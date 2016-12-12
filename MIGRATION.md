@@ -53,24 +53,24 @@ enabling "composite" subscription behavior.
 |RxJS 4|RxJS 5|
 |---|---|
 |`amb`|`race`|
-|`and`|Not yet implemented|
+|`and`|No longer implemented|
 |`asObservable`|Exists on `Subject` only|
-|`average`|Not yet implemented|
+|`average`|No longer implemented|
 |`bufferWithCount`|`bufferCount`|
 |`bufferWithTime`|`bufferTime`|
 |`concat`|`concat`|
 |`concatAll`|`concatAll`|
 |`concatMap`|`concatMap`|
-|`concatMapObserver`|Not yet implemented|
-|`controlled`|Not yet implemented|
-|`delaySubscription`|Not yet implemented|
+|`concatMapObserver`|No longer implemented|
+|`controlled`|No longer implemented|
+|`delaySubscription`|No longer implemented|
 |`do`|`do`|
 |`doAction`|`do`|
 |`doOnCompleted`|`do(null, null, fn)`|
 |`doOnError`|`do(null, fn)`|
 |`doOnNext`|`do(fn)`|
-|`doWhile`|Not yet implemented|
-|`extend`|Not yet implemented|
+|`doWhile`|No longer implemented|
+|`extend`|No longer implemented|
 |`flatMapFirst`|`exhaustMap`|
 |`flatMapLatest`|`switchMap`|
 |`flatMapWithMaxConcurrent`|`mergeMap` or `flatMap`(alias)|
@@ -78,49 +78,49 @@ enabling "composite" subscription behavior.
 |`fromCallback`|`bindCallback`|
 |`fromNodeCallback`|`bindNodeCallback`|
 |`groupByUntil`|`groupBy(keySelector, elementSelector, durationSelector)`|
-|`groupJoin`|Not yet implemented|
+|`groupJoin`|No longer implemented|
 |`includes(v)`|`.first(x => x === v, () => true, false)`|
 |`indexOf(v)`|`.map((x, i) => [x === v, i]).filter(([x]) => x).map(([_, i]) => i).first()`|
-|`join`|Not yet implemented|
-|`jortSortUntil`|Not yet implemented|
-|`jortSort`|Not yet implemented|
+|`join`|No longer implemented|
+|`jortSortUntil`|No longer implemented|
+|`jortSort`|No longer implemented|
 |`just(v)` or `just(a, b, c)`|`of(v)`, `of(a, b, c)`|
 |`lastIndexOf`|`.map((x, i) => [x === v, i]).filter(([x]) => x).map(([_, i]) => i).last()`|
-|`manySelect`|Not yet implemented|
+|`manySelect`|No longer implemented|
 |`map(fn)`|`map(fn)`|
 |`map(value)`|`mapTo(value)`|
 |`maxBy(fn)`|`scan((s, v, i) => { let max = Math.max(s.max, fn(v, i)); return { max, value: max === s.max ? s.value : v }; }, { max: null, value: undefined }).last(x => x.max !== null, x => x.value)`|
 |`minBy(fn)`|`scan((s, v, i) => { let min = Math.min(s.min, fn(v, i)); return { min, value: min === s.min ? s.value : v }; }, { min: null, value: undefined }).last(x => x.min !== null, x => x.value)`|
 |`of`|`of`|
-|`ofObjectChanges`|Not yet implemented|
-|`pausableBuffered`|Not yet implemented|
-|`pausable`|Not yet implemented|
+|`ofObjectChanges`|No longer implemented|
+|`pausableBuffered`|No longer implemented|
+|`pausable`|No longer implemented|
 |`pluck`|`pluck`|
 |`publishLast`|`publishLast`|
 |`publishValue`|`publishBehavior`|
 |`replay`|`publishReplay`|
 |`return`|`of`|
-|`selectConcatObserver`|Not yet implemented|
+|`selectConcatObserver`|No longer implemented|
 |`selectConcat`|`concatMap`|
 |`selectMany(fn)`|`mergeMap(fn)` or `flatMap(fn)` (alias)|
 |`selectMany(observable)`|`mergeMapTo(observable)`|
-|`selectManyObserver` or `flatMapObserver`|Not yet implemented|
+|`selectManyObserver` or `flatMapObserver`|No longer implemented|
 |`select`|`map`|
 |`shareReplay`|`publishReplay().refCount()`|
-|`shareValue`|Not yet implemented|
+|`shareValue`|No longer implemented|
 |`singleInstance`|`share`|
-|`skipLastWithTime`|Not yet implemented|
-|`skipLast`|Not yet implemented|
-|`skipUntilWithTime`|Not yet implemented|
-|`slice`|Not yet implemented|
+|`skipLastWithTime`|No longer implemented|
+|`skipLast`|No longer implemented|
+|`skipUntilWithTime`|No longer implemented|
+|`slice(start, end)`|`skip(start).take(end - start)`|
 |`some`|`first(fn, () => true, false)`|
 |`sum`|`reduce((s, v) => s + v, 0)`|
 |`switchFirst`|`exhaust`|
 |`takeLast`|`takeLast`|
-|`takeLastBufferWithTime`|Not yet implemented|
-|`takeLastBuffer`|Not yet implemented|
-|`takeLastWithTime`|Not yet implemented|
-|`takeUntilWithTime`|Not yet implemented|
+|`takeLastBufferWithTime`|No longer implemented|
+|`takeLastBuffer`|No longer implemented|
+|`takeLastWithTime`|No longer implemented|
+|`takeUntilWithTime`|No longer implemented|
 |`tapOnCompleted(fn)`|`do(null, null, fn)`|
 |`tapOnError(fn)`|`do(null, fn)`|
 |`tapOnNext(fn)`|`do(fn)`|
@@ -129,10 +129,10 @@ enabling "composite" subscription behavior.
 |`toMap(keySelector)`|`reduce((map, v, i) => map.set(keySelector(v, i), v), new Map())`|
 |`toMap(keySelector, elmentSelector)`|`reduce((map, v, i) => map.set(keySelector(v, i), elementSelector(v)), new Map())`|
 |`toSet`|`reduce((set, v) => set.add(v))`|
-|`transduce`|Not yet implemented|
+|`transduce`|No longer implemented|
 |`where`|`filter`|
 |`windowWithCount`|`windowCount`|
-|`windowWithTimeOrCount`|Not yet implemented|
+|`windowWithTimeOrCount`|No longer implemented|
 |`windowWithTime`|`windowTime`|
 |`zip`|`zip`|
 
