@@ -53,68 +53,88 @@ enabling "composite" subscription behavior.
 |RxJS 4|RxJS 5|
 |---|---|
 |`amb`|`race`|
+|`and`|No longer implemented|
+|`asObservable`|Exists on `Subject` only|
+|`average`|No longer implemented|
 |`bufferWithCount`|`bufferCount`|
 |`bufferWithTime`|`bufferTime`|
-|`flatMap` or `selectMany`|`mergeMap` or `flatMap`(alias)|
+|`concat`|`concat`|
+|`concatAll`|`concatAll`|
+|`concatMap`|`concatMap`|
+|`concatMapObserver`|No longer implemented|
+|`controlled`|No longer implemented|
+|`delaySubscription`|No longer implemented|
+|`do`|`do`|
+|`doAction`|`do`|
+|`doOnCompleted`|`do(null, null, fn)`|
+|`doOnError`|`do(null, fn)`|
+|`doOnNext`|`do(fn)`|
+|`doWhile`|No longer implemented|
+|`extend`|No longer implemented|
 |`flatMapFirst`|`exhaustMap`|
 |`flatMapLatest`|`switchMap`|
 |`flatMapWithMaxConcurrent`|`mergeMap` or `flatMap`(alias)|
+|`flatMap`|`mergeMap` or `flatMap`(alias)|
 |`fromCallback`|`bindCallback`|
 |`fromNodeCallback`|`bindNodeCallback`|
+|`groupByUntil`|`groupBy(keySelector, elementSelector, durationSelector)`|
+|`groupJoin`|No longer implemented|
+|`includes(v)`|`.first(x => x === v, () => true, false)`|
+|`indexOf(v)`|`.map((x, i) => [x === v, i]).filter(([x]) => x).map(([_, i]) => i).first()`|
+|`join`|No longer implemented|
+|`jortSortUntil`|No longer implemented|
+|`jortSort`|No longer implemented|
+|`just(v)` or `just(a, b, c)`|`of(v)`, `of(a, b, c)`|
+|`lastIndexOf`|`.map((x, i) => [x === v, i]).filter(([x]) => x).map(([_, i]) => i).last()`|
+|`manySelect`|No longer implemented|
+|`map(fn)`|`map(fn)`|
+|`map(value)`|`mapTo(value)`|
+|`maxBy(fn)`|`scan((s, v, i) => { let max = Math.max(s.max, fn(v, i)); return { max, value: max === s.max ? s.value : v }; }, { max: null, value: undefined }).last(x => x.max !== null, x => x.value)`|
+|`minBy(fn)`|`scan((s, v, i) => { let min = Math.min(s.min, fn(v, i)); return { min, value: min === s.min ? s.value : v }; }, { min: null, value: undefined }).last(x => x.min !== null, x => x.value)`|
+|`of`|`of`|
+|`ofObjectChanges`|No longer implemented|
+|`pausableBuffered`|No longer implemented|
+|`pausable`|No longer implemented|
+|`pluck`|`pluck`|
+|`publishLast`|`publishLast`|
 |`publishValue`|`publishBehavior`|
 |`replay`|`publishReplay`|
-|`return` or `just`|`of`|
-|`select`|`map`|
+|`return`|`of`|
+|`selectConcatObserver`|No longer implemented|
 |`selectConcat`|`concatMap`|
+|`selectMany(fn)`|`mergeMap(fn)` or `flatMap(fn)` (alias)|
+|`selectMany(observable)`|`mergeMapTo(observable)`|
+|`selectManyObserver` or `flatMapObserver`|No longer implemented|
+|`select`|`map`|
+|`shareReplay`|`publishReplay().refCount()`|
+|`shareValue`|No longer implemented|
+|`singleInstance`|`share`|
+|`skipLastWithTime`|No longer implemented|
+|`skipLast`|No longer implemented|
+|`skipUntilWithTime`|No longer implemented|
+|`slice(start, end)`|`skip(start).take(end - start)`|
+|`some`|`first(fn, () => true, false)`|
+|`sum`|`reduce((s, v) => s + v, 0)`|
 |`switchFirst`|`exhaust`|
+|`takeLast`|`takeLast`|
+|`takeLastBufferWithTime`|No longer implemented|
+|`takeLastBuffer`|No longer implemented|
+|`takeLastWithTime`|No longer implemented|
+|`takeUntilWithTime`|No longer implemented|
+|`tapOnCompleted(fn)`|`do(null, null, fn)`|
+|`tapOnError(fn)`|`do(null, fn)`|
+|`tapOnNext(fn)`|`do(fn)`|
 |`tap`|`do`|
-|`windowWithTime`|`windowTime`|
-|`windowWithCount`|`windowCount`|
+|`timestamp`|`map(v => ({ value: v, timestamp: Date.now() }))`|
+|`toMap(keySelector)`|`reduce((map, v, i) => map.set(keySelector(v, i), v), new Map())`|
+|`toMap(keySelector, elmentSelector)`|`reduce((map, v, i) => map.set(keySelector(v, i), elementSelector(v)), new Map())`|
+|`toSet`|`reduce((set, v) => set.add(v))`|
+|`transduce`|No longer implemented|
 |`where`|`filter`|
-|`and`|Not yet implemented|
-|`asObservable`|Not yet implemented|
-|`average`|Not yet implemented|
-|`controlled`|Not yet implemented|
-|`delaySubscription`|Not yet implemented|
-|`doWhile`|Not yet implemented|
-|`extend`|Not yet implemented|
-|`groupByUntil`|Not yet implemented|
-|`groupJoin`|Not yet implemented|
-|`includes`|Not yet implemented|
-|`indexOf`|Not yet implemented|
-|`join`|Not yet implemented|
-|`jortSort`|Not yet implemented|
-|`jortSortUntil`|Not yet implemented|
-|`lastIndexOf`|Not yet implemented|
-|`manySelect`|Not yet implemented|
-|`maxBy`|Not yet implemented|
-|`minBy`|Not yet implemented|
-|`ofObjectChanges`|Not yet implemented|
-|`pausable`|Not yet implemented|
-|`pausableBuffered`|Not yet implemented|
-|`shareReplay`|Not yet implemented|
-|`shareValue`|Not yet implemented|
-|`selectConcatObserver` or `concatMapObserver`|Not yet implemented|
-|`selectManyObserver` or `flatMapObserver`|Not yet implemented|
-|`singleInstance`|Not yet implemented|
-|`skipLast`|Not yet implemented|
-|`skipLastWithTime`|Not yet implemented|
-|`skipUntilWithTime`|Not yet implemented|
-|`slice`|Not yet implemented|
-|`some`|Not yet implemented|
-|`sum`|Not yet implemented|
-|`takeLastBuffer`|Not yet implemented|
-|`takeLastBufferWithTime`|Not yet implemented|
-|`takeLastWithTime`|Not yet implemented|
-|`takeUntilWithTime`|Not yet implemented|
-|`tapOnNext`|`do`|
-|`tapOnError`|`do`|
-|`tapOnCompleted`|`do`|
-|`timestamp`|Not yet implemented|
-|`toMap`|Not yet implemented|
-|`toSet`|Not yet implemented|
-|`transduce`|Not yet implemented|
-|`windowWithTimeOrCount`|Not yet implemented|
+|`windowWithCount`|`windowCount`|
+|`windowWithTimeOrCount`|No longer implemented|
+|`windowWithTime`|`windowTime`|
+|`zip`|`zip`|
 
 ## Operator Splits
 
