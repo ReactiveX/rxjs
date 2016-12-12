@@ -126,6 +126,15 @@ describe('Observable.prototype.takeUntil', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
+  it('should complete without subscribing to the source when notifier synchronously emits', () => {
+    const e1 =   hot('----a--|');
+    const e2 =  Observable.of(0);
+    const expected = '(|)     ';
+
+    expectObservable(e1.takeUntil(e2)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe([]);
+  });
+
   it('should raise error if source raises error before notifier emits', () => {
     const e1 =     hot('--a--b--c--d--#     ');
     const e1subs =     '^             !     ';
