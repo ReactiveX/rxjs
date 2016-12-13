@@ -10,9 +10,31 @@
  */
 export class EmptyError extends Error {
   constructor() {
-    const err: any = super('no elements in sequence');
-    (<any> this).name = err.name = 'EmptyError';
-    (<any> this).stack = err.stack;
-    (<any> this).message = err.message;
+    const message = 'no elements in sequence';
+    super(message);
+
+    Object.defineProperty(this, 'name', {
+      enumerable: false,
+      writable: false,
+      value: 'EmptyError'
+    });
+
+    Object.defineProperty(this, 'message', {
+      enumerable: false,
+      writable: true,
+      value: message
+    });
+
+    Object.defineProperty(this, 'stack', {
+      enumerable: false,
+      writable: false,
+      value: (new Error(message)).stack
+    });
   }
+}
+
+if (typeof (<any>Object).setPrototypeOf === 'function') {
+  (<any>Object).setPrototypeOf(EmptyError.prototype, Error.prototype);
+} else {
+  EmptyError.prototype = Object.create(Error.prototype);
 }

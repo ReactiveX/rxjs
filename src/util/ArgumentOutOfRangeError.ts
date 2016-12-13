@@ -10,9 +10,31 @@
  */
 export class ArgumentOutOfRangeError extends Error {
   constructor() {
-    const err: any = super('argument out of range');
-    (<any> this).name = err.name = 'ArgumentOutOfRangeError';
-    (<any> this).stack = err.stack;
-    (<any> this).message = err.message;
+    const message = 'argument out of range';
+    super(message);
+
+    Object.defineProperty(this, 'name', {
+      enumerable: false,
+      writable: false,
+      value: 'ArgumentOutOfRangeError'
+    });
+
+    Object.defineProperty(this, 'message', {
+      enumerable: false,
+      writable: true,
+      value: message
+    });
+
+    Object.defineProperty(this, 'stack', {
+      enumerable: false,
+      writable: false,
+      value: (new Error(message)).stack
+    });
   }
+}
+
+if (typeof (<any>Object).setPrototypeOf === 'function') {
+  (<any>Object).setPrototypeOf(ArgumentOutOfRangeError.prototype, Error.prototype);
+} else {
+  ArgumentOutOfRangeError.prototype = Object.create(Error.prototype);
 }
