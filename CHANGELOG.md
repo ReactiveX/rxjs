@@ -1,3 +1,14 @@
+<a name="5.0.0"></a>
+# [5.0.0](https://github.com/ReactiveX/RxJS/compare/5.0.0-rc.5...v5.0.0) (2016-12-13)
+
+
+### Bug Fixes
+
+* **race:** unsubscribe raced observables with immediate scheduler ([#2158](https://github.com/ReactiveX/RxJS/issues/2158)) ([7dd533b](https://github.com/ReactiveX/RxJS/commit/7dd533b))
+* **SubscribeOnObservable:** Add the source subscription to the action disposable so the source will ([64e3815](https://github.com/ReactiveX/RxJS/commit/64e3815))
+
+
+
 <a name="5.0.0-rc.5"></a>
 # [5.0.0-rc.5](https://github.com/ReactiveX/RxJS/compare/5.0.0-rc.4...v5.0.0-rc.5) (2016-12-07)
 
