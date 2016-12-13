@@ -1,3 +1,13 @@
+<a name="5.0.1"></a>
+## [5.0.1](https://github.com/ReactiveX/RxJS/compare/5.0.0...v5.0.1) (2016-12-13)
+
+
+### Bug Fixes
+
+* **TypeScript:** pin to TypeScript 2.0.x, fix errors with Error subclassing ([300504c](https://github.com/ReactiveX/RxJS/commit/300504c))
+
+
+
 <a name="5.0.0"></a>
 # [5.0.0](https://github.com/ReactiveX/RxJS/compare/5.0.0-rc.5...v5.0.0) (2016-12-13)
 
