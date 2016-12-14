@@ -1,5 +1,6 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
+import { TeardownLogic } from '../Subscription';
 import { Observable } from '../Observable';
 
 import { OuterSubscriber } from '../OuterSubscriber';
@@ -47,8 +48,11 @@ class BufferOperator<T> implements Operator<T, T[]> {
   constructor(private closingNotifier: Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T[]>, source: any): any {
-    return source.subscribe(new BufferSubscriber(subscriber, this.closingNotifier));
+  call(subscriber: Subscriber<T[]>, source: any): TeardownLogic {
+    const bufferSubscriber = new BufferSubscriber(subscriber);
+    const subscription = source.subscribe(bufferSubscriber);
+    bufferSubscriber.subscribeToClosingNotifier(this.closingNotifier);
+    return subscription;
   }
 }
 
@@ -60,8 +64,11 @@ class BufferOperator<T> implements Operator<T, T[]> {
 class BufferSubscriber<T> extends OuterSubscriber<T, any> {
   private buffer: T[] = [];
 
-  constructor(destination: Subscriber<T[]>, closingNotifier: Observable<any>) {
+  constructor(destination: Subscriber<T[]>) {
     super(destination);
+  }
+
+  subscribeToClosingNotifier(closingNotifier: Observable<any>) {
     this.add(subscribeToResult(this, closingNotifier));
   }
 
