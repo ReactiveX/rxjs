@@ -322,6 +322,9 @@ children:
         - label: using each source value only once
           children:
           - label: zip
+        - label: by defining how long value from one source will wait for values from the other one
+          children:
+          - label: join
   - label: 'I have some Observables to combine together as one Observable, and'
     children:
     - label: I want to receive values only from the Observable that emits a value first

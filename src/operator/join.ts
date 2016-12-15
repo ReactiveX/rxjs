@@ -9,21 +9,36 @@ import { subscribeToResult } from '../util/subscribeToResult';
 import { take } from './take';
 
 /**
- * Returns an Observable that combines the items emitted by two Observables, and selects which items to combine
- * based on duration-windows that you define on a per-item basis via the durtionSelector functions. You implement
- * these windows as Observables whose lifespans begin with each item emitted by either Observable. When such a
- * window-defining Observable either emits an item or completes, the window for the item it is associated with
- * closes. So long as an item's window is open, it will combine with any item emitted by the other Observable.
+ * Combines values from two Observables, based on time windows defined for each
+ * value and each stream.
+ *
+ * <span class="informal">Combine values from two streams, but only
+ * sometimes</span>
+ * <img src="./img/join.png" width="100%">
+ *
+ * Returns an Observable that combines the items emitted by two Observables,
+ * and selects which items to combine
+ * based on duration-windows that you define on a per-item basis via the
+ * durtionSelector functions. You implement
+ * these windows as Observables whose lifespans begin with each item emitted by
+ * either Observable. When such a
+ * window-defining Observable either emits an item or completes, the window for
+ * the item it is associated with
+ * closes. So long as an item's window is open, it will combine with any item
+ * emitted by the other Observable.
  * `resultSelector` is the function you define to combine the items.
  *
  * @param {Observable} right  the right observable sequence to join elements for
- * @param {Function} leftDurationSelector  a function to select the duration (expressed as an observable sequence)
+ * @param {Function} leftDurationSelector  a function to select the duration
+ * (expressed as an observable sequence)
  * of each element of the left observable sequence, used to determine overlap
- * @param {Function} rightDurationSelector  a function to select the duration (expressed as an observable sequence)
+ * @param {Function} rightDurationSelector  a function to select the duration
+ * (expressed as an observable sequence)
  * of each element of the left observable sequence, used to determine overlap
- * @param {Function} resultSelector  a function invoked to compute a result element for any two overlapping elements
+ * @param {Function} resultSelector  a function invoked to compute a result
+ * element for any two overlapping elements
  * of the left and right observable sequences.
- * @returns {Observable} an observable sequence that contains result elements computed from source elements that
+ * @returns {Observable} an observable sequence that contains result elements * * computed from source elements that
  * have an overlapping duration
  */
 export function join<T1, T2, R>(this: Observable<T1>,

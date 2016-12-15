@@ -18,11 +18,39 @@ function duration(x: TimeInterval): Rx.Observable<number> {
   return Observable.timer(x.interval, undefined, rxTestScheduler);
 };
 
-function concat(x: TimeInterval, y: TimeInterval): any {
+function tiConcat(x: TimeInterval, y: TimeInterval): any {
   return x.value + y.value;
 };
 
+function zeroDuration(x: string) {
+  return Observable.of({});
+}
+
+function stubDuration(intervals: any) {
+  return (x: string) => intervals[x + 'Interval'];
+}
+
+function concat(x: string, y: string) {
+  return x + y;
+}
+
 describe('Observable.prototype.join()', () => {
+  asDiagram('join')('should work with constant duration selector' +
+  'from source stream', () => {
+    const x =             hot('--a------b------c--------|');
+    const aInterval = cold(     '----t------------------|');
+    const bInterval = cold(            '----t-----------|');
+    const cInterval = cold(                   '----t----|');
+
+    const y =             hot('----p--------q---------r-|');
+    const expected =          '----x--------y-----------|';
+    const expectedValues = { x: 'ap', y: 'bq' };
+    const xDuration = stubDuration({ aInterval, bInterval, cInterval });
+
+    const result = x.join(y, xDuration, zeroDuration, concat);
+    expectObservable(result).toBe(expected, expectedValues);
+  });
+
   it('should work for synced sources and duration', () => {
     const xs = { a: ti('first0'), b: ti('first1'), c: ti('first2') };
     const ys = { d: ti('second0'), e: ti('second1'), f: ti('second2') };
@@ -42,7 +70,7 @@ describe('Observable.prototype.join()', () => {
     const expected =     '--g--h--i--|';
     const values = { g: 'first0second0', h: 'first1second1', i: 'first2second2' };
 
-    const r = x.join(y, duration, duration, concat);
+    const r = x.join(y, duration, duration, tiConcat);
     expectObservable(r).toBe(expected, values);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
@@ -65,7 +93,7 @@ describe('Observable.prototype.join()', () => {
     const expected =     '--g--h--i--|';
     const values = { g: 'first0second0', h: 'first0second1', i: 'first0second2' };
 
-    const r = x.join(y, duration, duration, concat);
+    const r = x.join(y, duration, duration, tiConcat);
     expectObservable(r).toBe(expected, values);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
@@ -88,7 +116,7 @@ describe('Observable.prototype.join()', () => {
     const expected =     '--g--h--i--|';
     const values = { g: 'first0second0', h: 'first1second0', i: 'first2second0' };
 
-    const r = x.join(y, duration, duration, concat);
+    const r = x.join(y, duration, duration, tiConcat);
     expectObservable(r).toBe(expected, values);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
@@ -115,7 +143,7 @@ describe('Observable.prototype.join()', () => {
     const expected =     '--tu-------------(wz)----|';
     const values = { t: '0hat', u: '0bat', w: '2wag', z: '2pig' };
 
-    const r = x.join(y, duration, duration, concat);
+    const r = x.join(y, duration, duration, tiConcat);
     expectObservable(r).toBe(expected, values);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
@@ -137,7 +165,7 @@ describe('Observable.prototype.join()', () => {
     const expected =     '--tu--#';
     const values = { t: '0hat', u: '0bat' };
 
-    const r = x.join(y, duration, duration, concat);
+    const r = x.join(y, duration, duration, tiConcat);
     expectObservable(r).toBe(expected, values);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
@@ -162,7 +190,7 @@ describe('Observable.prototype.join()', () => {
     const expected =     '--tu------#';
     const values = { t: '0hat', u: '0bat' };
 
-    const r = x.join(y, duration, duration, concat);
+    const r = x.join(y, duration, duration, tiConcat);
     expectObservable(r).toBe(expected, values);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
@@ -195,7 +223,7 @@ describe('Observable.prototype.join()', () => {
       }
     };
 
-    const r = x.join(y, throwError, duration, concat);
+    const r = x.join(y, throwError, duration, tiConcat);
     expectObservable(r).toBe(expected, values);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
@@ -228,7 +256,7 @@ describe('Observable.prototype.join()', () => {
       }
     };
 
-    const r = x.join(y, duration, throwError, concat);
+    const r = x.join(y, duration, throwError, tiConcat);
     expectObservable(r).toBe(expected, values);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(y.subscriptions).toBe(ysubs);
@@ -257,7 +285,7 @@ describe('Observable.prototype.join()', () => {
       if (vx.value === 'first2') {
         throw 'error';
       } else {
-        return concat(vx, vy);
+        return tiConcat(vx, vy);
       }
     };
 
@@ -287,7 +315,7 @@ describe('Observable.prototype.join()', () => {
       return duration(v);
     };
 
-    const r = x.join(y, duration, durationCounted, concat)
+    const r = x.join(y, duration, durationCounted, tiConcat)
       .do(undefined, undefined, () => expect(calls).to.equal(3));
     expectObservable(r).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -314,7 +342,7 @@ describe('Observable.prototype.join()', () => {
       return duration(v);
     };
 
-    const r = x.join(y, durationCounted, duration, concat)
+    const r = x.join(y, durationCounted, duration, tiConcat)
       .do(undefined, undefined, () => expect(calls).to.equal(3));
     expectObservable(r).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -343,7 +371,7 @@ describe('Observable.prototype.join()', () => {
 
     const r = x
       .mergeMap((v: TimeInterval) => Observable.of(v))
-      .join(y, duration, duration, concat)
+      .join(y, duration, duration, tiConcat)
       .mergeMap((v: TimeInterval) => Observable.of(v));
 
     expectObservable(r, unsub).toBe(expected, values);

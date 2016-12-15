@@ -195,6 +195,7 @@ There are operators for different purposes, and they may be categorized as: crea
 - [`concatAll`](../class/es6/Observable.js~Observable.html#instance-method-concatAll)
 - [`exhaust`](../class/es6/Observable.js~Observable.html#instance-method-exhaust)
 - [`forkJoin`](../class/es6/Observable.js~Observable.html#static-method-forkJoin)
+- [`join`](../class/es6/Observable.js~Observable.html#static-method-join)
 - [`merge`](../class/es6/Observable.js~Observable.html#instance-method-merge)
 - [`mergeAll`](../class/es6/Observable.js~Observable.html#instance-method-mergeAll)
 - [`race`](../class/es6/Observable.js~Observable.html#instance-method-race)
