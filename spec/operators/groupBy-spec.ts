@@ -1378,7 +1378,7 @@ describe('Observable.prototype.groupBy', () => {
       observer.complete();
     }).groupBy(
       (x: number) => x % 2,
-      (x: string) => x + '!'
+      (x: number) => x + '!'
     );
 
     expect(result instanceof MyCustomObservable).to.be.true;
