@@ -9,6 +9,14 @@
 
 Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Extensions/RxJS](https://github.com/Reactive-Extensions/RxJS) and is intended to supersede it once this is ready. This rewrite is meant to have better performance, better modularity, better debuggable call stacks, while staying mostly backwards compatible, with some breaking changes that reduce the API surface.
 
+## Versions In This Repository
+
+Different branches contain different versions
+
+- [master](https://github.com/ReactiveX/rxjs/commits/master) - **canary** the next _major_ release (aka RxJS 6 😱)
+- [5.1.x](https://github.com/ReactiveX/rxjs/commits/5.1.x) - **beta** the next _minor_ release
+- [5.0.x](https://github.com/ReactiveX/rxjs/commits/5.0.x) - **stable** the current _stable_ release and its patches
+
 [Apache 2.0 License](LICENSE.txt)
 
 - [Code of Conduct](CODE_OF_CONDUCT.md)
