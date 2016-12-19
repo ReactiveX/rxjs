@@ -652,6 +652,67 @@ describe('Observable.ajax', () => {
       expect(complete).to.be.true;
     });
 
+    it('should emit progress event when progressSubscriber is specified', function() {
+      const spy = sinon.spy();
+      const progressSubscriber = (<any>{
+        next: spy,
+        error: () => {
+          // noop
+        },
+        complete: () => {
+          // noop
+        }
+      });
+
+      Rx.Observable.ajax({
+        url: '/flibbertyJibbet',
+        progressSubscriber
+      })
+        .subscribe();
+
+      const request = MockXMLHttpRequest.mostRecent;
+
+      request.respondWith({
+        'status': 200,
+        'contentType': 'application/json',
+        'responseText': JSON.stringify({})
+      }, 3);
+
+      expect(spy).to.be.calledThrice;
+    });
+
+    it('should emit progress event when progressSubscriber is specified in IE', function() {
+      const spy = sinon.spy();
+      const progressSubscriber = (<any>{
+        next: spy,
+        error: () => {
+          // noop
+        },
+        complete: () => {
+          // noop
+        }
+      });
+
+      root.XMLHttpRequest = MockXMLHttpRequestInternetExplorer;
+      root.XDomainRequest = MockXMLHttpRequestInternetExplorer;
+
+      Rx.Observable.ajax({
+        url: '/flibbertyJibbet',
+        progressSubscriber
+      })
+        .subscribe();
+
+      const request = MockXMLHttpRequest.mostRecent;
+
+      request.respondWith({
+        'status': 200,
+        'contentType': 'application/json',
+        'responseText': JSON.stringify({})
+      }, 3);
+
+      expect(spy.callCount).to.equal(3);
+    });
+
   });
 
   it('should work fine when XMLHttpRequest onreadystatechange property is monkey patched', function() {
