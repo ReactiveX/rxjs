@@ -139,7 +139,7 @@ export class MockXMLHttpRequest {
   onerror: (e: ErrorEvent) => any;
   onprogress: (e: ProgressEvent) => any;
   ontimeout: (e: ProgressEvent) => any;
-  upload: XMLHttpRequestUpload;
+  upload: XMLHttpRequestUpload = <any>{ };
 
   constructor() {
     this.previousRequest = MockXMLHttpRequest.recentRequest;
@@ -158,6 +158,12 @@ export class MockXMLHttpRequest {
     this.password = password;
     this.readyState = 1;
     this.triggerEvent('readyStateChange');
+    const originalProgressHandler = this.upload.onprogress;
+    Object.defineProperty(this.upload, 'progress', {
+      get() {
+        return originalProgressHandler;
+      }
+    });
   }
 
   setRequestHeader(key: any, value: any): void {
