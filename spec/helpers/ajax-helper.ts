@@ -200,7 +200,12 @@ export class MockXMLHttpRequest {
     throw new Error('unhandled type "' + this.responseType + '"');
   }
 
-  respondWith(response: any): void {
+  respondWith(response: any, progressTimes?: number): void {
+    if (progressTimes) {
+      for (let i = 1; i <= progressTimes; ++ i) {
+        this.triggerUploadEvent('progress', { type: 'ProgressEvent', total: progressTimes, loaded: i });
+      }
+    }
     this.readyState = 4;
     this.responseHeaders = {
       'Content-Type': response.contentType || 'text/plain'
@@ -238,6 +243,15 @@ export class MockXMLHttpRequest {
       }
     });
   }
+
+  triggerUploadEvent(name: any, eventObj?: any): void {
+    // TODO: create a better default event
+    const e: any = eventObj || {};
+
+    if (this.upload['on' + name]) {
+      this.upload['on' + name](e);
+    }
+  }
 }
 
 export class MockXMLHttpRequestInternetExplorer extends MockXMLHttpRequest {
@@ -264,4 +278,11 @@ export class MockXMLHttpRequestInternetExplorer extends MockXMLHttpRequest {
     return super.defaultResponseValue();
   }
 
+  triggerUploadEvent(name: any, eventObj?: any): void {
+    // TODO: create a better default event
+    const e: any = eventObj || {};
+    if (this['on' + name]) {
+      this['on' + name](e);
+    }
+  }
 }

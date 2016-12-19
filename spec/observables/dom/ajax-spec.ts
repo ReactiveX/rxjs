@@ -734,16 +734,6 @@ describe('Observable.ajax', () => {
       configurable: true
     });
 
-    Object.defineProperty(root.XMLHttpRequest.prototype, 'upload', {
-      get() {
-        return true;
-      },
-      configurable: true
-    });
-
-    // mock for onprogress
-    root.XDomainRequest = true;
-
     Rx.Observable.ajax({
       url: '/flibbertyJibbet',
       progressSubscriber: (<any>{
@@ -763,12 +753,11 @@ describe('Observable.ajax', () => {
     const request = MockXMLHttpRequest.mostRecent;
 
     expect(() => {
-      request.onprogress((<any>'onprogress'));
+      request.upload.onprogress((<any>'onprogress'));
     }).not.throw();
 
     delete root.XMLHttpRequest.prototype.onprogress;
     delete root.XMLHttpRequest.prototype.upload;
-    delete root.XDomainRequest;
   });
 
   it('should work fine when XMLHttpRequest onerror property is monkey patched', function() {
@@ -788,16 +777,6 @@ describe('Observable.ajax', () => {
       configurable: true
     });
 
-    Object.defineProperty(root.XMLHttpRequest.prototype, 'upload', {
-      get() {
-        return true;
-      },
-      configurable: true
-    });
-
-    // mock for onprogress
-    root.XDomainRequest = true;
-
     Rx.Observable.ajax({
       url: '/flibbertyJibbet'
     })
@@ -813,6 +792,5 @@ describe('Observable.ajax', () => {
 
     delete root.XMLHttpRequest.prototype.onerror;
     delete root.XMLHttpRequest.prototype.upload;
-    delete root.XDomainRequest;
   });
 });
