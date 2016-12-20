@@ -20,11 +20,10 @@ Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Exten
 
 ## Versions In This Repository
 
-Different branches contain different versions
+- [master](https://github.com/ReactiveX/rxjs/commits/master) - commits that will be included in the next _minor_ or _patch_ release
+- [next](https://github.com/ReactiveX/rxjs/commits/next) - commits that will be included in the next _major_ release (breaking changes)
 
-- [master](https://github.com/ReactiveX/rxjs/commits/master) - **canary** the next _major_ release (aka RxJS 6 😱)
-- [5.1.x](https://github.com/ReactiveX/rxjs/commits/5.1.x) - **beta** the next _minor_ release
-- [5.0.x](https://github.com/ReactiveX/rxjs/commits/5.0.x) - **stable** the current _stable_ release and its patches
+Most PRs should be made to **master**, unless you know it is a breaking change.
 
 ## Important
 
