@@ -69,19 +69,20 @@ export function zipStatic<R>(...observables: Array<ObservableInput<any> | ((...v
  *
  * @example <caption>Combine age and name from different sources</caption>
  *
- * let age$ = Observable.of<number>(7, 5, 9);
+ * let age$ = Observable.of<number>(27, 25, 29);
  * let name$ = Observable.of<string>('Foo', 'Bar', 'Beer');
+ * let isDev$ = Observable.of<boolean>(true, true, false);
  *
  * Observable
  *     .zip(age$,
  *          name$,
- *          (age: number, name: string) => ({ age, name }))
+ *          (age: number, name: string, isDev: boolean) => ({ age, name, isDev }))
  *     .subscribe(x => console.log(x));
  *
  * // outputs 
- * // { age: 7, name: 'Foo' }
- * // { age: 5, name: 'Bar' }
- * // { age: 9, name: 'Beer' }
+ * // { age: 7, name: 'Foo', isDev: true }
+ * // { age: 5, name: 'Bar', isDev: true }
+ * // { age: 9, name: 'Beer', isDev: false }
  * 
  * @param observables
  * @return {Observable<R>}
