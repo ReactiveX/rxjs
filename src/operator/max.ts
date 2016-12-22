@@ -17,9 +17,9 @@ import { ReduceOperator } from './reduce';
  *   age: number,
  *   name: string
  * }
- * Observable.of({age: 7, name: 'Foo'},
- *               {age: 5, name: 'Bar'},
- *               {age: 9, name: 'Beer'})
+ * Observable.of<Person>({age: 7, name: 'Foo'},
+ *                       {age: 5, name: 'Bar'},
+ *                       {age: 9, name: 'Beer'})
  *           .max<Person>((a: Person, b: Person) => a.age < b.age ? -1 : 1)
  *           .subscribe((x: Person) => console.log(x.name)); // -> 'Beer'
  * }
