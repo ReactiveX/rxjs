@@ -76,6 +76,7 @@ export function zipStatic<R>(...observables: Array<ObservableInput<any> | ((...v
  * Observable
  *     .zip(age$,
  *          name$,
+ *          isDev$,
  *          (age: number, name: string, isDev: boolean) => ({ age, name, isDev }))
  *     .subscribe(x => console.log(x));
  *
