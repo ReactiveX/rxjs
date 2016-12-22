@@ -85,7 +85,7 @@ export function zipStatic<R>(...observables: Array<ObservableInput<any> | ((...v
  * // { age: 5, name: 'Bar', gender: 'M' }
  * // { age: 9, name: 'Beer', gender: 'F' }
  * 
- * * @param observables
+ * @param observables
  * @return {Observable<R>}
  * @static true
  * @name zip
