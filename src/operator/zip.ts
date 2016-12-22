@@ -67,23 +67,21 @@ export function zipStatic<R>(...observables: Array<ObservableInput<any> | ((...v
  * If the latest parameter is a function, this function is used to compute the created value from the input values. 
  * Otherwise, an array of the input values is returned.
  *
- * @example <caption>Combine age, name and gender from different sources</caption>
+ * @example <caption>Combine age and name from different sources</caption>
  *
- * let Ages = Observable.of<number>(7, 5, 9);
- * let Names = Observable.of<string>('Foo', 'Bar', 'Beer');
- * let Gender = Observable.of<string>('F', 'M', 'F');
+ * let age$ = Observable.of<number>(7, 5, 9);
+ * let name$ = Observable.of<string>('Foo', 'Bar', 'Beer');
  *
  * Observable
- *     .zip(Ages,
- *          Names,
- *          Gender,
- *          (age: number, name: string, gender: string) => ({ age, name, gender }))
+ *     .zip(age$,
+ *          name$,
+ *          (age: number, name: string) => ({ age, name }))
  *     .subscribe(x => console.log(x));
  *
  * // outputs 
- * // { age: 7, name: 'Foo', gender: 'F' }
- * // { age: 5, name: 'Bar', gender: 'M' }
- * // { age: 9, name: 'Beer', gender: 'F' }
+ * // { age: 7, name: 'Foo' }
+ * // { age: 5, name: 'Bar' }
+ * // { age: 9, name: 'Beer' }
  * 
  * @param observables
  * @return {Observable<R>}
