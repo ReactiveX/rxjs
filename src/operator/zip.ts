@@ -61,7 +61,31 @@ export function zipStatic<R>(...observables: Array<ObservableInput<any> | ((...v
 /* tslint:enable:max-line-length */
 
 /**
- * @param observables
+ * Combines multiple Observables to create an Observable whose values are calculated from the values, in order, of each 
+ * of its input Observables.
+ *
+ * If the latest parameter is a function, this function is used to compute the created value from the input values. 
+ * Otherwise, an array of the input values is returned.
+ *
+ * @example <caption>Combine age, name and gender from different sources</caption>
+ *
+ * let Ages = Observable.of<number>(7, 5, 9);
+ * let Names = Observable.of<string>('Foo', 'Bar', 'Beer');
+ * let Gender = Observable.of<string>('F', 'M', 'F');
+ *
+ * Observable
+ *     .zip(Ages,
+ *          Names,
+ *          Gender,
+ *          (age: number, name: string, gender: string) => ({ age, name, gender }))
+ *     .subscribe(x => console.log(x));
+ *
+ * // outputs 
+ * // { age: 7, name: 'Foo', gender: 'F' }
+ * // { age: 5, name: 'Bar', gender: 'M' }
+ * // { age: 9, name: 'Beer', gender: 'F' }
+ * 
+ * * @param observables
  * @return {Observable<R>}
  * @static true
  * @name zip
