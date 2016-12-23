@@ -1,3 +1,14 @@
+<a name="5.0.2"></a>
+## [5.0.2](https://github.com/ReactiveX/RxJS/compare/5.0.1...v5.0.2) (2016-12-23)
+
+
+### Bug Fixes
+
+* **ajax:** upload progress is now set correctly ([#2200](https://github.com/ReactiveX/RxJS/issues/2200)) ([1a83041](https://github.com/ReactiveX/RxJS/commit/1a83041))
+* **groupBy:** Fix groupBy to dispose of outer subscription. ([#2201](https://github.com/ReactiveX/RxJS/issues/2201)) ([2269618](https://github.com/ReactiveX/RxJS/commit/2269618))
+
+
+
 <a name="5.0.1"></a>
 ## [5.0.1](https://github.com/ReactiveX/RxJS/compare/5.0.0...v5.0.1) (2016-12-13)
 

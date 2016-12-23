@@ -652,6 +652,67 @@ describe('Observable.ajax', () => {
       expect(complete).to.be.true;
     });
 
+    it('should emit progress event when progressSubscriber is specified', function() {
+      const spy = sinon.spy();
+      const progressSubscriber = (<any>{
+        next: spy,
+        error: () => {
+          // noop
+        },
+        complete: () => {
+          // noop
+        }
+      });
+
+      Rx.Observable.ajax({
+        url: '/flibbertyJibbet',
+        progressSubscriber
+      })
+        .subscribe();
+
+      const request = MockXMLHttpRequest.mostRecent;
+
+      request.respondWith({
+        'status': 200,
+        'contentType': 'application/json',
+        'responseText': JSON.stringify({})
+      }, 3);
+
+      expect(spy).to.be.calledThrice;
+    });
+
+    it('should emit progress event when progressSubscriber is specified in IE', function() {
+      const spy = sinon.spy();
+      const progressSubscriber = (<any>{
+        next: spy,
+        error: () => {
+          // noop
+        },
+        complete: () => {
+          // noop
+        }
+      });
+
+      root.XMLHttpRequest = MockXMLHttpRequestInternetExplorer;
+      root.XDomainRequest = MockXMLHttpRequestInternetExplorer;
+
+      Rx.Observable.ajax({
+        url: '/flibbertyJibbet',
+        progressSubscriber
+      })
+        .subscribe();
+
+      const request = MockXMLHttpRequest.mostRecent;
+
+      request.respondWith({
+        'status': 200,
+        'contentType': 'application/json',
+        'responseText': JSON.stringify({})
+      }, 3);
+
+      expect(spy.callCount).to.equal(3);
+    });
+
   });
 
   it('should work fine when XMLHttpRequest onreadystatechange property is monkey patched', function() {
@@ -734,16 +795,6 @@ describe('Observable.ajax', () => {
       configurable: true
     });
 
-    Object.defineProperty(root.XMLHttpRequest.prototype, 'upload', {
-      get() {
-        return true;
-      },
-      configurable: true
-    });
-
-    // mock for onprogress
-    root.XDomainRequest = true;
-
     Rx.Observable.ajax({
       url: '/flibbertyJibbet',
       progressSubscriber: (<any>{
@@ -763,12 +814,11 @@ describe('Observable.ajax', () => {
     const request = MockXMLHttpRequest.mostRecent;
 
     expect(() => {
-      request.onprogress((<any>'onprogress'));
+      request.upload.onprogress((<any>'onprogress'));
     }).not.throw();
 
     delete root.XMLHttpRequest.prototype.onprogress;
     delete root.XMLHttpRequest.prototype.upload;
-    delete root.XDomainRequest;
   });
 
   it('should work fine when XMLHttpRequest onerror property is monkey patched', function() {
@@ -788,16 +838,6 @@ describe('Observable.ajax', () => {
       configurable: true
     });
 
-    Object.defineProperty(root.XMLHttpRequest.prototype, 'upload', {
-      get() {
-        return true;
-      },
-      configurable: true
-    });
-
-    // mock for onprogress
-    root.XDomainRequest = true;
-
     Rx.Observable.ajax({
       url: '/flibbertyJibbet'
     })
@@ -813,6 +853,5 @@ describe('Observable.ajax', () => {
 
     delete root.XMLHttpRequest.prototype.onerror;
     delete root.XMLHttpRequest.prototype.upload;
-    delete root.XDomainRequest;
   });
 });
