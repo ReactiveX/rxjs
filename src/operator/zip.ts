@@ -67,7 +67,7 @@ export function zipStatic<R>(...observables: Array<ObservableInput<any> | ((...v
  * @name zip
  * @owner Observable
  */
-export function zipStatic<T, R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R> {
+export function zipStatic<R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R> {
   const project = <((...ys: Array<any>) => R)> observables[observables.length - 1];
   if (typeof project === 'function') {
     observables.pop();

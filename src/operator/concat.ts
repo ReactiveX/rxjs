@@ -128,7 +128,7 @@ export function concatStatic<T, R>(...observables: (ObservableInput<any> | Sched
  * @name concat
  * @owner Observable
  */
-export function concatStatic<T, R>(...observables: Array<ObservableInput<any> | Scheduler>): Observable<R> {
+export function concatStatic<R>(...observables: Array<ObservableInput<any> | Scheduler>): Observable<R> {
   let scheduler: Scheduler = null;
   let args = <any[]>observables;
   if (isScheduler(args[observables.length - 1])) {

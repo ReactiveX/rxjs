@@ -11,7 +11,7 @@ export interface ISet<T> {
   clear(): void;
 }
 
-export function minimalSetImpl<T>(): ISetCtor {
+export function minimalSetImpl(): ISetCtor {
   // THIS IS NOT a full impl of Set, this is just the minimum
   // bits of functionality we need for this library.
   return class MinimalSet<T> implements ISet<T> {
