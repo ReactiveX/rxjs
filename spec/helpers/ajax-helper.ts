@@ -139,7 +139,7 @@ export class MockXMLHttpRequest {
   onerror: (e: ErrorEvent) => any;
   onprogress: (e: ProgressEvent) => any;
   ontimeout: (e: ProgressEvent) => any;
-  upload: XMLHttpRequestUpload;
+  upload: XMLHttpRequestUpload = <any>{ };
 
   constructor() {
     this.previousRequest = MockXMLHttpRequest.recentRequest;
@@ -158,6 +158,12 @@ export class MockXMLHttpRequest {
     this.password = password;
     this.readyState = 1;
     this.triggerEvent('readyStateChange');
+    const originalProgressHandler = this.upload.onprogress;
+    Object.defineProperty(this.upload, 'progress', {
+      get() {
+        return originalProgressHandler;
+      }
+    });
   }
 
   setRequestHeader(key: any, value: any): void {
@@ -194,7 +200,12 @@ export class MockXMLHttpRequest {
     throw new Error('unhandled type "' + this.responseType + '"');
   }
 
-  respondWith(response: any): void {
+  respondWith(response: any, progressTimes?: number): void {
+    if (progressTimes) {
+      for (let i = 1; i <= progressTimes; ++ i) {
+        this.triggerUploadEvent('progress', { type: 'ProgressEvent', total: progressTimes, loaded: i });
+      }
+    }
     this.readyState = 4;
     this.responseHeaders = {
       'Content-Type': response.contentType || 'text/plain'
@@ -232,6 +243,15 @@ export class MockXMLHttpRequest {
       }
     });
   }
+
+  triggerUploadEvent(name: any, eventObj?: any): void {
+    // TODO: create a better default event
+    const e: any = eventObj || {};
+
+    if (this.upload['on' + name]) {
+      this.upload['on' + name](e);
+    }
+  }
 }
 
 export class MockXMLHttpRequestInternetExplorer extends MockXMLHttpRequest {
@@ -258,4 +278,11 @@ export class MockXMLHttpRequestInternetExplorer extends MockXMLHttpRequest {
     return super.defaultResponseValue();
   }
 
+  triggerUploadEvent(name: any, eventObj?: any): void {
+    // TODO: create a better default event
+    const e: any = eventObj || {};
+    if (this['on' + name]) {
+      this['on' + name](e);
+    }
+  }
 }
