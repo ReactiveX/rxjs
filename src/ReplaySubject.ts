@@ -1,5 +1,5 @@
 import { Subject } from './Subject';
-import { Scheduler } from './Scheduler';
+import { IScheduler } from './Scheduler';
 import { queue } from './scheduler/queue';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
@@ -16,7 +16,7 @@ export class ReplaySubject<T> extends Subject<T> {
 
   constructor(bufferSize: number = Number.POSITIVE_INFINITY,
               windowTime: number = Number.POSITIVE_INFINITY,
-              private scheduler?: Scheduler) {
+              private scheduler?: IScheduler) {
     super();
     this._bufferSize = bufferSize < 1 ? 1 : bufferSize;
     this._windowTime = windowTime < 1 ? 1 : windowTime;
