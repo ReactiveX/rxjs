@@ -17,11 +17,18 @@ import { InnerSubscriber } from '../InnerSubscriber';
  * by the accumulator are merged into the outer Observable.</span>
  *
  * @example <caption>Count the number of click events</caption>
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var ones = clicks.mapTo(1);
- * var seed = 0;
- * var count = ones.mergeScan((acc, one) => Observable.of(acc + one), seed);
- * count.subscribe(x => console.log(x));
+ * const click$ = Rx.Observable.fromEvent(document, 'click');
+ * const one$ = click$.mapTo(1);
+ * const seed = 0;
+ * const count$ = one$.mergeScan((acc, one) => Rx.Observable.of(acc + one), seed);
+ * count$.subscribe(x => console.log(x));
+ *
+ * // Results:
+ * 1
+ * 2
+ * 3
+ * 4
+ * // ...and so on for each click
  *
  * @param {function(acc: R, value: T): Observable<R>} accumulator
  * The accumulator function called on each source value.
