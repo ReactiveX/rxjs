@@ -262,9 +262,12 @@ describe('Observable.ajax', () => {
       'responseText': 'Wee! I am text!'
     });
 
+    expect(error instanceof Error).to.be.true;
     expect(error instanceof Rx.AjaxError).to.be.true;
+    expect(error.name).to.equal('AjaxError');
     expect(error.message).to.equal('ajax error 404');
     expect(error.status).to.equal(404);
+    expect(error.xhr instanceof XMLHttpRequest).to.be.true;
   });
 
   it('should fail on 404', () => {
@@ -294,9 +297,12 @@ describe('Observable.ajax', () => {
       'responseText': 'Wee! I am text!'
     });
 
+    expect(error instanceof Error).to.be.true;
     expect(error instanceof Rx.AjaxError).to.be.true;
+    expect(error.name).to.equal('AjaxError');
     expect(error.message).to.equal('ajax error 300');
     expect(error.status).to.equal(300);
+    expect(error.xhr instanceof XMLHttpRequest).to.be.true;
   });
 
   it('should succeed no settings', () => {
@@ -773,7 +779,12 @@ describe('Observable.ajax', () => {
     try {
       request.ontimeout((<any>'ontimeout'));
     } catch (e) {
+      expect(e instanceof Error).to.be.true;
+      expect(e instanceof Rx.AjaxError).to.be.true;
+      expect(e instanceof Rx.AjaxTimeoutError).to.be.true;
+      expect(e.name).to.equal('AjaxTimeoutError');
       expect(e.message).to.equal(new Rx.AjaxTimeoutError((<any>request), ajaxRequest).message);
+      expect(e.xhr instanceof XMLHttpRequest).to.be.true;
     }
     delete root.XMLHttpRequest.prototype.ontimeout;
   });

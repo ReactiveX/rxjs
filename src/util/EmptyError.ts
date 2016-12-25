@@ -8,11 +8,26 @@
  *
  * @class EmptyError
  */
-export class EmptyError extends Error {
-  constructor() {
-    const err: any = super('no elements in sequence');
-    (<any> this).name = err.name = 'EmptyError';
-    (<any> this).stack = err.stack;
-    (<any> this).message = err.message;
-  }
+export interface EmptyError extends Error {}
+export interface EmptyErrorConstructor {
+    new(): EmptyError;
+    readonly prototype: EmptyError;
 }
+
+function EmptyErrorCtor(this: EmptyError): EmptyError {
+  const err = Error.call(this, 'no elements in sequence');
+  this.name = 'EmptyError';
+  this.stack = err.stack;
+  this.message = err.message;
+  return this;
+}
+EmptyErrorCtor.prototype = Object.create(Error.prototype, {
+  constructor: {
+    value: EmptyErrorCtor,
+    enumerable: false,
+    writable: true,
+    configurable: true
+  }
+});
+
+export const EmptyError = EmptyErrorCtor as any as EmptyErrorConstructor;

@@ -174,6 +174,61 @@ export class AjaxObservable<T> extends Observable<T> {
 }
 
 /**
+ * A normalized AJAX error.
+ *
+ * @see {@link ajax}
+ *
+ * @class AjaxError
+ */
+export interface AjaxError extends Error {
+  /** @type {XMLHttpRequest} The XHR instance associated with the error */
+  xhr: XMLHttpRequest;
+
+  /** @type {AjaxRequest} The AjaxRequest associated with the error */
+  request: AjaxRequest;
+
+  /** @type {number} The HTTP status code */
+  status: number;
+}
+export interface AjaxErrorConstructor {
+    new(message: string, xhr: XMLHttpRequest, request: AjaxRequest): AjaxError;
+    readonly prototype: AjaxError;
+}
+
+function AjaxErrorCtor(this: AjaxError, message: string, xhr: XMLHttpRequest, request: AjaxRequest): AjaxError {
+  const err = Error.call(this, message);
+  this.name = 'AjaxError';
+  this.stack = err.stack;
+  this.message = err.message;
+  this.xhr = xhr;
+  this.request = request;
+  this.status = xhr.status;
+  return this;
+}
+AjaxErrorCtor.prototype = Object.create(Error.prototype, {
+  constructor: {
+    value: AjaxErrorCtor,
+    enumerable: false,
+    writable: true,
+    configurable: true
+  }
+});
+
+export const AjaxError = AjaxErrorCtor as any as AjaxErrorConstructor;
+
+/**
+ * @see {@link ajax}
+ *
+ * @class AjaxTimeoutError
+ */
+export class AjaxTimeoutError extends AjaxError {
+  constructor(xhr: XMLHttpRequest, request: AjaxRequest) {
+    super('ajax timeout', xhr, request);
+    this.name = 'AjaxTimeoutError';
+  }
+}
+
+/**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
@@ -419,42 +474,5 @@ export class AjaxResponse {
         this.response = ('response' in xhr) ? xhr.response : xhr.responseText;
         break;
     }
-  }
-}
-
-/**
- * A normalized AJAX error.
- *
- * @see {@link ajax}
- *
- * @class AjaxError
- */
-export class AjaxError extends Error {
-  /** @type {XMLHttpRequest} The XHR instance associated with the error */
-  xhr: XMLHttpRequest;
-
-  /** @type {AjaxRequest} The AjaxRequest associated with the error */
-  request: AjaxRequest;
-
-  /** @type {number} The HTTP status code */
-  status: number;
-
-  constructor(message: string, xhr: XMLHttpRequest, request: AjaxRequest) {
-    super(message);
-    this.message = message;
-    this.xhr = xhr;
-    this.request = request;
-    this.status = xhr.status;
-  }
-}
-
-/**
- * @see {@link ajax}
- *
- * @class AjaxTimeoutError
- */
-export class AjaxTimeoutError extends AjaxError {
-  constructor(xhr: XMLHttpRequest, request: AjaxRequest) {
-    super('ajax timeout', xhr, request);
   }
 }

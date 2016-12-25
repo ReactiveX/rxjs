@@ -18,6 +18,7 @@ describe('UnsubscriptionError', () => {
     try {
       subscription.unsubscribe();
     } catch (err) {
+      expect(err instanceof Error).to.equal(true);
       expect(err instanceof UnsubscriptionError).to.equal(true);
       expect(err.message).to.equal(`2 errors occurred during unsubscription:
   1) ${err1}
