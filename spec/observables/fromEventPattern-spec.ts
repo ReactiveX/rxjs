@@ -1,5 +1,7 @@
 import {expect} from 'chai';
+import * as sinon from 'sinon';
 import * as Rx from '../../dist/cjs/Rx';
+import {noop} from '../../dist/cjs/util/noop';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 declare const {hot, asDiagram, expectObservable, expectSubscriptions};
@@ -56,6 +58,23 @@ describe('Observable.fromEventPattern', () => {
     subscription.unsubscribe();
 
     expect(removeHandlerCalledWith).to.be.a('function');
+  });
+
+  it('should work without optional removeHandler', () => {
+    const addHandler: (h: Function) => any = sinon.spy();
+    Observable.fromEventPattern(addHandler).subscribe(noop);
+
+    expect(addHandler).calledOnce;
+  });
+
+  it('should deliver return value of addHandler to removeHandler as signal', () => {
+    const expected = { signal: true};
+    const addHandler = () => expected;
+    const removeHandler = sinon.spy();
+    Observable.fromEventPattern(addHandler, removeHandler).subscribe(noop).unsubscribe();
+
+    const call = removeHandler.getCall(0);
+    expect(call).calledWith(sinon.match.any, expected);
   });
 
   it('should send errors in addHandler down the error path', () => {
