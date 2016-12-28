@@ -1,3 +1,4 @@
+import { isFunction } from '../util/isFunction';
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { Subscriber } from '../Subscriber';
@@ -45,7 +46,7 @@ export class FromEventPatternObservable<T> extends Observable<T> {
    * @param {function(handler: Function): any} addHandler A function that takes
    * a `handler` function as argument and attaches it somehow to the actual
    * source of events.
-   * @param {function(handler: Function, signal?: any): void} removeHandler A function that
+   * @param {function(handler: Function, signal?: any): void} [removeHandler] An optional function that
    * takes a `handler` function as argument and removes it in case it was
    * previously attached using `addHandler`. if addHandler returns signal to teardown when remove,
    * removeHandler function will forward it.
@@ -58,13 +59,13 @@ export class FromEventPatternObservable<T> extends Observable<T> {
    * @owner Observable
    */
   static create<T>(addHandler: (handler: Function) => any,
-                   removeHandler: (handler: Function, signal?: any) => void,
+                   removeHandler?: (handler: Function, signal?: any) => void,
                    selector?: (...args: Array<any>) => T) {
     return new FromEventPatternObservable(addHandler, removeHandler, selector);
   }
 
   constructor(private addHandler: (handler: Function) => any,
-              private removeHandler: (handler: Function, signal?: any) => void,
+              private removeHandler?: (handler: Function, signal?: any) => void,
               private selector?: (...args: Array<any>) => T) {
     super();
   }
@@ -77,6 +78,10 @@ export class FromEventPatternObservable<T> extends Observable<T> {
     } : function(e: any) { subscriber.next(e); };
 
     const retValue = this._callAddHandler(handler, subscriber);
+
+    if (!isFunction(removeHandler)) {
+      return;
+    }
 
     subscriber.add(new Subscription(() => {
       //TODO: determine whether or not to forward to error handler
