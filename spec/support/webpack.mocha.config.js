@@ -3,7 +3,8 @@ var path = require('path');
 var glob = require('glob');
 var webpack = require('webpack');
 
-var files = _.map(glob.sync('spec-js/**/!(mocha-setup-node|mocha.sauce.gruntfile|mocha.sauce.runner|webpack.mocha.config|painter|diagram-test-runner|testScheduler-ui).js'), function(x) {
+var globPattern = 'spec-js/**/!(mocha.sauce.gruntfile|mocha.sauce.runner|webpack.mocha.config|painter|diagram-test-runner|testScheduler-ui).js';
+var files = _.map(glob.sync(globPattern), function (x) {
   return path.resolve('./', x);
 });
 
@@ -27,6 +28,7 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin('browser.common.js')
+    new webpack.optimize.CommonsChunkPlugin('browser.common.js'),
+    new webpack.IgnorePlugin(/^mocha$/)
   ]
 };
