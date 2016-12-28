@@ -15,8 +15,14 @@ chai.use(sinonChai);
 
 declare const module, global, Suite, Test: any;
 
+if (global && !(typeof window !== 'undefined')) {
+  global.mocha = require('mocha'); // tslint:disable-line:no-require-imports no-var-requires
+  global.Suite = global.mocha.Suite;
+  global.Test = global.mocha.Test;
+}
+
 if (!global.Promise) {
-  global.Promise = require('promise'); // tslint:disable-line
+  global.Promise = require('promise'); // tslint:disable-line:no-require-imports no-var-requires
 }
 
 const diagramFunction = global.asDiagram;
