@@ -1,0 +1,26 @@
+{
+  "name": "decision-tree-widget",
+  "version": "1.0.0",
+  "description": "Interactive widget for a decision tree to assist choosing an RxJS operator",
+  "scripts": {
+    "yaml2json": "shx rm -f src/tree.json && node tools/yaml2json tree.yml ./src/tree.json",
+    "prebrowserify": "shx mkdir -p dist",
+    "browserify": "browserify src/main.js -t babelify --outfile dist/decision-tree-widget.js",
+    "uglify": "uglifyjs dist/decision-tree-widget.js -o dist/decision-tree-widget.min.js",
+    "build": "npm install && npm run yaml2json && npm run browserify && npm run uglify",
+    "postbuild": "shx rm -f src/tree.json"
+  },
+  "dependencies": {
+    "hyperscript-helpers": "^2.1.0",
+    "snabbdom": "^0.4.2",
+    "yaml-js": "^0.1.3"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.5.0",
+    "babel-preset-es2015": "^6.5.0",
+    "babelify": "^7.2.0",
+    "shx": "^0.1.1",
+    "browserify": "^13.0.0",
+    "uglify-js": "^2.6.2"
+  }
+}

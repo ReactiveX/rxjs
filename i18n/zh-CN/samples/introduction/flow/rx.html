@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="../../Rx.min.js"></script>
+</head>
+
+<body>
+  <button>点击！</button>
+  <a href="index.html">  原生版</a>
+</body>
+<script>
+  var button = document.querySelector('button');
+  Rx.Observable.fromEvent(button, 'click')
+    .throttleTime(1000)
+    .scan(count => count + 1, 0)
+    .subscribe(count => console.log(`Clicked ${count} times`));
+</script>
+
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+
+<body>
+  <button>点击！</button>
+  <a href="rx.html"> RX 版</a>
+</body>
+<script>
+  var count = 0;
+  var rate = 1000;
+  var lastClick = Date.now() - rate;
+  var button = document.querySelector('button');
+  button.addEventListener('click', (event) => {
+    if (Date.now() - lastClick >= rate) {
+      count += event.clientX;
+      console.log(count)
+      lastClick = Date.now();
+    }
+  });
+</script>
+
+</html>
