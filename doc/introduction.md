@@ -91,7 +91,8 @@ var lastClick = Date.now() - rate;
 var button = document.querySelector('button');
 button.addEventListener('click', (event) => {
   if (Date.now() - lastClick >= rate) {
-    console.log(++count + event.clientX)
+    count += event.clientX;
+    console.log(count)
     lastClick = Date.now();
   }
 });
