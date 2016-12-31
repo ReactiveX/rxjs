@@ -81,23 +81,23 @@ input.takeUntil(stopStream)
 // typing "hello world"
 var input = Rx.Observable.fromEvent(document.querySelector('input'), 'keypress');
 
-// Pass on a new value
-input.map(event => event.target.value)
+// Pass on a new key press
+input.map(event => event.key)
   .subscribe(value => console.log(value)); // "h"
 
-// Pass on a new value by plucking it
-input.pluck('target', 'value')
+// Pass on a new key press by plucking it
+input.pluck('key')
   .subscribe(value => console.log(value)); // "h"
 
-// Pass the two previous values
-input.pluck('target', 'value').pairwise()
-  .subscribe(value => console.log(value)); // ["h", "e"]
+// Pass paired the two previous key presses
+input.pluck('key').pairwise()
+  .subscribe(value => console.log(value)); // ["h", "e"], ["l", "l"], ...
 
-// Only pass unique values through
-input.pluck('target', 'value').distinct()
-  .subscribe(value => console.log(value)); // "helo wrd"
+// Only pass unique key presses through
+input.pluck('key').distinct()
+  .subscribe(value => console.log(value)); // "h", "e", "l", "o", " ", "w", "r", "d"
 
-// Do not pass repeating values through
-input.pluck('target', 'value').distinctUntilChanged()
-  .subscribe(value => console.log(value)); // "helo world"
+// Do not pass repeating key presses through
+input.pluck('key').distinctUntilChanged()
+  .subscribe(value => console.log(value)); // "h", "e", "l", "o", " ", "w", "o", "r", "l", "d"
 ```
