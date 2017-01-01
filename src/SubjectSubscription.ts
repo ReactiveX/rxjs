@@ -8,9 +8,7 @@ import { Subscription } from './Subscription';
  * @extends {Ignored}
  */
 export class SubjectSubscription<T> extends Subscription {
-  closed: boolean = false;
-
-  constructor(public subject: Subject<T>, public subscriber: Observer<T>) {
+  constructor(private subject: Subject<T>, private subscriber: Observer<T>) {
     super();
   }
 
@@ -19,7 +17,7 @@ export class SubjectSubscription<T> extends Subscription {
       return;
     }
 
-    this.closed = true;
+    this._closed = true;
 
     const subject = this.subject;
     const observers = subject.observers;
