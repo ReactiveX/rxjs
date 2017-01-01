@@ -1,41 +1,36 @@
 language: node_js
 sudo: false
-node_js:
-  - '4.2.2'
-  - '6'
 
 addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - gcc-4.8
-    - g++-4.8
-    sauce_connect:
-      # Update SAUCE_USERNAME / SAUCE_ACCESS_KEY in travis if necessary
-      # https://docs.travis-ci.com/user/environment-variables/#Defining-Variables-in-Repository-Settings
-      sauce_connect: true
+  sauce_connect:
+    # Update SAUCE_USERNAME / SAUCE_ACCESS_KEY in travis if necessary
+    # https://docs.travis-ci.com/user/environment-variables/#Defining-Variables-in-Repository-Settings
+    sauce_connect: true
 
 cache:
   directories:
     - node_modules
 
 env:
-  global:
-  - CXX=g++-4.8
-  - alias grunt=./node_modules/grunt-cli/bin/grunt
+  matrix:
+  - NODE_VER=4 FULL_VALIDATE=false
+  - NODE_VER=6 FULL_VALIDATE=true alias grunt=./node_modules/grunt-cli/bin/grunt
+  - NODE_VER=7 FULL_VALIDATE=false
+matrix:
+  fast_finish: true
 
 before_install:
-  - npm install -g npm@3 && npm install grunt@0.4.1 grunt-cli grunt-contrib-connect grunt-run
+  - nvm install $NODE_VER
+  - npm install -g npm@4 && node -v && npm -v
+  - if [ "$FULL_VALIDATE" == "true" ]; then npm install grunt@0.4.1 grunt-cli grunt-contrib-connect grunt-run; fi
 
 install:
-  - npm install && npm run lint
+  - npm install
+  - if [ "$FULL_VALIDATE" == "true" ]; then npm run lint && npm run check_circular_dependencies; fi
 
 script:
   - npm run build_spec && npm run test_mocha && node ./node_modules/markdown-doctest/bin/cmd.js
-  - npm run check_circular_dependencies
 
 after_success:
-  - npm run cover
-  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && [ -n "${SAUCE_ACCESS_KEY}" ] && npm run build_spec_browser && grunt --gruntfile spec/support/mocha.sauce.gruntfile.js || false'
+  - if [ "$FULL_VALIDATE" == "true" ]; then npm run cover && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js; fi
+  - if [ "$FULL_VALIDATE" == "true" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ -n "$SAUCE_ACCESS_KEY" ]; then npm run build_spec_browser && grunt --gruntfile spec/support/mocha.sauce.gruntfile.js; fi
