@@ -13,7 +13,7 @@ export type TeardownLogic = AnonymousSubscription | Function | void;
 
 export interface ISubscription extends AnonymousSubscription {
   unsubscribe(): void;
-  closed: boolean;
+  readonly closed: boolean;
 }
 
 /**
@@ -30,15 +30,18 @@ export interface ISubscription extends AnonymousSubscription {
  */
 export class Subscription implements ISubscription {
   public static EMPTY: Subscription = (function(empty: any){
-    empty.closed = true;
+    empty._closed = true;
     return empty;
   }(new Subscription()));
 
+  protected _closed: boolean = false;
   /**
    * A flag to indicate whether this Subscription has already been unsubscribed.
    * @type {boolean}
    */
-  public closed: boolean = false;
+  public get closed(): boolean {
+    return this._closed;
+  }
 
   /**
    * @param {function(): void} [unsubscribe] A function describing how to
@@ -64,7 +67,7 @@ export class Subscription implements ISubscription {
       return;
     }
 
-    this.closed = true;
+    this._closed = true;
 
     const { _unsubscribe, _subscriptions } = (<any> this);
 
