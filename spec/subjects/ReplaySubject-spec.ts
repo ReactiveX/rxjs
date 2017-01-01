@@ -10,10 +10,9 @@ const Observable = Rx.Observable;
 
 /** @test {ReplaySubject} */
 describe('ReplaySubject', () => {
-  it('should extend Subject', (done: MochaDone) => {
+  it('should extend Subject', () => {
     const subject = new ReplaySubject();
-    expect(subject instanceof Rx.Subject).to.be.true;
-    done();
+    expect(subject).to.be.instanceof(Rx.Subject);
   });
 
   it('should add the observer before running subscription code', () => {

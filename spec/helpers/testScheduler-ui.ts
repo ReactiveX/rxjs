@@ -155,18 +155,14 @@ module.exports = function(suite) {
       let modified = fn;
 
       if (fn && fn.length === 0) {
-        modified = function (done: MochaDone) {
+        modified = function () {
           context.rxTestScheduler = new Rx.TestScheduler(observableMatcher);
-          let error: Error = null;
 
           try {
             fn();
             context.rxTestScheduler.flush();
-          } catch (e) {
-            error = e instanceof Error ? e : new Error(e);
           } finally {
             context.rxTestScheduler = null;
-            error ? done(error) : done();
           }
         };
       }
