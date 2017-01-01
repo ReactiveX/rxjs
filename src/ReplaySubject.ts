@@ -41,7 +41,7 @@ export class ReplaySubject<T> extends Subject<T> {
     } else if (this.isStopped) {
       subscription = Subscription.EMPTY;
     } else {
-      this.observers.push(subscriber);
+      this._observers.push(subscriber);
       subscription = new SubjectSubscription(this, subscriber);
     }
 
