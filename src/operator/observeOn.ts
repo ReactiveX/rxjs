@@ -1,10 +1,9 @@
 import { Observable } from '../Observable';
 import { Scheduler } from '../Scheduler';
 import { Operator } from '../Operator';
-import { PartialObserver } from '../Observer';
 import { Subscriber } from '../Subscriber';
 import { Notification } from '../Notification';
-import { TeardownLogic } from '../Subscription';
+import { Subscription, TeardownLogic } from '../Subscription';
 
 /**
  * @see {@link Notification}
@@ -34,21 +33,25 @@ export class ObserveOnOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 export class ObserveOnSubscriber<T> extends Subscriber<T> {
-  static dispatch(arg: ObserveOnMessage) {
-    const { notification, destination } = arg;
-    notification.observe(destination);
+  private static dispatch(context: ObserveOnContext): void {
+    const { notification, subscriber, subscription } = context;
+    subscriber.observe(notification, subscription);
   }
 
-  constructor(destination: Subscriber<T>,
+  constructor(protected destination: Subscriber<T>,
               private scheduler: Scheduler,
               private delay: number = 0) {
     super(destination);
   }
 
   private scheduleMessage(notification: Notification<any>): void {
-     this.add(this.scheduler.schedule(ObserveOnSubscriber.dispatch,
-                                      this.delay,
-                                      new ObserveOnMessage(notification, this.destination)));
+    const message = new ObserveOnContext(notification, this);
+    const subscription = this.scheduler.schedule(ObserveOnSubscriber.dispatch, this.delay, message);
+
+    //do not add into subscription if scheduled synchronously
+    if (!subscription.closed) {
+      this.add(message.subscription = subscription);
+    }
    }
 
   protected _next(value: T): void {
@@ -62,10 +65,16 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
   protected _complete(): void {
     this.scheduleMessage(Notification.createComplete());
   }
+
+  public observe(notification: Notification<any>, subscription: Subscription): void {
+    notification.observe(this.destination);
+    this.remove(subscription);
+  }
 }
 
-export class ObserveOnMessage {
-  constructor(public notification: Notification<any>,
-              public destination: PartialObserver<any>) {
+class ObserveOnContext {
+  public subscription: Subscription;
+  constructor(public readonly notification: Notification<any>,
+              public readonly subscriber: ObserveOnSubscriber<any>) {
   }
 }
