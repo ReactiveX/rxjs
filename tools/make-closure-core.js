@@ -7,6 +7,7 @@ var compilerFlags = {
   jsCode: [{src: source}],
   languageIn: 'ES5',
   createSourceMap: true,
+  compilationLevel: 'ADVANCED'
 };
 
 var output = compiler(compilerFlags);
