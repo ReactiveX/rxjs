@@ -112,15 +112,19 @@ describe('Subscription', () => {
       expect(isCalled).to.equal(true);
     });
 
-    it('Should returns the passed one if passed a unsubscribed AnonymousSubscription', () => {
-      const sub = new Subscription();
+    it('Should wrap the AnonymousSubscription and return a subscription that unsubscribes and removes it when unsubbed', () => {
+      const sub: any = new Subscription();
+      let called = false;
       const arg = {
-        isUnsubscribed: true,
-        unsubscribe: () => undefined,
+        unsubscribe: () => called = true,
       };
       const ret = sub.add(arg);
 
-      expect(ret).to.equal(arg);
+      expect(called).to.equal(false);
+      expect(sub._subscriptions.length).to.equal(1);
+      ret.unsubscribe();
+      expect(called).to.equal(true);
+      expect(sub._subscriptions.length).to.equal(0);
     });
 
     it('Should returns the passed one if passed a AnonymousSubscription having not function `unsubscribe` member', () => {
