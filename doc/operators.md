@@ -141,6 +141,7 @@ There are operators for different purposes, and they may be categorized as: crea
 - [`concatMapTo`](../class/es6/Observable.js~Observable.html#instance-method-concatMapTo)
 - [`exhaustMap`](../class/es6/Observable.js~Observable.html#instance-method-exhaustMap)
 - [`expand`](../class/es6/Observable.js~Observable.html#instance-method-expand)
+- [`fart`](../class/es6/Observable.js~Observable.html#instance-method-fart)
 - [`groupBy`](../class/es6/Observable.js~Observable.html#instance-method-groupBy)
 - [`map`](../class/es6/Observable.js~Observable.html#instance-method-map)
 - [`mapTo`](../class/es6/Observable.js~Observable.html#instance-method-mapTo)
