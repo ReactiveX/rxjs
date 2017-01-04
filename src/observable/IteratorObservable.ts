@@ -1,5 +1,5 @@
 import { root } from '../util/root';
-import { Scheduler } from '../Scheduler';
+import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
 import { $$iterator } from '../symbol/iterator';
 import { TeardownLogic } from '../Subscription';
@@ -13,7 +13,7 @@ import { Subscriber } from '../Subscriber';
 export class IteratorObservable<T> extends Observable<T> {
   private iterator: any;
 
-  static create<T>(iterator: any, scheduler?: Scheduler): IteratorObservable<T> {
+  static create<T>(iterator: any, scheduler?: IScheduler): IteratorObservable<T> {
     return new IteratorObservable(iterator, scheduler);
   }
 
@@ -45,7 +45,7 @@ export class IteratorObservable<T> extends Observable<T> {
     (<any> this).schedule(state);
   }
 
-  constructor(iterator: any, private scheduler?: Scheduler) {
+  constructor(iterator: any, private scheduler?: IScheduler) {
     super();
 
     if (iterator == null) {

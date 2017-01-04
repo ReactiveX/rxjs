@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { Scheduler } from '../Scheduler';
+import { IScheduler } from '../Scheduler';
 import { Operator } from '../Operator';
 import { PartialObserver } from '../Observer';
 import { Subscriber } from '../Subscriber';
@@ -16,12 +16,12 @@ import { Action } from '../scheduler/Action';
  * @method observeOn
  * @owner Observable
  */
-export function observeOn<T>(this: Observable<T>, scheduler: Scheduler, delay: number = 0): Observable<T> {
+export function observeOn<T>(this: Observable<T>, scheduler: IScheduler, delay: number = 0): Observable<T> {
   return this.lift(new ObserveOnOperator(scheduler, delay));
 }
 
 export class ObserveOnOperator<T> implements Operator<T, T> {
-  constructor(private scheduler: Scheduler, private delay: number = 0) {
+  constructor(private scheduler: IScheduler, private delay: number = 0) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -44,7 +44,7 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
   }
 
   constructor(destination: Subscriber<T>,
-              private scheduler: Scheduler,
+              private scheduler: IScheduler,
               private delay: number = 0) {
     super(destination);
   }

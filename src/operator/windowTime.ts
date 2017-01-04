@@ -1,4 +1,4 @@
-import { Scheduler } from '../Scheduler';
+import { IScheduler } from '../Scheduler';
 import { Action } from '../scheduler/Action';
 import { Subject } from '../Subject';
 import { Operator } from '../Operator';
@@ -58,7 +58,7 @@ import { Subscription } from '../Subscription';
  */
 export function windowTime<T>(this: Observable<T>, windowTimeSpan: number,
                               windowCreationInterval: number = null,
-                              scheduler: Scheduler = async): Observable<Observable<T>> {
+                              scheduler: IScheduler = async): Observable<Observable<T>> {
   return this.lift(new WindowTimeOperator<T>(windowTimeSpan, windowCreationInterval, scheduler));
 }
 
@@ -66,7 +66,7 @@ class WindowTimeOperator<T> implements Operator<T, Observable<T>> {
 
   constructor(private windowTimeSpan: number,
               private windowCreationInterval: number,
-              private scheduler: Scheduler) {
+              private scheduler: IScheduler) {
   }
 
   call(subscriber: Subscriber<Observable<T>>, source: any): any {
@@ -80,7 +80,7 @@ interface CreationState<T> {
   windowTimeSpan: number;
   windowCreationInterval: number;
   subscriber: WindowTimeSubscriber<T>;
-  scheduler: Scheduler;
+  scheduler: IScheduler;
 }
 
 /**
@@ -94,7 +94,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
   constructor(protected destination: Subscriber<Observable<T>>,
               private windowTimeSpan: number,
               private windowCreationInterval: number,
-              private scheduler: Scheduler) {
+              private scheduler: IScheduler) {
     super(destination);
     if (windowCreationInterval !== null && windowCreationInterval >= 0) {
       let window = this.openWindow();
