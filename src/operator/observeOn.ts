@@ -4,7 +4,8 @@ import { Operator } from '../Operator';
 import { PartialObserver } from '../Observer';
 import { Subscriber } from '../Subscriber';
 import { Notification } from '../Notification';
-import { TeardownLogic } from '../Subscription';
+import { TeardownLogic, Subscription } from '../Subscription';
+import { Action } from '../scheduler/Action';
 
 /**
  * @see {@link Notification}
@@ -34,9 +35,12 @@ export class ObserveOnOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 export class ObserveOnSubscriber<T> extends Subscriber<T> {
-  static dispatch(arg: ObserveOnMessage) {
-    const { notification, destination } = arg;
+  static dispatch(this: Action<ObserveOnMessage>, arg: ObserveOnMessage) {
+    const { notification, destination, subscription } = arg;
     notification.observe(destination);
+    if (subscription) {
+      subscription.unsubscribe();
+    }
   }
 
   constructor(destination: Subscriber<T>,
@@ -46,10 +50,11 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
   }
 
   private scheduleMessage(notification: Notification<any>): void {
-     this.add(this.scheduler.schedule(ObserveOnSubscriber.dispatch,
-                                      this.delay,
-                                      new ObserveOnMessage(notification, this.destination)));
-   }
+    const message = new ObserveOnMessage(notification, this.destination);
+    message.subscription = this.add(
+        this.scheduler.schedule(ObserveOnSubscriber.dispatch, this.delay, message)
+    );
+  }
 
   protected _next(value: T): void {
     this.scheduleMessage(Notification.createNext(value));
@@ -65,6 +70,8 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
 }
 
 export class ObserveOnMessage {
+  public subscription: Subscription;
+
   constructor(public notification: Notification<any>,
               public destination: PartialObserver<any>) {
   }

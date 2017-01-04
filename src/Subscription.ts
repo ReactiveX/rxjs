@@ -40,6 +40,8 @@ export class Subscription implements ISubscription {
    */
   public closed: boolean = false;
 
+  private _subscriptions: ISubscription[];
+
   /**
    * @param {function(): void} [unsubscribe] A function describing how to
    * perform the disposal of resources when the `unsubscribe` method is called.
@@ -74,7 +76,10 @@ export class Subscription implements ISubscription {
       let trial = tryCatch(_unsubscribe).call(this);
       if (trial === errorObject) {
         hasErrors = true;
-        (errors = errors || []).push(errorObject.e);
+        errors = errors || (
+          errorObject.e instanceof UnsubscriptionError ?
+            flattenUnsubscriptionErrors(errorObject.e.errors) : [errorObject.e]
+        );
       }
     }
 
@@ -92,7 +97,7 @@ export class Subscription implements ISubscription {
             errors = errors || [];
             let err = errorObject.e;
             if (err instanceof UnsubscriptionError) {
-              errors = errors.concat(err.errors);
+              errors = errors.concat(flattenUnsubscriptionErrors(err.errors));
             } else {
               errors.push(err);
             }
@@ -140,18 +145,20 @@ export class Subscription implements ISubscription {
         sub = new Subscription(<(() => void) > teardown);
       case 'object':
         if (sub.closed || typeof sub.unsubscribe !== 'function') {
-          break;
+          return sub;
         } else if (this.closed) {
           sub.unsubscribe();
-        } else {
-          ((<any> this)._subscriptions || ((<any> this)._subscriptions = [])).push(sub);
+          return sub;
         }
         break;
       default:
         throw new Error('unrecognized teardown ' + teardown + ' added to Subscription.');
     }
 
-    return sub;
+    const childSub = new ChildSubscription(sub, this);
+    this._subscriptions = this._subscriptions || [];
+    this._subscriptions.push(childSub);
+    return childSub;
   }
 
   /**
@@ -178,4 +185,20 @@ export class Subscription implements ISubscription {
       }
     }
   }
+}
+
+export class ChildSubscription extends Subscription {
+  constructor(private _innerSub: ISubscription, private _parent: Subscription) {
+    super();
+  }
+
+  _unsubscribe() {
+    const { _innerSub, _parent } = this;
+    _parent.remove(this);
+    _innerSub.unsubscribe();
+  }
+}
+
+function flattenUnsubscriptionErrors(errors: any[]) {
+ return errors.reduce((errs, err) => errs.concat((err instanceof UnsubscriptionError) ? err.errors : err), []);
 }
