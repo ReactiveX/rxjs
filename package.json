@@ -13,8 +13,8 @@
     }
   },
   "lint-staged": {
-    "eslint": "*.@(js)",
-    "tslint": "*.@(ts)"
+    "*.@(js)": ["eslint --fix", "git add"],
+    "*.@(ts)": ["tslint --fix", "git add"]
   },
   "scripts-info": {
     "info": "List available script",
@@ -80,8 +80,8 @@
     "doctoc": "doctoc CONTRIBUTING.md",
     "generate_packages": "node .make-packages.js",
     "lint_perf": "eslint perf/",
-    "lint_spec": "tslint -c tslint.json spec/*.ts spec/**/*.ts spec/**/**/*.ts",
-    "lint_src": "tslint -c tslint.json src/*.ts src/**/*.ts src/**/**/*.ts",
+    "lint_spec": "tslint -c tslint.json \"spec/**/*.ts\"",
+    "lint_src": "tslint -c tslint.json \"src/**/*.ts\"",
     "lint_staged": "lint-staged",
     "lint": "npm-run-all --parallel lint_*",
     "perf": "protractor protractor.conf.js",
@@ -163,7 +163,7 @@
     "google-closure-compiler-js": "^20160916.0.0",
     "gzip-size": "^3.0.0",
     "http-server": "^0.9.0",
-    "lint-staged": "^3.1.0",
+    "lint-staged": "^3.2.5",
     "lodash": "^4.15.0",
     "madge": "^1.4.3",
     "markdown-doctest": "^0.8.1",
@@ -185,7 +185,7 @@
     "sinon-chai": "^2.8.0",
     "source-map-support": "^0.4.0",
     "tslib": "^1.0.0",
-    "tslint": "^3.15.1",
+    "tslint": "^4.2.0",
     "typescript": "~2.0.6",
     "typings": "^2.0.0",
     "validate-commit-msg": "^2.3.1",
