@@ -84,17 +84,18 @@ describe('Observable.prototype.observeOn', () => {
     //HACK: Deep introspection to make sure we're cleaning up notifications in scheduling.
     // as the architecture changes, this test may become brittle.
     const results = [];
+    // This is to build a scheduled observable with a slightly more stable
+    // subscription structure, since we're going to hack in to analyze it in this test.
     const subscription: any = new Observable(observer => {
       let i = 1;
-      const id = setInterval(() => {
+      return Rx.Scheduler.asap.schedule(function () {
         if (i > 3) {
           observer.complete();
         } else {
           observer.next(i++);
+          this.schedule();
         }
-      }, 0);
-
-      return () => clearInterval(id);
+      });
     })
       .observeOn(Rx.Scheduler.asap)
       .subscribe(
