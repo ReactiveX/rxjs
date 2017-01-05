@@ -1,4 +1,5 @@
 import {expect} from 'chai';
+import * as sinon from 'sinon';
 import * as Rx from '../dist/cjs/Rx';
 import {TeardownLogic} from '../dist/cjs/Subscription';
 
@@ -211,6 +212,9 @@ describe('Observable', () => {
     });
 
     it('should run unsubscription logic when an error is sent asynchronously and subscribe is called with no arguments', (done: MochaDone) => {
+      const sandbox = sinon.sandbox.create();
+      const fakeTimer = sandbox.useFakeTimers();
+
       let unsubscribeCalled = false;
       const source = new Observable((subscriber: Rx.Subscriber<string>) => {
         const id = setInterval(() => {
@@ -244,6 +248,9 @@ describe('Observable', () => {
           }
         }
       }, 100);
+
+      fakeTimer.tick(110);
+      sandbox.restore();
     });
 
     it('should return a Subscription that calls the unsubscribe function returned by the subscriber', () => {
