@@ -385,10 +385,10 @@
         },
         {
           "type": "Block",
-          "value": "*\n * Combines multiple Observables to create an Observable whose values are\n * calculated from the latest values of each of its input Observables.\n *\n * <span class=\"informal\">Whenever any input Observable emits a value, it\n * computes a formula using the latest values from all the inputs, then emits\n * the output of that formula.</span>\n *\n * <img src=\"./img/combineLatest.png\" width=\"100%\">\n *\n * `combineLatest` combines the values from all the Observables passed as\n * arguments. This is done by subscribing to each Observable, in order, and\n * collecting an array of each of the most recent values any time any of the\n * input Observables emits, then either taking that array and passing it as\n * arguments to an optional `project` function and emitting the return value of\n * that, or just emitting the array of recent values directly if there is no\n * `project` function.\n *\n * @example <caption>Dynamically calculate the Body-Mass Index from an Observable of weight and one for height</caption>\n * var weight = Rx.Observable.of(70, 72, 76, 79, 75);\n * var height = Rx.Observable.of(1.76, 1.77, 1.78);\n * var bmi = Rx.Observable.combineLatest(weight, height, (w, h) => w / (h * h));\n * bmi.subscribe(x => console.log('BMI is ' + x));\n *\n * @see {@link combineAll}\n * @see {@link merge}\n * @see {@link withLatestFrom}\n *\n * @param {Observable} observable1 An input Observable to combine with the\n * source Observable.\n * @param {Observable} observable2 An input Observable to combine with the\n * source Observable. More than one input Observables may be given as argument.\n * @param {function} [project] An optional function to project the values from\n * the combined latest values into a new value on the output Observable.\n * @param {Scheduler} [scheduler=null] The Scheduler to use for subscribing to\n * each input Observable.\n * @return {Observable} An Observable of projected values from the most recent\n * values from each input Observable, or an array of the most recent values from\n * each input Observable.\n * @static true\n * @name combineLatest\n * @owner Observable\n ",
+          "value": "*\n * Combines multiple Observables to create an Observable whose values are\n * calculated from the latest values of each of its input Observables.\n *\n * <span class=\"informal\">Whenever any input Observable emits a value, it\n * computes a formula using the latest values from all the inputs, then emits\n * the output of that formula.</span>\n *\n * <img src=\"./img/combineLatest.png\" width=\"100%\">\n *\n * `combineLatest` combines the values from all the Observables passed as\n * arguments. This is done by subscribing to each Observable, in order, and\n * collecting an array of each of the most recent values any time any of the\n * input Observables emits, then either taking that array and passing it as\n * arguments to an optional `project` function and emitting the return value of\n * that, or just emitting the array of recent values directly if there is no\n * `project` function.\n *\n * @example <caption>Dynamically calculate the Body-Mass Index from an Observable of weight and one for height</caption>\n * var weight = Rx.Observable.of(70, 72, 76, 79, 75);\n * var height = Rx.Observable.of(1.76, 1.77, 1.78);\n * var bmi = Rx.Observable.combineLatest(weight, height, (w, h) => w / (h * h));\n * bmi.subscribe(x => console.log('BMI is ' + x));\n *\n * // With output to console:\n * // BMI is 24.212293388429753\n * // BMI is 23.93948099205209\n * // BMI is 23.671253629592222\n *\n * @see {@link combineAll}\n * @see {@link merge}\n * @see {@link withLatestFrom}\n *\n * @param {Observable} observable1 An input Observable to combine with the\n * source Observable.\n * @param {Observable} observable2 An input Observable to combine with the\n * source Observable. More than one input Observables may be given as argument.\n * @param {function} [project] An optional function to project the values from\n * the combined latest values into a new value on the output Observable.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for subscribing to\n * each input Observable.\n * @return {Observable} An Observable of projected values from the most recent\n * values from each input Observable, or an array of the most recent values from\n * each input Observable.\n * @static true\n * @name combineLatest\n * @owner Observable\n ",
           "range": [
             250,
-            2339
+            2468
           ],
           "loc": {
             "start": {
@@ -396,7 +396,7 @@
               "column": 0
             },
             "end": {
-              "line": 48,
+              "line": 53,
               "column": 3
             }
           }
@@ -411,16 +411,16 @@
           "type": "Identifier",
           "name": "combineLatest",
           "range": [
-            2356,
-            2369
+            2485,
+            2498
           ],
           "loc": {
             "start": {
-              "line": 49,
+              "line": 54,
               "column": 16
             },
             "end": {
-              "line": 49,
+              "line": 54,
               "column": 29
             }
           }
@@ -432,31 +432,31 @@
               "type": "Identifier",
               "name": "observables",
               "range": [
-                2373,
-                2384
+                2502,
+                2513
               ],
               "loc": {
                 "start": {
-                  "line": 49,
+                  "line": 54,
                   "column": 33
                 },
                 "end": {
-                  "line": 49,
+                  "line": 54,
                   "column": 44
                 }
               }
             },
             "range": [
-              2370,
-              2384
+              2499,
+              2513
             ],
             "loc": {
               "start": {
-                "line": 49,
+                "line": 54,
                 "column": 30
               },
               "end": {
-                "line": 49,
+                "line": 54,
                 "column": 44
               }
             }
@@ -474,16 +474,16 @@
                     "type": "Identifier",
                     "name": "project",
                     "range": [
-                      2396,
-                      2403
+                      2525,
+                      2532
                     ],
                     "loc": {
                       "start": {
-                        "line": 50,
+                        "line": 55,
                         "column": 8
                       },
                       "end": {
-                        "line": 50,
+                        "line": 55,
                         "column": 15
                       }
                     }
@@ -493,31 +493,31 @@
                     "value": null,
                     "raw": "null",
                     "range": [
-                      2406,
-                      2410
+                      2535,
+                      2539
                     ],
                     "loc": {
                       "start": {
-                        "line": 50,
+                        "line": 55,
                         "column": 18
                       },
                       "end": {
-                        "line": 50,
+                        "line": 55,
                         "column": 22
                       }
                     }
                   },
                   "range": [
-                    2396,
-                    2410
+                    2525,
+                    2539
                   ],
                   "loc": {
                     "start": {
-                      "line": 50,
+                      "line": 55,
                       "column": 8
                     },
                     "end": {
-                      "line": 50,
+                      "line": 55,
                       "column": 22
                     }
                   }
@@ -525,16 +525,16 @@
               ],
               "kind": "let",
               "range": [
-                2392,
-                2411
+                2521,
+                2540
               ],
               "loc": {
                 "start": {
-                  "line": 50,
+                  "line": 55,
                   "column": 4
                 },
                 "end": {
-                  "line": 50,
+                  "line": 55,
                   "column": 23
                 }
               }
@@ -548,16 +548,16 @@
                     "type": "Identifier",
                     "name": "scheduler",
                     "range": [
-                      2420,
-                      2429
+                      2549,
+                      2558
                     ],
                     "loc": {
                       "start": {
-                        "line": 51,
+                        "line": 56,
                         "column": 8
                       },
                       "end": {
-                        "line": 51,
+                        "line": 56,
                         "column": 17
                       }
                     }
@@ -567,31 +567,31 @@
                     "value": null,
                     "raw": "null",
                     "range": [
-                      2432,
-                      2436
+                      2561,
+                      2565
                     ],
                     "loc": {
                       "start": {
-                        "line": 51,
+                        "line": 56,
                         "column": 20
                       },
                       "end": {
-                        "line": 51,
+                        "line": 56,
                         "column": 24
                       }
                     }
                   },
                   "range": [
-                    2420,
-                    2436
+                    2549,
+                    2565
                   ],
                   "loc": {
                     "start": {
-                      "line": 51,
+                      "line": 56,
                       "column": 8
                     },
                     "end": {
-                      "line": 51,
+                      "line": 56,
                       "column": 24
                     }
                   }
@@ -599,16 +599,16 @@
               ],
               "kind": "let",
               "range": [
-                2416,
-                2437
+                2545,
+                2566
               ],
               "loc": {
                 "start": {
-                  "line": 51,
+                  "line": 56,
                   "column": 4
                 },
                 "end": {
-                  "line": 51,
+                  "line": 56,
                   "column": 25
                 }
               }
@@ -621,16 +621,16 @@
                   "type": "Identifier",
                   "name": "isScheduler",
                   "range": [
-                    2446,
-                    2457
+                    2575,
+                    2586
                   ],
                   "loc": {
                     "start": {
-                      "line": 52,
+                      "line": 57,
                       "column": 8
                     },
                     "end": {
-                      "line": 52,
+                      "line": 57,
                       "column": 19
                     }
                   }
@@ -643,16 +643,16 @@
                       "type": "Identifier",
                       "name": "observables",
                       "range": [
-                        2458,
-                        2469
+                        2587,
+                        2598
                       ],
                       "loc": {
                         "start": {
-                          "line": 52,
+                          "line": 57,
                           "column": 20
                         },
                         "end": {
-                          "line": 52,
+                          "line": 57,
                           "column": 31
                         }
                       }
@@ -667,16 +667,16 @@
                           "type": "Identifier",
                           "name": "observables",
                           "range": [
-                            2470,
-                            2481
+                            2599,
+                            2610
                           ],
                           "loc": {
                             "start": {
-                              "line": 52,
+                              "line": 57,
                               "column": 32
                             },
                             "end": {
-                              "line": 52,
+                              "line": 57,
                               "column": 43
                             }
                           }
@@ -685,31 +685,31 @@
                           "type": "Identifier",
                           "name": "length",
                           "range": [
-                            2482,
-                            2488
+                            2611,
+                            2617
                           ],
                           "loc": {
                             "start": {
-                              "line": 52,
+                              "line": 57,
                               "column": 44
                             },
                             "end": {
-                              "line": 52,
+                              "line": 57,
                               "column": 50
                             }
                           }
                         },
                         "range": [
-                          2470,
-                          2488
+                          2599,
+                          2617
                         ],
                         "loc": {
                           "start": {
-                            "line": 52,
+                            "line": 57,
                             "column": 32
                           },
                           "end": {
-                            "line": 52,
+                            "line": 57,
                             "column": 50
                           }
                         }
@@ -719,62 +719,62 @@
                         "value": 1,
                         "raw": "1",
                         "range": [
-                          2491,
-                          2492
+                          2620,
+                          2621
                         ],
                         "loc": {
                           "start": {
-                            "line": 52,
+                            "line": 57,
                             "column": 53
                           },
                           "end": {
-                            "line": 52,
+                            "line": 57,
                             "column": 54
                           }
                         }
                       },
                       "range": [
-                        2470,
-                        2492
+                        2599,
+                        2621
                       ],
                       "loc": {
                         "start": {
-                          "line": 52,
+                          "line": 57,
                           "column": 32
                         },
                         "end": {
-                          "line": 52,
+                          "line": 57,
                           "column": 54
                         }
                       }
                     },
                     "range": [
-                      2458,
-                      2493
+                      2587,
+                      2622
                     ],
                     "loc": {
                       "start": {
-                        "line": 52,
+                        "line": 57,
                         "column": 20
                       },
                       "end": {
-                        "line": 52,
+                        "line": 57,
                         "column": 55
                       }
                     }
                   }
                 ],
                 "range": [
-                  2446,
-                  2494
+                  2575,
+                  2623
                 ],
                 "loc": {
                   "start": {
-                    "line": 52,
+                    "line": 57,
                     "column": 8
                   },
                   "end": {
-                    "line": 52,
+                    "line": 57,
                     "column": 56
                   }
                 }
@@ -791,16 +791,16 @@
                         "type": "Identifier",
                         "name": "scheduler",
                         "range": [
-                          2506,
-                          2515
+                          2635,
+                          2644
                         ],
                         "loc": {
                           "start": {
-                            "line": 53,
+                            "line": 58,
                             "column": 8
                           },
                           "end": {
-                            "line": 53,
+                            "line": 58,
                             "column": 17
                           }
                         }
@@ -814,16 +814,16 @@
                             "type": "Identifier",
                             "name": "observables",
                             "range": [
-                              2518,
-                              2529
+                              2647,
+                              2658
                             ],
                             "loc": {
                               "start": {
-                                "line": 53,
+                                "line": 58,
                                 "column": 20
                               },
                               "end": {
-                                "line": 53,
+                                "line": 58,
                                 "column": 31
                               }
                             }
@@ -832,109 +832,109 @@
                             "type": "Identifier",
                             "name": "pop",
                             "range": [
-                              2530,
-                              2533
+                              2659,
+                              2662
                             ],
                             "loc": {
                               "start": {
-                                "line": 53,
+                                "line": 58,
                                 "column": 32
                               },
                               "end": {
-                                "line": 53,
+                                "line": 58,
                                 "column": 35
                               }
                             }
                           },
                           "range": [
-                            2518,
-                            2533
+                            2647,
+                            2662
                           ],
                           "loc": {
                             "start": {
-                              "line": 53,
+                              "line": 58,
                               "column": 20
                             },
                             "end": {
-                              "line": 53,
+                              "line": 58,
                               "column": 35
                             }
                           }
                         },
                         "arguments": [],
                         "range": [
-                          2518,
-                          2535
+                          2647,
+                          2664
                         ],
                         "loc": {
                           "start": {
-                            "line": 53,
+                            "line": 58,
                             "column": 20
                           },
                           "end": {
-                            "line": 53,
+                            "line": 58,
                             "column": 37
                           }
                         }
                       },
                       "range": [
-                        2506,
-                        2535
+                        2635,
+                        2664
                       ],
                       "loc": {
                         "start": {
-                          "line": 53,
+                          "line": 58,
                           "column": 8
                         },
                         "end": {
-                          "line": 53,
+                          "line": 58,
                           "column": 37
                         }
                       }
                     },
                     "range": [
-                      2506,
-                      2536
+                      2635,
+                      2665
                     ],
                     "loc": {
                       "start": {
-                        "line": 53,
+                        "line": 58,
                         "column": 8
                       },
                       "end": {
-                        "line": 53,
+                        "line": 58,
                         "column": 38
                       }
                     }
                   }
                 ],
                 "range": [
-                  2496,
-                  2542
+                  2625,
+                  2671
                 ],
                 "loc": {
                   "start": {
-                    "line": 52,
+                    "line": 57,
                     "column": 58
                   },
                   "end": {
-                    "line": 54,
+                    "line": 59,
                     "column": 5
                   }
                 }
               },
               "alternate": null,
               "range": [
-                2442,
-                2542
+                2571,
+                2671
               ],
               "loc": {
                 "start": {
-                  "line": 52,
+                  "line": 57,
                   "column": 4
                 },
                 "end": {
-                  "line": 54,
+                  "line": 59,
                   "column": 5
                 }
               }
@@ -954,16 +954,16 @@
                       "type": "Identifier",
                       "name": "observables",
                       "range": [
-                        2558,
-                        2569
+                        2687,
+                        2698
                       ],
                       "loc": {
                         "start": {
-                          "line": 55,
+                          "line": 60,
                           "column": 15
                         },
                         "end": {
-                          "line": 55,
+                          "line": 60,
                           "column": 26
                         }
                       }
@@ -978,16 +978,16 @@
                           "type": "Identifier",
                           "name": "observables",
                           "range": [
-                            2570,
-                            2581
+                            2699,
+                            2710
                           ],
                           "loc": {
                             "start": {
-                              "line": 55,
+                              "line": 60,
                               "column": 27
                             },
                             "end": {
-                              "line": 55,
+                              "line": 60,
                               "column": 38
                             }
                           }
@@ -996,31 +996,31 @@
                           "type": "Identifier",
                           "name": "length",
                           "range": [
-                            2582,
-                            2588
+                            2711,
+                            2717
                           ],
                           "loc": {
                             "start": {
-                              "line": 55,
+                              "line": 60,
                               "column": 39
                             },
                             "end": {
-                              "line": 55,
+                              "line": 60,
                               "column": 45
                             }
                           }
                         },
                         "range": [
-                          2570,
-                          2588
+                          2699,
+                          2717
                         ],
                         "loc": {
                           "start": {
-                            "line": 55,
+                            "line": 60,
                             "column": 27
                           },
                           "end": {
-                            "line": 55,
+                            "line": 60,
                             "column": 45
                           }
                         }
@@ -1030,62 +1030,62 @@
                         "value": 1,
                         "raw": "1",
                         "range": [
-                          2591,
-                          2592
+                          2720,
+                          2721
                         ],
                         "loc": {
                           "start": {
-                            "line": 55,
+                            "line": 60,
                             "column": 48
                           },
                           "end": {
-                            "line": 55,
+                            "line": 60,
                             "column": 49
                           }
                         }
                       },
                       "range": [
-                        2570,
-                        2592
+                        2699,
+                        2721
                       ],
                       "loc": {
                         "start": {
-                          "line": 55,
+                          "line": 60,
                           "column": 27
                         },
                         "end": {
-                          "line": 55,
+                          "line": 60,
                           "column": 49
                         }
                       }
                     },
                     "range": [
-                      2558,
-                      2593
+                      2687,
+                      2722
                     ],
                     "loc": {
                       "start": {
-                        "line": 55,
+                        "line": 60,
                         "column": 15
                       },
                       "end": {
-                        "line": 55,
+                        "line": 60,
                         "column": 50
                       }
                     }
                   },
                   "prefix": true,
                   "range": [
-                    2551,
-                    2593
+                    2680,
+                    2722
                   ],
                   "loc": {
                     "start": {
-                      "line": 55,
+                      "line": 60,
                       "column": 8
                     },
                     "end": {
-                      "line": 55,
+                      "line": 60,
                       "column": 50
                     }
                   }
@@ -1095,31 +1095,31 @@
                   "value": "function",
                   "raw": "'function'",
                   "range": [
-                    2598,
-                    2608
+                    2727,
+                    2737
                   ],
                   "loc": {
                     "start": {
-                      "line": 55,
+                      "line": 60,
                       "column": 55
                     },
                     "end": {
-                      "line": 55,
+                      "line": 60,
                       "column": 65
                     }
                   }
                 },
                 "range": [
-                  2551,
-                  2608
+                  2680,
+                  2737
                 ],
                 "loc": {
                   "start": {
-                    "line": 55,
+                    "line": 60,
                     "column": 8
                   },
                   "end": {
-                    "line": 55,
+                    "line": 60,
                     "column": 65
                   }
                 }
@@ -1136,16 +1136,16 @@
                         "type": "Identifier",
                         "name": "project",
                         "range": [
-                          2620,
-                          2627
+                          2749,
+                          2756
                         ],
                         "loc": {
                           "start": {
-                            "line": 56,
+                            "line": 61,
                             "column": 8
                           },
                           "end": {
-                            "line": 56,
+                            "line": 61,
                             "column": 15
                           }
                         }
@@ -1159,16 +1159,16 @@
                             "type": "Identifier",
                             "name": "observables",
                             "range": [
-                              2630,
-                              2641
+                              2759,
+                              2770
                             ],
                             "loc": {
                               "start": {
-                                "line": 56,
+                                "line": 61,
                                 "column": 18
                               },
                               "end": {
-                                "line": 56,
+                                "line": 61,
                                 "column": 29
                               }
                             }
@@ -1177,109 +1177,109 @@
                             "type": "Identifier",
                             "name": "pop",
                             "range": [
-                              2642,
-                              2645
+                              2771,
+                              2774
                             ],
                             "loc": {
                               "start": {
-                                "line": 56,
+                                "line": 61,
                                 "column": 30
                               },
                               "end": {
-                                "line": 56,
+                                "line": 61,
                                 "column": 33
                               }
                             }
                           },
                           "range": [
-                            2630,
-                            2645
+                            2759,
+                            2774
                           ],
                           "loc": {
                             "start": {
-                              "line": 56,
+                              "line": 61,
                               "column": 18
                             },
                             "end": {
-                              "line": 56,
+                              "line": 61,
                               "column": 33
                             }
                           }
                         },
                         "arguments": [],
                         "range": [
-                          2630,
-                          2647
+                          2759,
+                          2776
                         ],
                         "loc": {
                           "start": {
-                            "line": 56,
+                            "line": 61,
                             "column": 18
                           },
                           "end": {
-                            "line": 56,
+                            "line": 61,
                             "column": 35
                           }
                         }
                       },
                       "range": [
-                        2620,
-                        2647
+                        2749,
+                        2776
                       ],
                       "loc": {
                         "start": {
-                          "line": 56,
+                          "line": 61,
                           "column": 8
                         },
                         "end": {
-                          "line": 56,
+                          "line": 61,
                           "column": 35
                         }
                       }
                     },
                     "range": [
-                      2620,
-                      2648
+                      2749,
+                      2777
                     ],
                     "loc": {
                       "start": {
-                        "line": 56,
+                        "line": 61,
                         "column": 8
                       },
                       "end": {
-                        "line": 56,
+                        "line": 61,
                         "column": 36
                       }
                     }
                   }
                 ],
                 "range": [
-                  2610,
-                  2654
+                  2739,
+                  2783
                 ],
                 "loc": {
                   "start": {
-                    "line": 55,
+                    "line": 60,
                     "column": 67
                   },
                   "end": {
-                    "line": 57,
+                    "line": 62,
                     "column": 5
                   }
                 }
               },
               "alternate": null,
               "range": [
-                2547,
-                2654
+                2676,
+                2783
               ],
               "loc": {
                 "start": {
-                  "line": 55,
+                  "line": 60,
                   "column": 4
                 },
                 "end": {
-                  "line": 57,
+                  "line": 62,
                   "column": 5
                 }
               },
@@ -1288,16 +1288,16 @@
                   "type": "Line",
                   "value": " if the first and only other argument besides the resultSelector is an array",
                   "range": [
-                    2659,
-                    2737
+                    2788,
+                    2866
                   ],
                   "loc": {
                     "start": {
-                      "line": 58,
+                      "line": 63,
                       "column": 4
                     },
                     "end": {
-                      "line": 58,
+                      "line": 63,
                       "column": 82
                     }
                   }
@@ -1306,16 +1306,16 @@
                   "type": "Line",
                   "value": " assume it's been called with `combineLatest([obs1, obs2, obs3], project)`",
                   "range": [
-                    2742,
-                    2818
+                    2871,
+                    2947
                   ],
                   "loc": {
                     "start": {
-                      "line": 59,
+                      "line": 64,
                       "column": 4
                     },
                     "end": {
-                      "line": 59,
+                      "line": 64,
                       "column": 80
                     }
                   }
@@ -1337,16 +1337,16 @@
                       "type": "Identifier",
                       "name": "observables",
                       "range": [
-                        2827,
-                        2838
+                        2956,
+                        2967
                       ],
                       "loc": {
                         "start": {
-                          "line": 60,
+                          "line": 65,
                           "column": 8
                         },
                         "end": {
-                          "line": 60,
+                          "line": 65,
                           "column": 19
                         }
                       }
@@ -1355,31 +1355,31 @@
                       "type": "Identifier",
                       "name": "length",
                       "range": [
-                        2839,
-                        2845
+                        2968,
+                        2974
                       ],
                       "loc": {
                         "start": {
-                          "line": 60,
+                          "line": 65,
                           "column": 20
                         },
                         "end": {
-                          "line": 60,
+                          "line": 65,
                           "column": 26
                         }
                       }
                     },
                     "range": [
-                      2827,
-                      2845
+                      2956,
+                      2974
                     ],
                     "loc": {
                       "start": {
-                        "line": 60,
+                        "line": 65,
                         "column": 8
                       },
                       "end": {
-                        "line": 60,
+                        "line": 65,
                         "column": 26
                       }
                     }
@@ -1389,31 +1389,31 @@
                     "value": 1,
                     "raw": "1",
                     "range": [
-                      2850,
-                      2851
+                      2979,
+                      2980
                     ],
                     "loc": {
                       "start": {
-                        "line": 60,
+                        "line": 65,
                         "column": 31
                       },
                       "end": {
-                        "line": 60,
+                        "line": 65,
                         "column": 32
                       }
                     }
                   },
                   "range": [
-                    2827,
-                    2851
+                    2956,
+                    2980
                   ],
                   "loc": {
                     "start": {
-                      "line": 60,
+                      "line": 65,
                       "column": 8
                     },
                     "end": {
-                      "line": 60,
+                      "line": 65,
                       "column": 32
                     }
                   }
@@ -1424,16 +1424,16 @@
                     "type": "Identifier",
                     "name": "isArray",
                     "range": [
-                      2855,
-                      2862
+                      2984,
+                      2991
                     ],
                     "loc": {
                       "start": {
-                        "line": 60,
+                        "line": 65,
                         "column": 36
                       },
                       "end": {
-                        "line": 60,
+                        "line": 65,
                         "column": 43
                       }
                     }
@@ -1446,16 +1446,16 @@
                         "type": "Identifier",
                         "name": "observables",
                         "range": [
-                          2863,
-                          2874
+                          2992,
+                          3003
                         ],
                         "loc": {
                           "start": {
-                            "line": 60,
+                            "line": 65,
                             "column": 44
                           },
                           "end": {
-                            "line": 60,
+                            "line": 65,
                             "column": 55
                           }
                         }
@@ -1465,62 +1465,62 @@
                         "value": 0,
                         "raw": "0",
                         "range": [
-                          2875,
-                          2876
+                          3004,
+                          3005
                         ],
                         "loc": {
                           "start": {
-                            "line": 60,
+                            "line": 65,
                             "column": 56
                           },
                           "end": {
-                            "line": 60,
+                            "line": 65,
                             "column": 57
                           }
                         }
                       },
                       "range": [
-                        2863,
-                        2877
+                        2992,
+                        3006
                       ],
                       "loc": {
                         "start": {
-                          "line": 60,
+                          "line": 65,
                           "column": 44
                         },
                         "end": {
-                          "line": 60,
+                          "line": 65,
                           "column": 58
                         }
                       }
                     }
                   ],
                   "range": [
-                    2855,
-                    2878
+                    2984,
+                    3007
                   ],
                   "loc": {
                     "start": {
-                      "line": 60,
+                      "line": 65,
                       "column": 36
                     },
                     "end": {
-                      "line": 60,
+                      "line": 65,
                       "column": 59
                     }
                   }
                 },
                 "range": [
-                  2827,
-                  2878
+                  2956,
+                  3007
                 ],
                 "loc": {
                   "start": {
-                    "line": 60,
+                    "line": 65,
                     "column": 8
                   },
                   "end": {
-                    "line": 60,
+                    "line": 65,
                     "column": 59
                   }
                 }
@@ -1537,16 +1537,16 @@
                         "type": "Identifier",
                         "name": "observables",
                         "range": [
-                          2890,
-                          2901
+                          3019,
+                          3030
                         ],
                         "loc": {
                           "start": {
-                            "line": 61,
+                            "line": 66,
                             "column": 8
                           },
                           "end": {
-                            "line": 61,
+                            "line": 66,
                             "column": 19
                           }
                         }
@@ -1558,16 +1558,16 @@
                           "type": "Identifier",
                           "name": "observables",
                           "range": [
-                            2904,
-                            2915
+                            3033,
+                            3044
                           ],
                           "loc": {
                             "start": {
-                              "line": 61,
+                              "line": 66,
                               "column": 22
                             },
                             "end": {
-                              "line": 61,
+                              "line": 66,
                               "column": 33
                             }
                           }
@@ -1577,93 +1577,93 @@
                           "value": 0,
                           "raw": "0",
                           "range": [
-                            2916,
-                            2917
+                            3045,
+                            3046
                           ],
                           "loc": {
                             "start": {
-                              "line": 61,
+                              "line": 66,
                               "column": 34
                             },
                             "end": {
-                              "line": 61,
+                              "line": 66,
                               "column": 35
                             }
                           }
                         },
                         "range": [
-                          2904,
-                          2918
+                          3033,
+                          3047
                         ],
                         "loc": {
                           "start": {
-                            "line": 61,
+                            "line": 66,
                             "column": 22
                           },
                           "end": {
-                            "line": 61,
+                            "line": 66,
                             "column": 36
                           }
                         }
                       },
                       "range": [
-                        2890,
-                        2918
+                        3019,
+                        3047
                       ],
                       "loc": {
                         "start": {
-                          "line": 61,
+                          "line": 66,
                           "column": 8
                         },
                         "end": {
-                          "line": 61,
+                          "line": 66,
                           "column": 36
                         }
                       }
                     },
                     "range": [
-                      2890,
-                      2919
+                      3019,
+                      3048
                     ],
                     "loc": {
                       "start": {
-                        "line": 61,
+                        "line": 66,
                         "column": 8
                       },
                       "end": {
-                        "line": 61,
+                        "line": 66,
                         "column": 37
                       }
                     }
                   }
                 ],
                 "range": [
-                  2880,
-                  2925
+                  3009,
+                  3054
                 ],
                 "loc": {
                   "start": {
-                    "line": 60,
+                    "line": 65,
                     "column": 61
                   },
                   "end": {
-                    "line": 62,
+                    "line": 67,
                     "column": 5
                   }
                 }
               },
               "alternate": null,
               "range": [
-                2823,
-                2925
+                2952,
+                3054
               ],
               "loc": {
                 "start": {
-                  "line": 60,
+                  "line": 65,
                   "column": 4
                 },
                 "end": {
-                  "line": 62,
+                  "line": 67,
                   "column": 5
                 }
               },
@@ -1672,16 +1672,16 @@
                   "type": "Line",
                   "value": " if the first and only other argument besides the resultSelector is an array",
                   "range": [
-                    2659,
-                    2737
+                    2788,
+                    2866
                   ],
                   "loc": {
                     "start": {
-                      "line": 58,
+                      "line": 63,
                       "column": 4
                     },
                     "end": {
-                      "line": 58,
+                      "line": 63,
                       "column": 82
                     }
                   }
@@ -1690,16 +1690,16 @@
                   "type": "Line",
                   "value": " assume it's been called with `combineLatest([obs1, obs2, obs3], project)`",
                   "range": [
-                    2742,
-                    2818
+                    2871,
+                    2947
                   ],
                   "loc": {
                     "start": {
-                      "line": 59,
+                      "line": 64,
                       "column": 4
                     },
                     "end": {
-                      "line": 59,
+                      "line": 64,
                       "column": 80
                     }
                   }
@@ -1719,16 +1719,16 @@
                       "type": "Identifier",
                       "name": "ArrayObservable",
                       "range": [
-                        2941,
-                        2956
+                        3070,
+                        3085
                       ],
                       "loc": {
                         "start": {
-                          "line": 63,
+                          "line": 68,
                           "column": 15
                         },
                         "end": {
-                          "line": 63,
+                          "line": 68,
                           "column": 30
                         }
                       }
@@ -1738,16 +1738,16 @@
                         "type": "Identifier",
                         "name": "observables",
                         "range": [
-                          2957,
-                          2968
+                          3086,
+                          3097
                         ],
                         "loc": {
                           "start": {
-                            "line": 63,
+                            "line": 68,
                             "column": 31
                           },
                           "end": {
-                            "line": 63,
+                            "line": 68,
                             "column": 42
                           }
                         }
@@ -1756,32 +1756,32 @@
                         "type": "Identifier",
                         "name": "scheduler",
                         "range": [
-                          2970,
-                          2979
+                          3099,
+                          3108
                         ],
                         "loc": {
                           "start": {
-                            "line": 63,
+                            "line": 68,
                             "column": 44
                           },
                           "end": {
-                            "line": 63,
+                            "line": 68,
                             "column": 53
                           }
                         }
                       }
                     ],
                     "range": [
-                      2937,
-                      2980
+                      3066,
+                      3109
                     ],
                     "loc": {
                       "start": {
-                        "line": 63,
+                        "line": 68,
                         "column": 11
                       },
                       "end": {
-                        "line": 63,
+                        "line": 68,
                         "column": 54
                       }
                     }
@@ -1790,31 +1790,31 @@
                     "type": "Identifier",
                     "name": "lift",
                     "range": [
-                      2981,
-                      2985
+                      3110,
+                      3114
                     ],
                     "loc": {
                       "start": {
-                        "line": 63,
+                        "line": 68,
                         "column": 55
                       },
                       "end": {
-                        "line": 63,
+                        "line": 68,
                         "column": 59
                       }
                     }
                   },
                   "range": [
-                    2937,
-                    2985
+                    3066,
+                    3114
                   ],
                   "loc": {
                     "start": {
-                      "line": 63,
+                      "line": 68,
                       "column": 11
                     },
                     "end": {
-                      "line": 63,
+                      "line": 68,
                       "column": 59
                     }
                   }
@@ -1826,16 +1826,16 @@
                       "type": "Identifier",
                       "name": "CombineLatestOperator",
                       "range": [
-                        2990,
-                        3011
+                        3119,
+                        3140
                       ],
                       "loc": {
                         "start": {
-                          "line": 63,
+                          "line": 68,
                           "column": 64
                         },
                         "end": {
-                          "line": 63,
+                          "line": 68,
                           "column": 85
                         }
                       }
@@ -1845,79 +1845,79 @@
                         "type": "Identifier",
                         "name": "project",
                         "range": [
-                          3012,
-                          3019
+                          3141,
+                          3148
                         ],
                         "loc": {
                           "start": {
-                            "line": 63,
+                            "line": 68,
                             "column": 86
                           },
                           "end": {
-                            "line": 63,
+                            "line": 68,
                             "column": 93
                           }
                         }
                       }
                     ],
                     "range": [
-                      2986,
-                      3020
+                      3115,
+                      3149
                     ],
                     "loc": {
                       "start": {
-                        "line": 63,
+                        "line": 68,
                         "column": 60
                       },
                       "end": {
-                        "line": 63,
+                        "line": 68,
                         "column": 94
                       }
                     }
                   }
                 ],
                 "range": [
-                  2937,
-                  3021
+                  3066,
+                  3150
                 ],
                 "loc": {
                   "start": {
-                    "line": 63,
+                    "line": 68,
                     "column": 11
                   },
                   "end": {
-                    "line": 63,
+                    "line": 68,
                     "column": 95
                   }
                 }
               },
               "range": [
-                2930,
-                3022
+                3059,
+                3151
               ],
               "loc": {
                 "start": {
-                  "line": 63,
+                  "line": 68,
                   "column": 4
                 },
                 "end": {
-                  "line": 63,
+                  "line": 68,
                   "column": 96
                 }
               }
             }
           ],
           "range": [
-            2386,
-            3024
+            2515,
+            3153
           ],
           "loc": {
             "start": {
-              "line": 49,
+              "line": 54,
               "column": 46
             },
             "end": {
-              "line": 64,
+              "line": 69,
               "column": 1
             }
           }
@@ -1925,16 +1925,16 @@
         "generator": false,
         "expression": false,
         "range": [
-          2347,
-          3024
+          2476,
+          3153
         ],
         "loc": {
           "start": {
-            "line": 49,
+            "line": 54,
             "column": 7
           },
           "end": {
-            "line": 64,
+            "line": 69,
             "column": 1
           }
         },
@@ -1959,10 +1959,10 @@
           },
           {
             "type": "Block",
-            "value": "*\n * Combines multiple Observables to create an Observable whose values are\n * calculated from the latest values of each of its input Observables.\n *\n * <span class=\"informal\">Whenever any input Observable emits a value, it\n * computes a formula using the latest values from all the inputs, then emits\n * the output of that formula.</span>\n *\n * <img src=\"./img/combineLatest.png\" width=\"100%\">\n *\n * `combineLatest` combines the values from all the Observables passed as\n * arguments. This is done by subscribing to each Observable, in order, and\n * collecting an array of each of the most recent values any time any of the\n * input Observables emits, then either taking that array and passing it as\n * arguments to an optional `project` function and emitting the return value of\n * that, or just emitting the array of recent values directly if there is no\n * `project` function.\n *\n * @example <caption>Dynamically calculate the Body-Mass Index from an Observable of weight and one for height</caption>\n * var weight = Rx.Observable.of(70, 72, 76, 79, 75);\n * var height = Rx.Observable.of(1.76, 1.77, 1.78);\n * var bmi = Rx.Observable.combineLatest(weight, height, (w, h) => w / (h * h));\n * bmi.subscribe(x => console.log('BMI is ' + x));\n *\n * @see {@link combineAll}\n * @see {@link merge}\n * @see {@link withLatestFrom}\n *\n * @param {Observable} observable1 An input Observable to combine with the\n * source Observable.\n * @param {Observable} observable2 An input Observable to combine with the\n * source Observable. More than one input Observables may be given as argument.\n * @param {function} [project] An optional function to project the values from\n * the combined latest values into a new value on the output Observable.\n * @param {Scheduler} [scheduler=null] The Scheduler to use for subscribing to\n * each input Observable.\n * @return {Observable} An Observable of projected values from the most recent\n * values from each input Observable, or an array of the most recent values from\n * each input Observable.\n * @static true\n * @name combineLatest\n * @owner Observable\n ",
+            "value": "*\n * Combines multiple Observables to create an Observable whose values are\n * calculated from the latest values of each of its input Observables.\n *\n * <span class=\"informal\">Whenever any input Observable emits a value, it\n * computes a formula using the latest values from all the inputs, then emits\n * the output of that formula.</span>\n *\n * <img src=\"./img/combineLatest.png\" width=\"100%\">\n *\n * `combineLatest` combines the values from all the Observables passed as\n * arguments. This is done by subscribing to each Observable, in order, and\n * collecting an array of each of the most recent values any time any of the\n * input Observables emits, then either taking that array and passing it as\n * arguments to an optional `project` function and emitting the return value of\n * that, or just emitting the array of recent values directly if there is no\n * `project` function.\n *\n * @example <caption>Dynamically calculate the Body-Mass Index from an Observable of weight and one for height</caption>\n * var weight = Rx.Observable.of(70, 72, 76, 79, 75);\n * var height = Rx.Observable.of(1.76, 1.77, 1.78);\n * var bmi = Rx.Observable.combineLatest(weight, height, (w, h) => w / (h * h));\n * bmi.subscribe(x => console.log('BMI is ' + x));\n *\n * // With output to console:\n * // BMI is 24.212293388429753\n * // BMI is 23.93948099205209\n * // BMI is 23.671253629592222\n *\n * @see {@link combineAll}\n * @see {@link merge}\n * @see {@link withLatestFrom}\n *\n * @param {Observable} observable1 An input Observable to combine with the\n * source Observable.\n * @param {Observable} observable2 An input Observable to combine with the\n * source Observable. More than one input Observables may be given as argument.\n * @param {function} [project] An optional function to project the values from\n * the combined latest values into a new value on the output Observable.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for subscribing to\n * each input Observable.\n * @return {Observable} An Observable of projected values from the most recent\n * values from each input Observable, or an array of the most recent values from\n * each input Observable.\n * @static true\n * @name combineLatest\n * @owner Observable\n ",
             "range": [
               250,
-              2339
+              2468
             ],
             "loc": {
               "start": {
@@ -1970,7 +1970,7 @@
                 "column": 0
               },
               "end": {
-                "line": 48,
+                "line": 53,
                 "column": 3
               }
             }
@@ -1981,16 +1981,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=combineLatest.js.map",
             "range": [
-              3025,
-              3066
+              3154,
+              3195
             ],
             "loc": {
               "start": {
-                "line": 65,
+                "line": 70,
                 "column": 0
               },
               "end": {
-                "line": 65,
+                "line": 70,
                 "column": 41
               }
             }
@@ -2000,16 +2000,16 @@
       "specifiers": [],
       "source": null,
       "range": [
-        2340,
-        3024
+        2469,
+        3153
       ],
       "loc": {
         "start": {
-          "line": 49,
+          "line": 54,
           "column": 0
         },
         "end": {
-          "line": 64,
+          "line": 69,
           "column": 1
         }
       },
@@ -2034,10 +2034,10 @@
         },
         {
           "type": "Block",
-          "value": "*\n * Combines multiple Observables to create an Observable whose values are\n * calculated from the latest values of each of its input Observables.\n *\n * <span class=\"informal\">Whenever any input Observable emits a value, it\n * computes a formula using the latest values from all the inputs, then emits\n * the output of that formula.</span>\n *\n * <img src=\"./img/combineLatest.png\" width=\"100%\">\n *\n * `combineLatest` combines the values from all the Observables passed as\n * arguments. This is done by subscribing to each Observable, in order, and\n * collecting an array of each of the most recent values any time any of the\n * input Observables emits, then either taking that array and passing it as\n * arguments to an optional `project` function and emitting the return value of\n * that, or just emitting the array of recent values directly if there is no\n * `project` function.\n *\n * @example <caption>Dynamically calculate the Body-Mass Index from an Observable of weight and one for height</caption>\n * var weight = Rx.Observable.of(70, 72, 76, 79, 75);\n * var height = Rx.Observable.of(1.76, 1.77, 1.78);\n * var bmi = Rx.Observable.combineLatest(weight, height, (w, h) => w / (h * h));\n * bmi.subscribe(x => console.log('BMI is ' + x));\n *\n * @see {@link combineAll}\n * @see {@link merge}\n * @see {@link withLatestFrom}\n *\n * @param {Observable} observable1 An input Observable to combine with the\n * source Observable.\n * @param {Observable} observable2 An input Observable to combine with the\n * source Observable. More than one input Observables may be given as argument.\n * @param {function} [project] An optional function to project the values from\n * the combined latest values into a new value on the output Observable.\n * @param {Scheduler} [scheduler=null] The Scheduler to use for subscribing to\n * each input Observable.\n * @return {Observable} An Observable of projected values from the most recent\n * values from each input Observable, or an array of the most recent values from\n * each input Observable.\n * @static true\n * @name combineLatest\n * @owner Observable\n ",
+          "value": "*\n * Combines multiple Observables to create an Observable whose values are\n * calculated from the latest values of each of its input Observables.\n *\n * <span class=\"informal\">Whenever any input Observable emits a value, it\n * computes a formula using the latest values from all the inputs, then emits\n * the output of that formula.</span>\n *\n * <img src=\"./img/combineLatest.png\" width=\"100%\">\n *\n * `combineLatest` combines the values from all the Observables passed as\n * arguments. This is done by subscribing to each Observable, in order, and\n * collecting an array of each of the most recent values any time any of the\n * input Observables emits, then either taking that array and passing it as\n * arguments to an optional `project` function and emitting the return value of\n * that, or just emitting the array of recent values directly if there is no\n * `project` function.\n *\n * @example <caption>Dynamically calculate the Body-Mass Index from an Observable of weight and one for height</caption>\n * var weight = Rx.Observable.of(70, 72, 76, 79, 75);\n * var height = Rx.Observable.of(1.76, 1.77, 1.78);\n * var bmi = Rx.Observable.combineLatest(weight, height, (w, h) => w / (h * h));\n * bmi.subscribe(x => console.log('BMI is ' + x));\n *\n * // With output to console:\n * // BMI is 24.212293388429753\n * // BMI is 23.93948099205209\n * // BMI is 23.671253629592222\n *\n * @see {@link combineAll}\n * @see {@link merge}\n * @see {@link withLatestFrom}\n *\n * @param {Observable} observable1 An input Observable to combine with the\n * source Observable.\n * @param {Observable} observable2 An input Observable to combine with the\n * source Observable. More than one input Observables may be given as argument.\n * @param {function} [project] An optional function to project the values from\n * the combined latest values into a new value on the output Observable.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for subscribing to\n * each input Observable.\n * @return {Observable} An Observable of projected values from the most recent\n * values from each input Observable, or an array of the most recent values from\n * each input Observable.\n * @static true\n * @name combineLatest\n * @owner Observable\n ",
           "range": [
             250,
-            2339
+            2468
           ],
           "loc": {
             "start": {
@@ -2045,7 +2045,7 @@
               "column": 0
             },
             "end": {
-              "line": 48,
+              "line": 53,
               "column": 3
             }
           }
@@ -2056,16 +2056,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=combineLatest.js.map",
           "range": [
-            3025,
-            3066
+            3154,
+            3195
           ],
           "loc": {
             "start": {
-              "line": 65,
+              "line": 70,
               "column": 0
             },
             "end": {
-              "line": 65,
+              "line": 70,
               "column": 41
             }
           }
@@ -2076,7 +2076,7 @@
   "sourceType": "module",
   "range": [
     0,
-    3024
+    3153
   ],
   "loc": {
     "start": {
@@ -2084,7 +2084,7 @@
       "column": 0
     },
     "end": {
-      "line": 64,
+      "line": 69,
       "column": 1
     }
   },
@@ -2109,10 +2109,10 @@
     },
     {
       "type": "Block",
-      "value": "*\n * Combines multiple Observables to create an Observable whose values are\n * calculated from the latest values of each of its input Observables.\n *\n * <span class=\"informal\">Whenever any input Observable emits a value, it\n * computes a formula using the latest values from all the inputs, then emits\n * the output of that formula.</span>\n *\n * <img src=\"./img/combineLatest.png\" width=\"100%\">\n *\n * `combineLatest` combines the values from all the Observables passed as\n * arguments. This is done by subscribing to each Observable, in order, and\n * collecting an array of each of the most recent values any time any of the\n * input Observables emits, then either taking that array and passing it as\n * arguments to an optional `project` function and emitting the return value of\n * that, or just emitting the array of recent values directly if there is no\n * `project` function.\n *\n * @example <caption>Dynamically calculate the Body-Mass Index from an Observable of weight and one for height</caption>\n * var weight = Rx.Observable.of(70, 72, 76, 79, 75);\n * var height = Rx.Observable.of(1.76, 1.77, 1.78);\n * var bmi = Rx.Observable.combineLatest(weight, height, (w, h) => w / (h * h));\n * bmi.subscribe(x => console.log('BMI is ' + x));\n *\n * @see {@link combineAll}\n * @see {@link merge}\n * @see {@link withLatestFrom}\n *\n * @param {Observable} observable1 An input Observable to combine with the\n * source Observable.\n * @param {Observable} observable2 An input Observable to combine with the\n * source Observable. More than one input Observables may be given as argument.\n * @param {function} [project] An optional function to project the values from\n * the combined latest values into a new value on the output Observable.\n * @param {Scheduler} [scheduler=null] The Scheduler to use for subscribing to\n * each input Observable.\n * @return {Observable} An Observable of projected values from the most recent\n * values from each input Observable, or an array of the most recent values from\n * each input Observable.\n * @static true\n * @name combineLatest\n * @owner Observable\n ",
+      "value": "*\n * Combines multiple Observables to create an Observable whose values are\n * calculated from the latest values of each of its input Observables.\n *\n * <span class=\"informal\">Whenever any input Observable emits a value, it\n * computes a formula using the latest values from all the inputs, then emits\n * the output of that formula.</span>\n *\n * <img src=\"./img/combineLatest.png\" width=\"100%\">\n *\n * `combineLatest` combines the values from all the Observables passed as\n * arguments. This is done by subscribing to each Observable, in order, and\n * collecting an array of each of the most recent values any time any of the\n * input Observables emits, then either taking that array and passing it as\n * arguments to an optional `project` function and emitting the return value of\n * that, or just emitting the array of recent values directly if there is no\n * `project` function.\n *\n * @example <caption>Dynamically calculate the Body-Mass Index from an Observable of weight and one for height</caption>\n * var weight = Rx.Observable.of(70, 72, 76, 79, 75);\n * var height = Rx.Observable.of(1.76, 1.77, 1.78);\n * var bmi = Rx.Observable.combineLatest(weight, height, (w, h) => w / (h * h));\n * bmi.subscribe(x => console.log('BMI is ' + x));\n *\n * // With output to console:\n * // BMI is 24.212293388429753\n * // BMI is 23.93948099205209\n * // BMI is 23.671253629592222\n *\n * @see {@link combineAll}\n * @see {@link merge}\n * @see {@link withLatestFrom}\n *\n * @param {Observable} observable1 An input Observable to combine with the\n * source Observable.\n * @param {Observable} observable2 An input Observable to combine with the\n * source Observable. More than one input Observables may be given as argument.\n * @param {function} [project] An optional function to project the values from\n * the combined latest values into a new value on the output Observable.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for subscribing to\n * each input Observable.\n * @return {Observable} An Observable of projected values from the most recent\n * values from each input Observable, or an array of the most recent values from\n * each input Observable.\n * @static true\n * @name combineLatest\n * @owner Observable\n ",
       "range": [
         250,
-        2339
+        2468
       ],
       "loc": {
         "start": {
@@ -2120,7 +2120,7 @@
           "column": 0
         },
         "end": {
-          "line": 48,
+          "line": 53,
           "column": 3
         }
       }
@@ -2129,16 +2129,16 @@
       "type": "Line",
       "value": " if the first and only other argument besides the resultSelector is an array",
       "range": [
-        2659,
-        2737
+        2788,
+        2866
       ],
       "loc": {
         "start": {
-          "line": 58,
+          "line": 63,
           "column": 4
         },
         "end": {
-          "line": 58,
+          "line": 63,
           "column": 82
         }
       }
@@ -2147,16 +2147,16 @@
       "type": "Line",
       "value": " assume it's been called with `combineLatest([obs1, obs2, obs3], project)`",
       "range": [
-        2742,
-        2818
+        2871,
+        2947
       ],
       "loc": {
         "start": {
-          "line": 59,
+          "line": 64,
           "column": 4
         },
         "end": {
-          "line": 59,
+          "line": 64,
           "column": 80
         }
       }
@@ -2165,16 +2165,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=combineLatest.js.map",
       "range": [
-        3025,
-        3066
+        3154,
+        3195
       ],
       "loc": {
         "start": {
-          "line": 65,
+          "line": 70,
           "column": 0
         },
         "end": {
-          "line": 65,
+          "line": 70,
           "column": 41
         }
       }

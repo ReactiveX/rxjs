@@ -367,10 +367,10 @@
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * Delays the emission of items from the source Observable by a given timeout or\n * until a given Date.\n *\n * <span class=\"informal\">Time shifts each item by some specified amount of\n * milliseconds.</span>\n *\n * <img src=\"./img/delay.png\" width=\"100%\">\n *\n * If the delay argument is a Number, this operator time shifts the source\n * Observable by that amount of time expressed in milliseconds. The relative\n * time intervals between the values are preserved.\n *\n * If the delay argument is a Date, this operator time shifts the start of the\n * Observable execution until the given date occurs.\n *\n * @example <caption>Delay each click by one second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var delayedClicks = clicks.delay(1000); // each click emitted after 1 second\n * delayedClicks.subscribe(x => console.log(x));\n *\n * @example <caption>Delay all clicks until a future date happens</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var date = new Date('March 15, 2050 12:00:00'); // in the future\n * var delayedClicks = clicks.delay(date); // click emitted only after that date\n * delayedClicks.subscribe(x => console.log(x));\n *\n * @see {@link debounceTime}\n * @see {@link delayWhen}\n *\n * @param {number|Date} delay The delay duration in milliseconds (a `number`) or\n * a `Date` until which the emission of the source items is delayed.\n * @param {Scheduler} [scheduler=async] The Scheduler to use for\n * managing the timers that handle the time-shift for each item.\n * @return {Observable} An Observable that delays the emissions of the source\n * Observable by the specified timeout or Date.\n * @method delay\n * @owner Observable\n ",
+          "value": "*\n * Delays the emission of items from the source Observable by a given timeout or\n * until a given Date.\n *\n * <span class=\"informal\">Time shifts each item by some specified amount of\n * milliseconds.</span>\n *\n * <img src=\"./img/delay.png\" width=\"100%\">\n *\n * If the delay argument is a Number, this operator time shifts the source\n * Observable by that amount of time expressed in milliseconds. The relative\n * time intervals between the values are preserved.\n *\n * If the delay argument is a Date, this operator time shifts the start of the\n * Observable execution until the given date occurs.\n *\n * @example <caption>Delay each click by one second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var delayedClicks = clicks.delay(1000); // each click emitted after 1 second\n * delayedClicks.subscribe(x => console.log(x));\n *\n * @example <caption>Delay all clicks until a future date happens</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var date = new Date('March 15, 2050 12:00:00'); // in the future\n * var delayedClicks = clicks.delay(date); // click emitted only after that date\n * delayedClicks.subscribe(x => console.log(x));\n *\n * @see {@link debounceTime}\n * @see {@link delayWhen}\n *\n * @param {number|Date} delay The delay duration in milliseconds (a `number`) or\n * a `Date` until which the emission of the source items is delayed.\n * @param {Scheduler} [scheduler=async] The IScheduler to use for\n * managing the timers that handle the time-shift for each item.\n * @return {Observable} An Observable that delays the emissions of the source\n * Observable by the specified timeout or Date.\n * @method delay\n * @owner Observable\n ",
           "range": [
             177,
-            1876
+            1877
           ],
           "loc": {
             "start": {
@@ -393,8 +393,8 @@
           "type": "Identifier",
           "name": "delay",
           "range": [
-            1893,
-            1898
+            1894,
+            1899
           ],
           "loc": {
             "start": {
@@ -412,8 +412,8 @@
             "type": "Identifier",
             "name": "delay",
             "range": [
-              1899,
-              1904
+              1900,
+              1905
             ],
             "loc": {
               "start": {
@@ -432,8 +432,8 @@
               "type": "Identifier",
               "name": "scheduler",
               "range": [
-                1906,
-                1915
+                1907,
+                1916
               ],
               "loc": {
                 "start": {
@@ -450,8 +450,8 @@
               "type": "Identifier",
               "name": "async",
               "range": [
-                1918,
-                1923
+                1919,
+                1924
               ],
               "loc": {
                 "start": {
@@ -465,8 +465,8 @@
               }
             },
             "range": [
-              1906,
-              1923
+              1907,
+              1924
             ],
             "loc": {
               "start": {
@@ -492,8 +492,8 @@
                     "type": "Identifier",
                     "name": "absoluteDelay",
                     "range": [
-                      1937,
-                      1950
+                      1938,
+                      1951
                     ],
                     "loc": {
                       "start": {
@@ -512,8 +512,8 @@
                       "type": "Identifier",
                       "name": "isDate",
                       "range": [
-                        1953,
-                        1959
+                        1954,
+                        1960
                       ],
                       "loc": {
                         "start": {
@@ -531,8 +531,8 @@
                         "type": "Identifier",
                         "name": "delay",
                         "range": [
-                          1960,
-                          1965
+                          1961,
+                          1966
                         ],
                         "loc": {
                           "start": {
@@ -547,8 +547,8 @@
                       }
                     ],
                     "range": [
-                      1953,
-                      1966
+                      1954,
+                      1967
                     ],
                     "loc": {
                       "start": {
@@ -562,8 +562,8 @@
                     }
                   },
                   "range": [
-                    1937,
-                    1966
+                    1938,
+                    1967
                   ],
                   "loc": {
                     "start": {
@@ -579,8 +579,8 @@
               ],
               "kind": "const",
               "range": [
-                1931,
-                1967
+                1932,
+                1968
               ],
               "loc": {
                 "start": {
@@ -602,8 +602,8 @@
                     "type": "Identifier",
                     "name": "delayFor",
                     "range": [
-                      1978,
-                      1986
+                      1979,
+                      1987
                     ],
                     "loc": {
                       "start": {
@@ -622,8 +622,8 @@
                       "type": "Identifier",
                       "name": "absoluteDelay",
                       "range": [
-                        1989,
-                        2002
+                        1990,
+                        2003
                       ],
                       "loc": {
                         "start": {
@@ -646,8 +646,8 @@
                           "type": "Identifier",
                           "name": "delay",
                           "range": [
-                            2007,
-                            2012
+                            2008,
+                            2013
                           ],
                           "loc": {
                             "start": {
@@ -662,8 +662,8 @@
                         },
                         "prefix": true,
                         "range": [
-                          2006,
-                          2012
+                          2007,
+                          2013
                         ],
                         "loc": {
                           "start": {
@@ -685,8 +685,8 @@
                             "type": "Identifier",
                             "name": "scheduler",
                             "range": [
-                              2015,
-                              2024
+                              2016,
+                              2025
                             ],
                             "loc": {
                               "start": {
@@ -703,8 +703,8 @@
                             "type": "Identifier",
                             "name": "now",
                             "range": [
-                              2025,
-                              2028
+                              2026,
+                              2029
                             ],
                             "loc": {
                               "start": {
@@ -718,8 +718,8 @@
                             }
                           },
                           "range": [
-                            2015,
-                            2028
+                            2016,
+                            2029
                           ],
                           "loc": {
                             "start": {
@@ -734,8 +734,8 @@
                         },
                         "arguments": [],
                         "range": [
-                          2015,
-                          2030
+                          2016,
+                          2031
                         ],
                         "loc": {
                           "start": {
@@ -749,8 +749,8 @@
                         }
                       },
                       "range": [
-                        2006,
-                        2030
+                        2007,
+                        2031
                       ],
                       "loc": {
                         "start": {
@@ -772,8 +772,8 @@
                           "type": "Identifier",
                           "name": "Math",
                           "range": [
-                            2034,
-                            2038
+                            2035,
+                            2039
                           ],
                           "loc": {
                             "start": {
@@ -790,8 +790,8 @@
                           "type": "Identifier",
                           "name": "abs",
                           "range": [
-                            2039,
-                            2042
+                            2040,
+                            2043
                           ],
                           "loc": {
                             "start": {
@@ -805,8 +805,8 @@
                           }
                         },
                         "range": [
-                          2034,
-                          2042
+                          2035,
+                          2043
                         ],
                         "loc": {
                           "start": {
@@ -824,8 +824,8 @@
                           "type": "Identifier",
                           "name": "delay",
                           "range": [
-                            2043,
-                            2048
+                            2044,
+                            2049
                           ],
                           "loc": {
                             "start": {
@@ -840,8 +840,8 @@
                         }
                       ],
                       "range": [
-                        2034,
-                        2049
+                        2035,
+                        2050
                       ],
                       "loc": {
                         "start": {
@@ -855,8 +855,8 @@
                       }
                     },
                     "range": [
-                      1989,
-                      2049
+                      1990,
+                      2050
                     ],
                     "loc": {
                       "start": {
@@ -870,8 +870,8 @@
                     }
                   },
                   "range": [
-                    1978,
-                    2049
+                    1979,
+                    2050
                   ],
                   "loc": {
                     "start": {
@@ -887,8 +887,8 @@
               ],
               "kind": "const",
               "range": [
-                1972,
-                2050
+                1973,
+                2051
               ],
               "loc": {
                 "start": {
@@ -911,8 +911,8 @@
                   "object": {
                     "type": "ThisExpression",
                     "range": [
-                      2062,
-                      2066
+                      2063,
+                      2067
                     ],
                     "loc": {
                       "start": {
@@ -929,8 +929,8 @@
                     "type": "Identifier",
                     "name": "lift",
                     "range": [
-                      2067,
-                      2071
+                      2068,
+                      2072
                     ],
                     "loc": {
                       "start": {
@@ -944,8 +944,8 @@
                     }
                   },
                   "range": [
-                    2062,
-                    2071
+                    2063,
+                    2072
                   ],
                   "loc": {
                     "start": {
@@ -965,8 +965,8 @@
                       "type": "Identifier",
                       "name": "DelayOperator",
                       "range": [
-                        2076,
-                        2089
+                        2077,
+                        2090
                       ],
                       "loc": {
                         "start": {
@@ -984,8 +984,8 @@
                         "type": "Identifier",
                         "name": "delayFor",
                         "range": [
-                          2090,
-                          2098
+                          2091,
+                          2099
                         ],
                         "loc": {
                           "start": {
@@ -1002,8 +1002,8 @@
                         "type": "Identifier",
                         "name": "scheduler",
                         "range": [
-                          2100,
-                          2109
+                          2101,
+                          2110
                         ],
                         "loc": {
                           "start": {
@@ -1018,8 +1018,8 @@
                       }
                     ],
                     "range": [
-                      2072,
-                      2110
+                      2073,
+                      2111
                     ],
                     "loc": {
                       "start": {
@@ -1034,8 +1034,8 @@
                   }
                 ],
                 "range": [
-                  2062,
-                  2111
+                  2063,
+                  2112
                 ],
                 "loc": {
                   "start": {
@@ -1049,8 +1049,8 @@
                 }
               },
               "range": [
-                2055,
-                2112
+                2056,
+                2113
               ],
               "loc": {
                 "start": {
@@ -1065,8 +1065,8 @@
             }
           ],
           "range": [
-            1925,
-            2114
+            1926,
+            2115
           ],
           "loc": {
             "start": {
@@ -1082,8 +1082,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          1884,
-          2114
+          1885,
+          2115
         ],
         "loc": {
           "start": {
@@ -1098,10 +1098,10 @@
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * Delays the emission of items from the source Observable by a given timeout or\n * until a given Date.\n *\n * <span class=\"informal\">Time shifts each item by some specified amount of\n * milliseconds.</span>\n *\n * <img src=\"./img/delay.png\" width=\"100%\">\n *\n * If the delay argument is a Number, this operator time shifts the source\n * Observable by that amount of time expressed in milliseconds. The relative\n * time intervals between the values are preserved.\n *\n * If the delay argument is a Date, this operator time shifts the start of the\n * Observable execution until the given date occurs.\n *\n * @example <caption>Delay each click by one second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var delayedClicks = clicks.delay(1000); // each click emitted after 1 second\n * delayedClicks.subscribe(x => console.log(x));\n *\n * @example <caption>Delay all clicks until a future date happens</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var date = new Date('March 15, 2050 12:00:00'); // in the future\n * var delayedClicks = clicks.delay(date); // click emitted only after that date\n * delayedClicks.subscribe(x => console.log(x));\n *\n * @see {@link debounceTime}\n * @see {@link delayWhen}\n *\n * @param {number|Date} delay The delay duration in milliseconds (a `number`) or\n * a `Date` until which the emission of the source items is delayed.\n * @param {Scheduler} [scheduler=async] The Scheduler to use for\n * managing the timers that handle the time-shift for each item.\n * @return {Observable} An Observable that delays the emissions of the source\n * Observable by the specified timeout or Date.\n * @method delay\n * @owner Observable\n ",
+            "value": "*\n * Delays the emission of items from the source Observable by a given timeout or\n * until a given Date.\n *\n * <span class=\"informal\">Time shifts each item by some specified amount of\n * milliseconds.</span>\n *\n * <img src=\"./img/delay.png\" width=\"100%\">\n *\n * If the delay argument is a Number, this operator time shifts the source\n * Observable by that amount of time expressed in milliseconds. The relative\n * time intervals between the values are preserved.\n *\n * If the delay argument is a Date, this operator time shifts the start of the\n * Observable execution until the given date occurs.\n *\n * @example <caption>Delay each click by one second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var delayedClicks = clicks.delay(1000); // each click emitted after 1 second\n * delayedClicks.subscribe(x => console.log(x));\n *\n * @example <caption>Delay all clicks until a future date happens</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var date = new Date('March 15, 2050 12:00:00'); // in the future\n * var delayedClicks = clicks.delay(date); // click emitted only after that date\n * delayedClicks.subscribe(x => console.log(x));\n *\n * @see {@link debounceTime}\n * @see {@link delayWhen}\n *\n * @param {number|Date} delay The delay duration in milliseconds (a `number`) or\n * a `Date` until which the emission of the source items is delayed.\n * @param {Scheduler} [scheduler=async] The IScheduler to use for\n * managing the timers that handle the time-shift for each item.\n * @return {Observable} An Observable that delays the emissions of the source\n * Observable by the specified timeout or Date.\n * @method delay\n * @owner Observable\n ",
             "range": [
               177,
-              1876
+              1877
             ],
             "loc": {
               "start": {
@@ -1120,8 +1120,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        1877,
-        2114
+        1878,
+        2115
       ],
       "loc": {
         "start": {
@@ -1136,10 +1136,10 @@
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * Delays the emission of items from the source Observable by a given timeout or\n * until a given Date.\n *\n * <span class=\"informal\">Time shifts each item by some specified amount of\n * milliseconds.</span>\n *\n * <img src=\"./img/delay.png\" width=\"100%\">\n *\n * If the delay argument is a Number, this operator time shifts the source\n * Observable by that amount of time expressed in milliseconds. The relative\n * time intervals between the values are preserved.\n *\n * If the delay argument is a Date, this operator time shifts the start of the\n * Observable execution until the given date occurs.\n *\n * @example <caption>Delay each click by one second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var delayedClicks = clicks.delay(1000); // each click emitted after 1 second\n * delayedClicks.subscribe(x => console.log(x));\n *\n * @example <caption>Delay all clicks until a future date happens</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var date = new Date('March 15, 2050 12:00:00'); // in the future\n * var delayedClicks = clicks.delay(date); // click emitted only after that date\n * delayedClicks.subscribe(x => console.log(x));\n *\n * @see {@link debounceTime}\n * @see {@link delayWhen}\n *\n * @param {number|Date} delay The delay duration in milliseconds (a `number`) or\n * a `Date` until which the emission of the source items is delayed.\n * @param {Scheduler} [scheduler=async] The Scheduler to use for\n * managing the timers that handle the time-shift for each item.\n * @return {Observable} An Observable that delays the emissions of the source\n * Observable by the specified timeout or Date.\n * @method delay\n * @owner Observable\n ",
+          "value": "*\n * Delays the emission of items from the source Observable by a given timeout or\n * until a given Date.\n *\n * <span class=\"informal\">Time shifts each item by some specified amount of\n * milliseconds.</span>\n *\n * <img src=\"./img/delay.png\" width=\"100%\">\n *\n * If the delay argument is a Number, this operator time shifts the source\n * Observable by that amount of time expressed in milliseconds. The relative\n * time intervals between the values are preserved.\n *\n * If the delay argument is a Date, this operator time shifts the start of the\n * Observable execution until the given date occurs.\n *\n * @example <caption>Delay each click by one second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var delayedClicks = clicks.delay(1000); // each click emitted after 1 second\n * delayedClicks.subscribe(x => console.log(x));\n *\n * @example <caption>Delay all clicks until a future date happens</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var date = new Date('March 15, 2050 12:00:00'); // in the future\n * var delayedClicks = clicks.delay(date); // click emitted only after that date\n * delayedClicks.subscribe(x => console.log(x));\n *\n * @see {@link debounceTime}\n * @see {@link delayWhen}\n *\n * @param {number|Date} delay The delay duration in milliseconds (a `number`) or\n * a `Date` until which the emission of the source items is delayed.\n * @param {Scheduler} [scheduler=async] The IScheduler to use for\n * managing the timers that handle the time-shift for each item.\n * @return {Observable} An Observable that delays the emissions of the source\n * Observable by the specified timeout or Date.\n * @method delay\n * @owner Observable\n ",
           "range": [
             177,
-            1876
+            1877
           ],
           "loc": {
             "start": {
@@ -1160,8 +1160,8 @@
         "type": "Identifier",
         "name": "DelayOperator",
         "range": [
-          2121,
-          2134
+          2122,
+          2135
         ],
         "loc": {
           "start": {
@@ -1184,8 +1184,8 @@
               "type": "Identifier",
               "name": "constructor",
               "range": [
-                2141,
-                2152
+                2142,
+                2153
               ],
               "loc": {
                 "start": {
@@ -1206,8 +1206,8 @@
                   "type": "Identifier",
                   "name": "delay",
                   "range": [
-                    2153,
-                    2158
+                    2154,
+                    2159
                   ],
                   "loc": {
                     "start": {
@@ -1224,8 +1224,8 @@
                   "type": "Identifier",
                   "name": "scheduler",
                   "range": [
-                    2160,
-                    2169
+                    2161,
+                    2170
                   ],
                   "loc": {
                     "start": {
@@ -1253,8 +1253,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            2181,
-                            2185
+                            2182,
+                            2186
                           ],
                           "loc": {
                             "start": {
@@ -1271,8 +1271,8 @@
                           "type": "Identifier",
                           "name": "delay",
                           "range": [
-                            2186,
-                            2191
+                            2187,
+                            2192
                           ],
                           "loc": {
                             "start": {
@@ -1286,8 +1286,8 @@
                           }
                         },
                         "range": [
-                          2181,
-                          2191
+                          2182,
+                          2192
                         ],
                         "loc": {
                           "start": {
@@ -1304,8 +1304,8 @@
                         "type": "Identifier",
                         "name": "delay",
                         "range": [
-                          2194,
-                          2199
+                          2195,
+                          2200
                         ],
                         "loc": {
                           "start": {
@@ -1319,8 +1319,8 @@
                         }
                       },
                       "range": [
-                        2181,
-                        2199
+                        2182,
+                        2200
                       ],
                       "loc": {
                         "start": {
@@ -1334,8 +1334,8 @@
                       }
                     },
                     "range": [
-                      2181,
-                      2200
+                      2182,
+                      2201
                     ],
                     "loc": {
                       "start": {
@@ -1359,8 +1359,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            2209,
-                            2213
+                            2210,
+                            2214
                           ],
                           "loc": {
                             "start": {
@@ -1377,8 +1377,8 @@
                           "type": "Identifier",
                           "name": "scheduler",
                           "range": [
-                            2214,
-                            2223
+                            2215,
+                            2224
                           ],
                           "loc": {
                             "start": {
@@ -1392,8 +1392,8 @@
                           }
                         },
                         "range": [
-                          2209,
-                          2223
+                          2210,
+                          2224
                         ],
                         "loc": {
                           "start": {
@@ -1410,8 +1410,8 @@
                         "type": "Identifier",
                         "name": "scheduler",
                         "range": [
-                          2226,
-                          2235
+                          2227,
+                          2236
                         ],
                         "loc": {
                           "start": {
@@ -1425,8 +1425,8 @@
                         }
                       },
                       "range": [
-                        2209,
-                        2235
+                        2210,
+                        2236
                       ],
                       "loc": {
                         "start": {
@@ -1440,8 +1440,8 @@
                       }
                     },
                     "range": [
-                      2209,
-                      2236
+                      2210,
+                      2237
                     ],
                     "loc": {
                       "start": {
@@ -1456,8 +1456,8 @@
                   }
                 ],
                 "range": [
-                  2171,
-                  2242
+                  2172,
+                  2243
                 ],
                 "loc": {
                   "start": {
@@ -1473,8 +1473,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                2152,
-                2242
+                2153,
+                2243
               ],
               "loc": {
                 "start": {
@@ -1490,8 +1490,8 @@
             "kind": "constructor",
             "computed": false,
             "range": [
-              2141,
-              2242
+              2142,
+              2243
             ],
             "loc": {
               "start": {
@@ -1511,8 +1511,8 @@
               "type": "Identifier",
               "name": "call",
               "range": [
-                2247,
-                2251
+                2248,
+                2252
               ],
               "loc": {
                 "start": {
@@ -1533,8 +1533,8 @@
                   "type": "Identifier",
                   "name": "subscriber",
                   "range": [
-                    2252,
-                    2262
+                    2253,
+                    2263
                   ],
                   "loc": {
                     "start": {
@@ -1551,8 +1551,8 @@
                   "type": "Identifier",
                   "name": "source",
                   "range": [
-                    2264,
-                    2270
+                    2265,
+                    2271
                   ],
                   "loc": {
                     "start": {
@@ -1580,8 +1580,8 @@
                           "type": "Identifier",
                           "name": "source",
                           "range": [
-                            2289,
-                            2295
+                            2290,
+                            2296
                           ],
                           "loc": {
                             "start": {
@@ -1596,9 +1596,9 @@
                         },
                         "property": {
                           "type": "Identifier",
-                          "name": "_subscribe",
+                          "name": "subscribe",
                           "range": [
-                            2296,
+                            2297,
                             2306
                           ],
                           "loc": {
@@ -1608,12 +1608,12 @@
                             },
                             "end": {
                               "line": 55,
-                              "column": 32
+                              "column": 31
                             }
                           }
                         },
                         "range": [
-                          2289,
+                          2290,
                           2306
                         ],
                         "loc": {
@@ -1623,7 +1623,7 @@
                           },
                           "end": {
                             "line": 55,
-                            "column": 32
+                            "column": 31
                           }
                         }
                       },
@@ -1640,11 +1640,11 @@
                             "loc": {
                               "start": {
                                 "line": 55,
-                                "column": 37
+                                "column": 36
                               },
                               "end": {
                                 "line": 55,
-                                "column": 52
+                                "column": 51
                               }
                             }
                           },
@@ -1659,11 +1659,11 @@
                               "loc": {
                                 "start": {
                                   "line": 55,
-                                  "column": 53
+                                  "column": 52
                                 },
                                 "end": {
                                   "line": 55,
-                                  "column": 63
+                                  "column": 62
                                 }
                               }
                             },
@@ -1679,11 +1679,11 @@
                                 "loc": {
                                   "start": {
                                     "line": 55,
-                                    "column": 65
+                                    "column": 64
                                   },
                                   "end": {
                                     "line": 55,
-                                    "column": 69
+                                    "column": 68
                                   }
                                 }
                               },
@@ -1697,11 +1697,11 @@
                                 "loc": {
                                   "start": {
                                     "line": 55,
-                                    "column": 70
+                                    "column": 69
                                   },
                                   "end": {
                                     "line": 55,
-                                    "column": 75
+                                    "column": 74
                                   }
                                 }
                               },
@@ -1712,11 +1712,11 @@
                               "loc": {
                                 "start": {
                                   "line": 55,
-                                  "column": 65
+                                  "column": 64
                                 },
                                 "end": {
                                   "line": 55,
-                                  "column": 75
+                                  "column": 74
                                 }
                               }
                             },
@@ -1732,11 +1732,11 @@
                                 "loc": {
                                   "start": {
                                     "line": 55,
-                                    "column": 77
+                                    "column": 76
                                   },
                                   "end": {
                                     "line": 55,
-                                    "column": 81
+                                    "column": 80
                                   }
                                 }
                               },
@@ -1750,11 +1750,11 @@
                                 "loc": {
                                   "start": {
                                     "line": 55,
-                                    "column": 82
+                                    "column": 81
                                   },
                                   "end": {
                                     "line": 55,
-                                    "column": 91
+                                    "column": 90
                                   }
                                 }
                               },
@@ -1765,11 +1765,11 @@
                               "loc": {
                                 "start": {
                                   "line": 55,
-                                  "column": 77
+                                  "column": 76
                                 },
                                 "end": {
                                   "line": 55,
-                                  "column": 91
+                                  "column": 90
                                 }
                               }
                             }
@@ -1781,17 +1781,17 @@
                           "loc": {
                             "start": {
                               "line": 55,
-                              "column": 33
+                              "column": 32
                             },
                             "end": {
                               "line": 55,
-                              "column": 92
+                              "column": 91
                             }
                           }
                         }
                       ],
                       "range": [
-                        2289,
+                        2290,
                         2367
                       ],
                       "loc": {
@@ -1801,12 +1801,12 @@
                         },
                         "end": {
                           "line": 55,
-                          "column": 93
+                          "column": 92
                         }
                       }
                     },
                     "range": [
-                      2282,
+                      2283,
                       2368
                     ],
                     "loc": {
@@ -1816,13 +1816,13 @@
                       },
                       "end": {
                         "line": 55,
-                        "column": 94
+                        "column": 93
                       }
                     }
                   }
                 ],
                 "range": [
-                  2272,
+                  2273,
                   2374
                 ],
                 "loc": {
@@ -1839,7 +1839,7 @@
               "generator": false,
               "expression": false,
               "range": [
-                2251,
+                2252,
                 2374
               ],
               "loc": {
@@ -1856,7 +1856,7 @@
             "kind": "method",
             "computed": false,
             "range": [
-              2247,
+              2248,
               2374
             ],
             "loc": {
@@ -1873,7 +1873,7 @@
           }
         ],
         "range": [
-          2135,
+          2136,
           2376
         ],
         "loc": {
@@ -1888,7 +1888,7 @@
         }
       },
       "range": [
-        2115,
+        2116,
         2376
       ],
       "loc": {
@@ -7618,10 +7618,10 @@
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * Delays the emission of items from the source Observable by a given timeout or\n * until a given Date.\n *\n * <span class=\"informal\">Time shifts each item by some specified amount of\n * milliseconds.</span>\n *\n * <img src=\"./img/delay.png\" width=\"100%\">\n *\n * If the delay argument is a Number, this operator time shifts the source\n * Observable by that amount of time expressed in milliseconds. The relative\n * time intervals between the values are preserved.\n *\n * If the delay argument is a Date, this operator time shifts the start of the\n * Observable execution until the given date occurs.\n *\n * @example <caption>Delay each click by one second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var delayedClicks = clicks.delay(1000); // each click emitted after 1 second\n * delayedClicks.subscribe(x => console.log(x));\n *\n * @example <caption>Delay all clicks until a future date happens</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var date = new Date('March 15, 2050 12:00:00'); // in the future\n * var delayedClicks = clicks.delay(date); // click emitted only after that date\n * delayedClicks.subscribe(x => console.log(x));\n *\n * @see {@link debounceTime}\n * @see {@link delayWhen}\n *\n * @param {number|Date} delay The delay duration in milliseconds (a `number`) or\n * a `Date` until which the emission of the source items is delayed.\n * @param {Scheduler} [scheduler=async] The Scheduler to use for\n * managing the timers that handle the time-shift for each item.\n * @return {Observable} An Observable that delays the emissions of the source\n * Observable by the specified timeout or Date.\n * @method delay\n * @owner Observable\n ",
+      "value": "*\n * Delays the emission of items from the source Observable by a given timeout or\n * until a given Date.\n *\n * <span class=\"informal\">Time shifts each item by some specified amount of\n * milliseconds.</span>\n *\n * <img src=\"./img/delay.png\" width=\"100%\">\n *\n * If the delay argument is a Number, this operator time shifts the source\n * Observable by that amount of time expressed in milliseconds. The relative\n * time intervals between the values are preserved.\n *\n * If the delay argument is a Date, this operator time shifts the start of the\n * Observable execution until the given date occurs.\n *\n * @example <caption>Delay each click by one second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var delayedClicks = clicks.delay(1000); // each click emitted after 1 second\n * delayedClicks.subscribe(x => console.log(x));\n *\n * @example <caption>Delay all clicks until a future date happens</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var date = new Date('March 15, 2050 12:00:00'); // in the future\n * var delayedClicks = clicks.delay(date); // click emitted only after that date\n * delayedClicks.subscribe(x => console.log(x));\n *\n * @see {@link debounceTime}\n * @see {@link delayWhen}\n *\n * @param {number|Date} delay The delay duration in milliseconds (a `number`) or\n * a `Date` until which the emission of the source items is delayed.\n * @param {Scheduler} [scheduler=async] The IScheduler to use for\n * managing the timers that handle the time-shift for each item.\n * @return {Observable} An Observable that delays the emissions of the source\n * Observable by the specified timeout or Date.\n * @method delay\n * @owner Observable\n ",
       "range": [
         177,
-        1876
+        1877
       ],
       "loc": {
         "start": {

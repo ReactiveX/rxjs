@@ -112,7 +112,7 @@ class BufferOperator {
         this.closingNotifier = closingNotifier;
     }
     call(subscriber, source) {
-        return source._subscribe(new BufferSubscriber(subscriber, this.closingNotifier));
+        return source.subscribe(new BufferSubscriber(subscriber, this.closingNotifier));
     }
 }
 /**

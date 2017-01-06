@@ -125,7 +125,7 @@ class TakeLastOperator {
         }
     }
     call(subscriber, source) {
-        return source._subscribe(new TakeLastSubscriber(subscriber, this.total));
+        return source.subscribe(new TakeLastSubscriber(subscriber, this.total));
     }
 }
 /**

@@ -175,7 +175,8 @@ describe(&apos;subscribeToResult&apos;, function () {
         var subscriber = new OuterSubscriber_1.OuterSubscriber(function (x) {
             done(new Error(&apos;should not be called&apos;));
         }, function (x) {
-            chai_1.expect(x).to.be.an(&apos;error&apos;, &apos;invalid observable&apos;);
+            chai_1.expect(x).to.be.an(&apos;error&apos;);
+            chai_1.expect(x.message).to.be.equal(&apos;Provided object does not correctly implement Symbol.observable&apos;);
             done();
         }, function () {
             done(new Error(&apos;should not be called&apos;));
@@ -187,12 +188,29 @@ describe(&apos;subscribeToResult&apos;, function () {
         var subscriber = new OuterSubscriber_1.OuterSubscriber(function (x) {
             done(new Error(&apos;should not be called&apos;));
         }, function (x) {
-            chai_1.expect(x).to.be.an(&apos;error&apos;, &apos;unknown type returned&apos;);
+            chai_1.expect(x).to.be.an(&apos;error&apos;);
+            var msg = &apos;You provided an invalid object where a stream was expected.&apos;
+                + &apos; You can provide an Observable, Promise, Array, or Iterable.&apos;;
+            chai_1.expect(x.message).to.be.equal(msg);
             done();
         }, function () {
             done(new Error(&apos;should not be called&apos;));
         });
         subscribeToResult_1.subscribeToResult(subscriber, {});
+    });
+    it(&apos;should emit an error when trying to subscribe to a non-object&apos;, function (done) {
+        var subscriber = new OuterSubscriber_1.OuterSubscriber(function (x) {
+            done(new Error(&apos;should not be called&apos;));
+        }, function (x) {
+            chai_1.expect(x).to.be.an(&apos;error&apos;);
+            var msg = &apos;You provided \&apos;null\&apos; where a stream was expected.&apos;
+                + &apos; You can provide an Observable, Promise, Array, or Iterable.&apos;;
+            chai_1.expect(x.message).to.be.equal(msg);
+            done();
+        }, function () {
+            done(new Error(&apos;should not be called&apos;));
+        });
+        subscribeToResult_1.subscribeToResult(subscriber, null);
     });
 });
 //# sourceMappingURL=subscribeToResult-spec.js.map</code></pre>

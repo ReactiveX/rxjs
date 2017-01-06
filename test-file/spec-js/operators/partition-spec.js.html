@@ -102,6 +102,17 @@ describe(&apos;Observable.prototype.partition&apos;, function () {
         expectObservableArray(e1.partition(predicate), expected);
         expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
     });
+    it(&apos;should partition an observable into two using a predicate and thisArg&apos;, function () {
+        var e1 = hot(&apos;--a-b---a------d--a---c--|&apos;);
+        var e1subs = &apos;^                        !&apos;;
+        var expected = [&apos;--a-----a---------a------|&apos;,
+            &apos;----b----------d------c--|&apos;];
+        function predicate(x) {
+            return x === this.value;
+        }
+        expectObservableArray(e1.partition(predicate, { value: &apos;a&apos; }), expected);
+        expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+    });
     it(&apos;should pass errors to both returned observables&apos;, function () {
         var e1 = hot(&apos;--a-b---#&apos;);
         var e1subs = &apos;^       !&apos;;
@@ -252,6 +263,14 @@ describe(&apos;Observable.prototype.partition&apos;, function () {
     it(&apos;should throw without predicate&apos;, function () {
         var e1 = hot(&apos;--a-b---a------d----&apos;);
         chai_1.expect(e1.partition).to.throw();
+    });
+    it(&apos;should accept thisArg&apos;, function () {
+        var thisArg = {};
+        Observable.of(1).partition(function (value) {
+            chai_1.expect(this).to.deep.equal(thisArg);
+            return true;
+        }, thisArg)
+            .forEach(function (observable) { return observable.subscribe(); });
     });
 });
 //# sourceMappingURL=partition-spec.js.map</code></pre>

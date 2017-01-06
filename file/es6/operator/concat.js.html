@@ -94,6 +94,9 @@ import { MergeAllOperator } from &apos;./mergeAll&apos;;
  * var result = timer.concat(sequence);
  * result.subscribe(x =&gt; console.log(x));
  *
+ * // results in:
+ * // 1000ms-&gt; 0 -1000ms-&gt; 1 -1000ms-&gt; 2 -1000ms-&gt; 3 -immediate-&gt; 1 ... 10
+ *
  * @example &lt;caption&gt;Concatenate 3 Observables&lt;/caption&gt;
  * var timer1 = Rx.Observable.interval(1000).take(10);
  * var timer2 = Rx.Observable.interval(2000).take(6);
@@ -101,13 +104,19 @@ import { MergeAllOperator } from &apos;./mergeAll&apos;;
  * var result = timer1.concat(timer2, timer3);
  * result.subscribe(x =&gt; console.log(x));
  *
+ * // results in the following:
+ * // (Prints to console sequentially)
+ * // -1000ms-&gt; 0 -1000ms-&gt; 1 -1000ms-&gt; ... 9
+ * // -2000ms-&gt; 0 -2000ms-&gt; 1 -2000ms-&gt; ... 5
+ * // -500ms-&gt; 0 -500ms-&gt; 1 -500ms-&gt; ... 9
+ *
  * @see {@link concatAll}
  * @see {@link concatMap}
  * @see {@link concatMapTo}
  *
  * @param {Observable} other An input Observable to concatenate after the source
  * Observable. More than one input Observables may be given as argument.
- * @param {Scheduler} [scheduler=null] An optional Scheduler to schedule each
+ * @param {Scheduler} [scheduler=null] An optional IScheduler to schedule each
  * Observable subscription on.
  * @return {Observable} All values of each passed Observable merged into a
  * single Observable, in order, in serial fashion.
@@ -137,12 +146,21 @@ export function concat(...observables) {
  * var result = Rx.Observable.concat(timer, sequence);
  * result.subscribe(x =&gt; console.log(x));
  *
+ * // results in:
+ * // 0 -1000ms-&gt; 1 -1000ms-&gt; 2 -1000ms-&gt; 3 -immediate-&gt; 1 ... 10
+ *
  * @example &lt;caption&gt;Concatenate 3 Observables&lt;/caption&gt;
  * var timer1 = Rx.Observable.interval(1000).take(10);
  * var timer2 = Rx.Observable.interval(2000).take(6);
  * var timer3 = Rx.Observable.interval(500).take(10);
  * var result = Rx.Observable.concat(timer1, timer2, timer3);
  * result.subscribe(x =&gt; console.log(x));
+ *
+ * // results in the following:
+ * // (Prints to console sequentially)
+ * // -1000ms-&gt; 0 -1000ms-&gt; 1 -1000ms-&gt; ... 9
+ * // -2000ms-&gt; 0 -2000ms-&gt; 1 -2000ms-&gt; ... 5
+ * // -500ms-&gt; 0 -500ms-&gt; 1 -500ms-&gt; ... 9
  *
  * @see {@link concatAll}
  * @see {@link concatMap}
@@ -151,7 +169,7 @@ export function concat(...observables) {
  * @param {Observable} input1 An input Observable to concatenate with others.
  * @param {Observable} input2 An input Observable to concatenate with others.
  * More than one input Observables may be given as argument.
- * @param {Scheduler} [scheduler=null] An optional Scheduler to schedule each
+ * @param {Scheduler} [scheduler=null] An optional IScheduler to schedule each
  * Observable subscription on.
  * @return {Observable} All values of each passed Observable merged into a
  * single Observable, in order, in serial fashion.

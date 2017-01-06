@@ -73,6 +73,7 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { root } from &apos;./root&apos;;
 import { isArray } from &apos;./isArray&apos;;
 import { isPromise } from &apos;./isPromise&apos;;
+import { isObject } from &apos;./isObject&apos;;
 import { Observable } from &apos;../Observable&apos;;
 import { $$iterator } from &apos;../symbol/iterator&apos;;
 import { InnerSubscriber } from &apos;../InnerSubscriber&apos;;
@@ -92,7 +93,7 @@ export function subscribeToResult(outerSubscriber, result, outerValue, outerInde
             return result.subscribe(destination);
         }
     }
-    if (isArray(result)) {
+    else if (isArray(result)) {
         for (let i = 0, len = result.length; i &lt; len &amp;&amp; !destination.closed; i++) {
             destination.next(result[i]);
         }
@@ -113,7 +114,7 @@ export function subscribeToResult(outerSubscriber, result, outerValue, outerInde
         });
         return destination;
     }
-    else if (typeof result[$$iterator] === &apos;function&apos;) {
+    else if (result &amp;&amp; typeof result[$$iterator] === &apos;function&apos;) {
         const iterator = result[$$iterator]();
         do {
             let item = iterator.next();
@@ -127,17 +128,20 @@ export function subscribeToResult(outerSubscriber, result, outerValue, outerInde
             }
         } while (true);
     }
-    else if (typeof result[$$observable] === &apos;function&apos;) {
+    else if (result &amp;&amp; typeof result[$$observable] === &apos;function&apos;) {
         const obs = result[$$observable]();
         if (typeof obs.subscribe !== &apos;function&apos;) {
-            destination.error(new Error(&apos;invalid observable&apos;));
+            destination.error(new TypeError(&apos;Provided object does not correctly implement Symbol.observable&apos;));
         }
         else {
             return obs.subscribe(new InnerSubscriber(outerSubscriber, outerValue, outerIndex));
         }
     }
     else {
-        destination.error(new TypeError(&apos;unknown type returned&apos;));
+        const value = isObject(result) ? &apos;an invalid object&apos; : `&apos;${result}&apos;`;
+        const msg = `You provided ${value} where a stream was expected.`
+            + &apos; You can provide an Observable, Promise, Array, or Iterable.&apos;;
+        destination.error(new TypeError(msg));
     }
     return null;
 }

@@ -76,8 +76,38 @@ import { errorObject } from &apos;../util/errorObject&apos;;
 /* tslint:disable:max-line-length */
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
+ *
  * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.
+ *
  * If a comparator function is not provided, an equality check is used by default.
+ *
+ * @example &lt;caption&gt;A simple example with numbers&lt;/caption&gt;
+ * Observable.of(1, 1, 2, 2, 2, 1, 1, 2, 3, 3, 4)
+ *   .distinctUntilChanged()
+ *   .subscribe(x =&gt; console.log(x)); // 1, 2, 1, 2, 3, 4
+ *
+ * @example &lt;caption&gt;An example using a compare function&lt;/caption&gt;
+ * interface Person {
+ *    age: number,
+ *    name: string
+ * }
+ *
+ * Observable.of&lt;Person&gt;(
+ *     { age: 4, name: &apos;Foo&apos;},
+ *     { age: 7, name: &apos;Bar&apos;},
+ *     { age: 5, name: &apos;Foo&apos;})
+ *     { age: 6, name: &apos;Foo&apos;})
+ *     .distinctUntilChanged((p: Person, q: Person) =&gt; p.name === q.name)
+ *     .subscribe(x =&gt; console.log(x));
+ *
+ * // displays:
+ * // { age: 4, name: &apos;Foo&apos; }
+ * // { age: 7, name: &apos;Bar&apos; }
+ * // { age: 5, name: &apos;Foo&apos; }
+ *
+ * @see {@link distinct}
+ * @see {@link distinctUntilKeyChanged}
+ *
  * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.
  * @return {Observable} an Observable that emits items from the source Observable with distinct values.
  * @method distinctUntilChanged
@@ -92,7 +122,7 @@ class DistinctUntilChangedOperator {
         this.keySelector = keySelector;
     }
     call(subscriber, source) {
-        return source._subscribe(new DistinctUntilChangedSubscriber(subscriber, this.compare, this.keySelector));
+        return source.subscribe(new DistinctUntilChangedSubscriber(subscriber, this.compare, this.keySelector));
     }
 }
 /**

@@ -72,7 +72,6 @@
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operator/first.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Subscriber } from &apos;../Subscriber&apos;;
 import { EmptyError } from &apos;../util/EmptyError&apos;;
-/* tslint:disable:max-line-length */
 /**
  * Emits only the first value (or the first value that meets some condition)
  * emitted by the source Observable.
@@ -133,7 +132,7 @@ class FirstOperator {
         this.source = source;
     }
     call(observer, source) {
-        return source._subscribe(new FirstSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
+        return source.subscribe(new FirstSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
     }
 }
 /**

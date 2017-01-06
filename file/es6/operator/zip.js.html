@@ -88,6 +88,30 @@ export function zipProto(...observables) {
 }
 /* tslint:enable:max-line-length */
 /**
+ * Combines multiple Observables to create an Observable whose values are calculated from the values, in order, of each
+ * of its input Observables.
+ *
+ * If the latest parameter is a function, this function is used to compute the created value from the input values.
+ * Otherwise, an array of the input values is returned.
+ *
+ * @example &lt;caption&gt;Combine age and name from different sources&lt;/caption&gt;
+ *
+ * let age$ = Observable.of&lt;number&gt;(27, 25, 29);
+ * let name$ = Observable.of&lt;string&gt;(&apos;Foo&apos;, &apos;Bar&apos;, &apos;Beer&apos;);
+ * let isDev$ = Observable.of&lt;boolean&gt;(true, true, false);
+ *
+ * Observable
+ *     .zip(age$,
+ *          name$,
+ *          isDev$,
+ *          (age: number, name: string, isDev: boolean) =&gt; ({ age, name, isDev }))
+ *     .subscribe(x =&gt; console.log(x));
+ *
+ * // outputs
+ * // { age: 7, name: &apos;Foo&apos;, isDev: true }
+ * // { age: 5, name: &apos;Bar&apos;, isDev: true }
+ * // { age: 9, name: &apos;Beer&apos;, isDev: false }
+ *
  * @param observables
  * @return {Observable&lt;R&gt;}
  * @static true
@@ -106,7 +130,7 @@ export class ZipOperator {
         this.project = project;
     }
     call(subscriber, source) {
-        return source._subscribe(new ZipSubscriber(subscriber, this.project));
+        return source.subscribe(new ZipSubscriber(subscriber, this.project));
     }
 }
 /**

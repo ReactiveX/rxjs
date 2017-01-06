@@ -461,7 +461,7 @@ functions.</p>
         
         
         <div data-ice="description"><p>Creates an Observable that emits sequential numbers every specified
-interval of time, on a specified Scheduler.</p>
+interval of time, on a specified IScheduler.</p>
 </div>
       </div>
     </td>
@@ -673,7 +673,9 @@ emits ever increasing numbers after each <code>period</code> of time thereafter.
       <div>
         
         
-        
+        <div data-ice="description"><p>Combines multiple Observables to create an Observable whose values are calculated from the values, in order, of each
+of its input Observables.</p>
+</div>
       </div>
     </td>
     <td>
@@ -1903,8 +1905,8 @@ objects.</p>
       <div>
         
         
-        <div data-ice="description"><p>The Max operator operates on an Observable that emits numbers (or items that can be evaluated as numbers),
-and when source Observable completes it emits a single item: the item with the largest number.</p>
+        <div data-ice="description"><p>The Max operator operates on an Observable that emits numbers (or items that can be compared with a provided function),
+and when source Observable completes it emits a single item: the item with the largest value.</p>
 </div>
       </div>
     </td>
@@ -2063,8 +2065,8 @@ times in the output Observable.</p>
       <div>
         
         
-        <div data-ice="description"><p>The Min operator operates on an Observable that emits numbers (or items that can be evaluated as numbers),
-and when source Observable completes it emits a single item: the item with the smallest number.</p>
+        <div data-ice="description"><p>The Min operator operates on an Observable that emits numbers (or items that can be compared with a provided function),
+and when source Observable completes it emits a single item: the item with the smallest value.</p>
 </div>
       </div>
     </td>
@@ -2382,7 +2384,7 @@ accumulated result when the source completes, given an optional seed value.</p>
         
         
         <div data-ice="description"><p>Returns an Observable that repeats the stream of items emitted by the source Observable at most count times,
-on a particular Scheduler.</p>
+on a particular IScheduler.</p>
 </div>
       </div>
     </td>
@@ -2755,7 +2757,7 @@ source Observable.</p>
       <div>
         
         
-        <div data-ice="description"><p>Asynchronously subscribes Observers to this Observable on the specified Scheduler.</p>
+        <div data-ice="description"><p>Asynchronously subscribes Observers to this Observable on the specified IScheduler.</p>
 </div>
       </div>
     </td>
@@ -3043,7 +3045,7 @@ values for <code>duration</code> milliseconds, then repeats this process.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-timeout">timeout</a></span></span><span data-ice="signature">(due: <span>*</span>, errorToSend: <span>*</span>, scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span><a href="class/es6/observable/dom/WebSocketSubject.js~WebSocketSubject.html">WebSocketSubject</a></span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-timeout">timeout</a></span></span><span data-ice="signature">(due: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, scheduler: <span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span><a href="class/es6/observable/dom/WebSocketSubject.js~WebSocketSubject.html">WebSocketSubject</a></span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
         </p>
       </div>
       <div>

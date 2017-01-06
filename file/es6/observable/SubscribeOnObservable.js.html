@@ -96,7 +96,7 @@ export class SubscribeOnObservable extends Observable {
     }
     static dispatch(arg) {
         const { source, subscriber } = arg;
-        return source.subscribe(subscriber);
+        return this.add(source.subscribe(subscriber));
     }
     _subscribe(subscriber) {
         const delay = this.delayTime;

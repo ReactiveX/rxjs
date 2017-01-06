@@ -92,7 +92,7 @@ export class IntervalObservable extends Observable {
     }
     /**
      * Creates an Observable that emits sequential numbers every specified
-     * interval of time, on a specified Scheduler.
+     * interval of time, on a specified IScheduler.
      *
      * &lt;span class=&quot;informal&quot;&gt;Emits incremental numbers periodically in time.
      * &lt;/span&gt;
@@ -103,8 +103,8 @@ export class IntervalObservable extends Observable {
      * ascending integers, with a constant interval of time of your choosing
      * between those emissions. The first emission is not sent immediately, but
      * only after the first period has passed. By default, this operator uses the
-     * `async` Scheduler to provide a notion of time, but you may pass any
-     * Scheduler to it.
+     * `async` IScheduler to provide a notion of time, but you may pass any
+     * IScheduler to it.
      *
      * @example &lt;caption&gt;Emits ascending numbers, one every second (1000ms)&lt;/caption&gt;
      * var numbers = Rx.Observable.interval(1000);
@@ -115,7 +115,7 @@ export class IntervalObservable extends Observable {
      *
      * @param {number} [period=0] The interval size in milliseconds (by default)
      * or the time unit determined by the scheduler&apos;s clock.
-     * @param {Scheduler} [scheduler=async] The Scheduler to use for scheduling
+     * @param {Scheduler} [scheduler=async] The IScheduler to use for scheduling
      * the emission of values, and providing a notion of &quot;time&quot;.
      * @return {Observable} An Observable that emits a sequential number each time
      * interval.

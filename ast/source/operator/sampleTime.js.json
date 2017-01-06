@@ -185,10 +185,10 @@
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * Emits the most recently emitted value from the source Observable within\n * periodic time intervals.\n *\n * <span class=\"informal\">Samples the source Observable at periodic time\n * intervals, emitting what it samples.</span>\n *\n * <img src=\"./img/sampleTime.png\" width=\"100%\">\n *\n * `sampleTime` periodically looks at the source Observable and emits whichever\n * value it has most recently emitted since the previous sampling, unless the\n * source has not emitted anything since the previous sampling. The sampling\n * happens periodically in time every `period` milliseconds (or the time unit\n * defined by the optional `scheduler` argument). The sampling starts as soon as\n * the output Observable is subscribed.\n *\n * @example <caption>Every second, emit the most recent click at most once</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.sampleTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link auditTime}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sample}\n * @see {@link throttleTime}\n *\n * @param {number} period The sampling period expressed in milliseconds or the\n * time unit determined internally by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link Scheduler} to use for\n * managing the timers that handle the sampling.\n * @return {Observable<T>} An Observable that emits the results of sampling the\n * values emitted by the source Observable at the specified time interval.\n * @method sampleTime\n * @owner Observable\n ",
+          "value": "*\n * Emits the most recently emitted value from the source Observable within\n * periodic time intervals.\n *\n * <span class=\"informal\">Samples the source Observable at periodic time\n * intervals, emitting what it samples.</span>\n *\n * <img src=\"./img/sampleTime.png\" width=\"100%\">\n *\n * `sampleTime` periodically looks at the source Observable and emits whichever\n * value it has most recently emitted since the previous sampling, unless the\n * source has not emitted anything since the previous sampling. The sampling\n * happens periodically in time every `period` milliseconds (or the time unit\n * defined by the optional `scheduler` argument). The sampling starts as soon as\n * the output Observable is subscribed.\n *\n * @example <caption>Every second, emit the most recent click at most once</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.sampleTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link auditTime}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sample}\n * @see {@link throttleTime}\n *\n * @param {number} period The sampling period expressed in milliseconds or the\n * time unit determined internally by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for\n * managing the timers that handle the sampling.\n * @return {Observable<T>} An Observable that emits the results of sampling the\n * values emitted by the source Observable at the specified time interval.\n * @method sampleTime\n * @owner Observable\n ",
           "range": [
             88,
-            1639
+            1640
           ],
           "loc": {
             "start": {
@@ -211,8 +211,8 @@
           "type": "Identifier",
           "name": "sampleTime",
           "range": [
-            1656,
-            1666
+            1657,
+            1667
           ],
           "loc": {
             "start": {
@@ -230,8 +230,8 @@
             "type": "Identifier",
             "name": "period",
             "range": [
-              1667,
-              1673
+              1668,
+              1674
             ],
             "loc": {
               "start": {
@@ -250,8 +250,8 @@
               "type": "Identifier",
               "name": "scheduler",
               "range": [
-                1675,
-                1684
+                1676,
+                1685
               ],
               "loc": {
                 "start": {
@@ -268,8 +268,8 @@
               "type": "Identifier",
               "name": "async",
               "range": [
-                1687,
-                1692
+                1688,
+                1693
               ],
               "loc": {
                 "start": {
@@ -283,8 +283,8 @@
               }
             },
             "range": [
-              1675,
-              1692
+              1676,
+              1693
             ],
             "loc": {
               "start": {
@@ -311,8 +311,8 @@
                   "object": {
                     "type": "ThisExpression",
                     "range": [
-                      1707,
-                      1711
+                      1708,
+                      1712
                     ],
                     "loc": {
                       "start": {
@@ -329,8 +329,8 @@
                     "type": "Identifier",
                     "name": "lift",
                     "range": [
-                      1712,
-                      1716
+                      1713,
+                      1717
                     ],
                     "loc": {
                       "start": {
@@ -344,8 +344,8 @@
                     }
                   },
                   "range": [
-                    1707,
-                    1716
+                    1708,
+                    1717
                   ],
                   "loc": {
                     "start": {
@@ -365,8 +365,8 @@
                       "type": "Identifier",
                       "name": "SampleTimeOperator",
                       "range": [
-                        1721,
-                        1739
+                        1722,
+                        1740
                       ],
                       "loc": {
                         "start": {
@@ -384,8 +384,8 @@
                         "type": "Identifier",
                         "name": "period",
                         "range": [
-                          1740,
-                          1746
+                          1741,
+                          1747
                         ],
                         "loc": {
                           "start": {
@@ -402,8 +402,8 @@
                         "type": "Identifier",
                         "name": "scheduler",
                         "range": [
-                          1748,
-                          1757
+                          1749,
+                          1758
                         ],
                         "loc": {
                           "start": {
@@ -418,8 +418,8 @@
                       }
                     ],
                     "range": [
-                      1717,
-                      1758
+                      1718,
+                      1759
                     ],
                     "loc": {
                       "start": {
@@ -434,8 +434,8 @@
                   }
                 ],
                 "range": [
-                  1707,
-                  1759
+                  1708,
+                  1760
                 ],
                 "loc": {
                   "start": {
@@ -449,8 +449,8 @@
                 }
               },
               "range": [
-                1700,
-                1760
+                1701,
+                1761
               ],
               "loc": {
                 "start": {
@@ -465,8 +465,8 @@
             }
           ],
           "range": [
-            1694,
-            1762
+            1695,
+            1763
           ],
           "loc": {
             "start": {
@@ -482,8 +482,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          1647,
-          1762
+          1648,
+          1763
         ],
         "loc": {
           "start": {
@@ -498,10 +498,10 @@
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * Emits the most recently emitted value from the source Observable within\n * periodic time intervals.\n *\n * <span class=\"informal\">Samples the source Observable at periodic time\n * intervals, emitting what it samples.</span>\n *\n * <img src=\"./img/sampleTime.png\" width=\"100%\">\n *\n * `sampleTime` periodically looks at the source Observable and emits whichever\n * value it has most recently emitted since the previous sampling, unless the\n * source has not emitted anything since the previous sampling. The sampling\n * happens periodically in time every `period` milliseconds (or the time unit\n * defined by the optional `scheduler` argument). The sampling starts as soon as\n * the output Observable is subscribed.\n *\n * @example <caption>Every second, emit the most recent click at most once</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.sampleTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link auditTime}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sample}\n * @see {@link throttleTime}\n *\n * @param {number} period The sampling period expressed in milliseconds or the\n * time unit determined internally by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link Scheduler} to use for\n * managing the timers that handle the sampling.\n * @return {Observable<T>} An Observable that emits the results of sampling the\n * values emitted by the source Observable at the specified time interval.\n * @method sampleTime\n * @owner Observable\n ",
+            "value": "*\n * Emits the most recently emitted value from the source Observable within\n * periodic time intervals.\n *\n * <span class=\"informal\">Samples the source Observable at periodic time\n * intervals, emitting what it samples.</span>\n *\n * <img src=\"./img/sampleTime.png\" width=\"100%\">\n *\n * `sampleTime` periodically looks at the source Observable and emits whichever\n * value it has most recently emitted since the previous sampling, unless the\n * source has not emitted anything since the previous sampling. The sampling\n * happens periodically in time every `period` milliseconds (or the time unit\n * defined by the optional `scheduler` argument). The sampling starts as soon as\n * the output Observable is subscribed.\n *\n * @example <caption>Every second, emit the most recent click at most once</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.sampleTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link auditTime}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sample}\n * @see {@link throttleTime}\n *\n * @param {number} period The sampling period expressed in milliseconds or the\n * time unit determined internally by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for\n * managing the timers that handle the sampling.\n * @return {Observable<T>} An Observable that emits the results of sampling the\n * values emitted by the source Observable at the specified time interval.\n * @method sampleTime\n * @owner Observable\n ",
             "range": [
               88,
-              1639
+              1640
             ],
             "loc": {
               "start": {
@@ -520,8 +520,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        1640,
-        1762
+        1641,
+        1763
       ],
       "loc": {
         "start": {
@@ -536,10 +536,10 @@
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * Emits the most recently emitted value from the source Observable within\n * periodic time intervals.\n *\n * <span class=\"informal\">Samples the source Observable at periodic time\n * intervals, emitting what it samples.</span>\n *\n * <img src=\"./img/sampleTime.png\" width=\"100%\">\n *\n * `sampleTime` periodically looks at the source Observable and emits whichever\n * value it has most recently emitted since the previous sampling, unless the\n * source has not emitted anything since the previous sampling. The sampling\n * happens periodically in time every `period` milliseconds (or the time unit\n * defined by the optional `scheduler` argument). The sampling starts as soon as\n * the output Observable is subscribed.\n *\n * @example <caption>Every second, emit the most recent click at most once</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.sampleTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link auditTime}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sample}\n * @see {@link throttleTime}\n *\n * @param {number} period The sampling period expressed in milliseconds or the\n * time unit determined internally by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link Scheduler} to use for\n * managing the timers that handle the sampling.\n * @return {Observable<T>} An Observable that emits the results of sampling the\n * values emitted by the source Observable at the specified time interval.\n * @method sampleTime\n * @owner Observable\n ",
+          "value": "*\n * Emits the most recently emitted value from the source Observable within\n * periodic time intervals.\n *\n * <span class=\"informal\">Samples the source Observable at periodic time\n * intervals, emitting what it samples.</span>\n *\n * <img src=\"./img/sampleTime.png\" width=\"100%\">\n *\n * `sampleTime` periodically looks at the source Observable and emits whichever\n * value it has most recently emitted since the previous sampling, unless the\n * source has not emitted anything since the previous sampling. The sampling\n * happens periodically in time every `period` milliseconds (or the time unit\n * defined by the optional `scheduler` argument). The sampling starts as soon as\n * the output Observable is subscribed.\n *\n * @example <caption>Every second, emit the most recent click at most once</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.sampleTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link auditTime}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sample}\n * @see {@link throttleTime}\n *\n * @param {number} period The sampling period expressed in milliseconds or the\n * time unit determined internally by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for\n * managing the timers that handle the sampling.\n * @return {Observable<T>} An Observable that emits the results of sampling the\n * values emitted by the source Observable at the specified time interval.\n * @method sampleTime\n * @owner Observable\n ",
           "range": [
             88,
-            1639
+            1640
           ],
           "loc": {
             "start": {
@@ -560,8 +560,8 @@
         "type": "Identifier",
         "name": "SampleTimeOperator",
         "range": [
-          1769,
-          1787
+          1770,
+          1788
         ],
         "loc": {
           "start": {
@@ -584,8 +584,8 @@
               "type": "Identifier",
               "name": "constructor",
               "range": [
-                1794,
-                1805
+                1795,
+                1806
               ],
               "loc": {
                 "start": {
@@ -606,8 +606,8 @@
                   "type": "Identifier",
                   "name": "period",
                   "range": [
-                    1806,
-                    1812
+                    1807,
+                    1813
                   ],
                   "loc": {
                     "start": {
@@ -624,8 +624,8 @@
                   "type": "Identifier",
                   "name": "scheduler",
                   "range": [
-                    1814,
-                    1823
+                    1815,
+                    1824
                   ],
                   "loc": {
                     "start": {
@@ -653,8 +653,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            1835,
-                            1839
+                            1836,
+                            1840
                           ],
                           "loc": {
                             "start": {
@@ -671,8 +671,8 @@
                           "type": "Identifier",
                           "name": "period",
                           "range": [
-                            1840,
-                            1846
+                            1841,
+                            1847
                           ],
                           "loc": {
                             "start": {
@@ -686,8 +686,8 @@
                           }
                         },
                         "range": [
-                          1835,
-                          1846
+                          1836,
+                          1847
                         ],
                         "loc": {
                           "start": {
@@ -704,8 +704,8 @@
                         "type": "Identifier",
                         "name": "period",
                         "range": [
-                          1849,
-                          1855
+                          1850,
+                          1856
                         ],
                         "loc": {
                           "start": {
@@ -719,8 +719,8 @@
                         }
                       },
                       "range": [
-                        1835,
-                        1855
+                        1836,
+                        1856
                       ],
                       "loc": {
                         "start": {
@@ -734,8 +734,8 @@
                       }
                     },
                     "range": [
-                      1835,
-                      1856
+                      1836,
+                      1857
                     ],
                     "loc": {
                       "start": {
@@ -759,8 +759,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            1865,
-                            1869
+                            1866,
+                            1870
                           ],
                           "loc": {
                             "start": {
@@ -777,8 +777,8 @@
                           "type": "Identifier",
                           "name": "scheduler",
                           "range": [
-                            1870,
-                            1879
+                            1871,
+                            1880
                           ],
                           "loc": {
                             "start": {
@@ -792,8 +792,8 @@
                           }
                         },
                         "range": [
-                          1865,
-                          1879
+                          1866,
+                          1880
                         ],
                         "loc": {
                           "start": {
@@ -810,8 +810,8 @@
                         "type": "Identifier",
                         "name": "scheduler",
                         "range": [
-                          1882,
-                          1891
+                          1883,
+                          1892
                         ],
                         "loc": {
                           "start": {
@@ -825,8 +825,8 @@
                         }
                       },
                       "range": [
-                        1865,
-                        1891
+                        1866,
+                        1892
                       ],
                       "loc": {
                         "start": {
@@ -840,8 +840,8 @@
                       }
                     },
                     "range": [
-                      1865,
-                      1892
+                      1866,
+                      1893
                     ],
                     "loc": {
                       "start": {
@@ -856,8 +856,8 @@
                   }
                 ],
                 "range": [
-                  1825,
-                  1898
+                  1826,
+                  1899
                 ],
                 "loc": {
                   "start": {
@@ -873,8 +873,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                1805,
-                1898
+                1806,
+                1899
               ],
               "loc": {
                 "start": {
@@ -890,8 +890,8 @@
             "kind": "constructor",
             "computed": false,
             "range": [
-              1794,
-              1898
+              1795,
+              1899
             ],
             "loc": {
               "start": {
@@ -911,8 +911,8 @@
               "type": "Identifier",
               "name": "call",
               "range": [
-                1903,
-                1907
+                1904,
+                1908
               ],
               "loc": {
                 "start": {
@@ -933,8 +933,8 @@
                   "type": "Identifier",
                   "name": "subscriber",
                   "range": [
-                    1908,
-                    1918
+                    1909,
+                    1919
                   ],
                   "loc": {
                     "start": {
@@ -951,8 +951,8 @@
                   "type": "Identifier",
                   "name": "source",
                   "range": [
-                    1920,
-                    1926
+                    1921,
+                    1927
                   ],
                   "loc": {
                     "start": {
@@ -980,8 +980,8 @@
                           "type": "Identifier",
                           "name": "source",
                           "range": [
-                            1945,
-                            1951
+                            1946,
+                            1952
                           ],
                           "loc": {
                             "start": {
@@ -996,9 +996,9 @@
                         },
                         "property": {
                           "type": "Identifier",
-                          "name": "_subscribe",
+                          "name": "subscribe",
                           "range": [
-                            1952,
+                            1953,
                             1962
                           ],
                           "loc": {
@@ -1008,12 +1008,12 @@
                             },
                             "end": {
                               "line": 48,
-                              "column": 32
+                              "column": 31
                             }
                           }
                         },
                         "range": [
-                          1945,
+                          1946,
                           1962
                         ],
                         "loc": {
@@ -1023,7 +1023,7 @@
                           },
                           "end": {
                             "line": 48,
-                            "column": 32
+                            "column": 31
                           }
                         }
                       },
@@ -1040,11 +1040,11 @@
                             "loc": {
                               "start": {
                                 "line": 48,
-                                "column": 37
+                                "column": 36
                               },
                               "end": {
                                 "line": 48,
-                                "column": 57
+                                "column": 56
                               }
                             }
                           },
@@ -1059,11 +1059,11 @@
                               "loc": {
                                 "start": {
                                   "line": 48,
-                                  "column": 58
+                                  "column": 57
                                 },
                                 "end": {
                                   "line": 48,
-                                  "column": 68
+                                  "column": 67
                                 }
                               }
                             },
@@ -1079,11 +1079,11 @@
                                 "loc": {
                                   "start": {
                                     "line": 48,
-                                    "column": 70
+                                    "column": 69
                                   },
                                   "end": {
                                     "line": 48,
-                                    "column": 74
+                                    "column": 73
                                   }
                                 }
                               },
@@ -1097,11 +1097,11 @@
                                 "loc": {
                                   "start": {
                                     "line": 48,
-                                    "column": 75
+                                    "column": 74
                                   },
                                   "end": {
                                     "line": 48,
-                                    "column": 81
+                                    "column": 80
                                   }
                                 }
                               },
@@ -1112,11 +1112,11 @@
                               "loc": {
                                 "start": {
                                   "line": 48,
-                                  "column": 70
+                                  "column": 69
                                 },
                                 "end": {
                                   "line": 48,
-                                  "column": 81
+                                  "column": 80
                                 }
                               }
                             },
@@ -1132,11 +1132,11 @@
                                 "loc": {
                                   "start": {
                                     "line": 48,
-                                    "column": 83
+                                    "column": 82
                                   },
                                   "end": {
                                     "line": 48,
-                                    "column": 87
+                                    "column": 86
                                   }
                                 }
                               },
@@ -1150,11 +1150,11 @@
                                 "loc": {
                                   "start": {
                                     "line": 48,
-                                    "column": 88
+                                    "column": 87
                                   },
                                   "end": {
                                     "line": 48,
-                                    "column": 97
+                                    "column": 96
                                   }
                                 }
                               },
@@ -1165,11 +1165,11 @@
                               "loc": {
                                 "start": {
                                   "line": 48,
-                                  "column": 83
+                                  "column": 82
                                 },
                                 "end": {
                                   "line": 48,
-                                  "column": 97
+                                  "column": 96
                                 }
                               }
                             }
@@ -1181,17 +1181,17 @@
                           "loc": {
                             "start": {
                               "line": 48,
-                              "column": 33
+                              "column": 32
                             },
                             "end": {
                               "line": 48,
-                              "column": 98
+                              "column": 97
                             }
                           }
                         }
                       ],
                       "range": [
-                        1945,
+                        1946,
                         2029
                       ],
                       "loc": {
@@ -1201,12 +1201,12 @@
                         },
                         "end": {
                           "line": 48,
-                          "column": 99
+                          "column": 98
                         }
                       }
                     },
                     "range": [
-                      1938,
+                      1939,
                       2030
                     ],
                     "loc": {
@@ -1216,13 +1216,13 @@
                       },
                       "end": {
                         "line": 48,
-                        "column": 100
+                        "column": 99
                       }
                     }
                   }
                 ],
                 "range": [
-                  1928,
+                  1929,
                   2036
                 ],
                 "loc": {
@@ -1239,7 +1239,7 @@
               "generator": false,
               "expression": false,
               "range": [
-                1907,
+                1908,
                 2036
               ],
               "loc": {
@@ -1256,7 +1256,7 @@
             "kind": "method",
             "computed": false,
             "range": [
-              1903,
+              1904,
               2036
             ],
             "loc": {
@@ -1273,7 +1273,7 @@
           }
         ],
         "range": [
-          1788,
+          1789,
           2038
         ],
         "loc": {
@@ -1288,7 +1288,7 @@
         }
       },
       "range": [
-        1763,
+        1764,
         2038
       ],
       "loc": {
@@ -3547,10 +3547,10 @@
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * Emits the most recently emitted value from the source Observable within\n * periodic time intervals.\n *\n * <span class=\"informal\">Samples the source Observable at periodic time\n * intervals, emitting what it samples.</span>\n *\n * <img src=\"./img/sampleTime.png\" width=\"100%\">\n *\n * `sampleTime` periodically looks at the source Observable and emits whichever\n * value it has most recently emitted since the previous sampling, unless the\n * source has not emitted anything since the previous sampling. The sampling\n * happens periodically in time every `period` milliseconds (or the time unit\n * defined by the optional `scheduler` argument). The sampling starts as soon as\n * the output Observable is subscribed.\n *\n * @example <caption>Every second, emit the most recent click at most once</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.sampleTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link auditTime}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sample}\n * @see {@link throttleTime}\n *\n * @param {number} period The sampling period expressed in milliseconds or the\n * time unit determined internally by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link Scheduler} to use for\n * managing the timers that handle the sampling.\n * @return {Observable<T>} An Observable that emits the results of sampling the\n * values emitted by the source Observable at the specified time interval.\n * @method sampleTime\n * @owner Observable\n ",
+      "value": "*\n * Emits the most recently emitted value from the source Observable within\n * periodic time intervals.\n *\n * <span class=\"informal\">Samples the source Observable at periodic time\n * intervals, emitting what it samples.</span>\n *\n * <img src=\"./img/sampleTime.png\" width=\"100%\">\n *\n * `sampleTime` periodically looks at the source Observable and emits whichever\n * value it has most recently emitted since the previous sampling, unless the\n * source has not emitted anything since the previous sampling. The sampling\n * happens periodically in time every `period` milliseconds (or the time unit\n * defined by the optional `scheduler` argument). The sampling starts as soon as\n * the output Observable is subscribed.\n *\n * @example <caption>Every second, emit the most recent click at most once</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.sampleTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link auditTime}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sample}\n * @see {@link throttleTime}\n *\n * @param {number} period The sampling period expressed in milliseconds or the\n * time unit determined internally by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for\n * managing the timers that handle the sampling.\n * @return {Observable<T>} An Observable that emits the results of sampling the\n * values emitted by the source Observable at the specified time interval.\n * @method sampleTime\n * @owner Observable\n ",
       "range": [
         88,
-        1639
+        1640
       ],
       "loc": {
         "start": {

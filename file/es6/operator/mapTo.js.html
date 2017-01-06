@@ -105,7 +105,7 @@ class MapToOperator {
         this.value = value;
     }
     call(subscriber, source) {
-        return source._subscribe(new MapToSubscriber(subscriber, this.value));
+        return source.subscribe(new MapToSubscriber(subscriber, this.value));
     }
 }
 /**

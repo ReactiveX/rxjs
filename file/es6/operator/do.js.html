@@ -125,7 +125,7 @@ class DoOperator {
         this.complete = complete;
     }
     call(subscriber, source) {
-        return source._subscribe(new DoSubscriber(subscriber, this.nextOrObserver, this.error, this.complete));
+        return source.subscribe(new DoSubscriber(subscriber, this.nextOrObserver, this.error, this.complete));
     }
 }
 /**

@@ -118,7 +118,7 @@ class ThrottleOperator {
         this.durationSelector = durationSelector;
     }
     call(subscriber, source) {
-        return source._subscribe(new ThrottleSubscriber(subscriber, this.durationSelector));
+        return source.subscribe(new ThrottleSubscriber(subscriber, this.durationSelector));
     }
 }
 /**

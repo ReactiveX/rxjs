@@ -121,7 +121,7 @@ class WindowOperator {
         this.closingSelector = closingSelector;
     }
     call(subscriber, source) {
-        return source._subscribe(new WindowSubscriber(subscriber, this.closingSelector));
+        return source.subscribe(new WindowSubscriber(subscriber, this.closingSelector));
     }
 }
 /**

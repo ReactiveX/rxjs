@@ -112,10 +112,10 @@
         },
         {
           "type": "Block",
-          "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n * If a comparator function is not provided, an equality check is used by default.\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
+          "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n *\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n *\n * If a comparator function is not provided, an equality check is used by default.\n *\n * @example <caption>An example comparing the name of persons</caption>\n *\n *  interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo'},\n *     { age: 6, name: 'Foo'})\n *     .distinctUntilKeyChanged('name')\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo' }\n *\n * @example <caption>An example comparing the first letters of the name</caption>\n *\n * interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo1'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo2'},\n *     { age: 6, name: 'Foo3'})\n *     .distinctUntilKeyChanged('name', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3))\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo1' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo2' }\n *\n * @see {@link distinct}\n * @see {@link distinctUntilChanged}\n *\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
           "range": [
             100,
-            953
+            2086
           ],
           "loc": {
             "start": {
@@ -123,7 +123,7 @@
               "column": 0
             },
             "end": {
-              "line": 13,
+              "line": 59,
               "column": 3
             }
           }
@@ -138,16 +138,16 @@
           "type": "Identifier",
           "name": "distinctUntilKeyChanged",
           "range": [
-            970,
-            993
+            2103,
+            2126
           ],
           "loc": {
             "start": {
-              "line": 14,
+              "line": 60,
               "column": 16
             },
             "end": {
-              "line": 14,
+              "line": 60,
               "column": 39
             }
           }
@@ -157,16 +157,16 @@
             "type": "Identifier",
             "name": "key",
             "range": [
-              994,
-              997
+              2127,
+              2130
             ],
             "loc": {
               "start": {
-                "line": 14,
+                "line": 60,
                 "column": 40
               },
               "end": {
-                "line": 14,
+                "line": 60,
                 "column": 43
               }
             }
@@ -175,16 +175,16 @@
             "type": "Identifier",
             "name": "compare",
             "range": [
-              999,
-              1006
+              2132,
+              2139
             ],
             "loc": {
               "start": {
-                "line": 14,
+                "line": 60,
                 "column": 45
               },
               "end": {
-                "line": 14,
+                "line": 60,
                 "column": 52
               }
             }
@@ -204,16 +204,16 @@
                     "type": "Identifier",
                     "name": "distinctUntilChanged",
                     "range": [
-                      1021,
-                      1041
+                      2154,
+                      2174
                     ],
                     "loc": {
                       "start": {
-                        "line": 15,
+                        "line": 61,
                         "column": 11
                       },
                       "end": {
-                        "line": 15,
+                        "line": 61,
                         "column": 31
                       }
                     }
@@ -222,31 +222,31 @@
                     "type": "Identifier",
                     "name": "call",
                     "range": [
-                      1042,
-                      1046
+                      2175,
+                      2179
                     ],
                     "loc": {
                       "start": {
-                        "line": 15,
+                        "line": 61,
                         "column": 32
                       },
                       "end": {
-                        "line": 15,
+                        "line": 61,
                         "column": 36
                       }
                     }
                   },
                   "range": [
-                    1021,
-                    1046
+                    2154,
+                    2179
                   ],
                   "loc": {
                     "start": {
-                      "line": 15,
+                      "line": 61,
                       "column": 11
                     },
                     "end": {
-                      "line": 15,
+                      "line": 61,
                       "column": 36
                     }
                   }
@@ -255,16 +255,16 @@
                   {
                     "type": "ThisExpression",
                     "range": [
-                      1047,
-                      1051
+                      2180,
+                      2184
                     ],
                     "loc": {
                       "start": {
-                        "line": 15,
+                        "line": 61,
                         "column": 37
                       },
                       "end": {
-                        "line": 15,
+                        "line": 61,
                         "column": 41
                       }
                     }
@@ -277,16 +277,16 @@
                         "type": "Identifier",
                         "name": "x",
                         "range": [
-                          1063,
-                          1064
+                          2196,
+                          2197
                         ],
                         "loc": {
                           "start": {
-                            "line": 15,
+                            "line": 61,
                             "column": 53
                           },
                           "end": {
-                            "line": 15,
+                            "line": 61,
                             "column": 54
                           }
                         }
@@ -295,16 +295,16 @@
                         "type": "Identifier",
                         "name": "y",
                         "range": [
-                          1066,
-                          1067
+                          2199,
+                          2200
                         ],
                         "loc": {
                           "start": {
-                            "line": 15,
+                            "line": 61,
                             "column": 56
                           },
                           "end": {
-                            "line": 15,
+                            "line": 61,
                             "column": 57
                           }
                         }
@@ -319,16 +319,16 @@
                             "type": "Identifier",
                             "name": "compare",
                             "range": [
-                              1083,
-                              1090
+                              2216,
+                              2223
                             ],
                             "loc": {
                               "start": {
-                                "line": 16,
+                                "line": 62,
                                 "column": 12
                               },
                               "end": {
-                                "line": 16,
+                                "line": 62,
                                 "column": 19
                               }
                             }
@@ -344,16 +344,16 @@
                                     "type": "Identifier",
                                     "name": "compare",
                                     "range": [
-                                      1113,
-                                      1120
+                                      2246,
+                                      2253
                                     ],
                                     "loc": {
                                       "start": {
-                                        "line": 17,
+                                        "line": 63,
                                         "column": 19
                                       },
                                       "end": {
-                                        "line": 17,
+                                        "line": 63,
                                         "column": 26
                                       }
                                     }
@@ -366,16 +366,16 @@
                                         "type": "Identifier",
                                         "name": "x",
                                         "range": [
-                                          1121,
-                                          1122
+                                          2254,
+                                          2255
                                         ],
                                         "loc": {
                                           "start": {
-                                            "line": 17,
+                                            "line": 63,
                                             "column": 27
                                           },
                                           "end": {
-                                            "line": 17,
+                                            "line": 63,
                                             "column": 28
                                           }
                                         }
@@ -384,31 +384,31 @@
                                         "type": "Identifier",
                                         "name": "key",
                                         "range": [
-                                          1123,
-                                          1126
+                                          2256,
+                                          2259
                                         ],
                                         "loc": {
                                           "start": {
-                                            "line": 17,
+                                            "line": 63,
                                             "column": 29
                                           },
                                           "end": {
-                                            "line": 17,
+                                            "line": 63,
                                             "column": 32
                                           }
                                         }
                                       },
                                       "range": [
-                                        1121,
-                                        1127
+                                        2254,
+                                        2260
                                       ],
                                       "loc": {
                                         "start": {
-                                          "line": 17,
+                                          "line": 63,
                                           "column": 27
                                         },
                                         "end": {
-                                          "line": 17,
+                                          "line": 63,
                                           "column": 33
                                         }
                                       }
@@ -420,16 +420,16 @@
                                         "type": "Identifier",
                                         "name": "y",
                                         "range": [
-                                          1129,
-                                          1130
+                                          2262,
+                                          2263
                                         ],
                                         "loc": {
                                           "start": {
-                                            "line": 17,
+                                            "line": 63,
                                             "column": 35
                                           },
                                           "end": {
-                                            "line": 17,
+                                            "line": 63,
                                             "column": 36
                                           }
                                         }
@@ -438,94 +438,94 @@
                                         "type": "Identifier",
                                         "name": "key",
                                         "range": [
-                                          1131,
-                                          1134
+                                          2264,
+                                          2267
                                         ],
                                         "loc": {
                                           "start": {
-                                            "line": 17,
+                                            "line": 63,
                                             "column": 37
                                           },
                                           "end": {
-                                            "line": 17,
+                                            "line": 63,
                                             "column": 40
                                           }
                                         }
                                       },
                                       "range": [
-                                        1129,
-                                        1135
+                                        2262,
+                                        2268
                                       ],
                                       "loc": {
                                         "start": {
-                                          "line": 17,
+                                          "line": 63,
                                           "column": 35
                                         },
                                         "end": {
-                                          "line": 17,
+                                          "line": 63,
                                           "column": 41
                                         }
                                       }
                                     }
                                   ],
                                   "range": [
-                                    1113,
-                                    1136
+                                    2246,
+                                    2269
                                   ],
                                   "loc": {
                                     "start": {
-                                      "line": 17,
+                                      "line": 63,
                                       "column": 19
                                     },
                                     "end": {
-                                      "line": 17,
+                                      "line": 63,
                                       "column": 42
                                     }
                                   }
                                 },
                                 "range": [
-                                  1106,
-                                  1137
+                                  2239,
+                                  2270
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 17,
+                                    "line": 63,
                                     "column": 12
                                   },
                                   "end": {
-                                    "line": 17,
+                                    "line": 63,
                                     "column": 43
                                   }
                                 }
                               }
                             ],
                             "range": [
-                              1092,
-                              1147
+                              2225,
+                              2280
                             ],
                             "loc": {
                               "start": {
-                                "line": 16,
+                                "line": 62,
                                 "column": 21
                               },
                               "end": {
-                                "line": 18,
+                                "line": 64,
                                 "column": 9
                               }
                             }
                           },
                           "alternate": null,
                           "range": [
-                            1079,
-                            1147
+                            2212,
+                            2280
                           ],
                           "loc": {
                             "start": {
-                              "line": 16,
+                              "line": 62,
                               "column": 8
                             },
                             "end": {
-                              "line": 18,
+                              "line": 64,
                               "column": 9
                             }
                           }
@@ -542,16 +542,16 @@
                                 "type": "Identifier",
                                 "name": "x",
                                 "range": [
-                                  1163,
-                                  1164
+                                  2296,
+                                  2297
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 19,
+                                    "line": 65,
                                     "column": 15
                                   },
                                   "end": {
-                                    "line": 19,
+                                    "line": 65,
                                     "column": 16
                                   }
                                 }
@@ -560,31 +560,31 @@
                                 "type": "Identifier",
                                 "name": "key",
                                 "range": [
-                                  1165,
-                                  1168
+                                  2298,
+                                  2301
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 19,
+                                    "line": 65,
                                     "column": 17
                                   },
                                   "end": {
-                                    "line": 19,
+                                    "line": 65,
                                     "column": 20
                                   }
                                 }
                               },
                               "range": [
-                                1163,
-                                1169
+                                2296,
+                                2302
                               ],
                               "loc": {
                                 "start": {
-                                  "line": 19,
+                                  "line": 65,
                                   "column": 15
                                 },
                                 "end": {
-                                  "line": 19,
+                                  "line": 65,
                                   "column": 21
                                 }
                               }
@@ -596,16 +596,16 @@
                                 "type": "Identifier",
                                 "name": "y",
                                 "range": [
-                                  1174,
-                                  1175
+                                  2307,
+                                  2308
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 19,
+                                    "line": 65,
                                     "column": 26
                                   },
                                   "end": {
-                                    "line": 19,
+                                    "line": 65,
                                     "column": 27
                                   }
                                 }
@@ -614,77 +614,77 @@
                                 "type": "Identifier",
                                 "name": "key",
                                 "range": [
-                                  1176,
-                                  1179
+                                  2309,
+                                  2312
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 19,
+                                    "line": 65,
                                     "column": 28
                                   },
                                   "end": {
-                                    "line": 19,
+                                    "line": 65,
                                     "column": 31
                                   }
                                 }
                               },
                               "range": [
-                                1174,
-                                1180
+                                2307,
+                                2313
                               ],
                               "loc": {
                                 "start": {
-                                  "line": 19,
+                                  "line": 65,
                                   "column": 26
                                 },
                                 "end": {
-                                  "line": 19,
+                                  "line": 65,
                                   "column": 32
                                 }
                               }
                             },
                             "range": [
-                              1163,
-                              1180
+                              2296,
+                              2313
                             ],
                             "loc": {
                               "start": {
-                                "line": 19,
+                                "line": 65,
                                 "column": 15
                               },
                               "end": {
-                                "line": 19,
+                                "line": 65,
                                 "column": 32
                               }
                             }
                           },
                           "range": [
-                            1156,
-                            1181
+                            2289,
+                            2314
                           ],
                           "loc": {
                             "start": {
-                              "line": 19,
+                              "line": 65,
                               "column": 8
                             },
                             "end": {
-                              "line": 19,
+                              "line": 65,
                               "column": 33
                             }
                           }
                         }
                       ],
                       "range": [
-                        1069,
-                        1187
+                        2202,
+                        2320
                       ],
                       "loc": {
                         "start": {
-                          "line": 15,
+                          "line": 61,
                           "column": 59
                         },
                         "end": {
-                          "line": 20,
+                          "line": 66,
                           "column": 5
                         }
                       }
@@ -692,63 +692,63 @@
                     "generator": false,
                     "expression": false,
                     "range": [
-                      1053,
-                      1187
+                      2186,
+                      2320
                     ],
                     "loc": {
                       "start": {
-                        "line": 15,
+                        "line": 61,
                         "column": 43
                       },
                       "end": {
-                        "line": 20,
+                        "line": 66,
                         "column": 5
                       }
                     }
                   }
                 ],
                 "range": [
-                  1021,
-                  1188
+                  2154,
+                  2321
                 ],
                 "loc": {
                   "start": {
-                    "line": 15,
+                    "line": 61,
                     "column": 11
                   },
                   "end": {
-                    "line": 20,
+                    "line": 66,
                     "column": 6
                   }
                 }
               },
               "range": [
-                1014,
-                1189
+                2147,
+                2322
               ],
               "loc": {
                 "start": {
-                  "line": 15,
+                  "line": 61,
                   "column": 4
                 },
                 "end": {
-                  "line": 20,
+                  "line": 66,
                   "column": 7
                 }
               }
             }
           ],
           "range": [
-            1008,
-            1191
+            2141,
+            2324
           ],
           "loc": {
             "start": {
-              "line": 14,
+              "line": 60,
               "column": 54
             },
             "end": {
-              "line": 21,
+              "line": 67,
               "column": 1
             }
           }
@@ -756,16 +756,16 @@
         "generator": false,
         "expression": false,
         "range": [
-          961,
-          1191
+          2094,
+          2324
         ],
         "loc": {
           "start": {
-            "line": 14,
+            "line": 60,
             "column": 7
           },
           "end": {
-            "line": 21,
+            "line": 67,
             "column": 1
           }
         },
@@ -790,10 +790,10 @@
           },
           {
             "type": "Block",
-            "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n * If a comparator function is not provided, an equality check is used by default.\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
+            "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n *\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n *\n * If a comparator function is not provided, an equality check is used by default.\n *\n * @example <caption>An example comparing the name of persons</caption>\n *\n *  interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo'},\n *     { age: 6, name: 'Foo'})\n *     .distinctUntilKeyChanged('name')\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo' }\n *\n * @example <caption>An example comparing the first letters of the name</caption>\n *\n * interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo1'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo2'},\n *     { age: 6, name: 'Foo3'})\n *     .distinctUntilKeyChanged('name', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3))\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo1' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo2' }\n *\n * @see {@link distinct}\n * @see {@link distinctUntilChanged}\n *\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
             "range": [
               100,
-              953
+              2086
             ],
             "loc": {
               "start": {
@@ -801,7 +801,7 @@
                 "column": 0
               },
               "end": {
-                "line": 13,
+                "line": 59,
                 "column": 3
               }
             }
@@ -812,16 +812,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=distinctUntilKeyChanged.js.map",
             "range": [
-              1192,
-              1243
+              2325,
+              2376
             ],
             "loc": {
               "start": {
-                "line": 22,
+                "line": 68,
                 "column": 0
               },
               "end": {
-                "line": 22,
+                "line": 68,
                 "column": 51
               }
             }
@@ -831,16 +831,16 @@
       "specifiers": [],
       "source": null,
       "range": [
-        954,
-        1191
+        2087,
+        2324
       ],
       "loc": {
         "start": {
-          "line": 14,
+          "line": 60,
           "column": 0
         },
         "end": {
-          "line": 21,
+          "line": 67,
           "column": 1
         }
       },
@@ -865,10 +865,10 @@
         },
         {
           "type": "Block",
-          "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n * If a comparator function is not provided, an equality check is used by default.\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
+          "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n *\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n *\n * If a comparator function is not provided, an equality check is used by default.\n *\n * @example <caption>An example comparing the name of persons</caption>\n *\n *  interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo'},\n *     { age: 6, name: 'Foo'})\n *     .distinctUntilKeyChanged('name')\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo' }\n *\n * @example <caption>An example comparing the first letters of the name</caption>\n *\n * interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo1'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo2'},\n *     { age: 6, name: 'Foo3'})\n *     .distinctUntilKeyChanged('name', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3))\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo1' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo2' }\n *\n * @see {@link distinct}\n * @see {@link distinctUntilChanged}\n *\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
           "range": [
             100,
-            953
+            2086
           ],
           "loc": {
             "start": {
@@ -876,7 +876,7 @@
               "column": 0
             },
             "end": {
-              "line": 13,
+              "line": 59,
               "column": 3
             }
           }
@@ -887,16 +887,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=distinctUntilKeyChanged.js.map",
           "range": [
-            1192,
-            1243
+            2325,
+            2376
           ],
           "loc": {
             "start": {
-              "line": 22,
+              "line": 68,
               "column": 0
             },
             "end": {
-              "line": 22,
+              "line": 68,
               "column": 51
             }
           }
@@ -907,7 +907,7 @@
   "sourceType": "module",
   "range": [
     0,
-    1191
+    2324
   ],
   "loc": {
     "start": {
@@ -915,7 +915,7 @@
       "column": 0
     },
     "end": {
-      "line": 21,
+      "line": 67,
       "column": 1
     }
   },
@@ -940,10 +940,10 @@
     },
     {
       "type": "Block",
-      "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n * If a comparator function is not provided, an equality check is used by default.\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
+      "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n *\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n *\n * If a comparator function is not provided, an equality check is used by default.\n *\n * @example <caption>An example comparing the name of persons</caption>\n *\n *  interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo'},\n *     { age: 6, name: 'Foo'})\n *     .distinctUntilKeyChanged('name')\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo' }\n *\n * @example <caption>An example comparing the first letters of the name</caption>\n *\n * interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo1'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo2'},\n *     { age: 6, name: 'Foo3'})\n *     .distinctUntilKeyChanged('name', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3))\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo1' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo2' }\n *\n * @see {@link distinct}\n * @see {@link distinctUntilChanged}\n *\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
       "range": [
         100,
-        953
+        2086
       ],
       "loc": {
         "start": {
@@ -951,7 +951,7 @@
           "column": 0
         },
         "end": {
-          "line": 13,
+          "line": 59,
           "column": 3
         }
       }
@@ -960,16 +960,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=distinctUntilKeyChanged.js.map",
       "range": [
-        1192,
-        1243
+        2325,
+        2376
       ],
       "loc": {
         "start": {
-          "line": 22,
+          "line": 68,
           "column": 0
         },
         "end": {
-          "line": 22,
+          "line": 68,
           "column": 51
         }
       }

@@ -111,7 +111,7 @@ import { subscribeToResult } from &apos;../util/subscribeToResult&apos;;
  * returns an Observable.
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
  * Observables being subscribed to concurrently.
- * @param {Scheduler} [scheduler=null] The Scheduler to use for subscribing to
+ * @param {Scheduler} [scheduler=null] The IScheduler to use for subscribing to
  * each projected inner Observable.
  * @return {Observable} An Observable that emits the source values and also
  * result of applying the projection function to each value emitted on the
@@ -131,7 +131,7 @@ export class ExpandOperator {
         this.scheduler = scheduler;
     }
     call(subscriber, source) {
-        return source._subscribe(new ExpandSubscriber(subscriber, this.project, this.concurrent, this.scheduler));
+        return source.subscribe(new ExpandSubscriber(subscriber, this.project, this.concurrent, this.scheduler));
     }
 }
 /**

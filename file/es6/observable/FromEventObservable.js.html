@@ -75,6 +75,7 @@ import { tryCatch } from &apos;../util/tryCatch&apos;;
 import { isFunction } from &apos;../util/isFunction&apos;;
 import { errorObject } from &apos;../util/errorObject&apos;;
 import { Subscription } from &apos;../Subscription&apos;;
+const toString = Object.prototype.toString;
 function isNodeStyleEventEmmitter(sourceObj) {
     return !!sourceObj &amp;&amp; typeof sourceObj.addListener === &apos;function&apos; &amp;&amp; typeof sourceObj.removeListener === &apos;function&apos;;
 }
@@ -82,10 +83,10 @@ function isJQueryStyleEventEmitter(sourceObj) {
     return !!sourceObj &amp;&amp; typeof sourceObj.on === &apos;function&apos; &amp;&amp; typeof sourceObj.off === &apos;function&apos;;
 }
 function isNodeList(sourceObj) {
-    return !!sourceObj &amp;&amp; sourceObj.toString() === &apos;[object NodeList]&apos;;
+    return !!sourceObj &amp;&amp; toString.call(sourceObj) === &apos;[object NodeList]&apos;;
 }
 function isHTMLCollection(sourceObj) {
-    return !!sourceObj &amp;&amp; sourceObj.toString() === &apos;[object HTMLCollection]&apos;;
+    return !!sourceObj &amp;&amp; toString.call(sourceObj) === &apos;[object HTMLCollection]&apos;;
 }
 function isEventTarget(sourceObj) {
     return !!sourceObj &amp;&amp; typeof sourceObj.addEventListener === &apos;function&apos; &amp;&amp; typeof sourceObj.removeEventListener === &apos;function&apos;;
@@ -123,6 +124,10 @@ export class FromEventObservable extends Observable {
      * @example &lt;caption&gt;Emits clicks happening on the DOM document&lt;/caption&gt;
      * var clicks = Rx.Observable.fromEvent(document, &apos;click&apos;);
      * clicks.subscribe(x =&gt; console.log(x));
+     *
+     * // Results in:
+     * // MouseEvent object logged to console everytime a click
+     * // occurs on the document.
      *
      * @see {@link from}
      * @see {@link fromEventPattern}

@@ -2146,10 +2146,10 @@
               "trailingComments": [
                 {
                   "type": "Block",
-                  "value": "*\n     * Creates an Observable that starts emitting after an `initialDelay` and\n     * emits ever increasing numbers after each `period` of time thereafter.\n     *\n     * <span class=\"informal\">Its like {@link interval}, but you can specify when\n     * should the emissions start.</span>\n     *\n     * <img src=\"./img/timer.png\" width=\"100%\">\n     *\n     * `timer` returns an Observable that emits an infinite sequence of ascending\n     * integers, with a constant interval of time, `period` of your choosing\n     * between those emissions. The first emission happens after the specified\n     * `initialDelay`. The initial delay may be a {@link Date}. By default, this\n     * operator uses the `async` Scheduler to provide a notion of time, but you\n     * may pass any Scheduler to it. If `period` is not specified, the output\n     * Observable emits only one value, `0`. Otherwise, it emits an infinite\n     * sequence.\n     *\n     * @example <caption>Emits ascending numbers, one every second (1000ms), starting after 3 seconds</caption>\n     * var numbers = Rx.Observable.timer(3000, 1000);\n     * numbers.subscribe(x => console.log(x));\n     *\n     * @example <caption>Emits one number after five seconds</caption>\n     * var numbers = Rx.Observable.timer(5000);\n     * numbers.subscribe(x => console.log(x));\n     *\n     * @see {@link interval}\n     * @see {@link delay}\n     *\n     * @param {number|Date} initialDelay The initial delay time to wait before\n     * emitting the first value of `0`.\n     * @param {number} [period] The period of time between emissions of the\n     * subsequent numbers.\n     * @param {Scheduler} [scheduler=async] The Scheduler to use for scheduling\n     * the emission of values, and providing a notion of \"time\".\n     * @return {Observable} An Observable that emits a `0` after the\n     * `initialDelay` and ever increasing numbers after each `period` of time\n     * thereafter.\n     * @static true\n     * @name timer\n     * @owner Observable\n     ",
+                  "value": "*\n     * Creates an Observable that starts emitting after an `initialDelay` and\n     * emits ever increasing numbers after each `period` of time thereafter.\n     *\n     * <span class=\"informal\">Its like {@link interval}, but you can specify when\n     * should the emissions start.</span>\n     *\n     * <img src=\"./img/timer.png\" width=\"100%\">\n     *\n     * `timer` returns an Observable that emits an infinite sequence of ascending\n     * integers, with a constant interval of time, `period` of your choosing\n     * between those emissions. The first emission happens after the specified\n     * `initialDelay`. The initial delay may be a {@link Date}. By default, this\n     * operator uses the `async` IScheduler to provide a notion of time, but you\n     * may pass any IScheduler to it. If `period` is not specified, the output\n     * Observable emits only one value, `0`. Otherwise, it emits an infinite\n     * sequence.\n     *\n     * @example <caption>Emits ascending numbers, one every second (1000ms), starting after 3 seconds</caption>\n     * var numbers = Rx.Observable.timer(3000, 1000);\n     * numbers.subscribe(x => console.log(x));\n     *\n     * @example <caption>Emits one number after five seconds</caption>\n     * var numbers = Rx.Observable.timer(5000);\n     * numbers.subscribe(x => console.log(x));\n     *\n     * @see {@link interval}\n     * @see {@link delay}\n     *\n     * @param {number|Date} initialDelay The initial delay time to wait before\n     * emitting the first value of `0`.\n     * @param {number} [period] The period of time between emissions of the\n     * subsequent numbers.\n     * @param {Scheduler} [scheduler=async] The IScheduler to use for scheduling\n     * the emission of values, and providing a notion of \"time\".\n     * @return {Observable} An Observable that emits a `0` after the\n     * `initialDelay` and ever increasing numbers after each `period` of time\n     * thereafter.\n     * @static true\n     * @name timer\n     * @owner Observable\n     ",
                   "range": [
                     921,
-                    2910
+                    2913
                   ],
                   "loc": {
                     "start": {
@@ -2171,8 +2171,8 @@
                 "type": "Identifier",
                 "name": "create",
                 "range": [
-                  2922,
-                  2928
+                  2925,
+                  2931
                 ],
                 "loc": {
                   "start": {
@@ -2195,8 +2195,8 @@
                       "type": "Identifier",
                       "name": "initialDelay",
                       "range": [
-                        2929,
-                        2941
+                        2932,
+                        2944
                       ],
                       "loc": {
                         "start": {
@@ -2214,8 +2214,8 @@
                       "value": 0,
                       "raw": "0",
                       "range": [
-                        2944,
-                        2945
+                        2947,
+                        2948
                       ],
                       "loc": {
                         "start": {
@@ -2229,8 +2229,8 @@
                       }
                     },
                     "range": [
-                      2929,
-                      2945
+                      2932,
+                      2948
                     ],
                     "loc": {
                       "start": {
@@ -2247,8 +2247,8 @@
                     "type": "Identifier",
                     "name": "period",
                     "range": [
-                      2947,
-                      2953
+                      2950,
+                      2956
                     ],
                     "loc": {
                       "start": {
@@ -2265,8 +2265,8 @@
                     "type": "Identifier",
                     "name": "scheduler",
                     "range": [
-                      2955,
-                      2964
+                      2958,
+                      2967
                     ],
                     "loc": {
                       "start": {
@@ -2291,8 +2291,8 @@
                           "type": "Identifier",
                           "name": "TimerObservable",
                           "range": [
-                            2987,
-                            3002
+                            2990,
+                            3005
                           ],
                           "loc": {
                             "start": {
@@ -2310,8 +2310,8 @@
                             "type": "Identifier",
                             "name": "initialDelay",
                             "range": [
-                              3003,
-                              3015
+                              3006,
+                              3018
                             ],
                             "loc": {
                               "start": {
@@ -2328,8 +2328,8 @@
                             "type": "Identifier",
                             "name": "period",
                             "range": [
-                              3017,
-                              3023
+                              3020,
+                              3026
                             ],
                             "loc": {
                               "start": {
@@ -2346,8 +2346,8 @@
                             "type": "Identifier",
                             "name": "scheduler",
                             "range": [
-                              3025,
-                              3034
+                              3028,
+                              3037
                             ],
                             "loc": {
                               "start": {
@@ -2362,8 +2362,8 @@
                           }
                         ],
                         "range": [
-                          2983,
-                          3035
+                          2986,
+                          3038
                         ],
                         "loc": {
                           "start": {
@@ -2377,8 +2377,8 @@
                         }
                       },
                       "range": [
-                        2976,
-                        3036
+                        2979,
+                        3039
                       ],
                       "loc": {
                         "start": {
@@ -2393,8 +2393,8 @@
                     }
                   ],
                   "range": [
-                    2966,
-                    3042
+                    2969,
+                    3045
                   ],
                   "loc": {
                     "start": {
@@ -2410,8 +2410,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  2928,
-                  3042
+                  2931,
+                  3045
                 ],
                 "loc": {
                   "start": {
@@ -2427,8 +2427,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                2915,
-                3042
+                2918,
+                3045
               ],
               "loc": {
                 "start": {
@@ -2443,10 +2443,10 @@
               "leadingComments": [
                 {
                   "type": "Block",
-                  "value": "*\n     * Creates an Observable that starts emitting after an `initialDelay` and\n     * emits ever increasing numbers after each `period` of time thereafter.\n     *\n     * <span class=\"informal\">Its like {@link interval}, but you can specify when\n     * should the emissions start.</span>\n     *\n     * <img src=\"./img/timer.png\" width=\"100%\">\n     *\n     * `timer` returns an Observable that emits an infinite sequence of ascending\n     * integers, with a constant interval of time, `period` of your choosing\n     * between those emissions. The first emission happens after the specified\n     * `initialDelay`. The initial delay may be a {@link Date}. By default, this\n     * operator uses the `async` Scheduler to provide a notion of time, but you\n     * may pass any Scheduler to it. If `period` is not specified, the output\n     * Observable emits only one value, `0`. Otherwise, it emits an infinite\n     * sequence.\n     *\n     * @example <caption>Emits ascending numbers, one every second (1000ms), starting after 3 seconds</caption>\n     * var numbers = Rx.Observable.timer(3000, 1000);\n     * numbers.subscribe(x => console.log(x));\n     *\n     * @example <caption>Emits one number after five seconds</caption>\n     * var numbers = Rx.Observable.timer(5000);\n     * numbers.subscribe(x => console.log(x));\n     *\n     * @see {@link interval}\n     * @see {@link delay}\n     *\n     * @param {number|Date} initialDelay The initial delay time to wait before\n     * emitting the first value of `0`.\n     * @param {number} [period] The period of time between emissions of the\n     * subsequent numbers.\n     * @param {Scheduler} [scheduler=async] The Scheduler to use for scheduling\n     * the emission of values, and providing a notion of \"time\".\n     * @return {Observable} An Observable that emits a `0` after the\n     * `initialDelay` and ever increasing numbers after each `period` of time\n     * thereafter.\n     * @static true\n     * @name timer\n     * @owner Observable\n     ",
+                  "value": "*\n     * Creates an Observable that starts emitting after an `initialDelay` and\n     * emits ever increasing numbers after each `period` of time thereafter.\n     *\n     * <span class=\"informal\">Its like {@link interval}, but you can specify when\n     * should the emissions start.</span>\n     *\n     * <img src=\"./img/timer.png\" width=\"100%\">\n     *\n     * `timer` returns an Observable that emits an infinite sequence of ascending\n     * integers, with a constant interval of time, `period` of your choosing\n     * between those emissions. The first emission happens after the specified\n     * `initialDelay`. The initial delay may be a {@link Date}. By default, this\n     * operator uses the `async` IScheduler to provide a notion of time, but you\n     * may pass any IScheduler to it. If `period` is not specified, the output\n     * Observable emits only one value, `0`. Otherwise, it emits an infinite\n     * sequence.\n     *\n     * @example <caption>Emits ascending numbers, one every second (1000ms), starting after 3 seconds</caption>\n     * var numbers = Rx.Observable.timer(3000, 1000);\n     * numbers.subscribe(x => console.log(x));\n     *\n     * @example <caption>Emits one number after five seconds</caption>\n     * var numbers = Rx.Observable.timer(5000);\n     * numbers.subscribe(x => console.log(x));\n     *\n     * @see {@link interval}\n     * @see {@link delay}\n     *\n     * @param {number|Date} initialDelay The initial delay time to wait before\n     * emitting the first value of `0`.\n     * @param {number} [period] The period of time between emissions of the\n     * subsequent numbers.\n     * @param {Scheduler} [scheduler=async] The IScheduler to use for scheduling\n     * the emission of values, and providing a notion of \"time\".\n     * @return {Observable} An Observable that emits a `0` after the\n     * `initialDelay` and ever increasing numbers after each `period` of time\n     * thereafter.\n     * @static true\n     * @name timer\n     * @owner Observable\n     ",
                   "range": [
                     921,
-                    2910
+                    2913
                   ],
                   "loc": {
                     "start": {
@@ -2468,8 +2468,8 @@
                 "type": "Identifier",
                 "name": "dispatch",
                 "range": [
-                  3054,
-                  3062
+                  3057,
+                  3065
                 ],
                 "loc": {
                   "start": {
@@ -2490,8 +2490,8 @@
                     "type": "Identifier",
                     "name": "state",
                     "range": [
-                      3063,
-                      3068
+                      3066,
+                      3071
                     ],
                     "loc": {
                       "start": {
@@ -2522,8 +2522,8 @@
                                   "type": "Identifier",
                                   "name": "index",
                                   "range": [
-                                    3088,
-                                    3093
+                                    3091,
+                                    3096
                                   ],
                                   "loc": {
                                     "start": {
@@ -2540,8 +2540,8 @@
                                   "type": "Identifier",
                                   "name": "index",
                                   "range": [
-                                    3088,
-                                    3093
+                                    3091,
+                                    3096
                                   ],
                                   "loc": {
                                     "start": {
@@ -2559,8 +2559,8 @@
                                 "shorthand": true,
                                 "computed": false,
                                 "range": [
-                                  3088,
-                                  3093
+                                  3091,
+                                  3096
                                 ],
                                 "loc": {
                                   "start": {
@@ -2579,8 +2579,8 @@
                                   "type": "Identifier",
                                   "name": "period",
                                   "range": [
-                                    3095,
-                                    3101
+                                    3098,
+                                    3104
                                   ],
                                   "loc": {
                                     "start": {
@@ -2597,8 +2597,8 @@
                                   "type": "Identifier",
                                   "name": "period",
                                   "range": [
-                                    3095,
-                                    3101
+                                    3098,
+                                    3104
                                   ],
                                   "loc": {
                                     "start": {
@@ -2616,8 +2616,8 @@
                                 "shorthand": true,
                                 "computed": false,
                                 "range": [
-                                  3095,
-                                  3101
+                                  3098,
+                                  3104
                                 ],
                                 "loc": {
                                   "start": {
@@ -2636,8 +2636,8 @@
                                   "type": "Identifier",
                                   "name": "subscriber",
                                   "range": [
-                                    3103,
-                                    3113
+                                    3106,
+                                    3116
                                   ],
                                   "loc": {
                                     "start": {
@@ -2654,8 +2654,8 @@
                                   "type": "Identifier",
                                   "name": "subscriber",
                                   "range": [
-                                    3103,
-                                    3113
+                                    3106,
+                                    3116
                                   ],
                                   "loc": {
                                     "start": {
@@ -2673,8 +2673,8 @@
                                 "shorthand": true,
                                 "computed": false,
                                 "range": [
-                                  3103,
-                                  3113
+                                  3106,
+                                  3116
                                 ],
                                 "loc": {
                                   "start": {
@@ -2689,8 +2689,8 @@
                               }
                             ],
                             "range": [
-                              3086,
-                              3115
+                              3089,
+                              3118
                             ],
                             "loc": {
                               "start": {
@@ -2707,8 +2707,8 @@
                             "type": "Identifier",
                             "name": "state",
                             "range": [
-                              3118,
-                              3123
+                              3121,
+                              3126
                             ],
                             "loc": {
                               "start": {
@@ -2722,8 +2722,8 @@
                             }
                           },
                           "range": [
-                            3086,
-                            3123
+                            3089,
+                            3126
                           ],
                           "loc": {
                             "start": {
@@ -2739,8 +2739,8 @@
                       ],
                       "kind": "const",
                       "range": [
-                        3080,
-                        3124
+                        3083,
+                        3127
                       ],
                       "loc": {
                         "start": {
@@ -2762,8 +2762,8 @@
                             "type": "Identifier",
                             "name": "action",
                             "range": [
-                              3139,
-                              3145
+                              3142,
+                              3148
                             ],
                             "loc": {
                               "start": {
@@ -2779,8 +2779,8 @@
                           "init": {
                             "type": "ThisExpression",
                             "range": [
-                              3148,
-                              3152
+                              3151,
+                              3155
                             ],
                             "loc": {
                               "start": {
@@ -2794,8 +2794,8 @@
                             }
                           },
                           "range": [
-                            3139,
-                            3152
+                            3142,
+                            3155
                           ],
                           "loc": {
                             "start": {
@@ -2811,8 +2811,8 @@
                       ],
                       "kind": "const",
                       "range": [
-                        3133,
-                        3153
+                        3136,
+                        3156
                       ],
                       "loc": {
                         "start": {
@@ -2836,8 +2836,8 @@
                             "type": "Identifier",
                             "name": "subscriber",
                             "range": [
-                              3162,
-                              3172
+                              3165,
+                              3175
                             ],
                             "loc": {
                               "start": {
@@ -2854,8 +2854,8 @@
                             "type": "Identifier",
                             "name": "next",
                             "range": [
-                              3173,
-                              3177
+                              3176,
+                              3180
                             ],
                             "loc": {
                               "start": {
@@ -2869,8 +2869,8 @@
                             }
                           },
                           "range": [
-                            3162,
-                            3177
+                            3165,
+                            3180
                           ],
                           "loc": {
                             "start": {
@@ -2888,8 +2888,8 @@
                             "type": "Identifier",
                             "name": "index",
                             "range": [
-                              3178,
-                              3183
+                              3181,
+                              3186
                             ],
                             "loc": {
                               "start": {
@@ -2904,8 +2904,8 @@
                           }
                         ],
                         "range": [
-                          3162,
-                          3184
+                          3165,
+                          3187
                         ],
                         "loc": {
                           "start": {
@@ -2919,8 +2919,8 @@
                         }
                       },
                       "range": [
-                        3162,
-                        3185
+                        3165,
+                        3188
                       ],
                       "loc": {
                         "start": {
@@ -2942,8 +2942,8 @@
                           "type": "Identifier",
                           "name": "subscriber",
                           "range": [
-                            3198,
-                            3208
+                            3201,
+                            3211
                           ],
                           "loc": {
                             "start": {
@@ -2960,8 +2960,8 @@
                           "type": "Identifier",
                           "name": "closed",
                           "range": [
-                            3209,
-                            3215
+                            3212,
+                            3218
                           ],
                           "loc": {
                             "start": {
@@ -2975,8 +2975,8 @@
                           }
                         },
                         "range": [
-                          3198,
-                          3215
+                          3201,
+                          3218
                         ],
                         "loc": {
                           "start": {
@@ -2996,8 +2996,8 @@
                             "type": "ReturnStatement",
                             "argument": null,
                             "range": [
-                              3231,
-                              3238
+                              3234,
+                              3241
                             ],
                             "loc": {
                               "start": {
@@ -3012,8 +3012,8 @@
                           }
                         ],
                         "range": [
-                          3217,
-                          3248
+                          3220,
+                          3251
                         ],
                         "loc": {
                           "start": {
@@ -3035,8 +3035,8 @@
                             "type": "Identifier",
                             "name": "period",
                             "range": [
-                              3266,
-                              3272
+                              3269,
+                              3275
                             ],
                             "loc": {
                               "start": {
@@ -3057,8 +3057,8 @@
                               "value": 1,
                               "raw": "1",
                               "range": [
-                                3278,
-                                3279
+                                3281,
+                                3282
                               ],
                               "loc": {
                                 "start": {
@@ -3073,8 +3073,8 @@
                             },
                             "prefix": true,
                             "range": [
-                              3277,
-                              3279
+                              3280,
+                              3282
                             ],
                             "loc": {
                               "start": {
@@ -3088,8 +3088,8 @@
                             }
                           },
                           "range": [
-                            3266,
-                            3279
+                            3269,
+                            3282
                           ],
                           "loc": {
                             "start": {
@@ -3116,8 +3116,8 @@
                                     "type": "Identifier",
                                     "name": "subscriber",
                                     "range": [
-                                      3302,
-                                      3312
+                                      3305,
+                                      3315
                                     ],
                                     "loc": {
                                       "start": {
@@ -3134,8 +3134,8 @@
                                     "type": "Identifier",
                                     "name": "complete",
                                     "range": [
-                                      3313,
-                                      3321
+                                      3316,
+                                      3324
                                     ],
                                     "loc": {
                                       "start": {
@@ -3149,8 +3149,8 @@
                                     }
                                   },
                                   "range": [
-                                    3302,
-                                    3321
+                                    3305,
+                                    3324
                                   ],
                                   "loc": {
                                     "start": {
@@ -3165,8 +3165,8 @@
                                 },
                                 "arguments": [],
                                 "range": [
-                                  3302,
-                                  3323
+                                  3305,
+                                  3326
                                 ],
                                 "loc": {
                                   "start": {
@@ -3180,8 +3180,8 @@
                                 }
                               },
                               "range": [
-                                3295,
-                                3324
+                                3298,
+                                3327
                               ],
                               "loc": {
                                 "start": {
@@ -3196,8 +3196,8 @@
                             }
                           ],
                           "range": [
-                            3281,
-                            3334
+                            3284,
+                            3337
                           ],
                           "loc": {
                             "start": {
@@ -3212,8 +3212,8 @@
                         },
                         "alternate": null,
                         "range": [
-                          3262,
-                          3334
+                          3265,
+                          3337
                         ],
                         "loc": {
                           "start": {
@@ -3227,8 +3227,8 @@
                         }
                       },
                       "range": [
-                        3194,
-                        3334
+                        3197,
+                        3337
                       ],
                       "loc": {
                         "start": {
@@ -3253,8 +3253,8 @@
                             "type": "Identifier",
                             "name": "state",
                             "range": [
-                              3343,
-                              3348
+                              3346,
+                              3351
                             ],
                             "loc": {
                               "start": {
@@ -3271,8 +3271,8 @@
                             "type": "Identifier",
                             "name": "index",
                             "range": [
-                              3349,
-                              3354
+                              3352,
+                              3357
                             ],
                             "loc": {
                               "start": {
@@ -3286,8 +3286,8 @@
                             }
                           },
                           "range": [
-                            3343,
-                            3354
+                            3346,
+                            3357
                           ],
                           "loc": {
                             "start": {
@@ -3307,8 +3307,8 @@
                             "type": "Identifier",
                             "name": "index",
                             "range": [
-                              3357,
-                              3362
+                              3360,
+                              3365
                             ],
                             "loc": {
                               "start": {
@@ -3326,8 +3326,8 @@
                             "value": 1,
                             "raw": "1",
                             "range": [
-                              3365,
-                              3366
+                              3368,
+                              3369
                             ],
                             "loc": {
                               "start": {
@@ -3341,8 +3341,8 @@
                             }
                           },
                           "range": [
-                            3357,
-                            3366
+                            3360,
+                            3369
                           ],
                           "loc": {
                             "start": {
@@ -3356,8 +3356,8 @@
                           }
                         },
                         "range": [
-                          3343,
-                          3366
+                          3346,
+                          3369
                         ],
                         "loc": {
                           "start": {
@@ -3371,8 +3371,8 @@
                         }
                       },
                       "range": [
-                        3343,
-                        3367
+                        3346,
+                        3370
                       ],
                       "loc": {
                         "start": {
@@ -3396,8 +3396,8 @@
                             "type": "Identifier",
                             "name": "action",
                             "range": [
-                              3376,
-                              3382
+                              3379,
+                              3385
                             ],
                             "loc": {
                               "start": {
@@ -3414,8 +3414,8 @@
                             "type": "Identifier",
                             "name": "schedule",
                             "range": [
-                              3383,
-                              3391
+                              3386,
+                              3394
                             ],
                             "loc": {
                               "start": {
@@ -3429,8 +3429,8 @@
                             }
                           },
                           "range": [
-                            3376,
-                            3391
+                            3379,
+                            3394
                           ],
                           "loc": {
                             "start": {
@@ -3448,8 +3448,8 @@
                             "type": "Identifier",
                             "name": "state",
                             "range": [
-                              3392,
-                              3397
+                              3395,
+                              3400
                             ],
                             "loc": {
                               "start": {
@@ -3466,8 +3466,8 @@
                             "type": "Identifier",
                             "name": "period",
                             "range": [
-                              3399,
-                              3405
+                              3402,
+                              3408
                             ],
                             "loc": {
                               "start": {
@@ -3482,8 +3482,8 @@
                           }
                         ],
                         "range": [
-                          3376,
-                          3406
+                          3379,
+                          3409
                         ],
                         "loc": {
                           "start": {
@@ -3497,8 +3497,8 @@
                         }
                       },
                       "range": [
-                        3376,
-                        3407
+                        3379,
+                        3410
                       ],
                       "loc": {
                         "start": {
@@ -3513,8 +3513,8 @@
                     }
                   ],
                   "range": [
-                    3070,
-                    3413
+                    3073,
+                    3416
                   ],
                   "loc": {
                     "start": {
@@ -3530,8 +3530,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  3062,
-                  3413
+                  3065,
+                  3416
                 ],
                 "loc": {
                   "start": {
@@ -3547,8 +3547,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                3047,
-                3413
+                3050,
+                3416
               ],
               "loc": {
                 "start": {
@@ -3568,8 +3568,8 @@
                 "type": "Identifier",
                 "name": "_subscribe",
                 "range": [
-                  3418,
-                  3428
+                  3421,
+                  3431
                 ],
                 "loc": {
                   "start": {
@@ -3590,8 +3590,8 @@
                     "type": "Identifier",
                     "name": "subscriber",
                     "range": [
-                      3429,
-                      3439
+                      3432,
+                      3442
                     ],
                     "loc": {
                       "start": {
@@ -3617,8 +3617,8 @@
                             "type": "Identifier",
                             "name": "index",
                             "range": [
-                              3457,
-                              3462
+                              3460,
+                              3465
                             ],
                             "loc": {
                               "start": {
@@ -3636,8 +3636,8 @@
                             "value": 0,
                             "raw": "0",
                             "range": [
-                              3465,
-                              3466
+                              3468,
+                              3469
                             ],
                             "loc": {
                               "start": {
@@ -3651,8 +3651,8 @@
                             }
                           },
                           "range": [
-                            3457,
-                            3466
+                            3460,
+                            3469
                           ],
                           "loc": {
                             "start": {
@@ -3668,8 +3668,8 @@
                       ],
                       "kind": "const",
                       "range": [
-                        3451,
-                        3467
+                        3454,
+                        3470
                       ],
                       "loc": {
                         "start": {
@@ -3696,8 +3696,8 @@
                                   "type": "Identifier",
                                   "name": "period",
                                   "range": [
-                                    3484,
-                                    3490
+                                    3487,
+                                    3493
                                   ],
                                   "loc": {
                                     "start": {
@@ -3714,8 +3714,8 @@
                                   "type": "Identifier",
                                   "name": "period",
                                   "range": [
-                                    3484,
-                                    3490
+                                    3487,
+                                    3493
                                   ],
                                   "loc": {
                                     "start": {
@@ -3733,8 +3733,8 @@
                                 "shorthand": true,
                                 "computed": false,
                                 "range": [
-                                  3484,
-                                  3490
+                                  3487,
+                                  3493
                                 ],
                                 "loc": {
                                   "start": {
@@ -3753,8 +3753,8 @@
                                   "type": "Identifier",
                                   "name": "dueTime",
                                   "range": [
-                                    3492,
-                                    3499
+                                    3495,
+                                    3502
                                   ],
                                   "loc": {
                                     "start": {
@@ -3771,8 +3771,8 @@
                                   "type": "Identifier",
                                   "name": "dueTime",
                                   "range": [
-                                    3492,
-                                    3499
+                                    3495,
+                                    3502
                                   ],
                                   "loc": {
                                     "start": {
@@ -3790,8 +3790,8 @@
                                 "shorthand": true,
                                 "computed": false,
                                 "range": [
-                                  3492,
-                                  3499
+                                  3495,
+                                  3502
                                 ],
                                 "loc": {
                                   "start": {
@@ -3810,8 +3810,8 @@
                                   "type": "Identifier",
                                   "name": "scheduler",
                                   "range": [
-                                    3501,
-                                    3510
+                                    3504,
+                                    3513
                                   ],
                                   "loc": {
                                     "start": {
@@ -3828,8 +3828,8 @@
                                   "type": "Identifier",
                                   "name": "scheduler",
                                   "range": [
-                                    3501,
-                                    3510
+                                    3504,
+                                    3513
                                   ],
                                   "loc": {
                                     "start": {
@@ -3847,8 +3847,8 @@
                                 "shorthand": true,
                                 "computed": false,
                                 "range": [
-                                  3501,
-                                  3510
+                                  3504,
+                                  3513
                                 ],
                                 "loc": {
                                   "start": {
@@ -3863,8 +3863,8 @@
                               }
                             ],
                             "range": [
-                              3482,
-                              3512
+                              3485,
+                              3515
                             ],
                             "loc": {
                               "start": {
@@ -3880,8 +3880,8 @@
                           "init": {
                             "type": "ThisExpression",
                             "range": [
-                              3515,
-                              3519
+                              3518,
+                              3522
                             ],
                             "loc": {
                               "start": {
@@ -3895,8 +3895,8 @@
                             }
                           },
                           "range": [
-                            3482,
-                            3519
+                            3485,
+                            3522
                           ],
                           "loc": {
                             "start": {
@@ -3912,8 +3912,8 @@
                       ],
                       "kind": "const",
                       "range": [
-                        3476,
-                        3520
+                        3479,
+                        3523
                       ],
                       "loc": {
                         "start": {
@@ -3937,8 +3937,8 @@
                             "type": "Identifier",
                             "name": "scheduler",
                             "range": [
-                              3536,
-                              3545
+                              3539,
+                              3548
                             ],
                             "loc": {
                               "start": {
@@ -3955,8 +3955,8 @@
                             "type": "Identifier",
                             "name": "schedule",
                             "range": [
-                              3546,
-                              3554
+                              3549,
+                              3557
                             ],
                             "loc": {
                               "start": {
@@ -3970,8 +3970,8 @@
                             }
                           },
                           "range": [
-                            3536,
-                            3554
+                            3539,
+                            3557
                           ],
                           "loc": {
                             "start": {
@@ -3992,8 +3992,8 @@
                               "type": "Identifier",
                               "name": "TimerObservable",
                               "range": [
-                                3555,
-                                3570
+                                3558,
+                                3573
                               ],
                               "loc": {
                                 "start": {
@@ -4010,8 +4010,8 @@
                               "type": "Identifier",
                               "name": "dispatch",
                               "range": [
-                                3571,
-                                3579
+                                3574,
+                                3582
                               ],
                               "loc": {
                                 "start": {
@@ -4025,8 +4025,8 @@
                               }
                             },
                             "range": [
-                              3555,
-                              3579
+                              3558,
+                              3582
                             ],
                             "loc": {
                               "start": {
@@ -4043,8 +4043,8 @@
                             "type": "Identifier",
                             "name": "dueTime",
                             "range": [
-                              3581,
-                              3588
+                              3584,
+                              3591
                             ],
                             "loc": {
                               "start": {
@@ -4066,8 +4066,8 @@
                                   "type": "Identifier",
                                   "name": "index",
                                   "range": [
-                                    3604,
-                                    3609
+                                    3607,
+                                    3612
                                   ],
                                   "loc": {
                                     "start": {
@@ -4084,8 +4084,8 @@
                                   "type": "Identifier",
                                   "name": "index",
                                   "range": [
-                                    3604,
-                                    3609
+                                    3607,
+                                    3612
                                   ],
                                   "loc": {
                                     "start": {
@@ -4103,8 +4103,8 @@
                                 "shorthand": true,
                                 "computed": false,
                                 "range": [
-                                  3604,
-                                  3609
+                                  3607,
+                                  3612
                                 ],
                                 "loc": {
                                   "start": {
@@ -4123,8 +4123,8 @@
                                   "type": "Identifier",
                                   "name": "period",
                                   "range": [
-                                    3611,
-                                    3617
+                                    3614,
+                                    3620
                                   ],
                                   "loc": {
                                     "start": {
@@ -4141,8 +4141,8 @@
                                   "type": "Identifier",
                                   "name": "period",
                                   "range": [
-                                    3611,
-                                    3617
+                                    3614,
+                                    3620
                                   ],
                                   "loc": {
                                     "start": {
@@ -4160,8 +4160,8 @@
                                 "shorthand": true,
                                 "computed": false,
                                 "range": [
-                                  3611,
-                                  3617
+                                  3614,
+                                  3620
                                 ],
                                 "loc": {
                                   "start": {
@@ -4180,8 +4180,8 @@
                                   "type": "Identifier",
                                   "name": "subscriber",
                                   "range": [
-                                    3619,
-                                    3629
+                                    3622,
+                                    3632
                                   ],
                                   "loc": {
                                     "start": {
@@ -4198,8 +4198,8 @@
                                   "type": "Identifier",
                                   "name": "subscriber",
                                   "range": [
-                                    3619,
-                                    3629
+                                    3622,
+                                    3632
                                   ],
                                   "loc": {
                                     "start": {
@@ -4217,8 +4217,8 @@
                                 "shorthand": true,
                                 "computed": false,
                                 "range": [
-                                  3619,
-                                  3629
+                                  3622,
+                                  3632
                                 ],
                                 "loc": {
                                   "start": {
@@ -4233,8 +4233,8 @@
                               }
                             ],
                             "range": [
-                              3590,
-                              3639
+                              3593,
+                              3642
                             ],
                             "loc": {
                               "start": {
@@ -4249,8 +4249,8 @@
                           }
                         ],
                         "range": [
-                          3536,
-                          3640
+                          3539,
+                          3643
                         ],
                         "loc": {
                           "start": {
@@ -4264,8 +4264,8 @@
                         }
                       },
                       "range": [
-                        3529,
-                        3641
+                        3532,
+                        3644
                       ],
                       "loc": {
                         "start": {
@@ -4280,8 +4280,8 @@
                     }
                   ],
                   "range": [
-                    3441,
-                    3647
+                    3444,
+                    3650
                   ],
                   "loc": {
                     "start": {
@@ -4297,8 +4297,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  3428,
-                  3647
+                  3431,
+                  3650
                 ],
                 "loc": {
                   "start": {
@@ -4314,8 +4314,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                3418,
-                3647
+                3421,
+                3650
               ],
               "loc": {
                 "start": {
@@ -4332,7 +4332,7 @@
           ],
           "range": [
             370,
-            3649
+            3652
           ],
           "loc": {
             "start": {
@@ -4347,7 +4347,7 @@
         },
         "range": [
           329,
-          3649
+          3652
         ],
         "loc": {
           "start": {
@@ -4384,8 +4384,8 @@
             "type": "Line",
             "value": "# sourceMappingURL=TimerObservable.js.map",
             "range": [
-              3650,
-              3693
+              3653,
+              3696
             ],
             "loc": {
               "start": {
@@ -4404,7 +4404,7 @@
       "source": null,
       "range": [
         322,
-        3649
+        3652
       ],
       "loc": {
         "start": {
@@ -4441,8 +4441,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=TimerObservable.js.map",
           "range": [
-            3650,
-            3693
+            3653,
+            3696
           ],
           "loc": {
             "start": {
@@ -4461,7 +4461,7 @@
   "sourceType": "module",
   "range": [
     0,
-    3649
+    3652
   ],
   "loc": {
     "start": {
@@ -4494,10 +4494,10 @@
     },
     {
       "type": "Block",
-      "value": "*\n     * Creates an Observable that starts emitting after an `initialDelay` and\n     * emits ever increasing numbers after each `period` of time thereafter.\n     *\n     * <span class=\"informal\">Its like {@link interval}, but you can specify when\n     * should the emissions start.</span>\n     *\n     * <img src=\"./img/timer.png\" width=\"100%\">\n     *\n     * `timer` returns an Observable that emits an infinite sequence of ascending\n     * integers, with a constant interval of time, `period` of your choosing\n     * between those emissions. The first emission happens after the specified\n     * `initialDelay`. The initial delay may be a {@link Date}. By default, this\n     * operator uses the `async` Scheduler to provide a notion of time, but you\n     * may pass any Scheduler to it. If `period` is not specified, the output\n     * Observable emits only one value, `0`. Otherwise, it emits an infinite\n     * sequence.\n     *\n     * @example <caption>Emits ascending numbers, one every second (1000ms), starting after 3 seconds</caption>\n     * var numbers = Rx.Observable.timer(3000, 1000);\n     * numbers.subscribe(x => console.log(x));\n     *\n     * @example <caption>Emits one number after five seconds</caption>\n     * var numbers = Rx.Observable.timer(5000);\n     * numbers.subscribe(x => console.log(x));\n     *\n     * @see {@link interval}\n     * @see {@link delay}\n     *\n     * @param {number|Date} initialDelay The initial delay time to wait before\n     * emitting the first value of `0`.\n     * @param {number} [period] The period of time between emissions of the\n     * subsequent numbers.\n     * @param {Scheduler} [scheduler=async] The Scheduler to use for scheduling\n     * the emission of values, and providing a notion of \"time\".\n     * @return {Observable} An Observable that emits a `0` after the\n     * `initialDelay` and ever increasing numbers after each `period` of time\n     * thereafter.\n     * @static true\n     * @name timer\n     * @owner Observable\n     ",
+      "value": "*\n     * Creates an Observable that starts emitting after an `initialDelay` and\n     * emits ever increasing numbers after each `period` of time thereafter.\n     *\n     * <span class=\"informal\">Its like {@link interval}, but you can specify when\n     * should the emissions start.</span>\n     *\n     * <img src=\"./img/timer.png\" width=\"100%\">\n     *\n     * `timer` returns an Observable that emits an infinite sequence of ascending\n     * integers, with a constant interval of time, `period` of your choosing\n     * between those emissions. The first emission happens after the specified\n     * `initialDelay`. The initial delay may be a {@link Date}. By default, this\n     * operator uses the `async` IScheduler to provide a notion of time, but you\n     * may pass any IScheduler to it. If `period` is not specified, the output\n     * Observable emits only one value, `0`. Otherwise, it emits an infinite\n     * sequence.\n     *\n     * @example <caption>Emits ascending numbers, one every second (1000ms), starting after 3 seconds</caption>\n     * var numbers = Rx.Observable.timer(3000, 1000);\n     * numbers.subscribe(x => console.log(x));\n     *\n     * @example <caption>Emits one number after five seconds</caption>\n     * var numbers = Rx.Observable.timer(5000);\n     * numbers.subscribe(x => console.log(x));\n     *\n     * @see {@link interval}\n     * @see {@link delay}\n     *\n     * @param {number|Date} initialDelay The initial delay time to wait before\n     * emitting the first value of `0`.\n     * @param {number} [period] The period of time between emissions of the\n     * subsequent numbers.\n     * @param {Scheduler} [scheduler=async] The IScheduler to use for scheduling\n     * the emission of values, and providing a notion of \"time\".\n     * @return {Observable} An Observable that emits a `0` after the\n     * `initialDelay` and ever increasing numbers after each `period` of time\n     * thereafter.\n     * @static true\n     * @name timer\n     * @owner Observable\n     ",
       "range": [
         921,
-        2910
+        2913
       ],
       "loc": {
         "start": {
@@ -4514,8 +4514,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=TimerObservable.js.map",
       "range": [
-        3650,
-        3693
+        3653,
+        3696
       ],
       "loc": {
         "start": {

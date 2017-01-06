@@ -136,7 +136,7 @@ export class ReduceOperator {
         this.hasSeed = hasSeed;
     }
     call(subscriber, source) {
-        return source._subscribe(new ReduceSubscriber(subscriber, this.accumulator, this.seed, this.hasSeed));
+        return source.subscribe(new ReduceSubscriber(subscriber, this.accumulator, this.seed, this.hasSeed));
     }
 }
 /**

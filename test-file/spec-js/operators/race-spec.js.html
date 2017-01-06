@@ -72,6 +72,7 @@
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/race-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
 var chai_1 = require(&apos;chai&apos;);
+var sinon = require(&apos;sinon&apos;);
 var Rx = require(&apos;../../dist/cjs/Rx&apos;);
 var Observable = Rx.Observable;
 /** @test {race} */
@@ -206,6 +207,35 @@ describe(&apos;Observable.prototype.race&apos;, function () {
         Observable.race(e1, e2).subscribe(function (x) {
             chai_1.expect(x).to.be.true;
         }, done, done);
+    });
+    it(&apos;should ignore latter observables if a former one emits immediately&apos;, function () {
+        var onNext = sinon.spy();
+        var onSubscribe = sinon.spy();
+        var e1 = Observable.of(&apos;a&apos;); // Wins the race
+        var e2 = Observable.defer(onSubscribe); // Should be ignored
+        e1.race(e2).subscribe(onNext);
+        chai_1.expect(onNext.calledWithExactly(&apos;a&apos;)).to.be.true;
+        chai_1.expect(onSubscribe.called).to.be.false;
+    });
+    it(&apos;should unsubscribe former observables if a latter one emits immediately&apos;, function () {
+        var onNext = sinon.spy();
+        var onUnsubscribe = sinon.spy();
+        var e1 = Observable.never().finally(onUnsubscribe); // Should be unsubscribed
+        var e2 = Observable.of(&apos;b&apos;); // Wins the race
+        e1.race(e2).subscribe(onNext);
+        chai_1.expect(onNext.calledWithExactly(&apos;b&apos;)).to.be.true;
+        chai_1.expect(onUnsubscribe.calledOnce).to.be.true;
+    });
+    it(&apos;should unsubscribe from immediately emitting observable on unsubscription&apos;, function () {
+        var onNext = sinon.spy();
+        var onUnsubscribe = sinon.spy();
+        var e1 = Observable.never().startWith(&apos;a&apos;).finally(onUnsubscribe); // Wins the race
+        var e2 = Observable.never(); // Loses the race
+        var subscription = e1.race(e2).subscribe(onNext);
+        chai_1.expect(onNext.calledWithExactly(&apos;a&apos;)).to.be.true;
+        chai_1.expect(onUnsubscribe.called).to.be.false;
+        subscription.unsubscribe();
+        chai_1.expect(onUnsubscribe.calledOnce).to.be.true;
     });
 });
 //# sourceMappingURL=race-spec.js.map</code></pre>

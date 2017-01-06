@@ -142,7 +142,7 @@ class BufferTimeOperator {
         this.scheduler = scheduler;
     }
     call(subscriber, source) {
-        return source._subscribe(new BufferTimeSubscriber(subscriber, this.bufferTimeSpan, this.bufferCreationInterval, this.maxBufferSize, this.scheduler));
+        return source.subscribe(new BufferTimeSubscriber(subscriber, this.bufferTimeSpan, this.bufferCreationInterval, this.maxBufferSize, this.scheduler));
     }
 }
 class Context {

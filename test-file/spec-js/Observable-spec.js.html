@@ -77,6 +77,7 @@ var __extends = (this &amp;&amp; this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var chai_1 = require(&apos;chai&apos;);
+var sinon = require(&apos;sinon&apos;);
 var Rx = require(&apos;../dist/cjs/Rx&apos;);
 var Subscriber = Rx.Subscriber;
 var Observable = Rx.Observable;
@@ -252,6 +253,8 @@ describe(&apos;Observable&apos;, function () {
             chai_1.expect(unsubscribeCalled).to.be.true;
         });
         it(&apos;should run unsubscription logic when an error is sent asynchronously and subscribe is called with no arguments&apos;, function (done) {
+            var sandbox = sinon.sandbox.create();
+            var fakeTimer = sandbox.useFakeTimers();
             var unsubscribeCalled = false;
             var source = new Observable(function (subscriber) {
                 var id = setInterval(function () {
@@ -286,6 +289,8 @@ describe(&apos;Observable&apos;, function () {
                     }
                 }
             }, 100);
+            fakeTimer.tick(110);
+            sandbox.restore();
         });
         it(&apos;should return a Subscription that calls the unsubscribe function returned by the subscriber&apos;, function () {
             var unsubscribeCalled = false;

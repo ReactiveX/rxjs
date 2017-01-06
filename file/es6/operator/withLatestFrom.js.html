@@ -125,7 +125,7 @@ class WithLatestFromOperator {
         this.project = project;
     }
     call(subscriber, source) {
-        return source._subscribe(new WithLatestFromSubscriber(subscriber, this.observables, this.project));
+        return source.subscribe(new WithLatestFromSubscriber(subscriber, this.observables, this.project));
     }
 }
 /**

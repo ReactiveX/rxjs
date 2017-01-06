@@ -247,6 +247,70 @@ describe(&apos;Observable.prototype.first&apos;, function () {
         expectObservable(e1.first(predicate, resultSelector)).toBe(expected);
         expectSubscriptions(e1.subscriptions).toBe(sub);
     });
+    it(&apos;should support type guards without breaking previous behavior&apos;, function () {
+        // tslint:disable no-unused-variable
+        // type guards with interfaces and classes
+        {
+            var Foo = (function () {
+                function Foo(bar, baz) {
+                    if (bar === void 0) { bar = &apos;name&apos;; }
+                    if (baz === void 0) { baz = 42; }
+                    this.bar = bar;
+                    this.baz = baz;
+                }
+                return Foo;
+            }());
+            var isBar = function (x) { return x &amp;&amp; x.bar !== undefined; };
+            var isBaz = function (x) { return x &amp;&amp; x.baz !== undefined; };
+            var foo = new Foo();
+            Observable.of(foo).first()
+                .subscribe(function (x) { return x.baz; }); // x is Foo
+            Observable.of(foo).first(function (foo) { return foo.bar === &apos;name&apos;; })
+                .subscribe(function (x) { return x.baz; }); // x is still Foo
+            Observable.of(foo).first(isBar)
+                .subscribe(function (x) { return x.bar; }); // x is Bar!
+            var foobar = new Foo(); // type is the interface, not the class
+            Observable.of(foobar).first()
+                .subscribe(function (x) { return x.bar; }); // x is Bar
+            Observable.of(foobar).first(function (foobar) { return foobar.bar === &apos;name&apos;; })
+                .subscribe(function (x) { return x.bar; }); // x is still Bar
+            Observable.of(foobar).first(isBaz)
+                .subscribe(function (x) { return x.baz; }); // x is Baz!
+            var barish = { bar: &apos;quack&apos;, baz: 42 }; // type can quack like a Bar
+            Observable.of(barish).first()
+                .subscribe(function (x) { return x.baz; }); // x is still { bar: string; baz: number; }
+            Observable.of(barish).first(function (x) { return x.bar === &apos;quack&apos;; })
+                .subscribe(function (x) { return x.bar; }); // x is still { bar: string; baz: number; }
+            Observable.of(barish).first(isBar)
+                .subscribe(function (x) { return x.bar; }); // x is Bar!
+        }
+        // type guards with primitive types
+        {
+            var xs = Observable.from([1, &apos;aaa&apos;, 3, &apos;bb&apos;]);
+            // This type guard will narrow a `string | number` to a string in the examples below
+            var isString = function (x) { return typeof x === &apos;string&apos;; };
+            // missing predicate preserves the type
+            xs.first().subscribe(function (x) { return x; }); // x is still string | number
+            // After the type guard `first` predicates, the type is narrowed to string
+            xs.first(isString)
+                .subscribe(function (s) { return s.length; }); // s is string
+            xs.first(isString, function (s) { return s.substr(0); }) // s is string in predicate
+                .subscribe(function (s) { return s.length; }); // s is string
+            // boolean predicates preserve the type
+            xs.first(function (x) { return typeof x === &apos;string&apos;; })
+                .subscribe(function (x) { return x; }); // x is still string | number
+            xs.first(function (x) { return !!x; }, function (x) { return x; })
+                .subscribe(function (x) { return x; }); // x is still string | number
+            xs.first(function (x) { return typeof x === &apos;string&apos;; }, function (x) { return x; }, &apos;&apos;) // default is string; x remains string | number
+                .subscribe(function (x) { return x; }); // x is still string | number
+            // `first` still uses the `resultSelector` return type, if it exists.
+            xs.first(function (x) { return typeof x === &apos;string&apos;; }, function (x) { return ({ str: &quot;&quot; + x }); }) // x remains string | number
+                .subscribe(function (o) { return o.str; }); // o is { str: string }
+            xs.first(function (x) { return typeof x === &apos;string&apos;; }, function (x) { return ({ str: &quot;&quot; + x }); }, { str: &apos;&apos; })
+                .subscribe(function (o) { return o.str; }); // o is { str: string }
+        }
+        // tslint:disable enable
+    });
 });
 //# sourceMappingURL=first-spec.js.map</code></pre>
 

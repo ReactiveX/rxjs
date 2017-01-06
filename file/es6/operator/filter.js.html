@@ -92,7 +92,6 @@
  * clicksOnDivs.subscribe(x =&gt; console.log(x));
  *
  * @see {@link distinct}
- * @see {@link distinctKey}
  * @see {@link distinctUntilChanged}
  * @see {@link distinctUntilKeyChanged}
  * @see {@link ignoreElements}
@@ -121,7 +120,7 @@ class FilterOperator {
         this.thisArg = thisArg;
     }
     call(subscriber, source) {
-        return source._subscribe(new FilterSubscriber(subscriber, this.predicate, this.thisArg));
+        return source.subscribe(new FilterSubscriber(subscriber, this.predicate, this.thisArg));
     }
 }
 /**

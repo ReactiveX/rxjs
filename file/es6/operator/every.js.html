@@ -73,6 +73,12 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Subscriber } from &apos;../Subscriber&apos;;
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
+ *
+ * @example &lt;caption&gt;A simple example emitting true if all elements are less than 5, false otherwise&lt;/caption&gt;
+ *  Observable.of(1, 2, 3, 4, 5, 6)
+ *     .every(x =&gt; x &lt; 5)
+ *     .subscribe(x =&gt; console.log(x)); // -&gt; false
+ *
  * @param {function} predicate a function for determining if an item meets a specified condition.
  * @param {any} [thisArg] optional object to use for `this` in the callback
  * @return {Observable} an Observable of booleans that determines if all items of the source Observable meet the condition specified.
@@ -89,7 +95,7 @@ class EveryOperator {
         this.source = source;
     }
     call(observer, source) {
-        return source._subscribe(new EverySubscriber(observer, this.predicate, this.thisArg, this.source));
+        return source.subscribe(new EverySubscriber(observer, this.predicate, this.thisArg, this.source));
     }
 }
 /**

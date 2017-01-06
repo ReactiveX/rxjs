@@ -75,8 +75,54 @@
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,
  * using a property accessed by using the key provided to check if the two items are distinct.
+ *
  * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.
+ *
  * If a comparator function is not provided, an equality check is used by default.
+ *
+ * @example &lt;caption&gt;An example comparing the name of persons&lt;/caption&gt;
+ *
+ *  interface Person {
+ *     age: number,
+ *     name: string
+ *  }
+ *
+ * Observable.of&lt;Person&gt;(
+ *     { age: 4, name: &apos;Foo&apos;},
+ *     { age: 7, name: &apos;Bar&apos;},
+ *     { age: 5, name: &apos;Foo&apos;},
+ *     { age: 6, name: &apos;Foo&apos;})
+ *     .distinctUntilKeyChanged(&apos;name&apos;)
+ *     .subscribe(x =&gt; console.log(x));
+ *
+ * // displays:
+ * // { age: 4, name: &apos;Foo&apos; }
+ * // { age: 7, name: &apos;Bar&apos; }
+ * // { age: 5, name: &apos;Foo&apos; }
+ *
+ * @example &lt;caption&gt;An example comparing the first letters of the name&lt;/caption&gt;
+ *
+ * interface Person {
+ *     age: number,
+ *     name: string
+ *  }
+ *
+ * Observable.of&lt;Person&gt;(
+ *     { age: 4, name: &apos;Foo1&apos;},
+ *     { age: 7, name: &apos;Bar&apos;},
+ *     { age: 5, name: &apos;Foo2&apos;},
+ *     { age: 6, name: &apos;Foo3&apos;})
+ *     .distinctUntilKeyChanged(&apos;name&apos;, (x: string, y: string) =&gt; x.substring(0, 3) === y.substring(0, 3))
+ *     .subscribe(x =&gt; console.log(x));
+ *
+ * // displays:
+ * // { age: 4, name: &apos;Foo1&apos; }
+ * // { age: 7, name: &apos;Bar&apos; }
+ * // { age: 5, name: &apos;Foo2&apos; }
+ *
+ * @see {@link distinct}
+ * @see {@link distinctUntilChanged}
+ *
  * @param {string} key string key for object property lookup on each item.
  * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.
  * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.

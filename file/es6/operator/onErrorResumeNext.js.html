@@ -95,7 +95,7 @@ class OnErrorResumeNextOperator {
         this.nextSources = nextSources;
     }
     call(subscriber, source) {
-        return source._subscribe(new OnErrorResumeNextSubscriber(subscriber, this.nextSources));
+        return source.subscribe(new OnErrorResumeNextSubscriber(subscriber, this.nextSources));
     }
 }
 class OnErrorResumeNextSubscriber extends OuterSubscriber {

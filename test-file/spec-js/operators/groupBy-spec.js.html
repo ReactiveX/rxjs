@@ -360,6 +360,31 @@ describe(&apos;Observable.prototype.groupBy&apos;, function () {
         expectObservable(source, unsub).toBe(expected, expectedValues);
         expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
+    it(&apos;should unsubscribe from the source when the outer and inner subscriptions are disposed&apos;, function () {
+        var values = {
+            a: &apos;  foo&apos;,
+            b: &apos; FoO &apos;,
+            c: &apos;baR  &apos;,
+            d: &apos;foO &apos;,
+            e: &apos; Baz   &apos;,
+            f: &apos;  qux &apos;,
+            g: &apos;   bar&apos;,
+            h: &apos; BAR  &apos;,
+            i: &apos;FOO &apos;,
+            j: &apos;baz  &apos;,
+            k: &apos; bAZ &apos;,
+            l: &apos;    fOo    &apos;
+        };
+        var e1 = hot(&apos;-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-|&apos;, values);
+        var e1subs = &apos;^ !&apos;;
+        var expected = &apos;--(a|)&apos;;
+        var source = e1
+            .groupBy(function (val) { return val.toLowerCase().trim(); })
+            .take(1)
+            .mergeMap(function (group) { return group.take(1); });
+        expectObservable(source).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
     it(&apos;should not break unsubscription chain when unsubscribed explicitly&apos;, function () {
         var values = {
             a: &apos;  foo&apos;,

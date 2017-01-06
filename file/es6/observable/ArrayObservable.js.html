@@ -104,8 +104,8 @@ export class ArrayObservable extends Observable {
      * This static operator is useful for creating a simple Observable that only
      * emits the arguments given, and the complete notification thereafter. It can
      * be used for composing with other Observables, such as with {@link concat}.
-     * By default, it uses a `null` Scheduler, which means the `next`
-     * notifications are sent synchronously, although with a different Scheduler
+     * By default, it uses a `null` IScheduler, which means the `next`
+     * notifications are sent synchronously, although with a different IScheduler
      * it is possible to determine when those notifications will be delivered.
      *
      * @example &lt;caption&gt;Emit 10, 20, 30, then &apos;a&apos;, &apos;b&apos;, &apos;c&apos;, then start ticking every second.&lt;/caption&gt;
@@ -121,7 +121,7 @@ export class ArrayObservable extends Observable {
      * @see {@link throw}
      *
      * @param {...T} values Arguments that represent `next` values to be emitted.
-     * @param {Scheduler} [scheduler] A {@link Scheduler} to use for scheduling
+     * @param {Scheduler} [scheduler] A {@link IScheduler} to use for scheduling
      * the emissions of the `next` notifications.
      * @return {Observable&lt;T&gt;} An Observable that emits each given input value.
      * @static true

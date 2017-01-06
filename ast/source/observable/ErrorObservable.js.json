@@ -535,10 +535,10 @@
               "trailingComments": [
                 {
                   "type": "Block",
-                  "value": "*\n     * Creates an Observable that emits no items to the Observer and immediately\n     * emits an error notification.\n     *\n     * <span class=\"informal\">Just emits 'error', and nothing else.\n     * </span>\n     *\n     * <img src=\"./img/throw.png\" width=\"100%\">\n     *\n     * This static operator is useful for creating a simple Observable that only\n     * emits the error notification. It can be used for composing with other\n     * Observables, such as in a {@link mergeMap}.\n     *\n     * @example <caption>Emit the number 7, then emit an error.</caption>\n     * var result = Rx.Observable.throw(new Error('oops!')).startWith(7);\n     * result.subscribe(x => console.log(x), e => console.error(e));\n     *\n     * @example <caption>Map and flattens numbers to the sequence 'a', 'b', 'c', but throw an error for 13</caption>\n     * var interval = Rx.Observable.interval(1000);\n     * var result = interval.mergeMap(x =>\n     *   x === 13 ?\n     *     Rx.Observable.throw('Thirteens are bad') :\n     *     Rx.Observable.of('a', 'b', 'c')\n     * );\n     * result.subscribe(x => console.log(x), e => console.error(e));\n     *\n     * @see {@link create}\n     * @see {@link empty}\n     * @see {@link never}\n     * @see {@link of}\n     *\n     * @param {any} error The particular Error to pass to the error notification.\n     * @param {Scheduler} [scheduler] A {@link Scheduler} to use for scheduling\n     * the emission of the error notification.\n     * @return {Observable} An error Observable: emits only the error notification\n     * using the given error argument.\n     * @static true\n     * @name throw\n     * @owner Observable\n     ",
+                  "value": "*\n     * Creates an Observable that emits no items to the Observer and immediately\n     * emits an error notification.\n     *\n     * <span class=\"informal\">Just emits 'error', and nothing else.\n     * </span>\n     *\n     * <img src=\"./img/throw.png\" width=\"100%\">\n     *\n     * This static operator is useful for creating a simple Observable that only\n     * emits the error notification. It can be used for composing with other\n     * Observables, such as in a {@link mergeMap}.\n     *\n     * @example <caption>Emit the number 7, then emit an error.</caption>\n     * var result = Rx.Observable.throw(new Error('oops!')).startWith(7);\n     * result.subscribe(x => console.log(x), e => console.error(e));\n     *\n     * @example <caption>Map and flattens numbers to the sequence 'a', 'b', 'c', but throw an error for 13</caption>\n     * var interval = Rx.Observable.interval(1000);\n     * var result = interval.mergeMap(x =>\n     *   x === 13 ?\n     *     Rx.Observable.throw('Thirteens are bad') :\n     *     Rx.Observable.of('a', 'b', 'c')\n     * );\n     * result.subscribe(x => console.log(x), e => console.error(e));\n     *\n     * @see {@link create}\n     * @see {@link empty}\n     * @see {@link never}\n     * @see {@link of}\n     *\n     * @param {any} error The particular Error to pass to the error notification.\n     * @param {Scheduler} [scheduler] A {@link IScheduler} to use for scheduling\n     * the emission of the error notification.\n     * @return {Observable} An error Observable: emits only the error notification\n     * using the given error argument.\n     * @static true\n     * @name throw\n     * @owner Observable\n     ",
                   "range": [
                     316,
-                    1955
+                    1956
                   ],
                   "loc": {
                     "start": {
@@ -560,8 +560,8 @@
                 "type": "Identifier",
                 "name": "create",
                 "range": [
-                  1967,
-                  1973
+                  1968,
+                  1974
                 ],
                 "loc": {
                   "start": {
@@ -582,8 +582,8 @@
                     "type": "Identifier",
                     "name": "error",
                     "range": [
-                      1974,
-                      1979
+                      1975,
+                      1980
                     ],
                     "loc": {
                       "start": {
@@ -600,8 +600,8 @@
                     "type": "Identifier",
                     "name": "scheduler",
                     "range": [
-                      1981,
-                      1990
+                      1982,
+                      1991
                     ],
                     "loc": {
                       "start": {
@@ -626,8 +626,8 @@
                           "type": "Identifier",
                           "name": "ErrorObservable",
                           "range": [
-                            2013,
-                            2028
+                            2014,
+                            2029
                           ],
                           "loc": {
                             "start": {
@@ -645,8 +645,8 @@
                             "type": "Identifier",
                             "name": "error",
                             "range": [
-                              2029,
-                              2034
+                              2030,
+                              2035
                             ],
                             "loc": {
                               "start": {
@@ -663,8 +663,8 @@
                             "type": "Identifier",
                             "name": "scheduler",
                             "range": [
-                              2036,
-                              2045
+                              2037,
+                              2046
                             ],
                             "loc": {
                               "start": {
@@ -679,8 +679,8 @@
                           }
                         ],
                         "range": [
-                          2009,
-                          2046
+                          2010,
+                          2047
                         ],
                         "loc": {
                           "start": {
@@ -694,8 +694,8 @@
                         }
                       },
                       "range": [
-                        2002,
-                        2047
+                        2003,
+                        2048
                       ],
                       "loc": {
                         "start": {
@@ -710,8 +710,8 @@
                     }
                   ],
                   "range": [
-                    1992,
-                    2053
+                    1993,
+                    2054
                   ],
                   "loc": {
                     "start": {
@@ -727,8 +727,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  1973,
-                  2053
+                  1974,
+                  2054
                 ],
                 "loc": {
                   "start": {
@@ -744,8 +744,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                1960,
-                2053
+                1961,
+                2054
               ],
               "loc": {
                 "start": {
@@ -760,10 +760,10 @@
               "leadingComments": [
                 {
                   "type": "Block",
-                  "value": "*\n     * Creates an Observable that emits no items to the Observer and immediately\n     * emits an error notification.\n     *\n     * <span class=\"informal\">Just emits 'error', and nothing else.\n     * </span>\n     *\n     * <img src=\"./img/throw.png\" width=\"100%\">\n     *\n     * This static operator is useful for creating a simple Observable that only\n     * emits the error notification. It can be used for composing with other\n     * Observables, such as in a {@link mergeMap}.\n     *\n     * @example <caption>Emit the number 7, then emit an error.</caption>\n     * var result = Rx.Observable.throw(new Error('oops!')).startWith(7);\n     * result.subscribe(x => console.log(x), e => console.error(e));\n     *\n     * @example <caption>Map and flattens numbers to the sequence 'a', 'b', 'c', but throw an error for 13</caption>\n     * var interval = Rx.Observable.interval(1000);\n     * var result = interval.mergeMap(x =>\n     *   x === 13 ?\n     *     Rx.Observable.throw('Thirteens are bad') :\n     *     Rx.Observable.of('a', 'b', 'c')\n     * );\n     * result.subscribe(x => console.log(x), e => console.error(e));\n     *\n     * @see {@link create}\n     * @see {@link empty}\n     * @see {@link never}\n     * @see {@link of}\n     *\n     * @param {any} error The particular Error to pass to the error notification.\n     * @param {Scheduler} [scheduler] A {@link Scheduler} to use for scheduling\n     * the emission of the error notification.\n     * @return {Observable} An error Observable: emits only the error notification\n     * using the given error argument.\n     * @static true\n     * @name throw\n     * @owner Observable\n     ",
+                  "value": "*\n     * Creates an Observable that emits no items to the Observer and immediately\n     * emits an error notification.\n     *\n     * <span class=\"informal\">Just emits 'error', and nothing else.\n     * </span>\n     *\n     * <img src=\"./img/throw.png\" width=\"100%\">\n     *\n     * This static operator is useful for creating a simple Observable that only\n     * emits the error notification. It can be used for composing with other\n     * Observables, such as in a {@link mergeMap}.\n     *\n     * @example <caption>Emit the number 7, then emit an error.</caption>\n     * var result = Rx.Observable.throw(new Error('oops!')).startWith(7);\n     * result.subscribe(x => console.log(x), e => console.error(e));\n     *\n     * @example <caption>Map and flattens numbers to the sequence 'a', 'b', 'c', but throw an error for 13</caption>\n     * var interval = Rx.Observable.interval(1000);\n     * var result = interval.mergeMap(x =>\n     *   x === 13 ?\n     *     Rx.Observable.throw('Thirteens are bad') :\n     *     Rx.Observable.of('a', 'b', 'c')\n     * );\n     * result.subscribe(x => console.log(x), e => console.error(e));\n     *\n     * @see {@link create}\n     * @see {@link empty}\n     * @see {@link never}\n     * @see {@link of}\n     *\n     * @param {any} error The particular Error to pass to the error notification.\n     * @param {Scheduler} [scheduler] A {@link IScheduler} to use for scheduling\n     * the emission of the error notification.\n     * @return {Observable} An error Observable: emits only the error notification\n     * using the given error argument.\n     * @static true\n     * @name throw\n     * @owner Observable\n     ",
                   "range": [
                     316,
-                    1955
+                    1956
                   ],
                   "loc": {
                     "start": {
@@ -785,8 +785,8 @@
                 "type": "Identifier",
                 "name": "dispatch",
                 "range": [
-                  2065,
-                  2073
+                  2066,
+                  2074
                 ],
                 "loc": {
                   "start": {
@@ -807,8 +807,8 @@
                     "type": "Identifier",
                     "name": "arg",
                     "range": [
-                      2074,
-                      2077
+                      2075,
+                      2078
                     ],
                     "loc": {
                       "start": {
@@ -839,8 +839,8 @@
                                   "type": "Identifier",
                                   "name": "error",
                                   "range": [
-                                    2097,
-                                    2102
+                                    2098,
+                                    2103
                                   ],
                                   "loc": {
                                     "start": {
@@ -857,8 +857,8 @@
                                   "type": "Identifier",
                                   "name": "error",
                                   "range": [
-                                    2097,
-                                    2102
+                                    2098,
+                                    2103
                                   ],
                                   "loc": {
                                     "start": {
@@ -876,8 +876,8 @@
                                 "shorthand": true,
                                 "computed": false,
                                 "range": [
-                                  2097,
-                                  2102
+                                  2098,
+                                  2103
                                 ],
                                 "loc": {
                                   "start": {
@@ -896,8 +896,8 @@
                                   "type": "Identifier",
                                   "name": "subscriber",
                                   "range": [
-                                    2104,
-                                    2114
+                                    2105,
+                                    2115
                                   ],
                                   "loc": {
                                     "start": {
@@ -914,8 +914,8 @@
                                   "type": "Identifier",
                                   "name": "subscriber",
                                   "range": [
-                                    2104,
-                                    2114
+                                    2105,
+                                    2115
                                   ],
                                   "loc": {
                                     "start": {
@@ -933,8 +933,8 @@
                                 "shorthand": true,
                                 "computed": false,
                                 "range": [
-                                  2104,
-                                  2114
+                                  2105,
+                                  2115
                                 ],
                                 "loc": {
                                   "start": {
@@ -949,8 +949,8 @@
                               }
                             ],
                             "range": [
-                              2095,
-                              2116
+                              2096,
+                              2117
                             ],
                             "loc": {
                               "start": {
@@ -967,8 +967,8 @@
                             "type": "Identifier",
                             "name": "arg",
                             "range": [
-                              2119,
-                              2122
+                              2120,
+                              2123
                             ],
                             "loc": {
                               "start": {
@@ -982,8 +982,8 @@
                             }
                           },
                           "range": [
-                            2095,
-                            2122
+                            2096,
+                            2123
                           ],
                           "loc": {
                             "start": {
@@ -999,8 +999,8 @@
                       ],
                       "kind": "const",
                       "range": [
-                        2089,
-                        2123
+                        2090,
+                        2124
                       ],
                       "loc": {
                         "start": {
@@ -1024,8 +1024,8 @@
                             "type": "Identifier",
                             "name": "subscriber",
                             "range": [
-                              2132,
-                              2142
+                              2133,
+                              2143
                             ],
                             "loc": {
                               "start": {
@@ -1042,8 +1042,8 @@
                             "type": "Identifier",
                             "name": "error",
                             "range": [
-                              2143,
-                              2148
+                              2144,
+                              2149
                             ],
                             "loc": {
                               "start": {
@@ -1057,8 +1057,8 @@
                             }
                           },
                           "range": [
-                            2132,
-                            2148
+                            2133,
+                            2149
                           ],
                           "loc": {
                             "start": {
@@ -1076,8 +1076,8 @@
                             "type": "Identifier",
                             "name": "error",
                             "range": [
-                              2149,
-                              2154
+                              2150,
+                              2155
                             ],
                             "loc": {
                               "start": {
@@ -1092,8 +1092,8 @@
                           }
                         ],
                         "range": [
-                          2132,
-                          2155
+                          2133,
+                          2156
                         ],
                         "loc": {
                           "start": {
@@ -1107,8 +1107,8 @@
                         }
                       },
                       "range": [
-                        2132,
-                        2156
+                        2133,
+                        2157
                       ],
                       "loc": {
                         "start": {
@@ -1123,8 +1123,8 @@
                     }
                   ],
                   "range": [
-                    2079,
-                    2162
+                    2080,
+                    2163
                   ],
                   "loc": {
                     "start": {
@@ -1140,8 +1140,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  2073,
-                  2162
+                  2074,
+                  2163
                 ],
                 "loc": {
                   "start": {
@@ -1157,8 +1157,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                2058,
-                2162
+                2059,
+                2163
               ],
               "loc": {
                 "start": {
@@ -1178,8 +1178,8 @@
                 "type": "Identifier",
                 "name": "_subscribe",
                 "range": [
-                  2167,
-                  2177
+                  2168,
+                  2178
                 ],
                 "loc": {
                   "start": {
@@ -1200,8 +1200,8 @@
                     "type": "Identifier",
                     "name": "subscriber",
                     "range": [
-                      2178,
-                      2188
+                      2179,
+                      2189
                     ],
                     "loc": {
                       "start": {
@@ -1227,8 +1227,8 @@
                             "type": "Identifier",
                             "name": "error",
                             "range": [
-                              2206,
-                              2211
+                              2207,
+                              2212
                             ],
                             "loc": {
                               "start": {
@@ -1247,8 +1247,8 @@
                             "object": {
                               "type": "ThisExpression",
                               "range": [
-                                2214,
-                                2218
+                                2215,
+                                2219
                               ],
                               "loc": {
                                 "start": {
@@ -1265,8 +1265,8 @@
                               "type": "Identifier",
                               "name": "error",
                               "range": [
-                                2219,
-                                2224
+                                2220,
+                                2225
                               ],
                               "loc": {
                                 "start": {
@@ -1280,8 +1280,8 @@
                               }
                             },
                             "range": [
-                              2214,
-                              2224
+                              2215,
+                              2225
                             ],
                             "loc": {
                               "start": {
@@ -1295,8 +1295,8 @@
                             }
                           },
                           "range": [
-                            2206,
-                            2224
+                            2207,
+                            2225
                           ],
                           "loc": {
                             "start": {
@@ -1312,8 +1312,8 @@
                       ],
                       "kind": "const",
                       "range": [
-                        2200,
-                        2225
+                        2201,
+                        2226
                       ],
                       "loc": {
                         "start": {
@@ -1335,8 +1335,8 @@
                             "type": "Identifier",
                             "name": "scheduler",
                             "range": [
-                              2240,
-                              2249
+                              2241,
+                              2250
                             ],
                             "loc": {
                               "start": {
@@ -1355,8 +1355,8 @@
                             "object": {
                               "type": "ThisExpression",
                               "range": [
-                                2252,
-                                2256
+                                2253,
+                                2257
                               ],
                               "loc": {
                                 "start": {
@@ -1373,8 +1373,8 @@
                               "type": "Identifier",
                               "name": "scheduler",
                               "range": [
-                                2257,
-                                2266
+                                2258,
+                                2267
                               ],
                               "loc": {
                                 "start": {
@@ -1388,8 +1388,8 @@
                               }
                             },
                             "range": [
-                              2252,
-                              2266
+                              2253,
+                              2267
                             ],
                             "loc": {
                               "start": {
@@ -1403,8 +1403,8 @@
                             }
                           },
                           "range": [
-                            2240,
-                            2266
+                            2241,
+                            2267
                           ],
                           "loc": {
                             "start": {
@@ -1420,8 +1420,8 @@
                       ],
                       "kind": "const",
                       "range": [
-                        2234,
-                        2267
+                        2235,
+                        2268
                       ],
                       "loc": {
                         "start": {
@@ -1440,8 +1440,8 @@
                         "type": "Identifier",
                         "name": "scheduler",
                         "range": [
-                          2280,
-                          2289
+                          2281,
+                          2290
                         ],
                         "loc": {
                           "start": {
@@ -1468,8 +1468,8 @@
                                   "type": "Identifier",
                                   "name": "scheduler",
                                   "range": [
-                                    2312,
-                                    2321
+                                    2313,
+                                    2322
                                   ],
                                   "loc": {
                                     "start": {
@@ -1486,8 +1486,8 @@
                                   "type": "Identifier",
                                   "name": "schedule",
                                   "range": [
-                                    2322,
-                                    2330
+                                    2323,
+                                    2331
                                   ],
                                   "loc": {
                                     "start": {
@@ -1501,8 +1501,8 @@
                                   }
                                 },
                                 "range": [
-                                  2312,
-                                  2330
+                                  2313,
+                                  2331
                                 ],
                                 "loc": {
                                   "start": {
@@ -1523,8 +1523,8 @@
                                     "type": "Identifier",
                                     "name": "ErrorObservable",
                                     "range": [
-                                      2331,
-                                      2346
+                                      2332,
+                                      2347
                                     ],
                                     "loc": {
                                       "start": {
@@ -1541,8 +1541,8 @@
                                     "type": "Identifier",
                                     "name": "dispatch",
                                     "range": [
-                                      2347,
-                                      2355
+                                      2348,
+                                      2356
                                     ],
                                     "loc": {
                                       "start": {
@@ -1556,8 +1556,8 @@
                                     }
                                   },
                                   "range": [
-                                    2331,
-                                    2355
+                                    2332,
+                                    2356
                                   ],
                                   "loc": {
                                     "start": {
@@ -1575,8 +1575,8 @@
                                   "value": 0,
                                   "raw": "0",
                                   "range": [
-                                    2357,
-                                    2358
+                                    2358,
+                                    2359
                                   ],
                                   "loc": {
                                     "start": {
@@ -1598,8 +1598,8 @@
                                         "type": "Identifier",
                                         "name": "error",
                                         "range": [
-                                          2378,
-                                          2383
+                                          2379,
+                                          2384
                                         ],
                                         "loc": {
                                           "start": {
@@ -1616,8 +1616,8 @@
                                         "type": "Identifier",
                                         "name": "error",
                                         "range": [
-                                          2378,
-                                          2383
+                                          2379,
+                                          2384
                                         ],
                                         "loc": {
                                           "start": {
@@ -1635,8 +1635,8 @@
                                       "shorthand": true,
                                       "computed": false,
                                       "range": [
-                                        2378,
-                                        2383
+                                        2379,
+                                        2384
                                       ],
                                       "loc": {
                                         "start": {
@@ -1655,8 +1655,8 @@
                                         "type": "Identifier",
                                         "name": "subscriber",
                                         "range": [
-                                          2385,
-                                          2395
+                                          2386,
+                                          2396
                                         ],
                                         "loc": {
                                           "start": {
@@ -1673,8 +1673,8 @@
                                         "type": "Identifier",
                                         "name": "subscriber",
                                         "range": [
-                                          2385,
-                                          2395
+                                          2386,
+                                          2396
                                         ],
                                         "loc": {
                                           "start": {
@@ -1692,8 +1692,8 @@
                                       "shorthand": true,
                                       "computed": false,
                                       "range": [
-                                        2385,
-                                        2395
+                                        2386,
+                                        2396
                                       ],
                                       "loc": {
                                         "start": {
@@ -1708,8 +1708,8 @@
                                     }
                                   ],
                                   "range": [
-                                    2360,
-                                    2409
+                                    2361,
+                                    2410
                                   ],
                                   "loc": {
                                     "start": {
@@ -1724,8 +1724,8 @@
                                 }
                               ],
                               "range": [
-                                2312,
-                                2410
+                                2313,
+                                2411
                               ],
                               "loc": {
                                 "start": {
@@ -1739,8 +1739,8 @@
                               }
                             },
                             "range": [
-                              2305,
-                              2411
+                              2306,
+                              2412
                             ],
                             "loc": {
                               "start": {
@@ -1755,8 +1755,8 @@
                           }
                         ],
                         "range": [
-                          2291,
-                          2421
+                          2292,
+                          2422
                         ],
                         "loc": {
                           "start": {
@@ -1783,8 +1783,8 @@
                                   "type": "Identifier",
                                   "name": "subscriber",
                                   "range": [
-                                    2449,
-                                    2459
+                                    2450,
+                                    2460
                                   ],
                                   "loc": {
                                     "start": {
@@ -1801,8 +1801,8 @@
                                   "type": "Identifier",
                                   "name": "error",
                                   "range": [
-                                    2460,
-                                    2465
+                                    2461,
+                                    2466
                                   ],
                                   "loc": {
                                     "start": {
@@ -1816,8 +1816,8 @@
                                   }
                                 },
                                 "range": [
-                                  2449,
-                                  2465
+                                  2450,
+                                  2466
                                 ],
                                 "loc": {
                                   "start": {
@@ -1835,8 +1835,8 @@
                                   "type": "Identifier",
                                   "name": "error",
                                   "range": [
-                                    2466,
-                                    2471
+                                    2467,
+                                    2472
                                   ],
                                   "loc": {
                                     "start": {
@@ -1851,8 +1851,8 @@
                                 }
                               ],
                               "range": [
-                                2449,
-                                2472
+                                2450,
+                                2473
                               ],
                               "loc": {
                                 "start": {
@@ -1866,8 +1866,8 @@
                               }
                             },
                             "range": [
-                              2449,
-                              2473
+                              2450,
+                              2474
                             ],
                             "loc": {
                               "start": {
@@ -1882,8 +1882,8 @@
                           }
                         ],
                         "range": [
-                          2435,
-                          2483
+                          2436,
+                          2484
                         ],
                         "loc": {
                           "start": {
@@ -1897,8 +1897,8 @@
                         }
                       },
                       "range": [
-                        2276,
-                        2483
+                        2277,
+                        2484
                       ],
                       "loc": {
                         "start": {
@@ -1913,8 +1913,8 @@
                     }
                   ],
                   "range": [
-                    2190,
-                    2489
+                    2191,
+                    2490
                   ],
                   "loc": {
                     "start": {
@@ -1930,8 +1930,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  2177,
-                  2489
+                  2178,
+                  2490
                 ],
                 "loc": {
                   "start": {
@@ -1947,8 +1947,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                2167,
-                2489
+                2168,
+                2490
               ],
               "loc": {
                 "start": {
@@ -1965,7 +1965,7 @@
           ],
           "range": [
             187,
-            2491
+            2492
           ],
           "loc": {
             "start": {
@@ -1980,7 +1980,7 @@
         },
         "range": [
           146,
-          2491
+          2492
         ],
         "loc": {
           "start": {
@@ -2017,8 +2017,8 @@
             "type": "Line",
             "value": "# sourceMappingURL=ErrorObservable.js.map",
             "range": [
-              2492,
-              2535
+              2493,
+              2536
             ],
             "loc": {
               "start": {
@@ -2037,7 +2037,7 @@
       "source": null,
       "range": [
         139,
-        2491
+        2492
       ],
       "loc": {
         "start": {
@@ -2074,8 +2074,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=ErrorObservable.js.map",
           "range": [
-            2492,
-            2535
+            2493,
+            2536
           ],
           "loc": {
             "start": {
@@ -2094,7 +2094,7 @@
   "sourceType": "module",
   "range": [
     0,
-    2491
+    2492
   ],
   "loc": {
     "start": {
@@ -2127,10 +2127,10 @@
     },
     {
       "type": "Block",
-      "value": "*\n     * Creates an Observable that emits no items to the Observer and immediately\n     * emits an error notification.\n     *\n     * <span class=\"informal\">Just emits 'error', and nothing else.\n     * </span>\n     *\n     * <img src=\"./img/throw.png\" width=\"100%\">\n     *\n     * This static operator is useful for creating a simple Observable that only\n     * emits the error notification. It can be used for composing with other\n     * Observables, such as in a {@link mergeMap}.\n     *\n     * @example <caption>Emit the number 7, then emit an error.</caption>\n     * var result = Rx.Observable.throw(new Error('oops!')).startWith(7);\n     * result.subscribe(x => console.log(x), e => console.error(e));\n     *\n     * @example <caption>Map and flattens numbers to the sequence 'a', 'b', 'c', but throw an error for 13</caption>\n     * var interval = Rx.Observable.interval(1000);\n     * var result = interval.mergeMap(x =>\n     *   x === 13 ?\n     *     Rx.Observable.throw('Thirteens are bad') :\n     *     Rx.Observable.of('a', 'b', 'c')\n     * );\n     * result.subscribe(x => console.log(x), e => console.error(e));\n     *\n     * @see {@link create}\n     * @see {@link empty}\n     * @see {@link never}\n     * @see {@link of}\n     *\n     * @param {any} error The particular Error to pass to the error notification.\n     * @param {Scheduler} [scheduler] A {@link Scheduler} to use for scheduling\n     * the emission of the error notification.\n     * @return {Observable} An error Observable: emits only the error notification\n     * using the given error argument.\n     * @static true\n     * @name throw\n     * @owner Observable\n     ",
+      "value": "*\n     * Creates an Observable that emits no items to the Observer and immediately\n     * emits an error notification.\n     *\n     * <span class=\"informal\">Just emits 'error', and nothing else.\n     * </span>\n     *\n     * <img src=\"./img/throw.png\" width=\"100%\">\n     *\n     * This static operator is useful for creating a simple Observable that only\n     * emits the error notification. It can be used for composing with other\n     * Observables, such as in a {@link mergeMap}.\n     *\n     * @example <caption>Emit the number 7, then emit an error.</caption>\n     * var result = Rx.Observable.throw(new Error('oops!')).startWith(7);\n     * result.subscribe(x => console.log(x), e => console.error(e));\n     *\n     * @example <caption>Map and flattens numbers to the sequence 'a', 'b', 'c', but throw an error for 13</caption>\n     * var interval = Rx.Observable.interval(1000);\n     * var result = interval.mergeMap(x =>\n     *   x === 13 ?\n     *     Rx.Observable.throw('Thirteens are bad') :\n     *     Rx.Observable.of('a', 'b', 'c')\n     * );\n     * result.subscribe(x => console.log(x), e => console.error(e));\n     *\n     * @see {@link create}\n     * @see {@link empty}\n     * @see {@link never}\n     * @see {@link of}\n     *\n     * @param {any} error The particular Error to pass to the error notification.\n     * @param {Scheduler} [scheduler] A {@link IScheduler} to use for scheduling\n     * the emission of the error notification.\n     * @return {Observable} An error Observable: emits only the error notification\n     * using the given error argument.\n     * @static true\n     * @name throw\n     * @owner Observable\n     ",
       "range": [
         316,
-        1955
+        1956
       ],
       "loc": {
         "start": {
@@ -2147,8 +2147,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=ErrorObservable.js.map",
       "range": [
-        2492,
-        2535
+        2493,
+        2536
       ],
       "loc": {
         "start": {

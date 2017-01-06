@@ -185,10 +185,10 @@
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * Ignores source values for `duration` milliseconds, then emits the most recent\n * value from the source Observable, then repeats this process.\n *\n * <span class=\"informal\">When it sees a source values, it ignores that plus\n * the next ones for `duration` milliseconds, and then it emits the most recent\n * value from the source.</span>\n *\n * <img src=\"./img/auditTime.png\" width=\"100%\">\n *\n * `auditTime` is similar to `throttleTime`, but emits the last value from the\n * silenced time window, instead of the first value. `auditTime` emits the most\n * recent value from the source Observable on the output Observable as soon as\n * its internal timer becomes disabled, and ignores source values while the\n * timer is enabled. Initially, the timer is disabled. As soon as the first\n * source value arrives, the timer is enabled. After `duration` milliseconds (or\n * the time unit determined internally by the optional `scheduler`) has passed,\n * the timer is disabled, then the most recent source value is emitted on the\n * output Observable, and this process repeats for the next source value.\n * Optionally takes a {@link Scheduler} for managing timers.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.auditTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sampleTime}\n * @see {@link throttleTime}\n *\n * @param {number} duration Time to wait before emitting the most recent source\n * value, measured in milliseconds or the time unit determined internally\n * by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link Scheduler} to use for\n * managing the timers that handle the rate-limiting behavior.\n * @return {Observable<T>} An Observable that performs rate-limiting of\n * emissions from the source Observable.\n * @method auditTime\n * @owner Observable\n ",
+          "value": "*\n * Ignores source values for `duration` milliseconds, then emits the most recent\n * value from the source Observable, then repeats this process.\n *\n * <span class=\"informal\">When it sees a source values, it ignores that plus\n * the next ones for `duration` milliseconds, and then it emits the most recent\n * value from the source.</span>\n *\n * <img src=\"./img/auditTime.png\" width=\"100%\">\n *\n * `auditTime` is similar to `throttleTime`, but emits the last value from the\n * silenced time window, instead of the first value. `auditTime` emits the most\n * recent value from the source Observable on the output Observable as soon as\n * its internal timer becomes disabled, and ignores source values while the\n * timer is enabled. Initially, the timer is disabled. As soon as the first\n * source value arrives, the timer is enabled. After `duration` milliseconds (or\n * the time unit determined internally by the optional `scheduler`) has passed,\n * the timer is disabled, then the most recent source value is emitted on the\n * output Observable, and this process repeats for the next source value.\n * Optionally takes a {@link IScheduler} for managing timers.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.auditTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sampleTime}\n * @see {@link throttleTime}\n *\n * @param {number} duration Time to wait before emitting the most recent source\n * value, measured in milliseconds or the time unit determined internally\n * by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for\n * managing the timers that handle the rate-limiting behavior.\n * @return {Observable<T>} An Observable that performs rate-limiting of\n * emissions from the source Observable.\n * @method auditTime\n * @owner Observable\n ",
           "range": [
             88,
-            2093
+            2095
           ],
           "loc": {
             "start": {
@@ -211,8 +211,8 @@
           "type": "Identifier",
           "name": "auditTime",
           "range": [
-            2110,
-            2119
+            2112,
+            2121
           ],
           "loc": {
             "start": {
@@ -230,8 +230,8 @@
             "type": "Identifier",
             "name": "duration",
             "range": [
-              2120,
-              2128
+              2122,
+              2130
             ],
             "loc": {
               "start": {
@@ -250,8 +250,8 @@
               "type": "Identifier",
               "name": "scheduler",
               "range": [
-                2130,
-                2139
+                2132,
+                2141
               ],
               "loc": {
                 "start": {
@@ -268,8 +268,8 @@
               "type": "Identifier",
               "name": "async",
               "range": [
-                2142,
-                2147
+                2144,
+                2149
               ],
               "loc": {
                 "start": {
@@ -283,8 +283,8 @@
               }
             },
             "range": [
-              2130,
-              2147
+              2132,
+              2149
             ],
             "loc": {
               "start": {
@@ -311,8 +311,8 @@
                   "object": {
                     "type": "ThisExpression",
                     "range": [
-                      2162,
-                      2166
+                      2164,
+                      2168
                     ],
                     "loc": {
                       "start": {
@@ -329,8 +329,8 @@
                     "type": "Identifier",
                     "name": "lift",
                     "range": [
-                      2167,
-                      2171
+                      2169,
+                      2173
                     ],
                     "loc": {
                       "start": {
@@ -344,8 +344,8 @@
                     }
                   },
                   "range": [
-                    2162,
-                    2171
+                    2164,
+                    2173
                   ],
                   "loc": {
                     "start": {
@@ -365,8 +365,8 @@
                       "type": "Identifier",
                       "name": "AuditTimeOperator",
                       "range": [
-                        2176,
-                        2193
+                        2178,
+                        2195
                       ],
                       "loc": {
                         "start": {
@@ -384,8 +384,8 @@
                         "type": "Identifier",
                         "name": "duration",
                         "range": [
-                          2194,
-                          2202
+                          2196,
+                          2204
                         ],
                         "loc": {
                           "start": {
@@ -402,8 +402,8 @@
                         "type": "Identifier",
                         "name": "scheduler",
                         "range": [
-                          2204,
-                          2213
+                          2206,
+                          2215
                         ],
                         "loc": {
                           "start": {
@@ -418,8 +418,8 @@
                       }
                     ],
                     "range": [
-                      2172,
-                      2214
+                      2174,
+                      2216
                     ],
                     "loc": {
                       "start": {
@@ -434,8 +434,8 @@
                   }
                 ],
                 "range": [
-                  2162,
-                  2215
+                  2164,
+                  2217
                 ],
                 "loc": {
                   "start": {
@@ -449,8 +449,8 @@
                 }
               },
               "range": [
-                2155,
-                2216
+                2157,
+                2218
               ],
               "loc": {
                 "start": {
@@ -465,8 +465,8 @@
             }
           ],
           "range": [
-            2149,
-            2218
+            2151,
+            2220
           ],
           "loc": {
             "start": {
@@ -482,8 +482,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          2101,
-          2218
+          2103,
+          2220
         ],
         "loc": {
           "start": {
@@ -498,10 +498,10 @@
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * Ignores source values for `duration` milliseconds, then emits the most recent\n * value from the source Observable, then repeats this process.\n *\n * <span class=\"informal\">When it sees a source values, it ignores that plus\n * the next ones for `duration` milliseconds, and then it emits the most recent\n * value from the source.</span>\n *\n * <img src=\"./img/auditTime.png\" width=\"100%\">\n *\n * `auditTime` is similar to `throttleTime`, but emits the last value from the\n * silenced time window, instead of the first value. `auditTime` emits the most\n * recent value from the source Observable on the output Observable as soon as\n * its internal timer becomes disabled, and ignores source values while the\n * timer is enabled. Initially, the timer is disabled. As soon as the first\n * source value arrives, the timer is enabled. After `duration` milliseconds (or\n * the time unit determined internally by the optional `scheduler`) has passed,\n * the timer is disabled, then the most recent source value is emitted on the\n * output Observable, and this process repeats for the next source value.\n * Optionally takes a {@link Scheduler} for managing timers.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.auditTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sampleTime}\n * @see {@link throttleTime}\n *\n * @param {number} duration Time to wait before emitting the most recent source\n * value, measured in milliseconds or the time unit determined internally\n * by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link Scheduler} to use for\n * managing the timers that handle the rate-limiting behavior.\n * @return {Observable<T>} An Observable that performs rate-limiting of\n * emissions from the source Observable.\n * @method auditTime\n * @owner Observable\n ",
+            "value": "*\n * Ignores source values for `duration` milliseconds, then emits the most recent\n * value from the source Observable, then repeats this process.\n *\n * <span class=\"informal\">When it sees a source values, it ignores that plus\n * the next ones for `duration` milliseconds, and then it emits the most recent\n * value from the source.</span>\n *\n * <img src=\"./img/auditTime.png\" width=\"100%\">\n *\n * `auditTime` is similar to `throttleTime`, but emits the last value from the\n * silenced time window, instead of the first value. `auditTime` emits the most\n * recent value from the source Observable on the output Observable as soon as\n * its internal timer becomes disabled, and ignores source values while the\n * timer is enabled. Initially, the timer is disabled. As soon as the first\n * source value arrives, the timer is enabled. After `duration` milliseconds (or\n * the time unit determined internally by the optional `scheduler`) has passed,\n * the timer is disabled, then the most recent source value is emitted on the\n * output Observable, and this process repeats for the next source value.\n * Optionally takes a {@link IScheduler} for managing timers.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.auditTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sampleTime}\n * @see {@link throttleTime}\n *\n * @param {number} duration Time to wait before emitting the most recent source\n * value, measured in milliseconds or the time unit determined internally\n * by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for\n * managing the timers that handle the rate-limiting behavior.\n * @return {Observable<T>} An Observable that performs rate-limiting of\n * emissions from the source Observable.\n * @method auditTime\n * @owner Observable\n ",
             "range": [
               88,
-              2093
+              2095
             ],
             "loc": {
               "start": {
@@ -520,8 +520,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        2094,
-        2218
+        2096,
+        2220
       ],
       "loc": {
         "start": {
@@ -536,10 +536,10 @@
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * Ignores source values for `duration` milliseconds, then emits the most recent\n * value from the source Observable, then repeats this process.\n *\n * <span class=\"informal\">When it sees a source values, it ignores that plus\n * the next ones for `duration` milliseconds, and then it emits the most recent\n * value from the source.</span>\n *\n * <img src=\"./img/auditTime.png\" width=\"100%\">\n *\n * `auditTime` is similar to `throttleTime`, but emits the last value from the\n * silenced time window, instead of the first value. `auditTime` emits the most\n * recent value from the source Observable on the output Observable as soon as\n * its internal timer becomes disabled, and ignores source values while the\n * timer is enabled. Initially, the timer is disabled. As soon as the first\n * source value arrives, the timer is enabled. After `duration` milliseconds (or\n * the time unit determined internally by the optional `scheduler`) has passed,\n * the timer is disabled, then the most recent source value is emitted on the\n * output Observable, and this process repeats for the next source value.\n * Optionally takes a {@link Scheduler} for managing timers.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.auditTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sampleTime}\n * @see {@link throttleTime}\n *\n * @param {number} duration Time to wait before emitting the most recent source\n * value, measured in milliseconds or the time unit determined internally\n * by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link Scheduler} to use for\n * managing the timers that handle the rate-limiting behavior.\n * @return {Observable<T>} An Observable that performs rate-limiting of\n * emissions from the source Observable.\n * @method auditTime\n * @owner Observable\n ",
+          "value": "*\n * Ignores source values for `duration` milliseconds, then emits the most recent\n * value from the source Observable, then repeats this process.\n *\n * <span class=\"informal\">When it sees a source values, it ignores that plus\n * the next ones for `duration` milliseconds, and then it emits the most recent\n * value from the source.</span>\n *\n * <img src=\"./img/auditTime.png\" width=\"100%\">\n *\n * `auditTime` is similar to `throttleTime`, but emits the last value from the\n * silenced time window, instead of the first value. `auditTime` emits the most\n * recent value from the source Observable on the output Observable as soon as\n * its internal timer becomes disabled, and ignores source values while the\n * timer is enabled. Initially, the timer is disabled. As soon as the first\n * source value arrives, the timer is enabled. After `duration` milliseconds (or\n * the time unit determined internally by the optional `scheduler`) has passed,\n * the timer is disabled, then the most recent source value is emitted on the\n * output Observable, and this process repeats for the next source value.\n * Optionally takes a {@link IScheduler} for managing timers.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.auditTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sampleTime}\n * @see {@link throttleTime}\n *\n * @param {number} duration Time to wait before emitting the most recent source\n * value, measured in milliseconds or the time unit determined internally\n * by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for\n * managing the timers that handle the rate-limiting behavior.\n * @return {Observable<T>} An Observable that performs rate-limiting of\n * emissions from the source Observable.\n * @method auditTime\n * @owner Observable\n ",
           "range": [
             88,
-            2093
+            2095
           ],
           "loc": {
             "start": {
@@ -560,8 +560,8 @@
         "type": "Identifier",
         "name": "AuditTimeOperator",
         "range": [
-          2225,
-          2242
+          2227,
+          2244
         ],
         "loc": {
           "start": {
@@ -584,8 +584,8 @@
               "type": "Identifier",
               "name": "constructor",
               "range": [
-                2249,
-                2260
+                2251,
+                2262
               ],
               "loc": {
                 "start": {
@@ -606,8 +606,8 @@
                   "type": "Identifier",
                   "name": "duration",
                   "range": [
-                    2261,
-                    2269
+                    2263,
+                    2271
                   ],
                   "loc": {
                     "start": {
@@ -624,8 +624,8 @@
                   "type": "Identifier",
                   "name": "scheduler",
                   "range": [
-                    2271,
-                    2280
+                    2273,
+                    2282
                   ],
                   "loc": {
                     "start": {
@@ -653,8 +653,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            2292,
-                            2296
+                            2294,
+                            2298
                           ],
                           "loc": {
                             "start": {
@@ -671,8 +671,8 @@
                           "type": "Identifier",
                           "name": "duration",
                           "range": [
-                            2297,
-                            2305
+                            2299,
+                            2307
                           ],
                           "loc": {
                             "start": {
@@ -686,8 +686,8 @@
                           }
                         },
                         "range": [
-                          2292,
-                          2305
+                          2294,
+                          2307
                         ],
                         "loc": {
                           "start": {
@@ -704,8 +704,8 @@
                         "type": "Identifier",
                         "name": "duration",
                         "range": [
-                          2308,
-                          2316
+                          2310,
+                          2318
                         ],
                         "loc": {
                           "start": {
@@ -719,8 +719,8 @@
                         }
                       },
                       "range": [
-                        2292,
-                        2316
+                        2294,
+                        2318
                       ],
                       "loc": {
                         "start": {
@@ -734,8 +734,8 @@
                       }
                     },
                     "range": [
-                      2292,
-                      2317
+                      2294,
+                      2319
                     ],
                     "loc": {
                       "start": {
@@ -759,8 +759,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            2326,
-                            2330
+                            2328,
+                            2332
                           ],
                           "loc": {
                             "start": {
@@ -777,8 +777,8 @@
                           "type": "Identifier",
                           "name": "scheduler",
                           "range": [
-                            2331,
-                            2340
+                            2333,
+                            2342
                           ],
                           "loc": {
                             "start": {
@@ -792,8 +792,8 @@
                           }
                         },
                         "range": [
-                          2326,
-                          2340
+                          2328,
+                          2342
                         ],
                         "loc": {
                           "start": {
@@ -810,8 +810,8 @@
                         "type": "Identifier",
                         "name": "scheduler",
                         "range": [
-                          2343,
-                          2352
+                          2345,
+                          2354
                         ],
                         "loc": {
                           "start": {
@@ -825,8 +825,8 @@
                         }
                       },
                       "range": [
-                        2326,
-                        2352
+                        2328,
+                        2354
                       ],
                       "loc": {
                         "start": {
@@ -840,8 +840,8 @@
                       }
                     },
                     "range": [
-                      2326,
-                      2353
+                      2328,
+                      2355
                     ],
                     "loc": {
                       "start": {
@@ -856,8 +856,8 @@
                   }
                 ],
                 "range": [
-                  2282,
-                  2359
+                  2284,
+                  2361
                 ],
                 "loc": {
                   "start": {
@@ -873,8 +873,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                2260,
-                2359
+                2262,
+                2361
               ],
               "loc": {
                 "start": {
@@ -890,8 +890,8 @@
             "kind": "constructor",
             "computed": false,
             "range": [
-              2249,
-              2359
+              2251,
+              2361
             ],
             "loc": {
               "start": {
@@ -911,8 +911,8 @@
               "type": "Identifier",
               "name": "call",
               "range": [
-                2364,
-                2368
+                2366,
+                2370
               ],
               "loc": {
                 "start": {
@@ -933,8 +933,8 @@
                   "type": "Identifier",
                   "name": "subscriber",
                   "range": [
-                    2369,
-                    2379
+                    2371,
+                    2381
                   ],
                   "loc": {
                     "start": {
@@ -951,8 +951,8 @@
                   "type": "Identifier",
                   "name": "source",
                   "range": [
-                    2381,
-                    2387
+                    2383,
+                    2389
                   ],
                   "loc": {
                     "start": {
@@ -980,8 +980,8 @@
                           "type": "Identifier",
                           "name": "source",
                           "range": [
-                            2406,
-                            2412
+                            2408,
+                            2414
                           ],
                           "loc": {
                             "start": {
@@ -996,10 +996,10 @@
                         },
                         "property": {
                           "type": "Identifier",
-                          "name": "_subscribe",
+                          "name": "subscribe",
                           "range": [
-                            2413,
-                            2423
+                            2415,
+                            2424
                           ],
                           "loc": {
                             "start": {
@@ -1008,13 +1008,13 @@
                             },
                             "end": {
                               "line": 54,
-                              "column": 32
+                              "column": 31
                             }
                           }
                         },
                         "range": [
-                          2406,
-                          2423
+                          2408,
+                          2424
                         ],
                         "loc": {
                           "start": {
@@ -1023,7 +1023,7 @@
                           },
                           "end": {
                             "line": 54,
-                            "column": 32
+                            "column": 31
                           }
                         }
                       },
@@ -1034,17 +1034,17 @@
                             "type": "Identifier",
                             "name": "AuditTimeSubscriber",
                             "range": [
-                              2428,
-                              2447
+                              2429,
+                              2448
                             ],
                             "loc": {
                               "start": {
                                 "line": 54,
-                                "column": 37
+                                "column": 36
                               },
                               "end": {
                                 "line": 54,
-                                "column": 56
+                                "column": 55
                               }
                             }
                           },
@@ -1053,17 +1053,17 @@
                               "type": "Identifier",
                               "name": "subscriber",
                               "range": [
-                                2448,
-                                2458
+                                2449,
+                                2459
                               ],
                               "loc": {
                                 "start": {
                                   "line": 54,
-                                  "column": 57
+                                  "column": 56
                                 },
                                 "end": {
                                   "line": 54,
-                                  "column": 67
+                                  "column": 66
                                 }
                               }
                             },
@@ -1073,17 +1073,17 @@
                               "object": {
                                 "type": "ThisExpression",
                                 "range": [
-                                  2460,
-                                  2464
+                                  2461,
+                                  2465
                                 ],
                                 "loc": {
                                   "start": {
                                     "line": 54,
-                                    "column": 69
+                                    "column": 68
                                   },
                                   "end": {
                                     "line": 54,
-                                    "column": 73
+                                    "column": 72
                                   }
                                 }
                               },
@@ -1091,32 +1091,32 @@
                                 "type": "Identifier",
                                 "name": "duration",
                                 "range": [
-                                  2465,
-                                  2473
+                                  2466,
+                                  2474
                                 ],
                                 "loc": {
                                   "start": {
                                     "line": 54,
-                                    "column": 74
+                                    "column": 73
                                   },
                                   "end": {
                                     "line": 54,
-                                    "column": 82
+                                    "column": 81
                                   }
                                 }
                               },
                               "range": [
-                                2460,
-                                2473
+                                2461,
+                                2474
                               ],
                               "loc": {
                                 "start": {
                                   "line": 54,
-                                  "column": 69
+                                  "column": 68
                                 },
                                 "end": {
                                   "line": 54,
-                                  "column": 82
+                                  "column": 81
                                 }
                               }
                             },
@@ -1126,17 +1126,17 @@
                               "object": {
                                 "type": "ThisExpression",
                                 "range": [
-                                  2475,
-                                  2479
+                                  2476,
+                                  2480
                                 ],
                                 "loc": {
                                   "start": {
                                     "line": 54,
-                                    "column": 84
+                                    "column": 83
                                   },
                                   "end": {
                                     "line": 54,
-                                    "column": 88
+                                    "column": 87
                                   }
                                 }
                               },
@@ -1144,55 +1144,55 @@
                                 "type": "Identifier",
                                 "name": "scheduler",
                                 "range": [
-                                  2480,
-                                  2489
+                                  2481,
+                                  2490
                                 ],
                                 "loc": {
                                   "start": {
                                     "line": 54,
-                                    "column": 89
+                                    "column": 88
                                   },
                                   "end": {
                                     "line": 54,
-                                    "column": 98
+                                    "column": 97
                                   }
                                 }
                               },
                               "range": [
-                                2475,
-                                2489
+                                2476,
+                                2490
                               ],
                               "loc": {
                                 "start": {
                                   "line": 54,
-                                  "column": 84
+                                  "column": 83
                                 },
                                 "end": {
                                   "line": 54,
-                                  "column": 98
+                                  "column": 97
                                 }
                               }
                             }
                           ],
                           "range": [
-                            2424,
-                            2490
+                            2425,
+                            2491
                           ],
                           "loc": {
                             "start": {
                               "line": 54,
-                              "column": 33
+                              "column": 32
                             },
                             "end": {
                               "line": 54,
-                              "column": 99
+                              "column": 98
                             }
                           }
                         }
                       ],
                       "range": [
-                        2406,
-                        2491
+                        2408,
+                        2492
                       ],
                       "loc": {
                         "start": {
@@ -1201,13 +1201,13 @@
                         },
                         "end": {
                           "line": 54,
-                          "column": 100
+                          "column": 99
                         }
                       }
                     },
                     "range": [
-                      2399,
-                      2492
+                      2401,
+                      2493
                     ],
                     "loc": {
                       "start": {
@@ -1216,14 +1216,14 @@
                       },
                       "end": {
                         "line": 54,
-                        "column": 101
+                        "column": 100
                       }
                     }
                   }
                 ],
                 "range": [
-                  2389,
-                  2498
+                  2391,
+                  2499
                 ],
                 "loc": {
                   "start": {
@@ -1239,8 +1239,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                2368,
-                2498
+                2370,
+                2499
               ],
               "loc": {
                 "start": {
@@ -1256,8 +1256,8 @@
             "kind": "method",
             "computed": false,
             "range": [
-              2364,
-              2498
+              2366,
+              2499
             ],
             "loc": {
               "start": {
@@ -1273,8 +1273,8 @@
           }
         ],
         "range": [
-          2243,
-          2500
+          2245,
+          2501
         ],
         "loc": {
           "start": {
@@ -1288,8 +1288,8 @@
         }
       },
       "range": [
-        2219,
-        2500
+        2221,
+        2501
       ],
       "loc": {
         "start": {
@@ -1306,8 +1306,8 @@
           "type": "Block",
           "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
           "range": [
-            2501,
-            2592
+            2502,
+            2593
           ],
           "loc": {
             "start": {
@@ -1328,8 +1328,8 @@
         "type": "Identifier",
         "name": "AuditTimeSubscriber",
         "range": [
-          2599,
-          2618
+          2600,
+          2619
         ],
         "loc": {
           "start": {
@@ -1346,8 +1346,8 @@
         "type": "Identifier",
         "name": "Subscriber",
         "range": [
-          2627,
-          2637
+          2628,
+          2638
         ],
         "loc": {
           "start": {
@@ -1369,8 +1369,8 @@
               "type": "Identifier",
               "name": "constructor",
               "range": [
-                2644,
-                2655
+                2645,
+                2656
               ],
               "loc": {
                 "start": {
@@ -1391,8 +1391,8 @@
                   "type": "Identifier",
                   "name": "destination",
                   "range": [
-                    2656,
-                    2667
+                    2657,
+                    2668
                   ],
                   "loc": {
                     "start": {
@@ -1409,8 +1409,8 @@
                   "type": "Identifier",
                   "name": "duration",
                   "range": [
-                    2669,
-                    2677
+                    2670,
+                    2678
                   ],
                   "loc": {
                     "start": {
@@ -1427,8 +1427,8 @@
                   "type": "Identifier",
                   "name": "scheduler",
                   "range": [
-                    2679,
-                    2688
+                    2680,
+                    2689
                   ],
                   "loc": {
                     "start": {
@@ -1452,8 +1452,8 @@
                       "callee": {
                         "type": "Super",
                         "range": [
-                          2700,
-                          2705
+                          2701,
+                          2706
                         ],
                         "loc": {
                           "start": {
@@ -1471,8 +1471,8 @@
                           "type": "Identifier",
                           "name": "destination",
                           "range": [
-                            2706,
-                            2717
+                            2707,
+                            2718
                           ],
                           "loc": {
                             "start": {
@@ -1487,8 +1487,8 @@
                         }
                       ],
                       "range": [
-                        2700,
-                        2718
+                        2701,
+                        2719
                       ],
                       "loc": {
                         "start": {
@@ -1502,8 +1502,8 @@
                       }
                     },
                     "range": [
-                      2700,
-                      2719
+                      2701,
+                      2720
                     ],
                     "loc": {
                       "start": {
@@ -1527,8 +1527,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            2728,
-                            2732
+                            2729,
+                            2733
                           ],
                           "loc": {
                             "start": {
@@ -1545,8 +1545,8 @@
                           "type": "Identifier",
                           "name": "duration",
                           "range": [
-                            2733,
-                            2741
+                            2734,
+                            2742
                           ],
                           "loc": {
                             "start": {
@@ -1560,8 +1560,8 @@
                           }
                         },
                         "range": [
-                          2728,
-                          2741
+                          2729,
+                          2742
                         ],
                         "loc": {
                           "start": {
@@ -1578,8 +1578,8 @@
                         "type": "Identifier",
                         "name": "duration",
                         "range": [
-                          2744,
-                          2752
+                          2745,
+                          2753
                         ],
                         "loc": {
                           "start": {
@@ -1593,8 +1593,8 @@
                         }
                       },
                       "range": [
-                        2728,
-                        2752
+                        2729,
+                        2753
                       ],
                       "loc": {
                         "start": {
@@ -1608,8 +1608,8 @@
                       }
                     },
                     "range": [
-                      2728,
-                      2753
+                      2729,
+                      2754
                     ],
                     "loc": {
                       "start": {
@@ -1633,8 +1633,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            2762,
-                            2766
+                            2763,
+                            2767
                           ],
                           "loc": {
                             "start": {
@@ -1651,8 +1651,8 @@
                           "type": "Identifier",
                           "name": "scheduler",
                           "range": [
-                            2767,
-                            2776
+                            2768,
+                            2777
                           ],
                           "loc": {
                             "start": {
@@ -1666,8 +1666,8 @@
                           }
                         },
                         "range": [
-                          2762,
-                          2776
+                          2763,
+                          2777
                         ],
                         "loc": {
                           "start": {
@@ -1684,8 +1684,8 @@
                         "type": "Identifier",
                         "name": "scheduler",
                         "range": [
-                          2779,
-                          2788
+                          2780,
+                          2789
                         ],
                         "loc": {
                           "start": {
@@ -1699,8 +1699,8 @@
                         }
                       },
                       "range": [
-                        2762,
-                        2788
+                        2763,
+                        2789
                       ],
                       "loc": {
                         "start": {
@@ -1714,8 +1714,8 @@
                       }
                     },
                     "range": [
-                      2762,
-                      2789
+                      2763,
+                      2790
                     ],
                     "loc": {
                       "start": {
@@ -1739,8 +1739,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            2798,
-                            2802
+                            2799,
+                            2803
                           ],
                           "loc": {
                             "start": {
@@ -1757,8 +1757,8 @@
                           "type": "Identifier",
                           "name": "hasValue",
                           "range": [
-                            2803,
-                            2811
+                            2804,
+                            2812
                           ],
                           "loc": {
                             "start": {
@@ -1772,8 +1772,8 @@
                           }
                         },
                         "range": [
-                          2798,
-                          2811
+                          2799,
+                          2812
                         ],
                         "loc": {
                           "start": {
@@ -1791,8 +1791,8 @@
                         "value": false,
                         "raw": "false",
                         "range": [
-                          2814,
-                          2819
+                          2815,
+                          2820
                         ],
                         "loc": {
                           "start": {
@@ -1806,8 +1806,8 @@
                         }
                       },
                       "range": [
-                        2798,
-                        2819
+                        2799,
+                        2820
                       ],
                       "loc": {
                         "start": {
@@ -1821,8 +1821,8 @@
                       }
                     },
                     "range": [
-                      2798,
-                      2820
+                      2799,
+                      2821
                     ],
                     "loc": {
                       "start": {
@@ -1837,8 +1837,8 @@
                   }
                 ],
                 "range": [
-                  2690,
-                  2826
+                  2691,
+                  2827
                 ],
                 "loc": {
                   "start": {
@@ -1854,8 +1854,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                2655,
-                2826
+                2656,
+                2827
               ],
               "loc": {
                 "start": {
@@ -1871,8 +1871,8 @@
             "kind": "constructor",
             "computed": false,
             "range": [
-              2644,
-              2826
+              2645,
+              2827
             ],
             "loc": {
               "start": {
@@ -1892,8 +1892,8 @@
               "type": "Identifier",
               "name": "_next",
               "range": [
-                2831,
-                2836
+                2832,
+                2837
               ],
               "loc": {
                 "start": {
@@ -1914,8 +1914,8 @@
                   "type": "Identifier",
                   "name": "value",
                   "range": [
-                    2837,
-                    2842
+                    2838,
+                    2843
                   ],
                   "loc": {
                     "start": {
@@ -1943,8 +1943,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            2854,
-                            2858
+                            2855,
+                            2859
                           ],
                           "loc": {
                             "start": {
@@ -1961,8 +1961,8 @@
                           "type": "Identifier",
                           "name": "value",
                           "range": [
-                            2859,
-                            2864
+                            2860,
+                            2865
                           ],
                           "loc": {
                             "start": {
@@ -1976,8 +1976,8 @@
                           }
                         },
                         "range": [
-                          2854,
-                          2864
+                          2855,
+                          2865
                         ],
                         "loc": {
                           "start": {
@@ -1994,8 +1994,8 @@
                         "type": "Identifier",
                         "name": "value",
                         "range": [
-                          2867,
-                          2872
+                          2868,
+                          2873
                         ],
                         "loc": {
                           "start": {
@@ -2009,8 +2009,8 @@
                         }
                       },
                       "range": [
-                        2854,
-                        2872
+                        2855,
+                        2873
                       ],
                       "loc": {
                         "start": {
@@ -2024,8 +2024,8 @@
                       }
                     },
                     "range": [
-                      2854,
-                      2873
+                      2855,
+                      2874
                     ],
                     "loc": {
                       "start": {
@@ -2049,8 +2049,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            2882,
-                            2886
+                            2883,
+                            2887
                           ],
                           "loc": {
                             "start": {
@@ -2067,8 +2067,8 @@
                           "type": "Identifier",
                           "name": "hasValue",
                           "range": [
-                            2887,
-                            2895
+                            2888,
+                            2896
                           ],
                           "loc": {
                             "start": {
@@ -2082,8 +2082,8 @@
                           }
                         },
                         "range": [
-                          2882,
-                          2895
+                          2883,
+                          2896
                         ],
                         "loc": {
                           "start": {
@@ -2101,8 +2101,8 @@
                         "value": true,
                         "raw": "true",
                         "range": [
-                          2898,
-                          2902
+                          2899,
+                          2903
                         ],
                         "loc": {
                           "start": {
@@ -2116,8 +2116,8 @@
                         }
                       },
                       "range": [
-                        2882,
-                        2902
+                        2883,
+                        2903
                       ],
                       "loc": {
                         "start": {
@@ -2131,8 +2131,8 @@
                       }
                     },
                     "range": [
-                      2882,
-                      2903
+                      2883,
+                      2904
                     ],
                     "loc": {
                       "start": {
@@ -2156,8 +2156,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            2917,
-                            2921
+                            2918,
+                            2922
                           ],
                           "loc": {
                             "start": {
@@ -2174,8 +2174,8 @@
                           "type": "Identifier",
                           "name": "throttled",
                           "range": [
-                            2922,
-                            2931
+                            2923,
+                            2932
                           ],
                           "loc": {
                             "start": {
@@ -2189,8 +2189,8 @@
                           }
                         },
                         "range": [
-                          2917,
-                          2931
+                          2918,
+                          2932
                         ],
                         "loc": {
                           "start": {
@@ -2205,8 +2205,8 @@
                       },
                       "prefix": true,
                       "range": [
-                        2916,
-                        2931
+                        2917,
+                        2932
                       ],
                       "loc": {
                         "start": {
@@ -2232,8 +2232,8 @@
                               "object": {
                                 "type": "ThisExpression",
                                 "range": [
-                                  2947,
-                                  2951
+                                  2948,
+                                  2952
                                 ],
                                 "loc": {
                                   "start": {
@@ -2250,8 +2250,8 @@
                                 "type": "Identifier",
                                 "name": "add",
                                 "range": [
-                                  2952,
-                                  2955
+                                  2953,
+                                  2956
                                 ],
                                 "loc": {
                                   "start": {
@@ -2265,8 +2265,8 @@
                                 }
                               },
                               "range": [
-                                2947,
-                                2955
+                                2948,
+                                2956
                               ],
                               "loc": {
                                 "start": {
@@ -2289,8 +2289,8 @@
                                   "object": {
                                     "type": "ThisExpression",
                                     "range": [
-                                      2956,
-                                      2960
+                                      2957,
+                                      2961
                                     ],
                                     "loc": {
                                       "start": {
@@ -2307,8 +2307,8 @@
                                     "type": "Identifier",
                                     "name": "throttled",
                                     "range": [
-                                      2961,
-                                      2970
+                                      2962,
+                                      2971
                                     ],
                                     "loc": {
                                       "start": {
@@ -2322,8 +2322,8 @@
                                     }
                                   },
                                   "range": [
-                                    2956,
-                                    2970
+                                    2957,
+                                    2971
                                   ],
                                   "loc": {
                                     "start": {
@@ -2347,8 +2347,8 @@
                                       "object": {
                                         "type": "ThisExpression",
                                         "range": [
-                                          2973,
-                                          2977
+                                          2974,
+                                          2978
                                         ],
                                         "loc": {
                                           "start": {
@@ -2365,8 +2365,8 @@
                                         "type": "Identifier",
                                         "name": "scheduler",
                                         "range": [
-                                          2978,
-                                          2987
+                                          2979,
+                                          2988
                                         ],
                                         "loc": {
                                           "start": {
@@ -2380,8 +2380,8 @@
                                         }
                                       },
                                       "range": [
-                                        2973,
-                                        2987
+                                        2974,
+                                        2988
                                       ],
                                       "loc": {
                                         "start": {
@@ -2398,8 +2398,8 @@
                                       "type": "Identifier",
                                       "name": "schedule",
                                       "range": [
-                                        2988,
-                                        2996
+                                        2989,
+                                        2997
                                       ],
                                       "loc": {
                                         "start": {
@@ -2413,8 +2413,8 @@
                                       }
                                     },
                                     "range": [
-                                      2973,
-                                      2996
+                                      2974,
+                                      2997
                                     ],
                                     "loc": {
                                       "start": {
@@ -2432,8 +2432,8 @@
                                       "type": "Identifier",
                                       "name": "dispatchNext",
                                       "range": [
-                                        2997,
-                                        3009
+                                        2998,
+                                        3010
                                       ],
                                       "loc": {
                                         "start": {
@@ -2452,8 +2452,8 @@
                                       "object": {
                                         "type": "ThisExpression",
                                         "range": [
-                                          3011,
-                                          3015
+                                          3012,
+                                          3016
                                         ],
                                         "loc": {
                                           "start": {
@@ -2470,8 +2470,8 @@
                                         "type": "Identifier",
                                         "name": "duration",
                                         "range": [
-                                          3016,
-                                          3024
+                                          3017,
+                                          3025
                                         ],
                                         "loc": {
                                           "start": {
@@ -2485,8 +2485,8 @@
                                         }
                                       },
                                       "range": [
-                                        3011,
-                                        3024
+                                        3012,
+                                        3025
                                       ],
                                       "loc": {
                                         "start": {
@@ -2502,8 +2502,8 @@
                                     {
                                       "type": "ThisExpression",
                                       "range": [
-                                        3026,
-                                        3030
+                                        3027,
+                                        3031
                                       ],
                                       "loc": {
                                         "start": {
@@ -2518,8 +2518,8 @@
                                     }
                                   ],
                                   "range": [
-                                    2973,
-                                    3031
+                                    2974,
+                                    3032
                                   ],
                                   "loc": {
                                     "start": {
@@ -2533,8 +2533,8 @@
                                   }
                                 },
                                 "range": [
-                                  2956,
-                                  3031
+                                  2957,
+                                  3032
                                 ],
                                 "loc": {
                                   "start": {
@@ -2549,8 +2549,8 @@
                               }
                             ],
                             "range": [
-                              2947,
-                              3032
+                              2948,
+                              3033
                             ],
                             "loc": {
                               "start": {
@@ -2564,8 +2564,8 @@
                             }
                           },
                           "range": [
-                            2947,
-                            3033
+                            2948,
+                            3034
                           ],
                           "loc": {
                             "start": {
@@ -2580,8 +2580,8 @@
                         }
                       ],
                       "range": [
-                        2933,
-                        3043
+                        2934,
+                        3044
                       ],
                       "loc": {
                         "start": {
@@ -2596,8 +2596,8 @@
                     },
                     "alternate": null,
                     "range": [
-                      2912,
-                      3043
+                      2913,
+                      3044
                     ],
                     "loc": {
                       "start": {
@@ -2612,8 +2612,8 @@
                   }
                 ],
                 "range": [
-                  2844,
-                  3049
+                  2845,
+                  3050
                 ],
                 "loc": {
                   "start": {
@@ -2629,8 +2629,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                2836,
-                3049
+                2837,
+                3050
               ],
               "loc": {
                 "start": {
@@ -2646,8 +2646,8 @@
             "kind": "method",
             "computed": false,
             "range": [
-              2831,
-              3049
+              2832,
+              3050
             ],
             "loc": {
               "start": {
@@ -2667,8 +2667,8 @@
               "type": "Identifier",
               "name": "clearThrottle",
               "range": [
-                3054,
-                3067
+                3055,
+                3068
               ],
               "loc": {
                 "start": {
@@ -2702,8 +2702,8 @@
                                 "type": "Identifier",
                                 "name": "value",
                                 "range": [
-                                  3088,
-                                  3093
+                                  3089,
+                                  3094
                                 ],
                                 "loc": {
                                   "start": {
@@ -2720,8 +2720,8 @@
                                 "type": "Identifier",
                                 "name": "value",
                                 "range": [
-                                  3088,
-                                  3093
+                                  3089,
+                                  3094
                                 ],
                                 "loc": {
                                   "start": {
@@ -2739,8 +2739,8 @@
                               "shorthand": true,
                               "computed": false,
                               "range": [
-                                3088,
-                                3093
+                                3089,
+                                3094
                               ],
                               "loc": {
                                 "start": {
@@ -2759,8 +2759,8 @@
                                 "type": "Identifier",
                                 "name": "hasValue",
                                 "range": [
-                                  3095,
-                                  3103
+                                  3096,
+                                  3104
                                 ],
                                 "loc": {
                                   "start": {
@@ -2777,8 +2777,8 @@
                                 "type": "Identifier",
                                 "name": "hasValue",
                                 "range": [
-                                  3095,
-                                  3103
+                                  3096,
+                                  3104
                                 ],
                                 "loc": {
                                   "start": {
@@ -2796,8 +2796,8 @@
                               "shorthand": true,
                               "computed": false,
                               "range": [
-                                3095,
-                                3103
+                                3096,
+                                3104
                               ],
                               "loc": {
                                 "start": {
@@ -2816,8 +2816,8 @@
                                 "type": "Identifier",
                                 "name": "throttled",
                                 "range": [
-                                  3105,
-                                  3114
+                                  3106,
+                                  3115
                                 ],
                                 "loc": {
                                   "start": {
@@ -2834,8 +2834,8 @@
                                 "type": "Identifier",
                                 "name": "throttled",
                                 "range": [
-                                  3105,
-                                  3114
+                                  3106,
+                                  3115
                                 ],
                                 "loc": {
                                   "start": {
@@ -2853,8 +2853,8 @@
                               "shorthand": true,
                               "computed": false,
                               "range": [
-                                3105,
-                                3114
+                                3106,
+                                3115
                               ],
                               "loc": {
                                 "start": {
@@ -2869,8 +2869,8 @@
                             }
                           ],
                           "range": [
-                            3086,
-                            3116
+                            3087,
+                            3117
                           ],
                           "loc": {
                             "start": {
@@ -2886,8 +2886,8 @@
                         "init": {
                           "type": "ThisExpression",
                           "range": [
-                            3119,
-                            3123
+                            3120,
+                            3124
                           ],
                           "loc": {
                             "start": {
@@ -2901,8 +2901,8 @@
                           }
                         },
                         "range": [
-                          3086,
-                          3123
+                          3087,
+                          3124
                         ],
                         "loc": {
                           "start": {
@@ -2918,8 +2918,8 @@
                     ],
                     "kind": "const",
                     "range": [
-                      3080,
-                      3124
+                      3081,
+                      3125
                     ],
                     "loc": {
                       "start": {
@@ -2938,8 +2938,8 @@
                       "type": "Identifier",
                       "name": "throttled",
                       "range": [
-                        3137,
-                        3146
+                        3138,
+                        3147
                       ],
                       "loc": {
                         "start": {
@@ -2965,8 +2965,8 @@
                               "object": {
                                 "type": "ThisExpression",
                                 "range": [
-                                  3162,
-                                  3166
+                                  3163,
+                                  3167
                                 ],
                                 "loc": {
                                   "start": {
@@ -2983,8 +2983,8 @@
                                 "type": "Identifier",
                                 "name": "remove",
                                 "range": [
-                                  3167,
-                                  3173
+                                  3168,
+                                  3174
                                 ],
                                 "loc": {
                                   "start": {
@@ -2998,8 +2998,8 @@
                                 }
                               },
                               "range": [
-                                3162,
-                                3173
+                                3163,
+                                3174
                               ],
                               "loc": {
                                 "start": {
@@ -3017,8 +3017,8 @@
                                 "type": "Identifier",
                                 "name": "throttled",
                                 "range": [
-                                  3174,
-                                  3183
+                                  3175,
+                                  3184
                                 ],
                                 "loc": {
                                   "start": {
@@ -3033,8 +3033,8 @@
                               }
                             ],
                             "range": [
-                              3162,
-                              3184
+                              3163,
+                              3185
                             ],
                             "loc": {
                               "start": {
@@ -3048,8 +3048,8 @@
                             }
                           },
                           "range": [
-                            3162,
-                            3185
+                            3163,
+                            3186
                           ],
                           "loc": {
                             "start": {
@@ -3073,8 +3073,8 @@
                               "object": {
                                 "type": "ThisExpression",
                                 "range": [
-                                  3198,
-                                  3202
+                                  3199,
+                                  3203
                                 ],
                                 "loc": {
                                   "start": {
@@ -3091,8 +3091,8 @@
                                 "type": "Identifier",
                                 "name": "throttled",
                                 "range": [
-                                  3203,
-                                  3212
+                                  3204,
+                                  3213
                                 ],
                                 "loc": {
                                   "start": {
@@ -3106,8 +3106,8 @@
                                 }
                               },
                               "range": [
-                                3198,
-                                3212
+                                3199,
+                                3213
                               ],
                               "loc": {
                                 "start": {
@@ -3125,8 +3125,8 @@
                               "value": null,
                               "raw": "null",
                               "range": [
-                                3215,
-                                3219
+                                3216,
+                                3220
                               ],
                               "loc": {
                                 "start": {
@@ -3140,8 +3140,8 @@
                               }
                             },
                             "range": [
-                              3198,
-                              3219
+                              3199,
+                              3220
                             ],
                             "loc": {
                               "start": {
@@ -3155,8 +3155,8 @@
                             }
                           },
                           "range": [
-                            3198,
-                            3220
+                            3199,
+                            3221
                           ],
                           "loc": {
                             "start": {
@@ -3180,8 +3180,8 @@
                                 "type": "Identifier",
                                 "name": "throttled",
                                 "range": [
-                                  3233,
-                                  3242
+                                  3234,
+                                  3243
                                 ],
                                 "loc": {
                                   "start": {
@@ -3198,8 +3198,8 @@
                                 "type": "Identifier",
                                 "name": "unsubscribe",
                                 "range": [
-                                  3243,
-                                  3254
+                                  3244,
+                                  3255
                                 ],
                                 "loc": {
                                   "start": {
@@ -3213,8 +3213,8 @@
                                 }
                               },
                               "range": [
-                                3233,
-                                3254
+                                3234,
+                                3255
                               ],
                               "loc": {
                                 "start": {
@@ -3229,8 +3229,8 @@
                             },
                             "arguments": [],
                             "range": [
-                              3233,
-                              3256
+                              3234,
+                              3257
                             ],
                             "loc": {
                               "start": {
@@ -3244,8 +3244,8 @@
                             }
                           },
                           "range": [
-                            3233,
-                            3257
+                            3234,
+                            3258
                           ],
                           "loc": {
                             "start": {
@@ -3260,8 +3260,8 @@
                         }
                       ],
                       "range": [
-                        3148,
-                        3267
+                        3149,
+                        3268
                       ],
                       "loc": {
                         "start": {
@@ -3276,8 +3276,8 @@
                     },
                     "alternate": null,
                     "range": [
-                      3133,
-                      3267
+                      3134,
+                      3268
                     ],
                     "loc": {
                       "start": {
@@ -3296,8 +3296,8 @@
                       "type": "Identifier",
                       "name": "hasValue",
                       "range": [
-                        3280,
-                        3288
+                        3281,
+                        3289
                       ],
                       "loc": {
                         "start": {
@@ -3324,8 +3324,8 @@
                               "object": {
                                 "type": "ThisExpression",
                                 "range": [
-                                  3304,
-                                  3308
+                                  3305,
+                                  3309
                                 ],
                                 "loc": {
                                   "start": {
@@ -3342,8 +3342,8 @@
                                 "type": "Identifier",
                                 "name": "value",
                                 "range": [
-                                  3309,
-                                  3314
+                                  3310,
+                                  3315
                                 ],
                                 "loc": {
                                   "start": {
@@ -3357,8 +3357,8 @@
                                 }
                               },
                               "range": [
-                                3304,
-                                3314
+                                3305,
+                                3315
                               ],
                               "loc": {
                                 "start": {
@@ -3376,8 +3376,8 @@
                               "value": null,
                               "raw": "null",
                               "range": [
-                                3317,
-                                3321
+                                3318,
+                                3322
                               ],
                               "loc": {
                                 "start": {
@@ -3391,8 +3391,8 @@
                               }
                             },
                             "range": [
-                              3304,
-                              3321
+                              3305,
+                              3322
                             ],
                             "loc": {
                               "start": {
@@ -3406,8 +3406,8 @@
                             }
                           },
                           "range": [
-                            3304,
-                            3322
+                            3305,
+                            3323
                           ],
                           "loc": {
                             "start": {
@@ -3431,8 +3431,8 @@
                               "object": {
                                 "type": "ThisExpression",
                                 "range": [
-                                  3335,
-                                  3339
+                                  3336,
+                                  3340
                                 ],
                                 "loc": {
                                   "start": {
@@ -3449,8 +3449,8 @@
                                 "type": "Identifier",
                                 "name": "hasValue",
                                 "range": [
-                                  3340,
-                                  3348
+                                  3341,
+                                  3349
                                 ],
                                 "loc": {
                                   "start": {
@@ -3464,8 +3464,8 @@
                                 }
                               },
                               "range": [
-                                3335,
-                                3348
+                                3336,
+                                3349
                               ],
                               "loc": {
                                 "start": {
@@ -3483,8 +3483,8 @@
                               "value": false,
                               "raw": "false",
                               "range": [
-                                3351,
-                                3356
+                                3352,
+                                3357
                               ],
                               "loc": {
                                 "start": {
@@ -3498,8 +3498,8 @@
                               }
                             },
                             "range": [
-                              3335,
-                              3356
+                              3336,
+                              3357
                             ],
                             "loc": {
                               "start": {
@@ -3513,8 +3513,8 @@
                             }
                           },
                           "range": [
-                            3335,
-                            3357
+                            3336,
+                            3358
                           ],
                           "loc": {
                             "start": {
@@ -3540,8 +3540,8 @@
                                 "object": {
                                   "type": "ThisExpression",
                                   "range": [
-                                    3370,
-                                    3374
+                                    3371,
+                                    3375
                                   ],
                                   "loc": {
                                     "start": {
@@ -3558,8 +3558,8 @@
                                   "type": "Identifier",
                                   "name": "destination",
                                   "range": [
-                                    3375,
-                                    3386
+                                    3376,
+                                    3387
                                   ],
                                   "loc": {
                                     "start": {
@@ -3573,8 +3573,8 @@
                                   }
                                 },
                                 "range": [
-                                  3370,
-                                  3386
+                                  3371,
+                                  3387
                                 ],
                                 "loc": {
                                   "start": {
@@ -3591,8 +3591,8 @@
                                 "type": "Identifier",
                                 "name": "next",
                                 "range": [
-                                  3387,
-                                  3391
+                                  3388,
+                                  3392
                                 ],
                                 "loc": {
                                   "start": {
@@ -3606,8 +3606,8 @@
                                 }
                               },
                               "range": [
-                                3370,
-                                3391
+                                3371,
+                                3392
                               ],
                               "loc": {
                                 "start": {
@@ -3625,8 +3625,8 @@
                                 "type": "Identifier",
                                 "name": "value",
                                 "range": [
-                                  3392,
-                                  3397
+                                  3393,
+                                  3398
                                 ],
                                 "loc": {
                                   "start": {
@@ -3641,8 +3641,8 @@
                               }
                             ],
                             "range": [
-                              3370,
-                              3398
+                              3371,
+                              3399
                             ],
                             "loc": {
                               "start": {
@@ -3656,8 +3656,8 @@
                             }
                           },
                           "range": [
-                            3370,
-                            3399
+                            3371,
+                            3400
                           ],
                           "loc": {
                             "start": {
@@ -3672,8 +3672,8 @@
                         }
                       ],
                       "range": [
-                        3290,
-                        3409
+                        3291,
+                        3410
                       ],
                       "loc": {
                         "start": {
@@ -3688,8 +3688,8 @@
                     },
                     "alternate": null,
                     "range": [
-                      3276,
-                      3409
+                      3277,
+                      3410
                     ],
                     "loc": {
                       "start": {
@@ -3704,8 +3704,8 @@
                   }
                 ],
                 "range": [
-                  3070,
-                  3415
+                  3071,
+                  3416
                 ],
                 "loc": {
                   "start": {
@@ -3721,8 +3721,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                3067,
-                3415
+                3068,
+                3416
               ],
               "loc": {
                 "start": {
@@ -3738,8 +3738,8 @@
             "kind": "method",
             "computed": false,
             "range": [
-              3054,
-              3415
+              3055,
+              3416
             ],
             "loc": {
               "start": {
@@ -3755,8 +3755,8 @@
           }
         ],
         "range": [
-          2638,
-          3417
+          2639,
+          3418
         ],
         "loc": {
           "start": {
@@ -3770,8 +3770,8 @@
         }
       },
       "range": [
-        2593,
-        3417
+        2594,
+        3418
       ],
       "loc": {
         "start": {
@@ -3788,8 +3788,8 @@
           "type": "Block",
           "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
           "range": [
-            2501,
-            2592
+            2502,
+            2593
           ],
           "loc": {
             "start": {
@@ -3810,8 +3810,8 @@
         "type": "Identifier",
         "name": "dispatchNext",
         "range": [
-          3427,
-          3439
+          3428,
+          3440
         ],
         "loc": {
           "start": {
@@ -3829,8 +3829,8 @@
           "type": "Identifier",
           "name": "subscriber",
           "range": [
-            3440,
-            3450
+            3441,
+            3451
           ],
           "loc": {
             "start": {
@@ -3858,8 +3858,8 @@
                   "type": "Identifier",
                   "name": "subscriber",
                   "range": [
-                    3458,
-                    3468
+                    3459,
+                    3469
                   ],
                   "loc": {
                     "start": {
@@ -3876,8 +3876,8 @@
                   "type": "Identifier",
                   "name": "clearThrottle",
                   "range": [
-                    3469,
-                    3482
+                    3470,
+                    3483
                   ],
                   "loc": {
                     "start": {
@@ -3891,8 +3891,8 @@
                   }
                 },
                 "range": [
-                  3458,
-                  3482
+                  3459,
+                  3483
                 ],
                 "loc": {
                   "start": {
@@ -3907,8 +3907,8 @@
               },
               "arguments": [],
               "range": [
-                3458,
-                3484
+                3459,
+                3485
               ],
               "loc": {
                 "start": {
@@ -3922,8 +3922,8 @@
               }
             },
             "range": [
-              3458,
-              3485
+              3459,
+              3486
             ],
             "loc": {
               "start": {
@@ -3938,8 +3938,8 @@
           }
         ],
         "range": [
-          3452,
-          3487
+          3453,
+          3488
         ],
         "loc": {
           "start": {
@@ -3955,8 +3955,8 @@
       "generator": false,
       "expression": false,
       "range": [
-        3418,
-        3487
+        3419,
+        3488
       ],
       "loc": {
         "start": {
@@ -3973,8 +3973,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=auditTime.js.map",
           "range": [
-            3488,
-            3525
+            3489,
+            3526
           ],
           "loc": {
             "start": {
@@ -3993,7 +3993,7 @@
   "sourceType": "module",
   "range": [
     0,
-    3487
+    3488
   ],
   "loc": {
     "start": {
@@ -4008,10 +4008,10 @@
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * Ignores source values for `duration` milliseconds, then emits the most recent\n * value from the source Observable, then repeats this process.\n *\n * <span class=\"informal\">When it sees a source values, it ignores that plus\n * the next ones for `duration` milliseconds, and then it emits the most recent\n * value from the source.</span>\n *\n * <img src=\"./img/auditTime.png\" width=\"100%\">\n *\n * `auditTime` is similar to `throttleTime`, but emits the last value from the\n * silenced time window, instead of the first value. `auditTime` emits the most\n * recent value from the source Observable on the output Observable as soon as\n * its internal timer becomes disabled, and ignores source values while the\n * timer is enabled. Initially, the timer is disabled. As soon as the first\n * source value arrives, the timer is enabled. After `duration` milliseconds (or\n * the time unit determined internally by the optional `scheduler`) has passed,\n * the timer is disabled, then the most recent source value is emitted on the\n * output Observable, and this process repeats for the next source value.\n * Optionally takes a {@link Scheduler} for managing timers.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.auditTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sampleTime}\n * @see {@link throttleTime}\n *\n * @param {number} duration Time to wait before emitting the most recent source\n * value, measured in milliseconds or the time unit determined internally\n * by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link Scheduler} to use for\n * managing the timers that handle the rate-limiting behavior.\n * @return {Observable<T>} An Observable that performs rate-limiting of\n * emissions from the source Observable.\n * @method auditTime\n * @owner Observable\n ",
+      "value": "*\n * Ignores source values for `duration` milliseconds, then emits the most recent\n * value from the source Observable, then repeats this process.\n *\n * <span class=\"informal\">When it sees a source values, it ignores that plus\n * the next ones for `duration` milliseconds, and then it emits the most recent\n * value from the source.</span>\n *\n * <img src=\"./img/auditTime.png\" width=\"100%\">\n *\n * `auditTime` is similar to `throttleTime`, but emits the last value from the\n * silenced time window, instead of the first value. `auditTime` emits the most\n * recent value from the source Observable on the output Observable as soon as\n * its internal timer becomes disabled, and ignores source values while the\n * timer is enabled. Initially, the timer is disabled. As soon as the first\n * source value arrives, the timer is enabled. After `duration` milliseconds (or\n * the time unit determined internally by the optional `scheduler`) has passed,\n * the timer is disabled, then the most recent source value is emitted on the\n * output Observable, and this process repeats for the next source value.\n * Optionally takes a {@link IScheduler} for managing timers.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.auditTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sampleTime}\n * @see {@link throttleTime}\n *\n * @param {number} duration Time to wait before emitting the most recent source\n * value, measured in milliseconds or the time unit determined internally\n * by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for\n * managing the timers that handle the rate-limiting behavior.\n * @return {Observable<T>} An Observable that performs rate-limiting of\n * emissions from the source Observable.\n * @method auditTime\n * @owner Observable\n ",
       "range": [
         88,
-        2093
+        2095
       ],
       "loc": {
         "start": {
@@ -4028,8 +4028,8 @@
       "type": "Block",
       "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
       "range": [
-        2501,
-        2592
+        2502,
+        2593
       ],
       "loc": {
         "start": {
@@ -4046,8 +4046,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=auditTime.js.map",
       "range": [
-        3488,
-        3525
+        3489,
+        3526
       ],
       "loc": {
         "start": {

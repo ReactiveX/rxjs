@@ -100,6 +100,11 @@ const none = {};
  * var bmi = weight.combineLatest(height, (w, h) =&gt; w / (h * h));
  * bmi.subscribe(x =&gt; console.log(&apos;BMI is &apos; + x));
  *
+ * // With output to console:
+ * // BMI is 24.212293388429753
+ * // BMI is 23.93948099205209
+ * // BMI is 23.671253629592222
+ *
  * @see {@link combineAll}
  * @see {@link merge}
  * @see {@link withLatestFrom}
@@ -132,7 +137,7 @@ export class CombineLatestOperator {
         this.project = project;
     }
     call(subscriber, source) {
-        return source._subscribe(new CombineLatestSubscriber(subscriber, this.project));
+        return source.subscribe(new CombineLatestSubscriber(subscriber, this.project));
     }
 }
 /**

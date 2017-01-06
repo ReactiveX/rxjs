@@ -126,7 +126,7 @@ class WindowToggleOperator {
         this.closingSelector = closingSelector;
     }
     call(subscriber, source) {
-        return source._subscribe(new WindowToggleSubscriber(subscriber, this.openings, this.closingSelector));
+        return source.subscribe(new WindowToggleSubscriber(subscriber, this.openings, this.closingSelector));
     }
 }
 /**

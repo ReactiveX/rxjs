@@ -126,7 +126,7 @@ class SwitchMapToOperator {
         this.resultSelector = resultSelector;
     }
     call(subscriber, source) {
-        return source._subscribe(new SwitchMapToSubscriber(subscriber, this.observable, this.resultSelector));
+        return source.subscribe(new SwitchMapToSubscriber(subscriber, this.observable, this.resultSelector));
     }
 }
 /**

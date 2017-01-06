@@ -94,6 +94,15 @@ import { OuterSubscriber } from &apos;../OuterSubscriber&apos;;
  * );
  * result.subscribe(x =&gt; console.log(x));
  *
+ * // Results in the following:
+ * // a0
+ * // b0
+ * // c0
+ * // a1
+ * // b1
+ * // c1
+ * // continues to list a,b,c with respective ascending integers
+ *
  * @see {@link concatMap}
  * @see {@link exhaustMap}
  * @see {@link merge}
@@ -136,7 +145,7 @@ export class MergeMapOperator {
         this.concurrent = concurrent;
     }
     call(observer, source) {
-        return source._subscribe(new MergeMapSubscriber(observer, this.project, this.resultSelector, this.concurrent));
+        return source.subscribe(new MergeMapSubscriber(observer, this.project, this.resultSelector, this.concurrent));
     }
 }
 /**

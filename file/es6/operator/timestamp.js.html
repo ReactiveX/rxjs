@@ -93,7 +93,7 @@ class TimestampOperator {
         this.scheduler = scheduler;
     }
     call(observer, source) {
-        return source._subscribe(new TimestampSubscriber(observer, this.scheduler));
+        return source.subscribe(new TimestampSubscriber(observer, this.scheduler));
     }
 }
 class TimestampSubscriber extends Subscriber {

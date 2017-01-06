@@ -129,7 +129,7 @@ class SwitchMapOperator {
         this.resultSelector = resultSelector;
     }
     call(subscriber, source) {
-        return source._subscribe(new SwitchMapSubscriber(subscriber, this.project, this.resultSelector));
+        return source.subscribe(new SwitchMapSubscriber(subscriber, this.project, this.resultSelector));
     }
 }
 /**

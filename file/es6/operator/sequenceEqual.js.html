@@ -90,7 +90,7 @@ import { errorObject } from &apos;../util/errorObject&apos;;
  * completes or emits after the other complets, the returned observable will never complete.
  *
  * @example &lt;caption&gt;figure out if the Konami code matches&lt;/caption&gt;
- * var code = Observable.from([
+ * var code = Rx.Observable.from([
  *  &quot;ArrowUp&quot;,
  *  &quot;ArrowUp&quot;,
  *  &quot;ArrowDown&quot;,
@@ -134,7 +134,7 @@ export class SequenceEqualOperator {
         this.comparor = comparor;
     }
     call(subscriber, source) {
-        return source._subscribe(new SequenceEqualSubscriber(subscriber, this.compareTo, this.comparor));
+        return source.subscribe(new SequenceEqualSubscriber(subscriber, this.compareTo, this.comparor));
     }
 }
 /**

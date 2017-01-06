@@ -141,7 +141,8 @@
 Rx.Observable.of(1,2,3)</code>
 </code></pre>
 <p>To import only what you need by patching (this is useful for size-sensitive bundling):</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">import {Observable} from &apos;rxjs/Observable&apos;;
+<pre><code class="lang-js"><code class="source-code prettyprint">import { Observable} from &apos;rxjs/Observable&apos;;
+import &apos;rxjs/add/observable/of&apos;;
 import &apos;rxjs/add/operator/map&apos;;
 
 Observable.of(1,2,3).map(x =&gt; x + &apos;!!!&apos;); // etc</code>
@@ -167,15 +168,16 @@ Rx.Observable.of(1,2,3); // etc</code>
 <p>Import only what you need and patch Observable (this is useful in size-sensitive bundling scenarios):</p>
 <pre><code class="lang-js"><code class="source-code prettyprint">var Observable = require(&apos;rxjs/Observable&apos;).Observable;
 // patch Observable with appropriate methods
+require(&apos;rxjs/add/observable/of&apos;);
 require(&apos;rxjs/add/operator/map&apos;);
 
 Observable.of(1,2,3).map(function (x) { return x + &apos;!!!&apos;; }); // etc</code>
 </code></pre>
 <p>Import operators and use them <em>manually</em> you can do the following (this is also useful for bundling):</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">var Observable = require(&apos;rxjs/Observable&apos;).Observable;
+<pre><code class="lang-js"><code class="source-code prettyprint">var of = require(&apos;rxjs/observable/of&apos;).of;
 var map = require(&apos;rxjs/operator/map&apos;).map;
 
-map.call(Observable.of(1,2,3), function (x) { return x + &apos;!!!&apos;; });</code>
+map.call(of(1,2,3), function (x) { return x + &apos;!!!&apos;; });</code>
 </code></pre>
 <p>You can also use the above method to build your own Observable and export it from your own module.</p>
 <h3 id="commonjs-with-typescript">CommonJS with TypeScript</h3>

@@ -90,7 +90,7 @@ export class ObserveOnOperator {
         this.delay = delay;
     }
     call(subscriber, source) {
-        return source._subscribe(new ObserveOnSubscriber(subscriber, this.scheduler, this.delay));
+        return source.subscribe(new ObserveOnSubscriber(subscriber, this.scheduler, this.delay));
     }
 }
 /**
@@ -105,11 +105,15 @@ export class ObserveOnSubscriber extends Subscriber {
         this.delay = delay;
     }
     static dispatch(arg) {
-        const { notification, destination } = arg;
+        const { notification, destination, subscription } = arg;
         notification.observe(destination);
+        if (subscription) {
+            subscription.unsubscribe();
+        }
     }
     scheduleMessage(notification) {
-        this.add(this.scheduler.schedule(ObserveOnSubscriber.dispatch, this.delay, new ObserveOnMessage(notification, this.destination)));
+        const message = new ObserveOnMessage(notification, this.destination);
+        message.subscription = this.add(this.scheduler.schedule(ObserveOnSubscriber.dispatch, this.delay, message));
     }
     _next(value) {
         this.scheduleMessage(Notification.createNext(value));

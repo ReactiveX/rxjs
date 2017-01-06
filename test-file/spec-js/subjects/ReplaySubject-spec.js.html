@@ -77,10 +77,9 @@ var ReplaySubject = Rx.ReplaySubject;
 var Observable = Rx.Observable;
 /** @test {ReplaySubject} */
 describe(&apos;ReplaySubject&apos;, function () {
-    it(&apos;should extend Subject&apos;, function (done) {
+    it(&apos;should extend Subject&apos;, function () {
         var subject = new ReplaySubject();
-        chai_1.expect(subject instanceof Rx.Subject).to.be.true;
-        done();
+        chai_1.expect(subject).to.be.instanceof(Rx.Subject);
     });
     it(&apos;should add the observer before running subscription code&apos;, function () {
         var subject = new ReplaySubject();

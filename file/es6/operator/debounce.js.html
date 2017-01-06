@@ -122,7 +122,7 @@ class DebounceOperator {
         this.durationSelector = durationSelector;
     }
     call(subscriber, source) {
-        return source._subscribe(new DebounceSubscriber(subscriber, this.durationSelector));
+        return source.subscribe(new DebounceSubscriber(subscriber, this.durationSelector));
     }
 }
 /**

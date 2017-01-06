@@ -101,7 +101,7 @@ class LastOperator {
         this.source = source;
     }
     call(observer, source) {
-        return source._subscribe(new LastSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
+        return source.subscribe(new LastSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
     }
 }
 /**

@@ -129,7 +129,7 @@ class WindowCountOperator {
         this.startWindowEvery = startWindowEvery;
     }
     call(subscriber, source) {
-        return source._subscribe(new WindowCountSubscriber(subscriber, this.windowSize, this.startWindowEvery));
+        return source.subscribe(new WindowCountSubscriber(subscriber, this.windowSize, this.startWindowEvery));
     }
 }
 /**

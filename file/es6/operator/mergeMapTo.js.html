@@ -132,7 +132,7 @@ export class MergeMapToOperator {
         this.concurrent = concurrent;
     }
     call(observer, source) {
-        return source._subscribe(new MergeMapToSubscriber(observer, this.ish, this.resultSelector, this.concurrent));
+        return source.subscribe(new MergeMapToSubscriber(observer, this.ish, this.resultSelector, this.concurrent));
     }
 }
 /**

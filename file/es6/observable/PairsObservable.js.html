@@ -96,7 +96,7 @@ export class PairsObservable extends Observable {
     }
     /**
      * Convert an object into an observable sequence of [key, value] pairs
-     * using an optional Scheduler to enumerate the object.
+     * using an optional IScheduler to enumerate the object.
      *
      * @example &lt;caption&gt;Converts a javascript object to an Observable&lt;/caption&gt;
      * var obj = {
@@ -120,7 +120,7 @@ export class PairsObservable extends Observable {
      *
      * @param {Object} obj The object to inspect and turn into an
      * Observable sequence.
-     * @param {Scheduler} [scheduler] An optional Scheduler to run the
+     * @param {Scheduler} [scheduler] An optional IScheduler to run the
      * enumeration of the input sequence on.
      * @returns {(Observable&lt;Array&lt;string | T&gt;&gt;)} An observable sequence of
      * [key, value] pairs from the object.

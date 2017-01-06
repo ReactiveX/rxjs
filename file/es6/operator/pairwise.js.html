@@ -111,7 +111,7 @@ export function pairwise() {
 }
 class PairwiseOperator {
     call(subscriber, source) {
-        return source._subscribe(new PairwiseSubscriber(subscriber));
+        return source.subscribe(new PairwiseSubscriber(subscriber));
     }
 }
 /**

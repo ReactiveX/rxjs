@@ -116,7 +116,7 @@ export class MapOperator {
         this.thisArg = thisArg;
     }
     call(subscriber, source) {
-        return source._subscribe(new MapSubscriber(subscriber, this.project, this.thisArg));
+        return source.subscribe(new MapSubscriber(subscriber, this.project, this.thisArg));
     }
 }
 /**

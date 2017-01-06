@@ -101,6 +101,9 @@
  * var result = numbers.count(i =&gt; i % 2 === 1);
  * result.subscribe(x =&gt; console.log(x));
  *
+ * // Results in:
+ * // 4
+ *
  * @see {@link max}
  * @see {@link min}
  * @see {@link reduce}
@@ -125,7 +128,7 @@ class CountOperator {
         this.source = source;
     }
     call(subscriber, source) {
-        return source._subscribe(new CountSubscriber(subscriber, this.predicate, this.source));
+        return source.subscribe(new CountSubscriber(subscriber, this.predicate, this.source));
     }
 }
 /**

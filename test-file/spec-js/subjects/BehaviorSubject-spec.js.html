@@ -78,10 +78,9 @@ var Observable = Rx.Observable;
 var ObjectUnsubscribedError = Rx.ObjectUnsubscribedError;
 /** @test {BehaviorSubject} */
 describe(&apos;BehaviorSubject&apos;, function () {
-    it(&apos;should extend Subject&apos;, function (done) {
+    it(&apos;should extend Subject&apos;, function () {
         var subject = new BehaviorSubject(null);
-        chai_1.expect(subject instanceof Rx.Subject).to.be.true;
-        done();
+        chai_1.expect(subject).to.be.instanceof(Rx.Subject);
     });
     it(&apos;should throw if it has received an error and getValue() is called&apos;, function () {
         var subject = new BehaviorSubject(null);

@@ -115,7 +115,7 @@ import { filter } from &apos;./filter&apos;;
  */
 export function partition(predicate, thisArg) {
     return [
-        filter.call(this, predicate),
+        filter.call(this, predicate, thisArg),
         filter.call(this, not(predicate, thisArg))
     ];
 }

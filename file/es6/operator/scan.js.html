@@ -128,7 +128,7 @@ class ScanOperator {
         this.hasSeed = hasSeed;
     }
     call(subscriber, source) {
-        return source._subscribe(new ScanSubscriber(subscriber, this.accumulator, this.seed, this.hasSeed));
+        return source.subscribe(new ScanSubscriber(subscriber, this.accumulator, this.seed, this.hasSeed));
     }
 }
 /**

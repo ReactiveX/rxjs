@@ -109,7 +109,7 @@ class GroupByOperator {
         this.subjectSelector = subjectSelector;
     }
     call(subscriber, source) {
-        return source._subscribe(new GroupBySubscriber(subscriber, this.keySelector, this.elementSelector, this.durationSelector, this.subjectSelector));
+        return source.subscribe(new GroupBySubscriber(subscriber, this.keySelector, this.elementSelector, this.durationSelector, this.subjectSelector));
     }
 }
 /**
@@ -202,7 +202,7 @@ class GroupBySubscriber extends Subscriber {
         this.groups.delete(key);
     }
     unsubscribe() {
-        if (!this.closed &amp;&amp; !this.attemptedToUnsubscribe) {
+        if (!this.closed) {
             this.attemptedToUnsubscribe = true;
             if (this.count === 0) {
                 super.unsubscribe();

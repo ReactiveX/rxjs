@@ -110,7 +110,7 @@ class DefaultIfEmptyOperator {
         this.defaultValue = defaultValue;
     }
     call(subscriber, source) {
-        return source._subscribe(new DefaultIfEmptySubscriber(subscriber, this.defaultValue));
+        return source.subscribe(new DefaultIfEmptySubscriber(subscriber, this.defaultValue));
     }
 }
 /**

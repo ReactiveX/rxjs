@@ -93,7 +93,7 @@ class CatchOperator {
         this.selector = selector;
     }
     call(subscriber, source) {
-        return source._subscribe(new CatchSubscriber(subscriber, this.selector, this.caught));
+        return source.subscribe(new CatchSubscriber(subscriber, this.selector, this.caught));
     }
 }
 /**

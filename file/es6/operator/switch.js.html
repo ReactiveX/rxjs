@@ -119,7 +119,7 @@ export function _switch() {
 }
 class SwitchOperator {
     call(subscriber, source) {
-        return source._subscribe(new SwitchSubscriber(subscriber));
+        return source.subscribe(new SwitchSubscriber(subscriber));
     }
 }
 /**

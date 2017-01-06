@@ -122,7 +122,8 @@ export class Subscription {
             let trial = tryCatch(_unsubscribe).call(this);
             if (trial === errorObject) {
                 hasErrors = true;
-                (errors = errors || []).push(errorObject.e);
+                errors = errors || (errorObject.e instanceof UnsubscriptionError ?
+                    flattenUnsubscriptionErrors(errorObject.e.errors) : [errorObject.e]);
             }
         }
         if (isArray(_subscriptions)) {
@@ -137,7 +138,7 @@ export class Subscription {
                         errors = errors || [];
                         let err = errorObject.e;
                         if (err instanceof UnsubscriptionError) {
-                            errors = errors.concat(err.errors);
+                            errors = errors.concat(flattenUnsubscriptionErrors(err.errors));
                         }
                         else {
                             errors.push(err);
@@ -181,19 +182,20 @@ export class Subscription {
                 sub = new Subscription(teardown);
             case &apos;object&apos;:
                 if (sub.closed || typeof sub.unsubscribe !== &apos;function&apos;) {
-                    break;
+                    return sub;
                 }
                 else if (this.closed) {
                     sub.unsubscribe();
-                }
-                else {
-                    (this._subscriptions || (this._subscriptions = [])).push(sub);
+                    return sub;
                 }
                 break;
             default:
                 throw new Error(&apos;unrecognized teardown &apos; + teardown + &apos; added to Subscription.&apos;);
         }
-        return sub;
+        const childSub = new ChildSubscription(sub, this);
+        this._subscriptions = this._subscriptions || [];
+        this._subscriptions.push(childSub);
+        return childSub;
     }
     /**
      * Removes a Subscription from the internal list of subscriptions that will
@@ -219,6 +221,21 @@ Subscription.EMPTY = (function (empty) {
     empty.closed = true;
     return empty;
 }(new Subscription()));
+export class ChildSubscription extends Subscription {
+    constructor(_innerSub, _parent) {
+        super();
+        this._innerSub = _innerSub;
+        this._parent = _parent;
+    }
+    _unsubscribe() {
+        const { _innerSub, _parent } = this;
+        _parent.remove(this);
+        _innerSub.unsubscribe();
+    }
+}
+function flattenUnsubscriptionErrors(errors) {
+    return errors.reduce((errs, err) =&gt; errs.concat((err instanceof UnsubscriptionError) ? err.errors : err), []);
+}
 //# sourceMappingURL=Subscription.js.map</code></pre>
 
 </div>

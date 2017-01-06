@@ -306,6 +306,23 @@ describe(&apos;Observable.fromEvent&apos;, function () {
         });
         send(1, 2, 3);
     });
+    it(&apos;should not throw an exception calling toString on obj with a null prototype&apos;, function (done) {
+        // NOTE: Can not test with Object.create(null) or `class Foo extends null`
+        // due to TypeScript bug. https://github.com/Microsoft/TypeScript/issues/1108
+        var NullProtoEventTarget = (function () {
+            function NullProtoEventTarget() {
+            }
+            NullProtoEventTarget.prototype.on = function () { };
+            NullProtoEventTarget.prototype.off = function () { };
+            return NullProtoEventTarget;
+        }());
+        NullProtoEventTarget.prototype.toString = null;
+        var obj = new NullProtoEventTarget();
+        chai_1.expect(function () {
+            Observable.fromEvent(obj, &apos;foo&apos;).subscribe();
+            done();
+        }).to.not.throw(TypeError);
+    });
 });
 //# sourceMappingURL=fromEvent-spec.js.map</code></pre>
 

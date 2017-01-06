@@ -108,9 +108,9 @@ of RxJS.</p>
     <h4>Test:</h4>
     <ul>
       
-    <li data-ice="test"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber19">Observable</a></span></li>
-<li data-ice="test"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber470">Observable.create</a></span></li>
-<li data-ice="test"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber497">Observable.lift</a></span></li>
+    <li data-ice="test"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber20">Observable</a></span></li>
+<li data-ice="test"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber475">Observable.create</a></span></li>
+<li data-ice="test"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber502">Observable.lift</a></span></li>
 </ul>
   </div>
 
@@ -460,7 +460,7 @@ functions.</p>
         
         
         <div data-ice="description"><p>Creates an Observable that emits sequential numbers every specified
-interval of time, on a specified Scheduler.</p>
+interval of time, on a specified IScheduler.</p>
 </div>
       </div>
     </td>
@@ -672,7 +672,9 @@ emits ever increasing numbers after each <code>period</code> of time thereafter.
       <div>
         
         
-        
+        <div data-ice="description"><p>Combines multiple Observables to create an Observable whose values are calculated from the values, in order, of each
+of its input Observables.</p>
+</div>
       </div>
     </td>
     <td>
@@ -1942,8 +1944,8 @@ objects.</p>
       <div>
         
         
-        <div data-ice="description"><p>The Max operator operates on an Observable that emits numbers (or items that can be evaluated as numbers),
-and when source Observable completes it emits a single item: the item with the largest number.</p>
+        <div data-ice="description"><p>The Max operator operates on an Observable that emits numbers (or items that can be compared with a provided function),
+and when source Observable completes it emits a single item: the item with the largest value.</p>
 </div>
       </div>
     </td>
@@ -2102,8 +2104,8 @@ times in the output Observable.</p>
       <div>
         
         
-        <div data-ice="description"><p>The Min operator operates on an Observable that emits numbers (or items that can be evaluated as numbers),
-and when source Observable completes it emits a single item: the item with the smallest number.</p>
+        <div data-ice="description"><p>The Min operator operates on an Observable that emits numbers (or items that can be compared with a provided function),
+and when source Observable completes it emits a single item: the item with the smallest value.</p>
 </div>
       </div>
     </td>
@@ -2421,7 +2423,7 @@ accumulated result when the source completes, given an optional seed value.</p>
         
         
         <div data-ice="description"><p>Returns an Observable that repeats the stream of items emitted by the source Observable at most count times,
-on a particular Scheduler.</p>
+on a particular IScheduler.</p>
 </div>
       </div>
     </td>
@@ -2794,7 +2796,7 @@ source Observable.</p>
       <div>
         
         
-        <div data-ice="description"><p>Asynchronously subscribes Observers to this Observable on the specified Scheduler.</p>
+        <div data-ice="description"><p>Asynchronously subscribes Observers to this Observable on the specified IScheduler.</p>
 </div>
       </div>
     </td>
@@ -3082,7 +3084,7 @@ values for <code>duration</code> milliseconds, then repeats this process.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-timeout">timeout</a></span></span><span data-ice="signature">(due: <span>*</span>, errorToSend: <span>*</span>, scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span><a href="class/es6/observable/dom/WebSocketSubject.js~WebSocketSubject.html">WebSocketSubject</a></span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-timeout">timeout</a></span></span><span data-ice="signature">(due: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, scheduler: <span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span><a href="class/es6/observable/dom/WebSocketSubject.js~WebSocketSubject.html">WebSocketSubject</a></span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
         </p>
       </div>
       <div>
@@ -3662,7 +3664,7 @@ result.subscribe(x =&gt; console.log(x), e =&gt; console.error(e));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/observable/combineLatest.js.html#lineNumber49">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/observable/combineLatest.js.html#lineNumber54">source</a></span></span>
     </span>
   </h3>
 
@@ -3723,7 +3725,7 @@ the combined latest values into a new value on the output Observable.</p>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: null</li></ul></td>
-      <td data-ice="description"><p>The Scheduler to use for subscribing to
+      <td data-ice="description"><p>The IScheduler to use for subscribing to
 each input Observable.</p>
 </td>
     </tr>
@@ -3761,7 +3763,12 @@ each input Observable.</p>
       <pre class="prettyprint source-code"><code data-ice="exampleCode">var weight = Rx.Observable.of(70, 72, 76, 79, 75);
 var height = Rx.Observable.of(1.76, 1.77, 1.78);
 var bmi = Rx.Observable.combineLatest(weight, height, (w, h) =&gt; w / (h * h));
-bmi.subscribe(x =&gt; console.log(&apos;BMI is &apos; + x));</code></pre>
+bmi.subscribe(x =&gt; console.log(&apos;BMI is &apos; + x));
+
+// With output to console:
+// BMI is 24.212293388429753
+// BMI is 23.93948099205209
+// BMI is 23.671253629592222</code></pre>
     </div>
 </div>
 
@@ -3790,7 +3797,7 @@ bmi.subscribe(x =&gt; console.log(&apos;BMI is &apos; + x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/concat.js.html#lineNumber90">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/concat.js.html#lineNumber108">source</a></span></span>
     </span>
   </h3>
 
@@ -3837,7 +3844,7 @@ More than one input Observables may be given as argument.</p>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: null</li></ul></td>
-      <td data-ice="description"><p>An optional Scheduler to schedule each
+      <td data-ice="description"><p>An optional IScheduler to schedule each
 Observable subscription on.</p>
 </td>
     </tr>
@@ -3874,7 +3881,10 @@ single Observable, in order, in serial fashion.</p>
       <pre class="prettyprint source-code"><code data-ice="exampleCode">var timer = Rx.Observable.interval(1000).take(4);
 var sequence = Rx.Observable.range(1, 10);
 var result = Rx.Observable.concat(timer, sequence);
-result.subscribe(x =&gt; console.log(x));</code></pre>
+result.subscribe(x =&gt; console.log(x));
+
+// results in:
+// 0 -1000ms-&gt; 1 -1000ms-&gt; 2 -1000ms-&gt; 3 -immediate-&gt; 1 ... 10</code></pre>
     </div>
 <div class="example-doc" data-ice="exampleDoc">
       <div class="example-caption" data-ice="exampleCaption">Concatenate 3 Observables</div>
@@ -3882,7 +3892,13 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
 var timer2 = Rx.Observable.interval(2000).take(6);
 var timer3 = Rx.Observable.interval(500).take(10);
 var result = Rx.Observable.concat(timer1, timer2, timer3);
-result.subscribe(x =&gt; console.log(x));</code></pre>
+result.subscribe(x =&gt; console.log(x));
+
+// results in the following:
+// (Prints to console sequentially)
+// -1000ms-&gt; 0 -1000ms-&gt; 1 -1000ms-&gt; ... 9
+// -2000ms-&gt; 0 -2000ms-&gt; 1 -2000ms-&gt; ... 5
+// -500ms-&gt; 0 -500ms-&gt; 1 -500ms-&gt; ... 9</code></pre>
     </div>
 </div>
 
@@ -4008,7 +4024,7 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/observable/DeferObservable.js.html#lineNumber54">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/observable/DeferObservable.js.html#lineNumber60">source</a></span></span>
     </span>
   </h3>
 
@@ -4087,7 +4103,13 @@ an invocation of the given Observable factory function.</p>
     return Rx.Observable.interval(1000);
   }
 });
-clicksOrInterval.subscribe(x =&gt; console.log(x));</code></pre>
+clicksOrInterval.subscribe(x =&gt; console.log(x));
+
+// Results in the following behavior:
+// If the result of Math.random() is greater than 0.5 it will listen
+// for clicks anywhere on the &quot;document&quot;; when document is clicked it
+// will log a MouseEvent object to the console. If the result is less
+// than 0.5 it will emit ascending numbers, one every second(1000ms).</code></pre>
     </div>
 </div>
 
@@ -4113,7 +4135,7 @@ clicksOrInterval.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/observable/EmptyObservable.js.html#lineNumber49">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/observable/EmptyObservable.js.html#lineNumber55">source</a></span></span>
     </span>
   </h3>
 
@@ -4144,7 +4166,7 @@ Observables, such as in a <span><a href="class/es6/Observable.js~Observable.html
       <td data-ice="name" data-depth="0">scheduler</td>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
-      <td data-ice="description"><p>A <span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span> to use for scheduling
+      <td data-ice="description"><p>A <span>IScheduler</span> to use for scheduling
 the emission of the complete notification.</p>
 </td>
     </tr>
@@ -4187,7 +4209,13 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
 var result = interval.mergeMap(x =&gt;
   x % 2 === 1 ? Rx.Observable.of(&apos;a&apos;, &apos;b&apos;, &apos;c&apos;) : Rx.Observable.empty()
 );
-result.subscribe(x =&gt; console.log(x));</code></pre>
+result.subscribe(x =&gt; console.log(x));
+
+// Results in the following to the console:
+// x is equal to the count on the interval eg(0,1,2,3,...)
+// x will occur every 1000ms
+// if x % 2 is equal to 1 print abc
+// if x % 2 is not equal to 1 nothing will be output</code></pre>
     </div>
 </div>
 
@@ -4288,7 +4316,7 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/observable/FromObservable.js.html#lineNumber73">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/observable/FromObservable.js.html#lineNumber79">source</a></span></span>
     </span>
   </h3>
 
@@ -4367,7 +4395,10 @@ input object that was converted.</p>
       <div class="example-caption" data-ice="exampleCaption">Converts an array to an Observable</div>
       <pre class="prettyprint source-code"><code data-ice="exampleCode">var array = [10, 20, 30];
 var result = Rx.Observable.from(array);
-result.subscribe(x =&gt; console.log(x));</code></pre>
+result.subscribe(x =&gt; console.log(x));
+
+// Results in the following:
+// 10 20 30</code></pre>
     </div>
 <div class="example-doc" data-ice="exampleDoc">
       <div class="example-caption" data-ice="exampleCaption">Convert an infinite iterable (from a generator) to an Observable</div>
@@ -4381,7 +4412,10 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
 
 var iterator = generateDoubles(3);
 var result = Rx.Observable.from(iterator).take(10);
-result.subscribe(x =&gt; console.log(x));</code></pre>
+result.subscribe(x =&gt; console.log(x));
+
+// Results in the following:
+// 3 6 12 24 48 96 192 384 768 1536</code></pre>
     </div>
 </div>
 
@@ -4410,7 +4444,7 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/observable/FromEventObservable.js.html#lineNumber71">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/observable/FromEventObservable.js.html#lineNumber76">source</a></span></span>
     </span>
   </h3>
 
@@ -4501,7 +4535,11 @@ should return a single value.</p>
   <div class="example-doc" data-ice="exampleDoc">
       <div class="example-caption" data-ice="exampleCaption">Emits clicks happening on the DOM document</div>
       <pre class="prettyprint source-code"><code data-ice="exampleCode">var clicks = Rx.Observable.fromEvent(document, &apos;click&apos;);
-clicks.subscribe(x =&gt; console.log(x));</code></pre>
+clicks.subscribe(x =&gt; console.log(x));
+
+// Results in:
+// MouseEvent object logged to console everytime a click
+// occurs on the document.</code></pre>
     </div>
 </div>
 
@@ -4688,7 +4726,7 @@ is rejected, then the output Observable emits the corresponding Error.</p>
       <td data-ice="name" data-depth="0">scheduler</td>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
-      <td data-ice="description"><p>An optional Scheduler to use for scheduling
+      <td data-ice="description"><p>An optional IScheduler to use for scheduling
 the delivery of the resolved value (or the rejection).</p>
 </td>
     </tr>
@@ -4757,7 +4795,7 @@ result.subscribe(x =&gt; console.log(x), e =&gt; console.error(e));</code></pre>
   
   
   <div data-ice="description"><p>Creates an Observable that emits sequential numbers every specified
-interval of time, on a specified Scheduler.</p>
+interval of time, on a specified IScheduler.</p>
 <p><span class="informal">Emits incremental numbers periodically in time.
 </span></p>
 <p><img src="./img/interval.png" width="100%"></p>
@@ -4765,8 +4803,8 @@ interval of time, on a specified Scheduler.</p>
 ascending integers, with a constant interval of time of your choosing
 between those emissions. The first emission is not sent immediately, but
 only after the first period has passed. By default, this operator uses the
-<code>async</code> Scheduler to provide a notion of time, but you may pass any
-Scheduler to it.</p>
+<code>async</code> IScheduler to provide a notion of time, but you may pass any
+IScheduler to it.</p>
 </div>
 
   
@@ -4793,7 +4831,7 @@ or the time unit determined by the scheduler&apos;s clock.</p>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: async</li></ul></td>
-      <td data-ice="description"><p>The Scheduler to use for scheduling
+      <td data-ice="description"><p>The IScheduler to use for scheduling
 the emission of values, and providing a notion of &quot;time&quot;.</p>
 </td>
     </tr>
@@ -4855,7 +4893,7 @@ numbers.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/merge.js.html#lineNumber100">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/merge.js.html#lineNumber115">source</a></span></span>
     </span>
   </h3>
 
@@ -4905,7 +4943,7 @@ Observables being subscribed to concurrently.</p>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: null</li></ul></td>
-      <td data-ice="description"><p>The Scheduler to use for managing
+      <td data-ice="description"><p>The IScheduler to use for managing
 concurrency of input Observables.</p>
 </td>
     </tr>
@@ -4942,7 +4980,13 @@ every input Observable.</p>
       <pre class="prettyprint source-code"><code data-ice="exampleCode">var clicks = Rx.Observable.fromEvent(document, &apos;click&apos;);
 var timer = Rx.Observable.interval(1000);
 var clicksOrTimer = Rx.Observable.merge(clicks, timer);
-clicksOrTimer.subscribe(x =&gt; console.log(x));</code></pre>
+clicksOrTimer.subscribe(x =&gt; console.log(x));
+
+// Results in the following:
+// timer will emit ascending values, one every second(1000ms) to console
+// clicks logs MouseEvents to console everytime the &quot;document&quot; is clicked
+// Since the two streams are merged you see these happening
+// as they occur.</code></pre>
     </div>
 <div class="example-doc" data-ice="exampleDoc">
       <div class="example-caption" data-ice="exampleCaption">Merge together 3 Observables, but only 2 run concurrently</div>
@@ -4951,7 +4995,16 @@ var timer2 = Rx.Observable.interval(2000).take(6);
 var timer3 = Rx.Observable.interval(500).take(10);
 var concurrent = 2; // the argument
 var merged = Rx.Observable.merge(timer1, timer2, timer3, concurrent);
-merged.subscribe(x =&gt; console.log(x));</code></pre>
+merged.subscribe(x =&gt; console.log(x));
+
+// Results in the following:
+// - First timer1 and timer2 will run concurrently
+// - timer1 will emit a value every 1000ms for 10 iterations
+// - timer2 will emit a value every 2000ms for 6 iterations
+// - after timer1 hits it&apos;s max iteration, timer2 will
+//   continue, and timer3 will start to run concurrently with timer2
+// - when timer2 hits it&apos;s max iteration it terminates, and
+//   timer3 will continue to emit a value every 500ms until it is complete</code></pre>
     </div>
 </div>
 
@@ -5069,8 +5122,8 @@ immediately one after the other, and then emits a complete notification.</p>
 <p>This static operator is useful for creating a simple Observable that only
 emits the arguments given, and the complete notification thereafter. It can
 be used for composing with other Observables, such as with <span><a href="class/es6/Observable.js~Observable.html#instance-method-concat">concat</a></span>.
-By default, it uses a <code>null</code> Scheduler, which means the <code>next</code>
-notifications are sent synchronously, although with a different Scheduler
+By default, it uses a <code>null</code> IScheduler, which means the <code>next</code>
+notifications are sent synchronously, although with a different IScheduler
 it is possible to determine when those notifications will be delivered.</p>
 </div>
 
@@ -5095,7 +5148,7 @@ it is possible to determine when those notifications will be delivered.</p>
       <td data-ice="name" data-depth="0">scheduler</td>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
-      <td data-ice="description"><p>A <span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span> to use for scheduling
+      <td data-ice="description"><p>A <span>IScheduler</span> to use for scheduling
 the emissions of the <code>next</code> notifications.</p>
 </td>
     </tr>
@@ -5174,8 +5227,8 @@ range.</p>
 <p><img src="./img/range.png" width="100%"></p>
 <p><code>range</code> operator emits a range of sequential integers, in order, where you
 select the <code>start</code> of the range and its <code>length</code>. By default, uses no
-Scheduler and just delivers the notifications synchronously, but may use
-an optional Scheduler to regulate those deliveries.</p>
+IScheduler and just delivers the notifications synchronously, but may use
+an optional IScheduler to regulate those deliveries.</p>
 </div>
 
   
@@ -5208,7 +5261,7 @@ an optional Scheduler to regulate those deliveries.</p>
       <td data-ice="name" data-depth="0">scheduler</td>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
-      <td data-ice="description"><p>A <span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span> to use for scheduling
+      <td data-ice="description"><p>A <span>IScheduler</span> to use for scheduling
 the emissions of the notifications.</p>
 </td>
     </tr>
@@ -5308,7 +5361,7 @@ Observables, such as in a <span><a href="class/es6/Observable.js~Observable.html
       <td data-ice="name" data-depth="0">scheduler</td>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
-      <td data-ice="description"><p>A <span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span> to use for scheduling
+      <td data-ice="description"><p>A <span>IScheduler</span> to use for scheduling
 the emission of the error notification.</p>
 </td>
     </tr>
@@ -5398,8 +5451,8 @@ should the emissions start.</span></p>
 integers, with a constant interval of time, <code>period</code> of your choosing
 between those emissions. The first emission happens after the specified
 <code>initialDelay</code>. The initial delay may be a <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a></span>. By default, this
-operator uses the <code>async</code> Scheduler to provide a notion of time, but you
-may pass any Scheduler to it. If <code>period</code> is not specified, the output
+operator uses the <code>async</code> IScheduler to provide a notion of time, but you
+may pass any IScheduler to it. If <code>period</code> is not specified, the output
 Observable emits only one value, <code>0</code>. Otherwise, it emits an infinite
 sequence.</p>
 </div>
@@ -5435,7 +5488,7 @@ subsequent numbers.</p>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: async</li></ul></td>
-      <td data-ice="description"><p>The Scheduler to use for scheduling
+      <td data-ice="description"><p>The IScheduler to use for scheduling
 the emission of values, and providing a notion of &quot;time&quot;.</p>
 </td>
     </tr>
@@ -5557,7 +5610,7 @@ numbers.subscribe(x =&gt; console.log(x));</code></pre>
     <h4>Test:</h4>
     <ul>
       
-    <li data-ice="test"><span><a href="test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber18">Observable.webSocket</a></span></li>
+    <li data-ice="test"><span><a href="test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber7">Observable.webSocket</a></span></li>
 </ul>
   </div>
 
@@ -5575,14 +5628,18 @@ numbers.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/zip.js.html#lineNumber25">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/zip.js.html#lineNumber49">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Combines multiple Observables to create an Observable whose values are calculated from the values, in order, of each
+of its input Observables.</p>
+<p>If the latest parameter is a function, this function is used to compute the created value from the input values.
+Otherwise, an array of the input values is returned.</p>
+</div>
 
   
 
@@ -5623,7 +5680,29 @@ numbers.subscribe(x =&gt; console.log(x));</code></pre>
 
   
 
-  
+  <div data-ice="example">
+    <h4>Example:</h4>
+    
+  <div class="example-doc" data-ice="exampleDoc">
+      <div class="example-caption" data-ice="exampleCaption">Combine age and name from different sources</div>
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">
+let age$ = Observable.of&lt;number&gt;(27, 25, 29);
+let name$ = Observable.of&lt;string&gt;(&apos;Foo&apos;, &apos;Bar&apos;, &apos;Beer&apos;);
+let isDev$ = Observable.of&lt;boolean&gt;(true, true, false);
+
+Observable
+    .zip(age$,
+         name$,
+         isDev$,
+         (age: number, name: string, isDev: boolean) =&gt; ({ age, name, isDev }))
+    .subscribe(x =&gt; console.log(x));
+
+// outputs
+// { age: 7, name: &apos;Foo&apos;, isDev: true }
+// { age: 5, name: &apos;Bar&apos;, isDev: true }
+// { age: 9, name: &apos;Beer&apos;, isDev: false }</code></pre>
+    </div>
+</div>
 
   <div data-ice="tests">
     <h4>Test:</h4>
@@ -5895,7 +5974,7 @@ source value arrives, the timer is enabled. After <code>duration</code> millisec
 the time unit determined internally by the optional <code>scheduler</code>) has passed,
 the timer is disabled, then the most recent source value is emitted on the
 output Observable, and this process repeats for the next source value.
-Optionally takes a <span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span> for managing timers.</p>
+Optionally takes a <span>IScheduler</span> for managing timers.</p>
 </div>
 
   
@@ -5922,7 +6001,7 @@ by the optional <code>scheduler</code>.</p>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: async</li></ul></td>
-      <td data-ice="description"><p>The <span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span> to use for
+      <td data-ice="description"><p>The <span>IScheduler</span> to use for
 managing the timers that handle the rate-limiting behavior.</p>
 </td>
     </tr>
@@ -6726,7 +6805,7 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/combineLatest.js.html#lineNumber45">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/combineLatest.js.html#lineNumber50">source</a></span></span>
     </span>
   </h3>
 
@@ -6808,7 +6887,12 @@ each input Observable.</p>
       <pre class="prettyprint source-code"><code data-ice="exampleCode">var weight = Rx.Observable.of(70, 72, 76, 79, 75);
 var height = Rx.Observable.of(1.76, 1.77, 1.78);
 var bmi = weight.combineLatest(height, (w, h) =&gt; w / (h * h));
-bmi.subscribe(x =&gt; console.log(&apos;BMI is &apos; + x));</code></pre>
+bmi.subscribe(x =&gt; console.log(&apos;BMI is &apos; + x));
+
+// With output to console:
+// BMI is 24.212293388429753
+// BMI is 23.93948099205209
+// BMI is 23.671253629592222</code></pre>
     </div>
 </div>
 
@@ -6830,7 +6914,7 @@ bmi.subscribe(x =&gt; console.log(&apos;BMI is &apos; + x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/concat.js.html#lineNumber45">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/concat.js.html#lineNumber54">source</a></span></span>
     </span>
   </h3>
 
@@ -6871,7 +6955,7 @@ Observable. More than one input Observables may be given as argument.</p>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: null</li></ul></td>
-      <td data-ice="description"><p>An optional Scheduler to schedule each
+      <td data-ice="description"><p>An optional IScheduler to schedule each
 Observable subscription on.</p>
 </td>
     </tr>
@@ -6908,7 +6992,10 @@ single Observable, in order, in serial fashion.</p>
       <pre class="prettyprint source-code"><code data-ice="exampleCode">var timer = Rx.Observable.interval(1000).take(4);
 var sequence = Rx.Observable.range(1, 10);
 var result = timer.concat(sequence);
-result.subscribe(x =&gt; console.log(x));</code></pre>
+result.subscribe(x =&gt; console.log(x));
+
+// results in:
+// 1000ms-&gt; 0 -1000ms-&gt; 1 -1000ms-&gt; 2 -1000ms-&gt; 3 -immediate-&gt; 1 ... 10</code></pre>
     </div>
 <div class="example-doc" data-ice="exampleDoc">
       <div class="example-caption" data-ice="exampleCaption">Concatenate 3 Observables</div>
@@ -6916,7 +7003,13 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
 var timer2 = Rx.Observable.interval(2000).take(6);
 var timer3 = Rx.Observable.interval(500).take(10);
 var result = timer1.concat(timer2, timer3);
-result.subscribe(x =&gt; console.log(x));</code></pre>
+result.subscribe(x =&gt; console.log(x));
+
+// results in the following:
+// (Prints to console sequentially)
+// -1000ms-&gt; 0 -1000ms-&gt; 1 -1000ms-&gt; ... 9
+// -2000ms-&gt; 0 -2000ms-&gt; 1 -2000ms-&gt; ... 5
+// -500ms-&gt; 0 -500ms-&gt; 1 -500ms-&gt; ... 9</code></pre>
     </div>
 </div>
 
@@ -6945,7 +7038,7 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/concatAll.js.html#lineNumber45">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/concatAll.js.html#lineNumber51">source</a></span></span>
     </span>
   </h3>
 
@@ -7002,7 +7095,13 @@ Observables concatenated.</p>
       <pre class="prettyprint source-code"><code data-ice="exampleCode">var clicks = Rx.Observable.fromEvent(document, &apos;click&apos;);
 var higherOrder = clicks.map(ev =&gt; Rx.Observable.interval(1000).take(4));
 var firstOrder = higherOrder.concatAll();
-firstOrder.subscribe(x =&gt; console.log(x));</code></pre>
+firstOrder.subscribe(x =&gt; console.log(x));
+
+// Results in the following:
+// (results are not concurrent)
+// For every click on the &quot;document&quot; it will emit values 0 to 3 spaced
+// on a 1000ms interval
+// one click = 1000ms-&gt; 0 -1000ms-&gt; 1 -1000ms-&gt; 2 -1000ms-&gt; 3</code></pre>
     </div>
 </div>
 
@@ -7035,7 +7134,7 @@ firstOrder.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/concatMap.js.html#lineNumber59">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/concatMap.js.html#lineNumber65">source</a></span></span>
     </span>
   </h3>
 
@@ -7128,7 +7227,13 @@ Observable sequentially.</p>
       <div class="example-caption" data-ice="exampleCaption">For each click event, tick every second from 0 to 3, with no concurrency</div>
       <pre class="prettyprint source-code"><code data-ice="exampleCode">var clicks = Rx.Observable.fromEvent(document, &apos;click&apos;);
 var result = clicks.concatMap(ev =&gt; Rx.Observable.interval(1000).take(4));
-result.subscribe(x =&gt; console.log(x));</code></pre>
+result.subscribe(x =&gt; console.log(x));
+
+// Results in the following:
+// (results are not concurrent)
+// For every click on the &quot;document&quot; it will emit values 0 to 3 spaced
+// on a 1000ms interval
+// one click = 1000ms-&gt; 0 -1000ms-&gt; 1 -1000ms-&gt; 2 -1000ms-&gt; 3</code></pre>
     </div>
 </div>
 
@@ -7159,7 +7264,7 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/concatMapTo.js.html#lineNumber53">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/concatMapTo.js.html#lineNumber59">source</a></span></span>
     </span>
   </h3>
 
@@ -7250,7 +7355,13 @@ from the source.</p>
       <div class="example-caption" data-ice="exampleCaption">For each click event, tick every second from 0 to 3, with no concurrency</div>
       <pre class="prettyprint source-code"><code data-ice="exampleCode">var clicks = Rx.Observable.fromEvent(document, &apos;click&apos;);
 var result = clicks.concatMapTo(Rx.Observable.interval(1000).take(4));
-result.subscribe(x =&gt; console.log(x));</code></pre>
+result.subscribe(x =&gt; console.log(x));
+
+// Results in the following:
+// (results are not concurrent)
+// For every click on the &quot;document&quot; it will emit values 0 to 3 spaced
+// on a 1000ms interval
+// one click = 1000ms-&gt; 0 -1000ms-&gt; 1 -1000ms-&gt; 2 -1000ms-&gt; 3</code></pre>
     </div>
 </div>
 
@@ -7280,7 +7391,7 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/count.js.html#lineNumber47">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/count.js.html#lineNumber50">source</a></span></span>
     </span>
   </h3>
 
@@ -7366,7 +7477,10 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
       <div class="example-caption" data-ice="exampleCaption">Counts how many odd numbers are there between 1 and 7</div>
       <pre class="prettyprint source-code"><code data-ice="exampleCode">var numbers = Rx.Observable.range(1, 7);
 var result = numbers.count(i =&gt; i % 2 === 1);
-result.subscribe(x =&gt; console.log(x));</code></pre>
+result.subscribe(x =&gt; console.log(x));
+
+// Results in:
+// 4</code></pre>
     </div>
 </div>
 
@@ -7523,7 +7637,7 @@ and will not be emitted on the output Observable.</p>
 <p>This is a rate-limiting operator, because it is impossible for more than one
 value to be emitted in any time window of duration <code>dueTime</code>, but it is also
 a delay-like operator since output emissions do not occur at the same time as
-they did on the source Observable. Optionally takes a <span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span> for
+they did on the source Observable. Optionally takes a <span>IScheduler</span> for
 managing timers.</p>
 </div>
 
@@ -7552,7 +7666,7 @@ source value.</p>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: async</li></ul></td>
-      <td data-ice="description"><p>The <span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span> to use for
+      <td data-ice="description"><p>The <span>IScheduler</span> to use for
 managing the timers that handle the timeout for each value.</p>
 </td>
     </tr>
@@ -7758,7 +7872,7 @@ a <code>Date</code> until which the emission of the source items is delayed.</p>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: async</li></ul></td>
-      <td data-ice="description"><p>The Scheduler to use for
+      <td data-ice="description"><p>The IScheduler to use for
 managing the timers that handle the time-shift for each item.</p>
 </td>
     </tr>
@@ -7944,7 +8058,7 @@ delayedClicks.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/dematerialize.js.html#lineNumber37">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/dematerialize.js.html#lineNumber42">source</a></span></span>
     </span>
   </h3>
 
@@ -8001,7 +8115,12 @@ var notifE = new Rx.Notification(&apos;E&apos;, void 0,
 );
 var materialized = Rx.Observable.of(notifA, notifB, notifE);
 var upperCase = materialized.dematerialize();
-upperCase.subscribe(x =&gt; console.log(x), e =&gt; console.error(e));</code></pre>
+upperCase.subscribe(x =&gt; console.log(x), e =&gt; console.error(e));
+
+// Results in:
+// A
+// B
+// TypeError: x.toUpperCase is not a function</code></pre>
     </div>
 </div>
 
@@ -8028,19 +8147,19 @@ upperCase.subscribe(x =&gt; console.log(x), e =&gt; console.error(e));</code></p
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/distinct.js.html#lineNumber20">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/distinct.js.html#lineNumber49">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items.
-If a keySelector function is provided, then it will project each value from the source observable into a new value that it will
+  <div data-ice="description"><p>Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items.</p>
+<p>If a keySelector function is provided, then it will project each value from the source observable into a new value that it will
 check for equality with previously projected values. If a keySelector function is not provided, it will use each value from the
-source observable directly with an equality check against previous values.
-In JavaScript runtimes that support <code>Set</code>, this operator will use a <code>Set</code> to improve performance of the distinct value checking.
-In other runtimes, this operator will use a minimal implementation of <code>Set</code> that relies on an <code>Array</code> and <code>indexOf</code> under the
+source observable directly with an equality check against previous values.</p>
+<p>In JavaScript runtimes that support <code>Set</code>, this operator will use a <code>Set</code> to improve performance of the distinct value checking.</p>
+<p>In other runtimes, this operator will use a minimal implementation of <code>Set</code> that relies on an <code>Array</code> and <code>indexOf</code> under the
 hood, so performance will degrade as more values are checked for distinction. Even in newer browsers, a long-running <code>distinct</code>
 use might result in memory leaks. To help alleviate this in some scenarios, an optional <code>flushes</code> parameter is also provided so
 that the internal <code>Set</code> can be &quot;flushed&quot;, basically clearing it of values.</p>
@@ -8094,7 +8213,34 @@ that the internal <code>Set</code> can be &quot;flushed&quot;, basically clearin
 
   
 
-  
+  <div data-ice="example">
+    <h4>Example:</h4>
+    
+  <div class="example-doc" data-ice="exampleDoc">
+      <div class="example-caption" data-ice="exampleCaption">A simple example with numbers</div>
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">Observable.of(1, 1, 2, 2, 2, 1, 2, 3, 4, 3, 2, 1)
+  .distinct()
+  .subscribe(x =&gt; console.log(x)); // 1, 2, 3, 4</code></pre>
+    </div>
+<div class="example-doc" data-ice="exampleDoc">
+      <div class="example-caption" data-ice="exampleCaption">An example using a keySelector function</div>
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">interface Person {
+   age: number,
+   name: string
+}
+
+Observable.of&lt;Person&gt;(
+    { age: 4, name: &apos;Foo&apos;},
+    { age: 7, name: &apos;Bar&apos;},
+    { age: 5, name: &apos;Foo&apos;})
+    .distinct((p: Person) =&gt; p.name)
+    .subscribe(x =&gt; console.log(x));
+
+// displays:
+// { age: 4, name: &apos;Foo&apos; }
+// { age: 7, name: &apos;Bar&apos; }</code></pre>
+    </div>
+</div>
 
   <div data-ice="tests">
     <h4>Test:</h4>
@@ -8104,7 +8250,8 @@ that the internal <code>Set</code> can be &quot;flushed&quot;, basically clearin
 </ul>
   </div>
 
-  
+  <div data-ice="see"><h4>See:</h4><ul><li><span><span><a href="class/es6/Observable.js~Observable.html#instance-method-distinctUntilChanged">distinctUntilChanged</a></span></span></li>
+<li><span><span><a href="class/es6/Observable.js~Observable.html#instance-method-distinctUntilKeyChanged">distinctUntilKeyChanged</a></span></span></li></ul></div>
   
 </div>
 <div class="detail" data-ice="detail">
@@ -8118,16 +8265,16 @@ that the internal <code>Set</code> can be &quot;flushed&quot;, basically clearin
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/distinctUntilChanged.js.html#lineNumber14">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/distinctUntilChanged.js.html#lineNumber44">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
-If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.
-If a comparator function is not provided, an equality check is used by default.</p>
+  <div data-ice="description"><p>Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.</p>
+<p>If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.</p>
+<p>If a comparator function is not provided, an equality check is used by default.</p>
 </div>
 
   
@@ -8171,7 +8318,36 @@ If a comparator function is not provided, an equality check is used by default.<
 
   
 
-  
+  <div data-ice="example">
+    <h4>Example:</h4>
+    
+  <div class="example-doc" data-ice="exampleDoc">
+      <div class="example-caption" data-ice="exampleCaption">A simple example with numbers</div>
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">Observable.of(1, 1, 2, 2, 2, 1, 1, 2, 3, 3, 4)
+  .distinctUntilChanged()
+  .subscribe(x =&gt; console.log(x)); // 1, 2, 1, 2, 3, 4</code></pre>
+    </div>
+<div class="example-doc" data-ice="exampleDoc">
+      <div class="example-caption" data-ice="exampleCaption">An example using a compare function</div>
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">interface Person {
+   age: number,
+   name: string
+}
+
+Observable.of&lt;Person&gt;(
+    { age: 4, name: &apos;Foo&apos;},
+    { age: 7, name: &apos;Bar&apos;},
+    { age: 5, name: &apos;Foo&apos;})
+    { age: 6, name: &apos;Foo&apos;})
+    .distinctUntilChanged((p: Person, q: Person) =&gt; p.name === q.name)
+    .subscribe(x =&gt; console.log(x));
+
+// displays:
+// { age: 4, name: &apos;Foo&apos; }
+// { age: 7, name: &apos;Bar&apos; }
+// { age: 5, name: &apos;Foo&apos; }</code></pre>
+    </div>
+</div>
 
   <div data-ice="tests">
     <h4>Test:</h4>
@@ -8181,7 +8357,8 @@ If a comparator function is not provided, an equality check is used by default.<
 </ul>
   </div>
 
-  
+  <div data-ice="see"><h4>See:</h4><ul><li><span><span><a href="class/es6/Observable.js~Observable.html#instance-method-distinct">distinct</a></span></span></li>
+<li><span><span><a href="class/es6/Observable.js~Observable.html#instance-method-distinctUntilKeyChanged">distinctUntilKeyChanged</a></span></span></li></ul></div>
   
 </div>
 <div class="detail" data-ice="detail">
@@ -8195,7 +8372,7 @@ If a comparator function is not provided, an equality check is used by default.<
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/distinctUntilKeyChanged.js.html#lineNumber14">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/distinctUntilKeyChanged.js.html#lineNumber60">source</a></span></span>
     </span>
   </h3>
 
@@ -8203,9 +8380,9 @@ If a comparator function is not provided, an equality check is used by default.<
   
   
   <div data-ice="description"><p>Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,
-using a property accessed by using the key provided to check if the two items are distinct.
-If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.
-If a comparator function is not provided, an equality check is used by default.</p>
+using a property accessed by using the key provided to check if the two items are distinct.</p>
+<p>If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.</p>
+<p>If a comparator function is not provided, an equality check is used by default.</p>
 </div>
 
   
@@ -8256,7 +8433,52 @@ If a comparator function is not provided, an equality check is used by default.<
 
   
 
-  
+  <div data-ice="example">
+    <h4>Example:</h4>
+    
+  <div class="example-doc" data-ice="exampleDoc">
+      <div class="example-caption" data-ice="exampleCaption">An example comparing the name of persons</div>
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">
+ interface Person {
+    age: number,
+    name: string
+ }
+
+Observable.of&lt;Person&gt;(
+    { age: 4, name: &apos;Foo&apos;},
+    { age: 7, name: &apos;Bar&apos;},
+    { age: 5, name: &apos;Foo&apos;},
+    { age: 6, name: &apos;Foo&apos;})
+    .distinctUntilKeyChanged(&apos;name&apos;)
+    .subscribe(x =&gt; console.log(x));
+
+// displays:
+// { age: 4, name: &apos;Foo&apos; }
+// { age: 7, name: &apos;Bar&apos; }
+// { age: 5, name: &apos;Foo&apos; }</code></pre>
+    </div>
+<div class="example-doc" data-ice="exampleDoc">
+      <div class="example-caption" data-ice="exampleCaption">An example comparing the first letters of the name</div>
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">
+interface Person {
+    age: number,
+    name: string
+ }
+
+Observable.of&lt;Person&gt;(
+    { age: 4, name: &apos;Foo1&apos;},
+    { age: 7, name: &apos;Bar&apos;},
+    { age: 5, name: &apos;Foo2&apos;},
+    { age: 6, name: &apos;Foo3&apos;})
+    .distinctUntilKeyChanged(&apos;name&apos;, (x: string, y: string) =&gt; x.substring(0, 3) === y.substring(0, 3))
+    .subscribe(x =&gt; console.log(x));
+
+// displays:
+// { age: 4, name: &apos;Foo1&apos; }
+// { age: 7, name: &apos;Bar&apos; }
+// { age: 5, name: &apos;Foo2&apos; }</code></pre>
+    </div>
+</div>
 
   <div data-ice="tests">
     <h4>Test:</h4>
@@ -8266,7 +8488,8 @@ If a comparator function is not provided, an equality check is used by default.<
 </ul>
   </div>
 
-  
+  <div data-ice="see"><h4>See:</h4><ul><li><span><span><a href="class/es6/Observable.js~Observable.html#instance-method-distinct">distinct</a></span></span></li>
+<li><span><span><a href="class/es6/Observable.js~Observable.html#instance-method-distinctUntilChanged">distinctUntilChanged</a></span></span></li></ul></div>
   
 </div>
 <div class="detail" data-ice="detail">
@@ -8392,7 +8615,7 @@ positions.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/elementAt.js.html#lineNumber40">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/elementAt.js.html#lineNumber45">source</a></span></span>
     </span>
   </h3>
 
@@ -8481,7 +8704,12 @@ Observable has completed before emitting the i-th <code>next</code> notification
       <div class="example-caption" data-ice="exampleCaption">Emit only the third click event</div>
       <pre class="prettyprint source-code"><code data-ice="exampleCode">var clicks = Rx.Observable.fromEvent(document, &apos;click&apos;);
 var result = clicks.elementAt(2);
-result.subscribe(x =&gt; console.log(x));</code></pre>
+result.subscribe(x =&gt; console.log(x));
+
+// Results in:
+// click 1 = nothing
+// click 2 = nothing
+// click 3 = MouseEvent object logged to console</code></pre>
     </div>
 </div>
 
@@ -8511,7 +8739,7 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/every.js.html#lineNumber10">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/every.js.html#lineNumber16">source</a></span></span>
     </span>
   </h3>
 
@@ -8569,7 +8797,16 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
 
   
 
-  
+  <div data-ice="example">
+    <h4>Example:</h4>
+    
+  <div class="example-doc" data-ice="exampleDoc">
+      <div class="example-caption" data-ice="exampleCaption">A simple example emitting true if all elements are less than 5, false otherwise</div>
+      <pre class="prettyprint source-code"><code data-ice="exampleCode"> Observable.of(1, 2, 3, 4, 5, 6)
+    .every(x =&gt; x &lt; 5)
+    .subscribe(x =&gt; console.log(x)); // -&gt; false</code></pre>
+    </div>
+</div>
 
   <div data-ice="tests">
     <h4>Test:</h4>
@@ -8854,7 +9091,7 @@ Observables being subscribed to concurrently.</p>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: null</li></ul></td>
-      <td data-ice="description"><p>The Scheduler to use for subscribing to
+      <td data-ice="description"><p>The IScheduler to use for subscribing to
 each projected inner Observable.</p>
 </td>
     </tr>
@@ -8922,7 +9159,7 @@ powersOfTwo.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/filter.js.html#lineNumber43">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/filter.js.html#lineNumber42">source</a></span></span>
     </span>
   </h3>
 
@@ -9015,7 +9252,6 @@ clicksOnDivs.subscribe(x =&gt; console.log(x));</code></pre>
   </div>
 
   <div data-ice="see"><h4>See:</h4><ul><li><span><span><a href="class/es6/Observable.js~Observable.html#instance-method-distinct">distinct</a></span></span></li>
-<li><span><span>distinctKey</span></span></li>
 <li><span><span><a href="class/es6/Observable.js~Observable.html#instance-method-distinctUntilChanged">distinctUntilChanged</a></span></span></li>
 <li><span><span><a href="class/es6/Observable.js~Observable.html#instance-method-distinctUntilKeyChanged">distinctUntilKeyChanged</a></span></span></li>
 <li><span><span><a href="class/es6/Observable.js~Observable.html#instance-method-ignoreElements">ignoreElements</a></span></span></li>
@@ -9243,7 +9479,7 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/first.js.html#lineNumber53">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/first.js.html#lineNumber52">source</a></span></span>
     </span>
   </h3>
 
@@ -9755,7 +9991,7 @@ callback if the Observable completes before any <code>next</code> notification w
     <h4>Test:</h4>
     <ul>
       
-    <li data-ice="test"><span><a href="test-file/spec-js/operators/last-spec.js.html#lineNumber5">Observable.prototype.last</a></span></li>
+    <li data-ice="test"><span><a href="test-file/spec-js/operators/last-spec.js.html#lineNumber6">Observable.prototype.last</a></span></li>
 </ul>
   </div>
 
@@ -10106,7 +10342,7 @@ greetings.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/materialize.js.html#lineNumber40">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/materialize.js.html#lineNumber47">source</a></span></span>
     </span>
   </h3>
 
@@ -10165,7 +10401,14 @@ Observable with metadata.</p>
       <pre class="prettyprint source-code"><code data-ice="exampleCode">var letters = Rx.Observable.of(&apos;a&apos;, &apos;b&apos;, 13, &apos;d&apos;);
 var upperCase = letters.map(x =&gt; x.toUpperCase());
 var materialized = upperCase.materialize();
-materialized.subscribe(x =&gt; console.log(x));</code></pre>
+materialized.subscribe(x =&gt; console.log(x));
+
+// Results in the following:
+// - Notification {kind: &quot;N&quot;, value: &quot;A&quot;, error: undefined, hasValue: true}
+// - Notification {kind: &quot;N&quot;, value: &quot;B&quot;, error: undefined, hasValue: true}
+// - Notification {kind: &quot;E&quot;, value: undefined, error: TypeError:
+//   x.toUpperCase is not a function at MapSubscriber.letters.map.x
+//   [as project] (http://1&#x2026;, hasValue: false}</code></pre>
     </div>
 </div>
 
@@ -10192,15 +10435,15 @@ materialized.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/max.js.html#lineNumber14">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/max.js.html#lineNumber33">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>The Max operator operates on an Observable that emits numbers (or items that can be evaluated as numbers),
-and when source Observable completes it emits a single item: the item with the largest number.</p>
+  <div data-ice="description"><p>The Max operator operates on an Observable that emits numbers (or items that can be compared with a provided function),
+and when source Observable completes it emits a single item: the item with the largest value.</p>
 <p><img src="./img/max.png" width="100%"></p>
 </div>
 
@@ -10232,7 +10475,7 @@ items.</p>
     <table>
       <tr>
         <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></td>
-        <td class="return-desc" data-ice="returnDescription"><p>an Observable that emits item with the largest number.</p>
+        <td class="return-desc" data-ice="returnDescription"><p>an Observable that emits item with the largest value.</p>
 </td>
       </tr>
     </table>
@@ -10246,7 +10489,29 @@ items.</p>
 
   
 
-  
+  <div data-ice="example">
+    <h4>Example:</h4>
+    
+  <div class="example-doc" data-ice="exampleDoc">
+      <div class="example-caption" data-ice="exampleCaption">Get the maximal value of a series of numbers</div>
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">Rx.Observable.of(5, 4, 7, 2, 8)
+  .max()
+  .subscribe(x =&gt; console.log(x)); // -&gt; 8</code></pre>
+    </div>
+<div class="example-doc" data-ice="exampleDoc">
+      <div class="example-caption" data-ice="exampleCaption">Use a comparer function to get the maximal item</div>
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">interface Person {
+  age: number,
+  name: string
+}
+Observable.of&lt;Person&gt;({age: 7, name: &apos;Foo&apos;},
+                      {age: 5, name: &apos;Bar&apos;},
+                      {age: 9, name: &apos;Beer&apos;})
+          .max&lt;Person&gt;((a: Person, b: Person) =&gt; a.age &lt; b.age ? -1 : 1)
+          .subscribe((x: Person) =&gt; console.log(x.name)); // -&gt; &apos;Beer&apos;
+}</code></pre>
+    </div>
+</div>
 
   <div data-ice="tests">
     <h4>Test:</h4>
@@ -10256,7 +10521,7 @@ items.</p>
 </ul>
   </div>
 
-  
+  <div data-ice="see"><h4>See:</h4><ul><li><span><span><a href="class/es6/Observable.js~Observable.html#instance-method-min">min</a></span></span></li></ul></div>
   
 </div>
 <div class="detail" data-ice="detail">
@@ -10322,7 +10587,7 @@ Observables being subscribed to concurrently.</p>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: null</li></ul></td>
-      <td data-ice="description"><p>The Scheduler to use for managing
+      <td data-ice="description"><p>The IScheduler to use for managing
 concurrency of input Observables.</p>
 </td>
     </tr>
@@ -10510,7 +10775,7 @@ firstOrder.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/mergeMap.js.html#lineNumber53">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/mergeMap.js.html#lineNumber62">source</a></span></span>
     </span>
   </h3>
 
@@ -10607,7 +10872,16 @@ from this transformation.</p>
 var result = letters.mergeMap(x =&gt;
   Rx.Observable.interval(1000).map(i =&gt; x+i)
 );
-result.subscribe(x =&gt; console.log(x));</code></pre>
+result.subscribe(x =&gt; console.log(x));
+
+// Results in the following:
+// a0
+// b0
+// c0
+// a1
+// b1
+// c1
+// continues to list a,b,c with respective ascending integers</code></pre>
     </div>
 </div>
 
@@ -10846,15 +11120,15 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/min.js.html#lineNumber13">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/min.js.html#lineNumber32">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>The Min operator operates on an Observable that emits numbers (or items that can be evaluated as numbers),
-and when source Observable completes it emits a single item: the item with the smallest number.</p>
+  <div data-ice="description"><p>The Min operator operates on an Observable that emits numbers (or items that can be compared with a provided function),
+and when source Observable completes it emits a single item: the item with the smallest value.</p>
 <p><img src="./img/min.png" width="100%"></p>
 </div>
 
@@ -10885,7 +11159,7 @@ and when source Observable completes it emits a single item: the item with the s
     <table>
       <tr>
         <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt;</td>
-        <td class="return-desc" data-ice="returnDescription"><p>an Observable that emits item with the smallest number.</p>
+        <td class="return-desc" data-ice="returnDescription"><p>an Observable that emits item with the smallest value.</p>
 </td>
       </tr>
     </table>
@@ -10899,7 +11173,29 @@ and when source Observable completes it emits a single item: the item with the s
 
   
 
-  
+  <div data-ice="example">
+    <h4>Example:</h4>
+    
+  <div class="example-doc" data-ice="exampleDoc">
+      <div class="example-caption" data-ice="exampleCaption">Get the minimal value of a series of numbers</div>
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">Rx.Observable.of(5, 4, 7, 2, 8)
+  .min()
+  .subscribe(x =&gt; console.log(x)); // -&gt; 2</code></pre>
+    </div>
+<div class="example-doc" data-ice="exampleDoc">
+      <div class="example-caption" data-ice="exampleCaption">Use a comparer function to get the minimal item</div>
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">interface Person {
+  age: number,
+  name: string
+}
+Observable.of&lt;Person&gt;({age: 7, name: &apos;Foo&apos;},
+                      {age: 5, name: &apos;Bar&apos;},
+                      {age: 9, name: &apos;Beer&apos;})
+          .min&lt;Person&gt;( (a: Person, b: Person) =&gt; a.age &lt; b.age ? -1 : 1)
+          .subscribe((x: Person) =&gt; console.log(x.name)); // -&gt; &apos;Bar&apos;
+}</code></pre>
+    </div>
+</div>
 
   <div data-ice="tests">
     <h4>Test:</h4>
@@ -10909,7 +11205,7 @@ and when source Observable completes it emits a single item: the item with the s
 </ul>
   </div>
 
-  
+  <div data-ice="see"><h4>See:</h4><ul><li><span><span><a href="class/es6/Observable.js~Observable.html#instance-method-max">max</a></span></span></li></ul></div>
   
 </div>
 <div class="detail" data-ice="detail">
@@ -11074,7 +11370,7 @@ the underlying stream.</p>
     <h4>Test:</h4>
     <ul>
       
-    <li data-ice="test"><span><a href="test-file/spec-js/operators/observeOn-spec.js.html#lineNumber5">Observable.prototype.observeOn</a></span></li>
+    <li data-ice="test"><span><a href="test-file/spec-js/operators/observeOn-spec.js.html#lineNumber6">Observable.prototype.observeOn</a></span></li>
 </ul>
   </div>
 
@@ -11732,7 +12028,7 @@ from the combination of this Observable and supplied Observables</p>
     <h4>Test:</h4>
     <ul>
       
-    <li data-ice="test"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber6">Observable.prototype.race</a></span></li>
+    <li data-ice="test"><span><a href="test-file/spec-js/operators/race-spec.js.html#lineNumber7">Observable.prototype.race</a></span></li>
 <li data-ice="test"><span><a href="test-file/spec-js/observables/race-spec.js.html#lineNumber5">Observable.race</a></span></li>
 </ul>
   </div>
@@ -11874,7 +12170,7 @@ count.subscribe(x =&gt; console.log(x));</code></pre>
   
   
   <div data-ice="description"><p>Returns an Observable that repeats the stream of items emitted by the source Observable at most count times,
-on a particular Scheduler.</p>
+on a particular IScheduler.</p>
 <p><img src="./img/repeat.png" width="100%"></p>
 </div>
 
@@ -11892,7 +12188,7 @@ on a particular Scheduler.</p>
       <td data-ice="name" data-depth="0">scheduler</td>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
-      <td data-ice="description"><p>the Scheduler to emit the items on.</p>
+      <td data-ice="description"><p>the IScheduler to emit the items on.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -11963,7 +12259,7 @@ count times.</p>
 A <code>complete</code> will cause the emission of the Throwable that cause the complete to the Observable returned from
 notificationHandler. If that Observable calls onComplete or <code>complete</code> then retry will call <code>complete</code> or <code>error</code>
 on the child subscription. Otherwise, this Observable will resubscribe to the source observable, on a particular
-Scheduler.</p>
+IScheduler.</p>
 <p><img src="./img/repeatWhen.png" width="100%"></p>
 </div>
 
@@ -11989,7 +12285,7 @@ aborting the retry.</p>
       <td data-ice="name" data-depth="0">the</td>
       <td data-ice="type"><span>scheduler</span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Scheduler on which to subscribe to the source Observable.</p>
+      <td data-ice="description"><p>IScheduler on which to subscribe to the source Observable.</p>
 </td>
     </tr>
 </tbody>
@@ -12134,7 +12430,7 @@ would be: [1, 2, 1, 2, 3, 4, 5, <code>complete</code>].</p>
 An <code>error</code> will cause the emission of the Throwable that cause the error to the Observable returned from
 notificationHandler. If that Observable calls onComplete or <code>error</code> then retry will call <code>complete</code> or <code>error</code>
 on the child subscription. Otherwise, this Observable will resubscribe to the source observable, on a particular
-Scheduler.</p>
+IScheduler.</p>
 <p><img src="./img/retryWhen.png" width="100%"></p>
 </div>
 
@@ -12160,7 +12456,7 @@ aborting the retry.</p>
       <td data-ice="name" data-depth="0">the</td>
       <td data-ice="type"><span>scheduler</span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Scheduler on which to subscribe to the source Observable.</p>
+      <td data-ice="description"><p>IScheduler on which to subscribe to the source Observable.</p>
 </td>
     </tr>
 </tbody>
@@ -12354,7 +12650,7 @@ time unit determined internally by the optional <code>scheduler</code>.</p>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: async</li></ul></td>
-      <td data-ice="description"><p>The <span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span> to use for
+      <td data-ice="description"><p>The <span>IScheduler</span> to use for
 managing the timers that handle the sampling.</p>
 </td>
     </tr>
@@ -12601,7 +12897,7 @@ the values emitted by both observables were equal in sequence</p>
     
   <div class="example-doc" data-ice="exampleDoc">
       <div class="example-caption" data-ice="exampleCaption">figure out if the Konami code matches</div>
-      <pre class="prettyprint source-code"><code data-ice="exampleCode">var code = Observable.from([
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">var code = Rx.Observable.from([
  &quot;ArrowUp&quot;,
  &quot;ArrowUp&quot;,
  &quot;ArrowDown&quot;,
@@ -13123,7 +13419,7 @@ emitted by the source Observable.</p>
   
   
   
-  <div data-ice="description"><p>Asynchronously subscribes Observers to this Observable on the specified Scheduler.</p>
+  <div data-ice="description"><p>Asynchronously subscribes Observers to this Observable on the specified IScheduler.</p>
 <p><img src="./img/subscribeOn.png" width="100%"></p>
 </div>
 
@@ -13141,7 +13437,7 @@ emitted by the source Observable.</p>
       <td data-ice="name" data-depth="0">the</td>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Scheduler to perform subscription actions on.</p>
+      <td data-ice="description"><p>IScheduler to perform subscription actions on.</p>
 </td>
     </tr>
 </tbody>
@@ -13154,7 +13450,7 @@ emitted by the source Observable.</p>
     <table>
       <tr>
         <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</td>
-        <td class="return-desc" data-ice="returnDescription"><p>the source Observable modified so that its subscriptions happen on the specified Scheduler
+        <td class="return-desc" data-ice="returnDescription"><p>the source Observable modified so that its subscriptions happen on the specified IScheduler
 .</p>
 </td>
       </tr>
@@ -14064,7 +14360,7 @@ value arrives, it is forwarded to the output Observable, and then the timer
 is enabled. After <code>duration</code> milliseconds (or the time unit determined
 internally by the optional <code>scheduler</code>) has passed, the timer is disabled,
 and this process repeats for the next source value. Optionally takes a
-<span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span> for managing timers.</p>
+<span>IScheduler</span> for managing timers.</p>
 </div>
 
   
@@ -14091,7 +14387,7 @@ internally by the optional <code>scheduler</code>.</p>
       <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: async</li></ul></td>
-      <td data-ice="description"><p>The <span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span> to use for
+      <td data-ice="description"><p>The <span>IScheduler</span> to use for
 managing the timers that handle the sampling.</p>
 </td>
     </tr>
@@ -14225,11 +14521,11 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
     
     
     
-    <span data-ice="name">timeout</span><span data-ice="signature">(due: <span>*</span>, errorToSend: <span>*</span>, scheduler: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span><a href="class/es6/observable/dom/WebSocketSubject.js~WebSocketSubject.html">WebSocketSubject</a></span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+    <span data-ice="name">timeout</span><span data-ice="signature">(due: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, scheduler: <span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span><a href="class/es6/observable/dom/WebSocketSubject.js~WebSocketSubject.html">WebSocketSubject</a></span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/timeout.js.html#lineNumber13">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/timeout.js.html#lineNumber12">source</a></span></span>
     </span>
   </h3>
 
@@ -14250,20 +14546,14 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">due</td>
-      <td data-ice="type"><span>*</span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">errorToSend</td>
-      <td data-ice="type"><span>*</span></td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">scheduler</td>
-      <td data-ice="type"><span>*</span></td>
-      <td data-ice="appendix"></td>
+      <td data-ice="type"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
 </tbody>

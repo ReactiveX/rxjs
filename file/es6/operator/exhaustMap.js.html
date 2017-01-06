@@ -127,7 +127,7 @@ class SwitchFirstMapOperator {
         this.resultSelector = resultSelector;
     }
     call(subscriber, source) {
-        return source._subscribe(new SwitchFirstMapSubscriber(subscriber, this.project, this.resultSelector));
+        return source.subscribe(new SwitchFirstMapSubscriber(subscriber, this.project, this.resultSelector));
     }
 }
 /**

@@ -106,7 +106,7 @@ export function raceStatic(...observables) {
 }
 export class RaceOperator {
     call(subscriber, source) {
-        return source._subscribe(new RaceSubscriber(subscriber));
+        return source.subscribe(new RaceSubscriber(subscriber));
     }
 }
 /**
@@ -131,13 +131,13 @@ export class RaceSubscriber extends OuterSubscriber {
             this.destination.complete();
         }
         else {
-            for (let i = 0; i &lt; len; i++) {
+            for (let i = 0; i &lt; len &amp;&amp; !this.hasFirst; i++) {
                 let observable = observables[i];
                 let subscription = subscribeToResult(this, observable, observable, i);
                 if (this.subscriptions) {
                     this.subscriptions.push(subscription);
-                    this.add(subscription);
                 }
+                this.add(subscription);
             }
             this.observables = null;
         }

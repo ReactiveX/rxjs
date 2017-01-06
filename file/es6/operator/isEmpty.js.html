@@ -85,7 +85,7 @@ export function isEmpty() {
 }
 class IsEmptyOperator {
     call(observer, source) {
-        return source._subscribe(new IsEmptySubscriber(observer));
+        return source.subscribe(new IsEmptySubscriber(observer));
     }
 }
 /**

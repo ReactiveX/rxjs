@@ -162,14 +162,18 @@ describe(&apos;Subscription&apos;, function () {
             ret.unsubscribe();
             chai_1.expect(isCalled).to.equal(true);
         });
-        it(&apos;Should returns the passed one if passed a unsubscribed AnonymousSubscription&apos;, function () {
+        it(&apos;Should wrap the AnonymousSubscription and return a subscription that unsubscribes and removes it when unsubbed&apos;, function () {
             var sub = new Subscription();
+            var called = false;
             var arg = {
-                isUnsubscribed: true,
-                unsubscribe: function () { return undefined; },
+                unsubscribe: function () { return called = true; },
             };
             var ret = sub.add(arg);
-            chai_1.expect(ret).to.equal(arg);
+            chai_1.expect(called).to.equal(false);
+            chai_1.expect(sub._subscriptions.length).to.equal(1);
+            ret.unsubscribe();
+            chai_1.expect(called).to.equal(true);
+            chai_1.expect(sub._subscriptions.length).to.equal(0);
         });
         it(&apos;Should returns the passed one if passed a AnonymousSubscription having not function `unsubscribe` member&apos;, function () {
             var sub = new Subscription();

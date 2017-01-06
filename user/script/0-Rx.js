@@ -15,19 +15,15 @@ and limitations under the License.
 /* global global, define, System, Reflect, Promise */
 var __extends;
 var __assign;
+var __rest;
 var __decorate;
 var __param;
 var __metadata;
 var __awaiter;
+var __generator;
 (function (factory) {
     var root = typeof global === "object" ? global : typeof self === "object" ? self : typeof this === "object" ? this : {};
-    if (typeof System === "object" && typeof System.register === "function") {
-        System.register("tslib", [], function (exporter) {
-            factory(createExporter(root, exporter));
-            return { setters: [], execute: function() { } };
-        });
-    }
-    else if (typeof define === "function" && define.amd) {
+    if (typeof define === "function" && define.amd) {
         define("tslib", ["exports"], function (exports) { factory(createExporter(root, createExporter(exports))); });
     }
     else if (typeof module === "object" && typeof module.exports === "object") {
@@ -36,14 +32,17 @@ var __awaiter;
     else {
         factory(createExporter(root));
     }
-
     function createExporter(exports, previous) {
         return function (id, v) { return exports[id] = previous ? previous(id, v) : v; };
     }
 })
 (function (exporter) {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+
     __extends = function (d, b) {
-        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+        extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
@@ -53,6 +52,16 @@ var __awaiter;
             s = arguments[i];
             for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
         }
+        return t;
+    };
+
+    __rest = function (s, e) {
+        var t = {};
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+            t[p] = s[p];
+        if (s != null && typeof Object.getOwnPropertySymbols === "function")
+            for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
+                t[p[i]] = s[p[i]];
         return t;
     };
 
@@ -74,19 +83,50 @@ var __awaiter;
     __awaiter = function (thisArg, _arguments, P, generator) {
         return new (P || (P = Promise))(function (resolve, reject) {
             function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-            function rejected(value) { try { step(generator.throw(value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
             function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-            step((generator = generator.apply(thisArg, _arguments)).next());
+            step((generator = generator.apply(thisArg, _arguments || [])).next());
         });
+    };
+
+    __generator = function (thisArg, body) {
+        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t;
+        return { next: verb(0), "throw": verb(1), "return": verb(2) };
+        function verb(n) { return function (v) { return step([n, v]); }; }
+        function step(op) {
+            if (f) throw new TypeError("Generator is already executing.");
+            while (_) try {
+                if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+                if (y = 0, t) op = [0, t.value];
+                switch (op[0]) {
+                    case 0: case 1: t = op; break;
+                    case 4: _.label++; return { value: op[1], done: false };
+                    case 5: _.label++; y = op[1]; op = [0]; continue;
+                    case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                    default:
+                        if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                        if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                        if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                        if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                        if (t[2]) _.ops.pop();
+                        _.trys.pop(); continue;
+                }
+                op = body.call(thisArg, _);
+            } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+            if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+        }
     };
 
     exporter("__extends", __extends);
     exporter("__assign", __assign);
+    exporter("__rest", __rest);
     exporter("__decorate", __decorate);
     exporter("__param", __param);
     exporter("__metadata", __metadata);
     exporter("__awaiter", __awaiter);
-});(function (global, factory) {
+    exporter("__generator", __generator);
+});
+(function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
     typeof define === 'function' && define.amd ? define(['exports'], factory) :
     (factory((global.Rx = global.Rx || {})));
@@ -196,7 +236,8 @@ var Subscription = (function () {
             var trial = tryCatch(_unsubscribe).call(this);
             if (trial === errorObject) {
                 hasErrors = true;
-                (errors = errors || []).push(errorObject.e);
+                errors = errors || (errorObject.e instanceof UnsubscriptionError ?
+                    flattenUnsubscriptionErrors(errorObject.e.errors) : [errorObject.e]);
             }
         }
         if (isArray(_subscriptions)) {
@@ -211,7 +252,7 @@ var Subscription = (function () {
                         errors = errors || [];
                         var err = errorObject.e;
                         if (err instanceof UnsubscriptionError) {
-                            errors = errors.concat(err.errors);
+                            errors = errors.concat(flattenUnsubscriptionErrors(err.errors));
                         }
                         else {
                             errors.push(err);
@@ -255,19 +296,20 @@ var Subscription = (function () {
                 sub = new Subscription(teardown);
             case 'object':
                 if (sub.closed || typeof sub.unsubscribe !== 'function') {
-                    break;
+                    return sub;
                 }
                 else if (this.closed) {
                     sub.unsubscribe();
-                }
-                else {
-                    (this._subscriptions || (this._subscriptions = [])).push(sub);
+                    return sub;
                 }
                 break;
             default:
                 throw new Error('unrecognized teardown ' + teardown + ' added to Subscription.');
         }
-        return sub;
+        var childSub = new ChildSubscription(sub, this);
+        this._subscriptions = this._subscriptions || [];
+        this._subscriptions.push(childSub);
+        return childSub;
     };
     /**
      * Removes a Subscription from the internal list of subscriptions that will
@@ -294,6 +336,23 @@ var Subscription = (function () {
     }(new Subscription()));
     return Subscription;
 }());
+var ChildSubscription = (function (_super) {
+    __extends(ChildSubscription, _super);
+    function ChildSubscription(_innerSub, _parent) {
+        _super.call(this);
+        this._innerSub = _innerSub;
+        this._parent = _parent;
+    }
+    ChildSubscription.prototype._unsubscribe = function () {
+        var _a = this, _innerSub = _a._innerSub, _parent = _a._parent;
+        _parent.remove(this);
+        _innerSub.unsubscribe();
+    };
+    return ChildSubscription;
+}(Subscription));
+function flattenUnsubscriptionErrors(errors) {
+    return errors.reduce(function (errs, err) { return errs.concat((err instanceof UnsubscriptionError) ? err.errors : err); }, []);
+}
 
 var empty = {
     closed: true,
@@ -615,7 +674,7 @@ var Observable = (function () {
         var operator = this.operator;
         var sink = toSubscriber(observerOrNext, error, complete);
         if (operator) {
-            operator.call(sink, this);
+            operator.call(sink, this.source);
         }
         else {
             sink.add(this._subscribe(sink));
@@ -1353,12 +1412,18 @@ var EmptyObservable = (function (_super) {
      * );
      * result.subscribe(x => console.log(x));
      *
+     * // Results in the following to the console:
+     * // x is equal to the count on the interval eg(0,1,2,3,...)
+     * // x will occur every 1000ms
+     * // if x % 2 is equal to 1 print abc
+     * // if x % 2 is not equal to 1 nothing will be output
+     *
      * @see {@link create}
      * @see {@link never}
      * @see {@link of}
      * @see {@link throw}
      *
-     * @param {Scheduler} [scheduler] A {@link Scheduler} to use for scheduling
+     * @param {Scheduler} [scheduler] A {@link IScheduler} to use for scheduling
      * the emission of the complete notification.
      * @return {Observable} An "empty" Observable: emits only the complete
      * notification.
@@ -1416,8 +1481,8 @@ var ArrayObservable = (function (_super) {
      * This static operator is useful for creating a simple Observable that only
      * emits the arguments given, and the complete notification thereafter. It can
      * be used for composing with other Observables, such as with {@link concat}.
-     * By default, it uses a `null` Scheduler, which means the `next`
-     * notifications are sent synchronously, although with a different Scheduler
+     * By default, it uses a `null` IScheduler, which means the `next`
+     * notifications are sent synchronously, although with a different IScheduler
      * it is possible to determine when those notifications will be delivered.
      *
      * @example <caption>Emit 10, 20, 30, then 'a', 'b', 'c', then start ticking every second.</caption>
@@ -1433,7 +1498,7 @@ var ArrayObservable = (function (_super) {
      * @see {@link throw}
      *
      * @param {...T} values Arguments that represent `next` values to be emitted.
-     * @param {Scheduler} [scheduler] A {@link Scheduler} to use for scheduling
+     * @param {Scheduler} [scheduler] A {@link IScheduler} to use for scheduling
      * the emissions of the `next` notifications.
      * @return {Observable<T>} An Observable that emits each given input value.
      * @static true
@@ -1596,7 +1661,7 @@ function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
             return result.subscribe(destination);
         }
     }
-    if (isArray(result)) {
+    else if (isArray(result)) {
         for (var i = 0, len = result.length; i < len && !destination.closed; i++) {
             destination.next(result[i]);
         }
@@ -1617,7 +1682,7 @@ function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
         });
         return destination;
     }
-    else if (typeof result[$$iterator] === 'function') {
+    else if (result && typeof result[$$iterator] === 'function') {
         var iterator = result[$$iterator]();
         do {
             var item = iterator.next();
@@ -1631,17 +1696,20 @@ function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
             }
         } while (true);
     }
-    else if (typeof result[$$observable] === 'function') {
+    else if (result && typeof result[$$observable] === 'function') {
         var obs = result[$$observable]();
         if (typeof obs.subscribe !== 'function') {
-            destination.error(new Error('invalid observable'));
+            destination.error(new TypeError('Provided object does not correctly implement Symbol.observable'));
         }
         else {
             return obs.subscribe(new InnerSubscriber(outerSubscriber, outerValue, outerIndex));
         }
     }
     else {
-        destination.error(new TypeError('unknown type returned'));
+        var value = isObject(result) ? 'an invalid object' : "'" + result + "'";
+        var msg = ("You provided " + value + " where a stream was expected.")
+            + ' You can provide an Observable, Promise, Array, or Iterable.';
+        destination.error(new TypeError(msg));
     }
     return null;
 }
@@ -1671,6 +1739,11 @@ var none = {};
  * var height = Rx.Observable.of(1.76, 1.77, 1.78);
  * var bmi = weight.combineLatest(height, (w, h) => w / (h * h));
  * bmi.subscribe(x => console.log('BMI is ' + x));
+ *
+ * // With output to console:
+ * // BMI is 24.212293388429753
+ * // BMI is 23.93948099205209
+ * // BMI is 23.671253629592222
  *
  * @see {@link combineAll}
  * @see {@link merge}
@@ -1708,7 +1781,7 @@ var CombineLatestOperator = (function () {
         this.project = project;
     }
     CombineLatestOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new CombineLatestSubscriber(subscriber, this.project));
+        return source.subscribe(new CombineLatestSubscriber(subscriber, this.project));
     };
     return CombineLatestOperator;
 }());
@@ -1805,6 +1878,11 @@ var CombineLatestSubscriber = (function (_super) {
  * var bmi = Rx.Observable.combineLatest(weight, height, (w, h) => w / (h * h));
  * bmi.subscribe(x => console.log('BMI is ' + x));
  *
+ * // With output to console:
+ * // BMI is 24.212293388429753
+ * // BMI is 23.93948099205209
+ * // BMI is 23.671253629592222
+ *
  * @see {@link combineAll}
  * @see {@link merge}
  * @see {@link withLatestFrom}
@@ -1815,7 +1893,7 @@ var CombineLatestSubscriber = (function (_super) {
  * source Observable. More than one input Observables may be given as argument.
  * @param {function} [project] An optional function to project the values from
  * the combined latest values into a new value on the output Observable.
- * @param {Scheduler} [scheduler=null] The Scheduler to use for subscribing to
+ * @param {Scheduler} [scheduler=null] The IScheduler to use for subscribing to
  * each input Observable.
  * @return {Observable} An Observable of projected values from the most recent
  * values from each input Observable, or an array of the most recent values from
@@ -1900,7 +1978,7 @@ var MergeAllOperator = (function () {
         this.concurrent = concurrent;
     }
     MergeAllOperator.prototype.call = function (observer, source) {
-        return source._subscribe(new MergeAllSubscriber(observer, this.concurrent));
+        return source.subscribe(new MergeAllSubscriber(observer, this.concurrent));
     };
     return MergeAllOperator;
 }());
@@ -1968,6 +2046,9 @@ var MergeAllSubscriber = (function (_super) {
  * var result = timer.concat(sequence);
  * result.subscribe(x => console.log(x));
  *
+ * // results in:
+ * // 1000ms-> 0 -1000ms-> 1 -1000ms-> 2 -1000ms-> 3 -immediate-> 1 ... 10
+ *
  * @example <caption>Concatenate 3 Observables</caption>
  * var timer1 = Rx.Observable.interval(1000).take(10);
  * var timer2 = Rx.Observable.interval(2000).take(6);
@@ -1975,13 +2056,19 @@ var MergeAllSubscriber = (function (_super) {
  * var result = timer1.concat(timer2, timer3);
  * result.subscribe(x => console.log(x));
  *
+ * // results in the following:
+ * // (Prints to console sequentially)
+ * // -1000ms-> 0 -1000ms-> 1 -1000ms-> ... 9
+ * // -2000ms-> 0 -2000ms-> 1 -2000ms-> ... 5
+ * // -500ms-> 0 -500ms-> 1 -500ms-> ... 9
+ *
  * @see {@link concatAll}
  * @see {@link concatMap}
  * @see {@link concatMapTo}
  *
  * @param {Observable} other An input Observable to concatenate after the source
  * Observable. More than one input Observables may be given as argument.
- * @param {Scheduler} [scheduler=null] An optional Scheduler to schedule each
+ * @param {Scheduler} [scheduler=null] An optional IScheduler to schedule each
  * Observable subscription on.
  * @return {Observable} All values of each passed Observable merged into a
  * single Observable, in order, in serial fashion.
@@ -2015,12 +2102,21 @@ function concat$1() {
  * var result = Rx.Observable.concat(timer, sequence);
  * result.subscribe(x => console.log(x));
  *
+ * // results in:
+ * // 0 -1000ms-> 1 -1000ms-> 2 -1000ms-> 3 -immediate-> 1 ... 10
+ *
  * @example <caption>Concatenate 3 Observables</caption>
  * var timer1 = Rx.Observable.interval(1000).take(10);
  * var timer2 = Rx.Observable.interval(2000).take(6);
  * var timer3 = Rx.Observable.interval(500).take(10);
  * var result = Rx.Observable.concat(timer1, timer2, timer3);
  * result.subscribe(x => console.log(x));
+ *
+ * // results in the following:
+ * // (Prints to console sequentially)
+ * // -1000ms-> 0 -1000ms-> 1 -1000ms-> ... 9
+ * // -2000ms-> 0 -2000ms-> 1 -2000ms-> ... 5
+ * // -500ms-> 0 -500ms-> 1 -500ms-> ... 9
  *
  * @see {@link concatAll}
  * @see {@link concatMap}
@@ -2029,7 +2125,7 @@ function concat$1() {
  * @param {Observable} input1 An input Observable to concatenate with others.
  * @param {Observable} input2 An input Observable to concatenate with others.
  * More than one input Observables may be given as argument.
- * @param {Scheduler} [scheduler=null] An optional Scheduler to schedule each
+ * @param {Scheduler} [scheduler=null] An optional IScheduler to schedule each
  * Observable subscription on.
  * @return {Observable} All values of each passed Observable merged into a
  * single Observable, in order, in serial fashion.
@@ -2095,6 +2191,12 @@ var DeferObservable = (function (_super) {
      *   }
      * });
      * clicksOrInterval.subscribe(x => console.log(x));
+     *
+     * // Results in the following behavior:
+     * // If the result of Math.random() is greater than 0.5 it will listen
+     * // for clicks anywhere on the "document"; when document is clicked it
+     * // will log a MouseEvent object to the console. If the result is less
+     * // than 0.5 it will emit ascending numbers, one every second(1000ms).
      *
      * @see {@link create}
      *
@@ -2283,7 +2385,7 @@ var PromiseObservable = (function (_super) {
      * @see {@link from}
      *
      * @param {Promise<T>} promise The promise to be converted.
-     * @param {Scheduler} [scheduler] An optional Scheduler to use for scheduling
+     * @param {Scheduler} [scheduler] An optional IScheduler to use for scheduling
      * the delivery of the resolved value (or the rejection).
      * @return {Observable<T>} An Observable which wraps the Promise.
      * @static true
@@ -2721,7 +2823,7 @@ var ObserveOnOperator = (function () {
         this.delay = delay;
     }
     ObserveOnOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new ObserveOnSubscriber(subscriber, this.scheduler, this.delay));
+        return source.subscribe(new ObserveOnSubscriber(subscriber, this.scheduler, this.delay));
     };
     return ObserveOnOperator;
 }());
@@ -2739,11 +2841,15 @@ var ObserveOnSubscriber = (function (_super) {
         this.delay = delay;
     }
     ObserveOnSubscriber.dispatch = function (arg) {
-        var notification = arg.notification, destination = arg.destination;
+        var notification = arg.notification, destination = arg.destination, subscription = arg.subscription;
         notification.observe(destination);
+        if (subscription) {
+            subscription.unsubscribe();
+        }
     };
     ObserveOnSubscriber.prototype.scheduleMessage = function (notification) {
-        this.add(this.scheduler.schedule(ObserveOnSubscriber.dispatch, this.delay, new ObserveOnMessage(notification, this.destination)));
+        var message = new ObserveOnMessage(notification, this.destination);
+        message.subscription = this.add(this.scheduler.schedule(ObserveOnSubscriber.dispatch, this.delay, message));
     };
     ObserveOnSubscriber.prototype._next = function (value) {
         this.scheduleMessage(Notification.createNext(value));
@@ -2798,6 +2904,9 @@ var FromObservable = (function (_super) {
      * var result = Rx.Observable.from(array);
      * result.subscribe(x => console.log(x));
      *
+     * // Results in the following:
+     * // 10 20 30
+     *
      * @example <caption>Convert an infinite iterable (from a generator) to an Observable</caption>
      * function* generateDoubles(seed) {
      *   var i = seed;
@@ -2810,6 +2919,9 @@ var FromObservable = (function (_super) {
      * var iterator = generateDoubles(3);
      * var result = Rx.Observable.from(iterator).take(10);
      * result.subscribe(x => console.log(x));
+     *
+     * // Results in the following:
+     * // 3 6 12 24 48 96 192 384 768 1536
      *
      * @see {@link create}
      * @see {@link fromEvent}
@@ -2867,6 +2979,7 @@ var from = FromObservable.create;
 
 Observable.from = from;
 
+var toString = Object.prototype.toString;
 function isNodeStyleEventEmmitter(sourceObj) {
     return !!sourceObj && typeof sourceObj.addListener === 'function' && typeof sourceObj.removeListener === 'function';
 }
@@ -2874,10 +2987,10 @@ function isJQueryStyleEventEmitter(sourceObj) {
     return !!sourceObj && typeof sourceObj.on === 'function' && typeof sourceObj.off === 'function';
 }
 function isNodeList(sourceObj) {
-    return !!sourceObj && sourceObj.toString() === '[object NodeList]';
+    return !!sourceObj && toString.call(sourceObj) === '[object NodeList]';
 }
 function isHTMLCollection(sourceObj) {
-    return !!sourceObj && sourceObj.toString() === '[object HTMLCollection]';
+    return !!sourceObj && toString.call(sourceObj) === '[object HTMLCollection]';
 }
 function isEventTarget(sourceObj) {
     return !!sourceObj && typeof sourceObj.addEventListener === 'function' && typeof sourceObj.removeEventListener === 'function';
@@ -2916,6 +3029,10 @@ var FromEventObservable = (function (_super) {
      * @example <caption>Emits clicks happening on the DOM document</caption>
      * var clicks = Rx.Observable.fromEvent(document, 'click');
      * clicks.subscribe(x => console.log(x));
+     *
+     * // Results in:
+     * // MouseEvent object logged to console everytime a click
+     * // occurs on the document.
      *
      * @see {@link from}
      * @see {@link fromEventPattern}
@@ -3575,7 +3692,7 @@ var IntervalObservable = (function (_super) {
     }
     /**
      * Creates an Observable that emits sequential numbers every specified
-     * interval of time, on a specified Scheduler.
+     * interval of time, on a specified IScheduler.
      *
      * <span class="informal">Emits incremental numbers periodically in time.
      * </span>
@@ -3586,8 +3703,8 @@ var IntervalObservable = (function (_super) {
      * ascending integers, with a constant interval of time of your choosing
      * between those emissions. The first emission is not sent immediately, but
      * only after the first period has passed. By default, this operator uses the
-     * `async` Scheduler to provide a notion of time, but you may pass any
-     * Scheduler to it.
+     * `async` IScheduler to provide a notion of time, but you may pass any
+     * IScheduler to it.
      *
      * @example <caption>Emits ascending numbers, one every second (1000ms)</caption>
      * var numbers = Rx.Observable.interval(1000);
@@ -3598,7 +3715,7 @@ var IntervalObservable = (function (_super) {
      *
      * @param {number} [period=0] The interval size in milliseconds (by default)
      * or the time unit determined by the scheduler's clock.
-     * @param {Scheduler} [scheduler=async] The Scheduler to use for scheduling
+     * @param {Scheduler} [scheduler=async] The IScheduler to use for scheduling
      * the emission of values, and providing a notion of "time".
      * @return {Observable} An Observable that emits a sequential number each time
      * interval.
@@ -3675,7 +3792,7 @@ Observable.interval = interval;
  * Observable. More than one input Observables may be given as argument.
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
  * Observables being subscribed to concurrently.
- * @param {Scheduler} [scheduler=null] The Scheduler to use for managing
+ * @param {Scheduler} [scheduler=null] The IScheduler to use for managing
  * concurrency of input Observables.
  * @return {Observable} an Observable that emits items that are the result of
  * every input Observable.
@@ -3711,6 +3828,12 @@ function merge$1() {
  * var clicksOrTimer = Rx.Observable.merge(clicks, timer);
  * clicksOrTimer.subscribe(x => console.log(x));
  *
+ * // Results in the following:
+ * // timer will emit ascending values, one every second(1000ms) to console
+ * // clicks logs MouseEvents to console everytime the "document" is clicked
+ * // Since the two streams are merged you see these happening
+ * // as they occur.
+ *
  * @example <caption>Merge together 3 Observables, but only 2 run concurrently</caption>
  * var timer1 = Rx.Observable.interval(1000).take(10);
  * var timer2 = Rx.Observable.interval(2000).take(6);
@@ -3718,6 +3841,15 @@ function merge$1() {
  * var concurrent = 2; // the argument
  * var merged = Rx.Observable.merge(timer1, timer2, timer3, concurrent);
  * merged.subscribe(x => console.log(x));
+ *
+ * // Results in the following:
+ * // - First timer1 and timer2 will run concurrently
+ * // - timer1 will emit a value every 1000ms for 10 iterations
+ * // - timer2 will emit a value every 2000ms for 6 iterations
+ * // - after timer1 hits it's max iteration, timer2 will
+ * //   continue, and timer3 will start to run concurrently with timer2
+ * // - when timer2 hits it's max iteration it terminates, and
+ * //   timer3 will continue to emit a value every 500ms until it is complete
  *
  * @see {@link mergeAll}
  * @see {@link mergeMap}
@@ -3727,7 +3859,7 @@ function merge$1() {
  * @param {...Observable} observables Input Observables to merge together.
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
  * Observables being subscribed to concurrently.
- * @param {Scheduler} [scheduler=null] The Scheduler to use for managing
+ * @param {Scheduler} [scheduler=null] The IScheduler to use for managing
  * concurrency of input Observables.
  * @return {Observable} an Observable that emits items that are the result of
  * every input Observable.
@@ -3804,7 +3936,7 @@ var RaceOperator = (function () {
     function RaceOperator() {
     }
     RaceOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new RaceSubscriber(subscriber));
+        return source.subscribe(new RaceSubscriber(subscriber));
     };
     return RaceOperator;
 }());
@@ -3831,13 +3963,13 @@ var RaceSubscriber = (function (_super) {
             this.destination.complete();
         }
         else {
-            for (var i = 0; i < len; i++) {
+            for (var i = 0; i < len && !this.hasFirst; i++) {
                 var observable = observables[i];
                 var subscription = subscribeToResult(this, observable, observable, i);
                 if (this.subscriptions) {
                     this.subscriptions.push(subscription);
-                    this.add(subscription);
                 }
+                this.add(subscription);
             }
             this.observables = null;
         }
@@ -3951,7 +4083,7 @@ var OnErrorResumeNextOperator = (function () {
         this.nextSources = nextSources;
     }
     OnErrorResumeNextOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new OnErrorResumeNextSubscriber(subscriber, this.nextSources));
+        return source.subscribe(new OnErrorResumeNextSubscriber(subscriber, this.nextSources));
     };
     return OnErrorResumeNextOperator;
 }());
@@ -4014,7 +4146,7 @@ var PairsObservable = (function (_super) {
     }
     /**
      * Convert an object into an observable sequence of [key, value] pairs
-     * using an optional Scheduler to enumerate the object.
+     * using an optional IScheduler to enumerate the object.
      *
      * @example <caption>Converts a javascript object to an Observable</caption>
      * var obj = {
@@ -4038,7 +4170,7 @@ var PairsObservable = (function (_super) {
      *
      * @param {Object} obj The object to inspect and turn into an
      * Observable sequence.
-     * @param {Scheduler} [scheduler] An optional Scheduler to run the
+     * @param {Scheduler} [scheduler] An optional IScheduler to run the
      * enumeration of the input sequence on.
      * @returns {(Observable<Array<string | T>>)} An observable sequence of
      * [key, value] pairs from the object.
@@ -4092,8 +4224,8 @@ var RangeObservable = (function (_super) {
      *
      * `range` operator emits a range of sequential integers, in order, where you
      * select the `start` of the range and its `length`. By default, uses no
-     * Scheduler and just delivers the notifications synchronously, but may use
-     * an optional Scheduler to regulate those deliveries.
+     * IScheduler and just delivers the notifications synchronously, but may use
+     * an optional IScheduler to regulate those deliveries.
      *
      * @example <caption>Emits the numbers 1 to 10</caption>
      * var numbers = Rx.Observable.range(1, 10);
@@ -4104,7 +4236,7 @@ var RangeObservable = (function (_super) {
      *
      * @param {number} [start=0] The value of the first integer in the sequence.
      * @param {number} [count=0] The number of sequential integers to generate.
-     * @param {Scheduler} [scheduler] A {@link Scheduler} to use for scheduling
+     * @param {Scheduler} [scheduler] A {@link IScheduler} to use for scheduling
      * the emissions of the notifications.
      * @return {Observable} An Observable of numbers that emits a finite range of
      * sequential integers.
@@ -4260,7 +4392,7 @@ var ErrorObservable = (function (_super) {
      * @see {@link of}
      *
      * @param {any} error The particular Error to pass to the error notification.
-     * @param {Scheduler} [scheduler] A {@link Scheduler} to use for scheduling
+     * @param {Scheduler} [scheduler] A {@link IScheduler} to use for scheduling
      * the emission of the error notification.
      * @return {Observable} An error Observable: emits only the error notification
      * using the given error argument.
@@ -4337,8 +4469,8 @@ var TimerObservable = (function (_super) {
      * integers, with a constant interval of time, `period` of your choosing
      * between those emissions. The first emission happens after the specified
      * `initialDelay`. The initial delay may be a {@link Date}. By default, this
-     * operator uses the `async` Scheduler to provide a notion of time, but you
-     * may pass any Scheduler to it. If `period` is not specified, the output
+     * operator uses the `async` IScheduler to provide a notion of time, but you
+     * may pass any IScheduler to it. If `period` is not specified, the output
      * Observable emits only one value, `0`. Otherwise, it emits an infinite
      * sequence.
      *
@@ -4357,7 +4489,7 @@ var TimerObservable = (function (_super) {
      * emitting the first value of `0`.
      * @param {number} [period] The period of time between emissions of the
      * subsequent numbers.
-     * @param {Scheduler} [scheduler=async] The Scheduler to use for scheduling
+     * @param {Scheduler} [scheduler=async] The IScheduler to use for scheduling
      * the emission of values, and providing a notion of "time".
      * @return {Observable} An Observable that emits a `0` after the
      * `initialDelay` and ever increasing numbers after each `period` of time
@@ -4413,6 +4545,30 @@ function zipProto() {
 }
 /* tslint:enable:max-line-length */
 /**
+ * Combines multiple Observables to create an Observable whose values are calculated from the values, in order, of each
+ * of its input Observables.
+ *
+ * If the latest parameter is a function, this function is used to compute the created value from the input values.
+ * Otherwise, an array of the input values is returned.
+ *
+ * @example <caption>Combine age and name from different sources</caption>
+ *
+ * let age$ = Observable.of<number>(27, 25, 29);
+ * let name$ = Observable.of<string>('Foo', 'Bar', 'Beer');
+ * let isDev$ = Observable.of<boolean>(true, true, false);
+ *
+ * Observable
+ *     .zip(age$,
+ *          name$,
+ *          isDev$,
+ *          (age: number, name: string, isDev: boolean) => ({ age, name, isDev }))
+ *     .subscribe(x => console.log(x));
+ *
+ * // outputs
+ * // { age: 7, name: 'Foo', isDev: true }
+ * // { age: 5, name: 'Bar', isDev: true }
+ * // { age: 9, name: 'Beer', isDev: false }
+ *
  * @param observables
  * @return {Observable<R>}
  * @static true
@@ -4435,7 +4591,7 @@ var ZipOperator = (function () {
         this.project = project;
     }
     ZipOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new ZipSubscriber(subscriber, this.project));
+        return source.subscribe(new ZipSubscriber(subscriber, this.project));
     };
     return ZipOperator;
 }());
@@ -4681,7 +4837,7 @@ var MapOperator = (function () {
         this.thisArg = thisArg;
     }
     MapOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new MapSubscriber(subscriber, this.project, this.thisArg));
+        return source.subscribe(new MapSubscriber(subscriber, this.project, this.thisArg));
     };
     return MapOperator;
 }());
@@ -4890,7 +5046,12 @@ var AjaxSubscriber = (function (_super) {
         }
         else {
             this.xhr = xhr;
-            // open XHR first
+            // set up the events before open XHR
+            // https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest
+            // You need to add the event listeners before calling open() on the request.
+            // Otherwise the progress events will not fire.
+            this.setupEvents(xhr, request);
+            // open XHR
             var result = void 0;
             if (user) {
                 result = tryCatch(xhr.open).call(xhr, method, url, async, user, password);
@@ -4907,14 +5068,11 @@ var AjaxSubscriber = (function (_super) {
             xhr.responseType = request.responseType;
             // set headers
             this.setHeaders(xhr, headers);
-            // now set up the events
-            this.setupEvents(xhr, request);
             // finally send the request
-            if (body) {
-                xhr.send(body);
-            }
-            else {
-                xhr.send();
+            result = body ? tryCatch(xhr.send).call(xhr, body) : tryCatch(xhr.send).call(xhr);
+            if (result === errorObject) {
+                this.error(errorObject.e);
+                return null;
             }
         }
         return xhr;
@@ -4962,14 +5120,19 @@ var AjaxSubscriber = (function (_super) {
         xhrTimeout.request = request;
         xhrTimeout.subscriber = this;
         xhrTimeout.progressSubscriber = progressSubscriber;
-        if (xhr.upload && 'withCredentials' in xhr && root.XDomainRequest) {
+        if (xhr.upload && 'withCredentials' in xhr) {
             if (progressSubscriber) {
                 var xhrProgress_1;
                 xhrProgress_1 = function (e) {
                     var progressSubscriber = xhrProgress_1.progressSubscriber;
                     progressSubscriber.next(e);
                 };
-                xhr.onprogress = xhrProgress_1;
+                if (root.XDomainRequest) {
+                    xhr.onprogress = xhrProgress_1;
+                }
+                else {
+                    xhr.upload.onprogress = xhrProgress_1;
+                }
                 xhrProgress_1.progressSubscriber = progressSubscriber;
             }
             var xhrError_1;
@@ -5503,7 +5666,7 @@ var BufferOperator = (function () {
         this.closingNotifier = closingNotifier;
     }
     BufferOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new BufferSubscriber(subscriber, this.closingNotifier));
+        return source.subscribe(new BufferSubscriber(subscriber, this.closingNotifier));
     };
     return BufferOperator;
 }());
@@ -5583,7 +5746,7 @@ var BufferCountOperator = (function () {
         this.startBufferEvery = startBufferEvery;
     }
     BufferCountOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new BufferCountSubscriber(subscriber, this.bufferSize, this.startBufferEvery));
+        return source.subscribe(new BufferCountSubscriber(subscriber, this.bufferSize, this.startBufferEvery));
     };
     return BufferCountOperator;
 }());
@@ -5702,7 +5865,7 @@ var BufferTimeOperator = (function () {
         this.scheduler = scheduler;
     }
     BufferTimeOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new BufferTimeSubscriber(subscriber, this.bufferTimeSpan, this.bufferCreationInterval, this.maxBufferSize, this.scheduler));
+        return source.subscribe(new BufferTimeSubscriber(subscriber, this.bufferTimeSpan, this.bufferCreationInterval, this.maxBufferSize, this.scheduler));
     };
     return BufferTimeOperator;
 }());
@@ -5871,7 +6034,7 @@ var BufferToggleOperator = (function () {
         this.closingSelector = closingSelector;
     }
     BufferToggleOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new BufferToggleSubscriber(subscriber, this.openings, this.closingSelector));
+        return source.subscribe(new BufferToggleSubscriber(subscriber, this.openings, this.closingSelector));
     };
     return BufferToggleOperator;
 }());
@@ -6009,7 +6172,7 @@ var BufferWhenOperator = (function () {
         this.closingSelector = closingSelector;
     }
     BufferWhenOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new BufferWhenSubscriber(subscriber, this.closingSelector));
+        return source.subscribe(new BufferWhenSubscriber(subscriber, this.closingSelector));
     };
     return BufferWhenOperator;
 }());
@@ -6101,7 +6264,7 @@ var CatchOperator = (function () {
         this.selector = selector;
     }
     CatchOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new CatchSubscriber(subscriber, this.selector, this.caught));
+        return source.subscribe(new CatchSubscriber(subscriber, this.selector, this.caught));
     };
     return CatchOperator;
 }());
@@ -6219,6 +6382,12 @@ Observable.prototype.concat = concat$1;
  * var firstOrder = higherOrder.concatAll();
  * firstOrder.subscribe(x => console.log(x));
  *
+ * // Results in the following:
+ * // (results are not concurrent)
+ * // For every click on the "document" it will emit values 0 to 3 spaced
+ * // on a 1000ms interval
+ * // one click = 1000ms-> 0 -1000ms-> 1 -1000ms-> 2 -1000ms-> 3
+ *
  * @see {@link combineAll}
  * @see {@link concat}
  * @see {@link concatMap}
@@ -6260,6 +6429,15 @@ Observable.prototype.concatAll = concatAll;
  *   Rx.Observable.interval(1000).map(i => x+i)
  * );
  * result.subscribe(x => console.log(x));
+ *
+ * // Results in the following:
+ * // a0
+ * // b0
+ * // c0
+ * // a1
+ * // b1
+ * // c1
+ * // continues to list a,b,c with respective ascending integers
  *
  * @see {@link concatMap}
  * @see {@link exhaustMap}
@@ -6305,7 +6483,7 @@ var MergeMapOperator = (function () {
         this.concurrent = concurrent;
     }
     MergeMapOperator.prototype.call = function (observer, source) {
-        return source._subscribe(new MergeMapSubscriber(observer, this.project, this.resultSelector, this.concurrent));
+        return source.subscribe(new MergeMapSubscriber(observer, this.project, this.resultSelector, this.concurrent));
     };
     return MergeMapOperator;
 }());
@@ -6419,6 +6597,12 @@ var MergeMapSubscriber = (function (_super) {
  * var result = clicks.concatMap(ev => Rx.Observable.interval(1000).take(4));
  * result.subscribe(x => console.log(x));
  *
+ * // Results in the following:
+ * // (results are not concurrent)
+ * // For every click on the "document" it will emit values 0 to 3 spaced
+ * // on a 1000ms interval
+ * // one click = 1000ms-> 0 -1000ms-> 1 -1000ms-> 2 -1000ms-> 3
+ *
  * @see {@link concat}
  * @see {@link concatAll}
  * @see {@link concatMapTo}
@@ -6515,7 +6699,7 @@ var MergeMapToOperator = (function () {
         this.concurrent = concurrent;
     }
     MergeMapToOperator.prototype.call = function (observer, source) {
-        return source._subscribe(new MergeMapToSubscriber(observer, this.ish, this.resultSelector, this.concurrent));
+        return source.subscribe(new MergeMapToSubscriber(observer, this.ish, this.resultSelector, this.concurrent));
     };
     return MergeMapToOperator;
 }());
@@ -6626,6 +6810,12 @@ var MergeMapToSubscriber = (function (_super) {
  * var result = clicks.concatMapTo(Rx.Observable.interval(1000).take(4));
  * result.subscribe(x => console.log(x));
  *
+ * // Results in the following:
+ * // (results are not concurrent)
+ * // For every click on the "document" it will emit values 0 to 3 spaced
+ * // on a 1000ms interval
+ * // one click = 1000ms-> 0 -1000ms-> 1 -1000ms-> 2 -1000ms-> 3
+ *
  * @see {@link concat}
  * @see {@link concatAll}
  * @see {@link concatMap}
@@ -6684,6 +6874,9 @@ Observable.prototype.concatMapTo = concatMapTo;
  * var result = numbers.count(i => i % 2 === 1);
  * result.subscribe(x => console.log(x));
  *
+ * // Results in:
+ * // 4
+ *
  * @see {@link max}
  * @see {@link min}
  * @see {@link reduce}
@@ -6708,7 +6901,7 @@ var CountOperator = (function () {
         this.source = source;
     }
     CountOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new CountSubscriber(subscriber, this.predicate, this.source));
+        return source.subscribe(new CountSubscriber(subscriber, this.predicate, this.source));
     };
     return CountOperator;
 }());
@@ -6783,6 +6976,11 @@ Observable.prototype.count = count;
  * var upperCase = materialized.dematerialize();
  * upperCase.subscribe(x => console.log(x), e => console.error(e));
  *
+ * // Results in:
+ * // A
+ * // B
+ * // TypeError: x.toUpperCase is not a function
+ *
  * @see {@link Notification}
  * @see {@link materialize}
  *
@@ -6798,7 +6996,7 @@ var DeMaterializeOperator = (function () {
     function DeMaterializeOperator() {
     }
     DeMaterializeOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new DeMaterializeSubscriber(subscriber));
+        return source.subscribe(new DeMaterializeSubscriber(subscriber));
     };
     return DeMaterializeOperator;
 }());
@@ -6870,7 +7068,7 @@ var DebounceOperator = (function () {
         this.durationSelector = durationSelector;
     }
     DebounceOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new DebounceSubscriber(subscriber, this.durationSelector));
+        return source.subscribe(new DebounceSubscriber(subscriber, this.durationSelector));
     };
     return DebounceOperator;
 }());
@@ -6960,7 +7158,7 @@ Observable.prototype.debounce = debounce;
  * This is a rate-limiting operator, because it is impossible for more than one
  * value to be emitted in any time window of duration `dueTime`, but it is also
  * a delay-like operator since output emissions do not occur at the same time as
- * they did on the source Observable. Optionally takes a {@link Scheduler} for
+ * they did on the source Observable. Optionally takes a {@link IScheduler} for
  * managing timers.
  *
  * @example <caption>Emit the most recent click after a burst of clicks</caption>
@@ -6978,7 +7176,7 @@ Observable.prototype.debounce = debounce;
  * unit determined internally by the optional `scheduler`) for the window of
  * time required to wait for emission silence before emitting the most recent
  * source value.
- * @param {Scheduler} [scheduler=async] The {@link Scheduler} to use for
+ * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for
  * managing the timers that handle the timeout for each value.
  * @return {Observable} An Observable that delays the emissions of the source
  * Observable by the specified `dueTime`, and may drop some values if they occur
@@ -6996,7 +7194,7 @@ var DebounceTimeOperator = (function () {
         this.scheduler = scheduler;
     }
     DebounceTimeOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new DebounceTimeSubscriber(subscriber, this.dueTime, this.scheduler));
+        return source.subscribe(new DebounceTimeSubscriber(subscriber, this.dueTime, this.scheduler));
     };
     return DebounceTimeOperator;
 }());
@@ -7089,7 +7287,7 @@ var DefaultIfEmptyOperator = (function () {
         this.defaultValue = defaultValue;
     }
     DefaultIfEmptyOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new DefaultIfEmptySubscriber(subscriber, this.defaultValue));
+        return source.subscribe(new DefaultIfEmptySubscriber(subscriber, this.defaultValue));
     };
     return DefaultIfEmptyOperator;
 }());
@@ -7152,7 +7350,7 @@ Observable.prototype.defaultIfEmpty = defaultIfEmpty;
  *
  * @param {number|Date} delay The delay duration in milliseconds (a `number`) or
  * a `Date` until which the emission of the source items is delayed.
- * @param {Scheduler} [scheduler=async] The Scheduler to use for
+ * @param {Scheduler} [scheduler=async] The IScheduler to use for
  * managing the timers that handle the time-shift for each item.
  * @return {Observable} An Observable that delays the emissions of the source
  * Observable by the specified timeout or Date.
@@ -7171,7 +7369,7 @@ var DelayOperator = (function () {
         this.scheduler = scheduler;
     }
     DelayOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new DelaySubscriber(subscriber, this.delay, this.scheduler));
+        return source.subscribe(new DelaySubscriber(subscriber, this.delay, this.scheduler));
     };
     return DelayOperator;
 }());
@@ -7303,7 +7501,7 @@ var DelayWhenOperator = (function () {
         this.delayDurationSelector = delayDurationSelector;
     }
     DelayWhenOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new DelayWhenSubscriber(subscriber, this.delayDurationSelector));
+        return source.subscribe(new DelayWhenSubscriber(subscriber, this.delayDurationSelector));
     };
     return DelayWhenOperator;
 }());
@@ -7459,14 +7657,43 @@ var Set = root.Set || minimalSetImpl();
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items.
+ *
  * If a keySelector function is provided, then it will project each value from the source observable into a new value that it will
  * check for equality with previously projected values. If a keySelector function is not provided, it will use each value from the
  * source observable directly with an equality check against previous values.
+ *
  * In JavaScript runtimes that support `Set`, this operator will use a `Set` to improve performance of the distinct value checking.
+ *
  * In other runtimes, this operator will use a minimal implementation of `Set` that relies on an `Array` and `indexOf` under the
  * hood, so performance will degrade as more values are checked for distinction. Even in newer browsers, a long-running `distinct`
  * use might result in memory leaks. To help alleviate this in some scenarios, an optional `flushes` parameter is also provided so
  * that the internal `Set` can be "flushed", basically clearing it of values.
+ *
+ * @example <caption>A simple example with numbers</caption>
+ * Observable.of(1, 1, 2, 2, 2, 1, 2, 3, 4, 3, 2, 1)
+ *   .distinct()
+ *   .subscribe(x => console.log(x)); // 1, 2, 3, 4
+ *
+ * @example <caption>An example using a keySelector function</caption>
+ * interface Person {
+ *    age: number,
+ *    name: string
+ * }
+ *
+ * Observable.of<Person>(
+ *     { age: 4, name: 'Foo'},
+ *     { age: 7, name: 'Bar'},
+ *     { age: 5, name: 'Foo'})
+ *     .distinct((p: Person) => p.name)
+ *     .subscribe(x => console.log(x));
+ *
+ * // displays:
+ * // { age: 4, name: 'Foo' }
+ * // { age: 7, name: 'Bar' }
+ *
+ * @see {@link distinctUntilChanged}
+ * @see {@link distinctUntilKeyChanged}
+ *
  * @param {function} [keySelector] optional function to select which value you want to check as distinct.
  * @param {Observable} [flushes] optional Observable for flushing the internal HashSet of the operator.
  * @return {Observable} an Observable that emits items from the source Observable with distinct values.
@@ -7482,7 +7709,7 @@ var DistinctOperator = (function () {
         this.flushes = flushes;
     }
     DistinctOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new DistinctSubscriber(subscriber, this.keySelector, this.flushes));
+        return source.subscribe(new DistinctSubscriber(subscriber, this.keySelector, this.flushes));
     };
     return DistinctOperator;
 }());
@@ -7542,8 +7769,38 @@ Observable.prototype.distinct = distinct;
 /* tslint:disable:max-line-length */
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
+ *
  * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.
+ *
  * If a comparator function is not provided, an equality check is used by default.
+ *
+ * @example <caption>A simple example with numbers</caption>
+ * Observable.of(1, 1, 2, 2, 2, 1, 1, 2, 3, 3, 4)
+ *   .distinctUntilChanged()
+ *   .subscribe(x => console.log(x)); // 1, 2, 1, 2, 3, 4
+ *
+ * @example <caption>An example using a compare function</caption>
+ * interface Person {
+ *    age: number,
+ *    name: string
+ * }
+ *
+ * Observable.of<Person>(
+ *     { age: 4, name: 'Foo'},
+ *     { age: 7, name: 'Bar'},
+ *     { age: 5, name: 'Foo'})
+ *     { age: 6, name: 'Foo'})
+ *     .distinctUntilChanged((p: Person, q: Person) => p.name === q.name)
+ *     .subscribe(x => console.log(x));
+ *
+ * // displays:
+ * // { age: 4, name: 'Foo' }
+ * // { age: 7, name: 'Bar' }
+ * // { age: 5, name: 'Foo' }
+ *
+ * @see {@link distinct}
+ * @see {@link distinctUntilKeyChanged}
+ *
  * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.
  * @return {Observable} an Observable that emits items from the source Observable with distinct values.
  * @method distinctUntilChanged
@@ -7558,7 +7815,7 @@ var DistinctUntilChangedOperator = (function () {
         this.keySelector = keySelector;
     }
     DistinctUntilChangedOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new DistinctUntilChangedSubscriber(subscriber, this.compare, this.keySelector));
+        return source.subscribe(new DistinctUntilChangedSubscriber(subscriber, this.compare, this.keySelector));
     };
     return DistinctUntilChangedOperator;
 }());
@@ -7613,8 +7870,54 @@ Observable.prototype.distinctUntilChanged = distinctUntilChanged;
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,
  * using a property accessed by using the key provided to check if the two items are distinct.
+ *
  * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.
+ *
  * If a comparator function is not provided, an equality check is used by default.
+ *
+ * @example <caption>An example comparing the name of persons</caption>
+ *
+ *  interface Person {
+ *     age: number,
+ *     name: string
+ *  }
+ *
+ * Observable.of<Person>(
+ *     { age: 4, name: 'Foo'},
+ *     { age: 7, name: 'Bar'},
+ *     { age: 5, name: 'Foo'},
+ *     { age: 6, name: 'Foo'})
+ *     .distinctUntilKeyChanged('name')
+ *     .subscribe(x => console.log(x));
+ *
+ * // displays:
+ * // { age: 4, name: 'Foo' }
+ * // { age: 7, name: 'Bar' }
+ * // { age: 5, name: 'Foo' }
+ *
+ * @example <caption>An example comparing the first letters of the name</caption>
+ *
+ * interface Person {
+ *     age: number,
+ *     name: string
+ *  }
+ *
+ * Observable.of<Person>(
+ *     { age: 4, name: 'Foo1'},
+ *     { age: 7, name: 'Bar'},
+ *     { age: 5, name: 'Foo2'},
+ *     { age: 6, name: 'Foo3'})
+ *     .distinctUntilKeyChanged('name', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3))
+ *     .subscribe(x => console.log(x));
+ *
+ * // displays:
+ * // { age: 4, name: 'Foo1' }
+ * // { age: 7, name: 'Bar' }
+ * // { age: 5, name: 'Foo2' }
+ *
+ * @see {@link distinct}
+ * @see {@link distinctUntilChanged}
+ *
  * @param {string} key string key for object property lookup on each item.
  * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.
  * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.
@@ -7686,7 +7989,7 @@ var DoOperator = (function () {
         this.complete = complete;
     }
     DoOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new DoSubscriber(subscriber, this.nextOrObserver, this.error, this.complete));
+        return source.subscribe(new DoSubscriber(subscriber, this.nextOrObserver, this.error, this.complete));
     };
     return DoOperator;
 }());
@@ -7783,7 +8086,7 @@ var SwitchFirstOperator = (function () {
     function SwitchFirstOperator() {
     }
     SwitchFirstOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new SwitchFirstSubscriber(subscriber));
+        return source.subscribe(new SwitchFirstSubscriber(subscriber));
     };
     return SwitchFirstOperator;
 }());
@@ -7878,7 +8181,7 @@ var SwitchFirstMapOperator = (function () {
         this.resultSelector = resultSelector;
     }
     SwitchFirstMapOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new SwitchFirstMapSubscriber(subscriber, this.project, this.resultSelector));
+        return source.subscribe(new SwitchFirstMapSubscriber(subscriber, this.project, this.resultSelector));
     };
     return SwitchFirstMapOperator;
 }());
@@ -7991,7 +8294,7 @@ Observable.prototype.exhaustMap = exhaustMap;
  * returns an Observable.
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
  * Observables being subscribed to concurrently.
- * @param {Scheduler} [scheduler=null] The Scheduler to use for subscribing to
+ * @param {Scheduler} [scheduler=null] The IScheduler to use for subscribing to
  * each projected inner Observable.
  * @return {Observable} An Observable that emits the source values and also
  * result of applying the projection function to each value emitted on the
@@ -8013,7 +8316,7 @@ var ExpandOperator = (function () {
         this.scheduler = scheduler;
     }
     ExpandOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new ExpandSubscriber(subscriber, this.project, this.concurrent, this.scheduler));
+        return source.subscribe(new ExpandSubscriber(subscriber, this.project, this.concurrent, this.scheduler));
     };
     return ExpandOperator;
 }());
@@ -8134,6 +8437,11 @@ var ArgumentOutOfRangeError = (function (_super) {
  * var result = clicks.elementAt(2);
  * result.subscribe(x => console.log(x));
  *
+ * // Results in:
+ * // click 1 = nothing
+ * // click 2 = nothing
+ * // click 3 = MouseEvent object logged to console
+ *
  * @see {@link first}
  * @see {@link last}
  * @see {@link skip}
@@ -8164,7 +8472,7 @@ var ElementAtOperator = (function () {
         }
     }
     ElementAtOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new ElementAtSubscriber(subscriber, this.index, this.defaultValue));
+        return source.subscribe(new ElementAtSubscriber(subscriber, this.index, this.defaultValue));
     };
     return ElementAtOperator;
 }());
@@ -8224,7 +8532,6 @@ Observable.prototype.elementAt = elementAt;
  * clicksOnDivs.subscribe(x => console.log(x));
  *
  * @see {@link distinct}
- * @see {@link distinctKey}
  * @see {@link distinctUntilChanged}
  * @see {@link distinctUntilKeyChanged}
  * @see {@link ignoreElements}
@@ -8253,7 +8560,7 @@ var FilterOperator = (function () {
         this.thisArg = thisArg;
     }
     FilterOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new FilterSubscriber(subscriber, this.predicate, this.thisArg));
+        return source.subscribe(new FilterSubscriber(subscriber, this.predicate, this.thisArg));
     };
     return FilterOperator;
 }());
@@ -8307,7 +8614,7 @@ var FinallyOperator = (function () {
         this.callback = callback;
     }
     FinallyOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new FinallySubscriber(subscriber, this.callback));
+        return source.subscribe(new FinallySubscriber(subscriber, this.callback));
     };
     return FinallyOperator;
 }());
@@ -8376,7 +8683,7 @@ var FindValueOperator = (function () {
         this.thisArg = thisArg;
     }
     FindValueOperator.prototype.call = function (observer, source) {
-        return source._subscribe(new FindValueSubscriber(observer, this.predicate, this.source, this.yieldIndex, this.thisArg));
+        return source.subscribe(new FindValueSubscriber(observer, this.predicate, this.source, this.yieldIndex, this.thisArg));
     };
     return FindValueOperator;
 }());
@@ -8482,7 +8789,6 @@ var EmptyError = (function (_super) {
     return EmptyError;
 }(Error));
 
-/* tslint:disable:max-line-length */
 /**
  * Emits only the first value (or the first value that meets some condition)
  * emitted by the source Observable.
@@ -8543,7 +8849,7 @@ var FirstOperator = (function () {
         this.source = source;
     }
     FirstOperator.prototype.call = function (observer, source) {
-        return source._subscribe(new FirstSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
+        return source.subscribe(new FirstSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
     };
     return FirstOperator;
 }());
@@ -8737,7 +9043,7 @@ var GroupByOperator = (function () {
         this.subjectSelector = subjectSelector;
     }
     GroupByOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new GroupBySubscriber(subscriber, this.keySelector, this.elementSelector, this.durationSelector, this.subjectSelector));
+        return source.subscribe(new GroupBySubscriber(subscriber, this.keySelector, this.elementSelector, this.durationSelector, this.subjectSelector));
     };
     return GroupByOperator;
 }());
@@ -8832,7 +9138,7 @@ var GroupBySubscriber = (function (_super) {
         this.groups.delete(key);
     };
     GroupBySubscriber.prototype.unsubscribe = function () {
-        if (!this.closed && !this.attemptedToUnsubscribe) {
+        if (!this.closed) {
             this.attemptedToUnsubscribe = true;
             if (this.count === 0) {
                 _super.prototype.unsubscribe.call(this);
@@ -8945,7 +9251,7 @@ var IgnoreElementsOperator = (function () {
     function IgnoreElementsOperator() {
     }
     IgnoreElementsOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new IgnoreElementsSubscriber(subscriber));
+        return source.subscribe(new IgnoreElementsSubscriber(subscriber));
     };
     return IgnoreElementsOperator;
 }());
@@ -8983,7 +9289,7 @@ var IsEmptyOperator = (function () {
     function IsEmptyOperator() {
     }
     IsEmptyOperator.prototype.call = function (observer, source) {
-        return source._subscribe(new IsEmptySubscriber(observer));
+        return source.subscribe(new IsEmptySubscriber(observer));
     };
     return IsEmptyOperator;
 }());
@@ -9061,7 +9367,7 @@ var AuditOperator = (function () {
         this.durationSelector = durationSelector;
     }
     AuditOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new AuditSubscriber(subscriber, this.durationSelector));
+        return source.subscribe(new AuditSubscriber(subscriber, this.durationSelector));
     };
     return AuditOperator;
 }());
@@ -9133,7 +9439,7 @@ Observable.prototype.audit = audit;
  * the time unit determined internally by the optional `scheduler`) has passed,
  * the timer is disabled, then the most recent source value is emitted on the
  * output Observable, and this process repeats for the next source value.
- * Optionally takes a {@link Scheduler} for managing timers.
+ * Optionally takes a {@link IScheduler} for managing timers.
  *
  * @example <caption>Emit clicks at a rate of at most one click per second</caption>
  * var clicks = Rx.Observable.fromEvent(document, 'click');
@@ -9149,7 +9455,7 @@ Observable.prototype.audit = audit;
  * @param {number} duration Time to wait before emitting the most recent source
  * value, measured in milliseconds or the time unit determined internally
  * by the optional `scheduler`.
- * @param {Scheduler} [scheduler=async] The {@link Scheduler} to use for
+ * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for
  * managing the timers that handle the rate-limiting behavior.
  * @return {Observable<T>} An Observable that performs rate-limiting of
  * emissions from the source Observable.
@@ -9166,7 +9472,7 @@ var AuditTimeOperator = (function () {
         this.scheduler = scheduler;
     }
     AuditTimeOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new AuditTimeSubscriber(subscriber, this.duration, this.scheduler));
+        return source.subscribe(new AuditTimeSubscriber(subscriber, this.duration, this.scheduler));
     };
     return AuditTimeOperator;
 }());
@@ -9240,7 +9546,7 @@ var LastOperator = (function () {
         this.source = source;
     }
     LastOperator.prototype.call = function (observer, source) {
-        return source._subscribe(new LastSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
+        return source.subscribe(new LastSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
     };
     return LastOperator;
 }());
@@ -9338,6 +9644,12 @@ Observable.prototype.letBind = letProto;
 
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
+ *
+ * @example <caption>A simple example emitting true if all elements are less than 5, false otherwise</caption>
+ *  Observable.of(1, 2, 3, 4, 5, 6)
+ *     .every(x => x < 5)
+ *     .subscribe(x => console.log(x)); // -> false
+ *
  * @param {function} predicate a function for determining if an item meets a specified condition.
  * @param {any} [thisArg] optional object to use for `this` in the callback
  * @return {Observable} an Observable of booleans that determines if all items of the source Observable meet the condition specified.
@@ -9354,7 +9666,7 @@ var EveryOperator = (function () {
         this.source = source;
     }
     EveryOperator.prototype.call = function (observer, source) {
-        return source._subscribe(new EverySubscriber(observer, this.predicate, this.thisArg, this.source));
+        return source.subscribe(new EverySubscriber(observer, this.predicate, this.thisArg, this.source));
     };
     return EveryOperator;
 }());
@@ -9434,7 +9746,7 @@ var MapToOperator = (function () {
         this.value = value;
     }
     MapToOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new MapToSubscriber(subscriber, this.value));
+        return source.subscribe(new MapToSubscriber(subscriber, this.value));
     };
     return MapToOperator;
 }());
@@ -9485,6 +9797,13 @@ Observable.prototype.mapTo = mapTo;
  * var materialized = upperCase.materialize();
  * materialized.subscribe(x => console.log(x));
  *
+ * // Results in the following:
+ * // - Notification {kind: "N", value: "A", error: undefined, hasValue: true}
+ * // - Notification {kind: "N", value: "B", error: undefined, hasValue: true}
+ * // - Notification {kind: "E", value: undefined, error: TypeError:
+ * //   x.toUpperCase is not a function at MapSubscriber.letters.map.x
+ * //   [as project] (http://1…, hasValue: false}
+ *
  * @see {@link Notification}
  * @see {@link dematerialize}
  *
@@ -9501,7 +9820,7 @@ var MaterializeOperator = (function () {
     function MaterializeOperator() {
     }
     MaterializeOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new MaterializeSubscriber(subscriber));
+        return source.subscribe(new MaterializeSubscriber(subscriber));
     };
     return MaterializeOperator;
 }());
@@ -9599,7 +9918,7 @@ var ReduceOperator = (function () {
         this.hasSeed = hasSeed;
     }
     ReduceOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new ReduceSubscriber(subscriber, this.accumulator, this.seed, this.hasSeed));
+        return source.subscribe(new ReduceSubscriber(subscriber, this.accumulator, this.seed, this.hasSeed));
     };
     return ReduceOperator;
 }());
@@ -9647,14 +9966,33 @@ var ReduceSubscriber = (function (_super) {
 }(Subscriber));
 
 /**
- * The Max operator operates on an Observable that emits numbers (or items that can be evaluated as numbers),
- * and when source Observable completes it emits a single item: the item with the largest number.
+ * The Max operator operates on an Observable that emits numbers (or items that can be compared with a provided function),
+ * and when source Observable completes it emits a single item: the item with the largest value.
  *
  * <img src="./img/max.png" width="100%">
  *
+ * @example <caption>Get the maximal value of a series of numbers</caption>
+ * Rx.Observable.of(5, 4, 7, 2, 8)
+ *   .max()
+ *   .subscribe(x => console.log(x)); // -> 8
+ *
+ * @example <caption>Use a comparer function to get the maximal item</caption>
+ * interface Person {
+ *   age: number,
+ *   name: string
+ * }
+ * Observable.of<Person>({age: 7, name: 'Foo'},
+ *                       {age: 5, name: 'Bar'},
+ *                       {age: 9, name: 'Beer'})
+ *           .max<Person>((a: Person, b: Person) => a.age < b.age ? -1 : 1)
+ *           .subscribe((x: Person) => console.log(x.name)); // -> 'Beer'
+ * }
+ *
+ * @see {@link min}
+ *
  * @param {Function} optional comparer function that it will use instead of its default to compare the value of two
  * items.
- * @return {Observable} an Observable that emits item with the largest number.
+ * @return {Observable} an Observable that emits item with the largest value.
  * @method max
  * @owner Observable
  */
@@ -9696,7 +10034,7 @@ var MergeScanOperator = (function () {
         this.concurrent = concurrent;
     }
     MergeScanOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new MergeScanSubscriber(subscriber, this.project, this.seed, this.concurrent));
+        return source.subscribe(new MergeScanSubscriber(subscriber, this.project, this.seed, this.concurrent));
     };
     return MergeScanOperator;
 }());
@@ -9773,13 +10111,32 @@ var MergeScanSubscriber = (function (_super) {
 Observable.prototype.mergeScan = mergeScan;
 
 /**
- * The Min operator operates on an Observable that emits numbers (or items that can be evaluated as numbers),
- * and when source Observable completes it emits a single item: the item with the smallest number.
+ * The Min operator operates on an Observable that emits numbers (or items that can be compared with a provided function),
+ * and when source Observable completes it emits a single item: the item with the smallest value.
  *
  * <img src="./img/min.png" width="100%">
  *
+ * @example <caption>Get the minimal value of a series of numbers</caption>
+ * Rx.Observable.of(5, 4, 7, 2, 8)
+ *   .min()
+ *   .subscribe(x => console.log(x)); // -> 2
+ *
+ * @example <caption>Use a comparer function to get the minimal item</caption>
+ * interface Person {
+ *   age: number,
+ *   name: string
+ * }
+ * Observable.of<Person>({age: 7, name: 'Foo'},
+ *                       {age: 5, name: 'Bar'},
+ *                       {age: 9, name: 'Beer'})
+ *           .min<Person>( (a: Person, b: Person) => a.age < b.age ? -1 : 1)
+ *           .subscribe((x: Person) => console.log(x.name)); // -> 'Bar'
+ * }
+ *
+ * @see {@link max}
+ *
  * @param {Function} optional comparer function that it will use instead of its default to compare the value of two items.
- * @return {Observable<R>} an Observable that emits item with the smallest number.
+ * @return {Observable<R>} an Observable that emits item with the smallest value.
  * @method min
  * @owner Observable
  */
@@ -9879,7 +10236,7 @@ var RefCountOperator = (function () {
         var connectable = this.connectable;
         connectable._refCount++;
         var refCounter = new RefCountSubscriber(subscriber, connectable);
-        var subscription = source._subscribe(refCounter);
+        var subscription = source.subscribe(refCounter);
         if (!refCounter.closed) {
             refCounter.connection = connectable.connect();
         }
@@ -9990,7 +10347,7 @@ var MulticastOperator = (function () {
         var selector = this.selector;
         var subject = this.subjectFactory();
         var subscription = selector(subject).subscribe(subscriber);
-        subscription.add(source._subscribe(subject));
+        subscription.add(source.subscribe(subject));
         return subscription;
     };
     return MulticastOperator;
@@ -10044,7 +10401,7 @@ var PairwiseOperator = (function () {
     function PairwiseOperator() {
     }
     PairwiseOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new PairwiseSubscriber(subscriber));
+        return source.subscribe(new PairwiseSubscriber(subscriber));
     };
     return PairwiseOperator;
 }());
@@ -10125,7 +10482,7 @@ function not(pred, thisArg) {
  */
 function partition(predicate, thisArg) {
     return [
-        filter.call(this, predicate),
+        filter.call(this, predicate, thisArg),
         filter.call(this, not(predicate, thisArg))
     ];
 }
@@ -10295,11 +10652,11 @@ Observable.prototype.reduce = reduce;
 
 /**
  * Returns an Observable that repeats the stream of items emitted by the source Observable at most count times,
- * on a particular Scheduler.
+ * on a particular IScheduler.
  *
  * <img src="./img/repeat.png" width="100%">
  *
- * @param {Scheduler} [scheduler] the Scheduler to emit the items on.
+ * @param {Scheduler} [scheduler] the IScheduler to emit the items on.
  * @param {number} [count] the number of times the source Observable items are repeated, a count of 0 will yield
  * an empty Observable.
  * @return {Observable} an Observable that repeats the stream of items emitted by the source Observable at most
@@ -10325,7 +10682,7 @@ var RepeatOperator = (function () {
         this.source = source;
     }
     RepeatOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new RepeatSubscriber(subscriber, this.count, this.source));
+        return source.subscribe(new RepeatSubscriber(subscriber, this.count, this.source));
     };
     return RepeatOperator;
 }());
@@ -10366,13 +10723,13 @@ Observable.prototype.repeat = repeat;
  * A `complete` will cause the emission of the Throwable that cause the complete to the Observable returned from
  * notificationHandler. If that Observable calls onComplete or `complete` then retry will call `complete` or `error`
  * on the child subscription. Otherwise, this Observable will resubscribe to the source observable, on a particular
- * Scheduler.
+ * IScheduler.
  *
  * <img src="./img/repeatWhen.png" width="100%">
  *
  * @param {notificationHandler} receives an Observable of notifications with which a user can `complete` or `error`,
  * aborting the retry.
- * @param {scheduler} the Scheduler on which to subscribe to the source Observable.
+ * @param {scheduler} the IScheduler on which to subscribe to the source Observable.
  * @return {Observable} the source Observable modified with retry logic.
  * @method repeatWhen
  * @owner Observable
@@ -10386,7 +10743,7 @@ var RepeatWhenOperator = (function () {
         this.source = source;
     }
     RepeatWhenOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new RepeatWhenSubscriber(subscriber, this.notifier, this.source));
+        return source.subscribe(new RepeatWhenSubscriber(subscriber, this.notifier, this.source));
     };
     return RepeatWhenOperator;
 }());
@@ -10484,7 +10841,7 @@ var RetryOperator = (function () {
         this.source = source;
     }
     RetryOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new RetrySubscriber(subscriber, this.count, this.source));
+        return source.subscribe(new RetrySubscriber(subscriber, this.count, this.source));
     };
     return RetryOperator;
 }());
@@ -10525,13 +10882,13 @@ Observable.prototype.retry = retry;
  * An `error` will cause the emission of the Throwable that cause the error to the Observable returned from
  * notificationHandler. If that Observable calls onComplete or `error` then retry will call `complete` or `error`
  * on the child subscription. Otherwise, this Observable will resubscribe to the source observable, on a particular
- * Scheduler.
+ * IScheduler.
  *
  * <img src="./img/retryWhen.png" width="100%">
  *
  * @param {notificationHandler} receives an Observable of notifications with which a user can `complete` or `error`,
  * aborting the retry.
- * @param {scheduler} the Scheduler on which to subscribe to the source Observable.
+ * @param {scheduler} the IScheduler on which to subscribe to the source Observable.
  * @return {Observable} the source Observable modified with retry logic.
  * @method retryWhen
  * @owner Observable
@@ -10545,7 +10902,7 @@ var RetryWhenOperator = (function () {
         this.source = source;
     }
     RetryWhenOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new RetryWhenSubscriber(subscriber, this.notifier, this.source));
+        return source.subscribe(new RetryWhenSubscriber(subscriber, this.notifier, this.source));
     };
     return RetryWhenOperator;
 }());
@@ -10659,7 +11016,7 @@ var SampleOperator = (function () {
     }
     SampleOperator.prototype.call = function (subscriber, source) {
         var sampleSubscriber = new SampleSubscriber(subscriber);
-        var subscription = source._subscribe(sampleSubscriber);
+        var subscription = source.subscribe(sampleSubscriber);
         subscription.add(subscribeToResult(sampleSubscriber, this.notifier));
         return subscription;
     };
@@ -10726,7 +11083,7 @@ Observable.prototype.sample = sample;
  *
  * @param {number} period The sampling period expressed in milliseconds or the
  * time unit determined internally by the optional `scheduler`.
- * @param {Scheduler} [scheduler=async] The {@link Scheduler} to use for
+ * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for
  * managing the timers that handle the sampling.
  * @return {Observable<T>} An Observable that emits the results of sampling the
  * values emitted by the source Observable at the specified time interval.
@@ -10743,7 +11100,7 @@ var SampleTimeOperator = (function () {
         this.scheduler = scheduler;
     }
     SampleTimeOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new SampleTimeSubscriber(subscriber, this.period, this.scheduler));
+        return source.subscribe(new SampleTimeSubscriber(subscriber, this.period, this.scheduler));
     };
     return SampleTimeOperator;
 }());
@@ -10839,7 +11196,7 @@ var ScanOperator = (function () {
         this.hasSeed = hasSeed;
     }
     ScanOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new ScanSubscriber(subscriber, this.accumulator, this.seed, this.hasSeed));
+        return source.subscribe(new ScanSubscriber(subscriber, this.accumulator, this.seed, this.hasSeed));
     };
     return ScanOperator;
 }());
@@ -10911,7 +11268,7 @@ Observable.prototype.scan = scan;
  * completes or emits after the other complets, the returned observable will never complete.
  *
  * @example <caption>figure out if the Konami code matches</caption>
- * var code = Observable.from([
+ * var code = Rx.Observable.from([
  *  "ArrowUp",
  *  "ArrowUp",
  *  "ArrowDown",
@@ -10955,7 +11312,7 @@ var SequenceEqualOperator = (function () {
         this.comparor = comparor;
     }
     SequenceEqualOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new SequenceEqualSubscriber(subscriber, this.compareTo, this.comparor));
+        return source.subscribe(new SequenceEqualSubscriber(subscriber, this.compareTo, this.comparor));
     };
     return SequenceEqualOperator;
 }());
@@ -11094,7 +11451,7 @@ var SingleOperator = (function () {
         this.source = source;
     }
     SingleOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new SingleSubscriber(subscriber, this.predicate, this.source));
+        return source.subscribe(new SingleSubscriber(subscriber, this.predicate, this.source));
     };
     return SingleOperator;
 }());
@@ -11176,7 +11533,7 @@ var SkipOperator = (function () {
         this.total = total;
     }
     SkipOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new SkipSubscriber(subscriber, this.total));
+        return source.subscribe(new SkipSubscriber(subscriber, this.total));
     };
     return SkipOperator;
 }());
@@ -11222,7 +11579,7 @@ var SkipUntilOperator = (function () {
         this.notifier = notifier;
     }
     SkipUntilOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new SkipUntilSubscriber(subscriber, this.notifier));
+        return source.subscribe(new SkipUntilSubscriber(subscriber, this.notifier));
     };
     return SkipUntilOperator;
 }());
@@ -11286,7 +11643,7 @@ var SkipWhileOperator = (function () {
         this.predicate = predicate;
     }
     SkipWhileOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new SkipWhileSubscriber(subscriber, this.predicate));
+        return source.subscribe(new SkipWhileSubscriber(subscriber, this.predicate));
     };
     return SkipWhileOperator;
 }());
@@ -11676,7 +12033,7 @@ var SubscribeOnObservable = (function (_super) {
     };
     SubscribeOnObservable.dispatch = function (arg) {
         var source = arg.source, subscriber = arg.subscriber;
-        return source.subscribe(subscriber);
+        return this.add(source.subscribe(subscriber));
     };
     SubscribeOnObservable.prototype._subscribe = function (subscriber) {
         var delay = this.delayTime;
@@ -11690,20 +12047,30 @@ var SubscribeOnObservable = (function (_super) {
 }(Observable));
 
 /**
- * Asynchronously subscribes Observers to this Observable on the specified Scheduler.
+ * Asynchronously subscribes Observers to this Observable on the specified IScheduler.
  *
  * <img src="./img/subscribeOn.png" width="100%">
  *
- * @param {Scheduler} the Scheduler to perform subscription actions on.
- * @return {Observable<T>} the source Observable modified so that its subscriptions happen on the specified Scheduler
+ * @param {Scheduler} the IScheduler to perform subscription actions on.
+ * @return {Observable<T>} the source Observable modified so that its subscriptions happen on the specified IScheduler
  .
  * @method subscribeOn
  * @owner Observable
  */
 function subscribeOn(scheduler, delay) {
     if (delay === void 0) { delay = 0; }
-    return new SubscribeOnObservable(this, delay, scheduler);
+    return this.lift(new SubscribeOnOperator(scheduler, delay));
 }
+var SubscribeOnOperator = (function () {
+    function SubscribeOnOperator(scheduler, delay) {
+        this.scheduler = scheduler;
+        this.delay = delay;
+    }
+    SubscribeOnOperator.prototype.call = function (subscriber, source) {
+        return new SubscribeOnObservable(source, this.delay, this.scheduler).subscribe(subscriber);
+    };
+    return SubscribeOnOperator;
+}());
 
 Observable.prototype.subscribeOn = subscribeOn;
 
@@ -11756,7 +12123,7 @@ var SwitchOperator = (function () {
     function SwitchOperator() {
     }
     SwitchOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new SwitchSubscriber(subscriber));
+        return source.subscribe(new SwitchSubscriber(subscriber));
     };
     return SwitchOperator;
 }());
@@ -11866,7 +12233,7 @@ var SwitchMapOperator = (function () {
         this.resultSelector = resultSelector;
     }
     SwitchMapOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new SwitchMapSubscriber(subscriber, this.project, this.resultSelector));
+        return source.subscribe(new SwitchMapSubscriber(subscriber, this.project, this.resultSelector));
     };
     return SwitchMapOperator;
 }());
@@ -11996,7 +12363,7 @@ var SwitchMapToOperator = (function () {
         this.resultSelector = resultSelector;
     }
     SwitchMapToOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new SwitchMapToSubscriber(subscriber, this.observable, this.resultSelector));
+        return source.subscribe(new SwitchMapToSubscriber(subscriber, this.observable, this.resultSelector));
     };
     return SwitchMapToOperator;
 }());
@@ -12111,7 +12478,7 @@ var TakeOperator = (function () {
         }
     }
     TakeOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new TakeSubscriber(subscriber, this.total));
+        return source.subscribe(new TakeSubscriber(subscriber, this.total));
     };
     return TakeOperator;
 }());
@@ -12195,7 +12562,7 @@ var TakeLastOperator = (function () {
         }
     }
     TakeLastOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new TakeLastSubscriber(subscriber, this.total));
+        return source.subscribe(new TakeLastSubscriber(subscriber, this.total));
     };
     return TakeLastOperator;
 }());
@@ -12283,7 +12650,7 @@ var TakeUntilOperator = (function () {
         this.notifier = notifier;
     }
     TakeUntilOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new TakeUntilSubscriber(subscriber, this.notifier));
+        return source.subscribe(new TakeUntilSubscriber(subscriber, this.notifier));
     };
     return TakeUntilOperator;
 }());
@@ -12354,7 +12721,7 @@ var TakeWhileOperator = (function () {
         this.predicate = predicate;
     }
     TakeWhileOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new TakeWhileSubscriber(subscriber, this.predicate));
+        return source.subscribe(new TakeWhileSubscriber(subscriber, this.predicate));
     };
     return TakeWhileOperator;
 }());
@@ -12442,7 +12809,7 @@ var ThrottleOperator = (function () {
         this.durationSelector = durationSelector;
     }
     ThrottleOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new ThrottleSubscriber(subscriber, this.durationSelector));
+        return source.subscribe(new ThrottleSubscriber(subscriber, this.durationSelector));
     };
     return ThrottleOperator;
 }());
@@ -12513,7 +12880,7 @@ Observable.prototype.throttle = throttle;
  * is enabled. After `duration` milliseconds (or the time unit determined
  * internally by the optional `scheduler`) has passed, the timer is disabled,
  * and this process repeats for the next source value. Optionally takes a
- * {@link Scheduler} for managing timers.
+ * {@link IScheduler} for managing timers.
  *
  * @example <caption>Emit clicks at a rate of at most one click per second</caption>
  * var clicks = Rx.Observable.fromEvent(document, 'click');
@@ -12529,7 +12896,7 @@ Observable.prototype.throttle = throttle;
  * @param {number} duration Time to wait before emitting another value after
  * emitting the last value, measured in milliseconds or the time unit determined
  * internally by the optional `scheduler`.
- * @param {Scheduler} [scheduler=async] The {@link Scheduler} to use for
+ * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for
  * managing the timers that handle the sampling.
  * @return {Observable<T>} An Observable that performs the throttle operation to
  * limit the rate of emissions from the source.
@@ -12546,7 +12913,7 @@ var ThrottleTimeOperator = (function () {
         this.scheduler = scheduler;
     }
     ThrottleTimeOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new ThrottleTimeSubscriber(subscriber, this.duration, this.scheduler));
+        return source.subscribe(new ThrottleTimeSubscriber(subscriber, this.duration, this.scheduler));
     };
     return ThrottleTimeOperator;
 }());
@@ -12608,7 +12975,7 @@ var TimeIntervalOperator = (function () {
         this.scheduler = scheduler;
     }
     TimeIntervalOperator.prototype.call = function (observer, source) {
-        return source._subscribe(new TimeIntervalSubscriber(observer, this.scheduler));
+        return source.subscribe(new TimeIntervalSubscriber(observer, this.scheduler));
     };
     return TimeIntervalOperator;
 }());
@@ -12655,29 +13022,27 @@ var TimeoutError = (function (_super) {
 }(Error));
 
 /**
- * @param due
- * @param errorToSend
- * @param scheduler
+ * @param {number} due
+ * @param {Scheduler} [scheduler]
  * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
  * @method timeout
  * @owner Observable
  */
-function timeout(due, errorToSend, scheduler) {
-    if (errorToSend === void 0) { errorToSend = null; }
+function timeout(due, scheduler) {
     if (scheduler === void 0) { scheduler = async; }
     var absoluteTimeout = isDate(due);
     var waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(due);
-    return this.lift(new TimeoutOperator(waitFor, absoluteTimeout, errorToSend, scheduler));
+    return this.lift(new TimeoutOperator(waitFor, absoluteTimeout, scheduler, new TimeoutError()));
 }
 var TimeoutOperator = (function () {
-    function TimeoutOperator(waitFor, absoluteTimeout, errorToSend, scheduler) {
+    function TimeoutOperator(waitFor, absoluteTimeout, scheduler, errorInstance) {
         this.waitFor = waitFor;
         this.absoluteTimeout = absoluteTimeout;
-        this.errorToSend = errorToSend;
         this.scheduler = scheduler;
+        this.errorInstance = errorInstance;
     }
     TimeoutOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new TimeoutSubscriber(subscriber, this.absoluteTimeout, this.waitFor, this.errorToSend, this.scheduler));
+        return source.subscribe(new TimeoutSubscriber(subscriber, this.absoluteTimeout, this.waitFor, this.scheduler, this.errorInstance));
     };
     return TimeoutOperator;
 }());
@@ -12688,12 +13053,12 @@ var TimeoutOperator = (function () {
  */
 var TimeoutSubscriber = (function (_super) {
     __extends(TimeoutSubscriber, _super);
-    function TimeoutSubscriber(destination, absoluteTimeout, waitFor, errorToSend, scheduler) {
+    function TimeoutSubscriber(destination, absoluteTimeout, waitFor, scheduler, errorInstance) {
         _super.call(this, destination);
         this.absoluteTimeout = absoluteTimeout;
         this.waitFor = waitFor;
-        this.errorToSend = errorToSend;
         this.scheduler = scheduler;
+        this.errorInstance = errorInstance;
         this.index = 0;
         this._previousIndex = 0;
         this._hasCompleted = false;
@@ -12741,7 +13106,7 @@ var TimeoutSubscriber = (function (_super) {
         this._hasCompleted = true;
     };
     TimeoutSubscriber.prototype.notifyTimeout = function () {
-        this.error(this.errorToSend || new TimeoutError());
+        this.error(this.errorInstance);
     };
     return TimeoutSubscriber;
 }(Subscriber));
@@ -12771,7 +13136,7 @@ var TimeoutWithOperator = (function () {
         this.scheduler = scheduler;
     }
     TimeoutWithOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new TimeoutWithSubscriber(subscriber, this.absoluteTimeout, this.waitFor, this.withObservable, this.scheduler));
+        return source.subscribe(new TimeoutWithSubscriber(subscriber, this.absoluteTimeout, this.waitFor, this.withObservable, this.scheduler));
     };
     return TimeoutWithOperator;
 }());
@@ -12873,7 +13238,7 @@ var TimestampOperator = (function () {
         this.scheduler = scheduler;
     }
     TimestampOperator.prototype.call = function (observer, source) {
-        return source._subscribe(new TimestampSubscriber(observer, this.scheduler));
+        return source.subscribe(new TimestampSubscriber(observer, this.scheduler));
     };
     return TimestampOperator;
 }());
@@ -12904,7 +13269,7 @@ var ToArrayOperator = (function () {
     function ToArrayOperator() {
     }
     ToArrayOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new ToArraySubscriber(subscriber));
+        return source.subscribe(new ToArraySubscriber(subscriber));
     };
     return ToArrayOperator;
 }());
@@ -13004,7 +13369,7 @@ var WindowOperator = (function () {
     }
     WindowOperator.prototype.call = function (subscriber, source) {
         var windowSubscriber = new WindowSubscriber(subscriber);
-        var sourceSubscription = source._subscribe(windowSubscriber);
+        var sourceSubscription = source.subscribe(windowSubscriber);
         if (!sourceSubscription.closed) {
             windowSubscriber.add(subscribeToResult(windowSubscriber, this.windowBoundaries));
         }
@@ -13119,7 +13484,7 @@ var WindowCountOperator = (function () {
         this.startWindowEvery = startWindowEvery;
     }
     WindowCountOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new WindowCountSubscriber(subscriber, this.windowSize, this.startWindowEvery));
+        return source.subscribe(new WindowCountSubscriber(subscriber, this.windowSize, this.startWindowEvery));
     };
     return WindowCountOperator;
 }());
@@ -13246,7 +13611,7 @@ var WindowTimeOperator = (function () {
         this.scheduler = scheduler;
     }
     WindowTimeOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new WindowTimeSubscriber(subscriber, this.windowTimeSpan, this.windowCreationInterval, this.scheduler));
+        return source.subscribe(new WindowTimeSubscriber(subscriber, this.windowTimeSpan, this.windowCreationInterval, this.scheduler));
     };
     return WindowTimeOperator;
 }());
@@ -13396,7 +13761,7 @@ var WindowToggleOperator = (function () {
         this.closingSelector = closingSelector;
     }
     WindowToggleOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new WindowToggleSubscriber(subscriber, this.openings, this.closingSelector));
+        return source.subscribe(new WindowToggleSubscriber(subscriber, this.openings, this.closingSelector));
     };
     return WindowToggleOperator;
 }());
@@ -13561,7 +13926,7 @@ var WindowOperator$1 = (function () {
         this.closingSelector = closingSelector;
     }
     WindowOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new WindowSubscriber$1(subscriber, this.closingSelector));
+        return source.subscribe(new WindowSubscriber$1(subscriber, this.closingSelector));
     };
     return WindowOperator;
 }());
@@ -13689,7 +14054,7 @@ var WithLatestFromOperator = (function () {
         this.project = project;
     }
     WithLatestFromOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new WithLatestFromSubscriber(subscriber, this.observables, this.project));
+        return source.subscribe(new WithLatestFromSubscriber(subscriber, this.observables, this.project));
     };
     return WithLatestFromOperator;
 }());
@@ -13928,8 +14293,16 @@ var VirtualAction = (function (_super) {
     }
     VirtualAction.prototype.schedule = function (state, delay) {
         if (delay === void 0) { delay = 0; }
-        return !this.id ?
-            _super.prototype.schedule.call(this, state, delay) : this.add(new VirtualAction(this.scheduler, this.work)).schedule(state, delay);
+        if (!this.id) {
+            return _super.prototype.schedule.call(this, state, delay);
+        }
+        // If an action is rescheduled, we save allocations by mutating its state,
+        // pushing it to the end of the scheduler queue, and recycling the action.
+        // But since the VirtualTimeScheduler is used for testing, VirtualActions
+        // must be immutable so they can be inspected later.
+        var action = new VirtualAction(this.scheduler, this.work);
+        this.add(action);
+        return action.schedule(state, delay);
     };
     VirtualAction.prototype.requestAsyncId = function (scheduler, id, delay) {
         if (delay === void 0) { delay = 0; }

@@ -122,7 +122,7 @@ class TakeOperator {
         }
     }
     call(subscriber, source) {
-        return source._subscribe(new TakeSubscriber(subscriber, this.total));
+        return source.subscribe(new TakeSubscriber(subscriber, this.total));
     }
 }
 /**

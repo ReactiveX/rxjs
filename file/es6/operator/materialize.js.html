@@ -100,6 +100,13 @@ import { Notification } from &apos;../Notification&apos;;
  * var materialized = upperCase.materialize();
  * materialized.subscribe(x =&gt; console.log(x));
  *
+ * // Results in the following:
+ * // - Notification {kind: &quot;N&quot;, value: &quot;A&quot;, error: undefined, hasValue: true}
+ * // - Notification {kind: &quot;N&quot;, value: &quot;B&quot;, error: undefined, hasValue: true}
+ * // - Notification {kind: &quot;E&quot;, value: undefined, error: TypeError:
+ * //   x.toUpperCase is not a function at MapSubscriber.letters.map.x
+ * //   [as project] (http://1&#x2026;, hasValue: false}
+ *
  * @see {@link Notification}
  * @see {@link dematerialize}
  *
@@ -114,7 +121,7 @@ export function materialize() {
 }
 class MaterializeOperator {
     call(subscriber, source) {
-        return source._subscribe(new MaterializeSubscriber(subscriber));
+        return source.subscribe(new MaterializeSubscriber(subscriber));
     }
 }
 /**

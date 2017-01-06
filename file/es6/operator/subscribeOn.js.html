@@ -72,18 +72,27 @@
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operator/subscribeOn.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { SubscribeOnObservable } from &apos;../observable/SubscribeOnObservable&apos;;
 /**
- * Asynchronously subscribes Observers to this Observable on the specified Scheduler.
+ * Asynchronously subscribes Observers to this Observable on the specified IScheduler.
  *
  * &lt;img src=&quot;./img/subscribeOn.png&quot; width=&quot;100%&quot;&gt;
  *
- * @param {Scheduler} the Scheduler to perform subscription actions on.
- * @return {Observable&lt;T&gt;} the source Observable modified so that its subscriptions happen on the specified Scheduler
+ * @param {Scheduler} the IScheduler to perform subscription actions on.
+ * @return {Observable&lt;T&gt;} the source Observable modified so that its subscriptions happen on the specified IScheduler
  .
  * @method subscribeOn
  * @owner Observable
  */
 export function subscribeOn(scheduler, delay = 0) {
-    return new SubscribeOnObservable(this, delay, scheduler);
+    return this.lift(new SubscribeOnOperator(scheduler, delay));
+}
+class SubscribeOnOperator {
+    constructor(scheduler, delay) {
+        this.scheduler = scheduler;
+        this.delay = delay;
+    }
+    call(subscriber, source) {
+        return new SubscribeOnObservable(source, this.delay, this.scheduler).subscribe(subscriber);
+    }
 }
 //# sourceMappingURL=subscribeOn.js.map</code></pre>
 

@@ -201,7 +201,8 @@ var lastClick = Date.now() - rate;
 var button = document.querySelector(&apos;button&apos;);
 button.addEventListener(&apos;click&apos;, (event) =&gt; {
   if (Date.now() - lastClick &gt;= rate) {
-    console.log(++count + event.clientX)
+    count += event.clientX;
+    console.log(count)
     lastClick = Date.now();
   }
 });</code>
@@ -981,7 +982,7 @@ var merged = Rx.Observable.merge(observable1, observable2);</code>
 <li><code>ajax</code></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-bindCallback"><code>bindCallback</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-bindNodeCallback"><code>bindNodeCallback</code></a></li>
-<li><code>create</code></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-create"><code>create</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-defer"><code>defer</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-empty"><code>empty</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-from"><code>from</code></a></li>
@@ -992,8 +993,8 @@ var merged = Rx.Observable.merge(observable1, observable2);</code>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-interval"><code>interval</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-never"><code>never</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-of"><code>of</code></a></li>
-<li><code>repeat</code></li>
-<li><code>repeatWhen</code></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-repeat"><code>repeat</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-repeatWhen"><code>repeatWhen</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-range"><code>range</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-throw"><code>throw</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-timer"><code>timer</code></a></li>
@@ -1067,7 +1068,7 @@ var merged = Rx.Observable.merge(observable1, observable2);</code>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-mergeAll"><code>mergeAll</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-race"><code>race</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-startWith"><code>startWith</code></a></li>
-<li><code>switch</code></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-switch"><code>switch</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-withLatestFrom"><code>withLatestFrom</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#static-method-zip"><code>zip</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-zipAll"><code>zipAll</code></a></li>
@@ -1084,13 +1085,13 @@ var merged = Rx.Observable.merge(observable1, observable2);</code>
 </ul>
 <h3 id="error-handling-operators">Error Handling Operators</h3>
 <ul>
-<li><code>catch</code></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-catch"><code>catch</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-retry"><code>retry</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-retryWhen"><code>retryWhen</code></a></li>
 </ul>
 <h3 id="utility-operators">Utility Operators</h3>
 <ul>
-<li><code>do</code></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-do"><code>do</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-delay"><code>delay</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-delayWhen"><code>delayWhen</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-dematerialize"><code>dematerialize</code></a></li>

@@ -71,11 +71,15 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/observables/dom/ajax-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var __extends = (this &amp;&amp; this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var chai_1 = require(&apos;chai&apos;);
 var sinon = require(&apos;sinon&apos;);
 var Rx = require(&apos;../../../dist/cjs/Rx&apos;);
 var root_1 = require(&apos;../../../dist/cjs/util/root&apos;);
-var ajax_helper_1 = require(&apos;../../helpers/ajax-helper&apos;);
 /** @test {ajax} */
 describe(&apos;Observable.ajax&apos;, function () {
     var gXHR;
@@ -85,12 +89,12 @@ describe(&apos;Observable.ajax&apos;, function () {
         sandbox = sinon.sandbox.create();
         gXHR = global.XMLHttpRequest;
         rXHR = root_1.root.XMLHttpRequest;
-        global.XMLHttpRequest = ajax_helper_1.MockXMLHttpRequest;
-        root_1.root.XMLHttpRequest = ajax_helper_1.MockXMLHttpRequest;
+        global.XMLHttpRequest = MockXMLHttpRequest;
+        root_1.root.XMLHttpRequest = MockXMLHttpRequest;
     });
     afterEach(function () {
         sandbox.restore();
-        ajax_helper_1.MockXMLHttpRequest.clearRequest();
+        MockXMLHttpRequest.clearRequest();
         global.XMLHttpRequest = gXHR;
         root_1.root.XMLHttpRequest = rXHR;
         root_1.root.XDomainRequest = null;
@@ -102,11 +106,11 @@ describe(&apos;Observable.ajax&apos;, function () {
             method: &apos;&apos;
         };
         Rx.Observable.ajax(obj).subscribe();
-        chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.withCredentials).to.be.false;
+        chai_1.expect(MockXMLHttpRequest.mostRecent.withCredentials).to.be.false;
     });
     it(&apos;should try to create AXObject for XHR in old version of IE&apos;, function () {
         var axObjectStub = sandbox.stub();
-        axObjectStub.returns(sinon.stub(new ajax_helper_1.MockXMLHttpRequest()));
+        axObjectStub.returns(sinon.stub(new MockXMLHttpRequest()));
         root_1.root.ActiveXObject = axObjectStub;
         root_1.root.XMLHttpRequest = null;
         var obj = {
@@ -135,11 +139,11 @@ describe(&apos;Observable.ajax&apos;, function () {
             withCredentials: true
         };
         Rx.Observable.ajax(obj).subscribe();
-        chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.withCredentials).to.be.true;
+        chai_1.expect(MockXMLHttpRequest.mostRecent.withCredentials).to.be.true;
     });
     it(&apos;should try to create XDomainRequest for CORS if XMLHttpRequest is not available&apos;, function () {
         var xDomainStub = sandbox.stub();
-        xDomainStub.returns(sinon.stub(new ajax_helper_1.MockXMLHttpRequest()));
+        xDomainStub.returns(sinon.stub(new MockXMLHttpRequest()));
         root_1.root.XDomainRequest = xDomainStub;
         root_1.root.XMLHttpRequest = null;
         var obj = {
@@ -175,7 +179,7 @@ describe(&apos;Observable.ajax&apos;, function () {
             method: &apos;&apos;
         };
         Rx.Observable.ajax(obj).subscribe();
-        var request = ajax_helper_1.MockXMLHttpRequest.mostRecent;
+        var request = MockXMLHttpRequest.mostRecent;
         chai_1.expect(request.url).to.equal(&apos;/talk-to-me-goose&apos;);
         chai_1.expect(request.requestHeaders).to.deep.equal({
             &apos;Content-Type&apos;: &apos;kenny/loggins&apos;,
@@ -190,7 +194,7 @@ describe(&apos;Observable.ajax&apos;, function () {
             method: &apos;GET&apos;
         };
         Rx.Observable.ajax(obj).subscribe();
-        var request = ajax_helper_1.MockXMLHttpRequest.mostRecent;
+        var request = MockXMLHttpRequest.mostRecent;
         chai_1.expect(request.url).to.equal(&apos;/talk-to-me-goose&apos;);
         chai_1.expect(request.requestHeaders).to.not.have.keys(&apos;Content-Type&apos;);
     });
@@ -213,6 +217,30 @@ describe(&apos;Observable.ajax&apos;, function () {
         });
         chai_1.expect(error).to.be.an(&apos;error&apos;, &apos;wokka wokka&apos;);
     });
+    it(&apos;should error if send request throws&apos;, function (done) {
+        var expected = new Error(&apos;xhr send failure&apos;);
+        var obj = {
+            url: &apos;/flibbertyJibbet&apos;,
+            responseType: &apos;text&apos;,
+            method: &apos;&apos;,
+            createXHR: function () {
+                var ret = new MockXMLHttpRequest();
+                ret.send = function () {
+                    throw expected;
+                };
+                return ret;
+            }
+        };
+        Rx.Observable.ajax(obj)
+            .subscribe(function () {
+            done(new Error(&apos;should not be called&apos;));
+        }, function (e) {
+            chai_1.expect(e).to.be.equal(expected);
+            done();
+        }, function () {
+            done(new Error(&apos;should not be called&apos;));
+        });
+    });
     it(&apos;should succeed on 200&apos;, function () {
         var expected = { foo: &apos;bar&apos; };
         var result;
@@ -228,8 +256,8 @@ describe(&apos;Observable.ajax&apos;, function () {
         }, null, function () {
             complete = true;
         });
-        chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
-        ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
+        chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+        MockXMLHttpRequest.mostRecent.respondWith({
             &apos;status&apos;: 200,
             &apos;contentType&apos;: &apos;application/json&apos;,
             &apos;responseText&apos;: JSON.stringify(expected)
@@ -256,8 +284,8 @@ describe(&apos;Observable.ajax&apos;, function () {
         }, function () {
             throw &apos;should not complete&apos;;
         });
-        chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
-        ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
+        chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+        MockXMLHttpRequest.mostRecent.respondWith({
             &apos;status&apos;: 404,
             &apos;contentType&apos;: &apos;text/plain&apos;,
             &apos;responseText&apos;: &apos;Wee! I am text!&apos;
@@ -283,8 +311,8 @@ describe(&apos;Observable.ajax&apos;, function () {
         }, function () {
             throw &apos;should not complete&apos;;
         });
-        chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
-        ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
+        chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+        MockXMLHttpRequest.mostRecent.respondWith({
             &apos;status&apos;: 300,
             &apos;contentType&apos;: &apos;text/plain&apos;,
             &apos;responseText&apos;: &apos;Wee! I am text!&apos;
@@ -303,8 +331,8 @@ describe(&apos;Observable.ajax&apos;, function () {
         }, function () {
             throw &apos;should not have been called&apos;;
         });
-        chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
-        ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
+        chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+        MockXMLHttpRequest.mostRecent.respondWith({
             &apos;status&apos;: 200,
             &apos;contentType&apos;: &apos;text/plain&apos;,
             &apos;responseText&apos;: expected
@@ -322,8 +350,8 @@ describe(&apos;Observable.ajax&apos;, function () {
         }, function () {
             throw &apos;should not have been called&apos;;
         });
-        chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
-        ajax_helper_1.MockXMLHttpRequest.mostRecent.respondWith({
+        chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+        MockXMLHttpRequest.mostRecent.respondWith({
             &apos;status&apos;: 500,
             &apos;contentType&apos;: &apos;text/plain&apos;,
             &apos;responseText&apos;: expected
@@ -349,8 +377,8 @@ describe(&apos;Observable.ajax&apos;, function () {
                 body: &apos;foobar&apos;
             };
             Rx.Observable.ajax(obj).subscribe();
-            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
-            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.data).to.equal(&apos;foobar&apos;);
+            chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(MockXMLHttpRequest.mostRecent.data).to.equal(&apos;foobar&apos;);
         });
         it(&apos;can take FormData body&apos;, function () {
             var body = new root_1.root.FormData();
@@ -360,9 +388,9 @@ describe(&apos;Observable.ajax&apos;, function () {
                 body: body
             };
             Rx.Observable.ajax(obj).subscribe();
-            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
-            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.data).to.deep.equal(body);
-            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.requestHeaders).to.deep.equal({
+            chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(MockXMLHttpRequest.mostRecent.data).to.deep.equal(body);
+            chai_1.expect(MockXMLHttpRequest.mostRecent.requestHeaders).to.deep.equal({
                 &apos;X-Requested-With&apos;: &apos;XMLHttpRequest&apos;,
             });
         });
@@ -377,7 +405,7 @@ describe(&apos;Observable.ajax&apos;, function () {
                 body: { &apos;&#x1F31F;&apos;: &apos;&#x1F680;&apos; }
             };
             Rx.Observable.ajax(obj).subscribe();
-            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
         });
         it(&apos;should send by form-urlencoded format&apos;, function () {
             var body = {
@@ -392,8 +420,8 @@ describe(&apos;Observable.ajax&apos;, function () {
                 body: body
             };
             Rx.Observable.ajax(obj).subscribe();
-            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
-            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.data).to.equal(&apos;%F0%9F%8C%9F=%F0%9F%9A%80&apos;);
+            chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(MockXMLHttpRequest.mostRecent.data).to.equal(&apos;%F0%9F%8C%9F=%F0%9F%9A%80&apos;);
         });
         it(&apos;should send by JSON&apos;, function () {
             var body = {
@@ -408,8 +436,33 @@ describe(&apos;Observable.ajax&apos;, function () {
                 body: body
             };
             Rx.Observable.ajax(obj).subscribe();
-            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
-            chai_1.expect(ajax_helper_1.MockXMLHttpRequest.mostRecent.data).to.equal(&apos;{&quot;&#x1F31F;&quot;:&quot;&#x1F680;&quot;}&apos;);
+            chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(MockXMLHttpRequest.mostRecent.data).to.equal(&apos;{&quot;&#x1F31F;&quot;:&quot;&#x1F680;&quot;}&apos;);
+        });
+        it(&apos;should error if send request throws&apos;, function (done) {
+            var expected = new Error(&apos;xhr send failure&apos;);
+            var obj = {
+                url: &apos;/flibbertyJibbet&apos;,
+                responseType: &apos;text&apos;,
+                method: &apos;&apos;,
+                body: &apos;foobar&apos;,
+                createXHR: function () {
+                    var ret = new MockXMLHttpRequest();
+                    ret.send = function () {
+                        throw expected;
+                    };
+                    return ret;
+                }
+            };
+            Rx.Observable.ajax(obj)
+                .subscribe(function () {
+                done(new Error(&apos;should not be called&apos;));
+            }, function (e) {
+                chai_1.expect(e).to.be.equal(expected);
+                done();
+            }, function () {
+                done(new Error(&apos;should not be called&apos;));
+            });
         });
     });
     describe(&apos;ajax.get&apos;, function () {
@@ -424,7 +477,7 @@ describe(&apos;Observable.ajax&apos;, function () {
             }, null, function () {
                 complete = true;
             });
-            var request = ajax_helper_1.MockXMLHttpRequest.mostRecent;
+            var request = MockXMLHttpRequest.mostRecent;
             chai_1.expect(request.url).to.equal(&apos;/flibbertyJibbet&apos;);
             request.respondWith({
                 &apos;status&apos;: 200,
@@ -445,7 +498,7 @@ describe(&apos;Observable.ajax&apos;, function () {
             }, null, function () {
                 complete = true;
             });
-            var request = ajax_helper_1.MockXMLHttpRequest.mostRecent;
+            var request = MockXMLHttpRequest.mostRecent;
             chai_1.expect(request.url).to.equal(&apos;/flibbertyJibbet&apos;);
             request.respondWith({
                 &apos;status&apos;: 204,
@@ -466,7 +519,7 @@ describe(&apos;Observable.ajax&apos;, function () {
             }, null, function () {
                 complete = true;
             });
-            var request = ajax_helper_1.MockXMLHttpRequest.mostRecent;
+            var request = MockXMLHttpRequest.mostRecent;
             chai_1.expect(request.url).to.equal(&apos;/flibbertyJibbet&apos;);
             request.respondWith({
                 &apos;status&apos;: 200,
@@ -489,7 +542,7 @@ describe(&apos;Observable.ajax&apos;, function () {
             }, null, function () {
                 complete = true;
             });
-            var request = ajax_helper_1.MockXMLHttpRequest.mostRecent;
+            var request = MockXMLHttpRequest.mostRecent;
             chai_1.expect(request.method).to.equal(&apos;POST&apos;);
             chai_1.expect(request.url).to.equal(&apos;/flibbertyJibbet&apos;);
             chai_1.expect(request.requestHeaders).to.deep.equal({
@@ -516,7 +569,7 @@ describe(&apos;Observable.ajax&apos;, function () {
             }, null, function () {
                 complete = true;
             });
-            var request = ajax_helper_1.MockXMLHttpRequest.mostRecent;
+            var request = MockXMLHttpRequest.mostRecent;
             chai_1.expect(request.method).to.equal(&apos;POST&apos;);
             chai_1.expect(request.url).to.equal(&apos;/flibbertyJibbet&apos;);
             chai_1.expect(request.requestHeaders).to.deep.equal({
@@ -536,7 +589,7 @@ describe(&apos;Observable.ajax&apos;, function () {
             var expected = null;
             var result;
             var complete = false;
-            root_1.root.XMLHttpRequest = ajax_helper_1.MockXMLHttpRequestInternetExplorer;
+            root_1.root.XMLHttpRequest = MockXMLHttpRequestInternetExplorer;
             Rx.Observable
                 .ajax.post(&apos;/flibbertyJibbet&apos;, expected)
                 .subscribe(function (x) {
@@ -544,7 +597,7 @@ describe(&apos;Observable.ajax&apos;, function () {
             }, null, function () {
                 complete = true;
             });
-            var request = ajax_helper_1.MockXMLHttpRequest.mostRecent;
+            var request = MockXMLHttpRequest.mostRecent;
             chai_1.expect(request.method).to.equal(&apos;POST&apos;);
             chai_1.expect(request.url).to.equal(&apos;/flibbertyJibbet&apos;);
             chai_1.expect(request.requestHeaders).to.deep.equal({
@@ -558,6 +611,56 @@ describe(&apos;Observable.ajax&apos;, function () {
             });
             chai_1.expect(result.response).to.equal(expected);
             chai_1.expect(complete).to.be.true;
+        });
+        it(&apos;should emit progress event when progressSubscriber is specified&apos;, function () {
+            var spy = sinon.spy();
+            var progressSubscriber = {
+                next: spy,
+                error: function () {
+                    // noop
+                },
+                complete: function () {
+                    // noop
+                }
+            };
+            Rx.Observable.ajax({
+                url: &apos;/flibbertyJibbet&apos;,
+                progressSubscriber: progressSubscriber
+            })
+                .subscribe();
+            var request = MockXMLHttpRequest.mostRecent;
+            request.respondWith({
+                &apos;status&apos;: 200,
+                &apos;contentType&apos;: &apos;application/json&apos;,
+                &apos;responseText&apos;: JSON.stringify({})
+            }, 3);
+            chai_1.expect(spy).to.be.calledThrice;
+        });
+        it(&apos;should emit progress event when progressSubscriber is specified in IE&apos;, function () {
+            var spy = sinon.spy();
+            var progressSubscriber = {
+                next: spy,
+                error: function () {
+                    // noop
+                },
+                complete: function () {
+                    // noop
+                }
+            };
+            root_1.root.XMLHttpRequest = MockXMLHttpRequestInternetExplorer;
+            root_1.root.XDomainRequest = MockXMLHttpRequestInternetExplorer;
+            Rx.Observable.ajax({
+                url: &apos;/flibbertyJibbet&apos;,
+                progressSubscriber: progressSubscriber
+            })
+                .subscribe();
+            var request = MockXMLHttpRequest.mostRecent;
+            request.respondWith({
+                &apos;status&apos;: 200,
+                &apos;contentType&apos;: &apos;application/json&apos;,
+                &apos;responseText&apos;: JSON.stringify({})
+            }, 3);
+            chai_1.expect(spy.callCount).to.equal(3);
         });
     });
     it(&apos;should work fine when XMLHttpRequest onreadystatechange property is monkey patched&apos;, function () {
@@ -581,7 +684,7 @@ describe(&apos;Observable.ajax&apos;, function () {
             url: &apos;/flibbertyJibbet&apos;
         })
             .subscribe();
-        var request = ajax_helper_1.MockXMLHttpRequest.mostRecent;
+        var request = MockXMLHttpRequest.mostRecent;
         chai_1.expect(function () {
             request.onreadystatechange(&apos;onreadystatechange&apos;);
         }).not.throw();
@@ -609,7 +712,7 @@ describe(&apos;Observable.ajax&apos;, function () {
         };
         Rx.Observable.ajax(ajaxRequest)
             .subscribe();
-        var request = ajax_helper_1.MockXMLHttpRequest.mostRecent;
+        var request = MockXMLHttpRequest.mostRecent;
         try {
             request.ontimeout(&apos;ontimeout&apos;);
         }
@@ -635,14 +738,6 @@ describe(&apos;Observable.ajax&apos;, function () {
             },
             configurable: true
         });
-        Object.defineProperty(root_1.root.XMLHttpRequest.prototype, &apos;upload&apos;, {
-            get: function () {
-                return true;
-            },
-            configurable: true
-        });
-        // mock for onprogress
-        root_1.root.XDomainRequest = true;
         Rx.Observable.ajax({
             url: &apos;/flibbertyJibbet&apos;,
             progressSubscriber: {
@@ -658,13 +753,12 @@ describe(&apos;Observable.ajax&apos;, function () {
             }
         })
             .subscribe();
-        var request = ajax_helper_1.MockXMLHttpRequest.mostRecent;
+        var request = MockXMLHttpRequest.mostRecent;
         chai_1.expect(function () {
-            request.onprogress(&apos;onprogress&apos;);
+            request.upload.onprogress(&apos;onprogress&apos;);
         }).not.throw();
         delete root_1.root.XMLHttpRequest.prototype.onprogress;
         delete root_1.root.XMLHttpRequest.prototype.upload;
-        delete root_1.root.XDomainRequest;
     });
     it(&apos;should work fine when XMLHttpRequest onerror property is monkey patched&apos;, function () {
         Object.defineProperty(root_1.root.XMLHttpRequest.prototype, &apos;onerror&apos;, {
@@ -683,19 +777,11 @@ describe(&apos;Observable.ajax&apos;, function () {
             },
             configurable: true
         });
-        Object.defineProperty(root_1.root.XMLHttpRequest.prototype, &apos;upload&apos;, {
-            get: function () {
-                return true;
-            },
-            configurable: true
-        });
-        // mock for onprogress
-        root_1.root.XDomainRequest = true;
         Rx.Observable.ajax({
             url: &apos;/flibbertyJibbet&apos;
         })
             .subscribe();
-        var request = ajax_helper_1.MockXMLHttpRequest.mostRecent;
+        var request = MockXMLHttpRequest.mostRecent;
         try {
             request.onerror(&apos;onerror&apos;);
         }
@@ -704,9 +790,167 @@ describe(&apos;Observable.ajax&apos;, function () {
         }
         delete root_1.root.XMLHttpRequest.prototype.onerror;
         delete root_1.root.XMLHttpRequest.prototype.upload;
-        delete root_1.root.XDomainRequest;
     });
 });
+var MockXMLHttpRequest = (function () {
+    function MockXMLHttpRequest() {
+        this.responseType = &apos;&apos;;
+        this.eventHandlers = [];
+        this.readyState = 0;
+        this.requestHeaders = {};
+        this.withCredentials = false;
+        this.upload = {};
+        this.previousRequest = MockXMLHttpRequest.recentRequest;
+        MockXMLHttpRequest.recentRequest = this;
+        MockXMLHttpRequest.requests.push(this);
+    }
+    Object.defineProperty(MockXMLHttpRequest, &quot;mostRecent&quot;, {
+        get: function () {
+            return MockXMLHttpRequest.recentRequest;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MockXMLHttpRequest, &quot;allRequests&quot;, {
+        get: function () {
+            return MockXMLHttpRequest.requests;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MockXMLHttpRequest.clearRequest = function () {
+        MockXMLHttpRequest.requests.length = 0;
+        MockXMLHttpRequest.recentRequest = null;
+    };
+    MockXMLHttpRequest.prototype.send = function (data) {
+        this.data = data;
+    };
+    MockXMLHttpRequest.prototype.open = function (method, url, async, user, password) {
+        this.method = method;
+        this.url = url;
+        this.user = user;
+        this.password = password;
+        this.readyState = 1;
+        this.triggerEvent(&apos;readyStateChange&apos;);
+        var originalProgressHandler = this.upload.onprogress;
+        Object.defineProperty(this.upload, &apos;progress&apos;, {
+            get: function () {
+                return originalProgressHandler;
+            }
+        });
+    };
+    MockXMLHttpRequest.prototype.setRequestHeader = function (key, value) {
+        this.requestHeaders[key] = value;
+    };
+    MockXMLHttpRequest.prototype.addEventListener = function (name, handler) {
+        this.eventHandlers.push({ name: name, handler: handler });
+    };
+    MockXMLHttpRequest.prototype.removeEventListener = function (name, handler) {
+        for (var i = this.eventHandlers.length - 1; i--;) {
+            var eh = this.eventHandlers[i];
+            if (eh.name === name &amp;&amp; eh.handler === handler) {
+                this.eventHandlers.splice(i, 1);
+            }
+        }
+    };
+    MockXMLHttpRequest.prototype.throwError = function (err) {
+        // TODO: something better with errors
+        this.triggerEvent(&apos;error&apos;);
+    };
+    MockXMLHttpRequest.prototype.jsonResponseValue = function (response) {
+        try {
+            this.response = JSON.parse(response.responseText);
+        }
+        catch (err) {
+            throw new Error(&apos;unable to JSON.parse: \n&apos; + response.responseText);
+        }
+    };
+    MockXMLHttpRequest.prototype.defaultResponseValue = function () {
+        throw new Error(&apos;unhandled type &quot;&apos; + this.responseType + &apos;&quot;&apos;);
+    };
+    MockXMLHttpRequest.prototype.respondWith = function (response, progressTimes) {
+        if (progressTimes) {
+            for (var i = 1; i &lt;= progressTimes; ++i) {
+                this.triggerUploadEvent(&apos;progress&apos;, { type: &apos;ProgressEvent&apos;, total: progressTimes, loaded: i });
+            }
+        }
+        this.readyState = 4;
+        this.responseHeaders = {
+            &apos;Content-Type&apos;: response.contentType || &apos;text/plain&apos;
+        };
+        this.status = response.status || 200;
+        this.responseText = response.responseText;
+        if (!(&apos;response&apos; in response)) {
+            switch (this.responseType) {
+                case &apos;json&apos;:
+                    this.jsonResponseValue(response);
+                    break;
+                case &apos;text&apos;:
+                    this.response = response.responseText;
+                    break;
+                default:
+                    this.defaultResponseValue();
+            }
+        }
+        // TODO: pass better event to onload.
+        this.triggerEvent(&apos;load&apos;);
+        this.triggerEvent(&apos;readystatechange&apos;);
+    };
+    MockXMLHttpRequest.prototype.triggerEvent = function (name, eventObj) {
+        // TODO: create a better default event
+        var e = eventObj || {};
+        if (this[&apos;on&apos; + name]) {
+            this[&apos;on&apos; + name](e);
+        }
+        this.eventHandlers.forEach(function (eh) {
+            if (eh.name === name) {
+                eh.handler.call(this, e);
+            }
+        });
+    };
+    MockXMLHttpRequest.prototype.triggerUploadEvent = function (name, eventObj) {
+        // TODO: create a better default event
+        var e = eventObj || {};
+        if (this.upload[&apos;on&apos; + name]) {
+            this.upload[&apos;on&apos; + name](e);
+        }
+    };
+    MockXMLHttpRequest.requests = [];
+    return MockXMLHttpRequest;
+}());
+var MockXMLHttpRequestInternetExplorer = (function (_super) {
+    __extends(MockXMLHttpRequestInternetExplorer, _super);
+    function MockXMLHttpRequestInternetExplorer() {
+        _super.apply(this, arguments);
+    }
+    MockXMLHttpRequestInternetExplorer.prototype.mockHttp204 = function () {
+        this.responseType = &apos;&apos;;
+        this.responseText = &apos;&apos;;
+        this.response = &apos;&apos;;
+    };
+    MockXMLHttpRequestInternetExplorer.prototype.jsonResponseValue = function (response) {
+        if (this.status == 204) {
+            this.mockHttp204();
+            return;
+        }
+        return _super.prototype.jsonResponseValue.call(this, response);
+    };
+    MockXMLHttpRequestInternetExplorer.prototype.defaultResponseValue = function () {
+        if (this.status == 204) {
+            this.mockHttp204();
+            return;
+        }
+        return _super.prototype.defaultResponseValue.call(this);
+    };
+    MockXMLHttpRequestInternetExplorer.prototype.triggerUploadEvent = function (name, eventObj) {
+        // TODO: create a better default event
+        var e = eventObj || {};
+        if (this[&apos;on&apos; + name]) {
+            this[&apos;on&apos; + name](e);
+        }
+    };
+    return MockXMLHttpRequestInternetExplorer;
+}(MockXMLHttpRequest));
 //# sourceMappingURL=ajax-spec.js.map</code></pre>
 
 </div>

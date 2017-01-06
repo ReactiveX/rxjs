@@ -113,7 +113,7 @@ export function exhaust() {
 }
 class SwitchFirstOperator {
     call(subscriber, source) {
-        return source._subscribe(new SwitchFirstSubscriber(subscriber));
+        return source.subscribe(new SwitchFirstSubscriber(subscriber));
     }
 }
 /**

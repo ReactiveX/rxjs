@@ -94,10 +94,10 @@
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * Converts an Observable of {@link Notification} objects into the emissions\n * that they represent.\n *\n * <span class=\"informal\">Unwraps {@link Notification} objects as actual `next`,\n * `error` and `complete` emissions. The opposite of {@link materialize}.</span>\n *\n * <img src=\"./img/dematerialize.png\" width=\"100%\">\n *\n * `dematerialize` is assumed to operate an Observable that only emits\n * {@link Notification} objects as `next` emissions, and does not emit any\n * `error`. Such Observable is the output of a `materialize` operation. Those\n * notifications are then unwrapped using the metadata they contain, and emitted\n * as `next`, `error`, and `complete` on the output Observable.\n *\n * Use this operator in conjunction with {@link materialize}.\n *\n * @example <caption>Convert an Observable of Notifications to an actual Observable</caption>\n * var notifA = new Rx.Notification('N', 'A');\n * var notifB = new Rx.Notification('N', 'B');\n * var notifE = new Rx.Notification('E', void 0,\n *   new TypeError('x.toUpperCase is not a function')\n * );\n * var materialized = Rx.Observable.of(notifA, notifB, notifE);\n * var upperCase = materialized.dematerialize();\n * upperCase.subscribe(x => console.log(x), e => console.error(e));\n *\n * @see {@link Notification}\n * @see {@link materialize}\n *\n * @return {Observable} An Observable that emits items and notifications\n * embedded in Notification objects emitted by the source Observable.\n * @method dematerialize\n * @owner Observable\n ",
+          "value": "*\n * Converts an Observable of {@link Notification} objects into the emissions\n * that they represent.\n *\n * <span class=\"informal\">Unwraps {@link Notification} objects as actual `next`,\n * `error` and `complete` emissions. The opposite of {@link materialize}.</span>\n *\n * <img src=\"./img/dematerialize.png\" width=\"100%\">\n *\n * `dematerialize` is assumed to operate an Observable that only emits\n * {@link Notification} objects as `next` emissions, and does not emit any\n * `error`. Such Observable is the output of a `materialize` operation. Those\n * notifications are then unwrapped using the metadata they contain, and emitted\n * as `next`, `error`, and `complete` on the output Observable.\n *\n * Use this operator in conjunction with {@link materialize}.\n *\n * @example <caption>Convert an Observable of Notifications to an actual Observable</caption>\n * var notifA = new Rx.Notification('N', 'A');\n * var notifB = new Rx.Notification('N', 'B');\n * var notifE = new Rx.Notification('E', void 0,\n *   new TypeError('x.toUpperCase is not a function')\n * );\n * var materialized = Rx.Observable.of(notifA, notifB, notifE);\n * var upperCase = materialized.dematerialize();\n * upperCase.subscribe(x => console.log(x), e => console.error(e));\n *\n * // Results in:\n * // A\n * // B\n * // TypeError: x.toUpperCase is not a function\n *\n * @see {@link Notification}\n * @see {@link materialize}\n *\n * @return {Observable} An Observable that emits items and notifications\n * embedded in Notification objects emitted by the source Observable.\n * @method dematerialize\n * @owner Observable\n ",
           "range": [
             44,
-            1542
+            1628
           ],
           "loc": {
             "start": {
@@ -105,7 +105,7 @@
               "column": 0
             },
             "end": {
-              "line": 36,
+              "line": 41,
               "column": 3
             }
           }
@@ -120,16 +120,16 @@
           "type": "Identifier",
           "name": "dematerialize",
           "range": [
-            1559,
-            1572
+            1645,
+            1658
           ],
           "loc": {
             "start": {
-              "line": 37,
+              "line": 42,
               "column": 16
             },
             "end": {
-              "line": 37,
+              "line": 42,
               "column": 29
             }
           }
@@ -148,16 +148,16 @@
                   "object": {
                     "type": "ThisExpression",
                     "range": [
-                      1588,
-                      1592
+                      1674,
+                      1678
                     ],
                     "loc": {
                       "start": {
-                        "line": 38,
+                        "line": 43,
                         "column": 11
                       },
                       "end": {
-                        "line": 38,
+                        "line": 43,
                         "column": 15
                       }
                     }
@@ -166,31 +166,31 @@
                     "type": "Identifier",
                     "name": "lift",
                     "range": [
-                      1593,
-                      1597
+                      1679,
+                      1683
                     ],
                     "loc": {
                       "start": {
-                        "line": 38,
+                        "line": 43,
                         "column": 16
                       },
                       "end": {
-                        "line": 38,
+                        "line": 43,
                         "column": 20
                       }
                     }
                   },
                   "range": [
-                    1588,
-                    1597
+                    1674,
+                    1683
                   ],
                   "loc": {
                     "start": {
-                      "line": 38,
+                      "line": 43,
                       "column": 11
                     },
                     "end": {
-                      "line": 38,
+                      "line": 43,
                       "column": 20
                     }
                   }
@@ -202,79 +202,79 @@
                       "type": "Identifier",
                       "name": "DeMaterializeOperator",
                       "range": [
-                        1602,
-                        1623
+                        1688,
+                        1709
                       ],
                       "loc": {
                         "start": {
-                          "line": 38,
+                          "line": 43,
                           "column": 25
                         },
                         "end": {
-                          "line": 38,
+                          "line": 43,
                           "column": 46
                         }
                       }
                     },
                     "arguments": [],
                     "range": [
-                      1598,
-                      1625
+                      1684,
+                      1711
                     ],
                     "loc": {
                       "start": {
-                        "line": 38,
+                        "line": 43,
                         "column": 21
                       },
                       "end": {
-                        "line": 38,
+                        "line": 43,
                         "column": 48
                       }
                     }
                   }
                 ],
                 "range": [
-                  1588,
-                  1626
+                  1674,
+                  1712
                 ],
                 "loc": {
                   "start": {
-                    "line": 38,
+                    "line": 43,
                     "column": 11
                   },
                   "end": {
-                    "line": 38,
+                    "line": 43,
                     "column": 49
                   }
                 }
               },
               "range": [
-                1581,
-                1627
+                1667,
+                1713
               ],
               "loc": {
                 "start": {
-                  "line": 38,
+                  "line": 43,
                   "column": 4
                 },
                 "end": {
-                  "line": 38,
+                  "line": 43,
                   "column": 50
                 }
               }
             }
           ],
           "range": [
-            1575,
-            1629
+            1661,
+            1715
           ],
           "loc": {
             "start": {
-              "line": 37,
+              "line": 42,
               "column": 32
             },
             "end": {
-              "line": 39,
+              "line": 44,
               "column": 1
             }
           }
@@ -282,26 +282,26 @@
         "generator": false,
         "expression": false,
         "range": [
-          1550,
-          1629
+          1636,
+          1715
         ],
         "loc": {
           "start": {
-            "line": 37,
+            "line": 42,
             "column": 7
           },
           "end": {
-            "line": 39,
+            "line": 44,
             "column": 1
           }
         },
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * Converts an Observable of {@link Notification} objects into the emissions\n * that they represent.\n *\n * <span class=\"informal\">Unwraps {@link Notification} objects as actual `next`,\n * `error` and `complete` emissions. The opposite of {@link materialize}.</span>\n *\n * <img src=\"./img/dematerialize.png\" width=\"100%\">\n *\n * `dematerialize` is assumed to operate an Observable that only emits\n * {@link Notification} objects as `next` emissions, and does not emit any\n * `error`. Such Observable is the output of a `materialize` operation. Those\n * notifications are then unwrapped using the metadata they contain, and emitted\n * as `next`, `error`, and `complete` on the output Observable.\n *\n * Use this operator in conjunction with {@link materialize}.\n *\n * @example <caption>Convert an Observable of Notifications to an actual Observable</caption>\n * var notifA = new Rx.Notification('N', 'A');\n * var notifB = new Rx.Notification('N', 'B');\n * var notifE = new Rx.Notification('E', void 0,\n *   new TypeError('x.toUpperCase is not a function')\n * );\n * var materialized = Rx.Observable.of(notifA, notifB, notifE);\n * var upperCase = materialized.dematerialize();\n * upperCase.subscribe(x => console.log(x), e => console.error(e));\n *\n * @see {@link Notification}\n * @see {@link materialize}\n *\n * @return {Observable} An Observable that emits items and notifications\n * embedded in Notification objects emitted by the source Observable.\n * @method dematerialize\n * @owner Observable\n ",
+            "value": "*\n * Converts an Observable of {@link Notification} objects into the emissions\n * that they represent.\n *\n * <span class=\"informal\">Unwraps {@link Notification} objects as actual `next`,\n * `error` and `complete` emissions. The opposite of {@link materialize}.</span>\n *\n * <img src=\"./img/dematerialize.png\" width=\"100%\">\n *\n * `dematerialize` is assumed to operate an Observable that only emits\n * {@link Notification} objects as `next` emissions, and does not emit any\n * `error`. Such Observable is the output of a `materialize` operation. Those\n * notifications are then unwrapped using the metadata they contain, and emitted\n * as `next`, `error`, and `complete` on the output Observable.\n *\n * Use this operator in conjunction with {@link materialize}.\n *\n * @example <caption>Convert an Observable of Notifications to an actual Observable</caption>\n * var notifA = new Rx.Notification('N', 'A');\n * var notifB = new Rx.Notification('N', 'B');\n * var notifE = new Rx.Notification('E', void 0,\n *   new TypeError('x.toUpperCase is not a function')\n * );\n * var materialized = Rx.Observable.of(notifA, notifB, notifE);\n * var upperCase = materialized.dematerialize();\n * upperCase.subscribe(x => console.log(x), e => console.error(e));\n *\n * // Results in:\n * // A\n * // B\n * // TypeError: x.toUpperCase is not a function\n *\n * @see {@link Notification}\n * @see {@link materialize}\n *\n * @return {Observable} An Observable that emits items and notifications\n * embedded in Notification objects emitted by the source Observable.\n * @method dematerialize\n * @owner Observable\n ",
             "range": [
               44,
-              1542
+              1628
             ],
             "loc": {
               "start": {
@@ -309,7 +309,7 @@
                 "column": 0
               },
               "end": {
-                "line": 36,
+                "line": 41,
                 "column": 3
               }
             }
@@ -320,26 +320,26 @@
       "specifiers": [],
       "source": null,
       "range": [
-        1543,
-        1629
+        1629,
+        1715
       ],
       "loc": {
         "start": {
-          "line": 37,
+          "line": 42,
           "column": 0
         },
         "end": {
-          "line": 39,
+          "line": 44,
           "column": 1
         }
       },
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * Converts an Observable of {@link Notification} objects into the emissions\n * that they represent.\n *\n * <span class=\"informal\">Unwraps {@link Notification} objects as actual `next`,\n * `error` and `complete` emissions. The opposite of {@link materialize}.</span>\n *\n * <img src=\"./img/dematerialize.png\" width=\"100%\">\n *\n * `dematerialize` is assumed to operate an Observable that only emits\n * {@link Notification} objects as `next` emissions, and does not emit any\n * `error`. Such Observable is the output of a `materialize` operation. Those\n * notifications are then unwrapped using the metadata they contain, and emitted\n * as `next`, `error`, and `complete` on the output Observable.\n *\n * Use this operator in conjunction with {@link materialize}.\n *\n * @example <caption>Convert an Observable of Notifications to an actual Observable</caption>\n * var notifA = new Rx.Notification('N', 'A');\n * var notifB = new Rx.Notification('N', 'B');\n * var notifE = new Rx.Notification('E', void 0,\n *   new TypeError('x.toUpperCase is not a function')\n * );\n * var materialized = Rx.Observable.of(notifA, notifB, notifE);\n * var upperCase = materialized.dematerialize();\n * upperCase.subscribe(x => console.log(x), e => console.error(e));\n *\n * @see {@link Notification}\n * @see {@link materialize}\n *\n * @return {Observable} An Observable that emits items and notifications\n * embedded in Notification objects emitted by the source Observable.\n * @method dematerialize\n * @owner Observable\n ",
+          "value": "*\n * Converts an Observable of {@link Notification} objects into the emissions\n * that they represent.\n *\n * <span class=\"informal\">Unwraps {@link Notification} objects as actual `next`,\n * `error` and `complete` emissions. The opposite of {@link materialize}.</span>\n *\n * <img src=\"./img/dematerialize.png\" width=\"100%\">\n *\n * `dematerialize` is assumed to operate an Observable that only emits\n * {@link Notification} objects as `next` emissions, and does not emit any\n * `error`. Such Observable is the output of a `materialize` operation. Those\n * notifications are then unwrapped using the metadata they contain, and emitted\n * as `next`, `error`, and `complete` on the output Observable.\n *\n * Use this operator in conjunction with {@link materialize}.\n *\n * @example <caption>Convert an Observable of Notifications to an actual Observable</caption>\n * var notifA = new Rx.Notification('N', 'A');\n * var notifB = new Rx.Notification('N', 'B');\n * var notifE = new Rx.Notification('E', void 0,\n *   new TypeError('x.toUpperCase is not a function')\n * );\n * var materialized = Rx.Observable.of(notifA, notifB, notifE);\n * var upperCase = materialized.dematerialize();\n * upperCase.subscribe(x => console.log(x), e => console.error(e));\n *\n * // Results in:\n * // A\n * // B\n * // TypeError: x.toUpperCase is not a function\n *\n * @see {@link Notification}\n * @see {@link materialize}\n *\n * @return {Observable} An Observable that emits items and notifications\n * embedded in Notification objects emitted by the source Observable.\n * @method dematerialize\n * @owner Observable\n ",
           "range": [
             44,
-            1542
+            1628
           ],
           "loc": {
             "start": {
@@ -347,7 +347,7 @@
               "column": 0
             },
             "end": {
-              "line": 36,
+              "line": 41,
               "column": 3
             }
           }
@@ -360,16 +360,16 @@
         "type": "Identifier",
         "name": "DeMaterializeOperator",
         "range": [
-          1636,
-          1657
+          1722,
+          1743
         ],
         "loc": {
           "start": {
-            "line": 40,
+            "line": 45,
             "column": 6
           },
           "end": {
-            "line": 40,
+            "line": 45,
             "column": 27
           }
         }
@@ -384,16 +384,16 @@
               "type": "Identifier",
               "name": "call",
               "range": [
-                1664,
-                1668
+                1750,
+                1754
               ],
               "loc": {
                 "start": {
-                  "line": 41,
+                  "line": 46,
                   "column": 4
                 },
                 "end": {
-                  "line": 41,
+                  "line": 46,
                   "column": 8
                 }
               }
@@ -406,16 +406,16 @@
                   "type": "Identifier",
                   "name": "subscriber",
                   "range": [
-                    1669,
-                    1679
+                    1755,
+                    1765
                   ],
                   "loc": {
                     "start": {
-                      "line": 41,
+                      "line": 46,
                       "column": 9
                     },
                     "end": {
-                      "line": 41,
+                      "line": 46,
                       "column": 19
                     }
                   }
@@ -424,16 +424,16 @@
                   "type": "Identifier",
                   "name": "source",
                   "range": [
-                    1681,
-                    1687
+                    1767,
+                    1773
                   ],
                   "loc": {
                     "start": {
-                      "line": 41,
+                      "line": 46,
                       "column": 21
                     },
                     "end": {
-                      "line": 41,
+                      "line": 46,
                       "column": 27
                     }
                   }
@@ -453,50 +453,50 @@
                           "type": "Identifier",
                           "name": "source",
                           "range": [
-                            1706,
-                            1712
+                            1792,
+                            1798
                           ],
                           "loc": {
                             "start": {
-                              "line": 42,
+                              "line": 47,
                               "column": 15
                             },
                             "end": {
-                              "line": 42,
+                              "line": 47,
                               "column": 21
                             }
                           }
                         },
                         "property": {
                           "type": "Identifier",
-                          "name": "_subscribe",
+                          "name": "subscribe",
                           "range": [
-                            1713,
-                            1723
+                            1799,
+                            1808
                           ],
                           "loc": {
                             "start": {
-                              "line": 42,
+                              "line": 47,
                               "column": 22
                             },
                             "end": {
-                              "line": 42,
-                              "column": 32
+                              "line": 47,
+                              "column": 31
                             }
                           }
                         },
                         "range": [
-                          1706,
-                          1723
+                          1792,
+                          1808
                         ],
                         "loc": {
                           "start": {
-                            "line": 42,
+                            "line": 47,
                             "column": 15
                           },
                           "end": {
-                            "line": 42,
-                            "column": 32
+                            "line": 47,
+                            "column": 31
                           }
                         }
                       },
@@ -507,17 +507,17 @@
                             "type": "Identifier",
                             "name": "DeMaterializeSubscriber",
                             "range": [
-                              1728,
-                              1751
+                              1813,
+                              1836
                             ],
                             "loc": {
                               "start": {
-                                "line": 42,
-                                "column": 37
+                                "line": 47,
+                                "column": 36
                               },
                               "end": {
-                                "line": 42,
-                                "column": 60
+                                "line": 47,
+                                "column": 59
                               }
                             }
                           },
@@ -526,79 +526,79 @@
                               "type": "Identifier",
                               "name": "subscriber",
                               "range": [
-                                1752,
-                                1762
+                                1837,
+                                1847
                               ],
                               "loc": {
                                 "start": {
-                                  "line": 42,
-                                  "column": 61
+                                  "line": 47,
+                                  "column": 60
                                 },
                                 "end": {
-                                  "line": 42,
-                                  "column": 71
+                                  "line": 47,
+                                  "column": 70
                                 }
                               }
                             }
                           ],
                           "range": [
-                            1724,
-                            1763
+                            1809,
+                            1848
                           ],
                           "loc": {
                             "start": {
-                              "line": 42,
-                              "column": 33
+                              "line": 47,
+                              "column": 32
                             },
                             "end": {
-                              "line": 42,
-                              "column": 72
+                              "line": 47,
+                              "column": 71
                             }
                           }
                         }
                       ],
                       "range": [
-                        1706,
-                        1764
+                        1792,
+                        1849
                       ],
                       "loc": {
                         "start": {
-                          "line": 42,
+                          "line": 47,
                           "column": 15
                         },
                         "end": {
-                          "line": 42,
-                          "column": 73
+                          "line": 47,
+                          "column": 72
                         }
                       }
                     },
                     "range": [
-                      1699,
-                      1765
+                      1785,
+                      1850
                     ],
                     "loc": {
                       "start": {
-                        "line": 42,
+                        "line": 47,
                         "column": 8
                       },
                       "end": {
-                        "line": 42,
-                        "column": 74
+                        "line": 47,
+                        "column": 73
                       }
                     }
                   }
                 ],
                 "range": [
-                  1689,
-                  1771
+                  1775,
+                  1856
                 ],
                 "loc": {
                   "start": {
-                    "line": 41,
+                    "line": 46,
                     "column": 29
                   },
                   "end": {
-                    "line": 43,
+                    "line": 48,
                     "column": 5
                   }
                 }
@@ -606,16 +606,16 @@
               "generator": false,
               "expression": false,
               "range": [
-                1668,
-                1771
+                1754,
+                1856
               ],
               "loc": {
                 "start": {
-                  "line": 41,
+                  "line": 46,
                   "column": 8
                 },
                 "end": {
-                  "line": 43,
+                  "line": 48,
                   "column": 5
                 }
               }
@@ -623,16 +623,16 @@
             "kind": "method",
             "computed": false,
             "range": [
-              1664,
-              1771
+              1750,
+              1856
             ],
             "loc": {
               "start": {
-                "line": 41,
+                "line": 46,
                 "column": 4
               },
               "end": {
-                "line": 43,
+                "line": 48,
                 "column": 5
               }
             },
@@ -640,31 +640,31 @@
           }
         ],
         "range": [
-          1658,
-          1773
+          1744,
+          1858
         ],
         "loc": {
           "start": {
-            "line": 40,
+            "line": 45,
             "column": 28
           },
           "end": {
-            "line": 44,
+            "line": 49,
             "column": 1
           }
         }
       },
       "range": [
-        1630,
-        1773
+        1716,
+        1858
       ],
       "loc": {
         "start": {
-          "line": 40,
+          "line": 45,
           "column": 0
         },
         "end": {
-          "line": 44,
+          "line": 49,
           "column": 1
         }
       },
@@ -673,16 +673,16 @@
           "type": "Block",
           "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
           "range": [
-            1774,
-            1865
+            1859,
+            1950
           ],
           "loc": {
             "start": {
-              "line": 45,
+              "line": 50,
               "column": 0
             },
             "end": {
-              "line": 49,
+              "line": 54,
               "column": 3
             }
           }
@@ -695,16 +695,16 @@
         "type": "Identifier",
         "name": "DeMaterializeSubscriber",
         "range": [
-          1872,
-          1895
+          1957,
+          1980
         ],
         "loc": {
           "start": {
-            "line": 50,
+            "line": 55,
             "column": 6
           },
           "end": {
-            "line": 50,
+            "line": 55,
             "column": 29
           }
         }
@@ -713,16 +713,16 @@
         "type": "Identifier",
         "name": "Subscriber",
         "range": [
-          1904,
-          1914
+          1989,
+          1999
         ],
         "loc": {
           "start": {
-            "line": 50,
+            "line": 55,
             "column": 38
           },
           "end": {
-            "line": 50,
+            "line": 55,
             "column": 48
           }
         }
@@ -736,16 +736,16 @@
               "type": "Identifier",
               "name": "constructor",
               "range": [
-                1921,
-                1932
+                2006,
+                2017
               ],
               "loc": {
                 "start": {
-                  "line": 51,
+                  "line": 56,
                   "column": 4
                 },
                 "end": {
-                  "line": 51,
+                  "line": 56,
                   "column": 15
                 }
               }
@@ -758,16 +758,16 @@
                   "type": "Identifier",
                   "name": "destination",
                   "range": [
-                    1933,
-                    1944
+                    2018,
+                    2029
                   ],
                   "loc": {
                     "start": {
-                      "line": 51,
+                      "line": 56,
                       "column": 16
                     },
                     "end": {
-                      "line": 51,
+                      "line": 56,
                       "column": 27
                     }
                   }
@@ -783,16 +783,16 @@
                       "callee": {
                         "type": "Super",
                         "range": [
-                          1956,
-                          1961
+                          2041,
+                          2046
                         ],
                         "loc": {
                           "start": {
-                            "line": 52,
+                            "line": 57,
                             "column": 8
                           },
                           "end": {
-                            "line": 52,
+                            "line": 57,
                             "column": 13
                           }
                         }
@@ -802,63 +802,63 @@
                           "type": "Identifier",
                           "name": "destination",
                           "range": [
-                            1962,
-                            1973
+                            2047,
+                            2058
                           ],
                           "loc": {
                             "start": {
-                              "line": 52,
+                              "line": 57,
                               "column": 14
                             },
                             "end": {
-                              "line": 52,
+                              "line": 57,
                               "column": 25
                             }
                           }
                         }
                       ],
                       "range": [
-                        1956,
-                        1974
+                        2041,
+                        2059
                       ],
                       "loc": {
                         "start": {
-                          "line": 52,
+                          "line": 57,
                           "column": 8
                         },
                         "end": {
-                          "line": 52,
+                          "line": 57,
                           "column": 26
                         }
                       }
                     },
                     "range": [
-                      1956,
-                      1975
+                      2041,
+                      2060
                     ],
                     "loc": {
                       "start": {
-                        "line": 52,
+                        "line": 57,
                         "column": 8
                       },
                       "end": {
-                        "line": 52,
+                        "line": 57,
                         "column": 27
                       }
                     }
                   }
                 ],
                 "range": [
-                  1946,
-                  1981
+                  2031,
+                  2066
                 ],
                 "loc": {
                   "start": {
-                    "line": 51,
+                    "line": 56,
                     "column": 29
                   },
                   "end": {
-                    "line": 53,
+                    "line": 58,
                     "column": 5
                   }
                 }
@@ -866,16 +866,16 @@
               "generator": false,
               "expression": false,
               "range": [
-                1932,
-                1981
+                2017,
+                2066
               ],
               "loc": {
                 "start": {
-                  "line": 51,
+                  "line": 56,
                   "column": 15
                 },
                 "end": {
-                  "line": 53,
+                  "line": 58,
                   "column": 5
                 }
               }
@@ -883,16 +883,16 @@
             "kind": "constructor",
             "computed": false,
             "range": [
-              1921,
-              1981
+              2006,
+              2066
             ],
             "loc": {
               "start": {
-                "line": 51,
+                "line": 56,
                 "column": 4
               },
               "end": {
-                "line": 53,
+                "line": 58,
                 "column": 5
               }
             },
@@ -904,16 +904,16 @@
               "type": "Identifier",
               "name": "_next",
               "range": [
-                1986,
-                1991
+                2071,
+                2076
               ],
               "loc": {
                 "start": {
-                  "line": 54,
+                  "line": 59,
                   "column": 4
                 },
                 "end": {
-                  "line": 54,
+                  "line": 59,
                   "column": 9
                 }
               }
@@ -926,16 +926,16 @@
                   "type": "Identifier",
                   "name": "value",
                   "range": [
-                    1992,
-                    1997
+                    2077,
+                    2082
                   ],
                   "loc": {
                     "start": {
-                      "line": 54,
+                      "line": 59,
                       "column": 10
                     },
                     "end": {
-                      "line": 54,
+                      "line": 59,
                       "column": 15
                     }
                   }
@@ -955,16 +955,16 @@
                           "type": "Identifier",
                           "name": "value",
                           "range": [
-                            2009,
-                            2014
+                            2094,
+                            2099
                           ],
                           "loc": {
                             "start": {
-                              "line": 55,
+                              "line": 60,
                               "column": 8
                             },
                             "end": {
-                              "line": 55,
+                              "line": 60,
                               "column": 13
                             }
                           }
@@ -973,31 +973,31 @@
                           "type": "Identifier",
                           "name": "observe",
                           "range": [
-                            2015,
-                            2022
+                            2100,
+                            2107
                           ],
                           "loc": {
                             "start": {
-                              "line": 55,
+                              "line": 60,
                               "column": 14
                             },
                             "end": {
-                              "line": 55,
+                              "line": 60,
                               "column": 21
                             }
                           }
                         },
                         "range": [
-                          2009,
-                          2022
+                          2094,
+                          2107
                         ],
                         "loc": {
                           "start": {
-                            "line": 55,
+                            "line": 60,
                             "column": 8
                           },
                           "end": {
-                            "line": 55,
+                            "line": 60,
                             "column": 21
                           }
                         }
@@ -1009,16 +1009,16 @@
                           "object": {
                             "type": "ThisExpression",
                             "range": [
-                              2023,
-                              2027
+                              2108,
+                              2112
                             ],
                             "loc": {
                               "start": {
-                                "line": 55,
+                                "line": 60,
                                 "column": 22
                               },
                               "end": {
-                                "line": 55,
+                                "line": 60,
                                 "column": 26
                               }
                             }
@@ -1027,78 +1027,78 @@
                             "type": "Identifier",
                             "name": "destination",
                             "range": [
-                              2028,
-                              2039
+                              2113,
+                              2124
                             ],
                             "loc": {
                               "start": {
-                                "line": 55,
+                                "line": 60,
                                 "column": 27
                               },
                               "end": {
-                                "line": 55,
+                                "line": 60,
                                 "column": 38
                               }
                             }
                           },
                           "range": [
-                            2023,
-                            2039
+                            2108,
+                            2124
                           ],
                           "loc": {
                             "start": {
-                              "line": 55,
+                              "line": 60,
                               "column": 22
                             },
                             "end": {
-                              "line": 55,
+                              "line": 60,
                               "column": 38
                             }
                           }
                         }
                       ],
                       "range": [
-                        2009,
-                        2040
+                        2094,
+                        2125
                       ],
                       "loc": {
                         "start": {
-                          "line": 55,
+                          "line": 60,
                           "column": 8
                         },
                         "end": {
-                          "line": 55,
+                          "line": 60,
                           "column": 39
                         }
                       }
                     },
                     "range": [
-                      2009,
-                      2041
+                      2094,
+                      2126
                     ],
                     "loc": {
                       "start": {
-                        "line": 55,
+                        "line": 60,
                         "column": 8
                       },
                       "end": {
-                        "line": 55,
+                        "line": 60,
                         "column": 40
                       }
                     }
                   }
                 ],
                 "range": [
-                  1999,
-                  2047
+                  2084,
+                  2132
                 ],
                 "loc": {
                   "start": {
-                    "line": 54,
+                    "line": 59,
                     "column": 17
                   },
                   "end": {
-                    "line": 56,
+                    "line": 61,
                     "column": 5
                   }
                 }
@@ -1106,16 +1106,16 @@
               "generator": false,
               "expression": false,
               "range": [
-                1991,
-                2047
+                2076,
+                2132
               ],
               "loc": {
                 "start": {
-                  "line": 54,
+                  "line": 59,
                   "column": 9
                 },
                 "end": {
-                  "line": 56,
+                  "line": 61,
                   "column": 5
                 }
               }
@@ -1123,16 +1123,16 @@
             "kind": "method",
             "computed": false,
             "range": [
-              1986,
-              2047
+              2071,
+              2132
             ],
             "loc": {
               "start": {
-                "line": 54,
+                "line": 59,
                 "column": 4
               },
               "end": {
-                "line": 56,
+                "line": 61,
                 "column": 5
               }
             },
@@ -1140,31 +1140,31 @@
           }
         ],
         "range": [
-          1915,
-          2049
+          2000,
+          2134
         ],
         "loc": {
           "start": {
-            "line": 50,
+            "line": 55,
             "column": 49
           },
           "end": {
-            "line": 57,
+            "line": 62,
             "column": 1
           }
         }
       },
       "range": [
-        1866,
-        2049
+        1951,
+        2134
       ],
       "loc": {
         "start": {
-          "line": 50,
+          "line": 55,
           "column": 0
         },
         "end": {
-          "line": 57,
+          "line": 62,
           "column": 1
         }
       },
@@ -1173,16 +1173,16 @@
           "type": "Block",
           "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
           "range": [
-            1774,
-            1865
+            1859,
+            1950
           ],
           "loc": {
             "start": {
-              "line": 45,
+              "line": 50,
               "column": 0
             },
             "end": {
-              "line": 49,
+              "line": 54,
               "column": 3
             }
           }
@@ -1193,16 +1193,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=dematerialize.js.map",
           "range": [
-            2050,
-            2091
+            2135,
+            2176
           ],
           "loc": {
             "start": {
-              "line": 58,
+              "line": 63,
               "column": 0
             },
             "end": {
-              "line": 58,
+              "line": 63,
               "column": 41
             }
           }
@@ -1213,7 +1213,7 @@
   "sourceType": "module",
   "range": [
     0,
-    2049
+    2134
   ],
   "loc": {
     "start": {
@@ -1221,17 +1221,17 @@
       "column": 0
     },
     "end": {
-      "line": 57,
+      "line": 62,
       "column": 1
     }
   },
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * Converts an Observable of {@link Notification} objects into the emissions\n * that they represent.\n *\n * <span class=\"informal\">Unwraps {@link Notification} objects as actual `next`,\n * `error` and `complete` emissions. The opposite of {@link materialize}.</span>\n *\n * <img src=\"./img/dematerialize.png\" width=\"100%\">\n *\n * `dematerialize` is assumed to operate an Observable that only emits\n * {@link Notification} objects as `next` emissions, and does not emit any\n * `error`. Such Observable is the output of a `materialize` operation. Those\n * notifications are then unwrapped using the metadata they contain, and emitted\n * as `next`, `error`, and `complete` on the output Observable.\n *\n * Use this operator in conjunction with {@link materialize}.\n *\n * @example <caption>Convert an Observable of Notifications to an actual Observable</caption>\n * var notifA = new Rx.Notification('N', 'A');\n * var notifB = new Rx.Notification('N', 'B');\n * var notifE = new Rx.Notification('E', void 0,\n *   new TypeError('x.toUpperCase is not a function')\n * );\n * var materialized = Rx.Observable.of(notifA, notifB, notifE);\n * var upperCase = materialized.dematerialize();\n * upperCase.subscribe(x => console.log(x), e => console.error(e));\n *\n * @see {@link Notification}\n * @see {@link materialize}\n *\n * @return {Observable} An Observable that emits items and notifications\n * embedded in Notification objects emitted by the source Observable.\n * @method dematerialize\n * @owner Observable\n ",
+      "value": "*\n * Converts an Observable of {@link Notification} objects into the emissions\n * that they represent.\n *\n * <span class=\"informal\">Unwraps {@link Notification} objects as actual `next`,\n * `error` and `complete` emissions. The opposite of {@link materialize}.</span>\n *\n * <img src=\"./img/dematerialize.png\" width=\"100%\">\n *\n * `dematerialize` is assumed to operate an Observable that only emits\n * {@link Notification} objects as `next` emissions, and does not emit any\n * `error`. Such Observable is the output of a `materialize` operation. Those\n * notifications are then unwrapped using the metadata they contain, and emitted\n * as `next`, `error`, and `complete` on the output Observable.\n *\n * Use this operator in conjunction with {@link materialize}.\n *\n * @example <caption>Convert an Observable of Notifications to an actual Observable</caption>\n * var notifA = new Rx.Notification('N', 'A');\n * var notifB = new Rx.Notification('N', 'B');\n * var notifE = new Rx.Notification('E', void 0,\n *   new TypeError('x.toUpperCase is not a function')\n * );\n * var materialized = Rx.Observable.of(notifA, notifB, notifE);\n * var upperCase = materialized.dematerialize();\n * upperCase.subscribe(x => console.log(x), e => console.error(e));\n *\n * // Results in:\n * // A\n * // B\n * // TypeError: x.toUpperCase is not a function\n *\n * @see {@link Notification}\n * @see {@link materialize}\n *\n * @return {Observable} An Observable that emits items and notifications\n * embedded in Notification objects emitted by the source Observable.\n * @method dematerialize\n * @owner Observable\n ",
       "range": [
         44,
-        1542
+        1628
       ],
       "loc": {
         "start": {
@@ -1239,7 +1239,7 @@
           "column": 0
         },
         "end": {
-          "line": 36,
+          "line": 41,
           "column": 3
         }
       }
@@ -1248,16 +1248,16 @@
       "type": "Block",
       "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
       "range": [
-        1774,
-        1865
+        1859,
+        1950
       ],
       "loc": {
         "start": {
-          "line": 45,
+          "line": 50,
           "column": 0
         },
         "end": {
-          "line": 49,
+          "line": 54,
           "column": 3
         }
       }
@@ -1266,16 +1266,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=dematerialize.js.map",
       "range": [
-        2050,
-        2091
+        2135,
+        2176
       ],
       "loc": {
         "start": {
-          "line": 58,
+          "line": 63,
           "column": 0
         },
         "end": {
-          "line": 58,
+          "line": 63,
           "column": 41
         }
       }

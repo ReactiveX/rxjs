@@ -292,6 +292,52 @@ describe(&apos;Observable.prototype.filter&apos;, function () {
         expectObservable(r, unsub).toBe(expected);
         expectSubscriptions(source.subscriptions).toBe(subs);
     });
+    it(&apos;should support type guards without breaking previous behavior&apos;, function () {
+        // tslint:disable no-unused-variable
+        // type guards with interfaces and classes
+        {
+            var Foo = (function () {
+                function Foo(bar, baz) {
+                    if (bar === void 0) { bar = &apos;name&apos;; }
+                    if (baz === void 0) { baz = 42; }
+                    this.bar = bar;
+                    this.baz = baz;
+                }
+                return Foo;
+            }());
+            var isBar = function (x) { return x &amp;&amp; x.bar !== undefined; };
+            var isBaz = function (x) { return x &amp;&amp; x.baz !== undefined; };
+            var foo = new Foo();
+            Observable.of(foo).filter(function (foo) { return foo.baz === 42; })
+                .subscribe(function (x) { return x.baz; }); // x is still Foo
+            Observable.of(foo).filter(isBar)
+                .subscribe(function (x) { return x.bar; }); // x is Bar!
+            var foobar = new Foo(); // type is interface, not the class
+            Observable.of(foobar).filter(function (foobar) { return foobar.bar === &apos;name&apos;; })
+                .subscribe(function (x) { return x.bar; }); // &lt;-- x is still Bar
+            Observable.of(foobar).filter(isBar)
+                .subscribe(function (x) { return x.bar; }); // &lt;--- x is Bar!
+            var barish = { bar: &apos;quack&apos;, baz: 42 }; // type can quack like a Bar
+            Observable.of(barish).filter(function (x) { return x.bar === &apos;quack&apos;; })
+                .subscribe(function (x) { return x.bar; }); // x is still { bar: string; baz: number; }
+            Observable.of(barish).filter(isBar)
+                .subscribe(function (bar) { return bar.bar; }); // x is Bar!
+        }
+        // type guards with primitive types
+        {
+            var xs = Observable.from([1, &apos;aaa&apos;, 3, &apos;bb&apos;]);
+            // This type guard will narrow a `string | number` to a string in the examples below
+            var isString = function (x) { return typeof x === &apos;string&apos;; };
+            xs.filter(isString)
+                .subscribe(function (s) { return s.length; }); // s is string
+            // In contrast, this type of regular boolean predicate still maintains the original type
+            xs.filter(function (x) { return typeof x === &apos;number&apos;; })
+                .subscribe(function (x) { return x; }); // x is still string | number
+            xs.filter(function (x, i) { return typeof x === &apos;number&apos; &amp;&amp; x &gt; i; })
+                .subscribe(function (x) { return x; }); // x is still string | number
+        }
+        // tslint:disable enable
+    });
 });
 //# sourceMappingURL=filter-spec.js.map</code></pre>
 

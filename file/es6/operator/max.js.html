@@ -72,14 +72,33 @@
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operator/max.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { ReduceOperator } from &apos;./reduce&apos;;
 /**
- * The Max operator operates on an Observable that emits numbers (or items that can be evaluated as numbers),
- * and when source Observable completes it emits a single item: the item with the largest number.
+ * The Max operator operates on an Observable that emits numbers (or items that can be compared with a provided function),
+ * and when source Observable completes it emits a single item: the item with the largest value.
  *
  * &lt;img src=&quot;./img/max.png&quot; width=&quot;100%&quot;&gt;
  *
+ * @example &lt;caption&gt;Get the maximal value of a series of numbers&lt;/caption&gt;
+ * Rx.Observable.of(5, 4, 7, 2, 8)
+ *   .max()
+ *   .subscribe(x =&gt; console.log(x)); // -&gt; 8
+ *
+ * @example &lt;caption&gt;Use a comparer function to get the maximal item&lt;/caption&gt;
+ * interface Person {
+ *   age: number,
+ *   name: string
+ * }
+ * Observable.of&lt;Person&gt;({age: 7, name: &apos;Foo&apos;},
+ *                       {age: 5, name: &apos;Bar&apos;},
+ *                       {age: 9, name: &apos;Beer&apos;})
+ *           .max&lt;Person&gt;((a: Person, b: Person) =&gt; a.age &lt; b.age ? -1 : 1)
+ *           .subscribe((x: Person) =&gt; console.log(x.name)); // -&gt; &apos;Beer&apos;
+ * }
+ *
+ * @see {@link min}
+ *
  * @param {Function} optional comparer function that it will use instead of its default to compare the value of two
  * items.
- * @return {Observable} an Observable that emits item with the largest number.
+ * @return {Observable} an Observable that emits item with the largest value.
  * @method max
  * @owner Observable
  */

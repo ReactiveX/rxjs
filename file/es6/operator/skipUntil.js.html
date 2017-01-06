@@ -92,7 +92,7 @@ class SkipUntilOperator {
         this.notifier = notifier;
     }
     call(subscriber, source) {
-        return source._subscribe(new SkipUntilSubscriber(subscriber, this.notifier));
+        return source.subscribe(new SkipUntilSubscriber(subscriber, this.notifier));
     }
 }
 /**

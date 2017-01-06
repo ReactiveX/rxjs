@@ -91,7 +91,7 @@ class SkipWhileOperator {
         this.predicate = predicate;
     }
     call(subscriber, source) {
-        return source._subscribe(new SkipWhileSubscriber(subscriber, this.predicate));
+        return source.subscribe(new SkipWhileSubscriber(subscriber, this.predicate));
     }
 }
 /**

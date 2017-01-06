@@ -74,20 +74,19 @@
 var chai_1 = require(&apos;chai&apos;);
 var sinon = require(&apos;sinon&apos;);
 var Rx = require(&apos;../../../dist/cjs/Rx&apos;);
-var ajax_helper_1 = require(&apos;../../helpers/ajax-helper&apos;);
 var Observable = Rx.Observable;
-var __ws;
-function setupMockWebSocket() {
-    ajax_helper_1.MockWebSocket.clearSockets();
-    __ws = __root__.WebSocket;
-    __root__.WebSocket = ajax_helper_1.MockWebSocket;
-}
-function teardownMockWebSocket() {
-    __root__.WebSocket = __ws;
-    ajax_helper_1.MockWebSocket.clearSockets();
-}
 /** @test {webSocket} */
 describe(&apos;Observable.webSocket&apos;, function () {
+    var __ws;
+    function setupMockWebSocket() {
+        MockWebSocket.clearSockets();
+        __ws = __root__.WebSocket;
+        __root__.WebSocket = MockWebSocket;
+    }
+    function teardownMockWebSocket() {
+        __root__.WebSocket = __ws;
+        MockWebSocket.clearSockets();
+    }
     beforeEach(function () {
         setupMockWebSocket();
     });
@@ -102,7 +101,7 @@ describe(&apos;Observable.webSocket&apos;, function () {
             chai_1.expect(x).to.equal(&apos;pong&apos;);
             messageReceived = true;
         });
-        var socket = ajax_helper_1.MockWebSocket.lastSocket;
+        var socket = MockWebSocket.lastSocket;
         chai_1.expect(socket.url).to.equal(&apos;ws://mysocket&apos;);
         socket.open();
         chai_1.expect(socket.lastMessageSent).to.equal(&apos;ping&apos;);
@@ -121,7 +120,7 @@ describe(&apos;Observable.webSocket&apos;, function () {
             chai_1.expect(x).to.equal(&apos;pong?!!&apos;);
             messageReceived = true;
         });
-        var socket = ajax_helper_1.MockWebSocket.lastSocket;
+        var socket = MockWebSocket.lastSocket;
         socket.open();
         socket.triggerMessage(JSON.stringify(&apos;pong&apos;));
         chai_1.expect(messageReceived).to.be.true;
@@ -134,7 +133,7 @@ describe(&apos;Observable.webSocket&apos;, function () {
         subject.subscribe(function (x) {
             results.push(x);
         });
-        var socket = ajax_helper_1.MockWebSocket.lastSocket;
+        var socket = MockWebSocket.lastSocket;
         socket.open();
         expected.forEach(function (x) {
             socket.triggerMessage(JSON.stringify(x));
@@ -148,10 +147,10 @@ describe(&apos;Observable.webSocket&apos;, function () {
         expected.forEach(function (x) {
             subject.next(x);
         });
-        var socket = ajax_helper_1.MockWebSocket.lastSocket;
+        var socket = MockWebSocket.lastSocket;
         chai_1.expect(socket).not.exist;
         subject.subscribe();
-        socket = ajax_helper_1.MockWebSocket.lastSocket;
+        socket = MockWebSocket.lastSocket;
         chai_1.expect(socket.sent.length).to.equal(0);
         socket.open();
         chai_1.expect(socket.sent.length).to.equal(expected.length);
@@ -160,7 +159,7 @@ describe(&apos;Observable.webSocket&apos;, function () {
     it(&apos;should send messages immediately if already open&apos;, function () {
         var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
         subject.subscribe();
-        var socket = ajax_helper_1.MockWebSocket.lastSocket;
+        var socket = MockWebSocket.lastSocket;
         socket.open();
         subject.next(&apos;avast!&apos;);
         chai_1.expect(socket.lastMessageSent).to.equal(&apos;avast!&apos;);
@@ -171,7 +170,7 @@ describe(&apos;Observable.webSocket&apos;, function () {
     it(&apos;should close the socket when completed&apos;, function () {
         var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
         subject.subscribe();
-        var socket = ajax_helper_1.MockWebSocket.lastSocket;
+        var socket = MockWebSocket.lastSocket;
         socket.open();
         chai_1.expect(socket.readyState).to.equal(1); // open
         sinon.spy(socket, &apos;close&apos;);
@@ -185,7 +184,7 @@ describe(&apos;Observable.webSocket&apos;, function () {
     it(&apos;should close the socket with a code and a reason when errored&apos;, function () {
         var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
         subject.subscribe();
-        var socket = ajax_helper_1.MockWebSocket.lastSocket;
+        var socket = MockWebSocket.lastSocket;
         socket.open();
         sinon.spy(socket, &apos;close&apos;);
         chai_1.expect(socket.close).not.have.been.called;
@@ -197,12 +196,12 @@ describe(&apos;Observable.webSocket&apos;, function () {
     it(&apos;should allow resubscription after closure via complete&apos;, function () {
         var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
         subject.subscribe();
-        var socket1 = ajax_helper_1.MockWebSocket.lastSocket;
+        var socket1 = MockWebSocket.lastSocket;
         socket1.open();
         subject.complete();
         subject.next(&apos;a mariner yer not. yarrr.&apos;);
         subject.subscribe();
-        var socket2 = ajax_helper_1.MockWebSocket.lastSocket;
+        var socket2 = MockWebSocket.lastSocket;
         socket2.open();
         chai_1.expect(socket2).not.to.equal(socket1);
         chai_1.expect(socket2.lastMessageSent).to.equal(&apos;a mariner yer not. yarrr.&apos;);
@@ -211,12 +210,12 @@ describe(&apos;Observable.webSocket&apos;, function () {
     it(&apos;should allow resubscription after closure via error&apos;, function () {
         var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
         subject.subscribe();
-        var socket1 = ajax_helper_1.MockWebSocket.lastSocket;
+        var socket1 = MockWebSocket.lastSocket;
         socket1.open();
         subject.error({ code: 1337 });
         subject.next(&apos;yo-ho! yo-ho!&apos;);
         subject.subscribe();
-        var socket2 = ajax_helper_1.MockWebSocket.lastSocket;
+        var socket2 = MockWebSocket.lastSocket;
         socket2.open();
         chai_1.expect(socket2).not.to.equal(socket1);
         chai_1.expect(socket2.lastMessageSent).to.equal(&apos;yo-ho! yo-ho!&apos;);
@@ -229,7 +228,7 @@ describe(&apos;Observable.webSocket&apos;, function () {
         subject.subscribe(function (x) {
             result = x;
         });
-        var socket = ajax_helper_1.MockWebSocket.lastSocket;
+        var socket = MockWebSocket.lastSocket;
         socket.open();
         socket.triggerMessage(JSON.stringify(expected));
         chai_1.expect(result).to.deep.equal(expected);
@@ -244,7 +243,7 @@ describe(&apos;Observable.webSocket&apos;, function () {
                 chai_1.expect(x).to.equal(&apos;pong&apos;);
                 messageReceived = true;
             });
-            var socket = ajax_helper_1.MockWebSocket.lastSocket;
+            var socket = MockWebSocket.lastSocket;
             chai_1.expect(socket.url).to.equal(&apos;ws://mysocket&apos;);
             socket.open();
             chai_1.expect(socket.lastMessageSent).to.equal(&apos;ping&apos;);
@@ -258,7 +257,7 @@ describe(&apos;Observable.webSocket&apos;, function () {
                 protocol: &apos;someprotocol&apos;
             });
             subject.subscribe();
-            var socket = ajax_helper_1.MockWebSocket.lastSocket;
+            var socket = MockWebSocket.lastSocket;
             chai_1.expect(socket.protocol).to.equal(&apos;someprotocol&apos;);
             subject.unsubscribe();
         });
@@ -273,7 +272,7 @@ describe(&apos;Observable.webSocket&apos;, function () {
             subject.subscribe(function (x) {
                 results.push(x);
             });
-            var socket = ajax_helper_1.MockWebSocket.lastSocket;
+            var socket = MockWebSocket.lastSocket;
             socket.open();
             [&apos;ahoy&apos;, &apos;yarr&apos;, &apos;shove off&apos;].forEach(function (x) {
                 socket.triggerMessage(x);
@@ -293,7 +292,7 @@ describe(&apos;Observable.webSocket&apos;, function () {
             }, function (err) {
                 chai_1.expect(err).to.be.an(&apos;error&apos;, &apos;I am a bad error&apos;);
             });
-            var socket = ajax_helper_1.MockWebSocket.lastSocket;
+            var socket = MockWebSocket.lastSocket;
             socket.open();
             socket.triggerMessage(&apos;weee!&apos;);
             subject.unsubscribe();
@@ -310,13 +309,13 @@ describe(&apos;Observable.webSocket&apos;, function () {
                 }
             });
             subject.subscribe();
-            var socket = ajax_helper_1.MockWebSocket.lastSocket;
+            var socket = MockWebSocket.lastSocket;
             socket.open();
             chai_1.expect(calls).to.equal(0);
             subject.complete();
             chai_1.expect(calls).to.equal(1);
             subject.subscribe();
-            socket = ajax_helper_1.MockWebSocket.lastSocket;
+            socket = MockWebSocket.lastSocket;
             socket.open();
             subject.error({ code: 1337 });
             chai_1.expect(calls).to.equal(2);
@@ -334,7 +333,7 @@ describe(&apos;Observable.webSocket&apos;, function () {
                 }
             });
             subject.subscribe();
-            var socket = ajax_helper_1.MockWebSocket.lastSocket;
+            var socket = MockWebSocket.lastSocket;
             socket.open();
             chai_1.expect(closes.length).to.equal(0);
             socket.triggerClose(expected[0]);
@@ -342,7 +341,7 @@ describe(&apos;Observable.webSocket&apos;, function () {
             subject.subscribe(null, function (err) {
                 chai_1.expect(err).to.equal(expected[1]);
             });
-            socket = ajax_helper_1.MockWebSocket.lastSocket;
+            socket = MockWebSocket.lastSocket;
             socket.open();
             socket.triggerClose(expected[1]);
             chai_1.expect(closes.length).to.equal(2);
@@ -383,11 +382,11 @@ describe(&apos;Observable.webSocket&apos;, function () {
                 .subscribe(function (x) {
                 results.push(x);
             });
-            var socket = ajax_helper_1.MockWebSocket.lastSocket;
+            var socket = MockWebSocket.lastSocket;
             socket.open();
             chai_1.expect(socket.lastMessageSent).to.deep.equal({ sub: &apos;foo&apos; });
             socket.triggerClose({ wasClean: false }); // Bad connection
-            var socket2 = ajax_helper_1.MockWebSocket.lastSocket;
+            var socket2 = MockWebSocket.lastSocket;
             chai_1.expect(socket2).not.to.equal(socket);
             socket2.open();
             chai_1.expect(socket2.lastMessageSent).to.deep.equal({ sub: &apos;foo&apos; });
@@ -411,13 +410,13 @@ describe(&apos;Observable.webSocket&apos;, function () {
                 .subscribe(function (x) {
                 results.push(x);
             });
-            var socket = ajax_helper_1.MockWebSocket.lastSocket;
+            var socket = MockWebSocket.lastSocket;
             socket.open();
             chai_1.expect(socket.lastMessageSent).to.deep.equal({ sub: &apos;foo&apos; }, &apos;first multiplexed sub&apos;);
             socket.triggerMessage(JSON.stringify({ name: &apos;foo&apos;, value: &apos;test&apos; }));
             socket.triggerMessage(JSON.stringify({ name: &apos;foo&apos;, value: &apos;this&apos; }));
             socket.triggerClose({ wasClean: true });
-            var socket2 = ajax_helper_1.MockWebSocket.lastSocket;
+            var socket2 = MockWebSocket.lastSocket;
             chai_1.expect(socket2).not.to.equal(socket, &apos;a new socket was not created&apos;);
             socket2.open();
             chai_1.expect(socket2.lastMessageSent).to.deep.equal({ sub: &apos;foo&apos; }, &apos;second multiplexed sub&apos;);
@@ -439,7 +438,7 @@ describe(&apos;Observable.webSocket&apos;, function () {
             var sub = source.subscribe(function (x) {
                 results.push(x.value);
             });
-            var socket = ajax_helper_1.MockWebSocket.lastSocket;
+            var socket = MockWebSocket.lastSocket;
             socket.open();
             chai_1.expect(socket.lastMessageSent).to.deep.equal({ sub: &apos;foo&apos; });
             [1, 2, 3, 4, 5].map(function (x) {
@@ -473,7 +472,7 @@ describe(&apos;Observable.webSocket&apos;, function () {
             socketSubject.multiplex(function () { return &apos;no-op&apos;; }, function () { return results.push(&apos;B unsub&apos;); }, function (req) { return req.id === &apos;B&apos;; })
                 .subscribe(function () { return results.push(&apos;B next&apos;); }, function (e) { return results.push(&apos;B error &apos; + e); }, function () { return results.push(&apos;B complete&apos;); });
             // Setup socket and send messages
-            var socket = ajax_helper_1.MockWebSocket.lastSocket;
+            var socket = MockWebSocket.lastSocket;
             socket.open();
             socketMessages.forEach(function (msg, i) {
                 if (i === 1) {
@@ -510,7 +509,7 @@ describe(&apos;Observable.webSocket&apos;, function () {
                 .takeWhile(function (req) { return !req.complete; })
                 .subscribe(function () { return results.push(&apos;B next&apos;); }, function (e) { return results.push(&apos;B error &apos; + e); }, function () { return results.push(&apos;B complete&apos;); });
             // Setup socket and send messages
-            var socket = ajax_helper_1.MockWebSocket.lastSocket;
+            var socket = MockWebSocket.lastSocket;
             socket.open();
             socketMessages.forEach(function (msg) {
                 socket.triggerMessage(JSON.stringify(msg));
@@ -527,6 +526,78 @@ describe(&apos;Observable.webSocket&apos;, function () {
         });
     });
 });
+var MockWebSocket = (function () {
+    function MockWebSocket(url, protocol) {
+        this.url = url;
+        this.protocol = protocol;
+        this.sent = [];
+        this.handlers = {};
+        this.readyState = 0;
+        MockWebSocket.sockets.push(this);
+    }
+    Object.defineProperty(MockWebSocket, &quot;lastSocket&quot;, {
+        get: function () {
+            var socket = MockWebSocket.sockets;
+            var length = socket.length;
+            return length &gt; 0 ? socket[length - 1] : undefined;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MockWebSocket.clearSockets = function () {
+        MockWebSocket.sockets.length = 0;
+    };
+    MockWebSocket.prototype.send = function (data) {
+        this.sent.push(data);
+    };
+    Object.defineProperty(MockWebSocket.prototype, &quot;lastMessageSent&quot;, {
+        get: function () {
+            var sent = this.sent;
+            var length = sent.length;
+            return length &gt; 0 ? sent[length - 1] : undefined;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MockWebSocket.prototype.triggerClose = function (e) {
+        this.readyState = 3;
+        this.trigger(&apos;close&apos;, e);
+    };
+    MockWebSocket.prototype.triggerMessage = function (data) {
+        var messageEvent = {
+            data: data,
+            origin: &apos;mockorigin&apos;,
+            ports: undefined,
+            source: __root__,
+        };
+        this.trigger(&apos;message&apos;, messageEvent);
+    };
+    MockWebSocket.prototype.open = function () {
+        this.readyState = 1;
+        this.trigger(&apos;open&apos;, {});
+    };
+    MockWebSocket.prototype.close = function (code, reason) {
+        if (this.readyState &lt; 2) {
+            this.readyState = 2;
+            this.closeCode = code;
+            this.closeReason = reason;
+            this.triggerClose({ wasClean: true });
+        }
+    };
+    MockWebSocket.prototype.trigger = function (name, e) {
+        if (this[&apos;on&apos; + name]) {
+            this[&apos;on&apos; + name](e);
+        }
+        var lookup = this.handlers[name];
+        if (lookup) {
+            for (var i = 0; i &lt; lookup.length; i++) {
+                lookup[i](e);
+            }
+        }
+    };
+    MockWebSocket.sockets = [];
+    return MockWebSocket;
+}());
 //# sourceMappingURL=webSocket-spec.js.map</code></pre>
 
 </div>

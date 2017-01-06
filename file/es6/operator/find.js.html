@@ -119,7 +119,7 @@ export class FindValueOperator {
         this.thisArg = thisArg;
     }
     call(observer, source) {
-        return source._subscribe(new FindValueSubscriber(observer, this.predicate, this.source, this.yieldIndex, this.thisArg));
+        return source.subscribe(new FindValueSubscriber(observer, this.predicate, this.source, this.yieldIndex, this.thisArg));
     }
 }
 /**

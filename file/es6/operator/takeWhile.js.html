@@ -115,7 +115,7 @@ class TakeWhileOperator {
         this.predicate = predicate;
     }
     call(subscriber, source) {
-        return source._subscribe(new TakeWhileSubscriber(subscriber, this.predicate));
+        return source.subscribe(new TakeWhileSubscriber(subscriber, this.predicate));
     }
 }
 /**

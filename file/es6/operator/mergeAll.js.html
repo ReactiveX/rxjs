@@ -124,7 +124,7 @@ export class MergeAllOperator {
         this.concurrent = concurrent;
     }
     call(observer, source) {
-        return source._subscribe(new MergeAllSubscriber(observer, this.concurrent));
+        return source.subscribe(new MergeAllSubscriber(observer, this.concurrent));
     }
 }
 /**

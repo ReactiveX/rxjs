@@ -120,7 +120,7 @@ class BufferToggleOperator {
         this.closingSelector = closingSelector;
     }
     call(subscriber, source) {
-        return source._subscribe(new BufferToggleSubscriber(subscriber, this.openings, this.closingSelector));
+        return source.subscribe(new BufferToggleSubscriber(subscriber, this.openings, this.closingSelector));
     }
 }
 /**

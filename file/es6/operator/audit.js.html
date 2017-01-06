@@ -122,7 +122,7 @@ class AuditOperator {
         this.durationSelector = durationSelector;
     }
     call(subscriber, source) {
-        return source._subscribe(new AuditSubscriber(subscriber, this.durationSelector));
+        return source.subscribe(new AuditSubscriber(subscriber, this.durationSelector));
     }
 }
 /**
