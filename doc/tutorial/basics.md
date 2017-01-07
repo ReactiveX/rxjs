@@ -48,7 +48,7 @@ Which one you choose depends on the scenario. The normal **Observable** is great
 ## Controlling the flow
 ```js
 // typing "hello world"
-var input = Rx.Observable.fromEvent(document.querySelector('input'), 'keyup');
+var input = Rx.Observable.fromEvent(document.querySelector('input'), 'input');
 
 // Filter out target values less than 3 characters long
 input.filter(event => event.target.value.length > 2)
@@ -79,7 +79,7 @@ input.takeUntil(stopStream)
 ## Producing values
 ```js
 // typing "hello world"
-var input = Rx.Observable.fromEvent(document.querySelector('input'), 'keyup');
+var input = Rx.Observable.fromEvent(document.querySelector('input'), 'input');
 
 // Pass on a new value
 input.map(event => event.target.value)
