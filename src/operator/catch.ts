@@ -46,21 +46,23 @@ class CatchSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   // NOTE: overriding `error` instead of `_error` because we don't want
-  // to have this flag this subscriber as `isStopped`.
+  // to have this flag this subscriber as `isStopped`. We can mimic the
+  // behavior of the RetrySubscriber (from the `retry` operator), where
+  // we unsubscribe from our source chain, reset our Subscriber flags,
+  // then subscribe to the selector result.
   error(err: any) {
     if (!this.isStopped) {
       let result: any;
-
       try {
         result = this.selector(err, this.caught);
-      } catch (err) {
-        this.destination.error(err);
+      } catch (err2) {
+        super.error(err2);
         return;
       }
-
       this.unsubscribe();
-      (<any>this.destination).remove(this);
-      subscribeToResult(this, result);
+      this.closed = false;
+      this.isStopped = false;
+      this.add(subscribeToResult(this, result));
     }
   }
 }
