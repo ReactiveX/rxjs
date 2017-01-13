@@ -79,7 +79,7 @@ export function combineLatest<T, R>(this: Observable<T>, ...observables: Array<O
   // if the first and only other argument besides the resultSelector is an array
   // assume it's been called with `combineLatest([obs1, obs2, obs3], project)`
   if (observables.length === 1 && isArray(observables[0])) {
-    observables = <any>observables[0];
+    observables = <any>observables[0].slice();
   }
 
   observables.unshift(this);
