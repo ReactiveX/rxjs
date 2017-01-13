@@ -13,7 +13,7 @@ export type TeardownLogic = AnonymousSubscription | Function | void;
 
 export interface ISubscription extends AnonymousSubscription {
   unsubscribe(): void;
-  closed: boolean;
+  readonly closed: boolean;
 }
 
 /**
