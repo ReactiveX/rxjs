@@ -133,6 +133,9 @@ describe('AsyncSubject', () => {
 
     subscription.unsubscribe();
     observer.results = [];
+
+    subject.error(new Error(''));
+
     subject.subscribe(observer);
     expect(observer.results).to.deep.equal(['done']);
   });
