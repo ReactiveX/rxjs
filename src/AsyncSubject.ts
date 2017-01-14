@@ -29,6 +29,12 @@ export class AsyncSubject<T> extends Subject<T> {
     }
   }
 
+  error(error: any): void {
+    if (!this.hasCompleted) {
+      super.error(error);
+    }
+  }
+
   complete(): void {
     this.hasCompleted = true;
     if (this.hasNext) {
