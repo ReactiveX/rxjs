@@ -22,11 +22,11 @@ export class SubjectSubscription<T> extends Subscription {
     this.closed = true;
 
     const subject = this.subject;
-    const observers = subject.observers;
+    const observers = (subject as any).observers; //accessing protected members, escape types
 
     this.subject = null;
 
-    if (!observers || observers.length === 0 || subject.isStopped || subject.closed) {
+    if (!observers || observers.length === 0 || (subject as any).isStopped || subject.closed) {
       return;
     }
 
