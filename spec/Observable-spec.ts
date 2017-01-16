@@ -476,8 +476,9 @@ describe('Observable', () => {
         ' of the anonymous observer', (done: MochaDone) => {
         //intentionally not using lambda to avoid typescript's this context capture
         const o = {
+          myValue: 'foo',
           next: function next(x) {
-            expect(this).to.equal(o);
+            expect(this.myValue).to.equal('foo');
             expect(x).to.equal(1);
             done();
           }
@@ -490,8 +491,9 @@ describe('Observable', () => {
         ' of the anonymous observer', (done: MochaDone) => {
         //intentionally not using lambda to avoid typescript's this context capture
         const o = {
+          myValue: 'foo',
           error: function error(err) {
-            expect(this).to.equal(o);
+            expect(this.myValue).to.equal('foo');
             expect(err).to.equal('bad');
             done();
           }
@@ -504,8 +506,9 @@ describe('Observable', () => {
         ' context of the anonymous observer', (done: MochaDone) => {
         //intentionally not using lambda to avoid typescript's this context capture
          const o = {
+          myValue: 'foo',
           complete: function complete() {
-            expect(this).to.equal(o);
+            expect(this.myValue).to.equal('foo');
             done();
           }
         };
@@ -527,8 +530,9 @@ describe('Observable', () => {
 
         //intentionally not using lambda to avoid typescript's this context capture
         const o = {
+          myValue: 'foo',
           next: function next(x) {
-            expect(this).to.equal(o);
+            expect(this.myValue).to.equal('foo');
             throw x;
           }
         };
