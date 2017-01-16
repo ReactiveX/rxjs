@@ -193,6 +193,80 @@ describe('Observable', () => {
       source.subscribe();
     });
 
+    it('should work when subscribe is called with no arguments and other subscription with no arguments completes', (done: MochaDone) => {
+      let nextCalled = false;
+      const source = new Observable((subscriber: Rx.Subscriber<string>) => {
+        const id = setTimeout(() => {
+          subscriber.next('foo');
+          subscriber.complete();
+          nextCalled = true;
+        }, 1);
+        return () => {
+          clearTimeout(id);
+        };
+      });
+
+      source.subscribe();
+
+      Observable.empty().subscribe();
+
+      setTimeout(() => {
+        let err;
+        let errHappened = false;
+        try {
+          expect(nextCalled).to.be.true;
+        } catch (e) {
+          err = e;
+          errHappened = true;
+        } finally {
+          if (!errHappened) {
+            done();
+          } else {
+            done(err);
+          }
+        }
+      }, 100);
+    });
+
+    it('should work when subscribe is called with observer and other subscription with same observer instance completes', (done: MochaDone) => {
+      let nextCalled = false;
+      const source = new Observable((subscriber: Rx.Subscriber<string>) => {
+        const id = setTimeout(() => {
+          subscriber.next('foo');
+          subscriber.complete();
+          nextCalled = true;
+        }, 1);
+        return () => {
+          clearTimeout(id);
+        };
+      });
+
+      let observer = {
+        next: function () { /*noop*/ }
+      };
+
+      source.subscribe(observer);
+
+      Observable.empty().subscribe(observer);
+
+      setTimeout(() => {
+        let err;
+        let errHappened = false;
+        try {
+          expect(nextCalled).to.be.true;
+        } catch (e) {
+          err = e;
+          errHappened = true;
+        } finally {
+          if (!errHappened) {
+            done();
+          } else {
+            done(err);
+          }
+        }
+      }, 100);
+    });
+
     it('should run unsubscription logic when an error is sent synchronously and subscribe is called with no arguments', () => {
       let unsubscribeCalled = false;
       const source = new Observable((subscriber: Rx.Subscriber<string>) => {
