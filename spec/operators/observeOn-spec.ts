@@ -1,4 +1,6 @@
 import * as Rx from '../../dist/cjs/Rx';
+import { expect } from 'chai';
+
 declare const {hot, asDiagram, expectObservable, expectSubscriptions};
 
 declare const rxTestScheduler: Rx.TestScheduler;
@@ -76,5 +78,48 @@ describe('Observable.prototype.observeOn', () => {
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
+  });
+
+  it('should clean up subscriptions created by async scheduling (prevent memory leaks #2244)', (done) => {
+    //HACK: Deep introspection to make sure we're cleaning up notifications in scheduling.
+    // as the architecture changes, this test may become brittle.
+    const results = [];
+    // This is to build a scheduled observable with a slightly more stable
+    // subscription structure, since we're going to hack in to analyze it in this test.
+    const subscription: any = new Observable(observer => {
+      let i = 1;
+      return Rx.Scheduler.asap.schedule(function () {
+        if (i > 3) {
+          observer.complete();
+        } else {
+          observer.next(i++);
+          this.schedule();
+        }
+      });
+    })
+      .observeOn(Rx.Scheduler.asap)
+      .subscribe(
+        x => {
+          const observeOnSubscriber = subscription._subscriptions[0]._innerSub;
+          expect(observeOnSubscriber._subscriptions.length).to.equal(2); // 1 for the consumer, and one for the notification
+          expect(observeOnSubscriber._subscriptions[1]._innerSub.state.notification.kind)
+            .to.equal('N');
+          expect(observeOnSubscriber._subscriptions[1]._innerSub.state.notification.value)
+            .to.equal(x);
+          results.push(x);
+        },
+        err => done(err),
+        () => {
+          // now that the last nexted value is done, there should only be a complete notification scheduled
+          const observeOnSubscriber = subscription._subscriptions[0]._innerSub;
+          expect(observeOnSubscriber._subscriptions.length).to.equal(2); // 1 for the consumer, one for the complete notification
+          // only this completion notification should remain.
+          expect(observeOnSubscriber._subscriptions[1]._innerSub.state.notification.kind)
+            .to.equal('C');
+          // After completion, the entire _subscriptions list is nulled out anyhow, so we can't test much further than this.
+          expect(results).to.deep.equal([1, 2, 3]);
+          done();
+        }
+      );
   });
 });

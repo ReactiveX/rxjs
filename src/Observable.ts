@@ -55,7 +55,7 @@ export class Observable<T> implements Subscribable<T> {
    */
   static create: Function = <T>(subscribe?: <R>(subscriber: Subscriber<R>) => TeardownLogic) => {
     return new Observable<T>(subscribe);
-  };
+  }
 
   /**
    * Creates a new Observable, with this Observable as the source, and the passed

@@ -1,3 +1,15 @@
+<a name="5.0.3"></a>
+## [5.0.3](https://github.com/ReactiveX/RxJS/compare/5.0.2...v5.0.3) (2017-01-05)
+
+
+### Bug Fixes
+
+* **observeOn:** seal memory leak involving old notifications ([9664a38](https://github.com/ReactiveX/RxJS/commit/9664a38)), closes [#2244](https://github.com/ReactiveX/RxJS/issues/2244)
+* **Subscription:** `add` will return Subscription that `remove`s itself when unsubscribed ([375d4a5](https://github.com/ReactiveX/RxJS/commit/375d4a5))
+* **TypeScript:** interfaces that accepted `Scheduler` now accept `IScheduler` interface ([a0d28a8](https://github.com/ReactiveX/RxJS/commit/a0d28a8))
+
+
+
 <a name="5.0.2"></a>
 ## [5.0.2](https://github.com/ReactiveX/RxJS/compare/5.0.1...v5.0.2) (2016-12-23)
 

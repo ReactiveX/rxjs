@@ -1,26 +1,26 @@
 import {expect} from 'chai';
 import * as sinon from 'sinon';
 import * as Rx from '../../../dist/cjs/Rx';
-import {MockWebSocket} from '../../helpers/ajax-helper';
 
 declare const __root__: any;
 
 const Observable = Rx.Observable;
-let __ws: any;
-
-function setupMockWebSocket() {
-  MockWebSocket.clearSockets();
-  __ws = __root__.WebSocket;
-  __root__.WebSocket = MockWebSocket;
-}
-
-function teardownMockWebSocket() {
-  __root__.WebSocket = __ws;
-  MockWebSocket.clearSockets();
-}
 
 /** @test {webSocket} */
 describe('Observable.webSocket', () => {
+  let __ws: any;
+
+  function setupMockWebSocket() {
+    MockWebSocket.clearSockets();
+    __ws = __root__.WebSocket;
+    __root__.WebSocket = MockWebSocket;
+  }
+
+  function teardownMockWebSocket() {
+    __root__.WebSocket = __ws;
+    MockWebSocket.clearSockets();
+  }
+
   beforeEach(() => {
     setupMockWebSocket();
   });
@@ -614,3 +614,80 @@ describe('Observable.webSocket', () => {
     });
   });
 });
+
+class MockWebSocket {
+  static sockets: Array<MockWebSocket> = [];
+  static get lastSocket(): MockWebSocket {
+    const socket = MockWebSocket.sockets;
+    const length = socket.length;
+    return length > 0 ? socket[length - 1] : undefined;
+  }
+
+  static clearSockets(): void {
+    MockWebSocket.sockets.length = 0;
+  }
+
+  sent: Array<any> = [];
+  handlers: any = {};
+  readyState: number = 0;
+  closeCode: any;
+  closeReason: any;
+
+  constructor(public url: string, public protocol: string) {
+    MockWebSocket.sockets.push(this);
+  }
+
+  send(data: any): void {
+    this.sent.push(data);
+  }
+
+  get lastMessageSent(): any {
+    const sent = this.sent;
+    const length = sent.length;
+
+    return length > 0 ? sent[length - 1] : undefined;
+  }
+
+  triggerClose(e: any): void {
+    this.readyState = 3;
+    this.trigger('close', e);
+  }
+
+  triggerMessage(data: any): void {
+    const messageEvent = {
+      data: data,
+      origin: 'mockorigin',
+      ports: undefined,
+      source: __root__,
+    };
+
+    this.trigger('message', messageEvent);
+  }
+
+  open(): void {
+    this.readyState = 1;
+    this.trigger('open', {});
+  }
+
+  close(code: any, reason: any): void {
+    if (this.readyState < 2) {
+      this.readyState = 2;
+      this.closeCode = code;
+      this.closeReason = reason;
+      this.triggerClose({ wasClean: true });
+    }
+  }
+
+  trigger(name: string, e: any) {
+    if (this['on' + name]) {
+      this['on' + name](e);
+    }
+
+    const lookup = this.handlers[name];
+    if (lookup) {
+      for (let i = 0; i < lookup.length; i++) {
+        lookup[i](e);
+      }
+    }
+  }
+}

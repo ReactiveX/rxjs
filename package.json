@@ -1,20 +1,22 @@
 {
   "name": "@reactivex/rxjs",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "Reactive Extensions for modern JavaScript",
   "main": "index.js",
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
-    },
-    "ghooks": {
-      "commit-msg": "node ./node_modules/validate-commit-msg/index.js",
-      "pre-commit": "npm run lint_staged"
     }
   },
   "lint-staged": {
-    "eslint": "*.@(js)",
-    "tslint": "*.@(ts)"
+    "*.@(js)": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.@(ts)": [
+      "tslint --fix",
+      "git add"
+    ]
   },
   "scripts-info": {
     "info": "List available script",
@@ -40,7 +42,6 @@
     "lint_perf": "Run lint against performance test suite",
     "lint_spec": "Run lint against test spec",
     "lint_src": "Run lint against source",
-    "lint_staged": "Run lint against staged files",
     "lint": "Run lint against everything",
     "perf": "Run macro performance benchmark",
     "perf_micro": "Run micro performance benchmark",
@@ -51,17 +52,19 @@
     "watch": "Watch codebase, trigger compile when source code changes"
   },
   "scripts": {
+    "precommit": "lint-staged",
+    "commitmsg": "validate-commit-msg",
     "info": "npm-scripts-info",
     "build_all": "npm-run-all build_cjs build_global generate_packages",
     "build_cjs": "npm-run-all clean_dist_cjs copy_src_cjs compile_dist_cjs",
     "build_es6": "npm-run-all clean_dist_es6 copy_src_es6 compile_module_es6",
     "build_es6_for_docs": "npm-run-all clean_dist_es6 copy_src_es6 compile_dist_es6_for_docs",
     "build_closure_core": "node ./tools/make-closure-core.js",
-    "build_global": "npm-run-all clean_dist_global build_es6 && mkdirp ./dist/global && node ./tools/make-umd-bundle.js && npm-run-all build_closure_core",
+    "build_global": "npm-run-all clean_dist_global build_es6 && mkdirp ./dist/global && node ./tools/make-umd-bundle.js && npm-run-all build_closure_core clean_dist_es6",
     "build_perf": "webdriver-manager update && npm-run-all build_cjs build_global perf",
     "build_test": "shx rm -rf ./dist/ && npm-run-all build_cjs clean_spec build_spec test_mocha",
     "build_cover": "shx rm -rf ./dist/ && npm-run-all build_cjs build_spec cover",
-    "build_docs": "npm-run-all build_global build_es6_for_docs build_cjs clean_spec build_spec tests2png decision_tree_widget && esdoc -c esdoc.json",
+    "build_docs": "npm-run-all build_global build_es6_for_docs build_cjs clean_spec build_spec tests2png decision_tree_widget && esdoc -c esdoc.json && npm-run-all clean_dist_es6",
     "build_spec": "tsc --project ./spec --pretty",
     "build_spec_browser": "webpack --config spec/support/webpack.mocha.config.js",
     "check_circular_dependencies": "madge ./dist/cjs --circular",
@@ -80,9 +83,8 @@
     "doctoc": "doctoc CONTRIBUTING.md",
     "generate_packages": "node .make-packages.js",
     "lint_perf": "eslint perf/",
-    "lint_spec": "tslint -c tslint.json spec/*.ts spec/**/*.ts spec/**/**/*.ts",
-    "lint_src": "tslint -c tslint.json src/*.ts src/**/*.ts src/**/**/*.ts",
-    "lint_staged": "lint-staged",
+    "lint_spec": "tslint -c tslint.json \"spec/**/*.ts\"",
+    "lint_src": "tslint -c tslint.json \"src/**/*.ts\"",
     "lint": "npm-run-all --parallel lint_*",
     "perf": "protractor protractor.conf.js",
     "perf_micro": "node ./perf/micro/index.js",
@@ -157,13 +159,13 @@
     "esdoc": "^0.4.7",
     "eslint": "^3.8.0",
     "fs-extra": "^0.30.0",
-    "ghooks": "^1.3.2",
     "glob": "^7.0.3",
     "gm": "^1.22.0",
     "google-closure-compiler-js": "^20160916.0.0",
     "gzip-size": "^3.0.0",
     "http-server": "^0.9.0",
-    "lint-staged": "^3.1.0",
+    "husky": "^0.12.0",
+    "lint-staged": "^3.2.5",
     "lodash": "^4.15.0",
     "madge": "^1.4.3",
     "markdown-doctest": "^0.8.1",
@@ -185,7 +187,7 @@
     "sinon-chai": "^2.8.0",
     "source-map-support": "^0.4.0",
     "tslib": "^1.0.0",
-    "tslint": "^3.15.1",
+    "tslint": "^4.2.0",
     "typescript": "~2.0.6",
     "typings": "^2.0.0",
     "validate-commit-msg": "^2.3.1",

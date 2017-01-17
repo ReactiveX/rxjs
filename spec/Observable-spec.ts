@@ -1,4 +1,5 @@
 import {expect} from 'chai';
+import * as sinon from 'sinon';
 import * as Rx from '../dist/cjs/Rx';
 import {TeardownLogic} from '../dist/cjs/Subscription';
 
@@ -285,6 +286,9 @@ describe('Observable', () => {
     });
 
     it('should run unsubscription logic when an error is sent asynchronously and subscribe is called with no arguments', (done: MochaDone) => {
+      const sandbox = sinon.sandbox.create();
+      const fakeTimer = sandbox.useFakeTimers();
+
       let unsubscribeCalled = false;
       const source = new Observable((subscriber: Rx.Subscriber<string>) => {
         const id = setInterval(() => {
@@ -318,6 +322,9 @@ describe('Observable', () => {
           }
         }
       }, 100);
+
+      fakeTimer.tick(110);
+      sandbox.restore();
     });
 
     it('should return a Subscription that calls the unsubscribe function returned by the subscriber', () => {
@@ -469,8 +476,9 @@ describe('Observable', () => {
         ' of the anonymous observer', (done: MochaDone) => {
         //intentionally not using lambda to avoid typescript's this context capture
         const o = {
+          myValue: 'foo',
           next: function next(x) {
-            expect(this).to.equal(o);
+            expect(this.myValue).to.equal('foo');
             expect(x).to.equal(1);
             done();
           }
@@ -483,8 +491,9 @@ describe('Observable', () => {
         ' of the anonymous observer', (done: MochaDone) => {
         //intentionally not using lambda to avoid typescript's this context capture
         const o = {
+          myValue: 'foo',
           error: function error(err) {
-            expect(this).to.equal(o);
+            expect(this.myValue).to.equal('foo');
             expect(err).to.equal('bad');
             done();
           }
@@ -497,8 +506,9 @@ describe('Observable', () => {
         ' context of the anonymous observer', (done: MochaDone) => {
         //intentionally not using lambda to avoid typescript's this context capture
          const o = {
+          myValue: 'foo',
           complete: function complete() {
-            expect(this).to.equal(o);
+            expect(this.myValue).to.equal('foo');
             done();
           }
         };
@@ -520,8 +530,9 @@ describe('Observable', () => {
 
         //intentionally not using lambda to avoid typescript's this context capture
         const o = {
+          myValue: 'foo',
           next: function next(x) {
-            expect(this).to.equal(o);
+            expect(this.myValue).to.equal('foo');
             throw x;
           }
         };
