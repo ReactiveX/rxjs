@@ -77,6 +77,7 @@ enabling "composite" subscription behavior.
 |`flatMap`|`mergeMap` or `flatMap`(alias)|
 |`fromCallback`|`bindCallback`|
 |`fromNodeCallback`|`bindNodeCallback`|
+|`generateWithRelativeTime`|`generateRelativeTime`|
 |`groupByUntil`|`groupBy(keySelector, elementSelector, durationSelector)`|
 |`groupJoin`|No longer implemented|
 |`includes(v)`|`.first(x => x === v, () => true, false)`|

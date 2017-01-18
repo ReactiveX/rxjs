@@ -121,6 +121,7 @@ There are operators for different purposes, and they may be categorized as: crea
 - [`fromEventPattern`](../class/es6/Observable.js~Observable.html#static-method-fromEventPattern)
 - [`fromPromise`](../class/es6/Observable.js~Observable.html#static-method-fromPromise)
 - [`generate`](../class/es6/Observable.js~Observable.html#static-method-generate)
+- [`generateRelativeTime`](../class/es6/Observable.js~Observable.html#static-method-generateRelativeTime)
 - [`interval`](../class/es6/Observable.js~Observable.html#static-method-interval)
 - [`never`](../class/es6/Observable.js~Observable.html#static-method-never)
 - [`of`](../class/es6/Observable.js~Observable.html#static-method-of)
