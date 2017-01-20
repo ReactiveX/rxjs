@@ -1,6 +1,5 @@
 import { Observable } from '../Observable';
 import { Notification } from '../Notification';
-import { Subject } from '../Subject';
 import { ColdObservable } from './ColdObservable';
 import { HotObservable } from './HotObservable';
 import { TestMessage } from './TestMessage';
@@ -36,7 +35,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     return indexOf * TestScheduler.frameTimeFactor;
   }
 
-  createColdObservable<T>(marbles: string, values?: any, error?: any): Observable<T> {
+  createColdObservable<T>(marbles: string, values?: any, error?: any): ColdObservable<T> {
     if (marbles.indexOf('^') !== -1) {
       throw new Error('cold observable cannot have subscription offset "^"');
     }
@@ -49,7 +48,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     return cold;
   }
 
-  createHotObservable<T>(marbles: string, values?: any, error?: any): Subject<T> {
+  createHotObservable<T>(marbles: string, values?: any, error?: any): HotObservable<T> {
     if (marbles.indexOf('!') !== -1) {
       throw new Error('hot observable cannot have unsubscription marker "!"');
     }
