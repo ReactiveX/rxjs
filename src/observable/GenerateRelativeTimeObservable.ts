@@ -20,8 +20,8 @@ interface SchedulerState<T, S> {
   subscriber: Subscriber<T>;
   condition?: ConditionFunc<S>;
   iterate: IterateFunc<S>;
-  timeSelector: TimeSelectorFunc<S>;
   resultSelector: ResultFunc<S, T>;
+  timeSelector: TimeSelectorFunc<S>;
 }
 
 export interface GenerateRelativeTimeBaseOptions<S> {
@@ -67,8 +67,8 @@ export class GenerateRelativeTimeObservable<T, S> extends Observable<T> {
   constructor(private initialState: S,
               private condition: ConditionFunc<S>,
               private iterate: IterateFunc<S>,
-              private timeSelector: TimeSelectorFunc<S>,
               private resultSelector: ResultFunc<S, T>,
+              private timeSelector: TimeSelectorFunc<S>,
               private scheduler: IScheduler = async) {
       super();
   }
@@ -82,11 +82,11 @@ export class GenerateRelativeTimeObservable<T, S> extends Observable<T> {
    *
    * <img src="./img/generateRelativeTime.png" width="100%">
    *
-   * @example <caption>Produces sequence of 0, 1, 2, ... 9, then completes.</caption>
-   * var res = Rx.Observable.generate(0, x => x < 10, x => x + 1, x => x);
+   * @example <caption>Produces sequence of 0, 1, 2, ... 5, then completes.</caption>
+   * var res = Rx.Observable.generateRelativeTime(1, x => x < 6, x => x + 1, x => x, x => 1000);
    *
    * @example <caption>Using asap scheduler, produces sequence of 2, 3, 5, then completes.</caption>
-   * var res = Rx.Observable.generate(1, x => x < 5, x => x * 2, x => x + 1, Rx.Scheduler.asap);
+   * var res = Rx.Observable.generateRelativeTime(1, x => x < 5, x => x * 2, x => x + 1, x => 0, Rx.Scheduler.asap);
    *
    * @see {@link from}
    * @see {@link create}
@@ -94,17 +94,17 @@ export class GenerateRelativeTimeObservable<T, S> extends Observable<T> {
    * @param {S} initialState Initial state.
    * @param {function (state: S): boolean} condition Condition to terminate generation (upon returning false).
    * @param {function (state: S): S} iterate Iteration step function.
+   * @param {function (state: S): T} resultSelector Selector function for results produced in the sequence.
    * @param {function (state: S): number} timeSelector Time selector function to control the speed of values being produced each iteration, returning
    * integer values denoting milliseconds.
-   * @param {function (state: S): T} resultSelector Selector function for results produced in the sequence.
    * @param {Scheduler} [scheduler=async] A {@link IScheduler} on which to run the generator loop. If not provided, defaults to Scheduler.async.
    * @returns {Observable<T>} The generated sequence.
    */
   static create<T, S>(initialState: S,
                       condition: ConditionFunc<S>,
                       iterate: IterateFunc<S>,
-                      timeSelector: TimeSelectorFunc<S>,
                       resultSelector: ResultFunc<S, T>,
+                      timeSelector: TimeSelectorFunc<S>,
                       scheduler?: IScheduler): Observable<T>
 
   /**
@@ -113,13 +113,13 @@ export class GenerateRelativeTimeObservable<T, S> extends Observable<T> {
    * to send out observer messages.
    * The overload uses state as an emitted value.
    *
-   * <img src="./img/generate.png" width="100%">
+   * <img src="./img/generateRelativeTime.png" width="100%">
    *
-   * @example <caption>Produces sequence of 0, 1, 2, ... 9, then completes.</caption>
-   * var res = Rx.Observable.generate(0, x => x < 10, x => x + 1);
+   * @example <caption>Produces sequence of 0, 1, 2, ... 5, then completes.</caption>
+   * var res = Rx.Observable.generateRelativeTime(1, x => x < 6, x => x + 1, x => 1000);
    *
    * @example <caption>Using asap scheduler, produces sequence of 1, 2, 4, then completes.</caption>
-   * var res = Rx.Observable.generate(1, x => x < 5, x => x * 2, Rx.Scheduler.asap);
+   * var res = Rx.Observable.generateRelativeTime(1, x => x < 5, x => x * 2, x => 0, Rx.Scheduler.asap);
    *
    * @see {@link from}
    * @see {@link create}
@@ -143,15 +143,16 @@ export class GenerateRelativeTimeObservable<T, S> extends Observable<T> {
    * producing the sequence's elements, using the specified scheduler
    * to send out observer messages.
    * The overload accepts options object that might contain initial state, iterate,
-   * condition and scheduler.
+   * condition, timeSelector and scheduler.
    *
-   * <img src="./img/generate.png" width="100%">
+   * <img src="./img/generateRelativeTime.png" width="100%">
    *
-   * @example <caption>Produces sequence of 0, 1, 2, ... 9, then completes.</caption>
+   * @example <caption>Produces sequence of 0, 1, 2, ... 5, then completes.</caption>
    * var res = Rx.Observable.generate({
    *   initialState: 0,
-   *   condition: x => x < 10,
+   *   condition: x => x < 6,
    *   iterate: x => x + 1
+   *   timeSelector: x => 1000
    * });
    *
    * @see {@link from}
@@ -168,16 +169,17 @@ export class GenerateRelativeTimeObservable<T, S> extends Observable<T> {
    * producing the sequence's elements, using the specified scheduler
    * to send out observer messages.
    * The overload accepts options object that might contain initial state, iterate,
-   * condition, result selector and scheduler.
+   * condition, result selector, timeSelector and scheduler.
    *
-   * <img src="./img/generate.png" width="100%">
+   * <img src="./img/generateRelativeTime.png" width="100%">
    *
-   * @example <caption>Produces sequence of 0, 1, 2, ... 9, then completes.</caption>
+   * @example <caption>Produces sequence of 0, 1, 2, ... 5, then completes.</caption>
    * var res = Rx.Observable.generate({
    *   initialState: 0,
-   *   condition: x => x < 10,
+   *   condition: x => x < 6,
    *   iterate: x => x + 1,
    *   resultSelector: x => x
+   *   timeSelector: x => 1000
    * });
    *
    * @see {@link from}
@@ -192,35 +194,35 @@ export class GenerateRelativeTimeObservable<T, S> extends Observable<T> {
   static create<T, S>(initialStateOrOptions: S | GenerateRelativeTimeOptions<T, S>,
                       condition?: ConditionFunc<S>,
                       iterate?: IterateFunc<S>,
-                      timeSelector?: TimeSelectorFunc<S>,
-                      resultSelectorOrObservable?: (ResultFunc<S, T>) | IScheduler,
+                      resultSelectorOrTimeSelector?: (ResultFunc<S, T>) | TimeSelectorFunc<S>,
+                      timeSelectorOrScheduler?: TimeSelectorFunc<S> | IScheduler,
                       scheduler: IScheduler = async): Observable<T> {
     if (arguments.length == 1) {
       return new GenerateRelativeTimeObservable<T, S>(
         (<GenerateRelativeTimeOptions<T, S>>initialStateOrOptions).initialState,
         (<GenerateRelativeTimeOptions<T, S>>initialStateOrOptions).condition,
         (<GenerateRelativeTimeOptions<T, S>>initialStateOrOptions).iterate,
-        (<GenerateRelativeTimeOptions<T, S>>initialStateOrOptions).timeSelector,
         (<GenerateRelativeTimeOptions<T, S>>initialStateOrOptions).resultSelector || selfSelector,
+        (<GenerateRelativeTimeOptions<T, S>>initialStateOrOptions).timeSelector,
         (<GenerateRelativeTimeOptions<T, S>>initialStateOrOptions).scheduler || async);
     }
 
-    if (resultSelectorOrObservable === undefined || isScheduler(resultSelectorOrObservable)) {
+    if (timeSelectorOrScheduler === undefined || isScheduler(timeSelectorOrScheduler)) {
       return new GenerateRelativeTimeObservable<T, S>(
         <S>initialStateOrOptions,
         condition,
         iterate,
-        timeSelector,
         selfSelector,
-        <IScheduler>resultSelectorOrObservable || async);
+        <TimeSelectorFunc<S>>resultSelectorOrTimeSelector,
+        <IScheduler>timeSelectorOrScheduler || async);
     }
 
     return new GenerateRelativeTimeObservable<T, S>(
       <S>initialStateOrOptions,
       condition,
       iterate,
-      timeSelector,
-      <ResultFunc<S, T>>resultSelectorOrObservable,
+      <ResultFunc<S, T>>resultSelectorOrTimeSelector,
+      <TimeSelectorFunc<S>>timeSelectorOrScheduler,
       <IScheduler>scheduler);
   }
 
@@ -230,8 +232,8 @@ export class GenerateRelativeTimeObservable<T, S> extends Observable<T> {
       subscriber,
       iterate: this.iterate,
       condition: this.condition,
-      timeSelector: this.timeSelector,
       resultSelector: this.resultSelector,
+      timeSelector: this.timeSelector,
       state });
   }
 
