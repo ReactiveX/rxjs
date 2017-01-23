@@ -15,7 +15,7 @@ import { TeardownLogic } from '../Subscription';
  * time and emits: [1, 2, 3, 4, 5] then the complete stream of emissions and notifications
  * would be: [1, 2, 1, 2, 3, 4, 5, `complete`].
  * @param {number} count - Number of retry attempts before failing.
- * @return {Observable} the source Observable modified with the retry logic.
+ * @return {Observable} The source Observable modified with the retry logic.
  * @method retry
  * @owner Observable
  */
