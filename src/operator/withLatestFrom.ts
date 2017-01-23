@@ -20,7 +20,7 @@ export function withLatestFrom<T, T2, T3, T4, T5, T6>(this: Observable<T>, v2: O
 export function withLatestFrom<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R>;
 export function withLatestFrom<T, R>(this: Observable<T>, array: ObservableInput<any>[]): Observable<R>;
 export function withLatestFrom<T, R>(this: Observable<T>, array: ObservableInput<any>[], project: (...values: Array<any>) => R): Observable<R>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Combines the source Observable with other Observables to create an Observable

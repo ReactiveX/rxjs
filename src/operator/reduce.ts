@@ -6,7 +6,7 @@ import { Subscriber } from '../Subscriber';
 export function reduce<T>(this: Observable<T>, accumulator: (acc: T, value: T, index: number) => T, seed?: T): Observable<T>;
 export function reduce<T>(this: Observable<T>, accumulator: (acc: T[], value: T, index: number) => T[], seed?: T[]): Observable<T[]>;
 export function reduce<T, R>(this: Observable<T>, accumulator: (acc: R, value: T, index: number) => R, seed?: R): Observable<R>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Applies an accumulator function over the source Observable, and returns the

@@ -19,7 +19,7 @@ export function merge<T, T2, T3, T4, T5, T6>(this: Observable<T>, v2: Observable
 export function merge<T, T2, T3, T4, T5, T6>(this: Observable<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, concurrent?: number, scheduler?: IScheduler): Observable<T | T2 | T3 | T4 | T5 | T6>;
 export function merge<T>(this: Observable<T>, ...observables: Array<ObservableInput<T> | IScheduler | number>): Observable<T>;
 export function merge<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> | IScheduler | number>): Observable<R>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Creates an output Observable which concurrently emits all values from every

@@ -9,7 +9,7 @@ import { InnerSubscriber } from '../InnerSubscriber';
 /* tslint:disable:max-line-length */
 export function mergeMap<T, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<R>, concurrent?: number): Observable<R>;
 export function mergeMap<T, I, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R, concurrent?: number): Observable<R>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Projects each source value to an Observable which is merged in the output
@@ -40,7 +40,7 @@ export function mergeMap<T, I, R>(this: Observable<T>, project: (value: T, index
  * // b1
  * // c1
  * // continues to list a,b,c with respective ascending integers
- * 
+ *
  * @see {@link concatMap}
  * @see {@link exhaustMap}
  * @see {@link merge}
