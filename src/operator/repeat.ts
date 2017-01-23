@@ -5,8 +5,7 @@ import { EmptyObservable } from '../observable/EmptyObservable';
 import { TeardownLogic } from '../Subscription';
 
 /**
- * Returns an Observable that repeats the stream of items emitted by the source Observable at most count times,
- * on a particular IScheduler.
+ * Returns an Observable that repeats the stream of items emitted by the source Observable at most count times.
  *
  * <img src="./img/repeat.png" width="100%">
  *
