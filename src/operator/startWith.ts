@@ -17,12 +17,14 @@ export function startWith<T>(this: Observable<T>, ...array: Array<T | IScheduler
 /* tslint:enable:max-line-length */
 
 /**
- * Returns an Observable that emits the items in a specified Iterable before it begins to emit items emitted by the
- * source Observable.
+ * Returns an Observable that emits the items you specify as arguments before it begins to emit
+ * items emitted by the source Observable.
  *
  * <img src="./img/startWith.png" width="100%">
  *
- * @param {Values} an Iterable that contains the items you want the modified Observable to emit first.
+ * @param {...T} values - Items you want the modified Observable to emit first.
+ * @param {Scheduler} [scheduler] - A {@link IScheduler} to use for scheduling
+ * the emissions of the `next` notifications.
  * @return {Observable} an Observable that emits the items in the specified Iterable and then emits the items
  * emitted by the source Observable.
  * @method startWith
