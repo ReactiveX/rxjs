@@ -23,7 +23,7 @@ export function combineLatest<T, T2, T3, T4, T5, T6>(this: Observable<T>, v2: Ob
 export function combineLatest<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<T> | ((...values: Array<T>) => R)>): Observable<R>;
 export function combineLatest<T, R>(this: Observable<T>, array: ObservableInput<T>[]): Observable<Array<T>>;
 export function combineLatest<T, TOther, R>(this: Observable<T>, array: ObservableInput<TOther>[], project: (v1: T, ...values: Array<TOther>) => R): Observable<R>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Combines multiple Observables to create an Observable whose values are
