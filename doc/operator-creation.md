@@ -41,15 +41,15 @@ function mySimpleOperator(someCallback) {
      var subscription = source.subscribe(value => {
        // important: catch errors from user-provided callbacks
        try {
-         subscriber.next(someCallback(value));
+         subscriber.onNext(someCallback(value));
        } catch(err) {
-         subscriber.error(err);
+         subscriber.onError(err);
        }
      },
      // be sure to handle errors and completions as appropriate and
      // send them along
      err => subscriber.error(err),
-     () => subscriber.complete());
+     () => subscriber.onCompleted());
 
      // to return now
      return subscription;
