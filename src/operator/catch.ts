@@ -8,6 +8,8 @@ import { subscribeToResult } from '../util/subscribeToResult';
 /**
  * Catches errors on the observable to be handled by returning a new observable or throwing an error.
  *
+ * <img src="./img/catch.png" width="100%">
+ * 
  * @example <caption>Continues with a different Observable when there's an error</caption>
  * 
  * Observable.of(1, 2, 3, 4, 5)
@@ -18,7 +20,8 @@ import { subscribeToResult } from '../util/subscribeToResult';
  *	   return n; 
  *   })
  *   .catch(err => Observable.of('I', 'II', 'III', 'IV', 'V'))
- *   .subscribe(x => console.log(x)); // -> 1, 2, 3, I, II, III, IV, V
+ *   .subscribe(x => console.log(x));
+ *   // 1, 2, 3, I, II, III, IV, V
  *
  * @example <caption>Retries the caught source Observable again in case of error, similar to retry() operator</caption>
  *
