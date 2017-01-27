@@ -1,4 +1,5 @@
 import {expect} from 'chai';
+import * as sinon from 'sinon';
 import * as Rx from '../../dist/cjs/Rx';
 import {ScalarObservable} from '../../dist/cjs/observable/ScalarObservable';
 
@@ -18,11 +19,14 @@ describe('ScalarObservable', () => {
   });
 
   it('should not schedule further if subscriber unsubscribed', () => {
-    const s = new ScalarObservable(1, rxTestScheduler);
+    const schedulerMock = sinon.stub(rxTestScheduler);
+    const s = new ScalarObservable(1, schedulerMock as any);
     const subscriber = new Rx.Subscriber();
     s.subscribe(subscriber);
-    subscriber.closed = true;
+    subscriber.unsubscribe();
     rxTestScheduler.flush();
+
+    expect((schedulerMock as any).schedule).calledOnce;
   });
 
   it('should set `_isScalar` to true when NOT called with a Scheduler', () => {

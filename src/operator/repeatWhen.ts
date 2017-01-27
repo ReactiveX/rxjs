@@ -77,7 +77,7 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
       }
 
       this.unsubscribe();
-      this.closed = false;
+      this._closed = false;
 
       this.notifications = notifications;
       this.retries = retries;
@@ -111,7 +111,7 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
 
     this.unsubscribe();
     this.isStopped = false;
-    this.closed = false;
+    this._closed = false;
 
     this.notifications = notifications;
     this.retries = retries;

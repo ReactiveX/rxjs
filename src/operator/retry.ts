@@ -55,7 +55,7 @@ class RetrySubscriber<T> extends Subscriber<T> {
       }
       this.unsubscribe();
       this.isStopped = false;
-      this.closed = false;
+      this._closed = false;
       source.subscribe(this);
     }
   }
