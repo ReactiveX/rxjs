@@ -122,10 +122,8 @@ npm install @reactivex/rxjs@5.0.0
 ### CDN
 
 For CDN, you can use [unpkg](https://unpkg.com/):
-
-##### 140k Minified, 30k Minified && Gzip'd  
   
-https://unpkg.com/@reactivex/rxjs/dist/global/Rx.min.js
+https://unpkg.com/rxjs/bundles/Rx.min.js
 
 #### Node.js Usage:
 
