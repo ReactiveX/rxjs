@@ -113,14 +113,14 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
               private windowCreationInterval: number,
               private scheduler: IScheduler) {
     super(destination);
+
+    const window = this.openWindow();
     if (windowCreationInterval !== null && windowCreationInterval >= 0) {
-      let window = this.openWindow();
       const closeState: CloseState<T> = { subscriber: this, window, context: <any>null };
       const creationState: CreationState<T> = { windowTimeSpan, windowCreationInterval, subscriber: this, scheduler };
       this.add(scheduler.schedule(dispatchWindowClose, windowTimeSpan, closeState));
       this.add(scheduler.schedule(dispatchWindowCreation, windowCreationInterval, creationState));
     } else {
-      let window = this.openWindow();
       const timeSpanOnlyState: TimeSpanOnlyState<T> = { subscriber: this, window, windowTimeSpan };
       this.add(scheduler.schedule(dispatchWindowTimeSpanOnly, windowTimeSpan, timeSpanOnlyState));
     }
@@ -174,7 +174,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
 function dispatchWindowTimeSpanOnly<T>(this: Action<TimeSpanOnlyState<T>>, state: TimeSpanOnlyState<T>): void {
   const { subscriber, windowTimeSpan, window } = state;
   if (window) {
-    window.complete();
+    subscriber.closeWindow(window);
   }
   state.window = subscriber.openWindow();
   this.schedule(state, windowTimeSpan);
