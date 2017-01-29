@@ -37,7 +37,7 @@ export class Observable<T> implements Subscribable<T> {
    * can be `next`ed, or an `error` method can be called to raise an error, or
    * `complete` can be called to notify of a successful completion.
    */
-  constructor(subscribe?: <R>(this: Observable<T>, subscriber: Subscriber<R>) => TeardownLogic) {
+  constructor(subscribe?: (this: Observable<T>, subscriber: Subscriber<T>) => TeardownLogic) {
     if (subscribe) {
       this._subscribe = subscribe;
     }
@@ -53,7 +53,7 @@ export class Observable<T> implements Subscribable<T> {
    * @param {Function} subscribe? the subscriber function to be passed to the Observable constructor
    * @return {Observable} a new cold observable
    */
-  static create: Function = <T>(subscribe?: <R>(subscriber: Subscriber<R>) => TeardownLogic) => {
+  static create: Function = <T>(subscribe?: (subscriber: Subscriber<T>) => TeardownLogic) => {
     return new Observable<T>(subscribe);
   }
 
