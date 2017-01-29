@@ -29,6 +29,18 @@ describe('Observable', () => {
     source.subscribe(function (x) { expect(x).to.equal(1); }, null, done);
   });
 
+  it('should send errors thrown in the constructor down the error path', (done) => {
+    new Observable((observer) => {
+      throw new Error('this should be handled');
+    })
+    .subscribe({
+      error(err) {
+        expect(err).to.deep.equal(new Error('this should be handled'));
+        done();
+      }
+    });
+  });
+
   describe('forEach', () => {
     it('should iterate and return a Promise', (done: MochaDone) => {
       const expected = [1, 2, 3];
@@ -581,6 +593,18 @@ describe('Observable.create', () => {
       //noop
     });
     expect(called).to.be.true;
+  });
+
+  it('should send errors thrown in the passed function down the error path', (done) => {
+    Observable.create((observer) => {
+      throw new Error('this should be handled');
+    })
+    .subscribe({
+      error(err) {
+        expect(err).to.deep.equal(new Error('this should be handled'));
+        done();
+      }
+    });
   });
 });
 
