@@ -95,7 +95,7 @@ export class Observable<T> implements Subscribable<T> {
     if (operator) {
       operator.call(sink, this.source);
     } else {
-      sink.add(this._subscribe(sink));
+      sink.add(this._trySubscribe(sink));
     }
 
     if (sink.syncErrorThrowable) {
@@ -106,6 +106,16 @@ export class Observable<T> implements Subscribable<T> {
     }
 
     return sink;
+  }
+
+  private _trySubscribe(sink: Subscriber<T>): TeardownLogic {
+    try {
+      return this._subscribe(sink);
+    } catch (err) {
+      sink.syncErrorThrown = true;
+      sink.syncErrorValue = err;
+      sink.error(err);
+    }
   }
 
   /**
