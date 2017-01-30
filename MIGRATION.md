@@ -110,7 +110,6 @@ enabling "composite" subscription behavior.
 |`shareValue`|No longer implemented|
 |`singleInstance`|`share`|
 |`skipLastWithTime`|No longer implemented|
-|`skipLast`|No longer implemented|
 |`skipUntilWithTime`|No longer implemented|
 |`slice(start, end)`|`skip(start).take(end - start)`|
 |`some`|`first(fn, () => true, false)`|
