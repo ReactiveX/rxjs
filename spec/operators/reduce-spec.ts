@@ -70,8 +70,6 @@ describe('Observable.prototype.reduce', () => {
     const idx = [1, 2, 3, 4, 5];
 
     Observable.range(0, 6).reduce((acc, value, index) => {
-      console.log(index);
-      console.log(value);
       expect(idx.shift()).to.equal(index);
       return value;
     }).subscribe(null, null, () => {
@@ -84,8 +82,6 @@ describe('Observable.prototype.reduce', () => {
     const idx = [0, 1, 2, 3, 4, 5];
 
     Observable.range(0, 6).reduce((acc, value, index) => {
-      console.log(index);
-      console.log(value);
       expect(idx.shift()).to.equal(index);
       return value;
     }, -1).subscribe(null, null, () => {
