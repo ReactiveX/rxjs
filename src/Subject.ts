@@ -2,7 +2,7 @@ import { Operator } from './Operator';
 import { Observer } from './Observer';
 import { Observable } from './Observable';
 import { Subscriber } from './Subscriber';
-import { ISubscription, Subscription } from './Subscription';
+import { ISubscription, Subscription, TeardownLogic } from './Subscription';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 import { SubjectSubscription } from './SubjectSubscription';
 import { $$rxSubscriber } from './symbol/rxSubscriber';
@@ -97,6 +97,14 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     this.isStopped = true;
     this.closed = true;
     this.observers = null;
+  }
+
+  protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
+    if (this.closed) {
+      throw new ObjectUnsubscribedError();
+    } else {
+      return super._trySubscribe(subscriber);
+    }
   }
 
   protected _subscribe(subscriber: Subscriber<T>): Subscription {

@@ -261,6 +261,9 @@ describe('Subject', () => {
     expect(() => {
       subject.subscribe(
         function (x) { results3.push(x); },
+        function (err) {
+          expect(false).to.equal('should not throw error: ' + err.toString());
+        }
       );
     }).to.throw(Rx.ObjectUnsubscribedError);
 
