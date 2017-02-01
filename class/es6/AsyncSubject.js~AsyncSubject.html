@@ -401,7 +401,7 @@ given event target.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-fromEventPattern">fromEventPattern</a></span></span><span data-ice="signature">(addHandler: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(handler: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>)</span>: <span>any</span></span>, removeHandler: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(handler: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>)</span>: <span>void</span></span>, selector: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(...args: <span>any</span>)</span>: <span>T</span></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-fromEventPattern">fromEventPattern</a></span></span><span data-ice="signature">(addHandler: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(handler: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>)</span>: <span>any</span></span>, removeHandler: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(handler: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, signal?: <span>any</span>)</span>: <span>void</span></span>, selector: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(...args: <span>any</span>)</span>: <span>T</span></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
         </p>
       </div>
       <div>
@@ -642,13 +642,14 @@ emits ever increasing numbers after each <code>period</code> of time thereafter.
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-webSocket">webSocket</a></span></span><span data-ice="signature">(urlConfigOrSource: <span>*</span>): <span><a href="class/es6/observable/dom/WebSocketSubject.js~WebSocketSubject.html">WebSocketSubject</a></span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-webSocket">webSocket</a></span></span><span data-ice="signature">(urlConfigOrSource: <span>string </span> | <span> WebSocketSubjectConfig</span>): <span><a href="class/es6/observable/dom/WebSocketSubject.js~WebSocketSubject.html">WebSocketSubject</a></span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Wrapper around the w3c-compatible WebSocket object provided by the browser.</p>
+</div>
       </div>
     </td>
     <td>
@@ -2034,13 +2035,16 @@ times in the output Observable.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-mergeScan">mergeScan</a></span></span><span data-ice="signature">(project: <span>*</span>, seed: <span>*</span>, concurrent: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span><a href="class/es6/observable/dom/WebSocketSubject.js~WebSocketSubject.html">WebSocketSubject</a></span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-mergeScan">mergeScan</a></span></span><span data-ice="signature">(accumulator: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(acc: <span>R</span>, value: <span>T</span>)</span>: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt;</span>, seed: <span>*</span>, concurrent: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Applies an accumulator function over the source Observable where the
+accumulator function itself returns an Observable, then each intermediate
+Observable returned is merged into the output Observable.</p>
+</div>
       </div>
     </td>
     <td>
@@ -2350,7 +2354,7 @@ from the combination of this Observable and supplied Observables</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-reduce">reduce</a></span></span><span data-ice="signature">(accumulator: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(acc: <span>R</span>, value: <span>T</span>)</span>: <span>R</span></span>, seed: <span>R</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-reduce">reduce</a></span></span><span data-ice="signature">(accumulator: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(acc: <span>R</span>, value: <span>T</span>, index: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>)</span>: <span>R</span></span>, seed: <span>R</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt;</span>
         </p>
       </div>
       <div>
@@ -3151,7 +3155,8 @@ values for <code>duration</code> milliseconds, then repeats this process.</p>
       <div>
         
         
-        
+        <div data-ice="description"><p>Converts an Observable sequence to a ES2015 compliant promise.</p>
+</div>
       </div>
     </td>
     <td>

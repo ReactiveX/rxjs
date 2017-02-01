@@ -212,8 +212,10 @@ describe(&apos;Subject&apos;, function () {
         subscription2.unsubscribe();
         subject.unsubscribe();
         chai_1.expect(function () {
-            subject.subscribe(function (x) { results3.push(x); }, function (e) { results3.push(&apos;E&apos;); }, function () { results3.push(&apos;C&apos;); });
-        }).to.throw();
+            subject.subscribe(function (x) { results3.push(x); }, function (err) {
+                chai_1.expect(false).to.equal(&apos;should not throw error: &apos; + err.toString());
+            });
+        }).to.throw(Rx.ObjectUnsubscribedError);
         chai_1.expect(results1).to.deep.equal([1, 2, 3, 4, 5]);
         chai_1.expect(results2).to.deep.equal([3, 4, 5]);
         chai_1.expect(results3).to.deep.equal([]);

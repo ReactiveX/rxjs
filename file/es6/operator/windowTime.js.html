@@ -148,15 +148,14 @@ class WindowTimeSubscriber extends Subscriber {
         this.windowCreationInterval = windowCreationInterval;
         this.scheduler = scheduler;
         this.windows = [];
+        const window = this.openWindow();
         if (windowCreationInterval !== null &amp;&amp; windowCreationInterval &gt;= 0) {
-            let window = this.openWindow();
             const closeState = { subscriber: this, window, context: null };
             const creationState = { windowTimeSpan, windowCreationInterval, subscriber: this, scheduler };
             this.add(scheduler.schedule(dispatchWindowClose, windowTimeSpan, closeState));
             this.add(scheduler.schedule(dispatchWindowCreation, windowCreationInterval, creationState));
         }
         else {
-            let window = this.openWindow();
             const timeSpanOnlyState = { subscriber: this, window, windowTimeSpan };
             this.add(scheduler.schedule(dispatchWindowTimeSpanOnly, windowTimeSpan, timeSpanOnlyState));
         }
@@ -204,23 +203,23 @@ class WindowTimeSubscriber extends Subscriber {
 function dispatchWindowTimeSpanOnly(state) {
     const { subscriber, windowTimeSpan, window } = state;
     if (window) {
-        window.complete();
+        subscriber.closeWindow(window);
     }
     state.window = subscriber.openWindow();
     this.schedule(state, windowTimeSpan);
 }
 function dispatchWindowCreation(state) {
-    let { windowTimeSpan, subscriber, scheduler, windowCreationInterval } = state;
-    let window = subscriber.openWindow();
-    let action = this;
+    const { windowTimeSpan, subscriber, scheduler, windowCreationInterval } = state;
+    const window = subscriber.openWindow();
+    const action = this;
     let context = { action, subscription: null };
     const timeSpanState = { subscriber, window, context };
     context.subscription = scheduler.schedule(dispatchWindowClose, windowTimeSpan, timeSpanState);
     action.add(context.subscription);
     action.schedule(state, windowCreationInterval);
 }
-function dispatchWindowClose(arg) {
-    const { subscriber, window, context } = arg;
+function dispatchWindowClose(state) {
+    const { subscriber, window, context } = state;
     if (context &amp;&amp; context.action &amp;&amp; context.subscription) {
         context.action.remove(context.subscription);
     }

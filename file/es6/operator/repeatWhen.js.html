@@ -92,15 +92,14 @@ import { subscribeToResult } from &apos;../util/subscribeToResult&apos;;
  * @owner Observable
  */
 export function repeatWhen(notifier) {
-    return this.lift(new RepeatWhenOperator(notifier, this));
+    return this.lift(new RepeatWhenOperator(notifier));
 }
 class RepeatWhenOperator {
-    constructor(notifier, source) {
+    constructor(notifier) {
         this.notifier = notifier;
-        this.source = source;
     }
     call(subscriber, source) {
-        return source.subscribe(new RepeatWhenSubscriber(subscriber, this.notifier, this.source));
+        return source.subscribe(new RepeatWhenSubscriber(subscriber, this.notifier, source));
     }
 }
 /**
@@ -113,30 +112,28 @@ class RepeatWhenSubscriber extends OuterSubscriber {
         super(destination);
         this.notifier = notifier;
         this.source = source;
+        this.sourceIsBeingSubscribedTo = true;
+    }
+    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+        this.source.subscribe(this);
+        this.sourceIsBeingSubscribedTo = true;
+    }
+    notifyComplete(innerSub) {
+        if (this.sourceIsBeingSubscribedTo === false) {
+            return super.complete();
+        }
     }
     complete() {
+        this.sourceIsBeingSubscribedTo = false;
         if (!this.isStopped) {
-            let notifications = this.notifications;
-            let retries = this.retries;
-            let retriesSubscription = this.retriesSubscription;
-            if (!retries) {
-                notifications = new Subject();
-                retries = tryCatch(this.notifier)(notifications);
-                if (retries === errorObject) {
-                    return super.complete();
-                }
-                retriesSubscription = subscribeToResult(this, retries);
+            if (!this.retries) {
+                this.subscribeToRetries();
             }
-            else {
-                this.notifications = null;
-                this.retriesSubscription = null;
+            else if (this.retriesSubscription.closed) {
+                return super.complete();
             }
-            this.unsubscribe();
-            this.closed = false;
-            this.notifications = notifications;
-            this.retries = retries;
-            this.retriesSubscription = retriesSubscription;
-            notifications.next();
+            this.temporarilyUnsubscribe();
+            this.notifications.next();
         }
     }
     _unsubscribe() {
@@ -151,7 +148,16 @@ class RepeatWhenSubscriber extends OuterSubscriber {
         }
         this.retries = null;
     }
-    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+    subscribeToRetries() {
+        this.notifications = new Subject();
+        const retries = tryCatch(this.notifier)(this.notifications);
+        if (retries === errorObject) {
+            return super.complete();
+        }
+        this.retries = retries;
+        this.retriesSubscription = subscribeToResult(this, retries);
+    }
+    temporarilyUnsubscribe() {
         const { notifications, retries, retriesSubscription } = this;
         this.notifications = null;
         this.retries = null;
@@ -162,7 +168,6 @@ class RepeatWhenSubscriber extends OuterSubscriber {
         this.notifications = notifications;
         this.retries = retries;
         this.retriesSubscription = retriesSubscription;
-        this.source.subscribe(this);
     }
 }
 //# sourceMappingURL=repeatWhen.js.map</code></pre>

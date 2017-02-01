@@ -75,24 +75,47 @@ import { errorObject } from &apos;../util/errorObject&apos;;
 import { subscribeToResult } from &apos;../util/subscribeToResult&apos;;
 import { OuterSubscriber } from &apos;../OuterSubscriber&apos;;
 /**
- * @param project
- * @param seed
- * @param concurrent
- * @return {Observable&lt;R&gt;|WebSocketSubject&lt;T&gt;|Observable&lt;T&gt;}
+ * Applies an accumulator function over the source Observable where the
+ * accumulator function itself returns an Observable, then each intermediate
+ * Observable returned is merged into the output Observable.
+ *
+ * &lt;span class=&quot;informal&quot;&gt;It&apos;s like {@link scan}, but the Observables returned
+ * by the accumulator are merged into the outer Observable.&lt;/span&gt;
+ *
+ * @example &lt;caption&gt;Count the number of click events&lt;/caption&gt;
+ * const click$ = Rx.Observable.fromEvent(document, &apos;click&apos;);
+ * const one$ = click$.mapTo(1);
+ * const seed = 0;
+ * const count$ = one$.mergeScan((acc, one) =&gt; Rx.Observable.of(acc + one), seed);
+ * count$.subscribe(x =&gt; console.log(x));
+ *
+ * // Results:
+ * 1
+ * 2
+ * 3
+ * 4
+ * // ...and so on for each click
+ *
+ * @param {function(acc: R, value: T): Observable&lt;R&gt;} accumulator
+ * The accumulator function called on each source value.
+ * @param seed The initial accumulation value.
+ * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of
+ * input Observables being subscribed to concurrently.
+ * @return {Observable&lt;R&gt;} An observable of the accumulated values.
  * @method mergeScan
  * @owner Observable
  */
-export function mergeScan(project, seed, concurrent = Number.POSITIVE_INFINITY) {
-    return this.lift(new MergeScanOperator(project, seed, concurrent));
+export function mergeScan(accumulator, seed, concurrent = Number.POSITIVE_INFINITY) {
+    return this.lift(new MergeScanOperator(accumulator, seed, concurrent));
 }
 export class MergeScanOperator {
-    constructor(project, seed, concurrent) {
-        this.project = project;
+    constructor(accumulator, seed, concurrent) {
+        this.accumulator = accumulator;
         this.seed = seed;
         this.concurrent = concurrent;
     }
     call(subscriber, source) {
-        return source.subscribe(new MergeScanSubscriber(subscriber, this.project, this.seed, this.concurrent));
+        return source.subscribe(new MergeScanSubscriber(subscriber, this.accumulator, this.seed, this.concurrent));
     }
 }
 /**
@@ -101,9 +124,9 @@ export class MergeScanOperator {
  * @extends {Ignored}
  */
 export class MergeScanSubscriber extends OuterSubscriber {
-    constructor(destination, project, acc, concurrent) {
+    constructor(destination, accumulator, acc, concurrent) {
         super(destination);
-        this.project = project;
+        this.accumulator = accumulator;
         this.acc = acc;
         this.concurrent = concurrent;
         this.hasValue = false;
@@ -115,7 +138,7 @@ export class MergeScanSubscriber extends OuterSubscriber {
     _next(value) {
         if (this.active &lt; this.concurrent) {
             const index = this.index++;
-            const ish = tryCatch(this.project)(this.acc, value);
+            const ish = tryCatch(this.accumulator)(this.acc, value);
             const destination = this.destination;
             if (ish === errorObject) {
                 destination.error(errorObject.e);

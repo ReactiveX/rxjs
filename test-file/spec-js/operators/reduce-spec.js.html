@@ -71,6 +71,7 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/reduce-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var chai_1 = require(&apos;chai&apos;);
 var Rx = require(&apos;../../dist/cjs/Rx&apos;);
 var Observable = Rx.Observable;
 /** @test {reduce} */
@@ -120,6 +121,26 @@ describe(&apos;Observable.prototype.reduce&apos;, function () {
         var source = e1.reduce(function (acc, x) { return acc + &apos; &apos; + x; });
         expectObservable(source).toBe(expected, values);
         expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should reduce with index without seed&apos;, function (done) {
+        var idx = [1, 2, 3, 4, 5];
+        Observable.range(0, 6).reduce(function (acc, value, index) {
+            chai_1.expect(idx.shift()).to.equal(index);
+            return value;
+        }).subscribe(null, null, function () {
+            chai_1.expect(idx).to.be.empty;
+            done();
+        });
+    });
+    it(&apos;should reduce with index with seed&apos;, function (done) {
+        var idx = [0, 1, 2, 3, 4, 5];
+        Observable.range(0, 6).reduce(function (acc, value, index) {
+            chai_1.expect(idx.shift()).to.equal(index);
+            return value;
+        }, -1).subscribe(null, null, function () {
+            chai_1.expect(idx).to.be.empty;
+            done();
+        });
     });
     it(&apos;should reduce with seed if source is empty&apos;, function () {
         var e1 = hot(&apos;--a--^-------|&apos;);

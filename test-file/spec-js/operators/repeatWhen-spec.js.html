@@ -80,9 +80,9 @@ describe(&apos;Observable.prototype.repeatWhen&apos;, function () {
         var source = cold(&apos;-1--2--|&apos;);
         var subs = [&apos;^      !                     &apos;,
             &apos;             ^      !        &apos;,
-            &apos;                          ^ !&apos;];
+            &apos;                          ^      !&apos;];
         var notifier = hot(&apos;-------------r------------r-|&apos;);
-        var expected = &apos;-1--2---------1--2---------1|&apos;;
+        var expected = &apos;-1--2---------1--2---------1--2--|&apos;;
         var result = source.repeatWhen(function (notifications) { return notifier; });
         expectObservable(result).toBe(expected);
         expectSubscriptions(source.subscriptions).toBe(subs);

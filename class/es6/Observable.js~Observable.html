@@ -109,8 +109,8 @@ of RxJS.</p>
     <ul>
       
     <li data-ice="test"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber20">Observable</a></span></li>
-<li data-ice="test"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber475">Observable.create</a></span></li>
-<li data-ice="test"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber502">Observable.lift</a></span></li>
+<li data-ice="test"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber486">Observable.create</a></span></li>
+<li data-ice="test"><span><a href="test-file/spec-js/Observable-spec.js.html#lineNumber524">Observable.lift</a></span></li>
 </ul>
   </div>
 
@@ -400,7 +400,7 @@ given event target.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-fromEventPattern">fromEventPattern</a></span></span><span data-ice="signature">(addHandler: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(handler: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>)</span>: <span>any</span></span>, removeHandler: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(handler: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>)</span>: <span>void</span></span>, selector: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(...args: <span>any</span>)</span>: <span>T</span></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-fromEventPattern">fromEventPattern</a></span></span><span data-ice="signature">(addHandler: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(handler: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>)</span>: <span>any</span></span>, removeHandler: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(handler: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, signal?: <span>any</span>)</span>: <span>void</span></span>, selector: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(...args: <span>any</span>)</span>: <span>T</span></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
         </p>
       </div>
       <div>
@@ -641,13 +641,14 @@ emits ever increasing numbers after each <code>period</code> of time thereafter.
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-webSocket">webSocket</a></span></span><span data-ice="signature">(urlConfigOrSource: <span>*</span>): <span><a href="class/es6/observable/dom/WebSocketSubject.js~WebSocketSubject.html">WebSocketSubject</a></span></span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#static-method-webSocket">webSocket</a></span></span><span data-ice="signature">(urlConfigOrSource: <span>string </span> | <span> WebSocketSubjectConfig</span>): <span><a href="class/es6/observable/dom/WebSocketSubject.js~WebSocketSubject.html">WebSocketSubject</a></span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Wrapper around the w3c-compatible WebSocket object provided by the browser.</p>
+</div>
       </div>
     </td>
     <td>
@@ -2073,13 +2074,16 @@ times in the output Observable.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-mergeScan">mergeScan</a></span></span><span data-ice="signature">(project: <span>*</span>, seed: <span>*</span>, concurrent: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span><a href="class/es6/observable/dom/WebSocketSubject.js~WebSocketSubject.html">WebSocketSubject</a></span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-mergeScan">mergeScan</a></span></span><span data-ice="signature">(accumulator: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(acc: <span>R</span>, value: <span>T</span>)</span>: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt;</span>, seed: <span>*</span>, concurrent: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Applies an accumulator function over the source Observable where the
+accumulator function itself returns an Observable, then each intermediate
+Observable returned is merged into the output Observable.</p>
+</div>
       </div>
     </td>
     <td>
@@ -2389,7 +2393,7 @@ from the combination of this Observable and supplied Observables</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-reduce">reduce</a></span></span><span data-ice="signature">(accumulator: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(acc: <span>R</span>, value: <span>T</span>)</span>: <span>R</span></span>, seed: <span>R</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt;</span>
+           <span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html#instance-method-reduce">reduce</a></span></span><span data-ice="signature">(accumulator: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(acc: <span>R</span>, value: <span>T</span>, index: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>)</span>: <span>R</span></span>, seed: <span>R</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt;</span>
         </p>
       </div>
       <div>
@@ -3190,7 +3194,8 @@ values for <code>duration</code> milliseconds, then repeats this process.</p>
       <div>
         
         
-        
+        <div data-ice="description"><p>Converts an Observable sequence to a ES2015 compliant promise.</p>
+</div>
       </div>
     </td>
     <td>
@@ -4562,11 +4567,11 @@ clicks.subscribe(x =&gt; console.log(x));
     
     
     
-    <span data-ice="name">fromEventPattern</span><span data-ice="signature">(addHandler: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(handler: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>)</span>: <span>any</span></span>, removeHandler: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(handler: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>)</span>: <span>void</span></span>, selector: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(...args: <span>any</span>)</span>: <span>T</span></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+    <span data-ice="name">fromEventPattern</span><span data-ice="signature">(addHandler: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(handler: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>)</span>: <span>any</span></span>, removeHandler: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(handler: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, signal?: <span>any</span>)</span>: <span>void</span></span>, selector: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(...args: <span>any</span>)</span>: <span>T</span></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/observable/FromEventPatternObservable.js.html#lineNumber62">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/observable/FromEventPatternObservable.js.html#lineNumber64">source</a></span></span>
     </span>
   </h3>
 
@@ -4606,11 +4611,12 @@ source of events.</p>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">removeHandler</td>
-      <td data-ice="type"><span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(handler: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>)</span>: <span>void</span></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>A function that
+      <td data-ice="type"><span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(handler: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a></span>, signal?: <span>any</span>)</span>: <span>void</span></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>An optional function that
 takes a <code>handler</code> function as argument and removes it in case it was
-previously attached using <code>addHandler</code>.</p>
+previously attached using <code>addHandler</code>. if addHandler returns signal to teardown when remove,
+removeHandler function will forward it.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -4670,7 +4676,7 @@ clicks.subscribe(x =&gt; console.log(x));</code></pre>
     <h4>Test:</h4>
     <ul>
       
-    <li data-ice="test"><span><a href="test-file/spec-js/observables/fromEventPattern-spec.js.html#lineNumber6">Observable.fromEventPattern</a></span></li>
+    <li data-ice="test"><span><a href="test-file/spec-js/observables/fromEventPattern-spec.js.html#lineNumber8">Observable.fromEventPattern</a></span></li>
 </ul>
   </div>
 
@@ -5552,18 +5558,19 @@ numbers.subscribe(x =&gt; console.log(x));</code></pre>
     
     
     
-    <span data-ice="name">webSocket</span><span data-ice="signature">(urlConfigOrSource: <span>*</span>): <span><a href="class/es6/observable/dom/WebSocketSubject.js~WebSocketSubject.html">WebSocketSubject</a></span></span>
+    <span data-ice="name">webSocket</span><span data-ice="signature">(urlConfigOrSource: <span>string </span> | <span> WebSocketSubjectConfig</span>): <span><a href="class/es6/observable/dom/WebSocketSubject.js~WebSocketSubject.html">WebSocketSubject</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/observable/dom/WebSocketSubject.js.html#lineNumber47">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/observable/dom/WebSocketSubject.js.html#lineNumber76">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Wrapper around the w3c-compatible WebSocket object provided by the browser.</p>
+</div>
 
   
 
@@ -5577,9 +5584,10 @@ numbers.subscribe(x =&gt; console.log(x));</code></pre>
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">urlConfigOrSource</td>
-      <td data-ice="type"><span>*</span></td>
+      <td data-ice="type"><span>string </span> | <span> WebSocketSubjectConfig</span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
+      <td data-ice="description"><p>the source of the websocket as an url or a structure defining the websocket object</p>
+</td>
     </tr>
 </tbody>
   </table>
@@ -5604,7 +5612,39 @@ numbers.subscribe(x =&gt; console.log(x));</code></pre>
 
   
 
-  
+  <div data-ice="example">
+    <h4>Example:</h4>
+    
+  <div class="example-doc" data-ice="exampleDoc">
+      <div class="example-caption" data-ice="exampleCaption">Wraps browser WebSocket</div>
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">
+let subject = Observable.webSocket(&apos;ws://localhost:8081&apos;);
+subject.subscribe(
+   (msg) =&gt; console.log(&apos;message received: &apos; + msg),
+   (err) =&gt; console.log(err),
+   () =&gt; console.log(&apos;complete&apos;)
+ );
+subject.next(JSON.stringify({ op: &apos;hello&apos; }));</code></pre>
+    </div>
+<div class="example-doc" data-ice="exampleDoc">
+      <div class="example-caption" data-ice="exampleCaption">Wraps WebSocket from nodejs-websocket (using node.js)</div>
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">
+import { w3cwebsocket } from &apos;websocket&apos;;
+
+let socket = new WebSocketSubject({
+  url: &apos;ws://localhost:8081&apos;,
+  WebSocketCtor: w3cwebsocket
+});
+
+let subject = Observable.webSocket(&apos;ws://localhost:8081&apos;);
+subject.subscribe(
+   (msg) =&gt; console.log(&apos;message received: &apos; + msg),
+   (err) =&gt; console.log(err),
+   () =&gt; console.log(&apos;complete&apos;)
+ );
+subject.next(JSON.stringify({ op: &apos;hello&apos; }));</code></pre>
+    </div>
+</div>
 
   <div data-ice="tests">
     <h4>Test:</h4>
@@ -5794,7 +5834,7 @@ can be <code>next</code>ed, or an <code>error</code> method can be called to rai
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber108">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber118">source</a></span></span>
     </span>
   </h3>
 
@@ -6617,7 +6657,7 @@ buffered.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/catch.js.html#lineNumber14">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/catch.js.html#lineNumber62">source</a></span></span>
     </span>
   </h3>
 
@@ -6625,6 +6665,7 @@ buffered.subscribe(x =&gt; console.log(x));</code></pre>
   
   
   <div data-ice="description"><p>Catches errors on the observable to be handled by returning a new observable or throwing an error.</p>
+<p><img src="./img/catch.png" width="100%"></p>
 </div>
 
   
@@ -6671,7 +6712,58 @@ buffered.subscribe(x =&gt; console.log(x));</code></pre>
 
   
 
-  
+  <div data-ice="example">
+    <h4>Example:</h4>
+    
+  <div class="example-doc" data-ice="exampleDoc">
+      <div class="example-caption" data-ice="exampleCaption">Continues with a different Observable when there&apos;s an error</div>
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">
+Observable.of(1, 2, 3, 4, 5)
+  .map(n =&gt; {
+	   if (n == 4) {
+	     throw &apos;four!&apos;;
+    }
+   return n;
+  })
+  .catch(err =&gt; Observable.of(&apos;I&apos;, &apos;II&apos;, &apos;III&apos;, &apos;IV&apos;, &apos;V&apos;))
+  .subscribe(x =&gt; console.log(x));
+  // 1, 2, 3, I, II, III, IV, V</code></pre>
+    </div>
+<div class="example-doc" data-ice="exampleDoc">
+      <div class="example-caption" data-ice="exampleCaption">Retries the caught source Observable again in case of error, similar to retry() operator</div>
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">
+Observable.of(1, 2, 3, 4, 5)
+  .map(n =&gt; {
+	   if (n === 4) {
+	     throw &apos;four!&apos;;
+    }
+	   return n;
+  })
+  .catch((err, caught) =&gt; caught)
+  .take(30)
+  .subscribe(x =&gt; console.log(x));
+  // 1, 2, 3, 1, 2, 3, ...</code></pre>
+    </div>
+<div class="example-doc" data-ice="exampleDoc">
+      <div class="example-caption" data-ice="exampleCaption">Throws a new error when the source Observable throws an error</div>
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">
+Observable.of(1, 2, 3, 4, 5)
+  .map(n =&gt; {
+    if (n == 4) {
+      throw &apos;four!&apos;;
+    }
+    return n;
+  })
+  .catch(err =&gt; {
+    throw &apos;error in source. Details: &apos; + err;
+  })
+  .subscribe(
+    x =&gt; console.log(x),
+    err =&gt; console.log(err)
+  );
+  // 1, 2, 3, error in source. Details: four!</code></pre>
+    </div>
+</div>
 
   <div data-ice="tests">
     <h4>Test:</h4>
@@ -7406,7 +7498,7 @@ completes.</span></p>
 <p><code>count</code> transforms an Observable that emits values into an Observable that
 emits a single value that represents the number of values emitted by the
 source Observable. If the source Observable terminates with an error, <code>count</code>
-will pass this error notification along without emitting an value first. If
+will pass this error notification along without emitting a value first. If
 the source Observable does not terminate at all, <code>count</code> will neither emit
 a value nor terminate. This operator takes an optional <code>predicate</code> function
 as argument, in which case the output emission will represent the number of
@@ -9618,7 +9710,7 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber61">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/Observable.js.html#lineNumber71">source</a></span></span>
     </span>
   </h3>
 
@@ -11032,18 +11124,23 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
     
     
     
-    <span data-ice="name">mergeScan</span><span data-ice="signature">(project: <span>*</span>, seed: <span>*</span>, concurrent: <span>*</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span><a href="class/es6/observable/dom/WebSocketSubject.js~WebSocketSubject.html">WebSocketSubject</a></span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</span>
+    <span data-ice="name">mergeScan</span><span data-ice="signature">(accumulator: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(acc: <span>R</span>, value: <span>T</span>)</span>: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt;</span>, seed: <span>*</span>, concurrent: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt;</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/mergeScan.js.html#lineNumber13">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/mergeScan.js.html#lineNumber36">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Applies an accumulator function over the source Observable where the
+accumulator function itself returns an Observable, then each intermediate
+Observable returned is merged into the output Observable.</p>
+<p><span class="informal">It&apos;s like <span><a href="class/es6/Observable.js~Observable.html#instance-method-scan">scan</a></span>, but the Observables returned
+by the accumulator are merged into the outer Observable.</span></p>
+</div>
 
   
 
@@ -11056,22 +11153,27 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" data-depth="0">project</td>
-      <td data-ice="type"><span>*</span></td>
+      <td data-ice="name" data-depth="0">accumulator</td>
+      <td data-ice="type"><span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(acc: <span>R</span>, value: <span>T</span>)</span>: <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt;</span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
+      <td data-ice="description"><p>The accumulator function called on each source value.</p>
+</td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">seed</td>
       <td data-ice="type"><span>*</span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
+      <td data-ice="description"><p>The initial accumulation value.</p>
+</td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">concurrent</td>
-      <td data-ice="type"><span>*</span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: Number.POSITIVE_INFINITY</li></ul></td>
+      <td data-ice="description"><p>Maximum number of
+input Observables being subscribed to concurrently.</p>
+</td>
     </tr>
 </tbody>
   </table>
@@ -11082,8 +11184,9 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
     <h4>Return:</h4>
     <table>
       <tr>
-        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt; | <span><a href="class/es6/observable/dom/WebSocketSubject.js~WebSocketSubject.html">WebSocketSubject</a></span>&lt;<span>T</span>&gt; | <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>T</span>&gt;</td>
-        
+        <td class="return-type" data-ice="returnType"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>An observable of the accumulated values.</p>
+</td>
       </tr>
     </table>
     <div data-ice="returnProperties">
@@ -11096,7 +11199,25 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
 
   
 
-  
+  <div data-ice="example">
+    <h4>Example:</h4>
+    
+  <div class="example-doc" data-ice="exampleDoc">
+      <div class="example-caption" data-ice="exampleCaption">Count the number of click events</div>
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">const click$ = Rx.Observable.fromEvent(document, &apos;click&apos;);
+const one$ = click$.mapTo(1);
+const seed = 0;
+const count$ = one$.mergeScan((acc, one) =&gt; Rx.Observable.of(acc + one), seed);
+count$.subscribe(x =&gt; console.log(x));
+
+// Results:
+1
+2
+3
+4
+// ...and so on for each click</code></pre>
+    </div>
+</div>
 
   <div data-ice="tests">
     <h4>Test:</h4>
@@ -12043,7 +12164,7 @@ from the combination of this Observable and supplied Observables</p>
     
     
     
-    <span data-ice="name">reduce</span><span data-ice="signature">(accumulator: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(acc: <span>R</span>, value: <span>T</span>)</span>: <span>R</span></span>, seed: <span>R</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt;</span>
+    <span data-ice="name">reduce</span><span data-ice="signature">(accumulator: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(acc: <span>R</span>, value: <span>T</span>, index: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>)</span>: <span>R</span></span>, seed: <span>R</span>): <span><a href="class/es6/Observable.js~Observable.html">Observable</a></span>&lt;<span>R</span>&gt;</span>
     <span class="right-info">
       
       
@@ -12085,7 +12206,7 @@ value is specified, the first item of the source is used as the seed.</p>
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">accumulator</td>
-      <td data-ice="type"><span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(acc: <span>R</span>, value: <span>T</span>)</span>: <span>R</span></span></td>
+      <td data-ice="type"><span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(acc: <span>R</span>, value: <span>T</span>, index: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>)</span>: <span>R</span></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>The accumulator function
 called on each source value.</p>
@@ -12141,7 +12262,7 @@ count.subscribe(x =&gt; console.log(x));</code></pre>
     <h4>Test:</h4>
     <ul>
       
-    <li data-ice="test"><span><a href="test-file/spec-js/operators/reduce-spec.js.html#lineNumber5">Observable.prototype.reduce</a></span></li>
+    <li data-ice="test"><span><a href="test-file/spec-js/operators/reduce-spec.js.html#lineNumber6">Observable.prototype.reduce</a></span></li>
 </ul>
   </div>
 
@@ -14809,14 +14930,15 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/es6/operator/toPromise.js.html#lineNumber9">source</a></span></span>
+      <span data-ice="source"><span><a href="file/es6/operator/toPromise.js.html#lineNumber52">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Converts an Observable sequence to a ES2015 compliant promise.</p>
+</div>
 
   
 
@@ -14832,7 +14954,10 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
       <td data-ice="name" data-depth="0">PromiseCtor</td>
       <td data-ice="type"><span>*</span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
+      <td data-ice="description"><p>promise The constructor of the promise. If not provided,
+it will look for a constructor first in Rx.config.Promise then fall back to
+the native Promise constructor if available.</p>
+</td>
     </tr>
 </tbody>
   </table>
@@ -14844,7 +14969,9 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
     <table>
       <tr>
         <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span>T</span>&gt;</td>
-        
+        <td class="return-desc" data-ice="returnDescription"><p>An ES2015 compatible promise with the last value from
+the observable sequence.</p>
+</td>
       </tr>
     </table>
     <div data-ice="returnProperties">
@@ -14857,7 +14984,49 @@ result.subscribe(x =&gt; console.log(x));</code></pre>
 
   
 
-  
+  <div data-ice="example">
+    <h4>Example:</h4>
+    
+  <div class="example-doc" data-ice="exampleDoc">
+      
+      <pre class="prettyprint source-code"><code data-ice="exampleCode">// Using normal ES2015
+let source = Rx.Observable
+  .just(42)
+  .toPromise();
+
+source.then((value) =&gt; console.log(&apos;Value: %s&apos;, value));
+// =&gt; Value: 42
+
+// Rejected Promise
+// Using normal ES2015
+let source = Rx.Observable
+  .throw(new Error(&apos;woops&apos;))
+  .toPromise();
+
+source
+  .then((value) =&gt; console.log(&apos;Value: %s&apos;, value))
+  .catch((err) =&gt; console.log(&apos;Error: %s&apos;, err));
+// =&gt; Error: Error: woops
+
+// Setting via the config
+Rx.config.Promise = RSVP.Promise;
+
+let source = Rx.Observable
+  .of(42)
+  .toPromise();
+
+source.then((value) =&gt; console.log(&apos;Value: %s&apos;, value));
+// =&gt; Value: 42
+
+// Setting via the method
+let source = Rx.Observable
+  .just(42)
+  .toPromise(RSVP.Promise);
+
+source.then((value) =&gt; console.log(&apos;Value: %s&apos;, value));
+// =&gt; Value: 42</code></pre>
+    </div>
+</div>
 
   <div data-ice="tests">
     <h4>Test:</h4>

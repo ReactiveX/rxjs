@@ -78,9 +78,9 @@ var Observable = Rx.Observable;
 /** @test {catch} */
 describe(&apos;Observable.prototype.catch&apos;, function () {
     asDiagram(&apos;catch&apos;)(&apos;should catch error and replace with a cold Observable&apos;, function () {
-        var e1 = hot(&apos;--a--b--#        &apos;);
-        var e2 = cold(&apos;-1-2-3-|         &apos;);
-        var expected = &apos;--a--b---1-2-3-|)&apos;;
+        var e1 = hot(&apos;--a--b--#       &apos;);
+        var e2 = cold(&apos;-1-2-3-|&apos;);
+        var expected = &apos;--a--b---1-2-3-|&apos;;
         var result = e1.catch(function (err) { return e2; });
         expectObservable(result).toBe(expected);
     });
@@ -136,6 +136,30 @@ describe(&apos;Observable.prototype.catch&apos;, function () {
             .mergeMap(function (x) { return Observable.of(x); });
         expectObservable(result, unsub).toBe(expected);
         expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should unsubscribe from a caught hot caught observable when unsubscribed explicitly&apos;, function () {
+        var e1 = hot(&apos;-1-2-3-#          &apos;);
+        var e1subs = &apos;^      !          &apos;;
+        var e2 = hot(&apos;---3-4-5-6-7-8-9-|&apos;);
+        var e2subs = &apos;       ^    !     &apos;;
+        var expected = &apos;-1-2-3-5-6-7-     &apos;;
+        var unsub = &apos;            !     &apos;;
+        var result = e1.catch(function () { return e2; });
+        expectObservable(result, unsub).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should unsubscribe from a caught cold caught observable when unsubscribed explicitly&apos;, function () {
+        var e1 = hot(&apos;-1-2-3-#          &apos;);
+        var e1subs = &apos;^      !          &apos;;
+        var e2 = cold(&apos;5-6-7-8-9-|&apos;);
+        var e2subs = &apos;       ^    !     &apos;;
+        var expected = &apos;-1-2-3-5-6-7-     &apos;;
+        var unsub = &apos;            !     &apos;;
+        var result = e1.catch(function () { return e2; });
+        expectObservable(result, unsub).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
     it(&apos;should catch error and replace it with a hot Observable&apos;, function () {
         var e1 = hot(&apos;--a--b--#          &apos;);

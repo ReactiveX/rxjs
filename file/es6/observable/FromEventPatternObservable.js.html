@@ -70,7 +70,8 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/observable/FromEventPatternObservable.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Observable } from &apos;../Observable&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { isFunction } from &apos;../util/isFunction&apos;;
+import { Observable } from &apos;../Observable&apos;;
 import { Subscription } from &apos;../Subscription&apos;;
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -120,9 +121,10 @@ export class FromEventPatternObservable extends Observable {
      * @param {function(handler: Function): any} addHandler A function that takes
      * a `handler` function as argument and attaches it somehow to the actual
      * source of events.
-     * @param {function(handler: Function): void} removeHandler A function that
+     * @param {function(handler: Function, signal?: any): void} [removeHandler] An optional function that
      * takes a `handler` function as argument and removes it in case it was
-     * previously attached using `addHandler`.
+     * previously attached using `addHandler`. if addHandler returns signal to teardown when remove,
+     * removeHandler function will forward it.
      * @param {function(...args: any): T} [selector] An optional function to
      * post-process results. It takes the arguments from the event handler and
      * should return a single value.
@@ -139,10 +141,13 @@ export class FromEventPatternObservable extends Observable {
         const handler = !!this.selector ? (...args) =&gt; {
             this._callSelector(subscriber, args);
         } : function (e) { subscriber.next(e); };
-        this._callAddHandler(handler, subscriber);
+        const retValue = this._callAddHandler(handler, subscriber);
+        if (!isFunction(removeHandler)) {
+            return;
+        }
         subscriber.add(new Subscription(() =&gt; {
             //TODO: determine whether or not to forward to error handler
-            removeHandler(handler);
+            removeHandler(handler, retValue);
         }));
     }
     _callSelector(subscriber, args) {
@@ -156,7 +161,7 @@ export class FromEventPatternObservable extends Observable {
     }
     _callAddHandler(handler, errorSubscriber) {
         try {
-            this.addHandler(handler);
+            return this.addHandler(handler) || null;
         }
         catch (e) {
             errorSubscriber.error(e);

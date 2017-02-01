@@ -110,7 +110,36 @@ export class WebSocketSubject extends AnonymousSubject {
         return JSON.parse(e.data);
     }
     /**
-     * @param urlConfigOrSource
+     * Wrapper around the w3c-compatible WebSocket object provided by the browser.
+     *
+     * @example &lt;caption&gt;Wraps browser WebSocket&lt;/caption&gt;
+     *
+     * let subject = Observable.webSocket(&apos;ws://localhost:8081&apos;);
+     * subject.subscribe(
+     *    (msg) =&gt; console.log(&apos;message received: &apos; + msg),
+     *    (err) =&gt; console.log(err),
+     *    () =&gt; console.log(&apos;complete&apos;)
+     *  );
+     * subject.next(JSON.stringify({ op: &apos;hello&apos; }));
+     *
+     * @example &lt;caption&gt;Wraps WebSocket from nodejs-websocket (using node.js)&lt;/caption&gt;
+     *
+     * import { w3cwebsocket } from &apos;websocket&apos;;
+     *
+     * let socket = new WebSocketSubject({
+     *   url: &apos;ws://localhost:8081&apos;,
+     *   WebSocketCtor: w3cwebsocket
+     * });
+     *
+     * let subject = Observable.webSocket(&apos;ws://localhost:8081&apos;);
+     * subject.subscribe(
+     *    (msg) =&gt; console.log(&apos;message received: &apos; + msg),
+     *    (err) =&gt; console.log(err),
+     *    () =&gt; console.log(&apos;complete&apos;)
+     *  );
+     * subject.next(JSON.stringify({ op: &apos;hello&apos; }));
+     *
+     * @param {string | WebSocketSubjectConfig} urlConfigOrSource the source of the websocket as an url or a structure defining the websocket object
      * @return {WebSocketSubject}
      * @static true
      * @name webSocket

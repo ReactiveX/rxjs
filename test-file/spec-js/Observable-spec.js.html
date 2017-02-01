@@ -98,6 +98,17 @@ describe(&apos;Observable&apos;, function () {
         });
         source.subscribe(function (x) { chai_1.expect(x).to.equal(1); }, null, done);
     });
+    it(&apos;should send errors thrown in the constructor down the error path&apos;, function (done) {
+        new Observable(function (observer) {
+            throw new Error(&apos;this should be handled&apos;);
+        })
+            .subscribe({
+            error: function (err) {
+                chai_1.expect(err).to.deep.equal(new Error(&apos;this should be handled&apos;));
+                done();
+            }
+        });
+    });
     describe(&apos;forEach&apos;, function () {
         it(&apos;should iterate and return a Promise&apos;, function (done) {
             var expected = [1, 2, 3];
@@ -568,6 +579,17 @@ describe(&apos;Observable.create&apos;, function () {
             //noop
         });
         chai_1.expect(called).to.be.true;
+    });
+    it(&apos;should send errors thrown in the passed function down the error path&apos;, function (done) {
+        Observable.create(function (observer) {
+            throw new Error(&apos;this should be handled&apos;);
+        })
+            .subscribe({
+            error: function (err) {
+                chai_1.expect(err).to.deep.equal(new Error(&apos;this should be handled&apos;));
+                done();
+            }
+        });
     });
 });
 /** @test {Observable} */

@@ -108,7 +108,7 @@
  * @see {@link mergeScan}
  * @see {@link scan}
  *
- * @param {function(acc: R, value: T): R} accumulator The accumulator function
+ * @param {function(acc: R, value: T, index: number): R} accumulator The accumulator function
  * called on each source value.
  * @param {R} [seed] The initial accumulation value.
  * @return {Observable&lt;R&gt;} An observable of the accumulated values.
@@ -149,8 +149,12 @@ export class ReduceSubscriber extends Subscriber {
         super(destination);
         this.accumulator = accumulator;
         this.hasSeed = hasSeed;
+        this.index = 0;
         this.hasValue = false;
         this.acc = seed;
+        if (!this.hasSeed) {
+            this.index++;
+        }
     }
     _next(value) {
         if (this.hasValue || (this.hasValue = this.hasSeed)) {
@@ -164,7 +168,7 @@ export class ReduceSubscriber extends Subscriber {
     _tryReduce(value) {
         let result;
         try {
-            result = this.accumulator(this.acc, value);
+            result = this.accumulator(this.acc, value, this.index++);
         }
         catch (err) {
             this.destination.error(err);

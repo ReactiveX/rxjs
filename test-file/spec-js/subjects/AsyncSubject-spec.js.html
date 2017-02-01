@@ -181,6 +181,7 @@ describe(&apos;AsyncSubject&apos;, function () {
         chai_1.expect(observer.results).to.deep.equal([&apos;done&apos;]);
         subscription.unsubscribe();
         observer.results = [];
+        subject.error(new Error(&apos;&apos;));
         subject.subscribe(observer);
         chai_1.expect(observer.results).to.deep.equal([&apos;done&apos;]);
     });
@@ -198,13 +199,28 @@ describe(&apos;AsyncSubject&apos;, function () {
         var expected = new Error(&apos;bad&apos;);
         var subject = new AsyncSubject();
         var observer = new TestObserver();
-        subject.subscribe(observer);
+        var subscription = subject.subscribe(observer);
         subject.next(1);
         chai_1.expect(observer.results).to.deep.equal([]);
         subject.error(expected);
         chai_1.expect(observer.results).to.deep.equal([expected]);
-        subject.unsubscribe();
+        subscription.unsubscribe();
         observer.results = [];
+        subject.subscribe(observer);
+        chai_1.expect(observer.results).to.deep.equal([expected]);
+    });
+    it(&apos;should not allow send complete after error&apos;, function () {
+        var expected = new Error(&apos;bad&apos;);
+        var subject = new AsyncSubject();
+        var observer = new TestObserver();
+        var subscription = subject.subscribe(observer);
+        subject.next(1);
+        chai_1.expect(observer.results).to.deep.equal([]);
+        subject.error(expected);
+        chai_1.expect(observer.results).to.deep.equal([expected]);
+        subscription.unsubscribe();
+        observer.results = [];
+        subject.complete();
         subject.subscribe(observer);
         chai_1.expect(observer.results).to.deep.equal([expected]);
     });

@@ -76,7 +76,7 @@ import { isFunction } from &apos;../util/isFunction&apos;;
 import { errorObject } from &apos;../util/errorObject&apos;;
 import { Subscription } from &apos;../Subscription&apos;;
 const toString = Object.prototype.toString;
-function isNodeStyleEventEmmitter(sourceObj) {
+function isNodeStyleEventEmitter(sourceObj) {
     return !!sourceObj &amp;&amp; typeof sourceObj.addListener === &apos;function&apos; &amp;&amp; typeof sourceObj.removeListener === &apos;function&apos;;
 }
 function isJQueryStyleEventEmitter(sourceObj) {
@@ -169,7 +169,7 @@ export class FromEventObservable extends Observable {
             sourceObj.on(eventName, handler);
             unsubscribe = () =&gt; source.off(eventName, handler);
         }
-        else if (isNodeStyleEventEmmitter(sourceObj)) {
+        else if (isNodeStyleEventEmitter(sourceObj)) {
             const source = sourceObj;
             sourceObj.addListener(eventName, handler);
             unsubscribe = () =&gt; source.removeListener(eventName, handler);

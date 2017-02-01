@@ -72,7 +72,9 @@
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/observables/fromEventPattern-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
 var chai_1 = require(&apos;chai&apos;);
+var sinon = require(&apos;sinon&apos;);
 var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var noop_1 = require(&apos;../../dist/cjs/util/noop&apos;);
 var Observable = Rx.Observable;
 /** @test {fromEventPattern} */
 describe(&apos;Observable.fromEventPattern&apos;, function () {
@@ -84,49 +86,44 @@ describe(&apos;Observable.fromEventPattern&apos;, function () {
                 .concat(Observable.never())
                 .subscribe(h);
         }
-        var e1 = Observable.fromEventPattern(addHandler, function () { return void 0; });
+        var e1 = Observable.fromEventPattern(addHandler);
         var expected = &apos;-----x-x---&apos;;
         expectObservable(e1).toBe(expected, { x: &apos;ev&apos; });
     });
     it(&apos;should call addHandler on subscription&apos;, function () {
-        var addHandlerCalledWith;
-        var addHandler = function (h) {
-            addHandlerCalledWith = h;
-        };
-        var removeHandler = function () {
-            //noop
-        };
-        Observable.fromEventPattern(addHandler, removeHandler)
-            .subscribe(function () {
-            //noop
-        });
-        chai_1.expect(addHandlerCalledWith).to.be.a(&apos;function&apos;);
+        var addHandler = sinon.spy();
+        Observable.fromEventPattern(addHandler, noop_1.noop).subscribe(noop_1.noop);
+        var call = addHandler.getCall(0);
+        chai_1.expect(addHandler).calledOnce;
+        chai_1.expect(call.args[0]).to.be.a(&apos;function&apos;);
     });
     it(&apos;should call removeHandler on unsubscription&apos;, function () {
-        var removeHandlerCalledWith;
-        var addHandler = function () {
-            //noop
-        };
-        var removeHandler = function (h) {
-            removeHandlerCalledWith = h;
-        };
-        var subscription = Observable.fromEventPattern(addHandler, removeHandler)
-            .subscribe(function () {
-            //noop
-        });
-        subscription.unsubscribe();
-        chai_1.expect(removeHandlerCalledWith).to.be.a(&apos;function&apos;);
+        var removeHandler = sinon.spy();
+        Observable.fromEventPattern(noop_1.noop, removeHandler).subscribe(noop_1.noop).unsubscribe();
+        var call = removeHandler.getCall(0);
+        chai_1.expect(removeHandler).calledOnce;
+        chai_1.expect(call.args[0]).to.be.a(&apos;function&apos;);
     });
-    it(&apos;should send errors in addHandler down the error path&apos;, function () {
+    it(&apos;should work without optional removeHandler&apos;, function () {
+        var addHandler = sinon.spy();
+        Observable.fromEventPattern(addHandler).subscribe(noop_1.noop);
+        chai_1.expect(addHandler).calledOnce;
+    });
+    it(&apos;should deliver return value of addHandler to removeHandler as signal&apos;, function () {
+        var expected = { signal: true };
+        var addHandler = function () { return expected; };
+        var removeHandler = sinon.spy();
+        Observable.fromEventPattern(addHandler, removeHandler).subscribe(noop_1.noop).unsubscribe();
+        var call = removeHandler.getCall(0);
+        chai_1.expect(call).calledWith(sinon.match.any, expected);
+    });
+    it(&apos;should send errors in addHandler down the error path&apos;, function (done) {
         Observable.fromEventPattern(function (h) {
             throw &apos;bad&apos;;
-        }, function () {
-            //noop
-        }).subscribe(function () {
-            //noop
-        }, function (err) {
+        }, noop_1.noop).subscribe(function () { return done(new Error(&apos;should not be called&apos;)); }, function (err) {
             chai_1.expect(err).to.equal(&apos;bad&apos;);
-        });
+            done();
+        }, function () { return done(new Error(&apos;should not be called&apos;)); });
     });
     it(&apos;should accept a selector that maps outgoing values&apos;, function (done) {
         var target;

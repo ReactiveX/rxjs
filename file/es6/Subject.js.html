@@ -151,6 +151,14 @@ export class Subject extends Observable {
         this.closed = true;
         this.observers = null;
     }
+    _trySubscribe(subscriber) {
+        if (this.closed) {
+            throw new ObjectUnsubscribedError();
+        }
+        else {
+            return super._trySubscribe(subscriber);
+        }
+    }
     _subscribe(subscriber) {
         if (this.closed) {
             throw new ObjectUnsubscribedError();

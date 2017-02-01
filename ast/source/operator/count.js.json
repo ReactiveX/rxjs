@@ -94,10 +94,10 @@
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * Counts the number of emissions on the source and emits that number when the\n * source completes.\n *\n * <span class=\"informal\">Tells how many values were emitted, when the source\n * completes.</span>\n *\n * <img src=\"./img/count.png\" width=\"100%\">\n *\n * `count` transforms an Observable that emits values into an Observable that\n * emits a single value that represents the number of values emitted by the\n * source Observable. If the source Observable terminates with an error, `count`\n * will pass this error notification along without emitting an value first. If\n * the source Observable does not terminate at all, `count` will neither emit\n * a value nor terminate. This operator takes an optional `predicate` function\n * as argument, in which case the output emission will represent the number of\n * source values that matched `true` with the `predicate`.\n *\n * @example <caption>Counts how many seconds have passed before the first click happened</caption>\n * var seconds = Rx.Observable.interval(1000);\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var secondsBeforeClick = seconds.takeUntil(clicks);\n * var result = secondsBeforeClick.count();\n * result.subscribe(x => console.log(x));\n *\n * @example <caption>Counts how many odd numbers are there between 1 and 7</caption>\n * var numbers = Rx.Observable.range(1, 7);\n * var result = numbers.count(i => i % 2 === 1);\n * result.subscribe(x => console.log(x));\n *\n * // Results in:\n * // 4\n *\n * @see {@link max}\n * @see {@link min}\n * @see {@link reduce}\n *\n * @param {function(value: T, i: number, source: Observable<T>): boolean} [predicate] A\n * boolean function to select what values are to be counted. It is provided with\n * arguments of:\n * - `value`: the value from the source Observable.\n * - `index`: the (zero-based) \"index\" of the value from the source Observable.\n * - `source`: the source Observable instance itself.\n * @return {Observable} An Observable of one number that represents the count as\n * described above.\n * @method count\n * @owner Observable\n ",
+          "value": "*\n * Counts the number of emissions on the source and emits that number when the\n * source completes.\n *\n * <span class=\"informal\">Tells how many values were emitted, when the source\n * completes.</span>\n *\n * <img src=\"./img/count.png\" width=\"100%\">\n *\n * `count` transforms an Observable that emits values into an Observable that\n * emits a single value that represents the number of values emitted by the\n * source Observable. If the source Observable terminates with an error, `count`\n * will pass this error notification along without emitting a value first. If\n * the source Observable does not terminate at all, `count` will neither emit\n * a value nor terminate. This operator takes an optional `predicate` function\n * as argument, in which case the output emission will represent the number of\n * source values that matched `true` with the `predicate`.\n *\n * @example <caption>Counts how many seconds have passed before the first click happened</caption>\n * var seconds = Rx.Observable.interval(1000);\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var secondsBeforeClick = seconds.takeUntil(clicks);\n * var result = secondsBeforeClick.count();\n * result.subscribe(x => console.log(x));\n *\n * @example <caption>Counts how many odd numbers are there between 1 and 7</caption>\n * var numbers = Rx.Observable.range(1, 7);\n * var result = numbers.count(i => i % 2 === 1);\n * result.subscribe(x => console.log(x));\n *\n * // Results in:\n * // 4\n *\n * @see {@link max}\n * @see {@link min}\n * @see {@link reduce}\n *\n * @param {function(value: T, i: number, source: Observable<T>): boolean} [predicate] A\n * boolean function to select what values are to be counted. It is provided with\n * arguments of:\n * - `value`: the value from the source Observable.\n * - `index`: the (zero-based) \"index\" of the value from the source Observable.\n * - `source`: the source Observable instance itself.\n * @return {Observable} An Observable of one number that represents the count as\n * described above.\n * @method count\n * @owner Observable\n ",
           "range": [
             44,
-            2094
+            2093
           ],
           "loc": {
             "start": {
@@ -120,8 +120,8 @@
           "type": "Identifier",
           "name": "count",
           "range": [
-            2111,
-            2116
+            2110,
+            2115
           ],
           "loc": {
             "start": {
@@ -139,8 +139,8 @@
             "type": "Identifier",
             "name": "predicate",
             "range": [
-              2117,
-              2126
+              2116,
+              2125
             ],
             "loc": {
               "start": {
@@ -167,8 +167,8 @@
                   "object": {
                     "type": "ThisExpression",
                     "range": [
-                      2141,
-                      2145
+                      2140,
+                      2144
                     ],
                     "loc": {
                       "start": {
@@ -185,8 +185,8 @@
                     "type": "Identifier",
                     "name": "lift",
                     "range": [
-                      2146,
-                      2150
+                      2145,
+                      2149
                     ],
                     "loc": {
                       "start": {
@@ -200,8 +200,8 @@
                     }
                   },
                   "range": [
-                    2141,
-                    2150
+                    2140,
+                    2149
                   ],
                   "loc": {
                     "start": {
@@ -221,8 +221,8 @@
                       "type": "Identifier",
                       "name": "CountOperator",
                       "range": [
-                        2155,
-                        2168
+                        2154,
+                        2167
                       ],
                       "loc": {
                         "start": {
@@ -240,8 +240,8 @@
                         "type": "Identifier",
                         "name": "predicate",
                         "range": [
-                          2169,
-                          2178
+                          2168,
+                          2177
                         ],
                         "loc": {
                           "start": {
@@ -257,8 +257,8 @@
                       {
                         "type": "ThisExpression",
                         "range": [
-                          2180,
-                          2184
+                          2179,
+                          2183
                         ],
                         "loc": {
                           "start": {
@@ -273,8 +273,8 @@
                       }
                     ],
                     "range": [
-                      2151,
-                      2185
+                      2150,
+                      2184
                     ],
                     "loc": {
                       "start": {
@@ -289,8 +289,8 @@
                   }
                 ],
                 "range": [
-                  2141,
-                  2186
+                  2140,
+                  2185
                 ],
                 "loc": {
                   "start": {
@@ -304,8 +304,8 @@
                 }
               },
               "range": [
-                2134,
-                2187
+                2133,
+                2186
               ],
               "loc": {
                 "start": {
@@ -320,8 +320,8 @@
             }
           ],
           "range": [
-            2128,
-            2189
+            2127,
+            2188
           ],
           "loc": {
             "start": {
@@ -337,8 +337,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          2102,
-          2189
+          2101,
+          2188
         ],
         "loc": {
           "start": {
@@ -353,10 +353,10 @@
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * Counts the number of emissions on the source and emits that number when the\n * source completes.\n *\n * <span class=\"informal\">Tells how many values were emitted, when the source\n * completes.</span>\n *\n * <img src=\"./img/count.png\" width=\"100%\">\n *\n * `count` transforms an Observable that emits values into an Observable that\n * emits a single value that represents the number of values emitted by the\n * source Observable. If the source Observable terminates with an error, `count`\n * will pass this error notification along without emitting an value first. If\n * the source Observable does not terminate at all, `count` will neither emit\n * a value nor terminate. This operator takes an optional `predicate` function\n * as argument, in which case the output emission will represent the number of\n * source values that matched `true` with the `predicate`.\n *\n * @example <caption>Counts how many seconds have passed before the first click happened</caption>\n * var seconds = Rx.Observable.interval(1000);\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var secondsBeforeClick = seconds.takeUntil(clicks);\n * var result = secondsBeforeClick.count();\n * result.subscribe(x => console.log(x));\n *\n * @example <caption>Counts how many odd numbers are there between 1 and 7</caption>\n * var numbers = Rx.Observable.range(1, 7);\n * var result = numbers.count(i => i % 2 === 1);\n * result.subscribe(x => console.log(x));\n *\n * // Results in:\n * // 4\n *\n * @see {@link max}\n * @see {@link min}\n * @see {@link reduce}\n *\n * @param {function(value: T, i: number, source: Observable<T>): boolean} [predicate] A\n * boolean function to select what values are to be counted. It is provided with\n * arguments of:\n * - `value`: the value from the source Observable.\n * - `index`: the (zero-based) \"index\" of the value from the source Observable.\n * - `source`: the source Observable instance itself.\n * @return {Observable} An Observable of one number that represents the count as\n * described above.\n * @method count\n * @owner Observable\n ",
+            "value": "*\n * Counts the number of emissions on the source and emits that number when the\n * source completes.\n *\n * <span class=\"informal\">Tells how many values were emitted, when the source\n * completes.</span>\n *\n * <img src=\"./img/count.png\" width=\"100%\">\n *\n * `count` transforms an Observable that emits values into an Observable that\n * emits a single value that represents the number of values emitted by the\n * source Observable. If the source Observable terminates with an error, `count`\n * will pass this error notification along without emitting a value first. If\n * the source Observable does not terminate at all, `count` will neither emit\n * a value nor terminate. This operator takes an optional `predicate` function\n * as argument, in which case the output emission will represent the number of\n * source values that matched `true` with the `predicate`.\n *\n * @example <caption>Counts how many seconds have passed before the first click happened</caption>\n * var seconds = Rx.Observable.interval(1000);\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var secondsBeforeClick = seconds.takeUntil(clicks);\n * var result = secondsBeforeClick.count();\n * result.subscribe(x => console.log(x));\n *\n * @example <caption>Counts how many odd numbers are there between 1 and 7</caption>\n * var numbers = Rx.Observable.range(1, 7);\n * var result = numbers.count(i => i % 2 === 1);\n * result.subscribe(x => console.log(x));\n *\n * // Results in:\n * // 4\n *\n * @see {@link max}\n * @see {@link min}\n * @see {@link reduce}\n *\n * @param {function(value: T, i: number, source: Observable<T>): boolean} [predicate] A\n * boolean function to select what values are to be counted. It is provided with\n * arguments of:\n * - `value`: the value from the source Observable.\n * - `index`: the (zero-based) \"index\" of the value from the source Observable.\n * - `source`: the source Observable instance itself.\n * @return {Observable} An Observable of one number that represents the count as\n * described above.\n * @method count\n * @owner Observable\n ",
             "range": [
               44,
-              2094
+              2093
             ],
             "loc": {
               "start": {
@@ -375,8 +375,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        2095,
-        2189
+        2094,
+        2188
       ],
       "loc": {
         "start": {
@@ -391,10 +391,10 @@
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * Counts the number of emissions on the source and emits that number when the\n * source completes.\n *\n * <span class=\"informal\">Tells how many values were emitted, when the source\n * completes.</span>\n *\n * <img src=\"./img/count.png\" width=\"100%\">\n *\n * `count` transforms an Observable that emits values into an Observable that\n * emits a single value that represents the number of values emitted by the\n * source Observable. If the source Observable terminates with an error, `count`\n * will pass this error notification along without emitting an value first. If\n * the source Observable does not terminate at all, `count` will neither emit\n * a value nor terminate. This operator takes an optional `predicate` function\n * as argument, in which case the output emission will represent the number of\n * source values that matched `true` with the `predicate`.\n *\n * @example <caption>Counts how many seconds have passed before the first click happened</caption>\n * var seconds = Rx.Observable.interval(1000);\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var secondsBeforeClick = seconds.takeUntil(clicks);\n * var result = secondsBeforeClick.count();\n * result.subscribe(x => console.log(x));\n *\n * @example <caption>Counts how many odd numbers are there between 1 and 7</caption>\n * var numbers = Rx.Observable.range(1, 7);\n * var result = numbers.count(i => i % 2 === 1);\n * result.subscribe(x => console.log(x));\n *\n * // Results in:\n * // 4\n *\n * @see {@link max}\n * @see {@link min}\n * @see {@link reduce}\n *\n * @param {function(value: T, i: number, source: Observable<T>): boolean} [predicate] A\n * boolean function to select what values are to be counted. It is provided with\n * arguments of:\n * - `value`: the value from the source Observable.\n * - `index`: the (zero-based) \"index\" of the value from the source Observable.\n * - `source`: the source Observable instance itself.\n * @return {Observable} An Observable of one number that represents the count as\n * described above.\n * @method count\n * @owner Observable\n ",
+          "value": "*\n * Counts the number of emissions on the source and emits that number when the\n * source completes.\n *\n * <span class=\"informal\">Tells how many values were emitted, when the source\n * completes.</span>\n *\n * <img src=\"./img/count.png\" width=\"100%\">\n *\n * `count` transforms an Observable that emits values into an Observable that\n * emits a single value that represents the number of values emitted by the\n * source Observable. If the source Observable terminates with an error, `count`\n * will pass this error notification along without emitting a value first. If\n * the source Observable does not terminate at all, `count` will neither emit\n * a value nor terminate. This operator takes an optional `predicate` function\n * as argument, in which case the output emission will represent the number of\n * source values that matched `true` with the `predicate`.\n *\n * @example <caption>Counts how many seconds have passed before the first click happened</caption>\n * var seconds = Rx.Observable.interval(1000);\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var secondsBeforeClick = seconds.takeUntil(clicks);\n * var result = secondsBeforeClick.count();\n * result.subscribe(x => console.log(x));\n *\n * @example <caption>Counts how many odd numbers are there between 1 and 7</caption>\n * var numbers = Rx.Observable.range(1, 7);\n * var result = numbers.count(i => i % 2 === 1);\n * result.subscribe(x => console.log(x));\n *\n * // Results in:\n * // 4\n *\n * @see {@link max}\n * @see {@link min}\n * @see {@link reduce}\n *\n * @param {function(value: T, i: number, source: Observable<T>): boolean} [predicate] A\n * boolean function to select what values are to be counted. It is provided with\n * arguments of:\n * - `value`: the value from the source Observable.\n * - `index`: the (zero-based) \"index\" of the value from the source Observable.\n * - `source`: the source Observable instance itself.\n * @return {Observable} An Observable of one number that represents the count as\n * described above.\n * @method count\n * @owner Observable\n ",
           "range": [
             44,
-            2094
+            2093
           ],
           "loc": {
             "start": {
@@ -415,8 +415,8 @@
         "type": "Identifier",
         "name": "CountOperator",
         "range": [
-          2196,
-          2209
+          2195,
+          2208
         ],
         "loc": {
           "start": {
@@ -439,8 +439,8 @@
               "type": "Identifier",
               "name": "constructor",
               "range": [
-                2216,
-                2227
+                2215,
+                2226
               ],
               "loc": {
                 "start": {
@@ -461,8 +461,8 @@
                   "type": "Identifier",
                   "name": "predicate",
                   "range": [
-                    2228,
-                    2237
+                    2227,
+                    2236
                   ],
                   "loc": {
                     "start": {
@@ -479,8 +479,8 @@
                   "type": "Identifier",
                   "name": "source",
                   "range": [
-                    2239,
-                    2245
+                    2238,
+                    2244
                   ],
                   "loc": {
                     "start": {
@@ -508,8 +508,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            2257,
-                            2261
+                            2256,
+                            2260
                           ],
                           "loc": {
                             "start": {
@@ -526,8 +526,8 @@
                           "type": "Identifier",
                           "name": "predicate",
                           "range": [
-                            2262,
-                            2271
+                            2261,
+                            2270
                           ],
                           "loc": {
                             "start": {
@@ -541,8 +541,8 @@
                           }
                         },
                         "range": [
-                          2257,
-                          2271
+                          2256,
+                          2270
                         ],
                         "loc": {
                           "start": {
@@ -559,8 +559,8 @@
                         "type": "Identifier",
                         "name": "predicate",
                         "range": [
-                          2274,
-                          2283
+                          2273,
+                          2282
                         ],
                         "loc": {
                           "start": {
@@ -574,8 +574,8 @@
                         }
                       },
                       "range": [
-                        2257,
-                        2283
+                        2256,
+                        2282
                       ],
                       "loc": {
                         "start": {
@@ -589,8 +589,8 @@
                       }
                     },
                     "range": [
-                      2257,
-                      2284
+                      2256,
+                      2283
                     ],
                     "loc": {
                       "start": {
@@ -614,8 +614,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            2293,
-                            2297
+                            2292,
+                            2296
                           ],
                           "loc": {
                             "start": {
@@ -632,8 +632,8 @@
                           "type": "Identifier",
                           "name": "source",
                           "range": [
-                            2298,
-                            2304
+                            2297,
+                            2303
                           ],
                           "loc": {
                             "start": {
@@ -647,8 +647,8 @@
                           }
                         },
                         "range": [
-                          2293,
-                          2304
+                          2292,
+                          2303
                         ],
                         "loc": {
                           "start": {
@@ -665,8 +665,8 @@
                         "type": "Identifier",
                         "name": "source",
                         "range": [
-                          2307,
-                          2313
+                          2306,
+                          2312
                         ],
                         "loc": {
                           "start": {
@@ -680,8 +680,8 @@
                         }
                       },
                       "range": [
-                        2293,
-                        2313
+                        2292,
+                        2312
                       ],
                       "loc": {
                         "start": {
@@ -695,8 +695,8 @@
                       }
                     },
                     "range": [
-                      2293,
-                      2314
+                      2292,
+                      2313
                     ],
                     "loc": {
                       "start": {
@@ -711,8 +711,8 @@
                   }
                 ],
                 "range": [
-                  2247,
-                  2320
+                  2246,
+                  2319
                 ],
                 "loc": {
                   "start": {
@@ -728,8 +728,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                2227,
-                2320
+                2226,
+                2319
               ],
               "loc": {
                 "start": {
@@ -745,8 +745,8 @@
             "kind": "constructor",
             "computed": false,
             "range": [
-              2216,
-              2320
+              2215,
+              2319
             ],
             "loc": {
               "start": {
@@ -766,8 +766,8 @@
               "type": "Identifier",
               "name": "call",
               "range": [
-                2325,
-                2329
+                2324,
+                2328
               ],
               "loc": {
                 "start": {
@@ -788,8 +788,8 @@
                   "type": "Identifier",
                   "name": "subscriber",
                   "range": [
-                    2330,
-                    2340
+                    2329,
+                    2339
                   ],
                   "loc": {
                     "start": {
@@ -806,8 +806,8 @@
                   "type": "Identifier",
                   "name": "source",
                   "range": [
-                    2342,
-                    2348
+                    2341,
+                    2347
                   ],
                   "loc": {
                     "start": {
@@ -835,8 +835,8 @@
                           "type": "Identifier",
                           "name": "source",
                           "range": [
-                            2367,
-                            2373
+                            2366,
+                            2372
                           ],
                           "loc": {
                             "start": {
@@ -853,8 +853,8 @@
                           "type": "Identifier",
                           "name": "subscribe",
                           "range": [
-                            2374,
-                            2383
+                            2373,
+                            2382
                           ],
                           "loc": {
                             "start": {
@@ -868,8 +868,8 @@
                           }
                         },
                         "range": [
-                          2367,
-                          2383
+                          2366,
+                          2382
                         ],
                         "loc": {
                           "start": {
@@ -889,8 +889,8 @@
                             "type": "Identifier",
                             "name": "CountSubscriber",
                             "range": [
-                              2388,
-                              2403
+                              2387,
+                              2402
                             ],
                             "loc": {
                               "start": {
@@ -908,8 +908,8 @@
                               "type": "Identifier",
                               "name": "subscriber",
                               "range": [
-                                2404,
-                                2414
+                                2403,
+                                2413
                               ],
                               "loc": {
                                 "start": {
@@ -928,8 +928,8 @@
                               "object": {
                                 "type": "ThisExpression",
                                 "range": [
-                                  2416,
-                                  2420
+                                  2415,
+                                  2419
                                 ],
                                 "loc": {
                                   "start": {
@@ -946,8 +946,8 @@
                                 "type": "Identifier",
                                 "name": "predicate",
                                 "range": [
-                                  2421,
-                                  2430
+                                  2420,
+                                  2429
                                 ],
                                 "loc": {
                                   "start": {
@@ -961,8 +961,8 @@
                                 }
                               },
                               "range": [
-                                2416,
-                                2430
+                                2415,
+                                2429
                               ],
                               "loc": {
                                 "start": {
@@ -981,8 +981,8 @@
                               "object": {
                                 "type": "ThisExpression",
                                 "range": [
-                                  2432,
-                                  2436
+                                  2431,
+                                  2435
                                 ],
                                 "loc": {
                                   "start": {
@@ -999,8 +999,8 @@
                                 "type": "Identifier",
                                 "name": "source",
                                 "range": [
-                                  2437,
-                                  2443
+                                  2436,
+                                  2442
                                 ],
                                 "loc": {
                                   "start": {
@@ -1014,8 +1014,8 @@
                                 }
                               },
                               "range": [
-                                2432,
-                                2443
+                                2431,
+                                2442
                               ],
                               "loc": {
                                 "start": {
@@ -1030,8 +1030,8 @@
                             }
                           ],
                           "range": [
-                            2384,
-                            2444
+                            2383,
+                            2443
                           ],
                           "loc": {
                             "start": {
@@ -1046,8 +1046,8 @@
                         }
                       ],
                       "range": [
-                        2367,
-                        2445
+                        2366,
+                        2444
                       ],
                       "loc": {
                         "start": {
@@ -1061,8 +1061,8 @@
                       }
                     },
                     "range": [
-                      2360,
-                      2446
+                      2359,
+                      2445
                     ],
                     "loc": {
                       "start": {
@@ -1077,8 +1077,8 @@
                   }
                 ],
                 "range": [
-                  2350,
-                  2452
+                  2349,
+                  2451
                 ],
                 "loc": {
                   "start": {
@@ -1094,8 +1094,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                2329,
-                2452
+                2328,
+                2451
               ],
               "loc": {
                 "start": {
@@ -1111,8 +1111,8 @@
             "kind": "method",
             "computed": false,
             "range": [
-              2325,
-              2452
+              2324,
+              2451
             ],
             "loc": {
               "start": {
@@ -1128,8 +1128,8 @@
           }
         ],
         "range": [
-          2210,
-          2454
+          2209,
+          2453
         ],
         "loc": {
           "start": {
@@ -1143,8 +1143,8 @@
         }
       },
       "range": [
-        2190,
-        2454
+        2189,
+        2453
       ],
       "loc": {
         "start": {
@@ -1161,8 +1161,8 @@
           "type": "Block",
           "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
           "range": [
-            2455,
-            2546
+            2454,
+            2545
           ],
           "loc": {
             "start": {
@@ -1183,8 +1183,8 @@
         "type": "Identifier",
         "name": "CountSubscriber",
         "range": [
-          2553,
-          2568
+          2552,
+          2567
         ],
         "loc": {
           "start": {
@@ -1201,8 +1201,8 @@
         "type": "Identifier",
         "name": "Subscriber",
         "range": [
-          2577,
-          2587
+          2576,
+          2586
         ],
         "loc": {
           "start": {
@@ -1224,8 +1224,8 @@
               "type": "Identifier",
               "name": "constructor",
               "range": [
-                2594,
-                2605
+                2593,
+                2604
               ],
               "loc": {
                 "start": {
@@ -1246,8 +1246,8 @@
                   "type": "Identifier",
                   "name": "destination",
                   "range": [
-                    2606,
-                    2617
+                    2605,
+                    2616
                   ],
                   "loc": {
                     "start": {
@@ -1264,8 +1264,8 @@
                   "type": "Identifier",
                   "name": "predicate",
                   "range": [
-                    2619,
-                    2628
+                    2618,
+                    2627
                   ],
                   "loc": {
                     "start": {
@@ -1282,8 +1282,8 @@
                   "type": "Identifier",
                   "name": "source",
                   "range": [
-                    2630,
-                    2636
+                    2629,
+                    2635
                   ],
                   "loc": {
                     "start": {
@@ -1307,8 +1307,8 @@
                       "callee": {
                         "type": "Super",
                         "range": [
-                          2648,
-                          2653
+                          2647,
+                          2652
                         ],
                         "loc": {
                           "start": {
@@ -1326,8 +1326,8 @@
                           "type": "Identifier",
                           "name": "destination",
                           "range": [
-                            2654,
-                            2665
+                            2653,
+                            2664
                           ],
                           "loc": {
                             "start": {
@@ -1342,8 +1342,8 @@
                         }
                       ],
                       "range": [
-                        2648,
-                        2666
+                        2647,
+                        2665
                       ],
                       "loc": {
                         "start": {
@@ -1357,8 +1357,8 @@
                       }
                     },
                     "range": [
-                      2648,
-                      2667
+                      2647,
+                      2666
                     ],
                     "loc": {
                       "start": {
@@ -1382,8 +1382,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            2676,
-                            2680
+                            2675,
+                            2679
                           ],
                           "loc": {
                             "start": {
@@ -1400,8 +1400,8 @@
                           "type": "Identifier",
                           "name": "predicate",
                           "range": [
-                            2681,
-                            2690
+                            2680,
+                            2689
                           ],
                           "loc": {
                             "start": {
@@ -1415,8 +1415,8 @@
                           }
                         },
                         "range": [
-                          2676,
-                          2690
+                          2675,
+                          2689
                         ],
                         "loc": {
                           "start": {
@@ -1433,8 +1433,8 @@
                         "type": "Identifier",
                         "name": "predicate",
                         "range": [
-                          2693,
-                          2702
+                          2692,
+                          2701
                         ],
                         "loc": {
                           "start": {
@@ -1448,8 +1448,8 @@
                         }
                       },
                       "range": [
-                        2676,
-                        2702
+                        2675,
+                        2701
                       ],
                       "loc": {
                         "start": {
@@ -1463,8 +1463,8 @@
                       }
                     },
                     "range": [
-                      2676,
-                      2703
+                      2675,
+                      2702
                     ],
                     "loc": {
                       "start": {
@@ -1488,8 +1488,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            2712,
-                            2716
+                            2711,
+                            2715
                           ],
                           "loc": {
                             "start": {
@@ -1506,8 +1506,8 @@
                           "type": "Identifier",
                           "name": "source",
                           "range": [
-                            2717,
-                            2723
+                            2716,
+                            2722
                           ],
                           "loc": {
                             "start": {
@@ -1521,8 +1521,8 @@
                           }
                         },
                         "range": [
-                          2712,
-                          2723
+                          2711,
+                          2722
                         ],
                         "loc": {
                           "start": {
@@ -1539,8 +1539,8 @@
                         "type": "Identifier",
                         "name": "source",
                         "range": [
-                          2726,
-                          2732
+                          2725,
+                          2731
                         ],
                         "loc": {
                           "start": {
@@ -1554,8 +1554,8 @@
                         }
                       },
                       "range": [
-                        2712,
-                        2732
+                        2711,
+                        2731
                       ],
                       "loc": {
                         "start": {
@@ -1569,8 +1569,8 @@
                       }
                     },
                     "range": [
-                      2712,
-                      2733
+                      2711,
+                      2732
                     ],
                     "loc": {
                       "start": {
@@ -1594,8 +1594,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            2742,
-                            2746
+                            2741,
+                            2745
                           ],
                           "loc": {
                             "start": {
@@ -1612,8 +1612,8 @@
                           "type": "Identifier",
                           "name": "count",
                           "range": [
-                            2747,
-                            2752
+                            2746,
+                            2751
                           ],
                           "loc": {
                             "start": {
@@ -1627,8 +1627,8 @@
                           }
                         },
                         "range": [
-                          2742,
-                          2752
+                          2741,
+                          2751
                         ],
                         "loc": {
                           "start": {
@@ -1646,8 +1646,8 @@
                         "value": 0,
                         "raw": "0",
                         "range": [
-                          2755,
-                          2756
+                          2754,
+                          2755
                         ],
                         "loc": {
                           "start": {
@@ -1661,8 +1661,8 @@
                         }
                       },
                       "range": [
-                        2742,
-                        2756
+                        2741,
+                        2755
                       ],
                       "loc": {
                         "start": {
@@ -1676,8 +1676,8 @@
                       }
                     },
                     "range": [
-                      2742,
-                      2757
+                      2741,
+                      2756
                     ],
                     "loc": {
                       "start": {
@@ -1701,8 +1701,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            2766,
-                            2770
+                            2765,
+                            2769
                           ],
                           "loc": {
                             "start": {
@@ -1719,8 +1719,8 @@
                           "type": "Identifier",
                           "name": "index",
                           "range": [
-                            2771,
-                            2776
+                            2770,
+                            2775
                           ],
                           "loc": {
                             "start": {
@@ -1734,8 +1734,8 @@
                           }
                         },
                         "range": [
-                          2766,
-                          2776
+                          2765,
+                          2775
                         ],
                         "loc": {
                           "start": {
@@ -1753,8 +1753,8 @@
                         "value": 0,
                         "raw": "0",
                         "range": [
-                          2779,
-                          2780
+                          2778,
+                          2779
                         ],
                         "loc": {
                           "start": {
@@ -1768,8 +1768,8 @@
                         }
                       },
                       "range": [
-                        2766,
-                        2780
+                        2765,
+                        2779
                       ],
                       "loc": {
                         "start": {
@@ -1783,8 +1783,8 @@
                       }
                     },
                     "range": [
-                      2766,
-                      2781
+                      2765,
+                      2780
                     ],
                     "loc": {
                       "start": {
@@ -1799,8 +1799,8 @@
                   }
                 ],
                 "range": [
-                  2638,
-                  2787
+                  2637,
+                  2786
                 ],
                 "loc": {
                   "start": {
@@ -1816,8 +1816,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                2605,
-                2787
+                2604,
+                2786
               ],
               "loc": {
                 "start": {
@@ -1833,8 +1833,8 @@
             "kind": "constructor",
             "computed": false,
             "range": [
-              2594,
-              2787
+              2593,
+              2786
             ],
             "loc": {
               "start": {
@@ -1854,8 +1854,8 @@
               "type": "Identifier",
               "name": "_next",
               "range": [
-                2792,
-                2797
+                2791,
+                2796
               ],
               "loc": {
                 "start": {
@@ -1876,8 +1876,8 @@
                   "type": "Identifier",
                   "name": "value",
                   "range": [
-                    2798,
-                    2803
+                    2797,
+                    2802
                   ],
                   "loc": {
                     "start": {
@@ -1902,8 +1902,8 @@
                       "object": {
                         "type": "ThisExpression",
                         "range": [
-                          2819,
-                          2823
+                          2818,
+                          2822
                         ],
                         "loc": {
                           "start": {
@@ -1920,8 +1920,8 @@
                         "type": "Identifier",
                         "name": "predicate",
                         "range": [
-                          2824,
-                          2833
+                          2823,
+                          2832
                         ],
                         "loc": {
                           "start": {
@@ -1935,8 +1935,8 @@
                         }
                       },
                       "range": [
-                        2819,
-                        2833
+                        2818,
+                        2832
                       ],
                       "loc": {
                         "start": {
@@ -1962,8 +1962,8 @@
                               "object": {
                                 "type": "ThisExpression",
                                 "range": [
-                                  2849,
-                                  2853
+                                  2848,
+                                  2852
                                 ],
                                 "loc": {
                                   "start": {
@@ -1980,8 +1980,8 @@
                                 "type": "Identifier",
                                 "name": "_tryPredicate",
                                 "range": [
-                                  2854,
-                                  2867
+                                  2853,
+                                  2866
                                 ],
                                 "loc": {
                                   "start": {
@@ -1995,8 +1995,8 @@
                                 }
                               },
                               "range": [
-                                2849,
-                                2867
+                                2848,
+                                2866
                               ],
                               "loc": {
                                 "start": {
@@ -2014,8 +2014,8 @@
                                 "type": "Identifier",
                                 "name": "value",
                                 "range": [
-                                  2868,
-                                  2873
+                                  2867,
+                                  2872
                                 ],
                                 "loc": {
                                   "start": {
@@ -2030,8 +2030,8 @@
                               }
                             ],
                             "range": [
-                              2849,
-                              2874
+                              2848,
+                              2873
                             ],
                             "loc": {
                               "start": {
@@ -2045,8 +2045,8 @@
                             }
                           },
                           "range": [
-                            2849,
-                            2875
+                            2848,
+                            2874
                           ],
                           "loc": {
                             "start": {
@@ -2061,8 +2061,8 @@
                         }
                       ],
                       "range": [
-                        2835,
-                        2885
+                        2834,
+                        2884
                       ],
                       "loc": {
                         "start": {
@@ -2089,8 +2089,8 @@
                               "object": {
                                 "type": "ThisExpression",
                                 "range": [
-                                  2913,
-                                  2917
+                                  2912,
+                                  2916
                                 ],
                                 "loc": {
                                   "start": {
@@ -2107,8 +2107,8 @@
                                 "type": "Identifier",
                                 "name": "count",
                                 "range": [
-                                  2918,
-                                  2923
+                                  2917,
+                                  2922
                                 ],
                                 "loc": {
                                   "start": {
@@ -2122,8 +2122,8 @@
                                 }
                               },
                               "range": [
-                                2913,
-                                2923
+                                2912,
+                                2922
                               ],
                               "loc": {
                                 "start": {
@@ -2138,8 +2138,8 @@
                             },
                             "prefix": false,
                             "range": [
-                              2913,
-                              2925
+                              2912,
+                              2924
                             ],
                             "loc": {
                               "start": {
@@ -2153,8 +2153,8 @@
                             }
                           },
                           "range": [
-                            2913,
-                            2926
+                            2912,
+                            2925
                           ],
                           "loc": {
                             "start": {
@@ -2169,8 +2169,8 @@
                         }
                       ],
                       "range": [
-                        2899,
-                        2936
+                        2898,
+                        2935
                       ],
                       "loc": {
                         "start": {
@@ -2184,8 +2184,8 @@
                       }
                     },
                     "range": [
-                      2815,
-                      2936
+                      2814,
+                      2935
                     ],
                     "loc": {
                       "start": {
@@ -2200,8 +2200,8 @@
                   }
                 ],
                 "range": [
-                  2805,
-                  2942
+                  2804,
+                  2941
                 ],
                 "loc": {
                   "start": {
@@ -2217,8 +2217,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                2797,
-                2942
+                2796,
+                2941
               ],
               "loc": {
                 "start": {
@@ -2234,8 +2234,8 @@
             "kind": "method",
             "computed": false,
             "range": [
-              2792,
-              2942
+              2791,
+              2941
             ],
             "loc": {
               "start": {
@@ -2255,8 +2255,8 @@
               "type": "Identifier",
               "name": "_tryPredicate",
               "range": [
-                2947,
-                2960
+                2946,
+                2959
               ],
               "loc": {
                 "start": {
@@ -2277,8 +2277,8 @@
                   "type": "Identifier",
                   "name": "value",
                   "range": [
-                    2961,
-                    2966
+                    2960,
+                    2965
                   ],
                   "loc": {
                     "start": {
@@ -2304,8 +2304,8 @@
                           "type": "Identifier",
                           "name": "result",
                           "range": [
-                            2982,
-                            2988
+                            2981,
+                            2987
                           ],
                           "loc": {
                             "start": {
@@ -2320,8 +2320,8 @@
                         },
                         "init": null,
                         "range": [
-                          2982,
-                          2988
+                          2981,
+                          2987
                         ],
                         "loc": {
                           "start": {
@@ -2337,8 +2337,8 @@
                     ],
                     "kind": "let",
                     "range": [
-                      2978,
-                      2989
+                      2977,
+                      2988
                     ],
                     "loc": {
                       "start": {
@@ -2365,8 +2365,8 @@
                               "type": "Identifier",
                               "name": "result",
                               "range": [
-                                3016,
-                                3022
+                                3015,
+                                3021
                               ],
                               "loc": {
                                 "start": {
@@ -2387,8 +2387,8 @@
                                 "object": {
                                   "type": "ThisExpression",
                                   "range": [
-                                    3025,
-                                    3029
+                                    3024,
+                                    3028
                                   ],
                                   "loc": {
                                     "start": {
@@ -2405,8 +2405,8 @@
                                   "type": "Identifier",
                                   "name": "predicate",
                                   "range": [
-                                    3030,
-                                    3039
+                                    3029,
+                                    3038
                                   ],
                                   "loc": {
                                     "start": {
@@ -2420,8 +2420,8 @@
                                   }
                                 },
                                 "range": [
-                                  3025,
-                                  3039
+                                  3024,
+                                  3038
                                 ],
                                 "loc": {
                                   "start": {
@@ -2439,8 +2439,8 @@
                                   "type": "Identifier",
                                   "name": "value",
                                   "range": [
-                                    3040,
-                                    3045
+                                    3039,
+                                    3044
                                   ],
                                   "loc": {
                                     "start": {
@@ -2462,8 +2462,8 @@
                                     "object": {
                                       "type": "ThisExpression",
                                       "range": [
-                                        3047,
-                                        3051
+                                        3046,
+                                        3050
                                       ],
                                       "loc": {
                                         "start": {
@@ -2480,8 +2480,8 @@
                                       "type": "Identifier",
                                       "name": "index",
                                       "range": [
-                                        3052,
-                                        3057
+                                        3051,
+                                        3056
                                       ],
                                       "loc": {
                                         "start": {
@@ -2495,8 +2495,8 @@
                                       }
                                     },
                                     "range": [
-                                      3047,
-                                      3057
+                                      3046,
+                                      3056
                                     ],
                                     "loc": {
                                       "start": {
@@ -2511,8 +2511,8 @@
                                   },
                                   "prefix": false,
                                   "range": [
-                                    3047,
-                                    3059
+                                    3046,
+                                    3058
                                   ],
                                   "loc": {
                                     "start": {
@@ -2531,8 +2531,8 @@
                                   "object": {
                                     "type": "ThisExpression",
                                     "range": [
-                                      3061,
-                                      3065
+                                      3060,
+                                      3064
                                     ],
                                     "loc": {
                                       "start": {
@@ -2549,8 +2549,8 @@
                                     "type": "Identifier",
                                     "name": "source",
                                     "range": [
-                                      3066,
-                                      3072
+                                      3065,
+                                      3071
                                     ],
                                     "loc": {
                                       "start": {
@@ -2564,8 +2564,8 @@
                                     }
                                   },
                                   "range": [
-                                    3061,
-                                    3072
+                                    3060,
+                                    3071
                                   ],
                                   "loc": {
                                     "start": {
@@ -2580,8 +2580,8 @@
                                 }
                               ],
                               "range": [
-                                3025,
-                                3073
+                                3024,
+                                3072
                               ],
                               "loc": {
                                 "start": {
@@ -2595,8 +2595,8 @@
                               }
                             },
                             "range": [
-                              3016,
-                              3073
+                              3015,
+                              3072
                             ],
                             "loc": {
                               "start": {
@@ -2610,8 +2610,8 @@
                             }
                           },
                           "range": [
-                            3016,
-                            3074
+                            3015,
+                            3073
                           ],
                           "loc": {
                             "start": {
@@ -2626,8 +2626,8 @@
                         }
                       ],
                       "range": [
-                        3002,
-                        3084
+                        3001,
+                        3083
                       ],
                       "loc": {
                         "start": {
@@ -2646,8 +2646,8 @@
                         "type": "Identifier",
                         "name": "err",
                         "range": [
-                          3100,
-                          3103
+                          3099,
+                          3102
                         ],
                         "loc": {
                           "start": {
@@ -2676,8 +2676,8 @@
                                   "object": {
                                     "type": "ThisExpression",
                                     "range": [
-                                      3119,
-                                      3123
+                                      3118,
+                                      3122
                                     ],
                                     "loc": {
                                       "start": {
@@ -2694,8 +2694,8 @@
                                     "type": "Identifier",
                                     "name": "destination",
                                     "range": [
-                                      3124,
-                                      3135
+                                      3123,
+                                      3134
                                     ],
                                     "loc": {
                                       "start": {
@@ -2709,8 +2709,8 @@
                                     }
                                   },
                                   "range": [
-                                    3119,
-                                    3135
+                                    3118,
+                                    3134
                                   ],
                                   "loc": {
                                     "start": {
@@ -2727,8 +2727,8 @@
                                   "type": "Identifier",
                                   "name": "error",
                                   "range": [
-                                    3136,
-                                    3141
+                                    3135,
+                                    3140
                                   ],
                                   "loc": {
                                     "start": {
@@ -2742,8 +2742,8 @@
                                   }
                                 },
                                 "range": [
-                                  3119,
-                                  3141
+                                  3118,
+                                  3140
                                 ],
                                 "loc": {
                                   "start": {
@@ -2761,8 +2761,8 @@
                                   "type": "Identifier",
                                   "name": "err",
                                   "range": [
-                                    3142,
-                                    3145
+                                    3141,
+                                    3144
                                   ],
                                   "loc": {
                                     "start": {
@@ -2777,8 +2777,8 @@
                                 }
                               ],
                               "range": [
-                                3119,
-                                3146
+                                3118,
+                                3145
                               ],
                               "loc": {
                                 "start": {
@@ -2792,8 +2792,8 @@
                               }
                             },
                             "range": [
-                              3119,
-                              3147
+                              3118,
+                              3146
                             ],
                             "loc": {
                               "start": {
@@ -2810,8 +2810,8 @@
                             "type": "ReturnStatement",
                             "argument": null,
                             "range": [
-                              3160,
-                              3167
+                              3159,
+                              3166
                             ],
                             "loc": {
                               "start": {
@@ -2826,8 +2826,8 @@
                           }
                         ],
                         "range": [
-                          3105,
-                          3177
+                          3104,
+                          3176
                         ],
                         "loc": {
                           "start": {
@@ -2841,8 +2841,8 @@
                         }
                       },
                       "range": [
-                        3093,
-                        3177
+                        3092,
+                        3176
                       ],
                       "loc": {
                         "start": {
@@ -2857,8 +2857,8 @@
                     },
                     "finalizer": null,
                     "range": [
-                      2998,
-                      3177
+                      2997,
+                      3176
                     ],
                     "loc": {
                       "start": {
@@ -2877,8 +2877,8 @@
                       "type": "Identifier",
                       "name": "result",
                       "range": [
-                        3190,
-                        3196
+                        3189,
+                        3195
                       ],
                       "loc": {
                         "start": {
@@ -2905,8 +2905,8 @@
                               "object": {
                                 "type": "ThisExpression",
                                 "range": [
-                                  3212,
-                                  3216
+                                  3211,
+                                  3215
                                 ],
                                 "loc": {
                                   "start": {
@@ -2923,8 +2923,8 @@
                                 "type": "Identifier",
                                 "name": "count",
                                 "range": [
-                                  3217,
-                                  3222
+                                  3216,
+                                  3221
                                 ],
                                 "loc": {
                                   "start": {
@@ -2938,8 +2938,8 @@
                                 }
                               },
                               "range": [
-                                3212,
-                                3222
+                                3211,
+                                3221
                               ],
                               "loc": {
                                 "start": {
@@ -2954,8 +2954,8 @@
                             },
                             "prefix": false,
                             "range": [
-                              3212,
-                              3224
+                              3211,
+                              3223
                             ],
                             "loc": {
                               "start": {
@@ -2969,8 +2969,8 @@
                             }
                           },
                           "range": [
-                            3212,
-                            3225
+                            3211,
+                            3224
                           ],
                           "loc": {
                             "start": {
@@ -2985,8 +2985,8 @@
                         }
                       ],
                       "range": [
-                        3198,
-                        3235
+                        3197,
+                        3234
                       ],
                       "loc": {
                         "start": {
@@ -3001,8 +3001,8 @@
                     },
                     "alternate": null,
                     "range": [
-                      3186,
-                      3235
+                      3185,
+                      3234
                     ],
                     "loc": {
                       "start": {
@@ -3017,8 +3017,8 @@
                   }
                 ],
                 "range": [
-                  2968,
-                  3241
+                  2967,
+                  3240
                 ],
                 "loc": {
                   "start": {
@@ -3034,8 +3034,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                2960,
-                3241
+                2959,
+                3240
               ],
               "loc": {
                 "start": {
@@ -3051,8 +3051,8 @@
             "kind": "method",
             "computed": false,
             "range": [
-              2947,
-              3241
+              2946,
+              3240
             ],
             "loc": {
               "start": {
@@ -3072,8 +3072,8 @@
               "type": "Identifier",
               "name": "_complete",
               "range": [
-                3246,
-                3255
+                3245,
+                3254
               ],
               "loc": {
                 "start": {
@@ -3106,8 +3106,8 @@
                           "object": {
                             "type": "ThisExpression",
                             "range": [
-                              3268,
-                              3272
+                              3267,
+                              3271
                             ],
                             "loc": {
                               "start": {
@@ -3124,8 +3124,8 @@
                             "type": "Identifier",
                             "name": "destination",
                             "range": [
-                              3273,
-                              3284
+                              3272,
+                              3283
                             ],
                             "loc": {
                               "start": {
@@ -3139,8 +3139,8 @@
                             }
                           },
                           "range": [
-                            3268,
-                            3284
+                            3267,
+                            3283
                           ],
                           "loc": {
                             "start": {
@@ -3157,8 +3157,8 @@
                           "type": "Identifier",
                           "name": "next",
                           "range": [
-                            3285,
-                            3289
+                            3284,
+                            3288
                           ],
                           "loc": {
                             "start": {
@@ -3172,8 +3172,8 @@
                           }
                         },
                         "range": [
-                          3268,
-                          3289
+                          3267,
+                          3288
                         ],
                         "loc": {
                           "start": {
@@ -3193,8 +3193,8 @@
                           "object": {
                             "type": "ThisExpression",
                             "range": [
-                              3290,
-                              3294
+                              3289,
+                              3293
                             ],
                             "loc": {
                               "start": {
@@ -3211,8 +3211,8 @@
                             "type": "Identifier",
                             "name": "count",
                             "range": [
-                              3295,
-                              3300
+                              3294,
+                              3299
                             ],
                             "loc": {
                               "start": {
@@ -3226,8 +3226,8 @@
                             }
                           },
                           "range": [
-                            3290,
-                            3300
+                            3289,
+                            3299
                           ],
                           "loc": {
                             "start": {
@@ -3242,8 +3242,8 @@
                         }
                       ],
                       "range": [
-                        3268,
-                        3301
+                        3267,
+                        3300
                       ],
                       "loc": {
                         "start": {
@@ -3257,8 +3257,8 @@
                       }
                     },
                     "range": [
-                      3268,
-                      3302
+                      3267,
+                      3301
                     ],
                     "loc": {
                       "start": {
@@ -3284,8 +3284,8 @@
                           "object": {
                             "type": "ThisExpression",
                             "range": [
-                              3311,
-                              3315
+                              3310,
+                              3314
                             ],
                             "loc": {
                               "start": {
@@ -3302,8 +3302,8 @@
                             "type": "Identifier",
                             "name": "destination",
                             "range": [
-                              3316,
-                              3327
+                              3315,
+                              3326
                             ],
                             "loc": {
                               "start": {
@@ -3317,8 +3317,8 @@
                             }
                           },
                           "range": [
-                            3311,
-                            3327
+                            3310,
+                            3326
                           ],
                           "loc": {
                             "start": {
@@ -3335,8 +3335,8 @@
                           "type": "Identifier",
                           "name": "complete",
                           "range": [
-                            3328,
-                            3336
+                            3327,
+                            3335
                           ],
                           "loc": {
                             "start": {
@@ -3350,8 +3350,8 @@
                           }
                         },
                         "range": [
-                          3311,
-                          3336
+                          3310,
+                          3335
                         ],
                         "loc": {
                           "start": {
@@ -3366,8 +3366,8 @@
                       },
                       "arguments": [],
                       "range": [
-                        3311,
-                        3338
+                        3310,
+                        3337
                       ],
                       "loc": {
                         "start": {
@@ -3381,8 +3381,8 @@
                       }
                     },
                     "range": [
-                      3311,
-                      3339
+                      3310,
+                      3338
                     ],
                     "loc": {
                       "start": {
@@ -3397,8 +3397,8 @@
                   }
                 ],
                 "range": [
-                  3258,
-                  3345
+                  3257,
+                  3344
                 ],
                 "loc": {
                   "start": {
@@ -3414,8 +3414,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                3255,
-                3345
+                3254,
+                3344
               ],
               "loc": {
                 "start": {
@@ -3431,8 +3431,8 @@
             "kind": "method",
             "computed": false,
             "range": [
-              3246,
-              3345
+              3245,
+              3344
             ],
             "loc": {
               "start": {
@@ -3448,8 +3448,8 @@
           }
         ],
         "range": [
-          2588,
-          3347
+          2587,
+          3346
         ],
         "loc": {
           "start": {
@@ -3463,8 +3463,8 @@
         }
       },
       "range": [
-        2547,
-        3347
+        2546,
+        3346
       ],
       "loc": {
         "start": {
@@ -3481,8 +3481,8 @@
           "type": "Block",
           "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
           "range": [
-            2455,
-            2546
+            2454,
+            2545
           ],
           "loc": {
             "start": {
@@ -3501,8 +3501,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=count.js.map",
           "range": [
-            3348,
-            3381
+            3347,
+            3380
           ],
           "loc": {
             "start": {
@@ -3521,7 +3521,7 @@
   "sourceType": "module",
   "range": [
     0,
-    3347
+    3346
   ],
   "loc": {
     "start": {
@@ -3536,10 +3536,10 @@
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * Counts the number of emissions on the source and emits that number when the\n * source completes.\n *\n * <span class=\"informal\">Tells how many values were emitted, when the source\n * completes.</span>\n *\n * <img src=\"./img/count.png\" width=\"100%\">\n *\n * `count` transforms an Observable that emits values into an Observable that\n * emits a single value that represents the number of values emitted by the\n * source Observable. If the source Observable terminates with an error, `count`\n * will pass this error notification along without emitting an value first. If\n * the source Observable does not terminate at all, `count` will neither emit\n * a value nor terminate. This operator takes an optional `predicate` function\n * as argument, in which case the output emission will represent the number of\n * source values that matched `true` with the `predicate`.\n *\n * @example <caption>Counts how many seconds have passed before the first click happened</caption>\n * var seconds = Rx.Observable.interval(1000);\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var secondsBeforeClick = seconds.takeUntil(clicks);\n * var result = secondsBeforeClick.count();\n * result.subscribe(x => console.log(x));\n *\n * @example <caption>Counts how many odd numbers are there between 1 and 7</caption>\n * var numbers = Rx.Observable.range(1, 7);\n * var result = numbers.count(i => i % 2 === 1);\n * result.subscribe(x => console.log(x));\n *\n * // Results in:\n * // 4\n *\n * @see {@link max}\n * @see {@link min}\n * @see {@link reduce}\n *\n * @param {function(value: T, i: number, source: Observable<T>): boolean} [predicate] A\n * boolean function to select what values are to be counted. It is provided with\n * arguments of:\n * - `value`: the value from the source Observable.\n * - `index`: the (zero-based) \"index\" of the value from the source Observable.\n * - `source`: the source Observable instance itself.\n * @return {Observable} An Observable of one number that represents the count as\n * described above.\n * @method count\n * @owner Observable\n ",
+      "value": "*\n * Counts the number of emissions on the source and emits that number when the\n * source completes.\n *\n * <span class=\"informal\">Tells how many values were emitted, when the source\n * completes.</span>\n *\n * <img src=\"./img/count.png\" width=\"100%\">\n *\n * `count` transforms an Observable that emits values into an Observable that\n * emits a single value that represents the number of values emitted by the\n * source Observable. If the source Observable terminates with an error, `count`\n * will pass this error notification along without emitting a value first. If\n * the source Observable does not terminate at all, `count` will neither emit\n * a value nor terminate. This operator takes an optional `predicate` function\n * as argument, in which case the output emission will represent the number of\n * source values that matched `true` with the `predicate`.\n *\n * @example <caption>Counts how many seconds have passed before the first click happened</caption>\n * var seconds = Rx.Observable.interval(1000);\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var secondsBeforeClick = seconds.takeUntil(clicks);\n * var result = secondsBeforeClick.count();\n * result.subscribe(x => console.log(x));\n *\n * @example <caption>Counts how many odd numbers are there between 1 and 7</caption>\n * var numbers = Rx.Observable.range(1, 7);\n * var result = numbers.count(i => i % 2 === 1);\n * result.subscribe(x => console.log(x));\n *\n * // Results in:\n * // 4\n *\n * @see {@link max}\n * @see {@link min}\n * @see {@link reduce}\n *\n * @param {function(value: T, i: number, source: Observable<T>): boolean} [predicate] A\n * boolean function to select what values are to be counted. It is provided with\n * arguments of:\n * - `value`: the value from the source Observable.\n * - `index`: the (zero-based) \"index\" of the value from the source Observable.\n * - `source`: the source Observable instance itself.\n * @return {Observable} An Observable of one number that represents the count as\n * described above.\n * @method count\n * @owner Observable\n ",
       "range": [
         44,
-        2094
+        2093
       ],
       "loc": {
         "start": {
@@ -3556,8 +3556,8 @@
       "type": "Block",
       "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
       "range": [
-        2455,
-        2546
+        2454,
+        2545
       ],
       "loc": {
         "start": {
@@ -3574,8 +3574,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=count.js.map",
       "range": [
-        3348,
-        3381
+        3347,
+        3380
       ],
       "loc": {
         "start": {

@@ -174,7 +174,7 @@ myObservable.subscribe(value =&gt; console.log(value));</code>
 <p>Which one you choose depends on the scenario. The normal <strong>Observable</strong> is great when you want to wrap functionality that produces values over time. An example would be a websocket connection. With <strong>Subject</strong> you can trigger new events from anywhere really and you can connect existing observables to it.</p>
 <h2 id="controlling-the-flow">Controlling the flow</h2>
 <pre><code class="lang-js"><code class="source-code prettyprint">// typing &quot;hello world&quot;
-var input = Rx.Observable.fromEvent(document.querySelector(&apos;input&apos;), &apos;keypress&apos;);
+var input = Rx.Observable.fromEvent(document.querySelector(&apos;input&apos;), &apos;input&apos;);
 
 // Filter out target values less than 3 characters long
 input.filter(event =&gt; event.target.value.length &gt; 2)
@@ -203,7 +203,7 @@ input.takeUntil(stopStream)
 </code></pre>
 <h2 id="producing-values">Producing values</h2>
 <pre><code class="lang-js"><code class="source-code prettyprint">// typing &quot;hello world&quot;
-var input = Rx.Observable.fromEvent(document.querySelector(&apos;input&apos;), &apos;keypress&apos;);
+var input = Rx.Observable.fromEvent(document.querySelector(&apos;input&apos;), &apos;input&apos;);
 
 // Pass on a new value
 input.map(event =&gt; event.target.value)
