@@ -157,7 +157,7 @@ describe('AsyncSubject', () => {
     const expected = new Error('bad');
     const subject = new AsyncSubject();
     const observer = new TestObserver();
-    subject.subscribe(observer);
+    const subscription = subject.subscribe(observer);
 
     subject.next(1);
     expect(observer.results).to.deep.equal([]);
@@ -165,7 +165,7 @@ describe('AsyncSubject', () => {
     subject.error(expected);
     expect(observer.results).to.deep.equal([expected]);
 
-    subject.unsubscribe();
+    subscription.unsubscribe();
 
     observer.results = [];
     subject.subscribe(observer);
