@@ -25,6 +25,23 @@ describe('Observable.bindNodeCallback', () => {
       expect(results).to.deep.equal([42, 'done']);
     });
 
+    it('should set context of callback to context of boundCallback', () => {
+      function callback(cb) {
+        cb(null, this.datum);
+      }
+      const boundCallback = Observable.bindNodeCallback(callback);
+      const results = [];
+
+      boundCallback.call({datum: 42})
+        .subscribe(
+          (x: number) => results.push(x),
+          null,
+          () => results.push('done')
+        );
+
+      expect(results).to.deep.equal([42, 'done']);
+    });
+
     it('should emit one value chosen by a selector', () => {
       function callback(datum, cb) {
         cb(null, datum);
@@ -122,6 +139,25 @@ describe('Observable.bindNodeCallback', () => {
         }, null, () => {
           results.push('done');
         });
+
+      rxTestScheduler.flush();
+
+      expect(results).to.deep.equal([42, 'done']);
+    });
+
+    it('should set context of callback to context of boundCallback', () => {
+      function callback(cb) {
+        cb(null, this.datum);
+      }
+      const boundCallback = Observable.bindNodeCallback(callback, null, rxTestScheduler);
+      const results = [];
+
+      boundCallback.call({datum: 42})
+        .subscribe(
+          (x: number) => results.push(x),
+          null,
+          () => results.push('done')
+        );
 
       rxTestScheduler.flush();
 
