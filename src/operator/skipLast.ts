@@ -41,19 +41,19 @@ export function skipLast<T>(this: Observable<T>, count: number): Observable<T> {
 }
 
 class SkipLastOperator<T> implements Operator<T, T> {
-  constructor(private total: number) {
-    if (this.total < 0) {
+  constructor(private _skipCount: number) {
+    if (this._skipCount < 0) {
       throw new ArgumentOutOfRangeError;
     }
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    if (this.total === 0) {
+    if (this._skipCount === 0) {
       // If we don't want to skip any values then just subscribe
       // to Subscriber without any further logic.
       return source.subscribe(new Subscriber(subscriber));
     } else {
-      return source.subscribe(new SkipLastSubscriber(subscriber, this.total));
+      return source.subscribe(new SkipLastSubscriber(subscriber, this._skipCount));
     }
   }
 }
@@ -64,24 +64,26 @@ class SkipLastOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class SkipLastSubscriber<T> extends Subscriber<T> {
-  private ring: T[] = [];
-  private count: number = 0;
+  private _ring: T[];
+  private _count: number = 0;
 
-  constructor(destination: Subscriber<T>, private total: number) {
+  constructor(destination: Subscriber<T>, private _skipCount: number) {
     super(destination);
+    this._ring = new Array<T>(_skipCount);
   }
 
   protected _next(value: T): void {
-    const len = this.ring.length;
+    const skipCount = this._skipCount;
+    const count = this._count++;
 
-    if (len < this.total) {
-      this.ring.push(value);
-      this.count++;
+    if (count < skipCount) {
+      this._ring[count] = value;
     } else {
-      const idx = this.count++ % this.total;
-      const oldValue = this.ring[idx];
+      const currentIndex = count % skipCount;
+      const ring = this._ring;
+      const oldValue = ring[currentIndex];
 
-      this.ring[idx] = value;
+      ring[currentIndex] = value;
       this.destination.next(oldValue);
     }
   }
