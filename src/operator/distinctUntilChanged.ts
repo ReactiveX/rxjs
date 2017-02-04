@@ -35,12 +35,12 @@ export function distinctUntilChanged<T, K>(this: Observable<T>, compare: (x: K, 
  *     { age: 6, name: 'Foo'})
  *     .distinctUntilChanged((p: Person, q: Person) => p.name === q.name)
  *     .subscribe(x => console.log(x));
- * 
+ *
  * // displays:
  * // { age: 4, name: 'Foo' }
  * // { age: 7, name: 'Bar' }
  * // { age: 5, name: 'Foo' }
- * 
+ *
  * @see {@link distinct}
  * @see {@link distinctUntilKeyChanged}
  *

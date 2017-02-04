@@ -11,7 +11,7 @@ import { ReduceOperator } from './reduce';
  * Rx.Observable.of(5, 4, 7, 2, 8)
  *   .max()
  *   .subscribe(x => console.log(x)); // -> 8
- * 
+ *
  * @example <caption>Use a comparer function to get the maximal item</caption>
  * interface Person {
  *   age: number,
@@ -23,9 +23,9 @@ import { ReduceOperator } from './reduce';
  *           .max<Person>((a: Person, b: Person) => a.age < b.age ? -1 : 1)
  *           .subscribe((x: Person) => console.log(x.name)); // -> 'Beer'
  * }
- * 
+ *
  * @see {@link min}
- * 
+ *
  * @param {Function} optional comparer function that it will use instead of its default to compare the value of two
  * items.
  * @return {Observable} an Observable that emits item with the largest value.

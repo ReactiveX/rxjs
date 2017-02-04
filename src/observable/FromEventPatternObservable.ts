@@ -29,11 +29,11 @@ export class FromEventPatternObservable<T> extends Observable<T> {
    * function addClickHandler(handler) {
    *   document.addEventListener('click', handler);
    * }
-   *  
+   *
    * function removeClickHandler(handler) {
    *   document.removeEventListener('click', handler);
    * }
-   *  
+   *
    * var clicks = Rx.Observable.fromEventPattern(
    *   addClickHandler,
    *   removeClickHandler
