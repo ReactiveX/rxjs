@@ -63,7 +63,7 @@ describe('Observable.prototype.scan', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should scan without seed', () => {
+  it.only('should scan without seed', () => {
     const e1 = hot('--a--^--b--c--d--|');
     const e1subs =      '^           !';
     const expected =    '---x--y--z--|';
