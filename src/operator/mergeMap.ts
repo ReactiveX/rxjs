@@ -40,7 +40,7 @@ export function mergeMap<T, I, R>(this: Observable<T>, project: (value: T, index
  * // b1
  * // c1
  * // continues to list a,b,c with respective ascending integers
- * 
+ *
  * @see {@link concatMap}
  * @see {@link exhaustMap}
  * @see {@link merge}

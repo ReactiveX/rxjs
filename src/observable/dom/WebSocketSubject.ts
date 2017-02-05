@@ -57,7 +57,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
    * @example <caption>Wraps WebSocket from nodejs-websocket (using node.js)</caption>
    *
    * import { w3cwebsocket } from 'websocket';
-   * 
+   *
    * let socket = new WebSocketSubject({
    *   url: 'ws://localhost:8081',
    *   WebSocketCtor: w3cwebsocket

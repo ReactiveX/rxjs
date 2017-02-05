@@ -59,7 +59,7 @@ export class FromObservable<T> extends Observable<T> {
    *     i = 2 * i; // double it
    *   }
    * }
-   *  
+   *
    * var iterator = generateDoubles(3);
    * var result = Rx.Observable.from(iterator).take(10);
    * result.subscribe(x => console.log(x));
@@ -71,7 +71,7 @@ export class FromObservable<T> extends Observable<T> {
    * @see {@link fromEvent}
    * @see {@link fromEventPattern}
    * @see {@link fromPromise}
-   *  
+   *
    * @param {ObservableInput<T>} ish A subscribable object, a Promise, an
    * Observable-like, an Array, an iterable or an array-like object to be
    * converted.
