@@ -40,10 +40,10 @@ if (testFilesIncludeExclusion.length > 0) {
 var testFilesMissingTypes = modifiedSpecFiles.reduce(function (acc, value) {
   var content = fs.readFileSync(value).toString();
 
-  var hotFnMatches = content.match(hotMatch) && content.match(hotSignatureMatch);
-  var coldFnMatches = content.match(coldMatch) && content.match(coldSignatureMatch);
+  var hotFnMatchesWithoutTypes = content.match(hotMatch) && !content.match(hotSignatureMatch);
+  var coldFnMatchesWithoutTypes = content.match(coldMatch) && !content.match(coldSignatureMatch);
 
-  if (!hotFnMatches || !coldFnMatches) {
+  if (hotFnMatchesWithoutTypes || coldFnMatchesWithoutTypes) {
     acc.push(path.basename(value));
   }
 
