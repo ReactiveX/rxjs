@@ -15,6 +15,7 @@ export class BoundCallbackObservable<T> extends Observable<T> {
   subject: AsyncSubject<T>;
 
   /* tslint:disable:max-line-length */
+  static create(callbackFunc: (callback: () => any) => any, selector?: void, scheduler?: IScheduler): () => Observable<void>;
   static create<R>(callbackFunc: (callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): () => Observable<R>;
   static create<T, R>(callbackFunc: (v1: T, callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T) => Observable<R>;
   static create<T, T2, R>(callbackFunc: (v1: T, v2: T2, callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2) => Observable<R>;
@@ -119,7 +120,7 @@ export class BoundCallbackObservable<T> extends Observable<T> {
               subject.complete();
             }
           } else {
-            subject.next(innerArgs.length === 1 ? innerArgs[0] : innerArgs);
+            subject.next(innerArgs.length <= 1 ? innerArgs[0] : innerArgs);
             subject.complete();
           }
         };
@@ -157,7 +158,7 @@ export class BoundCallbackObservable<T> extends Observable<T> {
             self.add(scheduler.schedule(dispatchNext, 0, { value: result, subject }));
           }
         } else {
-          const value = innerArgs.length === 1 ? innerArgs[0] : innerArgs;
+          const value = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
           self.add(scheduler.schedule(dispatchNext, 0, { value, subject }));
         }
       };
