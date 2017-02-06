@@ -55,7 +55,7 @@ export function concat<T, R>(this: Observable<T>, ...observables: Array<Observab
  * @see {@link concatMap}
  * @see {@link concatMapTo}
  *
- * @param {Observable} other An input Observable to concatenate after the source
+ * @param {ObservableInput} other An input Observable to concatenate after the source
  * Observable. More than one input Observables may be given as argument.
  * @param {Scheduler} [scheduler=null] An optional IScheduler to schedule each
  * Observable subscription on.
@@ -117,8 +117,8 @@ export function concatStatic<T, R>(...observables: (ObservableInput<any> | ISche
  * @see {@link concatMap}
  * @see {@link concatMapTo}
  *
- * @param {Observable} input1 An input Observable to concatenate with others.
- * @param {Observable} input2 An input Observable to concatenate with others.
+ * @param {ObservableInput} input1 An input Observable to concatenate with others.
+ * @param {ObservableInput} input2 An input Observable to concatenate with others.
  * More than one input Observables may be given as argument.
  * @param {Scheduler} [scheduler=null] An optional IScheduler to schedule each
  * Observable subscription on.
