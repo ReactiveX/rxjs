@@ -61,9 +61,9 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * @see {@link merge}
  * @see {@link withLatestFrom}
  *
- * @param {Observable} observable1 An input Observable to combine with the
+ * @param {ObservableInput} observable1 An input Observable to combine with the
  * source Observable.
- * @param {Observable} observable2 An input Observable to combine with the
+ * @param {ObservableInput} observable2 An input Observable to combine with the
  * source Observable. More than one input Observables may be given as argument.
  * @param {function} [project] An optional function to project the values from
  * the combined latest values into a new value on the output Observable.
