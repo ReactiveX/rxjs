@@ -3,7 +3,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { IScheduler } from '../Scheduler';
 import { async } from '../scheduler/async';
-import { Subscription, TeardownLogic } from '../Subscription';
+import { TeardownLogic } from '../Subscription';
 import { Observable, ObservableInput } from '../Observable';
 import { isDate } from '../util/isDate';
 import { OuterSubscriber } from '../OuterSubscriber';
