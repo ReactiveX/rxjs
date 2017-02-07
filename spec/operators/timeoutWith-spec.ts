@@ -279,8 +279,8 @@ describe('Observable.prototype.timeoutWith', () => {
       .lift({
         call: (timeoutSubscriber, source) => {
           const { action } = <any> timeoutSubscriber; // get a ref to the action here
-          timeoutSubscriber.add(() => {         // because it'll be null by the
-            if (!action.closed) {               // time we get into this function.
+          timeoutSubscriber.add(() => {               // because it'll be null by the
+            if (!action.closed) {                     // time we get into this function.
               throw new Error('TimeoutSubscriber scheduled action wasn\'t canceled');
             }
           });
