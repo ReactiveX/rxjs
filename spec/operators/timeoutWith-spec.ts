@@ -1,7 +1,13 @@
 import * as Rx from '../../dist/cjs/Rx';
-declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
+declare const { asDiagram };
 declare const rxTestScheduler: Rx.TestScheduler;
+declare const hot: typeof marbleTestingSignature.hot;
+declare const cold: typeof marbleTestingSignature.cold;
+declare const expectObservable: typeof marbleTestingSignature.expectObservable;
+declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
+
 const Observable = Rx.Observable;
 
 /** @test {timeoutWith} */
@@ -272,7 +278,7 @@ describe('Observable.prototype.timeoutWith', () => {
     const result = e1
       .lift({
         call: (timeoutSubscriber, source) => {
-          const { action } = timeoutSubscriber; // get a ref to the action here
+          const { action } = <any> timeoutSubscriber; // get a ref to the action here
           timeoutSubscriber.add(() => {         // because it'll be null by the
             if (!action.closed) {               // time we get into this function.
               throw new Error('TimeoutSubscriber scheduled action wasn\'t canceled');
