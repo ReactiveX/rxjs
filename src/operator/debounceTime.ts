@@ -1,7 +1,7 @@
 import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { Scheduler } from '../Scheduler';
+import { IScheduler } from '../Scheduler';
 import { Subscription, TeardownLogic } from '../Subscription';
 import { async } from '../scheduler/async';
 
@@ -25,7 +25,7 @@ import { async } from '../scheduler/async';
  * This is a rate-limiting operator, because it is impossible for more than one
  * value to be emitted in any time window of duration `dueTime`, but it is also
  * a delay-like operator since output emissions do not occur at the same time as
- * they did on the source Observable. Optionally takes a {@link Scheduler} for
+ * they did on the source Observable. Optionally takes a {@link IScheduler} for
  * managing timers.
  *
  * @example <caption>Emit the most recent click after a burst of clicks</caption>
@@ -43,7 +43,7 @@ import { async } from '../scheduler/async';
  * unit determined internally by the optional `scheduler`) for the window of
  * time required to wait for emission silence before emitting the most recent
  * source value.
- * @param {Scheduler} [scheduler=async] The {@link Scheduler} to use for
+ * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for
  * managing the timers that handle the timeout for each value.
  * @return {Observable} An Observable that delays the emissions of the source
  * Observable by the specified `dueTime`, and may drop some values if they occur
@@ -51,16 +51,16 @@ import { async } from '../scheduler/async';
  * @method debounceTime
  * @owner Observable
  */
-export function debounceTime<T>(this: Observable<T>, dueTime: number, scheduler: Scheduler = async): Observable<T> {
+export function debounceTime<T>(this: Observable<T>, dueTime: number, scheduler: IScheduler = async): Observable<T> {
   return this.lift(new DebounceTimeOperator(dueTime, scheduler));
 }
 
 class DebounceTimeOperator<T> implements Operator<T, T> {
-  constructor(private dueTime: number, private scheduler: Scheduler) {
+  constructor(private dueTime: number, private scheduler: IScheduler) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new DebounceTimeSubscriber(subscriber, this.dueTime, this.scheduler));
+    return source.subscribe(new DebounceTimeSubscriber(subscriber, this.dueTime, this.scheduler));
   }
 }
 
@@ -76,7 +76,7 @@ class DebounceTimeSubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<T>,
               private dueTime: number,
-              private scheduler: Scheduler) {
+              private scheduler: IScheduler) {
     super(destination);
   }
 

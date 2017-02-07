@@ -56,7 +56,7 @@ export function raceStatic<T>(...observables: Array<Observable<any> | Array<Obse
 
 export class RaceOperator<T> implements Operator<T, T> {
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new RaceSubscriber(subscriber));
+    return source.subscribe(new RaceSubscriber(subscriber));
   }
 }
 
@@ -85,14 +85,14 @@ export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
     if (len === 0) {
       this.destination.complete();
     } else {
-      for (let i = 0; i < len; i++) {
+      for (let i = 0; i < len && !this.hasFirst; i++) {
         let observable = observables[i];
         let subscription = subscribeToResult(this, observable, observable, i);
 
         if (this.subscriptions) {
           this.subscriptions.push(subscription);
-          this.add(subscription);
         }
+        this.add(subscription);
       }
       this.observables = null;
     }

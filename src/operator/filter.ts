@@ -5,9 +5,11 @@ import { TeardownLogic } from '../Subscription';
 
 /* tslint:disable:max-line-length */
 export function filter<T, S extends T>(this: Observable<T>,
-                                       predicate: ((value: T, index: number) => boolean) |
-                                                  ((value: T, index: number) => value is S),
+                                       predicate: (value: T, index: number) => value is S,
                                        thisArg?: any): Observable<S>;
+export function filter<T>(this: Observable<T>,
+                          predicate: (value: T, index: number) => boolean,
+                          thisArg?: any): Observable<T>;
 /* tslint:disable:max-line-length */
 
 /**
@@ -30,7 +32,6 @@ export function filter<T, S extends T>(this: Observable<T>,
  * clicksOnDivs.subscribe(x => console.log(x));
  *
  * @see {@link distinct}
- * @see {@link distinctKey}
  * @see {@link distinctUntilChanged}
  * @see {@link distinctUntilKeyChanged}
  * @see {@link ignoreElements}
@@ -61,7 +62,7 @@ class FilterOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new FilterSubscriber(subscriber, this.predicate, this.thisArg));
+    return source.subscribe(new FilterSubscriber(subscriber, this.predicate, this.thisArg));
   }
 }
 

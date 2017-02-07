@@ -1,4 +1,4 @@
-import { Scheduler } from '../Scheduler';
+import { IScheduler } from '../Scheduler';
 import { Action } from '../scheduler/Action';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
@@ -38,7 +38,7 @@ export class PairsObservable<T> extends Observable<Array<string | T>> {
 
   /**
    * Convert an object into an observable sequence of [key, value] pairs
-   * using an optional Scheduler to enumerate the object.
+   * using an optional IScheduler to enumerate the object.
    *
    * @example <caption>Converts a javascript object to an Observable</caption>
    * var obj = {
@@ -62,16 +62,16 @@ export class PairsObservable<T> extends Observable<Array<string | T>> {
    *
    * @param {Object} obj The object to inspect and turn into an
    * Observable sequence.
-   * @param {Scheduler} [scheduler] An optional Scheduler to run the
+   * @param {Scheduler} [scheduler] An optional IScheduler to run the
    * enumeration of the input sequence on.
    * @returns {(Observable<Array<string | T>>)} An observable sequence of
    * [key, value] pairs from the object.
    */
-  static create<T>(obj: Object, scheduler?: Scheduler): Observable<Array<string | T>> {
+  static create<T>(obj: Object, scheduler?: IScheduler): Observable<Array<string | T>> {
     return new PairsObservable<T>(obj, scheduler);
   }
 
-  constructor(private obj: Object, private scheduler?: Scheduler) {
+  constructor(private obj: Object, private scheduler?: IScheduler) {
     super();
     this.keys = Object.keys(obj);
   }

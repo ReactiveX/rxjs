@@ -37,7 +37,7 @@ export class Observable<T> implements Subscribable<T> {
    * can be `next`ed, or an `error` method can be called to raise an error, or
    * `complete` can be called to notify of a successful completion.
    */
-  constructor(subscribe?: <R>(this: Observable<T>, subscriber: Subscriber<R>) => TeardownLogic) {
+  constructor(subscribe?: (this: Observable<T>, subscriber: Subscriber<T>) => TeardownLogic) {
     if (subscribe) {
       this._subscribe = subscribe;
     }
@@ -53,9 +53,9 @@ export class Observable<T> implements Subscribable<T> {
    * @param {Function} subscribe? the subscriber function to be passed to the Observable constructor
    * @return {Observable} a new cold observable
    */
-  static create: Function = <T>(subscribe?: <R>(subscriber: Subscriber<R>) => TeardownLogic) => {
+  static create: Function = <T>(subscribe?: (subscriber: Subscriber<T>) => TeardownLogic) => {
     return new Observable<T>(subscribe);
-  };
+  }
 
   /**
    * Creates a new Observable, with this Observable as the source, and the passed
@@ -93,9 +93,9 @@ export class Observable<T> implements Subscribable<T> {
     const sink = toSubscriber(observerOrNext, error, complete);
 
     if (operator) {
-      operator.call(sink, this);
+      operator.call(sink, this.source);
     } else {
-      sink.add(this._subscribe(sink));
+      sink.add(this._trySubscribe(sink));
     }
 
     if (sink.syncErrorThrowable) {
@@ -106,6 +106,16 @@ export class Observable<T> implements Subscribable<T> {
     }
 
     return sink;
+  }
+
+  protected _trySubscribe(sink: Subscriber<T>): TeardownLogic {
+    try {
+      return this._subscribe(sink);
+    } catch (err) {
+      sink.syncErrorThrown = true;
+      sink.syncErrorValue = err;
+      sink.error(err);
+    }
   }
 
   /**

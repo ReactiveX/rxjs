@@ -1,7 +1,7 @@
 import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { Scheduler } from '../Scheduler';
+import { IScheduler } from '../Scheduler';
 import { async } from '../scheduler/async';
 
 /**
@@ -10,7 +10,7 @@ import { async } from '../scheduler/async';
  * @method timestamp
  * @owner Observable
  */
-export function timestamp<T>(this: Observable<T>, scheduler: Scheduler = async): Observable<Timestamp<T>> {
+export function timestamp<T>(this: Observable<T>, scheduler: IScheduler = async): Observable<Timestamp<T>> {
   return this.lift(new TimestampOperator(scheduler));
 }
 
@@ -20,16 +20,16 @@ export class Timestamp<T> {
 };
 
 class TimestampOperator<T> implements Operator<T, Timestamp<T>> {
-  constructor(private scheduler: Scheduler) {
+  constructor(private scheduler: IScheduler) {
   }
 
   call(observer: Subscriber<Timestamp<T>>, source: any): any {
-    return source._subscribe(new TimestampSubscriber(observer, this.scheduler));
+    return source.subscribe(new TimestampSubscriber(observer, this.scheduler));
   }
 }
 
 class TimestampSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<Timestamp<T>>, private scheduler: Scheduler) {
+  constructor(destination: Subscriber<Timestamp<T>>, private scheduler: IScheduler) {
     super(destination);
   }
 

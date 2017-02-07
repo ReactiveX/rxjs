@@ -9,9 +9,9 @@ const Observable = Rx.Observable;
 /** @test {catch} */
 describe('Observable.prototype.catch', () => {
   asDiagram('catch')('should catch error and replace with a cold Observable', () => {
-    const e1 =   hot('--a--b--#        ');
-    const e2 =  cold('-1-2-3-|         ');
-    const expected = '--a--b---1-2-3-|)';
+    const e1 =   hot('--a--b--#       ');
+    const e2 =  cold(        '-1-2-3-|');
+    const expected = '--a--b---1-2-3-|';
 
     const result = e1.catch((err: any) => e2);
 
@@ -83,6 +83,36 @@ describe('Observable.prototype.catch', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should unsubscribe from a caught hot caught observable when unsubscribed explicitly', () => {
+    const e1 =   hot('-1-2-3-#          ');
+    const e1subs =   '^      !          ';
+    const e2 =   hot('---3-4-5-6-7-8-9-|');
+    const e2subs =   '       ^    !     ';
+    const expected = '-1-2-3-5-6-7-     ';
+    const unsub =    '            !     ';
+
+    const result = e1.catch(() => e2);
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
+  it('should unsubscribe from a caught cold caught observable when unsubscribed explicitly', () => {
+    const e1 =   hot('-1-2-3-#          ');
+    const e1subs =   '^      !          ';
+    const e2 =  cold(       '5-6-7-8-9-|');
+    const e2subs =   '       ^    !     ';
+    const expected = '-1-2-3-5-6-7-     ';
+    const unsub =    '            !     ';
+
+    const result = e1.catch(() => e2);
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
   it('should catch error and replace it with a hot Observable', () => {
     const e1 =   hot('--a--b--#          ');
     const e1subs =   '^       !          ';
@@ -101,8 +131,8 @@ describe('Observable.prototype.catch', () => {
   '(caught) argument', () => {
     const e1 =  cold('--a--b--c--------|       ');
     const subs =    ['^       !                ',
-                   '        ^       !        ',
-                   '                ^       !'];
+                     '        ^       !        ',
+                     '                ^       !'];
     const expected = '--a--b----a--b----a--b--#';
 
     let retries = 0;
@@ -128,7 +158,7 @@ describe('Observable.prototype.catch', () => {
   '(caught) argument', () => {
     const e1 =   hot('--a--b--c----d---|');
     const subs =    ['^       !         ',
-                   '        ^        !'];
+                     '        ^        !'];
     const expected = '--a--b-------d---|';
 
     let retries = 0;

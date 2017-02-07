@@ -132,10 +132,10 @@ class MyComponent extends ObservableComponent {
   }
   componentDidMount() {
     this.messages = messages
-      // Let accumulate our messages in an array
+      // Accumulate our messages in an array
       .scan((messages, message) => [message].concat(messages), [])
       // And render whenever we get a new message
-      .forEach(messages => this.setState({messages: messages}));
+      .subscribe(messages => this.setState({messages: messages}));
   }
   componentWillUnmount() {
     this.messages.unsubscribe();

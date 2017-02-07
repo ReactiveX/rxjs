@@ -270,15 +270,16 @@ describe('Observable.prototype.timeoutWith', () => {
     const unsub =      '              !    ';
 
     const result = e1
-      .lift(function(source) {
-        const timeoutSubscriber = this;
-        const { action } = timeoutSubscriber; // get a ref to the action here
-        timeoutSubscriber.add(() => {         // because it'll be null by the
-          if (!action.closed) {               // time we get into this function.
-            throw new Error('TimeoutSubscriber scheduled action wasn\'t canceled');
-          }
-        });
-        return source._subscribe(timeoutSubscriber);
+      .lift({
+        call: (timeoutSubscriber, source) => {
+          const { action } = timeoutSubscriber; // get a ref to the action here
+          timeoutSubscriber.add(() => {         // because it'll be null by the
+            if (!action.closed) {               // time we get into this function.
+              throw new Error('TimeoutSubscriber scheduled action wasn\'t canceled');
+            }
+          });
+          return source.subscribe(timeoutSubscriber);
+        }
       })
       .timeoutWith(40, e2, rxTestScheduler);
 

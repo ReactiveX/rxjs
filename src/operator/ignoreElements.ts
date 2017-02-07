@@ -19,7 +19,7 @@ export function ignoreElements<T>(this: Observable<T>): Observable<T> {
 
 class IgnoreElementsOperator<T, R> implements Operator<T, R> {
   call(subscriber: Subscriber<R>, source: any): any {
-    return source._subscribe(new IgnoreElementsSubscriber(subscriber));
+    return source.subscribe(new IgnoreElementsSubscriber(subscriber));
   }
 }
 

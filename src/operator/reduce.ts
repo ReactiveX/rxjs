@@ -44,7 +44,7 @@ export function reduce<T, R>(this: Observable<T>, accumulator: (acc: R, value: T
  * @see {@link mergeScan}
  * @see {@link scan}
  *
- * @param {function(acc: R, value: T): R} accumulator The accumulator function
+ * @param {function(acc: R, value: T, index: number): R} accumulator The accumulator function
  * called on each source value.
  * @param {R} [seed] The initial accumulation value.
  * @return {Observable<R>} An observable of the accumulated values.
@@ -53,7 +53,7 @@ export function reduce<T, R>(this: Observable<T>, accumulator: (acc: R, value: T
  * @method reduce
  * @owner Observable
  */
-export function reduce<T, R>(this: Observable<T>, accumulator: (acc: R, value: T) => R, seed?: R): Observable<R> {
+export function reduce<T, R>(this: Observable<T>, accumulator: (acc: R, value: T, index?: number) => R, seed?: R): Observable<R> {
   let hasSeed = false;
   // providing a seed of `undefined` *should* be valid and trigger
   // hasSeed! so don't use `seed !== undefined` checks!
@@ -68,10 +68,10 @@ export function reduce<T, R>(this: Observable<T>, accumulator: (acc: R, value: T
 }
 
 export class ReduceOperator<T, R> implements Operator<T, R> {
-  constructor(private accumulator: (acc: R, value: T) => R, private seed?: R, private hasSeed: boolean = false) {}
+  constructor(private accumulator: (acc: R, value: T, index?: number) => R, private seed?: R, private hasSeed: boolean = false) {}
 
   call(subscriber: Subscriber<R>, source: any): any {
-    return source._subscribe(new ReduceSubscriber(subscriber, this.accumulator, this.seed, this.hasSeed));
+    return source.subscribe(new ReduceSubscriber(subscriber, this.accumulator, this.seed, this.hasSeed));
   }
 }
 
@@ -81,15 +81,20 @@ export class ReduceOperator<T, R> implements Operator<T, R> {
  * @extends {Ignored}
  */
 export class ReduceSubscriber<T, R> extends Subscriber<T> {
-  acc: T | R;
-  hasValue: boolean = false;
+  private index: number = 0;
+  private acc: T | R;
+  private hasValue: boolean = false;
 
   constructor(destination: Subscriber<R>,
-              private accumulator: (acc: R, value: T) => R,
+              private accumulator: (acc: R, value: T, index?: number) => R,
               seed: R,
               private hasSeed: boolean) {
     super(destination);
     this.acc = seed;
+
+    if (!this.hasSeed) {
+      this.index++;
+    }
   }
 
   protected _next(value: T) {
@@ -104,7 +109,7 @@ export class ReduceSubscriber<T, R> extends Subscriber<T> {
   private _tryReduce(value: T) {
     let result: any;
     try {
-      result = this.accumulator(<R>this.acc, value);
+      result = this.accumulator(<R>this.acc, value, this.index++);
     } catch (err) {
       this.destination.error(err);
       return;

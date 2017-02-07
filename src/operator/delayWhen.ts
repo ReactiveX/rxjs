@@ -66,7 +66,7 @@ class DelayWhenOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new DelayWhenSubscriber(subscriber, this.delayDurationSelector));
+    return source.subscribe(new DelayWhenSubscriber(subscriber, this.delayDurationSelector));
   }
 }
 

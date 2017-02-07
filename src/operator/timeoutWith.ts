@@ -1,17 +1,17 @@
 import { Action } from '../scheduler/Action';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { Scheduler } from '../Scheduler';
+import { IScheduler } from '../Scheduler';
 import { async } from '../scheduler/async';
-import { TeardownLogic } from '../Subscription';
+import { Subscription, TeardownLogic } from '../Subscription';
 import { Observable, ObservableInput } from '../Observable';
 import { isDate } from '../util/isDate';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 
 /* tslint:disable:max-line-length */
-export function timeoutWith<T>(this: Observable<T>, due: number | Date, withObservable: ObservableInput<T>, scheduler?: Scheduler): Observable<T>;
-export function timeoutWith<T, R>(this: Observable<T>, due: number | Date, withObservable: ObservableInput<R>, scheduler?: Scheduler): Observable<T | R>;
+export function timeoutWith<T>(this: Observable<T>, due: number | Date, withObservable: ObservableInput<T>, scheduler?: IScheduler): Observable<T>;
+export function timeoutWith<T, R>(this: Observable<T>, due: number | Date, withObservable: ObservableInput<R>, scheduler?: IScheduler): Observable<T | R>;
 /* tslint:disable:max-line-length */
 
 /**
@@ -24,7 +24,7 @@ export function timeoutWith<T, R>(this: Observable<T>, due: number | Date, withO
  */
 export function timeoutWith<T, R>(this: Observable<T>, due: number | Date,
                                   withObservable: ObservableInput<R>,
-                                  scheduler: Scheduler = async): Observable<T | R> {
+                                  scheduler: IScheduler = async): Observable<T | R> {
   let absoluteTimeout = isDate(due);
   let waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
   return this.lift(new TimeoutWithOperator(waitFor, absoluteTimeout, withObservable, scheduler));
@@ -34,11 +34,11 @@ class TimeoutWithOperator<T> implements Operator<T, T> {
   constructor(private waitFor: number,
               private absoluteTimeout: boolean,
               private withObservable: ObservableInput<any>,
-              private scheduler: Scheduler) {
+              private scheduler: IScheduler) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new TimeoutWithSubscriber(
+    return source.subscribe(new TimeoutWithSubscriber(
       subscriber, this.absoluteTimeout, this.waitFor, this.withObservable, this.scheduler
     ));
   }
@@ -57,7 +57,7 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
               private absoluteTimeout: boolean,
               private waitFor: number,
               private withObservable: ObservableInput<any>,
-              private scheduler: Scheduler) {
+              private scheduler: IScheduler) {
     super(destination);
     this.scheduleTimeout();
   }

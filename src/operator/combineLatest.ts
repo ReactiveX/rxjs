@@ -49,6 +49,11 @@ export function combineLatest<T, TOther, R>(this: Observable<T>, array: Observab
  * var bmi = weight.combineLatest(height, (w, h) => w / (h * h));
  * bmi.subscribe(x => console.log('BMI is ' + x));
  *
+ * // With output to console:
+ * // BMI is 24.212293388429753
+ * // BMI is 23.93948099205209
+ * // BMI is 23.671253629592222
+ *
  * @see {@link combineAll}
  * @see {@link merge}
  * @see {@link withLatestFrom}
@@ -74,7 +79,7 @@ export function combineLatest<T, R>(this: Observable<T>, ...observables: Array<O
   // if the first and only other argument besides the resultSelector is an array
   // assume it's been called with `combineLatest([obs1, obs2, obs3], project)`
   if (observables.length === 1 && isArray(observables[0])) {
-    observables = <any>observables[0];
+    observables = (<any>observables[0]).slice();
   }
 
   observables.unshift(this);
@@ -87,7 +92,7 @@ export class CombineLatestOperator<T, R> implements Operator<T, R> {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {
-    return source._subscribe(new CombineLatestSubscriber(subscriber, this.project));
+    return source.subscribe(new CombineLatestSubscriber(subscriber, this.project));
   }
 }
 

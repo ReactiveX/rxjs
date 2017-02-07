@@ -23,6 +23,11 @@ import { TeardownLogic } from '../Subscription';
  * var result = clicks.elementAt(2);
  * result.subscribe(x => console.log(x));
  *
+ * // Results in:
+ * // click 1 = nothing
+ * // click 2 = nothing
+ * // click 3 = MouseEvent object logged to console
+ *
  * @see {@link first}
  * @see {@link last}
  * @see {@link skip}
@@ -54,7 +59,7 @@ class ElementAtOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new ElementAtSubscriber(subscriber, this.index, this.defaultValue));
+    return source.subscribe(new ElementAtSubscriber(subscriber, this.index, this.defaultValue));
   }
 }
 

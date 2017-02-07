@@ -22,7 +22,7 @@ import { errorObject } from '../util/errorObject';
  * completes or emits after the other complets, the returned observable will never complete.
  *
  * @example <caption>figure out if the Konami code matches</caption>
- * var code = Observable.from([
+ * var code = Rx.Observable.from([
  *  "ArrowUp",
  *  "ArrowUp",
  *  "ArrowDown",
@@ -68,7 +68,7 @@ export class SequenceEqualOperator<T> implements Operator<T, boolean> {
   }
 
   call(subscriber: Subscriber<boolean>, source: any): any {
-    return source._subscribe(new SequenceEqualSubscriber(subscriber, this.compareTo, this.comparor));
+    return source.subscribe(new SequenceEqualSubscriber(subscriber, this.compareTo, this.comparor));
   }
 }
 

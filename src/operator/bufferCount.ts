@@ -52,7 +52,7 @@ class BufferCountOperator<T> implements Operator<T, T[]> {
   }
 
   call(subscriber: Subscriber<T[]>, source: any): any {
-    return source._subscribe(new BufferCountSubscriber(subscriber, this.bufferSize, this.startBufferEvery));
+    return source.subscribe(new BufferCountSubscriber(subscriber, this.bufferSize, this.startBufferEvery));
   }
 }
 

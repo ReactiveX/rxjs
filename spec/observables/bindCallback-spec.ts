@@ -25,6 +25,24 @@ describe('Observable.bindCallback', () => {
       expect(results).to.deep.equal([42, 'done']);
     });
 
+    it('should set callback function context to context of returned function', () => {
+      function callback(cb) {
+        cb(this.datum);
+      }
+
+      const boundCallback = Observable.bindCallback(callback);
+      const results = [];
+
+      boundCallback.apply({datum: 5})
+        .subscribe(
+          (x: number) => results.push(x),
+          null,
+          () => results.push('done')
+        );
+
+      expect(results).to.deep.equal([5, 'done']);
+    });
+
     it('should emit one value chosen by a selector', () => {
       function callback(datum, cb) {
         cb(datum);
@@ -103,6 +121,26 @@ describe('Observable.bindCallback', () => {
       rxTestScheduler.flush();
 
       expect(results).to.deep.equal([42, 'done']);
+    });
+
+    it('should set callback function context to context of returned function', () => {
+      function callback(cb) {
+        cb(this.datum);
+      }
+
+      const boundCallback = Observable.bindCallback(callback, null, rxTestScheduler);
+      const results = [];
+
+      boundCallback.apply({datum: 5})
+        .subscribe(
+          (x: number) => results.push(x),
+          null,
+          () => results.push('done')
+        );
+
+      rxTestScheduler.flush();
+
+      expect(results).to.deep.equal([5, 'done']);
     });
 
     it('should error if callback throws', () => {

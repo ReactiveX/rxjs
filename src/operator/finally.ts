@@ -20,7 +20,7 @@ class FinallyOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new FinallySubscriber(subscriber, this.callback));
+    return source.subscribe(new FinallySubscriber(subscriber, this.callback));
   }
 }
 

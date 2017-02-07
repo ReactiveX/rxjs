@@ -340,6 +340,34 @@ describe('Observable.prototype.groupBy', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should unsubscribe from the source when the outer and inner subscriptions are disposed', () => {
+    const values = {
+      a: '  foo',
+      b: ' FoO ',
+      c: 'baR  ',
+      d: 'foO ',
+      e: ' Baz   ',
+      f: '  qux ',
+      g: '   bar',
+      h: ' BAR  ',
+      i: 'FOO ',
+      j: 'baz  ',
+      k: ' bAZ ',
+      l: '    fOo    '
+    };
+    const e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-|', values);
+    const e1subs =        '^ !';
+    const expected =      '--(a|)';
+
+    const source = e1
+      .groupBy((val: string) => val.toLowerCase().trim())
+      .take(1)
+      .mergeMap((group: any) => group.take(1));
+
+    expectObservable(source).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should not break unsubscription chain when unsubscribed explicitly', () => {
     const values = {
       a: '  foo',
@@ -1378,7 +1406,7 @@ describe('Observable.prototype.groupBy', () => {
       observer.complete();
     }).groupBy(
       (x: number) => x % 2,
-      (x: string) => x + '!'
+      (x: number) => x + '!'
     );
 
     expect(result instanceof MyCustomObservable).to.be.true;

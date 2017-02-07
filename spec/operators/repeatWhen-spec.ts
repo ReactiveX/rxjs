@@ -10,9 +10,9 @@ describe('Observable.prototype.repeatWhen', () => {
     const source =  cold('-1--2--|');
     const subs =        ['^      !                     ',
                        '             ^      !        ',
-                       '                          ^ !'];
+                       '                          ^      !'];
     const notifier = hot('-------------r------------r-|');
-    const expected =     '-1--2---------1--2---------1|';
+    const expected =     '-1--2---------1--2---------1--2--|';
 
     const result = source.repeatWhen((notifications: any) => notifier);
 

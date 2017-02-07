@@ -1,4 +1,5 @@
-import { Scheduler } from '../Scheduler';
+import { Action } from '../scheduler/Action';
+import { IScheduler } from '../Scheduler';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { Observable } from '../Observable';
@@ -16,18 +17,18 @@ export interface DispatchArg<T> {
  * @hide true
  */
 export class SubscribeOnObservable<T> extends Observable<T> {
-  static create<T>(source: Observable<T>, delay: number = 0, scheduler: Scheduler = asap): Observable<T> {
+  static create<T>(source: Observable<T>, delay: number = 0, scheduler: IScheduler = asap): Observable<T> {
     return new SubscribeOnObservable(source, delay, scheduler);
   }
 
-  static dispatch<T>(arg: DispatchArg<T>): Subscription {
+  static dispatch<T>(this: Action<T>, arg: DispatchArg<T>): Subscription {
     const { source, subscriber } = arg;
-    return source.subscribe(subscriber);
+    return this.add(source.subscribe(subscriber));
   }
 
   constructor(public source: Observable<T>,
               private delayTime: number = 0,
-              private scheduler: Scheduler = asap) {
+              private scheduler: IScheduler = asap) {
     super();
     if (!isNumeric(delayTime) || delayTime < 0) {
       this.delayTime = 0;

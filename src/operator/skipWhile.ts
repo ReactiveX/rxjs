@@ -24,7 +24,7 @@ class SkipWhileOperator<T> implements Operator<T, T> {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source._subscribe(new SkipWhileSubscriber(subscriber, this.predicate));
+    return source.subscribe(new SkipWhileSubscriber(subscriber, this.predicate));
   }
 }
 

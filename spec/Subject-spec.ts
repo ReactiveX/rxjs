@@ -261,10 +261,11 @@ describe('Subject', () => {
     expect(() => {
       subject.subscribe(
         function (x) { results3.push(x); },
-        function (e) { results3.push('E'); },
-        () => { results3.push('C'); }
+        function (err) {
+          expect(false).to.equal('should not throw error: ' + err.toString());
+        }
       );
-    }).to.throw();
+    }).to.throw(Rx.ObjectUnsubscribedError);
 
     expect(results1).to.deep.equal([1, 2, 3, 4, 5]);
     expect(results2).to.deep.equal([3, 4, 5]);

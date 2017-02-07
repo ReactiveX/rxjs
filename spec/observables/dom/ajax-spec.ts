@@ -2,7 +2,6 @@ import {expect} from 'chai';
 import * as sinon from 'sinon';
 import * as Rx from '../../../dist/cjs/Rx';
 import {root} from '../../../dist/cjs/util/root';
-import {MockXMLHttpRequest, MockXMLHttpRequestInternetExplorer} from '../../helpers/ajax-helper';
 
 declare const global: any;
 
@@ -175,6 +174,33 @@ describe('Observable.ajax', () => {
       });
 
     expect(error).to.be.an('error', 'wokka wokka');
+  });
+
+  it('should error if send request throws', (done: MochaDone) => {
+    const expected = new Error('xhr send failure');
+
+    const obj = {
+      url: '/flibbertyJibbet',
+      responseType: 'text',
+      method: '',
+      createXHR: () => {
+        const ret = new MockXMLHttpRequest();
+        ret.send = () => {
+          throw expected;
+        };
+        return ret as any;
+      }
+    };
+
+    Rx.Observable.ajax(obj)
+      .subscribe(() => {
+        done(new Error('should not be called'));
+      }, (e: Error) => {
+        expect(e).to.be.equal(expected);
+        done();
+      }, () => {
+        done(new Error('should not be called'));
+      });
   });
 
   it('should succeed on 200', () => {
@@ -410,6 +436,34 @@ describe('Observable.ajax', () => {
       expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
       expect(MockXMLHttpRequest.mostRecent.data).to.equal('{"🌟":"🚀"}');
     });
+
+    it('should error if send request throws', (done: MochaDone) => {
+      const expected = new Error('xhr send failure');
+
+      const obj = {
+        url: '/flibbertyJibbet',
+        responseType: 'text',
+        method: '',
+        body: 'foobar',
+        createXHR: () => {
+          const ret = new MockXMLHttpRequest();
+          ret.send = () => {
+            throw expected;
+          };
+          return ret as any;
+        }
+      };
+
+      Rx.Observable.ajax(obj)
+        .subscribe(() => {
+          done(new Error('should not be called'));
+        }, (e: Error) => {
+          expect(e).to.be.equal(expected);
+          done();
+        }, () => {
+          done(new Error('should not be called'));
+        });
+    });
   });
 
   describe('ajax.get', () => {
@@ -597,6 +651,67 @@ describe('Observable.ajax', () => {
       expect(complete).to.be.true;
     });
 
+    it('should emit progress event when progressSubscriber is specified', function() {
+      const spy = sinon.spy();
+      const progressSubscriber = (<any>{
+        next: spy,
+        error: () => {
+          // noop
+        },
+        complete: () => {
+          // noop
+        }
+      });
+
+      Rx.Observable.ajax({
+        url: '/flibbertyJibbet',
+        progressSubscriber
+      })
+        .subscribe();
+
+      const request = MockXMLHttpRequest.mostRecent;
+
+      request.respondWith({
+        'status': 200,
+        'contentType': 'application/json',
+        'responseText': JSON.stringify({})
+      }, 3);
+
+      expect(spy).to.be.calledThrice;
+    });
+
+    it('should emit progress event when progressSubscriber is specified in IE', function() {
+      const spy = sinon.spy();
+      const progressSubscriber = (<any>{
+        next: spy,
+        error: () => {
+          // noop
+        },
+        complete: () => {
+          // noop
+        }
+      });
+
+      root.XMLHttpRequest = MockXMLHttpRequestInternetExplorer;
+      root.XDomainRequest = MockXMLHttpRequestInternetExplorer;
+
+      Rx.Observable.ajax({
+        url: '/flibbertyJibbet',
+        progressSubscriber
+      })
+        .subscribe();
+
+      const request = MockXMLHttpRequest.mostRecent;
+
+      request.respondWith({
+        'status': 200,
+        'contentType': 'application/json',
+        'responseText': JSON.stringify({})
+      }, 3);
+
+      expect(spy.callCount).to.equal(3);
+    });
+
   });
 
   it('should work fine when XMLHttpRequest onreadystatechange property is monkey patched', function() {
@@ -679,16 +794,6 @@ describe('Observable.ajax', () => {
       configurable: true
     });
 
-    Object.defineProperty(root.XMLHttpRequest.prototype, 'upload', {
-      get() {
-        return true;
-      },
-      configurable: true
-    });
-
-    // mock for onprogress
-    root.XDomainRequest = true;
-
     Rx.Observable.ajax({
       url: '/flibbertyJibbet',
       progressSubscriber: (<any>{
@@ -708,12 +813,11 @@ describe('Observable.ajax', () => {
     const request = MockXMLHttpRequest.mostRecent;
 
     expect(() => {
-      request.onprogress((<any>'onprogress'));
+      request.upload.onprogress((<any>'onprogress'));
     }).not.throw();
 
     delete root.XMLHttpRequest.prototype.onprogress;
     delete root.XMLHttpRequest.prototype.upload;
-    delete root.XDomainRequest;
   });
 
   it('should work fine when XMLHttpRequest onerror property is monkey patched', function() {
@@ -733,16 +837,6 @@ describe('Observable.ajax', () => {
       configurable: true
     });
 
-    Object.defineProperty(root.XMLHttpRequest.prototype, 'upload', {
-      get() {
-        return true;
-      },
-      configurable: true
-    });
-
-    // mock for onprogress
-    root.XDomainRequest = true;
-
     Rx.Observable.ajax({
       url: '/flibbertyJibbet'
     })
@@ -758,6 +852,194 @@ describe('Observable.ajax', () => {
 
     delete root.XMLHttpRequest.prototype.onerror;
     delete root.XMLHttpRequest.prototype.upload;
-    delete root.XDomainRequest;
   });
 });
+
+class MockXMLHttpRequest {
+  private static requests: Array<MockXMLHttpRequest> = [];
+  private static recentRequest: MockXMLHttpRequest;
+
+  static get mostRecent(): MockXMLHttpRequest {
+    return MockXMLHttpRequest.recentRequest;
+  }
+
+  static get allRequests(): Array<MockXMLHttpRequest> {
+    return MockXMLHttpRequest.requests;
+  }
+
+  static clearRequest(): void {
+    MockXMLHttpRequest.requests.length = 0;
+    MockXMLHttpRequest.recentRequest = null;
+  }
+
+  private previousRequest: MockXMLHttpRequest;
+
+  protected responseType: string = '';
+  private eventHandlers: Array<any> = [];
+  private readyState: number = 0;
+
+  private user: any;
+  private password: any;
+
+  private responseHeaders: any;
+  protected status: any;
+  protected responseText: string;
+  protected response: any;
+
+  url: any;
+  method: any;
+  data: any;
+  requestHeaders: any = {};
+  withCredentials: boolean = false;
+
+  onreadystatechange: (e: ProgressEvent) => any;
+  onerror: (e: ErrorEvent) => any;
+  onprogress: (e: ProgressEvent) => any;
+  ontimeout: (e: ProgressEvent) => any;
+  upload: XMLHttpRequestUpload = <any>{ };
+
+  constructor() {
+    this.previousRequest = MockXMLHttpRequest.recentRequest;
+    MockXMLHttpRequest.recentRequest = this;
+    MockXMLHttpRequest.requests.push(this);
+  }
+
+  send(data: any): void {
+    this.data = data;
+  }
+
+  open(method: any, url: any, async: any, user: any, password: any): void {
+    this.method = method;
+    this.url = url;
+    this.user = user;
+    this.password = password;
+    this.readyState = 1;
+    this.triggerEvent('readyStateChange');
+    const originalProgressHandler = this.upload.onprogress;
+    Object.defineProperty(this.upload, 'progress', {
+      get() {
+        return originalProgressHandler;
+      }
+    });
+  }
+
+  setRequestHeader(key: any, value: any): void {
+    this.requestHeaders[key] = value;
+  }
+
+  addEventListener(name: string, handler: any): void {
+    this.eventHandlers.push({ name: name, handler: handler });
+  }
+
+  removeEventListener(name: string, handler: any): void {
+    for (let i = this.eventHandlers.length - 1; i--; ) {
+      let eh = this.eventHandlers[i];
+      if (eh.name === name && eh.handler === handler) {
+        this.eventHandlers.splice(i, 1);
+      }
+    }
+  }
+
+  throwError(err: any): void {
+    // TODO: something better with errors
+    this.triggerEvent('error');
+  }
+
+  protected jsonResponseValue(response: any) {
+    try {
+      this.response = JSON.parse(response.responseText);
+    } catch (err) {
+      throw new Error('unable to JSON.parse: \n' + response.responseText);
+    }
+  }
+
+  protected defaultResponseValue() {
+    throw new Error('unhandled type "' + this.responseType + '"');
+  }
+
+  respondWith(response: any, progressTimes?: number): void {
+    if (progressTimes) {
+      for (let i = 1; i <= progressTimes; ++ i) {
+        this.triggerUploadEvent('progress', { type: 'ProgressEvent', total: progressTimes, loaded: i });
+      }
+    }
+    this.readyState = 4;
+    this.responseHeaders = {
+      'Content-Type': response.contentType || 'text/plain'
+    };
+    this.status = response.status || 200;
+    this.responseText = response.responseText;
+    if (!('response' in response)) {
+      switch (this.responseType) {
+      case 'json':
+        this.jsonResponseValue(response);
+        break;
+      case 'text':
+        this.response = response.responseText;
+        break;
+      default:
+        this.defaultResponseValue();
+      }
+    }
+    // TODO: pass better event to onload.
+    this.triggerEvent('load');
+    this.triggerEvent('readystatechange');
+  }
+
+  triggerEvent(name: any, eventObj?: any): void {
+    // TODO: create a better default event
+    const e: any = eventObj || {};
+
+    if (this['on' + name]) {
+      this['on' + name](e);
+    }
+
+    this.eventHandlers.forEach(function (eh) {
+      if (eh.name === name) {
+        eh.handler.call(this, e);
+      }
+    });
+  }
+
+  triggerUploadEvent(name: any, eventObj?: any): void {
+    // TODO: create a better default event
+    const e: any = eventObj || {};
+
+    if (this.upload['on' + name]) {
+      this.upload['on' + name](e);
+    }
+  }
+}
+
+class MockXMLHttpRequestInternetExplorer extends MockXMLHttpRequest {
+
+  private mockHttp204() {
+    this.responseType = '';
+    this.responseText = '';
+    this.response = '';
+  }
+
+  protected jsonResponseValue(response: any) {
+    if (this.status == 204) {
+      this.mockHttp204();
+      return;
+    }
+    return super.jsonResponseValue(response);
+  }
+
+  protected defaultResponseValue() {
+    if (this.status == 204) {
+      this.mockHttp204();
+      return;
+    }
+    return super.defaultResponseValue();
+  }
+
+  triggerUploadEvent(name: any, eventObj?: any): void {
+    // TODO: create a better default event
+    const e: any = eventObj || {};
+    if (this['on' + name]) {
+      this['on' + name](e);
+    }
+  }
+}

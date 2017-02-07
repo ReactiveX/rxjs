@@ -67,7 +67,7 @@ class SwitchFirstMapOperator<T, I, R> implements Operator<T, R> {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {
-    return source._subscribe(new SwitchFirstMapSubscriber(subscriber, this.project, this.resultSelector));
+    return source.subscribe(new SwitchFirstMapSubscriber(subscriber, this.project, this.resultSelector));
   }
 }
 

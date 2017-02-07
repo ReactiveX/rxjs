@@ -32,6 +32,15 @@ export function mergeMap<T, I, R>(this: Observable<T>, project: (value: T, index
  * );
  * result.subscribe(x => console.log(x));
  *
+ * // Results in the following:
+ * // a0
+ * // b0
+ * // c0
+ * // a1
+ * // b1
+ * // c1
+ * // continues to list a,b,c with respective ascending integers
+ *
  * @see {@link concatMap}
  * @see {@link exhaustMap}
  * @see {@link merge}
@@ -77,7 +86,7 @@ export class MergeMapOperator<T, I, R> implements Operator<T, I> {
   }
 
   call(observer: Subscriber<I>, source: any): any {
-    return source._subscribe(new MergeMapSubscriber(
+    return source.subscribe(new MergeMapSubscriber(
       observer, this.project, this.resultSelector, this.concurrent
     ));
   }

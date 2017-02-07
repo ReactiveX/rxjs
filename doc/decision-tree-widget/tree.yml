@@ -77,9 +77,6 @@ children:
           - label: emitted just before the current value
             children:
             - label: distinctUntilKeyChanged
-          - label: emitted some time in the past
-            children:
-            - label: distinctKey
       - label: that occur too frequently
         children:
         - label: by emitting the first value in each time window

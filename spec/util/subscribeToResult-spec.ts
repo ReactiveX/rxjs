@@ -125,7 +125,8 @@ describe('subscribeToResult', () => {
     const subscriber = new OuterSubscriber(x => {
       done(new Error('should not be called'));
     }, (x) => {
-      expect(x).to.be.an('error', 'invalid observable');
+      expect(x).to.be.an('error');
+      expect(x.message).to.be.equal('Provided object does not correctly implement Symbol.observable');
       done();
     }, () => {
       done(new Error('should not be called'));
@@ -138,12 +139,31 @@ describe('subscribeToResult', () => {
     const subscriber = new OuterSubscriber(x => {
       done(new Error('should not be called'));
     }, (x) => {
-      expect(x).to.be.an('error', 'unknown type returned');
+      expect(x).to.be.an('error');
+      const msg = 'You provided an invalid object where a stream was expected.'
+        + ' You can provide an Observable, Promise, Array, or Iterable.';
+      expect(x.message).to.be.equal(msg);
       done();
     }, () => {
       done(new Error('should not be called'));
     });
 
     subscribeToResult(subscriber, {});
+  });
+
+  it('should emit an error when trying to subscribe to a non-object', (done: MochaDone) => {
+    const subscriber = new OuterSubscriber(x => {
+      done(new Error('should not be called'));
+    }, (x) => {
+      expect(x).to.be.an('error');
+      const msg = 'You provided \'null\' where a stream was expected.'
+        + ' You can provide an Observable, Promise, Array, or Iterable.';
+      expect(x.message).to.be.equal(msg);
+      done();
+    }, () => {
+      done(new Error('should not be called'));
+    });
+
+    subscribeToResult(subscriber, null);
   });
 });

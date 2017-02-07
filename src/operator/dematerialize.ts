@@ -30,6 +30,11 @@ import { Notification } from '../Notification';
  * var upperCase = materialized.dematerialize();
  * upperCase.subscribe(x => console.log(x), e => console.error(e));
  *
+ * // Results in:
+ * // A
+ * // B
+ * // TypeError: x.toUpperCase is not a function
+ *
  * @see {@link Notification}
  * @see {@link materialize}
  *
@@ -44,7 +49,7 @@ export function dematerialize<T>(this: Observable<T>): Observable<any> {
 
 class DeMaterializeOperator<T extends Notification<any>, R> implements Operator<T, R> {
   call(subscriber: Subscriber<any>, source: any): any {
-    return source._subscribe(new DeMaterializeSubscriber(subscriber));
+    return source.subscribe(new DeMaterializeSubscriber(subscriber));
   }
 }
 

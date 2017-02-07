@@ -52,7 +52,7 @@ class BufferWhenOperator<T> implements Operator<T, T[]> {
   }
 
   call(subscriber: Subscriber<T[]>, source: any): any {
-    return source._subscribe(new BufferWhenSubscriber(subscriber, this.closingSelector));
+    return source.subscribe(new BufferWhenSubscriber(subscriber, this.closingSelector));
   }
 }
 

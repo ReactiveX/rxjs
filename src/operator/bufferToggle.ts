@@ -57,7 +57,7 @@ class BufferToggleOperator<T, O> implements Operator<T, T[]> {
   }
 
   call(subscriber: Subscriber<T[]>, source: any): any {
-    return source._subscribe(new BufferToggleSubscriber(subscriber, this.openings, this.closingSelector));
+    return source.subscribe(new BufferToggleSubscriber(subscriber, this.openings, this.closingSelector));
   }
 }
 

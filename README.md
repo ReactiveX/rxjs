@@ -5,7 +5,7 @@
 
 [![Selenium Test Status](https://saucelabs.com/browser-matrix/rxjs5.svg)](https://saucelabs.com/u/rxjs5)
 
-# RxJS 5 (release candidate)
+# RxJS 5
 
 Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Extensions/RxJS](https://github.com/Reactive-Extensions/RxJS) and is intended to supersede it once this is ready. This rewrite is meant to have better performance, better modularity, better debuggable call stacks, while staying mostly backwards compatible, with some breaking changes that reduce the API surface.
 
@@ -17,6 +17,13 @@ Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Exten
 - [Creating Operators](doc/operator-creation.md)
 - [Migrating From RxJS 4 to RxJS 5](MIGRATION.md)
 - [API Documentation (WIP)](http://reactivex.io/rxjs)
+
+## Versions In This Repository
+
+- [master](https://github.com/ReactiveX/rxjs/commits/master) - commits that will be included in the next _minor_ or _patch_ release
+- [next](https://github.com/ReactiveX/rxjs/commits/next) - commits that will be included in the next _major_ release (breaking changes)
+
+Most PRs should be made to **master**, unless you know it is a breaking change.
 
 ## Important
 
@@ -108,21 +115,14 @@ npm install @reactivex/rxjs
 If you are using npm **version 2** before this library has achieved a stable version, you need to specify the library version explicitly:
 
 ```sh
-npm install @reactivex/rxjs@5.0.0-rc.1
+npm install @reactivex/rxjs@5.0.0
 ```
 
 ### CDN
 
 For CDN, you can use [unpkg](https://unpkg.com/):
-
-5.0.0-beta.1 - 5.0.0-beta.11:
-
-https://unpkg.com/@reactivex/rxjs/dist/global/Rx.umd.js
-
-
-5.0.0-beta.12 or higher:
-
-https://unpkg.com/@reactivex/rxjs/dist/global/Rx.js
+  
+https://unpkg.com/rxjs/bundles/Rx.min.js
 
 #### Node.js Usage:
 

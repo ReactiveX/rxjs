@@ -5,6 +5,12 @@ import { Subscriber } from '../Subscriber';
 
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
+ *
+ * @example <caption>A simple example emitting true if all elements are less than 5, false otherwise</caption>
+ *  Observable.of(1, 2, 3, 4, 5, 6)
+ *     .every(x => x < 5)
+ *     .subscribe(x => console.log(x)); // -> false
+ *
  * @param {function} predicate a function for determining if an item meets a specified condition.
  * @param {any} [thisArg] optional object to use for `this` in the callback
  * @return {Observable} an Observable of booleans that determines if all items of the source Observable meet the condition specified.
@@ -23,7 +29,7 @@ class EveryOperator<T> implements Operator<T, boolean> {
   }
 
   call(observer: Subscriber<boolean>, source: any): any {
-    return source._subscribe(new EverySubscriber(observer, this.predicate, this.thisArg, this.source));
+    return source.subscribe(new EverySubscriber(observer, this.predicate, this.thisArg, this.source));
   }
 }
 

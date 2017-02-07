@@ -8,10 +8,9 @@ const ObjectUnsubscribedError = Rx.ObjectUnsubscribedError;
 
 /** @test {BehaviorSubject} */
 describe('BehaviorSubject', () => {
-  it('should extend Subject', (done: MochaDone) => {
+  it('should extend Subject', () => {
     const subject = new BehaviorSubject(null);
-    expect(subject instanceof Rx.Subject).to.be.true;
-    done();
+    expect(subject).to.be.instanceof(Rx.Subject);
   });
 
   it('should throw if it has received an error and getValue() is called', () => {
