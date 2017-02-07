@@ -46,6 +46,8 @@ export class VirtualTimeScheduler extends AsyncScheduler {
  */
 export class VirtualAction<T> extends AsyncAction<T> {
 
+  protected active: boolean = true;
+
   constructor(protected scheduler: VirtualTimeScheduler,
               protected work: (this: VirtualAction<T>, state?: T) => void,
               protected index: number = scheduler.index += 1) {
@@ -57,7 +59,7 @@ export class VirtualAction<T> extends AsyncAction<T> {
     if (!this.id) {
       return super.schedule(state, delay);
     }
-
+    this.active = false;
     // If an action is rescheduled, we save allocations by mutating its state,
     // pushing it to the end of the scheduler queue, and recycling the action.
     // But since the VirtualTimeScheduler is used for testing, VirtualActions
@@ -77,6 +79,12 @@ export class VirtualAction<T> extends AsyncAction<T> {
 
   protected recycleAsyncId(scheduler: VirtualTimeScheduler, id?: any, delay: number = 0): any {
     return undefined;
+  }
+
+  protected _execute(state: T, delay: number): any {
+    if (this.active === true) {
+      return super._execute(state, delay);
+    }
   }
 
   public static sortActions<T>(a: VirtualAction<T>, b: VirtualAction<T>) {
