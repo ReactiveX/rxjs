@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var _ = require('lodash');
+var validateMessage = require('validate-commit-msg');
 
 //simple regex matcher to detect usage of helper function and its type signature
 var hotMatch = /\bhot\(/gi;
@@ -53,4 +54,15 @@ var testFilesMissingTypes = modifiedSpecFiles.reduce(function (acc, value) {
 if (testFilesMissingTypes.length > 0) {
   fail('missing type definition import in tests (' + testFilesMissingTypes + ') (' + ++errorCount + ')');
   markdown('> (' + errorCount + ') : It seems updated test cases uses test scheduler interface `hot`, `cold` but miss to import type signature for those.');
+}
+
+//validate commit message in PR if it conforms conventional change log, notify if it doesn't.
+var messageConventionValid = danger.git.commits.reduce(function (acc, value) {
+  var valid = validateMessage(value.message);
+  return valid && acc;
+}, true);
+
+if (!messageConventionValid) {
+  fail('commit message does not follows conventional change log (' + ++errorCount + ')');
+  markdown('> (' + errorCount + ') : RxJS uses conventional change log to generate changelog automatically. It seems some of commit messages are not following those, please check [contributing guideline](https://github.com/ReactiveX/rxjs/blob/master/CONTRIBUTING.md#commit-message-format) and update commit messages.');
 }
