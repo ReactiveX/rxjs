@@ -1,7 +1,10 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 import {TestScheduler} from '../../dist/cjs/testing/TestScheduler';
-declare const {hot, expectObservable};
+import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+
+declare const hot: typeof marbleTestingSignature.hot;
+declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 
 declare const rxTestScheduler: TestScheduler;
 

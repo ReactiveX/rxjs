@@ -1,5 +1,8 @@
 import * as Rx from '../../dist/cjs/Rx';
-declare const {hot, asDiagram, expectObservable, expectSubscriptions};
+import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+
+declare const { asDiagram };
+declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 
 const Observable = Rx.Observable;
 
