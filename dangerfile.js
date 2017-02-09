@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var _ = require('lodash');
+var validateMessage = require('validate-commit-msg');
 
 //simple regex matcher to detect usage of helper function and its type signature
 var hotMatch = /\bhot\(/gi;
@@ -53,4 +54,18 @@ var testFilesMissingTypes = modifiedSpecFiles.reduce(function (acc, value) {
 if (testFilesMissingTypes.length > 0) {
   fail('missing type definition import in tests (' + testFilesMissingTypes + ') (' + ++errorCount + ')');
   markdown('> (' + errorCount + ') : It seems updated test cases uses test scheduler interface `hot`, `cold` but miss to import type signature for those.');
+}
+
+var commits = danger.github.commits;
+console.log(commits);
+var messageConventionValid = commits.reduce(function (acc, value) {
+  var valid = validateMessage(value.message);
+  console.log(value.message);
+  console.log(valid);
+  return valid && acc;
+}, true);
+
+if (!messageConventionValid) {
+  fail('commit message does not follows conventional change log (' + ++errorCount + ')');
+  markdown('> (' + errorCount + ') : Please check [Contributing guideline](https://github.com/ReactiveX/rxjs/blob/master/CONTRIBUTING.md#commit-message-format) and update commit messages.');
 }
