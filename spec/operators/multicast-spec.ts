@@ -1,6 +1,12 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions, time, rxTestScheduler};
+import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+
+declare const { asDiagram, time, rxTestScheduler };
+declare const hot: typeof marbleTestingSignature.hot;
+declare const cold: typeof marbleTestingSignature.cold;
+declare const expectObservable: typeof marbleTestingSignature.expectObservable;
+declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
 
 const Observable = Rx.Observable;
 const Subject = Rx.Subject;
@@ -56,7 +62,7 @@ describe('Observable.prototype.multicast', () => {
                             '    ^       !',
                             '        ^   !'];
     const multicasted = source.multicast(() => new Subject(),
-      x => x.zip(x, (a, b) => (parseInt(a) + parseInt(b)).toString()));
+      x => x.zip(x, (a: string, b: string) => (parseInt(a) + parseInt(b)).toString()));
     const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
     const expected1   =     '-2-4-6----8-|';
     const subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
@@ -76,7 +82,7 @@ describe('Observable.prototype.multicast', () => {
                             '    ^           !',
                             '        ^           !'];
     const multicasted = source.multicast(() => new Subject(),
-      x => x.zip(x, (a, b) => (parseInt(a) + parseInt(b)).toString()));
+      x => x.zip(x, (a: string, b: string) => (parseInt(a) + parseInt(b)).toString()));
     const expected1   =     '-2-4-6----8-|';
     const expected2   =     '    -2-4-6----8-|';
     const expected3   =     '        -2-4-6----8-|';
