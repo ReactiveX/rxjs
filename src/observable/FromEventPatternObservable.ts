@@ -91,7 +91,7 @@ export class FromEventPatternObservable<T> extends Observable<T> {
 
   private _callSelector(subscriber: Subscriber<T>, args: Array<any>): void {
     try {
-      const result: T = this.selector(...args);
+      const result: T = this.selector!(...args);
       subscriber.next(result);
     }
     catch (e) {

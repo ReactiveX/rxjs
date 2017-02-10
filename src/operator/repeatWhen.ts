@@ -48,7 +48,7 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private notifications: Subject<any>;
   private retries: Observable<any>;
-  private retriesSubscription: Subscription;
+  private retriesSubscription: Subscription | null;
   private sourceIsBeingSubscribedTo: boolean = true;
 
   constructor(destination: Subscriber<R>,
@@ -76,7 +76,7 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     if (!this.isStopped) {
       if (!this.retries) {
         this.subscribeToRetries();
-      } else if (this.retriesSubscription.closed) {
+      } else if (this.retriesSubscription === null || this.retriesSubscription.closed) {
         return super.complete();
       }
 
@@ -89,13 +89,13 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     const { notifications, retriesSubscription } = this;
     if (notifications) {
       notifications.unsubscribe();
-      this.notifications = null;
+      this.notifications = null as any; // garbage collection
     }
     if (retriesSubscription) {
       retriesSubscription.unsubscribe();
       this.retriesSubscription = null;
     }
-    this.retries = null;
+    this.retries = null as any; // garbage collection
   }
 
   private subscribeToRetries() {
@@ -110,9 +110,8 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private temporarilyUnsubscribe() {
     const { notifications, retries, retriesSubscription } = this;
-    this.notifications = null;
-    this.retries = null;
-    this.retriesSubscription = null;
+    this.notifications = null as any; // save from unsubscribe
+    this.retriesSubscription = null; // save from unsubscribe
 
     this.unsubscribe();
     this.isStopped = false;

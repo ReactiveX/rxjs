@@ -9,7 +9,7 @@ import { OuterSubscriber } from './OuterSubscriber';
 export class InnerSubscriber<T, R> extends Subscriber<R> {
   private index: number = 0;
 
-  constructor(private parent: OuterSubscriber<T, R>, private outerValue: T, private outerIndex: number) {
+  constructor(private parent: OuterSubscriber<T, R>, private outerValue: T, private outerIndex?: number) {
     super();
   }
 

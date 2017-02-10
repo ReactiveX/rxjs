@@ -64,7 +64,7 @@ export function sequenceEqual<T>(this: Observable<T>, compareTo: Observable<T>,
 
 export class SequenceEqualOperator<T> implements Operator<T, boolean> {
   constructor(private compareTo: Observable<T>,
-              private comparor: (a: T, b: T) => boolean) {
+              private comparor?: (a: T, b: T) => boolean) {
   }
 
   call(subscriber: Subscriber<boolean>, source: any): any {
@@ -84,7 +84,7 @@ export class SequenceEqualSubscriber<T, R> extends Subscriber<T> {
 
   constructor(destination: Observer<R>,
               private compareTo: Observable<T>,
-              private comparor: (a: T, b: T) => boolean) {
+              private comparor?: (a: T, b: T) => boolean) {
     super(destination);
     this.add(compareTo.subscribe(new SequenceEqualCompareToSubscriber(destination, this)));
   }
@@ -109,8 +109,8 @@ export class SequenceEqualSubscriber<T, R> extends Subscriber<T> {
   checkValues() {
     const { _a, _b, comparor } = this;
     while (_a.length > 0 && _b.length > 0) {
-      let a = _a.shift();
-      let b = _b.shift();
+      let a = _a.shift()!;
+      let b = _b.shift()!;
       let areEqual = false;
       if (comparor) {
         areEqual = tryCatch(comparor)(a, b);

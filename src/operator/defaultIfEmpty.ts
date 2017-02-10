@@ -37,13 +37,13 @@ export function defaultIfEmpty<T, R>(this: Observable<T>, defaultValue?: R): Obs
  * @method defaultIfEmpty
  * @owner Observable
  */
-export function defaultIfEmpty<T, R>(this: Observable<T>, defaultValue: R = null): Observable<T | R> {
+export function defaultIfEmpty<T, R>(this: Observable<T>, defaultValue: R | null = null): Observable<T | R> {
   return this.lift(new DefaultIfEmptyOperator(defaultValue));
 }
 
 class DefaultIfEmptyOperator<T, R> implements Operator<T, T | R> {
 
-  constructor(private defaultValue: R) {
+  constructor(private defaultValue: R | null) {
   }
 
   call(subscriber: Subscriber<T | R>, source: any): any {
@@ -59,7 +59,7 @@ class DefaultIfEmptyOperator<T, R> implements Operator<T, T | R> {
 class DefaultIfEmptySubscriber<T, R> extends Subscriber<T> {
   private isEmpty: boolean = true;
 
-  constructor(destination: Subscriber<T | R>, private defaultValue: R) {
+  constructor(destination: Subscriber<T | R>, private defaultValue: R | null) {
     super(destination);
   }
 

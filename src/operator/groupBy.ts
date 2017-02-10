@@ -68,7 +68,7 @@ class GroupByOperator<T, K, R> implements Operator<T, GroupedObservable<K, R>> {
  * @extends {Ignored}
  */
 class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscription {
-  private groups: Map<K, Subject<T|R>> = null;
+  private groups: Map<K, Subject<T|R>> | null = null;
   public attemptedToUnsubscribe: boolean = false;
   public count: number = 0;
 
@@ -93,15 +93,11 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
   }
 
   private _group(value: T, key: K) {
-    let groups = this.groups;
-
-    if (!groups) {
-      groups = this.groups = typeof key === 'string' ? new FastMap() : new Map();
-    }
+    let groups = this.groups || (this.groups = typeof key === 'string' ? new FastMap() : new Map());
 
     let group = groups.get(key);
 
-    let element: R;
+    let element: R | undefined;
     if (this.elementSelector) {
       try {
         element = this.elementSelector(value);
@@ -159,7 +155,9 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
   }
 
   removeGroup(key: K): void {
-    this.groups.delete(key);
+    if (this.groups) { // TODO: check if this conditional is ok
+      this.groups.delete(key);
+    }
   }
 
   unsubscribe() {

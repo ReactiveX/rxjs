@@ -84,7 +84,7 @@ class BufferWhenSubscriber<T> extends OuterSubscriber<T, any> {
   }
 
   protected _unsubscribe() {
-    this.buffer = null;
+    this.buffer = null as any; // garbage collection;
     this.subscribing = false;
   }
 

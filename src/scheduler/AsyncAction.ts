@@ -11,7 +11,7 @@ import { AsyncScheduler } from './AsyncScheduler';
 export class AsyncAction<T> extends Action<T> {
 
   public id: any;
-  public state: T;
+  public state: T | undefined;
   public delay: number;
   protected pending: boolean = false;
 
@@ -68,11 +68,11 @@ export class AsyncAction<T> extends Action<T> {
     return this;
   }
 
-  protected requestAsyncId(scheduler: AsyncScheduler, id?: any, delay: number = 0): any {
+  protected requestAsyncId(scheduler: AsyncScheduler, id?: any, delay: number | null = 0): any {
     return root.setInterval(scheduler.flush.bind(scheduler, this), delay);
   }
 
-  protected recycleAsyncId(scheduler: AsyncScheduler, id: any, delay: number = 0): any {
+  protected recycleAsyncId(scheduler: AsyncScheduler, id: any, delay: number | null = 0): any {
     // If this action is rescheduled with the same delay time, don't clear the interval id.
     if (delay !== null && this.delay === delay) {
       return id;
@@ -136,18 +136,18 @@ export class AsyncAction<T> extends Action<T> {
     const actions = scheduler.actions;
     const index = actions.indexOf(this);
 
-    this.work  = null;
-    this.delay = null;
-    this.state = null;
+    this.work  = null as any;
+    this.delay = null as any;
+    this.state = null as any;
     this.pending = false;
-    this.scheduler = null;
+    this.scheduler = null as any;
 
     if (index !== -1) {
       actions.splice(index, 1);
     }
 
     if (id != null) {
-      this.id = this.recycleAsyncId(scheduler, id, null);
+      this.id = this.recycleAsyncId(scheduler, id, undefined);
     }
   }
 }

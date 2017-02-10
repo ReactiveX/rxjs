@@ -67,7 +67,7 @@ export function merge<T, R>(this: Observable<T>, ...observables: Array<Observabl
  * @method merge
  * @owner Observable
  */
-export function merge<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> | IScheduler | number>): Observable<R> {
+export function merge<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> | IScheduler | number | undefined>): Observable<R> {
   return this.lift.call(mergeStatic<T, R>(this, ...observables));
 }
 
@@ -84,8 +84,8 @@ export function mergeStatic<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: Obser
 export function mergeStatic<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, concurrent?: number, scheduler?: IScheduler): Observable<T | T2 | T3 | T4 | T5>;
 export function mergeStatic<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, scheduler?: IScheduler): Observable<T | T2 | T3 | T4 | T5 | T6>;
 export function mergeStatic<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, concurrent?: number, scheduler?: IScheduler): Observable<T | T2 | T3 | T4 | T5 | T6>;
-export function mergeStatic<T>(...observables: (ObservableInput<T> | IScheduler | number)[]): Observable<T>;
-export function mergeStatic<T, R>(...observables: (ObservableInput<any> | IScheduler | number)[]): Observable<R>;
+export function mergeStatic<T>(...observables: (ObservableInput<T> | IScheduler | number | undefined)[]): Observable<T>;
+export function mergeStatic<T, R>(...observables: (ObservableInput<any> | IScheduler | number | undefined)[]): Observable<R>;
 /* tslint:enable:max-line-length */
 /**
  * Creates an output Observable which concurrently emits all values from every
@@ -147,9 +147,9 @@ export function mergeStatic<T, R>(...observables: (ObservableInput<any> | ISched
  * @name merge
  * @owner Observable
  */
-export function mergeStatic<T, R>(...observables: Array<ObservableInput<any> | IScheduler | number>): Observable<R> {
+export function mergeStatic<T, R>(...observables: Array<ObservableInput<any> | IScheduler | number | undefined>): Observable<R> {
  let concurrent = Number.POSITIVE_INFINITY;
- let scheduler: IScheduler = null;
+ let scheduler: IScheduler | undefined;
   let last: any = observables[observables.length - 1];
   if (isScheduler(last)) {
     scheduler = <IScheduler>observables.pop();
@@ -160,7 +160,7 @@ export function mergeStatic<T, R>(...observables: Array<ObservableInput<any> | I
     concurrent = <number>observables.pop();
   }
 
-  if (scheduler === null && observables.length === 1) {
+  if (scheduler === undefined && observables.length === 1) {
     return <Observable<R>>observables[0];
   }
 

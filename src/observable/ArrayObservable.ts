@@ -61,11 +61,11 @@ export class ArrayObservable<T> extends Observable<T> {
    * @owner Observable
    */
   static of<T>(...array: Array<T | IScheduler>): Observable<T> {
-    let scheduler = <IScheduler>array[array.length - 1];
+    let scheduler: IScheduler | undefined = <IScheduler>array[array.length - 1];
     if (isScheduler(scheduler)) {
       array.pop();
     } else {
-      scheduler = null;
+      scheduler = undefined;
     }
 
     const len = array.length;

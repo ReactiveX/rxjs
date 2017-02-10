@@ -66,7 +66,7 @@ class SwitchOperator<T, R> implements Operator<T, R> {
 class SwitchSubscriber<T, R> extends OuterSubscriber<T, R> {
   private active: number = 0;
   private hasCompleted: boolean = false;
-  innerSubscription: Subscription;
+  innerSubscription: Subscription | null;
 
   constructor(destination: Subscriber<R>) {
     super(destination);

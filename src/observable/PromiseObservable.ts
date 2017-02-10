@@ -39,11 +39,11 @@ export class PromiseObservable<T> extends Observable<T> {
    * @name fromPromise
    * @owner Observable
    */
-  static create<T>(promise: Promise<T>, scheduler?: IScheduler): Observable<T> {
+  static create<T>(promise: PromiseLike<T>, scheduler?: IScheduler): Observable<T> {
     return new PromiseObservable(promise, scheduler);
   }
 
-  constructor(private promise: Promise<T>, private scheduler?: IScheduler) {
+  constructor(private promise: PromiseLike<T>, private scheduler?: IScheduler) {
     super();
   }
 
@@ -73,7 +73,7 @@ export class PromiseObservable<T> extends Observable<T> {
             }
           }
         )
-        .then(null, err => {
+        .then(null as any, (err: any) => {
           // escape the promise trap, throw unhandled errors
           root.setTimeout(() => { throw err; });
         });
@@ -97,7 +97,7 @@ export class PromiseObservable<T> extends Observable<T> {
               subscriber.add(scheduler.schedule(dispatchError, 0, { err, subscriber }));
             }
           })
-          .then(null, (err) => {
+          .then(null as any, (err: any) => {
             // escape the promise trap, throw unhandled errors
             root.setTimeout(() => { throw err; });
           });

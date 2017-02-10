@@ -68,9 +68,9 @@ class DebounceOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
-  private value: T;
+  private value: T | undefined;
   private hasValue: boolean = false;
-  private durationSubscription: Subscription = null;
+  private durationSubscription: Subscription | null = null;
 
   constructor(destination: Subscriber<R>,
               private durationSelector: (value: T) => SubscribableOrPromise<number>) {
@@ -104,7 +104,7 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
 
     subscription = subscribeToResult(this, duration);
-    if (!subscription.closed) {
+    if (subscription === null || !subscription.closed) {
       this.add(this.durationSubscription = subscription);
     }
   }
@@ -128,7 +128,7 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
         subscription.unsubscribe();
         this.remove(subscription);
       }
-      this.value = null;
+      this.value = undefined;
       this.hasValue = false;
       super._next(value);
     }

@@ -11,7 +11,7 @@ export class ConnectableObservable<T> extends Observable<T> {
 
   protected _subject: Subject<T>;
   protected _refCount: number = 0;
-  protected _connection: Subscription;
+  protected _connection: Subscription | undefined;
 
   constructor(protected source: Observable<T>,
               protected subjectFactory: () => Subject<T>) {
@@ -37,7 +37,7 @@ export class ConnectableObservable<T> extends Observable<T> {
       connection.add(this.source
         .subscribe(new ConnectableSubscriber(this.getSubject(), this)));
       if (connection.closed) {
-        this._connection = null;
+        this._connection = undefined;
         connection = Subscription.EMPTY;
       } else {
         this._connection = connection;
@@ -76,7 +76,7 @@ class ConnectableSubscriber<T> extends SubjectSubscriber<T> {
   protected _unsubscribe() {
     const { connectable } = this;
     if (connectable) {
-      this.connectable = null;
+      this.connectable = null as any; // garbage collection
       const connection = (<any> connectable)._connection;
       (<any> connectable)._refCount = 0;
       (<any> connectable)._subject = null;
@@ -109,7 +109,7 @@ class RefCountOperator<T> implements Operator<T, T> {
 
 class RefCountSubscriber<T> extends Subscriber<T> {
 
-  private connection: Subscription;
+  private connection: Subscription | undefined;
 
   constructor(destination: Subscriber<T>,
               private connectable: ConnectableObservable<T>) {
@@ -120,20 +120,20 @@ class RefCountSubscriber<T> extends Subscriber<T> {
 
     const { connectable } = this;
     if (!connectable) {
-      this.connection = null;
+      this.connection = undefined;
       return;
     }
 
-    this.connectable = null;
+    this.connectable = null as any; // garbage collection
     const refCount = (<any> connectable)._refCount;
     if (refCount <= 0) {
-      this.connection = null;
+      this.connection = undefined;
       return;
     }
 
     (<any> connectable)._refCount = refCount - 1;
     if (refCount > 1) {
-      this.connection = null;
+      this.connection = undefined;
       return;
     }
 
@@ -162,7 +162,7 @@ class RefCountSubscriber<T> extends Subscriber<T> {
     ///
     const { connection } = this;
     const sharedConnection = (<any> connectable)._connection;
-    this.connection = null;
+    this.connection = undefined;
 
     if (sharedConnection && (!connection || sharedConnection === connection)) {
       sharedConnection.unsubscribe();

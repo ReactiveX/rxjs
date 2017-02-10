@@ -94,7 +94,7 @@ export class BoundCallbackObservable<T> extends Observable<T> {
               private selector: Function,
               private args: any[],
               private context: any,
-              private scheduler: IScheduler) {
+              private scheduler?: IScheduler) {
     super();
   }
 
@@ -140,7 +140,8 @@ export class BoundCallbackObservable<T> extends Observable<T> {
   static dispatch<T>(state: { source: BoundCallbackObservable<T>, subscriber: Subscriber<T>, context: any }) {
     const self = (<Subscription><any>this);
     const { source, subscriber, context } = state;
-    const { callbackFunc, args, scheduler } = source;
+    const { callbackFunc, args } = source;
+    const scheduler = source.scheduler!;
     let subject = source.subject;
 
     if (!subject) {

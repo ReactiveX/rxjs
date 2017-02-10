@@ -74,7 +74,7 @@ export function mergeMap<T, I, R>(this: Observable<T>, project: (value: T, index
                                   concurrent: number = Number.POSITIVE_INFINITY): Observable<I | R> {
   if (typeof resultSelector === 'number') {
     concurrent = <number>resultSelector;
-    resultSelector = null;
+    resultSelector = undefined;
   }
   return this.lift(new MergeMapOperator(project, <any>resultSelector, concurrent));
 }
@@ -155,7 +155,7 @@ export class MergeMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   private _notifyResultSelector(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) {
     let result: R;
     try {
-      result = this.resultSelector(outerValue, innerValue, outerIndex, innerIndex);
+      result = this.resultSelector!(outerValue, innerValue, outerIndex, innerIndex);
     } catch (err) {
       this.destination.error(err);
       return;
@@ -168,7 +168,7 @@ export class MergeMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     this.remove(innerSub);
     this.active--;
     if (buffer.length > 0) {
-      this._next(buffer.shift());
+      this._next(buffer.shift()!);
     } else if (this.active === 0 && this.hasCompleted) {
       this.destination.complete();
     }

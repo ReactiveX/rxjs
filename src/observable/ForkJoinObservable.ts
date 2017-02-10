@@ -52,7 +52,7 @@ export class ForkJoinObservable<T> extends Observable<T> {
       return new EmptyObservable<T>();
     }
 
-    let resultSelector: (...values: Array<any>) => any = null;
+    let resultSelector: ((...values: Array<any>) => any) | undefined;
     if (typeof sources[sources.length - 1] === 'function') {
       resultSelector = <(...values: Array<any>) => any>sources.pop();
     }

@@ -61,7 +61,7 @@ export function expand<T, R>(this: Observable<T>, project: (value: T, index: num
  */
 export function expand<T, R>(this: Observable<T>, project: (value: T, index: number) => Observable<R>,
                              concurrent: number = Number.POSITIVE_INFINITY,
-                             scheduler: IScheduler = undefined): Observable<R> {
+                             scheduler?: IScheduler): Observable<R> {
   concurrent = (concurrent || 0) < 1 ? Number.POSITIVE_INFINITY : concurrent;
 
   return this.lift(new ExpandOperator(project, concurrent, scheduler));
@@ -70,7 +70,7 @@ export function expand<T, R>(this: Observable<T>, project: (value: T, index: num
 export class ExpandOperator<T, R> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => Observable<R>,
               private concurrent: number,
-              private scheduler: IScheduler) {
+              private scheduler?: IScheduler) {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {
@@ -99,7 +99,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
   constructor(destination: Subscriber<R>,
               private project: (value: T, index: number) => Observable<R>,
               private concurrent: number,
-              private scheduler: IScheduler) {
+              private scheduler?: IScheduler) {
     super(destination);
     if (concurrent < Number.POSITIVE_INFINITY) {
       this.buffer = [];

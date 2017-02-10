@@ -23,6 +23,23 @@ export interface AjaxRequest {
   responseType?: string;
 }
 
+export interface SafeAjaxRequest {
+  url?: string;
+  body?: any;
+  user?: string;
+  async: boolean;
+  method: string;
+  headers: Object;
+  timeout: number;
+  password?: string;
+  hasContent?: boolean;
+  crossDomain: boolean;
+  withCredentials: boolean;
+  createXHR: () => XMLHttpRequest;
+  progressSubscriber?: Subscriber<any>;
+  responseType: string;
+}
+
 function getCORSRequest(this: AjaxRequest): XMLHttpRequest {
   if (root.XMLHttpRequest) {
     const xhr = new root.XMLHttpRequest();
@@ -41,7 +58,7 @@ function getXMLHttpRequest(): XMLHttpRequest {
   if (root.XMLHttpRequest) {
     return new root.XMLHttpRequest();
   } else {
-    let progId: string;
+    let progId: string | undefined;
     try {
       const progIds = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'];
       for (let i = 0; i < 3; i++) {
@@ -70,7 +87,7 @@ export interface AjaxCreationMethod {
   getJSON<T>(url: string, headers?: Object): Observable<T>;
 }
 
-export function ajaxGet(url: string, headers: Object = null) {
+export function ajaxGet(url: string, headers?: Object) {
   return new AjaxObservable<AjaxResponse>({ method: 'GET', url, headers });
 };
 
@@ -137,12 +154,12 @@ export class AjaxObservable<T> extends Observable<T> {
     return <AjaxCreationMethod>create;
   })();
 
-  private request: AjaxRequest;
+  private request: SafeAjaxRequest;
 
   constructor(urlOrRequest: string | AjaxRequest) {
     super();
 
-    const request: AjaxRequest = {
+    const request: SafeAjaxRequest = {
       async: true,
       createXHR: function(this: AjaxRequest) {
         return this.crossDomain ? getCORSRequest.call(this) : getXMLHttpRequest();
@@ -182,7 +199,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   private xhr: XMLHttpRequest;
   private done: boolean = false;
 
-  constructor(destination: Subscriber<T>, public request: AjaxRequest) {
+  constructor(destination: Subscriber<T>, public request: SafeAjaxRequest) {
     super(destination);
 
     const headers = request.headers = request.headers || {};
@@ -211,7 +228,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
     destination.next(response);
   }
 
-  private send(): XMLHttpRequest {
+  private send(): XMLHttpRequest | null {
     const {
       request,
       request: { user, method, url, async, password, headers, body }
@@ -396,7 +413,7 @@ export class AjaxResponse {
   responseText: string;
 
   /** @type {string} The responseType (e.g. 'json', 'arraybuffer', or 'xml') */
-  responseType: string;
+  responseType: string | undefined;
 
   constructor(public originalEvent: Event, public xhr: XMLHttpRequest, public request: AjaxRequest) {
     this.status = xhr.status;

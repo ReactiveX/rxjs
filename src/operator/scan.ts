@@ -76,7 +76,7 @@ class ScanSubscriber<T, R> extends Subscriber<T> {
   private index: number = 0;
 
   get seed(): T | R {
-    return this._seed;
+    return this._seed!;
   }
 
   set seed(value: T | R) {
@@ -84,7 +84,7 @@ class ScanSubscriber<T, R> extends Subscriber<T> {
     this._seed = value;
   }
 
-  constructor(destination: Subscriber<R>, private accumulator: (acc: R, value: T, index: number) => R, private _seed: T | R, private hasSeed: boolean) {
+  constructor(destination: Subscriber<R>, private accumulator: (acc: R, value: T, index: number) => R, private _seed: T | R | undefined, private hasSeed: boolean) {
     super(destination);
   }
 

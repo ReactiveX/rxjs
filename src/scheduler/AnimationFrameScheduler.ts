@@ -3,15 +3,15 @@ import { AsyncScheduler } from './AsyncScheduler';
 
 export class AnimationFrameScheduler extends AsyncScheduler {
   public flush(action?: AsyncAction<any>): void {
+    const {actions} = this;
 
     this.active = true;
     this.scheduled = undefined;
 
-    const {actions} = this;
     let error: any;
     let index: number = -1;
     let count: number = actions.length;
-    action = action || actions.shift();
+    action = action || actions.shift()!; // TODO: make sure actions has always at least one element
 
     do {
       if (error = action.execute(action.state, action.delay)) {

@@ -80,10 +80,10 @@ export function first<T, R>(this: Observable<T>, predicate?: (value: T, index: n
 }
 
 class FirstOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: ((value: T, index: number) => R) | void,
-              private defaultValue?: any,
-              private source?: Observable<T>) {
+  constructor(private predicate: ((value: T, index: number, source: Observable<T>) => boolean) | undefined,
+              private resultSelector: ((value: T, index: number) => R) | void,
+              private defaultValue: any | undefined,
+              private source: Observable<T>) {
   }
 
   call(observer: Subscriber<R>, source: any): any {
@@ -102,10 +102,10 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
   private _emitted: boolean = false;
 
   constructor(destination: Subscriber<R>,
-              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: ((value: T, index: number) => R) | void,
-              private defaultValue?: any,
-              private source?: Observable<T>) {
+              private predicate: ((value: T, index: number, source: Observable<T>) => boolean) | undefined,
+              private resultSelector: ((value: T, index: number) => R) | void,
+              private defaultValue: any | undefined,
+              private source: Observable<T>) {
     super(destination);
   }
 
@@ -121,7 +121,7 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
   private _tryPredicate(value: T, index: number) {
     let result: any;
     try {
-      result = this.predicate(value, index, this.source);
+      result = this.predicate!(value, index, this.source);
     } catch (err) {
       this.destination.error(err);
       return;

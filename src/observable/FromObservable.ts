@@ -21,7 +21,7 @@ const isArrayLike = (<T>(x: any): x is ArrayLike<T> => x && typeof x.length === 
  */
 export class FromObservable<T> extends Observable<T> {
   constructor(private ish: ObservableInput<T>, private scheduler?: IScheduler) {
-    super(null);
+    super();
   }
 
   static create<T>(ish: ObservableInput<T>, scheduler?: IScheduler): Observable<T>;

@@ -70,8 +70,8 @@ class DebounceTimeOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class DebounceTimeSubscriber<T> extends Subscriber<T> {
-  private debouncedSubscription: Subscription = null;
-  private lastValue: T = null;
+  private debouncedSubscription: Subscription | null = null;
+  private lastValue: T | null = null;
   private hasValue: boolean = false;
 
   constructor(destination: Subscriber<T>,

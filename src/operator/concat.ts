@@ -11,8 +11,8 @@ export function concat<T, T2, T3>(this: Observable<T>, v2: ObservableInput<T2>, 
 export function concat<T, T2, T3, T4>(this: Observable<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, scheduler?: IScheduler): Observable<T | T2 | T3 | T4>;
 export function concat<T, T2, T3, T4, T5>(this: Observable<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, scheduler?: IScheduler): Observable<T | T2 | T3 | T4 | T5>;
 export function concat<T, T2, T3, T4, T5, T6>(this: Observable<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, scheduler?: IScheduler): Observable<T | T2 | T3 | T4 | T5 | T6>;
-export function concat<T>(this: Observable<T>, ...observables: Array<ObservableInput<T> | IScheduler>): Observable<T>;
-export function concat<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> | IScheduler>): Observable<R>;
+export function concat<T>(this: Observable<T>, ...observables: Array<ObservableInput<T> | IScheduler | undefined>): Observable<T>;
+export function concat<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> | IScheduler | undefined>): Observable<R>;
 /* tslint:disable:max-line-length */
 
 /**
@@ -64,7 +64,7 @@ export function concat<T, R>(this: Observable<T>, ...observables: Array<Observab
  * @method concat
  * @owner Observable
  */
-export function concat<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> | IScheduler>): Observable<R> {
+export function concat<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> | IScheduler | undefined>): Observable<R> {
   return this.lift.call(concatStatic<T, R>(this, ...observables));
 }
 
@@ -75,8 +75,8 @@ export function concatStatic<T, T2, T3>(v1: ObservableInput<T>, v2: ObservableIn
 export function concatStatic<T, T2, T3, T4>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, scheduler?: IScheduler): Observable<T | T2 | T3 | T4>;
 export function concatStatic<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, scheduler?: IScheduler): Observable<T | T2 | T3 | T4 | T5>;
 export function concatStatic<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, scheduler?: IScheduler): Observable<T | T2 | T3 | T4 | T5 | T6>;
-export function concatStatic<T>(...observables: (ObservableInput<T> | IScheduler)[]): Observable<T>;
-export function concatStatic<T, R>(...observables: (ObservableInput<any> | IScheduler)[]): Observable<R>;
+export function concatStatic<T>(...observables: (ObservableInput<T> | IScheduler | undefined)[]): Observable<T>;
+export function concatStatic<T, R>(...observables: (ObservableInput<any> | IScheduler | undefined)[]): Observable<R>;
 /* tslint:enable:max-line-length */
 /**
  * Creates an output Observable which sequentially emits all values from every
@@ -128,14 +128,14 @@ export function concatStatic<T, R>(...observables: (ObservableInput<any> | ISche
  * @name concat
  * @owner Observable
  */
-export function concatStatic<T, R>(...observables: Array<ObservableInput<any> | IScheduler>): Observable<R> {
-  let scheduler: IScheduler = null;
+export function concatStatic<T, R>(...observables: Array<ObservableInput<any> | IScheduler | undefined>): Observable<R> {
+  let scheduler: IScheduler | undefined;
   let args = <any[]>observables;
   if (isScheduler(args[observables.length - 1])) {
     scheduler = args.pop();
   }
 
-  if (scheduler === null && observables.length === 1) {
+  if (scheduler === undefined && observables.length === 1) {
     return <Observable<R>>observables[0];
   }
 

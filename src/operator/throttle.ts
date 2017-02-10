@@ -64,7 +64,7 @@ class ThrottleOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
-  private throttled: Subscription;
+  private throttled: Subscription | null;
 
   constructor(protected destination: Subscriber<T>,
               private durationSelector: (value: T) => SubscribableOrPromise<number>) {
@@ -78,7 +78,7 @@ class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   private tryDurationSelector(value: T): void {
-    let duration: SubscribableOrPromise<number> = null;
+    let duration: SubscribableOrPromise<number>;
     try {
       duration = this.durationSelector(value);
     } catch (err) {

@@ -122,7 +122,7 @@ export class FromEventObservable<T> extends Observable<T> {
                                       handler: Function,
                                       subscriber: Subscriber<T>,
                                       options?: EventListenerOptions) {
-    let unsubscribe: () => void;
+    let unsubscribe: (() => void) | undefined;
     if (isNodeList(sourceObj) || isHTMLCollection(sourceObj)) {
       for (let i = 0, len = sourceObj.length; i < len; i++) {
         FromEventObservable.setupSubscription(sourceObj[i], eventName, handler, subscriber, options);

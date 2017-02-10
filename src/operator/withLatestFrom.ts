@@ -136,7 +136,7 @@ class WithLatestFromSubscriber<T, R> extends OuterSubscriber<T, R> {
   private _tryProject(args: any[]) {
     let result: any;
     try {
-      result = this.project.apply(this, args);
+      result = this.project!.apply(this, args);
     } catch (err) {
       this.destination.error(err);
       return;

@@ -42,7 +42,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   public syncErrorThrowable: boolean = false;
 
   protected isStopped: boolean = false;
-  protected destination: PartialObserver<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
+  protected destination: Observer<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
 
   /**
    * @param {Observer|function(value: T): void} [destinationOrNext] A partially
@@ -131,11 +131,11 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     super.unsubscribe();
   }
 
-  protected _next(value: T): void {
+  protected _next(value?: T): void {
     this.destination.next(value);
   }
 
-  protected _error(err: any): void {
+  protected _error(err?: any): void {
     this.destination.error(err);
     this.unsubscribe();
   }
@@ -161,7 +161,7 @@ class SafeSubscriber<T> extends Subscriber<T> {
               complete?: () => void) {
     super();
 
-    let next: ((value: T) => void);
+    let next: ((value: T) => void) | undefined;
     let context: any = this;
 
     if (isFunction(observerOrNext)) {
@@ -178,9 +178,9 @@ class SafeSubscriber<T> extends Subscriber<T> {
     }
 
     this._context = context;
-    this._next = next;
-    this._error = error;
-    this._complete = complete;
+    this._next = next!; // TODO: make sure next is always defined
+    this._error = error!; // TODO: make sure error is always defined
+    this._complete = complete!; // TODO: make sure complete is always defined
   }
 
   next(value?: T): void {
@@ -256,7 +256,7 @@ class SafeSubscriber<T> extends Subscriber<T> {
   protected _unsubscribe(): void {
     const { _parent } = this;
     this._context = null;
-    this._parent = null;
+    this._parent = null as any; // garbage collection
     _parent.unsubscribe();
   }
 }

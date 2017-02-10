@@ -69,7 +69,7 @@ class WindowOperator<T> implements Operator<T, Observable<T>> {
  */
 class WindowSubscriber<T> extends OuterSubscriber<T, any> {
   private window: Subject<T>;
-  private closingNotification: Subscription;
+  private closingNotification: Subscription | null = null;
 
   constructor(protected destination: Subscriber<Observable<T>>,
               private closingSelector: () => Observable<any>) {
@@ -113,7 +113,7 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
     }
   }
 
-  private openWindow(innerSub: InnerSubscriber<T, any> = null): void {
+  private openWindow(innerSub: InnerSubscriber<T, any> | null = null): void {
     if (innerSub) {
       this.remove(innerSub);
       innerSub.unsubscribe();

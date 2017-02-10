@@ -80,8 +80,8 @@ export function combineLatest<T, R>(...observables: Array<any | ObservableInput<
                                                     Array<ObservableInput<any>> |
                                                     (((...values: Array<any>) => R)) |
                                                     IScheduler>): Observable<R> {
-  let project: (...values: Array<any>) => R =  null;
-  let scheduler: IScheduler = null;
+  let project: ((...values: Array<any>) => R) | undefined;
+  let scheduler: IScheduler | undefined;
 
   if (isScheduler(observables[observables.length - 1])) {
     scheduler = <IScheduler>observables.pop();

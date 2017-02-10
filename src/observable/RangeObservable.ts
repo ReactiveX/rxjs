@@ -69,7 +69,7 @@ export class RangeObservable extends Observable<number> {
 
   private start: number;
   private _count: number;
-  private scheduler: IScheduler;
+  private scheduler: IScheduler | undefined;
 
   constructor(start: number,
               count: number,

@@ -30,7 +30,7 @@ export class Notification<T> {
   observe(observer: PartialObserver<T>): any {
     switch (this.kind) {
       case 'N':
-        return observer.next && observer.next(this.value);
+        return observer.next && observer.next(this.value!); // TODO: make sure value is defined
       case 'E':
         return observer.error && observer.error(this.error);
       case 'C':
@@ -50,7 +50,7 @@ export class Notification<T> {
     const kind = this.kind;
     switch (kind) {
       case 'N':
-        return next && next(this.value);
+        return next && next(this.value!); // TODO: make sure value is defined here
       case 'E':
         return error && error(this.error);
       case 'C':
@@ -118,7 +118,7 @@ export class Notification<T> {
    * argument.
    */
   static createError<T>(err?: any): Notification<T> {
-    return new Notification('E', undefined, err);
+    return new Notification<T>('E', undefined, err);
   }
 
   /**
