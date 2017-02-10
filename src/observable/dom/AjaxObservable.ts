@@ -66,6 +66,7 @@ export interface AjaxCreationMethod {
   get(url: string, headers?: Object): Observable<AjaxResponse>;
   post(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
   put(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
+  patch(url: string, body?: any, headers?: Object): Observable<AjaxResponse>;
   delete(url: string, headers?: Object): Observable<AjaxResponse>;
   getJSON<T>(url: string, headers?: Object): Observable<T>;
 }
@@ -84,6 +85,10 @@ export function ajaxDelete(url: string, headers?: Object): Observable<AjaxRespon
 
 export function ajaxPut(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
   return new AjaxObservable<AjaxResponse>({ method: 'PUT', url, body, headers });
+};
+
+export function ajaxPatch(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
+  return new AjaxObservable<AjaxResponse>({ method: 'PATCH', url, body, headers });
 };
 
 export function ajaxGetJSON<T>(url: string, headers?: Object): Observable<T> {
@@ -132,6 +137,7 @@ export class AjaxObservable<T> extends Observable<T> {
     create.post = ajaxPost;
     create.delete = ajaxDelete;
     create.put = ajaxPut;
+    create.patch = ajaxPatch;
     create.getJSON = ajaxGetJSON;
 
     return <AjaxCreationMethod>create;
