@@ -75,7 +75,7 @@ class SwitchSubscriber<T, R> extends OuterSubscriber<T, R> {
   protected _next(value: T): void {
     this.unsubscribeInner();
     this.active++;
-    this.add(this.innerSubscription = subscribeToResult(this, value));
+    this.innerSubscription = this.add(subscribeToResult(this, value));
   }
 
   protected _complete(): void {
@@ -90,7 +90,6 @@ class SwitchSubscriber<T, R> extends OuterSubscriber<T, R> {
     const innerSubscription = this.innerSubscription;
     if (innerSubscription) {
       innerSubscription.unsubscribe();
-      this.remove(innerSubscription);
     }
   }
 
