@@ -48,11 +48,18 @@ export function bufferCount<T>(this: Observable<T>, bufferSize: number, startBuf
 }
 
 class BufferCountOperator<T> implements Operator<T, T[]> {
+  private subscriberClass: any;
+
   constructor(private bufferSize: number, private startBufferEvery: number) {
+    if (!startBufferEvery || bufferSize === startBufferEvery) {
+      this.subscriberClass = BufferCountSubscriber;
+    } else {
+      this.subscriberClass = BufferSkipCountSubscriber;
+    }
   }
 
   call(subscriber: Subscriber<T[]>, source: any): any {
-    return source.subscribe(new BufferCountSubscriber(subscriber, this.bufferSize, this.startBufferEvery));
+    return source.subscribe(new this.subscriberClass(subscriber, this.bufferSize, this.startBufferEvery));
   }
 }
 
@@ -62,6 +69,38 @@ class BufferCountOperator<T> implements Operator<T, T[]> {
  * @extends {Ignored}
  */
 class BufferCountSubscriber<T> extends Subscriber<T> {
+  private buffer: T[] = [];
+
+  constructor(destination: Subscriber<T[]>, private bufferSize: number) {
+    super(destination);
+  }
+
+  protected _next(value: T): void {
+    const buffer = this.buffer;
+
+    buffer.push(value);
+
+    if (buffer.length == this.bufferSize) {
+      this.destination.next(buffer);
+      this.buffer = [];
+    }
+  }
+
+  protected _complete(): void {
+    const buffer = this.buffer;
+    if (buffer.length > 0) {
+      this.destination.next(buffer);
+    }
+    super._complete();
+  }
+}
+
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+class BufferSkipCountSubscriber<T> extends Subscriber<T> {
   private buffers: Array<T[]> = [];
   private count: number = 0;
 
@@ -70,11 +109,9 @@ class BufferCountSubscriber<T> extends Subscriber<T> {
   }
 
   protected _next(value: T) {
-    const count = this.count++;
-    const { destination, bufferSize, startBufferEvery, buffers } = this;
-    const startOn = (startBufferEvery == null) ? bufferSize : startBufferEvery;
+    const { bufferSize, startBufferEvery, buffers } = this;
 
-    if (count % startOn === 0) {
+    if (this.count++ % startBufferEvery === 0) {
       buffers.push([]);
     }
 
@@ -83,20 +120,21 @@ class BufferCountSubscriber<T> extends Subscriber<T> {
       buffer.push(value);
       if (buffer.length === bufferSize) {
         buffers.splice(i, 1);
-        destination.next(buffer);
+        this.destination.next(buffer);
       }
     }
   }
 
   protected _complete() {
-    const destination = this.destination;
     const buffers = this.buffers;
+
     while (buffers.length > 0) {
       let buffer = buffers.shift();
       if (buffer.length > 0) {
-        destination.next(buffer);
+        this.destination.next(buffer);
       }
     }
     super._complete();
   }
+
 }
