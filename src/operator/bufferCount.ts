@@ -1,6 +1,7 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
+import { TeardownLogic } from '../Subscription';
 
 /**
  * Buffers the source Observable values until the size hits the maximum
@@ -58,7 +59,7 @@ class BufferCountOperator<T> implements Operator<T, T[]> {
     }
   }
 
-  call(subscriber: Subscriber<T[]>, source: any): any {
+  call(subscriber: Subscriber<T[]>, source: any): TeardownLogic {
     return source.subscribe(new this.subscriberClass(subscriber, this.bufferSize, this.startBufferEvery));
   }
 }
@@ -108,7 +109,7 @@ class BufferSkipCountSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  protected _next(value: T) {
+  protected _next(value: T): void {
     const { bufferSize, startBufferEvery, buffers } = this;
 
     if (this.count++ % startBufferEvery === 0) {
@@ -125,7 +126,7 @@ class BufferSkipCountSubscriber<T> extends Subscriber<T> {
     }
   }
 
-  protected _complete() {
+  protected _complete(): void {
     const buffers = this.buffers;
 
     while (buffers.length > 0) {
