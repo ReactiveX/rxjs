@@ -1,5 +1,5 @@
 import { root } from './root';
-import { isArray } from './isArray';
+import { isArrayLike } from './isArrayLike';
 import { isPromise } from './isPromise';
 import { isObject } from './isObject';
 import { Subscriber } from '../Subscriber';
@@ -32,7 +32,7 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
     } else {
       return result.subscribe(destination);
     }
-  } else if (isArray(result)) {
+  } else if (isArrayLike(result)) {
     for (let i = 0, len = result.length; i < len && !destination.closed; i++) {
       destination.next(result[i]);
     }
