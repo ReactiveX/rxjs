@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
+import {lowerCaseO} from '../helpers/test-helper';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const hot: typeof marbleTestingSignature.hot;
@@ -209,6 +210,36 @@ describe('Observable.merge(...observables)', () => {
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
+  it('should merge single lowerCaseO into RxJS Observable', () => {
+    const e1 = lowerCaseO('a', 'b', 'c');
+
+    const result = Observable.merge(e1);
+
+    expect(result).to.be.instanceof(Observable);
+    expectObservable(result).toBe('(abc|)');
+  });
+
+  it('should merge two lowerCaseO into RxJS Observable', () => {
+    const e1 = lowerCaseO('a', 'b', 'c');
+    const e2 = lowerCaseO('d', 'e', 'f');
+
+    const result = Observable.merge(e1, e2);
+
+    expect(result).to.be.instanceof(Observable);
+    expectObservable(result).toBe('(abcdef|)');
+  });
+});
+
+describe('Observable.merge(...observables, Scheduler)', () => {
+  it('should merge single lowerCaseO into RxJS Observable', () => {
+    const e1 = lowerCaseO('a', 'b', 'c');
+
+    const result = Observable.merge(e1, rxTestScheduler);
+
+    expect(result).to.be.instanceof(Observable);
+    expectObservable(result).toBe('(abc|)');
   });
 });
 
