@@ -160,7 +160,7 @@ export function mergeStatic<T, R>(...observables: Array<ObservableInput<any> | I
     concurrent = <number>observables.pop();
   }
 
-  if (scheduler === null && observables.length === 1) {
+  if (scheduler === null && observables.length === 1 && observables[0] instanceof Observable) {
     return <Observable<R>>observables[0];
   }
 
