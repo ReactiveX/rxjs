@@ -107,9 +107,7 @@ class CatchSubscriber<T, R> extends OuterSubscriber<T, R> {
         super.error(err2);
         return;
       }
-      this.unsubscribe();
-      this.closed = false;
-      this.isStopped = false;
+      this._unsubscribeAndRecycle();
       this.add(subscribeToResult(this, result));
     }
   }

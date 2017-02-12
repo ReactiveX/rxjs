@@ -4,7 +4,7 @@ import { Operator } from '../Operator';
 import { PartialObserver } from '../Observer';
 import { Subscriber } from '../Subscriber';
 import { Notification } from '../Notification';
-import { TeardownLogic, Subscription } from '../Subscription';
+import { TeardownLogic } from '../Subscription';
 import { Action } from '../scheduler/Action';
 
 /**
@@ -36,11 +36,9 @@ export class ObserveOnOperator<T> implements Operator<T, T> {
  */
 export class ObserveOnSubscriber<T> extends Subscriber<T> {
   static dispatch(this: Action<ObserveOnMessage>, arg: ObserveOnMessage) {
-    const { notification, destination, subscription } = arg;
+    const { notification, destination } = arg;
     notification.observe(destination);
-    if (subscription) {
-      subscription.unsubscribe();
-    }
+    this.unsubscribe();
   }
 
   constructor(destination: Subscriber<T>,
@@ -50,10 +48,11 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
   }
 
   private scheduleMessage(notification: Notification<any>): void {
-    const message = new ObserveOnMessage(notification, this.destination);
-    message.subscription = this.add(
-        this.scheduler.schedule(ObserveOnSubscriber.dispatch, this.delay, message)
-    );
+    this.add(this.scheduler.schedule(
+      ObserveOnSubscriber.dispatch,
+      this.delay,
+      new ObserveOnMessage(notification, this.destination)
+    ));
   }
 
   protected _next(value: T): void {
@@ -70,8 +69,6 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
 }
 
 export class ObserveOnMessage {
-  public subscription: Subscription;
-
   constructor(public notification: Notification<any>,
               public destination: PartialObserver<any>) {
   }
