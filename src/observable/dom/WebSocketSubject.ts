@@ -29,7 +29,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
 
   url: string;
   protocol: string|Array<string>;
-  socket: WebSocket;
+  socket: WebSocket | null;
   openObserver: NextObserver<Event>;
   closeObserver: NextObserver<CloseEvent>;
   closingObserver: NextObserver<void>;
@@ -153,7 +153,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     const { WebSocketCtor } = this;
     const observer = this._output;
 
-    let socket: WebSocket = null;
+    let socket: WebSocket;
     try {
       socket = this.protocol ?
         new WebSocketCtor(this.url, this.protocol) :

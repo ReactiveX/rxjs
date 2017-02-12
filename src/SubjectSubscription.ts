@@ -24,7 +24,7 @@ export class SubjectSubscription<T> extends Subscription {
     const subject = this.subject;
     const observers = subject.observers;
 
-    this.subject = null;
+    this.subject = null as any; // garbage collection
 
     if (!observers || observers.length === 0 || subject.isStopped || subject.closed) {
       return;

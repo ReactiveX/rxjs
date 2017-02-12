@@ -40,14 +40,12 @@ export function onErrorResumeNextStatic<R>(array: ObservableInput<any>[]): Obser
 export function onErrorResumeNextStatic<T, R>(...nextSources: Array<ObservableInput<any> |
                                                               Array<ObservableInput<any>> |
                                                               ((...values: Array<any>) => R)>): Observable<R> {
-  let source: ObservableInput<any> = null;
-
   if (nextSources.length === 1 && isArray(nextSources[0])) {
     nextSources = <Array<ObservableInput<any>>>nextSources[0];
   }
-  source = nextSources.shift();
+  let source = nextSources.shift()!; // TODO: what to do when this argument is undefined?
 
-  return new FromObservable(source, null).lift(new OnErrorResumeNextOperator<T, R>(nextSources));
+  return new FromObservable(source, undefined).lift(new OnErrorResumeNextOperator<T, R>(nextSources));
 }
 
 class OnErrorResumeNextOperator<T, R> implements Operator<T, R> {

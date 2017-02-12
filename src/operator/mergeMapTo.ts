@@ -1,6 +1,5 @@
 import { Observable, ObservableInput } from '../Observable';
 import { Operator } from '../Operator';
-import { PartialObserver } from '../Observer';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { OuterSubscriber } from '../OuterSubscriber';
@@ -60,7 +59,7 @@ export function mergeMapTo<T, I, R>(this: Observable<T>, innerObservable: Observ
                                     concurrent: number = Number.POSITIVE_INFINITY): Observable<R> {
   if (typeof resultSelector === 'number') {
     concurrent = <number>resultSelector;
-    resultSelector = null;
+    resultSelector = undefined;
   }
   return this.lift(new MergeMapToOperator(innerObservable, <any>resultSelector, concurrent));
 }
@@ -98,21 +97,17 @@ export class MergeMapToSubscriber<T, I, R> extends OuterSubscriber<T, I> {
 
   protected _next(value: T): void {
     if (this.active < this.concurrent) {
-      const resultSelector = this.resultSelector;
       const index = this.index++;
       const ish = this.ish;
-      const destination = this.destination;
 
       this.active++;
-      this._innerSub(ish, destination, resultSelector, value, index);
+      this._innerSub(ish, value, index);
     } else {
       this.buffer.push(value);
     }
   }
 
   private _innerSub(ish: ObservableInput<I>,
-                    destination: PartialObserver<I>,
-                    resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R,
                     value: T,
                     index: number): void {
     this.add(subscribeToResult<T, I>(this, ish, value, index));
@@ -141,7 +136,7 @@ export class MergeMapToSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     const { resultSelector, destination } = this;
     let result: R;
     try {
-      result = resultSelector(outerValue, innerValue, outerIndex, innerIndex);
+      result = resultSelector!(outerValue, innerValue, outerIndex, innerIndex);
     } catch (err) {
       destination.error(err);
       return;
@@ -159,7 +154,7 @@ export class MergeMapToSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     this.remove(innerSub);
     this.active--;
     if (buffer.length > 0) {
-      this._next(buffer.shift());
+      this._next(buffer.shift()!);
     } else if (this.active === 0 && this.hasCompleted) {
       this.destination.complete();
     }

@@ -92,25 +92,25 @@ class BufferToggleSubscriber<T, O> extends OuterSubscriber<T, O> {
   protected _error(err: any): void {
     const contexts = this.contexts;
     while (contexts.length > 0) {
-      const context = contexts.shift();
+      const context = contexts.shift()!;
       context.subscription.unsubscribe();
-      context.buffer = null;
-      context.subscription = null;
+      context.buffer = null as any; // garbage collection
+      context.subscription = null as any; // garbage collection
     }
-    this.contexts = null;
+    this.contexts = null as any; // garbage collection
     super._error(err);
   }
 
   protected _complete(): void {
     const contexts = this.contexts;
     while (contexts.length > 0) {
-      const context = contexts.shift();
+      const context = contexts.shift()!;
       this.destination.next(context.buffer);
       context.subscription.unsubscribe();
-      context.buffer = null;
-      context.subscription = null;
+      context.buffer = null as any; // garbage collection
+      context.subscription = null as any; // garbage collection
     }
-    this.contexts = null;
+    this.contexts = null as any; // garbage collection
     super._complete();
   }
 

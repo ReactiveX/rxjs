@@ -25,7 +25,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     return new SubjectSubscriber(this);
   }
 
-  observers: Observer<T>[] = [];
+  observers: Observer<T | undefined>[] = [];
 
   closed = false;
 
@@ -96,7 +96,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
   unsubscribe() {
     this.isStopped = true;
     this.closed = true;
-    this.observers = null;
+    this.observers = null as any; // garbage collection
   }
 
   protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
@@ -107,7 +107,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     }
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  protected _subscribe(subscriber: Subscriber<T | undefined>): Subscription {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     } else if (this.hasError) {
@@ -148,21 +148,21 @@ export class AnonymousSubject<T> extends Subject<T> {
   error(err: any) {
     const { destination } = this;
     if (destination && destination.error) {
-      this.destination.error(err);
+      destination.error(err);
     }
   }
 
   complete() {
     const { destination } = this;
     if (destination && destination.complete) {
-      this.destination.complete();
+      destination.complete();
     }
   }
 
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
     const { source } = this;
     if (source) {
-      return this.source.subscribe(subscriber);
+      return source.subscribe(subscriber);
     } else {
       return Subscription.EMPTY;
     }

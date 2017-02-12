@@ -97,7 +97,7 @@ export class MergeAllSubscriber<T> extends OuterSubscriber<Observable<T>, T> {
     this.remove(innerSub);
     this.active--;
     if (buffer.length > 0) {
-      this._next(buffer.shift());
+      this._next(buffer.shift()!);
     } else if (this.active === 0 && this.hasCompleted) {
       this.destination.complete();
     }

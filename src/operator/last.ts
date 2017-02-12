@@ -49,10 +49,10 @@ export function last<T, R>(this: Observable<T>, predicate?: (value: T, index: nu
 }
 
 class LastOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: ((value: T, index: number) => R) | void,
-              private defaultValue?: any,
-              private source?: Observable<T>) {
+  constructor(private predicate: ((value: T, index: number, source: Observable<T>) => boolean) | undefined,
+              private resultSelector: ((value: T, index: number) => R) | void,
+              private defaultValue: any | undefined,
+              private source: Observable<T>) {
   }
 
   call(observer: Subscriber<R>, source: any): any {
@@ -71,10 +71,10 @@ class LastSubscriber<T, R> extends Subscriber<T> {
   private index: number = 0;
 
   constructor(destination: Subscriber<R>,
-              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: ((value: T, index: number) => R) | void,
-              private defaultValue?: any,
-              private source?: Observable<T>) {
+              private predicate: ((value: T, index: number, source: Observable<T>) => boolean) | undefined,
+              private resultSelector: ((value: T, index: number) => R) | void,
+              private defaultValue: any | undefined,
+              private source: Observable<T>) {
     super(destination);
     if (typeof defaultValue !== 'undefined') {
       this.lastValue = defaultValue;
@@ -99,7 +99,7 @@ class LastSubscriber<T, R> extends Subscriber<T> {
   private _tryPredicate(value: T, index: number) {
     let result: any;
     try {
-      result = this.predicate(value, index, this.source);
+      result = this.predicate!(value, index, this.source);
     } catch (err) {
       this.destination.error(err);
       return;

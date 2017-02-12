@@ -64,7 +64,7 @@ class ThrottleTimeOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class ThrottleTimeSubscriber<T> extends Subscriber<T> {
-  private throttled: Subscription;
+  private throttled: Subscription | null;
 
   constructor(destination: Subscriber<T>,
               private duration: number,

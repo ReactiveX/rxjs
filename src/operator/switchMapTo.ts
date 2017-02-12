@@ -80,7 +80,7 @@ class SwitchMapToOperator<T, I, R> implements Operator<T, I> {
  */
 class SwitchMapToSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   private index: number = 0;
-  private innerSubscription: Subscription;
+  private innerSubscription: Subscription | null;
 
   constructor(destination: Subscriber<I>,
               private inner: Observable<I>,
@@ -131,7 +131,7 @@ class SwitchMapToSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     const { resultSelector, destination } = this;
     let result: R;
     try {
-      result = resultSelector(outerValue, innerValue, outerIndex, innerIndex);
+      result = resultSelector!(outerValue, innerValue, outerIndex, innerIndex);
     } catch (err) {
       destination.error(err);
       return;

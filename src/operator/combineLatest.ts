@@ -71,7 +71,7 @@ export function combineLatest<T, TOther, R>(this: Observable<T>, array: Observab
 export function combineLatest<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> |
                                                        Array<ObservableInput<any>> |
                                                        ((...values: Array<any>) => R)>): Observable<R> {
-  let project: (...values: Array<any>) => R = null;
+  let project: ((...values: Array<any>) => R) | undefined;
   if (typeof observables[observables.length - 1] === 'function') {
     project = <(...values: Array<any>) => R>observables.pop();
   }
@@ -159,7 +159,7 @@ export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
   private _tryProject(values: any[]) {
     let result: any;
     try {
-      result = this.project.apply(this, values);
+      result = this.project!.apply(this, values);
     } catch (err) {
       this.destination.error(err);
       return;

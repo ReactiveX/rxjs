@@ -77,7 +77,7 @@ class DelayWhenOperator<T> implements Operator<T, T> {
  */
 class DelayWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
   private completed: boolean = false;
-  private delayNotifierSubscriptions: Array<Subscription> = [];
+  private delayNotifierSubscriptions: Array<Subscription | null> = [];
   private values: Array<T> = [];
 
   constructor(destination: Subscriber<T>,
@@ -121,11 +121,11 @@ class DelayWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.tryComplete();
   }
 
-  private removeSubscription(subscription: InnerSubscriber<T, R>): T {
+  private removeSubscription(subscription: InnerSubscriber<T, R>): T | null {
     subscription.unsubscribe();
 
     const subscriptionIdx = this.delayNotifierSubscriptions.indexOf(subscription);
-    let value: T = null;
+    let value: T | null = null;
 
     if (subscriptionIdx !== -1) {
       value = this.values[subscriptionIdx];
@@ -162,7 +162,7 @@ class SubscriptionDelayObservable<T> extends Observable<T> {
   }
 
   protected _subscribe(subscriber: Subscriber<T>) {
-    this.subscriptionDelay.subscribe(new SubscriptionDelaySubscriber(subscriber, this.source));
+    return this.subscriptionDelay.subscribe(new SubscriptionDelaySubscriber(subscriber, this.source));
   }
 }
 

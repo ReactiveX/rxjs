@@ -101,10 +101,7 @@ export function zipStatic<T, R>(...observables: Array<ObservableInput<any> | ((.
 
 export class ZipOperator<T, R> implements Operator<T, R> {
 
-  project: (...values: Array<any>) => R;
-
-  constructor(project?: (...values: Array<any>) => R) {
-    this.project = project;
+  constructor(public project?: (...values: Array<any>) => R) {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {
@@ -119,7 +116,7 @@ export class ZipOperator<T, R> implements Operator<T, R> {
  */
 export class ZipSubscriber<T, R> extends Subscriber<T> {
   private values: any;
-  private project: (...values: Array<any>) => R;
+  private project: ((...values: Array<any>) => R) | null;
   private iterators: LookAheadIterator<any>[] = [];
   private active = 0;
 
@@ -210,7 +207,7 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
   protected _tryProject(args: any[]) {
     let result: any;
     try {
-      result = this.project.apply(this, args);
+      result = this.project!.apply(this, args);
     } catch (err) {
       this.destination.error(err);
       return;
@@ -247,7 +244,7 @@ class StaticIterator<T> implements LookAheadIterator<T> {
   }
 }
 
-class StaticArrayIterator<T> implements LookAheadIterator<T> {
+class StaticArrayIterator<T> implements LookAheadIterator<T | null> {
   private index = 0;
   private length = 0;
 
@@ -259,7 +256,7 @@ class StaticArrayIterator<T> implements LookAheadIterator<T> {
     return this;
   }
 
-  next(value?: any): IteratorResult<T> {
+  next(value?: any): IteratorResult<T | null> {
     const i = this.index++;
     const array = this.array;
     return i < this.length ? { value: array[i], done: false } : { value: null, done: true };
@@ -279,7 +276,7 @@ class StaticArrayIterator<T> implements LookAheadIterator<T> {
  * @ignore
  * @extends {Ignored}
  */
-class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAheadIterator<T> {
+class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAheadIterator<T | null> {
   stillUnsubscribed = true;
   buffer: T[] = [];
   isComplete = false;
@@ -296,12 +293,12 @@ class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAhead
 
   // NOTE: there is actually a name collision here with Subscriber.next and Iterator.next
   //    this is legit because `next()` will never be called by a subscription in this case.
-  next(): IteratorResult<T> {
+  next(): IteratorResult<T | null> {
     const buffer = this.buffer;
     if (buffer.length === 0 && this.isComplete) {
       return { value: null, done: true };
     } else {
-      return { value: buffer.shift(), done: false };
+      return { value: buffer.shift()!, done: false };
     }
   }
 

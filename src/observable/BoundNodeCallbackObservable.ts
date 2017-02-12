@@ -83,7 +83,7 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
               private selector: Function,
               private args: any[],
               private context: any,
-              public scheduler: IScheduler) {
+              public scheduler?: IScheduler) {
     super();
   }
 

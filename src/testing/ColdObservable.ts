@@ -12,6 +12,12 @@ import { Subscriber } from '../Subscriber';
  * @ignore
  * @extends {Ignored}
  */
+
+export interface MessageAndSubscriber {
+  message: TestMessage;
+  subscriber: Subscriber<any>;
+}
+
 export class ColdObservable<T> extends Observable<T> implements SubscriptionLoggable {
   public subscriptions: SubscriptionLog[] = [];
   scheduler: Scheduler;
@@ -37,9 +43,10 @@ export class ColdObservable<T> extends Observable<T> implements SubscriptionLogg
     for (let i = 0; i < messagesLength; i++) {
       const message = this.messages[i];
       subscriber.add(
-        this.scheduler.schedule(({message, subscriber}) => { message.notification.observe(subscriber); },
+        this.scheduler.schedule<MessageAndSubscriber>(({message, subscriber}) => { message.notification.observe(subscriber); },
           message.frame,
-          {message, subscriber})
+          {message, subscriber}
+        )
       );
     }
   }

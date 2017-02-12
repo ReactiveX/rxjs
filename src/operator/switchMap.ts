@@ -80,7 +80,7 @@ class SwitchMapOperator<T, I, R> implements Operator<T, I> {
  */
 class SwitchMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   private index: number = 0;
-  private innerSubscription: Subscription;
+  private innerSubscription: Subscription | null;
 
   constructor(destination: Subscriber<I>,
               private project: (value: T, index: number) => ObservableInput<I>,
@@ -140,7 +140,7 @@ class SwitchMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   private _tryNotifyNext(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): void {
     let result: R;
     try {
-      result = this.resultSelector(outerValue, innerValue, outerIndex, innerIndex);
+      result = this.resultSelector!(outerValue, innerValue, outerIndex, innerIndex);
     } catch (err) {
       this.destination.error(err);
       return;

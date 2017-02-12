@@ -56,7 +56,7 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  */
 export class GenerateObservable<T, S> extends Observable<T> {
   constructor(private initialState: S,
-              private condition: ConditionFunc<S>,
+              private condition: ConditionFunc<S> | undefined,
               private iterate: IterateFunc<S>,
               private resultSelector: ResultFunc<S, T>,
               private scheduler?: IScheduler) {
@@ -187,7 +187,7 @@ export class GenerateObservable<T, S> extends Observable<T> {
       return new GenerateObservable<T, S>(
         <S>initialStateOrOptions,
         condition,
-        iterate,
+        iterate!,
         selfSelector,
         <IScheduler>resultSelectorOrObservable);
     }
@@ -195,7 +195,7 @@ export class GenerateObservable<T, S> extends Observable<T> {
     return new GenerateObservable<T, S>(
       <S>initialStateOrOptions,
       condition,
-      iterate,
+      iterate!,
       <ResultFunc<S, T>>resultSelectorOrObservable,
       <IScheduler>scheduler);
   }

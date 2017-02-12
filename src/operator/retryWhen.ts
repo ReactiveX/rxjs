@@ -49,7 +49,7 @@ class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private errors: Subject<any>;
   private retries: Observable<any>;
-  private retriesSubscription: Subscription;
+  private retriesSubscription: Subscription | null;
 
   constructor(destination: Subscriber<R>,
               private notifier: (errors: Observable<any>) => Observable<any>,
@@ -72,8 +72,8 @@ class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
         }
         retriesSubscription = subscribeToResult(this, retries);
       } else {
-        this.errors = null;
-        this.retriesSubscription = null;
+        this.errors = null as any; // save from unsubscribe
+        this.retriesSubscription = null; // save from unsubscribe
       }
 
       this.unsubscribe();
@@ -91,13 +91,13 @@ class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     const { errors, retriesSubscription } = this;
     if (errors) {
       errors.unsubscribe();
-      this.errors = null;
+      this.errors = null as any; // gargabe collection
     }
     if (retriesSubscription) {
       retriesSubscription.unsubscribe();
-      this.retriesSubscription = null;
+      this.retriesSubscription = null; // gargabe collection
     }
-    this.retries = null;
+    this.retries = null as any; // gargabe collection
   }
 
   notifyNext(outerValue: T, innerValue: R,
@@ -105,9 +105,8 @@ class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
              innerSub: InnerSubscriber<T, R>): void {
 
     const { errors, retries, retriesSubscription } = this;
-    this.errors = null;
-    this.retries = null;
-    this.retriesSubscription = null;
+    this.errors = null as any; // save from unsubscribe
+    this.retriesSubscription = null; // save from unsubscribe
 
     this.unsubscribe();
     this.isStopped = false;

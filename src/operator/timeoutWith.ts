@@ -49,7 +49,7 @@ class TimeoutWithOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
-  private timeoutSubscription: Subscription = undefined;
+  private timeoutSubscription: Subscription | null = null;
   private index: number = 0;
   private _previousIndex: number = 0;
   get previousIndex(): number {

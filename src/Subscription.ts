@@ -9,7 +9,7 @@ export interface AnonymousSubscription {
   unsubscribe(): void;
 }
 
-export type TeardownLogic = AnonymousSubscription | Function | void;
+export type TeardownLogic = AnonymousSubscription | Function | undefined | null | void;
 
 export interface ISubscription extends AnonymousSubscription {
   unsubscribe(): void;
@@ -60,7 +60,7 @@ export class Subscription implements ISubscription {
    */
   unsubscribe(): void {
     let hasErrors = false;
-    let errors: any[];
+    let errors: any[] | undefined;
 
     if (this.closed) {
       return;
@@ -107,7 +107,8 @@ export class Subscription implements ISubscription {
     }
 
     if (hasErrors) {
-      throw new UnsubscriptionError(errors);
+      // TODO: make sure errors is always defined at this point
+      throw new UnsubscriptionError(errors!);
     }
   }
 

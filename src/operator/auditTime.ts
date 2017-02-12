@@ -68,9 +68,9 @@ class AuditTimeOperator<T> implements Operator<T, T> {
  */
 class AuditTimeSubscriber<T> extends Subscriber<T> {
 
-  private value: T;
+  private value: T | undefined;
   private hasValue: boolean = false;
-  private throttled: Subscription;
+  private throttled: Subscription | undefined;
 
   constructor(destination: Subscriber<T>,
               private duration: number,
@@ -90,11 +90,11 @@ class AuditTimeSubscriber<T> extends Subscriber<T> {
     const { value, hasValue, throttled } = this;
     if (throttled) {
       this.remove(throttled);
-      this.throttled = null;
+      this.throttled = undefined;
       throttled.unsubscribe();
     }
     if (hasValue) {
-      this.value = null;
+      this.value = undefined;
       this.hasValue = false;
       this.destination.next(value);
     }

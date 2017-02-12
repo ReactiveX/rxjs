@@ -105,7 +105,7 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
   }
 
   protected _unsubscribe() {
-    this.window = null;
+    this.window = null as any; // garbage collection
   }
 
   private openWindow(): void  {

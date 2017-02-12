@@ -72,7 +72,7 @@ export class TestScheduler extends VirtualTimeScheduler {
   }
 
   expectObservable(observable: Observable<any>,
-                   unsubscriptionMarbles: string = null): ({ toBe: observableToBeFn }) {
+                   unsubscriptionMarbles: string | null = null): ({ toBe: observableToBeFn }) {
     const actual: TestMessage[] = [];
     const flushTest: FlushableTest = { actual, ready: false };
     const unsubscriptionFrame = TestScheduler
@@ -125,18 +125,18 @@ export class TestScheduler extends VirtualTimeScheduler {
   flush() {
     const hotObservables = this.hotObservables;
     while (hotObservables.length > 0) {
-      hotObservables.shift().setup();
+      hotObservables.shift()!.setup();
     }
 
     super.flush();
     const readyFlushTests = this.flushTests.filter(test => test.ready);
     while (readyFlushTests.length > 0) {
-      const test = readyFlushTests.shift();
+      const test = readyFlushTests.shift()!;
       this.assertDeepEqual(test.actual, test.expected);
     }
   }
 
-  static parseMarblesAsSubscriptions(marbles: string): SubscriptionLog {
+  static parseMarblesAsSubscriptions(marbles: string | any): SubscriptionLog {
     if (typeof marbles !== 'string') {
       return new SubscriptionLog(Number.POSITIVE_INFINITY);
     }
@@ -210,7 +210,7 @@ export class TestScheduler extends VirtualTimeScheduler {
 
     for (let i = 0; i < len; i++) {
       const frame = i * this.frameTimeFactor + frameOffset;
-      let notification: Notification<any>;
+      let notification: Notification<any> | undefined;
       const c = marbles[i];
       switch (c) {
         case '-':

@@ -57,7 +57,7 @@ import { Subscription } from '../Subscription';
  * @owner Observable
  */
 export function windowTime<T>(this: Observable<T>, windowTimeSpan: number,
-                              windowCreationInterval: number = null,
+                              windowCreationInterval: number | null = null,
                               scheduler: IScheduler = async): Observable<Observable<T>> {
   return this.lift(new WindowTimeOperator<T>(windowTimeSpan, windowCreationInterval, scheduler));
 }
@@ -65,7 +65,7 @@ export function windowTime<T>(this: Observable<T>, windowTimeSpan: number,
 class WindowTimeOperator<T> implements Operator<T, Observable<T>> {
 
   constructor(private windowTimeSpan: number,
-              private windowCreationInterval: number,
+              private windowCreationInterval: number | null,
               private scheduler: IScheduler) {
   }
 
@@ -110,7 +110,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
 
   constructor(protected destination: Subscriber<Observable<T>>,
               private windowTimeSpan: number,
-              private windowCreationInterval: number,
+              private windowCreationInterval: number | null,
               private scheduler: IScheduler) {
     super(destination);
 
@@ -140,7 +140,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
   protected _error(err: any): void {
     const windows = this.windows;
     while (windows.length > 0) {
-      windows.shift().error(err);
+      windows.shift()!.error(err);
     }
     this.destination.error(err);
   }
@@ -148,7 +148,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
   protected _complete(): void {
     const windows = this.windows;
     while (windows.length > 0) {
-      const window = windows.shift();
+      const window = windows.shift()!;
       if (!window.closed) {
         window.complete();
       }

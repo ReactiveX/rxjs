@@ -13,11 +13,15 @@ import { $$observable } from '../symbol/observable';
 export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
                                         result: any,
                                         outerValue?: T,
-                                        outerIndex?: number): Subscription;
+                                        outerIndex?: number): Subscription | null;
 export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
                                      result: ObservableInput<T>,
                                      outerValue?: T,
-                                     outerIndex?: number): Subscription {
+                                     outerIndex?: number): Subscription | null;
+export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
+                                     result: ObservableInput<T>,
+                                     outerValue?: any,
+                                     outerIndex?: number): Subscription | null {
   let destination: Subscriber<any> = new InnerSubscriber(outerSubscriber, outerValue, outerIndex);
 
   if (destination.closed) {
@@ -48,8 +52,7 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
         }
       },
       (err: any) => destination.error(err)
-    )
-    .then(null, (err: any) => {
+    ).then(undefined, (err: any) => {
       // Escaping the Promise trap: globally throw unhandled errors
       root.setTimeout(() => { throw err; });
     });

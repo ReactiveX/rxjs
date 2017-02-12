@@ -65,7 +65,7 @@ export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number): Obse
     length--;
   }
 
-  let bufferCreationInterval: number = null;
+  let bufferCreationInterval: number | null = null;
   if (length >= 2) {
     bufferCreationInterval = arguments[1];
   }
@@ -80,7 +80,7 @@ export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number): Obse
 
 class BufferTimeOperator<T> implements Operator<T, T[]> {
   constructor(private bufferTimeSpan: number,
-              private bufferCreationInterval: number,
+              private bufferCreationInterval: number | null,
               private maxBufferSize: number,
               private scheduler: IScheduler) {
   }
@@ -115,27 +115,32 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<T[]>,
               private bufferTimeSpan: number,
-              private bufferCreationInterval: number,
+              private bufferCreationInterval: number | null,
               private maxBufferSize: number,
               private scheduler: IScheduler) {
     super(destination);
     const context = this.openContext();
-    this.timespanOnly = bufferCreationInterval == null || bufferCreationInterval < 0;
+    this.timespanOnly = bufferCreationInterval === null || bufferCreationInterval < 0;
     if (this.timespanOnly) {
       const timeSpanOnlyState = { subscriber: this, context, bufferTimeSpan };
       this.add(context.closeAction = scheduler.schedule(dispatchBufferTimeSpanOnly, bufferTimeSpan, timeSpanOnlyState));
     } else {
       const closeState = { subscriber: this, context };
-      const creationState: CreationState<T> = { bufferTimeSpan, bufferCreationInterval, subscriber: this, scheduler };
+      const creationState: CreationState<T> = {
+        bufferTimeSpan,
+        bufferCreationInterval: bufferCreationInterval!,
+        subscriber: this,
+        scheduler
+      };
       this.add(context.closeAction = scheduler.schedule(dispatchBufferClose, bufferTimeSpan, closeState));
-      this.add(scheduler.schedule(dispatchBufferCreation, bufferCreationInterval, creationState));
+      this.add(scheduler.schedule(dispatchBufferCreation, bufferCreationInterval!, creationState));
     }
   }
 
   protected _next(value: T) {
     const contexts = this.contexts;
     const len = contexts.length;
-    let filledBufferContext: Context<T>;
+    let filledBufferContext: Context<T> | undefined;
     for (let i = 0; i < len; i++) {
       const context = contexts[i];
       const buffer = context.buffer;
@@ -158,14 +163,14 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
   protected _complete() {
     const { contexts, destination } = this;
     while (contexts.length > 0) {
-      const context = contexts.shift();
+      const context = contexts.shift()!;
       destination.next(context.buffer);
     }
     super._complete();
   }
 
   protected _unsubscribe() {
-    this.contexts = null;
+    this.contexts = null as any; // garbage collection
   }
 
   protected onBufferFull(context: Context<T>) {

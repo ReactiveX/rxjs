@@ -68,7 +68,7 @@ export class RaceOperator<T> implements Operator<T, T> {
 export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
   private hasFirst: boolean = false;
   private observables: Observable<any>[] = [];
-  private subscriptions: Subscription[] = [];
+  private subscriptions: Subscription[] | null = [];
 
   constructor(destination: Subscriber<T>) {
     super(destination);
@@ -89,12 +89,12 @@ export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
         let observable = observables[i];
         let subscription = subscribeToResult(this, observable, observable, i);
 
-        if (this.subscriptions) {
+        if (this.subscriptions && subscription !== null) {
           this.subscriptions.push(subscription);
         }
         this.add(subscription);
       }
-      this.observables = null;
+      this.observables = null as any; // garbage collection
     }
   }
 
@@ -104,9 +104,9 @@ export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
     if (!this.hasFirst) {
       this.hasFirst = true;
 
-      for (let i = 0; i < this.subscriptions.length; i++) {
+      for (let i = 0; i < this.subscriptions!.length; i++) {
         if (i !== outerIndex) {
-          let subscription = this.subscriptions[i];
+          let subscription = this.subscriptions![i];
 
           subscription.unsubscribe();
           this.remove(subscription);

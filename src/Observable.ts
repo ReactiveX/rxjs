@@ -27,8 +27,8 @@ export class Observable<T> implements Subscribable<T> {
 
   public _isScalar: boolean = false;
 
-  protected source: Observable<any>;
-  protected operator: Operator<any, T>;
+  protected source: Observable<any> | undefined;
+  protected operator: Operator<any, T> | undefined;
 
   /**
    * @constructor
@@ -84,6 +84,7 @@ export class Observable<T> implements Subscribable<T> {
    */
   subscribe(): Subscription;
   subscribe(observer: PartialObserver<T>): Subscription;
+  subscribe(observer: Subscriber<T>): Subscription;
   subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Subscription;
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
             error?: (error: any) => void,
@@ -93,7 +94,7 @@ export class Observable<T> implements Subscribable<T> {
     const sink = toSubscriber(observerOrNext, error, complete);
 
     if (operator) {
-      operator.call(sink, this.source);
+      operator.call(sink, this.source!); // TODO: make sure source is defined here
     } else {
       sink.add(this._trySubscribe(sink));
     }
@@ -165,7 +166,8 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
-    return this.source.subscribe(subscriber);
+    // TODO: make sure source is always defined here
+    return this.source!.subscribe(subscriber);
   }
 
   // `if` and `throw` are special snow flakes, the compiler sees them as reserved words
