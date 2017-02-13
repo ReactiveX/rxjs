@@ -76,8 +76,7 @@ class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
         this.retriesSubscription = null;
       }
 
-      this.unsubscribe();
-      this.closed = false;
+      this._unsubscribeAndRecycle();
 
       this.errors = errors;
       this.retries = retries;
@@ -103,15 +102,12 @@ class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
   notifyNext(outerValue: T, innerValue: R,
              outerIndex: number, innerIndex: number,
              innerSub: InnerSubscriber<T, R>): void {
-
     const { errors, retries, retriesSubscription } = this;
     this.errors = null;
     this.retries = null;
     this.retriesSubscription = null;
 
-    this.unsubscribe();
-    this.isStopped = false;
-    this.closed = false;
+    this._unsubscribeAndRecycle();
 
     this.errors = errors;
     this.retries = retries;
