@@ -4,7 +4,7 @@ import { Observable, ObservableInput } from '../Observable';
 /* tslint:disable:max-line-length */
 export function concatMap<T, R>(this: Observable<T>, project: (value: T, index: number) =>  ObservableInput<R>): Observable<R>;
 export function concatMap<T, I, R>(this: Observable<T>, project: (value: T, index: number) =>  ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Projects each source value to an Observable which is merged in the output

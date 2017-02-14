@@ -4,7 +4,7 @@ import { MergeMapToOperator } from './mergeMapTo';
 /* tslint:disable:max-line-length */
 export function concatMapTo<T, R>(this: Observable<T>, observable: ObservableInput<R>): Observable<R>;
 export function concatMapTo<T, I, R>(this: Observable<T>, observable: ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Projects each source value to the same Observable which is merged multiple

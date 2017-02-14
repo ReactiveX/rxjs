@@ -6,7 +6,7 @@ import { ConnectableObservable } from '../observable/ConnectableObservable';
 /* tslint:disable:max-line-length */
 export function publish<T>(this: Observable<T>): ConnectableObservable<T>;
 export function publish<T>(this: Observable<T>, selector: selector<T>): Observable<T>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called
