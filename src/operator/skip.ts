@@ -8,7 +8,7 @@ import { TeardownLogic } from '../Subscription';
  *
  * <img src="./img/skip.png" width="100%">
  *
- * @param {Number} the `n` of times, items emitted by source Observable should be skipped.
+ * @param {Number} n - The number of times, items emitted by source Observable should be skipped.
  * @return {Observable} an Observable that skips values emitted by the source Observable.
  *
  * @method skip
