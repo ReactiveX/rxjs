@@ -112,7 +112,7 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
               subject.complete();
             }
           } else {
-            subject.next(innerArgs.length === 1 ? innerArgs[0] : innerArgs);
+            subject.next(innerArgs.length <= 1 ? innerArgs[0] : innerArgs);
             subject.complete();
           }
         };
@@ -162,7 +162,7 @@ function dispatch<T>(this: Action<DispatchState<T>>, state: DispatchState<T>) {
           self.add(scheduler.schedule(dispatchNext, 0, { value: result, subject }));
         }
       } else {
-        const value = innerArgs.length === 1 ? innerArgs[0] : innerArgs;
+        const value = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
         self.add(scheduler.schedule(dispatchNext, 0, { value, subject }));
       }
     };
