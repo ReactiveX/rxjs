@@ -8,6 +8,23 @@ const Observable = Rx.Observable;
 /** @test {bindCallback} */
 describe('Observable.bindCallback', () => {
   describe('when not scheduled', () => {
+    it('should emit undefined from a callback without arguments', () => {
+      function callback(cb) {
+        cb();
+      }
+      const boundCallback = Observable.bindCallback(callback);
+      const results = [];
+
+      boundCallback()
+        .subscribe((x: any) => {
+          results.push(typeof x);
+        }, null, () => {
+          results.push('done');
+        });
+
+      expect(results).to.deep.equal(['undefined', 'done']);
+    });
+
     it('should emit one value from a callback', () => {
       function callback(datum, cb) {
         cb(datum);
@@ -104,6 +121,25 @@ describe('Observable.bindCallback', () => {
   });
 
   describe('when scheduled', () => {
+    it('should emit undefined from a callback without arguments', () => {
+      function callback(cb) {
+        cb();
+      }
+      const boundCallback = Observable.bindCallback(callback, null, rxTestScheduler);
+      const results = [];
+
+      boundCallback()
+        .subscribe((x: any) => {
+          results.push(typeof x);
+        }, null, () => {
+          results.push('done');
+        });
+
+      rxTestScheduler.flush();
+
+      expect(results).to.deep.equal(['undefined', 'done']);
+    });
+
     it('should emit one value from a callback', () => {
       function callback(datum, cb) {
         cb(datum);
