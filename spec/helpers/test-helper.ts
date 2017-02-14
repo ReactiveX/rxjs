@@ -8,11 +8,10 @@ import {$$iterator} from '../../dist/cjs/symbol/iterator';
 import $$symbolObservable from 'symbol-observable';
 
 export function lowerCaseO<T>(...args): Rx.Observable<T> {
-  const values = [].slice.apply(arguments);
 
   const o = {
     subscribe: function (observer) {
-      values.forEach(function (v) {
+      args.forEach(function (v) {
         observer.next(v);
       });
       observer.complete();
