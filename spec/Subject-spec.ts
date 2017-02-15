@@ -1,7 +1,10 @@
 import {expect} from 'chai';
 import * as Rx from '../dist/cjs/Rx';
+import marbleTestingSignature = require('./helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
-declare const {hot, expectObservable};
+declare const { time };
+declare const hot: typeof marbleTestingSignature.hot;
+declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 
 const Subject = Rx.Subject;
 const Observable = Rx.Observable;
@@ -261,6 +264,9 @@ describe('Subject', () => {
     expect(() => {
       subject.subscribe(
         function (x) { results3.push(x); },
+        function (err) {
+          expect(false).to.equal('should not throw error: ' + err.toString());
+        }
       );
     }).to.throw(Rx.ObjectUnsubscribedError);
 

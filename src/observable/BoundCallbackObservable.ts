@@ -15,6 +15,7 @@ export class BoundCallbackObservable<T> extends Observable<T> {
   subject: AsyncSubject<T>;
 
   /* tslint:disable:max-line-length */
+  static create(callbackFunc: (callback: () => any) => any, selector?: void, scheduler?: IScheduler): () => Observable<void>;
   static create<R>(callbackFunc: (callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): () => Observable<R>;
   static create<T, R>(callbackFunc: (v1: T, callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T) => Observable<R>;
   static create<T, T2, R>(callbackFunc: (v1: T, v2: T2, callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2) => Observable<R>;
@@ -43,16 +44,29 @@ export class BoundCallbackObservable<T> extends Observable<T> {
    * `bindCallback` is not an operator because its input and output are not
    * Observables. The input is a function `func` with some parameters, but the
    * last parameter must be a callback function that `func` calls when it is
-   * done. The output of `bindCallback` is a function that takes the same
+   * done.
+   *
+   * The output of `bindCallback` is a function that takes the same
    * parameters as `func`, except the last one (the callback). When the output
    * function is called with arguments, it will return an Observable where the
    * results will be delivered to.
+   *
+   * If `func` depends on some context (`this` property), that context will be set
+   * to the same context that returned function has at call time. In particular, if `func`
+   * is usually called as method of some object, in order to preserve proper behaviour,
+   * it is recommended to set context of output function to that object as well,
+   * provided `func` is not already bound.
    *
    * @example <caption>Convert jQuery's getJSON to an Observable API</caption>
    * // Suppose we have jQuery.getJSON('/my/url', callback)
    * var getJSONAsObservable = Rx.Observable.bindCallback(jQuery.getJSON);
    * var result = getJSONAsObservable('/my/url');
    * result.subscribe(x => console.log(x), e => console.error(e));
+   *
+   * @example <caption>Use bindCallback on object method</caption>
+   * const boundMethod = Rx.Observable.bindCallback(someObject.methodWithCallback);
+   * boundMethod.call(someObject) // make sure methodWithCallback has access to someObject
+   * .subscribe(subscriber);
    *
    * @see {@link bindNodeCallback}
    * @see {@link from}
@@ -72,14 +86,15 @@ export class BoundCallbackObservable<T> extends Observable<T> {
   static create<T>(func: Function,
                    selector: Function | void = undefined,
                    scheduler?: IScheduler): (...args: any[]) => Observable<T> {
-    return (...args: any[]): Observable<T> => {
-      return new BoundCallbackObservable<T>(func, <any>selector, args, scheduler);
+    return function(this: any, ...args: any[]): Observable<T> {
+      return new BoundCallbackObservable<T>(func, <any>selector, args, this, scheduler);
     };
   }
 
   constructor(private callbackFunc: Function,
               private selector: Function,
               private args: any[],
+              private context: any,
               private scheduler: IScheduler) {
     super();
   }
@@ -105,27 +120,27 @@ export class BoundCallbackObservable<T> extends Observable<T> {
               subject.complete();
             }
           } else {
-            subject.next(innerArgs.length === 1 ? innerArgs[0] : innerArgs);
+            subject.next(innerArgs.length <= 1 ? innerArgs[0] : innerArgs);
             subject.complete();
           }
         };
         // use named function instance to avoid closure.
         (<any>handler).source = this;
 
-        const result = tryCatch(callbackFunc).apply(this, args.concat(handler));
+        const result = tryCatch(callbackFunc).apply(this.context, args.concat(handler));
         if (result === errorObject) {
           subject.error(errorObject.e);
         }
       }
       return subject.subscribe(subscriber);
     } else {
-      return scheduler.schedule(BoundCallbackObservable.dispatch, 0, { source: this, subscriber });
+      return scheduler.schedule(BoundCallbackObservable.dispatch, 0, { source: this, subscriber, context: this.context });
     }
   }
 
-  static dispatch<T>(state: { source: BoundCallbackObservable<T>, subscriber: Subscriber<T> }) {
+  static dispatch<T>(state: { source: BoundCallbackObservable<T>, subscriber: Subscriber<T>, context: any }) {
     const self = (<Subscription><any>this);
-    const { source, subscriber } = state;
+    const { source, subscriber, context } = state;
     const { callbackFunc, args, scheduler } = source;
     let subject = source.subject;
 
@@ -143,14 +158,14 @@ export class BoundCallbackObservable<T> extends Observable<T> {
             self.add(scheduler.schedule(dispatchNext, 0, { value: result, subject }));
           }
         } else {
-          const value = innerArgs.length === 1 ? innerArgs[0] : innerArgs;
+          const value = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
           self.add(scheduler.schedule(dispatchNext, 0, { value, subject }));
         }
       };
       // use named function to pass values in without closure
       (<any>handler).source = source;
 
-      const result = tryCatch(callbackFunc).apply(this, args.concat(handler));
+      const result = tryCatch(callbackFunc).apply(context, args.concat(handler));
       if (result === errorObject) {
         subject.error(errorObject.e);
       }

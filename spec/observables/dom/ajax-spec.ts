@@ -853,6 +853,21 @@ describe('Observable.ajax', () => {
     delete root.XMLHttpRequest.prototype.onerror;
     delete root.XMLHttpRequest.prototype.upload;
   });
+
+  describe('ajax.patch', () => {
+    it('should create an AjaxObservable with correct options', () => {
+      const body = { foo: 'bar' };
+      const headers = { first: 'first' };
+      // returns Observable, not AjaxObservable, so needs a cast
+      const { request } = <any>Rx.Observable
+        .ajax.patch('/flibbertyJibbet', body, headers);
+
+      expect(request.method).to.equal('PATCH');
+      expect(request.url).to.equal('/flibbertyJibbet');
+      expect(request.body).to.equal(body);
+      expect(request.headers).to.equal(headers);
+    });
+  });
 });
 
 class MockXMLHttpRequest {

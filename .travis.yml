@@ -14,7 +14,7 @@ cache:
 env:
   matrix:
   - NODE_VER=4 FULL_VALIDATE=false
-  - NODE_VER=6 FULL_VALIDATE=true alias grunt=./node_modules/grunt-cli/bin/grunt
+  - NODE_VER=6 FULL_VALIDATE=true alias grunt=./node_modules/grunt-cli/bin/grunt danger=./node_modules/danger/distribution/danger
   - NODE_VER=7 FULL_VALIDATE=false
 matrix:
   fast_finish: true
@@ -23,6 +23,7 @@ before_install:
   - nvm install $NODE_VER
   - npm install -g npm@4 && node -v && npm -v
   - if [ "$FULL_VALIDATE" == "true" ]; then npm install grunt@0.4.1 grunt-cli grunt-contrib-connect grunt-run; fi
+  - if [ "$FULL_VALIDATE" == "true" ] && [ -n "DANGER_GITHUB_API_TOKEN" ]; then npm install danger && danger; fi
 
 install:
   - npm install

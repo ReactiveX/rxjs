@@ -1,8 +1,11 @@
 import {expect} from 'chai';
 import * as sinon from 'sinon';
 import * as Rx from '../../dist/cjs/Rx';
+import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
-declare const {hot, asDiagram, expectObservable, expectSubscriptions};
+declare const { asDiagram };
+declare const expectObservable: typeof marbleTestingSignature.expectObservable;
+
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 const asap = Rx.Scheduler.asap;

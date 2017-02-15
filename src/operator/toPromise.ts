@@ -4,7 +4,7 @@ import { root } from '../util/root';
 /* tslint:disable:max-line-length */
 export function toPromise<T>(this: Observable<T>): Promise<T>;
 export function toPromise<T>(this: Observable<T>, PromiseCtor: typeof Promise): Promise<T>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Converts an Observable sequence to a ES2015 compliant promise.

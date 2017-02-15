@@ -18,6 +18,7 @@ export interface WebSocketSubjectConfig {
   closeObserver?: NextObserver<CloseEvent>;
   closingObserver?: NextObserver<void>;
   WebSocketCtor?: { new(url: string, protocol?: string|Array<string>): WebSocket };
+  binaryType?: 'blob' | 'arraybuffer';
 }
 
 /**
@@ -34,6 +35,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   closeObserver: NextObserver<CloseEvent>;
   closingObserver: NextObserver<void>;
   WebSocketCtor: { new(url: string, protocol?: string|Array<string>): WebSocket };
+  binaryType?: 'blob' | 'arraybuffer';
 
   private _output: Subject<T>;
 
@@ -57,7 +59,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
    * @example <caption>Wraps WebSocket from nodejs-websocket (using node.js)</caption>
    *
    * import { w3cwebsocket } from 'websocket';
-   * 
+   *
    * let socket = new WebSocketSubject({
    *   url: 'ws://localhost:8081',
    *   WebSocketCtor: w3cwebsocket
@@ -159,6 +161,9 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
         new WebSocketCtor(this.url, this.protocol) :
         new WebSocketCtor(this.url);
       this.socket = socket;
+      if (this.binaryType) {
+        this.socket.binaryType = this.binaryType;
+      }
     } catch (e) {
       observer.error(e);
       return;
