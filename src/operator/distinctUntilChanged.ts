@@ -8,7 +8,7 @@ import { TeardownLogic } from '../Subscription';
 /* tslint:disable:max-line-length */
 export function distinctUntilChanged<T>(this: Observable<T>, compare?: (x: T, y: T) => boolean): Observable<T>;
 export function distinctUntilChanged<T, K>(this: Observable<T>, compare: (x: K, y: K) => boolean, keySelector: (x: T) => K): Observable<T>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.

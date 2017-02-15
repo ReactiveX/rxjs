@@ -19,7 +19,7 @@ export function merge<T, T2, T3, T4, T5, T6>(this: Observable<T>, v2: Observable
 export function merge<T, T2, T3, T4, T5, T6>(this: Observable<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, concurrent?: number, scheduler?: IScheduler): Observable<T | T2 | T3 | T4 | T5 | T6>;
 export function merge<T>(this: Observable<T>, ...observables: Array<ObservableInput<T> | IScheduler | number>): Observable<T>;
 export function merge<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> | IScheduler | number>): Observable<R>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Creates an output Observable which concurrently emits all values from every
@@ -56,7 +56,7 @@ export function merge<T, R>(this: Observable<T>, ...observables: Array<Observabl
  * @see {@link mergeMapTo}
  * @see {@link mergeScan}
  *
- * @param {Observable} other An input Observable to merge with the source
+ * @param {ObservableInput} other An input Observable to merge with the source
  * Observable. More than one input Observables may be given as argument.
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
  * Observables being subscribed to concurrently.
@@ -136,7 +136,7 @@ export function mergeStatic<T, R>(...observables: (ObservableInput<any> | ISched
  * @see {@link mergeMapTo}
  * @see {@link mergeScan}
  *
- * @param {...Observable} observables Input Observables to merge together.
+ * @param {...ObservableInput} observables Input Observables to merge together.
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
  * Observables being subscribed to concurrently.
  * @param {Scheduler} [scheduler=null] The IScheduler to use for managing
@@ -160,7 +160,7 @@ export function mergeStatic<T, R>(...observables: Array<ObservableInput<any> | I
     concurrent = <number>observables.pop();
   }
 
-  if (scheduler === null && observables.length === 1) {
+  if (scheduler === null && observables.length === 1 && observables[0] instanceof Observable) {
     return <Observable<R>>observables[0];
   }
 

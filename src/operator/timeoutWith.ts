@@ -12,7 +12,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
 /* tslint:disable:max-line-length */
 export function timeoutWith<T>(this: Observable<T>, due: number | Date, withObservable: ObservableInput<T>, scheduler?: IScheduler): Observable<T>;
 export function timeoutWith<T, R>(this: Observable<T>, due: number | Date, withObservable: ObservableInput<R>, scheduler?: IScheduler): Observable<T | R>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * @param due
@@ -64,9 +64,7 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private static dispatchTimeout<T, R>(subscriber: TimeoutWithSubscriber<T, R>): void {
     const { withObservable } = subscriber;
-    subscriber.unsubscribe();
-    subscriber.closed = false;
-    subscriber.isStopped = false;
+    (<any> subscriber)._unsubscribeAndRecycle();
     subscriber.add(subscribeToResult(subscriber, withObservable));
   }
 

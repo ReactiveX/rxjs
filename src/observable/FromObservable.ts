@@ -1,4 +1,5 @@
 import { isArray } from '../util/isArray';
+import { isArrayLike } from '../util/isArrayLike';
 import { isPromise } from '../util/isPromise';
 import { PromiseObservable } from './PromiseObservable';
 import { IteratorObservable } from'./IteratorObservable';
@@ -11,8 +12,6 @@ import { Observable, ObservableInput } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { ObserveOnSubscriber } from '../operator/observeOn';
 import { $$observable } from '../symbol/observable';
-
-const isArrayLike = (<T>(x: any): x is ArrayLike<T> => x && typeof x.length === 'number');
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

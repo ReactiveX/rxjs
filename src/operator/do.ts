@@ -7,7 +7,7 @@ import { TeardownLogic } from '../Subscription';
 /* tslint:disable:max-line-length */
 export function _do<T>(this: Observable<T>, next: (x: T) => void, error?: (e: any) => void, complete?: () => void): Observable<T>;
 export function _do<T>(this: Observable<T>, observer: PartialObserver<T>): Observable<T>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Perform a side effect for every emission on the source Observable, but return
