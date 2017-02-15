@@ -58,7 +58,7 @@ export function combineLatest<T, TOther, R>(this: Observable<T>, array: Observab
  * @see {@link merge}
  * @see {@link withLatestFrom}
  *
- * @param {Observable} other An input Observable to combine with the source
+ * @param {ObservableInput} other An input Observable to combine with the source
  * Observable. More than one input Observables may be given as argument.
  * @param {function} [project] An optional function to project the values from
  * the combined latest values into a new value on the output Observable.
