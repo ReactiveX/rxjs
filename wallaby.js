@@ -13,12 +13,12 @@ module.exports = wallaby => ({
       preserveConstEnums: true,
     })
   },
-  
+
   testFramework: {
     type: 'mocha',
     path: 'mocha'
   },
-  
+
   env: {
     type: 'node'
   },
@@ -40,8 +40,6 @@ module.exports = wallaby => ({
     global.mocha = require('mocha');
     global.Suite = global.mocha.Suite;
     global.Test = global.mocha.Test;
-    require('./spec/helpers/test-helper');
-    require('./spec/helpers/ajax-helper');
 
     //delete global context due to avoid issue by reusing process
     //https://github.com/wallabyjs/public/issues/536

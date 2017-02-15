@@ -1,5 +1,11 @@
-declare const {rxTestScheduler, time, type};
 import * as _ from 'lodash';
+import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+
+declare const { asDiagram, rxTestScheduler, time, type };
+declare const hot: typeof marbleTestingSignature.hot;
+declare const cold: typeof marbleTestingSignature.cold;
+declare const expectObservable: typeof marbleTestingSignature.expectObservable;
+declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
 
 const booleans = { T: true, F: false };
 

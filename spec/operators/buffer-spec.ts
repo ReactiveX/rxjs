@@ -1,5 +1,10 @@
 import * as Rx from '../../dist/cjs/Rx';
-declare const {hot, asDiagram, expectObservable, expectSubscriptions};
+import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+
+declare const { asDiagram };
+declare const hot: typeof marbleTestingSignature.hot;
+declare const expectObservable: typeof marbleTestingSignature.expectObservable;
+declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
 
 const Observable = Rx.Observable;
 
@@ -231,5 +236,17 @@ describe('Observable.prototype.buffer', () => {
 
     const result = source.buffer(filteredSource);
     expectObservable(result).toBe(expected, expectedValues);
+  });
+
+  it('should emit last buffer if source completes', () => {
+    const a =    hot('-a-b-c-d-e-f-g-h-i-|');
+    const b =    hot('-----B-----B--------');
+    const expected = '-----x-----y-------(z|)';
+    const expectedValues = {
+      x: ['a', 'b', 'c'],
+      y: ['d', 'e', 'f'],
+      z: ['g', 'h', 'i']
+    };
+    expectObservable(a.buffer(b)).toBe(expected, expectedValues);
   });
 });

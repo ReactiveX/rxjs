@@ -18,6 +18,13 @@ Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Exten
 - [Migrating From RxJS 4 to RxJS 5](MIGRATION.md)
 - [API Documentation (WIP)](http://reactivex.io/rxjs)
 
+## Versions In This Repository
+
+- [master](https://github.com/ReactiveX/rxjs/commits/master) - commits that will be included in the next _minor_ or _patch_ release
+- [next](https://github.com/ReactiveX/rxjs/commits/next) - commits that will be included in the next _major_ release (breaking changes)
+
+Most PRs should be made to **master**, unless you know it is a breaking change.
+
 ## Important
 
 By contributing or commenting on issues in this repository, whether you've read them or not, you're agreeing to the [Contributor Code of Conduct](CODE_OF_CONDUCT.md). Much like traffic laws, ignorance doesn't grant you immunity.
@@ -114,15 +121,8 @@ npm install @reactivex/rxjs@5.0.0
 ### CDN
 
 For CDN, you can use [unpkg](https://unpkg.com/):
-
-5.0.0-beta.1 - 5.0.0-beta.11:
-
-https://unpkg.com/@reactivex/rxjs/dist/global/Rx.umd.js
-
-
-5.0.0-beta.12 or higher:
-
-https://unpkg.com/@reactivex/rxjs/dist/global/Rx.js
+  
+https://unpkg.com/rxjs/bundles/Rx.min.js
 
 #### Node.js Usage:
 

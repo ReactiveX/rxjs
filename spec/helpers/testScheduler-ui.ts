@@ -15,8 +15,14 @@ chai.use(sinonChai);
 
 declare const module, global, Suite, Test: any;
 
+if (global && !(typeof window !== 'undefined')) {
+  global.mocha = require('mocha'); // tslint:disable-line:no-require-imports no-var-requires
+  global.Suite = global.mocha.Suite;
+  global.Test = global.mocha.Test;
+}
+
 if (!global.Promise) {
-  global.Promise = require('promise'); // tslint:disable-line
+  global.Promise = require('promise'); // tslint:disable-line:no-require-imports no-var-requires
 }
 
 const diagramFunction = global.asDiagram;
@@ -155,18 +161,14 @@ module.exports = function(suite) {
       let modified = fn;
 
       if (fn && fn.length === 0) {
-        modified = function (done: MochaDone) {
+        modified = function () {
           context.rxTestScheduler = new Rx.TestScheduler(observableMatcher);
-          let error: Error = null;
 
           try {
             fn();
             context.rxTestScheduler.flush();
-          } catch (e) {
-            error = e instanceof Error ? e : new Error(e);
           } finally {
             context.rxTestScheduler = null;
-            error ? done(error) : done();
           }
         };
       }

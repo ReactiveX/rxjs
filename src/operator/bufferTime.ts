@@ -1,4 +1,4 @@
-import { Scheduler } from '../Scheduler';
+import { IScheduler } from '../Scheduler';
 import { Action } from '../scheduler/Action';
 import { Operator } from '../Operator';
 import { async } from '../scheduler/async';
@@ -8,10 +8,10 @@ import { Subscription } from '../Subscription';
 import { isScheduler } from '../util/isScheduler';
 
 /* tslint:disable:max-line-length */
-export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, scheduler?: Scheduler): Observable<T[]>;
-export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number, scheduler?: Scheduler): Observable<T[]>;
-export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number, maxBufferSize: number, scheduler?: Scheduler): Observable<T[]>;
-/* tslint:disable:max-line-length */
+export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, scheduler?: IScheduler): Observable<T[]>;
+export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number, scheduler?: IScheduler): Observable<T[]>;
+export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number, maxBufferSize: number, scheduler?: IScheduler): Observable<T[]>;
+/* tslint:enable:max-line-length */
 
 /**
  * Buffers the source Observable values for a specific time period.
@@ -59,7 +59,7 @@ export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, buffe
 export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number): Observable<T[]> {
   let length: number = arguments.length;
 
-  let scheduler: Scheduler = async;
+  let scheduler: IScheduler = async;
   if (isScheduler(arguments[arguments.length - 1])) {
     scheduler = arguments[arguments.length - 1];
     length--;
@@ -82,7 +82,7 @@ class BufferTimeOperator<T> implements Operator<T, T[]> {
   constructor(private bufferTimeSpan: number,
               private bufferCreationInterval: number,
               private maxBufferSize: number,
-              private scheduler: Scheduler) {
+              private scheduler: IScheduler) {
   }
 
   call(subscriber: Subscriber<T[]>, source: any): any {
@@ -101,7 +101,7 @@ type CreationState<T> = {
   bufferTimeSpan: number;
   bufferCreationInterval: number,
   subscriber: BufferTimeSubscriber<T>;
-  scheduler: Scheduler;
+  scheduler: IScheduler;
 };
 
 /**
@@ -117,7 +117,7 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
               private bufferTimeSpan: number,
               private bufferCreationInterval: number,
               private maxBufferSize: number,
-              private scheduler: Scheduler) {
+              private scheduler: IScheduler) {
     super(destination);
     const context = this.openContext();
     this.timespanOnly = bufferCreationInterval == null || bufferCreationInterval < 0;

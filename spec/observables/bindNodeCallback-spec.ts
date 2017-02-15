@@ -8,6 +8,24 @@ const Observable = Rx.Observable;
 /** @test {bindNodeCallback} */
 describe('Observable.bindNodeCallback', () => {
   describe('when not scheduled', () => {
+    it('should emit undefined when callback is called without success arguments', () => {
+      function callback(cb) {
+        cb(null);
+      }
+
+      const boundCallback = Observable.bindNodeCallback(callback);
+      const results = [];
+
+      boundCallback()
+        .subscribe((x: any) => {
+          results.push(typeof x);
+        }, null, () => {
+          results.push('done');
+        });
+
+      expect(results).to.deep.equal(['undefined', 'done']);
+    });
+
     it('should emit one value from a callback', () => {
       function callback(datum, cb) {
         cb(null, datum);
@@ -21,6 +39,23 @@ describe('Observable.bindNodeCallback', () => {
         }, null, () => {
           results.push('done');
         });
+
+      expect(results).to.deep.equal([42, 'done']);
+    });
+
+    it('should set context of callback to context of boundCallback', () => {
+      function callback(cb) {
+        cb(null, this.datum);
+      }
+      const boundCallback = Observable.bindNodeCallback(callback);
+      const results = [];
+
+      boundCallback.call({datum: 42})
+        .subscribe(
+          (x: number) => results.push(x),
+          null,
+          () => results.push('done')
+        );
 
       expect(results).to.deep.equal([42, 'done']);
     });
@@ -109,6 +144,26 @@ describe('Observable.bindNodeCallback', () => {
   });
 
   describe('when scheduled', () => {
+    it('should emit undefined when callback is called without success arguments', () => {
+      function callback(cb) {
+        cb(null);
+      }
+
+      const boundCallback = Observable.bindNodeCallback(callback, null, rxTestScheduler);
+      const results = [];
+
+      boundCallback()
+        .subscribe((x: any) => {
+          results.push(typeof x);
+        }, null, () => {
+          results.push('done');
+        });
+
+      rxTestScheduler.flush();
+
+      expect(results).to.deep.equal(['undefined', 'done']);
+    });
+
     it('should emit one value from a callback', () => {
       function callback(datum, cb) {
         cb(null, datum);
@@ -122,6 +177,25 @@ describe('Observable.bindNodeCallback', () => {
         }, null, () => {
           results.push('done');
         });
+
+      rxTestScheduler.flush();
+
+      expect(results).to.deep.equal([42, 'done']);
+    });
+
+    it('should set context of callback to context of boundCallback', () => {
+      function callback(cb) {
+        cb(null, this.datum);
+      }
+      const boundCallback = Observable.bindNodeCallback(callback, null, rxTestScheduler);
+      const results = [];
+
+      boundCallback.call({datum: 42})
+        .subscribe(
+          (x: number) => results.push(x),
+          null,
+          () => results.push('done')
+        );
 
       rxTestScheduler.flush();
 

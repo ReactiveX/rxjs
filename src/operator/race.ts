@@ -11,7 +11,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
 /* tslint:disable:max-line-length */
 export function race<T>(this: Observable<T>, ...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T>;
 export function race<T, R>(this: Observable<T>, ...observables: Array<Observable<any> | Array<Observable<T>>>): Observable<R>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Returns an Observable that mirrors the first source Observable to emit an item

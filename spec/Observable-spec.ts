@@ -1,8 +1,14 @@
 import {expect} from 'chai';
+import * as sinon from 'sinon';
 import * as Rx from '../dist/cjs/Rx';
 import {TeardownLogic} from '../dist/cjs/Subscription';
+import marbleTestingSignature = require('./helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
-declare const {asDiagram, expectObservable, rxTestScheduler};
+declare const { asDiagram, rxTestScheduler };
+declare const cold: typeof marbleTestingSignature.cold;
+declare const expectObservable: typeof marbleTestingSignature.expectObservable;
+declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
+
 const Subscriber = Rx.Subscriber;
 const Observable = Rx.Observable;
 
@@ -26,6 +32,18 @@ describe('Observable', () => {
     });
 
     source.subscribe(function (x) { expect(x).to.equal(1); }, null, done);
+  });
+
+  it('should send errors thrown in the constructor down the error path', (done) => {
+    new Observable((observer) => {
+      throw new Error('this should be handled');
+    })
+    .subscribe({
+      error(err) {
+        expect(err).to.deep.equal(new Error('this should be handled'));
+        done();
+      }
+    });
   });
 
   describe('forEach', () => {
@@ -211,6 +229,9 @@ describe('Observable', () => {
     });
 
     it('should run unsubscription logic when an error is sent asynchronously and subscribe is called with no arguments', (done: MochaDone) => {
+      const sandbox = sinon.sandbox.create();
+      const fakeTimer = sandbox.useFakeTimers();
+
       let unsubscribeCalled = false;
       const source = new Observable((subscriber: Rx.Subscriber<string>) => {
         const id = setInterval(() => {
@@ -244,6 +265,9 @@ describe('Observable', () => {
           }
         }
       }, 100);
+
+      fakeTimer.tick(110);
+      sandbox.restore();
     });
 
     it('should return a Subscription that calls the unsubscribe function returned by the subscriber', () => {
@@ -574,6 +598,18 @@ describe('Observable.create', () => {
       //noop
     });
     expect(called).to.be.true;
+  });
+
+  it('should send errors thrown in the passed function down the error path', (done) => {
+    Observable.create((observer) => {
+      throw new Error('this should be handled');
+    })
+    .subscribe({
+      error(err) {
+        expect(err).to.deep.equal(new Error('this should be handled'));
+        done();
+      }
+    });
   });
 });
 

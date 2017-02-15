@@ -1,6 +1,6 @@
 import { async } from '../scheduler/async';
 import { Operator } from '../Operator';
-import { Scheduler } from '../Scheduler';
+import { IScheduler } from '../Scheduler';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subscription, TeardownLogic } from '../Subscription';
@@ -24,7 +24,7 @@ import { Subscription, TeardownLogic } from '../Subscription';
  * the time unit determined internally by the optional `scheduler`) has passed,
  * the timer is disabled, then the most recent source value is emitted on the
  * output Observable, and this process repeats for the next source value.
- * Optionally takes a {@link Scheduler} for managing timers.
+ * Optionally takes a {@link IScheduler} for managing timers.
  *
  * @example <caption>Emit clicks at a rate of at most one click per second</caption>
  * var clicks = Rx.Observable.fromEvent(document, 'click');
@@ -40,20 +40,20 @@ import { Subscription, TeardownLogic } from '../Subscription';
  * @param {number} duration Time to wait before emitting the most recent source
  * value, measured in milliseconds or the time unit determined internally
  * by the optional `scheduler`.
- * @param {Scheduler} [scheduler=async] The {@link Scheduler} to use for
+ * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for
  * managing the timers that handle the rate-limiting behavior.
  * @return {Observable<T>} An Observable that performs rate-limiting of
  * emissions from the source Observable.
  * @method auditTime
  * @owner Observable
  */
-export function auditTime<T>(this: Observable<T>, duration: number, scheduler: Scheduler = async): Observable<T> {
+export function auditTime<T>(this: Observable<T>, duration: number, scheduler: IScheduler = async): Observable<T> {
   return this.lift(new AuditTimeOperator(duration, scheduler));
 }
 
 class AuditTimeOperator<T> implements Operator<T, T> {
   constructor(private duration: number,
-              private scheduler: Scheduler) {
+              private scheduler: IScheduler) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -74,7 +74,7 @@ class AuditTimeSubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<T>,
               private duration: number,
-              private scheduler: Scheduler) {
+              private scheduler: IScheduler) {
     super(destination);
   }
 

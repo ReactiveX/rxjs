@@ -23,7 +23,7 @@ export function last<T>(this: Observable<T>,
                         predicate: (value: T, index: number, source: Observable<T>) => boolean,
                         resultSelector: void,
                         defaultValue?: T): Observable<T>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Returns an Observable that emits only the last item emitted by the source Observable.

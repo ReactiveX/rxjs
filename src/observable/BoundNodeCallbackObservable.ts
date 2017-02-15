@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { Scheduler } from '../Scheduler';
+import { IScheduler } from '../Scheduler';
 import { Action } from '../scheduler/Action';
 import { tryCatch } from '../util/tryCatch';
 import { errorObject } from '../util/errorObject';
@@ -16,15 +16,15 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
   subject: AsyncSubject<T>;
 
   /* tslint:disable:max-line-length */
-  static create<R>(callbackFunc: (callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): () => Observable<R>;
-  static create<T, R>(callbackFunc: (v1: T, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): (v1: T) => Observable<R>;
-  static create<T, T2, R>(callbackFunc: (v1: T, v2: T2, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2) => Observable<R>;
-  static create<T, T2, T3, R>(callbackFunc: (v1: T, v2: T2, v3: T3, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3) => Observable<R>;
-  static create<T, T2, T3, T4, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3, v4: T4) => Observable<R>;
-  static create<T, T2, T3, T4, T5, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => Observable<R>;
-  static create<T, T2, T3, T4, T5, T6, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: Scheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => Observable<R>;
-  static create<T>(callbackFunc: Function, selector?: void, scheduler?: Scheduler): (...args: any[]) => Observable<T>;
-  static create<T>(callbackFunc: Function, selector?: (...args: any[]) => T, scheduler?: Scheduler): (...args: any[]) => Observable<T>;
+  static create<R>(callbackFunc: (callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: IScheduler): () => Observable<R>;
+  static create<T, R>(callbackFunc: (v1: T, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T) => Observable<R>;
+  static create<T, T2, R>(callbackFunc: (v1: T, v2: T2, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2) => Observable<R>;
+  static create<T, T2, T3, R>(callbackFunc: (v1: T, v2: T2, v3: T3, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3) => Observable<R>;
+  static create<T, T2, T3, T4, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4) => Observable<R>;
+  static create<T, T2, T3, T4, T5, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => Observable<R>;
+  static create<T, T2, T3, T4, T5, T6, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => Observable<R>;
+  static create<T>(callbackFunc: Function, selector?: void, scheduler?: IScheduler): (...args: any[]) => Observable<T>;
+  static create<T>(callbackFunc: Function, selector?: (...args: any[]) => T, scheduler?: IScheduler): (...args: any[]) => Observable<T>;
   /* tslint:enable:max-line-length */
 
   /**
@@ -39,10 +39,15 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
    * last parameter must be a callback function that `func` calls when it is
    * done. The callback function is expected to follow Node.js conventions,
    * where the first argument to the callback is an error, while remaining
-   * arguments are the callback result. The output of `bindNodeCallback` is a
+   * arguments are the callback result.
+   *
+   * The output of `bindNodeCallback` is a
    * function that takes the same parameters as `func`, except the last one (the
    * callback). When the output function is called with arguments, it will
    * return an Observable where the results will be delivered to.
+   *
+   * As in {@link bindCallback}, context (`this` property) of input function will be set to context
+   * of returned function, when it is called.
    *
    * @example <caption>Read a file from the filesystem and get the data as an Observable</caption>
    * import * as fs from 'fs';
@@ -68,16 +73,17 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
    */
   static create<T>(func: Function,
                    selector: Function | void = undefined,
-                   scheduler?: Scheduler): (...args: any[]) => Observable<T> {
-    return (...args: any[]): Observable<T> => {
-      return new BoundNodeCallbackObservable<T>(func, <any>selector, args, scheduler);
+                   scheduler?: IScheduler): (...args: any[]) => Observable<T> {
+    return function(this: any, ...args: any[]): Observable<T> {
+      return new BoundNodeCallbackObservable<T>(func, <any>selector, args, this, scheduler);
     };
   }
 
   constructor(private callbackFunc: Function,
               private selector: Function,
               private args: any[],
-              public scheduler: Scheduler) {
+              private context: any,
+              public scheduler: IScheduler) {
     super();
   }
 
@@ -106,21 +112,21 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
               subject.complete();
             }
           } else {
-            subject.next(innerArgs.length === 1 ? innerArgs[0] : innerArgs);
+            subject.next(innerArgs.length <= 1 ? innerArgs[0] : innerArgs);
             subject.complete();
           }
         };
         // use named function instance to avoid closure.
         (<any>handler).source = this;
 
-        const result = tryCatch(callbackFunc).apply(this, args.concat(handler));
+        const result = tryCatch(callbackFunc).apply(this.context, args.concat(handler));
         if (result === errorObject) {
           subject.error(errorObject.e);
         }
       }
       return subject.subscribe(subscriber);
     } else {
-      return scheduler.schedule(dispatch, 0, { source: this, subscriber });
+      return scheduler.schedule(dispatch, 0, { source: this, subscriber, context: this.context });
     }
   }
 }
@@ -128,11 +134,12 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
 interface DispatchState<T> {
   source: BoundNodeCallbackObservable<T>;
   subscriber: Subscriber<T>;
+  context: any;
 }
 
 function dispatch<T>(this: Action<DispatchState<T>>, state: DispatchState<T>) {
   const self = (<Subscription> this);
-  const { source, subscriber } = state;
+  const { source, subscriber, context } = state;
   // XXX: cast to `any` to access to the private field in `source`.
   const { callbackFunc, args, scheduler } = source as any;
   let subject = source.subject;
@@ -155,14 +162,14 @@ function dispatch<T>(this: Action<DispatchState<T>>, state: DispatchState<T>) {
           self.add(scheduler.schedule(dispatchNext, 0, { value: result, subject }));
         }
       } else {
-        const value = innerArgs.length === 1 ? innerArgs[0] : innerArgs;
+        const value = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
         self.add(scheduler.schedule(dispatchNext, 0, { value, subject }));
       }
     };
     // use named function to pass values in without closure
     (<any>handler).source = source;
 
-    const result = tryCatch(callbackFunc).apply(this, args.concat(handler));
+    const result = tryCatch(callbackFunc).apply(context, args.concat(handler));
     if (result === errorObject) {
       subject.error(errorObject.e);
     }

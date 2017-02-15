@@ -58,6 +58,17 @@ describe('subscribeToResult', () => {
     expect(expected).to.be.deep.equal(result);
   });
 
+  it('should subscribe to an array-like and emit synchronously', () => {
+    const result = {0: 0, 1: 1, 2: 2, length: 3};
+    const expected = [];
+
+    const subscriber = new OuterSubscriber(x => expected.push(x));
+
+    subscribeToResult(subscriber, result);
+
+    expect(expected).to.be.deep.equal([0, 1, 2]);
+  });
+
   it('should subscribe to a promise', (done: MochaDone) => {
     const result = Promise.resolve(42);
 

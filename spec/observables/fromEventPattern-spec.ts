@@ -1,8 +1,13 @@
 import {expect} from 'chai';
+import * as sinon from 'sinon';
 import * as Rx from '../../dist/cjs/Rx';
+import {noop} from '../../dist/cjs/util/noop';
+import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+
+declare const { asDiagram };
+declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 
 declare const rxTestScheduler: Rx.TestScheduler;
-declare const {hot, asDiagram, expectObservable, expectSubscriptions};
 const Observable = Rx.Observable;
 
 /** @test {fromEventPattern} */
@@ -16,58 +21,56 @@ describe('Observable.fromEventPattern', () => {
         .concat(Observable.never())
         .subscribe(h);
     }
-    const e1 = Observable.fromEventPattern(addHandler, () => void 0);
+    const e1 = Observable.fromEventPattern(addHandler);
     const expected = '-----x-x---';
     expectObservable(e1).toBe(expected, {x: 'ev'});
   });
 
   it('should call addHandler on subscription', () => {
-    let addHandlerCalledWith;
-    const addHandler = (h: any) => {
-      addHandlerCalledWith = h;
-    };
+    const addHandler = sinon.spy();
+    Observable.fromEventPattern(addHandler, noop).subscribe(noop);
 
-    const removeHandler = () => {
-      //noop
-    };
-
-    Observable.fromEventPattern(addHandler, removeHandler)
-      .subscribe(() => {
-        //noop
-      });
-
-    expect(addHandlerCalledWith).to.be.a('function');
+    const call = addHandler.getCall(0);
+    expect(addHandler).calledOnce;
+    expect(call.args[0]).to.be.a('function');
   });
 
   it('should call removeHandler on unsubscription', () => {
-    let removeHandlerCalledWith;
-    const addHandler = () => {
-      //noop
-     };
-    const removeHandler = (h: any) => {
-      removeHandlerCalledWith = h;
-    };
+    const removeHandler = sinon.spy();
 
-    const subscription = Observable.fromEventPattern(addHandler, removeHandler)
-      .subscribe(() => {
-        //noop
-      });
+    Observable.fromEventPattern(noop, removeHandler).subscribe(noop).unsubscribe();
 
-    subscription.unsubscribe();
-
-    expect(removeHandlerCalledWith).to.be.a('function');
+    const call = removeHandler.getCall(0);
+    expect(removeHandler).calledOnce;
+    expect(call.args[0]).to.be.a('function');
   });
 
-  it('should send errors in addHandler down the error path', () => {
+  it('should work without optional removeHandler', () => {
+    const addHandler: (h: Function) => any = sinon.spy();
+    Observable.fromEventPattern(addHandler).subscribe(noop);
+
+    expect(addHandler).calledOnce;
+  });
+
+  it('should deliver return value of addHandler to removeHandler as signal', () => {
+    const expected = { signal: true};
+    const addHandler = () => expected;
+    const removeHandler = sinon.spy();
+    Observable.fromEventPattern(addHandler, removeHandler).subscribe(noop).unsubscribe();
+
+    const call = removeHandler.getCall(0);
+    expect(call).calledWith(sinon.match.any, expected);
+  });
+
+  it('should send errors in addHandler down the error path', (done: MochaDone) => {
     Observable.fromEventPattern((h: any) => {
       throw 'bad';
-    }, () => {
-        //noop
-      }).subscribe(() => {
-        //noop
-       }, (err: any) => {
-          expect(err).to.equal('bad');
-        });
+    }, noop).subscribe(
+      () => done(new Error('should not be called')),
+      (err: any) => {
+        expect(err).to.equal('bad');
+        done();
+      }, () => done(new Error('should not be called')));
   });
 
   it('should accept a selector that maps outgoing values', (done: MochaDone) => {

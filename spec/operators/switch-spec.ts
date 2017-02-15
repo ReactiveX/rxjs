@@ -1,6 +1,12 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+
+declare const { asDiagram };
+declare const hot: typeof marbleTestingSignature.hot;
+declare const cold: typeof marbleTestingSignature.cold;
+declare const expectObservable: typeof marbleTestingSignature.expectObservable;
+declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
 
 const Observable = Rx.Observable;
 const queueScheduler = Rx.Scheduler.queue;
@@ -216,5 +222,45 @@ describe('Observable.prototype.switch', () => {
       });
 
     expect(completed).to.be.true;
+  });
+
+  it('should not leak when child completes before each switch (prevent memory leaks #2355)', () => {
+    let iStream: Rx.Subject<number>;
+    const oStreamControl = new Rx.Subject<number>();
+    const oStream = oStreamControl.map(() => {
+      return (iStream = new Rx.Subject());
+    });
+    const switcher = oStream.switch();
+    const result = [];
+    let sub = switcher.subscribe((x: number) => result.push(x));
+
+    [0, 1, 2, 3, 4].forEach((n) => {
+      oStreamControl.next(n); // creates inner
+      iStream.complete();
+    });
+    // Expect one child of switch(): The oStream
+    expect(
+      (<any>sub)._subscriptions[0]._subscriptions.length
+    ).to.equal(1);
+    sub.unsubscribe();
+  });
+
+  it('should not leak if we switch before child completes (prevent memory leaks #2355)', () => {
+    const oStreamControl = new Rx.Subject<number>();
+    const oStream = oStreamControl.map(() => {
+      return (new Rx.Subject());
+    });
+    const switcher = oStream.switch();
+    const result = [];
+    let sub = switcher.subscribe((x: number) => result.push(x));
+
+    [0, 1, 2, 3, 4].forEach((n) => {
+      oStreamControl.next(n); // creates inner
+    });
+    // Expect two children of switch(): The oStream and the first inner
+    expect(
+      (<any>sub)._subscriptions[0]._subscriptions.length
+    ).to.equal(2);
+    sub.unsubscribe();
   });
 });

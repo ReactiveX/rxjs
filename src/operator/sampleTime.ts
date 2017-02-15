@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { Scheduler } from '../Scheduler';
+import { IScheduler } from '../Scheduler';
 import { Action } from '../scheduler/Action';
 import { async } from '../scheduler/async';
 import { TeardownLogic } from '../Subscription';
@@ -35,20 +35,20 @@ import { TeardownLogic } from '../Subscription';
  *
  * @param {number} period The sampling period expressed in milliseconds or the
  * time unit determined internally by the optional `scheduler`.
- * @param {Scheduler} [scheduler=async] The {@link Scheduler} to use for
+ * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for
  * managing the timers that handle the sampling.
  * @return {Observable<T>} An Observable that emits the results of sampling the
  * values emitted by the source Observable at the specified time interval.
  * @method sampleTime
  * @owner Observable
  */
-export function sampleTime<T>(this: Observable<T>, period: number, scheduler: Scheduler = async): Observable<T> {
+export function sampleTime<T>(this: Observable<T>, period: number, scheduler: IScheduler = async): Observable<T> {
   return this.lift(new SampleTimeOperator(period, scheduler));
 }
 
 class SampleTimeOperator<T> implements Operator<T, T> {
   constructor(private period: number,
-              private scheduler: Scheduler) {
+              private scheduler: IScheduler) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -67,7 +67,7 @@ class SampleTimeSubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<T>,
               private period: number,
-              private scheduler: Scheduler) {
+              private scheduler: IScheduler) {
     super(destination);
     this.add(scheduler.schedule(dispatchNotification, period, { subscriber: this, period }));
   }
