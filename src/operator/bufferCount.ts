@@ -110,9 +110,10 @@ class BufferSkipCountSubscriber<T> extends Subscriber<T> {
   }
 
   protected _next(value: T): void {
-    const { bufferSize, startBufferEvery, buffers } = this;
+    const { bufferSize, startBufferEvery, buffers, count } = this;
 
-    if (this.count++ % startBufferEvery === 0) {
+    this.count++;
+    if (count % startBufferEvery === 0) {
       buffers.push([]);
     }
 
