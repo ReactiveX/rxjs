@@ -64,9 +64,7 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private static dispatchTimeout<T, R>(subscriber: TimeoutWithSubscriber<T, R>): void {
     const { withObservable } = subscriber;
-    subscriber.unsubscribe();
-    subscriber.closed = false;
-    subscriber.isStopped = false;
+    (<any> subscriber)._unsubscribeAndRecycle();
     subscriber.add(subscribeToResult(subscriber, withObservable));
   }
 
