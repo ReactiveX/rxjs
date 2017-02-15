@@ -60,8 +60,8 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
   notifyNext(outerValue: T, innerValue: R,
              outerIndex: number, innerIndex: number,
              innerSub: InnerSubscriber<T, R>): void {
-    this.source.subscribe(this);
     this.sourceIsBeingSubscribedTo = true;
+    this.source.subscribe(this);
   }
 
   notifyComplete(innerSub: InnerSubscriber<T, R>): void {
@@ -80,7 +80,7 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
         return super.complete();
       }
 
-      this.temporarilyUnsubscribe();
+      this._unsubscribeAndRecycle();
       this.notifications.next();
     }
   }
@@ -98,6 +98,18 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.retries = null;
   }
 
+  protected _unsubscribeAndRecycle(): Subscriber<T> {
+    const { notifications, retries, retriesSubscription } = this;
+    this.notifications = null;
+    this.retries = null;
+    this.retriesSubscription = null;
+    super._unsubscribeAndRecycle();
+    this.notifications = notifications;
+    this.retries = retries;
+    this.retriesSubscription = retriesSubscription;
+    return this;
+  }
+
   private subscribeToRetries() {
     this.notifications = new Subject();
     const retries = tryCatch(this.notifier)(this.notifications);
@@ -107,20 +119,4 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.retries = retries;
     this.retriesSubscription = subscribeToResult(this, retries);
   }
-
-  private temporarilyUnsubscribe() {
-    const { notifications, retries, retriesSubscription } = this;
-    this.notifications = null;
-    this.retries = null;
-    this.retriesSubscription = null;
-
-    this.unsubscribe();
-    this.isStopped = false;
-    this.closed = false;
-
-    this.notifications = notifications;
-    this.retries = retries;
-    this.retriesSubscription = retriesSubscription;
-  }
-
 }

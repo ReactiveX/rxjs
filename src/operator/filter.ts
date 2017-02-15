@@ -10,7 +10,7 @@ export function filter<T, S extends T>(this: Observable<T>,
 export function filter<T>(this: Observable<T>,
                           predicate: (value: T, index: number) => boolean,
                           thisArg?: any): Observable<T>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Filter items emitted by the source Observable by only emitting those that

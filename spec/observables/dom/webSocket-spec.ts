@@ -261,6 +261,20 @@ describe('Observable.webSocket', () => {
       subject.unsubscribe();
     });
 
+    it('should take a binaryType and set it properly on the web socket', () => {
+      const subject = Observable.webSocket({
+        url: 'ws://mysocket',
+        binaryType: 'blob'
+      });
+
+      subject.subscribe();
+
+      const socket = MockWebSocket.lastSocket;
+      expect(socket.binaryType).to.equal('blob');
+
+      subject.unsubscribe();
+    });
+
     it('should take a resultSelector', () => {
       const results = [];
 
@@ -632,6 +646,7 @@ class MockWebSocket {
   readyState: number = 0;
   closeCode: any;
   closeReason: any;
+  binaryType?: string;
 
   constructor(public url: string, public protocol: string) {
     MockWebSocket.sockets.push(this);
