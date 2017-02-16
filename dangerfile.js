@@ -63,6 +63,6 @@ var messageConventionValid = danger.git.commits.reduce(function (acc, value) {
 }, true);
 
 if (!messageConventionValid) {
-  fail('commit message does not follows conventional change log (' + ++errorCount + ')');
+  warn('commit message does not follows conventional change log (' + ++errorCount + ')');
   markdown('> (' + errorCount + ') : RxJS uses conventional change log to generate changelog automatically. It seems some of commit messages are not following those, please check [contributing guideline](https://github.com/ReactiveX/rxjs/blob/master/CONTRIBUTING.md#commit-message-format) and update commit messages.');
 }
