@@ -8,7 +8,7 @@ import { noop } from '../util/noop';
  *
  * <img src="./img/ignoreElements.png" width="100%">
  *
- * @return {Observable} an empty Observable that only calls `complete`
+ * @return {Observable} An empty Observable that only calls `complete`
  * or `error`, based on which one is called by the source Observable.
  * @method ignoreElements
  * @owner Observable
