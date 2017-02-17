@@ -8,7 +8,7 @@ import { TeardownLogic } from '../Subscription';
 /* tslint:disable:max-line-length */
 export function distinctUntilChanged<T>(this: Observable<T>, compare?: (x: T, y: T) => boolean): Observable<T>;
 export function distinctUntilChanged<T, K>(this: Observable<T>, compare: (x: K, y: K) => boolean, keySelector: (x: T) => K): Observable<T>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
@@ -35,17 +35,17 @@ export function distinctUntilChanged<T, K>(this: Observable<T>, compare: (x: K, 
  *     { age: 6, name: 'Foo'})
  *     .distinctUntilChanged((p: Person, q: Person) => p.name === q.name)
  *     .subscribe(x => console.log(x));
- * 
+ *
  * // displays:
  * // { age: 4, name: 'Foo' }
  * // { age: 7, name: 'Bar' }
  * // { age: 5, name: 'Foo' }
- * 
+ *
  * @see {@link distinct}
  * @see {@link distinctUntilKeyChanged}
  *
- * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.
- * @return {Observable} an Observable that emits items from the source Observable with distinct values.
+ * @param {function} [compare] Optional comparison function called to test if an item is distinct from the previous item in the source.
+ * @return {Observable} An Observable that emits items from the source Observable with distinct values.
  * @method distinctUntilChanged
  * @owner Observable
  */

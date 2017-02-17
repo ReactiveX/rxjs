@@ -1,6 +1,11 @@
 import * as Rx from '../../dist/cjs/Rx';
-declare const {hot, cold, asDiagram, time, expectObservable, expectSubscriptions};
+import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
+declare const { asDiagram, time };
+declare const hot: typeof marbleTestingSignature.hot;
+declare const cold: typeof marbleTestingSignature.cold;
+declare const expectObservable: typeof marbleTestingSignature.expectObservable;
+declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
@@ -18,9 +23,46 @@ describe('Observable.prototype.windowTime', () => {
     const x = cold(            '--a--(b|)                  ');
     const y = cold(                      '-d--e|           ');
     const z = cold(                                '-g--h| ');
-    const values = { x: x, y: y, z: z };
+    const values = { x, y, z };
 
     const result = source.windowTime(50, 100, rxTestScheduler);
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should close windows after max count is reached', () => {
+    const source = hot('--1--2--^--a--b--c--d--e--f--g-----|');
+    const subs =               '^                          !';
+    const timeSpan = time(     '----------|');
+    //  100 frames              0---------1---------2------|
+    const expected =           'x---------y---------z------|';
+    const x = cold(            '---a--(b|)                  ');
+    const y = cold(                      '--d--(e|)         ');
+    const z = cold(                                '-g-----|');
+    const values = { x, y, z };
+
+    const result = source.windowTime(timeSpan, null, 2, rxTestScheduler);
+
+    expectObservable(result).toBe(expected, values);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should close window after max count is reached with' +
+  'windowCreationInterval', () => {
+    const source = hot('--1--2--^-a--b--c--de-f---g--h--i-|');
+    const subs =               '^                         !';
+    //  100 frames              0---------1---------2-----|
+    //  50                      ----|
+    //  50                                ----|
+    //  50                                          ----|
+    const expected =           'x---------y---------z-----|';
+    const x = cold(            '--a--(b|)                  ');
+    const y = cold(                      '-de-(f|)         ');
+    const z = cold(                                '-h--i| ');
+    const values = { x, y, z };
+
+    const result = source.windowTime(50, 100, 3, rxTestScheduler);
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -35,9 +77,9 @@ describe('Observable.prototype.windowTime', () => {
     const x = cold(            '---a--b--c|                 ');
     const y = cold(                      '--d--e--f-|       ');
     const z = cold(                                '-g--h--|');
-    const values = { x: x, y: y, z: z };
+    const values = { x, y, z };
 
-    const result = source.windowTime(timeSpan, null, rxTestScheduler);
+    const result = source.windowTime(timeSpan, rxTestScheduler);
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -56,7 +98,7 @@ describe('Observable.prototype.windowTime', () => {
     const x = cold(            '---a-|                      ');
     const y = cold(                      '--d--(e|)         ');
     const z = cold(                                '-g--h|  ');
-    const values = { x: x, y: y, z: z };
+    const values = { x, y, z };
 
     const result = source.windowTime(timeSpan, interval, rxTestScheduler);
 
@@ -69,7 +111,7 @@ describe('Observable.prototype.windowTime', () => {
     const subs =          '(^!)';
     const expected =      '(w|)';
     const w =        cold('|');
-    const expectedValues = { w: w };
+    const expectedValues = { w };
     const timeSpan = time('-----|');
     const interval = time('----------|');
 
@@ -84,7 +126,7 @@ describe('Observable.prototype.windowTime', () => {
     const subs =          '(^!)';
     const expected =      '(w|)';
     const w =        cold('(a|)');
-    const expectedValues = { w: w };
+    const expectedValues = { w };
     const timeSpan = time('-----|');
     const interval = time('----------|');
 
@@ -105,7 +147,7 @@ describe('Observable.prototype.windowTime', () => {
     const c =        cold(      '---| ');
     const d =        cold(         '--');
     const unsub =         '          !';
-    const expectedValues = { a: a, b: b, c: c, d: d };
+    const expectedValues = { a, b, c, d };
 
     const result = source.windowTime(timeSpan, interval, rxTestScheduler);
 
@@ -118,7 +160,7 @@ describe('Observable.prototype.windowTime', () => {
     const subs =          '(^!)';
     const expected =      '(w#)';
     const w =        cold('#');
-    const expectedValues = { w: w };
+    const expectedValues = { w };
     const timeSpan = time('-----|');
     const interval = time('----------|');
 
@@ -141,7 +183,7 @@ describe('Observable.prototype.windowTime', () => {
     const x = cold(            '---a-|                      ');
     const y = cold(                      '--d--(e|)         ');
     const z = cold(                                '-g--h|  ');
-    const values = { x: x, y: y, z: z };
+    const values = { x, y, z };
 
     const result = source.windowTime(timeSpan, interval, rxTestScheduler);
 
@@ -163,7 +205,7 @@ describe('Observable.prototype.windowTime', () => {
     const x = cold(            '---a-|                      ');
     const y = cold(                      '--                ');
     const unsub =              '           !                ';
-    const values = { x: x, y: y };
+    const values = { x, y };
 
     const result = source.windowTime(timeSpan, interval, rxTestScheduler);
 
@@ -184,7 +226,7 @@ describe('Observable.prototype.windowTime', () => {
     const x = cold(            '---a-|                      ');
     const y = cold(                      '--d--             ');
     const unsub =              '              !             ';
-    const values = { x: x, y: y };
+    const values = { x, y };
 
     const result = source
       .mergeMap((x: string) => Observable.of(x))

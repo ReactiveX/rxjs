@@ -4,7 +4,7 @@ import { Observable, ObservableInput } from '../Observable';
 /* tslint:disable:max-line-length */
 export function concatMap<T, R>(this: Observable<T>, project: (value: T, index: number) =>  ObservableInput<R>): Observable<R>;
 export function concatMap<T, I, R>(this: Observable<T>, project: (value: T, index: number) =>  ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Projects each source value to an Observable which is merged in the output
@@ -47,7 +47,7 @@ export function concatMap<T, I, R>(this: Observable<T>, project: (value: T, inde
  * @see {@link mergeMap}
  * @see {@link switchMap}
  *
- * @param {function(value: T, ?index: number): Observable} project A function
+ * @param {function(value: T, ?index: number): ObservableInput} project A function
  * that, when applied to an item emitted by the source Observable, returns an
  * Observable.
  * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]
@@ -58,7 +58,7 @@ export function concatMap<T, I, R>(this: Observable<T>, project: (value: T, inde
  * - `innerValue`: the value that came from the projected Observable
  * - `outerIndex`: the "index" of the value that came from the source
  * - `innerIndex`: the "index" of the value from the projected Observable
- * @return {Observable} an observable of values merged from the projected
+ * @return {Observable} An observable of values merged from the projected
  * Observables as they were subscribed to, one at a time. Optionally, these
  * values may have been projected from a passed `projectResult` argument.
  * @return {Observable} An Observable that emits the result of applying the

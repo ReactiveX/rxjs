@@ -39,10 +39,15 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
    * last parameter must be a callback function that `func` calls when it is
    * done. The callback function is expected to follow Node.js conventions,
    * where the first argument to the callback is an error, while remaining
-   * arguments are the callback result. The output of `bindNodeCallback` is a
+   * arguments are the callback result.
+   *
+   * The output of `bindNodeCallback` is a
    * function that takes the same parameters as `func`, except the last one (the
    * callback). When the output function is called with arguments, it will
    * return an Observable where the results will be delivered to.
+   *
+   * As in {@link bindCallback}, context (`this` property) of input function will be set to context
+   * of returned function, when it is called.
    *
    * @example <caption>Read a file from the filesystem and get the data as an Observable</caption>
    * import * as fs from 'fs';
@@ -56,7 +61,7 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
    *
    * @param {function} func Function with a callback as the last parameter.
    * @param {function} [selector] A function which takes the arguments from the
-   * callback and maps those a value to emit on the output Observable.
+   * callback and maps those to a value to emit on the output Observable.
    * @param {Scheduler} [scheduler] The scheduler on which to schedule the
    * callbacks.
    * @return {function(...params: *): Observable} A function which returns the
@@ -69,14 +74,15 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
   static create<T>(func: Function,
                    selector: Function | void = undefined,
                    scheduler?: IScheduler): (...args: any[]) => Observable<T> {
-    return (...args: any[]): Observable<T> => {
-      return new BoundNodeCallbackObservable<T>(func, <any>selector, args, scheduler);
+    return function(this: any, ...args: any[]): Observable<T> {
+      return new BoundNodeCallbackObservable<T>(func, <any>selector, args, this, scheduler);
     };
   }
 
   constructor(private callbackFunc: Function,
               private selector: Function,
               private args: any[],
+              private context: any,
               public scheduler: IScheduler) {
     super();
   }
@@ -106,21 +112,21 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
               subject.complete();
             }
           } else {
-            subject.next(innerArgs.length === 1 ? innerArgs[0] : innerArgs);
+            subject.next(innerArgs.length <= 1 ? innerArgs[0] : innerArgs);
             subject.complete();
           }
         };
         // use named function instance to avoid closure.
         (<any>handler).source = this;
 
-        const result = tryCatch(callbackFunc).apply(this, args.concat(handler));
+        const result = tryCatch(callbackFunc).apply(this.context, args.concat(handler));
         if (result === errorObject) {
           subject.error(errorObject.e);
         }
       }
       return subject.subscribe(subscriber);
     } else {
-      return scheduler.schedule(dispatch, 0, { source: this, subscriber });
+      return scheduler.schedule(dispatch, 0, { source: this, subscriber, context: this.context });
     }
   }
 }
@@ -128,11 +134,12 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
 interface DispatchState<T> {
   source: BoundNodeCallbackObservable<T>;
   subscriber: Subscriber<T>;
+  context: any;
 }
 
 function dispatch<T>(this: Action<DispatchState<T>>, state: DispatchState<T>) {
   const self = (<Subscription> this);
-  const { source, subscriber } = state;
+  const { source, subscriber, context } = state;
   // XXX: cast to `any` to access to the private field in `source`.
   const { callbackFunc, args, scheduler } = source as any;
   let subject = source.subject;
@@ -155,14 +162,14 @@ function dispatch<T>(this: Action<DispatchState<T>>, state: DispatchState<T>) {
           self.add(scheduler.schedule(dispatchNext, 0, { value: result, subject }));
         }
       } else {
-        const value = innerArgs.length === 1 ? innerArgs[0] : innerArgs;
+        const value = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
         self.add(scheduler.schedule(dispatchNext, 0, { value, subject }));
       }
     };
     // use named function to pass values in without closure
     (<any>handler).source = source;
 
-    const result = tryCatch(callbackFunc).apply(this, args.concat(handler));
+    const result = tryCatch(callbackFunc).apply(context, args.concat(handler));
     if (result === errorObject) {
       subject.error(errorObject.e);
     }

@@ -38,17 +38,17 @@ import { ISet, Set } from '../util/Set';
  *     { age: 5, name: 'Foo'})
  *     .distinct((p: Person) => p.name)
  *     .subscribe(x => console.log(x));
- * 
+ *
  * // displays:
  * // { age: 4, name: 'Foo' }
  * // { age: 7, name: 'Bar' }
- * 
+ *
  * @see {@link distinctUntilChanged}
  * @see {@link distinctUntilKeyChanged}
- * 
- * @param {function} [keySelector] optional function to select which value you want to check as distinct.
- * @param {Observable} [flushes] optional Observable for flushing the internal HashSet of the operator.
- * @return {Observable} an Observable that emits items from the source Observable with distinct values.
+ *
+ * @param {function} [keySelector] Optional function to select which value you want to check as distinct.
+ * @param {Observable} [flushes] Optional Observable for flushing the internal HashSet of the operator.
+ * @return {Observable} An Observable that emits items from the source Observable with distinct values.
  * @method distinct
  * @owner Observable
  */

@@ -9,7 +9,7 @@ export function find<T, S extends T>(this: Observable<T>,
 export function find<T>(this: Observable<T>,
                         predicate: (value: T, index: number) => boolean,
                         thisArg?: any): Observable<T>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Emits only the first value emitted by the source Observable that meets some

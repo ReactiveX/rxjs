@@ -1,5 +1,12 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions, type};
+import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+
+declare const { asDiagram, type };
+declare const hot: typeof marbleTestingSignature.hot;
+declare const cold: typeof marbleTestingSignature.cold;
+declare const expectObservable: typeof marbleTestingSignature.expectObservable;
+declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
 
 const Observable = Rx.Observable;
 
@@ -63,6 +70,30 @@ describe('Observable.prototype.reduce', () => {
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should reduce with index without seed', (done: MochaDone) => {
+    const idx = [1, 2, 3, 4, 5];
+
+    Observable.range(0, 6).reduce((acc, value, index) => {
+      expect(idx.shift()).to.equal(index);
+      return value;
+    }).subscribe(null, null, () => {
+      expect(idx).to.be.empty;
+      done();
+    });
+  });
+
+  it('should reduce with index with seed', (done: MochaDone) => {
+    const idx = [0, 1, 2, 3, 4, 5];
+
+    Observable.range(0, 6).reduce((acc, value, index) => {
+      expect(idx.shift()).to.equal(index);
+      return value;
+    }, -1).subscribe(null, null, () => {
+      expect(idx).to.be.empty;
+      done();
+    });
   });
 
   it('should reduce with seed if source is empty', () => {

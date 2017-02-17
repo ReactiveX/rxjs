@@ -1,4 +1,5 @@
 import { isArray } from '../util/isArray';
+import { isArrayLike } from '../util/isArrayLike';
 import { isPromise } from '../util/isPromise';
 import { PromiseObservable } from './PromiseObservable';
 import { IteratorObservable } from'./IteratorObservable';
@@ -11,8 +12,6 @@ import { Observable, ObservableInput } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { ObserveOnSubscriber } from '../operator/observeOn';
 import { $$observable } from '../symbol/observable';
-
-const isArrayLike = (<T>(x: any): x is ArrayLike<T> => x && typeof x.length === 'number');
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -59,7 +58,7 @@ export class FromObservable<T> extends Observable<T> {
    *     i = 2 * i; // double it
    *   }
    * }
-   *  
+   *
    * var iterator = generateDoubles(3);
    * var result = Rx.Observable.from(iterator).take(10);
    * result.subscribe(x => console.log(x));
@@ -71,7 +70,7 @@ export class FromObservable<T> extends Observable<T> {
    * @see {@link fromEvent}
    * @see {@link fromEventPattern}
    * @see {@link fromPromise}
-   *  
+   *
    * @param {ObservableInput<T>} ish A subscribable object, a Promise, an
    * Observable-like, an Array, an iterable or an array-like object to be
    * converted.

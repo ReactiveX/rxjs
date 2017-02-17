@@ -11,7 +11,7 @@ import { ReduceOperator } from './reduce';
  * Rx.Observable.of(5, 4, 7, 2, 8)
  *   .min()
  *   .subscribe(x => console.log(x)); // -> 2
- * 
+ *
  * @example <caption>Use a comparer function to get the minimal item</caption>
  * interface Person {
  *   age: number,
@@ -23,11 +23,12 @@ import { ReduceOperator } from './reduce';
  *           .min<Person>( (a: Person, b: Person) => a.age < b.age ? -1 : 1)
  *           .subscribe((x: Person) => console.log(x.name)); // -> 'Bar'
  * }
- * 
+ *
  * @see {@link max}
- * 
- * @param {Function} optional comparer function that it will use instead of its default to compare the value of two items.
- * @return {Observable<R>} an Observable that emits item with the smallest value.
+ *
+ * @param {Function} [comparer] - Optional comparer function that it will use instead of its default to compare the
+ * value of two items.
+ * @return {Observable<R>} An Observable that emits item with the smallest value.
  * @method min
  * @owner Observable
  */

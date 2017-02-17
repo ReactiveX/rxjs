@@ -24,7 +24,7 @@ export function zipProto<T, T2, T3, T4, T5, T6>(this: Observable<T>, v2: Observa
 export function zipProto<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<T> | ((...values: Array<T>) => R)>): Observable<R>;
 export function zipProto<T, R>(this: Observable<T>, array: Array<ObservableInput<T>>): Observable<R>;
 export function zipProto<T, TOther, R>(this: Observable<T>, array: Array<ObservableInput<TOther>>, project: (v1: T, ...values: Array<TOther>) => R): Observable<R>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * @param observables
@@ -61,10 +61,10 @@ export function zipStatic<R>(...observables: Array<ObservableInput<any> | ((...v
 /* tslint:enable:max-line-length */
 
 /**
- * Combines multiple Observables to create an Observable whose values are calculated from the values, in order, of each 
+ * Combines multiple Observables to create an Observable whose values are calculated from the values, in order, of each
  * of its input Observables.
  *
- * If the latest parameter is a function, this function is used to compute the created value from the input values. 
+ * If the latest parameter is a function, this function is used to compute the created value from the input values.
  * Otherwise, an array of the input values is returned.
  *
  * @example <caption>Combine age and name from different sources</caption>
