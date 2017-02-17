@@ -120,9 +120,20 @@ npm install @reactivex/rxjs@5.0.0
 
 ### CDN
 
-For CDN, you can use [unpkg](https://unpkg.com/):
-  
+For CDN, you can use [unpkg](https://unpkg.com/) to retrieve the single-file UMD
+bundle:
+
 https://unpkg.com/rxjs/bundles/Rx.min.js
+
+Alternatively, the following package publishes a single-file System bundle for
+easy consumption via Plunkr. This bundle makes it possible to consume the
+various sub-modules with a single network request:
+
+https://www.npmjs.com/package/rxjs-system-bundle
+
+And is also available via unpkg:
+
+https://unpkg.com/rxjs-system-bundle@5.1.1/Rx.system.min.js
 
 #### Node.js Usage:
 
