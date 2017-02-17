@@ -74,7 +74,7 @@ export class BoundCallbackObservable<T> extends Observable<T> {
    *
    * @param {function} func Function with a callback as the last parameter.
    * @param {function} [selector] A function which takes the arguments from the
-   * callback and maps those a value to emit on the output Observable.
+   * callback and maps those to a value to emit on the output Observable.
    * @param {Scheduler} [scheduler] The scheduler on which to schedule the
    * callbacks.
    * @return {function(...params: *): Observable} A function which returns the
