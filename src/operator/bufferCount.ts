@@ -128,12 +128,12 @@ class BufferSkipCountSubscriber<T> extends Subscriber<T> {
   }
 
   protected _complete(): void {
-    const buffers = this.buffers;
+    const { buffers, destination } = this;
 
     while (buffers.length > 0) {
       let buffer = buffers.shift();
       if (buffer.length > 0) {
-        this.destination.next(buffer);
+        destination.next(buffer);
       }
     }
     super._complete();
