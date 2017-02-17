@@ -32,7 +32,7 @@ Rx.Observable.fromEvent(button, 'click')
 
 
 ### Purity
-What makes RxJS powerful is its ability to produce values using pure functions. That means your code is less prone for errors.
+What makes RxJS powerful is its ability to produce values using pure functions. That means your code is less prone to errors.
 
 Normally you would create an impure function, where other
 pieces of your code can mess up your state.
