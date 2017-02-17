@@ -80,11 +80,11 @@ export function zipStatic<R>(...observables: Array<ObservableInput<any> | ((...v
  *          (age: number, name: string, isDev: boolean) => ({ age, name, isDev }))
  *     .subscribe(x => console.log(x));
  *
- * // outputs 
+ * // outputs
  * // { age: 27, name: 'Foo', isDev: true }
  * // { age: 25, name: 'Bar', isDev: true }
  * // { age: 29, name: 'Beer', isDev: false }
- * 
+ *
  * @param observables
  * @return {Observable<R>}
  * @static true
