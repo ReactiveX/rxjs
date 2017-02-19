@@ -5,11 +5,11 @@
  * we need these bogus classes, which are not stripped away. This file on the
  * other hand, is not included in the release bundle.
  */
-import { Subscriber } from './Subscriber';
 import { TeardownLogic } from './Subscription';
 import { Observable } from './Observable';
 import './scheduler/MiscJSDoc';
 import './observable/dom/MiscJSDoc';
+import { Observer } from './Observer';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -18,53 +18,126 @@ import './observable/dom/MiscJSDoc';
  */
 export class ObservableDoc {
   /**
-   * Creates a new Observable that will execute the specified function when a
-   * {@link Subscriber} subscribes to it.
+   * Creates a new Observable, that will execute the specified function when an
+   * {@link Observer} subscribes to it.
    *
-   * <span class="informal">Creates an Observable with custom logic given in
-   * the `subscribe` function.</span>
+   * <span class="informal">Create custom Observable, that does whatever you like.</span>
    *
    * <img src="./img/create.png" width="100%">
    *
-   * `create` converts a `subscribe` function to an actual Observable. This is
-   * equivalent to calling the Observable constructor. Write the `subscribe`
-   * function so that it behaves as an Observable: It should invoke the
-   * Subscriber's `next`, `error`, and `complete` methods following the
-   * *Observable Contract*. A well-formed Observable must invoke either the
-   * Subscriber's `complete` method exactly once or its `error` method exactly
-   * once, and invoke nothing else thereafter.
+   * `create` converts an `onSubscription` function to an actual Observable.
+   * Whenever someone subscribes to that Observable, the function will be called
+   * with an {@link Observer} instance as a first and only parameter. `onSubscription` should
+   * then invoke the Observers `next`, `error` and `complete` methods.
    *
-   * Most of the times you should not need to use `create` because existing
-   * creation operators (together with instance combination operators) allow you
-   * to create an Observable for most of the use cases. However, `create` is
-   * low-level and is able to create any Observable.
+   * Calling `next` with a value will emit that value to the observer. Calling `complete`
+   * means that Observable finished emitting and will not do anything else.
+   * Calling `error` means that something went wrong - value passed to `error` method should
+   * provide details on what exactly happened.
    *
-   * @example <caption>Emit three random numbers, then complete.</caption>
-   * var result = Rx.Observable.create(function (subscriber) {
-   *   subscriber.next(Math.random());
-   *   subscriber.next(Math.random());
-   *   subscriber.next(Math.random());
-   *   subscriber.complete();
+   * A well-formed Observable can emit as many values as it needs via `next` method,
+   * but `complete` and `error` methods can be called only once and nothing else can be called
+   * thereafter. If you try to invoke `next`, `complete` or `error` methods after created
+   * Observable already completed or ended with an error, these calls will be ignored to
+   * preserve so called *Observable Contract*. Note that you are not required to call
+   * `complete` at any point - it is perfectly fine to create an Observable that never ends,
+   * depending on your needs.
+   *
+   * `onSubscription` can optionally return either a function or an object with
+   * `unsubscribe` method. In both cases function or method will be called when
+   * subscription to Observable is being cancelled and should be used to clean up all
+   * resources. So, for example, if you are using `setTimeout` in your custom
+   * Observable, when someone unsubscribes, you can clear planned timeout, so that
+   * it does not fire needlessly and browser (or other environment) does not waste
+   * computing power on timing event that no one will listen to anyways.
+   *
+   * Most of the times you should not need to use `create`, because existing
+   * operators allow you to create an Observable for most of the use cases.
+   * That being said, `create` is low-level mechanism allowing you to create
+   * any Observable, if you have very specific needs.
+   *
+   * **TypeScript signature issue**
+   *
+   * Because Observable extends class which already has defined static `create` function,
+   * but with different type signature, it was impossible to assign proper signature to
+   * `Observable.create`. Because of that, it has very general type `Function` and thus
+   * function passed to `create` will not be type checked, unless you explicitly state
+   * what signature it should have.
+   *
+   * When using TypeScript we recommend to declare type signature of function passed to
+   * `create` as `(observer: Observer) => TeardownLogic`, where {@link Observer}
+   * and {@link TeardownLogic} are interfaces provided by the library.
+   *
+   * @example <caption>Emit three numbers, then complete.</caption>
+   * var observable = Rx.Observable.create(function (observer) {
+   *   observer.next(1);
+   *   observer.next(2);
+   *   observer.next(3);
+   *   observer.complete();
    * });
-   * result.subscribe(x => console.log(x));
+   * observable.subscribe(
+   *   value => console.log(value),
+   *   err => {},
+   *   () => console.log('this is the end')
+   * );
+   *
+   * // Logs
+   * // 1
+   * // 2
+   * // 3
+   * // "this is the end"
+   *
+   *
+   * @example <caption>Emit an error</caption>
+   * const observable = Rx.Observable.create((observer) => {
+   *   observer.error('something went really wrong...');
+   * });
+   *
+   * observable.subscribe(
+   *   value => console.log(value), // will never be called
+   *   err => console.log(err),
+   *   () => console.log('complete') // will never be called
+   * );
+   *
+   * // Logs
+   * // "something went really wrong..."
+   *
+   *
+   * @example <caption>Return unsubscribe function</caption>
+   *
+   * const observable = Rx.Observable.create(observer => {
+   *   const id = setTimeout(() => observer.next('...'), 5000); // emit value after 5s
+   *
+   *   return () => { clearTimeout(id); console.log('cleared!'); };
+   * });
+   *
+   * const subscription = observable.subscribe(value => console.log(value));
+   *
+   * setTimeout(() => subscription.unsubscribe(), 3000); // cancel subscription after 3s
+   *
+   * // Logs:
+   * // "cleared!" after 3s
+   *
+   * // Never logs "..."
+   *
    *
    * @see {@link empty}
    * @see {@link never}
    * @see {@link of}
    * @see {@link throw}
    *
-   * @param {function(subscriber: Subscriber): TeardownLogic} [subscribe] A
-   * function that accepts a {@link Subscriber}, and invokes its `next`,
-   * `error`, and `complete` methods as appropriate, and should return some
-   * logic for tear down, either as a {@link Subscription} or as a function.
-   * @return {Observable} An Observable that, when subscribed, will execute the
+   * @param {function(observer: Observer): TeardownLogic} onSubscription A
+   * function that accepts an Observer, and invokes its `next`,
+   * `error`, and `complete` methods as appropriate, and optionally returns some
+   * logic for cleaning up resources.
+   * @return {Observable} An Observable that, whenever subscribed, will execute the
    * specified function.
    * @static true
    * @name create
    * @owner Observable
    */
-  static create<T>(subscribe?: <R>(subscriber: Subscriber<R>) => TeardownLogic): Observable<T> {
-    return new Observable<T>(subscribe);
+  static create<T>(onSubscription: <R>(observer: Observer<R>) => TeardownLogic): Observable<T> {
+    return new Observable<T>(onSubscription);
   };
 }
 
@@ -344,5 +417,36 @@ export class SubscribableOrPromiseDoc<T> {
  * @noimport true
  */
 export class ObservableInputDoc<T> {
+
+}
+
+/**
+ *
+ * This interface describes what should be returned by function passed to Observable
+ * constructor or static {@link create} function. Value of that interface will be used
+ * to cancel subscription for given Observable.
+ *
+ * `TeardownLogic` can be:
+ *
+ * ## Function
+ *
+ * Function that takes no parameters. When consumer of created Observable calls `unsubscribe`,
+ * that function will be called
+ *
+ * ## AnonymousSubscription
+ *
+ * `AnonymousSubscription` is simply an object with `unsubscribe` method on it. That method
+ * will work the same as function
+ *
+ * ## void
+ *
+ * If created Observable does not have any resources to clean up, function does not have to
+ * return anything.
+ *
+ * @interface
+ * @name TeardownLogic
+ * @noimport true
+ */
+export class TeardownLogicDoc {
 
 }
