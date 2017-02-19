@@ -109,12 +109,9 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
   }
 
   private openWindow(): void  {
-    const prevWindow = this.window;
-    if (prevWindow) {
-      prevWindow.complete();
-    }
-    const destination = this.destination;
+    this.window.complete();
+
     const newWindow = this.window = new Subject<T>();
-    destination.next(newWindow);
+    this.destination.next(newWindow);
   }
 }
