@@ -3,7 +3,7 @@ import * as Rx from '../../dist/cjs/Rx';
 import {lowerCaseO} from '../helpers/test-helper';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
-declare const {type};
+declare const {type, asDiagram};
 declare const hot: typeof marbleTestingSignature.hot;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
@@ -12,6 +12,17 @@ const Observable = Rx.Observable;
 
 /** @test {forkJoin} */
 describe('Observable.forkJoin', () => {
+  asDiagram('forkJoin')
+    ('should join the last values of the provided observables into an array', () => {
+      const e1 = Observable.forkJoin(
+                   hot('---a---b---c---d---|'),
+                   hot('-1---2---3---|')
+      );
+      const expected = '-------------------(x|)';
+
+      expectObservable(e1).toBe(expected, {x: ['d', '3']});
+    });
+
   it('should join the last values of the provided observables into an array', () => {
     const e1 = Observable.forkJoin(
                hot('--a--b--c--d--|'),
