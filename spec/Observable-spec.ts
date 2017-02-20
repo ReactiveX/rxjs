@@ -193,51 +193,28 @@ describe('Observable', () => {
       source.subscribe();
     });
 
-    it('should work when subscribe is called with no arguments and other subscription with no arguments completes', (done: MochaDone) => {
-      let nextCalled = false;
-      const source = new Observable((subscriber: Rx.Subscriber<string>) => {
-        const id = setTimeout(() => {
-          subscriber.next('foo');
-          subscriber.complete();
-          nextCalled = true;
-        }, 1);
+    it('should not be unsubscribed when other empty subscription completes', () => {
+      let unsubscribeCalled = false;
+      const source = new Observable(() => {
         return () => {
-          clearTimeout(id);
+          unsubscribeCalled = true;
         };
       });
 
       source.subscribe();
 
+      expect(unsubscribeCalled).to.be.false;
+
       Observable.empty().subscribe();
 
-      setTimeout(() => {
-        let err;
-        let errHappened = false;
-        try {
-          expect(nextCalled).to.be.true;
-        } catch (e) {
-          err = e;
-          errHappened = true;
-        } finally {
-          if (!errHappened) {
-            done();
-          } else {
-            done(err);
-          }
-        }
-      }, 100);
+      expect(unsubscribeCalled).to.be.false;
     });
 
-    it('should work when subscribe is called with observer and other subscription with same observer instance completes', (done: MochaDone) => {
-      let nextCalled = false;
-      const source = new Observable((subscriber: Rx.Subscriber<string>) => {
-        const id = setTimeout(() => {
-          subscriber.next('foo');
-          subscriber.complete();
-          nextCalled = true;
-        }, 1);
+    it('should not be unsubscribed when other subscription with same observer completes', () => {
+      let unsubscribeCalled = false;
+      const source = new Observable(() => {
         return () => {
-          clearTimeout(id);
+          unsubscribeCalled = true;
         };
       });
 
@@ -247,24 +224,11 @@ describe('Observable', () => {
 
       source.subscribe(observer);
 
+      expect(unsubscribeCalled).to.be.false;
+
       Observable.empty().subscribe(observer);
 
-      setTimeout(() => {
-        let err;
-        let errHappened = false;
-        try {
-          expect(nextCalled).to.be.true;
-        } catch (e) {
-          err = e;
-          errHappened = true;
-        } finally {
-          if (!errHappened) {
-            done();
-          } else {
-            done(err);
-          }
-        }
-      }, 100);
+      expect(unsubscribeCalled).to.be.false;
     });
 
     it('should run unsubscription logic when an error is sent synchronously and subscribe is called with no arguments', () => {
