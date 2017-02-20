@@ -60,9 +60,9 @@ export function combineLatest<T, TOther, R>(this: Observable<T>, array: Observab
  *
  * @param {ObservableInput} other An input Observable to combine with the source
  * Observable. More than one input Observables may be given as argument.
- * @param {function} [project] An optional function to project the values from
+ * @param {function(...values: T[]): R} [project] An optional function to project the values from
  * the combined latest values into a new value on the output Observable.
- * @return {Observable} An Observable of projected values from the most recent
+ * @return {Observable<R>} An Observable of projected values from the most recent
  * values from each input Observable, or an array of the most recent values from
  * each input Observable.
  * @method combineLatest

@@ -14,10 +14,10 @@ import { TeardownLogic } from '../Subscription';
  *
  * @throws {EmptyError} Delivers an EmptyError to the Observer's `error`
  * callback if the Observable completes before any `next` notification was sent.
- * @param {Function} predicate - A predicate function to evaluate items emitted by the source Observable.
+ * @param {function(value: T, index: number, source: Observable<T>): boolean} [predicate] - A predicate function to
+ * evaluate items emitted by the source Observable.
  * @return {Observable<T>} An Observable that emits the single item emitted by the source Observable that matches
  * the predicate.
- .
  * @method single
  * @owner Observable
  */

@@ -50,9 +50,9 @@ import { errorObject } from '../util/errorObject';
  * @see {@link zip}
  * @see {@link withLatestFrom}
  *
- * @param {Observable} compareTo The observable sequence to compare the source sequence to.
- * @param {function} [comparor] An optional function to compare each value pair
- * @return {Observable} An Observable of a single boolean value representing whether or not
+ * @param {Observable<T>} compareTo The observable sequence to compare the source sequence to.
+ * @param {function(a: T, b: T): boolean} [comparor] An optional function to compare each value pair
+ * @return {Observable<boolean>} An Observable of a single boolean value representing whether or not
  * the values emitted by both observables were equal in sequence.
  * @method sequenceEqual
  * @owner Observable

@@ -33,7 +33,7 @@ import { Observable } from '../Observable';
  * @see {@link combineLatest}
  * @see {@link mergeAll}
  *
- * @param {function} [project] An optional function to map the most recent
+ * @param {function(...values: T[]): R} [project] An optional function to map the most recent
  * values from each inner Observable into a new result. Takes each of the most
  * recent values from each collected inner Observable as arguments, in order.
  * @return {Observable} An Observable of projected results or arrays of recent

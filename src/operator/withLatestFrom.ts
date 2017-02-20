@@ -49,7 +49,7 @@ export function withLatestFrom<T, R>(this: Observable<T>, array: ObservableInput
  *
  * @param {ObservableInput} other An input Observable to combine with the source
  * Observable. More than one input Observables may be given as argument.
- * @param {Function} [project] Projection function for combining values
+ * @param {function(...values: T[]): R} [project] Projection function for combining values
  * together. Receives all values in order of the Observables passed, where the
  * first parameter is a value from the source Observable. (e.g.
  * `a.withLatestFrom(b, c, (a1, b1, c1) => a1 + b1 + c1)`). If this is not

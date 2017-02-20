@@ -26,9 +26,9 @@ import { ReduceOperator } from './reduce';
  *
  * @see {@link min}
  *
- * @param {Function} [comparer] - Optional comparer function that it will use instead of its default to compare the
+ * @param {function(x: T, y: T): number} [comparer] - Optional comparer function that it will use instead of its default to compare the
  * value of two items.
- * @return {Observable} An Observable that emits item with the largest value.
+ * @return {Observable<T>} An Observable that emits item with the largest value.
  * @method max
  * @owner Observable
  */
