@@ -94,10 +94,10 @@
       "trailingComments": [
         {
           "type": "Block",
-          "value": " tslint:disable:max-line-length ",
+          "value": " tslint:enable:max-line-length ",
           "range": [
             63,
-            99
+            98
           ],
           "loc": {
             "start": {
@@ -106,16 +106,16 @@
             },
             "end": {
               "line": 2,
-              "column": 36
+              "column": 35
             }
           }
         },
         {
           "type": "Block",
-          "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n *\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n *\n * If a comparator function is not provided, an equality check is used by default.\n *\n * @example <caption>An example comparing the name of persons</caption>\n *\n *  interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo'},\n *     { age: 6, name: 'Foo'})\n *     .distinctUntilKeyChanged('name')\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo' }\n *\n * @example <caption>An example comparing the first letters of the name</caption>\n *\n * interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo1'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo2'},\n *     { age: 6, name: 'Foo3'})\n *     .distinctUntilKeyChanged('name', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3))\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo1' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo2' }\n *\n * @see {@link distinct}\n * @see {@link distinctUntilChanged}\n *\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
+          "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n *\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n *\n * If a comparator function is not provided, an equality check is used by default.\n *\n * @example <caption>An example comparing the name of persons</caption>\n *\n *  interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo'},\n *     { age: 6, name: 'Foo'})\n *     .distinctUntilKeyChanged('name')\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo' }\n *\n * @example <caption>An example comparing the first letters of the name</caption>\n *\n * interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo1'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo2'},\n *     { age: 6, name: 'Foo3'})\n *     .distinctUntilKeyChanged('name', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3))\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo1' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo2' }\n *\n * @see {@link distinct}\n * @see {@link distinctUntilChanged}\n *\n * @param {string} key String key for object property lookup on each item.\n * @param {function} [compare] Optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} An Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
           "range": [
-            100,
-            2086
+            99,
+            2085
           ],
           "loc": {
             "start": {
@@ -138,8 +138,8 @@
           "type": "Identifier",
           "name": "distinctUntilKeyChanged",
           "range": [
-            2103,
-            2126
+            2102,
+            2125
           ],
           "loc": {
             "start": {
@@ -157,8 +157,8 @@
             "type": "Identifier",
             "name": "key",
             "range": [
-              2127,
-              2130
+              2126,
+              2129
             ],
             "loc": {
               "start": {
@@ -175,8 +175,8 @@
             "type": "Identifier",
             "name": "compare",
             "range": [
-              2132,
-              2139
+              2131,
+              2138
             ],
             "loc": {
               "start": {
@@ -204,8 +204,8 @@
                     "type": "Identifier",
                     "name": "distinctUntilChanged",
                     "range": [
-                      2154,
-                      2174
+                      2153,
+                      2173
                     ],
                     "loc": {
                       "start": {
@@ -222,8 +222,8 @@
                     "type": "Identifier",
                     "name": "call",
                     "range": [
-                      2175,
-                      2179
+                      2174,
+                      2178
                     ],
                     "loc": {
                       "start": {
@@ -237,8 +237,8 @@
                     }
                   },
                   "range": [
-                    2154,
-                    2179
+                    2153,
+                    2178
                   ],
                   "loc": {
                     "start": {
@@ -255,8 +255,8 @@
                   {
                     "type": "ThisExpression",
                     "range": [
-                      2180,
-                      2184
+                      2179,
+                      2183
                     ],
                     "loc": {
                       "start": {
@@ -277,8 +277,8 @@
                         "type": "Identifier",
                         "name": "x",
                         "range": [
-                          2196,
-                          2197
+                          2195,
+                          2196
                         ],
                         "loc": {
                           "start": {
@@ -295,8 +295,8 @@
                         "type": "Identifier",
                         "name": "y",
                         "range": [
-                          2199,
-                          2200
+                          2198,
+                          2199
                         ],
                         "loc": {
                           "start": {
@@ -319,8 +319,8 @@
                             "type": "Identifier",
                             "name": "compare",
                             "range": [
-                              2216,
-                              2223
+                              2215,
+                              2222
                             ],
                             "loc": {
                               "start": {
@@ -344,8 +344,8 @@
                                     "type": "Identifier",
                                     "name": "compare",
                                     "range": [
-                                      2246,
-                                      2253
+                                      2245,
+                                      2252
                                     ],
                                     "loc": {
                                       "start": {
@@ -366,8 +366,8 @@
                                         "type": "Identifier",
                                         "name": "x",
                                         "range": [
-                                          2254,
-                                          2255
+                                          2253,
+                                          2254
                                         ],
                                         "loc": {
                                           "start": {
@@ -384,8 +384,8 @@
                                         "type": "Identifier",
                                         "name": "key",
                                         "range": [
-                                          2256,
-                                          2259
+                                          2255,
+                                          2258
                                         ],
                                         "loc": {
                                           "start": {
@@ -399,8 +399,8 @@
                                         }
                                       },
                                       "range": [
-                                        2254,
-                                        2260
+                                        2253,
+                                        2259
                                       ],
                                       "loc": {
                                         "start": {
@@ -420,8 +420,8 @@
                                         "type": "Identifier",
                                         "name": "y",
                                         "range": [
-                                          2262,
-                                          2263
+                                          2261,
+                                          2262
                                         ],
                                         "loc": {
                                           "start": {
@@ -438,8 +438,8 @@
                                         "type": "Identifier",
                                         "name": "key",
                                         "range": [
-                                          2264,
-                                          2267
+                                          2263,
+                                          2266
                                         ],
                                         "loc": {
                                           "start": {
@@ -453,8 +453,8 @@
                                         }
                                       },
                                       "range": [
-                                        2262,
-                                        2268
+                                        2261,
+                                        2267
                                       ],
                                       "loc": {
                                         "start": {
@@ -469,8 +469,8 @@
                                     }
                                   ],
                                   "range": [
-                                    2246,
-                                    2269
+                                    2245,
+                                    2268
                                   ],
                                   "loc": {
                                     "start": {
@@ -484,8 +484,8 @@
                                   }
                                 },
                                 "range": [
-                                  2239,
-                                  2270
+                                  2238,
+                                  2269
                                 ],
                                 "loc": {
                                   "start": {
@@ -500,8 +500,8 @@
                               }
                             ],
                             "range": [
-                              2225,
-                              2280
+                              2224,
+                              2279
                             ],
                             "loc": {
                               "start": {
@@ -516,8 +516,8 @@
                           },
                           "alternate": null,
                           "range": [
-                            2212,
-                            2280
+                            2211,
+                            2279
                           ],
                           "loc": {
                             "start": {
@@ -542,8 +542,8 @@
                                 "type": "Identifier",
                                 "name": "x",
                                 "range": [
-                                  2296,
-                                  2297
+                                  2295,
+                                  2296
                                 ],
                                 "loc": {
                                   "start": {
@@ -560,8 +560,8 @@
                                 "type": "Identifier",
                                 "name": "key",
                                 "range": [
-                                  2298,
-                                  2301
+                                  2297,
+                                  2300
                                 ],
                                 "loc": {
                                   "start": {
@@ -575,8 +575,8 @@
                                 }
                               },
                               "range": [
-                                2296,
-                                2302
+                                2295,
+                                2301
                               ],
                               "loc": {
                                 "start": {
@@ -596,8 +596,8 @@
                                 "type": "Identifier",
                                 "name": "y",
                                 "range": [
-                                  2307,
-                                  2308
+                                  2306,
+                                  2307
                                 ],
                                 "loc": {
                                   "start": {
@@ -614,8 +614,8 @@
                                 "type": "Identifier",
                                 "name": "key",
                                 "range": [
-                                  2309,
-                                  2312
+                                  2308,
+                                  2311
                                 ],
                                 "loc": {
                                   "start": {
@@ -629,8 +629,8 @@
                                 }
                               },
                               "range": [
-                                2307,
-                                2313
+                                2306,
+                                2312
                               ],
                               "loc": {
                                 "start": {
@@ -644,8 +644,8 @@
                               }
                             },
                             "range": [
-                              2296,
-                              2313
+                              2295,
+                              2312
                             ],
                             "loc": {
                               "start": {
@@ -659,8 +659,8 @@
                             }
                           },
                           "range": [
-                            2289,
-                            2314
+                            2288,
+                            2313
                           ],
                           "loc": {
                             "start": {
@@ -675,8 +675,8 @@
                         }
                       ],
                       "range": [
-                        2202,
-                        2320
+                        2201,
+                        2319
                       ],
                       "loc": {
                         "start": {
@@ -692,8 +692,8 @@
                     "generator": false,
                     "expression": false,
                     "range": [
-                      2186,
-                      2320
+                      2185,
+                      2319
                     ],
                     "loc": {
                       "start": {
@@ -708,8 +708,8 @@
                   }
                 ],
                 "range": [
-                  2154,
-                  2321
+                  2153,
+                  2320
                 ],
                 "loc": {
                   "start": {
@@ -723,8 +723,8 @@
                 }
               },
               "range": [
-                2147,
-                2322
+                2146,
+                2321
               ],
               "loc": {
                 "start": {
@@ -739,8 +739,8 @@
             }
           ],
           "range": [
-            2141,
-            2324
+            2140,
+            2323
           ],
           "loc": {
             "start": {
@@ -756,8 +756,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          2094,
-          2324
+          2093,
+          2323
         ],
         "loc": {
           "start": {
@@ -772,10 +772,10 @@
         "leadingComments": [
           {
             "type": "Block",
-            "value": " tslint:disable:max-line-length ",
+            "value": " tslint:enable:max-line-length ",
             "range": [
               63,
-              99
+              98
             ],
             "loc": {
               "start": {
@@ -784,16 +784,16 @@
               },
               "end": {
                 "line": 2,
-                "column": 36
+                "column": 35
               }
             }
           },
           {
             "type": "Block",
-            "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n *\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n *\n * If a comparator function is not provided, an equality check is used by default.\n *\n * @example <caption>An example comparing the name of persons</caption>\n *\n *  interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo'},\n *     { age: 6, name: 'Foo'})\n *     .distinctUntilKeyChanged('name')\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo' }\n *\n * @example <caption>An example comparing the first letters of the name</caption>\n *\n * interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo1'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo2'},\n *     { age: 6, name: 'Foo3'})\n *     .distinctUntilKeyChanged('name', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3))\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo1' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo2' }\n *\n * @see {@link distinct}\n * @see {@link distinctUntilChanged}\n *\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
+            "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n *\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n *\n * If a comparator function is not provided, an equality check is used by default.\n *\n * @example <caption>An example comparing the name of persons</caption>\n *\n *  interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo'},\n *     { age: 6, name: 'Foo'})\n *     .distinctUntilKeyChanged('name')\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo' }\n *\n * @example <caption>An example comparing the first letters of the name</caption>\n *\n * interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo1'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo2'},\n *     { age: 6, name: 'Foo3'})\n *     .distinctUntilKeyChanged('name', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3))\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo1' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo2' }\n *\n * @see {@link distinct}\n * @see {@link distinctUntilChanged}\n *\n * @param {string} key String key for object property lookup on each item.\n * @param {function} [compare] Optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} An Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
             "range": [
-              100,
-              2086
+              99,
+              2085
             ],
             "loc": {
               "start": {
@@ -812,8 +812,8 @@
             "type": "Line",
             "value": "# sourceMappingURL=distinctUntilKeyChanged.js.map",
             "range": [
-              2325,
-              2376
+              2324,
+              2375
             ],
             "loc": {
               "start": {
@@ -831,8 +831,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        2087,
-        2324
+        2086,
+        2323
       ],
       "loc": {
         "start": {
@@ -847,10 +847,10 @@
       "leadingComments": [
         {
           "type": "Block",
-          "value": " tslint:disable:max-line-length ",
+          "value": " tslint:enable:max-line-length ",
           "range": [
             63,
-            99
+            98
           ],
           "loc": {
             "start": {
@@ -859,16 +859,16 @@
             },
             "end": {
               "line": 2,
-              "column": 36
+              "column": 35
             }
           }
         },
         {
           "type": "Block",
-          "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n *\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n *\n * If a comparator function is not provided, an equality check is used by default.\n *\n * @example <caption>An example comparing the name of persons</caption>\n *\n *  interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo'},\n *     { age: 6, name: 'Foo'})\n *     .distinctUntilKeyChanged('name')\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo' }\n *\n * @example <caption>An example comparing the first letters of the name</caption>\n *\n * interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo1'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo2'},\n *     { age: 6, name: 'Foo3'})\n *     .distinctUntilKeyChanged('name', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3))\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo1' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo2' }\n *\n * @see {@link distinct}\n * @see {@link distinctUntilChanged}\n *\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
+          "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n *\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n *\n * If a comparator function is not provided, an equality check is used by default.\n *\n * @example <caption>An example comparing the name of persons</caption>\n *\n *  interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo'},\n *     { age: 6, name: 'Foo'})\n *     .distinctUntilKeyChanged('name')\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo' }\n *\n * @example <caption>An example comparing the first letters of the name</caption>\n *\n * interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo1'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo2'},\n *     { age: 6, name: 'Foo3'})\n *     .distinctUntilKeyChanged('name', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3))\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo1' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo2' }\n *\n * @see {@link distinct}\n * @see {@link distinctUntilChanged}\n *\n * @param {string} key String key for object property lookup on each item.\n * @param {function} [compare] Optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} An Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
           "range": [
-            100,
-            2086
+            99,
+            2085
           ],
           "loc": {
             "start": {
@@ -887,8 +887,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=distinctUntilKeyChanged.js.map",
           "range": [
-            2325,
-            2376
+            2324,
+            2375
           ],
           "loc": {
             "start": {
@@ -907,7 +907,7 @@
   "sourceType": "module",
   "range": [
     0,
-    2324
+    2323
   ],
   "loc": {
     "start": {
@@ -922,10 +922,10 @@
   "comments": [
     {
       "type": "Block",
-      "value": " tslint:disable:max-line-length ",
+      "value": " tslint:enable:max-line-length ",
       "range": [
         63,
-        99
+        98
       ],
       "loc": {
         "start": {
@@ -934,16 +934,16 @@
         },
         "end": {
           "line": 2,
-          "column": 36
+          "column": 35
         }
       }
     },
     {
       "type": "Block",
-      "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n *\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n *\n * If a comparator function is not provided, an equality check is used by default.\n *\n * @example <caption>An example comparing the name of persons</caption>\n *\n *  interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo'},\n *     { age: 6, name: 'Foo'})\n *     .distinctUntilKeyChanged('name')\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo' }\n *\n * @example <caption>An example comparing the first letters of the name</caption>\n *\n * interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo1'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo2'},\n *     { age: 6, name: 'Foo3'})\n *     .distinctUntilKeyChanged('name', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3))\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo1' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo2' }\n *\n * @see {@link distinct}\n * @see {@link distinctUntilChanged}\n *\n * @param {string} key string key for object property lookup on each item.\n * @param {function} [compare] optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} an Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
+      "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n *\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n *\n * If a comparator function is not provided, an equality check is used by default.\n *\n * @example <caption>An example comparing the name of persons</caption>\n *\n *  interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo'},\n *     { age: 6, name: 'Foo'})\n *     .distinctUntilKeyChanged('name')\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo' }\n *\n * @example <caption>An example comparing the first letters of the name</caption>\n *\n * interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo1'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo2'},\n *     { age: 6, name: 'Foo3'})\n *     .distinctUntilKeyChanged('name', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3))\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo1' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo2' }\n *\n * @see {@link distinct}\n * @see {@link distinctUntilChanged}\n *\n * @param {string} key String key for object property lookup on each item.\n * @param {function} [compare] Optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} An Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
       "range": [
-        100,
-        2086
+        99,
+        2085
       ],
       "loc": {
         "start": {
@@ -960,8 +960,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=distinctUntilKeyChanged.js.map",
       "range": [
-        2325,
-        2376
+        2324,
+        2375
       ],
       "loc": {
         "start": {

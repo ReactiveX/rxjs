@@ -94,10 +94,10 @@
       "trailingComments": [
         {
           "type": "Block",
-          "value": " tslint:disable:max-line-length ",
+          "value": " tslint:enable:max-line-length ",
           "range": [
             47,
-            83
+            82
           ],
           "loc": {
             "start": {
@@ -106,7 +106,7 @@
             },
             "end": {
               "line": 2,
-              "column": 36
+              "column": 35
             }
           }
         },
@@ -114,8 +114,8 @@
           "type": "Block",
           "value": "*\n * Converts a higher-order Observable into a first-order Observable by\n * concatenating the inner Observables in order.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables by putting one\n * inner Observable after the other.</span>\n *\n * <img src=\"./img/concatAll.png\" width=\"100%\">\n *\n * Joins every Observable emitted by the source (a higher-order Observable), in\n * a serial fashion. It subscribes to each inner Observable only after the\n * previous inner Observable has completed, and merges all of their values into\n * the returned observable.\n *\n * __Warning:__ If the source Observable emits Observables quickly and\n * endlessly, and the inner Observables it emits generally complete slower than\n * the source emits, you can run into memory issues as the incoming Observables\n * collect in an unbounded buffer.\n *\n * Note: `concatAll` is equivalent to `mergeAll` with concurrency parameter set\n * to `1`.\n *\n * @example <caption>For each click event, tick every second from 0 to 3, with no concurrency</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map(ev => Rx.Observable.interval(1000).take(4));\n * var firstOrder = higherOrder.concatAll();\n * firstOrder.subscribe(x => console.log(x));\n *\n * // Results in the following:\n * // (results are not concurrent)\n * // For every click on the \"document\" it will emit values 0 to 3 spaced\n * // on a 1000ms interval\n * // one click = 1000ms-> 0 -1000ms-> 1 -1000ms-> 2 -1000ms-> 3\n *\n * @see {@link combineAll}\n * @see {@link concat}\n * @see {@link concatMap}\n * @see {@link concatMapTo}\n * @see {@link exhaust}\n * @see {@link mergeAll}\n * @see {@link switch}\n * @see {@link zipAll}\n *\n * @return {Observable} An Observable emitting values from all the inner\n * Observables concatenated.\n * @method concatAll\n * @owner Observable\n ",
           "range": [
-            84,
-            1937
+            83,
+            1936
           ],
           "loc": {
             "start": {
@@ -138,8 +138,8 @@
           "type": "Identifier",
           "name": "concatAll",
           "range": [
-            1954,
-            1963
+            1953,
+            1962
           ],
           "loc": {
             "start": {
@@ -166,8 +166,8 @@
                   "object": {
                     "type": "ThisExpression",
                     "range": [
-                      1979,
-                      1983
+                      1978,
+                      1982
                     ],
                     "loc": {
                       "start": {
@@ -184,8 +184,8 @@
                     "type": "Identifier",
                     "name": "lift",
                     "range": [
-                      1984,
-                      1988
+                      1983,
+                      1987
                     ],
                     "loc": {
                       "start": {
@@ -199,8 +199,8 @@
                     }
                   },
                   "range": [
-                    1979,
-                    1988
+                    1978,
+                    1987
                   ],
                   "loc": {
                     "start": {
@@ -220,8 +220,8 @@
                       "type": "Identifier",
                       "name": "MergeAllOperator",
                       "range": [
-                        1993,
-                        2009
+                        1992,
+                        2008
                       ],
                       "loc": {
                         "start": {
@@ -240,8 +240,8 @@
                         "value": 1,
                         "raw": "1",
                         "range": [
-                          2010,
-                          2011
+                          2009,
+                          2010
                         ],
                         "loc": {
                           "start": {
@@ -256,8 +256,8 @@
                       }
                     ],
                     "range": [
-                      1989,
-                      2012
+                      1988,
+                      2011
                     ],
                     "loc": {
                       "start": {
@@ -272,8 +272,8 @@
                   }
                 ],
                 "range": [
-                  1979,
-                  2013
+                  1978,
+                  2012
                 ],
                 "loc": {
                   "start": {
@@ -287,8 +287,8 @@
                 }
               },
               "range": [
-                1972,
-                2014
+                1971,
+                2013
               ],
               "loc": {
                 "start": {
@@ -303,8 +303,8 @@
             }
           ],
           "range": [
-            1966,
-            2016
+            1965,
+            2015
           ],
           "loc": {
             "start": {
@@ -320,8 +320,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          1945,
-          2016
+          1944,
+          2015
         ],
         "loc": {
           "start": {
@@ -336,10 +336,10 @@
         "leadingComments": [
           {
             "type": "Block",
-            "value": " tslint:disable:max-line-length ",
+            "value": " tslint:enable:max-line-length ",
             "range": [
               47,
-              83
+              82
             ],
             "loc": {
               "start": {
@@ -348,7 +348,7 @@
               },
               "end": {
                 "line": 2,
-                "column": 36
+                "column": 35
               }
             }
           },
@@ -356,8 +356,8 @@
             "type": "Block",
             "value": "*\n * Converts a higher-order Observable into a first-order Observable by\n * concatenating the inner Observables in order.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables by putting one\n * inner Observable after the other.</span>\n *\n * <img src=\"./img/concatAll.png\" width=\"100%\">\n *\n * Joins every Observable emitted by the source (a higher-order Observable), in\n * a serial fashion. It subscribes to each inner Observable only after the\n * previous inner Observable has completed, and merges all of their values into\n * the returned observable.\n *\n * __Warning:__ If the source Observable emits Observables quickly and\n * endlessly, and the inner Observables it emits generally complete slower than\n * the source emits, you can run into memory issues as the incoming Observables\n * collect in an unbounded buffer.\n *\n * Note: `concatAll` is equivalent to `mergeAll` with concurrency parameter set\n * to `1`.\n *\n * @example <caption>For each click event, tick every second from 0 to 3, with no concurrency</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map(ev => Rx.Observable.interval(1000).take(4));\n * var firstOrder = higherOrder.concatAll();\n * firstOrder.subscribe(x => console.log(x));\n *\n * // Results in the following:\n * // (results are not concurrent)\n * // For every click on the \"document\" it will emit values 0 to 3 spaced\n * // on a 1000ms interval\n * // one click = 1000ms-> 0 -1000ms-> 1 -1000ms-> 2 -1000ms-> 3\n *\n * @see {@link combineAll}\n * @see {@link concat}\n * @see {@link concatMap}\n * @see {@link concatMapTo}\n * @see {@link exhaust}\n * @see {@link mergeAll}\n * @see {@link switch}\n * @see {@link zipAll}\n *\n * @return {Observable} An Observable emitting values from all the inner\n * Observables concatenated.\n * @method concatAll\n * @owner Observable\n ",
             "range": [
-              84,
-              1937
+              83,
+              1936
             ],
             "loc": {
               "start": {
@@ -376,8 +376,8 @@
             "type": "Line",
             "value": "# sourceMappingURL=concatAll.js.map",
             "range": [
-              2017,
-              2054
+              2016,
+              2053
             ],
             "loc": {
               "start": {
@@ -395,8 +395,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        1938,
-        2016
+        1937,
+        2015
       ],
       "loc": {
         "start": {
@@ -411,10 +411,10 @@
       "leadingComments": [
         {
           "type": "Block",
-          "value": " tslint:disable:max-line-length ",
+          "value": " tslint:enable:max-line-length ",
           "range": [
             47,
-            83
+            82
           ],
           "loc": {
             "start": {
@@ -423,7 +423,7 @@
             },
             "end": {
               "line": 2,
-              "column": 36
+              "column": 35
             }
           }
         },
@@ -431,8 +431,8 @@
           "type": "Block",
           "value": "*\n * Converts a higher-order Observable into a first-order Observable by\n * concatenating the inner Observables in order.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables by putting one\n * inner Observable after the other.</span>\n *\n * <img src=\"./img/concatAll.png\" width=\"100%\">\n *\n * Joins every Observable emitted by the source (a higher-order Observable), in\n * a serial fashion. It subscribes to each inner Observable only after the\n * previous inner Observable has completed, and merges all of their values into\n * the returned observable.\n *\n * __Warning:__ If the source Observable emits Observables quickly and\n * endlessly, and the inner Observables it emits generally complete slower than\n * the source emits, you can run into memory issues as the incoming Observables\n * collect in an unbounded buffer.\n *\n * Note: `concatAll` is equivalent to `mergeAll` with concurrency parameter set\n * to `1`.\n *\n * @example <caption>For each click event, tick every second from 0 to 3, with no concurrency</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map(ev => Rx.Observable.interval(1000).take(4));\n * var firstOrder = higherOrder.concatAll();\n * firstOrder.subscribe(x => console.log(x));\n *\n * // Results in the following:\n * // (results are not concurrent)\n * // For every click on the \"document\" it will emit values 0 to 3 spaced\n * // on a 1000ms interval\n * // one click = 1000ms-> 0 -1000ms-> 1 -1000ms-> 2 -1000ms-> 3\n *\n * @see {@link combineAll}\n * @see {@link concat}\n * @see {@link concatMap}\n * @see {@link concatMapTo}\n * @see {@link exhaust}\n * @see {@link mergeAll}\n * @see {@link switch}\n * @see {@link zipAll}\n *\n * @return {Observable} An Observable emitting values from all the inner\n * Observables concatenated.\n * @method concatAll\n * @owner Observable\n ",
           "range": [
-            84,
-            1937
+            83,
+            1936
           ],
           "loc": {
             "start": {
@@ -451,8 +451,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=concatAll.js.map",
           "range": [
-            2017,
-            2054
+            2016,
+            2053
           ],
           "loc": {
             "start": {
@@ -471,7 +471,7 @@
   "sourceType": "module",
   "range": [
     0,
-    2016
+    2015
   ],
   "loc": {
     "start": {
@@ -486,10 +486,10 @@
   "comments": [
     {
       "type": "Block",
-      "value": " tslint:disable:max-line-length ",
+      "value": " tslint:enable:max-line-length ",
       "range": [
         47,
-        83
+        82
       ],
       "loc": {
         "start": {
@@ -498,7 +498,7 @@
         },
         "end": {
           "line": 2,
-          "column": 36
+          "column": 35
         }
       }
     },
@@ -506,8 +506,8 @@
       "type": "Block",
       "value": "*\n * Converts a higher-order Observable into a first-order Observable by\n * concatenating the inner Observables in order.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables by putting one\n * inner Observable after the other.</span>\n *\n * <img src=\"./img/concatAll.png\" width=\"100%\">\n *\n * Joins every Observable emitted by the source (a higher-order Observable), in\n * a serial fashion. It subscribes to each inner Observable only after the\n * previous inner Observable has completed, and merges all of their values into\n * the returned observable.\n *\n * __Warning:__ If the source Observable emits Observables quickly and\n * endlessly, and the inner Observables it emits generally complete slower than\n * the source emits, you can run into memory issues as the incoming Observables\n * collect in an unbounded buffer.\n *\n * Note: `concatAll` is equivalent to `mergeAll` with concurrency parameter set\n * to `1`.\n *\n * @example <caption>For each click event, tick every second from 0 to 3, with no concurrency</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map(ev => Rx.Observable.interval(1000).take(4));\n * var firstOrder = higherOrder.concatAll();\n * firstOrder.subscribe(x => console.log(x));\n *\n * // Results in the following:\n * // (results are not concurrent)\n * // For every click on the \"document\" it will emit values 0 to 3 spaced\n * // on a 1000ms interval\n * // one click = 1000ms-> 0 -1000ms-> 1 -1000ms-> 2 -1000ms-> 3\n *\n * @see {@link combineAll}\n * @see {@link concat}\n * @see {@link concatMap}\n * @see {@link concatMapTo}\n * @see {@link exhaust}\n * @see {@link mergeAll}\n * @see {@link switch}\n * @see {@link zipAll}\n *\n * @return {Observable} An Observable emitting values from all the inner\n * Observables concatenated.\n * @method concatAll\n * @owner Observable\n ",
       "range": [
-        84,
-        1937
+        83,
+        1936
       ],
       "loc": {
         "start": {
@@ -524,8 +524,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=concatAll.js.map",
       "range": [
-        2017,
-        2054
+        2016,
+        2053
       ],
       "loc": {
         "start": {

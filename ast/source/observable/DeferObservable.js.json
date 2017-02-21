@@ -593,10 +593,10 @@
               "trailingComments": [
                 {
                   "type": "Block",
-                  "value": "*\n     * Creates an Observable that, on subscribe, calls an Observable factory to\n     * make an Observable for each new Observer.\n     *\n     * <span class=\"informal\">Creates the Observable lazily, that is, only when it\n     * is subscribed.\n     * </span>\n     *\n     * <img src=\"./img/defer.png\" width=\"100%\">\n     *\n     * `defer` allows you to create the Observable only when the Observer\n     * subscribes, and create a fresh Observable for each Observer. It waits until\n     * an Observer subscribes to it, and then it generates an Observable,\n     * typically with an Observable factory function. It does this afresh for each\n     * subscriber, so although each subscriber may think it is subscribing to the\n     * same Observable, in fact each subscriber gets its own individual\n     * Observable.\n     *\n     * @example <caption>Subscribe to either an Observable of clicks or an Observable of interval, at random</caption>\n     * var clicksOrInterval = Rx.Observable.defer(function () {\n     *   if (Math.random() > 0.5) {\n     *     return Rx.Observable.fromEvent(document, 'click');\n     *   } else {\n     *     return Rx.Observable.interval(1000);\n     *   }\n     * });\n     * clicksOrInterval.subscribe(x => console.log(x));\n     *\n     * // Results in the following behavior:\n     * // If the result of Math.random() is greater than 0.5 it will listen\n     * // for clicks anywhere on the \"document\"; when document is clicked it\n     * // will log a MouseEvent object to the console. If the result is less\n     * // than 0.5 it will emit ascending numbers, one every second(1000ms).\n     *\n     * @see {@link create}\n     *\n     * @param {function(): Observable|Promise} observableFactory The Observable\n     * factory function to invoke for each Observer that subscribes to the output\n     * Observable. May also return a Promise, which will be converted on the fly\n     * to an Observable.\n     * @return {Observable} An Observable whose Observers' subscriptions trigger\n     * an invocation of the given Observable factory function.\n     * @static true\n     * @name defer\n     * @owner Observable\n     ",
+                  "value": "*\n     * Creates an Observable that, on subscribe, calls an Observable factory to\n     * make an Observable for each new Observer.\n     *\n     * <span class=\"informal\">Creates the Observable lazily, that is, only when it\n     * is subscribed.\n     * </span>\n     *\n     * <img src=\"./img/defer.png\" width=\"100%\">\n     *\n     * `defer` allows you to create the Observable only when the Observer\n     * subscribes, and create a fresh Observable for each Observer. It waits until\n     * an Observer subscribes to it, and then it generates an Observable,\n     * typically with an Observable factory function. It does this afresh for each\n     * subscriber, so although each subscriber may think it is subscribing to the\n     * same Observable, in fact each subscriber gets its own individual\n     * Observable.\n     *\n     * @example <caption>Subscribe to either an Observable of clicks or an Observable of interval, at random</caption>\n     * var clicksOrInterval = Rx.Observable.defer(function () {\n     *   if (Math.random() > 0.5) {\n     *     return Rx.Observable.fromEvent(document, 'click');\n     *   } else {\n     *     return Rx.Observable.interval(1000);\n     *   }\n     * });\n     * clicksOrInterval.subscribe(x => console.log(x));\n     *\n     * // Results in the following behavior:\n     * // If the result of Math.random() is greater than 0.5 it will listen\n     * // for clicks anywhere on the \"document\"; when document is clicked it\n     * // will log a MouseEvent object to the console. If the result is less\n     * // than 0.5 it will emit ascending numbers, one every second(1000ms).\n     *\n     * @see {@link create}\n     *\n     * @param {function(): SubscribableOrPromise} observableFactory The Observable\n     * factory function to invoke for each Observer that subscribes to the output\n     * Observable. May also return a Promise, which will be converted on the fly\n     * to an Observable.\n     * @return {Observable} An Observable whose Observers' subscriptions trigger\n     * an invocation of the given Observable factory function.\n     * @static true\n     * @name defer\n     * @owner Observable\n     ",
                   "range": [
                     422,
-                    2546
+                    2549
                   ],
                   "loc": {
                     "start": {
@@ -618,8 +618,8 @@
                 "type": "Identifier",
                 "name": "create",
                 "range": [
-                  2558,
-                  2564
+                  2561,
+                  2567
                 ],
                 "loc": {
                   "start": {
@@ -640,8 +640,8 @@
                     "type": "Identifier",
                     "name": "observableFactory",
                     "range": [
-                      2565,
-                      2582
+                      2568,
+                      2585
                     ],
                     "loc": {
                       "start": {
@@ -666,8 +666,8 @@
                           "type": "Identifier",
                           "name": "DeferObservable",
                           "range": [
-                            2605,
-                            2620
+                            2608,
+                            2623
                           ],
                           "loc": {
                             "start": {
@@ -685,8 +685,8 @@
                             "type": "Identifier",
                             "name": "observableFactory",
                             "range": [
-                              2621,
-                              2638
+                              2624,
+                              2641
                             ],
                             "loc": {
                               "start": {
@@ -701,8 +701,8 @@
                           }
                         ],
                         "range": [
-                          2601,
-                          2639
+                          2604,
+                          2642
                         ],
                         "loc": {
                           "start": {
@@ -716,8 +716,8 @@
                         }
                       },
                       "range": [
-                        2594,
-                        2640
+                        2597,
+                        2643
                       ],
                       "loc": {
                         "start": {
@@ -732,8 +732,8 @@
                     }
                   ],
                   "range": [
-                    2584,
-                    2646
+                    2587,
+                    2649
                   ],
                   "loc": {
                     "start": {
@@ -749,8 +749,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  2564,
-                  2646
+                  2567,
+                  2649
                 ],
                 "loc": {
                   "start": {
@@ -766,8 +766,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                2551,
-                2646
+                2554,
+                2649
               ],
               "loc": {
                 "start": {
@@ -782,10 +782,10 @@
               "leadingComments": [
                 {
                   "type": "Block",
-                  "value": "*\n     * Creates an Observable that, on subscribe, calls an Observable factory to\n     * make an Observable for each new Observer.\n     *\n     * <span class=\"informal\">Creates the Observable lazily, that is, only when it\n     * is subscribed.\n     * </span>\n     *\n     * <img src=\"./img/defer.png\" width=\"100%\">\n     *\n     * `defer` allows you to create the Observable only when the Observer\n     * subscribes, and create a fresh Observable for each Observer. It waits until\n     * an Observer subscribes to it, and then it generates an Observable,\n     * typically with an Observable factory function. It does this afresh for each\n     * subscriber, so although each subscriber may think it is subscribing to the\n     * same Observable, in fact each subscriber gets its own individual\n     * Observable.\n     *\n     * @example <caption>Subscribe to either an Observable of clicks or an Observable of interval, at random</caption>\n     * var clicksOrInterval = Rx.Observable.defer(function () {\n     *   if (Math.random() > 0.5) {\n     *     return Rx.Observable.fromEvent(document, 'click');\n     *   } else {\n     *     return Rx.Observable.interval(1000);\n     *   }\n     * });\n     * clicksOrInterval.subscribe(x => console.log(x));\n     *\n     * // Results in the following behavior:\n     * // If the result of Math.random() is greater than 0.5 it will listen\n     * // for clicks anywhere on the \"document\"; when document is clicked it\n     * // will log a MouseEvent object to the console. If the result is less\n     * // than 0.5 it will emit ascending numbers, one every second(1000ms).\n     *\n     * @see {@link create}\n     *\n     * @param {function(): Observable|Promise} observableFactory The Observable\n     * factory function to invoke for each Observer that subscribes to the output\n     * Observable. May also return a Promise, which will be converted on the fly\n     * to an Observable.\n     * @return {Observable} An Observable whose Observers' subscriptions trigger\n     * an invocation of the given Observable factory function.\n     * @static true\n     * @name defer\n     * @owner Observable\n     ",
+                  "value": "*\n     * Creates an Observable that, on subscribe, calls an Observable factory to\n     * make an Observable for each new Observer.\n     *\n     * <span class=\"informal\">Creates the Observable lazily, that is, only when it\n     * is subscribed.\n     * </span>\n     *\n     * <img src=\"./img/defer.png\" width=\"100%\">\n     *\n     * `defer` allows you to create the Observable only when the Observer\n     * subscribes, and create a fresh Observable for each Observer. It waits until\n     * an Observer subscribes to it, and then it generates an Observable,\n     * typically with an Observable factory function. It does this afresh for each\n     * subscriber, so although each subscriber may think it is subscribing to the\n     * same Observable, in fact each subscriber gets its own individual\n     * Observable.\n     *\n     * @example <caption>Subscribe to either an Observable of clicks or an Observable of interval, at random</caption>\n     * var clicksOrInterval = Rx.Observable.defer(function () {\n     *   if (Math.random() > 0.5) {\n     *     return Rx.Observable.fromEvent(document, 'click');\n     *   } else {\n     *     return Rx.Observable.interval(1000);\n     *   }\n     * });\n     * clicksOrInterval.subscribe(x => console.log(x));\n     *\n     * // Results in the following behavior:\n     * // If the result of Math.random() is greater than 0.5 it will listen\n     * // for clicks anywhere on the \"document\"; when document is clicked it\n     * // will log a MouseEvent object to the console. If the result is less\n     * // than 0.5 it will emit ascending numbers, one every second(1000ms).\n     *\n     * @see {@link create}\n     *\n     * @param {function(): SubscribableOrPromise} observableFactory The Observable\n     * factory function to invoke for each Observer that subscribes to the output\n     * Observable. May also return a Promise, which will be converted on the fly\n     * to an Observable.\n     * @return {Observable} An Observable whose Observers' subscriptions trigger\n     * an invocation of the given Observable factory function.\n     * @static true\n     * @name defer\n     * @owner Observable\n     ",
                   "range": [
                     422,
-                    2546
+                    2549
                   ],
                   "loc": {
                     "start": {
@@ -807,8 +807,8 @@
                 "type": "Identifier",
                 "name": "_subscribe",
                 "range": [
-                  2651,
-                  2661
+                  2654,
+                  2664
                 ],
                 "loc": {
                   "start": {
@@ -829,8 +829,8 @@
                     "type": "Identifier",
                     "name": "subscriber",
                     "range": [
-                      2662,
-                      2672
+                      2665,
+                      2675
                     ],
                     "loc": {
                       "start": {
@@ -855,8 +855,8 @@
                           "type": "Identifier",
                           "name": "DeferSubscriber",
                           "range": [
-                            2695,
-                            2710
+                            2698,
+                            2713
                           ],
                           "loc": {
                             "start": {
@@ -874,8 +874,8 @@
                             "type": "Identifier",
                             "name": "subscriber",
                             "range": [
-                              2711,
-                              2721
+                              2714,
+                              2724
                             ],
                             "loc": {
                               "start": {
@@ -894,8 +894,8 @@
                             "object": {
                               "type": "ThisExpression",
                               "range": [
-                                2723,
-                                2727
+                                2726,
+                                2730
                               ],
                               "loc": {
                                 "start": {
@@ -912,8 +912,8 @@
                               "type": "Identifier",
                               "name": "observableFactory",
                               "range": [
-                                2728,
-                                2745
+                                2731,
+                                2748
                               ],
                               "loc": {
                                 "start": {
@@ -927,8 +927,8 @@
                               }
                             },
                             "range": [
-                              2723,
-                              2745
+                              2726,
+                              2748
                             ],
                             "loc": {
                               "start": {
@@ -943,8 +943,8 @@
                           }
                         ],
                         "range": [
-                          2691,
-                          2746
+                          2694,
+                          2749
                         ],
                         "loc": {
                           "start": {
@@ -958,8 +958,8 @@
                         }
                       },
                       "range": [
-                        2684,
-                        2747
+                        2687,
+                        2750
                       ],
                       "loc": {
                         "start": {
@@ -974,8 +974,8 @@
                     }
                   ],
                   "range": [
-                    2674,
-                    2753
+                    2677,
+                    2756
                   ],
                   "loc": {
                     "start": {
@@ -991,8 +991,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  2661,
-                  2753
+                  2664,
+                  2756
                 ],
                 "loc": {
                   "start": {
@@ -1008,8 +1008,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                2651,
-                2753
+                2654,
+                2756
               ],
               "loc": {
                 "start": {
@@ -1026,7 +1026,7 @@
           ],
           "range": [
             304,
-            2755
+            2758
           ],
           "loc": {
             "start": {
@@ -1041,7 +1041,7 @@
         },
         "range": [
           263,
-          2755
+          2758
         ],
         "loc": {
           "start": {
@@ -1079,7 +1079,7 @@
       "source": null,
       "range": [
         256,
-        2755
+        2758
       ],
       "loc": {
         "start": {
@@ -1118,8 +1118,8 @@
         "type": "Identifier",
         "name": "DeferSubscriber",
         "range": [
-          2762,
-          2777
+          2765,
+          2780
         ],
         "loc": {
           "start": {
@@ -1136,8 +1136,8 @@
         "type": "Identifier",
         "name": "OuterSubscriber",
         "range": [
-          2786,
-          2801
+          2789,
+          2804
         ],
         "loc": {
           "start": {
@@ -1159,8 +1159,8 @@
               "type": "Identifier",
               "name": "constructor",
               "range": [
-                2808,
-                2819
+                2811,
+                2822
               ],
               "loc": {
                 "start": {
@@ -1181,8 +1181,8 @@
                   "type": "Identifier",
                   "name": "destination",
                   "range": [
-                    2820,
-                    2831
+                    2823,
+                    2834
                   ],
                   "loc": {
                     "start": {
@@ -1199,8 +1199,8 @@
                   "type": "Identifier",
                   "name": "factory",
                   "range": [
-                    2833,
-                    2840
+                    2836,
+                    2843
                   ],
                   "loc": {
                     "start": {
@@ -1224,8 +1224,8 @@
                       "callee": {
                         "type": "Super",
                         "range": [
-                          2852,
-                          2857
+                          2855,
+                          2860
                         ],
                         "loc": {
                           "start": {
@@ -1243,8 +1243,8 @@
                           "type": "Identifier",
                           "name": "destination",
                           "range": [
-                            2858,
-                            2869
+                            2861,
+                            2872
                           ],
                           "loc": {
                             "start": {
@@ -1259,8 +1259,8 @@
                         }
                       ],
                       "range": [
-                        2852,
-                        2870
+                        2855,
+                        2873
                       ],
                       "loc": {
                         "start": {
@@ -1274,8 +1274,8 @@
                       }
                     },
                     "range": [
-                      2852,
-                      2871
+                      2855,
+                      2874
                     ],
                     "loc": {
                       "start": {
@@ -1299,8 +1299,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            2880,
-                            2884
+                            2883,
+                            2887
                           ],
                           "loc": {
                             "start": {
@@ -1317,8 +1317,8 @@
                           "type": "Identifier",
                           "name": "factory",
                           "range": [
-                            2885,
-                            2892
+                            2888,
+                            2895
                           ],
                           "loc": {
                             "start": {
@@ -1332,8 +1332,8 @@
                           }
                         },
                         "range": [
-                          2880,
-                          2892
+                          2883,
+                          2895
                         ],
                         "loc": {
                           "start": {
@@ -1350,8 +1350,8 @@
                         "type": "Identifier",
                         "name": "factory",
                         "range": [
-                          2895,
-                          2902
+                          2898,
+                          2905
                         ],
                         "loc": {
                           "start": {
@@ -1365,8 +1365,8 @@
                         }
                       },
                       "range": [
-                        2880,
-                        2902
+                        2883,
+                        2905
                       ],
                       "loc": {
                         "start": {
@@ -1380,8 +1380,8 @@
                       }
                     },
                     "range": [
-                      2880,
-                      2903
+                      2883,
+                      2906
                     ],
                     "loc": {
                       "start": {
@@ -1404,8 +1404,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            2912,
-                            2916
+                            2915,
+                            2919
                           ],
                           "loc": {
                             "start": {
@@ -1422,8 +1422,8 @@
                           "type": "Identifier",
                           "name": "tryDefer",
                           "range": [
-                            2917,
-                            2925
+                            2920,
+                            2928
                           ],
                           "loc": {
                             "start": {
@@ -1437,8 +1437,8 @@
                           }
                         },
                         "range": [
-                          2912,
-                          2925
+                          2915,
+                          2928
                         ],
                         "loc": {
                           "start": {
@@ -1453,8 +1453,8 @@
                       },
                       "arguments": [],
                       "range": [
-                        2912,
-                        2927
+                        2915,
+                        2930
                       ],
                       "loc": {
                         "start": {
@@ -1468,8 +1468,8 @@
                       }
                     },
                     "range": [
-                      2912,
-                      2928
+                      2915,
+                      2931
                     ],
                     "loc": {
                       "start": {
@@ -1484,8 +1484,8 @@
                   }
                 ],
                 "range": [
-                  2842,
-                  2934
+                  2845,
+                  2937
                 ],
                 "loc": {
                   "start": {
@@ -1501,8 +1501,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                2819,
-                2934
+                2822,
+                2937
               ],
               "loc": {
                 "start": {
@@ -1518,8 +1518,8 @@
             "kind": "constructor",
             "computed": false,
             "range": [
-              2808,
-              2934
+              2811,
+              2937
             ],
             "loc": {
               "start": {
@@ -1539,8 +1539,8 @@
               "type": "Identifier",
               "name": "tryDefer",
               "range": [
-                2939,
-                2947
+                2942,
+                2950
               ],
               "loc": {
                 "start": {
@@ -1575,8 +1575,8 @@
                               "object": {
                                 "type": "ThisExpression",
                                 "range": [
-                                  2978,
-                                  2982
+                                  2981,
+                                  2985
                                 ],
                                 "loc": {
                                   "start": {
@@ -1593,8 +1593,8 @@
                                 "type": "Identifier",
                                 "name": "_callFactory",
                                 "range": [
-                                  2983,
-                                  2995
+                                  2986,
+                                  2998
                                 ],
                                 "loc": {
                                   "start": {
@@ -1608,8 +1608,8 @@
                                 }
                               },
                               "range": [
-                                2978,
-                                2995
+                                2981,
+                                2998
                               ],
                               "loc": {
                                 "start": {
@@ -1624,8 +1624,8 @@
                             },
                             "arguments": [],
                             "range": [
-                              2978,
-                              2997
+                              2981,
+                              3000
                             ],
                             "loc": {
                               "start": {
@@ -1639,8 +1639,8 @@
                             }
                           },
                           "range": [
-                            2978,
-                            2998
+                            2981,
+                            3001
                           ],
                           "loc": {
                             "start": {
@@ -1655,8 +1655,8 @@
                         }
                       ],
                       "range": [
-                        2964,
-                        3008
+                        2967,
+                        3011
                       ],
                       "loc": {
                         "start": {
@@ -1675,8 +1675,8 @@
                         "type": "Identifier",
                         "name": "err",
                         "range": [
-                          3024,
-                          3027
+                          3027,
+                          3030
                         ],
                         "loc": {
                           "start": {
@@ -1702,8 +1702,8 @@
                                 "object": {
                                   "type": "ThisExpression",
                                   "range": [
-                                    3043,
-                                    3047
+                                    3046,
+                                    3050
                                   ],
                                   "loc": {
                                     "start": {
@@ -1720,8 +1720,8 @@
                                   "type": "Identifier",
                                   "name": "_error",
                                   "range": [
-                                    3048,
-                                    3054
+                                    3051,
+                                    3057
                                   ],
                                   "loc": {
                                     "start": {
@@ -1735,8 +1735,8 @@
                                   }
                                 },
                                 "range": [
-                                  3043,
-                                  3054
+                                  3046,
+                                  3057
                                 ],
                                 "loc": {
                                   "start": {
@@ -1754,8 +1754,8 @@
                                   "type": "Identifier",
                                   "name": "err",
                                   "range": [
-                                    3055,
-                                    3058
+                                    3058,
+                                    3061
                                   ],
                                   "loc": {
                                     "start": {
@@ -1770,8 +1770,8 @@
                                 }
                               ],
                               "range": [
-                                3043,
-                                3059
+                                3046,
+                                3062
                               ],
                               "loc": {
                                 "start": {
@@ -1785,8 +1785,8 @@
                               }
                             },
                             "range": [
-                              3043,
-                              3060
+                              3046,
+                              3063
                             ],
                             "loc": {
                               "start": {
@@ -1801,8 +1801,8 @@
                           }
                         ],
                         "range": [
-                          3029,
-                          3070
+                          3032,
+                          3073
                         ],
                         "loc": {
                           "start": {
@@ -1816,8 +1816,8 @@
                         }
                       },
                       "range": [
-                        3017,
-                        3070
+                        3020,
+                        3073
                       ],
                       "loc": {
                         "start": {
@@ -1832,8 +1832,8 @@
                     },
                     "finalizer": null,
                     "range": [
-                      2960,
-                      3070
+                      2963,
+                      3073
                     ],
                     "loc": {
                       "start": {
@@ -1848,8 +1848,8 @@
                   }
                 ],
                 "range": [
-                  2950,
-                  3076
+                  2953,
+                  3079
                 ],
                 "loc": {
                   "start": {
@@ -1865,8 +1865,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                2947,
-                3076
+                2950,
+                3079
               ],
               "loc": {
                 "start": {
@@ -1882,8 +1882,8 @@
             "kind": "method",
             "computed": false,
             "range": [
-              2939,
-              3076
+              2942,
+              3079
             ],
             "loc": {
               "start": {
@@ -1903,8 +1903,8 @@
               "type": "Identifier",
               "name": "_callFactory",
               "range": [
-                3081,
-                3093
+                3084,
+                3096
               ],
               "loc": {
                 "start": {
@@ -1933,8 +1933,8 @@
                           "type": "Identifier",
                           "name": "result",
                           "range": [
-                            3112,
-                            3118
+                            3115,
+                            3121
                           ],
                           "loc": {
                             "start": {
@@ -1955,8 +1955,8 @@
                             "object": {
                               "type": "ThisExpression",
                               "range": [
-                                3121,
-                                3125
+                                3124,
+                                3128
                               ],
                               "loc": {
                                 "start": {
@@ -1973,8 +1973,8 @@
                               "type": "Identifier",
                               "name": "factory",
                               "range": [
-                                3126,
-                                3133
+                                3129,
+                                3136
                               ],
                               "loc": {
                                 "start": {
@@ -1988,8 +1988,8 @@
                               }
                             },
                             "range": [
-                              3121,
-                              3133
+                              3124,
+                              3136
                             ],
                             "loc": {
                               "start": {
@@ -2004,8 +2004,8 @@
                           },
                           "arguments": [],
                           "range": [
-                            3121,
-                            3135
+                            3124,
+                            3138
                           ],
                           "loc": {
                             "start": {
@@ -2019,8 +2019,8 @@
                           }
                         },
                         "range": [
-                          3112,
-                          3135
+                          3115,
+                          3138
                         ],
                         "loc": {
                           "start": {
@@ -2036,8 +2036,8 @@
                     ],
                     "kind": "const",
                     "range": [
-                      3106,
-                      3136
+                      3109,
+                      3139
                     ],
                     "loc": {
                       "start": {
@@ -2056,8 +2056,8 @@
                       "type": "Identifier",
                       "name": "result",
                       "range": [
-                        3149,
-                        3155
+                        3152,
+                        3158
                       ],
                       "loc": {
                         "start": {
@@ -2083,8 +2083,8 @@
                               "object": {
                                 "type": "ThisExpression",
                                 "range": [
-                                  3171,
-                                  3175
+                                  3174,
+                                  3178
                                 ],
                                 "loc": {
                                   "start": {
@@ -2101,8 +2101,8 @@
                                 "type": "Identifier",
                                 "name": "add",
                                 "range": [
-                                  3176,
-                                  3179
+                                  3179,
+                                  3182
                                 ],
                                 "loc": {
                                   "start": {
@@ -2116,8 +2116,8 @@
                                 }
                               },
                               "range": [
-                                3171,
-                                3179
+                                3174,
+                                3182
                               ],
                               "loc": {
                                 "start": {
@@ -2137,8 +2137,8 @@
                                   "type": "Identifier",
                                   "name": "subscribeToResult",
                                   "range": [
-                                    3180,
-                                    3197
+                                    3183,
+                                    3200
                                   ],
                                   "loc": {
                                     "start": {
@@ -2155,8 +2155,8 @@
                                   {
                                     "type": "ThisExpression",
                                     "range": [
-                                      3198,
-                                      3202
+                                      3201,
+                                      3205
                                     ],
                                     "loc": {
                                       "start": {
@@ -2173,8 +2173,8 @@
                                     "type": "Identifier",
                                     "name": "result",
                                     "range": [
-                                      3204,
-                                      3210
+                                      3207,
+                                      3213
                                     ],
                                     "loc": {
                                       "start": {
@@ -2189,8 +2189,8 @@
                                   }
                                 ],
                                 "range": [
-                                  3180,
-                                  3211
+                                  3183,
+                                  3214
                                 ],
                                 "loc": {
                                   "start": {
@@ -2205,8 +2205,8 @@
                               }
                             ],
                             "range": [
-                              3171,
-                              3212
+                              3174,
+                              3215
                             ],
                             "loc": {
                               "start": {
@@ -2220,8 +2220,8 @@
                             }
                           },
                           "range": [
-                            3171,
-                            3213
+                            3174,
+                            3216
                           ],
                           "loc": {
                             "start": {
@@ -2236,8 +2236,8 @@
                         }
                       ],
                       "range": [
-                        3157,
-                        3223
+                        3160,
+                        3226
                       ],
                       "loc": {
                         "start": {
@@ -2252,8 +2252,8 @@
                     },
                     "alternate": null,
                     "range": [
-                      3145,
-                      3223
+                      3148,
+                      3226
                     ],
                     "loc": {
                       "start": {
@@ -2268,8 +2268,8 @@
                   }
                 ],
                 "range": [
-                  3096,
-                  3229
+                  3099,
+                  3232
                 ],
                 "loc": {
                   "start": {
@@ -2285,8 +2285,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                3093,
-                3229
+                3096,
+                3232
               ],
               "loc": {
                 "start": {
@@ -2302,8 +2302,8 @@
             "kind": "method",
             "computed": false,
             "range": [
-              3081,
-              3229
+              3084,
+              3232
             ],
             "loc": {
               "start": {
@@ -2319,8 +2319,8 @@
           }
         ],
         "range": [
-          2802,
-          3231
+          2805,
+          3234
         ],
         "loc": {
           "start": {
@@ -2334,8 +2334,8 @@
         }
       },
       "range": [
-        2756,
-        3231
+        2759,
+        3234
       ],
       "loc": {
         "start": {
@@ -2352,8 +2352,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=DeferObservable.js.map",
           "range": [
-            3232,
-            3275
+            3235,
+            3278
           ],
           "loc": {
             "start": {
@@ -2372,7 +2372,7 @@
   "sourceType": "module",
   "range": [
     0,
-    3231
+    3234
   ],
   "loc": {
     "start": {
@@ -2405,10 +2405,10 @@
     },
     {
       "type": "Block",
-      "value": "*\n     * Creates an Observable that, on subscribe, calls an Observable factory to\n     * make an Observable for each new Observer.\n     *\n     * <span class=\"informal\">Creates the Observable lazily, that is, only when it\n     * is subscribed.\n     * </span>\n     *\n     * <img src=\"./img/defer.png\" width=\"100%\">\n     *\n     * `defer` allows you to create the Observable only when the Observer\n     * subscribes, and create a fresh Observable for each Observer. It waits until\n     * an Observer subscribes to it, and then it generates an Observable,\n     * typically with an Observable factory function. It does this afresh for each\n     * subscriber, so although each subscriber may think it is subscribing to the\n     * same Observable, in fact each subscriber gets its own individual\n     * Observable.\n     *\n     * @example <caption>Subscribe to either an Observable of clicks or an Observable of interval, at random</caption>\n     * var clicksOrInterval = Rx.Observable.defer(function () {\n     *   if (Math.random() > 0.5) {\n     *     return Rx.Observable.fromEvent(document, 'click');\n     *   } else {\n     *     return Rx.Observable.interval(1000);\n     *   }\n     * });\n     * clicksOrInterval.subscribe(x => console.log(x));\n     *\n     * // Results in the following behavior:\n     * // If the result of Math.random() is greater than 0.5 it will listen\n     * // for clicks anywhere on the \"document\"; when document is clicked it\n     * // will log a MouseEvent object to the console. If the result is less\n     * // than 0.5 it will emit ascending numbers, one every second(1000ms).\n     *\n     * @see {@link create}\n     *\n     * @param {function(): Observable|Promise} observableFactory The Observable\n     * factory function to invoke for each Observer that subscribes to the output\n     * Observable. May also return a Promise, which will be converted on the fly\n     * to an Observable.\n     * @return {Observable} An Observable whose Observers' subscriptions trigger\n     * an invocation of the given Observable factory function.\n     * @static true\n     * @name defer\n     * @owner Observable\n     ",
+      "value": "*\n     * Creates an Observable that, on subscribe, calls an Observable factory to\n     * make an Observable for each new Observer.\n     *\n     * <span class=\"informal\">Creates the Observable lazily, that is, only when it\n     * is subscribed.\n     * </span>\n     *\n     * <img src=\"./img/defer.png\" width=\"100%\">\n     *\n     * `defer` allows you to create the Observable only when the Observer\n     * subscribes, and create a fresh Observable for each Observer. It waits until\n     * an Observer subscribes to it, and then it generates an Observable,\n     * typically with an Observable factory function. It does this afresh for each\n     * subscriber, so although each subscriber may think it is subscribing to the\n     * same Observable, in fact each subscriber gets its own individual\n     * Observable.\n     *\n     * @example <caption>Subscribe to either an Observable of clicks or an Observable of interval, at random</caption>\n     * var clicksOrInterval = Rx.Observable.defer(function () {\n     *   if (Math.random() > 0.5) {\n     *     return Rx.Observable.fromEvent(document, 'click');\n     *   } else {\n     *     return Rx.Observable.interval(1000);\n     *   }\n     * });\n     * clicksOrInterval.subscribe(x => console.log(x));\n     *\n     * // Results in the following behavior:\n     * // If the result of Math.random() is greater than 0.5 it will listen\n     * // for clicks anywhere on the \"document\"; when document is clicked it\n     * // will log a MouseEvent object to the console. If the result is less\n     * // than 0.5 it will emit ascending numbers, one every second(1000ms).\n     *\n     * @see {@link create}\n     *\n     * @param {function(): SubscribableOrPromise} observableFactory The Observable\n     * factory function to invoke for each Observer that subscribes to the output\n     * Observable. May also return a Promise, which will be converted on the fly\n     * to an Observable.\n     * @return {Observable} An Observable whose Observers' subscriptions trigger\n     * an invocation of the given Observable factory function.\n     * @static true\n     * @name defer\n     * @owner Observable\n     ",
       "range": [
         422,
-        2546
+        2549
       ],
       "loc": {
         "start": {
@@ -2425,8 +2425,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=DeferObservable.js.map",
       "range": [
-        3232,
-        3275
+        3235,
+        3278
       ],
       "loc": {
         "start": {

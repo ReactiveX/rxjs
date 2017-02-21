@@ -185,7 +185,7 @@
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * Catches errors on the observable to be handled by returning a new observable or throwing an error.\n *\n * <img src=\"./img/catch.png\" width=\"100%\">\n *\n * @example <caption>Continues with a different Observable when there's an error</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n * \t   if (n == 4) {\n * \t     throw 'four!';\n *     }\n *\t   return n;\n *   })\n *   .catch(err => Observable.of('I', 'II', 'III', 'IV', 'V'))\n *   .subscribe(x => console.log(x));\n *   // 1, 2, 3, I, II, III, IV, V\n *\n * @example <caption>Retries the caught source Observable again in case of error, similar to retry() operator</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n * \t   if (n === 4) {\n * \t     throw 'four!';\n *     }\n * \t   return n;\n *   })\n *   .catch((err, caught) => caught)\n *   .take(30)\n *   .subscribe(x => console.log(x));\n *   // 1, 2, 3, 1, 2, 3, ...\n *\n * @example <caption>Throws a new error when the source Observable throws an error</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n *     if (n == 4) {\n *       throw 'four!';\n *     }\n *     return n;\n *   })\n *   .catch(err => {\n *     throw 'error in source. Details: ' + err;\n *   })\n *   .subscribe(\n *     x => console.log(x),\n *     err => console.log(err)\n *   );\n *   // 1, 2, 3, error in source. Details: four!\n *\n * @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which\n *  is the source observable, in case you'd like to \"retry\" that observable by returning it again. Whatever observable\n *  is returned by the `selector` will be used to continue the observable chain.\n * @return {Observable} an observable that originates from either the source or the observable returned by the\n *  catch `selector` function.\n * @method catch\n * @name catch\n * @owner Observable\n ",
+          "value": "*\n * Catches errors on the observable to be handled by returning a new observable or throwing an error.\n *\n * <img src=\"./img/catch.png\" width=\"100%\">\n *\n * @example <caption>Continues with a different Observable when there's an error</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n * \t   if (n == 4) {\n * \t     throw 'four!';\n *     }\n *\t   return n;\n *   })\n *   .catch(err => Observable.of('I', 'II', 'III', 'IV', 'V'))\n *   .subscribe(x => console.log(x));\n *   // 1, 2, 3, I, II, III, IV, V\n *\n * @example <caption>Retries the caught source Observable again in case of error, similar to retry() operator</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n * \t   if (n === 4) {\n * \t     throw 'four!';\n *     }\n * \t   return n;\n *   })\n *   .catch((err, caught) => caught)\n *   .take(30)\n *   .subscribe(x => console.log(x));\n *   // 1, 2, 3, 1, 2, 3, ...\n *\n * @example <caption>Throws a new error when the source Observable throws an error</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n *     if (n == 4) {\n *       throw 'four!';\n *     }\n *     return n;\n *   })\n *   .catch(err => {\n *     throw 'error in source. Details: ' + err;\n *   })\n *   .subscribe(\n *     x => console.log(x),\n *     err => console.log(err)\n *   );\n *   // 1, 2, 3, error in source. Details: four!\n *\n * @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which\n *  is the source observable, in case you'd like to \"retry\" that observable by returning it again. Whatever observable\n *  is returned by the `selector` will be used to continue the observable chain.\n * @return {Observable} An observable that originates from either the source or the observable returned by the\n *  catch `selector` function.\n * @method catch\n * @name catch\n * @owner Observable\n ",
           "range": [
             117,
             1956
@@ -645,7 +645,7 @@
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * Catches errors on the observable to be handled by returning a new observable or throwing an error.\n *\n * <img src=\"./img/catch.png\" width=\"100%\">\n *\n * @example <caption>Continues with a different Observable when there's an error</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n * \t   if (n == 4) {\n * \t     throw 'four!';\n *     }\n *\t   return n;\n *   })\n *   .catch(err => Observable.of('I', 'II', 'III', 'IV', 'V'))\n *   .subscribe(x => console.log(x));\n *   // 1, 2, 3, I, II, III, IV, V\n *\n * @example <caption>Retries the caught source Observable again in case of error, similar to retry() operator</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n * \t   if (n === 4) {\n * \t     throw 'four!';\n *     }\n * \t   return n;\n *   })\n *   .catch((err, caught) => caught)\n *   .take(30)\n *   .subscribe(x => console.log(x));\n *   // 1, 2, 3, 1, 2, 3, ...\n *\n * @example <caption>Throws a new error when the source Observable throws an error</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n *     if (n == 4) {\n *       throw 'four!';\n *     }\n *     return n;\n *   })\n *   .catch(err => {\n *     throw 'error in source. Details: ' + err;\n *   })\n *   .subscribe(\n *     x => console.log(x),\n *     err => console.log(err)\n *   );\n *   // 1, 2, 3, error in source. Details: four!\n *\n * @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which\n *  is the source observable, in case you'd like to \"retry\" that observable by returning it again. Whatever observable\n *  is returned by the `selector` will be used to continue the observable chain.\n * @return {Observable} an observable that originates from either the source or the observable returned by the\n *  catch `selector` function.\n * @method catch\n * @name catch\n * @owner Observable\n ",
+            "value": "*\n * Catches errors on the observable to be handled by returning a new observable or throwing an error.\n *\n * <img src=\"./img/catch.png\" width=\"100%\">\n *\n * @example <caption>Continues with a different Observable when there's an error</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n * \t   if (n == 4) {\n * \t     throw 'four!';\n *     }\n *\t   return n;\n *   })\n *   .catch(err => Observable.of('I', 'II', 'III', 'IV', 'V'))\n *   .subscribe(x => console.log(x));\n *   // 1, 2, 3, I, II, III, IV, V\n *\n * @example <caption>Retries the caught source Observable again in case of error, similar to retry() operator</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n * \t   if (n === 4) {\n * \t     throw 'four!';\n *     }\n * \t   return n;\n *   })\n *   .catch((err, caught) => caught)\n *   .take(30)\n *   .subscribe(x => console.log(x));\n *   // 1, 2, 3, 1, 2, 3, ...\n *\n * @example <caption>Throws a new error when the source Observable throws an error</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n *     if (n == 4) {\n *       throw 'four!';\n *     }\n *     return n;\n *   })\n *   .catch(err => {\n *     throw 'error in source. Details: ' + err;\n *   })\n *   .subscribe(\n *     x => console.log(x),\n *     err => console.log(err)\n *   );\n *   // 1, 2, 3, error in source. Details: four!\n *\n * @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which\n *  is the source observable, in case you'd like to \"retry\" that observable by returning it again. Whatever observable\n *  is returned by the `selector` will be used to continue the observable chain.\n * @return {Observable} An observable that originates from either the source or the observable returned by the\n *  catch `selector` function.\n * @method catch\n * @name catch\n * @owner Observable\n ",
             "range": [
               117,
               1956
@@ -683,7 +683,7 @@
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * Catches errors on the observable to be handled by returning a new observable or throwing an error.\n *\n * <img src=\"./img/catch.png\" width=\"100%\">\n *\n * @example <caption>Continues with a different Observable when there's an error</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n * \t   if (n == 4) {\n * \t     throw 'four!';\n *     }\n *\t   return n;\n *   })\n *   .catch(err => Observable.of('I', 'II', 'III', 'IV', 'V'))\n *   .subscribe(x => console.log(x));\n *   // 1, 2, 3, I, II, III, IV, V\n *\n * @example <caption>Retries the caught source Observable again in case of error, similar to retry() operator</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n * \t   if (n === 4) {\n * \t     throw 'four!';\n *     }\n * \t   return n;\n *   })\n *   .catch((err, caught) => caught)\n *   .take(30)\n *   .subscribe(x => console.log(x));\n *   // 1, 2, 3, 1, 2, 3, ...\n *\n * @example <caption>Throws a new error when the source Observable throws an error</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n *     if (n == 4) {\n *       throw 'four!';\n *     }\n *     return n;\n *   })\n *   .catch(err => {\n *     throw 'error in source. Details: ' + err;\n *   })\n *   .subscribe(\n *     x => console.log(x),\n *     err => console.log(err)\n *   );\n *   // 1, 2, 3, error in source. Details: four!\n *\n * @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which\n *  is the source observable, in case you'd like to \"retry\" that observable by returning it again. Whatever observable\n *  is returned by the `selector` will be used to continue the observable chain.\n * @return {Observable} an observable that originates from either the source or the observable returned by the\n *  catch `selector` function.\n * @method catch\n * @name catch\n * @owner Observable\n ",
+          "value": "*\n * Catches errors on the observable to be handled by returning a new observable or throwing an error.\n *\n * <img src=\"./img/catch.png\" width=\"100%\">\n *\n * @example <caption>Continues with a different Observable when there's an error</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n * \t   if (n == 4) {\n * \t     throw 'four!';\n *     }\n *\t   return n;\n *   })\n *   .catch(err => Observable.of('I', 'II', 'III', 'IV', 'V'))\n *   .subscribe(x => console.log(x));\n *   // 1, 2, 3, I, II, III, IV, V\n *\n * @example <caption>Retries the caught source Observable again in case of error, similar to retry() operator</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n * \t   if (n === 4) {\n * \t     throw 'four!';\n *     }\n * \t   return n;\n *   })\n *   .catch((err, caught) => caught)\n *   .take(30)\n *   .subscribe(x => console.log(x));\n *   // 1, 2, 3, 1, 2, 3, ...\n *\n * @example <caption>Throws a new error when the source Observable throws an error</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n *     if (n == 4) {\n *       throw 'four!';\n *     }\n *     return n;\n *   })\n *   .catch(err => {\n *     throw 'error in source. Details: ' + err;\n *   })\n *   .subscribe(\n *     x => console.log(x),\n *     err => console.log(err)\n *   );\n *   // 1, 2, 3, error in source. Details: four!\n *\n * @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which\n *  is the source observable, in case you'd like to \"retry\" that observable by returning it again. Whatever observable\n *  is returned by the `selector` will be used to continue the observable chain.\n * @return {Observable} An observable that originates from either the source or the observable returned by the\n *  catch `selector` function.\n * @method catch\n * @name catch\n * @owner Observable\n ",
           "range": [
             117,
             1956
@@ -2511,10 +2511,10 @@
                               },
                               "property": {
                                 "type": "Identifier",
-                                "name": "unsubscribe",
+                                "name": "_unsubscribeAndRecycle",
                                 "range": [
                                   3253,
-                                  3264
+                                  3275
                                 ],
                                 "loc": {
                                   "start": {
@@ -2523,13 +2523,13 @@
                                   },
                                   "end": {
                                     "line": 101,
-                                    "column": 28
+                                    "column": 39
                                   }
                                 }
                               },
                               "range": [
                                 3248,
-                                3264
+                                3275
                               ],
                               "loc": {
                                 "start": {
@@ -2538,14 +2538,14 @@
                                 },
                                 "end": {
                                   "line": 101,
-                                  "column": 28
+                                  "column": 39
                                 }
                               }
                             },
                             "arguments": [],
                             "range": [
                               3248,
-                              3266
+                              3277
                             ],
                             "loc": {
                               "start": {
@@ -2554,13 +2554,13 @@
                               },
                               "end": {
                                 "line": 101,
-                                "column": 30
+                                "column": 41
                               }
                             }
                           },
                           "range": [
                             3248,
-                            3267
+                            3278
                           ],
                           "loc": {
                             "start": {
@@ -2569,221 +2569,7 @@
                             },
                             "end": {
                               "line": 101,
-                              "column": 31
-                            }
-                          }
-                        },
-                        {
-                          "type": "ExpressionStatement",
-                          "expression": {
-                            "type": "AssignmentExpression",
-                            "operator": "=",
-                            "left": {
-                              "type": "MemberExpression",
-                              "computed": false,
-                              "object": {
-                                "type": "ThisExpression",
-                                "range": [
-                                  3280,
-                                  3284
-                                ],
-                                "loc": {
-                                  "start": {
-                                    "line": 102,
-                                    "column": 12
-                                  },
-                                  "end": {
-                                    "line": 102,
-                                    "column": 16
-                                  }
-                                }
-                              },
-                              "property": {
-                                "type": "Identifier",
-                                "name": "closed",
-                                "range": [
-                                  3285,
-                                  3291
-                                ],
-                                "loc": {
-                                  "start": {
-                                    "line": 102,
-                                    "column": 17
-                                  },
-                                  "end": {
-                                    "line": 102,
-                                    "column": 23
-                                  }
-                                }
-                              },
-                              "range": [
-                                3280,
-                                3291
-                              ],
-                              "loc": {
-                                "start": {
-                                  "line": 102,
-                                  "column": 12
-                                },
-                                "end": {
-                                  "line": 102,
-                                  "column": 23
-                                }
-                              }
-                            },
-                            "right": {
-                              "type": "Literal",
-                              "value": false,
-                              "raw": "false",
-                              "range": [
-                                3294,
-                                3299
-                              ],
-                              "loc": {
-                                "start": {
-                                  "line": 102,
-                                  "column": 26
-                                },
-                                "end": {
-                                  "line": 102,
-                                  "column": 31
-                                }
-                              }
-                            },
-                            "range": [
-                              3280,
-                              3299
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 102,
-                                "column": 12
-                              },
-                              "end": {
-                                "line": 102,
-                                "column": 31
-                              }
-                            }
-                          },
-                          "range": [
-                            3280,
-                            3300
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 102,
-                              "column": 12
-                            },
-                            "end": {
-                              "line": 102,
-                              "column": 32
-                            }
-                          }
-                        },
-                        {
-                          "type": "ExpressionStatement",
-                          "expression": {
-                            "type": "AssignmentExpression",
-                            "operator": "=",
-                            "left": {
-                              "type": "MemberExpression",
-                              "computed": false,
-                              "object": {
-                                "type": "ThisExpression",
-                                "range": [
-                                  3313,
-                                  3317
-                                ],
-                                "loc": {
-                                  "start": {
-                                    "line": 103,
-                                    "column": 12
-                                  },
-                                  "end": {
-                                    "line": 103,
-                                    "column": 16
-                                  }
-                                }
-                              },
-                              "property": {
-                                "type": "Identifier",
-                                "name": "isStopped",
-                                "range": [
-                                  3318,
-                                  3327
-                                ],
-                                "loc": {
-                                  "start": {
-                                    "line": 103,
-                                    "column": 17
-                                  },
-                                  "end": {
-                                    "line": 103,
-                                    "column": 26
-                                  }
-                                }
-                              },
-                              "range": [
-                                3313,
-                                3327
-                              ],
-                              "loc": {
-                                "start": {
-                                  "line": 103,
-                                  "column": 12
-                                },
-                                "end": {
-                                  "line": 103,
-                                  "column": 26
-                                }
-                              }
-                            },
-                            "right": {
-                              "type": "Literal",
-                              "value": false,
-                              "raw": "false",
-                              "range": [
-                                3330,
-                                3335
-                              ],
-                              "loc": {
-                                "start": {
-                                  "line": 103,
-                                  "column": 29
-                                },
-                                "end": {
-                                  "line": 103,
-                                  "column": 34
-                                }
-                              }
-                            },
-                            "range": [
-                              3313,
-                              3335
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 103,
-                                "column": 12
-                              },
-                              "end": {
-                                "line": 103,
-                                "column": 34
-                              }
-                            }
-                          },
-                          "range": [
-                            3313,
-                            3336
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 103,
-                              "column": 12
-                            },
-                            "end": {
-                              "line": 103,
-                              "column": 35
+                              "column": 42
                             }
                           }
                         },
@@ -2797,16 +2583,16 @@
                               "object": {
                                 "type": "ThisExpression",
                                 "range": [
-                                  3349,
-                                  3353
+                                  3291,
+                                  3295
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 104,
+                                    "line": 102,
                                     "column": 12
                                   },
                                   "end": {
-                                    "line": 104,
+                                    "line": 102,
                                     "column": 16
                                   }
                                 }
@@ -2815,31 +2601,31 @@
                                 "type": "Identifier",
                                 "name": "add",
                                 "range": [
-                                  3354,
-                                  3357
+                                  3296,
+                                  3299
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 104,
+                                    "line": 102,
                                     "column": 17
                                   },
                                   "end": {
-                                    "line": 104,
+                                    "line": 102,
                                     "column": 20
                                   }
                                 }
                               },
                               "range": [
-                                3349,
-                                3357
+                                3291,
+                                3299
                               ],
                               "loc": {
                                 "start": {
-                                  "line": 104,
+                                  "line": 102,
                                   "column": 12
                                 },
                                 "end": {
-                                  "line": 104,
+                                  "line": 102,
                                   "column": 20
                                 }
                               }
@@ -2851,16 +2637,16 @@
                                   "type": "Identifier",
                                   "name": "subscribeToResult",
                                   "range": [
-                                    3358,
-                                    3375
+                                    3300,
+                                    3317
                                   ],
                                   "loc": {
                                     "start": {
-                                      "line": 104,
+                                      "line": 102,
                                       "column": 21
                                     },
                                     "end": {
-                                      "line": 104,
+                                      "line": 102,
                                       "column": 38
                                     }
                                   }
@@ -2869,16 +2655,16 @@
                                   {
                                     "type": "ThisExpression",
                                     "range": [
-                                      3376,
-                                      3380
+                                      3318,
+                                      3322
                                     ],
                                     "loc": {
                                       "start": {
-                                        "line": 104,
+                                        "line": 102,
                                         "column": 39
                                       },
                                       "end": {
-                                        "line": 104,
+                                        "line": 102,
                                         "column": 43
                                       }
                                     }
@@ -2887,63 +2673,63 @@
                                     "type": "Identifier",
                                     "name": "result",
                                     "range": [
-                                      3382,
-                                      3388
+                                      3324,
+                                      3330
                                     ],
                                     "loc": {
                                       "start": {
-                                        "line": 104,
+                                        "line": 102,
                                         "column": 45
                                       },
                                       "end": {
-                                        "line": 104,
+                                        "line": 102,
                                         "column": 51
                                       }
                                     }
                                   }
                                 ],
                                 "range": [
-                                  3358,
-                                  3389
+                                  3300,
+                                  3331
                                 ],
                                 "loc": {
                                   "start": {
-                                    "line": 104,
+                                    "line": 102,
                                     "column": 21
                                   },
                                   "end": {
-                                    "line": 104,
+                                    "line": 102,
                                     "column": 52
                                   }
                                 }
                               }
                             ],
                             "range": [
-                              3349,
-                              3390
+                              3291,
+                              3332
                             ],
                             "loc": {
                               "start": {
-                                "line": 104,
+                                "line": 102,
                                 "column": 12
                               },
                               "end": {
-                                "line": 104,
+                                "line": 102,
                                 "column": 53
                               }
                             }
                           },
                           "range": [
-                            3349,
-                            3391
+                            3291,
+                            3333
                           ],
                           "loc": {
                             "start": {
-                              "line": 104,
+                              "line": 102,
                               "column": 12
                             },
                             "end": {
-                              "line": 104,
+                              "line": 102,
                               "column": 54
                             }
                           }
@@ -2951,7 +2737,7 @@
                       ],
                       "range": [
                         3020,
-                        3401
+                        3343
                       ],
                       "loc": {
                         "start": {
@@ -2959,7 +2745,7 @@
                           "column": 29
                         },
                         "end": {
-                          "line": 105,
+                          "line": 103,
                           "column": 9
                         }
                       }
@@ -2967,7 +2753,7 @@
                     "alternate": null,
                     "range": [
                       2999,
-                      3401
+                      3343
                     ],
                     "loc": {
                       "start": {
@@ -2975,7 +2761,7 @@
                         "column": 8
                       },
                       "end": {
-                        "line": 105,
+                        "line": 103,
                         "column": 9
                       }
                     }
@@ -2983,7 +2769,7 @@
                 ],
                 "range": [
                   2989,
-                  3407
+                  3349
                 ],
                 "loc": {
                   "start": {
@@ -2991,7 +2777,7 @@
                     "column": 15
                   },
                   "end": {
-                    "line": 106,
+                    "line": 104,
                     "column": 5
                   }
                 }
@@ -3000,7 +2786,7 @@
               "expression": false,
               "range": [
                 2983,
-                3407
+                3349
               ],
               "loc": {
                 "start": {
@@ -3008,7 +2794,7 @@
                   "column": 9
                 },
                 "end": {
-                  "line": 106,
+                  "line": 104,
                   "column": 5
                 }
               }
@@ -3017,7 +2803,7 @@
             "computed": false,
             "range": [
               2978,
-              3407
+              3349
             ],
             "loc": {
               "start": {
@@ -3025,7 +2811,7 @@
                 "column": 4
               },
               "end": {
-                "line": 106,
+                "line": 104,
                 "column": 5
               }
             },
@@ -3126,7 +2912,7 @@
         ],
         "range": [
           2484,
-          3409
+          3351
         ],
         "loc": {
           "start": {
@@ -3134,14 +2920,14 @@
             "column": 46
           },
           "end": {
-            "line": 107,
+            "line": 105,
             "column": 1
           }
         }
       },
       "range": [
         2438,
-        3409
+        3351
       ],
       "loc": {
         "start": {
@@ -3149,7 +2935,7 @@
           "column": 0
         },
         "end": {
-          "line": 107,
+          "line": 105,
           "column": 1
         }
       },
@@ -3178,16 +2964,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=catch.js.map",
           "range": [
-            3410,
-            3443
+            3352,
+            3385
           ],
           "loc": {
             "start": {
-              "line": 108,
+              "line": 106,
               "column": 0
             },
             "end": {
-              "line": 108,
+              "line": 106,
               "column": 33
             }
           }
@@ -3198,7 +2984,7 @@
   "sourceType": "module",
   "range": [
     0,
-    3409
+    3351
   ],
   "loc": {
     "start": {
@@ -3206,14 +2992,14 @@
       "column": 0
     },
     "end": {
-      "line": 107,
+      "line": 105,
       "column": 1
     }
   },
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * Catches errors on the observable to be handled by returning a new observable or throwing an error.\n *\n * <img src=\"./img/catch.png\" width=\"100%\">\n *\n * @example <caption>Continues with a different Observable when there's an error</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n * \t   if (n == 4) {\n * \t     throw 'four!';\n *     }\n *\t   return n;\n *   })\n *   .catch(err => Observable.of('I', 'II', 'III', 'IV', 'V'))\n *   .subscribe(x => console.log(x));\n *   // 1, 2, 3, I, II, III, IV, V\n *\n * @example <caption>Retries the caught source Observable again in case of error, similar to retry() operator</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n * \t   if (n === 4) {\n * \t     throw 'four!';\n *     }\n * \t   return n;\n *   })\n *   .catch((err, caught) => caught)\n *   .take(30)\n *   .subscribe(x => console.log(x));\n *   // 1, 2, 3, 1, 2, 3, ...\n *\n * @example <caption>Throws a new error when the source Observable throws an error</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n *     if (n == 4) {\n *       throw 'four!';\n *     }\n *     return n;\n *   })\n *   .catch(err => {\n *     throw 'error in source. Details: ' + err;\n *   })\n *   .subscribe(\n *     x => console.log(x),\n *     err => console.log(err)\n *   );\n *   // 1, 2, 3, error in source. Details: four!\n *\n * @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which\n *  is the source observable, in case you'd like to \"retry\" that observable by returning it again. Whatever observable\n *  is returned by the `selector` will be used to continue the observable chain.\n * @return {Observable} an observable that originates from either the source or the observable returned by the\n *  catch `selector` function.\n * @method catch\n * @name catch\n * @owner Observable\n ",
+      "value": "*\n * Catches errors on the observable to be handled by returning a new observable or throwing an error.\n *\n * <img src=\"./img/catch.png\" width=\"100%\">\n *\n * @example <caption>Continues with a different Observable when there's an error</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n * \t   if (n == 4) {\n * \t     throw 'four!';\n *     }\n *\t   return n;\n *   })\n *   .catch(err => Observable.of('I', 'II', 'III', 'IV', 'V'))\n *   .subscribe(x => console.log(x));\n *   // 1, 2, 3, I, II, III, IV, V\n *\n * @example <caption>Retries the caught source Observable again in case of error, similar to retry() operator</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n * \t   if (n === 4) {\n * \t     throw 'four!';\n *     }\n * \t   return n;\n *   })\n *   .catch((err, caught) => caught)\n *   .take(30)\n *   .subscribe(x => console.log(x));\n *   // 1, 2, 3, 1, 2, 3, ...\n *\n * @example <caption>Throws a new error when the source Observable throws an error</caption>\n *\n * Observable.of(1, 2, 3, 4, 5)\n *   .map(n => {\n *     if (n == 4) {\n *       throw 'four!';\n *     }\n *     return n;\n *   })\n *   .catch(err => {\n *     throw 'error in source. Details: ' + err;\n *   })\n *   .subscribe(\n *     x => console.log(x),\n *     err => console.log(err)\n *   );\n *   // 1, 2, 3, error in source. Details: four!\n *\n * @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which\n *  is the source observable, in case you'd like to \"retry\" that observable by returning it again. Whatever observable\n *  is returned by the `selector` will be used to continue the observable chain.\n * @return {Observable} An observable that originates from either the source or the observable returned by the\n *  catch `selector` function.\n * @method catch\n * @name catch\n * @owner Observable\n ",
       "range": [
         117,
         1956
@@ -3341,16 +3127,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=catch.js.map",
       "range": [
-        3410,
-        3443
+        3352,
+        3385
       ],
       "loc": {
         "start": {
-          "line": 108,
+          "line": 106,
           "column": 0
         },
         "end": {
-          "line": 108,
+          "line": 106,
           "column": 33
         }
       }

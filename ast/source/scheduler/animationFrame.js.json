@@ -181,7 +181,27 @@
           "line": 2,
           "column": 68
         }
-      }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n *\n * Animation Frame Scheduler\n *\n * <span class=\"informal\">Perform task when `window.requestAnimationFrame` would fire</span>\n *\n * When `animationFrame` scheduler is used with delay, it will fall back to {@link async} scheduler\n * behaviour.\n *\n * Without delay, `animationFrame` scheduler can be used to create smooth browser animations.\n * It makes sure scheduled task will happen just before next browser content repaint,\n * thus performing animations as efficiently as possible.\n *\n * @example <caption>Schedule div height animation</caption>\n * const div = document.querySelector('.some-div');\n *\n * Rx.Scheduler.schedule(function(height) {\n *   div.style.height = height + \"px\";\n *\n *   this.schedule(height + 1);  // `this` references currently executing Action,\n *                               // which we reschedule with new state\n * }, 0, 0);\n *\n * // You will see .some-div element growing in height\n *\n *\n * @static true\n * @name animationFrame\n * @owner Scheduler\n ",
+          "range": [
+            132,
+            1120
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 32,
+              "column": 3
+            }
+          }
+        }
+      ]
     },
     {
       "type": "ExportNamedDeclaration",
@@ -194,16 +214,16 @@
               "type": "Identifier",
               "name": "animationFrame",
               "range": [
-                145,
-                159
+                1134,
+                1148
               ],
               "loc": {
                 "start": {
-                  "line": 3,
+                  "line": 33,
                   "column": 13
                 },
                 "end": {
-                  "line": 3,
+                  "line": 33,
                   "column": 27
                 }
               }
@@ -214,16 +234,16 @@
                 "type": "Identifier",
                 "name": "AnimationFrameScheduler",
                 "range": [
-                  166,
-                  189
+                  1155,
+                  1178
                 ],
                 "loc": {
                   "start": {
-                    "line": 3,
+                    "line": 33,
                     "column": 34
                   },
                   "end": {
-                    "line": 3,
+                    "line": 33,
                     "column": 57
                   }
                 }
@@ -233,47 +253,47 @@
                   "type": "Identifier",
                   "name": "AnimationFrameAction",
                   "range": [
-                    190,
-                    210
+                    1179,
+                    1199
                   ],
                   "loc": {
                     "start": {
-                      "line": 3,
+                      "line": 33,
                       "column": 58
                     },
                     "end": {
-                      "line": 3,
+                      "line": 33,
                       "column": 78
                     }
                   }
                 }
               ],
               "range": [
-                162,
-                211
+                1151,
+                1200
               ],
               "loc": {
                 "start": {
-                  "line": 3,
+                  "line": 33,
                   "column": 30
                 },
                 "end": {
-                  "line": 3,
+                  "line": 33,
                   "column": 79
                 }
               }
             },
             "range": [
-              145,
-              211
+              1134,
+              1200
             ],
             "loc": {
               "start": {
-                "line": 3,
+                "line": 33,
                 "column": 13
               },
               "end": {
-                "line": 3,
+                "line": 33,
                 "column": 79
               }
             }
@@ -281,35 +301,54 @@
         ],
         "kind": "const",
         "range": [
-          139,
-          212
+          1128,
+          1201
         ],
         "loc": {
           "start": {
-            "line": 3,
+            "line": 33,
             "column": 7
           },
           "end": {
-            "line": 3,
+            "line": 33,
             "column": 80
           }
         },
-        "leadingComments": [],
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n *\n * Animation Frame Scheduler\n *\n * <span class=\"informal\">Perform task when `window.requestAnimationFrame` would fire</span>\n *\n * When `animationFrame` scheduler is used with delay, it will fall back to {@link async} scheduler\n * behaviour.\n *\n * Without delay, `animationFrame` scheduler can be used to create smooth browser animations.\n * It makes sure scheduled task will happen just before next browser content repaint,\n * thus performing animations as efficiently as possible.\n *\n * @example <caption>Schedule div height animation</caption>\n * const div = document.querySelector('.some-div');\n *\n * Rx.Scheduler.schedule(function(height) {\n *   div.style.height = height + \"px\";\n *\n *   this.schedule(height + 1);  // `this` references currently executing Action,\n *                               // which we reschedule with new state\n * }, 0, 0);\n *\n * // You will see .some-div element growing in height\n *\n *\n * @static true\n * @name animationFrame\n * @owner Scheduler\n ",
+            "range": [
+              132,
+              1120
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 32,
+                "column": 3
+              }
+            }
+          }
+        ],
         "trailingComments": [
           {
             "type": "Line",
             "value": "# sourceMappingURL=animationFrame.js.map",
             "range": [
-              213,
-              255
+              1202,
+              1244
             ],
             "loc": {
               "start": {
-                "line": 4,
+                "line": 34,
                 "column": 0
               },
               "end": {
-                "line": 4,
+                "line": 34,
                 "column": 42
               }
             }
@@ -319,34 +358,54 @@
       "specifiers": [],
       "source": null,
       "range": [
-        132,
-        212
+        1121,
+        1201
       ],
       "loc": {
         "start": {
-          "line": 3,
+          "line": 33,
           "column": 0
         },
         "end": {
-          "line": 3,
+          "line": 33,
           "column": 80
         }
       },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n *\n * Animation Frame Scheduler\n *\n * <span class=\"informal\">Perform task when `window.requestAnimationFrame` would fire</span>\n *\n * When `animationFrame` scheduler is used with delay, it will fall back to {@link async} scheduler\n * behaviour.\n *\n * Without delay, `animationFrame` scheduler can be used to create smooth browser animations.\n * It makes sure scheduled task will happen just before next browser content repaint,\n * thus performing animations as efficiently as possible.\n *\n * @example <caption>Schedule div height animation</caption>\n * const div = document.querySelector('.some-div');\n *\n * Rx.Scheduler.schedule(function(height) {\n *   div.style.height = height + \"px\";\n *\n *   this.schedule(height + 1);  // `this` references currently executing Action,\n *                               // which we reschedule with new state\n * }, 0, 0);\n *\n * // You will see .some-div element growing in height\n *\n *\n * @static true\n * @name animationFrame\n * @owner Scheduler\n ",
+          "range": [
+            132,
+            1120
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 32,
+              "column": 3
+            }
+          }
+        }
+      ],
       "trailingComments": [
         {
           "type": "Line",
           "value": "# sourceMappingURL=animationFrame.js.map",
           "range": [
-            213,
-            255
+            1202,
+            1244
           ],
           "loc": {
             "start": {
-              "line": 4,
+              "line": 34,
               "column": 0
             },
             "end": {
-              "line": 4,
+              "line": 34,
               "column": 42
             }
           }
@@ -357,7 +416,7 @@
   "sourceType": "module",
   "range": [
     0,
-    212
+    1201
   ],
   "loc": {
     "start": {
@@ -365,25 +424,43 @@
       "column": 0
     },
     "end": {
-      "line": 3,
+      "line": 33,
       "column": 80
     }
   },
   "comments": [
     {
-      "type": "Line",
-      "value": "# sourceMappingURL=animationFrame.js.map",
+      "type": "Block",
+      "value": "*\n *\n * Animation Frame Scheduler\n *\n * <span class=\"informal\">Perform task when `window.requestAnimationFrame` would fire</span>\n *\n * When `animationFrame` scheduler is used with delay, it will fall back to {@link async} scheduler\n * behaviour.\n *\n * Without delay, `animationFrame` scheduler can be used to create smooth browser animations.\n * It makes sure scheduled task will happen just before next browser content repaint,\n * thus performing animations as efficiently as possible.\n *\n * @example <caption>Schedule div height animation</caption>\n * const div = document.querySelector('.some-div');\n *\n * Rx.Scheduler.schedule(function(height) {\n *   div.style.height = height + \"px\";\n *\n *   this.schedule(height + 1);  // `this` references currently executing Action,\n *                               // which we reschedule with new state\n * }, 0, 0);\n *\n * // You will see .some-div element growing in height\n *\n *\n * @static true\n * @name animationFrame\n * @owner Scheduler\n ",
       "range": [
-        213,
-        255
+        132,
+        1120
       ],
       "loc": {
         "start": {
-          "line": 4,
+          "line": 3,
           "column": 0
         },
         "end": {
-          "line": 4,
+          "line": 32,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=animationFrame.js.map",
+      "range": [
+        1202,
+        1244
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 0
+        },
+        "end": {
+          "line": 34,
           "column": 42
         }
       }

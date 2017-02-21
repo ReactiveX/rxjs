@@ -185,10 +185,10 @@
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.\n *\n * <img src=\"./img/skipUntil.png\" width=\"100%\">\n *\n * @param {Observable} the second Observable that has to emit an item before the source Observable's elements begin to\n * be mirrored by the resulting Observable.\n * @return {Observable<T>} an Observable that skips items from the source Observable until the second Observable emits\n * an item, then emits the remaining items.\n * @method skipUntil\n * @owner Observable\n ",
+          "value": "*\n * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.\n *\n * <img src=\"./img/skipUntil.png\" width=\"100%\">\n *\n * @param {Observable} notifier - The second Observable that has to emit an item before the source Observable's elements begin to\n * be mirrored by the resulting Observable.\n * @return {Observable<T>} An Observable that skips items from the source Observable until the second Observable emits\n * an item, then emits the remaining items.\n * @method skipUntil\n * @owner Observable\n ",
           "range": [
             117,
-            662
+            673
           ],
           "loc": {
             "start": {
@@ -211,8 +211,8 @@
           "type": "Identifier",
           "name": "skipUntil",
           "range": [
-            679,
-            688
+            690,
+            699
           ],
           "loc": {
             "start": {
@@ -230,8 +230,8 @@
             "type": "Identifier",
             "name": "notifier",
             "range": [
-              689,
-              697
+              700,
+              708
             ],
             "loc": {
               "start": {
@@ -258,8 +258,8 @@
                   "object": {
                     "type": "ThisExpression",
                     "range": [
-                      712,
-                      716
+                      723,
+                      727
                     ],
                     "loc": {
                       "start": {
@@ -276,8 +276,8 @@
                     "type": "Identifier",
                     "name": "lift",
                     "range": [
-                      717,
-                      721
+                      728,
+                      732
                     ],
                     "loc": {
                       "start": {
@@ -291,8 +291,8 @@
                     }
                   },
                   "range": [
-                    712,
-                    721
+                    723,
+                    732
                   ],
                   "loc": {
                     "start": {
@@ -312,8 +312,8 @@
                       "type": "Identifier",
                       "name": "SkipUntilOperator",
                       "range": [
-                        726,
-                        743
+                        737,
+                        754
                       ],
                       "loc": {
                         "start": {
@@ -331,8 +331,8 @@
                         "type": "Identifier",
                         "name": "notifier",
                         "range": [
-                          744,
-                          752
+                          755,
+                          763
                         ],
                         "loc": {
                           "start": {
@@ -347,8 +347,8 @@
                       }
                     ],
                     "range": [
-                      722,
-                      753
+                      733,
+                      764
                     ],
                     "loc": {
                       "start": {
@@ -363,8 +363,8 @@
                   }
                 ],
                 "range": [
-                  712,
-                  754
+                  723,
+                  765
                 ],
                 "loc": {
                   "start": {
@@ -378,8 +378,8 @@
                 }
               },
               "range": [
-                705,
-                755
+                716,
+                766
               ],
               "loc": {
                 "start": {
@@ -394,8 +394,8 @@
             }
           ],
           "range": [
-            699,
-            757
+            710,
+            768
           ],
           "loc": {
             "start": {
@@ -411,8 +411,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          670,
-          757
+          681,
+          768
         ],
         "loc": {
           "start": {
@@ -427,10 +427,10 @@
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.\n *\n * <img src=\"./img/skipUntil.png\" width=\"100%\">\n *\n * @param {Observable} the second Observable that has to emit an item before the source Observable's elements begin to\n * be mirrored by the resulting Observable.\n * @return {Observable<T>} an Observable that skips items from the source Observable until the second Observable emits\n * an item, then emits the remaining items.\n * @method skipUntil\n * @owner Observable\n ",
+            "value": "*\n * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.\n *\n * <img src=\"./img/skipUntil.png\" width=\"100%\">\n *\n * @param {Observable} notifier - The second Observable that has to emit an item before the source Observable's elements begin to\n * be mirrored by the resulting Observable.\n * @return {Observable<T>} An Observable that skips items from the source Observable until the second Observable emits\n * an item, then emits the remaining items.\n * @method skipUntil\n * @owner Observable\n ",
             "range": [
               117,
-              662
+              673
             ],
             "loc": {
               "start": {
@@ -449,8 +449,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        663,
-        757
+        674,
+        768
       ],
       "loc": {
         "start": {
@@ -465,10 +465,10 @@
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.\n *\n * <img src=\"./img/skipUntil.png\" width=\"100%\">\n *\n * @param {Observable} the second Observable that has to emit an item before the source Observable's elements begin to\n * be mirrored by the resulting Observable.\n * @return {Observable<T>} an Observable that skips items from the source Observable until the second Observable emits\n * an item, then emits the remaining items.\n * @method skipUntil\n * @owner Observable\n ",
+          "value": "*\n * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.\n *\n * <img src=\"./img/skipUntil.png\" width=\"100%\">\n *\n * @param {Observable} notifier - The second Observable that has to emit an item before the source Observable's elements begin to\n * be mirrored by the resulting Observable.\n * @return {Observable<T>} An Observable that skips items from the source Observable until the second Observable emits\n * an item, then emits the remaining items.\n * @method skipUntil\n * @owner Observable\n ",
           "range": [
             117,
-            662
+            673
           ],
           "loc": {
             "start": {
@@ -489,8 +489,8 @@
         "type": "Identifier",
         "name": "SkipUntilOperator",
         "range": [
-          764,
-          781
+          775,
+          792
         ],
         "loc": {
           "start": {
@@ -513,8 +513,8 @@
               "type": "Identifier",
               "name": "constructor",
               "range": [
-                788,
-                799
+                799,
+                810
               ],
               "loc": {
                 "start": {
@@ -535,8 +535,8 @@
                   "type": "Identifier",
                   "name": "notifier",
                   "range": [
-                    800,
-                    808
+                    811,
+                    819
                   ],
                   "loc": {
                     "start": {
@@ -564,8 +564,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            820,
-                            824
+                            831,
+                            835
                           ],
                           "loc": {
                             "start": {
@@ -582,8 +582,8 @@
                           "type": "Identifier",
                           "name": "notifier",
                           "range": [
-                            825,
-                            833
+                            836,
+                            844
                           ],
                           "loc": {
                             "start": {
@@ -597,8 +597,8 @@
                           }
                         },
                         "range": [
-                          820,
-                          833
+                          831,
+                          844
                         ],
                         "loc": {
                           "start": {
@@ -615,8 +615,8 @@
                         "type": "Identifier",
                         "name": "notifier",
                         "range": [
-                          836,
-                          844
+                          847,
+                          855
                         ],
                         "loc": {
                           "start": {
@@ -630,8 +630,8 @@
                         }
                       },
                       "range": [
-                        820,
-                        844
+                        831,
+                        855
                       ],
                       "loc": {
                         "start": {
@@ -645,8 +645,8 @@
                       }
                     },
                     "range": [
-                      820,
-                      845
+                      831,
+                      856
                     ],
                     "loc": {
                       "start": {
@@ -661,8 +661,8 @@
                   }
                 ],
                 "range": [
-                  810,
-                  851
+                  821,
+                  862
                 ],
                 "loc": {
                   "start": {
@@ -678,8 +678,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                799,
-                851
+                810,
+                862
               ],
               "loc": {
                 "start": {
@@ -695,8 +695,8 @@
             "kind": "constructor",
             "computed": false,
             "range": [
-              788,
-              851
+              799,
+              862
             ],
             "loc": {
               "start": {
@@ -716,8 +716,8 @@
               "type": "Identifier",
               "name": "call",
               "range": [
-                856,
-                860
+                867,
+                871
               ],
               "loc": {
                 "start": {
@@ -738,8 +738,8 @@
                   "type": "Identifier",
                   "name": "subscriber",
                   "range": [
-                    861,
-                    871
+                    872,
+                    882
                   ],
                   "loc": {
                     "start": {
@@ -756,8 +756,8 @@
                   "type": "Identifier",
                   "name": "source",
                   "range": [
-                    873,
-                    879
+                    884,
+                    890
                   ],
                   "loc": {
                     "start": {
@@ -785,8 +785,8 @@
                           "type": "Identifier",
                           "name": "source",
                           "range": [
-                            898,
-                            904
+                            909,
+                            915
                           ],
                           "loc": {
                             "start": {
@@ -803,8 +803,8 @@
                           "type": "Identifier",
                           "name": "subscribe",
                           "range": [
-                            905,
-                            914
+                            916,
+                            925
                           ],
                           "loc": {
                             "start": {
@@ -818,8 +818,8 @@
                           }
                         },
                         "range": [
-                          898,
-                          914
+                          909,
+                          925
                         ],
                         "loc": {
                           "start": {
@@ -839,8 +839,8 @@
                             "type": "Identifier",
                             "name": "SkipUntilSubscriber",
                             "range": [
-                              919,
-                              938
+                              930,
+                              949
                             ],
                             "loc": {
                               "start": {
@@ -858,8 +858,8 @@
                               "type": "Identifier",
                               "name": "subscriber",
                               "range": [
-                                939,
-                                949
+                                950,
+                                960
                               ],
                               "loc": {
                                 "start": {
@@ -878,8 +878,8 @@
                               "object": {
                                 "type": "ThisExpression",
                                 "range": [
-                                  951,
-                                  955
+                                  962,
+                                  966
                                 ],
                                 "loc": {
                                   "start": {
@@ -896,8 +896,8 @@
                                 "type": "Identifier",
                                 "name": "notifier",
                                 "range": [
-                                  956,
-                                  964
+                                  967,
+                                  975
                                 ],
                                 "loc": {
                                   "start": {
@@ -911,8 +911,8 @@
                                 }
                               },
                               "range": [
-                                951,
-                                964
+                                962,
+                                975
                               ],
                               "loc": {
                                 "start": {
@@ -927,8 +927,8 @@
                             }
                           ],
                           "range": [
-                            915,
-                            965
+                            926,
+                            976
                           ],
                           "loc": {
                             "start": {
@@ -943,8 +943,8 @@
                         }
                       ],
                       "range": [
-                        898,
-                        966
+                        909,
+                        977
                       ],
                       "loc": {
                         "start": {
@@ -958,8 +958,8 @@
                       }
                     },
                     "range": [
-                      891,
-                      967
+                      902,
+                      978
                     ],
                     "loc": {
                       "start": {
@@ -974,8 +974,8 @@
                   }
                 ],
                 "range": [
-                  881,
-                  973
+                  892,
+                  984
                 ],
                 "loc": {
                   "start": {
@@ -991,8 +991,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                860,
-                973
+                871,
+                984
               ],
               "loc": {
                 "start": {
@@ -1008,8 +1008,8 @@
             "kind": "method",
             "computed": false,
             "range": [
-              856,
-              973
+              867,
+              984
             ],
             "loc": {
               "start": {
@@ -1025,8 +1025,8 @@
           }
         ],
         "range": [
-          782,
-          975
+          793,
+          986
         ],
         "loc": {
           "start": {
@@ -1040,8 +1040,8 @@
         }
       },
       "range": [
-        758,
-        975
+        769,
+        986
       ],
       "loc": {
         "start": {
@@ -1058,8 +1058,8 @@
           "type": "Block",
           "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
           "range": [
-            976,
-            1067
+            987,
+            1078
           ],
           "loc": {
             "start": {
@@ -1080,8 +1080,8 @@
         "type": "Identifier",
         "name": "SkipUntilSubscriber",
         "range": [
-          1074,
-          1093
+          1085,
+          1104
         ],
         "loc": {
           "start": {
@@ -1098,8 +1098,8 @@
         "type": "Identifier",
         "name": "OuterSubscriber",
         "range": [
-          1102,
-          1117
+          1113,
+          1128
         ],
         "loc": {
           "start": {
@@ -1121,8 +1121,8 @@
               "type": "Identifier",
               "name": "constructor",
               "range": [
-                1124,
-                1135
+                1135,
+                1146
               ],
               "loc": {
                 "start": {
@@ -1143,8 +1143,8 @@
                   "type": "Identifier",
                   "name": "destination",
                   "range": [
-                    1136,
-                    1147
+                    1147,
+                    1158
                   ],
                   "loc": {
                     "start": {
@@ -1161,8 +1161,8 @@
                   "type": "Identifier",
                   "name": "notifier",
                   "range": [
-                    1149,
-                    1157
+                    1160,
+                    1168
                   ],
                   "loc": {
                     "start": {
@@ -1186,8 +1186,8 @@
                       "callee": {
                         "type": "Super",
                         "range": [
-                          1169,
-                          1174
+                          1180,
+                          1185
                         ],
                         "loc": {
                           "start": {
@@ -1205,8 +1205,8 @@
                           "type": "Identifier",
                           "name": "destination",
                           "range": [
-                            1175,
-                            1186
+                            1186,
+                            1197
                           ],
                           "loc": {
                             "start": {
@@ -1221,8 +1221,8 @@
                         }
                       ],
                       "range": [
-                        1169,
-                        1187
+                        1180,
+                        1198
                       ],
                       "loc": {
                         "start": {
@@ -1236,8 +1236,8 @@
                       }
                     },
                     "range": [
-                      1169,
-                      1188
+                      1180,
+                      1199
                     ],
                     "loc": {
                       "start": {
@@ -1261,8 +1261,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            1197,
-                            1201
+                            1208,
+                            1212
                           ],
                           "loc": {
                             "start": {
@@ -1279,8 +1279,8 @@
                           "type": "Identifier",
                           "name": "hasValue",
                           "range": [
-                            1202,
-                            1210
+                            1213,
+                            1221
                           ],
                           "loc": {
                             "start": {
@@ -1294,8 +1294,8 @@
                           }
                         },
                         "range": [
-                          1197,
-                          1210
+                          1208,
+                          1221
                         ],
                         "loc": {
                           "start": {
@@ -1313,8 +1313,8 @@
                         "value": false,
                         "raw": "false",
                         "range": [
-                          1213,
-                          1218
+                          1224,
+                          1229
                         ],
                         "loc": {
                           "start": {
@@ -1328,8 +1328,8 @@
                         }
                       },
                       "range": [
-                        1197,
-                        1218
+                        1208,
+                        1229
                       ],
                       "loc": {
                         "start": {
@@ -1343,8 +1343,8 @@
                       }
                     },
                     "range": [
-                      1197,
-                      1219
+                      1208,
+                      1230
                     ],
                     "loc": {
                       "start": {
@@ -1368,8 +1368,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            1228,
-                            1232
+                            1239,
+                            1243
                           ],
                           "loc": {
                             "start": {
@@ -1386,8 +1386,8 @@
                           "type": "Identifier",
                           "name": "isInnerStopped",
                           "range": [
-                            1233,
-                            1247
+                            1244,
+                            1258
                           ],
                           "loc": {
                             "start": {
@@ -1401,8 +1401,8 @@
                           }
                         },
                         "range": [
-                          1228,
-                          1247
+                          1239,
+                          1258
                         ],
                         "loc": {
                           "start": {
@@ -1420,8 +1420,8 @@
                         "value": false,
                         "raw": "false",
                         "range": [
-                          1250,
-                          1255
+                          1261,
+                          1266
                         ],
                         "loc": {
                           "start": {
@@ -1435,8 +1435,8 @@
                         }
                       },
                       "range": [
-                        1228,
-                        1255
+                        1239,
+                        1266
                       ],
                       "loc": {
                         "start": {
@@ -1450,8 +1450,8 @@
                       }
                     },
                     "range": [
-                      1228,
-                      1256
+                      1239,
+                      1267
                     ],
                     "loc": {
                       "start": {
@@ -1474,8 +1474,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            1265,
-                            1269
+                            1276,
+                            1280
                           ],
                           "loc": {
                             "start": {
@@ -1492,8 +1492,8 @@
                           "type": "Identifier",
                           "name": "add",
                           "range": [
-                            1270,
-                            1273
+                            1281,
+                            1284
                           ],
                           "loc": {
                             "start": {
@@ -1507,8 +1507,8 @@
                           }
                         },
                         "range": [
-                          1265,
-                          1273
+                          1276,
+                          1284
                         ],
                         "loc": {
                           "start": {
@@ -1528,8 +1528,8 @@
                             "type": "Identifier",
                             "name": "subscribeToResult",
                             "range": [
-                              1274,
-                              1291
+                              1285,
+                              1302
                             ],
                             "loc": {
                               "start": {
@@ -1546,8 +1546,8 @@
                             {
                               "type": "ThisExpression",
                               "range": [
-                                1292,
-                                1296
+                                1303,
+                                1307
                               ],
                               "loc": {
                                 "start": {
@@ -1564,8 +1564,8 @@
                               "type": "Identifier",
                               "name": "notifier",
                               "range": [
-                                1298,
-                                1306
+                                1309,
+                                1317
                               ],
                               "loc": {
                                 "start": {
@@ -1580,8 +1580,8 @@
                             }
                           ],
                           "range": [
-                            1274,
-                            1307
+                            1285,
+                            1318
                           ],
                           "loc": {
                             "start": {
@@ -1596,8 +1596,8 @@
                         }
                       ],
                       "range": [
-                        1265,
-                        1308
+                        1276,
+                        1319
                       ],
                       "loc": {
                         "start": {
@@ -1611,8 +1611,8 @@
                       }
                     },
                     "range": [
-                      1265,
-                      1309
+                      1276,
+                      1320
                     ],
                     "loc": {
                       "start": {
@@ -1627,8 +1627,8 @@
                   }
                 ],
                 "range": [
-                  1159,
-                  1315
+                  1170,
+                  1326
                 ],
                 "loc": {
                   "start": {
@@ -1644,8 +1644,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                1135,
-                1315
+                1146,
+                1326
               ],
               "loc": {
                 "start": {
@@ -1661,8 +1661,8 @@
             "kind": "constructor",
             "computed": false,
             "range": [
-              1124,
-              1315
+              1135,
+              1326
             ],
             "loc": {
               "start": {
@@ -1682,8 +1682,8 @@
               "type": "Identifier",
               "name": "_next",
               "range": [
-                1320,
-                1325
+                1331,
+                1336
               ],
               "loc": {
                 "start": {
@@ -1704,8 +1704,8 @@
                   "type": "Identifier",
                   "name": "value",
                   "range": [
-                    1326,
-                    1331
+                    1337,
+                    1342
                   ],
                   "loc": {
                     "start": {
@@ -1730,8 +1730,8 @@
                       "object": {
                         "type": "ThisExpression",
                         "range": [
-                          1347,
-                          1351
+                          1358,
+                          1362
                         ],
                         "loc": {
                           "start": {
@@ -1748,8 +1748,8 @@
                         "type": "Identifier",
                         "name": "hasValue",
                         "range": [
-                          1352,
-                          1360
+                          1363,
+                          1371
                         ],
                         "loc": {
                           "start": {
@@ -1763,8 +1763,8 @@
                         }
                       },
                       "range": [
-                        1347,
-                        1360
+                        1358,
+                        1371
                       ],
                       "loc": {
                         "start": {
@@ -1790,8 +1790,8 @@
                               "object": {
                                 "type": "Super",
                                 "range": [
-                                  1376,
-                                  1381
+                                  1387,
+                                  1392
                                 ],
                                 "loc": {
                                   "start": {
@@ -1808,8 +1808,8 @@
                                 "type": "Identifier",
                                 "name": "_next",
                                 "range": [
-                                  1382,
-                                  1387
+                                  1393,
+                                  1398
                                 ],
                                 "loc": {
                                   "start": {
@@ -1823,8 +1823,8 @@
                                 }
                               },
                               "range": [
-                                1376,
-                                1387
+                                1387,
+                                1398
                               ],
                               "loc": {
                                 "start": {
@@ -1842,8 +1842,8 @@
                                 "type": "Identifier",
                                 "name": "value",
                                 "range": [
-                                  1388,
-                                  1393
+                                  1399,
+                                  1404
                                 ],
                                 "loc": {
                                   "start": {
@@ -1858,8 +1858,8 @@
                               }
                             ],
                             "range": [
-                              1376,
-                              1394
+                              1387,
+                              1405
                             ],
                             "loc": {
                               "start": {
@@ -1873,8 +1873,8 @@
                             }
                           },
                           "range": [
-                            1376,
-                            1395
+                            1387,
+                            1406
                           ],
                           "loc": {
                             "start": {
@@ -1889,8 +1889,8 @@
                         }
                       ],
                       "range": [
-                        1362,
-                        1405
+                        1373,
+                        1416
                       ],
                       "loc": {
                         "start": {
@@ -1905,8 +1905,8 @@
                     },
                     "alternate": null,
                     "range": [
-                      1343,
-                      1405
+                      1354,
+                      1416
                     ],
                     "loc": {
                       "start": {
@@ -1921,8 +1921,8 @@
                   }
                 ],
                 "range": [
-                  1333,
-                  1411
+                  1344,
+                  1422
                 ],
                 "loc": {
                   "start": {
@@ -1938,8 +1938,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                1325,
-                1411
+                1336,
+                1422
               ],
               "loc": {
                 "start": {
@@ -1955,8 +1955,8 @@
             "kind": "method",
             "computed": false,
             "range": [
-              1320,
-              1411
+              1331,
+              1422
             ],
             "loc": {
               "start": {
@@ -1976,8 +1976,8 @@
               "type": "Identifier",
               "name": "_complete",
               "range": [
-                1416,
-                1425
+                1427,
+                1436
               ],
               "loc": {
                 "start": {
@@ -2005,8 +2005,8 @@
                       "object": {
                         "type": "ThisExpression",
                         "range": [
-                          1442,
-                          1446
+                          1453,
+                          1457
                         ],
                         "loc": {
                           "start": {
@@ -2023,8 +2023,8 @@
                         "type": "Identifier",
                         "name": "isInnerStopped",
                         "range": [
-                          1447,
-                          1461
+                          1458,
+                          1472
                         ],
                         "loc": {
                           "start": {
@@ -2038,8 +2038,8 @@
                         }
                       },
                       "range": [
-                        1442,
-                        1461
+                        1453,
+                        1472
                       ],
                       "loc": {
                         "start": {
@@ -2065,8 +2065,8 @@
                               "object": {
                                 "type": "Super",
                                 "range": [
-                                  1477,
-                                  1482
+                                  1488,
+                                  1493
                                 ],
                                 "loc": {
                                   "start": {
@@ -2083,8 +2083,8 @@
                                 "type": "Identifier",
                                 "name": "_complete",
                                 "range": [
-                                  1483,
-                                  1492
+                                  1494,
+                                  1503
                                 ],
                                 "loc": {
                                   "start": {
@@ -2098,8 +2098,8 @@
                                 }
                               },
                               "range": [
-                                1477,
-                                1492
+                                1488,
+                                1503
                               ],
                               "loc": {
                                 "start": {
@@ -2114,8 +2114,8 @@
                             },
                             "arguments": [],
                             "range": [
-                              1477,
-                              1494
+                              1488,
+                              1505
                             ],
                             "loc": {
                               "start": {
@@ -2129,8 +2129,8 @@
                             }
                           },
                           "range": [
-                            1477,
-                            1495
+                            1488,
+                            1506
                           ],
                           "loc": {
                             "start": {
@@ -2145,8 +2145,8 @@
                         }
                       ],
                       "range": [
-                        1463,
-                        1505
+                        1474,
+                        1516
                       ],
                       "loc": {
                         "start": {
@@ -2172,8 +2172,8 @@
                               "object": {
                                 "type": "ThisExpression",
                                 "range": [
-                                  1533,
-                                  1537
+                                  1544,
+                                  1548
                                 ],
                                 "loc": {
                                   "start": {
@@ -2190,8 +2190,8 @@
                                 "type": "Identifier",
                                 "name": "unsubscribe",
                                 "range": [
-                                  1538,
-                                  1549
+                                  1549,
+                                  1560
                                 ],
                                 "loc": {
                                   "start": {
@@ -2205,8 +2205,8 @@
                                 }
                               },
                               "range": [
-                                1533,
-                                1549
+                                1544,
+                                1560
                               ],
                               "loc": {
                                 "start": {
@@ -2221,8 +2221,8 @@
                             },
                             "arguments": [],
                             "range": [
-                              1533,
-                              1551
+                              1544,
+                              1562
                             ],
                             "loc": {
                               "start": {
@@ -2236,8 +2236,8 @@
                             }
                           },
                           "range": [
-                            1533,
-                            1552
+                            1544,
+                            1563
                           ],
                           "loc": {
                             "start": {
@@ -2252,8 +2252,8 @@
                         }
                       ],
                       "range": [
-                        1519,
-                        1562
+                        1530,
+                        1573
                       ],
                       "loc": {
                         "start": {
@@ -2267,8 +2267,8 @@
                       }
                     },
                     "range": [
-                      1438,
-                      1562
+                      1449,
+                      1573
                     ],
                     "loc": {
                       "start": {
@@ -2283,8 +2283,8 @@
                   }
                 ],
                 "range": [
-                  1428,
-                  1568
+                  1439,
+                  1579
                 ],
                 "loc": {
                   "start": {
@@ -2300,8 +2300,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                1425,
-                1568
+                1436,
+                1579
               ],
               "loc": {
                 "start": {
@@ -2317,8 +2317,8 @@
             "kind": "method",
             "computed": false,
             "range": [
-              1416,
-              1568
+              1427,
+              1579
             ],
             "loc": {
               "start": {
@@ -2338,8 +2338,8 @@
               "type": "Identifier",
               "name": "notifyNext",
               "range": [
-                1573,
-                1583
+                1584,
+                1594
               ],
               "loc": {
                 "start": {
@@ -2360,8 +2360,8 @@
                   "type": "Identifier",
                   "name": "outerValue",
                   "range": [
-                    1584,
-                    1594
+                    1595,
+                    1605
                   ],
                   "loc": {
                     "start": {
@@ -2378,8 +2378,8 @@
                   "type": "Identifier",
                   "name": "innerValue",
                   "range": [
-                    1596,
-                    1606
+                    1607,
+                    1617
                   ],
                   "loc": {
                     "start": {
@@ -2396,8 +2396,8 @@
                   "type": "Identifier",
                   "name": "outerIndex",
                   "range": [
-                    1608,
-                    1618
+                    1619,
+                    1629
                   ],
                   "loc": {
                     "start": {
@@ -2414,8 +2414,8 @@
                   "type": "Identifier",
                   "name": "innerIndex",
                   "range": [
-                    1620,
-                    1630
+                    1631,
+                    1641
                   ],
                   "loc": {
                     "start": {
@@ -2432,8 +2432,8 @@
                   "type": "Identifier",
                   "name": "innerSub",
                   "range": [
-                    1632,
-                    1640
+                    1643,
+                    1651
                   ],
                   "loc": {
                     "start": {
@@ -2461,8 +2461,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            1652,
-                            1656
+                            1663,
+                            1667
                           ],
                           "loc": {
                             "start": {
@@ -2479,8 +2479,8 @@
                           "type": "Identifier",
                           "name": "hasValue",
                           "range": [
-                            1657,
-                            1665
+                            1668,
+                            1676
                           ],
                           "loc": {
                             "start": {
@@ -2494,8 +2494,8 @@
                           }
                         },
                         "range": [
-                          1652,
-                          1665
+                          1663,
+                          1676
                         ],
                         "loc": {
                           "start": {
@@ -2513,8 +2513,8 @@
                         "value": true,
                         "raw": "true",
                         "range": [
-                          1668,
-                          1672
+                          1679,
+                          1683
                         ],
                         "loc": {
                           "start": {
@@ -2528,8 +2528,8 @@
                         }
                       },
                       "range": [
-                        1652,
-                        1672
+                        1663,
+                        1683
                       ],
                       "loc": {
                         "start": {
@@ -2543,8 +2543,8 @@
                       }
                     },
                     "range": [
-                      1652,
-                      1673
+                      1663,
+                      1684
                     ],
                     "loc": {
                       "start": {
@@ -2559,8 +2559,8 @@
                   }
                 ],
                 "range": [
-                  1642,
-                  1679
+                  1653,
+                  1690
                 ],
                 "loc": {
                   "start": {
@@ -2576,8 +2576,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                1583,
-                1679
+                1594,
+                1690
               ],
               "loc": {
                 "start": {
@@ -2593,8 +2593,8 @@
             "kind": "method",
             "computed": false,
             "range": [
-              1573,
-              1679
+              1584,
+              1690
             ],
             "loc": {
               "start": {
@@ -2614,8 +2614,8 @@
               "type": "Identifier",
               "name": "notifyComplete",
               "range": [
-                1684,
-                1698
+                1695,
+                1709
               ],
               "loc": {
                 "start": {
@@ -2646,8 +2646,8 @@
                         "object": {
                           "type": "ThisExpression",
                           "range": [
-                            1711,
-                            1715
+                            1722,
+                            1726
                           ],
                           "loc": {
                             "start": {
@@ -2664,8 +2664,8 @@
                           "type": "Identifier",
                           "name": "isInnerStopped",
                           "range": [
-                            1716,
-                            1730
+                            1727,
+                            1741
                           ],
                           "loc": {
                             "start": {
@@ -2679,8 +2679,8 @@
                           }
                         },
                         "range": [
-                          1711,
-                          1730
+                          1722,
+                          1741
                         ],
                         "loc": {
                           "start": {
@@ -2698,8 +2698,8 @@
                         "value": true,
                         "raw": "true",
                         "range": [
-                          1733,
-                          1737
+                          1744,
+                          1748
                         ],
                         "loc": {
                           "start": {
@@ -2713,8 +2713,8 @@
                         }
                       },
                       "range": [
-                        1711,
-                        1737
+                        1722,
+                        1748
                       ],
                       "loc": {
                         "start": {
@@ -2728,8 +2728,8 @@
                       }
                     },
                     "range": [
-                      1711,
-                      1738
+                      1722,
+                      1749
                     ],
                     "loc": {
                       "start": {
@@ -2750,8 +2750,8 @@
                       "object": {
                         "type": "ThisExpression",
                         "range": [
-                          1751,
-                          1755
+                          1762,
+                          1766
                         ],
                         "loc": {
                           "start": {
@@ -2768,8 +2768,8 @@
                         "type": "Identifier",
                         "name": "isStopped",
                         "range": [
-                          1756,
-                          1765
+                          1767,
+                          1776
                         ],
                         "loc": {
                           "start": {
@@ -2783,8 +2783,8 @@
                         }
                       },
                       "range": [
-                        1751,
-                        1765
+                        1762,
+                        1776
                       ],
                       "loc": {
                         "start": {
@@ -2810,8 +2810,8 @@
                               "object": {
                                 "type": "Super",
                                 "range": [
-                                  1781,
-                                  1786
+                                  1792,
+                                  1797
                                 ],
                                 "loc": {
                                   "start": {
@@ -2828,8 +2828,8 @@
                                 "type": "Identifier",
                                 "name": "_complete",
                                 "range": [
-                                  1787,
-                                  1796
+                                  1798,
+                                  1807
                                 ],
                                 "loc": {
                                   "start": {
@@ -2843,8 +2843,8 @@
                                 }
                               },
                               "range": [
-                                1781,
-                                1796
+                                1792,
+                                1807
                               ],
                               "loc": {
                                 "start": {
@@ -2859,8 +2859,8 @@
                             },
                             "arguments": [],
                             "range": [
-                              1781,
-                              1798
+                              1792,
+                              1809
                             ],
                             "loc": {
                               "start": {
@@ -2874,8 +2874,8 @@
                             }
                           },
                           "range": [
-                            1781,
-                            1799
+                            1792,
+                            1810
                           ],
                           "loc": {
                             "start": {
@@ -2890,8 +2890,8 @@
                         }
                       ],
                       "range": [
-                        1767,
-                        1809
+                        1778,
+                        1820
                       ],
                       "loc": {
                         "start": {
@@ -2906,8 +2906,8 @@
                     },
                     "alternate": null,
                     "range": [
-                      1747,
-                      1809
+                      1758,
+                      1820
                     ],
                     "loc": {
                       "start": {
@@ -2922,8 +2922,8 @@
                   }
                 ],
                 "range": [
-                  1701,
-                  1815
+                  1712,
+                  1826
                 ],
                 "loc": {
                   "start": {
@@ -2939,8 +2939,8 @@
               "generator": false,
               "expression": false,
               "range": [
-                1698,
-                1815
+                1709,
+                1826
               ],
               "loc": {
                 "start": {
@@ -2956,8 +2956,8 @@
             "kind": "method",
             "computed": false,
             "range": [
-              1684,
-              1815
+              1695,
+              1826
             ],
             "loc": {
               "start": {
@@ -2973,8 +2973,8 @@
           }
         ],
         "range": [
-          1118,
-          1817
+          1129,
+          1828
         ],
         "loc": {
           "start": {
@@ -2988,8 +2988,8 @@
         }
       },
       "range": [
-        1068,
-        1817
+        1079,
+        1828
       ],
       "loc": {
         "start": {
@@ -3006,8 +3006,8 @@
           "type": "Block",
           "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
           "range": [
-            976,
-            1067
+            987,
+            1078
           ],
           "loc": {
             "start": {
@@ -3026,8 +3026,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=skipUntil.js.map",
           "range": [
-            1818,
-            1855
+            1829,
+            1866
           ],
           "loc": {
             "start": {
@@ -3046,7 +3046,7 @@
   "sourceType": "module",
   "range": [
     0,
-    1817
+    1828
   ],
   "loc": {
     "start": {
@@ -3061,10 +3061,10 @@
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.\n *\n * <img src=\"./img/skipUntil.png\" width=\"100%\">\n *\n * @param {Observable} the second Observable that has to emit an item before the source Observable's elements begin to\n * be mirrored by the resulting Observable.\n * @return {Observable<T>} an Observable that skips items from the source Observable until the second Observable emits\n * an item, then emits the remaining items.\n * @method skipUntil\n * @owner Observable\n ",
+      "value": "*\n * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.\n *\n * <img src=\"./img/skipUntil.png\" width=\"100%\">\n *\n * @param {Observable} notifier - The second Observable that has to emit an item before the source Observable's elements begin to\n * be mirrored by the resulting Observable.\n * @return {Observable<T>} An Observable that skips items from the source Observable until the second Observable emits\n * an item, then emits the remaining items.\n * @method skipUntil\n * @owner Observable\n ",
       "range": [
         117,
-        662
+        673
       ],
       "loc": {
         "start": {
@@ -3081,8 +3081,8 @@
       "type": "Block",
       "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
       "range": [
-        976,
-        1067
+        987,
+        1078
       ],
       "loc": {
         "start": {
@@ -3099,8 +3099,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=skipUntil.js.map",
       "range": [
-        1818,
-        1855
+        1829,
+        1866
       ],
       "loc": {
         "start": {

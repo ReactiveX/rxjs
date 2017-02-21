@@ -185,10 +185,10 @@
       "trailingComments": [
         {
           "type": "Block",
-          "value": " tslint:disable:max-line-length ",
+          "value": " tslint:enable:max-line-length ",
           "range": [
             79,
-            115
+            114
           ],
           "loc": {
             "start": {
@@ -197,16 +197,16 @@
             },
             "end": {
               "line": 3,
-              "column": 36
+              "column": 35
             }
           }
         },
         {
           "type": "Block",
-          "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @param {Function} Optional selector function which can use the multicasted source sequence as many times as needed,\n * without causing multiple subscriptions to the source sequence.\n * Subscribers to the given source will receive all notifications of the source from the time of the subscription on.\n * @return a ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
+          "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @param {Function} [selector] - Optional selector function which can use the multicasted source sequence as many times\n * as needed, without causing multiple subscriptions to the source sequence.\n * Subscribers to the given source will receive all notifications of the source from the time of the subscription on.\n * @return A ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
           "range": [
-            116,
-            832
+            115,
+            844
           ],
           "loc": {
             "start": {
@@ -229,8 +229,8 @@
           "type": "Identifier",
           "name": "publish",
           "range": [
-            849,
-            856
+            861,
+            868
           ],
           "loc": {
             "start": {
@@ -248,8 +248,8 @@
             "type": "Identifier",
             "name": "selector",
             "range": [
-              857,
-              865
+              869,
+              877
             ],
             "loc": {
               "start": {
@@ -274,8 +274,8 @@
                   "type": "Identifier",
                   "name": "selector",
                   "range": [
-                    880,
-                    888
+                    892,
+                    900
                   ],
                   "loc": {
                     "start": {
@@ -297,8 +297,8 @@
                       "type": "Identifier",
                       "name": "multicast",
                       "range": [
-                        891,
-                        900
+                        903,
+                        912
                       ],
                       "loc": {
                         "start": {
@@ -315,8 +315,8 @@
                       "type": "Identifier",
                       "name": "call",
                       "range": [
-                        901,
-                        905
+                        913,
+                        917
                       ],
                       "loc": {
                         "start": {
@@ -330,8 +330,8 @@
                       }
                     },
                     "range": [
-                      891,
-                      905
+                      903,
+                      917
                     ],
                     "loc": {
                       "start": {
@@ -348,8 +348,8 @@
                     {
                       "type": "ThisExpression",
                       "range": [
-                        906,
-                        910
+                        918,
+                        922
                       ],
                       "loc": {
                         "start": {
@@ -372,8 +372,8 @@
                           "type": "Identifier",
                           "name": "Subject",
                           "range": [
-                            922,
-                            929
+                            934,
+                            941
                           ],
                           "loc": {
                             "start": {
@@ -388,8 +388,8 @@
                         },
                         "arguments": [],
                         "range": [
-                          918,
-                          931
+                          930,
+                          943
                         ],
                         "loc": {
                           "start": {
@@ -405,8 +405,8 @@
                       "generator": false,
                       "expression": true,
                       "range": [
-                        912,
-                        931
+                        924,
+                        943
                       ],
                       "loc": {
                         "start": {
@@ -423,8 +423,8 @@
                       "type": "Identifier",
                       "name": "selector",
                       "range": [
-                        933,
-                        941
+                        945,
+                        953
                       ],
                       "loc": {
                         "start": {
@@ -439,8 +439,8 @@
                     }
                   ],
                   "range": [
-                    891,
-                    942
+                    903,
+                    954
                   ],
                   "loc": {
                     "start": {
@@ -462,8 +462,8 @@
                       "type": "Identifier",
                       "name": "multicast",
                       "range": [
-                        953,
-                        962
+                        965,
+                        974
                       ],
                       "loc": {
                         "start": {
@@ -480,8 +480,8 @@
                       "type": "Identifier",
                       "name": "call",
                       "range": [
-                        963,
-                        967
+                        975,
+                        979
                       ],
                       "loc": {
                         "start": {
@@ -495,8 +495,8 @@
                       }
                     },
                     "range": [
-                      953,
-                      967
+                      965,
+                      979
                     ],
                     "loc": {
                       "start": {
@@ -513,8 +513,8 @@
                     {
                       "type": "ThisExpression",
                       "range": [
-                        968,
-                        972
+                        980,
+                        984
                       ],
                       "loc": {
                         "start": {
@@ -533,8 +533,8 @@
                         "type": "Identifier",
                         "name": "Subject",
                         "range": [
-                          978,
-                          985
+                          990,
+                          997
                         ],
                         "loc": {
                           "start": {
@@ -549,8 +549,8 @@
                       },
                       "arguments": [],
                       "range": [
-                        974,
-                        987
+                        986,
+                        999
                       ],
                       "loc": {
                         "start": {
@@ -565,8 +565,8 @@
                     }
                   ],
                   "range": [
-                    953,
-                    988
+                    965,
+                    1000
                   ],
                   "loc": {
                     "start": {
@@ -580,8 +580,8 @@
                   }
                 },
                 "range": [
-                  880,
-                  988
+                  892,
+                  1000
                 ],
                 "loc": {
                   "start": {
@@ -595,8 +595,8 @@
                 }
               },
               "range": [
-                873,
-                989
+                885,
+                1001
               ],
               "loc": {
                 "start": {
@@ -611,8 +611,8 @@
             }
           ],
           "range": [
-            867,
-            991
+            879,
+            1003
           ],
           "loc": {
             "start": {
@@ -628,8 +628,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          840,
-          991
+          852,
+          1003
         ],
         "loc": {
           "start": {
@@ -644,10 +644,10 @@
         "leadingComments": [
           {
             "type": "Block",
-            "value": " tslint:disable:max-line-length ",
+            "value": " tslint:enable:max-line-length ",
             "range": [
               79,
-              115
+              114
             ],
             "loc": {
               "start": {
@@ -656,16 +656,16 @@
               },
               "end": {
                 "line": 3,
-                "column": 36
+                "column": 35
               }
             }
           },
           {
             "type": "Block",
-            "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @param {Function} Optional selector function which can use the multicasted source sequence as many times as needed,\n * without causing multiple subscriptions to the source sequence.\n * Subscribers to the given source will receive all notifications of the source from the time of the subscription on.\n * @return a ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
+            "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @param {Function} [selector] - Optional selector function which can use the multicasted source sequence as many times\n * as needed, without causing multiple subscriptions to the source sequence.\n * Subscribers to the given source will receive all notifications of the source from the time of the subscription on.\n * @return A ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
             "range": [
-              116,
-              832
+              115,
+              844
             ],
             "loc": {
               "start": {
@@ -684,8 +684,8 @@
             "type": "Line",
             "value": "# sourceMappingURL=publish.js.map",
             "range": [
-              992,
-              1027
+              1004,
+              1039
             ],
             "loc": {
               "start": {
@@ -703,8 +703,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        833,
-        991
+        845,
+        1003
       ],
       "loc": {
         "start": {
@@ -719,10 +719,10 @@
       "leadingComments": [
         {
           "type": "Block",
-          "value": " tslint:disable:max-line-length ",
+          "value": " tslint:enable:max-line-length ",
           "range": [
             79,
-            115
+            114
           ],
           "loc": {
             "start": {
@@ -731,16 +731,16 @@
             },
             "end": {
               "line": 3,
-              "column": 36
+              "column": 35
             }
           }
         },
         {
           "type": "Block",
-          "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @param {Function} Optional selector function which can use the multicasted source sequence as many times as needed,\n * without causing multiple subscriptions to the source sequence.\n * Subscribers to the given source will receive all notifications of the source from the time of the subscription on.\n * @return a ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
+          "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @param {Function} [selector] - Optional selector function which can use the multicasted source sequence as many times\n * as needed, without causing multiple subscriptions to the source sequence.\n * Subscribers to the given source will receive all notifications of the source from the time of the subscription on.\n * @return A ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
           "range": [
-            116,
-            832
+            115,
+            844
           ],
           "loc": {
             "start": {
@@ -759,8 +759,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=publish.js.map",
           "range": [
-            992,
-            1027
+            1004,
+            1039
           ],
           "loc": {
             "start": {
@@ -779,7 +779,7 @@
   "sourceType": "module",
   "range": [
     0,
-    991
+    1003
   ],
   "loc": {
     "start": {
@@ -794,10 +794,10 @@
   "comments": [
     {
       "type": "Block",
-      "value": " tslint:disable:max-line-length ",
+      "value": " tslint:enable:max-line-length ",
       "range": [
         79,
-        115
+        114
       ],
       "loc": {
         "start": {
@@ -806,16 +806,16 @@
         },
         "end": {
           "line": 3,
-          "column": 36
+          "column": 35
         }
       }
     },
     {
       "type": "Block",
-      "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @param {Function} Optional selector function which can use the multicasted source sequence as many times as needed,\n * without causing multiple subscriptions to the source sequence.\n * Subscribers to the given source will receive all notifications of the source from the time of the subscription on.\n * @return a ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
+      "value": "*\n * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called\n * before it begins emitting items to those Observers that have subscribed to it.\n *\n * <img src=\"./img/publish.png\" width=\"100%\">\n *\n * @param {Function} [selector] - Optional selector function which can use the multicasted source sequence as many times\n * as needed, without causing multiple subscriptions to the source sequence.\n * Subscribers to the given source will receive all notifications of the source from the time of the subscription on.\n * @return A ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.\n * @method publish\n * @owner Observable\n ",
       "range": [
-        116,
-        832
+        115,
+        844
       ],
       "loc": {
         "start": {
@@ -832,8 +832,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=publish.js.map",
       "range": [
-        992,
-        1027
+        1004,
+        1039
       ],
       "loc": {
         "start": {

@@ -49,7 +49,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObservableInputDoc.html">ObservableInput</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SubscribableOrPromiseDoc.html">SubscribableOrPromise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~TeardownLogicDoc.html">TeardownLogic</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Symbol">Rx.Symbol</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
@@ -59,6 +62,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html">AjaxRequest</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/scheduler/Action.js~Action.html">Action</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animationFrame">animationFrame</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asap">asap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-async">async</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-queue">queue</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
@@ -80,11 +87,12 @@ import { AsyncSubject } from &apos;../AsyncSubject&apos;;
  * @hide true
  */
 export class BoundNodeCallbackObservable extends Observable {
-    constructor(callbackFunc, selector, args, scheduler) {
+    constructor(callbackFunc, selector, args, context, scheduler) {
         super();
         this.callbackFunc = callbackFunc;
         this.selector = selector;
         this.args = args;
+        this.context = context;
         this.scheduler = scheduler;
     }
     /* tslint:enable:max-line-length */
@@ -99,11 +107,58 @@ export class BoundNodeCallbackObservable extends Observable {
      * Observables. The input is a function `func` with some parameters, but the
      * last parameter must be a callback function that `func` calls when it is
      * done. The callback function is expected to follow Node.js conventions,
-     * where the first argument to the callback is an error, while remaining
-     * arguments are the callback result. The output of `bindNodeCallback` is a
-     * function that takes the same parameters as `func`, except the last one (the
-     * callback). When the output function is called with arguments, it will
-     * return an Observable where the results will be delivered to.
+     * where the first argument to the callback is an error object, signaling
+     * whether call was successful. If that object is passed to callback, it means
+     * something went wrong.
+     *
+     * The output of `bindNodeCallback` is a function that takes the same
+     * parameters as `func`, except the last one (the callback). When the output
+     * function is called with arguments, it will return an Observable.
+     * If `func` calls its callback with error parameter present, Observable will
+     * error with that value as well. If error parameter is not passed, Observable will emit
+     * second parameter. If there are more parameters (third and so on),
+     * Observable will emit an array with all arguments, except first error argument.
+     *
+     * Optionally `bindNodeCallback` accepts selector function, which allows you to
+     * make resulting Observable emit value computed by selector, instead of regular
+     * callback arguments. It works similarly to {@link bindCallback} selector, but
+     * Node.js-style error argument will never be passed to that function.
+     *
+     * Note that `func` will not be called at the same time output function is,
+     * but rather whenever resulting Observable is subscribed. By default call to
+     * `func` will happen synchronously after subscription, but that can be changed
+     * with proper {@link Scheduler} provided as optional third parameter. Scheduler
+     * can also control when values from callback will be emitted by Observable.
+     * To find out more, check out documentation for {@link bindCallback}, where
+     * Scheduler works exactly the same.
+     *
+     * As in {@link bindCallback}, context (`this` property) of input function will be set to context
+     * of returned function, when it is called.
+     *
+     * After Observable emits value, it will complete immediately. This means
+     * even if `func` calls callback again, values from second and consecutive
+     * calls will never appear on the stream. If you need to handle functions
+     * that call callbacks multiple times, check out {@link fromEvent} or
+     * {@link fromEventPattern} instead.
+     *
+     * Note that `bindNodeCallback` can be used in non-Node.js environments as well.
+     * &quot;Node.js-style&quot; callbacks are just a convention, so if you write for
+     * browsers or any other environment and API you use implements that callback style,
+     * `bindNodeCallback` can be safely used on that API functions as well.
+     *
+     * Remember that Error object passed to callback does not have to be an instance
+     * of JavaScript built-in `Error` object. In fact, it does not even have to an object.
+     * Error parameter of callback function is interpreted as &quot;present&quot;, when value
+     * of that parameter is truthy. It could be, for example, non-zero number, non-empty
+     * string or boolean `true`. In all of these cases resulting Observable would error
+     * with that value. This means usually regular style callbacks will fail very often when
+     * `bindNodeCallback` is used. If your Observable errors much more often then you
+     * would expect, check if callback really is called in Node.js-style and, if not,
+     * switch to {@link bindCallback} instead.
+     *
+     * Note that even if error parameter is technically present in callback, but its value
+     * is falsy, it still won&apos;t appear in array emitted by Observable or in selector function.
+     *
      *
      * @example &lt;caption&gt;Read a file from the filesystem and get the data as an Observable&lt;/caption&gt;
      * import * as fs from &apos;fs&apos;;
@@ -111,13 +166,52 @@ export class BoundNodeCallbackObservable extends Observable {
      * var result = readFileAsObservable(&apos;./roadNames.txt&apos;, &apos;utf8&apos;);
      * result.subscribe(x =&gt; console.log(x), e =&gt; console.error(e));
      *
+     *
+     * @example &lt;caption&gt;Use on function calling callback with multiple arguments&lt;/caption&gt;
+     * someFunction((err, a, b) =&gt; {
+     *   console.log(err); // null
+     *   console.log(a); // 5
+     *   console.log(b); // &quot;some string&quot;
+     * });
+     * var boundSomeFunction = Rx.Observable.bindNodeCallback(someFunction);
+     * boundSomeFunction()
+     * .subscribe(value =&gt; {
+     *   console.log(value); // [5, &quot;some string&quot;]
+     * });
+     *
+     *
+     * @example &lt;caption&gt;Use with selector function&lt;/caption&gt;
+     * someFunction((err, a, b) =&gt; {
+     *   console.log(err); // undefined
+     *   console.log(a); // &quot;abc&quot;
+     *   console.log(b); // &quot;DEF&quot;
+     * });
+     * var boundSomeFunction = Rx.Observable.bindNodeCallback(someFunction, (a, b) =&gt; a + b);
+     * boundSomeFunction()
+     * .subscribe(value =&gt; {
+     *   console.log(value); // &quot;abcDEF&quot;
+     * });
+     *
+     *
+     * @example &lt;caption&gt;Use on function calling callback in regular style&lt;/caption&gt;
+     * someFunction(a =&gt; {
+     *   console.log(a); // 5
+     * });
+     * var boundSomeFunction = Rx.Observable.bindNodeCallback(someFunction);
+     * boundSomeFunction()
+     * .subscribe(
+     *   value =&gt; {}             // never gets called
+     *   err =&gt; console.log(err) // 5
+     *);
+     *
+     *
      * @see {@link bindCallback}
      * @see {@link from}
      * @see {@link fromPromise}
      *
-     * @param {function} func Function with a callback as the last parameter.
+     * @param {function} func Function with a Node.js-style callback as the last parameter.
      * @param {function} [selector] A function which takes the arguments from the
-     * callback and maps those a value to emit on the output Observable.
+     * callback and maps those to a value to emit on the output Observable.
      * @param {Scheduler} [scheduler] The scheduler on which to schedule the
      * callbacks.
      * @return {function(...params: *): Observable} A function which returns the
@@ -128,8 +222,8 @@ export class BoundNodeCallbackObservable extends Observable {
      * @owner Observable
      */
     static create(func, selector = undefined, scheduler) {
-        return (...args) =&gt; {
-            return new BoundNodeCallbackObservable(func, selector, args, scheduler);
+        return function (...args) {
+            return new BoundNodeCallbackObservable(func, selector, args, this, scheduler);
         };
     }
     _subscribe(subscriber) {
@@ -158,13 +252,13 @@ export class BoundNodeCallbackObservable extends Observable {
                         }
                     }
                     else {
-                        subject.next(innerArgs.length === 1 ? innerArgs[0] : innerArgs);
+                        subject.next(innerArgs.length &lt;= 1 ? innerArgs[0] : innerArgs);
                         subject.complete();
                     }
                 };
                 // use named function instance to avoid closure.
                 handler.source = this;
-                const result = tryCatch(callbackFunc).apply(this, args.concat(handler));
+                const result = tryCatch(callbackFunc).apply(this.context, args.concat(handler));
                 if (result === errorObject) {
                     subject.error(errorObject.e);
                 }
@@ -172,13 +266,13 @@ export class BoundNodeCallbackObservable extends Observable {
             return subject.subscribe(subscriber);
         }
         else {
-            return scheduler.schedule(dispatch, 0, { source: this, subscriber });
+            return scheduler.schedule(dispatch, 0, { source: this, subscriber, context: this.context });
         }
     }
 }
 function dispatch(state) {
     const self = this;
-    const { source, subscriber } = state;
+    const { source, subscriber, context } = state;
     // XXX: cast to `any` to access to the private field in `source`.
     const { callbackFunc, args, scheduler } = source;
     let subject = source.subject;
@@ -189,7 +283,7 @@ function dispatch(state) {
             const { selector, subject } = source;
             const err = innerArgs.shift();
             if (err) {
-                subject.error(err);
+                self.add(scheduler.schedule(dispatchError, 0, { err, subject }));
             }
             else if (selector) {
                 const result = tryCatch(selector).apply(this, innerArgs);
@@ -201,15 +295,15 @@ function dispatch(state) {
                 }
             }
             else {
-                const value = innerArgs.length === 1 ? innerArgs[0] : innerArgs;
+                const value = innerArgs.length &lt;= 1 ? innerArgs[0] : innerArgs;
                 self.add(scheduler.schedule(dispatchNext, 0, { value, subject }));
             }
         };
         // use named function to pass values in without closure
         handler.source = source;
-        const result = tryCatch(callbackFunc).apply(this, args.concat(handler));
+        const result = tryCatch(callbackFunc).apply(context, args.concat(handler));
         if (result === errorObject) {
-            subject.error(errorObject.e);
+            self.add(scheduler.schedule(dispatchError, 0, { err: errorObject.e, subject }));
         }
     }
     self.add(subject.subscribe(subscriber));

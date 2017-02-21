@@ -49,7 +49,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObservableInputDoc.html">ObservableInput</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SubscribableOrPromiseDoc.html">SubscribableOrPromise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~TeardownLogicDoc.html">TeardownLogic</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Symbol">Rx.Symbol</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
@@ -59,6 +62,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html">AjaxRequest</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/scheduler/Action.js~Action.html">Action</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animationFrame">animationFrame</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asap">asap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-async">async</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-queue">queue</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
@@ -78,6 +85,20 @@ var Observable = Rx.Observable;
 /** @test {bindNodeCallback} */
 describe(&apos;Observable.bindNodeCallback&apos;, function () {
     describe(&apos;when not scheduled&apos;, function () {
+        it(&apos;should emit undefined when callback is called without success arguments&apos;, function () {
+            function callback(cb) {
+                cb(null);
+            }
+            var boundCallback = Observable.bindNodeCallback(callback);
+            var results = [];
+            boundCallback()
+                .subscribe(function (x) {
+                results.push(typeof x);
+            }, null, function () {
+                results.push(&apos;done&apos;);
+            });
+            chai_1.expect(results).to.deep.equal([&apos;undefined&apos;, &apos;done&apos;]);
+        });
         it(&apos;should emit one value from a callback&apos;, function () {
             function callback(datum, cb) {
                 cb(null, datum);
@@ -90,6 +111,16 @@ describe(&apos;Observable.bindNodeCallback&apos;, function () {
             }, null, function () {
                 results.push(&apos;done&apos;);
             });
+            chai_1.expect(results).to.deep.equal([42, &apos;done&apos;]);
+        });
+        it(&apos;should set context of callback to context of boundCallback&apos;, function () {
+            function callback(cb) {
+                cb(null, this.datum);
+            }
+            var boundCallback = Observable.bindNodeCallback(callback);
+            var results = [];
+            boundCallback.call({ datum: 42 })
+                .subscribe(function (x) { return results.push(x); }, null, function () { return results.push(&apos;done&apos;); });
             chai_1.expect(results).to.deep.equal([42, &apos;done&apos;]);
         });
         it(&apos;should emit one value chosen by a selector&apos;, function () {
@@ -162,6 +193,21 @@ describe(&apos;Observable.bindNodeCallback&apos;, function () {
         });
     });
     describe(&apos;when scheduled&apos;, function () {
+        it(&apos;should emit undefined when callback is called without success arguments&apos;, function () {
+            function callback(cb) {
+                cb(null);
+            }
+            var boundCallback = Observable.bindNodeCallback(callback, null, rxTestScheduler);
+            var results = [];
+            boundCallback()
+                .subscribe(function (x) {
+                results.push(typeof x);
+            }, null, function () {
+                results.push(&apos;done&apos;);
+            });
+            rxTestScheduler.flush();
+            chai_1.expect(results).to.deep.equal([&apos;undefined&apos;, &apos;done&apos;]);
+        });
         it(&apos;should emit one value from a callback&apos;, function () {
             function callback(datum, cb) {
                 cb(null, datum);
@@ -174,6 +220,17 @@ describe(&apos;Observable.bindNodeCallback&apos;, function () {
             }, null, function () {
                 results.push(&apos;done&apos;);
             });
+            rxTestScheduler.flush();
+            chai_1.expect(results).to.deep.equal([42, &apos;done&apos;]);
+        });
+        it(&apos;should set context of callback to context of boundCallback&apos;, function () {
+            function callback(cb) {
+                cb(null, this.datum);
+            }
+            var boundCallback = Observable.bindNodeCallback(callback, null, rxTestScheduler);
+            var results = [];
+            boundCallback.call({ datum: 42 })
+                .subscribe(function (x) { return results.push(x); }, null, function () { return results.push(&apos;done&apos;); });
             rxTestScheduler.flush();
             chai_1.expect(results).to.deep.equal([42, &apos;done&apos;]);
         });

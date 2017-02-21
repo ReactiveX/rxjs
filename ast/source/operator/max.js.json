@@ -94,10 +94,10 @@
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * The Max operator operates on an Observable that emits numbers (or items that can be compared with a provided function),\n * and when source Observable completes it emits a single item: the item with the largest value.\n *\n * <img src=\"./img/max.png\" width=\"100%\">\n *\n * @example <caption>Get the maximal value of a series of numbers</caption>\n * Rx.Observable.of(5, 4, 7, 2, 8)\n *   .max()\n *   .subscribe(x => console.log(x)); // -> 8\n *\n * @example <caption>Use a comparer function to get the maximal item</caption>\n * interface Person {\n *   age: number,\n *   name: string\n * }\n * Observable.of<Person>({age: 7, name: 'Foo'},\n *                       {age: 5, name: 'Bar'},\n *                       {age: 9, name: 'Beer'})\n *           .max<Person>((a: Person, b: Person) => a.age < b.age ? -1 : 1)\n *           .subscribe((x: Person) => console.log(x.name)); // -> 'Beer'\n * }\n *\n * @see {@link min}\n *\n * @param {Function} optional comparer function that it will use instead of its default to compare the value of two\n * items.\n * @return {Observable} an Observable that emits item with the largest value.\n * @method max\n * @owner Observable\n ",
+          "value": "*\n * The Max operator operates on an Observable that emits numbers (or items that can be compared with a provided function),\n * and when source Observable completes it emits a single item: the item with the largest value.\n *\n * <img src=\"./img/max.png\" width=\"100%\">\n *\n * @example <caption>Get the maximal value of a series of numbers</caption>\n * Rx.Observable.of(5, 4, 7, 2, 8)\n *   .max()\n *   .subscribe(x => console.log(x)); // -> 8\n *\n * @example <caption>Use a comparer function to get the maximal item</caption>\n * interface Person {\n *   age: number,\n *   name: string\n * }\n * Observable.of<Person>({age: 7, name: 'Foo'},\n *                       {age: 5, name: 'Bar'},\n *                       {age: 9, name: 'Beer'})\n *           .max<Person>((a: Person, b: Person) => a.age < b.age ? -1 : 1)\n *           .subscribe((x: Person) => console.log(x.name)); // -> 'Beer'\n * }\n *\n * @see {@link min}\n *\n * @param {Function} [comparer] - Optional comparer function that it will use instead of its default to compare the\n * value of two items.\n * @return {Observable} An Observable that emits item with the largest value.\n * @method max\n * @owner Observable\n ",
           "range": [
             43,
-            1198
+            1211
           ],
           "loc": {
             "start": {
@@ -120,8 +120,8 @@
           "type": "Identifier",
           "name": "max",
           "range": [
-            1215,
-            1218
+            1228,
+            1231
           ],
           "loc": {
             "start": {
@@ -139,8 +139,8 @@
             "type": "Identifier",
             "name": "comparer",
             "range": [
-              1219,
-              1227
+              1232,
+              1240
             ],
             "loc": {
               "start": {
@@ -166,8 +166,8 @@
                     "type": "Identifier",
                     "name": "max",
                     "range": [
-                      1241,
-                      1244
+                      1254,
+                      1257
                     ],
                     "loc": {
                       "start": {
@@ -192,8 +192,8 @@
                           "type": "Identifier",
                           "name": "comparer",
                           "range": [
-                            1255,
-                            1263
+                            1268,
+                            1276
                           ],
                           "loc": {
                             "start": {
@@ -208,8 +208,8 @@
                         },
                         "prefix": true,
                         "range": [
-                          1248,
-                          1263
+                          1261,
+                          1276
                         ],
                         "loc": {
                           "start": {
@@ -227,8 +227,8 @@
                         "value": "function",
                         "raw": "'function'",
                         "range": [
-                          1268,
-                          1278
+                          1281,
+                          1291
                         ],
                         "loc": {
                           "start": {
@@ -242,8 +242,8 @@
                         }
                       },
                       "range": [
-                        1248,
-                        1278
+                        1261,
+                        1291
                       ],
                       "loc": {
                         "start": {
@@ -264,8 +264,8 @@
                           "type": "Identifier",
                           "name": "x",
                           "range": [
-                            1291,
-                            1292
+                            1304,
+                            1305
                           ],
                           "loc": {
                             "start": {
@@ -282,8 +282,8 @@
                           "type": "Identifier",
                           "name": "y",
                           "range": [
-                            1294,
-                            1295
+                            1307,
+                            1308
                           ],
                           "loc": {
                             "start": {
@@ -308,8 +308,8 @@
                               "type": "Identifier",
                               "name": "comparer",
                               "range": [
-                                1300,
-                                1308
+                                1313,
+                                1321
                               ],
                               "loc": {
                                 "start": {
@@ -327,8 +327,8 @@
                                 "type": "Identifier",
                                 "name": "x",
                                 "range": [
-                                  1309,
-                                  1310
+                                  1322,
+                                  1323
                                 ],
                                 "loc": {
                                   "start": {
@@ -345,8 +345,8 @@
                                 "type": "Identifier",
                                 "name": "y",
                                 "range": [
-                                  1312,
-                                  1313
+                                  1325,
+                                  1326
                                 ],
                                 "loc": {
                                   "start": {
@@ -361,8 +361,8 @@
                               }
                             ],
                             "range": [
-                              1300,
-                              1314
+                              1313,
+                              1327
                             ],
                             "loc": {
                               "start": {
@@ -380,8 +380,8 @@
                             "value": 0,
                             "raw": "0",
                             "range": [
-                              1317,
-                              1318
+                              1330,
+                              1331
                             ],
                             "loc": {
                               "start": {
@@ -395,8 +395,8 @@
                             }
                           },
                           "range": [
-                            1300,
-                            1318
+                            1313,
+                            1331
                           ],
                           "loc": {
                             "start": {
@@ -413,8 +413,8 @@
                           "type": "Identifier",
                           "name": "x",
                           "range": [
-                            1321,
-                            1322
+                            1334,
+                            1335
                           ],
                           "loc": {
                             "start": {
@@ -431,8 +431,8 @@
                           "type": "Identifier",
                           "name": "y",
                           "range": [
-                            1325,
-                            1326
+                            1338,
+                            1339
                           ],
                           "loc": {
                             "start": {
@@ -446,8 +446,8 @@
                           }
                         },
                         "range": [
-                          1300,
-                          1326
+                          1313,
+                          1339
                         ],
                         "loc": {
                           "start": {
@@ -463,8 +463,8 @@
                       "generator": false,
                       "expression": true,
                       "range": [
-                        1290,
-                        1326
+                        1303,
+                        1339
                       ],
                       "loc": {
                         "start": {
@@ -485,8 +485,8 @@
                           "type": "Identifier",
                           "name": "x",
                           "range": [
-                            1338,
-                            1339
+                            1351,
+                            1352
                           ],
                           "loc": {
                             "start": {
@@ -503,8 +503,8 @@
                           "type": "Identifier",
                           "name": "y",
                           "range": [
-                            1341,
-                            1342
+                            1354,
+                            1355
                           ],
                           "loc": {
                             "start": {
@@ -527,8 +527,8 @@
                             "type": "Identifier",
                             "name": "x",
                             "range": [
-                              1347,
-                              1348
+                              1360,
+                              1361
                             ],
                             "loc": {
                               "start": {
@@ -545,8 +545,8 @@
                             "type": "Identifier",
                             "name": "y",
                             "range": [
-                              1351,
-                              1352
+                              1364,
+                              1365
                             ],
                             "loc": {
                               "start": {
@@ -560,8 +560,8 @@
                             }
                           },
                           "range": [
-                            1347,
-                            1352
+                            1360,
+                            1365
                           ],
                           "loc": {
                             "start": {
@@ -578,8 +578,8 @@
                           "type": "Identifier",
                           "name": "x",
                           "range": [
-                            1355,
-                            1356
+                            1368,
+                            1369
                           ],
                           "loc": {
                             "start": {
@@ -596,8 +596,8 @@
                           "type": "Identifier",
                           "name": "y",
                           "range": [
-                            1359,
-                            1360
+                            1372,
+                            1373
                           ],
                           "loc": {
                             "start": {
@@ -611,8 +611,8 @@
                           }
                         },
                         "range": [
-                          1347,
-                          1360
+                          1360,
+                          1373
                         ],
                         "loc": {
                           "start": {
@@ -628,8 +628,8 @@
                       "generator": false,
                       "expression": true,
                       "range": [
-                        1337,
-                        1360
+                        1350,
+                        1373
                       ],
                       "loc": {
                         "start": {
@@ -643,8 +643,8 @@
                       }
                     },
                     "range": [
-                      1247,
-                      1360
+                      1260,
+                      1373
                     ],
                     "loc": {
                       "start": {
@@ -658,8 +658,8 @@
                     }
                   },
                   "range": [
-                    1241,
-                    1360
+                    1254,
+                    1373
                   ],
                   "loc": {
                     "start": {
@@ -675,8 +675,8 @@
               ],
               "kind": "const",
               "range": [
-                1235,
-                1361
+                1248,
+                1374
               ],
               "loc": {
                 "start": {
@@ -699,8 +699,8 @@
                   "object": {
                     "type": "ThisExpression",
                     "range": [
-                      1373,
-                      1377
+                      1386,
+                      1390
                     ],
                     "loc": {
                       "start": {
@@ -717,8 +717,8 @@
                     "type": "Identifier",
                     "name": "lift",
                     "range": [
-                      1378,
-                      1382
+                      1391,
+                      1395
                     ],
                     "loc": {
                       "start": {
@@ -732,8 +732,8 @@
                     }
                   },
                   "range": [
-                    1373,
-                    1382
+                    1386,
+                    1395
                   ],
                   "loc": {
                     "start": {
@@ -753,8 +753,8 @@
                       "type": "Identifier",
                       "name": "ReduceOperator",
                       "range": [
-                        1387,
-                        1401
+                        1400,
+                        1414
                       ],
                       "loc": {
                         "start": {
@@ -772,8 +772,8 @@
                         "type": "Identifier",
                         "name": "max",
                         "range": [
-                          1402,
-                          1405
+                          1415,
+                          1418
                         ],
                         "loc": {
                           "start": {
@@ -788,8 +788,8 @@
                       }
                     ],
                     "range": [
-                      1383,
-                      1406
+                      1396,
+                      1419
                     ],
                     "loc": {
                       "start": {
@@ -804,8 +804,8 @@
                   }
                 ],
                 "range": [
-                  1373,
-                  1407
+                  1386,
+                  1420
                 ],
                 "loc": {
                   "start": {
@@ -819,8 +819,8 @@
                 }
               },
               "range": [
-                1366,
-                1408
+                1379,
+                1421
               ],
               "loc": {
                 "start": {
@@ -835,8 +835,8 @@
             }
           ],
           "range": [
-            1229,
-            1410
+            1242,
+            1423
           ],
           "loc": {
             "start": {
@@ -852,8 +852,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          1206,
-          1410
+          1219,
+          1423
         ],
         "loc": {
           "start": {
@@ -868,10 +868,10 @@
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * The Max operator operates on an Observable that emits numbers (or items that can be compared with a provided function),\n * and when source Observable completes it emits a single item: the item with the largest value.\n *\n * <img src=\"./img/max.png\" width=\"100%\">\n *\n * @example <caption>Get the maximal value of a series of numbers</caption>\n * Rx.Observable.of(5, 4, 7, 2, 8)\n *   .max()\n *   .subscribe(x => console.log(x)); // -> 8\n *\n * @example <caption>Use a comparer function to get the maximal item</caption>\n * interface Person {\n *   age: number,\n *   name: string\n * }\n * Observable.of<Person>({age: 7, name: 'Foo'},\n *                       {age: 5, name: 'Bar'},\n *                       {age: 9, name: 'Beer'})\n *           .max<Person>((a: Person, b: Person) => a.age < b.age ? -1 : 1)\n *           .subscribe((x: Person) => console.log(x.name)); // -> 'Beer'\n * }\n *\n * @see {@link min}\n *\n * @param {Function} optional comparer function that it will use instead of its default to compare the value of two\n * items.\n * @return {Observable} an Observable that emits item with the largest value.\n * @method max\n * @owner Observable\n ",
+            "value": "*\n * The Max operator operates on an Observable that emits numbers (or items that can be compared with a provided function),\n * and when source Observable completes it emits a single item: the item with the largest value.\n *\n * <img src=\"./img/max.png\" width=\"100%\">\n *\n * @example <caption>Get the maximal value of a series of numbers</caption>\n * Rx.Observable.of(5, 4, 7, 2, 8)\n *   .max()\n *   .subscribe(x => console.log(x)); // -> 8\n *\n * @example <caption>Use a comparer function to get the maximal item</caption>\n * interface Person {\n *   age: number,\n *   name: string\n * }\n * Observable.of<Person>({age: 7, name: 'Foo'},\n *                       {age: 5, name: 'Bar'},\n *                       {age: 9, name: 'Beer'})\n *           .max<Person>((a: Person, b: Person) => a.age < b.age ? -1 : 1)\n *           .subscribe((x: Person) => console.log(x.name)); // -> 'Beer'\n * }\n *\n * @see {@link min}\n *\n * @param {Function} [comparer] - Optional comparer function that it will use instead of its default to compare the\n * value of two items.\n * @return {Observable} An Observable that emits item with the largest value.\n * @method max\n * @owner Observable\n ",
             "range": [
               43,
-              1198
+              1211
             ],
             "loc": {
               "start": {
@@ -890,8 +890,8 @@
             "type": "Line",
             "value": "# sourceMappingURL=max.js.map",
             "range": [
-              1411,
-              1442
+              1424,
+              1455
             ],
             "loc": {
               "start": {
@@ -909,8 +909,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        1199,
-        1410
+        1212,
+        1423
       ],
       "loc": {
         "start": {
@@ -925,10 +925,10 @@
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * The Max operator operates on an Observable that emits numbers (or items that can be compared with a provided function),\n * and when source Observable completes it emits a single item: the item with the largest value.\n *\n * <img src=\"./img/max.png\" width=\"100%\">\n *\n * @example <caption>Get the maximal value of a series of numbers</caption>\n * Rx.Observable.of(5, 4, 7, 2, 8)\n *   .max()\n *   .subscribe(x => console.log(x)); // -> 8\n *\n * @example <caption>Use a comparer function to get the maximal item</caption>\n * interface Person {\n *   age: number,\n *   name: string\n * }\n * Observable.of<Person>({age: 7, name: 'Foo'},\n *                       {age: 5, name: 'Bar'},\n *                       {age: 9, name: 'Beer'})\n *           .max<Person>((a: Person, b: Person) => a.age < b.age ? -1 : 1)\n *           .subscribe((x: Person) => console.log(x.name)); // -> 'Beer'\n * }\n *\n * @see {@link min}\n *\n * @param {Function} optional comparer function that it will use instead of its default to compare the value of two\n * items.\n * @return {Observable} an Observable that emits item with the largest value.\n * @method max\n * @owner Observable\n ",
+          "value": "*\n * The Max operator operates on an Observable that emits numbers (or items that can be compared with a provided function),\n * and when source Observable completes it emits a single item: the item with the largest value.\n *\n * <img src=\"./img/max.png\" width=\"100%\">\n *\n * @example <caption>Get the maximal value of a series of numbers</caption>\n * Rx.Observable.of(5, 4, 7, 2, 8)\n *   .max()\n *   .subscribe(x => console.log(x)); // -> 8\n *\n * @example <caption>Use a comparer function to get the maximal item</caption>\n * interface Person {\n *   age: number,\n *   name: string\n * }\n * Observable.of<Person>({age: 7, name: 'Foo'},\n *                       {age: 5, name: 'Bar'},\n *                       {age: 9, name: 'Beer'})\n *           .max<Person>((a: Person, b: Person) => a.age < b.age ? -1 : 1)\n *           .subscribe((x: Person) => console.log(x.name)); // -> 'Beer'\n * }\n *\n * @see {@link min}\n *\n * @param {Function} [comparer] - Optional comparer function that it will use instead of its default to compare the\n * value of two items.\n * @return {Observable} An Observable that emits item with the largest value.\n * @method max\n * @owner Observable\n ",
           "range": [
             43,
-            1198
+            1211
           ],
           "loc": {
             "start": {
@@ -947,8 +947,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=max.js.map",
           "range": [
-            1411,
-            1442
+            1424,
+            1455
           ],
           "loc": {
             "start": {
@@ -967,7 +967,7 @@
   "sourceType": "module",
   "range": [
     0,
-    1410
+    1423
   ],
   "loc": {
     "start": {
@@ -982,10 +982,10 @@
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * The Max operator operates on an Observable that emits numbers (or items that can be compared with a provided function),\n * and when source Observable completes it emits a single item: the item with the largest value.\n *\n * <img src=\"./img/max.png\" width=\"100%\">\n *\n * @example <caption>Get the maximal value of a series of numbers</caption>\n * Rx.Observable.of(5, 4, 7, 2, 8)\n *   .max()\n *   .subscribe(x => console.log(x)); // -> 8\n *\n * @example <caption>Use a comparer function to get the maximal item</caption>\n * interface Person {\n *   age: number,\n *   name: string\n * }\n * Observable.of<Person>({age: 7, name: 'Foo'},\n *                       {age: 5, name: 'Bar'},\n *                       {age: 9, name: 'Beer'})\n *           .max<Person>((a: Person, b: Person) => a.age < b.age ? -1 : 1)\n *           .subscribe((x: Person) => console.log(x.name)); // -> 'Beer'\n * }\n *\n * @see {@link min}\n *\n * @param {Function} optional comparer function that it will use instead of its default to compare the value of two\n * items.\n * @return {Observable} an Observable that emits item with the largest value.\n * @method max\n * @owner Observable\n ",
+      "value": "*\n * The Max operator operates on an Observable that emits numbers (or items that can be compared with a provided function),\n * and when source Observable completes it emits a single item: the item with the largest value.\n *\n * <img src=\"./img/max.png\" width=\"100%\">\n *\n * @example <caption>Get the maximal value of a series of numbers</caption>\n * Rx.Observable.of(5, 4, 7, 2, 8)\n *   .max()\n *   .subscribe(x => console.log(x)); // -> 8\n *\n * @example <caption>Use a comparer function to get the maximal item</caption>\n * interface Person {\n *   age: number,\n *   name: string\n * }\n * Observable.of<Person>({age: 7, name: 'Foo'},\n *                       {age: 5, name: 'Bar'},\n *                       {age: 9, name: 'Beer'})\n *           .max<Person>((a: Person, b: Person) => a.age < b.age ? -1 : 1)\n *           .subscribe((x: Person) => console.log(x.name)); // -> 'Beer'\n * }\n *\n * @see {@link min}\n *\n * @param {Function} [comparer] - Optional comparer function that it will use instead of its default to compare the\n * value of two items.\n * @return {Observable} An Observable that emits item with the largest value.\n * @method max\n * @owner Observable\n ",
       "range": [
         43,
-        1198
+        1211
       ],
       "loc": {
         "start": {
@@ -1002,8 +1002,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=max.js.map",
       "range": [
-        1411,
-        1442
+        1424,
+        1455
       ],
       "loc": {
         "start": {

@@ -181,7 +181,27 @@
           "line": 2,
           "column": 48
         }
-      }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n *\n * Asap Scheduler\n *\n * <span class=\"informal\">Perform task as fast as it can be performed asynchronously</span>\n *\n * `asap` scheduler behaves the same as {@link async} scheduler when you use it to delay task\n * in time. If however you set delay to `0`, `asap` will wait for current synchronously executing\n * code to end and then it will try to execute given task as fast as possible.\n *\n * `asap` scheduler will do its best to minimize time between end of currently executing code\n * and start of scheduled task. This makes it best candidate for performing so called \"deferring\".\n * Traditionally this was achieved by calling `setTimeout(deferredTask, 0)`, but that technique involves\n * some (although minimal) unwanted delay.\n *\n * Note that using `asap` scheduler does not necessarily mean that your task will be first to process\n * after currently executing code. In particular, if some task was also scheduled with `asap` before,\n * that task will execute first. That being said, if you need to schedule task asynchronously, but\n * as soon as possible, `asap` scheduler is your best bet.\n *\n * @example <caption>Compare async and asap scheduler</caption>\n *\n * Rx.Scheduler.async.schedule(() => console.log('async')); // scheduling 'async' first...\n * Rx.Scheduler.asap.schedule(() => console.log('asap'));\n *\n * // Logs:\n * // \"asap\"\n * // \"async\"\n * // ... but 'asap' goes first!\n *\n * @static true\n * @name asap\n * @owner Scheduler\n ",
+          "range": [
+            92,
+            1545
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 36,
+              "column": 3
+            }
+          }
+        }
+      ]
     },
     {
       "type": "ExportNamedDeclaration",
@@ -194,16 +214,16 @@
               "type": "Identifier",
               "name": "asap",
               "range": [
-                105,
-                109
+                1559,
+                1563
               ],
               "loc": {
                 "start": {
-                  "line": 3,
+                  "line": 37,
                   "column": 13
                 },
                 "end": {
-                  "line": 3,
+                  "line": 37,
                   "column": 17
                 }
               }
@@ -214,16 +234,16 @@
                 "type": "Identifier",
                 "name": "AsapScheduler",
                 "range": [
-                  116,
-                  129
+                  1570,
+                  1583
                 ],
                 "loc": {
                   "start": {
-                    "line": 3,
+                    "line": 37,
                     "column": 24
                   },
                   "end": {
-                    "line": 3,
+                    "line": 37,
                     "column": 37
                   }
                 }
@@ -233,47 +253,47 @@
                   "type": "Identifier",
                   "name": "AsapAction",
                   "range": [
-                    130,
-                    140
+                    1584,
+                    1594
                   ],
                   "loc": {
                     "start": {
-                      "line": 3,
+                      "line": 37,
                       "column": 38
                     },
                     "end": {
-                      "line": 3,
+                      "line": 37,
                       "column": 48
                     }
                   }
                 }
               ],
               "range": [
-                112,
-                141
+                1566,
+                1595
               ],
               "loc": {
                 "start": {
-                  "line": 3,
+                  "line": 37,
                   "column": 20
                 },
                 "end": {
-                  "line": 3,
+                  "line": 37,
                   "column": 49
                 }
               }
             },
             "range": [
-              105,
-              141
+              1559,
+              1595
             ],
             "loc": {
               "start": {
-                "line": 3,
+                "line": 37,
                 "column": 13
               },
               "end": {
-                "line": 3,
+                "line": 37,
                 "column": 49
               }
             }
@@ -281,35 +301,54 @@
         ],
         "kind": "const",
         "range": [
-          99,
-          142
+          1553,
+          1596
         ],
         "loc": {
           "start": {
-            "line": 3,
+            "line": 37,
             "column": 7
           },
           "end": {
-            "line": 3,
+            "line": 37,
             "column": 50
           }
         },
-        "leadingComments": [],
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n *\n * Asap Scheduler\n *\n * <span class=\"informal\">Perform task as fast as it can be performed asynchronously</span>\n *\n * `asap` scheduler behaves the same as {@link async} scheduler when you use it to delay task\n * in time. If however you set delay to `0`, `asap` will wait for current synchronously executing\n * code to end and then it will try to execute given task as fast as possible.\n *\n * `asap` scheduler will do its best to minimize time between end of currently executing code\n * and start of scheduled task. This makes it best candidate for performing so called \"deferring\".\n * Traditionally this was achieved by calling `setTimeout(deferredTask, 0)`, but that technique involves\n * some (although minimal) unwanted delay.\n *\n * Note that using `asap` scheduler does not necessarily mean that your task will be first to process\n * after currently executing code. In particular, if some task was also scheduled with `asap` before,\n * that task will execute first. That being said, if you need to schedule task asynchronously, but\n * as soon as possible, `asap` scheduler is your best bet.\n *\n * @example <caption>Compare async and asap scheduler</caption>\n *\n * Rx.Scheduler.async.schedule(() => console.log('async')); // scheduling 'async' first...\n * Rx.Scheduler.asap.schedule(() => console.log('asap'));\n *\n * // Logs:\n * // \"asap\"\n * // \"async\"\n * // ... but 'asap' goes first!\n *\n * @static true\n * @name asap\n * @owner Scheduler\n ",
+            "range": [
+              92,
+              1545
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 36,
+                "column": 3
+              }
+            }
+          }
+        ],
         "trailingComments": [
           {
             "type": "Line",
             "value": "# sourceMappingURL=asap.js.map",
             "range": [
-              143,
-              175
+              1597,
+              1629
             ],
             "loc": {
               "start": {
-                "line": 4,
+                "line": 38,
                 "column": 0
               },
               "end": {
-                "line": 4,
+                "line": 38,
                 "column": 32
               }
             }
@@ -319,34 +358,54 @@
       "specifiers": [],
       "source": null,
       "range": [
-        92,
-        142
+        1546,
+        1596
       ],
       "loc": {
         "start": {
-          "line": 3,
+          "line": 37,
           "column": 0
         },
         "end": {
-          "line": 3,
+          "line": 37,
           "column": 50
         }
       },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n *\n * Asap Scheduler\n *\n * <span class=\"informal\">Perform task as fast as it can be performed asynchronously</span>\n *\n * `asap` scheduler behaves the same as {@link async} scheduler when you use it to delay task\n * in time. If however you set delay to `0`, `asap` will wait for current synchronously executing\n * code to end and then it will try to execute given task as fast as possible.\n *\n * `asap` scheduler will do its best to minimize time between end of currently executing code\n * and start of scheduled task. This makes it best candidate for performing so called \"deferring\".\n * Traditionally this was achieved by calling `setTimeout(deferredTask, 0)`, but that technique involves\n * some (although minimal) unwanted delay.\n *\n * Note that using `asap` scheduler does not necessarily mean that your task will be first to process\n * after currently executing code. In particular, if some task was also scheduled with `asap` before,\n * that task will execute first. That being said, if you need to schedule task asynchronously, but\n * as soon as possible, `asap` scheduler is your best bet.\n *\n * @example <caption>Compare async and asap scheduler</caption>\n *\n * Rx.Scheduler.async.schedule(() => console.log('async')); // scheduling 'async' first...\n * Rx.Scheduler.asap.schedule(() => console.log('asap'));\n *\n * // Logs:\n * // \"asap\"\n * // \"async\"\n * // ... but 'asap' goes first!\n *\n * @static true\n * @name asap\n * @owner Scheduler\n ",
+          "range": [
+            92,
+            1545
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 36,
+              "column": 3
+            }
+          }
+        }
+      ],
       "trailingComments": [
         {
           "type": "Line",
           "value": "# sourceMappingURL=asap.js.map",
           "range": [
-            143,
-            175
+            1597,
+            1629
           ],
           "loc": {
             "start": {
-              "line": 4,
+              "line": 38,
               "column": 0
             },
             "end": {
-              "line": 4,
+              "line": 38,
               "column": 32
             }
           }
@@ -357,7 +416,7 @@
   "sourceType": "module",
   "range": [
     0,
-    142
+    1596
   ],
   "loc": {
     "start": {
@@ -365,25 +424,43 @@
       "column": 0
     },
     "end": {
-      "line": 3,
+      "line": 37,
       "column": 50
     }
   },
   "comments": [
     {
-      "type": "Line",
-      "value": "# sourceMappingURL=asap.js.map",
+      "type": "Block",
+      "value": "*\n *\n * Asap Scheduler\n *\n * <span class=\"informal\">Perform task as fast as it can be performed asynchronously</span>\n *\n * `asap` scheduler behaves the same as {@link async} scheduler when you use it to delay task\n * in time. If however you set delay to `0`, `asap` will wait for current synchronously executing\n * code to end and then it will try to execute given task as fast as possible.\n *\n * `asap` scheduler will do its best to minimize time between end of currently executing code\n * and start of scheduled task. This makes it best candidate for performing so called \"deferring\".\n * Traditionally this was achieved by calling `setTimeout(deferredTask, 0)`, but that technique involves\n * some (although minimal) unwanted delay.\n *\n * Note that using `asap` scheduler does not necessarily mean that your task will be first to process\n * after currently executing code. In particular, if some task was also scheduled with `asap` before,\n * that task will execute first. That being said, if you need to schedule task asynchronously, but\n * as soon as possible, `asap` scheduler is your best bet.\n *\n * @example <caption>Compare async and asap scheduler</caption>\n *\n * Rx.Scheduler.async.schedule(() => console.log('async')); // scheduling 'async' first...\n * Rx.Scheduler.asap.schedule(() => console.log('asap'));\n *\n * // Logs:\n * // \"asap\"\n * // \"async\"\n * // ... but 'asap' goes first!\n *\n * @static true\n * @name asap\n * @owner Scheduler\n ",
       "range": [
-        143,
-        175
+        92,
+        1545
       ],
       "loc": {
         "start": {
-          "line": 4,
+          "line": 3,
           "column": 0
         },
         "end": {
-          "line": 4,
+          "line": 36,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=asap.js.map",
+      "range": [
+        1597,
+        1629
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 0
+        },
+        "end": {
+          "line": 38,
           "column": 32
         }
       }

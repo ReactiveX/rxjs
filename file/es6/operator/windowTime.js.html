@@ -49,7 +49,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObservableInputDoc.html">ObservableInput</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SubscribableOrPromiseDoc.html">SubscribableOrPromise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~TeardownLogicDoc.html">TeardownLogic</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Symbol">Rx.Symbol</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
@@ -59,6 +62,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html">AjaxRequest</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/scheduler/Action.js~Action.html">Action</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animationFrame">animationFrame</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asap">asap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-async">async</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-queue">queue</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
@@ -73,66 +80,51 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Subject } from &apos;../Subject&apos;;
 import { async } from &apos;../scheduler/async&apos;;
 import { Subscriber } from &apos;../Subscriber&apos;;
-/**
- * Branch out the source Observable values as a nested Observable periodically
- * in time.
- *
- * &lt;span class=&quot;informal&quot;&gt;It&apos;s like {@link bufferTime}, but emits a nested
- * Observable instead of an array.&lt;/span&gt;
- *
- * &lt;img src=&quot;./img/windowTime.png&quot; width=&quot;100%&quot;&gt;
- *
- * Returns an Observable that emits windows of items it collects from the source
- * Observable. The output Observable starts a new window periodically, as
- * determined by the `windowCreationInterval` argument. It emits each window
- * after a fixed timespan, specified by the `windowTimeSpan` argument. When the
- * source Observable completes or encounters an error, the output Observable
- * emits the current window and propagates the notification from the source
- * Observable. If `windowCreationInterval` is not provided, the output
- * Observable starts a new window when the previous window of duration
- * `windowTimeSpan` completes.
- *
- * @example &lt;caption&gt;In every window of 1 second each, emit at most 2 click events&lt;/caption&gt;
- * var clicks = Rx.Observable.fromEvent(document, &apos;click&apos;);
- * var result = clicks.windowTime(1000)
- *   .map(win =&gt; win.take(2)) // each window has at most 2 emissions
- *   .mergeAll(); // flatten the Observable-of-Observables
- * result.subscribe(x =&gt; console.log(x));
- *
- * @example &lt;caption&gt;Every 5 seconds start a window 1 second long, and emit at most 2 click events per window&lt;/caption&gt;
- * var clicks = Rx.Observable.fromEvent(document, &apos;click&apos;);
- * var result = clicks.windowTime(1000, 5000)
- *   .map(win =&gt; win.take(2)) // each window has at most 2 emissions
- *   .mergeAll(); // flatten the Observable-of-Observables
- * result.subscribe(x =&gt; console.log(x));
- *
- * @see {@link window}
- * @see {@link windowCount}
- * @see {@link windowToggle}
- * @see {@link windowWhen}
- * @see {@link bufferTime}
- *
- * @param {number} windowTimeSpan The amount of time to fill each window.
- * @param {number} [windowCreationInterval] The interval at which to start new
- * windows.
- * @param {Scheduler} [scheduler=async] The scheduler on which to schedule the
- * intervals that determine window boundaries.
- * @return {Observable&lt;Observable&lt;T&gt;&gt;} An observable of windows, which in turn
- * are Observables.
- * @method windowTime
- * @owner Observable
- */
-export function windowTime(windowTimeSpan, windowCreationInterval = null, scheduler = async) {
-    return this.lift(new WindowTimeOperator(windowTimeSpan, windowCreationInterval, scheduler));
+import { isNumeric } from &apos;../util/isNumeric&apos;;
+import { isScheduler } from &apos;../util/isScheduler&apos;;
+export function windowTime(windowTimeSpan) {
+    let scheduler = async;
+    let windowCreationInterval = null;
+    let maxWindowSize = Number.POSITIVE_INFINITY;
+    if (isScheduler(arguments[3])) {
+        scheduler = arguments[3];
+    }
+    if (isScheduler(arguments[2])) {
+        scheduler = arguments[2];
+    }
+    else if (isNumeric(arguments[2])) {
+        maxWindowSize = arguments[2];
+    }
+    if (isScheduler(arguments[1])) {
+        scheduler = arguments[1];
+    }
+    else if (isNumeric(arguments[1])) {
+        windowCreationInterval = arguments[1];
+    }
+    return this.lift(new WindowTimeOperator(windowTimeSpan, windowCreationInterval, maxWindowSize, scheduler));
 }
 class WindowTimeOperator {
-    constructor(windowTimeSpan, windowCreationInterval, scheduler) {
+    constructor(windowTimeSpan, windowCreationInterval, maxWindowSize, scheduler) {
         this.windowTimeSpan = windowTimeSpan;
         this.windowCreationInterval = windowCreationInterval;
+        this.maxWindowSize = maxWindowSize;
         this.scheduler = scheduler;
     }
     call(subscriber, source) {
-        return source.subscribe(new WindowTimeSubscriber(subscriber, this.windowTimeSpan, this.windowCreationInterval, this.scheduler));
+        return source.subscribe(new WindowTimeSubscriber(subscriber, this.windowTimeSpan, this.windowCreationInterval, this.maxWindowSize, this.scheduler));
+    }
+}
+class CountedSubject extends Subject {
+    constructor() {
+        super(...arguments);
+        this._numberOfNextedValues = 0;
+    }
+    next(value) {
+        this._numberOfNextedValues++;
+        super.next(value);
+    }
+    get numberOfNextedValues() {
+        return this._numberOfNextedValues;
     }
 }
 /**
@@ -141,11 +133,12 @@ class WindowTimeOperator {
  * @extends {Ignored}
  */
 class WindowTimeSubscriber extends Subscriber {
-    constructor(destination, windowTimeSpan, windowCreationInterval, scheduler) {
+    constructor(destination, windowTimeSpan, windowCreationInterval, maxWindowSize, scheduler) {
         super(destination);
         this.destination = destination;
         this.windowTimeSpan = windowTimeSpan;
         this.windowCreationInterval = windowCreationInterval;
+        this.maxWindowSize = maxWindowSize;
         this.scheduler = scheduler;
         this.windows = [];
         const window = this.openWindow();
@@ -167,6 +160,9 @@ class WindowTimeSubscriber extends Subscriber {
             const window = windows[i];
             if (!window.closed) {
                 window.next(value);
+                if (window.numberOfNextedValues &gt;= this.maxWindowSize) {
+                    this.closeWindow(window);
+                }
             }
         }
     }
@@ -188,7 +184,7 @@ class WindowTimeSubscriber extends Subscriber {
         this.destination.complete();
     }
     openWindow() {
-        const window = new Subject();
+        const window = new CountedSubject();
         this.windows.push(window);
         const destination = this.destination;
         destination.next(window);

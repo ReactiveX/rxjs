@@ -288,6 +288,30 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "@reactivex/rxjs/es6/scheduler/animationframe.js~animationframe",
+    "variable/index.html#static-variable-animationFrame",
+    "<span>animationFrame</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/scheduler/animationFrame.js</span>",
+    "variable"
+  ],
+  [
+    "@reactivex/rxjs/es6/scheduler/asap.js~asap",
+    "variable/index.html#static-variable-asap",
+    "<span>asap</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/scheduler/asap.js</span>",
+    "variable"
+  ],
+  [
+    "@reactivex/rxjs/es6/scheduler/async.js~async",
+    "variable/index.html#static-variable-async",
+    "<span>async</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/scheduler/async.js</span>",
+    "variable"
+  ],
+  [
+    "@reactivex/rxjs/es6/scheduler/queue.js~queue",
+    "variable/index.html#static-variable-queue",
+    "<span>queue</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/scheduler/queue.js</span>",
+    "variable"
+  ],
+  [
     "@reactivex/rxjs/es6/util/root.js~root",
     "variable/index.html#static-variable-root",
     "<span>root</span> <span class=\"search-result-import-path\">@reactivex/rxjs/es6/util/root.js</span>",
@@ -805,13 +829,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/refCount-spec.js.html#lineNumber55",
+    "test-file/spec-js/operators/refCount-spec.js.html#lineNumber70",
     "ConnectableObservable.prototype.refCount ",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/refCount-spec.js.html#lineNumber70",
+    "test-file/spec-js/operators/refCount-spec.js.html#lineNumber55",
     "ConnectableObservable.prototype.refCount ",
     "test"
   ],
@@ -1741,7 +1765,7 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/Observable-spec.js.html#lineNumber391",
+    "test-file/spec-js/Observable-spec.js.html#lineNumber375",
     "Observable subscribe when called with an anonymous observer ",
     "test"
   ],
@@ -1753,13 +1777,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/Observable-spec.js.html#lineNumber375",
+    "test-file/spec-js/Observable-spec.js.html#lineNumber351",
     "Observable subscribe when called with an anonymous observer ",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/Observable-spec.js.html#lineNumber351",
+    "test-file/spec-js/Observable-spec.js.html#lineNumber391",
     "Observable subscribe when called with an anonymous observer ",
     "test"
   ],
@@ -1857,6 +1881,18 @@ window.esdocSearchIndex = [
     "",
     "test-file/spec-js/observables/dom/ajax-spec.js.html#lineNumber418",
     "Observable.ajax ajax.get should succeed on 204 No Content",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/dom/ajax-spec.js.html#lineNumber722",
+    "Observable.ajax ajax.patch",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/dom/ajax-spec.js.html#lineNumber723",
+    "Observable.ajax ajax.patch should create an AjaxObservable with correct options",
     "test"
   ],
   [
@@ -2017,25 +2053,25 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber179",
+    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber229",
     "Observable.bindCallback should cache value for next subscription and not call callbackFunc again",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber204",
+    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber254",
     "Observable.bindCallback should not even call the callbackFn if immediately unsubscribed",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber145",
+    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber195",
     "Observable.bindCallback should pass multiple inner arguments as an array",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber160",
+    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber210",
     "Observable.bindCallback should pass multiple inner arguments to the selector if there is one",
     "test"
   ],
@@ -2047,55 +2083,79 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber37",
+    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber61",
     "Observable.bindCallback when not scheduled should emit an error when the selector throws",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber23",
+    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber47",
     "Observable.bindCallback when not scheduled should emit one value chosen by a selector",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber9",
+    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber23",
     "Observable.bindCallback when not scheduled should emit one value from a callback",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber52",
-    "Observable.bindCallback when not scheduled should not emit, throw or complete if immediately unsubscribed",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber75",
-    "Observable.bindCallback when scheduled",
+    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber9",
+    "Observable.bindCallback when not scheduled should emit undefined from a callback without arguments",
     "test"
   ],
   [
     "",
     "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber76",
+    "Observable.bindCallback when not scheduled should not emit, throw or complete if immediately unsubscribed",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber37",
+    "Observable.bindCallback when not scheduled should set callback function context to context of returned function",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber99",
+    "Observable.bindCallback when scheduled",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber115",
     "Observable.bindCallback when scheduled should emit one value from a callback",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber91",
+    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber100",
+    "Observable.bindCallback when scheduled should emit undefined from a callback without arguments",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber141",
     "Observable.bindCallback when scheduled should error if callback throws",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber107",
+    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber157",
     "Observable.bindCallback when scheduled should error if selector throws",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber126",
+    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber130",
+    "Observable.bindCallback when scheduled should set callback function context to context of returned function",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/bindCallback-spec.js.html#lineNumber176",
     "Observable.bindCallback when scheduled should use a selector",
     "test"
   ],
@@ -2107,19 +2167,19 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber214",
+    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber264",
     "Observable.bindNodeCallback should cache value for next subscription and not call callbackFunc again",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber180",
+    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber230",
     "Observable.bindNodeCallback should pass multiple inner arguments as an array",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber195",
+    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber245",
     "Observable.bindNodeCallback should pass multiple inner arguments to the selector if there is one",
     "test"
   ],
@@ -2131,67 +2191,91 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber54",
+    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber78",
     "Observable.bindNodeCallback when not scheduled should emit an error when the selector throws",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber23",
+    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber47",
     "Observable.bindNodeCallback when not scheduled should emit one value chosen by a selector",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber9",
+    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber23",
     "Observable.bindNodeCallback when not scheduled should emit one value from a callback",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber69",
-    "Observable.bindNodeCallback when not scheduled should not emit, throw or complete if immediately unsubscribed",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber37",
-    "Observable.bindNodeCallback when not scheduled should raise error from callback",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber92",
-    "Observable.bindNodeCallback when scheduled",
+    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber9",
+    "Observable.bindNodeCallback when not scheduled should emit undefined when callback is called without success arguments",
     "test"
   ],
   [
     "",
     "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber93",
+    "Observable.bindNodeCallback when not scheduled should not emit, throw or complete if immediately unsubscribed",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber61",
+    "Observable.bindNodeCallback when not scheduled should raise error from callback",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber37",
+    "Observable.bindNodeCallback when not scheduled should set context of callback to context of boundCallback",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber116",
+    "Observable.bindNodeCallback when scheduled",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber132",
     "Observable.bindNodeCallback when scheduled should emit one value from a callback",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber108",
+    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber117",
+    "Observable.bindNodeCallback when scheduled should emit undefined when callback is called without success arguments",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber158",
     "Observable.bindNodeCallback when scheduled should error if callback throws",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber142",
+    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber192",
     "Observable.bindNodeCallback when scheduled should error if selector throws",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber124",
+    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber174",
     "Observable.bindNodeCallback when scheduled should raise error from callback",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber161",
+    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber147",
+    "Observable.bindNodeCallback when scheduled should set context of callback to context of boundCallback",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/bindNodeCallback-spec.js.html#lineNumber211",
     "Observable.bindNodeCallback when scheduled should use a selector",
     "test"
   ],
@@ -2437,175 +2521,187 @@ window.esdocSearchIndex = [
   ],
   [
     "concat es6/operator/concat.js~concat,concat",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber7",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber8",
     "Observable.concat",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber32",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber209",
     "Observable.concat ",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber146",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber257",
     "Observable.concat ",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber208",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber147",
     "Observable.concat ",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber256",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber220",
     "Observable.concat ",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber219",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber33",
     "Observable.concat ",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber56",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber57",
     "Observable.concat should complete without emit if both sources are empty",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber277",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber278",
     "Observable.concat should concat an immediately-scheduled source with an immediately-scheduled second",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber126",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber127",
     "Observable.concat should concat if first source emits once, second source is empty",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber136",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber137",
     "Observable.concat should concat if first source is empty, second source emits once",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber21",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber22",
     "Observable.concat should concat the same cold observable multiple times",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber198",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber199",
     "Observable.concat should emit element from first source then raise error from second source",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber167",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber168",
     "Observable.concat should emit elements from each source when source emit once",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber8",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber9",
     "Observable.concat should emit elements from multiple sources",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber248",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber249",
     "Observable.concat should error immediately if given a just-throw source",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber43",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber44",
     "Observable.concat should not break unsubscription chains when result is unsubscribed explicitly",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber86",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber87",
     "Observable.concat should not complete if both sources do not complete",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber157",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber158",
     "Observable.concat should not complete if first source does not complete",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber66",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber67",
     "Observable.concat should not complete if first source does not completes",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber76",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber77",
     "Observable.concat should not complete if second source does not completes",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber230",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber231",
     "Observable.concat should not emit collapsing element from second source",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber267",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber268",
     "Observable.concat should not emit collapsing element from second source",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber188",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber189",
     "Observable.concat should raise error from first source and does not emit from second source",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber96",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber97",
     "Observable.concat should raise error when first source is empty, second source raises error",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber106",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber107",
     "Observable.concat should raise error when first source raises error, second source is empty",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber116",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber117",
     "Observable.concat should raise first error when both source raise error",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber240",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber309",
+    "Observable.concat should return RxJS Observable when single lowerCaseO was passed",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber241",
     "Observable.concat should return empty if concatenating an empty source",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber177",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber303",
+    "Observable.concat should return passed observable if no scheduler was passed",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber178",
     "Observable.concat should unsubscribe to inner source if outer is unsubscribed early",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/concat-spec.js.html#lineNumber285",
+    "test-file/spec-js/observables/concat-spec.js.html#lineNumber286",
     "Observable.concat should use the scheduler even when one Observable is concat'd",
     "test"
   ],
@@ -3349,127 +3445,151 @@ window.esdocSearchIndex = [
   ],
   [
     "merge es6/operator/merge.js~merge,merge",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber6",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber7",
     "Observable.merge(...observables)",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber7",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber8",
     "Observable.merge(...observables) should merge cold and cold",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber56",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber57",
     "Observable.merge(...observables) should merge empty and empty",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber129",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber130",
     "Observable.merge(...observables) should merge empty and eventual error",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber99",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber100",
     "Observable.merge(...observables) should merge empty and throw",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber34",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber35",
     "Observable.merge(...observables) should merge hot and cold",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber140",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber141",
     "Observable.merge(...observables) should merge hot and error",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber23",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber24",
     "Observable.merge(...observables) should merge hot and hot",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber109",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber110",
     "Observable.merge(...observables) should merge hot and throw",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber79",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber80",
     "Observable.merge(...observables) should merge never and empty",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber151",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber152",
     "Observable.merge(...observables) should merge never and error",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber89",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber90",
     "Observable.merge(...observables) should merge never and never",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber119",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber120",
     "Observable.merge(...observables) should merge never and throw",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber45",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber46",
     "Observable.merge(...observables) should merge parallel emissions",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber66",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber163",
+    "Observable.merge(...observables) should merge single lowerCaseO into RxJS Observable",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber67",
     "Observable.merge(...observables) should merge three empties",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber18",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber169",
+    "Observable.merge(...observables) should merge two lowerCaseO into RxJS Observable",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber19",
     "Observable.merge(...observables) should return itself when try to merge single observable",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber163",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber177",
+    "Observable.merge(...observables, Scheduler)",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber178",
+    "Observable.merge(...observables, Scheduler) should merge single lowerCaseO into RxJS Observable",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber185",
     "Observable.merge(...observables, Scheduler, number)",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber164",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber186",
     "Observable.merge(...observables, Scheduler, number) should handle concurrency limits",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber171",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber193",
     "Observable.merge(...observables, Scheduler, number) should handle scheduler",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber177",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber199",
     "Observable.merge(...observables, Scheduler, number) should handle scheduler with concurrency limits",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/merge-spec.js.html#lineNumber184",
+    "test-file/spec-js/observables/merge-spec.js.html#lineNumber206",
     "Observable.merge(...observables, Scheduler, number) should use the scheduler even when one Observable is merged",
     "test"
   ],
@@ -3799,13 +3919,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/buffer-spec.js.html#lineNumber171",
+    "test-file/spec-js/operators/buffer-spec.js.html#lineNumber186",
     "Observable.prototype.buffer should unsubscribe notifier when source unsubscribed",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/buffer-spec.js.html#lineNumber186",
+    "test-file/spec-js/operators/buffer-spec.js.html#lineNumber171",
     "Observable.prototype.buffer should unsubscribe notifier when source unsubscribed",
     "test"
   ],
@@ -3865,13 +3985,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/buffer-spec.js.html#lineNumber156",
+    "test-file/spec-js/operators/buffer-spec.js.html#lineNumber137",
     "Observable.prototype.buffer should work with non-empty and selector error",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/buffer-spec.js.html#lineNumber137",
+    "test-file/spec-js/operators/buffer-spec.js.html#lineNumber156",
     "Observable.prototype.buffer should work with non-empty and selector error",
     "test"
   ],
@@ -4801,13 +4921,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/concat-spec.js.html#lineNumber200",
+    "test-file/spec-js/operators/concat-spec.js.html#lineNumber123",
     "Observable.prototype.concat ",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/concat-spec.js.html#lineNumber123",
+    "test-file/spec-js/operators/concat-spec.js.html#lineNumber200",
     "Observable.prototype.concat ",
     "test"
   ],
@@ -4939,6 +5059,12 @@ window.esdocSearchIndex = [
   ],
   [
     "",
+    "test-file/spec-js/operators/concatAll-spec.js.html#lineNumber286",
+    "Observable.prototype.concatAll ",
+    "test"
+  ],
+  [
+    "",
     "test-file/spec-js/operators/concatAll-spec.js.html#lineNumber191",
     "Observable.prototype.concatAll ",
     "test"
@@ -4946,12 +5072,6 @@ window.esdocSearchIndex = [
   [
     "",
     "test-file/spec-js/operators/concatAll-spec.js.html#lineNumber274",
-    "Observable.prototype.concatAll ",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec-js/operators/concatAll-spec.js.html#lineNumber286",
     "Observable.prototype.concatAll ",
     "test"
   ],
@@ -5989,13 +6109,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/delay-spec.js.html#lineNumber35",
+    "test-file/spec-js/operators/delay-spec.js.html#lineNumber44",
     "Observable.prototype.delay should raise error when source raises error",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/delay-spec.js.html#lineNumber44",
+    "test-file/spec-js/operators/delay-spec.js.html#lineNumber35",
     "Observable.prototype.delay should raise error when source raises error",
     "test"
   ],
@@ -7639,13 +7759,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/groupBy-spec.js.html#lineNumber378",
+    "test-file/spec-js/operators/groupBy-spec.js.html#lineNumber879",
     "Observable.prototype.groupBy ",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/groupBy-spec.js.html#lineNumber879",
+    "test-file/spec-js/operators/groupBy-spec.js.html#lineNumber378",
     "Observable.prototype.groupBy ",
     "test"
   ],
@@ -9661,43 +9781,43 @@ window.esdocSearchIndex = [
   ],
   [
     "pairwise es6/operator/pairwise.js~pairwise,pairwise",
-    "test-file/spec-js/operators/pairwise-spec.js.html#lineNumber2",
+    "test-file/spec-js/operators/pairwise-spec.js.html#lineNumber3",
     "Observable.prototype.pairwise",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/pairwise-spec.js.html#lineNumber52",
+    "test-file/spec-js/operators/pairwise-spec.js.html#lineNumber53",
     "Observable.prototype.pairwise should handle empty",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/pairwise-spec.js.html#lineNumber39",
+    "test-file/spec-js/operators/pairwise-spec.js.html#lineNumber40",
     "Observable.prototype.pairwise should handle mid-stream throw",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/pairwise-spec.js.html#lineNumber60",
+    "test-file/spec-js/operators/pairwise-spec.js.html#lineNumber61",
     "Observable.prototype.pairwise should handle never",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/pairwise-spec.js.html#lineNumber68",
+    "test-file/spec-js/operators/pairwise-spec.js.html#lineNumber69",
     "Observable.prototype.pairwise should handle throw",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/pairwise-spec.js.html#lineNumber30",
+    "test-file/spec-js/operators/pairwise-spec.js.html#lineNumber31",
     "Observable.prototype.pairwise should not emit on single-element streams",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/pairwise-spec.js.html#lineNumber15",
+    "test-file/spec-js/operators/pairwise-spec.js.html#lineNumber16",
     "Observable.prototype.pairwise should pairwise things",
     "test"
   ],
@@ -10189,13 +10309,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/publishReplay-spec.js.html#lineNumber79",
+    "test-file/spec-js/operators/publishReplay-spec.js.html#lineNumber241",
     "Observable.prototype.publishReplay ",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/publishReplay-spec.js.html#lineNumber241",
+    "test-file/spec-js/operators/publishReplay-spec.js.html#lineNumber79",
     "Observable.prototype.publishReplay ",
     "test"
   ],
@@ -10873,12 +10993,6 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/retryWhen-spec.js.html#lineNumber142",
-    "Observable.prototype.retryWhen ",
-    "test"
-  ],
-  [
-    "",
     "test-file/spec-js/operators/retryWhen-spec.js.html#lineNumber249",
     "Observable.prototype.retryWhen ",
     "test"
@@ -10886,6 +11000,12 @@ window.esdocSearchIndex = [
   [
     "",
     "test-file/spec-js/operators/retryWhen-spec.js.html#lineNumber228",
+    "Observable.prototype.retryWhen ",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/operators/retryWhen-spec.js.html#lineNumber142",
     "Observable.prototype.retryWhen ",
     "test"
   ],
@@ -11359,13 +11479,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber42",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber31",
     "Observable.prototype.sequenceEqual should return true for two observables that match when the last one emits and completes in the same frame",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber31",
+    "test-file/spec-js/operators/sequenceEqual-spec.js.html#lineNumber42",
     "Observable.prototype.sequenceEqual should return true for two observables that match when the last one emits and completes in the same frame",
     "test"
   ],
@@ -11509,73 +11629,79 @@ window.esdocSearchIndex = [
   ],
   [
     "single es6/operator/single.js~single,single",
-    "test-file/spec-js/operators/single-spec.js.html#lineNumber5",
+    "test-file/spec-js/operators/single-spec.js.html#lineNumber6",
     "Observable.prototype.single",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/single-spec.js.html#lineNumber28",
+    "test-file/spec-js/operators/single-spec.js.html#lineNumber29",
     "Observable.prototype.single should allow unsubscribing explicitly and early",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/single-spec.js.html#lineNumber36",
+    "test-file/spec-js/operators/single-spec.js.html#lineNumber119",
+    "Observable.prototype.single should call predicate with indices starting at 0",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/operators/single-spec.js.html#lineNumber37",
     "Observable.prototype.single should not break unsubscription chains when result is unsubscribed explicitly",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/single-spec.js.html#lineNumber14",
+    "test-file/spec-js/operators/single-spec.js.html#lineNumber15",
     "Observable.prototype.single should raise error from empty predicate if observable does not emit",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/single-spec.js.html#lineNumber48",
+    "test-file/spec-js/operators/single-spec.js.html#lineNumber49",
     "Observable.prototype.single should raise error from empty predicate if observable emits error",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/single-spec.js.html#lineNumber98",
+    "test-file/spec-js/operators/single-spec.js.html#lineNumber99",
     "Observable.prototype.single should raise error from predicate if observable does not emit",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/single-spec.js.html#lineNumber55",
+    "test-file/spec-js/operators/single-spec.js.html#lineNumber56",
     "Observable.prototype.single should raise error from predicate if observable emits error",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/single-spec.js.html#lineNumber88",
+    "test-file/spec-js/operators/single-spec.js.html#lineNumber89",
     "Observable.prototype.single should raise error from predicate if observable have multiple matching element",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/single-spec.js.html#lineNumber65",
+    "test-file/spec-js/operators/single-spec.js.html#lineNumber66",
     "Observable.prototype.single should raise error if predicate throws error",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/single-spec.js.html#lineNumber78",
+    "test-file/spec-js/operators/single-spec.js.html#lineNumber79",
     "Observable.prototype.single should return element from predicate if observable have single matching element",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/single-spec.js.html#lineNumber21",
+    "test-file/spec-js/operators/single-spec.js.html#lineNumber22",
     "Observable.prototype.single should return only element from empty predicate if observable emits only once",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/single-spec.js.html#lineNumber108",
+    "test-file/spec-js/operators/single-spec.js.html#lineNumber109",
     "Observable.prototype.single should return undefined from predicate if observable does not contain matching element",
     "test"
   ],
@@ -12081,6 +12207,18 @@ window.esdocSearchIndex = [
     "",
     "test-file/spec-js/operators/switch-spec.js.html#lineNumber72",
     "Observable.prototype.switch should not break unsubscription chains when result is unsubscribed explicitly",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/operators/switch-spec.js.html#lineNumber209",
+    "Observable.prototype.switch should not leak if we switch before child completes (prevent memory leaks #2355)",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/operators/switch-spec.js.html#lineNumber192",
+    "Observable.prototype.switch should not leak when child completes before each switch (prevent memory leaks #2355)",
     "test"
   ],
   [
@@ -13057,7 +13195,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/timeoutWith-spec.js.html#lineNumber106",
+    "test-file/spec-js/operators/timeoutWith-spec.js.html#lineNumber82",
+    "Observable.prototype.timeoutWith ",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/operators/timeoutWith-spec.js.html#lineNumber197",
     "Observable.prototype.timeoutWith ",
     "test"
   ],
@@ -13069,25 +13213,19 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/timeoutWith-spec.js.html#lineNumber82",
-    "Observable.prototype.timeoutWith ",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec-js/operators/timeoutWith-spec.js.html#lineNumber94",
-    "Observable.prototype.timeoutWith ",
-    "test"
-  ],
-  [
-    "",
     "test-file/spec-js/operators/timeoutWith-spec.js.html#lineNumber118",
     "Observable.prototype.timeoutWith ",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/timeoutWith-spec.js.html#lineNumber197",
+    "test-file/spec-js/operators/timeoutWith-spec.js.html#lineNumber106",
+    "Observable.prototype.timeoutWith ",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/operators/timeoutWith-spec.js.html#lineNumber94",
     "Observable.prototype.timeoutWith ",
     "test"
   ],
@@ -13440,62 +13578,74 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "windowtime es6/operator/windowtime.js~windowtime,windowtime",
+    "windowtime windowtime,windowtime",
     "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber5",
     "Observable.prototype.windowTime",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber125",
+    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber156",
     "Observable.prototype.windowTime ",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber79",
+    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber37",
+    "Observable.prototype.windowTime ",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber110",
     "Observable.prototype.windowTime should be able to split a never Observable into timely empty windows",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber95",
+    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber23",
+    "Observable.prototype.windowTime should close windows after max count is reached",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber126",
     "Observable.prototype.windowTime should emit an error-only window if outer is a simple throw-Observable",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber23",
+    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber54",
     "Observable.prototype.windowTime should emit windows given windowTimeSpan",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber37",
+    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber68",
     "Observable.prototype.windowTime should emit windows given windowTimeSpan and windowCreationInterval",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber107",
+    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber138",
     "Observable.prototype.windowTime should handle source Observable which eventually emits an error",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber144",
+    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber175",
     "Observable.prototype.windowTime should not break unsubscription chains when result is unsubscribed explicitly",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber55",
+    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber86",
     "Observable.prototype.windowTime should return a single empty window if source is empty",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber67",
+    "test-file/spec-js/operators/windowTime-spec.js.html#lineNumber98",
     "Observable.prototype.windowTime should split a Just source into a single window identical to source",
     "test"
   ],
@@ -14353,13 +14503,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/operators/zipAll-spec.js.html#lineNumber134",
+    "test-file/spec-js/operators/zipAll-spec.js.html#lineNumber158",
     "Observable.prototype.zipAll with iterables should work with non-empty observable and empty iterable",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/operators/zipAll-spec.js.html#lineNumber158",
+    "test-file/spec-js/operators/zipAll-spec.js.html#lineNumber134",
     "Observable.prototype.zipAll with iterables should work with non-empty observable and empty iterable",
     "test"
   ],
@@ -14551,13 +14701,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/observables/timer-spec.js.html#lineNumber31",
+    "test-file/spec-js/observables/timer-spec.js.html#lineNumber63",
     "Observable.timer should start after delay and periodically emit values",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/timer-spec.js.html#lineNumber63",
+    "test-file/spec-js/observables/timer-spec.js.html#lineNumber31",
     "Observable.timer should start after delay and periodically emit values",
     "test"
   ],
@@ -14617,37 +14767,37 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber295",
+    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber305",
     "Observable.webSocket multiplex",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber325",
+    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber335",
     "Observable.webSocket multiplex should be repeatable",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber296",
+    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber306",
     "Observable.webSocket multiplex should be retryable",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber387",
+    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber397",
     "Observable.webSocket multiplex should keep the same socket for multiple multiplex subscriptions",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber356",
+    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber366",
     "Observable.webSocket multiplex should multiplex over the websocket",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber423",
+    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber433",
     "Observable.webSocket multiplex should not close the socket until all subscriptions complete",
     "test"
   ],
@@ -14719,25 +14869,25 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber211",
+    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber221",
     "Observable.webSocket with a config object if the resultSelector fails it should go down the error path",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber252",
+    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber262",
     "Observable.webSocket with a config object should accept a closeObserver",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber228",
+    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber238",
     "Observable.webSocket with a config object should accept a closingObserver",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber280",
+    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber290",
     "Observable.webSocket with a config object should handle constructor errors",
     "test"
   ],
@@ -14749,13 +14899,19 @@ window.esdocSearchIndex = [
   ],
   [
     "",
+    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber192",
+    "Observable.webSocket with a config object should take a binaryType and set it properly on the web socket",
+    "test"
+  ],
+  [
+    "",
     "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber182",
     "Observable.webSocket with a config object should take a protocol and set it properly on the web socket",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber192",
+    "test-file/spec-js/observables/dom/webSocket-spec.js.html#lineNumber202",
     "Observable.webSocket with a config object should take a resultSelector",
     "test"
   ],
@@ -15031,13 +15187,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/observables/zip-spec.js.html#lineNumber128",
+    "test-file/spec-js/observables/zip-spec.js.html#lineNumber152",
     "Observable.zip with iterables should work with non-empty observable and empty iterable",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/observables/zip-spec.js.html#lineNumber152",
+    "test-file/spec-js/observables/zip-spec.js.html#lineNumber128",
     "Observable.zip with iterables should work with non-empty observable and empty iterable",
     "test"
   ],
@@ -15331,13 +15487,13 @@ window.esdocSearchIndex = [
   ],
   [
     "scheduler es6/scheduler.js~scheduler,scheduler",
-    "test-file/spec-js/Scheduler-spec.js.html#lineNumber6",
+    "test-file/spec-js/schedulers/QueueScheduler-spec.js.html#lineNumber8",
     "Scheduler.queue",
     "test"
   ],
   [
     "scheduler es6/scheduler.js~scheduler,scheduler",
-    "test-file/spec-js/schedulers/QueueScheduler-spec.js.html#lineNumber8",
+    "test-file/spec-js/Scheduler-spec.js.html#lineNumber6",
     "Scheduler.queue",
     "test"
   ],
@@ -15403,25 +15559,25 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/Subject-spec.js.html#lineNumber35",
-    "Subject ",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec-js/Subject-spec.js.html#lineNumber86",
-    "Subject ",
-    "test"
-  ],
-  [
-    "",
     "test-file/spec-js/Subject-spec.js.html#lineNumber62",
     "Subject ",
     "test"
   ],
   [
     "",
+    "test-file/spec-js/Subject-spec.js.html#lineNumber35",
+    "Subject ",
+    "test"
+  ],
+  [
+    "",
     "test-file/spec-js/Subject-spec.js.html#lineNumber110",
+    "Subject ",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec-js/Subject-spec.js.html#lineNumber86",
     "Subject ",
     "test"
   ],
@@ -16080,6 +16236,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "es6/miscjsdoc.js~observableinputdoc",
+    "class/es6/MiscJSDoc.js~ObservableInputDoc.html",
+    "es6/MiscJSDoc.js~ObservableInputDoc",
+    "class"
+  ],
+  [
     "es6/miscjsdoc.js~observerdoc",
     "class/es6/MiscJSDoc.js~ObserverDoc.html",
     "es6/MiscJSDoc.js~ObserverDoc",
@@ -16108,6 +16270,18 @@ window.esdocSearchIndex = [
     "class/es6/MiscJSDoc.js~ObserverDoc.html#instance-method-next",
     "es6/MiscJSDoc.js~ObserverDoc#next",
     "method"
+  ],
+  [
+    "es6/miscjsdoc.js~subscribableorpromisedoc",
+    "class/es6/MiscJSDoc.js~SubscribableOrPromiseDoc.html",
+    "es6/MiscJSDoc.js~SubscribableOrPromiseDoc",
+    "class"
+  ],
+  [
+    "es6/miscjsdoc.js~teardownlogicdoc",
+    "class/es6/MiscJSDoc.js~TeardownLogicDoc.html",
+    "es6/MiscJSDoc.js~TeardownLogicDoc",
+    "class"
   ],
   [
     "es6/notification.js",
@@ -18726,12 +18900,6 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "es6/operator/windowtime.js~windowtime",
-    "class/es6/Observable.js~Observable.html#instance-method-windowTime",
-    "es6/operator/windowTime.js~windowTime",
-    "method"
-  ],
-  [
     "es6/operator/windowtoggle.js",
     "file/es6/operator/windowToggle.js.html",
     "es6/operator/windowToggle.js",
@@ -19035,6 +19203,12 @@ window.esdocSearchIndex = [
     "es6/util/isarray.js",
     "file/es6/util/isArray.js.html",
     "es6/util/isArray.js",
+    "file"
+  ],
+  [
+    "es6/util/isarraylike.js",
+    "file/es6/util/isArrayLike.js.html",
+    "es6/util/isArrayLike.js",
     "file"
   ],
   [
@@ -20167,19 +20341,19 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/util/subscribeToResult-spec.js.html#lineNumber101",
+    "test-file/spec-js/util/subscribeToResult-spec.js.html#lineNumber108",
     "subscribeToResult should emit an error if value returned by Symbol.observable call is not a valid observable",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/util/subscribeToResult-spec.js.html#lineNumber129",
+    "test-file/spec-js/util/subscribeToResult-spec.js.html#lineNumber136",
     "subscribeToResult should emit an error when trying to subscribe to a non-object",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/util/subscribeToResult-spec.js.html#lineNumber115",
+    "test-file/spec-js/util/subscribeToResult-spec.js.html#lineNumber122",
     "subscribeToResult should emit an error when trying to subscribe to an unknown type of object",
     "test"
   ],
@@ -20191,19 +20365,19 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec-js/util/subscribeToResult-spec.js.html#lineNumber58",
+    "test-file/spec-js/util/subscribeToResult-spec.js.html#lineNumber65",
     "subscribeToResult should emits error when the promise rejects",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/util/subscribeToResult-spec.js.html#lineNumber70",
+    "test-file/spec-js/util/subscribeToResult-spec.js.html#lineNumber77",
     "subscribeToResult should subscribe an iterable and emit results synchronously",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/util/subscribeToResult-spec.js.html#lineNumber49",
+    "test-file/spec-js/util/subscribeToResult-spec.js.html#lineNumber56",
     "subscribeToResult should subscribe to a promise",
     "test"
   ],
@@ -20215,13 +20389,19 @@ window.esdocSearchIndex = [
   ],
   [
     "",
+    "test-file/spec-js/util/subscribeToResult-spec.js.html#lineNumber49",
+    "subscribeToResult should subscribe to an array-like and emit synchronously",
+    "test"
+  ],
+  [
+    "",
     "test-file/spec-js/util/subscribeToResult-spec.js.html#lineNumber17",
     "subscribeToResult should subscribe to observables that are an instanceof Rx.Observable",
     "test"
   ],
   [
     "",
-    "test-file/spec-js/util/subscribeToResult-spec.js.html#lineNumber91",
+    "test-file/spec-js/util/subscribeToResult-spec.js.html#lineNumber98",
     "subscribeToResult should subscribe to to an object that implements Symbol.observable",
     "test"
   ],
