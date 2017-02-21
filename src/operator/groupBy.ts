@@ -43,7 +43,7 @@ export function groupBy<T, K, R>(this: Observable<T>, keySelector: (value: T) =>
  * //   { id: 2, name: 'dg2' },
  * //   { id: 2, name: 'sfqfb2' },
  * //   { id: 2, name: 'qsgqsfg2' } ]
- * // 
+ * //
  * // [ { id: 3, name: 'qfs3' } ]
  *
  * @example <caption>Pivot data on the id field</caption>
