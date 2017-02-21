@@ -135,7 +135,7 @@ export function concatStatic<T, R>(...observables: Array<ObservableInput<any> | 
     scheduler = args.pop();
   }
 
-  if (scheduler === null && observables.length === 1) {
+  if (scheduler === null && observables.length === 1 && observables[0] instanceof Observable) {
     return <Observable<R>>observables[0];
   }
 
