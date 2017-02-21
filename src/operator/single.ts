@@ -61,19 +61,18 @@ class SingleSubscriber<T> extends Subscriber<T> {
   }
 
   protected _next(value: T): void {
-    const predicate = this.predicate;
-    this.index++;
-    if (predicate) {
-      this.tryNext(value);
+    const index = this.index++;
+
+    if (this.predicate) {
+      this.tryNext(value, index);
     } else {
       this.applySingleValue(value);
     }
   }
 
-  private tryNext(value: T): void {
+  private tryNext(value: T, index: number): void {
     try {
-      const result = this.predicate(value, this.index, this.source);
-      if (result) {
+      if (this.predicate(value, index, this.source)) {
         this.applySingleValue(value);
       }
     } catch (err) {
