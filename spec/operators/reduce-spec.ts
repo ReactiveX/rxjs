@@ -302,23 +302,84 @@ describe('Observable.prototype.reduce', () => {
 
   it('should accept T typed reducers', () => {
     type(() => {
-      let a: Rx.Observable<{ a?: number; b?: string }>;
-      a.reduce((acc, value) => {
+      let a: Rx.Observable<{ a: number; b: string }>;
+      const reduced = a.reduce((acc, value) => {
         value.a = acc.a;
         value.b = acc.b;
         return acc;
-      }, {});
+      });
+
+      reduced.subscribe(r => {
+        r.a.toExponential();
+        r.b.toLowerCase();
+      });
     });
   });
 
-  it('should accept R typed reducers', () => {
+  it('should accept R typed reducers when R is assignable to T', () => {
     type(() => {
-      let a: Rx.Observable<{ a: number; b: string }>;
-      a.reduce<{ a?: number; b?: string }>((acc, value) => {
+      let a: Rx.Observable<{ a?: number; b?: string }>;
+      const reduced = a.reduce((acc, value) => {
         value.a = acc.a;
         value.b = acc.b;
         return acc;
       }, {});
+
+      reduced.subscribe(r => {
+        r.a.toExponential();
+        r.b.toLowerCase();
+      });
+    });
+  });
+
+  it('should accept R typed reducers when R is not assignable to T', () => {
+    type(() => {
+      let a: Rx.Observable<{ a: number; b: string }>;
+      const seed = {
+        as: [1],
+        bs: ['a']
+      };
+      const reduced = a.reduce((acc, value) => {
+        acc.as.push(value.a);
+        acc.bs.push(value.b);
+        return acc;
+      }, seed);
+
+      reduced.subscribe(r => {
+        r.as[0].toExponential();
+        r.bs[0].toLowerCase();
+      });
+    });
+  });
+
+  it('should accept R typed reducers and reduce to type R', () => {
+    type(() => {
+      let a: Rx.Observable<{ a: number; b: string }>;
+      const reduced = a.reduce<{ a?: number; b?: string }>((acc, value) => {
+        value.a = acc.a;
+        value.b = acc.b;
+        return acc;
+      }, {});
+
+      reduced.subscribe(r => {
+        r.a.toExponential();
+        r.b.toLowerCase();
+      });
+    });
+  });
+
+  it('should accept array of R typed reducers and reduce to array of R', () => {
+    type(() => {
+      let a: Rx.Observable<number>;
+      const reduced = a.reduce((acc, cur) => {
+        console.log(acc);
+        acc.push(cur.toString());
+        return acc;
+      }, [] as string[]);
+
+      reduced.subscribe(rs => {
+        rs[0].toLowerCase();
+      });
     });
   });
 });
