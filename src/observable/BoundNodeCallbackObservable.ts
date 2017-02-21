@@ -153,7 +153,7 @@ function dispatch<T>(this: Action<DispatchState<T>>, state: DispatchState<T>) {
       const err = innerArgs.shift();
 
       if (err) {
-        subject.error(err);
+        self.add(scheduler.schedule(dispatchError, 0, { err, subject }));
       } else if (selector) {
         const result = tryCatch(selector).apply(this, innerArgs);
         if (result === errorObject) {
@@ -171,7 +171,7 @@ function dispatch<T>(this: Action<DispatchState<T>>, state: DispatchState<T>) {
 
     const result = tryCatch(callbackFunc).apply(context, args.concat(handler));
     if (result === errorObject) {
-      subject.error(errorObject.e);
+      self.add(scheduler.schedule(dispatchError, 0, { err: errorObject.e, subject }));
     }
   }
 
