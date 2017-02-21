@@ -418,6 +418,25 @@ describe('Observable.ajax', () => {
       expect(MockXMLHttpRequest.mostRecent.data).to.equal('%F0%9F%8C%9F=%F0%9F%9A%80');
     });
 
+    it('should send by form-urlencoded format with special characters', () => {
+      const body = {
+        'foo=bar': 'foo?bar'
+      };
+      const obj = {
+        url: '/flibbertyJibbet',
+        method: '',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: body
+      };
+
+      Rx.Observable.ajax(obj).subscribe();
+
+      expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
+      expect(MockXMLHttpRequest.mostRecent.data).to.equal('foo%3Dbar=foo%3Fbar');
+    });
+
     it('should send by JSON', () => {
       const body = {
         '🌟': '🚀'
