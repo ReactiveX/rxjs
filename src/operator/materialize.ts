@@ -35,7 +35,7 @@ import { Notification } from '../Notification';
  * // - Notification {kind: "N", value: "A", error: undefined, hasValue: true}
  * // - Notification {kind: "N", value: "B", error: undefined, hasValue: true}
  * // - Notification {kind: "E", value: undefined, error: TypeError:
- * //   x.toUpperCase is not a function at MapSubscriber.letters.map.x 
+ * //   x.toUpperCase is not a function at MapSubscriber.letters.map.x
  * //   [as project] (http://1…, hasValue: false}
  *
  * @see {@link Notification}

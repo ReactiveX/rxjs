@@ -5,7 +5,7 @@ import { Subscriber } from '../Subscriber';
 /* tslint:disable:max-line-length */
 export function defaultIfEmpty<T>(this: Observable<T>, defaultValue?: T): Observable<T>;
 export function defaultIfEmpty<T, R>(this: Observable<T>, defaultValue?: R): Observable<T | R>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Emits a given value if the source Observable completes without emitting any

@@ -1,3 +1,63 @@
+<a name="5.1.1"></a>
+## [5.1.1](https://github.com/ReactiveX/RxJS/compare/5.1.0...v5.1.1) (2017-02-13)
+
+
+### Bug Fixes
+
+* **bindCallback:** input function context can now be properly set via output function ([#2319](https://github.com/ReactiveX/RxJS/issues/2319)) ([cb91c76](https://github.com/ReactiveX/RxJS/commit/cb91c76))
+* **bindNodeCallback:** input function context can now be properly set via output function ([#2320](https://github.com/ReactiveX/RxJS/issues/2320)) ([3ec315d](https://github.com/ReactiveX/RxJS/commit/3ec315d))
+* **Subscription:** fold ChildSubscription logic into Subscriber to prevent operators from leaking ChildSubscriptions. ([#2360](https://github.com/ReactiveX/RxJS/issues/2360)) ([22e4c17](https://github.com/ReactiveX/RxJS/commit/22e4c17)), closes [#2244](https://github.com/ReactiveX/RxJS/issues/2244) [#2355](https://github.com/ReactiveX/RxJS/issues/2355)
+
+
+
+<a name="5.1.0"></a>
+# [5.1.0](https://github.com/ReactiveX/RxJS/compare/5.0.3...v5.1.0) (2017-02-01)
+
+
+### Bug Fixes
+
+* **catch:** update the catch operator to dispose inner subscriptions if the catch subscription is di ([#2271](https://github.com/ReactiveX/RxJS/issues/2271)) ([8a1e089](https://github.com/ReactiveX/RxJS/commit/8a1e089))
+* **combineLatest:** Don't mutate array of observables passed to ([#2276](https://github.com/ReactiveX/RxJS/issues/2276)) ([9b73c46](https://github.com/ReactiveX/RxJS/commit/9b73c46))
+* **ISubscription:** update type definition of ISubscription::closed ([#2249](https://github.com/ReactiveX/RxJS/issues/2249)) ([0c304a2](https://github.com/ReactiveX/RxJS/commit/0c304a2))
+* **Observable:** Ensure the generic type of the Observer passed to Observable's initializer function is the same. ([51a0bc1](https://github.com/ReactiveX/RxJS/commit/51a0bc1)), closes [#2166](https://github.com/ReactiveX/RxJS/issues/2166)
+* **Observable:** errors thrown during subscription are now properly sent down error channel ([#2313](https://github.com/ReactiveX/RxJS/issues/2313)) ([d4a9aac](https://github.com/ReactiveX/RxJS/commit/d4a9aac)), closes [#1833](https://github.com/ReactiveX/RxJS/issues/1833)
+* **reduce:** index will properly start at 1 if no seed is provided, to match native Array reduce behavior ([30a4ca4](https://github.com/ReactiveX/RxJS/commit/30a4ca4)), closes [#2290](https://github.com/ReactiveX/RxJS/issues/2290)
+* **repeatWhen:** resulting observable will wait for the source to complete, even if a hot notifier completes first. ([#2209](https://github.com/ReactiveX/RxJS/issues/2209)) ([c65a098](https://github.com/ReactiveX/RxJS/commit/c65a098)), closes [#2054](https://github.com/ReactiveX/RxJS/issues/2054)
+* **Subject:** ensure subject properly throws ObjectUnsubscribedError when unsubscribed then resubscribed to ([#2318](https://github.com/ReactiveX/RxJS/issues/2318)) ([41489eb](https://github.com/ReactiveX/RxJS/commit/41489eb))
+* **TestScheduler:** helper methods return proper types, `HotObservable` and `ColdObservable` instead of Observable ([#2305](https://github.com/ReactiveX/RxJS/issues/2305)) ([758aae9](https://github.com/ReactiveX/RxJS/commit/758aae9))
+* **windowTime:** ensure windows created when only a timespan is passed are closed and cleaned up properly. ([#2278](https://github.com/ReactiveX/RxJS/issues/2278)) ([d4533c4](https://github.com/ReactiveX/RxJS/commit/d4533c4))
+
+
+### Features
+
+* **fromEventPattern:** support optional removeHandler ([86960c2](https://github.com/ReactiveX/RxJS/commit/86960c2))
+* **fromEventPattern:** support pass signal from addHandler to removeHandler ([01d0622](https://github.com/ReactiveX/RxJS/commit/01d0622))
+
+
+
+<a name="5.0.3"></a>
+## [5.0.3](https://github.com/ReactiveX/RxJS/compare/5.0.2...v5.0.3) (2017-01-05)
+
+
+### Bug Fixes
+
+* **observeOn:** seal memory leak involving old notifications ([9664a38](https://github.com/ReactiveX/RxJS/commit/9664a38)), closes [#2244](https://github.com/ReactiveX/RxJS/issues/2244)
+* **Subscription:** `add` will return Subscription that `remove`s itself when unsubscribed ([375d4a5](https://github.com/ReactiveX/RxJS/commit/375d4a5))
+* **TypeScript:** interfaces that accepted `Scheduler` now accept `IScheduler` interface ([a0d28a8](https://github.com/ReactiveX/RxJS/commit/a0d28a8))
+
+
+
+<a name="5.0.2"></a>
+## [5.0.2](https://github.com/ReactiveX/RxJS/compare/5.0.1...v5.0.2) (2016-12-23)
+
+
+### Bug Fixes
+
+* **ajax:** upload progress is now set correctly ([#2200](https://github.com/ReactiveX/RxJS/issues/2200)) ([1a83041](https://github.com/ReactiveX/RxJS/commit/1a83041))
+* **groupBy:** Fix groupBy to dispose of outer subscription. ([#2201](https://github.com/ReactiveX/RxJS/issues/2201)) ([2269618](https://github.com/ReactiveX/RxJS/commit/2269618))
+
+
+
 <a name="5.0.1"></a>
 ## [5.0.1](https://github.com/ReactiveX/RxJS/compare/5.0.0...v5.0.1) (2016-12-13)
 

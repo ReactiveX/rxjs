@@ -1,6 +1,10 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-declare const {hot, expectObservable};
+import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+
+declare const { time };
+declare const hot: typeof marbleTestingSignature.hot;
+declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 
 const BehaviorSubject = Rx.BehaviorSubject;
 const Observable = Rx.Observable;
@@ -8,10 +12,9 @@ const ObjectUnsubscribedError = Rx.ObjectUnsubscribedError;
 
 /** @test {BehaviorSubject} */
 describe('BehaviorSubject', () => {
-  it('should extend Subject', (done: MochaDone) => {
+  it('should extend Subject', () => {
     const subject = new BehaviorSubject(null);
-    expect(subject instanceof Rx.Subject).to.be.true;
-    done();
+    expect(subject).to.be.instanceof(Rx.Subject);
   });
 
   it('should throw if it has received an error and getValue() is called', () => {

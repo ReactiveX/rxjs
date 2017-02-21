@@ -1,5 +1,11 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-declare const {hot, asDiagram, expectObservable, expectSubscriptions};
+import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+
+declare const { asDiagram };
+declare const hot: typeof marbleTestingSignature.hot;
+declare const expectObservable: typeof marbleTestingSignature.expectObservable;
+declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
 
 const Observable = Rx.Observable;
 /** @test {single} */
@@ -144,6 +150,23 @@ describe('Observable.prototype.single', () => {
     };
 
     expectObservable(e1.single(predicate)).toBe(expected, {z: undefined});
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should call predicate with indices starting at 0', () => {
+    const e1 =    hot('--a--b--c--|');
+    const e1subs =    '^          !';
+    const expected =  '-----------(b|)';
+
+    let indices = [];
+    const predicate = function(value, index) {
+      indices.push(index);
+      return value === 'b';
+    };
+
+    expectObservable(e1.single(predicate).do(null, null, () => {
+      expect(indices).to.deep.equal([0, 1, 2]);
+    })).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });

@@ -1,6 +1,12 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+
+declare const { asDiagram };
+declare const hot: typeof marbleTestingSignature.hot;
+declare const cold: typeof marbleTestingSignature.cold;
+declare const expectObservable: typeof marbleTestingSignature.expectObservable;
+declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
 
 const Observable = Rx.Observable;
 
@@ -10,9 +16,9 @@ describe('Observable.prototype.repeatWhen', () => {
     const source =  cold('-1--2--|');
     const subs =        ['^      !                     ',
                        '             ^      !        ',
-                       '                          ^ !'];
+                       '                          ^      !'];
     const notifier = hot('-------------r------------r-|');
-    const expected =     '-1--2---------1--2---------1|';
+    const expected =     '-1--2---------1--2---------1--2--|';
 
     const result = source.repeatWhen((notifications: any) => notifier);
 

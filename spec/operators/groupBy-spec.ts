@@ -1,7 +1,13 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 import {GroupedObservable} from '../../dist/cjs/operator/groupBy';
-declare const {hot, cold, asDiagram, expectObservable, expectSubscriptions};
+import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+
+declare const { asDiagram };
+declare const hot: typeof marbleTestingSignature.hot;
+declare const cold: typeof marbleTestingSignature.cold;
+declare const expectObservable: typeof marbleTestingSignature.expectObservable;
+declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
@@ -337,6 +343,34 @@ describe('Observable.prototype.groupBy', () => {
       .map((group: any) => group.key);
 
     expectObservable(source, unsub).toBe(expected, expectedValues);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should unsubscribe from the source when the outer and inner subscriptions are disposed', () => {
+    const values = {
+      a: '  foo',
+      b: ' FoO ',
+      c: 'baR  ',
+      d: 'foO ',
+      e: ' Baz   ',
+      f: '  qux ',
+      g: '   bar',
+      h: ' BAR  ',
+      i: 'FOO ',
+      j: 'baz  ',
+      k: ' bAZ ',
+      l: '    fOo    '
+    };
+    const e1 = hot('-1--2--^-a-b-c-d-e-f-g-h-i-j-k-l-|', values);
+    const e1subs =        '^ !';
+    const expected =      '--(a|)';
+
+    const source = e1
+      .groupBy((val: string) => val.toLowerCase().trim())
+      .take(1)
+      .mergeMap((group: any) => group.take(1));
+
+    expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -1378,7 +1412,7 @@ describe('Observable.prototype.groupBy', () => {
       observer.complete();
     }).groupBy(
       (x: number) => x % 2,
-      (x: string) => x + '!'
+      (x: number) => x + '!'
     );
 
     expect(result instanceof MyCustomObservable).to.be.true;

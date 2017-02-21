@@ -23,7 +23,7 @@ export function combineLatest<T, T2, T3, T4, T5, T6>(this: Observable<T>, v2: Ob
 export function combineLatest<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<T> | ((...values: Array<T>) => R)>): Observable<R>;
 export function combineLatest<T, R>(this: Observable<T>, array: ObservableInput<T>[]): Observable<Array<T>>;
 export function combineLatest<T, TOther, R>(this: Observable<T>, array: ObservableInput<TOther>[], project: (v1: T, ...values: Array<TOther>) => R): Observable<R>;
-/* tslint:disable:max-line-length */
+/* tslint:enable:max-line-length */
 
 /**
  * Combines multiple Observables to create an Observable whose values are
@@ -58,7 +58,7 @@ export function combineLatest<T, TOther, R>(this: Observable<T>, array: Observab
  * @see {@link merge}
  * @see {@link withLatestFrom}
  *
- * @param {Observable} other An input Observable to combine with the source
+ * @param {ObservableInput} other An input Observable to combine with the source
  * Observable. More than one input Observables may be given as argument.
  * @param {function} [project] An optional function to project the values from
  * the combined latest values into a new value on the output Observable.
@@ -79,7 +79,7 @@ export function combineLatest<T, R>(this: Observable<T>, ...observables: Array<O
   // if the first and only other argument besides the resultSelector is an array
   // assume it's been called with `combineLatest([obs1, obs2, obs3], project)`
   if (observables.length === 1 && isArray(observables[0])) {
-    observables = <any>observables[0];
+    observables = (<any>observables[0]).slice();
   }
 
   observables.unshift(this);

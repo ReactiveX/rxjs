@@ -243,6 +243,15 @@ To reduce polymorphism and get better performance out of operators, some operato
       <td><code>timeout(dueTime: number | Date, other?: Observable | Promise, scheduler?: Scheduler)</code></td>
       <td><code>timeoutWith(due: number | Date, withObservable: ObservableInput, scheduler: Scheduler)</code></td>
     </tr>
+    <tr>
+      <td rowspan="2"><code>sample</code></td>
+      <td><code>sample(interval: number, scheduler?: Scheduler)</code></td>
+      <td><code>sampleTime(interval: number, scheduler?: Scheduler)</code></td>
+    </tr>
+    <tr>
+      <td><code>sample(notifier: Observable)</code></td>
+      <td><code>sample(notifier: Observable)</code></td>
+    </tr>
   </tbody>
 </table>
 

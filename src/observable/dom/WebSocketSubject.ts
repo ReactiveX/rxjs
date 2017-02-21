@@ -18,6 +18,7 @@ export interface WebSocketSubjectConfig {
   closeObserver?: NextObserver<CloseEvent>;
   closingObserver?: NextObserver<void>;
   WebSocketCtor?: { new(url: string, protocol?: string|Array<string>): WebSocket };
+  binaryType?: 'blob' | 'arraybuffer';
 }
 
 /**
@@ -34,6 +35,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   closeObserver: NextObserver<CloseEvent>;
   closingObserver: NextObserver<void>;
   WebSocketCtor: { new(url: string, protocol?: string|Array<string>): WebSocket };
+  binaryType?: 'blob' | 'arraybuffer';
 
   private _output: Subject<T>;
 
@@ -42,7 +44,36 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   }
 
   /**
-   * @param urlConfigOrSource
+   * Wrapper around the w3c-compatible WebSocket object provided by the browser.
+   *
+   * @example <caption>Wraps browser WebSocket</caption>
+   *
+   * let subject = Observable.webSocket('ws://localhost:8081');
+   * subject.subscribe(
+   *    (msg) => console.log('message received: ' + msg),
+   *    (err) => console.log(err),
+   *    () => console.log('complete')
+   *  );
+   * subject.next(JSON.stringify({ op: 'hello' }));
+   *
+   * @example <caption>Wraps WebSocket from nodejs-websocket (using node.js)</caption>
+   *
+   * import { w3cwebsocket } from 'websocket';
+   *
+   * let socket = new WebSocketSubject({
+   *   url: 'ws://localhost:8081',
+   *   WebSocketCtor: w3cwebsocket
+   * });
+   *
+   * let subject = Observable.webSocket('ws://localhost:8081');
+   * subject.subscribe(
+   *    (msg) => console.log('message received: ' + msg),
+   *    (err) => console.log(err),
+   *    () => console.log('complete')
+   *  );
+   * subject.next(JSON.stringify({ op: 'hello' }));
+   *
+   * @param {string | WebSocketSubjectConfig} urlConfigOrSource the source of the websocket as an url or a structure defining the websocket object
    * @return {WebSocketSubject}
    * @static true
    * @name webSocket
@@ -130,6 +161,9 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
         new WebSocketCtor(this.url, this.protocol) :
         new WebSocketCtor(this.url);
       this.socket = socket;
+      if (this.binaryType) {
+        this.socket.binaryType = this.binaryType;
+      }
     } catch (e) {
       observer.error(e);
       return;

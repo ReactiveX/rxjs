@@ -11,32 +11,29 @@ import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 
 /**
- * Returns an Observable that emits the same values as the source observable with the exception of a `complete`.
- * A `complete` will cause the emission of the Throwable that cause the complete to the Observable returned from
- * notificationHandler. If that Observable calls onComplete or `complete` then retry will call `complete` or `error`
- * on the child subscription. Otherwise, this Observable will resubscribe to the source observable, on a particular
- * Scheduler.
+ * Returns an Observable that mirrors the source Observable with the exception of a `complete`. If the source
+ * Observable calls `complete`, this method will emit to the Observable returned from `notifier`. If that Observable
+ * calls `complete` or `error`, then this method will call `complete` or `error` on the child subscription. Otherwise
+ * this method will resubscribe to the source Observable.
  *
  * <img src="./img/repeatWhen.png" width="100%">
  *
- * @param {notificationHandler} receives an Observable of notifications with which a user can `complete` or `error`,
- * aborting the retry.
- * @param {scheduler} the Scheduler on which to subscribe to the source Observable.
- * @return {Observable} the source Observable modified with retry logic.
+ * @param {function(notifications: Observable): Observable} notifier - Receives an Observable of notifications with
+ * which a user can `complete` or `error`, aborting the repetition.
+ * @return {Observable} The source Observable modified with repeat logic.
  * @method repeatWhen
  * @owner Observable
  */
 export function repeatWhen<T>(this: Observable<T>, notifier: (notifications: Observable<any>) => Observable<any>): Observable<T> {
-  return this.lift(new RepeatWhenOperator(notifier, this));
+  return this.lift(new RepeatWhenOperator(notifier));
 }
 
 class RepeatWhenOperator<T> implements Operator<T, T> {
-  constructor(protected notifier: (notifications: Observable<any>) => Observable<any>,
-              protected source: Observable<T>) {
+  constructor(protected notifier: (notifications: Observable<any>) => Observable<any>) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new RepeatWhenSubscriber(subscriber, this.notifier, this.source));
+    return source.subscribe(new RepeatWhenSubscriber(subscriber, this.notifier, source));
   }
 }
 
@@ -50,6 +47,7 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
   private notifications: Subject<any>;
   private retries: Observable<any>;
   private retriesSubscription: Subscription;
+  private sourceIsBeingSubscribedTo: boolean = true;
 
   constructor(destination: Subscriber<R>,
               private notifier: (notifications: Observable<any>) => Observable<any>,
@@ -57,33 +55,31 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     super(destination);
   }
 
+  notifyNext(outerValue: T, innerValue: R,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, R>): void {
+    this.sourceIsBeingSubscribedTo = true;
+    this.source.subscribe(this);
+  }
+
+  notifyComplete(innerSub: InnerSubscriber<T, R>): void {
+    if (this.sourceIsBeingSubscribedTo === false) {
+      return super.complete();
+    }
+  }
+
   complete() {
+    this.sourceIsBeingSubscribedTo = false;
+
     if (!this.isStopped) {
-
-      let notifications = this.notifications;
-      let retries: any = this.retries;
-      let retriesSubscription = this.retriesSubscription;
-
-      if (!retries) {
-        notifications = new Subject();
-        retries = tryCatch(this.notifier)(notifications);
-        if (retries === errorObject) {
-          return super.complete();
-        }
-        retriesSubscription = subscribeToResult(this, retries);
-      } else {
-        this.notifications = null;
-        this.retriesSubscription = null;
+      if (!this.retries) {
+        this.subscribeToRetries();
+      } else if (this.retriesSubscription.closed) {
+        return super.complete();
       }
 
-      this.unsubscribe();
-      this.closed = false;
-
-      this.notifications = notifications;
-      this.retries = retries;
-      this.retriesSubscription = retriesSubscription;
-
-      notifications.next();
+      this._unsubscribeAndRecycle();
+      this.notifications.next();
     }
   }
 
@@ -100,23 +96,25 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.retries = null;
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
-
+  protected _unsubscribeAndRecycle(): Subscriber<T> {
     const { notifications, retries, retriesSubscription } = this;
     this.notifications = null;
     this.retries = null;
     this.retriesSubscription = null;
-
-    this.unsubscribe();
-    this.isStopped = false;
-    this.closed = false;
-
+    super._unsubscribeAndRecycle();
     this.notifications = notifications;
     this.retries = retries;
     this.retriesSubscription = retriesSubscription;
+    return this;
+  }
 
-    this.source.subscribe(this);
+  private subscribeToRetries() {
+    this.notifications = new Subject();
+    const retries = tryCatch(this.notifier)(this.notifications);
+    if (retries === errorObject) {
+      return super.complete();
+    }
+    this.retries = retries;
+    this.retriesSubscription = subscribeToResult(this, retries);
   }
 }
