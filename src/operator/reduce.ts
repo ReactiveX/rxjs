@@ -47,7 +47,6 @@ export function reduce<T, R>(this: Observable<T>, accumulator: (acc: R, value: T
  * @param {function(acc: R, value: T, index: number): R} accumulator The accumulator function
  * called on each source value.
  * @param {R} [seed] The initial accumulation value.
- * @return {Observable<R>} An observable of the accumulated values.
  * @return {Observable<R>} An Observable that emits a single value that is the
  * result of accumulating the values emitted by the source Observable.
  * @method reduce

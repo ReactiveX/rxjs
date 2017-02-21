@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
+import {lowerCaseO} from '../helpers/test-helper';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const hot: typeof marbleTestingSignature.hot;
@@ -366,5 +367,21 @@ describe('Observable.concat', () => {
       });
 
     expect(e1Subscribed).to.be.false;
+  });
+
+  it('should return passed observable if no scheduler was passed', () => {
+    const source = cold('--a---b----c---|');
+    const result = Observable.concat(source);
+
+    expect(result).to.equal(source);
+    expectObservable(result).toBe('--a---b----c---|');
+  });
+
+  it('should return RxJS Observable when single lowerCaseO was passed', () => {
+    const source = lowerCaseO('a', 'b', 'c');
+    const result = Observable.concat(source);
+
+    expect(result).to.be.an.instanceof(Observable);
+    expectObservable(result).toBe('(abc|)');
   });
 });

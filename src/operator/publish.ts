@@ -14,10 +14,10 @@ export function publish<T>(this: Observable<T>, selector: selector<T>): Observab
  *
  * <img src="./img/publish.png" width="100%">
  *
- * @param {Function} Optional selector function which can use the multicasted source sequence as many times as needed,
- * without causing multiple subscriptions to the source sequence.
+ * @param {Function} [selector] - Optional selector function which can use the multicasted source sequence as many times
+ * as needed, without causing multiple subscriptions to the source sequence.
  * Subscribers to the given source will receive all notifications of the source from the time of the subscription on.
- * @return a ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.
+ * @return A ConnectableObservable that upon connection causes the source Observable to emit items to its Observers.
  * @method publish
  * @owner Observable
  */
