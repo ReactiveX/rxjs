@@ -1,3 +1,29 @@
+<a name="5.2.0"></a>
+# [5.2.0](https://github.com/ReactiveX/RxJS/compare/5.1.1...v5.2.0) (2017-02-21)
+
+
+### Bug Fixes
+
+* **ajax:** will set `withCredentials` after `open` on XHR for IE10 ([#2332](https://github.com/ReactiveX/RxJS/issues/2332)) ([0ab1d3b](https://github.com/ReactiveX/RxJS/commit/0ab1d3b))
+* **bindCallback:** emit undefined when callback is without arguments ([915a2a8](https://github.com/ReactiveX/RxJS/commit/915a2a8))
+* **bindNodeCallback:** emit undefined when callback has no success arguments ([8b81fc6](https://github.com/ReactiveX/RxJS/commit/8b81fc6)), closes [#2254](https://github.com/ReactiveX/RxJS/issues/2254)
+* **bindNodeCallback:** errors thrown in callback will be scheduled if a scheduler is provided ([#2344](https://github.com/ReactiveX/RxJS/issues/2344)) ([82ec4f1](https://github.com/ReactiveX/RxJS/commit/82ec4f1))
+* **concat:** will now return Observable when given a single object implementing Symbol.observable ([#2387](https://github.com/ReactiveX/RxJS/issues/2387)) ([f5d035a](https://github.com/ReactiveX/RxJS/commit/f5d035a))
+* **ErrorObservable:** remove type constraint to error value ([2f951cd](https://github.com/ReactiveX/RxJS/commit/2f951cd)), closes [#2395](https://github.com/ReactiveX/RxJS/issues/2395)
+* **forkJoin:** add type signature for single observable with selector ([7983b91](https://github.com/ReactiveX/RxJS/commit/7983b91)), closes [#2347](https://github.com/ReactiveX/RxJS/issues/2347)
+* **merge:** return Observable when called with single lowerCaseO ([85752eb](https://github.com/ReactiveX/RxJS/commit/85752eb))
+* **mergeAll:** introduce variant support <T, R> for mergeMap ([656f2b3](https://github.com/ReactiveX/RxJS/commit/656f2b3)), closes [#2372](https://github.com/ReactiveX/RxJS/issues/2372)
+* **single:** predicate function receives indicies starting at 0 ([#2396](https://github.com/ReactiveX/RxJS/issues/2396)) ([c81882f](https://github.com/ReactiveX/RxJS/commit/c81882f))
+* **subscribeToResult:** accept array-like as result ([14685ba](https://github.com/ReactiveX/RxJS/commit/14685ba))
+
+
+### Features
+
+* **webSocket:** Add binaryType to config object ([86acbd1](https://github.com/ReactiveX/RxJS/commit/86acbd1)), closes [#2353](https://github.com/ReactiveX/RxJS/issues/2353)
+* **windowTime:** maxWindowSize parameter in windowTime operator ([381be3f](https://github.com/ReactiveX/RxJS/commit/381be3f)), closes [#1301](https://github.com/ReactiveX/RxJS/issues/1301)
+
+
+
 <a name="5.1.1"></a>
 ## [5.1.1](https://github.com/ReactiveX/RxJS/compare/5.1.0...v5.1.1) (2017-02-13)
 
