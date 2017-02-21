@@ -25,11 +25,7 @@ export interface AjaxRequest {
 
 function getCORSRequest(this: AjaxRequest): XMLHttpRequest {
   if (root.XMLHttpRequest) {
-    const xhr = new root.XMLHttpRequest();
-    if ('withCredentials' in xhr) {
-      xhr.withCredentials = !!this.withCredentials;
-    }
-    return xhr;
+    return new root.XMLHttpRequest();
   } else if (!!root.XDomainRequest) {
     return new root.XDomainRequest();
   } else {
@@ -248,9 +244,13 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
         return null;
       }
 
-      // timeout and responseType can be set once the XHR is open
+      // timeout, responseType and withCredentials can be set once the XHR is open
       xhr.timeout = request.timeout;
       xhr.responseType = request.responseType;
+
+      if ('withCredentials' in xhr) {
+        xhr.withCredentials = !!request.withCredentials;
+      }
 
       // set headers
       this.setHeaders(xhr, headers);
