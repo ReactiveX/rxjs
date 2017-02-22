@@ -4,7 +4,7 @@ import * as Rx from '../../dist/cjs/Rx';
 import {noop} from '../../dist/cjs/util/noop';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
-declare const { asDiagram };
+declare const { asDiagram, type };
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 
 declare const rxTestScheduler: Rx.TestScheduler;
@@ -132,5 +132,122 @@ describe('Observable.fromEventPattern', () => {
       });
 
     trigger('test');
+  });
+
+  it('should be an Observable with values of empty object type if handler is Function', () => {
+    type(() => {
+      /* tslint:disable:no-unused-variable */
+      const eventTarget = {
+        totallyCustomAddHandler(handler: Function) { noop(); },
+        totallyCustomRemoveHandler(handler: Function) { noop(); }
+      };
+      const o1: Rx.Observable<{}> = Observable.fromEventPattern(
+        handler => eventTarget.totallyCustomAddHandler(handler)
+      );
+      /* tslint:enable:no-unused-variable */
+    });
+  });
+
+  it('should be an Observable with values of empty object type if handler is any', () => {
+    type(() => {
+      /* tslint:disable:no-unused-variable */
+      const eventTarget = {
+        totallyCustomAddHandler(handler: any) { noop(); },
+        totallyCustomRemoveHandler(handler: any) { noop(); }
+      };
+      const o1: Rx.Observable<{}> = Observable.fromEventPattern(
+        handler => eventTarget.totallyCustomAddHandler(handler)
+      );
+      /* tslint:enable:no-unused-variable */
+    });
+  });
+
+  it('should be an Observable with values of empty object type if handler has no arguments', () => {
+    type(() => {
+      /* tslint:disable:no-unused-variable */
+      const eventTarget = {
+        totallyCustomAddHandler(handler: () => void) { noop(); },
+        totallyCustomRemoveHandler(handler: () => void) { noop(); }
+      };
+      const o1: Rx.Observable<{}> = Observable.fromEventPattern(
+        handler => eventTarget.totallyCustomAddHandler(handler)
+      );
+      /* tslint:enable:no-unused-variable */
+    });
+  });
+
+  it('should be an Observable with values of handlers first argument type', () => {
+    type(() => {
+      /* tslint:disable:no-unused-variable */
+      const eventTarget = {
+        totallyCustomAddHandler(handler: (a: number, b: string) => void) { noop(); },
+        totallyCustomRemoveHandler(handler: (a: number, b: string) => void) { noop(); }
+      };
+      const o1: Rx.Observable<number> = Observable.fromEventPattern(
+        handler => eventTarget.totallyCustomAddHandler(handler)
+      );
+      /* tslint:enable:no-unused-variable */
+    });
+  });
+
+  it('should be an Observable with values of empty object type when API expects non-void handler', () => {
+    type(() => {
+      /* tslint:disable:no-unused-variable */
+      const eventTarget = {
+        totallyCustomAddHandler(handler: (a: number, b: string) => string) { noop(); },
+        totallyCustomRemoveHandler(handler: (a: number, b: string) => string) { noop(); }
+      };
+      const o1: Rx.Observable<{}> = Observable.fromEventPattern(
+        (handler: (a: number, b: string) => string) => eventTarget.totallyCustomAddHandler(handler)
+      );
+      /* tslint:enable:no-unused-variable */
+    });
+  });
+
+  it('should be an Observable with values of handlers first argument type when used with totallyCustomRemoveHandler', () => {
+    type(() => {
+      /* tslint:disable:no-unused-variable */
+      const eventTarget = {
+        totallyCustomAddHandler(handler: (a: number, b: string) => void) { noop(); },
+        totallyCustomRemoveHandler(handler: (a: number, b: string) => void) { noop(); }
+      };
+      const o1: Rx.Observable<number> = Observable.fromEventPattern(
+        handler => eventTarget.totallyCustomAddHandler(handler),
+        handler => eventTarget.totallyCustomRemoveHandler(handler)
+      );
+      /* tslint:enable:no-unused-variable */
+    });
+  });
+
+  it('should be an Observable with values of the same type as projects return value', () => {
+    type(() => {
+      /* tslint:disable:no-unused-variable */
+      const eventTarget = {
+        totallyCustomAddHandler(handler: (a: number, b: string) => void) { noop(); },
+        totallyCustomRemoveHandler(handler: (a: number, b: string) => void) { noop(); }
+      };
+      const o1: Rx.Observable<string> = Observable.fromEventPattern(
+        handler => eventTarget.totallyCustomAddHandler(handler),
+        handler => eventTarget.totallyCustomRemoveHandler(handler),
+        (a, b) => 'this is string'
+      );
+      /* tslint:enable:no-unused-variable */
+    });
+  });
+
+  it('should be an Observable with values of the same type as projects return value when handler has many parameters', () => {
+    type(() => {
+      /* tslint:disable:no-unused-variable */
+      const eventTarget = {
+        totallyCustomAddHandler(handler: (a: number, b: string, c: symbol, d: number) => void) { noop(); },
+        totallyCustomRemoveHandler(handler: (a: number, b: string, c: symbol, d: number) => void) { noop(); }
+      };
+      const o1: Rx.Observable<string> = Observable.fromEventPattern(
+        handler => eventTarget.totallyCustomAddHandler(handler),
+        handler => eventTarget.totallyCustomRemoveHandler(handler),
+        (a, b, c, d) => 'this is string'
+      );
+      /* tslint:enable:no-unused-variable */
+    });
   });
 });

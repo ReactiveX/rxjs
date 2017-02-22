@@ -58,6 +58,28 @@ export class FromEventPatternObservable<T> extends Observable<T> {
    * @name fromEventPattern
    * @owner Observable
    */
+  static create<T>(addHandler: (handler: (v1?: T) => void) => any,
+                   removeHandler?: (handler: (v1?: T) => void, signal?: any) => void
+  ): Observable<T>;
+  static create<T, R>(addHandler: (handler: (v1: T) => void) => any,
+                      removeHandler: (handler: (v1: T) => void, signal?: any) => void | undefined,
+                      selector: (v1: T) => R
+  ): Observable<R>;
+  static create<T1, T2, R>(addHandler: (handler: (v1: T1, v2: T2) => void) => any,
+                           removeHandler: (handler: (v1: T1, v2: T2) => void, signal?: any) => void | undefined,
+                           selector: (v1: T1, v2: T2) => R
+  ): Observable<R>;
+  static create<T1, T2, T3, R>(addHandler: (handler: (v1: T1, v2: T2, v3: T3) => void) => any,
+                               removeHandler: (handler: (v1: T1, v2: T2, v3: T3) => void, signal?: any) => void | undefined,
+                               selector: (v1: T1, v2: T2, v3: T3) => R
+  ): Observable<R>;
+  static create<T>(addHandler: (handler: (...args: any[]) => void) => any,
+                   removeHandler: (handler: (...args: any[]) => void, signal?: any) => void | undefined,
+                   selector: (...args: any[]) => T
+  ): Observable<T>;
+  static create<T>(addHandler: (handler: Function) => any,
+                   removeHandler?: (handler: Function, signal?: any) => void,
+                   selector?: (...args: Array<any>) => T): Observable<T>;
   static create<T>(addHandler: (handler: Function) => any,
                    removeHandler?: (handler: Function, signal?: any) => void,
                    selector?: (...args: Array<any>) => T) {
