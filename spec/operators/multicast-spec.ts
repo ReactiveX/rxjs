@@ -41,6 +41,33 @@ describe('Observable.prototype.multicast', () => {
     connectable.connect();
   });
 
+  it('should multicast a ConnectableObservable', (done: MochaDone) => {
+    const expected = [1, 2, 3, 4];
+
+    const source = new Subject<number>();
+    const connectable = source.multicast(new Subject<number>());
+    const replayed = connectable.multicast(new ReplaySubject<number>());
+
+    connectable.connect();
+    replayed.connect();
+
+    source.next(1);
+    source.next(2);
+    source.next(3);
+    source.next(4);
+    source.complete();
+
+    replayed.do({
+      next(x: number) {
+        expect(x).to.equal(expected.shift());
+      },
+      complete() {
+        expect(expected.length).to.equal(0);
+      }
+    })
+    .subscribe(null, done, done);
+  });
+
   it('should accept Subject factory functions', (done: MochaDone) => {
     const expected = [1, 2, 3, 4];
 
