@@ -1,5 +1,5 @@
 import { of, EMPTY } from 'rxjs';
-import { delayWhen } from 'rxjs/operators';
+import { delayWhen, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { expect } from 'chai';
@@ -248,5 +248,25 @@ describe('delayWhen operator', () => {
 
     expect(next).to.be.true;
     expect(complete).to.be.true;
+  });
+
+  it('should call predicate with indices starting at 0', () => {
+    const e1 =    hot('--a--b--c--|');
+    const expected =  '--a--b--c--|';
+    const selector = cold('(x|)');
+
+    let indices: number[] = [];
+    const predicate = (value: string, index: number) => {
+      indices.push(index);
+      return selector;
+    };
+
+    const result = e1.pipe(delayWhen(predicate));
+
+    expectObservable(result.pipe(
+      tap(null, null, () => {
+        expect(indices).to.deep.equal([0, 1, 2]);
+      })
+    )).toBe(expected);
   });
 });
