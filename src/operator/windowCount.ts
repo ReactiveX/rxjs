@@ -80,7 +80,7 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
               private windowSize: number,
               private startWindowEvery: number) {
     super(destination);
-    destination.next(this.windows[0]);
+    destination.next(this.windows[0].asObservable());
   }
 
   protected _next(value: T) {
@@ -100,7 +100,7 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
     if (++this.count % startWindowEvery === 0 && !this.closed) {
       const window = new Subject<T>();
       windows.push(window);
-      destination.next(window);
+      destination.next(window.asObservable());
     }
   }
 
