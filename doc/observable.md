@@ -57,7 +57,7 @@ done
 
 ## Pull versus Push
 
-*Pull* and *Push* are two different protocols how a data *Producer* can communicate with a data *Consumer*.
+*Pull* and *Push* are two different protocols that describe how a data *Producer* can communicate with a data *Consumer*.
 
 **What is Pull?** In Pull systems, the Consumer determines when it receives data from the data Producer. The Producer itself is unaware of when the data will be delivered to the Consumer.
 
@@ -364,9 +364,9 @@ var observable = Rx.Observable.create(function subscribe(observer) {
 
 ### Disposing Observable Executions
 
-Because Observable Executions may be infinite, and it's common for an Observer to want abort execution in finite time, we need an API for canceling an execution. Since each execution is exclusive to one Observer only, once the Observer is done receiving values, it has to have a way to stop the execution, in order to avoid wasting computation power or memory resources.
+Because Observable Executions may be infinite, and it's common for an Observer to want to abort execution in finite time, we need an API for canceling an execution. Since each execution is exclusive to one Observer only, once the Observer is done receiving values, it has to have a way to stop the execution, in order to avoid wasting computation power or memory resources.
 
-When `observable.subscribe` is called, the Observer gets attached to the newly created Observable execution, but also this call returns an object, the `Subscription`:
+When `observable.subscribe` is called, the Observer gets attached to the newly created Observable execution. This call also returns an object, the `Subscription`:
 
 <!-- skip-example -->
 ```js
