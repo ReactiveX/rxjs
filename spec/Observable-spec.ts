@@ -210,6 +210,44 @@ describe('Observable', () => {
       source.subscribe();
     });
 
+    it('should not be unsubscribed when other empty subscription completes', () => {
+      let unsubscribeCalled = false;
+      const source = new Observable(() => {
+        return () => {
+          unsubscribeCalled = true;
+        };
+      });
+
+      source.subscribe();
+
+      expect(unsubscribeCalled).to.be.false;
+
+      Observable.empty().subscribe();
+
+      expect(unsubscribeCalled).to.be.false;
+    });
+
+    it('should not be unsubscribed when other subscription with same observer completes', () => {
+      let unsubscribeCalled = false;
+      const source = new Observable(() => {
+        return () => {
+          unsubscribeCalled = true;
+        };
+      });
+
+      let observer = {
+        next: function () { /*noop*/ }
+      };
+
+      source.subscribe(observer);
+
+      expect(unsubscribeCalled).to.be.false;
+
+      Observable.empty().subscribe(observer);
+
+      expect(unsubscribeCalled).to.be.false;
+    });
+
     it('should run unsubscription logic when an error is sent synchronously and subscribe is called with no arguments', () => {
       let unsubscribeCalled = false;
       const source = new Observable((subscriber: Rx.Subscriber<string>) => {
@@ -419,8 +457,9 @@ describe('Observable', () => {
         ' of the anonymous observer', (done: MochaDone) => {
         //intentionally not using lambda to avoid typescript's this context capture
         const o = {
+          myValue: 'foo',
           next: function next(x) {
-            expect(this).to.equal(o);
+            expect(this.myValue).to.equal('foo');
             expect(x).to.equal(1);
             done();
           }
@@ -433,8 +472,9 @@ describe('Observable', () => {
         ' of the anonymous observer', (done: MochaDone) => {
         //intentionally not using lambda to avoid typescript's this context capture
         const o = {
+          myValue: 'foo',
           error: function error(err) {
-            expect(this).to.equal(o);
+            expect(this.myValue).to.equal('foo');
             expect(err).to.equal('bad');
             done();
           }
@@ -447,8 +487,9 @@ describe('Observable', () => {
         ' context of the anonymous observer', (done: MochaDone) => {
         //intentionally not using lambda to avoid typescript's this context capture
          const o = {
+          myValue: 'foo',
           complete: function complete() {
-            expect(this).to.equal(o);
+            expect(this.myValue).to.equal('foo');
             done();
           }
         };
@@ -470,8 +511,9 @@ describe('Observable', () => {
 
         //intentionally not using lambda to avoid typescript's this context capture
         const o = {
+          myValue: 'foo',
           next: function next(x) {
-            expect(this).to.equal(o);
+            expect(this.myValue).to.equal('foo');
             throw x;
           }
         };
