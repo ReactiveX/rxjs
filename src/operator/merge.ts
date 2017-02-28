@@ -96,11 +96,39 @@ export function mergeStatic<T, R>(...observables: (ObservableInput<any> | ISched
  *
  * <img src="./img/merge.png" width="100%">
  *
- * `merge` subscribes to each given input Observable (as arguments), and simply
- * forwards (without doing any transformation) all the values from all the input
- * Observables to the output Observable. The output Observable only completes
- * once all input Observables have completed. Any error delivered by an input
- * Observable will be immediately emitted on the output Observable.
+ * `merge` accepts as parameters either an array of Observables or Observables
+ * themselves, passed directly as arguments. If no Observables are provided,
+ * resulting stream just completes immediately.
+ *
+ * If one or more Observables are passed, output will be an Observable that
+ * emits value whenever any of input Observables does, without transforming it
+ * in any way. You can think of resulting stream as being a sum of all incoming
+ * streams. The output Observable only completes
+ * once all input Observables have completed. So if there is at least one Observable
+ * that never completes, `merge` will never complete as well. On the other hand,
+ * Observables that complete immediately without emitting anything, are a noop
+ * for `merge`, in a sense that they don't affect output stream in any way.
+ * If any input Observable errors, `merge` will immediately error and all other
+ * streams will be unsubscribed.
+ *
+ * `merge` accepts optional `concurrent` parameter, which is a number representing
+ * how many Observables at the same time can be subscribed and emit their values. By default it is
+ * `Number.POSITIVE_INFINITY`, which means that all Observables passed to the operator
+ * will emit concurrently. But passing `2` for example, will ensure that at any given moment
+ * only two streams are subscribed to and thus pushing values to final stream. In the order
+ * they were passed to `merge`, first two Observables are emitting at the beginning.
+ * Whenever any of them completes, another stream passed to the operator is subscribed
+ * and starts pushing its values. This continues until there is no more Observables in line.
+ * We still wait for the last two streams to complete and then the output stream ends.
+ * Note that `merge` with `concurrent` set to `1` is simply a {@link concat},
+ * since at any point it emits values from single Observable only and, once it completed,
+ * goes to then next.
+ *
+ * Another optional parameter, which should be always passed as a last argument,
+ * is scheduler. It controls when subsequent input Observables will be subscribed.
+ * So, for example, if you need to ensure that each input Observable is subscribed
+ * in separate task in event loop, you might pass `async` scheduler.
+ *
  *
  * @example <caption>Merge together two Observables: 1s interval and clicks</caption>
  * var clicks = Rx.Observable.fromEvent(document, 'click');
@@ -141,8 +169,8 @@ export function mergeStatic<T, R>(...observables: (ObservableInput<any> | ISched
  * Observables being subscribed to concurrently.
  * @param {Scheduler} [scheduler=null] The IScheduler to use for managing
  * concurrency of input Observables.
- * @return {Observable} an Observable that emits items that are the result of
- * every input Observable.
+ * @return {Observable} An Observable that at the same time emits items from every input Observable,
+ * as they happen.
  * @static true
  * @name merge
  * @owner Observable
