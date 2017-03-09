@@ -723,4 +723,11 @@ describe('Observable.prototype.zipAll', () => {
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
+
+  it('should complete when empty source', () => {
+    const source = hot('|');
+    const expected =   '|';
+
+    expectObservable(source.zipAll()).toBe(expected);
+  });
 });
