@@ -1,6 +1,6 @@
 import { isFunction } from './util/isFunction';
 import { Observer, PartialObserver } from './Observer';
-import { Subscription } from './Subscription';
+import { Subscription, TeardownLogic } from './Subscription';
 import { empty as emptyObserver } from './Observer';
 import { $$rxSubscriber } from './symbol/rxSubscriber';
 
@@ -40,6 +40,8 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   public syncErrorValue: any = null;
   public syncErrorThrown: boolean = false;
   public syncErrorThrowable: boolean = false;
+
+  private parentSubscription: Subscription = new Subscription();
 
   protected isStopped: boolean = false;
   protected destination: PartialObserver<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
@@ -83,6 +85,15 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     }
   }
 
+  addParentTeardown(parentTeardown: TeardownLogic) {
+    this.parentSubscription.add(parentTeardown);
+    this.add(this.parentSubscription);
+  }
+
+  unsubscribeParentSubscription() {
+    this.parentSubscription.unsubscribe();
+  }
+
   /**
    * The {@link Observer} callback to receive notifications of type `next` from
    * the Observable, with a value. The Observable may call this method 0 or more
@@ -107,6 +118,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     if (!this.isStopped) {
       this.isStopped = true;
       this._error(err);
+      this.unsubscribeParentSubscription();
     }
   }
 
@@ -120,6 +132,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     if (!this.isStopped) {
       this.isStopped = true;
       this._complete();
+      this.unsubscribeParentSubscription();
     }
   }
 
@@ -154,6 +167,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     this.isStopped = false;
     this._parent = _parent;
     this._parents = _parents;
+    this.parentSubscription = new Subscription();
     return this;
   }
 }

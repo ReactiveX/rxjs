@@ -146,13 +146,14 @@ describe('Observable.prototype.sequenceEqual', () => {
     const s1 =  cold('------a------');
     const s2 =  cold('|'); // empty
     const expected = '------(F|)';
-    const subs =     '^     !';
+    const subs1 =    '^     !';
+    const subs2 =    '(^!)';
 
     const source = s1.sequenceEqual(s2);
 
     expectObservable(source).toBe(expected, booleans);
-    expectSubscriptions(s1.subscriptions).toBe(subs);
-    expectSubscriptions(s2.subscriptions).toBe(subs);
+    expectSubscriptions(s1.subscriptions).toBe(subs1);
+    expectSubscriptions(s2.subscriptions).toBe(subs2);
   });
 
   it('should return never if compareTo is empty and source is never', () => {
@@ -307,7 +308,7 @@ describe('Observable.prototype.sequenceEqual', () => {
     const s1 = hot('---a--^---b---c---d---e---f---g---h---i---j---|');
     const s2 = cold(     '----b---c-|');
     const expected1 =    '------------(F|)';
-    const subs1 =        '^           !';
+    const subs1 =        '^         !';
     const delay =        '-------------------|';
     const s3 = cold(                        '-f---g---h---i---j---|');
     const expected2 =    '                   ---------------------(T|)';

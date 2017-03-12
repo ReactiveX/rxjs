@@ -23,11 +23,12 @@ export class ColdObservable<T> extends Observable<T> implements SubscriptionLogg
     super(function (this: ColdObservable<T>, subscriber: Subscriber<any>) {
       const observable: ColdObservable<T> = this;
       const index = observable.logSubscribedFrame();
-      subscriber.add(new Subscription(() => {
+      const subscription = new Subscription();
+      subscription.add(new Subscription(() => {
         observable.logUnsubscribedFrame(index);
       }));
       observable.scheduleMessages(subscriber);
-      return subscriber;
+      return subscription;
     });
     this.scheduler = scheduler;
   }
