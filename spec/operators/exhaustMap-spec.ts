@@ -175,7 +175,7 @@ describe('Observable.prototype.exhaustMap', () => {
     const z = cold(                                 '--g--h--i-----');
     const zsubs =    '                               ^             ';
     const e1 =   hot('---x---------y-----------------z---------|   ');
-    const e1subs =   '^                                            ';
+    const e1subs =   '^                                        !   ';
     const expected = '-----a--b--c---------------------g--h--i-----';
 
     const observableLookup = { x: x, y: y, z: z };
@@ -235,7 +235,7 @@ describe('Observable.prototype.exhaustMap', () => {
     const z =    hot('---z-o-o-m-------------j---k---l---m--|');
     const zsubs =    '                    ^                 !';
     const e1 =   hot('---------x----y-----z--------|         ');
-    const e1subs =   '^                                     !';
+    const e1subs =   '^                            !         ';
     const expected = '-----------c--d--e-----j---k---l---m--|';
 
     const observableLookup = { x: x, y: y, z: z };
@@ -274,7 +274,7 @@ describe('Observable.prototype.exhaustMap', () => {
     const xsubs =    '         (^!)                 ';
     const ysubs =    '                   ^          ';
     const e1 =   hot('---------x---------y---------|');
-    const e1subs =   '^                             ';
+    const e1subs =   '^                            !';
     const expected = '------------------------------';
 
     const observableLookup = { x: x, y: y };
@@ -293,7 +293,7 @@ describe('Observable.prototype.exhaustMap', () => {
     const xsubs =    '         ^                     ';
     const ysubs = [];
     const e1 =   hot('---------x---------y----------|');
-    const e1subs =   '^                              ';
+    const e1subs =   '^                             !';
     const expected = '-------------------------------';
 
     const observableLookup = { x: x, y: y };
@@ -349,7 +349,7 @@ describe('Observable.prototype.exhaustMap', () => {
     const z =   cold(                   '---k---l---m---n--|');
     const zsubs =    '                   ^                 !';
     const e1 =   hot('--x---------y------z-|                ');
-    const e1subs =   '^                                    !';
+    const e1subs =   '^                    !                 ';
     const expected = '----a--b--c--d--e-----k---l---m---n--|';
 
     const observableLookup = { x: x, y: y, z: z };

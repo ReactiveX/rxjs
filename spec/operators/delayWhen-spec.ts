@@ -13,7 +13,7 @@ describe('Observable.prototype.delayWhen', () => {
   asDiagram('delayWhen(durationSelector)')('should delay by duration selector', () => {
     const e1 =        hot('---a---b---c--|');
     const expected =      '-----a------c----(b|)';
-    const subs =          '^                !';
+    const subs =          '^             !';
     const selector = [cold(  '--x--|'),
                       cold(      '----------(x|)'),
                       cold(          '-x--|')];
@@ -81,7 +81,7 @@ describe('Observable.prototype.delayWhen', () => {
   it('should delay by selector and completes after value emits', () => {
     const e1 =        hot('--a--b--|');
     const expected =      '---------a--(b|)';
-    const subs =          '^           !';
+    const subs =          '^       !';
     const selector = cold('-------x--|');
     const selectorSubs = ['  ^      !',
                         '     ^      !'];
@@ -96,7 +96,7 @@ describe('Observable.prototype.delayWhen', () => {
   it('should delay by selector completes if selector does not emits', () => {
     const e1 =        hot('--a--b--|');
     const expected =      '------a--(b|)';
-    const subs =          '^        !';
+    const subs =          '^       ! ';
     const selector = cold(  '----|');
     const selectorSubs = ['  ^   !',
                         '     ^   !'];
@@ -111,7 +111,7 @@ describe('Observable.prototype.delayWhen', () => {
   it('should not emit if selector never emits', () => {
     const e1 =        hot('--a--b--|');
     const expected =      '-';
-    const subs =          '^         ';
+    const subs =          '^       !';
     const selector = cold(  '-');
     const selectorSubs = ['  ^       ',
                         '     ^    '];
@@ -126,7 +126,7 @@ describe('Observable.prototype.delayWhen', () => {
   it('should delay by first value from selector', () => {
     const e1 =        hot('--a--b--|');
     const expected =      '------a--(b|)';
-    const subs =          '^        !';
+    const subs =          '^       ! ';
     const selector = cold(  '----x--y--|');
     const selectorSubs = ['  ^   !',
                         '     ^   !'];
@@ -141,7 +141,7 @@ describe('Observable.prototype.delayWhen', () => {
   it('should delay by selector does not completes', () => {
     const e1 =        hot('--a--b--|');
     const expected =      '------a--(b|)';
-    const subs =          '^        !';
+    const subs =          '^       ! ';
     const selector = cold(  '----x-----y---');
     const selectorSubs = ['  ^   !',
                         '     ^   !'];

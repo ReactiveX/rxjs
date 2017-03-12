@@ -35,7 +35,7 @@ describe('Observable.prototype.concatMap', () => {
     const d =   cold(                              '------(d|)');
     const dsubs =    '                              ^     !   ';
     const e1 =   hot('a---b--------------------c-d----|       ');
-    const e1subs =   '^                                   !   ';
+    const e1subs =   '^                               !       ';
     const expected = '--a-a-a-a---b--b--b-------c-c-c-----(d|)';
 
     const observableLookup = { a: a, b: b, c: c, d: d };
@@ -52,7 +52,7 @@ describe('Observable.prototype.concatMap', () => {
   it('should concatMap many outer values to many inner values', () => {
     const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     const e1 =     hot('-a---b---c---d---|                        ');
-    const e1subs =     '^                                        !';
+    const e1subs =     '^                !';
     const inner =  cold('--i-j-k-l-|                              ', values);
     const innersubs = [' ^         !                              ',
                      '           ^         !                    ',
@@ -127,7 +127,7 @@ describe('Observable.prototype.concatMap', () => {
 
   it('should return a never if the mapped inner is never', () => {
     const e1 = cold(  '--a-b--c-|');
-    const e1subs =    '^         ';
+    const e1subs =    '^        !';
     const inner = cold('-');
     const innersubs = '  ^       ';
     const expected =  '----------';
@@ -192,7 +192,7 @@ describe('Observable.prototype.concatMap', () => {
   it('should concatMap many outer to many inner, inner never completes', () => {
     const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     const e1 =     hot('-a---b---c---d---|');
-    const e1subs =     '^                 ';
+    const e1subs =     '^                !';
     const inner =  cold('--i-j-k-l-       ', values);
     const innersubs =  ' ^                ';
     const expected =   '---i-j-k-l--------';
@@ -266,7 +266,7 @@ describe('Observable.prototype.concatMap', () => {
     const g =   cold(                                                      '---1-2|');
     const gsubs =          '                                                ^     !';
     const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
-    const e1subs =         '^                                                     !';
+    const e1subs =         '^                                      !';
     const expected =       '---2--3--4--5----6-----2--3-1------2--3-4-5--------1-2|';
     const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
@@ -299,7 +299,7 @@ describe('Observable.prototype.concatMap', () => {
     const g =   cold(                                                      '---1-2|');
     const gsubs = [];
     const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
-    const e1subs =         '^                                                      ';
+    const e1subs =         '^                                      !';
     const expected =       '---2--3--4--5----6-----2--3----------------------------';
     const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 

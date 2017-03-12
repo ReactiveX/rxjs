@@ -28,7 +28,7 @@ describe('Observable.prototype.concatMapTo', () => {
   it('should concatMapTo many outer values to many inner values', () => {
     const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     const e1 =     hot('-a---b---c---d---|                        ');
-    const e1subs =     '^                                        !';
+    const e1subs =     '^                !                        ';
     const inner =  cold('--i-j-k-l-|                              ', values);
     const innersubs = [' ^         !                              ',
                      '           ^         !                    ',
@@ -103,7 +103,7 @@ describe('Observable.prototype.concatMapTo', () => {
 
   it('should return a never if the mapped inner is never', () => {
     const e1 =    cold('--a-b--c-|');
-    const e1subs =     '^         ';
+    const e1subs =     '^        !';
     const inner = cold('-');
     const innersubs =  '  ^       ';
     const expected =   '----------';
@@ -168,7 +168,7 @@ describe('Observable.prototype.concatMapTo', () => {
   it('should not break unsubscription chains when result is unsubscribed explicitly', () => {
     const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     const e1 =     hot('-a---b---c---d---| ');
-    const e1subs =     '^                 !';
+    const e1subs =     '^                ! ';
     const inner =  cold('--i-j-k-l-|       ', values);
     const innersubs = [' ^         !       ',
                      '           ^      !'];
@@ -188,7 +188,7 @@ describe('Observable.prototype.concatMapTo', () => {
   it('should concatMapTo many outer to many inner, inner never completes', () => {
     const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     const e1 =     hot('-a---b---c---d---|');
-    const e1subs =     '^                 ';
+    const e1subs =     '^                !';
     const inner =  cold('--i-j-k-l-       ', values);
     const innersubs =  ' ^                ';
     const expected =   '---i-j-k-l--------';
