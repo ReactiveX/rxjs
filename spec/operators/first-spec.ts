@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { doNotUnsubscribe } from '../helpers/doNotUnsubscribe';
 
 declare const { asDiagram };
 declare const hot: typeof marbleTestingSignature.hot;
@@ -217,6 +218,41 @@ describe('Observable.prototype.first', () => {
     };
 
     expectObservable(e1.first(predicate, resultSelector)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(sub);
+  });
+
+  it('should unsubscribe from the source after first value, even if destination doesn\'t unsubscribe', () => {
+    const e1 = hot('--^---a---|');
+    const sub =      '^---!';
+    const expected = '----(a|)';
+
+    const result = e1.first().let(doNotUnsubscribe);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(sub);
+  });
+
+  it('should unsubscribe from the source after completion without value,' +
+    ' even if destination doesn\'t unsubscribe', () => {
+    const e1 = hot('--^---|');
+    const sub =      '^---!';
+    const expected = '----(a|)';
+
+    const result = e1.first(undefined, undefined, 'a').let(doNotUnsubscribe);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(sub);
+  });
+
+  it('should unsubscribe from the source after erroring without value,' +
+    ' even if destination doesn\'t unsubscribe', () => {
+    const e1 = hot('--^---|');
+    const sub =      '^---!';
+    const expected = '----#';
+
+    const result = e1.first().let(doNotUnsubscribe);
+
+    expectObservable(result).toBe(expected, undefined, new Rx.EmptyError());
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
