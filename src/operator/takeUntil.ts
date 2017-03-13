@@ -18,7 +18,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
  *
  * `takeUntil` subscribes and begins mirroring the source Observable. It also
  * monitors a second Observable, `notifier` that you provide. If the `notifier`
- * emits a value, the output Observable stops mirroring the source Observable 
+ * emits a value, the output Observable stops mirroring the source Observable
  * and completes.
  *
  * @example <caption>Tick every second until the first click happens</caption>
