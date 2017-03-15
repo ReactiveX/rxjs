@@ -158,7 +158,7 @@ describe('Observable.prototype.throttleTime', () => {
   });
 
   describe('throttleTime(fn, { leading: false, trailing: true })', () => {
-    asDiagram('throttleTime(fn, { leading: true, trailing: true })')('should immediately emit the first value in each time window', () =>  {
+    asDiagram('throttleTime(fn, { leading: false, trailing: true })')('should immediately emit the first value in each time window', () =>  {
       const e1 =   hot('-a-xy-----b--x--cxxx--|');
       const e1subs =   '^                     !';
       const t =  time( '----|                 ');

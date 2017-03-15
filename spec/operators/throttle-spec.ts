@@ -357,7 +357,7 @@ describe('Observable.prototype.throttle', () =>  {
   });
 
   describe('throttle(fn, { leading: false, trailing: true })', () => {
-    asDiagram('throttle(fn, { leading: true, trailing: true })')('should immediately emit the first value in each time window', () =>  {
+    asDiagram('throttle(fn, { leading: false, trailing: true })')('should immediately emit the first value in each time window', () =>  {
       const e1 =   hot('-a-xy-----b--x--cxxx--|');
       const e1subs =   '^                     !';
       const e2 =  cold( '----|                 ');
