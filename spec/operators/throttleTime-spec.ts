@@ -7,6 +7,7 @@ declare const hot: typeof marbleTestingSignature.hot;
 declare const cold: typeof marbleTestingSignature.cold;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
+declare const time: typeof marbleTestingSignature.time;
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
@@ -140,5 +141,33 @@ describe('Observable.prototype.throttleTime', () => {
 
     expectObservable(e1.throttleTime(50, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
+  });
+
+  describe('throttleTime(fn, { leading: true, trailing: true })', () => {
+    asDiagram('throttleTime(fn, { leading: true, trailing: true })')('should immediately emit the first value in each time window', () =>  {
+      const e1 =   hot('-a-xy-----b--x--cxxx--|');
+      const e1subs =   '^                     !';
+      const t =  time( '----|                 ');
+      const expected = '-a---y----b---x-c---x-|';
+
+      const result = e1.throttleTime(t, rxTestScheduler, { leading: true, trailing: true });
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+  });
+
+  describe('throttleTime(fn, { leading: false, trailing: true })', () => {
+    asDiagram('throttleTime(fn, { leading: true, trailing: true })')('should immediately emit the first value in each time window', () =>  {
+      const e1 =   hot('-a-xy-----b--x--cxxx--|');
+      const e1subs =   '^                     !';
+      const t =  time( '----|                 ');
+      const expected = '-----y--------x-----x-|';
+
+      const result = e1.throttleTime(t, rxTestScheduler, { leading: false, trailing: true });
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 });

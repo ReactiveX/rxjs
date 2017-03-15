@@ -12,7 +12,7 @@ export interface ThrottleConfig {
   trailing?: boolean;
 }
 
-const defaultThrottleConfig: ThrottleConfig = {
+export const defaultThrottleConfig: ThrottleConfig = {
   leading: true,
   trailing: false
 };
