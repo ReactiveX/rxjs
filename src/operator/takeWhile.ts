@@ -72,6 +72,7 @@ class TakeWhileSubscriber<T> extends Subscriber<T> {
       result = this.predicate(value, this.index++);
     } catch (err) {
       destination.error(err);
+      this.unsubscribe();
       return;
     }
     this.nextOrComplete(value, result);
@@ -83,6 +84,7 @@ class TakeWhileSubscriber<T> extends Subscriber<T> {
       destination.next(value);
     } else {
       destination.complete();
+      this.unsubscribe();
     }
   }
 }

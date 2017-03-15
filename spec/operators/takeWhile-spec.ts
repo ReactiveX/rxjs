@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { doNotUnsubscribe } from '../helpers/doNotUnsubscribe';
 
 declare const { asDiagram };
 declare const hot: typeof marbleTestingSignature.hot;
@@ -203,6 +204,39 @@ describe('Observable.prototype.takeWhile', () => {
       .mergeMap((x: string) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should unsubscribe from source Observable after complete,' +
+    ' even if destination does not unsubscribe', () => {
+    const e1 = hot('--a-^-b--c--d--e--|');
+    const e1subs =     '^-------!      ';
+    const expected =   '--b--c--|';
+
+    function predicate(value) {
+      return value !== 'd';
+    }
+
+    const result = e1.takeWhile(predicate).let(doNotUnsubscribe);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should unsubscribe from source Observable after error,' +
+    ' even if destination does not unsubscribe', () => {
+    const e1 = hot('--a-^-b--c--d--e--|');
+    const e1subs =     '^----!        ';
+    const expected =   '--b--#';
+
+    function predicate(value) {
+      if (value === 'c') { throw 'error'; }
+      return value !== 'd';
+    }
+
+    const result = e1.takeWhile(predicate).let(doNotUnsubscribe);
+
+    expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
