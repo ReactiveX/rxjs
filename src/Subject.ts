@@ -5,7 +5,7 @@ import { Subscriber } from './Subscriber';
 import { ISubscription, Subscription, TeardownLogic } from './Subscription';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 import { SubjectSubscription } from './SubjectSubscription';
-import { $$rxSubscriber } from './symbol/rxSubscriber';
+import { rxSubscriber as rxSubscriberSymbol } from './symbol/rxSubscriber';
 
 /**
  * @class SubjectSubscriber<T>
@@ -21,7 +21,7 @@ export class SubjectSubscriber<T> extends Subscriber<T> {
  */
 export class Subject<T> extends Observable<T> implements ISubscription {
 
-  [$$rxSubscriber]() {
+  [rxSubscriberSymbol]() {
     return new SubjectSubscriber(this);
   }
 
