@@ -11,7 +11,7 @@ import { $$iterator } from '../symbol/iterator';
 import { Observable, ObservableInput } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { ObserveOnSubscriber } from '../operator/observeOn';
-import { $$observable } from '../symbol/observable';
+import { observable as Symbol_observable } from '../symbol/observable';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -84,7 +84,7 @@ export class FromObservable<T> extends Observable<T> {
    */
   static create<T>(ish: ObservableInput<T>, scheduler?: IScheduler): Observable<T> {
     if (ish != null) {
-      if (typeof ish[$$observable] === 'function') {
+      if (typeof ish[Symbol_observable] === 'function') {
         if (ish instanceof Observable && !scheduler) {
           return ish;
         }
@@ -107,9 +107,9 @@ export class FromObservable<T> extends Observable<T> {
     const ish = this.ish;
     const scheduler = this.scheduler;
     if (scheduler == null) {
-      return ish[$$observable]().subscribe(subscriber);
+      return ish[Symbol_observable]().subscribe(subscriber);
     } else {
-      return ish[$$observable]().subscribe(new ObserveOnSubscriber(subscriber, scheduler, 0));
+      return ish[Symbol_observable]().subscribe(new ObserveOnSubscriber(subscriber, scheduler, 0));
     }
   }
 }

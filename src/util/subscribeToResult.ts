@@ -8,7 +8,7 @@ import { $$iterator } from '../symbol/iterator';
 import { Subscription } from '../Subscription';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { OuterSubscriber } from '../OuterSubscriber';
-import { $$observable } from '../symbol/observable';
+import { observable as Symbol_observable } from '../symbol/observable';
 
 export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
                                         result: any,
@@ -67,8 +67,8 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
         break;
       }
     } while (true);
-  } else if (result && typeof result[$$observable] === 'function') {
-    const obs = result[$$observable]();
+  } else if (result && typeof result[Symbol_observable] === 'function') {
+    const obs = result[Symbol_observable]();
     if (typeof obs.subscribe !== 'function') {
       destination.error(new TypeError('Provided object does not correctly implement Symbol.observable'));
     } else {
