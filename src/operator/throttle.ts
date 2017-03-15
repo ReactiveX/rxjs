@@ -7,6 +7,16 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 
+export interface ThrottleConfig {
+  leading?: boolean;
+  trailing?: boolean;
+}
+
+const defaultThrottleConfig: ThrottleConfig = {
+  leading: true,
+  trailing: false
+};
+
 /**
  * Emits a value from the source Observable, then ignores subsequent source
  * values for a duration determined by another Observable, then repeats this
@@ -40,61 +50,85 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @param {function(value: T): SubscribableOrPromise} durationSelector A function
  * that receives a value from the source Observable, for computing the silencing
  * duration for each source value, returned as an Observable or a Promise.
+ * @param {Object} config a configuration object to define `leading` and `trailing` behavior. Defaults
+ * to `{ leading: true, trailing: false }`.
  * @return {Observable<T>} An Observable that performs the throttle operation to
  * limit the rate of emissions from the source.
  * @method throttle
  * @owner Observable
  */
-export function throttle<T>(this: Observable<T>, durationSelector: (value: T) => SubscribableOrPromise<number>): Observable<T> {
-  return this.lift(new ThrottleOperator(durationSelector));
+export function throttle<T>(this: Observable<T>,
+                            durationSelector: (value: T) => SubscribableOrPromise<number>,
+                            config: ThrottleConfig = defaultThrottleConfig): Observable<T> {
+  return this.lift(new ThrottleOperator(durationSelector, config.leading, config.trailing));
 }
 
 class ThrottleOperator<T> implements Operator<T, T> {
-  constructor(private durationSelector: (value: T) => SubscribableOrPromise<number>) {
+  constructor(private durationSelector: (value: T) => SubscribableOrPromise<number>,
+              private leading: boolean,
+              private trailing: boolean) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new ThrottleSubscriber(subscriber, this.durationSelector));
+    return source.subscribe(
+      new ThrottleSubscriber(subscriber, this.durationSelector, this.leading, this.trailing)
+    );
   }
 }
 
 /**
- * We need this JSDoc comment for affecting ESDoc.
+ * We need this JSDoc comment for affecting ESDoc
  * @ignore
  * @extends {Ignored}
  */
 class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
   private throttled: Subscription;
+  private _trailingValue: T;
+  private _hasTrailingValue = false;
 
   constructor(protected destination: Subscriber<T>,
-              private durationSelector: (value: T) => SubscribableOrPromise<number>) {
+              private durationSelector: (value: T) => SubscribableOrPromise<number>,
+              private _leading: boolean,
+              private _trailing: boolean) {
     super(destination);
   }
 
   protected _next(value: T): void {
-    if (!this.throttled) {
-      this.tryDurationSelector(value);
+    if (this.throttled) {
+      if (this._trailing) {
+        this._hasTrailingValue = true;
+        this._trailingValue = value;
+      }
+    } else {
+      const duration = this.tryDurationSelector(value);
+      if (duration) {
+        this.add(this.throttled = subscribeToResult(this, duration));
+      }
+      if (this._leading) {
+        this.destination.next(value);
+        if (this._trailing) {
+          this._hasTrailingValue = true;
+          this._trailingValue = value;
+        }
+      }
     }
   }
 
-  private tryDurationSelector(value: T): void {
-    let duration: SubscribableOrPromise<number> = null;
+  private tryDurationSelector(value: T): SubscribableOrPromise<any> {
     try {
-      duration = this.durationSelector(value);
+      return this.durationSelector(value);
     } catch (err) {
       this.destination.error(err);
-      return;
+      return null;
     }
-    this.emitAndThrottle(value, duration);
-  }
-
-  private emitAndThrottle(value: T, duration: SubscribableOrPromise<number>) {
-    this.add(this.throttled = subscribeToResult(this, duration));
-    this.destination.next(value);
   }
 
   protected _unsubscribe() {
-    const throttled = this.throttled;
+    const { throttled, _trailingValue, _hasTrailingValue, _trailing } = this;
+
+    this._trailingValue = null;
+    this._hasTrailingValue = false;
+
     if (throttled) {
       this.remove(throttled);
       this.throttled = null;
@@ -102,13 +136,24 @@ class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
+  private _sendTrailing() {
+    const { destination, throttled, _trailing, _trailingValue, _hasTrailingValue } = this;
+    if (throttled && _trailing && _hasTrailingValue) {
+      destination.next(_trailingValue);
+      this._trailingValue = null;
+      this._hasTrailingValue = false;
+    }
+  }
+
   notifyNext(outerValue: T, innerValue: R,
              outerIndex: number, innerIndex: number,
              innerSub: InnerSubscriber<T, R>): void {
+    this._sendTrailing();
     this._unsubscribe();
   }
 
   notifyComplete(): void {
+    this._sendTrailing();
     this._unsubscribe();
   }
 }
