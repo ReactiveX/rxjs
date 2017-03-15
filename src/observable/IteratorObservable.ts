@@ -1,7 +1,7 @@
 import { root } from '../util/root';
 import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
-import { $$iterator } from '../symbol/iterator';
+import { iterator as Symbol_iterator } from '../symbol/iterator';
 import { TeardownLogic } from '../Subscription';
 import { Subscriber } from '../Subscriber';
 
@@ -89,7 +89,7 @@ class StringIterator {
               private idx: number = 0,
               private len: number = str.length) {
   }
-  [$$iterator]() { return (this); }
+  [Symbol_iterator]() { return (this); }
   next() {
     return this.idx < this.len ? {
         done: false,
@@ -106,7 +106,7 @@ class ArrayIterator {
               private idx: number = 0,
               private len: number = toLength(arr)) {
   }
-  [$$iterator]() { return this; }
+  [Symbol_iterator]() { return this; }
   next() {
     return this.idx < this.len ? {
         done: false,
@@ -119,7 +119,7 @@ class ArrayIterator {
 }
 
 function getIterator(obj: any) {
-  const i = obj[$$iterator];
+  const i = obj[Symbol_iterator];
   if (!i && typeof obj === 'string') {
     return new StringIterator(obj);
   }
@@ -129,7 +129,7 @@ function getIterator(obj: any) {
   if (!i) {
     throw new TypeError('object is not iterable');
   }
-  return obj[$$iterator]();
+  return obj[Symbol_iterator]();
 }
 
 const maxSafeInteger = Math.pow(2, 53) - 1;

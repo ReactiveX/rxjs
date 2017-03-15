@@ -4,7 +4,7 @@ import { isPromise } from './isPromise';
 import { isObject } from './isObject';
 import { Subscriber } from '../Subscriber';
 import { Observable, ObservableInput } from '../Observable';
-import { $$iterator } from '../symbol/iterator';
+import { iterator as Symbol_iterator } from '../symbol/iterator';
 import { Subscription } from '../Subscription';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { OuterSubscriber } from '../OuterSubscriber';
@@ -54,8 +54,8 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
       root.setTimeout(() => { throw err; });
     });
     return destination;
-  } else if (result && typeof result[$$iterator] === 'function') {
-    const iterator = <any>result[$$iterator]();
+  } else if (result && typeof result[Symbol_iterator] === 'function') {
+    const iterator = <any>result[Symbol_iterator]();
     do {
       let item = iterator.next();
       if (item.done) {

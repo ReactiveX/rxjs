@@ -7,7 +7,7 @@ import { ArrayObservable } from './ArrayObservable';
 import { ArrayLikeObservable } from './ArrayLikeObservable';
 
 import { IScheduler } from '../Scheduler';
-import { $$iterator } from '../symbol/iterator';
+import { iterator as Symbol_iterator } from '../symbol/iterator';
 import { Observable, ObservableInput } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { ObserveOnSubscriber } from '../operator/observeOn';
@@ -93,7 +93,7 @@ export class FromObservable<T> extends Observable<T> {
         return new ArrayObservable<T>(ish, scheduler);
       } else if (isPromise(ish)) {
         return new PromiseObservable<T>(ish, scheduler);
-      } else if (typeof ish[$$iterator] === 'function' || typeof ish === 'string') {
+      } else if (typeof ish[Symbol_iterator] === 'function' || typeof ish === 'string') {
         return new IteratorObservable<T>(ish, scheduler);
       } else if (isArrayLike(ish)) {
         return new ArrayLikeObservable(ish, scheduler);
