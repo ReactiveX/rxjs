@@ -145,6 +145,12 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
   protected _complete() {
     const iterators = this.iterators;
     const len = iterators.length;
+
+    if (len === 0) {
+      this.destination.complete();
+      return;
+    }
+
     this.active = len;
     for (let i = 0; i < len; i++) {
       let iterator: ZipBufferIterator<any, any> = <any>iterators[i];
