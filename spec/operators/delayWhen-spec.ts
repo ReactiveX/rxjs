@@ -1,4 +1,3 @@
-import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
@@ -215,23 +214,5 @@ describe('Observable.prototype.delayWhen', () => {
     expectSubscriptions(e1.subscriptions).toBe([]);
     expectSubscriptions(selector.subscriptions).toBe([]);
     expectSubscriptions(subDelay.subscriptions).toBe(subDelaySub);
-  });
-
-  it('should call predicate with indices starting at 0', () => {
-    const e1 =    hot('--a--b--c--|');
-    const expected =  '--a--b--c--|';
-    const selector = cold('(x|)');
-
-    let indices = [];
-    const predicate = (value, index) => {
-      indices.push(index);
-      return selector;
-    };
-
-    const result = e1.delayWhen(predicate);
-
-    expectObservable(result.do(null, null, () => {
-      expect(indices).to.deep.equal([0, 1, 2]);
-    })).toBe(expected);
   });
 });
