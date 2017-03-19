@@ -64,13 +64,13 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @name catch
  * @owner Observable
  */
-export function _catch<T, R>(this: Observable<T>, selector: (err: any, caught: Observable<T>) => ObservableInput<R>): Observable<R> {
+export function _catch<T, R>(this: Observable<T>, selector: (err: any, caught: Observable<T>) => ObservableInput<R>): Observable<T | R> {
   const operator = new CatchOperator(selector);
   const caught = this.lift(operator);
   return (operator.caught = caught);
 }
 
-class CatchOperator<T, R> implements Operator<T, R> {
+class CatchOperator<T, R> implements Operator<T, T | R> {
   caught: Observable<T>;
 
   constructor(private selector: (err: any, caught: Observable<T>) => ObservableInput<T | R>) {
@@ -86,7 +86,7 @@ class CatchOperator<T, R> implements Operator<T, R> {
  * @ignore
  * @extends {Ignored}
  */
-class CatchSubscriber<T, R> extends OuterSubscriber<T, R> {
+class CatchSubscriber<T, R> extends OuterSubscriber<T, T | R> {
   constructor(destination: Subscriber<any>,
               private selector: (err: any, caught: Observable<T>) => ObservableInput<T | R>,
               private caught: Observable<T>) {
