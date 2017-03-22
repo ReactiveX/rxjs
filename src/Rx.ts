@@ -174,6 +174,7 @@ import { $$iterator as iterator } from './symbol/iterator';
 import { $$observable as observable } from './symbol/observable';
 
 /* tslint:enable:no-unused-variable */
+export { compose } from './util/compose';
 
 /**
  * @typedef {Object} Rx.Scheduler
