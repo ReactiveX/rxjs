@@ -15,7 +15,7 @@ interface FlushableTest {
   expected?: any[];
 }
 
-export type observableToBeFn = (marbles: string, values?: any, errorValue?: any) => void;
+export type observableToBeFn = (marbles: string|Observable<any>, values?: any, errorValue?: any) => void;
 export type subscriptionLogsToBeFn = (marbles: string | string[]) => void;
 
 export class TestScheduler extends VirtualTimeScheduler {
@@ -100,10 +100,23 @@ export class TestScheduler extends VirtualTimeScheduler {
 
     this.flushTests.push(flushTest);
 
+    const compareMarbles = (marbles: string, values?: any, errorValue?: any) => {
+      flushTest.ready = true;
+      flushTest.expected = TestScheduler.parseMarbles(marbles, values, errorValue, true);
+    };
+
+    const compareObservables = (expectedObservable: Observable<any>) => {
+      flushTest.ready = true;
+      flushTest.expected = this.materializeInnerObservable(expectedObservable, 0);
+    };
+
     return {
-      toBe(marbles: string, values?: any, errorValue?: any) {
-        flushTest.ready = true;
-        flushTest.expected = TestScheduler.parseMarbles(marbles, values, errorValue, true);
+      toBe(marbles: string|Observable<any>, values?: any, errorValue?: any) {
+        if (typeof marbles === 'string') {
+          compareMarbles(marbles, values, errorValue);
+        } else {
+          compareObservables(marbles);
+        }
       }
     };
   }
