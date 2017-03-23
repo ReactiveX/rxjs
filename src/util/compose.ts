@@ -1,4 +1,5 @@
-export function compose<A, B, C>(fnA: (a: A) => B, fnB: (b: B) => C): (a: A) => C;
+export function compose<A, B, C>(
+  fnA: (a: A) => B, fnB: (b: B) => C): (a: A) => C;
 export function compose<A, B, C, D>(
   fnA: (a: A) => B, fnB: (b: B) => C, fnC: (c: C) => D): (a: A) => D;
 export function compose<A, B, C, D>(
@@ -25,6 +26,6 @@ export function compose<A, B, C, D, E, F, G, H, I, J>(
   fnD: (d: D) => E, fnE: (e: E) => F, fnF: (f: F) => G,
   fnG: (g: G) => H, fnH: (h: H) => I, fnJ: (i: I) => J): (a: A) => J;
 
-export function compose<T>(...fns: ((t: T) => T)[]): (t: T) => T {
-    return (t: T) => fns.reduce((prev, fn) => fn(prev), t);
+export function compose(...fns: any[]): any {
+    return (t: any) => fns.reduce((prev, fn) => fn(prev), t);
 }
