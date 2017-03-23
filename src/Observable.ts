@@ -7,6 +7,7 @@ import { toSubscriber } from './util/toSubscriber';
 import { IfObservable } from './observable/IfObservable';
 import { ErrorObservable } from './observable/ErrorObservable';
 import { $$observable } from './symbol/observable';
+import { compose } from './util/compose';
 
 export interface Subscribable<T> {
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
@@ -162,6 +163,11 @@ export class Observable<T> implements Subscribable<T> {
         }
       }, reject, resolve);
     });
+  }
+
+  pipe(...fns: ((x: Observable<T>) => Observable<T>)[]): Observable<T> {
+    const composed = compose.apply(this, fns);
+    return composed(this);
   }
 
   protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
