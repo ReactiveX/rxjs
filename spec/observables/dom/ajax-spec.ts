@@ -340,6 +340,65 @@ describe('Observable.ajax', () => {
     });
   });
 
+  it('should create an asynchronous request', () => {
+    const obj: Rx.AjaxRequest = {
+      url: '/flibbertyJibbet',
+      responseType: 'text',
+      timeout: 10
+    };
+
+    Rx.Observable.ajax(obj)
+      .subscribe((x: any) => {
+        expect(x.status).to.equal(200);
+        expect(x.xhr.method).to.equal('GET');
+        expect(x.xhr.async).to.equal(true);
+        expect(x.xhr.timeout).to.equal(10);
+        expect(x.xhr.responseType).to.equal('text');
+      }, () => {
+        throw 'should not have been called';
+      });
+
+    const request = MockXMLHttpRequest.mostRecent;
+
+    expect(request.url).to.equal('/flibbertyJibbet');
+
+    request.respondWith({
+      'status': 200,
+      'contentType': 'text/plain',
+      'responseText': 'Wee! I am text!'
+    });
+  });
+
+  it('should create a synchronous request', () => {
+    const obj: Rx.AjaxRequest = {
+      url: '/flibbertyJibbet',
+      responseType: 'text',
+      timeout: 10,
+      async: false
+    };
+
+    Rx.Observable.ajax(obj)
+      .subscribe((x: any) => {
+        expect(x.status).to.equal(200);
+        expect(x.xhr.method).to.equal('GET');
+        expect(x.xhr.async).to.equal(false);
+        expect(x.xhr.timeout).to.be.undefined;
+        expect(x.xhr.responseType).to.equal('');
+      }, () => {
+        throw 'should not have been called';
+      });
+
+    const request = MockXMLHttpRequest.mostRecent;
+
+    expect(request.url).to.equal('/flibbertyJibbet');
+
+    request.respondWith({
+      'status': 200,
+      'contentType': 'text/plain',
+      'responseText': 'Wee! I am text!'
+    });
+  });
+
   describe('ajax request body', () => {
     let rFormData: FormData;
 
@@ -893,6 +952,8 @@ class MockXMLHttpRequest {
   private eventHandlers: Array<any> = [];
   private readyState: number = 0;
 
+  private async: boolean = true;
+
   private user: any;
   private password: any;
 
@@ -926,6 +987,7 @@ class MockXMLHttpRequest {
   open(method: any, url: any, async: any, user: any, password: any): void {
     this.method = method;
     this.url = url;
+    this.async = async;
     this.user = user;
     this.password = password;
     this.readyState = 1;
@@ -969,7 +1031,11 @@ class MockXMLHttpRequest {
   }
 
   protected defaultResponseValue() {
-    throw new Error('unhandled type "' + this.responseType + '"');
+    if (this.async === false) {
+      this.response = this.responseText;
+    } else {
+      throw new Error('unhandled type "' + this.responseType + '"');
+    }
   }
 
   respondWith(response: any, progressTimes?: number): void {
