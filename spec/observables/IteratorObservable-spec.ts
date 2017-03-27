@@ -47,6 +47,24 @@ describe('IteratorObservable', () => {
       );
   });
 
+  it('should get new iterator for each subscription', () => {
+    const expected = [
+      Rx.Notification.createNext(10),
+      Rx.Notification.createNext(20),
+      Rx.Notification.createComplete()
+    ];
+
+    const e1 = IteratorObservable.create<number>(new Int32Array([10, 20])).observeOn(rxTestScheduler);
+
+    let v1, v2: Array<Rx.Notification<any>>;
+    e1.materialize().toArray().subscribe((x) => v1 = x);
+    e1.materialize().toArray().subscribe((x) => v2 = x);
+
+    rxTestScheduler.flush();
+    expect(v1).to.deep.equal(expected);
+    expect(v2).to.deep.equal(expected);
+  });
+
   it('should finalize generators if the subscription ends', () => {
     const iterator = {
       finalized: false,
