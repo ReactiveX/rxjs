@@ -31,7 +31,7 @@ export class PromiseObservable<T> extends Observable<T> {
    * @see {@link bindCallback}
    * @see {@link from}
    *
-   * @param {Promise<T>} promise The promise to be converted.
+   * @param {PromiseLike<T>} promise The promise to be converted.
    * @param {Scheduler} [scheduler] An optional IScheduler to use for scheduling
    * the delivery of the resolved value (or the rejection).
    * @return {Observable<T>} An Observable which wraps the Promise.
