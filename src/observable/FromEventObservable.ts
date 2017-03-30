@@ -140,7 +140,7 @@ export class FromEventObservable<T> extends Observable<T> {
       sourceObj.addListener(eventName, handler);
       unsubscribe = () => source.removeListener(eventName, handler);
     } else {
-      throw new TypeError('Invalid event target');
+      throw new TypeError('Invalid event target, addEventListener and/or removeEventListener missing.');
     }
 
     subscriber.add(new Subscription(unsubscribe));
