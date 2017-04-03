@@ -54,6 +54,7 @@ import './add/operator/concatMapTo';
 import './add/operator/count';
 import './add/operator/dematerialize';
 import './add/operator/debounce';
+import './add/operator/debug';
 import './add/operator/debounceTime';
 import './add/operator/defaultIfEmpty';
 import './add/operator/delay';
