@@ -1,22 +1,3 @@
-<a name="5.2.1-smooth"></a>
-## [5.2.1-smooth](https://github.com/ReactiveX/RxJS/compare/5.2.0...v5.2.1-smooth) (2017-04-01)
-
-
-### Bug Fixes
-
-* **multicast:** Ensure ConnectableObservables returned by multicast are state-isolated. ([aaa9e6b](https://github.com/ReactiveX/RxJS/commit/aaa9e6b))
-* **SafeSubscriber:** SafeSubscriber shouldn't mutate incoming Observers. ([a1778e0](https://github.com/ReactiveX/RxJS/commit/a1778e0))
-* **timeout:** Cancels scheduled timeout, if no longer needed ([3e9d529](https://github.com/ReactiveX/RxJS/commit/3e9d529)), closes [#2134](https://github.com/ReactiveX/RxJS/issues/2134) [#2244](https://github.com/ReactiveX/RxJS/issues/2244) [#2355](https://github.com/ReactiveX/RxJS/issues/2355) [#2347](https://github.com/ReactiveX/RxJS/issues/2347) [#2353](https://github.com/ReactiveX/RxJS/issues/2353) [#2254](https://github.com/ReactiveX/RxJS/issues/2254) [#2372](https://github.com/ReactiveX/RxJS/issues/2372) [#1301](https://github.com/ReactiveX/RxJS/issues/1301)
-* **zipAll:** complete when the source is empty ([712fece](https://github.com/ReactiveX/RxJS/commit/712fece))
-
-
-### Features
-
-* **delayWhen:** add index to the selector function ([5d6291e](https://github.com/ReactiveX/RxJS/commit/5d6291e))
-* **smooth:** Adds the smooth() operator, the cool operator ([#2508](https://github.com/ReactiveX/RxJS/issues/2508)) ([07905e2](https://github.com/ReactiveX/RxJS/commit/07905e2))
-
-
-
 <a name="5.2.0"></a>
 # [5.2.0](https://github.com/ReactiveX/RxJS/compare/5.1.1...v5.2.0) (2017-02-21)
 
