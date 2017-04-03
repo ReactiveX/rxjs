@@ -4,7 +4,7 @@ import { Observable, ObservableInput } from '../Observable';
 
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
-import { ErrorObservable } from '../Observable/ErrorObservable';
+import { ErrorObservable } from '../observable/ErrorObservable';
 
 /**
  * Catches errors on the observable to be handled by returning a new observable or throwing an error.
