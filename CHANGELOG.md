@@ -1,9 +1,16 @@
-<a name="5.2.1-smooth"></a>
-## [5.2.1-smooth](https://github.com/ReactiveX/RxJS/compare/5.2.0...v5.2.1-smooth) (2017-04-01)
+<a name="5.2.2"></a>
+## [5.2.2](https://github.com/ReactiveX/RxJS/compare/5.2.0...v5.2.2) (2017-04-03)
 
 
 ### Bug Fixes
 
+* **catch:** return type is now the union of input types ([#2478](https://github.com/ReactiveX/RxJS/issues/2478)) ([840def0](https://github.com/ReactiveX/RxJS/commit/840def0))
+* **forEach:** fix a temporal dead zone issue in forEach. ([#2474](https://github.com/ReactiveX/RxJS/issues/2474)) ([e9e9801](https://github.com/ReactiveX/RxJS/commit/e9e9801))
+* **multicast:** Ensure ConnectableObservables returned by multicast are state-isolated. ([aaa9e6b](https://github.com/ReactiveX/RxJS/commit/aaa9e6b))
+* **reduce:** proper TypeScript signature overload ordering ([#2382](https://github.com/ReactiveX/RxJS/issues/2382)) ([f6a4951](https://github.com/ReactiveX/RxJS/commit/f6a4951)), closes [#2338](https://github.com/ReactiveX/RxJS/issues/2338)
+* **SafeSubscriber:** SafeSubscriber shouldn't mutate incoming Observers. ([a1778e0](https://github.com/ReactiveX/RxJS/commit/a1778e0))
+* **timeout:** Cancels scheduled timeout, if no longer needed ([3e9d529](https://github.com/ReactiveX/RxJS/commit/3e9d529)), closes [#2134](https://github.com/ReactiveX/RxJS/issues/2134) [#2244](https://github.com/ReactiveX/RxJS/issues/2244) [#2355](https://github.com/ReactiveX/RxJS/issues/2355) [#2347](https://github.com/ReactiveX/RxJS/issues/2347) [#2353](https://github.com/ReactiveX/RxJS/issues/2353) [#2254](https://github.com/ReactiveX/RxJS/issues/2254) [#2372](https://github.com/ReactiveX/RxJS/issues/2372) [#1301](https://github.com/ReactiveX/RxJS/issues/1301)
+* **zipAll:** complete when the source is empty ([712fece](https://github.com/ReactiveX/RxJS/commit/712fece))
 * **multicast:** Ensure ConnectableObservables returned by multicast are state-isolated. ([aaa9e6b](https://github.com/ReactiveX/RxJS/commit/aaa9e6b))
 * **SafeSubscriber:** SafeSubscriber shouldn't mutate incoming Observers. ([a1778e0](https://github.com/ReactiveX/RxJS/commit/a1778e0))
 * **timeout:** Cancels scheduled timeout, if no longer needed ([3e9d529](https://github.com/ReactiveX/RxJS/commit/3e9d529)), closes [#2134](https://github.com/ReactiveX/RxJS/issues/2134) [#2244](https://github.com/ReactiveX/RxJS/issues/2244) [#2355](https://github.com/ReactiveX/RxJS/issues/2355) [#2347](https://github.com/ReactiveX/RxJS/issues/2347) [#2353](https://github.com/ReactiveX/RxJS/issues/2353) [#2254](https://github.com/ReactiveX/RxJS/issues/2254) [#2372](https://github.com/ReactiveX/RxJS/issues/2372) [#1301](https://github.com/ReactiveX/RxJS/issues/1301)
@@ -14,6 +21,13 @@
 
 * **delayWhen:** add index to the selector function ([5d6291e](https://github.com/ReactiveX/RxJS/commit/5d6291e))
 * **smooth:** Adds the smooth() operator, the cool operator ([#2508](https://github.com/ReactiveX/RxJS/issues/2508)) ([07905e2](https://github.com/ReactiveX/RxJS/commit/07905e2))
+* **smooth:** stop to ship `smooth()` as a part of default bundled. ([#2512](https://github.com/ReactiveX/RxJS/issues/2512)) ([f72b9aa](https://github.com/ReactiveX/RxJS/commit/f72b9aa))
+* **symbol exports:** symbols now also exported without `$$` prefix to work with Babel UMD exporting ([#2435](https://github.com/ReactiveX/RxJS/issues/2435)) ([747bef6](https://github.com/ReactiveX/RxJS/commit/747bef6)), closes [#2415](https://github.com/ReactiveX/RxJS/issues/2415)
+
+
+### Performance Improvements
+
+* **bufferCount:** optimize bufferCount operator ([#2359](https://github.com/ReactiveX/RxJS/issues/2359)) ([28d0883](https://github.com/ReactiveX/RxJS/commit/28d0883))
 
 
 
