@@ -139,7 +139,10 @@ export class Observable<T> implements Subscribable<T> {
     }
 
     return new PromiseCtor<void>((resolve, reject) => {
-      const subscription = this.subscribe((value) => {
+      // Must be declared in a separate statement to avoid a RefernceError when
+      // accessing subscription below in the closure due to Temporal Dead Zone.
+      let subscription: Subscription;
+      subscription = this.subscribe((value) => {
         if (subscription) {
           // if there is a subscription, then we can surmise
           // the next handling is asynchronous. Any errors thrown
