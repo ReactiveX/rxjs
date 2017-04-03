@@ -73,6 +73,6 @@ class TakeUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   notifyComplete(): void {
-    // noop
+    this.complete();
   }
 }
