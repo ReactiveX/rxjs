@@ -7,7 +7,7 @@ import { Subscriber } from '../Subscriber';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
-import { $$iterator } from '../symbol/iterator';
+import { iterator as Symbol_iterator } from '../symbol/iterator';
 
 /* tslint:disable:max-line-length */
 export function zipProto<T, R>(this: Observable<T>, project: (v1: T) => R): Observable<R>;
@@ -135,8 +135,8 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
     const iterators = this.iterators;
     if (isArray(value)) {
       iterators.push(new StaticArrayIterator(value));
-    } else if (typeof value[$$iterator] === 'function') {
-      iterators.push(new StaticIterator(value[$$iterator]()));
+    } else if (typeof value[Symbol_iterator] === 'function') {
+      iterators.push(new StaticIterator(value[Symbol_iterator]()));
     } else {
       iterators.push(new ZipBufferIterator(this.destination, this, value));
     }
@@ -261,7 +261,7 @@ class StaticArrayIterator<T> implements LookAheadIterator<T> {
     this.length = array.length;
   }
 
-  [$$iterator]() {
+  [Symbol_iterator]() {
     return this;
   }
 
@@ -296,7 +296,7 @@ class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAhead
     super(destination);
   }
 
-  [$$iterator]() {
+  [Symbol_iterator]() {
     return this;
   }
 

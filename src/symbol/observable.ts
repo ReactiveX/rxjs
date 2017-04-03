@@ -18,4 +18,9 @@ export function getSymbolObservable(context: any) {
   return $$observable;
 }
 
-export const $$observable = getSymbolObservable(root);
+export const observable = getSymbolObservable(root);
+
+/**
+ * @deprecated use observable instead
+ */
+export const $$observable = observable;

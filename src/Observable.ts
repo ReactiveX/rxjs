@@ -6,7 +6,7 @@ import { root } from './util/root';
 import { toSubscriber } from './util/toSubscriber';
 import { IfObservable } from './observable/IfObservable';
 import { ErrorObservable } from './observable/ErrorObservable';
-import { $$observable } from './symbol/observable';
+import { observable as Symbol_observable } from './symbol/observable';
 
 export interface Subscribable<T> {
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
@@ -177,7 +177,7 @@ export class Observable<T> implements Subscribable<T> {
    * @method Symbol.observable
    * @return {Observable} this instance of the observable
    */
-  [$$observable]() {
+  [Symbol_observable]() {
     return this;
   }
 }
