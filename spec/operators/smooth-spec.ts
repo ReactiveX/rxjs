@@ -1,4 +1,5 @@
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import '../../dist/cjs/add/operator/smooth';
 
 declare const { asDiagram };
 declare const hot: typeof marbleTestingSignature.hot;
