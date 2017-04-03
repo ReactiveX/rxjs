@@ -15,6 +15,8 @@ RxJS is a library for reactive programming using Observables, to make it easier 
 
 - - -
 
+### Find the right Operator
+
 <div class="decision-tree-widget"></div>
 
 **Hint: open your DevTools to experiment with RxJS.**
