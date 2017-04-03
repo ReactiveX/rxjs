@@ -1,25 +1,29 @@
-## ES6 via npm
+## All Module Types (CJS/ES6/AMD/TypeScript) via npm
+
+To install this library via [npm](https://www.npmjs.org), use the following command:
 
 ```none
 npm install rxjs
 ```
 
-To import the entire core set of functionality:
+## ES6
+
+Import all core functionality:
 
 ```js
 import Rx from 'rxjs/Rx';
 
-Rx.Observable.of(1,2,3)
+Rx.Observable.of(1,2,3).subscribe(console.log.bind(console));
 ```
 
-To import only what you need by patching (this is useful for size-sensitive bundling):
+Import only what you need and patch Observable (this is useful in size-sensitive bundling scenarios):
 
-```js 
+```js
 import { Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 
-Observable.of(1,2,3).map(x => x + '!!!'); // etc
+Observable.of(1,2,3).map(x => x + '!!!').subscribe(console.log.bind(console));
 ```
 
 To import what you need and use it with proposed [bind operator](https://github.com/tc39/proposal-bind-operator):
@@ -31,21 +35,17 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { map } from 'rxjs/operator/map';
 
-Observable::of(1,2,3)::map(x => x + '!!!'); // etc
+Observable::of(1,2,3)::map(x => x + '!!!').subscribe(console.log.bind(console));
 ```
 
-## CommonJS via npm
-
-```none
-npm install rxjs
-```
+## CommonJS
 
 Import all core functionality:
 
 ```js
 var Rx = require('rxjs/Rx');
 
-Rx.Observable.of(1,2,3); // etc
+Rx.Observable.of(1,2,3).subscribe(console.log.bind(console));
 ```
 
 Import only what you need and patch Observable (this is useful in size-sensitive bundling scenarios):
@@ -56,7 +56,7 @@ var Observable = require('rxjs/Observable').Observable;
 require('rxjs/add/observable/of');
 require('rxjs/add/operator/map');
 
-Observable.of(1,2,3).map(function (x) { return x + '!!!'; }); // etc
+Observable.of(1,2,3).map(function (x) { return x + '!!!'; }).subscribe(console.log.bind(console));
 ```
 
 Import operators and use them _manually_ you can do the following (this is also useful for bundling):
@@ -65,7 +65,7 @@ Import operators and use them _manually_ you can do the following (this is also 
 var of = require('rxjs/observable/of').of;
 var map = require('rxjs/operator/map').map;
 
-map.call(of(1,2,3), function (x) { return x + '!!!'; });
+map.call(of(1,2,3), function (x) { return x + '!!!'; }).subscribe(console.log.bind(console));
 ```
 
 You can also use the above method to build your own Observable and export it from your own module.
@@ -73,35 +73,16 @@ You can also use the above method to build your own Observable and export it fro
 ### CommonJS with TypeScript
 If you recieve an error like `error TS2304: Cannot find name 'Promise'` or `error TS2304: Cannot find name 'Iterable'` when using RxJS you may need to install a supplemental set of typings.
 
-1. For [`typings`](https://github.com/typings/typings) users:
-
-    `typings install es6-shim --ambient`
+1. Using [`typings`](https://github.com/typings/typings): `typings install es6-shim --ambient`
+   or npm: `npm install --save-dev @types/es6-shim`
 
 2. If you're not using typings the interfaces can be copied from [/es6-shim/es6-shim.d.ts](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/es6-shim/es6-shim.d.ts).
 
 3. Add type definition file included in `tsconfig.json` or CLI argument.
 
-## All Module Types (CJS/ES6/AMD/TypeScript) via npm
-
-To install this library via [npm](https://www.npmjs.org) **version 3**, use the following command:
-
-```none
-npm install @reactivex/rxjs
-```
-
-If you are using npm **version 2** before this library has achieved a stable version, you need to specify the library version explicitly:
-
-```none
-npm install @reactivex/rxjs@5.0.0-beta.1
-```
-
 ## CDN
 
-For CDN, you can use [unpkg](https://unpkg.com). Just replace `version` with the current
-version on the link below:
+For CDN, you can use [unpkg](https://unpkg.com).
 
-For RxJS 5.0.0-beta.1 through beta.11:
-https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.umd.js
-
-For RxJS 5.0.0-beta.12 and higher:
-https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.js
+For the latest RxJS:
+https://unpkg.com/rxjs/bundles/Rx.min.js
