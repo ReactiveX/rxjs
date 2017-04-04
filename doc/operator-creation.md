@@ -8,7 +8,6 @@ For how to develop a custom operator for *this* library, [see below](#advanced).
 
 ## DIY Custom Operators for End Users
 
-
 ### Guidelines
 
 In the most common case, users might like to create an operator to be used only by their app. These can be developed in
@@ -98,8 +97,48 @@ Observable.prototype.mySimpleOperator = mySimpleOperator;
 someObservable.mySimpleOperator(x => x + '!');
 ```
 
+### Operator as a pure function
+
+If you don't want to patch the Observable prototype, you can also write the operator as a pure function that takes the input Observable as argument, instead of relying on the `this` keyword.
+
+Example implementation:
+
+```js
+function mySimpleOperator(someCallback) {
+  // notice that we return a function here
+  return function mySimpleOperatorImplementation(source) {
+    return Observable.create(subscriber => {
+      var subscription = source.subscribe(value => {
+        try {
+          subscriber.next(someCallback(value));
+        } catch(err) {
+          subscriber.error(err);
+        }
+      },
+      err => subscriber.error(err),
+      () => subscriber.complete());
+
+      return subscription;
+   });
+  }
+}
+```
+
+This can now be used with the `let()` method on the Observable:
+
+```js
+const obs = someObservable.let(mySimpleOperator(x => x + '!'));
+```
+
+## Publish your operator as a separate library
+
+We strongly recommend you to publish your custom operator as an npm package as a pure function to be used with `let`. See the sections above. RxJS core already has over 100 operators, and we should not add more operators unless they are absolutely essential and add functionality not possible with existing operators.
+
+Publishing it as a separate library will guarantee your operator to be immediately usable by the community, and we can start growing an RxJS ecosystem as opposed to making the RxJS library thicker and heavier. There are cases, however, where the new operator should be added to the core library.
 
 ## <a id="advanced"></a>Creating An Operator For Inclusion In *This* Library
+
+**Please publish your operator as a separate library before proposing it into RxJS.** See the section above.
 
 __To create an operator for inclusion in this library, it's probably best to work from prior art__. Something
 like the `filter` operator would be a good start. It's not expected that you'll be able to read
