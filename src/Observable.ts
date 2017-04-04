@@ -8,6 +8,7 @@ import { IfObservable } from './observable/IfObservable';
 import { ErrorObservable } from './observable/ErrorObservable';
 import { observable as Symbol_observable } from './symbol/observable';
 import { compose } from './util/compose';
+import { letProto } from './operator/let';
 
 export interface Subscribable<T> {
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
@@ -71,6 +72,8 @@ export class Observable<T> implements Subscribable<T> {
     observable.operator = operator;
     return observable;
   }
+
+  let: typeof letProto;
 
   /**
    * Registers handlers for handling emitted values, error and completions from the observable, and
@@ -190,3 +193,5 @@ export class Observable<T> implements Subscribable<T> {
     return this;
   }
 }
+
+Observable.prototype.let = letProto;

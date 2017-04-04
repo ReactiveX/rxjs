@@ -25,6 +25,7 @@ export function compose<A, B, C, D, E, F, G, H, I, J>(
   fnA: (a: A) => B, fnB: (b: B) => C, fnC: (c: C) => D,
   fnD: (d: D) => E, fnE: (e: E) => F, fnF: (f: F) => G,
   fnG: (g: G) => H, fnH: (h: H) => I, fnJ: (i: I) => J): (a: A) => J;
+export function compose(...fns: any[]): (value: any) => any;
 
 export function compose(...fns: any[]): any {
     return (t: any) => fns.reduce((prev, fn) => fn(prev), t);
