@@ -12,7 +12,7 @@ export function toPromise<T>(this: Observable<T>, PromiseCtor: typeof Promise): 
  * @example
  * // Using normal ES2015
  * let source = Rx.Observable
- *   .just(42)
+ *   .of(42)
  *   .toPromise();
  *
  * source.then((value) => console.log('Value: %s', value));
@@ -41,7 +41,7 @@ export function toPromise<T>(this: Observable<T>, PromiseCtor: typeof Promise): 
  *
  * // Setting via the method
  * let source = Rx.Observable
- *   .just(42)
+ *   .of(42)
  *   .toPromise(RSVP.Promise);
  *
  * source.then((value) => console.log('Value: %s', value));
