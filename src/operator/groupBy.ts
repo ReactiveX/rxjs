@@ -1,10 +1,10 @@
 import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subject } from '../Subject';
 import { Map } from '../util/Map';
 import { FastMap } from '../util/FastMap';
+import { GroupedObservable, RefCountSubscription } from '../observable/GroupedObservable';
 
 /* tslint:disable:max-line-length */
 export function groupBy<T, K>(this: Observable<T>, keySelector: (value: T) => K): Observable<GroupedObservable<K, T>>;
@@ -85,13 +85,6 @@ export function groupBy<T, K, R>(this: Observable<T>, keySelector: (value: T) =>
                                  durationSelector?: (grouped: GroupedObservable<K, R>) => Observable<any>,
                                  subjectSelector?: () => Subject<R>): Observable<GroupedObservable<K, R>> {
   return this.lift(new GroupByOperator(keySelector, elementSelector, durationSelector, subjectSelector));
-}
-
-export interface RefCountSubscription {
-  count: number;
-  unsubscribe: () => void;
-  closed: boolean;
-  attemptedToUnsubscribe: boolean;
 }
 
 class GroupByOperator<T, K, R> implements Operator<T, GroupedObservable<K, R>> {
@@ -248,54 +241,5 @@ class GroupDurationSubscriber<K, T> extends Subscriber<T> {
       group.complete();
     }
     this.parent.removeGroup(this.key);
-  }
-}
-
-/**
- * An Observable representing values belonging to the same group represented by
- * a common key. The values emitted by a GroupedObservable come from the source
- * Observable. The common key is available as the field `key` on a
- * GroupedObservable instance.
- *
- * @class GroupedObservable<K, T>
- */
-export class GroupedObservable<K, T> extends Observable<T> {
-  constructor(public key: K,
-              private groupSubject: Subject<T>,
-              private refCountSubscription?: RefCountSubscription) {
-    super();
-  }
-
-  protected _subscribe(subscriber: Subscriber<T>) {
-    const subscription = new Subscription();
-    const {refCountSubscription, groupSubject} = this;
-    if (refCountSubscription && !refCountSubscription.closed) {
-      subscription.add(new InnerRefCountSubscription(refCountSubscription));
-    }
-    subscription.add(groupSubject.subscribe(subscriber));
-    return subscription;
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class InnerRefCountSubscription extends Subscription {
-  constructor(private parent: RefCountSubscription) {
-    super();
-    parent.count++;
-  }
-
-  unsubscribe() {
-    const parent = this.parent;
-    if (!parent.closed && !this.closed) {
-      super.unsubscribe();
-      parent.count -= 1;
-      if (parent.count === 0 && parent.attemptedToUnsubscribe) {
-        parent.unsubscribe();
-      }
-    }
   }
 }

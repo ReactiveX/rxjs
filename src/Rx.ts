@@ -176,16 +176,6 @@ import { observable } from './symbol/observable';
 /* tslint:enable:no-unused-variable */
 export { compose } from './util/compose';
 
-// pull in pipe definitions
-import { map as mapPipe } from './pipe/map';
-
-/**
- * @typedef {Object} Rx.Pipe
- */
-let Pipe = {
-  map: mapPipe
-};
-
 /**
  * @typedef {Object} Rx.Scheduler
  * @property {Scheduler} queue Schedules on a queue in the current event frame
@@ -228,6 +218,5 @@ let Symbol = {
 export {
     Scheduler,
     Symbol,
-    Pipe,
     Observable
 };

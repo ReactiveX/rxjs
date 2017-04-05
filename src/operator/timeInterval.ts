@@ -4,17 +4,22 @@ import { Subscriber } from '../Subscriber';
 import { IScheduler } from '../Scheduler';
 import { async } from '../scheduler/async';
 
+export interface ITimeInterval<T> {
+  value: T;
+  interval: number;
+}
+
 /**
  * @param scheduler
  * @return {Observable<TimeInterval<any>>|WebSocketSubject<T>|Observable<T>}
  * @method timeInterval
  * @owner Observable
  */
-export function timeInterval<T>(this: Observable<T>, scheduler: IScheduler = async): Observable<TimeInterval<T>> {
+export function timeInterval<T>(this: Observable<T>, scheduler: IScheduler = async): Observable<ITimeInterval<T>> {
   return this.lift(new TimeIntervalOperator(scheduler));
 }
 
-export class TimeInterval<T> {
+export class TimeInterval<T> implements ITimeInterval<T> {
   constructor(public value: T, public interval: number) {
 
   }

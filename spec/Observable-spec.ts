@@ -656,7 +656,7 @@ describe('Observable.create', () => {
 
   describe('pipe', () => {
     it('should exist', () => {
-      expect(Observable.prototype.pipe).to.exist;
+      expect(Observable.prototype.let).to.exist;
     });
 
     it('should pipe through multiple functions', () => {
@@ -666,7 +666,7 @@ describe('Observable.create', () => {
       const ob4 = Observable.of(4);
       const results = [];
 
-      const piped = ob1.pipe(
+      const piped = ob1.let(
         s => {
           expect(s).to.equal(ob1);
           return ob2;
