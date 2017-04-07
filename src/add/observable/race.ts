@@ -1,10 +1,10 @@
 import { Observable } from '../../Observable';
-import { raceStatic } from '../../operator/race';
+import { race as staticRace } from '../../observable/race';
 
-Observable.race = raceStatic;
+Observable.race = staticRace;
 
 declare module '../../Observable' {
   namespace Observable {
-    export let race: typeof raceStatic;
+    export let race: typeof staticRace;
   }
 }
