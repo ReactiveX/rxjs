@@ -287,7 +287,7 @@ RxJS v4 defaulted to a scheduler called `Rx.Scheduler.asap` which schedules on t
 The names of the Schedulers in RxJS 4 were based off of the Rx.NET implementation. Consequently, some of the names
 didn't make sense in a JavaScript context (for example: `currentThread` when there's only one thread anyhow).
 
-|RxJS 4|RxJS 5||
+|RxJS 4|RxJS 5| |
 |------|------|---|
 |`Rx.Scheduler.default`|`Rx.Scheduler.asap`|schedules on the micro task queue|
 |`Rx.Scheduler.currentThread`|`Rx.Scheduler.queue`|schedules on a queue in the current event frame (trampoline scheduler)|
