@@ -101,6 +101,10 @@ export class FindValueSubscriber<T> extends Subscriber<T> {
   }
 
   protected _complete(): void {
-    this.notifyComplete(this.yieldIndex ? -1 : undefined);
+    if (this.yieldIndex) {
+      this.notifyComplete(-1);
+    } else {
+      this.destination.complete();
+    }
   }
 }
