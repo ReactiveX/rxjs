@@ -12,12 +12,18 @@ declare module NodeJS {
  * self: browser in WebWorker
  * global: Node.js/other
  */
-export const root: any = (
-     typeof window == 'object' && window.window === window && window
-  || typeof self == 'object' && self.self === self && self
-  || typeof global == 'object' && global.global === global && global
-);
-
-if (!root) {
-  throw new Error('RxJS could not find any global context (window, self, global)');
+export let root: any;
+if (typeof window == 'object' && window.window === window) {
+  root = window;
+} else if (typeof self == 'object' && self.self === self) {
+  root = self;
+} else if (typeof global == 'object' && global.global === global) {
+  root = global;
+} else {
+  // Workaround Closure Compiler restriction: The body of a goog.module cannot use throw.
+  // This is needed when used with angular/tsickle which inserts a goog.module statement.
+  // Wrap in IIFE
+  (function () {
+    throw new Error('RxJS could not find any global context (window, self, global)');
+  })();
 }
