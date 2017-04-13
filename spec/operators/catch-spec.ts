@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
+import * as sinon from 'sinon';
 import {createObservableInputs} from '../helpers/test-helper';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
@@ -278,4 +279,83 @@ describe('Observable.prototype.catch', () => {
       done();
     });
   });
+
+  context('fromPromise', () => {
+    type SetTimeout = (callback: (...args: any[]) => void, ms: number, ...args: any[]) => NodeJS.Timer;
+
+    let trueSetTimeout: SetTimeout;
+    let sandbox: sinon.SinonSandbox;
+    let timers: sinon.SinonFakeTimers;
+
+    beforeEach(() => {
+      trueSetTimeout = global.setTimeout;
+      sandbox = sinon.sandbox.create();
+      timers = sandbox.useFakeTimers();
+    });
+
+    afterEach(() => {
+      sandbox.restore();
+    });
+
+    it('should chain a throw from a promise using throw', (done: MochaDone) => {
+      const subscribeSpy = sinon.spy();
+      const testError = new Error('BROKEN PROMISE');
+      Observable.fromPromise(Promise.reject(testError)).catch(err => {
+        throw new Error('BROKEN THROW');
+      }).subscribe(subscribeSpy);
+
+      trueSetTimeout(() => {
+        try {
+          timers.tick(1);
+        } catch (e) {
+          expect(subscribeSpy).not.to.be.called;
+          expect(e.message).to.equal('BROKEN THROW');
+          return done();
+        }
+        done(new Error('This should have thrown an error'));
+      }, 0);
+    });
+
+    it('should chain a throw from a promise using Observable.throw', (done: MochaDone) => {
+      const subscribeSpy = sinon.spy();
+      const testError = new Error('BROKEN PROMISE');
+      Observable.fromPromise(Promise.reject(testError)).catch(err =>
+        Observable.throw(new Error('BROKEN THROW'))
+      ).subscribe(subscribeSpy);
+
+      trueSetTimeout(() => {
+        try {
+          timers.tick(1);
+        } catch (e) {
+          expect(subscribeSpy).not.to.be.called;
+          expect(e.message).to.equal('BROKEN THROW');
+          return done();
+        }
+        done(new Error('This should have thrown an error'));
+      }, 0);
+    });
+
+    it('should chain a throw from a promise using Observable.throw', (done: MochaDone) => {
+      const subscribeSpy = sinon.spy();
+      const errorSpy = sinon.spy();
+      const thrownError = new Error('BROKEN THROW');
+      const testError = new Error('BROKEN PROMISE');
+      Observable.fromPromise(Promise.reject(testError)).catch(err =>
+        Observable.throw(thrownError)
+      ).subscribe(subscribeSpy, errorSpy);
+
+      trueSetTimeout(() => {
+        try {
+          timers.tick(1);
+        } catch (e) {
+          return done(new Error('This should not have thrown an error'));
+        }
+        expect(subscribeSpy).not.to.be.called;
+        expect(errorSpy).to.have.been.called;
+        expect(errorSpy).to.have.been.calledWith(thrownError);
+        done();
+      }, 0);
+    });
+  });
+
 });
