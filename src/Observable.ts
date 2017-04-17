@@ -17,6 +17,10 @@ export interface Subscribable<T> {
 export type SubscribableOrPromise<T> = Subscribable<T> | PromiseLike<T>;
 export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T>;
 
+export type ObservableOrPromise<T> = Observable<T> | Promise<T>;
+export type ArrayOrIterator<T> = Iterator<T> | ArrayLike<T>;
+export type ObservableInput<T> = ObservableOrPromise<T> | ArrayOrIterator<T>;
+
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
  * of RxJS.
