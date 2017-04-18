@@ -1,13 +1,15 @@
 import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
 import {subscribeToResult} from '../../dist/cjs/util/subscribeToResult';
 import {OuterSubscriber} from '../../dist/cjs/OuterSubscriber';
+import {Observable} from '../../dist/cjs/Observable';
+import '../../dist/cjs/add/observable/range';
+import '../../dist/cjs/add/observable/throw';
 import {$$iterator} from '../../dist/cjs/symbol/iterator';
 import $$symbolObservable from 'symbol-observable';
 
 describe('subscribeToResult', () => {
   it('should synchronously complete when subscribe to scalarObservable', () => {
-    const result = Rx.Observable.of(42);
+    const result = Observable.of(42);
     let expected: number;
     const subscriber = new OuterSubscriber((x: number) => expected = x);
 
@@ -19,7 +21,7 @@ describe('subscribeToResult', () => {
 
   it('should subscribe to observables that are an instanceof Rx.Observable', (done: MochaDone) => {
     const expected = [1, 2, 3];
-    const result = Rx.Observable.range(1, 3);
+    const result = Observable.range(1, 3);
 
     const subscriber = new OuterSubscriber(x => {
       expect(expected.shift()).to.be.equal(x);
@@ -34,7 +36,7 @@ describe('subscribeToResult', () => {
   });
 
   it('should emit error when observable emits error', (done: MochaDone) => {
-    const result = Rx.Observable.throw(new Error('error'));
+    const result = Observable.throw(new Error('error'));
     const subscriber = new OuterSubscriber(x => {
       done(new Error('should not be called'));
     }, (err) => {
@@ -119,7 +121,7 @@ describe('subscribeToResult', () => {
   });
 
   it('should subscribe to to an object that implements Symbol.observable', (done: MochaDone) => {
-    const observableSymbolObject = { [$$symbolObservable]: () => Rx.Observable.of(42) };
+    const observableSymbolObject = { [$$symbolObservable]: () => Observable.of(42) };
 
     const subscriber = new OuterSubscriber(x => {
       expect(x).to.be.equal(42);

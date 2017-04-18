@@ -1,6 +1,5 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-import {GroupedObservable} from '../../dist/cjs/operator/groupBy';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram };
@@ -203,28 +202,6 @@ describe('Observable.prototype.groupBy', () => {
 
     const source = e1
       .groupBy((val: string) => val.toLowerCase().trim());
-
-    expectObservable(source).toBe(expected, expectedValues);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should emit GroupObservables', () => {
-    const values = {
-      a: '  foo',
-      b: ' FoO '
-    };
-    const e1 = hot('-1--2--^-a-b----|', values);
-    const e1subs =        '^        !';
-    const expected =      '--g------|';
-    const expectedValues = { g: 'foo' };
-
-    const source = e1
-      .groupBy((val: string) => val.toLowerCase().trim())
-      .do((group: any) => {
-        expect(group.key).to.equal('foo');
-        expect(group instanceof GroupedObservable).to.be.true;
-      })
-      .map((group: any) => { return group.key; });
 
     expectObservable(source).toBe(expected, expectedValues);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

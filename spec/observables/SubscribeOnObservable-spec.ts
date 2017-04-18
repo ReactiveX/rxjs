@@ -2,6 +2,7 @@ import {expect} from 'chai';
 import * as sinon from 'sinon';
 import * as Rx from '../../dist/cjs/Rx';
 import {SubscribeOnObservable} from '../../dist/cjs/observable/SubscribeOnObservable';
+import {asap} from '../../dist/cjs/scheduler/asap';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const hot: typeof marbleTestingSignature.hot;
@@ -26,7 +27,7 @@ describe('SubscribeOnObservable', () => {
 
     const scheduler = (<any>new SubscribeOnObservable(e1, 0, obj)).scheduler;
 
-    expect(scheduler).to.deep.equal(Rx.Scheduler.asap);
+    expect(scheduler).to.deep.equal(asap);
   });
 
   it('should create observable via staic create function', () => {
