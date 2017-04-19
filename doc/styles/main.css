@@ -127,6 +127,7 @@ body.light-theme .navigation, body.dark-theme .navigation {
   height: calc(100% - 40px);
   background-color: #333;
   padding: 10px;
+  -webkit-overflow-scrolling: touch;
 }
 
 body.light-theme .navigation {
@@ -208,6 +209,7 @@ a:hover {
   overflow-y: scroll;
   height: calc(100vh - 40px);
   box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
 }
 
 .content .detail {
