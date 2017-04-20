@@ -15,15 +15,14 @@ In the example below, we have two Observers attached to a Subject, and we feed s
 ```js
 var subject = new Rx.Subject();
 
-subject.subscribe({
-  next: (v) => console.log('observerA: ' + v)
-});
-subject.subscribe({
-  next: (v) => console.log('observerB: ' + v)
-});
+ar subject = new Rx.Subject();
 
-subject.next(1);
-subject.next(2);
+subject.subscribe((v) => console.log('observerA: ' + v));
+subject.subscribe((v) => console.log('observerB: ' + v));
+
+subject.onNext(1);
+subject.onNext(2);
+
 ```
 
 With the following output on the console:
@@ -40,12 +39,8 @@ Since a Subject is an Observer, this also means you may provide a Subject as the
 ```js
 var subject = new Rx.Subject();
 
-subject.subscribe({
-  next: (v) => console.log('observerA: ' + v)
-});
-subject.subscribe({
-  next: (v) => console.log('observerB: ' + v)
-});
+subject.subscribe((v) => console.log('observerA: ' + v));
+subject.subscribe((v) => console.log('observerB: ' + v));
 
 var observable = Rx.Observable.from([1, 2, 3]);
 
@@ -81,12 +76,8 @@ var subject = new Rx.Subject();
 var multicasted = source.multicast(subject);
 
 // These are, under the hood, `subject.subscribe({...})`:
-multicasted.subscribe({
-  next: (v) => console.log('observerA: ' + v)
-});
-multicasted.subscribe({
-  next: (v) => console.log('observerB: ' + v)
-});
+multicasted.subscribe((v) => console.log('observerA: ' + v));
+multicasted.subscribe((v) => console.log('observerB: ' + v));
 
 // This is, under the hood, `source.subscribe(subject)`:
 multicasted.connect();
@@ -121,28 +112,24 @@ var subject = new Rx.Subject();
 var multicasted = source.multicast(subject);
 var subscription1, subscription2, subscriptionConnect;
 
-subscription1 = multicasted.subscribe({
-  next: (v) => console.log('observerA: ' + v)
-});
+subscription1 = multicasted.subscribe((v) => console.log('observerA: ' + v));
 // We should call `connect()` here, because the first
 // subscriber to `multicasted` is interested in consuming values
 subscriptionConnect = multicasted.connect();
 
 setTimeout(() => {
-  subscription2 = multicasted.subscribe({
-    next: (v) => console.log('observerB: ' + v)
-  });
+  subscription2 = multicasted.subscribe((v) => console.log('observerB: ' + v));
 }, 600);
 
 setTimeout(() => {
-  subscription1.unsubscribe();
+  subscription1.dispose();
 }, 1200);
 
-// We should unsubscribe the shared Observable execution here,
+// We should dispose the shared Observable execution here,
 // because `multicasted` would have no more subscribers after this
 setTimeout(() => {
-  subscription2.unsubscribe();
-  subscriptionConnect.unsubscribe(); // for the shared Observable execution
+  subscription2.dispose();
+  subscriptionConnect.dispose(); // for the shared Observable execution
 }, 2000);
 ```
 
@@ -161,27 +148,23 @@ var subscription1, subscription2, subscriptionConnect;
 // This calls `connect()`, because
 // it is the first subscriber to `refCounted`
 console.log('observerA subscribed');
-subscription1 = refCounted.subscribe({
-  next: (v) => console.log('observerA: ' + v)
-});
+subscription1 = refCounted.subscribe((v) => console.log('observerA: ' + v));
 
 setTimeout(() => {
   console.log('observerB subscribed');
-  subscription2 = refCounted.subscribe({
-    next: (v) => console.log('observerB: ' + v)
-  });
+  subscription2 = refCounted.subscribe((v) => console.log('observerB: ' + v));
 }, 600);
 
 setTimeout(() => {
-  console.log('observerA unsubscribed');
-  subscription1.unsubscribe();
+  console.log('observerA dispose');
+  subscription1.dispose();
 }, 1200);
 
 // This is when the shared Observable execution will stop, because
 // `refCounted` would have no more subscribers after this
 setTimeout(() => {
-  console.log('observerB unsubscribed');
-  subscription2.unsubscribe();
+  console.log('observerB dispose');
+  subscription2.dispose();
 }, 2000);
 ```
 
@@ -211,18 +194,14 @@ In the following example, the BehaviorSubject is initialized with the value `0` 
 ```js
 var subject = new Rx.BehaviorSubject(0); // 0 is the initial value
 
-subject.subscribe({
-  next: (v) => console.log('observerA: ' + v)
-});
+subject.subscribe((v) => console.log('observerA: ' + v));
 
-subject.next(1);
-subject.next(2);
+subject.onNext(1);
+subject.onNext(2);
 
-subject.subscribe({
-  next: (v) => console.log('observerB: ' + v)
-});
+subject.subscribe((v) => console.log('observerB: ' + v));
 
-subject.next(3);
+subject.onNext(3);
 ```
 
 With output:
@@ -247,20 +226,16 @@ When creating a `ReplaySubject`, you can specify how many values to replay:
 ```js
 var subject = new Rx.ReplaySubject(3); // buffer 3 values for new subscribers
 
-subject.subscribe({
-  next: (v) => console.log('observerA: ' + v)
-});
+subject.subscribe((v) => console.log('observerA: ' + v));
 
-subject.next(1);
-subject.next(2);
-subject.next(3);
-subject.next(4);
+subject.onNext(1);
+subject.onNext(2);
+subject.onNext(3);
+subject.onNext(4);
 
-subject.subscribe({
-  next: (v) => console.log('observerB: ' + v)
-});
+subject.subscribe((v) => console.log('observerB: ' + v));
 
-subject.next(5);
+subject.onNext(5);
 ```
 
 With output:
@@ -283,17 +258,13 @@ You can also specify a *window time* in milliseconds, besides of the buffer size
 ```js
 var subject = new Rx.ReplaySubject(100, 500 /* windowTime */);
 
-subject.subscribe({
-  next: (v) => console.log('observerA: ' + v)
-});
+subject.subscribe((v) => console.log('observerA: ' + v));
 
 var i = 1;
-setInterval(() => subject.next(i++), 200);
+setInterval(() => subject.onNext(i++), 200);
 
 setTimeout(() => {
-  subject.subscribe({
-    next: (v) => console.log('observerB: ' + v)
-  });
+  subject.subscribe((v) => console.log('observerB: ' + v));
 }, 1000);
 ```
 
@@ -320,21 +291,17 @@ The AsyncSubject is a variant where only the last value of the Observable execut
 ```js
 var subject = new Rx.AsyncSubject();
 
-subject.subscribe({
-  next: (v) => console.log('observerA: ' + v)
-});
+subject.subscribe((v) => console.log('observerA: ' + v));
 
-subject.next(1);
-subject.next(2);
-subject.next(3);
-subject.next(4);
+subject.onNext(1);
+subject.onNext(2);
+subject.onNext(3);
+subject.onNext(4);
 
-subject.subscribe({
-  next: (v) => console.log('observerB: ' + v)
-});
+subject.subscribe((v) => console.log('observerB: ' + v));
 
-subject.next(5);
-subject.complete();
+subject.onNext(5);
+subject.onCompleted();
 ```
 
 With output:
