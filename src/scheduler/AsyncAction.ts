@@ -74,11 +74,11 @@ export class AsyncAction<T> extends Action<T> {
 
   protected recycleAsyncId(scheduler: AsyncScheduler, id: any, delay: number = 0): any {
     // If this action is rescheduled with the same delay time, don't clear the interval id.
-    if (delay !== null && this.delay === delay) {
+    if (delay !== null && this.delay === delay && this.pending === false) {
       return id;
     }
     // Otherwise, if the action's delay time is different from the current delay,
-    // clear the interval id
+    // or the action has been rescheduled before it's executed, clear the interval id
     return root.clearInterval(id) && undefined || undefined;
   }
 
