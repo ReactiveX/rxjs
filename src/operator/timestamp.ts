@@ -4,17 +4,22 @@ import { Subscriber } from '../Subscriber';
 import { IScheduler } from '../Scheduler';
 import { async } from '../scheduler/async';
 
+export interface ITimestamp<T> {
+  value: T;
+  timestamp: number;
+}
+
 /**
  * @param scheduler
  * @return {Observable<Timestamp<any>>|WebSocketSubject<T>|Observable<T>}
  * @method timestamp
  * @owner Observable
  */
-export function timestamp<T>(this: Observable<T>, scheduler: IScheduler = async): Observable<Timestamp<T>> {
+export function timestamp<T>(this: Observable<T>, scheduler: IScheduler = async): Observable<ITimestamp<T>> {
   return this.lift(new TimestampOperator(scheduler));
 }
 
-export class Timestamp<T> {
+export class Timestamp<T> implements ITimestamp<T> {
   constructor(public value: T, public timestamp: number) {
   }
 };

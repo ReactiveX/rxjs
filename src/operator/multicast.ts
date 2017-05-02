@@ -4,9 +4,12 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { ConnectableObservable, connectableObservableDescriptor } from '../observable/ConnectableObservable';
 
+export type factoryOrValue<T> = T | (() => T);
+export type selector<T> = (source: Observable<T>) => Observable<T>;
+
 /* tslint:disable:max-line-length */
 export function multicast<T>(this: Observable<T>, subjectOrSubjectFactory: factoryOrValue<Subject<T>>): ConnectableObservable<T>;
-export function multicast<T>(SubjectFactory: (this: Observable<T>) => Subject<T>, selector?: selector<T>): Observable<T>;
+export function multicast<T>(SubjectFactory: () => Subject<T>, selector?: selector<T>): Observable<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -49,9 +52,6 @@ export function multicast<T>(this: Observable<T>, subjectOrSubjectFactory: Subje
 
   return <ConnectableObservable<T>> connectable;
 }
-
-export type factoryOrValue<T> = T | (() => T);
-export type selector<T> = (source: Observable<T>) => Observable<T>;
 
 export class MulticastOperator<T> implements Operator<T, T> {
   constructor(private subjectFactory: () => Subject<T>,

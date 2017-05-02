@@ -653,6 +653,41 @@ describe('Observable.create', () => {
       }
     });
   });
+
+  describe('pipe', () => {
+    it('should exist', () => {
+      expect(Observable.prototype.let).to.exist;
+    });
+
+    it('should pipe through multiple functions', () => {
+      const ob1 = Observable.of(1);
+      const ob2 = Observable.of(2);
+      const ob3 = Observable.of(3);
+      const ob4 = Observable.of(4);
+      const results = [];
+
+      const piped = ob1.let(
+        s => {
+          expect(s).to.equal(ob1);
+          return ob2;
+        },
+        s => {
+          expect(s).to.equal(ob2);
+          return ob3;
+        },
+        s => {
+          expect(s).to.equal(ob3);
+          return ob4;
+        },
+      );
+
+      expect(piped).to.equal(ob4);
+
+      piped.subscribe(x => results.push(x), null, () => results.push('done'));
+
+      expect(results).to.deep.equal([4, 'done']);
+    });
+  });
 });
 
 /** @test {Observable} */

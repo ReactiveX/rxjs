@@ -4,7 +4,7 @@
 // definition
 export {Subject, AnonymousSubject} from './Subject';
 /* tslint:enable:no-unused-variable */
-export {Observable} from './Observable';
+import {Observable} from './Observable';
 
 // statics
 /* tslint:disable:no-use-before-declare */
@@ -174,6 +174,7 @@ import { iterator } from './symbol/iterator';
 import { observable } from './symbol/observable';
 
 /* tslint:enable:no-unused-variable */
+export { compose } from './util/compose';
 
 /**
  * @typedef {Object} Rx.Scheduler
@@ -216,5 +217,6 @@ let Symbol = {
 
 export {
     Scheduler,
-    Symbol
+    Symbol,
+    Observable
 };
