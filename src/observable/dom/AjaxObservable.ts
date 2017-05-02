@@ -20,7 +20,7 @@ export interface AjaxRequest {
   withCredentials?: boolean;
   createXHR?: () => XMLHttpRequest;
   progressSubscriber?: Subscriber<any>;
-  responseType?: string;
+  responseType?: typeof XMLHttpRequest.prototype.responseType;
 }
 
 function getCORSRequest(this: AjaxRequest): XMLHttpRequest {
@@ -401,8 +401,8 @@ export class AjaxResponse {
   /** @type {string} The raw responseText */
   responseText: string;
 
-  /** @type {string} The responseType (e.g. 'json', 'arraybuffer', or 'xml') */
-  responseType: string;
+  /** @type {string} The responseType (e.g. 'json', 'arraybuffer', or 'document') */
+  responseType: typeof XMLHttpRequest.prototype.responseType;
 
   constructor(public originalEvent: Event, public xhr: XMLHttpRequest, public request: AjaxRequest) {
     this.status = xhr.status;
@@ -417,7 +417,10 @@ export class AjaxResponse {
           this.response = JSON.parse(xhr.responseText || 'null');
         }
         break;
-      case 'xml':
+      // TODO: The 'xml' case exists for backwards compatibility, but is not a
+      // valid responseType and should be removed.
+      case 'xml' as any:
+      case 'document':
         this.response = xhr.responseXML;
         break;
       case 'text':
