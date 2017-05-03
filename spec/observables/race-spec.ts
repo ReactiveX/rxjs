@@ -35,6 +35,20 @@ describe('Observable.race', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
+  it('should race with array of observable', () => {
+    const e1 =  cold('---a-----b-----c----|');
+    const e1subs =   '^                   !';
+    const e2 =  cold('------x-----y-----z----|');
+    const e2subs =   '^  !';
+    const expected = '---a-----b-----c----|';
+
+    const result = Observable.race([e1, e2]);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
   it('should race hot and hot', () => {
     const e1 =   hot('---a-----b-----c----|');
     const e1subs =   '^                   !';

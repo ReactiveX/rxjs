@@ -6,8 +6,8 @@ import { root } from './util/root';
 import { toSubscriber } from './util/toSubscriber';
 import { IfObservable } from './observable/IfObservable';
 import { ErrorObservable } from './observable/ErrorObservable';
-import { $$observable } from './symbol/observable';
 import { compose } from './util/compose';
+import { observable as Symbol_observable } from './symbol/observable';
 
 export interface Subscribable<T> {
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
@@ -140,7 +140,10 @@ export class Observable<T> implements Subscribable<T> {
     }
 
     return new PromiseCtor<void>((resolve, reject) => {
-      const subscription = this.subscribe((value) => {
+      // Must be declared in a separate statement to avoid a RefernceError when
+      // accessing subscription below in the closure due to Temporal Dead Zone.
+      let subscription: Subscription;
+      subscription = this.subscribe((value) => {
         if (subscription) {
           // if there is a subscription, then we can surmise
           // the next handling is asynchronous. Any errors thrown
@@ -183,7 +186,7 @@ export class Observable<T> implements Subscribable<T> {
    * @method Symbol.observable
    * @return {Observable} this instance of the observable
    */
-  [$$observable]() {
+  [Symbol_observable]() {
     return this;
   }
 }

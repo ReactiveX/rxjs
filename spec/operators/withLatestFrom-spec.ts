@@ -14,8 +14,8 @@ const Observable = Rx.Observable;
 /** @test {withLatestFrom} */
 describe('Observable.prototype.withLatestFrom', () => {
   asDiagram('withLatestFrom')('should combine events from cold observables', () => {
-    const e1 =   hot('-a--b-----c-d-e-|');
-    const e2 =   hot('--1--2-3-4---|   ');
+    const e1 =  cold('-a--b-----c-d-e-|');
+    const e2 =  cold('--1--2-3-4---|   ');
     const expected = '----B-----C-D-E-|';
 
     const result = e1.withLatestFrom(e2, (a: string, b: string) => String(a) + String(b));

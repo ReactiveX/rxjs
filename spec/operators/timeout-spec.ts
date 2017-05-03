@@ -1,14 +1,14 @@
-import * as Rx from '../../dist/cjs/Rx';
 import { expect } from 'chai';
+import * as Rx from '../../dist/cjs/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram };
+declare const rxTestScheduler: Rx.TestScheduler;
 declare const hot: typeof marbleTestingSignature.hot;
 declare const cold: typeof marbleTestingSignature.cold;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
 
-declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
 /** @test {timeout} */
@@ -119,6 +119,30 @@ describe('Observable.prototype.timeout', () => {
     const result = e1.timeout(new Date(rxTestScheduler.now() + 100), rxTestScheduler);
 
     expectObservable(result).toBe(expected, values, defaultTimeoutError);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should unsubscribe from the scheduled timeout action when timeout is unsubscribed early', () => {
+    const e1 =   hot('--a--b--c---d--e--|');
+    const e1subs =   '^         !        ';
+    const expected = '--a--b--c--        ';
+    const unsub =    '          !        ';
+
+    const result = e1
+      .lift({
+        call: (timeoutSubscriber, source) => {
+          const { action } = <any> timeoutSubscriber; // get a ref to the action here
+          timeoutSubscriber.add(() => {               // because it'll be null by the
+            if (!action.closed) {                     // time we get into this function.
+              throw new Error('TimeoutSubscriber scheduled action wasn\'t canceled');
+            }
+          });
+          return source.subscribe(timeoutSubscriber);
+        }
+      })
+      .timeout(50, rxTestScheduler);
+
+    expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
