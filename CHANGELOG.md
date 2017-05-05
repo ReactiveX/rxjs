@@ -1,3 +1,74 @@
+<a name="5.3.1"></a>
+## [5.3.1](https://github.com/ReactiveX/RxJS/compare/5.3.0...v5.3.1) (2017-05-02)
+
+
+### Bug Fixes
+
+* **AsyncAction:** rescheduling an action with the same delay before it has executed will now schedule appropriately. ([#2580](https://github.com/ReactiveX/RxJS/issues/2580)) ([281760e](https://github.com/ReactiveX/RxJS/commit/281760e))
+* **closure:** make root.ts work with closure ([#2546](https://github.com/ReactiveX/RxJS/issues/2546)) ([0ecf55d](https://github.com/ReactiveX/RxJS/commit/0ecf55d))
+* **tests:** add missing babel-polyfill to package.json ([b277ce9](https://github.com/ReactiveX/RxJS/commit/b277ce9)), closes [#2261](https://github.com/ReactiveX/RxJS/issues/2261)
+* **withLatestFrom:** change from hot to cold observable in marble test ([0c65446](https://github.com/ReactiveX/RxJS/commit/0c65446)), closes [#2526](https://github.com/ReactiveX/RxJS/issues/2526)
+
+
+
+<a name="5.3.0"></a>
+# [5.3.0](https://github.com/ReactiveX/RxJS/compare/5.2.0...v5.3.0) (2017-04-03)
+
+
+### Bug Fixes
+
+* **catch:** return type is now the union of input types ([#2478](https://github.com/ReactiveX/RxJS/issues/2478)) ([840def0](https://github.com/ReactiveX/RxJS/commit/840def0))
+* **forEach:** fix a temporal dead zone issue in forEach. ([#2474](https://github.com/ReactiveX/RxJS/issues/2474)) ([e9e9801](https://github.com/ReactiveX/RxJS/commit/e9e9801))
+* **multicast:** Ensure ConnectableObservables returned by multicast are state-isolated. ([aaa9e6b](https://github.com/ReactiveX/RxJS/commit/aaa9e6b))
+* **reduce:** proper TypeScript signature overload ordering ([#2382](https://github.com/ReactiveX/RxJS/issues/2382)) ([f6a4951](https://github.com/ReactiveX/RxJS/commit/f6a4951)), closes [#2338](https://github.com/ReactiveX/RxJS/issues/2338)
+* **SafeSubscriber:** SafeSubscriber shouldn't mutate incoming Observers. ([a1778e0](https://github.com/ReactiveX/RxJS/commit/a1778e0))
+* **timeout:** Cancels scheduled timeout, if no longer needed ([3e9d529](https://github.com/ReactiveX/RxJS/commit/3e9d529)), closes [#2134](https://github.com/ReactiveX/RxJS/issues/2134) [#2244](https://github.com/ReactiveX/RxJS/issues/2244) [#2355](https://github.com/ReactiveX/RxJS/issues/2355) [#2347](https://github.com/ReactiveX/RxJS/issues/2347) [#2353](https://github.com/ReactiveX/RxJS/issues/2353) [#2254](https://github.com/ReactiveX/RxJS/issues/2254) [#2372](https://github.com/ReactiveX/RxJS/issues/2372) [#1301](https://github.com/ReactiveX/RxJS/issues/1301)
+* **zipAll:** complete when the source is empty ([712fece](https://github.com/ReactiveX/RxJS/commit/712fece))
+
+
+### Features
+
+* **delayWhen:** add index to the selector function ([5d6291e](https://github.com/ReactiveX/RxJS/commit/5d6291e))
+* **symbol exports:** symbols now also exported without `$$` prefix to work with Babel UMD exporting ([#2435](https://github.com/ReactiveX/RxJS/issues/2435)) ([747bef6](https://github.com/ReactiveX/RxJS/commit/747bef6)), closes [#2415](https://github.com/ReactiveX/RxJS/issues/2415)
+
+
+### Performance Improvements
+
+* **bufferCount:** optimize bufferCount operator ([#2359](https://github.com/ReactiveX/RxJS/issues/2359)) ([28d0883](https://github.com/ReactiveX/RxJS/commit/28d0883))
+
+
+### April Fools
+
+* **smooth:** `smooth()` was never really a thing. Sorry, folks. :D
+
+
+
+<a name="5.2.0"></a>
+# [5.2.0](https://github.com/ReactiveX/RxJS/compare/5.1.1...v5.2.0) (2017-02-21)
+
+
+### Bug Fixes
+
+* **ajax:** will set `withCredentials` after `open` on XHR for IE10 ([#2332](https://github.com/ReactiveX/RxJS/issues/2332)) ([0ab1d3b](https://github.com/ReactiveX/RxJS/commit/0ab1d3b))
+* **bindCallback:** emit undefined when callback is without arguments ([915a2a8](https://github.com/ReactiveX/RxJS/commit/915a2a8))
+* **bindNodeCallback:** emit undefined when callback has no success arguments ([8b81fc6](https://github.com/ReactiveX/RxJS/commit/8b81fc6)), closes [#2254](https://github.com/ReactiveX/RxJS/issues/2254)
+* **bindNodeCallback:** errors thrown in callback will be scheduled if a scheduler is provided ([#2344](https://github.com/ReactiveX/RxJS/issues/2344)) ([82ec4f1](https://github.com/ReactiveX/RxJS/commit/82ec4f1))
+* **concat:** will now return Observable when given a single object implementing Symbol.observable ([#2387](https://github.com/ReactiveX/RxJS/issues/2387)) ([f5d035a](https://github.com/ReactiveX/RxJS/commit/f5d035a))
+* **ErrorObservable:** remove type constraint to error value ([2f951cd](https://github.com/ReactiveX/RxJS/commit/2f951cd)), closes [#2395](https://github.com/ReactiveX/RxJS/issues/2395)
+* **forkJoin:** add type signature for single observable with selector ([7983b91](https://github.com/ReactiveX/RxJS/commit/7983b91)), closes [#2347](https://github.com/ReactiveX/RxJS/issues/2347)
+* **merge:** return Observable when called with single lowerCaseO ([85752eb](https://github.com/ReactiveX/RxJS/commit/85752eb))
+* **mergeAll:** introduce variant support <T, R> for mergeMap ([656f2b3](https://github.com/ReactiveX/RxJS/commit/656f2b3)), closes [#2372](https://github.com/ReactiveX/RxJS/issues/2372)
+* **single:** predicate function receives indicies starting at 0 ([#2396](https://github.com/ReactiveX/RxJS/issues/2396)) ([c81882f](https://github.com/ReactiveX/RxJS/commit/c81882f))
+* **subscribeToResult:** accept array-like as result ([14685ba](https://github.com/ReactiveX/RxJS/commit/14685ba))
+
+
+### Features
+
+* **webSocket:** Add binaryType to config object ([86acbd1](https://github.com/ReactiveX/RxJS/commit/86acbd1)), closes [#2353](https://github.com/ReactiveX/RxJS/issues/2353)
+* **windowTime:** maxWindowSize parameter in windowTime operator ([381be3f](https://github.com/ReactiveX/RxJS/commit/381be3f)), closes [#1301](https://github.com/ReactiveX/RxJS/issues/1301)
+
+
+
 <a name="5.1.1"></a>
 ## [5.1.1](https://github.com/ReactiveX/RxJS/compare/5.1.0...v5.1.1) (2017-02-13)
 

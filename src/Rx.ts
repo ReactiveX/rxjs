@@ -169,9 +169,9 @@ import { AsapScheduler } from './scheduler/AsapScheduler';
 import { AsyncScheduler } from './scheduler/AsyncScheduler';
 import { QueueScheduler } from './scheduler/QueueScheduler';
 import { AnimationFrameScheduler } from './scheduler/AnimationFrameScheduler';
-import { $$rxSubscriber as rxSubscriber } from './symbol/rxSubscriber';
-import { $$iterator as iterator } from './symbol/iterator';
-import { $$observable as observable } from './symbol/observable';
+import { rxSubscriber } from './symbol/rxSubscriber';
+import { iterator } from './symbol/iterator';
+import { observable } from './symbol/observable';
 
 /* tslint:enable:no-unused-variable */
 

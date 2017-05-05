@@ -2,7 +2,7 @@ import { isFunction } from './util/isFunction';
 import { Observer, PartialObserver } from './Observer';
 import { Subscription } from './Subscription';
 import { empty as emptyObserver } from './Observer';
-import { $$rxSubscriber } from './symbol/rxSubscriber';
+import { rxSubscriber as rxSubscriberSymbol } from './symbol/rxSubscriber';
 
 /**
  * Implements the {@link Observer} interface and extends the
@@ -16,7 +16,7 @@ import { $$rxSubscriber } from './symbol/rxSubscriber';
  */
 export class Subscriber<T> extends Subscription implements Observer<T> {
 
-  [$$rxSubscriber]() { return this; }
+  [rxSubscriberSymbol]() { return this; }
 
   /**
    * A static factory for a Subscriber, given a (potentially partial) definition
@@ -179,14 +179,16 @@ class SafeSubscriber<T> extends Subscriber<T> {
     if (isFunction(observerOrNext)) {
       next = (<((value: T) => void)> observerOrNext);
     } else if (observerOrNext) {
-      context = observerOrNext;
       next = (<PartialObserver<T>> observerOrNext).next;
       error = (<PartialObserver<T>> observerOrNext).error;
       complete = (<PartialObserver<T>> observerOrNext).complete;
-      if (isFunction(context.unsubscribe)) {
-        this.add(<() => void> context.unsubscribe.bind(context));
+      if (observerOrNext !== emptyObserver) {
+        context = Object.create(observerOrNext);
+        if (isFunction(context.unsubscribe)) {
+          this.add(<() => void> context.unsubscribe.bind(context));
+        }
+        context.unsubscribe = this.unsubscribe.bind(this);
       }
-      context.unsubscribe = this.unsubscribe.bind(this);
     }
 
     this._context = context;

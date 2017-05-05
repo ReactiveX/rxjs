@@ -83,4 +83,18 @@ describe('Subscriber', () => {
     expect(times).to.equal(2);
     expect(completeCalled).to.be.false;
   });
+
+  it('should not be closed when other subscriber with same observer instance completes', () => {
+    let observer = {
+      next: function () { /*noop*/ }
+    };
+
+    const sub1 = new Subscriber(observer);
+    const sub2 = new Subscriber(observer);
+
+    sub2.complete();
+
+    expect(sub1.closed).to.be.false;
+    expect(sub2.closed).to.be.true;
+  });
 });

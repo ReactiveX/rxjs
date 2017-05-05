@@ -1,5 +1,6 @@
 import * as Rx from '../../dist/cjs/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { expect } from 'chai';
 
 declare const { asDiagram };
 declare const hot: typeof marbleTestingSignature.hot;
@@ -214,5 +215,17 @@ describe('Observable.prototype.delayWhen', () => {
     expectSubscriptions(e1.subscriptions).toBe([]);
     expectSubscriptions(selector.subscriptions).toBe([]);
     expectSubscriptions(subDelay.subscriptions).toBe(subDelaySub);
+  });
+
+  it('should complete when duration selector returns synchronous observable', () => {
+    let next: boolean = false;
+    let complete: boolean = false;
+
+    Rx.Observable.of(1)
+      .delayWhen(() => Rx.Observable.of(2))
+      .subscribe(() => next = true, null, () => complete = true);
+
+    expect(next).to.be.true;
+    expect(complete).to.be.true;
   });
 });

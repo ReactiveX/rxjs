@@ -194,6 +194,35 @@ describe('Observable.forkJoin', () => {
     expectObservable(e1).toBe(expected);
   });
 
+  it('should not complete when only source never completes', () => {
+    const e1 = Observable.forkJoin(
+      hot('--------------')
+    );
+    const expected = '-';
+
+    expectObservable(e1).toBe(expected);
+  });
+
+  it('should not complete when one of the sources never completes', () => {
+    const e1 = Observable.forkJoin(
+      hot('--------------'),
+      hot('-a---b--c--|')
+    );
+    const expected = '-';
+
+    expectObservable(e1).toBe(expected);
+  });
+
+  it('should complete when one of the sources never completes but other completes without values', () => {
+    const e1 = Observable.forkJoin(
+                 hot('--------------'),
+                 hot('------|')
+    );
+    const expected = '------|';
+
+    expectObservable(e1).toBe(expected);
+  });
+
   it('should complete if source is not provided', () => {
     const e1 = Observable.forkJoin();
     const expected = '|';
@@ -240,6 +269,15 @@ describe('Observable.forkJoin', () => {
     const e1 = Observable.forkJoin(
                hot('------#'),
                hot('---------|'));
+    const expected = '------#';
+
+    expectObservable(e1).toBe(expected);
+  });
+
+  it('should raise error when any of source raises error with source that never completes', () => {
+    const e1 = Observable.forkJoin(
+                 hot('------#'),
+                 hot('----------'));
     const expected = '------#';
 
     expectObservable(e1).toBe(expected);
@@ -293,6 +331,20 @@ describe('Observable.forkJoin', () => {
     const result = Observable.forkJoin(e1, e2);
 
     expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
+  it('should unsubscribe other Observables, when one of them errors', () => {
+    const e1 =   hot('--a--^--b--c---d-| ');
+    const e1subs =        '^        !    ';
+    const e2 =   hot('---e-^---f--g-#');
+    const e2subs =        '^        !    ';
+    const expected =      '---------#    ';
+
+    const result = Observable.forkJoin(e1, e2);
+
+    expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
