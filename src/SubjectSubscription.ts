@@ -22,7 +22,7 @@ export class SubjectSubscription<T> extends Subscription {
     this.closed = true;
 
     const subject = this.subject;
-    const observers = subject.observers;
+    const observers = (subject as any)._observers;
 
     this.subject = null;
 

@@ -25,15 +25,23 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     return new SubjectSubscriber(this);
   }
 
-  observers: Observer<T>[] = [];
+  protected _observers: Array<Observer<T>> = [];
+  public get observers(): ReadonlyArray<Observer<T>> {
+    return this._observers;
+  }
 
-  closed = false;
+  protected _closed: boolean = false;
+  public get closed(): boolean {
+    return this._closed;
+  }
 
-  isStopped = false;
+  protected _isStopped: boolean = false;
+  public get isStopped(): boolean {
+    return this._isStopped;
+  }
 
-  hasError = false;
-
-  thrownError: any = null;
+  protected hasError: boolean = false;
+  protected thrownError: any = null;
 
   constructor() {
     super();
@@ -69,34 +77,34 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     }
     this.hasError = true;
     this.thrownError = err;
-    this.isStopped = true;
+    this._isStopped = true;
     const { observers } = this;
     const len = observers.length;
     const copy = observers.slice();
     for (let i = 0; i < len; i++) {
       copy[i].error(err);
     }
-    this.observers.length = 0;
+    this._observers.length = 0;
   }
 
   complete() {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     }
-    this.isStopped = true;
+    this._isStopped = true;
     const { observers } = this;
     const len = observers.length;
     const copy = observers.slice();
     for (let i = 0; i < len; i++) {
       copy[i].complete();
     }
-    this.observers.length = 0;
+    this._observers.length = 0;
   }
 
   unsubscribe() {
-    this.isStopped = true;
-    this.closed = true;
-    this.observers = null;
+    this._isStopped = true;
+    this._closed = true;
+    this._observers = null;
   }
 
   protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
@@ -117,7 +125,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
       subscriber.complete();
       return Subscription.EMPTY;
     } else {
-      this.observers.push(subscriber);
+      this._observers.push(subscriber);
       return new SubjectSubscription(this, subscriber);
     }
   }
