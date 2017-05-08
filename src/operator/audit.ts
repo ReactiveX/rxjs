@@ -86,6 +86,9 @@ class AuditSubscriber<T, R> extends OuterSubscriber<T, R> {
         this.destination.error(errorObject.e);
       } else {
         this.add(this.throttled = subscribeToResult(this, duration));
+        if (this.throttled.closed) {
+          this.clearThrottle();
+        }
       }
     }
   }
