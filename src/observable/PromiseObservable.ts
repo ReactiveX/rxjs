@@ -31,7 +31,7 @@ export class PromiseObservable<T> extends Observable<T> {
    * @see {@link bindCallback}
    * @see {@link from}
    *
-   * @param {Promise<T>} promise The promise to be converted.
+   * @param {PromiseLike<T>} promise The promise to be converted.
    * @param {Scheduler} [scheduler] An optional IScheduler to use for scheduling
    * the delivery of the resolved value (or the rejection).
    * @return {Observable<T>} An Observable which wraps the Promise.
@@ -39,11 +39,11 @@ export class PromiseObservable<T> extends Observable<T> {
    * @name fromPromise
    * @owner Observable
    */
-  static create<T>(promise: Promise<T>, scheduler?: IScheduler): Observable<T> {
+  static create<T>(promise: PromiseLike<T>, scheduler?: IScheduler): Observable<T> {
     return new PromiseObservable(promise, scheduler);
   }
 
-  constructor(private promise: Promise<T>, private scheduler?: IScheduler) {
+  constructor(private promise: PromiseLike<T>, private scheduler?: IScheduler) {
     super();
   }
 
