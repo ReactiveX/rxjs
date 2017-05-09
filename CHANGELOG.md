@@ -20,7 +20,7 @@
 * **Subscriber:** do not call complete with undefined value param ([#2559](https://github.com/ReactiveX/RxJS/issues/2559)) ([3d63de2](https://github.com/ReactiveX/RxJS/commit/3d63de2))
 
 
-**(NOTE: 5.2.2 was a broken release and was removed)**
+**(NOTE: 5.3.2 was a broken release and was removed)**
 
 
 <a name="5.3.1"></a>
