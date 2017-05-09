@@ -12,6 +12,7 @@ export class ConnectableObservable<T> extends Observable<T> {
   protected _subject: Subject<T>;
   protected _refCount: number = 0;
   protected _connection: Subscription;
+  _isComplete = false;
 
   constructor(protected source: Observable<T>,
               protected subjectFactory: () => Subject<T>) {
@@ -33,6 +34,7 @@ export class ConnectableObservable<T> extends Observable<T> {
   connect(): Subscription {
     let connection = this._connection;
     if (!connection) {
+      this._isComplete = false;
       connection = this._connection = new Subscription();
       connection.add(this.source
         .subscribe(new ConnectableSubscriber(this.getSubject(), this)));
@@ -51,15 +53,18 @@ export class ConnectableObservable<T> extends Observable<T> {
   }
 }
 
+const connectableProto = <any>ConnectableObservable.prototype;
+
 export const connectableObservableDescriptor: PropertyDescriptorMap = {
   operator: { value: null },
   _refCount: { value: 0, writable: true },
   _subject: { value: null, writable: true },
   _connection: { value: null, writable: true },
-  _subscribe: { value: (<any> ConnectableObservable.prototype)._subscribe },
-  getSubject: { value: (<any> ConnectableObservable.prototype).getSubject },
-  connect: { value: (<any> ConnectableObservable.prototype).connect },
-  refCount: { value: (<any> ConnectableObservable.prototype).refCount }
+  _subscribe: { value: connectableProto._subscribe },
+  _isComplete: { value: connectableProto._isComplete, writable: true },
+  getSubject: { value: connectableProto.getSubject },
+  connect: { value: connectableProto.connect },
+  refCount: { value: connectableProto.refCount }
 };
 
 class ConnectableSubscriber<T> extends SubjectSubscriber<T> {
@@ -72,17 +77,18 @@ class ConnectableSubscriber<T> extends SubjectSubscriber<T> {
     super._error(err);
   }
   protected _complete(): void {
+    this.connectable._isComplete = true;
     this._unsubscribe();
     super._complete();
   }
   protected _unsubscribe() {
-    const { connectable } = this;
+    const connectable = <any>this.connectable;
     if (connectable) {
       this.connectable = null;
-      const connection = (<any> connectable)._connection;
-      (<any> connectable)._refCount = 0;
-      (<any> connectable)._subject = null;
-      (<any> connectable)._connection = null;
+      const connection = connectable._connection;
+      connectable._refCount = 0;
+      connectable._subject = null;
+      connectable._connection = null;
       if (connection) {
         connection.unsubscribe();
       }
