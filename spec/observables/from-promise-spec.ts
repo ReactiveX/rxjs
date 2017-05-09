@@ -72,6 +72,25 @@ describe('Observable.fromPromise', () => {
     });
   });
 
+  it('should accept PromiseLike object for interoperability', (done: MochaDone) => {
+    class CustomPromise<T> implements PromiseLike<T> {
+      constructor(private promise: PromiseLike<T>) {
+      }
+      then(onFulfilled?, onRejected?): PromiseLike<T> {
+        return new CustomPromise(this.promise.then(onFulfilled, onRejected));
+      };
+    }
+    const promise = new CustomPromise(Promise.resolve(42));
+    Observable.fromPromise(promise)
+      .subscribe(
+        (x: number) => { expect(x).to.equal(42); },
+        () => {
+          done(new Error('should not be called'));
+        }, () => {
+          done();
+        });
+  });
+
   it('should emit a value from a resolved promise on a separate scheduler', (done: MochaDone) => {
     const promise = Promise.resolve(42);
     Observable.fromPromise(promise, Rx.Scheduler.asap)
