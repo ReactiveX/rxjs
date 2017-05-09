@@ -66,6 +66,7 @@ import './add/operator/exhaust';
 import './add/operator/exhaustMap';
 import './add/operator/expand';
 import './add/operator/elementAt';
+import './add/operator/fart';
 import './add/operator/filter';
 import './add/operator/finally';
 import './add/operator/find';
