@@ -110,6 +110,7 @@ import './add/operator/sampleTime';
 import './add/operator/scan';
 import './add/operator/sequenceEqual';
 import './add/operator/share';
+import './add/operator/shareResults';
 import './add/operator/single';
 import './add/operator/skip';
 import './add/operator/skipUntil';
