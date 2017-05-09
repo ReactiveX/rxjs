@@ -20,17 +20,7 @@
 * **Subscriber:** do not call complete with undefined value param ([#2559](https://github.com/ReactiveX/RxJS/issues/2559)) ([3d63de2](https://github.com/ReactiveX/RxJS/commit/3d63de2))
 
 
-
-<a name="5.3.2"></a>
-## [5.3.2](https://github.com/ReactiveX/RxJS/compare/5.3.1...v5.3.2) (2017-05-09)
-
-
-### Bug Fixes
-
-* **delayWhen:** correctly handle synchronous duration observable ([#2589](https://github.com/ReactiveX/RxJS/issues/2589)) ([695f280](https://github.com/ReactiveX/RxJS/commit/695f280)), closes [#2587](https://github.com/ReactiveX/RxJS/issues/2587)
-* **race:** allow TypeScript support for array of observables other than rest param ([#2548](https://github.com/ReactiveX/RxJS/issues/2548)) ([ace553c](https://github.com/ReactiveX/RxJS/commit/ace553c))
-* **Subscriber:** do not call complete with undefined value param ([#2559](https://github.com/ReactiveX/RxJS/issues/2559)) ([3d63de2](https://github.com/ReactiveX/RxJS/commit/3d63de2))
-
+**(NOTE: 5.2.2 was a broken release and was removed)**
 
 
 <a name="5.3.1"></a>
