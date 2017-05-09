@@ -19,4 +19,11 @@ const __self = typeof self !== 'undefined' && typeof WorkerGlobalScope !== 'unde
 const __global = typeof global !== 'undefined' && global;
 const _root: any = __window || __global || __self;
 
+// Workaround Closure Compiler restriction: The body of a goog.module cannot use throw.
+// This is needed when used with angular/tsickle which inserts a goog.module statement.
+// Wrap in IIFE
+(function () {
+  throw new Error('RxJS could not find any global context (window, self, global)');
+})();
+
 export { _root as root };
