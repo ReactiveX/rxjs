@@ -234,11 +234,13 @@ class SafeSubscriber<T> extends Subscriber<T> {
     if (!this.isStopped) {
       const { _parentSubscriber } = this;
       if (this._complete) {
+        const wrappedComplete = () => this._complete.call(this._context);
+
         if (!_parentSubscriber.syncErrorThrowable) {
-          this.__tryOrUnsub(this._complete);
+          this.__tryOrUnsub(wrappedComplete);
           this.unsubscribe();
         } else {
-          this.__tryOrSetError(_parentSubscriber, this._complete);
+          this.__tryOrSetError(_parentSubscriber, wrappedComplete);
           this.unsubscribe();
         }
       } else {

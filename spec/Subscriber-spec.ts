@@ -85,7 +85,7 @@ describe('Subscriber', () => {
   });
 
   it('should not be closed when other subscriber with same observer instance completes', () => {
-    let observer = {
+    const observer = {
       next: function () { /*noop*/ }
     };
 
@@ -96,5 +96,20 @@ describe('Subscriber', () => {
 
     expect(sub1.closed).to.be.false;
     expect(sub2.closed).to.be.true;
+  });
+
+  it('should call complete observer without any arguments', () => {
+    let argument: Array<any> = null;
+
+    const observer = {
+      complete: (...args: Array<any>) => {
+        argument = args;
+      }
+    };
+
+    const sub1 = new Subscriber(observer);
+    sub1.complete();
+
+    expect(argument).to.have.lengthOf(0);
   });
 });
