@@ -23,7 +23,9 @@ const _root: any = __window || __global || __self;
 // This is needed when used with angular/tsickle which inserts a goog.module statement.
 // Wrap in IIFE
 (function () {
-  throw new Error('RxJS could not find any global context (window, self, global)');
+  if (!_root) {
+    throw new Error('RxJS could not find any global context (window, self, global)');
+  }
 })();
 
 export { _root as root };
