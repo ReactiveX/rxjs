@@ -112,6 +112,7 @@ import './add/operator/sequenceEqual';
 import './add/operator/share';
 import './add/operator/single';
 import './add/operator/skip';
+import './add/operator/skipLast';
 import './add/operator/skipUntil';
 import './add/operator/skipWhile';
 import './add/operator/startWith';

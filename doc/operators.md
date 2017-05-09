@@ -178,6 +178,7 @@ There are operators for different purposes, and they may be categorized as: crea
 - [`sampleTime`](../class/es6/Observable.js~Observable.html#instance-method-sampleTime)
 - [`single`](../class/es6/Observable.js~Observable.html#instance-method-single)
 - [`skip`](../class/es6/Observable.js~Observable.html#instance-method-skip)
+- [`skipLast`](../class/es6/Observable.js~Observable.html#instance-method-skipLast)
 - [`skipUntil`](../class/es6/Observable.js~Observable.html#instance-method-skipUntil)
 - [`skipWhile`](../class/es6/Observable.js~Observable.html#instance-method-skipWhile)
 - [`take`](../class/es6/Observable.js~Observable.html#instance-method-take)

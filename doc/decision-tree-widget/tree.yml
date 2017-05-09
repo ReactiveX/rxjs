@@ -59,6 +59,9 @@ children:
         - label: based on custom logic
           children:
           - label: skipWhile
+      - label: from the end of the Observable
+        children:
+        - label: skipLast
       - label: until another Observable emits a value
         children:
         - label: skipUntil
