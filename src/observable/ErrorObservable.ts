@@ -1,6 +1,7 @@
 import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
+import { Subscriber } from '../Subscriber';
 
 export interface DispatchArg {
   error: any;
@@ -67,9 +68,11 @@ export class ErrorObservable extends Observable<any> {
     super();
   }
 
-  protected _subscribe(subscriber: any): TeardownLogic {
+  protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
     const error = this.error;
     const scheduler = this.scheduler;
+
+    subscriber.syncErrorThrowable = true;
 
     if (scheduler) {
       return scheduler.schedule(ErrorObservable.dispatch, 0, {
