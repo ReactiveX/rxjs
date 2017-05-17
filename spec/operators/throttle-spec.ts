@@ -337,4 +337,40 @@ describe('Observable.prototype.throttle', () =>  {
       }
     );
   });
+
+  describe('throttle(fn, { leading: true, trailing: true })', () => {
+    asDiagram('throttle(fn, { leading: true, trailing: true })')('should immediately emit the first value in each time window', () =>  {
+      const e1 =   hot('-a-xy-----b--x--cxxx--|');
+      const e1subs =   '^                     !';
+      const e2 =  cold( '----|                 ');
+      const e2subs =  [' ^   !                 ',
+                       '          ^   !        ',
+                       '                ^   !  '];
+      const expected = '-a---y----b---x-c---x-|';
+
+      const result = e1.throttle(() =>  e2, { leading: true, trailing: true });
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+  });
+
+  describe('throttle(fn, { leading: false, trailing: true })', () => {
+    asDiagram('throttle(fn, { leading: false, trailing: true })')('should immediately emit the first value in each time window', () =>  {
+      const e1 =   hot('-a-xy-----b--x--cxxx--|');
+      const e1subs =   '^                     !';
+      const e2 =  cold( '----|                 ');
+      const e2subs =  [' ^   !                 ',
+                       '          ^   !        ',
+                       '                ^   !  '];
+      const expected = '-----y--------x-----x-|';
+
+      const result = e1.throttle(() =>  e2, { leading: false, trailing: true });
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+  });
 });
