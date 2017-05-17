@@ -5,6 +5,7 @@ import { Observable } from '../../Observable';
 import { Subscriber } from '../../Subscriber';
 import { TeardownLogic } from '../../Subscription';
 import { MapOperator } from '../../operator/map';
+import 'tslib';
 
 export interface AjaxRequest {
   url?: string;
@@ -417,7 +418,7 @@ export class AjaxResponse {
           this.response = JSON.parse(xhr.responseText || 'null');
         }
         break;
-      case 'xml':
+      case 'document':
         this.response = xhr.responseXML;
         break;
       case 'text':
