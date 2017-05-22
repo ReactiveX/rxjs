@@ -75,6 +75,7 @@ enabling "composite" subscription behavior.
 |`flatMapLatest`|`switchMap`|
 |`flatMapWithMaxConcurrent`|`mergeMap` or `flatMap`(alias)|
 |`flatMap`|`mergeMap` or `flatMap`(alias)|
+|`fromArray`|`from`|
 |`fromCallback`|`bindCallback`|
 |`fromNodeCallback`|`bindNodeCallback`|
 |`groupByUntil`|`groupBy(keySelector, elementSelector, durationSelector)`|
