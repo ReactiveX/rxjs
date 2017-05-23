@@ -145,7 +145,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
         const result = tryCatch(unsubMsg)();
         if (result === errorObject) {
           observer.error(errorObject.e);
-        } else {
+        } else if (result !== undefined) {
           self.next(result);
         }
         subscription.unsubscribe();
