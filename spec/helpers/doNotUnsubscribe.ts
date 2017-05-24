@@ -1,4 +1,3 @@
-///<reference path='../../typings/index.d.ts'/>
 import * as Rx from '../../dist/cjs/Rx';
 
 export function doNotUnsubscribe<T>(ob: Rx.Observable<T>): Rx.Observable<T> {
