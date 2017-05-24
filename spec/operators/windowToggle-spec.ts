@@ -222,11 +222,9 @@ describe('Observable.prototype.windowToggle', () => {
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
     rxTestScheduler.schedule(() => {
-      try {
+      expect(() => {
         window.subscribe();
-      } catch (err) {
-        expect(Rx.Util.isObjectUnsubscribedError(err)).to.be.true;
-      }
+      }).to.throw(Rx.ObjectUnsubscribedError);
     }, late);
   });
 

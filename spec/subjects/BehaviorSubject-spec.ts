@@ -8,6 +8,7 @@ declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 
 const BehaviorSubject = Rx.BehaviorSubject;
 const Observable = Rx.Observable;
+const ObjectUnsubscribedError = Rx.ObjectUnsubscribedError;
 
 /** @test {BehaviorSubject} */
 describe('BehaviorSubject', () => {
@@ -28,13 +29,9 @@ describe('BehaviorSubject', () => {
     'and the BehaviorSubject has been unsubscribed', () => {
     const subject = new BehaviorSubject('hi there');
     subject.unsubscribe();
-    let thrownError: any;
-    try {
+    expect(() => {
       subject.getValue();
-    } catch (err) {
-      thrownError = err;
-    }
-    expect(Rx.Util.isObjectUnsubscribedError(thrownError)).to.be.true;
+    }).to.throw(ObjectUnsubscribedError);
   });
 
   it('should have a getValue() method to retrieve the current value', () => {

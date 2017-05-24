@@ -1,10 +1,10 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 
-const { Observable } = Rx;
+const { Observable, UnsubscriptionError } = Rx;
 
 /** @test {UnsubscriptionError} */
-describe('createUnsubscriptionError', () => {
+describe('UnsubscriptionError', () => {
   it('should create a message that is a clear indication of its internal errors', () => {
     const err1 = new Error('Swiss cheese tastes amazing but smells like socks');
     const err2 = new Error('User too big to fit in tiny European elevator');
@@ -18,10 +18,11 @@ describe('createUnsubscriptionError', () => {
     try {
       subscription.unsubscribe();
     } catch (err) {
-      expect(Rx.Util.isUnsubscriptionError(err)).to.be.true;
+      expect(err instanceof UnsubscriptionError).to.equal(true);
       expect(err.message).to.equal(`2 errors occurred during unsubscription:
   1) ${err1}
   2) ${err2}`);
+      expect(err.name).to.equal('UnsubscriptionError');
     }
   });
 });

@@ -114,13 +114,8 @@ describe('Observable.prototype.take', () => {
   });
 
   it('should throw if total is less than zero', () => {
-    let thrownError: any;
-    try {
-      Observable.range(0, 10).take(-1);
-    } catch (err) {
-      thrownError = err;
-    }
-    expect(Rx.Util.isArgumentOutOfRangeError(thrownError)).to.be.true;
+    expect(() => { Observable.range(0, 10).take(-1); })
+      .to.throw(Rx.ArgumentOutOfRangeError);
   });
 
   it('should not break unsubscription chain when unsubscribed explicitly', () => {

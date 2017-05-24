@@ -53,7 +53,7 @@ describe('Observable.prototype.elementAt', () => {
     const subs =        '(^!)';
     const expected =    '#';
 
-    expectObservable((<any>source).elementAt(0)).toBe(expected, undefined, Rx.Util.createArgumentOutOfRangeError());
+    expectObservable((<any>source).elementAt(0)).toBe(expected, undefined, new Rx.ArgumentOutOfRangeError());
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -103,13 +103,8 @@ describe('Observable.prototype.elementAt', () => {
   });
 
   it('should throw if index is smaller than zero', () => {
-    let thrownError: any;
-    try {
-      (<any>Observable.range(0, 10)).elementAt(-1);
-    } catch (err) {
-      thrownError = err;
-    }
-    expect(Rx.Util.isArgumentOutOfRangeError(thrownError)).to.be.true;
+    expect(() => { (<any>Observable.range(0, 10)).elementAt(-1); })
+      .to.throw(Rx.ArgumentOutOfRangeError);
   });
 
   it('should raise error if index is out of range but does not have default value', () => {
@@ -118,7 +113,7 @@ describe('Observable.prototype.elementAt', () => {
     const expected =   '-----#';
 
     expectObservable((<any>source).elementAt(3))
-      .toBe(expected, null, Rx.Util.createArgumentOutOfRangeError());
+      .toBe(expected, null, new Rx.ArgumentOutOfRangeError());
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 

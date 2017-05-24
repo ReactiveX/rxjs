@@ -26,7 +26,7 @@ describe('Observable.prototype.last', () => {
     const e1subs =      '^    !';
     const expected =    '-----#';
 
-    expectObservable(e1.last()).toBe(expected, null, Rx.Util.createEmptyError());
+    expectObservable(e1.last()).toBe(expected, null, new Rx.EmptyError());
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -35,7 +35,7 @@ describe('Observable.prototype.last', () => {
     const e1subs =   '(^!)';
     const expected = '#';
 
-    expectObservable(e1.last()).toBe(expected, null, Rx.Util.createEmptyError());
+    expectObservable(e1.last()).toBe(expected, null, new Rx.EmptyError());
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 

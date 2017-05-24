@@ -3,7 +3,7 @@ import { Observer } from './Observer';
 import { Observable } from './Observable';
 import { Subscriber } from './Subscriber';
 import { ISubscription, Subscription, TeardownLogic } from './Subscription';
-import { createObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
+import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 import { SubjectSubscription } from './SubjectSubscription';
 import { rxSubscriber as rxSubscriberSymbol } from './symbol/rxSubscriber';
 
@@ -51,7 +51,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
 
   next(value?: T) {
     if (this.closed) {
-      throw createObjectUnsubscribedError();
+      throw new ObjectUnsubscribedError();
     }
     if (!this.isStopped) {
       const { observers } = this;
@@ -65,7 +65,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
 
   error(err: any) {
     if (this.closed) {
-      throw createObjectUnsubscribedError();
+      throw new ObjectUnsubscribedError();
     }
     this.hasError = true;
     this.thrownError = err;
@@ -81,7 +81,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
 
   complete() {
     if (this.closed) {
-      throw createObjectUnsubscribedError();
+      throw new ObjectUnsubscribedError();
     }
     this.isStopped = true;
     const { observers } = this;
@@ -101,7 +101,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
 
   protected _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
     if (this.closed) {
-      throw createObjectUnsubscribedError();
+      throw new ObjectUnsubscribedError();
     } else {
       return super._trySubscribe(subscriber);
     }
@@ -109,7 +109,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
 
   protected _subscribe(subscriber: Subscriber<T>): Subscription {
     if (this.closed) {
-      throw createObjectUnsubscribedError();
+      throw new ObjectUnsubscribedError();
     } else if (this.hasError) {
       subscriber.error(this.thrownError);
       return Subscription.EMPTY;

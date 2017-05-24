@@ -1,7 +1,7 @@
 import { Subject } from './Subject';
 import { Subscriber } from './Subscriber';
 import { Subscription, ISubscription } from './Subscription';
-import { createObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
+import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 
 /**
  * @class BehaviorSubject<T>
@@ -28,7 +28,7 @@ export class BehaviorSubject<T> extends Subject<T> {
     if (this.hasError) {
       throw this.thrownError;
     } else if (this.closed) {
-      throw createObjectUnsubscribedError();
+      throw new ObjectUnsubscribedError();
     } else {
       return this._value;
     }

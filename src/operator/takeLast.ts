@@ -1,6 +1,6 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { createArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
+import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
 import { EmptyObservable } from '../observable/EmptyObservable';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
@@ -31,9 +31,8 @@ import { TeardownLogic } from '../Subscription';
  * @see {@link takeWhile}
  * @see {@link skip}
  *
- * @throws {Error} When using `takeLast(i)`, it delivers an
+ * @throws {ArgumentOutOfRangeError} When using `takeLast(i)`, it delivers an
  * ArgumentOutOrRangeError to the Observer's `error` callback if `i < 0`.
- * This error can be tested for with {@link isArgumentOutOfRangeError}
  *
  * @param {number} count The maximum number of values to emit from the end of
  * the sequence of values emitted by the source Observable.
@@ -53,7 +52,7 @@ export function takeLast<T>(this: Observable<T>, count: number): Observable<T> {
 class TakeLastOperator<T> implements Operator<T, T> {
   constructor(private total: number) {
     if (this.total < 0) {
-      throw createArgumentOutOfRangeError();
+      throw new ArgumentOutOfRangeError;
     }
   }
 

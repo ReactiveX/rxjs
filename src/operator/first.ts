@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { createEmptyError } from '../util/EmptyError';
+import { EmptyError } from '../util/EmptyError';
 
 /* tslint:disable:max-line-length */
 export function first<T, S extends T>(this: Observable<T>,
@@ -55,9 +55,8 @@ export function first<T>(this: Observable<T>,
  * @see {@link find}
  * @see {@link take}
  *
- * @throws {Error} Delivers an Error to the Observer's `error`
+ * @throws {EmptyError} Delivers an EmptyError to the Observer's `error`
  * callback if the Observable completes before any `next` notification was sent.
- * The error can be tested with {@link isEmptyError}
  *
  * @param {function(value: T, index: number, source: Observable<T>): boolean} [predicate]
  * An optional function called with each item to test for condition matching.
@@ -167,7 +166,7 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
       destination.next(this.defaultValue);
       destination.complete();
     } else if (!this.hasCompleted) {
-      destination.error(createEmptyError());
+      destination.error(new EmptyError);
     }
   }
 }

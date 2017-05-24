@@ -1,6 +1,6 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { createArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
+import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
 import { EmptyObservable } from '../observable/EmptyObservable';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
@@ -28,9 +28,8 @@ import { TeardownLogic } from '../Subscription';
  * @see {@link takeWhile}
  * @see {@link skip}
  *
- * @throws {Error} When using `take(i)`, it delivers an
- * Error to the Observer's `error` callback if `i < 0`. This error can be tested
- * for with {@link isArgumentOutOfRangeError}
+ * @throws {ArgumentOutOfRangeError} When using `take(i)`, it delivers an
+ * ArgumentOutOrRangeError to the Observer's `error` callback if `i < 0`.
  *
  * @param {number} count The maximum number of `next` values to emit.
  * @return {Observable<T>} An Observable that emits only the first `count`
@@ -50,7 +49,7 @@ export function take<T>(this: Observable<T>, count: number): Observable<T> {
 class TakeOperator<T> implements Operator<T, T> {
   constructor(private total: number) {
     if (this.total < 0) {
-      throw createArgumentOutOfRangeError();
+      throw new ArgumentOutOfRangeError;
     }
   }
 
