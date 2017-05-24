@@ -11,7 +11,7 @@ declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscript
 const Observable = Rx.Observable;
 
 /** @test {sample} */
-describe('Observable.prototype.sample', () => {
+describe.only('Observable.prototype.sample', () => {
   asDiagram('sample')('should get samples when the notifier emits', () => {
     const e1 =   hot('---a----b---c----------d-----|   ');
     const e1subs =   '^                            !   ';
