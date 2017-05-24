@@ -13,7 +13,7 @@ const Observable = Rx.Observable;
 
 /** @test {timeout} */
 describe('Observable.prototype.timeout', () => {
-  const defaultTimeoutError = new Rx.TimeoutError();
+  const defaultTimeoutError = Rx.Util.createTimeoutError();
 
   asDiagram('timeout(50)')('should timeout after a specified timeout period', () => {
     const e1 =  cold('-------a--b--|');
@@ -26,13 +26,13 @@ describe('Observable.prototype.timeout', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should emit and error of an instanceof TimeoutError on timeout', () => {
+  it('should emit and error of an RxJS TimeoutError on timeout', () => {
     const e1 =  cold('-------a--b--|');
     const result = e1.timeout(50, rxTestScheduler);
     result.subscribe(() => {
       throw new Error('this should not next');
     }, err => {
-      expect(err).to.be.an.instanceof(Rx.TimeoutError);
+      expect(Rx.Util.isTimeoutError(err)).to.be.true;
     }, () => {
       throw new Error('this should not complete');
     });

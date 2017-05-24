@@ -25,7 +25,7 @@ describe('Observable.prototype.single', () => {
     const e1subs =      '^  !';
     const expected =    '---#';
 
-    expectObservable(e1.single()).toBe(expected, null, new Rx.EmptyError());
+    expectObservable(e1.single()).toBe(expected, null, Rx.Util.createEmptyError());
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -136,7 +136,7 @@ describe('Observable.prototype.single', () => {
       return value === 'a';
     };
 
-    expectObservable(e1.single(predicate)).toBe(expected, null, new Rx.EmptyError());
+    expectObservable(e1.single(predicate)).toBe(expected, null, Rx.Util.createEmptyError());
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 

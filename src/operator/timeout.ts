@@ -6,7 +6,7 @@ import { Subscriber } from '../Subscriber';
 import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
-import { TimeoutError } from '../util/TimeoutError';
+import { createTimeoutError } from '../util/TimeoutError';
 
 /**
  * @param {number} due
@@ -20,14 +20,14 @@ export function timeout<T>(this: Observable<T>,
                            scheduler: IScheduler = async): Observable<T> {
   const absoluteTimeout = isDate(due);
   const waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
-  return this.lift(new TimeoutOperator(waitFor, absoluteTimeout, scheduler, new TimeoutError()));
+  return this.lift(new TimeoutOperator(waitFor, absoluteTimeout, scheduler, createTimeoutError()));
 }
 
 class TimeoutOperator<T> implements Operator<T, T> {
   constructor(private waitFor: number,
               private absoluteTimeout: boolean,
               private scheduler: IScheduler,
-              private errorInstance: TimeoutError) {
+              private errorInstance: Error) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -50,7 +50,7 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
               private absoluteTimeout: boolean,
               private waitFor: number,
               private scheduler: IScheduler,
-              private errorInstance: TimeoutError) {
+              private errorInstance: Error) {
     super(destination);
     this.scheduleTimeout();
   }

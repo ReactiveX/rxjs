@@ -31,9 +31,14 @@ describe('Subscription', () => {
     const subscription = Observable.merge(source1, source2, source3).subscribe();
 
     setTimeout(() => {
-      expect(() => {
+      let thrownError: any;
+      try {
         subscription.unsubscribe();
-      }).to.throw(Rx.UnsubscriptionError);
+      } catch (err) {
+        thrownError = err;
+      }
+
+      expect(Rx.Util.isUnsubscriptionError(thrownError)).to.be.true;
       expect(tearDowns).to.deep.equal([1, 2, 3]);
       done();
     });
@@ -71,9 +76,13 @@ describe('Subscription', () => {
     sub.add(Observable.merge(source1, source2, source3).subscribe());
 
     setTimeout(() => {
-      expect(() => {
+      let thrownError: any;
+      try {
         sub.unsubscribe();
-      }).to.throw(Rx.UnsubscriptionError);
+      } catch (err) {
+        thrownError = err;
+      }
+      expect(Rx.Util.isUnsubscriptionError(thrownError)).to.be.true;
       expect(tearDowns).to.deep.equal([1, 2, 3]);
       done();
     });

@@ -1,18 +1,25 @@
+const message = 'sequence empty (RxJS)';
+
+const symbol = Symbol(message);
 /**
- * An error thrown when an Observable or a sequence was queried but has no
+ * Creates an error thrown when an Observable or a sequence was queried but has no
  * elements.
  *
+ * Can be tested for with {@link isEmptyError}
  * @see {@link first}
  * @see {@link last}
  * @see {@link single}
- *
- * @class EmptyError
  */
-export class EmptyError extends Error {
-  constructor() {
-    const err: any = super('no elements in sequence');
-    (<any> this).name = err.name = 'EmptyError';
-    (<any> this).stack = err.stack;
-    (<any> this).message = err.message;
-  }
+export function createEmptyError(): Error {
+  const error = new Error(message);
+  error[symbol] = true;
+  return error;
+}
+
+/**
+ * Tests to see if an Error is an RxJS Empty error.
+ * @param err any error object to test
+ */
+export function isEmptyError(err: Error): boolean {
+  return err && err[symbol];
 }

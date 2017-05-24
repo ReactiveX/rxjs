@@ -6,9 +6,9 @@ describe('assign', () => {
     expect(assign).to.be.a('function');
   });
 
-  if (Object.assign) {
+  if ((<any>Object).assign) {
     it('should use Object.assign if available', () => {
-      expect(assign).to.equal(Object.assign);
+      expect(assign).to.equal((<any>Object).assign);
     });
   }
 
@@ -36,7 +36,7 @@ describe('assignImpl', () => {
 });
 
 describe('getAssign', () => {
-  it('should return assignImpl if Object.assign does not exist on root', () => {
+  it('should return assignImpl if (<any>Object).assign does not exist on root', () => {
     const result = getAssign({ Object: {} });
     expect(result).to.equal(assignImpl);
   });

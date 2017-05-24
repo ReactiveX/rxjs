@@ -3,7 +3,7 @@ import { isObject } from './util/isObject';
 import { isFunction } from './util/isFunction';
 import { tryCatch } from './util/tryCatch';
 import { errorObject } from './util/errorObject';
-import { UnsubscriptionError } from './util/UnsubscriptionError';
+import { createUnsubscriptionError, isUnsubscriptionError } from './util/UnsubscriptionError';
 
 export interface AnonymousSubscription {
   unsubscribe(): void;
@@ -94,7 +94,7 @@ export class Subscription implements ISubscription {
       if (trial === errorObject) {
         hasErrors = true;
         errors = errors || (
-          errorObject.e instanceof UnsubscriptionError ?
+          isUnsubscriptionError(errorObject.e) ?
             flattenUnsubscriptionErrors(errorObject.e.errors) : [errorObject.e]
         );
       }
@@ -113,7 +113,7 @@ export class Subscription implements ISubscription {
             hasErrors = true;
             errors = errors || [];
             let err = errorObject.e;
-            if (err instanceof UnsubscriptionError) {
+            if (isUnsubscriptionError(err)) {
               errors = errors.concat(flattenUnsubscriptionErrors(err.errors));
             } else {
               errors.push(err);
@@ -124,7 +124,7 @@ export class Subscription implements ISubscription {
     }
 
     if (hasErrors) {
-      throw new UnsubscriptionError(errors);
+      throw createUnsubscriptionError(errors);
     }
   }
 
@@ -218,5 +218,5 @@ export class Subscription implements ISubscription {
 }
 
 function flattenUnsubscriptionErrors(errors: any[]) {
- return errors.reduce((errs, err) => errs.concat((err instanceof UnsubscriptionError) ? err.errors : err), []);
+ return errors.reduce((errs, err) => errs.concat((isUnsubscriptionError(err)) ? err.errors : err), []);
 }

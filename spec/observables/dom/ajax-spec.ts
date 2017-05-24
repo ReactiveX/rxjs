@@ -261,7 +261,7 @@ describe('Observable.ajax', () => {
       'responseText': 'Wee! I am text!'
     });
 
-    expect(error instanceof Rx.AjaxError).to.be.true;
+    expect(Rx.Util.isAjaxError(error)).to.be.true;
     expect(error.message).to.equal('ajax error 404');
     expect(error.status).to.equal(404);
   });
@@ -293,7 +293,7 @@ describe('Observable.ajax', () => {
       'responseText': 'Wee! I am text!'
     });
 
-    expect(error instanceof Rx.AjaxError).to.be.true;
+    expect(Rx.Util.isAjaxError(error)).to.be.true;
     expect(error.message).to.equal('ajax error 300');
     expect(error.status).to.equal(300);
   });
@@ -772,7 +772,7 @@ describe('Observable.ajax', () => {
     try {
       request.ontimeout((<any>'ontimeout'));
     } catch (e) {
-      expect(e.message).to.equal(new Rx.AjaxTimeoutError((<any>request), ajaxRequest).message);
+      expect(e.message).to.equal(Rx.Util.createAjaxTimeoutError((<any>request), ajaxRequest).message);
     }
     delete root.XMLHttpRequest.prototype.ontimeout;
   });
