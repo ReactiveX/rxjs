@@ -6,7 +6,7 @@ import { ConnectableObservable, connectableObservableDescriptor } from '../obser
 
 /* tslint:disable:max-line-length */
 export function multicast<T>(this: Observable<T>, subjectOrSubjectFactory: factoryOrValue<Subject<T>>): ConnectableObservable<T>;
-export function multicast<T>(SubjectFactory: (this: Observable<T>) => Subject<T>, selector?: selector<T>): Observable<T>;
+export function multicast<T, R>(SubjectFactory: (this: Observable<T>) => Subject<T>, selector?: selector<T, R>): Observable<R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -28,8 +28,8 @@ export function multicast<T>(SubjectFactory: (this: Observable<T>) => Subject<T>
  * @method multicast
  * @owner Observable
  */
-export function multicast<T>(this: Observable<T>, subjectOrSubjectFactory: Subject<T> | (() => Subject<T>),
-                             selector?: (source: Observable<T>) => Observable<T>): Observable<T> | ConnectableObservable<T> {
+export function multicast<T, R>(this: Observable<T>, subjectOrSubjectFactory: Subject<T> | (() => Subject<T>),
+                                selector?: (source: Observable<T>) => Observable<R>): Observable<R> | ConnectableObservable<T> {
   let subjectFactory: () => Subject<T>;
   if (typeof subjectOrSubjectFactory === 'function') {
     subjectFactory = <() => Subject<T>>subjectOrSubjectFactory;
@@ -51,13 +51,13 @@ export function multicast<T>(this: Observable<T>, subjectOrSubjectFactory: Subje
 }
 
 export type factoryOrValue<T> = T | (() => T);
-export type selector<T> = (source: Observable<T>) => Observable<T>;
+export type selector<T, R> = (source: Observable<T>) => Observable<R>;
 
-export class MulticastOperator<T> implements Operator<T, T> {
+export class MulticastOperator<T, R> implements Operator<T, R> {
   constructor(private subjectFactory: () => Subject<T>,
-              private selector: (source: Observable<T>) => Observable<T>) {
+              private selector: (source: Observable<T>) => Observable<R>) {
   }
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<R>, source: any): any {
     const { selector } = this;
     const subject = this.subjectFactory();
     const subscription = selector(subject).subscribe(subscriber);
