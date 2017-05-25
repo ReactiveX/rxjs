@@ -158,7 +158,7 @@ describe('Observable.ajax', () => {
     let error;
     const obj = {
       url: '/flibbertyJibbet',
-      responseType: 'text',
+      responseType: <XMLHttpRequestResponseType>'text',
       createXHR: () => {
         throw new Error('wokka wokka');
       }
@@ -181,7 +181,7 @@ describe('Observable.ajax', () => {
 
     const obj = {
       url: '/flibbertyJibbet',
-      responseType: 'text',
+      responseType: <XMLHttpRequestResponseType>'text',
       method: '',
       createXHR: () => {
         const ret = new MockXMLHttpRequest();
@@ -209,7 +209,7 @@ describe('Observable.ajax', () => {
     let complete = false;
     const obj = {
       url: '/flibbertyJibbet',
-      responseType: 'text',
+      responseType: <XMLHttpRequestResponseType>'text',
       method: ''
     };
 
@@ -240,7 +240,7 @@ describe('Observable.ajax', () => {
       normalizeError: (e: any, xhr: any, type: any) => {
         return xhr.response || xhr.responseText;
       },
-      responseType: 'text',
+      responseType: <XMLHttpRequestResponseType>'text',
       method: ''
     };
 
@@ -275,7 +275,7 @@ describe('Observable.ajax', () => {
       normalizeError: (e: any, xhr: any, type: any) => {
         return xhr.response || xhr.responseText;
       },
-      responseType: 'text',
+      responseType: <XMLHttpRequestResponseType>'text',
       method: ''
     };
 
@@ -444,7 +444,7 @@ describe('Observable.ajax', () => {
 
       const obj = {
         url: '/flibbertyJibbet',
-        responseType: 'text',
+        responseType: <XMLHttpRequestResponseType>'text',
         method: '',
         body: 'foobar',
         createXHR: () => {

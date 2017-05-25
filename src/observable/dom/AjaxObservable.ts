@@ -21,7 +21,7 @@ export interface AjaxRequest {
   withCredentials?: boolean;
   createXHR?: () => XMLHttpRequest;
   progressSubscriber?: Subscriber<any>;
-  responseType?: string;
+  responseType?: XMLHttpRequestResponseType;
 }
 
 function getCORSRequest(this: AjaxRequest): XMLHttpRequest {
