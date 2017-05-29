@@ -73,13 +73,18 @@ You can also use the above method to build your own Observable and export it fro
 ### CommonJS with TypeScript
 If you recieve an error like `error TS2304: Cannot find name 'Promise'` or `error TS2304: Cannot find name 'Iterable'` when using RxJS you may need to install a supplemental set of typings.
 
-1. For [`typings`](https://github.com/typings/typings) users:
+1. For TypeScript **version < 2.0** [`typings`](https://github.com/typings/typings) users:
 
     `typings install es6-shim --ambient`
+ - For TypeScript **version > 2.0** users:
+
+    `npm i -D @types/@reactivex/rxjs`
 
 2. If you're not using typings the interfaces can be copied from [/es6-shim/es6-shim.d.ts](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/es6-shim/es6-shim.d.ts).
 
 3. Add type definition file included in `tsconfig.json` or CLI argument.
+
+
 
 ## All Module Types (CJS/ES6/AMD/TypeScript) via npm
 
@@ -92,7 +97,7 @@ npm install @reactivex/rxjs
 If you are using npm **version 2** before this library has achieved a stable version, you need to specify the library version explicitly:
 
 ```none
-npm install @reactivex/rxjs@5.0.0-beta.1
+npm install @reactivex/rxjs@5.0.0-rc.1
 ```
 
 ## CDN
