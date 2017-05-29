@@ -1,0 +1,19 @@
+{
+  "name": "rxjs-bootstrap-typescript",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "all": "ts-node import-all.ts",
+    "operators": "ts-node import-operators.ts",
+    "build:es5": "tsc -p tsconfig_es5.json",
+    "build:es2015": "tsc -p tsconfig_es2015.json"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "rxjs": "latest"
+  },
+  "devDependencies": {
+    "ts-node": "^1.7.0",
+    "typescript": "latest"
+  }
+}
