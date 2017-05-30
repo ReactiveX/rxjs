@@ -12,6 +12,7 @@ import { Observable, ObservableInput } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { ObserveOnSubscriber } from '../operator/observeOn';
 import { observable as Symbol_observable } from '../symbol/observable';
+import { isObservable } from '../util/isObservable';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -85,7 +86,7 @@ export class FromObservable<T> extends Observable<T> {
   static create<T>(ish: ObservableInput<T>, scheduler?: IScheduler): Observable<T> {
     if (ish != null) {
       if (typeof ish[Symbol_observable] === 'function') {
-        if (ish instanceof Observable && !scheduler) {
+        if (isObservable(ish) && !scheduler) {
           return ish;
         }
         return new FromObservable<T>(ish, scheduler);
