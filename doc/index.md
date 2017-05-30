@@ -12,6 +12,8 @@ RxJS is a library for reactive programming using Observables, to make it easier 
 *Read detailed documentation on each operator*
 ### [» View examples](./manual/tutorial.html)
 *Read our tutorials on using RxJS in real applications*
+### [» Advanced](./manual/usage.html)
+*Read advanced topic about RxJS*
 
 - - -
 
