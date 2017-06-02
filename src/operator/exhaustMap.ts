@@ -31,7 +31,7 @@ export function exhaustMap<T, I, R>(this: Observable<T>, project: (value: T, ind
  *
  * @example <caption>Run a finite timer for each click, only if there is no currently active timer</caption>
  * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = clicks.exhaustMap((ev) => Rx.Observable.interval(1000));
+ * var result = clicks.exhaustMap((ev) => Rx.Observable.interval(1000).take(5));
  * result.subscribe(x => console.log(x));
  *
  * @see {@link concatMap}
