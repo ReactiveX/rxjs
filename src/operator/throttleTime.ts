@@ -39,7 +39,7 @@ import { ThrottleConfig, defaultThrottleConfig } from './throttle';
  * emitting the last value, measured in milliseconds or the time unit determined
  * internally by the optional `scheduler`.
  * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for
- * managing the timers that handle the sampling.
+ * managing the timers that handle the throttling.
  * @return {Observable<T>} An Observable that performs the throttle operation to
  * limit the rate of emissions from the source.
  * @method throttleTime
