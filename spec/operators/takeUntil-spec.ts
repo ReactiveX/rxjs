@@ -35,12 +35,12 @@ describe('Observable.prototype.takeUntil', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should take all values when notifier is empty', () => {
+  it('should take values until notifier completes', () => {
     const e1 =     hot('--a--b--c--d--e--f--g--|');
-    const e1subs =     '^                      !';
+    const e1subs =     '^            !          ';
     const e2 =     hot('-------------|          ');
     const e2subs =     '^            !          ';
-    const expected =   '--a--b--c--d--e--f--g--|';
+    const expected =   '--a--b--c--d-|          ';
 
     expectObservable(e1.takeUntil(e2)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -96,12 +96,12 @@ describe('Observable.prototype.takeUntil', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should not complete when notifier is empty if source observable does not complete', () => {
+  it('should complete when notifier is empty even if source observable does not complete', () => {
     const e1 =     hot('-');
-    const e1subs =     '^';
+    const e1subs =     '^ !';
     const e2 =     hot('--|');
     const e2subs =     '^ !';
-    const expected =   '---';
+    const expected =   '--|';
 
     expectObservable(e1.takeUntil(e2)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
