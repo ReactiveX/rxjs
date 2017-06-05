@@ -92,6 +92,7 @@ import './add/operator/min';
 import './add/operator/multicast';
 import './add/operator/observeOn';
 import './add/operator/onErrorResumeNext';
+import './add/operator/onErrorReturn';
 import './add/operator/pairwise';
 import './add/operator/partition';
 import './add/operator/pluck';
