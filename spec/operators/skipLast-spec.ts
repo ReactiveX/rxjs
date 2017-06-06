@@ -134,8 +134,13 @@ describe('Observable.prototype.skipLast', () => {
   });
 
   it('should throw if total is less than zero', () => {
-    expect(() => { Observable.range(0, 10).skipLast(-1); })
-      .to.throw(Rx.ArgumentOutOfRangeError);
+    let thrownError: any;
+    try {
+      Observable.range(0, 10).skipLast(-1);
+    } catch (err) {
+      thrownError = err;
+    }
+    expect(Rx.Util.isArgumentOutOfRangeError(thrownError)).to.be.true;
   });
 
   it('should not break unsubscription chain when unsubscribed explicitly', () => {

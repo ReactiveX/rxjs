@@ -5,6 +5,7 @@ import { Observable } from '../../Observable';
 import { Subscriber } from '../../Subscriber';
 import { TeardownLogic } from '../../Subscription';
 import { MapOperator } from '../../operator/map';
+import 'tslib';
 
 export interface AjaxRequest {
   url?: string;
@@ -306,7 +307,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       if (progressSubscriber) {
         progressSubscriber.error(e);
       }
-      subscriber.error(new AjaxTimeoutError(this, request)); //TODO: Make betterer.
+      subscriber.error(createAjaxTimeoutError(this, request)); //TODO: Make betterer.
     };
     xhr.ontimeout = xhrTimeout;
     (<any>xhrTimeout).request = request;
@@ -332,7 +333,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
         if (progressSubscriber) {
           progressSubscriber.error(e);
         }
-        subscriber.error(new AjaxError('ajax error', this, request));
+        subscriber.error(createAjaxError('ajax error', this, request));
       };
       xhr.onerror = xhrError;
       (<any>xhrError).request = request;
@@ -365,7 +366,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
           if (progressSubscriber) {
             progressSubscriber.error(e);
           }
-          subscriber.error(new AjaxError('ajax error ' + status, this, request));
+          subscriber.error(createAjaxError('ajax error ' + status, this, request));
         }
       }
     };
@@ -417,7 +418,7 @@ export class AjaxResponse {
           this.response = JSON.parse(xhr.responseText || 'null');
         }
         break;
-      case 'xml':
+      case 'document':
         this.response = xhr.responseXML;
         break;
       case 'text':
@@ -428,39 +429,35 @@ export class AjaxResponse {
   }
 }
 
+const ajaxErrorSymbol = Symbol('ajax error (RxJS)');
+const ajaxTimeoutErrorSymbol = Symbol('ajax timeout error (RxJS)');
+
 /**
- * A normalized AJAX error.
+ * creates a normalized AJAX error.
  *
- * @see {@link ajax}
- *
- * @class AjaxError
+ * @param message the error message
+ * @param xhr the xhr related to the error
+ * @param request the request related to the error
  */
-export class AjaxError extends Error {
-  /** @type {XMLHttpRequest} The XHR instance associated with the error */
-  xhr: XMLHttpRequest;
-
-  /** @type {AjaxRequest} The AjaxRequest associated with the error */
-  request: AjaxRequest;
-
-  /** @type {number} The HTTP status code */
-  status: number;
-
-  constructor(message: string, xhr: XMLHttpRequest, request: AjaxRequest) {
-    super(message);
-    this.message = message;
-    this.xhr = xhr;
-    this.request = request;
-    this.status = xhr.status;
-  }
+export function createAjaxError(message: string, xhr: XMLHttpRequest, request: AjaxRequest) {
+  const error = new Error(message);
+  error[ajaxErrorSymbol] = true;
+  (<any>error).xhr = xhr;
+  (<any>error).request = request;
+  (<any>error).status = xhr.status;
+  return error;
 }
 
-/**
- * @see {@link ajax}
- *
- * @class AjaxTimeoutError
- */
-export class AjaxTimeoutError extends AjaxError {
-  constructor(xhr: XMLHttpRequest, request: AjaxRequest) {
-    super('ajax timeout', xhr, request);
-  }
+export function isAjaxError(err: Error): boolean {
+  return err && err[ajaxErrorSymbol];
+}
+
+export function createAjaxTimeoutError(xhr: XMLHttpRequest, request: AjaxRequest) {
+  const error = createAjaxError('ajax timeout (RxJS)', xhr, request);
+  error[ajaxTimeoutErrorSymbol] = true;
+  return error;
+}
+
+export function isAjaxTimeoutError(err: Error): boolean {
+  return err && err[ajaxTimeoutErrorSymbol];
 }

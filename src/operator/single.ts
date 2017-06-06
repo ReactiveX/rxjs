@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observer } from '../Observer';
-import { EmptyError } from '../util/EmptyError';
+import { createEmptyError } from '../util/EmptyError';
 import { TeardownLogic } from '../Subscription';
 
 /**
@@ -12,8 +12,9 @@ import { TeardownLogic } from '../Subscription';
  *
  * <img src="./img/single.png" width="100%">
  *
- * @throws {EmptyError} Delivers an EmptyError to the Observer's `error`
+ * @throws {Error} Delivers an Error to the Observer's `error`
  * callback if the Observable completes before any `next` notification was sent.
+ * The error can be checked with {@link isEmptyError}
  * @param {Function} predicate - A predicate function to evaluate items emitted by the source Observable.
  * @return {Observable<T>} An Observable that emits the single item emitted by the source Observable that matches
  * the predicate.
@@ -87,7 +88,7 @@ class SingleSubscriber<T> extends Subscriber<T> {
       destination.next(this.seenValue ? this.singleValue : undefined);
       destination.complete();
     } else {
-      destination.error(new EmptyError);
+      destination.error(createEmptyError());
     }
   }
 }

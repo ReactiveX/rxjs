@@ -1,15 +1,24 @@
+const message = 'timeout (RxJS)';
+
+const symbol = Symbol(message);
 /**
- * An error thrown when duetime elapses.
+ * Creates an error thrown when duetime elapses.
+ *
+ * Can be tested for with {@link isTimeoutError}
  *
  * @see {@link timeout}
  *
- * @class TimeoutError
  */
-export class TimeoutError extends Error {
-  constructor() {
-    const err: any = super('Timeout has occurred');
-    (<any> this).name = err.name = 'TimeoutError';
-    (<any> this).stack = err.stack;
-    (<any> this).message = err.message;
-  }
+export function createTimeoutError(): Error {
+  const error = new Error(message);
+  error[symbol] = true;
+  return error;
+}
+
+/**
+ * Tests to see if an Error is an RxJS Timeout error.
+ * @param err any error object to test
+ */
+export function isTimeoutError(err: Error): boolean {
+  return err && err[symbol];
 }

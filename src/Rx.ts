@@ -1,4 +1,6 @@
 /* tslint:disable:no-unused-variable */
+import 'tslib';
+
 // Subject imported before Observable to bypass circular dependency issue since
 // Subject extends Observable and Observable references Subject in it's
 // definition
@@ -152,16 +154,11 @@ export {ReplaySubject} from './ReplaySubject';
 export {BehaviorSubject} from './BehaviorSubject';
 export {ConnectableObservable} from './observable/ConnectableObservable';
 export {Notification} from './Notification';
-export {EmptyError} from './util/EmptyError';
-export {ArgumentOutOfRangeError} from './util/ArgumentOutOfRangeError';
-export {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
-export {TimeoutError} from './util/TimeoutError';
-export {UnsubscriptionError} from './util/UnsubscriptionError';
 export {TimeInterval} from './operator/timeInterval';
 export {Timestamp} from './operator/timestamp';
 export {TestScheduler} from './testing/TestScheduler';
 export {VirtualTimeScheduler} from './scheduler/VirtualTimeScheduler';
-export {AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError} from './observable/dom/AjaxObservable';
+export {AjaxRequest, AjaxResponse } from './observable/dom/AjaxObservable';
 
 import { asap } from './scheduler/asap';
 import { async } from './scheduler/async';
@@ -216,7 +213,62 @@ let Symbol = {
   iterator
 };
 
+import { createEmptyError, isEmptyError } from './util/EmptyError';
+import { createArgumentOutOfRangeError, isArgumentOutOfRangeError } from './util/ArgumentOutOfRangeError';
+import { createObjectUnsubscribedError, isObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
+import { createTimeoutError, isTimeoutError } from './util/TimeoutError';
+import { createUnsubscriptionError, isUnsubscriptionError } from './util/UnsubscriptionError';
+import { createAjaxError, isAjaxError, createAjaxTimeoutError, isAjaxTimeoutError } from './observable/dom/AjaxObservable';
+/**
+ * @typedef {Object} Rx.Util
+ * @property {function} createEmptyError creates an Error that is an RxJS
+ * EmptyError.
+ * @property {function} createArgumentOutOfRangeError creates an Error that is
+ * an RxJS ArgumentOutOfRangeError.
+ * @property {function} createObjectUnsubscribedError creates an Error that is
+ * an RxJS ObjectUnsubscribedError.
+ * @property {function} createTimeoutError creates an Error that is an RxJS
+ * TimeoutError.
+ * @property {function} createUnsubscriptionError creates an Error that is an
+ * RxJS UnsubscriptionError.
+ * @property {function} createAjaxError creates an Error that is an RxJS
+ * AjaxError
+ * @property {function} createAjaxTimeoutError creates an Error that is an RxJS
+ * AjaxTimeoutError
+ * @property {function} isEmptyError verifies that a passed error is an RxJS
+ * EmptyError
+ * @property {function} isArgumentOutOfRangeError verifies that a passed error
+ * is an RxJS ArgumentOutOfRangeError
+ * @property {function} isObjectUnsubscribedError verifies that a passed error
+ * is an RxJS ObjectUnsubscribedError
+ * @property {function} isTimeoutError verifies that a passed error is an RxJS
+ * TimeoutError
+ * @property {function} isUnsubscriptionError verifies that a passed error is an
+ *  RxJS UnsubscriptionError
+ * @property {function} isAjaxError verifies that a passed error is an RxJS
+ * AjaxError
+ * @property {function} isAjaxTimeoutError verifies that a passed error is an
+ * RxJS AjaxTimeoutError
+ */
+let Util = {
+  createEmptyError,
+  createArgumentOutOfRangeError,
+  createObjectUnsubscribedError,
+  createTimeoutError,
+  createUnsubscriptionError,
+  createAjaxError,
+  createAjaxTimeoutError,
+  isEmptyError,
+  isArgumentOutOfRangeError,
+  isObjectUnsubscribedError,
+  isTimeoutError,
+  isUnsubscriptionError,
+  isAjaxError,
+  isAjaxTimeoutError
+};
+
 export {
     Scheduler,
-    Symbol
+    Symbol,
+    Util
 };

@@ -1,6 +1,6 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
+import { createArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
 
@@ -27,8 +27,9 @@ import { TeardownLogic } from '../Subscription';
  * @see {@link skipWhile}
  * @see {@link take}
  *
- * @throws {ArgumentOutOfRangeError} When using `skipLast(i)`, it throws
- * ArgumentOutOrRangeError if `i < 0`.
+ * @throws {Error} When using `skipLast(i)`, it throws
+ * ArgumentOutOrRangeError if `i < 0`. This error can be tested for with
+ * {@link isArgumentOutOfRangeError}
  *
  * @param {number} count Number of elements to skip from the end of the source Observable.
  * @returns {Observable<T>} An Observable that skips the last count values
@@ -43,7 +44,7 @@ export function skipLast<T>(this: Observable<T>, count: number): Observable<T> {
 class SkipLastOperator<T> implements Operator<T, T> {
   constructor(private _skipCount: number) {
     if (this._skipCount < 0) {
-      throw new ArgumentOutOfRangeError;
+      throw createArgumentOutOfRangeError();
     }
   }
 

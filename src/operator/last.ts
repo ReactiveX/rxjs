@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { EmptyError } from '../util/EmptyError';
+import { createEmptyError } from '../util/EmptyError';
 
 /* tslint:disable:max-line-length */
 export function last<T, S extends T>(this: Observable<T>,
@@ -33,8 +33,9 @@ export function last<T>(this: Observable<T>,
  *
  * <img src="./img/last.png" width="100%">
  *
- * @throws {EmptyError} Delivers an EmptyError to the Observer's `error`
+ * @throws {Error} Delivers an Error to the Observer's `error`
  * callback if the Observable completes before any `next` notification was sent.
+ * The error can be tested with {@link isEmptyError}
  * @param {function} predicate - The condition any source emitted item has to satisfy.
  * @return {Observable} An Observable that emits only the last item satisfying the given condition
  * from the source, or an NoSuchElementException if no such items are emitted.
@@ -132,7 +133,7 @@ class LastSubscriber<T, R> extends Subscriber<T> {
       destination.next(this.lastValue);
       destination.complete();
     } else {
-      destination.error(new EmptyError);
+      destination.error(createEmptyError());
     }
   }
 }

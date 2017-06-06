@@ -1,6 +1,6 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
+import { createArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
 
@@ -16,7 +16,7 @@ import { TeardownLogic } from '../Subscription';
  * `index` in the source Observable, or a default value if that `index` is out
  * of range and the `default` argument is provided. If the `default` argument is
  * not given and the `index` is out of range, the output Observable will emit an
- * `ArgumentOutOfRangeError` error.
+ * error. This error can be verified with {@link isArgumentOutOfRangeError}
  *
  * @example <caption>Emit only the third click event</caption>
  * var clicks = Rx.Observable.fromEvent(document, 'click');
@@ -34,9 +34,10 @@ import { TeardownLogic } from '../Subscription';
  * @see {@link single}
  * @see {@link take}
  *
- * @throws {ArgumentOutOfRangeError} When using `elementAt(i)`, it delivers an
- * ArgumentOutOrRangeError to the Observer's `error` callback if `i < 0` or the
+ * @throws {Error} When using `elementAt(i)`, it delivers an
+ * Error to the Observer's `error` callback if `i < 0` or the
  * Observable has completed before emitting the i-th `next` notification.
+ * This error can be tested for with {@link isArgumentOutOfRangeError}
  *
  * @param {number} index Is the number `i` for the i-th source emission that has
  * happened since the subscription, starting from the number `0`.
@@ -54,7 +55,7 @@ class ElementAtOperator<T> implements Operator<T, T> {
 
   constructor(private index: number, private defaultValue?: T) {
     if (index < 0) {
-      throw new ArgumentOutOfRangeError;
+      throw createArgumentOutOfRangeError();
     }
   }
 
@@ -87,7 +88,7 @@ class ElementAtSubscriber<T> extends Subscriber<T> {
       if (typeof this.defaultValue !== 'undefined') {
         destination.next(this.defaultValue);
       } else {
-        destination.error(new ArgumentOutOfRangeError);
+        destination.error(createArgumentOutOfRangeError());
       }
     }
     destination.complete();

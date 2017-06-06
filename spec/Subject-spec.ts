@@ -261,14 +261,18 @@ describe('Subject', () => {
     subscription2.unsubscribe();
     subject.unsubscribe();
 
-    expect(() => {
+    let thrownError: any;
+    try {
       subject.subscribe(
         function (x) { results3.push(x); },
         function (err) {
           expect(false).to.equal('should not throw error: ' + err.toString());
         }
       );
-    }).to.throw(Rx.ObjectUnsubscribedError);
+    } catch (err) {
+      thrownError = err;
+    }
+    expect(Rx.Util.isObjectUnsubscribedError(thrownError)).to.be.true;
 
     expect(results1).to.deep.equal([1, 2, 3, 4, 5]);
     expect(results2).to.deep.equal([3, 4, 5]);
@@ -285,7 +289,14 @@ describe('Subject', () => {
 
     subject.next('foo');
     subject.unsubscribe();
-    expect(() => subject.next('bar')).to.throw(Rx.ObjectUnsubscribedError);
+
+    let thrownError: any;
+    try {
+      subject.next('bar');
+    } catch (err) {
+      thrownError = err;
+    }
+    expect(Rx.Util.isObjectUnsubscribedError(thrownError)).to.be.true;
     done();
   });
 
@@ -439,17 +450,30 @@ describe('Subject', () => {
     const subject = new Rx.Subject();
     subject.unsubscribe();
 
-    expect(() => {
+    let thrownError: any;
+    try {
       subject.next('a');
-    }).to.throw(Rx.ObjectUnsubscribedError);
+    } catch (err) {
+      thrownError = err;
+    }
+    expect(Rx.Util.isObjectUnsubscribedError(thrownError)).to.be.true;
+    thrownError = null;
 
-    expect(() => {
+    try {
       subject.error('a');
-    }).to.throw(Rx.ObjectUnsubscribedError);
+    } catch (err) {
+      thrownError = err;
+    }
+    expect(Rx.Util.isObjectUnsubscribedError(thrownError)).to.be.true;
+    thrownError = null;
 
-    expect(() => {
+    try {
       subject.complete();
-    }).to.throw(Rx.ObjectUnsubscribedError);
+    } catch (err) {
+      thrownError = err;
+    }
+    expect(Rx.Util.isObjectUnsubscribedError(thrownError)).to.be.true;
+    thrownError = null;
   });
 
   it('should not next after completed', () => {
