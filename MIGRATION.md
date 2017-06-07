@@ -31,6 +31,12 @@ Observers and Subjects alike) has changed.
 
 So what was once `subject.onNext("hi")` is now `subject.next("hi")`.
 
+## Changes to Subject.create
+
+Along with observers now being subscribers, the order of the arguments to `Subject.create` has changed.
+
+- `Subject.create(observer, observable)` -> `Subject.create(observable, subscriber)`
+
 ## Subscription `dispose` is now `unsubscribe`
 
 To meet the Observable spec (goal 3) `dispose` had to be renamed to `unsubscribe`.
