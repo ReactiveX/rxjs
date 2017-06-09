@@ -72,6 +72,52 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /**
+   * Allows you to apply an operator to a given stream, without it needing to be
+   * on the Observable prototype. This is useful whenever you don't want to
+   * unintentionally leak implementation details or otherwise rely on the fact
+   * that you're using a particular operator.
+   * 
+   * It takes the provided operator function and any arbitrary arguments
+   * then internally just calls `operator.apply(this, args)`.
+   * 
+   * This is solves a similar problem as the TC39 proposed [bind operator syntax](https://github.com/tc39/proposal-bind-operator)
+   * e.g. `stream::map(i => i + 1)` but that's stage-0 and not supported by
+   * TypeScript.
+   * 
+   * Example 1: in your unit tests, if you were to patch additional operators
+   * onto the Observable prototype then the application you're testing could
+   * unknowingly be relying on those operators without it importing them itself.
+   * Your tests would pass because the operator is available in your tests, but
+   * when you run the app standalone it errors because the operator wasn't
+   * imported!
+   * 
+   * Example 2: you're writing a library that itself uses RxJS. If you patch
+   * operators onto the prototype, then consumers of your library could
+   * accidentally depend on the fact that the operators you use are available.
+   * 
+   * @example <caption>Apply several operators without patching the Observable prototype</caption>
+   * import { of } from 'rxjs/observable/of';
+   * import { filter } from 'rxjs/operator/filter';
+   * import { map } from 'rxjs/operator/map';
+   * 
+   * of(1, 2, 3)
+   *   .op(filter, i => i > 1)
+   *   .op(map, i => i * 10)
+   *   .subscribe(x => console.log(x));
+   * // 20..30
+   * 
+   * @method op
+   * @param {Function} operator The operator function you wish to apply.
+   * @param {...any} args (optional) A spread of any arguments you want to apply
+   * to the operator when we apply it to your stream.
+   * @return {Observable<T>} An Observable that comes from the result of applying
+   * the provided operator to the source.
+   */
+  op<T>(operator: Function, ...args: Array<any>): Observable<T> {
+    return operator.apply(this, args);
+  }
+
+  /**
    * Registers handlers for handling emitted values, error and completions from the observable, and
    *  executes the observable's subscriber function, which will take action to set up the underlying data stream
    * @method subscribe
