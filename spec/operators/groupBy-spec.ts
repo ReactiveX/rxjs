@@ -903,6 +903,51 @@ describe('Observable.prototype.groupBy', () => {
     expectObservable(source, unsub).toBe(expected, expectedGroups);
   });
 
+  it('should dispose a durationSelector after closing the group',
+  () => {
+    let durationMarble = '-------s';
+    let durations = [];
+    const duration = () => {
+      let o = cold(durationMarble); // duration 7 frames, then stop
+      durations.push(o);
+      return o;
+    };
+    const e1 = hot( '-1-2-1-3-1-4-1-5------------|');
+    const sub =     '^                            !' ;
+    const gr =      '-a-k---l-b-m---n------------|' ;
+    const empty =   '-----------------------------' ;
+
+    let unsubs = [];
+    for (let i = 0; i < gr.length; i++) {
+      if (gr[i] !== '-' && gr[i] !== '|') {
+        unsubs.push(empty.slice(0, i) + '^' + durationMarble.slice(1, -1) + '!');
+      }
+    }
+
+    const a = cold(  '1---1--|'                     );
+    const b = cold(          '1---1--|'             );
+
+    const k = cold(    '2------|'                   );
+    const l = cold(        '3------|'               );
+    const m = cold(            '4------|'           );
+    const n = cold(                '5------|'       );
+
+    const expectedValues = { a, b, k, l, m, n };
+
+    const source = e1.groupBy(
+      (val: string) => val,
+      (val: string) => val,
+      (group: any) => duration()
+    );
+
+    expectObservable(source, sub).toBe(gr, expectedValues);
+    rxTestScheduler.schedule(() => {
+      durations.forEach((d, i) => {
+        expectSubscriptions(d.subscriptions).toBe(unsubs[i]);
+      });
+    }, 500);
+  });
+
   it('should allow using a durationSelector, but keySelector throws', () => {
     const values = {
       a: '  foo',
