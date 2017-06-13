@@ -241,6 +241,7 @@ class GroupDurationSubscriber<K, T> extends Subscriber<T> {
     }
     this.parent.removeGroup(this.key);
     this.unsubscribe();
+    this.parent.remove(this);
   }
 
   protected _complete(): void {
@@ -250,6 +251,7 @@ class GroupDurationSubscriber<K, T> extends Subscriber<T> {
     }
     this.parent.removeGroup(this.key);
     this.unsubscribe();
+    this.parent.remove(this);
   }
 }
 
