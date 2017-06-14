@@ -14,7 +14,6 @@
 
 ### Features
 
-* **errors:** all custom errors are now just Error objects ([13767c3](https://github.com/ReactiveX/RxJS/commit/13767c3)), closes [#2612](https://github.com/ReactiveX/RxJS/issues/2612)
 * **errors:** refactor errors to use Object.setPrototypeOf ([d242156](https://github.com/ReactiveX/RxJS/commit/d242156))
 * **TypeScript:** Update to TypeScript 2.3 ([03cc146](https://github.com/ReactiveX/RxJS/commit/03cc146))
 
