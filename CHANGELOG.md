@@ -1,3 +1,50 @@
+<a name="6.0.0-alpha.0"></a>
+# [6.0.0-alpha.0](https://github.com/ReactiveX/RxJS/compare/5.4.1...v6.0.0-alpha.0) (2017-06-14)
+
+
+### Bug Fixes
+
+* **buffer:** emit last buffer if source completes ([836fb84](https://github.com/ReactiveX/RxJS/commit/836fb84))
+* **buffer:** emit last buffer if source completes ([6405cf4](https://github.com/ReactiveX/RxJS/commit/6405cf4))
+* **buffer:** subscribe to source and closingNotifier in proper order ([#2195](https://github.com/ReactiveX/RxJS/issues/2195)) ([41e33f5](https://github.com/ReactiveX/RxJS/commit/41e33f5)), closes [#1610](https://github.com/ReactiveX/RxJS/issues/1610)
+* **find:** emit empty observable when match isn't found ([#2538](https://github.com/ReactiveX/RxJS/issues/2538)) ([d59011f](https://github.com/ReactiveX/RxJS/commit/d59011f)), closes [#2515](https://github.com/ReactiveX/RxJS/issues/2515)
+* **first:** unsubscription logic properly called on complete and error ([#2463](https://github.com/ReactiveX/RxJS/issues/2463)) ([c04eb85](https://github.com/ReactiveX/RxJS/commit/c04eb85)), closes [#2455](https://github.com/ReactiveX/RxJS/issues/2455)
+* **takeWhile:** force unsubscribe when it completes or errors ([#2470](https://github.com/ReactiveX/RxJS/issues/2470)) ([2b4a96c](https://github.com/ReactiveX/RxJS/commit/2b4a96c))
+
+
+### Features
+
+* **errors:** all custom errors are now just Error objects ([13767c3](https://github.com/ReactiveX/RxJS/commit/13767c3)), closes [#2612](https://github.com/ReactiveX/RxJS/issues/2612)
+* **errors:** refactor errors to use Object.setPrototypeOf ([d242156](https://github.com/ReactiveX/RxJS/commit/d242156))
+* **TypeScript:** Update to TypeScript 2.3 ([03cc146](https://github.com/ReactiveX/RxJS/commit/03cc146))
+
+
+### BREAKING CHANGES
+
+* **find:** `find` will no longer emit an `undefined` value before completing if it does not find a match.
+* **buffer:** When source and closingNotifier fire at the same time, it is expected
+that value emitted by source will first land in buffer and then
+closingNotifier will close it. Because of reversed subscription order,
+closingNotifier emitted first, so source was not able to put value in
+buffer before it was closed. Now source is subscribed before closingNotifier,
+so if they fire at the same time, source value is put into buffer and then
+closingNotifer closes it.
+* **first:** unsubscription cadence has changed for `first`, this means side-effects related to unsubscription may occur at a different time than in previous versions.
+* **buffer:** The `buffer()` operator now emits what's partially buffered when the
+source completes. This is closer to rxjs v4* behaviour and matches the
+v5 behaviour of the other buffer operators.
+* **TypeScript:** TypeScript 2.3 now required
+* **TypeScript:** `AjaxRequest`'s `responseType` property is now
+`XMLHttpRequestResponseType` rather than `string` to support TS 2.3
+* **errors:** IE10 and lower will need to polyfill `Object.setPrototypeOf`
+* **errors:** The following types no longer exist: `EmptyError`, `UnsubscriptionError`, `ArgumentOutOfRangeError`, `ObjectUnsubcribedError`, `TimeoutError`, `AjaxError`, `AjaxTimeoutError`. There are now utilities for creating and testing under `Rx.Util` for example:  `Rx.Util.createTimeoutError()` and `Rx.Util.isTimeoutError(err)` etc.
+* **buffer:** The `buffer()` operator now emits what's partially buffered when the
+source completes. This is closer to rxjs v4* behaviour and matches the
+v5 behaviour of the other buffer operators.
+* **first:** unsubscription cadence has changed for `first`, this means side-effects related to unsubscription may occur at a different time than in previous versions.
+
+
+
 <a name="5.4.1"></a>
 ## [5.4.1](https://github.com/ReactiveX/RxJS/compare/5.4.0...v5.4.1) (2017-06-14)
 
@@ -12,11 +59,6 @@
 * **Observable:** errors thrown in observer/handlers without an operator applied will no longer be swallowed ([#2626](https://github.com/ReactiveX/RxJS/issues/2626)) ([c250afc](https://github.com/ReactiveX/RxJS/commit/c250afc)), closes [#2565](https://github.com/ReactiveX/RxJS/issues/2565)
 * **reduce:** type definitions overloads for TypeScript are now in proper order ([#2523](https://github.com/ReactiveX/RxJS/issues/2523)) ([ccc0647](https://github.com/ReactiveX/RxJS/commit/ccc0647))
 * **Schedulers:** Fix issue where canceling an asap or animationFrame action early could throw ([#2638](https://github.com/ReactiveX/RxJS/issues/2638)) ([fc39043](https://github.com/ReactiveX/RxJS/commit/fc39043))
-
-
-### BREAKING CHANGES
-
-* **first:** unsubscription cadence has changed for `first`, this means side-effects related to unsubscription may occur at a different time than in previous versions.
 
 
 
