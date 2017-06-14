@@ -225,6 +225,19 @@ describe('Observable.prototype.buffer', () => {
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
 
+  it('should work with filtered source as closingNotifier', () => {
+    const values = {0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8};
+
+    const source =    hot('-0-1-2-3-4-5-6-7-8-|', values);
+    const expected =      '-a---b---c---d---e-|';
+
+    const expectedValues = {a: [0], b: [1, 2], c: [3, 4], d: [5, 6], e: [7, 8]};
+    const filteredSource = source.filter(x => x % 2 === 0);
+
+    const result = source.buffer(filteredSource);
+    expectObservable(result).toBe(expected, expectedValues);
+  });
+
   it('should emit last buffer if source completes', () => {
     const a =    hot('-a-b-c-d-e-f-g-h-i-|');
     const b =    hot('-----B-----B--------');
