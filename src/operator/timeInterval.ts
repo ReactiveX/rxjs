@@ -18,7 +18,7 @@ export class TimeInterval<T> {
   constructor(public value: T, public interval: number) {
 
   }
-};
+}
 
 class TimeIntervalOperator<T> implements Operator<T, TimeInterval<T>> {
   constructor(private scheduler: IScheduler) {

@@ -15,7 +15,7 @@ import { noop } from '../util/noop';
  */
 export function ignoreElements<T>(this: Observable<T>): Observable<T> {
   return this.lift(new IgnoreElementsOperator());
-};
+}
 
 class IgnoreElementsOperator<T, R> implements Operator<T, R> {
   call(subscriber: Subscriber<R>, source: any): any {

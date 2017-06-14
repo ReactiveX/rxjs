@@ -1,4 +1,3 @@
-///<reference path='../../typings/index.d.ts'/>
 declare const global: any;
 
 import * as Rx from '../../dist/cjs/Rx';
@@ -23,7 +22,7 @@ export function lowerCaseO<T>(...args): Rx.Observable<T> {
   };
 
   return <any>o;
-};
+}
 
 export const createObservableInputs = <T>(value: T) => Rx.Observable.of<ObservableInput<T>>(
   Rx.Observable.of<T>(value),

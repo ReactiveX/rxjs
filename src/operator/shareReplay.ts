@@ -23,4 +23,4 @@ export function shareReplay<T>(
     }
   });
   return connectable.refCount();
-};
+}

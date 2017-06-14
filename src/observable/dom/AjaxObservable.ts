@@ -5,6 +5,7 @@ import { Observable } from '../../Observable';
 import { Subscriber } from '../../Subscriber';
 import { TeardownLogic } from '../../Subscription';
 import { MapOperator } from '../../operator/map';
+import 'tslib';
 
 export interface AjaxRequest {
   url?: string;
@@ -20,7 +21,7 @@ export interface AjaxRequest {
   withCredentials?: boolean;
   createXHR?: () => XMLHttpRequest;
   progressSubscriber?: Subscriber<any>;
-  responseType?: string;
+  responseType?: XMLHttpRequestResponseType;
 }
 
 function getCORSRequest(this: AjaxRequest): XMLHttpRequest {
@@ -69,28 +70,28 @@ export interface AjaxCreationMethod {
 
 export function ajaxGet(url: string, headers: Object = null) {
   return new AjaxObservable<AjaxResponse>({ method: 'GET', url, headers });
-};
+}
 
 export function ajaxPost(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
   return new AjaxObservable<AjaxResponse>({ method: 'POST', url, body, headers });
-};
+}
 
 export function ajaxDelete(url: string, headers?: Object): Observable<AjaxResponse> {
   return new AjaxObservable<AjaxResponse>({ method: 'DELETE', url, headers });
-};
+}
 
 export function ajaxPut(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
   return new AjaxObservable<AjaxResponse>({ method: 'PUT', url, body, headers });
-};
+}
 
 export function ajaxPatch(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
   return new AjaxObservable<AjaxResponse>({ method: 'PATCH', url, body, headers });
-};
+}
 
 export function ajaxGetJSON<T>(url: string, headers?: Object): Observable<T> {
   return new AjaxObservable<AjaxResponse>({ method: 'GET', url, responseType: 'json', headers })
     .lift<T>(new MapOperator<AjaxResponse, T>((x: AjaxResponse, index: number): T => x.response, null));
-};
+}
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -309,7 +310,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
         progressSubscriber.error(e);
       }
       subscriber.error(new AjaxTimeoutError(this, request)); //TODO: Make betterer.
-    };
+    }
     xhr.ontimeout = xhrTimeout;
     (<any>xhrTimeout).request = request;
     (<any>xhrTimeout).subscriber = this;
@@ -370,7 +371,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
           subscriber.error(new AjaxError('ajax error ' + status, this, request));
         }
       }
-    };
+    }
     xhr.onreadystatechange = xhrReadyStateChange;
     (<any>xhrReadyStateChange).subscriber = this;
     (<any>xhrReadyStateChange).progressSubscriber = progressSubscriber;
@@ -419,7 +420,7 @@ export class AjaxResponse {
           this.response = JSON.parse(xhr.responseText || 'null');
         }
         break;
-      case 'xml':
+      case 'document':
         this.response = xhr.responseXML;
         break;
       case 'text':
@@ -438,21 +439,13 @@ export class AjaxResponse {
  * @class AjaxError
  */
 export class AjaxError extends Error {
-  /** @type {XMLHttpRequest} The XHR instance associated with the error */
-  xhr: XMLHttpRequest;
-
-  /** @type {AjaxRequest} The AjaxRequest associated with the error */
-  request: AjaxRequest;
-
-  /** @type {number} The HTTP status code */
   status: number;
 
-  constructor(message: string, xhr: XMLHttpRequest, request: AjaxRequest) {
+  constructor(message: string, public xhr: XMLHttpRequest, public request: AjaxRequest) {
     super(message);
-    this.message = message;
-    this.xhr = xhr;
-    this.request = request;
+    this.name = 'AjaxError';
     this.status = xhr.status;
+    (<any>Object).setPrototypeOf(this, AjaxError.prototype);
   }
 }
 
@@ -464,5 +457,6 @@ export class AjaxError extends Error {
 export class AjaxTimeoutError extends AjaxError {
   constructor(xhr: XMLHttpRequest, request: AjaxRequest) {
     super('ajax timeout', xhr, request);
+    (<any>Object).setPrototypeOf(this, AjaxTimeoutError.prototype);
   }
 }

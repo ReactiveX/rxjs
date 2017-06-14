@@ -7,14 +7,14 @@ npm install rxjs
 To import the entire core set of functionality:
 
 ```js
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 Rx.Observable.of(1,2,3)
 ```
 
 To import only what you need by patching (this is useful for size-sensitive bundling):
 
-```js 
+```js
 import { Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';

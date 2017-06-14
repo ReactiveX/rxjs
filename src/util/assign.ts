@@ -11,7 +11,7 @@ export function assignImpl(target: Object, ...sources: Object[]) {
     }
   }
   return target;
-};
+}
 
 export function getAssign(root: any) {
   return root.Object.assign || assignImpl;
