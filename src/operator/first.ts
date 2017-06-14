@@ -156,7 +156,6 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
       this._emitted = true;
       destination.next(value);
       destination.complete();
-      this.unsubscribe();
       this.hasCompleted = true;
     }
   }
@@ -166,10 +165,8 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
     if (!this.hasCompleted && typeof this.defaultValue !== 'undefined') {
       destination.next(this.defaultValue);
       destination.complete();
-      this.unsubscribe();
     } else if (!this.hasCompleted) {
       destination.error(new EmptyError);
-      this.unsubscribe();
     }
   }
 }
