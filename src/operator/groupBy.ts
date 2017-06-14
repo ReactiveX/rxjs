@@ -56,7 +56,7 @@ export function groupBy<T, K, R>(this: Observable<T>, keySelector: (value: T) =>
  *                    {id: 3, name: 'qfs1'},
  *                    {id: 2, name: 'qsgqsfg2'}
  *                   )
- *     .groupBy(p => p.id, p => p.anme)
+ *     .groupBy(p => p.id, p => p.name)
  *     .flatMap( (group$) => group$.reduce((acc, cur) => [...acc, cur], ["" + group$.key]))
  *     .map(arr => ({'id': parseInt(arr[0]), 'values': arr.slice(1)}))
  *     .subscribe(p => console.log(p));

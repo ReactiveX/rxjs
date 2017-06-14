@@ -137,7 +137,6 @@ export class AsyncAction<T> extends Action<T> {
     const index = actions.indexOf(this);
 
     this.work  = null;
-    this.delay = null;
     this.state = null;
     this.pending = false;
     this.scheduler = null;
@@ -149,5 +148,7 @@ export class AsyncAction<T> extends Action<T> {
     if (id != null) {
       this.id = this.recycleAsyncId(scheduler, id, null);
     }
+
+    this.delay = null;
   }
 }

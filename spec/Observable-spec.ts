@@ -46,6 +46,18 @@ describe('Observable', () => {
     });
   });
 
+  it('should not send error to error handler for observable have source', () => {
+    const source = Observable.of(1);
+    const observable = new Observable();
+    (observable as any).source = source;
+
+    expect(() => {
+      observable.subscribe((x) => {
+        throw new Error('error');
+      });
+    }).to.throw();
+  });
+
   describe('forEach', () => {
     it('should iterate and return a Promise', (done: MochaDone) => {
       const expected = [1, 2, 3];
