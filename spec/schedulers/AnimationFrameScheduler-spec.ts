@@ -25,6 +25,21 @@ describe('Scheduler.animationFrame', () => {
     sandbox.restore();
   });
 
+  it('should cancel animationFrame actions when delay > 0', () => {
+    let actionHappened = false;
+    const sandbox = sinon.sandbox.create();
+    const fakeTimer = sandbox.useFakeTimers();
+    animationFrame.schedule(() => {
+      actionHappened = true;
+    }, 50).unsubscribe();
+    expect(actionHappened).to.be.false;
+    fakeTimer.tick(25);
+    expect(actionHappened).to.be.false;
+    fakeTimer.tick(25);
+    expect(actionHappened).to.be.false;
+    sandbox.restore();
+  });
+
   it('should schedule an action to happen later', (done: MochaDone) => {
     let actionHappened = false;
     animationFrame.schedule(() => {
