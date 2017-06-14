@@ -227,27 +227,19 @@ class GroupDurationSubscriber<K, T> extends Subscriber<T> {
   constructor(private key: K,
               private group: Subject<T>,
               private parent: GroupBySubscriber<any, K, T>) {
-    super();
+    super(group);
   }
 
   protected _next(value: T): void {
-    this._complete();
+    this.complete();
   }
 
-  protected _error(err: any): void {
-    const group = this.group;
-    if (!group.closed) {
-      group.error(err);
+  protected _unsubscribe() {
+    const { parent, key } = this;
+    this.key = this.parent = null;
+    if (parent) {
+      parent.removeGroup(key);
     }
-    this.parent.removeGroup(this.key);
-  }
-
-  protected _complete(): void {
-    const group = this.group;
-    if (!group.closed) {
-      group.complete();
-    }
-    this.parent.removeGroup(this.key);
   }
 }
 
