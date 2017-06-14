@@ -137,7 +137,7 @@ export class ObservableDoc {
    */
   static create<T>(onSubscription: <R>(observer: Observer<R>) => TeardownLogic): Observable<T> {
     return new Observable<T>(onSubscription);
-  };
+  }
 }
 
 /**

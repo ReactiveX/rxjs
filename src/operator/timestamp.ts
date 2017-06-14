@@ -17,7 +17,7 @@ export function timestamp<T>(this: Observable<T>, scheduler: IScheduler = async)
 export class Timestamp<T> {
   constructor(public value: T, public timestamp: number) {
   }
-};
+}
 
 class TimestampOperator<T> implements Operator<T, Timestamp<T>> {
   constructor(private scheduler: IScheduler) {
