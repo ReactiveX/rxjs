@@ -43,14 +43,14 @@ describe('Observable.prototype.find', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should return undefined if source is empty to match predicate', () => {
+  it('should return empty if source is empty to match predicate', () => {
     const source = cold('|');
     const subs =        '(^!)';
-    const expected =    '(x|)';
+    const expected =    '(|)';
 
     const result = (<any>source).find(truePredicate);
 
-    expectObservable(result).toBe(expected, {x: undefined});
+    expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -96,16 +96,14 @@ describe('Observable.prototype.find', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should return undefined if element does not match with predicate', () => {
+  it('should return empty if element does not match with predicate', () => {
     const source = hot('--a--b--c--|');
     const subs =       '^          !';
-    const expected =   '-----------(x|)';
+    const expected =   '-----------|';
 
-    const predicate = function (value) {
-      return value === 'z';
-    };
+    const predicate = (value) => value === 'z';
 
-    expectObservable((<any>source).find(predicate)).toBe(expected, { x: undefined });
+    expectObservable(source.find(predicate)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
