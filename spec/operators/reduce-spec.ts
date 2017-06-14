@@ -316,6 +316,33 @@ describe('Observable.prototype.reduce', () => {
     });
   });
 
+  it('should accept T typed reducers when T is an array', () => {
+    type(() => {
+      let a: Rx.Observable<number[]>;
+      const reduced = a.reduce((acc, value) => {
+        return acc.concat(value);
+      }, []);
+
+      reduced.subscribe(rs => {
+        rs[0].toExponential();
+      });
+    });
+  });
+
+  it('should accept R typed reduces when R is an array of T', () => {
+    type(() => {
+      let a: Rx.Observable<number>;
+      const reduced = a.reduce((acc, value) => {
+        acc.push(value);
+        return acc;
+      }, []);
+
+      reduced.subscribe(rs => {
+        rs[0].toExponential();
+      });
+    });
+  });
+
   it('should accept R typed reducers when R is assignable to T', () => {
     type(() => {
       let a: Rx.Observable<{ a?: number; b?: string }>;

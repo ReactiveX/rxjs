@@ -111,7 +111,7 @@ Hopefully the information provided here will give context to decisions made whil
 There are a few things to know and (try to) understand while developing operators:
 
 1. All operator methods are actually created in separate modules from `Observable`. This is so developers can
- "build their own observable" by pulling in operator methods an adding them to observable in their own module.
+ "build their own observable" by pulling in operator methods and adding them to observable in their own module.
  It also means operators can be brought in ad-hock and used directly, either with the ES7 function bind operator
  in Babel (`::`) or by using it with `.call()`.
 2. Every operator has an `Operator` class. The `Operator` class is really a `Subscriber` "factory". It's
