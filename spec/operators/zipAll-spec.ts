@@ -392,7 +392,7 @@ describe('Observable.prototype.zipAll', () => {
     const y = cold(        'd---e---f---|   ');
     const ysubs =     '        ^           !';
     const e1 =    hot('--x--y--|            ', { x: x, y: y });
-    const e1subs =    '^                   !';
+    const e1subs =    '^       !';
     const expected =  '--------u---v---w---|';
     const values = {
       u: ['a', 'd'],
@@ -414,7 +414,7 @@ describe('Observable.prototype.zipAll', () => {
     const z = cold(                    'g-h-i-j-k-|           ');
     const zsubs =    '                           ^         !  ';
     const e1 =   hot('--x------y--------z--------|            ', { x: x, y: y, z: z });
-    const e1subs =   '^                                      !';
+    const e1subs =   '^                          !';
     const expected = '---------------------------u-v---------|';
     const values = {
       u: ['a', 'c', 'g'],
@@ -436,7 +436,7 @@ describe('Observable.prototype.zipAll', () => {
     const z = cold(                          'g-h-i-j-k-|    ');
     const zsubs =    '                              ^       !';
     const e1 =   hot('--x---------y--------z--------|', { x: x, y: y, z: z });
-    const e1subs =   '^                                     !';
+    const e1subs =   '^                             !';
     const expected = '------------------------------u-v-----#';
 
     const expectedValues = {

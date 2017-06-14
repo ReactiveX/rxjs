@@ -110,7 +110,7 @@ export function onErrorResumeNextStatic<T, R>(...nextSources: Array<ObservableIn
   }
   source = nextSources.shift();
 
-  return new FromObservable(source, null).lift(new OnErrorResumeNextOperator<T, R>(nextSources));
+  return FromObservable.create(source, null).lift(new OnErrorResumeNextOperator<T, R>(nextSources));
 }
 
 class OnErrorResumeNextOperator<T, R> implements Operator<T, R> {

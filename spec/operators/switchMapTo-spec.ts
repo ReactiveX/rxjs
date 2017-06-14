@@ -55,7 +55,7 @@ describe('Observable.prototype.switchMapTo', () => {
     //                                 --a--b--c--d--e--|
                    '                   ^                !'];
     const e1 =   hot('---------x---------x---------|       ');
-    const e1subs =   '^                                   !';
+    const e1subs =   '^                            !';
     const expected = '-----------a--b--c---a--b--c--d--e--|';
 
     expectObservable(e1.switchMapTo(x)).toBe(expected);
@@ -116,7 +116,7 @@ describe('Observable.prototype.switchMapTo', () => {
     //                                 --a--b--c--d--e-
                    '                   ^               '];
     const e1 =   hot('---------x---------y---------|     ');
-    const e1subs =   '^                                  ';
+    const e1subs =   '^                            !';
     const expected = '-----------a--b--c---a--b--c--d--e-';
 
     expectObservable(e1.switchMapTo(x)).toBe(expected);
@@ -180,7 +180,7 @@ describe('Observable.prototype.switchMapTo', () => {
     const xsubs =   ['         ^         !          ',
                    '                   ^          '];
     const e1 =   hot('---------x---------x---------|');
-    const e1subs =   '^                             ';
+    const e1subs =   '^                            !';
     const expected = '------------------------------';
 
     expectObservable(e1.switchMapTo(x)).toBe(expected);
@@ -233,7 +233,7 @@ describe('Observable.prototype.switchMapTo', () => {
     //                                 --1--2--3--4--5--|
                    '                   ^                !'];
     const e1 =   hot('---------x---------y---------|       ');
-    const e1subs =   '^                                   !';
+    const e1subs =   '^                            !';
     const expected = '-----------a--b--c---d--e--f--g--h--|';
     const expectedValues = {
       a: ['x', '1', 0, 0],

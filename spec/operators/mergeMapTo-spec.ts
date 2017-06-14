@@ -36,7 +36,7 @@ describe('Observable.prototype.mergeMapTo', () => {
     //                                      ----1---2---3---(4|)
                    '                        ^               !   '];
     const e1 =   hot('a---b-----------c-------d-------|           ');
-    const e1subs =   '^                                       !';
+    const e1subs =   '^                               !';
     const expected = '----1---(21)(32)(43)(41)2---(31)(42)3---(4|)';
 
     const source = e1.mergeMapTo(x);
@@ -132,7 +132,7 @@ describe('Observable.prototype.mergeMapTo', () => {
   it('should mergeMapTo many outer values to many inner values', () => {
     const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     const e1 =     hot('-a-------b-------c-------d-------|            ');
-    const e1subs =     '^                                            !';
+    const e1subs =     '^                                !';
     const inner =  cold('----i---j---k---l---|                        ', values);
     const innersubs = [' ^                   !                        ',
                      '         ^                   !                ',
@@ -208,7 +208,7 @@ describe('Observable.prototype.mergeMapTo', () => {
   it('should mergeMapTo many outer to many inner, inner never completes', () => {
     const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     const e1 =     hot('-a-------b-------c-------d-------|         ');
-    const e1subs =     '^                                          ';
+    const e1subs =     '^                                !';
     const inner =  cold('----i---j---k---l-', values);
     const innersubs = [' ^                                         ',
                      '         ^                                 ',
@@ -271,7 +271,7 @@ describe('Observable.prototype.mergeMapTo', () => {
   it('should mergeMapTo many cold Observable, with parameter concurrency=1', () => {
     const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     const e1 =     hot('-a-------b-------c---|                                        ');
-    const e1subs =     '^                                                            !';
+    const e1subs =     '^                    !';
     const inner =  cold('----i---j---k---l---|                                        ', values);
     const innersubs = [' ^                   !                                        ',
                      '                     ^                   !                    ',
@@ -289,7 +289,7 @@ describe('Observable.prototype.mergeMapTo', () => {
   it('should mergeMap to many cold Observable, with parameter concurrency=2', () => {
     const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     const e1 =     hot('-a-------b-------c---|                    ');
-    const e1subs =     '^                                        !';
+    const e1subs =     '^                    !';
     const inner =  cold('----i---j---k---l---|                    ', values);
     const innersubs = [' ^                   !                    ',
                      '         ^                   !            ',
@@ -307,7 +307,7 @@ describe('Observable.prototype.mergeMapTo', () => {
   it('should mergeMapTo many cold Observable, with parameter concurrency=1, without resultSelector', () => {
     const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     const e1 =     hot('-a-------b-------c---|                                        ');
-    const e1subs =     '^                                                            !';
+    const e1subs =     '^                    !';
     const inner =  cold('----i---j---k---l---|                                        ', values);
     const innersubs = [' ^                   !                                        ',
                      '                     ^                   !                    ',
@@ -324,7 +324,7 @@ describe('Observable.prototype.mergeMapTo', () => {
   it('should mergeMap to many cold Observable, with parameter concurrency=2, without resultSelector', () => {
     const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
     const e1 =     hot('-a-------b-------c---|                    ');
-    const e1subs =     '^                                        !';
+    const e1subs =     '^                    !';
     const inner =  cold('----i---j---k---l---|                    ', values);
     const innersubs = [' ^                   !                    ',
                      '         ^                   !            ',

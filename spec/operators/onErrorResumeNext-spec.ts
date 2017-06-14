@@ -14,7 +14,7 @@ describe('Observable.prototype.onErrorResumeNext', () => {
   asDiagram('onErrorResumeNext')('should continue observable sequence with next observable', () => {
     const source =  hot('--a--b--#');
     const next   = cold(        '--c--d--|');
-    const subs =        '^               !';
+    const subs =        '^       !';
     const expected =    '--a--b----c--d--|';
 
     expectObservable(source.onErrorResumeNext(next)).toBe(expected);
@@ -24,7 +24,7 @@ describe('Observable.prototype.onErrorResumeNext', () => {
   it('should continue with hot observables', () => {
     const source =  hot('--a--b--#');
     const next   =  hot('-----x----c--d--|');
-    const subs =        '^               !';
+    const subs =        '^       !';
     const expected =    '--a--b----c--d--|';
 
     expectObservable(source.onErrorResumeNext(next)).toBe(expected);
@@ -36,7 +36,7 @@ describe('Observable.prototype.onErrorResumeNext', () => {
     const next   = [cold(        '--c--d--#'),
                     cold(                '--e--#'),
                     cold(                     '--f--g--|')];
-    const subs =         '^                            !';
+    const subs =         '^       !';
     const expected =     '--a--b----c--d----e----f--g--|';
 
     expectObservable(source.onErrorResumeNext(next)).toBe(expected);
@@ -48,7 +48,7 @@ describe('Observable.prototype.onErrorResumeNext', () => {
     const next1  =  cold(        '--c--d--#');
     const next2  =  cold(                '--e--#');
     const next3  =  cold(                     '--f--g--|');
-    const subs =         '^                            !';
+    const subs =         '^       !';
     const expected =     '--a--b----c--d----e----f--g--|';
 
     expectObservable(source.onErrorResumeNext(next1, next2, next3)).toBe(expected);
@@ -60,7 +60,7 @@ describe('Observable.prototype.onErrorResumeNext', () => {
     const next1  =  cold(        '--c--d--|');
     const next2  =  cold(                '--e--|');
     const next3  =  cold(                     '--f--g--|');
-    const subs =         '^                            !';
+    const subs =         '^       !';
     const expected =     '--a--b----c--d----e----f--g--|';
 
     expectObservable(source.onErrorResumeNext(next1, next2, next3)).toBe(expected);
@@ -72,7 +72,7 @@ describe('Observable.prototype.onErrorResumeNext', () => {
     const next1  =  cold('--c--d--|');
     const next2  =  cold(        '--e--#');
     const next3  =  cold(             '--f--g--|');
-    const subs =         '^                    !';
+    const subs =         '(^!)';
     const expected =     '--c--d----e----f--g--|';
 
     expectObservable(source.onErrorResumeNext(next1, next2, next3)).toBe(expected);
@@ -82,7 +82,7 @@ describe('Observable.prototype.onErrorResumeNext', () => {
   it('should not complete with observble does not ends', () => {
     const source =   hot('--a--b--|');
     const next1  =  cold(        '--');
-    const subs =         '^         ';
+    const subs =         '^       !';
     const expected =     '--a--b----';
 
     expectObservable(source.onErrorResumeNext(next1)).toBe(expected);
@@ -102,7 +102,7 @@ describe('Observable.prototype.onErrorResumeNext', () => {
   it('should complete observable with next observable throws', () => {
     const source =  hot('--a--b--#');
     const next   = cold(        '--c--d--#');
-    const subs =        '^               !';
+    const subs =        '^       !';
     const expected =    '--a--b----c--d--|';
 
     expectObservable(source.onErrorResumeNext(next)).toBe(expected);

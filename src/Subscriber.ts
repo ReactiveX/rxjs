@@ -1,6 +1,6 @@
 import { isFunction } from './util/isFunction';
 import { Observer, PartialObserver } from './Observer';
-import { Subscription } from './Subscription';
+import { Subscription, TeardownLogic } from './Subscription';
 import { empty as emptyObserver } from './Observer';
 import { rxSubscriber as rxSubscriberSymbol } from './symbol/rxSubscriber';
 
@@ -41,6 +41,8 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   public syncErrorThrown: boolean = false;
   public syncErrorThrowable: boolean = false;
 
+  private parentSubscription: Subscription | null = null;
+
   protected isStopped: boolean = false;
   protected destination: PartialObserver<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
 
@@ -69,7 +71,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
         if (typeof destinationOrNext === 'object') {
           if (destinationOrNext instanceof Subscriber) {
             this.destination = (<Subscriber<any>> destinationOrNext);
-            (<any> this.destination).add(this);
+            (<Subscriber<any>> this.destination).addParentTeardownLogic(this);
           } else {
             this.syncErrorThrowable = true;
             this.destination = new SafeSubscriber<T>(this, <PartialObserver<any>> destinationOrNext);
@@ -80,6 +82,16 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
         this.syncErrorThrowable = true;
         this.destination = new SafeSubscriber<T>(this, <((value: T) => void)> destinationOrNext, error, complete);
         break;
+    }
+  }
+
+  addParentTeardownLogic(parentTeardownLogic: TeardownLogic) {
+    this.parentSubscription = this.add(parentTeardownLogic);
+  }
+
+  unsubscribeParentSubscription() {
+    if (this.parentSubscription !== null) {
+      this.parentSubscription.unsubscribe();
     }
   }
 
@@ -107,6 +119,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     if (!this.isStopped) {
       this.isStopped = true;
       this._error(err);
+      this.unsubscribeParentSubscription();
     }
   }
 
@@ -120,6 +133,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     if (!this.isStopped) {
       this.isStopped = true;
       this._complete();
+      this.unsubscribeParentSubscription();
     }
   }
 
@@ -154,6 +168,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     this.isStopped = false;
     this._parent = _parent;
     this._parents = _parents;
+    this.parentSubscription = null;
     return this;
   }
 }

@@ -15,7 +15,7 @@ describe('Observable.prototype.delay', () => {
     const e1 =   hot('---a--b--|  ');
     const t =   time(   '--|      ');
     const expected = '-----a--b--|';
-    const subs =     '^          !';
+    const subs =     '^        !  ';
 
     const result = e1.delay(t, rxTestScheduler);
 
@@ -27,7 +27,7 @@ describe('Observable.prototype.delay', () => {
     const e1 =   hot('--a--b--|  ');
     const t =   time(  '---|     ');
     const expected = '-----a--b--|';
-    const subs =     '^          !';
+    const subs =     '^       !   ';
 
     const absoluteDelay = new Date(rxTestScheduler.now() + t);
     const result = e1.delay(absoluteDelay, rxTestScheduler);
@@ -40,7 +40,7 @@ describe('Observable.prototype.delay', () => {
     const e1 =   hot('---^--a--b--|  ');
     const t =   time(      '---|     ');
     const expected =    '------a--b--|';
-    const subs =        '^           !';
+    const subs =        '^        !   ';
 
     const absoluteDelay = new Date(rxTestScheduler.now() + t);
     const result = e1.delay(absoluteDelay, rxTestScheduler);
@@ -91,7 +91,7 @@ describe('Observable.prototype.delay', () => {
     const e1 =   hot('----|   ');
     const t =   time(    '---|');
     const expected = '-------|';
-    const subs =     '^      !';
+    const subs =     '^   !';
 
     const result = e1.delay(t, rxTestScheduler);
 
