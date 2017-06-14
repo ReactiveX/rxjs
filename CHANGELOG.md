@@ -1,3 +1,25 @@
+<a name="5.4.1"></a>
+## [5.4.1](https://github.com/ReactiveX/RxJS/compare/5.4.0...v5.4.1) (2017-06-14)
+
+
+### Bug Fixes
+
+* **ajax:** Only set timeout & responseType if request is asynchronous ([#2486](https://github.com/ReactiveX/RxJS/issues/2486)) ([380fbcf](https://github.com/ReactiveX/RxJS/commit/380fbcf))
+* **audit:** will now properly mirror source if durations are Observable.empty() ([#2595](https://github.com/ReactiveX/RxJS/issues/2595)) ([6ded82e](https://github.com/ReactiveX/RxJS/commit/6ded82e))
+* **elementAt:** will now properly unsubscribe when it completes or errors ([#2501](https://github.com/ReactiveX/RxJS/issues/2501)) ([a400cab](https://github.com/ReactiveX/RxJS/commit/a400cab))
+* **ErrorObservable:** will now propagate errors properly when used in a `catch` after `fromPromise`. ([#2552](https://github.com/ReactiveX/RxJS/issues/2552)) ([cf88a20](https://github.com/ReactiveX/RxJS/commit/cf88a20))
+* **groupBy:** group duration notifiers will now properly unsubscribe and clean up ([#2662](https://github.com/ReactiveX/RxJS/issues/2662)) ([ab92083](https://github.com/ReactiveX/RxJS/commit/ab92083)), closes [#2660](https://github.com/ReactiveX/RxJS/issues/2660) [#2661](https://github.com/ReactiveX/RxJS/issues/2661)
+* **Observable:** errors thrown in observer/handlers without an operator applied will no longer be swallowed ([#2626](https://github.com/ReactiveX/RxJS/issues/2626)) ([c250afc](https://github.com/ReactiveX/RxJS/commit/c250afc)), closes [#2565](https://github.com/ReactiveX/RxJS/issues/2565)
+* **reduce:** type definitions overloads for TypeScript are now in proper order ([#2523](https://github.com/ReactiveX/RxJS/issues/2523)) ([ccc0647](https://github.com/ReactiveX/RxJS/commit/ccc0647))
+* **Schedulers:** Fix issue where canceling an asap or animationFrame action early could throw ([#2638](https://github.com/ReactiveX/RxJS/issues/2638)) ([fc39043](https://github.com/ReactiveX/RxJS/commit/fc39043))
+
+
+### BREAKING CHANGES
+
+* **first:** unsubscription cadence has changed for `first`, this means side-effects related to unsubscription may occur at a different time than in previous versions.
+
+
+
 <a name="5.4.0"></a>
 # [5.4.0](https://github.com/ReactiveX/RxJS/) (2017-05-09)
 
