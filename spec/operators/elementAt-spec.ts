@@ -1,7 +1,6 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
-import { doNotUnsubscribe } from '../helpers/doNotUnsubscribe';
 
 declare const { asDiagram };
 declare const hot: typeof marbleTestingSignature.hot;
@@ -125,35 +124,6 @@ describe('Observable.prototype.elementAt', () => {
     const defaultValue = '42';
 
     expectObservable((<any>source).elementAt(3, defaultValue)).toBe(expected, { x: defaultValue });
-    expectSubscriptions(source.subscriptions).toBe(subs);
-  });
-
-  it('should unsubscribe from source Observable, even if destination does not unsubscribe', () => {
-    const source = hot('--a--b--c-d---|');
-    const subs =       '^       !      ';
-    const expected =   '--------(c|)   ';
-
-    expectObservable((<any>source).elementAt(2).let(doNotUnsubscribe)).toBe(expected);
-    expectSubscriptions(source.subscriptions).toBe(subs);
-  });
-
-  it('should unsubscribe from source if index is out of range, even if destination does not unsubscribe', () => {
-    const source = hot('--a--|');
-    const subs =       '^    !';
-    const expected =   '-----#';
-
-    expectObservable((<any>source).elementAt(3).let(doNotUnsubscribe))
-      .toBe(expected, null, new Rx.ArgumentOutOfRangeError());
-    expectSubscriptions(source.subscriptions).toBe(subs);
-  });
-
-  it('should unsubscribe when returning default value, even if destination does not unsubscribe', () => {
-    const source = hot('--a--|');
-    const subs =       '^    !';
-    const expected =   '-----(x|)';
-    const defaultValue = '42';
-
-    expectObservable((<any>source).elementAt(3, defaultValue).let(doNotUnsubscribe)).toBe(expected, { x: defaultValue });
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 });
