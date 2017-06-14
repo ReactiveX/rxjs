@@ -14,11 +14,6 @@
 * **Schedulers:** Fix issue where canceling an asap or animationFrame action early could throw ([#2638](https://github.com/ReactiveX/RxJS/issues/2638)) ([fc39043](https://github.com/ReactiveX/RxJS/commit/fc39043))
 
 
-### BREAKING CHANGES
-
-* **first:** unsubscription cadence has changed for `first`, this means side-effects related to unsubscription may occur at a different time than in previous versions.
-
-
 
 <a name="5.4.0"></a>
 # [5.4.0](https://github.com/ReactiveX/RxJS/) (2017-05-09)
