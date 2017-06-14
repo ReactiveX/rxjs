@@ -40,7 +40,7 @@ npm install rxjs
 To import the entire core set of functionality:
 
 ```js
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
 
 Rx.Observable.of(1,2,3)
 ```
@@ -121,7 +121,7 @@ npm install @reactivex/rxjs@5.0.0
 ### CDN
 
 For CDN, you can use [unpkg](https://unpkg.com/):
-  
+
 https://unpkg.com/rxjs/bundles/Rx.min.js
 
 #### Node.js Usage:
