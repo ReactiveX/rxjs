@@ -1,7 +1,7 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { OperatorFunction } from './OperatorFunction';
+import { OperatorFunction } from '../interfaces';
 
 /**
  * Applies a given `project` function to each value emitted by the source

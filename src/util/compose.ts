@@ -1,8 +1,5 @@
 import { noop } from './noop';
-
-export interface UnaryFunction<T, R> {
-  (input: T): R;
-}
+import { UnaryFunction } from '../interfaces';
 
 export function compose<T, R>(...fns: Array<UnaryFunction<T, R>>): UnaryFunction<T, R> {
   if (!fns) {
