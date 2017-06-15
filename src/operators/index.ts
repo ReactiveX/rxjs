@@ -1,7 +1,11 @@
 export { concatMap } from './concatMap';
+export { defaultIfEmpty } from './defaultIfEmpty';
 export { filter } from './filter';
 export { map } from './map';
+export { max } from './max';
 export { mergeMap } from './mergeMap';
+export { min } from './min';
+export { reduce } from './reduce';
 export { scan } from './scan';
 export { switchMap } from './switchMap';
 export { takeLast } from './takeLast';

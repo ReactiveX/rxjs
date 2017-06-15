@@ -1,5 +1,5 @@
-import { Observable } from '../Observable';
-import { min as higherOrderMin } from '../operators';
+import { reduce } from './reduce';
+import { OperatorFunction } from '../interfaces';
 
 /**
  * The Min operator operates on an Observable that emits numbers (or items that can be compared with a provided function),
@@ -32,6 +32,9 @@ import { min as higherOrderMin } from '../operators';
  * @method min
  * @owner Observable
  */
-export function min<T>(this: Observable<T>, comparer?: (x: T, y: T) => number): Observable<T> {
-  return higherOrderMin(comparer)(this);
+export function min<T>(comparer?: (x: T, y: T) => number): OperatorFunction<T, T> {
+  const min: (x: T, y: T) => T = (typeof comparer === 'function')
+    ? (x, y) => comparer(x, y) < 0 ? x : y
+    : (x, y) => x < y ? x : y;
+  return reduce(min);
 }

@@ -1,10 +1,14 @@
 import { Observable } from '../Observable';
-import { reduce as higherOrderReduce } from '../operators';
+import { scan } from './scan';
+import { takeLast } from './takeLast';
+import { defaultIfEmpty } from './defaultIfEmpty';
+import { OperatorFunction } from '../interfaces';
+import { compose } from '../util/compose';
 
 /* tslint:disable:max-line-length */
-export function reduce<T>(this: Observable<T>, accumulator: (acc: T, value: T, index: number) => T, seed?: T): Observable<T>;
-export function reduce<T>(this: Observable<T>, accumulator: (acc: T[], value: T, index: number) => T[], seed: T[]): Observable<T[]>;
-export function reduce<T, R>(this: Observable<T>, accumulator: (acc: R, value: T, index: number) => R, seed: R): Observable<R>;
+export function reduce<T>(accumulator: (acc: T, value: T, index: number) => T, seed?: T): OperatorFunction<T, T>;
+export function reduce<T>(accumulator: (acc: T[], value: T, index: number) => T[], seed: T[]): OperatorFunction<T, T[]>;
+export function reduce<T, R>(accumulator: (acc: R, value: T, index: number) => R, seed?: R): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -51,15 +55,20 @@ export function reduce<T, R>(this: Observable<T>, accumulator: (acc: R, value: T
  * @method reduce
  * @owner Observable
  */
-export function reduce<T, R>(this: Observable<T>, accumulator: (acc: R, value: T, index?: number) => R, seed?: R): Observable<R> {
+export function reduce<T, R>(accumulator: (acc: R, value: T, index?: number) => R, seed?: R): OperatorFunction<T, R> {
   // providing a seed of `undefined` *should* be valid and trigger
   // hasSeed! so don't use `seed !== undefined` checks!
   // For this reason, we have to check it here at the original call site
   // otherwise inside Operator/Subscriber we won't know if `undefined`
   // means they didn't provide anything or if they literally provided `undefined`
   if (arguments.length >= 2) {
-    return higherOrderReduce(accumulator, seed)(this);
+    return function reduceOperatorFunctionWithSeed(source: Observable<T>): Observable<R> {
+      return compose(scan(accumulator, seed), takeLast(1), defaultIfEmpty(seed))(source);
+    };
   }
-
-  return higherOrderReduce(accumulator)(this);
+  return function reduceOperatorFunction(source: Observable<T>): Observable<R> {
+    return compose(scan<T, T | R>((acc, value, index) => {
+      return accumulator(<R>acc, value, index + 1);
+    }), takeLast(1))(source);
+  };
 }
