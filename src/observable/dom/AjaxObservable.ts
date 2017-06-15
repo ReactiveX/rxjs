@@ -4,7 +4,7 @@ import { errorObject } from '../../util/errorObject';
 import { Observable } from '../../Observable';
 import { Subscriber } from '../../Subscriber';
 import { TeardownLogic } from '../../Subscription';
-import { MapOperator } from '../../operator/map';
+import { map } from '../../operators';
 
 export interface AjaxRequest {
   url?: string;
@@ -87,9 +87,17 @@ export function ajaxPatch(url: string, body?: any, headers?: Object): Observable
   return new AjaxObservable<AjaxResponse>({ method: 'PATCH', url, body, headers });
 };
 
+const mapResponse = map((x: AjaxResponse, index: number) => x.response);
+
 export function ajaxGetJSON<T>(url: string, headers?: Object): Observable<T> {
-  return new AjaxObservable<AjaxResponse>({ method: 'GET', url, responseType: 'json', headers })
-    .lift<T>(new MapOperator<AjaxResponse, T>((x: AjaxResponse, index: number): T => x.response, null));
+  return mapResponse(
+    new AjaxObservable<AjaxResponse>({
+      method: 'GET',
+      url,
+      responseType: 'json',
+      headers
+    })
+  );
 };
 
 /**
