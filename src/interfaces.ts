@@ -1,8 +1,5 @@
 import { Observable } from './Observable';
 
-export interface UnaryFunction<T, R> {
-  (source: T): R;
-}
+export type UnaryFunction<T, R> = (source: T) => R;
 
-export interface OperatorFunction<T, R> extends UnaryFunction<Observable<T>, Observable<R>> {
-}
+export type OperatorFunction<T, R> = UnaryFunction<Observable<T>, Observable<R>>;
