@@ -1,10 +1,7 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-
-export interface OperatorFunction<T, R> {
-  (source: Observable<T>): Observable<R>;
-}
+import { OperatorFunction } from './OperatorFunction';
 
 /**
  * Applies a given `project` function to each value emitted by the source

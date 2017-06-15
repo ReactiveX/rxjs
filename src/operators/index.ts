@@ -1,1 +1,3 @@
-export { map, OperatorFunction } from './map';
+export { OperatorFunction } from './OperatorFunction';
+export { map } from './map';
+export { mergeMap } from './mergeMap';
