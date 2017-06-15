@@ -4,3 +4,4 @@ export { map } from './map';
 export { mergeMap } from './mergeMap';
 export { scan } from './scan';
 export { switchMap } from './switchMap';
+export { takeLast } from './takeLast';
