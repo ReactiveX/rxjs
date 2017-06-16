@@ -73,20 +73,53 @@ function getKB(size) {
   return (size / 1024).toFixed(2);
 }
 
+var globalFile = 'Rx.js';
+var minFile = 'Rx.min.js';
+
+function sizeDiffBadge(name, value) {
+  return 'https://img.shields.io/badge/' + name + '-' + value + 'KB-red.svg?style=flat-square';
+}
+
 //post size of build
 schedule(new Promise(function (res) {
   getSize('./dist/cjs', function (e, result) {
-    var globalFile = './dist/global/Rx.js';
-    var minFile = './dist/global/Rx.min.js';
-    var global = fs.statSync(globalFile);
-    var global_gzip = gzipSize.sync(fs.readFileSync(globalFile, 'utf8'));
-    var min = fs.statSync('./dist/global/Rx.min.js');
-    var min_gzip = gzipSize.sync(fs.readFileSync(minFile, 'utf8'));
+    var localGlobalFile = path.resolve('./dist/global', globalFile);
+    var localMinFile = path.resolve('./dist/global', minFile);
+
+    //get sizes of PR build
+    var global = fs.statSync(localGlobalFile);
+    var global_gzip = gzipSize.sync(fs.readFileSync(localGlobalFile, 'utf8'));
+    var min = fs.statSync(localMinFile);
+    var min_gzip = gzipSize.sync(fs.readFileSync(localMinFile, 'utf8'));
+
+    //resolve path to release build
+    var releasePath = path.dirname(require.resolve(require.resolve('rxjs')));
+    var bundlePath = path.resolve(releasePath, 'bundles');
+    var bundleGlobalFile = path.resolve(bundlePath, globalFile);
+    var bundleMinFile = path.resolve(bundlePath, minFile);
+
+    var packagePath = path.resolve(releasePath, 'package.json');
+    var releaseVersion = require(packagePath).version;
+
+    //get sizes of release build
+    var bundleGlobal = fs.statSync(bundleGlobalFile);
+    var bundle_global_gzip = gzipSize.sync(fs.readFileSync(bundleGlobalFile, 'utf8'));
+    var bundleMin = fs.statSync(bundleMinFile);
+    var bundle_min_gzip = gzipSize.sync(fs.readFileSync(bundleMinFile, 'utf8'));
+
+    var sizeMessage = '<img src="https://img.shields.io/badge/Size%20Diff%20%28' + releaseVersion + '%29--lightgrey.svg?style=flat-square"/> ';
+    sizeMessage += '<img src="' + sizeDiffBadge('Global', getKB(global.size) - getKB(bundleGlobal.size)) + '"/>';
+    sizeMessage += '<img src="' + sizeDiffBadge('Global(gzipped)', getKB(global_gzip) - getKB(bundle_global_gzip)) + '"/>';
+    sizeMessage += '<img src="' + sizeDiffBadge('Min', getKB(min.size) - getKB(bundleMin.size)) + '"/>';
+    sizeMessage += '<img src="' + sizeDiffBadge('Min (gzipped)', getKB(min_gzip) - getKB(bundle_min_gzip)) + '"/>';
+    message(sizeMessage);
+
     markdown('> CJS: **' + getKB(result) +
-    '**KB, global: **' + getKB(global.size) +
-    '**KB (gzipped: **' + getKB(global_gzip) +
-    '**KB), min: **' + getKB(min.size) +
-    '**KB (gzipped: **' + getKB(min_gzip) + '**KB)');
+      '**KB, global: **' + getKB(global.size) +
+      '**KB (gzipped: **' + getKB(global_gzip) +
+      '**KB), min: **' + getKB(min.size) +
+      '**KB (gzipped: **' + getKB(min_gzip) + '**KB)');
+
     res();
   });
 }));
