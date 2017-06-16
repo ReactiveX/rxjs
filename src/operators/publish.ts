@@ -1,11 +1,10 @@
-
-import { Observable } from '../Observable';
-import { ConnectableObservable } from '../observable/ConnectableObservable';
-import { publish as higherOrder } from '../operators';
+import { Subject } from '../Subject';
+import { multicast } from './multicast';
+import { MonoTypeOperatorFunction } from '../interfaces';
 
 /* tslint:disable:max-line-length */
-export function publish<T>(this: Observable<T>): ConnectableObservable<T>;
-export function publish<T>(this: Observable<T>, selector: selector<T>): Observable<T>;
+export function publish<T>(): MonoTypeOperatorFunction<T>;
+export function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -21,8 +20,8 @@ export function publish<T>(this: Observable<T>, selector: selector<T>): Observab
  * @method publish
  * @owner Observable
  */
-export function publish<T>(this: Observable<T>, selector?: (source: Observable<T>) => Observable<T>): Observable<T> | ConnectableObservable<T> {
-  return higherOrder(selector)(this);
+export function publish<T>(selector?: MonoTypeOperatorFunction<T>): MonoTypeOperatorFunction<T> {
+  return selector ?
+    multicast(() => new Subject<T>(), selector) :
+    multicast(new Subject<T>());
 }
-
-export type selector<T> = (source: Observable<T>) => Observable<T>;
