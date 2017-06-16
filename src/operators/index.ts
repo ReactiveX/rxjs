@@ -5,6 +5,7 @@ export { map } from './map';
 export { max } from './max';
 export { mergeMap } from './mergeMap';
 export { min } from './min';
+export { multicast } from './multicast';
 export { reduce } from './reduce';
 export { scan } from './scan';
 export { switchMap } from './switchMap';

@@ -1,12 +1,12 @@
 import { Subject } from '../Subject';
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { ConnectableObservable, connectableObservableDescriptor } from '../observable/ConnectableObservable';
+import { ConnectableObservable } from '../observable/ConnectableObservable';
+import { multicast as higherOrder } from '../operators';
+import { FactoryOrValue, MonoTypeOperatorFunction } from '../interfaces';
 
 /* tslint:disable:max-line-length */
-export function multicast<T>(this: Observable<T>, subjectOrSubjectFactory: factoryOrValue<Subject<T>>): ConnectableObservable<T>;
-export function multicast<T>(SubjectFactory: (this: Observable<T>) => Subject<T>, selector?: selector<T>): Observable<T>;
+export function multicast<T>(this: Observable<T>, subjectOrSubjectFactory: FactoryOrValue<Subject<T>>): ConnectableObservable<T>;
+export function multicast<T>(SubjectFactory: (this: Observable<T>) => Subject<T>, selector?: MonoTypeOperatorFunction<T>): Observable<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -30,38 +30,5 @@ export function multicast<T>(SubjectFactory: (this: Observable<T>) => Subject<T>
  */
 export function multicast<T>(this: Observable<T>, subjectOrSubjectFactory: Subject<T> | (() => Subject<T>),
                              selector?: (source: Observable<T>) => Observable<T>): Observable<T> | ConnectableObservable<T> {
-  let subjectFactory: () => Subject<T>;
-  if (typeof subjectOrSubjectFactory === 'function') {
-    subjectFactory = <() => Subject<T>>subjectOrSubjectFactory;
-  } else {
-    subjectFactory = function subjectFactory() {
-      return <Subject<T>>subjectOrSubjectFactory;
-    };
-  }
-
-  if (typeof selector === 'function') {
-    return this.lift(new MulticastOperator(subjectFactory, selector));
-  }
-
-  const connectable: any = Object.create(this, connectableObservableDescriptor);
-  connectable.source = this;
-  connectable.subjectFactory = subjectFactory;
-
-  return <ConnectableObservable<T>> connectable;
-}
-
-export type factoryOrValue<T> = T | (() => T);
-export type selector<T> = (source: Observable<T>) => Observable<T>;
-
-export class MulticastOperator<T> implements Operator<T, T> {
-  constructor(private subjectFactory: () => Subject<T>,
-              private selector: (source: Observable<T>) => Observable<T>) {
-  }
-  call(subscriber: Subscriber<T>, source: any): any {
-    const { selector } = this;
-    const subject = this.subjectFactory();
-    const subscription = selector(subject).subscribe(subscriber);
-    subscription.add(source.subscribe(subject));
-    return subscription;
-  }
+  return higherOrder(<any>subjectOrSubjectFactory, selector)(this);
 }
