@@ -9,6 +9,7 @@ export { min } from './min';
 export { multicast } from './multicast';
 export { publish } from './publish';
 export { reduce } from './reduce';
+export { refCount } from './refCount';
 export { scan } from './scan';
 export { switchAll } from './switchAll';
 export { switchMap } from './switchMap';
