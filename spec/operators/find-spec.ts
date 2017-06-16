@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { doNotUnsubscribe } from '../helpers/doNotUnsubscribe';
 
 declare const { asDiagram };
 declare const hot: typeof marbleTestingSignature.hot;
@@ -157,6 +158,33 @@ describe('Observable.prototype.find', () => {
     };
 
     expectObservable((<any>source).find(predicate)).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should unsubscribe from source when complete, even if following operator does not unsubscribe', () => {
+    const values = {a: 3, b: 9, c: 15, d: 20};
+    const source = hot('---a--b--c--d---|', values);
+    const subs =       '^        !       ';
+    const expected =   '---------(c|)    ';
+
+    const predicate = function (x) { return x % 5 === 0; };
+
+    expectObservable((<any>source).find(predicate).let(doNotUnsubscribe)).toBe(expected, values);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should unsubscribe from source when predicate function errors,' +
+    ' even if following operator does not unsubscribe', () => {
+
+    const source = hot('--a--b--c--|');
+    const subs =       '^ !';
+    const expected =   '--#';
+
+    const predicate = function (value) {
+      throw 'error';
+    };
+
+    expectObservable((<any>source).find(predicate).let(doNotUnsubscribe)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
