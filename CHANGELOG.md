@@ -40,7 +40,7 @@ v5 behaviour of the other buffer operators.
 * **buffer:** The `buffer()` operator now emits what's partially buffered when the
 source completes. This is closer to rxjs v4* behaviour and matches the
 v5 behaviour of the other buffer operators.
-* **first:** unsubscription cadence has changed for `first`, this means side-effects related to unsubscription may occur at a different time than in previous versions.
+* **takeWhile:** unsubscription cadence has changed for `takeWhile`, this means side-effects related to unsubscription may occur at a different time than in previous versions.
 
 
 
