@@ -1,16 +1,17 @@
 import { Observable, ObservableInput } from '../Observable';
 import { IScheduler } from '../Scheduler';
-import { concat as higherOrder } from '../operators';
+import { OperatorFunction, MonoTypeOperatorFunction } from '../interfaces';
+import { concat as concatStatic } from '../observable/concat';
 
 /* tslint:disable:max-line-length */
-export function concat<T>(this: Observable<T>, scheduler?: IScheduler): Observable<T>;
-export function concat<T, T2>(this: Observable<T>, v2: ObservableInput<T2>, scheduler?: IScheduler): Observable<T | T2>;
-export function concat<T, T2, T3>(this: Observable<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, scheduler?: IScheduler): Observable<T | T2 | T3>;
-export function concat<T, T2, T3, T4>(this: Observable<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, scheduler?: IScheduler): Observable<T | T2 | T3 | T4>;
-export function concat<T, T2, T3, T4, T5>(this: Observable<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, scheduler?: IScheduler): Observable<T | T2 | T3 | T4 | T5>;
-export function concat<T, T2, T3, T4, T5, T6>(this: Observable<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, scheduler?: IScheduler): Observable<T | T2 | T3 | T4 | T5 | T6>;
-export function concat<T>(this: Observable<T>, ...observables: Array<ObservableInput<T> | IScheduler>): Observable<T>;
-export function concat<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> | IScheduler>): Observable<R>;
+export function concat<T>(scheduler?: IScheduler): MonoTypeOperatorFunction<T>;
+export function concat<T, T2>(v2: ObservableInput<T2>, scheduler?: IScheduler): OperatorFunction<T, T | T2>;
+export function concat<T, T2, T3>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, scheduler?: IScheduler): OperatorFunction<T, T | T2 | T3>;
+export function concat<T, T2, T3, T4>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, scheduler?: IScheduler): OperatorFunction<T, T | T2 | T3 | T4>;
+export function concat<T, T2, T3, T4, T5>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, scheduler?: IScheduler): OperatorFunction<T, T | T2 | T3 | T4 | T5>;
+export function concat<T, T2, T3, T4, T5, T6>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, scheduler?: IScheduler): OperatorFunction<T, T | T2 | T3 | T4 | T5 | T6>;
+export function concat<T>(...observables: Array<ObservableInput<T> | IScheduler>): MonoTypeOperatorFunction<T>;
+export function concat<T, R>(...observables: Array<ObservableInput<any> | IScheduler>): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -62,6 +63,8 @@ export function concat<T, R>(this: Observable<T>, ...observables: Array<Observab
  * @method concat
  * @owner Observable
  */
-export function concat<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> | IScheduler>): Observable<R> {
-  return higherOrder(...observables)(this);
+export function concat<T, R>(...observables: Array<ObservableInput<any> | IScheduler>): OperatorFunction<T, R> {
+  return function concatOperatorFunction(source: Observable<T>): Observable<T | R> {
+    return source.lift.call(concatStatic<T, R>(source, ...observables));
+  };
 }

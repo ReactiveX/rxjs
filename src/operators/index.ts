@@ -1,10 +1,13 @@
 export { catchError } from './catchError';
+export { concat } from './concat';
+export { concatAll } from './concatAll';
 export { concatMap } from './concatMap';
 export { defaultIfEmpty } from './defaultIfEmpty';
 export { filter } from './filter';
 export { ignoreElements } from './ignoreElements';
 export { map } from './map';
 export { max } from './max';
+export { mergeAll } from './mergeAll';
 export { mergeMap } from './mergeMap';
 export { min } from './min';
 export { multicast } from './multicast';
