@@ -10,6 +10,7 @@ export { multicast } from './multicast';
 export { publish } from './publish';
 export { reduce } from './reduce';
 export { scan } from './scan';
+export { switchAll } from './switchAll';
 export { switchMap } from './switchMap';
 export { takeLast } from './takeLast';
 export { tap } from './tap';

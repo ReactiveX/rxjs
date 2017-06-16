@@ -1,10 +1,5 @@
 import { Observable } from '../Observable';
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
+import { switchAll as higherOrder } from '../operators';
 
 /**
  * Converts a higher-order Observable into a first-order Observable by
@@ -48,66 +43,6 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @name switch
  * @owner Observable
  */
-export function _switch<T>(this: Observable<T>): T {
-  return <any>this.lift<any>(new SwitchOperator());
-}
-
-class SwitchOperator<T, R> implements Operator<T, R> {
-  call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new SwitchSubscriber(subscriber));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class SwitchSubscriber<T, R> extends OuterSubscriber<T, R> {
-  private active: number = 0;
-  private hasCompleted: boolean = false;
-  innerSubscription: Subscription;
-
-  constructor(destination: Subscriber<R>) {
-    super(destination);
-  }
-
-  protected _next(value: T): void {
-    this.unsubscribeInner();
-    this.active++;
-    this.add(this.innerSubscription = subscribeToResult(this, value));
-  }
-
-  protected _complete(): void {
-    this.hasCompleted = true;
-    if (this.active === 0) {
-      this.destination.complete();
-    }
-  }
-
-  private unsubscribeInner(): void {
-    this.active = this.active > 0 ? this.active - 1 : 0;
-    const innerSubscription = this.innerSubscription;
-    if (innerSubscription) {
-      innerSubscription.unsubscribe();
-      this.remove(innerSubscription);
-    }
-  }
-
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
-    this.destination.next(innerValue);
-  }
-
-  notifyError(err: any): void {
-    this.destination.error(err);
-  }
-
-  notifyComplete(): void {
-    this.unsubscribeInner();
-    if (this.hasCompleted && this.active === 0) {
-      this.destination.complete();
-    }
-  }
+export function _switch<T>(this: Observable<Observable<T>>): Observable<T> {
+  return higherOrder()(this);
 }
