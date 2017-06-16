@@ -1,6 +1,8 @@
 var fs = require('fs');
 var path = require('path');
 var _ = require('lodash');
+var getSize = require('get-folder-size');
+var gzipSize = require('gzip-size');
 var validateMessage = require('validate-commit-msg');
 
 //simple regex matcher to detect usage of helper function and its type signature
@@ -66,3 +68,25 @@ if (!messageConventionValid) {
   warn('commit message does not follows conventional change log (' + ++errorCount + ')');
   markdown('> (' + errorCount + ') : RxJS uses conventional change log to generate changelog automatically. It seems some of commit messages are not following those, please check [contributing guideline](https://github.com/ReactiveX/rxjs/blob/master/CONTRIBUTING.md#commit-message-format) and update commit messages.');
 }
+
+function getKB(size) {
+  return (size / 1024).toFixed(2);
+}
+
+//post size of build
+schedule(new Promise(function (res) {
+  getSize('./dist/cjs', function (e, result) {
+    var globalFile = './dist/global/Rx.js';
+    var minFile = './dist/global/Rx.min.js';
+    var global = fs.statSync(globalFile);
+    var global_gzip = gzipSize.sync(fs.readFileSync(globalFile, 'utf8'));
+    var min = fs.statSync('./dist/global/Rx.min.js');
+    var min_gzip = gzipSize.sync(fs.readFileSync(minFile, 'utf8'));
+    markdown('> CJS: **' + getKB(result) +
+    '**KB, global: **' + getKB(global.size) +
+    '**KB (gzipped: **' + getKB(global_gzip) +
+    '**KB), min: **' + getKB(min.size) +
+    '**KB (gzipped: **' + getKB(min_gzip) + '**KB)');
+    res();
+  });
+}));
