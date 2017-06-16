@@ -1,5 +1,5 @@
 import { reduce } from './reduce';
-import { OperatorFunction } from '../interfaces';
+import { MonoTypeOperatorFunction } from '../interfaces';
 
 /**
  * The Max operator operates on an Observable that emits numbers (or items that can be compared with a provided function),
@@ -32,7 +32,7 @@ import { OperatorFunction } from '../interfaces';
  * @method max
  * @owner Observable
  */
-export function max<T>(comparer?: (x: T, y: T) => number): OperatorFunction<T, T> {
+export function max<T>(comparer?: (x: T, y: T) => number): MonoTypeOperatorFunction<T> {
   const max: (x: T, y: T) => T = (typeof comparer === 'function')
     ? (x, y) => comparer(x, y) > 0 ? x : y
     : (x, y) => x > y ? x : y;

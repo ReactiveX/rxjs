@@ -1,10 +1,10 @@
 import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { OperatorFunction } from '../interfaces';
+import { OperatorFunction, MonoTypeOperatorFunction } from '../interfaces';
 
 /* tslint:disable:max-line-length */
-export function defaultIfEmpty<T>(defaultValue?: T): OperatorFunction<T, T>;
+export function defaultIfEmpty<T>(defaultValue?: T): MonoTypeOperatorFunction<T>;
 export function defaultIfEmpty<T, R>(defaultValue?: R): OperatorFunction<T, T | R>;
 /* tslint:enable:max-line-length */
 

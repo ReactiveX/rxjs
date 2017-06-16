@@ -2,11 +2,11 @@ import { Observable } from '../Observable';
 import { scan } from './scan';
 import { takeLast } from './takeLast';
 import { defaultIfEmpty } from './defaultIfEmpty';
-import { OperatorFunction } from '../interfaces';
+import { OperatorFunction, MonoTypeOperatorFunction } from '../interfaces';
 import { compose } from '../util/compose';
 
 /* tslint:disable:max-line-length */
-export function reduce<T>(accumulator: (acc: T, value: T, index: number) => T, seed?: T): OperatorFunction<T, T>;
+export function reduce<T>(accumulator: (acc: T, value: T, index: number) => T, seed?: T): MonoTypeOperatorFunction<T>;
 export function reduce<T>(accumulator: (acc: T[], value: T, index: number) => T[], seed: T[]): OperatorFunction<T, T[]>;
 export function reduce<T, R>(accumulator: (acc: R, value: T, index: number) => R, seed?: R): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */

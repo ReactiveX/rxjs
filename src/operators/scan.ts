@@ -1,10 +1,10 @@
 import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { OperatorFunction } from '../interfaces';
+import { OperatorFunction, MonoTypeOperatorFunction } from '../interfaces';
 
 /* tslint:disable:max-line-length */
-export function scan<T>(accumulator: (acc: T, value: T, index: number) => T, seed?: T): OperatorFunction<T, T>;
+export function scan<T>(accumulator: (acc: T, value: T, index: number) => T, seed?: T): MonoTypeOperatorFunction<T>;
 export function scan<T>(accumulator: (acc: T[], value: T, index: number) => T[], seed?: T[]): OperatorFunction<T, T[]>;
 export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, seed?: R): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */

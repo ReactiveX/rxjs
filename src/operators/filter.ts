@@ -2,13 +2,13 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
-import { OperatorFunction } from '../interfaces';
+import { OperatorFunction, MonoTypeOperatorFunction } from '../interfaces';
 
 /* tslint:disable:max-line-length */
 export function filter<T, S extends T>(predicate: (value: T, index: number) => value is S,
                                        thisArg?: any): OperatorFunction<T, S>;
 export function filter<T>(predicate: (value: T, index: number) => boolean,
-                          thisArg?: any): OperatorFunction<T, T>;
+                          thisArg?: any): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -51,7 +51,7 @@ export function filter<T>(predicate: (value: T, index: number) => boolean,
  * @owner Observable
  */
 export function filter<T>(predicate: (value: T, index: number) => boolean,
-                          thisArg?: any): OperatorFunction<T, T> {
+                          thisArg?: any): MonoTypeOperatorFunction<T> {
   return function filterOperatorFunction(source: Observable<T>): Observable<T> {
     return source.lift(new FilterOperator(predicate, thisArg));
   };

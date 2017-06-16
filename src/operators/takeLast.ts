@@ -4,7 +4,7 @@ import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
 import { EmptyObservable } from '../observable/EmptyObservable';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
-import { OperatorFunction } from '../interfaces';
+import { MonoTypeOperatorFunction } from '../interfaces';
 
 /**
  * Emits only the last `count` values emitted by the source Observable.
@@ -42,7 +42,7 @@ import { OperatorFunction } from '../interfaces';
  * @method takeLast
  * @owner Observable
  */
-export function takeLast<T>(count: number): OperatorFunction<T, T> {
+export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
   return function takeLastOperatorFunction(source: Observable<T>): Observable<T> {
     if (count === 0) {
       return new EmptyObservable<T>();
