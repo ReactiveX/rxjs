@@ -2,6 +2,7 @@ export { catchError } from './catchError';
 export { concatMap } from './concatMap';
 export { defaultIfEmpty } from './defaultIfEmpty';
 export { filter } from './filter';
+export { ignoreElements } from './ignoreElements';
 export { map } from './map';
 export { max } from './max';
 export { mergeMap } from './mergeMap';
