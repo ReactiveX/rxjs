@@ -3,7 +3,7 @@ import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription, TeardownLogic } from '../Subscription';
-import { refCount as higherOrderRefCount } from '../operators';
+import { refCount as higherOrderRefCount } from '../operators/refCount';
 
 /**
  * @class ConnectableObservable<T>
