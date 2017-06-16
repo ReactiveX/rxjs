@@ -9,6 +9,7 @@ export { mergeMap } from './mergeMap';
 export { min } from './min';
 export { multicast } from './multicast';
 export { publish } from './publish';
+export { race } from './race';
 export { reduce } from './reduce';
 export { refCount } from './refCount';
 export { scan } from './scan';

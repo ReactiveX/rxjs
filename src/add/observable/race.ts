@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { raceStatic } from '../../operator/race';
+import { race as raceStatic } from '../../observable/race';
 
 Observable.race = raceStatic;
 
