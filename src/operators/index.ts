@@ -1,3 +1,4 @@
+export { catchError } from './catchError';
 export { concatMap } from './concatMap';
 export { defaultIfEmpty } from './defaultIfEmpty';
 export { filter } from './filter';
