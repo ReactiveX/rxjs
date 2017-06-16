@@ -12,3 +12,4 @@ export { reduce } from './reduce';
 export { scan } from './scan';
 export { switchMap } from './switchMap';
 export { takeLast } from './takeLast';
+export { tap } from './tap';
