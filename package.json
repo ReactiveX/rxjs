@@ -65,7 +65,7 @@
     "build_test": "shx rm -rf ./dist/ && npm-run-all build_cjs clean_spec build_spec test_mocha",
     "build_cover": "shx rm -rf ./dist/ && npm-run-all build_cjs build_spec cover",
     "build_docs": "npm-run-all build_global build_es6_for_docs build_cjs clean_spec build_spec tests2png decision_tree_widget && esdoc -c esdoc.json && npm-run-all clean_dist_es6",
-    "build_spec": "tsc --project ./spec --lib es5,es2015.iterable,es2015.collection,es2015.promise,dom --pretty",
+    "build_spec": "tsc --project ./spec",
     "build_spec_browser": "webpack --config spec/support/webpack.mocha.config.js",
     "check_circular_dependencies": "madge ./dist/cjs --circular",
     "clean_spec": "shx rm -rf spec-js",
