@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "diagnostics": true,
+    "module": "commonjs",
+    "outDir": "./dist/cjs",
+    "pretty": true,
+    "target": "ES5"
+  },
+  "files": [
+    "./dist/cjs/src/Rx.ts",
+    "./dist/cjs/src/add/observable/of.ts"
+  ]
+}
