@@ -5,9 +5,10 @@
     "outDir": "./dist/es6",
     "target": "ES6"
   },
-  "files": [
-    "./dist/es6/src/Rx.ts",
-    "./dist/es6/src/add/observable/of.ts",
-    "./dist/es6/src/MiscJSDoc.ts"
-  ]
+  "include": [
+    "dist/es6/src/**/*"
+  ],
+  // XXX: if we don't specify this, tsc adds the value of `outDir` to `exclude`
+  // and it will compile error by conflicting `include` vs `exclude`
+  "exclude": []
 }

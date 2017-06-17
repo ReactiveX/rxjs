@@ -5,8 +5,10 @@
     "outDir": "./dist/cjs",
     "target": "ES5"
   },
-  "files": [
-    "src/Rx.ts",
-    "src/add/observable/of.ts"
-  ]
+  "include": [
+    "src/**/*"
+  ],
+  // XXX: if we don't specify this, tsc adds the value of `outDir` to `exclude`
+  // and it will compile error by conflicting `include` vs `exclude`
+  "exclude": []
 }
