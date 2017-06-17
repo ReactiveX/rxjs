@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "diagnostics": true,
+    "module": "es2015",
+    "outDir": "./dist/es6",
+    "pretty": true,
+    "target": "ES5"
+  },
+  "files": [
+    "./dist/es6/src/Rx.ts",
+    "./dist/es6/src/add/observable/of.ts"
+  ]
+}
