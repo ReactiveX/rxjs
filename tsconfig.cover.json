@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "./dist/cjs",
+    "target": "ES5"
+  },
+  "files": [
+    "src/Rx.ts",
+    "src/add/observable/of.ts"
+  ]
+}
