@@ -6,9 +6,6 @@
     "target": "ES6"
   },
   "include": [
-    "dist/es6/src/**/*"
-  ],
-  // XXX: if we don't specify this, tsc adds the value of `outDir` to `exclude`
-  // and it will compile error by conflicting `include` vs `exclude`
-  "exclude": []
+    "src/**/*"
+  ]
 }
