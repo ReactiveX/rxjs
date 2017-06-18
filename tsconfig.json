@@ -1,6 +1,10 @@
-// This file exists to support some editors/IDE (e.g. vscode)
 {
   "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "module": "es2015",
+    "outDir": "./dist/es6",
+    "target": "ES5"
+  },
   "include": [
     "src/**/*"
   ]

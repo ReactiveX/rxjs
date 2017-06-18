@@ -76,7 +76,7 @@
     "copy_src_es6": "mkdirp ./dist/es6/src && shx cp -r ./src/* ./dist/es6/src",
     "commit": "git-cz",
     "compile_dist_cjs": "tsc --project ./tsconfig.cjs.json",
-    "compile_module_es6": "tsc --project ./tsconfig.es6.json",
+    "compile_module_es6": "tsc --project ./tsconfig.json",
     "compile_dist_es6_for_docs": "tsc --project ./tsconfig.tsconfig.es6_for_docs.json",
     "cover": "shx rm -rf dist/cjs && tsc --project ./tsconfig.cover.json  && nyc --reporter=lcov --reporter=html --exclude=spec/support/**/* --exclude=spec-js/**/* --exclude=node_modules mocha --opts spec/support/default.opts spec-js",
     "decision_tree_widget": "cd doc/decision-tree-widget && npm run build && cd ../..",
