@@ -78,6 +78,7 @@ class ElementAtSubscriber<T> extends Subscriber<T> {
     if (this.index-- === 0) {
       this.destination.next(x);
       this.destination.complete();
+      this.unsubscribe();
     }
   }
 
@@ -88,8 +89,11 @@ class ElementAtSubscriber<T> extends Subscriber<T> {
         destination.next(this.defaultValue);
       } else {
         destination.error(new ArgumentOutOfRangeError);
+        this.unsubscribe();
+        return;
       }
     }
     destination.complete();
+    this.unsubscribe();
   }
 }
