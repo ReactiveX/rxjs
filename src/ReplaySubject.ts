@@ -31,8 +31,13 @@ export class ReplaySubject<T> extends Subject<T> {
   }
 
   private nextInfiniteTimeWindow(value: T): void {
-    this._events.push(value);
-    this._trimBufferSize();
+    const _events = this._events;
+    _events.push(value);
+    // Since this method is invoked in every next() call than the buffer
+    // can overgrow the max size only by one item
+    if (_events.length > this._bufferSize) {
+      _events.shift();
+    }
 
     super.next(value);
   }
@@ -49,13 +54,12 @@ export class ReplaySubject<T> extends Subject<T> {
     const _infiniteTimeWindow = this._infiniteTimeWindow;
     const _events = _infiniteTimeWindow ? this._events : this._trimBufferThenGetEvents();
     const scheduler = this.scheduler;
+    const len = _events.length;
     let subscription: Subscription;
 
     if (this.closed) {
       throw new ObjectUnsubscribedError();
-    } else if (this.hasError) {
-      subscription = Subscription.EMPTY;
-    } else if (this.isStopped) {
+    } else if (this.isStopped || this.hasError) {
       subscription = Subscription.EMPTY;
     } else {
       this.observers.push(subscriber);
@@ -66,7 +70,6 @@ export class ReplaySubject<T> extends Subject<T> {
       subscriber.add(subscriber = new ObserveOnSubscriber<T>(subscriber, scheduler));
     }
 
-    const len = _events.length;
     if (_infiniteTimeWindow) {
       for (let i = 0; i < len && !subscriber.closed; i++) {
         subscriber.next(<T>_events[i]);
@@ -96,7 +99,7 @@ export class ReplaySubject<T> extends Subject<T> {
     const _windowTime = this._windowTime;
     const _events = <ReplayEvent<T>[]>this._events;
 
-    let eventsCount = _events.length;
+    const eventsCount = _events.length;
     let spliceCount = 0;
 
     // Trim events that fall out of the time window.
@@ -118,14 +121,6 @@ export class ReplaySubject<T> extends Subject<T> {
     }
 
     return _events;
-  }
-
-  private _trimBufferSize(): void {
-    const { _events } = this;
-
-    for (let i = 0; i < _events.length - this._bufferSize; i++) {
-      _events.shift();
-    }
   }
 
 }
