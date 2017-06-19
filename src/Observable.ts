@@ -4,9 +4,9 @@ import { Subscriber } from './Subscriber';
 import { Subscription, AnonymousSubscription, TeardownLogic } from './Subscription';
 import { root } from './util/root';
 import { toSubscriber } from './util/toSubscriber';
-import { IfObservable } from './observable/IfObservable';
 import { ErrorObservable } from './observable/ErrorObservable';
 import { observable as Symbol_observable } from './symbol/observable';
+import { _if } from './observable/if';
 
 export interface Subscribable<T> {
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
@@ -275,7 +275,7 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   // `if` and `throw` are special snow flakes, the compiler sees them as reserved words
-  static if: typeof IfObservable.create;
+  static if: typeof _if;
   static throw: typeof ErrorObservable.create;
 
   /**
