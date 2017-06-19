@@ -108,10 +108,10 @@ schedule(new Promise(function (res) {
     var bundle_min_gzip = gzipSize.sync(fs.readFileSync(bundleMinFile, 'utf8'));
 
     var sizeMessage = '<img src="https://img.shields.io/badge/Size%20Diff%20%28' + releaseVersion + '%29--lightgrey.svg?style=flat-square"/> ';
-    sizeMessage += '<img src="' + sizeDiffBadge('Global', getKB(global.size) - getKB(bundleGlobal.size)) + '"/>';
-    sizeMessage += '<img src="' + sizeDiffBadge('Global(gzipped)', getKB(global_gzip) - getKB(bundle_global_gzip)) + '"/>';
-    sizeMessage += '<img src="' + sizeDiffBadge('Min', getKB(min.size) - getKB(bundleMin.size)) + '"/>';
-    sizeMessage += '<img src="' + sizeDiffBadge('Min (gzipped)', getKB(min_gzip) - getKB(bundle_min_gzip)) + '"/>';
+    sizeMessage += '<img src="' + sizeDiffBadge('Global', getKB(global.size - bundleGlobal.size)) + '"/> ';
+    sizeMessage += '<img src="' + sizeDiffBadge('Global(gzipped)', getKB(global_gzip - bundle_global_gzip)) + '"/> ';
+    sizeMessage += '<img src="' + sizeDiffBadge('Min', getKB(min.size - bundleMin.size)) + '"/> ';
+    sizeMessage += '<img src="' + sizeDiffBadge('Min (gzipped)', getKB(min_gzip - bundle_min_gzip)) + '"/> ';
     message(sizeMessage);
 
     markdown('> CJS: **' + getKB(result) +
