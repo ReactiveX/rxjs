@@ -29,7 +29,7 @@ describe('IteratorObservable', () => {
 
   it('should not accept boolean as iterator', () => {
     expect(() => {
-      IteratorObservable.create(false);
+      IteratorObservable.create(<any>false);
     }).to.throw(Error, 'object is not iterable');
   });
 
@@ -66,7 +66,7 @@ describe('IteratorObservable', () => {
 
     const results = [];
 
-    IteratorObservable.create(iterable)
+    IteratorObservable.create(<any>iterable)
       .take(3)
       .subscribe(
         x => results.push(x),
@@ -97,7 +97,7 @@ describe('IteratorObservable', () => {
 
     const results = [];
 
-    IteratorObservable.create(iterable, queue)
+    IteratorObservable.create(<any>iterable, queue)
       .take(3)
       .subscribe(
         x => results.push(x),
@@ -149,7 +149,7 @@ describe('IteratorObservable', () => {
     const expected = ['f', 'o', 'o'];
     IteratorObservable.create('foo')
       .subscribe(
-        (x: number) => { expect(x).to.equal(expected.shift()); },
+        (x) => { expect(x).to.equal(expected.shift()); },
         (x) => {
           done(new Error('should not be called'));
         }, () => {

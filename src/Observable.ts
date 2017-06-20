@@ -15,7 +15,8 @@ export interface Subscribable<T> {
 }
 
 export type SubscribableOrPromise<T> = Subscribable<T> | PromiseLike<T>;
-export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T>;
+export type ArrayOrIterable<T> = Iterable<T> | ArrayLike<T>;
+export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayOrIterable<T>;
 
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
