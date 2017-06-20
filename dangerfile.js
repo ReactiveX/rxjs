@@ -81,7 +81,7 @@ function sizeDiffBadge(name, value) {
   if (value > 0) {
     color = 'red';
   } else if (value < 0) {
-    color = 'lime';
+    color = 'green';
   }
   return 'https://img.shields.io/badge/' + name + '-' + getKB(value) + 'KB-' + color + '.svg?style=flat-square';
 }
