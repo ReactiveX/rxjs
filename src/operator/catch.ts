@@ -14,10 +14,10 @@ import { subscribeToResult } from '../util/subscribeToResult';
  *
  * Observable.of(1, 2, 3, 4, 5)
  *   .map(n => {
- * 	   if (n == 4) {
- * 	     throw 'four!';
+ *        if (n == 4) {
+ *          throw 'four!';
  *     }
- *	   return n;
+ *       return n;
  *   })
  *   .catch(err => Observable.of('I', 'II', 'III', 'IV', 'V'))
  *   .subscribe(x => console.log(x));
@@ -27,10 +27,10 @@ import { subscribeToResult } from '../util/subscribeToResult';
  *
  * Observable.of(1, 2, 3, 4, 5)
  *   .map(n => {
- * 	   if (n === 4) {
- * 	     throw 'four!';
+ *        if (n === 4) {
+ *          throw 'four!';
  *     }
- * 	   return n;
+ *        return n;
  *   })
  *   .catch((err, caught) => caught)
  *   .take(30)
@@ -64,16 +64,16 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @name catch
  * @owner Observable
  */
-export function _catch<T, R>(this: Observable<T>, selector: (err: any, caught: Observable<T>) => ObservableInput<R>): Observable<T | R> {
+export function _catch<T, R = T>(this: Observable<T>, selector: (err: any, caught: Observable<R>) => ObservableInput<R>): Observable<R> {
   const operator = new CatchOperator(selector);
   const caught = this.lift(operator);
   return (operator.caught = caught);
 }
 
-class CatchOperator<T, R> implements Operator<T, T | R> {
-  caught: Observable<T>;
+class CatchOperator<T, R = T> implements Operator<T, R> {
+  caught: Observable<R>;
 
-  constructor(private selector: (err: any, caught: Observable<T>) => ObservableInput<T | R>) {
+  constructor(private selector: (err: any, caught: Observable<R>) => ObservableInput<R>) {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {
@@ -86,10 +86,10 @@ class CatchOperator<T, R> implements Operator<T, T | R> {
  * @ignore
  * @extends {Ignored}
  */
-class CatchSubscriber<T, R> extends OuterSubscriber<T, T | R> {
+class CatchSubscriber<T, R> extends OuterSubscriber<T, R> {
   constructor(destination: Subscriber<any>,
-              private selector: (err: any, caught: Observable<T>) => ObservableInput<T | R>,
-              private caught: Observable<T>) {
+              private selector: (err: any, caught: Observable<R>) => ObservableInput<R>,
+              private caught: Observable<R>) {
     super(destination);
   }
 

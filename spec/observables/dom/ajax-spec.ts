@@ -950,7 +950,7 @@ class MockXMLHttpRequest {
 
   private previousRequest: MockXMLHttpRequest;
 
-  protected responseType: string = '';
+  protected responseType: XMLHttpRequestResponseType = '';
   private eventHandlers: Array<any> = [];
   private readyState: number = 0;
 

@@ -3,8 +3,7 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 
 /* tslint:disable:max-line-length */
-export function defaultIfEmpty<T>(this: Observable<T>, defaultValue?: T): Observable<T>;
-export function defaultIfEmpty<T, R>(this: Observable<T>, defaultValue?: R): Observable<T | R>;
+export function defaultIfEmpty<T, R = T>(this: Observable<T>, defaultValue?: R): Observable<R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -37,16 +36,16 @@ export function defaultIfEmpty<T, R>(this: Observable<T>, defaultValue?: R): Obs
  * @method defaultIfEmpty
  * @owner Observable
  */
-export function defaultIfEmpty<T, R>(this: Observable<T>, defaultValue: R = null): Observable<T | R> {
+export function defaultIfEmpty<T, R = T>(this: Observable<T>, defaultValue: R = null): Observable<R> {
   return this.lift(new DefaultIfEmptyOperator(defaultValue));
 }
 
-class DefaultIfEmptyOperator<T, R> implements Operator<T, T | R> {
+class DefaultIfEmptyOperator<T, R> implements Operator<T, R> {
 
   constructor(private defaultValue: R) {
   }
 
-  call(subscriber: Subscriber<T | R>, source: any): any {
+  call(subscriber: Subscriber<R>, source: any): any {
     return source.subscribe(new DefaultIfEmptySubscriber(subscriber, this.defaultValue));
   }
 }
@@ -59,7 +58,7 @@ class DefaultIfEmptyOperator<T, R> implements Operator<T, T | R> {
 class DefaultIfEmptySubscriber<T, R> extends Subscriber<T> {
   private isEmpty: boolean = true;
 
-  constructor(destination: Subscriber<T | R>, private defaultValue: R) {
+  constructor(destination: Subscriber<R>, private defaultValue: R) {
     super(destination);
   }
 
