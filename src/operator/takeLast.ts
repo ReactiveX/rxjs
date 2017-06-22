@@ -43,7 +43,7 @@ import { TeardownLogic } from '../Subscription';
  */
 export function takeLast<T>(this: Observable<T>, count: number): Observable<T> {
   if (count === 0) {
-    return new EmptyObservable<T>();
+    return new EmptyObservable();
   } else {
     return this.lift(new TakeLastOperator(count));
   }

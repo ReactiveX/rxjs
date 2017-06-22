@@ -44,6 +44,6 @@ export function startWith<T>(this: Observable<T>, ...array: Array<T | IScheduler
   } else if (len > 1) {
     return concatStatic(new ArrayObservable<T>(<T[]>array, scheduler), <Observable<T>>this);
   } else {
-    return concatStatic(new EmptyObservable<T>(scheduler), <Observable<T>>this);
+    return concatStatic(new EmptyObservable(scheduler), <Observable<T>>this);
   }
 }

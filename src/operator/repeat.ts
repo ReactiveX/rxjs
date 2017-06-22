@@ -18,7 +18,7 @@ import { TeardownLogic } from '../Subscription';
  */
 export function repeat<T>(this: Observable<T>, count: number = -1): Observable<T> {
   if (count === 0) {
-    return new EmptyObservable<T>();
+    return new EmptyObservable();
   } else if (count < 0) {
     return this.lift(new RepeatOperator(-1, this));
   } else {

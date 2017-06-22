@@ -15,7 +15,7 @@ export class ArrayLikeObservable<T> extends Observable<T> {
   static create<T>(arrayLike: ArrayLike<T>, scheduler?: IScheduler): Observable<T> {
     const length = arrayLike.length;
     if (length === 0) {
-      return new EmptyObservable<T>();
+      return new EmptyObservable();
     } else if (length === 1) {
       return new ScalarObservable<T>(<any>arrayLike[0], scheduler);
     } else {

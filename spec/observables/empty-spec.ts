@@ -10,7 +10,7 @@ const Observable = Rx.Observable;
 describe('Observable.empty', () => {
   asDiagram('empty')('should create a cold observable with only complete', () => {
     const expected = '|';
-    const e1 = Observable.empty();
+    const e1: Rx.Observable<never> = Observable.empty();
     expectObservable(e1).toBe(expected);
   });
 });

@@ -10,7 +10,7 @@ const Observable = Rx.Observable;
 describe('Observable.never', () => {
   asDiagram('never')('should create a cold observable that never emits', () => {
     const expected = '-';
-    const e1 = Observable.never();
+    const e1: Rx.Observable<never> = Observable.never();
     expectObservable(e1).toBe(expected);
   });
 });

@@ -192,7 +192,7 @@ describe('Observable.prototype.race', () => {
   it('should unsubscribe former observables if a latter one emits immediately', () => {
     const onNext = sinon.spy();
     const onUnsubscribe = sinon.spy();
-    const e1 = Observable.never<string>().finally(onUnsubscribe); // Should be unsubscribed
+    const e1 = Observable.never().finally(onUnsubscribe); // Should be unsubscribed
     const e2 = Observable.of('b'); // Wins the race
 
     e1.race(e2).subscribe(onNext);
@@ -203,8 +203,8 @@ describe('Observable.prototype.race', () => {
   it('should unsubscribe from immediately emitting observable on unsubscription', () => {
     const onNext = sinon.spy();
     const onUnsubscribe = sinon.spy();
-    const e1 = Observable.never<string>().startWith('a').finally(onUnsubscribe); // Wins the race
-    const e2 = Observable.never<string>(); // Loses the race
+    const e1 = Observable.never().startWith('a').finally(onUnsubscribe); // Wins the race
+    const e2 = Observable.never(); // Loses the race
 
     const subscription = e1.race(e2).subscribe(onNext);
     expect(onNext.calledWithExactly('a')).to.be.true;

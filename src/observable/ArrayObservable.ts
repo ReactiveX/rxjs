@@ -74,7 +74,7 @@ export class ArrayObservable<T> extends Observable<T> {
     } else if (len === 1) {
       return new ScalarObservable<T>(<any>array[0], scheduler);
     } else {
-      return new EmptyObservable<T>(scheduler);
+      return new EmptyObservable(scheduler);
     }
   }
 
