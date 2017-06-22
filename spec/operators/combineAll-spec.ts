@@ -2,7 +2,8 @@ import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
-declare const { asDiagram };
+declare const asDiagram: Function;
+declare const type: Function;
 declare const hot: typeof marbleTestingSignature.hot;
 declare const cold: typeof marbleTestingSignature.cold;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
@@ -19,7 +20,7 @@ describe('Observable.prototype.combineAll', () => {
     const outer = hot('-x----y--------|           ', { x: x, y: y });
     const expected =  '-----------------A-B--C---|';
 
-    const result = outer.combineAll((a: any, b: any) => String(a) + String(b));
+    const result = outer.combineAll((a, b) => String(a) + String(b));
 
     expectObservable(result).toBe(expected, { A: 'a1', B: 'a2', C: 'b2' });
   });
@@ -31,7 +32,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =   '^';
     const expected = '-';
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -45,7 +46,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =   '(^!)';
     const expected = '-';
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -59,7 +60,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =   '^';
     const expected = '-';
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -73,7 +74,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =  '(^!)';
     const expected = '|';
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -87,7 +88,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =           '^   !';
     const expected =         '----|';
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -101,7 +102,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =           '^   !';
     const expected =         '----|';
 
-    const result = Observable.of(e2, e1).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e2, e1).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -115,7 +116,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =           '^  ';
     const expected =         '-'; //never
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -129,7 +130,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =           '^   !';
     const expected =         '-----'; //never
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -143,7 +144,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =        '^         !';
     const expected =      '----x-yz--|';
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected, { x: 'bf', y: 'cf', z: 'cg' });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -159,7 +160,7 @@ describe('Observable.prototype.combineAll', () => {
     const unsub =         '         !    ';
     const values = { x: 'bf', y: 'cf', z: 'cg' };
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -176,9 +177,9 @@ describe('Observable.prototype.combineAll', () => {
     const values = { x: 'bf', y: 'cf', z: 'cg' };
 
     const result = Observable.of(e1, e2)
-      .mergeMap((x: any) => Observable.of(x))
-      .combineAll((x: any, y: any) => x + y)
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x))
+      .combineAll((x, y) => x + y)
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -209,7 +210,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =   '^     !';
     const expected = '------#';
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected, null, 'shazbot!');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -223,7 +224,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =     '^   !';
     const expected =   '----#';
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected, null, 'too bad, honk');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -237,7 +238,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =       '^ !';
     const expected =     '--#';
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected, null, 'bazinga');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -251,7 +252,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =       '^ !';
     const expected =     '--#';
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected, null, 'bazinga');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -265,7 +266,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =       '^ !';
     const expected =     '--#';
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected, null, 'bazinga');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -279,7 +280,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =       '^ !';
     const expected =     '--#';
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected, null, 'flurp');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -293,7 +294,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =       '^ !';
     const expected =     '--#';
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected, null, 'flurp');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -307,7 +308,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =       '^     !';
     const expected =     '------#';
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected, null, 'wokka wokka');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -321,7 +322,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =       '^    !';
     const expected =     '-----#';
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected, null, 'wokka wokka');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -335,7 +336,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =       '^  !';
     const expected =     '---#';
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected, { a: 1, b: 2}, 'wokka wokka');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -349,7 +350,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =       '^  !';
     const expected =     '---#';
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected, null, 'wokka wokka');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -363,7 +364,7 @@ describe('Observable.prototype.combineAll', () => {
     const rightSubs =      '^        !';
     const expected =       '---------#';
 
-    const result = Observable.of(left, right).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(left, right).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected, null, 'bad things');
     expectSubscriptions(left.subscriptions).toBe(leftSubs);
@@ -377,7 +378,7 @@ describe('Observable.prototype.combineAll', () => {
     const rightSubs =       '^      !';
     const expected =        '---------#';
 
-    const result = Observable.of(left, right).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(left, right).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected, null, 'bad things');
     expectSubscriptions(left.subscriptions).toBe(leftSubs);
@@ -391,7 +392,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =     '^           !';
     const expected =   '-----x-y-z--|';
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected, { x: 'be', y: 'ce', z: 'cf' });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -405,7 +406,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =      '^                   !';
     const expected =    '-----------x--y--z--|';
 
-    const result = Observable.of(e1, e2).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(e1, e2).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected, { x: 'cd', y: 'ce', z: 'cf' });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -419,7 +420,7 @@ describe('Observable.prototype.combineAll', () => {
     const rightSubs =      '^        !';
     const expected =       '---------#';
 
-    const result = Observable.of(left, right).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(left, right).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected, null, 'jenga');
     expectSubscriptions(left.subscriptions).toBe(leftSubs);
@@ -433,7 +434,7 @@ describe('Observable.prototype.combineAll', () => {
     const rightSubs =      '^                   !';
     const expected =       '-----------x--y--z--#';
 
-    const result = Observable.of(left, right).combineAll((x: any, y: any) => x + y);
+    const result = Observable.of(left, right).combineAll((x, y) => x + y);
 
     expectObservable(result).toBe(expected, { x: 'cd', y: 'ce', z: 'cf' }, 'dun dun dun');
     expectSubscriptions(left.subscriptions).toBe(leftSubs);
@@ -447,7 +448,7 @@ describe('Observable.prototype.combineAll', () => {
     const e2subs =      '^  !';
     const expected =    '---#';
 
-    const result = Observable.of(e1, e2).combineAll(<any>((x: string, y: string) => { throw 'ha ha ' + x + ', ' + y; }));
+    const result = Observable.of(e1, e2).combineAll(((x: string, y: string) => { throw 'ha ha ' + x + ', ' + y; }));
 
     expectObservable(result).toBe(expected, null, 'ha ha b, d');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -458,7 +459,7 @@ describe('Observable.prototype.combineAll', () => {
     const a = Observable.of(1, 2, 3);
     const b = Observable.of(4, 5, 6, 7, 8);
     const expected = [[3, 4], [3, 5], [3, 6], [3, 7], [3, 8]];
-    Observable.of(a, b).combineAll().subscribe((vals: any) => {
+    Observable.of(a, b).combineAll().subscribe((vals) => {
       expect(vals).to.deep.equal(expected.shift());
     }, null, () => {
       expect(expected.length).to.equal(0);
@@ -472,11 +473,52 @@ describe('Observable.prototype.combineAll', () => {
     const r = [[1, 4], [2, 4], [2, 5], [3, 5], [3, 6], [3, 7], [3, 8]];
 
     Observable.of<Rx.Observable<number>>(a, b, queueScheduler).combineAll()
-      .subscribe((vals: any) => {
+      .subscribe((vals) => {
         expect(vals).to.deep.equal(r.shift());
     }, null, () => {
       expect(r.length).to.equal(0);
       done();
+    });
+  });
+
+  it ('types should flow with arrays', () => {
+    type(() => {
+      let o: Rx.Observable<number[]>;
+      let r: Rx.Observable<number[]> = o.combineAll();
+    });
+  });
+
+  it ('types should flow with promises', () => {
+    type(() => {
+      let o: Rx.Observable<Promise<string>>;
+      let r: Rx.Observable<string[]> = o.combineAll();
+    });
+  });
+
+  it ('types should flow with observables', () => {
+    type(() => {
+      let o: Rx.Observable<Rx.Observable<{ a: string }>>;
+      let r: Rx.Observable<{ a: string }[]> = o.combineAll();
+    });
+  });
+
+  it ('types should flow with mixed', () => {
+    type(() => {
+      let o1: Rx.Observable<Rx.Observable<{ b: string }>>;
+      let o2: Rx.Observable<{ b: string }[]>;
+      let o3: Rx.Observable<Promise<{ b: string }>>;
+      let r: Rx.Observable<{ b: string }[]> = Rx.Observable.concat(o1, o2, o3)
+        .combineAll();
+    });
+  });
+
+  it ('types should flow with mixed projection', () => {
+    type(() => {
+      let o1: Rx.Observable<Rx.Observable<{ b: string }>>;
+      let o2: Rx.Observable<{ b: string }[]>;
+      let o3: Rx.Observable<Promise<{ b: string }>>;
+      let r: Rx.Observable<string> = Rx.Observable.concat(o1, o2, o3)
+        .combineAll((...values) => values.map(z => z.b).join(''));
     });
   });
 });

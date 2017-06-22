@@ -19,7 +19,7 @@ describe('Observable.prototype.concatMap', () => {
     const expected =  '--x-x-x-y-y-yz-z-z-|';
     const values = {x: 10, y: 30, z: 50};
 
-    const result = e1.concatMap(x => e2.map(i => i * x));
+    const result = e1.concatMap(x => e2.map(i => i * parseInt(x)));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

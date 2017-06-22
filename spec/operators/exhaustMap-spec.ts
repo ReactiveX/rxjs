@@ -19,7 +19,7 @@ describe('Observable.prototype.exhaustMap', () => {
     const expected =  '--x-x-x-y-y-y------|';
     const values = {x: 10, y: 30, z: 50};
 
-    const result = e1.exhaustMap(x => e2.map(i => i * x));
+    const result = e1.exhaustMap(x => e2.map(i => i * parseInt(x)));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -366,7 +366,7 @@ describe('Observable.prototype.exhaustMap', () => {
       n: ['z', 'n', 1, 3],
     };
 
-    const result = (<any>e1).exhaustMap((value: any) => observableLookup[value],
+    const result = e1.exhaustMap((value) => observableLookup[value],
     (innerValue, outerValue, innerIndex, outerIndex) => [innerValue, outerValue, innerIndex, outerIndex]);
 
     expectObservable(result).toBe(expected, expectedValues);

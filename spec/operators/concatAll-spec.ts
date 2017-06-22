@@ -2,7 +2,8 @@ import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
-declare const { asDiagram };
+declare const asDiagram: Function;
+declare const type: Function;
 declare const hot: typeof marbleTestingSignature.hot;
 declare const cold: typeof marbleTestingSignature.cold;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
@@ -27,17 +28,16 @@ describe('Observable.prototype.concatAll', () => {
   it('should concat sources from promise', function (done: MochaDone) {
     this.timeout(2000);
     const sources = Rx.Observable.from([
-      new Promise((res: any) => { res(0); }),
-      new Promise((res: any) => { res(1); }),
-      new Promise((res: any) => { res(2); }),
-      new Promise((res: any) => { res(3); }),
+      new Promise<number>((res) => { res(0); }),
+      new Promise<number>((res) => { res(1); }),
+      new Promise<number>((res) => { res(2); }),
+      new Promise<number>((res) => { res(3); }),
     ]).take(10);
 
     const res = [];
-    (<any>sources.concatAll()).subscribe(
+    sources.concatAll().subscribe(
       (x: number) => { res.push(x); },
-      (err: any) => { done(new Error('should not be called')); },
-      () => {
+      (err: any) => { done(new Error('should not be called')); },      () => {
         expect(res).to.deep.equal([0, 1, 2, 3]);
         done();
       });
@@ -47,14 +47,14 @@ describe('Observable.prototype.concatAll', () => {
     this.timeout(2000);
 
     const sources = Rx.Observable.from([
-      new Promise((res: any) => { res(0); }),
-      new Promise((res: any, rej: any) => { rej(1); }),
-      new Promise((res: any) => { res(2); }),
-      new Promise((res: any) => { res(3); }),
+      new Promise<number>((res) => { res(0); }),
+      new Promise<number>((res, rej: any) => { rej(1); }),
+      new Promise<number>((res) => { res(2); }),
+      new Promise<number>((res) => { res(3); }),
     ]).take(10);
 
     const res = [];
-    (<any>sources.concatAll()).subscribe(
+    sources.concatAll().subscribe(
       (x: number) => { res.push(x); },
       (err: any) => {
         expect(res.length).to.equal(1);
@@ -433,5 +433,37 @@ describe('Observable.prototype.concatAll', () => {
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it ('types should flow with arrays', () => {
+    type(() => {
+      let o: Rx.Observable<number[]>;
+      let r: Rx.Observable<number> = o.concatAll();
+    });
+  });
+
+  it ('types should flow with promises', () => {
+    type(() => {
+      let o: Rx.Observable<Promise<string>>;
+      let r: Rx.Observable<string> = o.concatAll();
+    });
+  });
+
+  it ('types should flow with observables', () => {
+    type(() => {
+      let o: Rx.Observable<Rx.Observable<{ a: string }>>;
+      let r: Rx.Observable<{ a: string }> = o.concatAll();
+    });
+  });
+
+  it ('types should flow with mixed', () => {
+    type(() => {
+      let o1: Rx.Observable<Rx.Observable<{ b: string }>>;
+      let o2: Rx.Observable<{ b: string }[]>;
+      let o3: Rx.Observable<Promise<{ b: string }>>;
+      let r: Rx.Observable<{ b: string }> = Rx.Observable
+        .concat(o1, o2, o3)
+        .concatAll();
+    });
   });
 });

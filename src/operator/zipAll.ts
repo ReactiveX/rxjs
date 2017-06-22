@@ -1,6 +1,9 @@
 import { ZipOperator } from './zip';
-import { Observable } from '../Observable';
+import { Observable, ObservableInput } from '../Observable';
 
+export function zipAll<T>(this: Observable<ObservableInput<T>>): Observable<T[]>;
+export function zipAll<T, R>(this: Observable<ObservableInput<T>>, project: (...values: T[]) => R): Observable<R>;
+export function zipAll<T, R>(this: Observable<T>, project?: (...values: any[]) => R): Observable<R>;
 /**
  * @param project
  * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}

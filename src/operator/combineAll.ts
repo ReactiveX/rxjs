@@ -1,6 +1,9 @@
 import { CombineLatestOperator } from './combineLatest';
-import { Observable } from '../Observable';
+import { Observable, ObservableInput } from '../Observable';
 
+export function combineAll<T>(this: Observable<ObservableInput<T>>): Observable<T[]>;
+export function combineAll<T, R>(this: Observable<ObservableInput<T>>, project: (...values: T[]) => R): Observable<R>;
+export function combineAll<T, R>(this: Observable<T>, project?: (...values: any[]) => R): Observable<R>;
 /**
  * Converts a higher-order Observable into a first-order Observable by waiting
  * for the outer Observable to complete, then applying {@link combineLatest}.

@@ -93,9 +93,9 @@ describe('Observable.prototype.expand', () => {
     const e2shape =  '---(z|)      ';
     const expected = 'a--b--c--(d#)';
 
-    const result = e1.expand((x: number) => {
+    const result = e1.expand((x) => {
       if (x === 8) {
-        return cold('#');
+        return cold<number>(<any>'#');
       }
       return cold(e2shape, { z: x + x });
     });

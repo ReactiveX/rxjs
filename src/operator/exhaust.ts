@@ -1,10 +1,12 @@
 import { Operator } from '../Operator';
-import { Observable } from '../Observable';
+import { Observable, ObservableInput } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription, TeardownLogic } from '../Subscription';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 
+export function exhaust<T>(this: Observable<ObservableInput<T>>): Observable<T>;
+export function exhaust<T, R>(this: Observable<T>): Observable<R>;
 /**
  * Converts a higher-order Observable into a first-order Observable by dropping
  * inner Observables while the previous inner Observable has not yet completed.
@@ -40,8 +42,8 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @method exhaust
  * @owner Observable
  */
-export function exhaust<T>(this: Observable<T>): Observable<T> {
-  return this.lift(new SwitchFirstOperator<T>());
+export function exhaust<T, R>(this: Observable<T>): Observable<R> {
+  return this.lift<R>(new SwitchFirstOperator<R>());
 }
 
 class SwitchFirstOperator<T> implements Operator<T, T> {
