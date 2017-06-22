@@ -116,9 +116,7 @@ export class ReplaySubject<T> extends Subject<T> {
       spliceCount = Math.max(spliceCount, eventsCount - _bufferSize);
     }
 
-    for (let i = 0; i < spliceCount; i++) {
-      _events.shift();
-    }
+    _events.splice(0, spliceCount);
 
     return _events;
   }
