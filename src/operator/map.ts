@@ -35,7 +35,9 @@ import { Observable } from '../Observable';
  * @method map
  * @owner Observable
  */
-export function map<T, R>(this: Observable<T>, project: (value: T, index: number) => R, thisArg?: any): Observable<R> {
+export function map<T, R>(this: Observable<T>, project: (value: T, index: number) => R): Observable<R>;
+export function map<T, R, This>(this: Observable<T>, project: (this: This, value: T, index: number) => R, thisArg: This): Observable<R>;
+export function map<T, R, This>(this: Observable<T>, project: (this: This, value: T, index: number) => R, thisArg?: This): Observable<R> {
   if (typeof project !== 'function') {
     throw new TypeError('argument is not a function. Are you looking for `mapTo()`?');
   }

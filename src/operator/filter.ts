@@ -4,12 +4,10 @@ import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
 
 /* tslint:disable:max-line-length */
-export function filter<T, S extends T>(this: Observable<T>,
-                                       predicate: (value: T, index: number) => value is S,
-                                       thisArg?: any): Observable<S>;
-export function filter<T>(this: Observable<T>,
-                          predicate: (value: T, index: number) => boolean,
-                          thisArg?: any): Observable<T>;
+export function filter<T, S extends T>(this: Observable<T>, predicate: (value: T, index: number) => value is S): Observable<S>;
+export function filter<T, S extends T, This>(this: Observable<T>, predicate: (this: This, value: T, index: number) => value is S, thisArg: This): Observable<S>;
+export function filter<T>(this: Observable<T>, predicate: (value: T, index: number) => boolean): Observable<T>;
+export function filter<T, This>(this: Observable<T>, predicate: (this: This, value: T, index: number) => boolean, thisArg: This): Observable<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -51,14 +49,12 @@ export function filter<T>(this: Observable<T>,
  * @method filter
  * @owner Observable
  */
-export function filter<T>(this: Observable<T>, predicate: (value: T, index: number) => boolean,
-                          thisArg?: any): Observable<T> {
+export function filter<T, This>(this: Observable<T>, predicate: (this: This, value: T, index: number) => boolean, thisArg?: This): Observable<T> {
   return this.lift(new FilterOperator(predicate, thisArg));
 }
 
 class FilterOperator<T> implements Operator<T, T> {
-  constructor(private predicate: (value: T, index: number) => boolean,
-              private thisArg?: any) {
+  constructor(private predicate: (value: T, index: number) => boolean, private thisArg?: any) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {

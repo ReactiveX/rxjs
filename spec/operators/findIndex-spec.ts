@@ -1,7 +1,7 @@
 import * as Rx from '../../dist/cjs/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
-declare const { asDiagram };
+declare const asDiagram: Function;
 declare const hot: typeof marbleTestingSignature.hot;
 declare const cold: typeof marbleTestingSignature.cold;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
@@ -11,7 +11,7 @@ const Observable = Rx.Observable;
 
 /** @test {findIndex} */
 describe('Observable.prototype.findIndex', () => {
-  function truePredicate(x) {
+  function truePredicate(x: never) {
     return true;
   }
 
@@ -21,9 +21,9 @@ describe('Observable.prototype.findIndex', () => {
     const subs =       '^        !       ';
     const expected =   '---------(x|)    ';
 
-    const predicate = function (x) { return x % 5 === 0; };
+    const predicate = function (x: number) { return x % 5 === 0; };
 
-    expectObservable((<any>source).findIndex(predicate)).toBe(expected, { x: 2 });
+    expectObservable(source.findIndex(predicate)).toBe(expected, { x: 2 });
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -32,7 +32,7 @@ describe('Observable.prototype.findIndex', () => {
     const subs =       '^';
     const expected =   '-';
 
-    expectObservable((<any>source).findIndex(truePredicate)).toBe(expected);
+    expectObservable(source.findIndex(truePredicate)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -41,7 +41,7 @@ describe('Observable.prototype.findIndex', () => {
     const subs =        '(^!)';
     const expected =    '(x|)';
 
-    const result = (<any>source).findIndex(truePredicate);
+    const result = source.findIndex(truePredicate);
 
     expectObservable(result).toBe(expected, {x: -1});
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -53,11 +53,11 @@ describe('Observable.prototype.findIndex', () => {
     const subs =       '^ !   ';
     const expected =   '--(x|)';
 
-    const predicate = function (value) {
+    const predicate = function (value: number) {
       return value === sourceValue;
     };
 
-    expectObservable((<any>source).findIndex(predicate)).toBe(expected, { x: 0 });
+    expectObservable(source.findIndex(predicate)).toBe(expected, { x: 0 });
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -66,11 +66,11 @@ describe('Observable.prototype.findIndex', () => {
     const subs =       '^    !';
     const expected =   '-----(x|)';
 
-    const predicate = function (value) {
+    const predicate = function (value: number) {
       return value === 7;
     };
 
-    expectObservable((<any>source).findIndex(predicate)).toBe(expected, { x: 1 });
+    expectObservable(source.findIndex(predicate)).toBe(expected, { x: 1 });
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -80,10 +80,10 @@ describe('Observable.prototype.findIndex', () => {
     const subs =       '^    !';
     const expected =   '-----(x|)';
 
-    const predicate = function (value) {
+    const predicate = function (this: typeof sourceValues, value: number) {
       return value === this.b;
     };
-    const result = (<any>source).findIndex(predicate, sourceValues);
+    const result = source.findIndex(predicate, sourceValues);
 
     expectObservable(result).toBe(expected, { x: 1 });
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -94,11 +94,11 @@ describe('Observable.prototype.findIndex', () => {
     const subs =       '^          !';
     const expected =   '-----------(x|)';
 
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       return value === 'z';
     };
 
-    expectObservable((<any>source).findIndex(predicate)).toBe(expected, { x: -1 });
+    expectObservable(source.findIndex(predicate)).toBe(expected, { x: -1 });
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -108,7 +108,7 @@ describe('Observable.prototype.findIndex', () => {
     const expected =   '-------     ';
     const unsub =      '      !     ';
 
-    const result = (<any>source).findIndex((value: string) => value === 'z');
+    const result = source.findIndex((value) => value === 'z');
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -120,10 +120,10 @@ describe('Observable.prototype.findIndex', () => {
     const expected =   '-------     ';
     const unsub =      '      !     ';
 
-    const result = (<any>source)
-      .mergeMap((x: string) => Observable.of(x))
-      .findIndex((value: string) => value === 'z')
-      .mergeMap((x: string) => Observable.of(x));
+    const result = source
+      .mergeMap((x) => Observable.of(x))
+      .findIndex((value) => value === 'z')
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -134,11 +134,11 @@ describe('Observable.prototype.findIndex', () => {
     const subs =       '^       !';
     const expected =   '--------#';
 
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       return value === 'z';
     };
 
-    expectObservable((<any>source).findIndex(predicate)).toBe(expected);
+    expectObservable(source.findIndex(predicate)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -147,11 +147,11 @@ describe('Observable.prototype.findIndex', () => {
     const subs =       '^ !';
     const expected =   '--#';
 
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       throw 'error';
     };
 
-    expectObservable((<any>source).findIndex(predicate)).toBe(expected);
+    expectObservable(source.findIndex(predicate)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 });

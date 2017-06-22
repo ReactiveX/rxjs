@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
-declare const { asDiagram };
+declare const asDiagram: Function;
 declare const hot: typeof marbleTestingSignature.hot;
 declare const cold: typeof marbleTestingSignature.cold;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
@@ -12,11 +12,11 @@ const Observable = Rx.Observable;
 
 /** @test {every} */
 describe('Observable.prototype.every', () => {
-  function truePredicate(x) {
+  function truePredicate(x: never) {
     return true;
   }
 
-  function predicate(x) {
+  function predicate(x: number) {
     return x % 5 === 0;
   }
 
@@ -55,13 +55,13 @@ describe('Observable.prototype.every', () => {
       observer.next(1);
       observer.complete();
     })
-    .every(function (value: number, index: number) {
+    .every(function (this: typeof thisArg, value: number, index: number) {
       expect(this).to.deep.equal(thisArg);
     }, thisArg).subscribe();
   });
 
   it('should emit true if source is empty', () => {
-    const source = hot('-----|');
+    const source = hot('-----|', <{ [index: string]: number; }>{});
     const sourceSubs = '^    !';
     const expected =   '-----(x|)';
 
@@ -70,7 +70,7 @@ describe('Observable.prototype.every', () => {
   });
 
   it('should emit false if single source of element does not match with predicate', () => {
-    const source = hot('--a--|');
+    const source = hot('--a--|', <{ [index: string]: number; }>{});
     const sourceSubs = '^ !';
     const expected =   '--(x|)';
 
@@ -79,7 +79,7 @@ describe('Observable.prototype.every', () => {
   });
 
   it('should emit false if none of element does not match with predicate', () => {
-    const source = hot('--a--b--c--d--e--|');
+    const source = hot('--a--b--c--d--e--|', { a: 1, b: 2, c: 3, d: 4, e: 5 });
     const sourceSubs = '^ !';
     const expected =   '--(x|)';
 
@@ -115,9 +115,9 @@ describe('Observable.prototype.every', () => {
     const unsub =      '       !          ';
 
     const result = source
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .every(predicate)
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -128,7 +128,7 @@ describe('Observable.prototype.every', () => {
     const sourceSubs = '^       !';
     const expected =   '--------#';
 
-    function faultyPredicate(x) {
+    function faultyPredicate(x: string) {
       if (x === 'c') {
         throw 'error';
       } else {
@@ -167,7 +167,7 @@ describe('Observable.prototype.every', () => {
     const source = Observable.of(3);
     const expected = '#';
 
-    function faultyPredicate(x) {
+    function faultyPredicate(x: number) {
       throw 'error';
     }
 
@@ -192,7 +192,7 @@ describe('Observable.prototype.every', () => {
     const source = Observable.of(5, 10, 15, 20);
     const expected = '#';
 
-    function faultyPredicate(x) {
+    function faultyPredicate(x: number) {
       if (x === 15) {
         throw 'error';
       }
@@ -257,7 +257,7 @@ describe('Observable.prototype.every', () => {
   });
 
   it('should emit true if source does not emit after subscription', () => {
-    const source = hot('--z--^-----|');
+    const source = hot('--z--^-----|', { z: 0 });
     const sourceSubs =      '^     !';
     const expected =        '------(x|)';
 

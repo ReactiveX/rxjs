@@ -17,8 +17,11 @@ import { Subscriber } from '../Subscriber';
  * @method every
  * @owner Observable
  */
-export function every<T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                         thisArg?: any): Observable<boolean> {
+export function every<T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => boolean): Observable<boolean>;
+export function every<T, This>(this: Observable<T>, predicate: (this: This, value: T, index: number, source: Observable<T>) => boolean,
+                               thisArg: This): Observable<boolean>;
+export function every<T, This>(this: Observable<T>, predicate: (this: This, value: T, index: number, source: Observable<T>) => boolean,
+                               thisArg?: This): Observable<boolean> {
   return this.lift(new EveryOperator(predicate, thisArg, this));
 }
 
