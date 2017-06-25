@@ -1,3 +1,4 @@
+export { audit } from './audit';
 export { catchError } from './catchError';
 export { concat } from './concat';
 export { concatAll } from './concatAll';
