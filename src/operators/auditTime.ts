@@ -1,7 +1,8 @@
 import { async } from '../scheduler/async';
 import { IScheduler } from '../Scheduler';
-import { Observable } from '../Observable';
-import { auditTime as higherOrder } from '../operators';
+import { audit } from './audit';
+import { timer } from '../observable/timer';
+import { MonoTypeOperatorFunction } from '../interfaces';
 
 /**
  * Ignores source values for `duration` milliseconds, then emits the most recent
@@ -45,6 +46,6 @@ import { auditTime as higherOrder } from '../operators';
  * @method auditTime
  * @owner Observable
  */
-export function auditTime<T>(this: Observable<T>, duration: number, scheduler: IScheduler = async): Observable<T> {
-  return higherOrder(duration, scheduler)(this);
+export function auditTime<T>(duration: number, scheduler: IScheduler = async): MonoTypeOperatorFunction<T> {
+  return audit(() => timer(duration, scheduler));
 }
