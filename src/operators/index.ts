@@ -23,4 +23,5 @@ export { switchMap } from './switchMap';
 export { takeLast } from './takeLast';
 export { tap } from './tap';
 export { window } from './window';
+export { windowTime } from './windowTime';
 export { windowToggle } from './windowToggle';
