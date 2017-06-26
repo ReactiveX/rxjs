@@ -88,7 +88,7 @@ export class Notification<T> {
       case 'E':
         return Observable.throw(this.error);
       case 'C':
-        return Observable.empty<T>();
+        return Observable.empty();
     }
     throw new Error('unexpected notification kind value');
   }

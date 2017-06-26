@@ -3,8 +3,8 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
 
-export interface DispatchArg<T> {
-  subscriber: Subscriber<T>;
+export interface DispatchArg {
+  subscriber: Subscriber<never>;
 }
 
 /**
@@ -12,7 +12,7 @@ export interface DispatchArg<T> {
  * @extends {Ignored}
  * @hide true
  */
-export class EmptyObservable<T> extends Observable<T> {
+export class EmptyObservable extends Observable<never> {
 
   /**
    * Creates an Observable that emits no items to the Observer and immediately
@@ -57,11 +57,11 @@ export class EmptyObservable<T> extends Observable<T> {
    * @name empty
    * @owner Observable
    */
-  static create<T>(scheduler?: IScheduler): Observable<T> {
-    return new EmptyObservable<T>(scheduler);
+  static create(scheduler?: IScheduler): Observable<never> {
+    return new EmptyObservable(scheduler);
   }
 
-  static dispatch<T>(arg: DispatchArg<T>) {
+  static dispatch(arg: DispatchArg) {
     const { subscriber } = arg;
     subscriber.complete();
   }
@@ -70,7 +70,7 @@ export class EmptyObservable<T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
+  protected _subscribe(subscriber: Subscriber<never>): TeardownLogic {
 
     const scheduler = this.scheduler;
 

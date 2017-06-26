@@ -294,7 +294,7 @@ describe('Observable.prototype.debounce', () => {
     const e1subs =   '^                                   !';
     const expected = '--------a-x-yz---bxy---z--c--x--y--z|';
 
-    function selectorFunction(x) { return Observable.empty<number>(); }
+    function selectorFunction(x) { return Observable.empty(); }
 
     expectObservable(e1.debounce(selectorFunction)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -305,7 +305,7 @@ describe('Observable.prototype.debounce', () => {
     const e1subs =   '^                                   !';
     const expected = '------------------------------------(z|)';
 
-    function selectorFunction(x) { return Observable.never<number>(); }
+    function selectorFunction(x) { return Observable.never(); }
 
     expectObservable(e1.debounce(selectorFunction)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

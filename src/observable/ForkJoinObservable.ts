@@ -50,7 +50,7 @@ export class ForkJoinObservable<T> extends Observable<T> {
                                   Array<SubscribableOrPromise<any>> |
                                   ((...values: Array<any>) => any)>): Observable<T> {
     if (sources === null || arguments.length === 0) {
-      return new EmptyObservable<T>();
+      return new EmptyObservable();
     }
 
     let resultSelector: (...values: Array<any>) => any = null;
@@ -65,7 +65,7 @@ export class ForkJoinObservable<T> extends Observable<T> {
     }
 
     if (sources.length === 0) {
-      return new EmptyObservable<T>();
+      return new EmptyObservable();
     }
 
     return new ForkJoinObservable(<Array<SubscribableOrPromise<any>>>sources, resultSelector);

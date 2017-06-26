@@ -7,7 +7,7 @@ import { noop } from '../util/noop';
  * @extends {Ignored}
  * @hide true
  */
-export class NeverObservable<T> extends Observable<T> {
+export class NeverObservable extends Observable<never> {
   /**
    * Creates an Observable that emits no items to the Observer.
    *
@@ -39,15 +39,15 @@ export class NeverObservable<T> extends Observable<T> {
    * @name never
    * @owner Observable
    */
-  static create<T>() {
-    return new NeverObservable<T>();
+  static create() {
+    return new NeverObservable();
   }
 
   constructor() {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): void {
+  protected _subscribe(subscriber: Subscriber<never>): void {
     noop();
   }
 }
