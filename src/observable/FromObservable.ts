@@ -1,5 +1,6 @@
 import { isArray } from '../util/isArray';
 import { isArrayLike } from '../util/isArrayLike';
+import { isIterable } from '../util/isIterable';
 import { isPromise } from '../util/isPromise';
 import { PromiseObservable } from './PromiseObservable';
 import { IteratorObservable } from'./IteratorObservable';
@@ -93,7 +94,7 @@ export class FromObservable<T> extends Observable<T> {
         return new ArrayObservable<T>(ish, scheduler);
       } else if (isPromise(ish)) {
         return new PromiseObservable<T>(ish, scheduler);
-      } else if (typeof ish[Symbol_iterator] === 'function' || typeof ish === 'string') {
+      } else if (isIterable(ish) || typeof ish === 'string') {
         return new IteratorObservable<T>(ish, scheduler);
       } else if (isArrayLike(ish)) {
         return new ArrayLikeObservable(ish, scheduler);
