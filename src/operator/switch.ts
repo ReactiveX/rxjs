@@ -1,4 +1,4 @@
-import { Observable } from '../Observable';
+import { Observable, ObservableInput } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
@@ -6,6 +6,8 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 
+export function _switch<T>(this: Observable<ObservableInput<T>>): Observable<T>;
+export function _switch<T, R>(this: Observable<T>): Observable<R>;
 /**
  * Converts a higher-order Observable into a first-order Observable by
  * subscribing to only the most recently emitted of those inner Observables.
@@ -48,8 +50,8 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @name switch
  * @owner Observable
  */
-export function _switch<T>(this: Observable<T>): T {
-  return <any>this.lift<any>(new SwitchOperator());
+export function _switch<T, R>(this: Observable<T>): Observable<R> {
+  return this.lift(new SwitchOperator<T, R>());
 }
 
 class SwitchOperator<T, R> implements Operator<T, R> {

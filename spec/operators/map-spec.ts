@@ -22,7 +22,7 @@ describe('Observable.prototype.map', () => {
     const asubs =    '^          !';
     const expected = '--x--y--z--|';
 
-    const r = a.map(function (x) { return 10 * x; });
+    const r = a.map(function (x) { return 10 * parseInt(x); });
 
     expectObservable(r).toBe(expected, {x: 10, y: 20, z: 30});
     expectSubscriptions(a.subscriptions).toBe(asubs);

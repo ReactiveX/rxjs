@@ -165,7 +165,7 @@ describe('Observable.prototype.pluck', () => {
     const expected = '--1--2-     ';
 
     const r = a
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .pluck('prop')
       .mergeMap((x: string) => Observable.of(x));
 

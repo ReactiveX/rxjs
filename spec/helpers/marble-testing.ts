@@ -8,14 +8,18 @@ declare const global: any;
 
 export const rxTestScheduler: TestScheduler = global.rxTestScheduler;
 
-export function hot(marbles: string, values?: any, error?: any): HotObservable<any> {
+export function hot(marbles: string, values?: void, error?: any): HotObservable<string>;
+export function hot<V>(marbles: string, values?: { [index: string]: V; }, error?: any): HotObservable<V>;
+export function hot<V>(marbles: string, values?: { [index: string]: V; } | void, error?: any): HotObservable<any> {
   if (!global.rxTestScheduler) {
     throw 'tried to use hot() in async test';
   }
   return global.rxTestScheduler.createHotObservable.apply(global.rxTestScheduler, arguments);
 }
 
-export function cold(marbles: string, values?: any, error?: any): ColdObservable<any> {
+export function cold(marbles: string, values?: void, error?: any): ColdObservable<string>;
+export function cold<V>(marbles: string, values?: { [index: string]: V; }, error?: any): ColdObservable<V>;
+export function cold<V>(marbles: string, values?: { [index: string]: V; } | void, error?: any): ColdObservable<V> {
   if (!global.rxTestScheduler) {
     throw 'tried to use cold() in async test';
   }

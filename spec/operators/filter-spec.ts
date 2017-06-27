@@ -178,8 +178,8 @@ describe('Observable.prototype.filter', () => {
 
     expectObservable(
       source
-        .filter((x: number) => x % 2 === 0)
-        .filter((x: number) => x % 3 === 0)
+        .filter((x) => parseInt(x) % 2 === 0)
+        .filter((x) => parseInt(x) % 3 === 0)
     ).toBe(expected);
   });
 
@@ -209,8 +209,8 @@ describe('Observable.prototype.filter', () => {
 
     expectObservable(
       source
-        .filter((x: number) => x % 2 === 0)
-        .map((x: number) => x * x)
+        .filter((x) => parseInt(x) % 2 === 0)
+        .map((x) => parseInt(x) * parseInt(x))
     ).toBe(expected, values);
   });
 
