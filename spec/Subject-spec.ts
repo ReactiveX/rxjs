@@ -473,6 +473,18 @@ describe('Subject', () => {
     expect(results).to.deep.equal(['a', error]);
   });
 
+  it('should return corresponding hasObserver value', () => {
+    const subject = new Rx.Subject();
+
+    expect(subject.hasObservers()).to.be.false;
+
+    subject.subscribe(() => {
+      //noop
+    });
+
+    expect (subject.hasObservers()).to.be.true;
+  });
+
   describe('asObservable', () => {
     it('should hide subject', () => {
       const subject = new Rx.Subject();
