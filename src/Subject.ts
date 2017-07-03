@@ -16,40 +16,41 @@ export class SubjectSubscriber<T> extends Subscriber<T> {
   }
 }
 
+export interface ISubject<T> extends ISubscription, Observable<T>, Observer<T> {
+  readonly closed: boolean;
+  asObservable(): Observable<T>;
+}
+
 /**
  * @class Subject<T>
  */
-export class Subject<T> extends Observable<T> implements ISubscription {
+export class Subject<T> extends Observable<T> implements ISubject<T> {
 
   [rxSubscriberSymbol]() {
     return new SubjectSubscriber(this);
   }
 
-  observers: Observer<T>[] = [];
-
+  protected observers: Observer<T>[] = [];
+  protected isStopped = false;
+  protected hasError = false;
+  protected thrownError: any = null;
   closed = false;
-
-  isStopped = false;
-
-  hasError = false;
-
-  thrownError: any = null;
 
   constructor() {
     super();
   }
 
-  static create: Function = <T>(destination: Observer<T>, source: Observable<T>): AnonymousSubject<T> => {
+  static create: Function = <T>(destination: Observer<T>, source: Observable<T>): ISubject<T> => {
     return new AnonymousSubject<T>(destination, source);
   }
 
-  lift<R>(operator: Operator<T, R>): Observable<T> {
+  public lift<R>(operator: Operator<T, R>): Observable<T> {
     const subject = new AnonymousSubject(this, this);
     subject.operator = <any>operator;
     return <any>subject;
   }
 
-  next(value?: T) {
+  public next(value?: T): void {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     }
@@ -63,7 +64,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     }
   }
 
-  error(err: any) {
+  public error(err: any): void {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     }
@@ -79,7 +80,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     this.observers.length = 0;
   }
 
-  complete() {
+  public complete(): void {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     }
@@ -93,7 +94,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     this.observers.length = 0;
   }
 
-  unsubscribe() {
+  public unsubscribe(): void {
     this.isStopped = true;
     this.closed = true;
     this.observers = null;
@@ -122,7 +123,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     }
   }
 
-  asObservable(): Observable<T> {
+  public asObservable(): Observable<T> {
     const observable = new Observable<T>();
     (<any>observable).source = this;
     return observable;
@@ -138,21 +139,21 @@ export class AnonymousSubject<T> extends Subject<T> {
     this.source = source;
   }
 
-  next(value: T) {
+  public next(value: T): void {
     const { destination } = this;
     if (destination && destination.next) {
       destination.next(value);
     }
   }
 
-  error(err: any) {
+  public error(err: any): void {
     const { destination } = this;
     if (destination && destination.error) {
       this.destination.error(err);
     }
   }
 
-  complete() {
+  public complete(): void {
     const { destination } = this;
     if (destination && destination.complete) {
       this.destination.complete();

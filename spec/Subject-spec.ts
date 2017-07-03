@@ -39,7 +39,7 @@ describe('Subject', () => {
       expect(x).to.equal(expected[j++]);
     }, null, done);
 
-    expect(subject.observers.length).to.equal(2);
+    expect((subject as any).observers.length).to.equal(2);
     subject.next('foo');
     subject.next('bar');
     subject.complete();
@@ -300,11 +300,11 @@ describe('Subject', () => {
       //noop
     });
 
-    expect(subject.observers.length).to.equal(2);
+    expect((subject as any).observers.length).to.equal(2);
     sub1.unsubscribe();
-    expect(subject.observers.length).to.equal(1);
+    expect((subject as any).observers.length).to.equal(1);
     sub2.unsubscribe();
-    expect(subject.observers.length).to.equal(0);
+    expect((subject as any).observers.length).to.equal(0);
     done();
   });
 

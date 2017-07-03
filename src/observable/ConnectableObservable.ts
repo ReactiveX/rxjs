@@ -25,7 +25,7 @@ export class ConnectableObservable<T> extends Observable<T> {
 
   protected getSubject(): Subject<T> {
     const subject = this._subject;
-    if (!subject || subject.isStopped) {
+    if (!subject || (subject as any).isStopped) {
       this._subject = this.subjectFactory();
     }
     return this._subject;
