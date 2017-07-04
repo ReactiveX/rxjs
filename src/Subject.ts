@@ -43,7 +43,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     return new AnonymousSubject<T>(destination, source);
   }
 
-  lift<R>(operator: Operator<T, R>): Observable<T> {
+  lift<R>(operator: Operator<T, R>): Observable<R> {
     const subject = new AnonymousSubject(this, this);
     subject.operator = <any>operator;
     return <any>subject;
