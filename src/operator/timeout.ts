@@ -63,7 +63,7 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
     const { action } = this;
     if (action) {
       // Recycle the action if we've already scheduled one. All the production
-      // Scheduler Actions mutate their state/delay time and return themeselves.
+      // Scheduler Actions mutate their state/delay time and return themselves.
       // VirtualActions are immutable, so they create and return a clone. In this
       // case, we need to set the action reference to the most recent VirtualAction,
       // to ensure that's the one we clone from next time.
