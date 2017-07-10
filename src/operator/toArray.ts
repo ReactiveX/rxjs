@@ -3,6 +3,24 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 
 /**
+ * Creates an array containing all emissions of an Observable.
+ *
+ * <span class="informal">It's like {@link buffer } with the source Observable completion as closingNotifier.</span>
+ *
+ * <img src="./img/toArray.png" width="100%">
+ *
+ * `toArray` will wait until the Observable completes before emitting
+ * the array containing all emissions. If the Observable errors no
+ * array will be emitted.
+ *
+ * @example <caption>Create array from input</caption>
+ * const input = Rx.Observable.interval(100).take(4);
+ *
+ * input.toArray()
+ *   .subscribe(arr => console.log(arr)); // [0,1,2,3]
+ *
+ * @see {@link buffer}
+ *
  * @return {Observable<any[]>|WebSocketSubject<T>|Observable<T>}
  * @method toArray
  * @owner Observable
