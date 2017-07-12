@@ -139,6 +139,18 @@ describe('Observable.prototype.audit', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should mirror source if durations are Observable.of()', () => {
+      const e1 =   hot('abcdefabcdefabcdefabcdefa|');
+      const e1subs =   '^                        !';
+      const e2 =  Rx.Observable.of('one single value');
+      const expected = 'abcdefabcdefabcdefabcdefa|';
+
+      const result = e1.audit(() => e2);
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should emit no values if duration is a never', () => {
     const e1 =   hot('----abcdefabcdefabcdefabcdefa|');
     const e1subs =   '^                            !';
