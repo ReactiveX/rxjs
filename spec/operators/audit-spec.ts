@@ -139,7 +139,7 @@ describe('Observable.prototype.audit', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should mirror source if durations are Observable.of()', () => {
+  it('should mirror source if durations are synchronous observables', () => {
       const e1 =   hot('abcdefabcdefabcdefabcdefa|');
       const e1subs =   '^                        !';
       const e2 =  Rx.Observable.of('one single value');
