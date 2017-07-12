@@ -1,3 +1,14 @@
+<a name="5.4.2"></a>
+## [5.4.2](https://github.com/ReactiveX/RxJS/compare/5.4.1...v5.4.2) (2017-07-05)
+
+
+### Bug Fixes
+
+* **Notification:** Don't reference `this` from static methods. ([9f8e375](https://github.com/ReactiveX/RxJS/commit/9f8e375))
+* **Subject:** lift signature is now appropriate for stricter TypeScript 2.4 checks ([#2722](https://github.com/ReactiveX/RxJS/issues/2722)) ([9804de7](https://github.com/ReactiveX/RxJS/commit/9804de7))
+
+
+
 <a name="5.4.1"></a>
 ## [5.4.1](https://github.com/ReactiveX/RxJS/compare/5.4.0...v5.4.1) (2017-06-14)
 

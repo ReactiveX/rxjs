@@ -127,7 +127,7 @@ There are a few things to know and (try to) understand while developing operator
    - Subscribers all have `add` and `remove` methods that are used for adding and removing inner subscriptions to
    the shared underlying subscription.
    - When you `subscribe` to an Observable, the functions or Observer you passed are used to create the final `destination`
-   `Subscriber` for the chain. It's this `Subscriber` that is really also the shared `Subscriptoin` for the operator chain.
+   `Subscriber` for the chain. It's this `Subscriber` that is really also the shared `Subscription` for the operator chain.
 
 ### Submitting a PR for an Operator
 

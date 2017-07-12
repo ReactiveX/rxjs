@@ -18,7 +18,7 @@ export type SubscribableOrPromise<T> = Subscribable<T> | PromiseLike<T>;
 export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T>;
 
 /**
- * A representation of any set of values over any amount of time. This the most basic building block
+ * A representation of any set of values over any amount of time. This is the most basic building block
  * of RxJS.
  *
  * @class Observable<T>
@@ -32,7 +32,7 @@ export class Observable<T> implements Subscribable<T> {
 
   /**
    * @constructor
-   * @param {Function} subscribe the function that is  called when the Observable is
+   * @param {Function} subscribe the function that is called when the Observable is
    * initially subscribed to. This function is given a Subscriber, to which new values
    * can be `next`ed, or an `error` method can be called to raise an error, or
    * `complete` can be called to notify of a successful completion.
@@ -79,7 +79,7 @@ export class Observable<T> implements Subscribable<T> {
    *
    * <span class="informal">Use it when you have all these Observables, but still nothing is happening.</span>
    *
-   * `subscribe` is not a regular operator, but a method that calls Observables internal `subscribe` function. It
+   * `subscribe` is not a regular operator, but a method that calls Observable's internal `subscribe` function. It
    * might be for example a function that you passed to a {@link create} static factory, but most of the time it is
    * a library implementation, which defines what and when will be emitted by an Observable. This means that calling
    * `subscribe` is actually the moment when Observable starts its work, not when it is created, as it is often
@@ -121,7 +121,7 @@ export class Observable<T> implements Subscribable<T> {
    *     console.log('Adding: ' + value);
    *     this.sum = this.sum + value;
    *   },
-   *   error() { // We actually could just remote this method,
+   *   error() { // We actually could just remove this method,
    *   },        // since we do not really care about errors right now.
    *   complete() {
    *     console.log('Sum equals: ' + this.sum);
@@ -176,7 +176,7 @@ export class Observable<T> implements Subscribable<T> {
    * // Logs:
    * // 0 after 1s
    * // 1 after 2s
-   * // "unsubscribed!" after 2,5s
+   * // "unsubscribed!" after 2.5s
    *
    *
    * @param {Observer|Function} observerOrNext (optional) Either an observer with methods to be called,
