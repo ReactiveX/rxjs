@@ -22,6 +22,7 @@ export { switchAll } from './switchAll';
 export { switchMap } from './switchMap';
 export { takeLast } from './takeLast';
 export { tap } from './tap';
+export { toArray } from './toArray';
 export { window } from './window';
 export { windowCount } from './windowCount';
 export { windowTime } from './windowTime';
