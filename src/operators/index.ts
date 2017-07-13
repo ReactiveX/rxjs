@@ -1,5 +1,6 @@
 export { audit } from './audit';
 export { auditTime } from './auditTime';
+export { buffer } from './buffer';
 export { catchError } from './catchError';
 export { concat } from './concat';
 export { concatAll } from './concatAll';
