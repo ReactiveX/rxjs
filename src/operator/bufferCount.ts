@@ -1,7 +1,6 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
+
 import { Observable } from '../Observable';
-import { TeardownLogic } from '../Subscription';
+import { bufferCount as higherOrder } from '../operators';
 
 /**
  * Buffers the source Observable values until the size hits the maximum
@@ -45,98 +44,5 @@ import { TeardownLogic } from '../Subscription';
  * @owner Observable
  */
 export function bufferCount<T>(this: Observable<T>, bufferSize: number, startBufferEvery: number = null): Observable<T[]> {
-  return this.lift(new BufferCountOperator<T>(bufferSize, startBufferEvery));
-}
-
-class BufferCountOperator<T> implements Operator<T, T[]> {
-  private subscriberClass: any;
-
-  constructor(private bufferSize: number, private startBufferEvery: number) {
-    if (!startBufferEvery || bufferSize === startBufferEvery) {
-      this.subscriberClass = BufferCountSubscriber;
-    } else {
-      this.subscriberClass = BufferSkipCountSubscriber;
-    }
-  }
-
-  call(subscriber: Subscriber<T[]>, source: any): TeardownLogic {
-    return source.subscribe(new this.subscriberClass(subscriber, this.bufferSize, this.startBufferEvery));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class BufferCountSubscriber<T> extends Subscriber<T> {
-  private buffer: T[] = [];
-
-  constructor(destination: Subscriber<T[]>, private bufferSize: number) {
-    super(destination);
-  }
-
-  protected _next(value: T): void {
-    const buffer = this.buffer;
-
-    buffer.push(value);
-
-    if (buffer.length == this.bufferSize) {
-      this.destination.next(buffer);
-      this.buffer = [];
-    }
-  }
-
-  protected _complete(): void {
-    const buffer = this.buffer;
-    if (buffer.length > 0) {
-      this.destination.next(buffer);
-    }
-    super._complete();
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class BufferSkipCountSubscriber<T> extends Subscriber<T> {
-  private buffers: Array<T[]> = [];
-  private count: number = 0;
-
-  constructor(destination: Subscriber<T[]>, private bufferSize: number, private startBufferEvery: number) {
-    super(destination);
-  }
-
-  protected _next(value: T): void {
-    const { bufferSize, startBufferEvery, buffers, count } = this;
-
-    this.count++;
-    if (count % startBufferEvery === 0) {
-      buffers.push([]);
-    }
-
-    for (let i = buffers.length; i--; ) {
-      const buffer = buffers[i];
-      buffer.push(value);
-      if (buffer.length === bufferSize) {
-        buffers.splice(i, 1);
-        this.destination.next(buffer);
-      }
-    }
-  }
-
-  protected _complete(): void {
-    const { buffers, destination } = this;
-
-    while (buffers.length > 0) {
-      let buffer = buffers.shift();
-      if (buffer.length > 0) {
-        destination.next(buffer);
-      }
-    }
-    super._complete();
-  }
-
+  return higherOrder(bufferSize, startBufferEvery)(this);
 }
