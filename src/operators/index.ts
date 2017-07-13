@@ -3,6 +3,7 @@ export { auditTime } from './auditTime';
 export { buffer } from './buffer';
 export { bufferCount } from './bufferCount';
 export { bufferTime } from './bufferTime';
+export { bufferToggle } from './bufferToggle';
 export { catchError } from './catchError';
 export { concat } from './concat';
 export { concatAll } from './concatAll';
