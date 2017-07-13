@@ -9,6 +9,7 @@ export { dematerialize } from './dematerialize';
 export { filter } from './filter';
 export { ignoreElements } from './ignoreElements';
 export { map } from './map';
+export { materialize } from './materialize';
 export { max } from './max';
 export { mergeAll } from './mergeAll';
 export { mergeMap } from './mergeMap';

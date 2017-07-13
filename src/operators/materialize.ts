@@ -1,7 +1,8 @@
-
+import { Operator } from '../Operator';
 import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
 import { Notification } from '../Notification';
-import { materialize as higherOrder } from '../operators';
+import { OperatorFunction } from '../interfaces';
 
 /**
  * Represents all of the notifications from the source Observable as `next`
@@ -47,6 +48,41 @@ import { materialize as higherOrder } from '../operators';
  * @method materialize
  * @owner Observable
  */
-export function materialize<T>(this: Observable<T>): Observable<Notification<T>> {
-  return higherOrder()(this);
+export function materialize<T>(): OperatorFunction<T, Notification<T>> {
+  return function materializeOperatorFunction(source: Observable<T>) {
+    return source.lift(new MaterializeOperator());
+  };
+}
+
+class MaterializeOperator<T> implements Operator<T, Notification<T>> {
+  call(subscriber: Subscriber<Notification<T>>, source: any): any {
+    return source.subscribe(new MaterializeSubscriber(subscriber));
+  }
+}
+
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+class MaterializeSubscriber<T> extends Subscriber<T> {
+  constructor(destination: Subscriber<Notification<T>>) {
+    super(destination);
+  }
+
+  protected _next(value: T) {
+    this.destination.next(Notification.createNext(value));
+  }
+
+  protected _error(err: any) {
+    const destination = this.destination;
+    destination.next(Notification.createError(err));
+    destination.complete();
+  }
+
+  protected _complete() {
+    const destination = this.destination;
+    destination.next(Notification.createComplete());
+    destination.complete();
+  }
 }
