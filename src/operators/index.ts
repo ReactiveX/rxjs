@@ -5,6 +5,7 @@ export { concat } from './concat';
 export { concatAll } from './concatAll';
 export { concatMap } from './concatMap';
 export { defaultIfEmpty } from './defaultIfEmpty';
+export { dematerialize } from './dematerialize';
 export { filter } from './filter';
 export { ignoreElements } from './ignoreElements';
 export { map } from './map';
