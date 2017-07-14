@@ -26,6 +26,7 @@ export { race } from './race';
 export { reduce } from './reduce';
 export { refCount } from './refCount';
 export { scan } from './scan';
+export { subscribeOn } from './subscribeOn';
 export { switchAll } from './switchAll';
 export { switchMap } from './switchMap';
 export { takeLast } from './takeLast';

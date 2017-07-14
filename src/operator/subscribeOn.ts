@@ -1,9 +1,7 @@
-import { Operator } from '../Operator';
+
 import { IScheduler } from '../Scheduler';
-import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { TeardownLogic } from '../Subscription';
-import { SubscribeOnObservable } from '../observable/SubscribeOnObservable';
+import { subscribeOn as higherOrder } from '../operators';
 
 /**
  * Asynchronously subscribes Observers to this Observable on the specified IScheduler.
@@ -17,16 +15,5 @@ import { SubscribeOnObservable } from '../observable/SubscribeOnObservable';
  * @owner Observable
  */
 export function subscribeOn<T>(this: Observable<T>, scheduler: IScheduler, delay: number = 0): Observable<T> {
-  return this.lift(new SubscribeOnOperator<T>(scheduler, delay));
-}
-
-class SubscribeOnOperator<T> implements Operator<T, T> {
-  constructor(private scheduler: IScheduler,
-              private delay: number) {
-  }
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return new SubscribeOnObservable(
-      source, this.delay, this.scheduler
-    ).subscribe(subscriber);
-  }
+  return higherOrder(scheduler, delay)(this);
 }
