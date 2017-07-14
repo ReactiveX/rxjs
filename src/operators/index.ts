@@ -20,6 +20,7 @@ export { mergeAll } from './mergeAll';
 export { mergeMap } from './mergeMap';
 export { min } from './min';
 export { multicast } from './multicast';
+export { observeOn } from './observeOn';
 export { publish } from './publish';
 export { race } from './race';
 export { reduce } from './reduce';
