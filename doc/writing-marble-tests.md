@@ -7,8 +7,8 @@ from many teachings and documents by people such as @jhusain, @headinthebox, @ma
 
 #### links
 
-- [Contribution](../CONTRIBUTING.md)
-- [Code of Conduct](../CODE_OF_CONDUCT.md)
+- [Contribution](https://github.com/ReactiveX/rxjs/blob/master/CONTRIBUTING.md)
+- [Code of Conduct](https://github.com/ReactiveX/rxjs/blob/master/CODE_OF_CONDUCT.md)
 
 ## Basic methods
 
