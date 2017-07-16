@@ -553,7 +553,7 @@ describe('Observable.prototype.multicast', () => {
     connectable.connect();
 
     expect(results1).to.deep.equal([1, 2, 3, 4]);
-    expect(results1).to.deep.equal([1, 2, 3, 4]);
+    expect(results2).to.deep.equal([1, 2, 3, 4]);
     expect(subscriptions).to.equal(1);
     done();
   });
