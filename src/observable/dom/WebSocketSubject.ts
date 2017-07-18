@@ -10,10 +10,10 @@ import { tryCatch } from '../../util/tryCatch';
 import { errorObject } from '../../util/errorObject';
 import { assign } from '../../util/assign';
 
-export interface WebSocketSubjectConfig {
+export interface WebSocketSubjectConfig<T> {
   url: string;
   protocol?: string | Array<string>;
-  resultSelector?: <T>(e: MessageEvent) => T;
+  resultSelector?: (e: MessageEvent) => T;
   openObserver?: NextObserver<Event>;
   closeObserver?: NextObserver<CloseEvent>;
   closingObserver?: NextObserver<void>;
@@ -75,17 +75,17 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
    *
    * socket$.next(JSON.stringify({ op: 'hello' }));
    *
-   * @param {string | WebSocketSubjectConfig} urlConfigOrSource the source of the websocket as an url or a structure defining the websocket object
+   * @param {string | WebSocketSubjectConfig<T>} urlConfigOrSource the source of the websocket as an url or a structure defining the websocket object
    * @return {WebSocketSubject}
    * @static true
    * @name webSocket
    * @owner Observable
    */
-  static create<T>(urlConfigOrSource: string | WebSocketSubjectConfig): WebSocketSubject<T> {
+  static create<T>(urlConfigOrSource: string | WebSocketSubjectConfig<T>): WebSocketSubject<T> {
     return new WebSocketSubject<T>(urlConfigOrSource);
   }
 
-  constructor(urlConfigOrSource: string | WebSocketSubjectConfig | Observable<T>, destination?: Observer<T>) {
+  constructor(urlConfigOrSource: string | WebSocketSubjectConfig<T> | Observable<T>, destination?: Observer<T>) {
     if (urlConfigOrSource instanceof Observable) {
       super(destination, <Observable<T>> urlConfigOrSource);
     } else {
