@@ -6,6 +6,7 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { Subscribable } from '../Observable';
 import { subscribeToResult } from '../util/subscribeToResult';
 
+export function mergeAll<T>(this: Observable<ArrayLike<T>>, concurrent?: number): Observable<T>;
 export function mergeAll<T>(this: Observable<T>, concurrent?: number): T;
 export function mergeAll<T, R>(this: Observable<T>, concurrent?: number): Subscribable<R>;
 
