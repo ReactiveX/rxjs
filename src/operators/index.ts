@@ -38,3 +38,4 @@ export { windowCount } from './windowCount';
 export { windowTime } from './windowTime';
 export { windowToggle } from './windowToggle';
 export { windowWhen } from './windowWhen';
+export { zip } from './zip';

@@ -1,4 +1,4 @@
-import { ZipOperator } from './zip';
+import { ZipOperator } from '../operators/zip';
 import { Observable } from '../Observable';
 
 /**
