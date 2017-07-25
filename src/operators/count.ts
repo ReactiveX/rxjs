@@ -1,5 +1,8 @@
 import { Observable } from '../Observable';
-import { count as higherOrder } from '../operators';
+import { Operator } from '../Operator';
+import { Observer } from '../Observer';
+import { Subscriber } from '../Subscriber';
+import { OperatorFunction } from '../interfaces';
 
 /**
  * Counts the number of emissions on the source and emits that number when the
@@ -49,6 +52,60 @@ import { count as higherOrder } from '../operators';
  * @method count
  * @owner Observable
  */
-export function count<T>(this: Observable<T>, predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<number> {
-  return higherOrder(predicate)(this);
+export function count<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, number> {
+  return (source: Observable<T>) => source.lift(new CountOperator(predicate, source));
+}
+
+class CountOperator<T> implements Operator<T, number> {
+  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+              private source?: Observable<T>) {
+  }
+
+  call(subscriber: Subscriber<number>, source: any): any {
+    return source.subscribe(new CountSubscriber(subscriber, this.predicate, this.source));
+  }
+}
+
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+class CountSubscriber<T> extends Subscriber<T> {
+  private count: number = 0;
+  private index: number = 0;
+
+  constructor(destination: Observer<number>,
+              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+              private source?: Observable<T>) {
+    super(destination);
+  }
+
+  protected _next(value: T): void {
+    if (this.predicate) {
+      this._tryPredicate(value);
+    } else {
+      this.count++;
+    }
+  }
+
+  private _tryPredicate(value: T) {
+    let result: any;
+
+    try {
+      result = this.predicate(value, this.index++, this.source);
+    } catch (err) {
+      this.destination.error(err);
+      return;
+    }
+
+    if (result) {
+      this.count++;
+    }
+  }
+
+  protected _complete(): void {
+    this.destination.next(this.count);
+    this.destination.complete();
+  }
 }
