@@ -1,9 +1,10 @@
 import { Observable, ObservableInput } from '../Observable';
-import { concatMapTo as higherOrder } from '../operators';
+import { concatMap } from './concatMap';
+import { OperatorFunction } from '../interfaces';
 
 /* tslint:disable:max-line-length */
-export function concatMapTo<T, R>(this: Observable<T>, observable: ObservableInput<R>): Observable<R>;
-export function concatMapTo<T, I, R>(this: Observable<T>, observable: ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R>;
+export function concatMapTo<T, R>(observable: ObservableInput<R>): OperatorFunction<T, R>;
+export function concatMapTo<T, I, R>(observable: ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -62,7 +63,9 @@ export function concatMapTo<T, I, R>(this: Observable<T>, observable: Observable
  * @method concatMapTo
  * @owner Observable
  */
-export function concatMapTo<T, I, R>(this: Observable<T>, innerObservable: Observable<I>,
-                                     resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R> {
-  return higherOrder(innerObservable, resultSelector)(this);
+export function concatMapTo<T, I, R>(
+  innerObservable: Observable<I>,
+  resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R
+): OperatorFunction<T, R> {
+  return concatMap(() => innerObservable, resultSelector);
 }

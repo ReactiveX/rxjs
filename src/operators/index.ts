@@ -9,6 +9,7 @@ export { catchError } from './catchError';
 export { concat } from './concat';
 export { concatAll } from './concatAll';
 export { concatMap } from './concatMap';
+export { concatMapTo } from './concatMapTo';
 export { defaultIfEmpty } from './defaultIfEmpty';
 export { dematerialize } from './dematerialize';
 export { filter } from './filter';
