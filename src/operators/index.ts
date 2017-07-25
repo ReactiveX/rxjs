@@ -12,6 +12,7 @@ export { concatMap } from './concatMap';
 export { concatMapTo } from './concatMapTo';
 export { count } from './count';
 export { debounce } from './debounce';
+export { debounceTime } from './debounceTime';
 export { defaultIfEmpty } from './defaultIfEmpty';
 export { dematerialize } from './dematerialize';
 export { filter } from './filter';
