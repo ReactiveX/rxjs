@@ -1,10 +1,9 @@
-
-import { Observable } from '../Observable';
-import { distinctUntilKeyChanged as higherOrder } from '../operators';
+import { distinctUntilChanged } from './distinctUntilChanged';
+import { MonoTypeOperatorFunction } from '../interfaces';
 
 /* tslint:disable:max-line-length */
-export function distinctUntilKeyChanged<T>(this: Observable<T>, key: string): Observable<T>;
-export function distinctUntilKeyChanged<T, K>(this: Observable<T>, key: string, compare: (x: K, y: K) => boolean): Observable<T>;
+export function distinctUntilKeyChanged<T>(key: string): MonoTypeOperatorFunction<T>;
+export function distinctUntilKeyChanged<T, K>(key: string, compare: (x: K, y: K) => boolean): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -64,6 +63,6 @@ export function distinctUntilKeyChanged<T, K>(this: Observable<T>, key: string, 
  * @method distinctUntilKeyChanged
  * @owner Observable
  */
-export function distinctUntilKeyChanged<T>(this: Observable<T>, key: string, compare?: (x: T, y: T) => boolean): Observable<T> {
-  return higherOrder<T, T>(key, compare)(this);
+export function distinctUntilKeyChanged<T>(key: string, compare?: (x: T, y: T) => boolean): MonoTypeOperatorFunction<T> {
+  return distinctUntilChanged((x: T, y: T) => compare ? compare(x[key], y[key]) : x[key] === y[key]);
 }
