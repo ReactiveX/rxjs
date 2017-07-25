@@ -1,11 +1,6 @@
-import { Operator } from '../Operator';
-import { Observable, SubscribableOrPromise } from '../Observable';
-import { Subscriber } from '../Subscriber';
-import { Subscription, TeardownLogic } from '../Subscription';
 
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
+import { Observable, SubscribableOrPromise } from '../Observable';
+import { debounce as higherOrder } from '../operators';
 
 /**
  * Emits a value from the source Observable only after a particular time span
@@ -50,87 +45,5 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @owner Observable
  */
 export function debounce<T>(this: Observable<T>, durationSelector: (value: T) => SubscribableOrPromise<number>): Observable<T> {
-  return this.lift(new DebounceOperator(durationSelector));
-}
-
-class DebounceOperator<T> implements Operator<T, T> {
-  constructor(private durationSelector: (value: T) => SubscribableOrPromise<number>) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new DebounceSubscriber(subscriber, this.durationSelector));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
-  private value: T;
-  private hasValue: boolean = false;
-  private durationSubscription: Subscription = null;
-
-  constructor(destination: Subscriber<R>,
-              private durationSelector: (value: T) => SubscribableOrPromise<number>) {
-    super(destination);
-  }
-
-  protected _next(value: T): void {
-    try {
-      const result = this.durationSelector.call(this, value);
-
-      if (result) {
-        this._tryNext(value, result);
-      }
-    } catch (err) {
-      this.destination.error(err);
-    }
-  }
-
-  protected _complete(): void {
-    this.emitValue();
-    this.destination.complete();
-  }
-
-  private _tryNext(value: T, duration: SubscribableOrPromise<number>): void {
-    let subscription = this.durationSubscription;
-    this.value = value;
-    this.hasValue = true;
-    if (subscription) {
-      subscription.unsubscribe();
-      this.remove(subscription);
-    }
-
-    subscription = subscribeToResult(this, duration);
-    if (!subscription.closed) {
-      this.add(this.durationSubscription = subscription);
-    }
-  }
-
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
-    this.emitValue();
-  }
-
-  notifyComplete(): void {
-    this.emitValue();
-  }
-
-  emitValue(): void {
-    if (this.hasValue) {
-      const value = this.value;
-      const subscription = this.durationSubscription;
-      if (subscription) {
-        this.durationSubscription = null;
-        subscription.unsubscribe();
-        this.remove(subscription);
-      }
-      this.value = null;
-      this.hasValue = false;
-      super._next(value);
-    }
-  }
+  return higherOrder(durationSelector)(this);
 }
