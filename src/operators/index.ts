@@ -15,6 +15,7 @@ export { debounce } from './debounce';
 export { debounceTime } from './debounceTime';
 export { defaultIfEmpty } from './defaultIfEmpty';
 export { delay } from './delay';
+export { delayWhen } from './delayWhen';
 export { dematerialize } from './dematerialize';
 export { filter } from './filter';
 export { ignoreElements } from './ignoreElements';
