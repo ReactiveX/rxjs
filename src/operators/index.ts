@@ -17,6 +17,7 @@ export { defaultIfEmpty } from './defaultIfEmpty';
 export { delay } from './delay';
 export { delayWhen } from './delayWhen';
 export { dematerialize } from './dematerialize';
+export { distinctUntilChanged } from './distinctUntilChanged';
 export { filter } from './filter';
 export { ignoreElements } from './ignoreElements';
 export { map } from './map';
