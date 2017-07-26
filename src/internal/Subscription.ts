@@ -134,49 +134,21 @@ export class Subscription implements SubscriptionLike {
    * If this subscription is already in an `closed` state, the passed
    * tear down logic will be executed immediately.
    *
-   * @param {TeardownLogic} teardown The additional logic to execute on
+   * @param {...TeardownLogic[]} teardowns The additional logics to execute on
    * teardown.
    * @return {Subscription} Returns the Subscription used or created to be
    * added to the inner subscriptions list. This Subscription can be used with
    * `remove()` to remove the passed teardown logic from the inner subscriptions
    * list.
    */
-  add(teardown: TeardownLogic): Subscription {
-    if (!teardown || (teardown === Subscription.EMPTY)) {
-      return Subscription.EMPTY;
+  add(...teardowns: TeardownLogic[]): Subscription {
+    if (teardowns.length === 1) {
+      const [ teardown ] = teardowns;
+      return this._addTeardown(teardown, this);
     }
-
-    if (teardown === this) {
-      return this;
-    }
-
-    let subscription = (<Subscription> teardown);
-
-    switch (typeof teardown) {
-      case 'function':
-        subscription = new Subscription(<(() => void) > teardown);
-      case 'object':
-        if (subscription.closed || typeof subscription.unsubscribe !== 'function') {
-          return subscription;
-        } else if (this.closed) {
-          subscription.unsubscribe();
-          return subscription;
-        } else if (typeof subscription._addParent !== 'function' /* quack quack */) {
-          const tmp = subscription;
-          subscription = new Subscription();
-          subscription._subscriptions = [tmp];
-        }
-        break;
-      default:
-        throw new Error('unrecognized teardown ' + teardown + ' added to Subscription.');
-    }
-
-    const subscriptions = this._subscriptions || (this._subscriptions = []);
-
-    subscriptions.push(subscription);
-    subscription._addParent(this);
-
-    return subscription;
+    const subscription = new Subscription();
+    teardowns.forEach((teardown) => this._addTeardown(teardown, subscription));
+    return this._addTeardown(subscription, this);
   }
 
   /**
@@ -210,6 +182,44 @@ export class Subscription implements SubscriptionLike {
       // Only add the new parent to the _parents list if it's not already there.
       _parents.push(parent);
     }
+  }
+
+  private _addTeardown(teardown: TeardownLogic, parent: Subscription) {
+    if (!teardown || (teardown === Subscription.EMPTY)) {
+      return Subscription.EMPTY;
+    }
+
+    if (teardown === parent) {
+      return parent;
+    }
+
+    let subscription = (<Subscription> teardown);
+
+    switch (typeof teardown) {
+      case 'function':
+        subscription = new Subscription(<(() => void) > teardown);
+      case 'object':
+        if (subscription.closed || typeof subscription.unsubscribe !== 'function') {
+          return subscription;
+        } else if (parent.closed) {
+          subscription.unsubscribe();
+          return subscription;
+        } else if (typeof subscription._addParent !== 'function' /* quack quack */) {
+          const tmp = subscription;
+          subscription = new Subscription();
+          subscription._subscriptions = [tmp];
+        }
+        break;
+      default:
+        throw new Error('unrecognized teardown ' + teardown + ' added to Subscription.');
+    }
+
+    const subscriptions = parent._subscriptions || (parent._subscriptions = []);
+
+    subscriptions.push(subscription);
+    subscription._addParent(parent);
+
+    return subscription;
   }
 }
 
