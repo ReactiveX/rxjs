@@ -29,6 +29,7 @@ any way the developer sees fit, but here are some guidelines:
 <!-- share-code-between-examples -->
 ### Example
 
+<!-- skip-example -->
 ```js
 function mySimpleOperator(someCallback) {
    // We *could* do a `var self = this;` here to close over, but see next comment
@@ -62,12 +63,14 @@ There are a few ways to do this. It's really down to needs and preference:
 
 1) Use the ES7 function bind operator (`::`) available in transpilers like [BabelJS](http://babeljs.io):
 
+<!-- skip-example -->
 ```js
 someObservable::mySimpleOperator(x => x + '!');
 ```
 
 2) Create your own Observable subclass and override `lift` to return it:
 
+<!-- skip-example -->
 ```js
 class MyObservable extends Observable {
   lift(operator) {
@@ -89,6 +92,7 @@ MyObservable.prototype.mySimpleOperator = mySimpleOperator;
 
 3) Patch `Observable.prototype` directly:
 
+<!-- skip-example -->
 ```js
 Observable.prototype.mySimpleOperator = mySimpleOperator;
 
@@ -103,6 +107,7 @@ If you don't want to patch the Observable prototype, you can also write the oper
 
 Example implementation:
 
+<!-- skip-example -->
 ```js
 function mySimpleOperator(someCallback) {
   // notice that we return a function here
@@ -126,6 +131,7 @@ function mySimpleOperator(someCallback) {
 
 This can now be used with the `let()` method on the Observable:
 
+<!-- skip-example -->
 ```js
 const obs = someObservable.let(mySimpleOperator(x => x + '!'));
 ```
