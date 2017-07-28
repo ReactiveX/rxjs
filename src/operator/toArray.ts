@@ -3,15 +3,15 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 
 /**
- * Creates an array containing all emissions of an Observable.
+ * Collects all source emissions and emits them as an array when the source completes.
  *
- * <span class="informal">It's like {@link buffer } with the source Observable completion as closingNotifier.</span>
+ * <span class="informal">Get all values inside an array when the source completes</span>
  *
  * <img src="./img/toArray.png" width="100%">
  *
- * `toArray` will wait until the Observable completes before emitting
- * the array containing all emissions. If the Observable errors no
- * array will be emitted.
+ * `toArray` will wait until the source Observable completes
+ * before emitting the array containing all emissions.
+ * When the source Observable errors no array will be emitted.
  *
  * @example <caption>Create array from input</caption>
  * const input = Rx.Observable.interval(100).take(4);
