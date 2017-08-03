@@ -66,7 +66,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
  */
 export function _catch<T, R>(this: Observable<T>, selector: (err: any, caught: Observable<T>) => ObservableInput<R>): Observable<T | R> {
   const operator = new CatchOperator(selector);
-  const caught = this.lift(operator);
+  const caught = this.lift<T>(operator);
   return (operator.caught = caught);
 }
 
