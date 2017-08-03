@@ -91,7 +91,7 @@ export class FromObservable<T> extends Observable<T> {
         return new FromObservable<T>(ish, scheduler);
       } else if (isArray(ish)) {
         return new ArrayObservable<T>(ish, scheduler);
-      } else if (isPromise(ish)) {
+      } else if (isPromise<T>(ish)) {
         return new PromiseObservable<T>(ish, scheduler);
       } else if (typeof ish[Symbol_iterator] === 'function' || typeof ish === 'string') {
         return new IteratorObservable<T>(ish, scheduler);
