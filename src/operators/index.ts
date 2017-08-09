@@ -27,6 +27,7 @@ export { expand } from './expand';
 export { filter } from './filter';
 export { finalize } from './finalize';
 export { find } from './find';
+export { findIndex } from './findIndex';
 export { ignoreElements } from './ignoreElements';
 export { map } from './map';
 export { materialize } from './materialize';
