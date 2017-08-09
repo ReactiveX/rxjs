@@ -1,6 +1,6 @@
 import { root } from '../util/root';
 
-export function symbolIteratorPonyfill(root: any) {
+export function symbolIteratorPolyfill(root: any) {
   const Symbol: any = root.Symbol;
 
   if (typeof Symbol === 'function') {
@@ -30,7 +30,7 @@ export function symbolIteratorPonyfill(root: any) {
   }
 }
 
-export const iterator = symbolIteratorPonyfill(root);
+export const iterator = symbolIteratorPolyfill(root);
 
 /**
  * @deprecated use iterator instead
