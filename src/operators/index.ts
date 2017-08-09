@@ -19,6 +19,7 @@ export { delayWhen } from './delayWhen';
 export { dematerialize } from './dematerialize';
 export { distinctUntilChanged } from './distinctUntilChanged';
 export { distinctUntilKeyChanged } from './distinctUntilKeyChanged';
+export { elementAt } from './elementAt';
 export { filter } from './filter';
 export { ignoreElements } from './ignoreElements';
 export { map } from './map';
