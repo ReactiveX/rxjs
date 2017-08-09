@@ -129,7 +129,7 @@ export class ImmediateDefinition {
     // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
     const root = this.root;
 
-    let messagePrefix = 'setImmediate$' + root.Math.random() + '$';
+    let messagePrefix = 'setImmediate$' + Math.random() + '$';
     let onGlobalMessage = function globalMessageHandler(event: any) {
       const instance = (<any>globalMessageHandler).instance;
       if (event.source === root &&
