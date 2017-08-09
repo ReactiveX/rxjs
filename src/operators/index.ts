@@ -21,6 +21,7 @@ export { distinctUntilChanged } from './distinctUntilChanged';
 export { distinctUntilKeyChanged } from './distinctUntilKeyChanged';
 export { elementAt } from './elementAt';
 export { every } from './every';
+export { exhaust } from './exhaust';
 export { filter } from './filter';
 export { ignoreElements } from './ignoreElements';
 export { map } from './map';
