@@ -409,24 +409,7 @@ export class AjaxResponse {
   constructor(public originalEvent: Event, public xhr: XMLHttpRequest, public request: AjaxRequest) {
     this.status = xhr.status;
     this.responseType = xhr.responseType || request.responseType;
-
-    switch (this.responseType) {
-      case 'json':
-        if ('response' in xhr) {
-          //IE does not support json as responseType, parse it internally
-          this.response = xhr.responseType ? xhr.response : JSON.parse(xhr.response || xhr.responseText || 'null');
-        } else {
-          this.response = JSON.parse(xhr.responseText || 'null');
-        }
-        break;
-      case 'xml':
-        this.response = xhr.responseXML;
-        break;
-      case 'text':
-      default:
-        this.response = ('response' in xhr) ? xhr.response : xhr.responseText;
-        break;
-    }
+    this.response = parseXhrResponse(this.responseType, xhr);
   }
 }
 
@@ -447,12 +430,37 @@ export class AjaxError extends Error {
   /** @type {number} The HTTP status code */
   status: number;
 
+  /** @type {string} The responseType (e.g. 'json', 'arraybuffer', or 'xml') */
+  responseType: string;
+
+  /** @type {string|ArrayBuffer|Document|object|any} The response data */
+  response: any;
+
   constructor(message: string, xhr: XMLHttpRequest, request: AjaxRequest) {
     super(message);
     this.message = message;
     this.xhr = xhr;
     this.request = request;
     this.status = xhr.status;
+    this.responseType = xhr.responseType || request.responseType;
+    this.response = parseXhrResponse(this.responseType, xhr);
+  }
+}
+
+function parseXhrResponse(responseType: string, xhr: XMLHttpRequest) {
+  switch (responseType) {
+    case 'json':
+        if ('response' in xhr) {
+          //IE does not support json as responseType, parse it internally
+          return xhr.responseType ? xhr.response : JSON.parse(xhr.response || xhr.responseText || 'null');
+        } else {
+          return JSON.parse(xhr.responseText || 'null');
+        }
+      case 'xml':
+        return xhr.responseXML;
+      case 'text':
+      default:
+        return  ('response' in xhr) ? xhr.response : xhr.responseText;
   }
 }
 
