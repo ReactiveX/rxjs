@@ -1,7 +1,6 @@
-import { Operator } from '../Operator';
-import { Observer } from '../Observer';
+
 import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
+import { every as higherOrder } from '../operators';
 
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
@@ -19,56 +18,5 @@ import { Subscriber } from '../Subscriber';
  */
 export function every<T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => boolean,
                          thisArg?: any): Observable<boolean> {
-  return this.lift(new EveryOperator(predicate, thisArg, this));
-}
-
-class EveryOperator<T> implements Operator<T, boolean> {
-  constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean,
-              private thisArg?: any,
-              private source?: Observable<T>) {
-  }
-
-  call(observer: Subscriber<boolean>, source: any): any {
-    return source.subscribe(new EverySubscriber(observer, this.predicate, this.thisArg, this.source));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class EverySubscriber<T> extends Subscriber<T> {
-  private index: number = 0;
-
-  constructor(destination: Observer<boolean>,
-              private predicate: (value: T, index: number, source: Observable<T>) => boolean,
-              private thisArg: any,
-              private source?: Observable<T>) {
-    super(destination);
-    this.thisArg = thisArg || this;
-  }
-
-  private notifyComplete(everyValueMatch: boolean): void {
-    this.destination.next(everyValueMatch);
-    this.destination.complete();
-  }
-
-  protected _next(value: T): void {
-    let result = false;
-    try {
-      result = this.predicate.call(this.thisArg, value, this.index++, this.source);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-
-    if (!result) {
-      this.notifyComplete(false);
-    }
-  }
-
-  protected _complete(): void {
-    this.notifyComplete(true);
-  }
+  return higherOrder(predicate, thisArg)(this);
 }
