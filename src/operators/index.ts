@@ -28,6 +28,7 @@ export { filter } from './filter';
 export { finalize } from './finalize';
 export { find } from './find';
 export { findIndex } from './findIndex';
+export { first } from './first';
 export { ignoreElements } from './ignoreElements';
 export { map } from './map';
 export { materialize } from './materialize';
