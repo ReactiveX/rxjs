@@ -3,6 +3,7 @@ import * as sinon from 'sinon';
 import * as Rx from '../dist/cjs/Rx';
 import {TeardownLogic} from '../dist/cjs/Subscription';
 import marbleTestingSignature = require('./helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { map } from '../dist/cjs/operators';
 
 declare const { asDiagram, rxTestScheduler };
 declare const cold: typeof marbleTestingSignature.cold;
@@ -619,6 +620,34 @@ describe('Observable', () => {
         expect(times).to.equal(2);
         expect(completeCalled).to.be.false;
       });
+    });
+  });
+
+  describe('pipe', () => {
+    it('should exist', () => {
+      const source = Observable.of('test');
+      expect(source.pipe).to.be.a('function');
+    });
+
+    it('should pipe multiple operations', (done) => {
+      Observable.of('test')
+        .pipe(
+          map((x: string) => x + x),
+          map((x: string) => x + '!!!')
+        )
+        .subscribe(
+          x => {
+            expect(x).to.equal('testtest!!!');
+          },
+          null,
+          done
+        );
+    });
+
+    it('should return the same observable if there are no arguments', () => {
+      const source = Observable.of('test');
+      const result = source.pipe();
+      expect(result).to.equal(source);
     });
   });
 });

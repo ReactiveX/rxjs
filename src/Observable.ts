@@ -7,6 +7,8 @@ import { toSubscriber } from './util/toSubscriber';
 import { IfObservable } from './observable/IfObservable';
 import { ErrorObservable } from './observable/ErrorObservable';
 import { observable as Symbol_observable } from './symbol/observable';
+import { OperatorFunction } from './interfaces';
+import { compose } from './util/compose';
 
 export interface Subscribable<T> {
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
@@ -285,5 +287,44 @@ export class Observable<T> implements Subscribable<T> {
    */
   [Symbol_observable]() {
     return this;
+  }
+
+  /* tslint:disable:max-line-length */
+  pipe(): Observable<T>
+  pipe<A>(op1: OperatorFunction<T, A>): Observable<A>
+  pipe<A, B>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>): Observable<B>
+  pipe<A, B, C>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>): Observable<C>
+  pipe<A, B, C, D>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>): Observable<D>
+  pipe<A, B, C, D, E>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>): Observable<E>
+  pipe<A, B, C, D, E, F>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>): Observable<F>
+  pipe<A, B, C, D, E, F, G>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op7: OperatorFunction<F, G>): Observable<G>
+  pipe<A, B, C, D, E, F, G, H>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op7: OperatorFunction<F, G>, op8: OperatorFunction<G, H>): Observable<H>
+  pipe<A, B, C, D, E, F, G, H, I>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op7: OperatorFunction<F, G>, op8: OperatorFunction<G, H>, op9: OperatorFunction<H, I>): Observable<I>
+  /* tslint:enable:max-line-length */
+
+  /**
+   * Used to stitch together functional operators into a chain.
+   * @method pipe
+   * @return {Observable} the Observable result of all of the operators having
+   * been called in the order they were passed in.
+   *
+   * @example
+   *
+   * import { map, filter, scan } from 'rxjs/operators';
+   *
+   * Rx.Observable.interval(1000)
+   *   .pipe(
+   *     filter(x => x % 2 === 0),
+   *     map(x => x + x),
+   *     scan((acc, x) => acc + x)
+   *   )
+   *   .subscribe(x => console.log(x))
+   */
+  pipe<R>(...operations: OperatorFunction<T, R>[]): Observable<R> {
+    if (operations.length === 0) {
+      return this as any;
+    }
+
+    return compose.apply(this, operations)(this);
   }
 }
