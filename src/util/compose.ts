@@ -15,6 +15,11 @@ export function compose<T, A, B, C, D, E, F, G, H, I>(op1: UnaryFunction<T, A>, 
 /* tslint:enable:max-line-length */
 
 export function compose<T, R>(...fns: Array<UnaryFunction<T, R>>): UnaryFunction<T, R> {
+  return composeFromArray(fns);
+}
+
+/* @internal */
+export function composeFromArray<T, R>(fns: Array<UnaryFunction<T, R>>): UnaryFunction<T, R> {
   if (!fns) {
     return noop as UnaryFunction<any, any>;
   }
