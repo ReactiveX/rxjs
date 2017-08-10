@@ -1,3 +1,14 @@
+<a name="5.4.3"></a>
+## [5.4.3](https://github.com/ReactiveX/RxJS/compare/5.4.2...v5.4.3) (2017-08-10)
+
+
+### Bug Fixes
+
+* **compilation:** compiles under typescript 2.4.2 ([#2780](https://github.com/ReactiveX/RxJS/issues/2780)) ([d2a32f9](https://github.com/ReactiveX/RxJS/commit/d2a32f9))
+* **exports:** add exports for missing static operators: generate, ([08c4196](https://github.com/ReactiveX/RxJS/commit/08c4196))
+
+
+
 <a name="5.4.2"></a>
 ## [5.4.2](https://github.com/ReactiveX/RxJS/compare/5.4.1...v5.4.2) (2017-07-05)
 
