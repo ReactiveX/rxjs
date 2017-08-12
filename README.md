@@ -1,3 +1,7 @@
+<img src="doc/asset/Rx_Logo_S.png" alt="Miss Electric Eel 2017" width="86" height="86"> RxJs: ReactiveX for JavaScript
+======================================
+
+
 [![Build Status](https://travis-ci.org/ReactiveX/rxjs.svg?branch=master)](https://travis-ci.org/ReactiveX/rxjs)
 [![Coverage Status](https://coveralls.io/repos/github/ReactiveX/rxjs/badge.svg?branch=master)](https://coveralls.io/github/ReactiveX/rxjs?branch=master)
 [![npm version](https://badge.fury.io/js/%40reactivex%2Frxjs.svg)](http://badge.fury.io/js/%40reactivex%2Frxjs)
