@@ -174,7 +174,7 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
           subscription.add(innerSubscription);
         }
 
-        this.destination.next(window);
+        this.destination.next(window.asObservable());
 
       }
     } else {

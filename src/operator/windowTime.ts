@@ -221,7 +221,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
     const window = new CountedSubject<T>();
     this.windows.push(window);
     const destination = this.destination;
-    destination.next(window);
+    destination.next(window.asObservable());
     return window;
   }
 

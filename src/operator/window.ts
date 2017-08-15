@@ -73,7 +73,7 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
 
   constructor(destination: Subscriber<Observable<T>>) {
     super(destination);
-    destination.next(this.window);
+    destination.next(this.window.asObservable());
   }
 
   notifyNext(outerValue: T, innerValue: any,
@@ -115,6 +115,6 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
     }
     const destination = this.destination;
     const newWindow = this.window = new Subject<T>();
-    destination.next(newWindow);
+    destination.next(newWindow.asObservable());
   }
 }

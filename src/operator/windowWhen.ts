@@ -125,7 +125,7 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
     }
 
     const window = this.window = new Subject<T>();
-    this.destination.next(window);
+    this.destination.next(window.asObservable());
 
     const closingNotifier = tryCatch(this.closingSelector)();
     if (closingNotifier === errorObject) {

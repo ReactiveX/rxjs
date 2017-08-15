@@ -432,4 +432,21 @@ describe('Observable.prototype.windowToggle', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
+
+  it('should emit Observables instead of Subjects', () => {
+    const source =   hot('---a---b---c--|');
+    const e2 = cold(     '--o-------o---|');
+    const expected =     '--x-------y---|';
+    const closing = cold(  '--------|');
+    const x = cold(        '-a---b--|    ');
+    const y = cold(                '-c--|');
+    const expectedValues = { x: x, y: y };
+
+    const result = source.windowToggle(e2, () => closing);
+
+    expectObservable(result.do(observable => {
+      expect(observable).to.be.instanceof(Rx.Observable);
+      expect(observable).not.to.be.instanceof(Rx.Subject);
+    })).toBe(expected, expectedValues);
+  });
 });

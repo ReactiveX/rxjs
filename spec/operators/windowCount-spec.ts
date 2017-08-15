@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
@@ -154,5 +155,20 @@ describe('Observable.prototype.windowCount', () => {
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should emit Observables instead of Subjects', () => {
+    const source =   hot('---a---b---c--|');
+    const expected =     'x------y------|';
+    const x = cold(      '---a---(b|)    ');
+    const y = cold(             '----c--|');
+    const expectedValues = { x: x, y: y };
+
+    const result = source.windowCount(2);
+
+    expectObservable(result.do(observable => {
+      expect(observable).to.be.instanceof(Rx.Observable);
+      expect(observable).not.to.be.instanceof(Rx.Subject);
+    })).toBe(expected, expectedValues);
   });
 });
