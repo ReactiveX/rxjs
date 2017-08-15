@@ -1,11 +1,11 @@
 import { IScheduler } from '../Scheduler';
 import { Action } from '../scheduler/Action';
-import { Observable } from '../Observable' ;
+import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { isScheduler } from '../util/isScheduler';
 
-const selfSelector = <T>(value: T) => value;
+const selfSelector = <S, T>(state: S): T => (state as any) as T;
 
 export type ConditionFunc<S> = (state: S) => boolean;
 export type IterateFunc<S> = (state: S) => S;
@@ -60,7 +60,7 @@ export class GenerateObservable<T, S> extends Observable<T> {
               private iterate: IterateFunc<S>,
               private resultSelector: ResultFunc<S, T>,
               private scheduler?: IScheduler) {
-      super();
+    super();
   }
 
   /**
@@ -208,7 +208,8 @@ export class GenerateObservable<T, S> extends Observable<T> {
         iterate: this.iterate,
         condition: this.condition,
         resultSelector: this.resultSelector,
-        state });
+        state
+      });
     }
     const { condition, resultSelector, iterate } = this;
     do {
