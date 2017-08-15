@@ -67,6 +67,8 @@
     "build_docs": "npm-run-all build_global build_es6_for_docs build_cjs clean_spec build_spec tests2png decision_tree_widget && esdoc -c esdoc.json && npm-run-all clean_dist_es6",
     "build_spec": "tsc --project ./spec --pretty",
     "build_spec_browser": "webpack --config spec/support/webpack.mocha.config.js",
+    "build_spec_browser_global": "webpack --config spec/support/webpack.mocha.config.global.js",
+    "build_spec_browser_global_min": "webpack --config spec/support/webpack.mocha.config.global.min.js",
     "check_circular_dependencies": "madge ./dist/cjs --circular",
     "clean_spec": "shx rm -rf spec-js",
     "clean_dist_cjs": "shx rm -rf ./dist/cjs",
