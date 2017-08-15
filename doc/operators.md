@@ -243,6 +243,7 @@ There are operators for different purposes, and they may be categorized as: crea
 
 - [`defaultIfEmpty`](../class/es6/Observable.js~Observable.html#instance-method-defaultIfEmpty)
 - [`every`](../class/es6/Observable.js~Observable.html#instance-method-every)
+- [`some`](../class/es6/Observable.js~Observable.html#instance-method-some)
 - [`find`](../class/es6/Observable.js~Observable.html#instance-method-find)
 - [`findIndex`](../class/es6/Observable.js~Observable.html#instance-method-findIndex)
 - [`isEmpty`](../class/es6/Observable.js~Observable.html#instance-method-isEmpty)
