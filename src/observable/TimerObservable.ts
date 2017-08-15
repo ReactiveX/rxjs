@@ -63,15 +63,14 @@ export class TimerObservable extends Observable<number> {
   }
 
   static dispatch(state: any) {
-
-    const { index, period, subscriber } = state;
+    const { index, period, subscriber, hasPeriod } = state;
     const action = (<any> this);
 
     subscriber.next(index);
 
     if (subscriber.closed) {
       return;
-    } else if (period === -1) {
+    } else if (!hasPeriod) {
       return subscriber.complete();
     }
 
@@ -79,7 +78,8 @@ export class TimerObservable extends Observable<number> {
     action.schedule(state, period);
   }
 
-  private period: number = -1;
+  private period: number = 0;
+  private hasPeriod: boolean = false;
   private dueTime: number = 0;
   private scheduler: IScheduler;
 
@@ -89,7 +89,8 @@ export class TimerObservable extends Observable<number> {
     super();
 
     if (isNumeric(period)) {
-      this.period = Number(period) < 1 && 1 || Number(period);
+      this.hasPeriod = true;
+      this.period = period < 0 ? 0 : period;
     } else if (isScheduler(period)) {
       scheduler = <IScheduler> period;
     }
@@ -99,17 +100,18 @@ export class TimerObservable extends Observable<number> {
     }
 
     this.scheduler = scheduler;
-    this.dueTime = isDate(dueTime) ?
+    const dt = isDate(dueTime) ?
       (+dueTime - this.scheduler.now()) :
-      (<number> dueTime);
+      (dueTime as number);
+    this.dueTime = dt < 0 ? 0 : dt;
   }
 
   protected _subscribe(subscriber: Subscriber<number>): TeardownLogic {
     const index = 0;
-    const { period, dueTime, scheduler } = this;
+    const { period, dueTime, scheduler, hasPeriod } = this;
 
     return scheduler.schedule(TimerObservable.dispatch, dueTime, {
-      index, period, subscriber
+      index, period, subscriber, hasPeriod
     });
   }
 }

@@ -90,4 +90,14 @@ describe('Observable.timer', () => {
     const values = { a: 0, b: 1, c: 2, d: 3, e: 4};
     expectObservable(source).toBe(expected, values);
   });
+
+  it('should consider a negative initialDelay as a zero', () => {
+    const src = Observable.timer(-1, rxTestScheduler);
+    expectObservable(src).toBe('(x|)', { x: 0 });
+  });
+
+  it('should consider a negative period as a zero', () => {
+    const src = Observable.timer(0, -1, rxTestScheduler).take(5);
+    expectObservable(src).toBe('(abcde|)', { a: 0, b: 1, c: 2, d: 3, e: 4 });
+  });
 });
