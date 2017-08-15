@@ -3,12 +3,13 @@ import { isArrayLike } from './isArrayLike';
 import { isPromise } from './isPromise';
 import { isObject } from './isObject';
 import { Subscriber } from '../Subscriber';
-import { Observable, ObservableInput } from '../Observable';
+import { ObservableInput } from '../Observable';
 import { iterator as Symbol_iterator } from '../symbol/iterator';
 import { Subscription } from '../Subscription';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { observable as Symbol_observable } from '../symbol/observable';
+import { isObservable } from './isObservable';
 
 export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
                                         result: any,
@@ -24,7 +25,7 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
     return null;
   }
 
-  if (result instanceof Observable) {
+  if (isObservable(result)) {
     if (result._isScalar) {
       destination.next((<any>result).value);
       destination.complete();

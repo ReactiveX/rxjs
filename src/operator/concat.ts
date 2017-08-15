@@ -3,6 +3,7 @@ import { IScheduler } from '../Scheduler';
 import { isScheduler } from '../util/isScheduler';
 import { ArrayObservable } from '../observable/ArrayObservable';
 import { MergeAllOperator } from './mergeAll';
+import { isObservable } from '../util/isObservable';
 
 /* tslint:disable:max-line-length */
 export function concat<T>(this: Observable<T>, scheduler?: IScheduler): Observable<T>;
@@ -178,7 +179,7 @@ export function concatStatic<T, R>(...observables: Array<ObservableInput<any> | 
     scheduler = args.pop();
   }
 
-  if (scheduler === null && observables.length === 1 && observables[0] instanceof Observable) {
+  if (scheduler === null && observables.length === 1 && isObservable(observables[0])) {
     return <Observable<R>>observables[0];
   }
 

@@ -6,6 +6,7 @@ import { TestMessage } from './TestMessage';
 import { SubscriptionLog } from './SubscriptionLog';
 import { Subscription } from '../Subscription';
 import { VirtualTimeScheduler, VirtualAction } from '../scheduler/VirtualTimeScheduler';
+import { isObservable } from '../util/isObservable';
 
 const defaultMaxFrame: number = 750;
 
@@ -83,7 +84,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       subscription = observable.subscribe(x => {
         let value = x;
         // Support Observable-of-Observables
-        if (x instanceof Observable) {
+        if (isObservable(x)) {
           value = this.materializeInnerObservable(value, this.frame);
         }
         actual.push({ frame: this.frame, notification: Notification.createNext(value) });

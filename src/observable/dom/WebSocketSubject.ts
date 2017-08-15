@@ -9,6 +9,7 @@ import { Observer, NextObserver } from '../../Observer';
 import { tryCatch } from '../../util/tryCatch';
 import { errorObject } from '../../util/errorObject';
 import { assign } from '../../util/assign';
+import { isObservable } from '../../util/isObservable';
 
 export interface WebSocketSubjectConfig {
   url: string;
@@ -86,7 +87,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   }
 
   constructor(urlConfigOrSource: string | WebSocketSubjectConfig | Observable<T>, destination?: Observer<T>) {
-    if (urlConfigOrSource instanceof Observable) {
+    if (isObservable(urlConfigOrSource)) {
       super(destination, <Observable<T>> urlConfigOrSource);
     } else {
       super();

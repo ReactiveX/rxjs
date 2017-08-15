@@ -3,6 +3,7 @@ import { IScheduler } from '../Scheduler';
 import { ArrayObservable } from '../observable/ArrayObservable';
 import { MergeAllOperator } from './mergeAll';
 import { isScheduler } from '../util/isScheduler';
+import { isObservable } from '../util/isObservable';
 
 /* tslint:disable:max-line-length */
 export function merge<T>(this: Observable<T>, scheduler?: IScheduler): Observable<T>;
@@ -160,7 +161,7 @@ export function mergeStatic<T, R>(...observables: Array<ObservableInput<any> | I
     concurrent = <number>observables.pop();
   }
 
-  if (scheduler === null && observables.length === 1 && observables[0] instanceof Observable) {
+  if (scheduler === null && observables.length === 1 && isObservable(observables[0])) {
     return <Observable<R>>observables[0];
   }
 
