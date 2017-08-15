@@ -22,6 +22,7 @@ describe('UnsubscriptionError', () => {
       expect(err.message).to.equal(`2 errors occurred during unsubscription:
   1) ${err1}
   2) ${err2}`);
+      expect(err.stack).to.not.be.undefined;
       expect(err.name).to.equal('UnsubscriptionError');
     }
   });

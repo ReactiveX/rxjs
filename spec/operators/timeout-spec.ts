@@ -33,6 +33,7 @@ describe('Observable.prototype.timeout', () => {
       throw new Error('this should not next');
     }, err => {
       expect(err).to.be.an.instanceof(Rx.TimeoutError);
+      expect(err.stack).to.not.be.undefined;
     }, () => {
       throw new Error('this should not complete');
     });

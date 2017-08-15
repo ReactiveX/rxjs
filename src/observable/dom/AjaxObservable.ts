@@ -438,6 +438,9 @@ export class AjaxResponse {
  * @class AjaxError
  */
 export class AjaxError extends Error {
+
+  protected err: Error;
+
   /** @type {XMLHttpRequest} The XHR instance associated with the error */
   xhr: XMLHttpRequest;
 
@@ -448,11 +451,16 @@ export class AjaxError extends Error {
   status: number;
 
   constructor(message: string, xhr: XMLHttpRequest, request: AjaxRequest) {
-    super(message);
+    const err: any = super(message);
+    this.err = err;
     this.message = message;
     this.xhr = xhr;
     this.request = request;
     this.status = xhr.status;
+  }
+
+  get stack() {
+    return this.err.stack;
   }
 }
 
@@ -464,5 +472,9 @@ export class AjaxError extends Error {
 export class AjaxTimeoutError extends AjaxError {
   constructor(xhr: XMLHttpRequest, request: AjaxRequest) {
     super('ajax timeout', xhr, request);
+  }
+
+  get stack() {
+    return this.err.stack;
   }
 }
