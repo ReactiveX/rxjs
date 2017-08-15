@@ -43,7 +43,10 @@ import { Observable } from '../Observable';
  * @method partition
  * @owner Observable
  */
-export function partition<T>(this: Observable<T>, predicate: (value: T) => boolean, thisArg?: any): [Observable<T>, Observable<T>] {
+export function partition<T>(this: Observable<T>, predicate: (value: T) => boolean): [Observable<T>, Observable<T>];
+export function partition<T, This>(this: Observable<T>, predicate: (this: This, value: T) => boolean, thisArg: This): [Observable<T>, Observable<T>];
+export function partition<T, This>(this: Observable<T>, predicate: (this: This, value: T) => boolean,
+                                   thisArg?: This): [Observable<T>, Observable<T>] {
   return [
     filter.call(this, predicate, thisArg),
     filter.call(this, not(predicate, thisArg))

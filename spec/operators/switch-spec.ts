@@ -213,7 +213,7 @@ describe('Observable.prototype.switch', () => {
     const expected = [1, 2, 3, 4];
     let completed = false;
 
-    Observable.of<any>(Observable.never(), Observable.never<number>(), [1, 2, 3, 4])
+    Observable.of<any>(Observable.never(), Observable.never(), [1, 2, 3, 4])
       .switch()
       .subscribe((x) => {
         expect(x).to.equal(expected.shift());
