@@ -10,7 +10,7 @@ var path = require('path');
 var tslib = require('tslib');
 
 rollup.rollup({
-  entry: 'dist/es6/Rx.js',
+  entry: 'dist/esm5/Rx.js',
   plugins: [
     rollupNodeResolve({
       jsnext: true,
