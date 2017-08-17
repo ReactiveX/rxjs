@@ -1,9 +1,11 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
-import {subscribeToResult} from '../../dist/cjs/util/subscribeToResult';
-import {OuterSubscriber} from '../../dist/cjs/OuterSubscriber';
-import {$$iterator} from '../../dist/cjs/symbol/iterator';
+import { subscribeToResult } from '../../dist/cjs/util/subscribeToResult';
+import { OuterSubscriber } from '../../dist/cjs/OuterSubscriber';
+import { $$iterator } from '../../dist/cjs/symbol/iterator';
 import $$symbolObservable from 'symbol-observable';
+import { Observable } from '../../dist/cjs/Observable';
+import { Subject } from '../../dist/cjs/Subject';
 
 describe('subscribeToResult', () => {
   it('should synchronously complete when subscribe to scalarObservable', () => {
@@ -59,7 +61,7 @@ describe('subscribeToResult', () => {
   });
 
   it('should subscribe to an array-like and emit synchronously', () => {
-    const result = {0: 0, 1: 1, 2: 2, length: 3};
+    const result = { 0: 0, 1: 1, 2: 2, length: 3 };
     const expected = [];
 
     const subscriber = new OuterSubscriber(x => expected.push(x));
@@ -105,12 +107,13 @@ describe('subscribeToResult', () => {
 
     const iterable = {
       [$$iterator]: () => {
-      return {
-        next: () => {
-          return iteratorResults.shift();
-        }
-      };
-    }};
+        return {
+          next: () => {
+            return iteratorResults.shift();
+          }
+        };
+      }
+    };
 
     const subscriber = new OuterSubscriber((x: number) => expected = x);
 
@@ -176,5 +179,15 @@ describe('subscribeToResult', () => {
     });
 
     subscribeToResult(subscriber, null);
+  });
+
+  it('should not swallow exception in inner subscriber', () => {
+    const source = new Subject();
+
+    source.mergeMapTo(Observable.of(1, 2, 3)).subscribe(() => {
+      throw new Error('meh');
+    });
+
+    expect(() => source.next()).to.throw();
   });
 });
