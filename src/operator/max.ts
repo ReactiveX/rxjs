@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { ReduceOperator } from './reduce';
+import { max as higherOrderMax } from '../operators';
 
 /**
  * The Max operator operates on an Observable that emits numbers (or items that can be compared with a provided function),
@@ -33,8 +33,5 @@ import { ReduceOperator } from './reduce';
  * @owner Observable
  */
 export function max<T>(this: Observable<T>, comparer?: (x: T, y: T) => number): Observable<T> {
-  const max: (x: T, y: T) => T = (typeof comparer === 'function')
-    ? (x, y) => comparer(x, y) > 0 ? x : y
-    : (x, y) => x > y ? x : y;
-  return this.lift(new ReduceOperator(max));
+  return higherOrderMax(comparer)(this);
 }

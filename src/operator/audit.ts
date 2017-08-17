@@ -1,12 +1,6 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { Observable, SubscribableOrPromise } from '../Observable';
-import { Subscription, TeardownLogic } from '../Subscription';
 
-import { tryCatch } from '../util/tryCatch';
-import { errorObject } from '../util/errorObject';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
+import { Observable, SubscribableOrPromise } from '../Observable';
+import { audit as higherOrder } from '../operators';
 
 /**
  * Ignores source values for a duration determined by another Observable, then
@@ -49,71 +43,5 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @owner Observable
  */
 export function audit<T>(this: Observable<T>, durationSelector: (value: T) => SubscribableOrPromise<any>): Observable<T> {
-  return this.lift(new AuditOperator(durationSelector));
-}
-
-class AuditOperator<T> implements Operator<T, T> {
-  constructor(private durationSelector: (value: T) => SubscribableOrPromise<any>) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new AuditSubscriber<T, T>(subscriber, this.durationSelector));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class AuditSubscriber<T, R> extends OuterSubscriber<T, R> {
-
-  private value: T;
-  private hasValue: boolean = false;
-  private throttled: Subscription;
-
-  constructor(destination: Subscriber<T>,
-              private durationSelector: (value: T) => SubscribableOrPromise<any>) {
-    super(destination);
-  }
-
-  protected _next(value: T): void {
-    this.value = value;
-    this.hasValue = true;
-    if (!this.throttled) {
-      const duration = tryCatch(this.durationSelector)(value);
-      if (duration === errorObject) {
-        this.destination.error(errorObject.e);
-      } else {
-        const innerSubscription = subscribeToResult(this, duration);
-        if (innerSubscription.closed) {
-          this.clearThrottle();
-        } else {
-          this.add(this.throttled = innerSubscription);
-        }
-      }
-    }
-  }
-
-  clearThrottle() {
-    const { value, hasValue, throttled } = this;
-    if (throttled) {
-      this.remove(throttled);
-      this.throttled = null;
-      throttled.unsubscribe();
-    }
-    if (hasValue) {
-      this.value = null;
-      this.hasValue = false;
-      this.destination.next(value);
-    }
-  }
-
-  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number): void {
-    this.clearThrottle();
-  }
-
-  notifyComplete(): void {
-    this.clearThrottle();
-  }
+  return higherOrder(durationSelector)(this);
 }

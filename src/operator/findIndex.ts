@@ -1,6 +1,5 @@
 import { Observable } from '../Observable';
-import { FindValueOperator } from './find';
-
+import { findIndex as higherOrder } from '../operators';
 /**
  * Emits only the index of the first value emitted by the source Observable that
  * meets some condition.
@@ -37,5 +36,5 @@ import { FindValueOperator } from './find';
  */
 export function findIndex<T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => boolean,
                              thisArg?: any): Observable<number> {
-  return <any>this.lift<any>(new FindValueOperator(predicate, this, true, thisArg));
+  return higherOrder(predicate, thisArg)(this);
 }

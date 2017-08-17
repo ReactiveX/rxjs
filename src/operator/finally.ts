@@ -1,7 +1,6 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { Subscription, TeardownLogic } from '../Subscription';
+
 import { Observable } from '../Observable';
+import { finalize } from '../operators';
 
 /**
  * Returns an Observable that mirrors the source Observable, but will call a specified function when
@@ -12,26 +11,5 @@ import { Observable } from '../Observable';
  * @owner Observable
  */
 export function _finally<T>(this: Observable<T>, callback: () => void): Observable<T> {
-  return this.lift(new FinallyOperator(callback));
-}
-
-class FinallyOperator<T> implements Operator<T, T> {
-  constructor(private callback: () => void) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new FinallySubscriber(subscriber, this.callback));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class FinallySubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<T>, callback: () => void) {
-    super(destination);
-    this.add(new Subscription(callback));
-  }
+  return finalize(callback)(this);
 }

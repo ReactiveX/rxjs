@@ -1,7 +1,7 @@
-import { Subject } from '../Subject';
+
 import { Observable } from '../Observable';
-import { multicast } from './multicast';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
+import { publish as higherOrder } from '../operators';
 
 /* tslint:disable:max-line-length */
 export function publish<T>(this: Observable<T>): ConnectableObservable<T>;
@@ -22,8 +22,7 @@ export function publish<T>(this: Observable<T>, selector: selector<T>): Observab
  * @owner Observable
  */
 export function publish<T>(this: Observable<T>, selector?: (source: Observable<T>) => Observable<T>): Observable<T> | ConnectableObservable<T> {
-  return selector ? multicast.call(this, () => new Subject<T>(), selector) :
-                    multicast.call(this, new Subject<T>());
+  return higherOrder(selector)(this);
 }
 
 export type selector<T> = (source: Observable<T>) => Observable<T>;

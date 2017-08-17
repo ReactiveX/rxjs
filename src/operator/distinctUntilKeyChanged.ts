@@ -1,5 +1,6 @@
-import { distinctUntilChanged } from './distinctUntilChanged';
+
 import { Observable } from '../Observable';
+import { distinctUntilKeyChanged as higherOrder } from '../operators';
 
 /* tslint:disable:max-line-length */
 export function distinctUntilKeyChanged<T>(this: Observable<T>, key: string): Observable<T>;
@@ -64,10 +65,5 @@ export function distinctUntilKeyChanged<T, K>(this: Observable<T>, key: string, 
  * @owner Observable
  */
 export function distinctUntilKeyChanged<T>(this: Observable<T>, key: string, compare?: (x: T, y: T) => boolean): Observable<T> {
-  return distinctUntilChanged.call(this, function(x: T, y: T) {
-    if (compare) {
-      return compare(x[key], y[key]);
-    }
-    return x[key] === y[key];
-  });
+  return higherOrder<T, T>(key, compare)(this);
 }

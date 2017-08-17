@@ -1,10 +1,6 @@
-import { Operator } from '../Operator';
+
 import { Observable, ObservableInput } from '../Observable';
-import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
+import { switchMap as higherOrderSwitchMap } from '../operators';
 
 /* tslint:disable:max-line-length */
 export function switchMap<T, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<R>): Observable<R>;
@@ -60,91 +56,5 @@ export function switchMap<T, I, R>(this: Observable<T>, project: (value: T, inde
  */
 export function switchMap<T, I, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<I>,
                                    resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<I | R> {
-  return this.lift(new SwitchMapOperator(project, resultSelector));
-}
-
-class SwitchMapOperator<T, I, R> implements Operator<T, I> {
-  constructor(private project: (value: T, index: number) => ObservableInput<I>,
-              private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {
-  }
-
-  call(subscriber: Subscriber<I>, source: any): any {
-    return source.subscribe(new SwitchMapSubscriber(subscriber, this.project, this.resultSelector));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class SwitchMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
-  private index: number = 0;
-  private innerSubscription: Subscription;
-
-  constructor(destination: Subscriber<I>,
-              private project: (value: T, index: number) => ObservableInput<I>,
-              private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {
-    super(destination);
-  }
-
-  protected _next(value: T) {
-    let result: ObservableInput<I>;
-    const index = this.index++;
-    try {
-      result = this.project(value, index);
-    } catch (error) {
-      this.destination.error(error);
-      return;
-    }
-    this._innerSub(result, value, index);
-  }
-
-  private _innerSub(result: ObservableInput<I>, value: T, index: number) {
-    const innerSubscription = this.innerSubscription;
-    if (innerSubscription) {
-      innerSubscription.unsubscribe();
-    }
-    this.add(this.innerSubscription = subscribeToResult(this, result, value, index));
-  }
-
-  protected _complete(): void {
-    const {innerSubscription} = this;
-    if (!innerSubscription || innerSubscription.closed) {
-      super._complete();
-    }
-  }
-
-  protected _unsubscribe() {
-    this.innerSubscription = null;
-  }
-
-  notifyComplete(innerSub: Subscription): void {
-    this.remove(innerSub);
-    this.innerSubscription = null;
-    if (this.isStopped) {
-      super._complete();
-    }
-  }
-
-  notifyNext(outerValue: T, innerValue: I,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, I>): void {
-    if (this.resultSelector) {
-      this._tryNotifyNext(outerValue, innerValue, outerIndex, innerIndex);
-    } else {
-      this.destination.next(innerValue);
-    }
-  }
-
-  private _tryNotifyNext(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): void {
-    let result: R;
-    try {
-      result = this.resultSelector(outerValue, innerValue, outerIndex, innerIndex);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    this.destination.next(result);
-  }
+  return higherOrderSwitchMap(project, resultSelector)(this);
 }

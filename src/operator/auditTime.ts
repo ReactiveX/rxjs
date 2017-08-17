@@ -1,9 +1,7 @@
 import { async } from '../scheduler/async';
-import { Operator } from '../Operator';
 import { IScheduler } from '../Scheduler';
-import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { Subscription, TeardownLogic } from '../Subscription';
+import { auditTime as higherOrder } from '../operators';
 
 /**
  * Ignores source values for `duration` milliseconds, then emits the most recent
@@ -48,59 +46,5 @@ import { Subscription, TeardownLogic } from '../Subscription';
  * @owner Observable
  */
 export function auditTime<T>(this: Observable<T>, duration: number, scheduler: IScheduler = async): Observable<T> {
-  return this.lift(new AuditTimeOperator(duration, scheduler));
-}
-
-class AuditTimeOperator<T> implements Operator<T, T> {
-  constructor(private duration: number,
-              private scheduler: IScheduler) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new AuditTimeSubscriber(subscriber, this.duration, this.scheduler));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class AuditTimeSubscriber<T> extends Subscriber<T> {
-
-  private value: T;
-  private hasValue: boolean = false;
-  private throttled: Subscription;
-
-  constructor(destination: Subscriber<T>,
-              private duration: number,
-              private scheduler: IScheduler) {
-    super(destination);
-  }
-
-  protected _next(value: T): void {
-    this.value = value;
-    this.hasValue = true;
-    if (!this.throttled) {
-      this.add(this.throttled = this.scheduler.schedule(dispatchNext, this.duration, this));
-    }
-  }
-
-  clearThrottle(): void {
-    const { value, hasValue, throttled } = this;
-    if (throttled) {
-      this.remove(throttled);
-      this.throttled = null;
-      throttled.unsubscribe();
-    }
-    if (hasValue) {
-      this.value = null;
-      this.hasValue = false;
-      this.destination.next(value);
-    }
-  }
-}
-
-function dispatchNext<T>(subscriber: AuditTimeSubscriber<T>): void {
-  subscriber.clearThrottle();
+  return higherOrder(duration, scheduler)(this);
 }

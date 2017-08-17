@@ -10,7 +10,7 @@ import { IScheduler } from '../Scheduler';
 import { iterator as Symbol_iterator } from '../symbol/iterator';
 import { Observable, ObservableInput } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { ObserveOnSubscriber } from '../operator/observeOn';
+import { ObserveOnSubscriber } from '../operators/observeOn';
 import { observable as Symbol_observable } from '../symbol/observable';
 
 /**

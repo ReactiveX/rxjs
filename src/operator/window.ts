@@ -1,11 +1,6 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
-import { Subject } from '../Subject';
 
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
+import { Observable } from '../Observable';
+import { window as higherOrder } from '../operators';
 
 /**
  * Branch out the source Observable values as a nested Observable whenever
@@ -44,77 +39,5 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @owner Observable
  */
 export function window<T>(this: Observable<T>, windowBoundaries: Observable<any>): Observable<Observable<T>> {
-  return this.lift(new WindowOperator<T>(windowBoundaries));
-}
-
-class WindowOperator<T> implements Operator<T, Observable<T>> {
-
-  constructor(private windowBoundaries: Observable<any>) {
-  }
-
-  call(subscriber: Subscriber<Observable<T>>, source: any): any {
-    const windowSubscriber = new WindowSubscriber(subscriber);
-    const sourceSubscription = source.subscribe(windowSubscriber);
-    if (!sourceSubscription.closed) {
-      windowSubscriber.add(subscribeToResult(windowSubscriber, this.windowBoundaries));
-    }
-    return sourceSubscription;
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class WindowSubscriber<T> extends OuterSubscriber<T, any> {
-
-  private window: Subject<T> = new Subject<T>();
-
-  constructor(destination: Subscriber<Observable<T>>) {
-    super(destination);
-    destination.next(this.window);
-  }
-
-  notifyNext(outerValue: T, innerValue: any,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, any>): void {
-    this.openWindow();
-  }
-
-  notifyError(error: any, innerSub: InnerSubscriber<T, any>): void {
-    this._error(error);
-  }
-
-  notifyComplete(innerSub: InnerSubscriber<T, any>): void {
-    this._complete();
-  }
-
-  protected _next(value: T): void {
-    this.window.next(value);
-  }
-
-  protected _error(err: any): void {
-    this.window.error(err);
-    this.destination.error(err);
-  }
-
-  protected _complete(): void {
-    this.window.complete();
-    this.destination.complete();
-  }
-
-  protected _unsubscribe() {
-    this.window = null;
-  }
-
-  private openWindow(): void  {
-    const prevWindow = this.window;
-    if (prevWindow) {
-      prevWindow.complete();
-    }
-    const destination = this.destination;
-    const newWindow = this.window = new Subject<T>();
-    destination.next(newWindow);
-  }
+  return higherOrder(windowBoundaries)(this);
 }

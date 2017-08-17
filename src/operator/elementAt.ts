@@ -1,8 +1,6 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
+
 import { Observable } from '../Observable';
-import { TeardownLogic } from '../Subscription';
+import { elementAt as higherOrder } from '../operators';
 
 /**
  * Emits the single value at the specified `index` in a sequence of emissions
@@ -47,49 +45,5 @@ import { TeardownLogic } from '../Subscription';
  * @owner Observable
  */
 export function elementAt<T>(this: Observable<T>, index: number, defaultValue?: T): Observable<T> {
-  return this.lift(new ElementAtOperator(index, defaultValue));
-}
-
-class ElementAtOperator<T> implements Operator<T, T> {
-
-  constructor(private index: number, private defaultValue?: T) {
-    if (index < 0) {
-      throw new ArgumentOutOfRangeError;
-    }
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new ElementAtSubscriber(subscriber, this.index, this.defaultValue));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class ElementAtSubscriber<T> extends Subscriber<T> {
-
-  constructor(destination: Subscriber<T>, private index: number, private defaultValue?: T) {
-    super(destination);
-  }
-
-  protected _next(x: T) {
-    if (this.index-- === 0) {
-      this.destination.next(x);
-      this.destination.complete();
-    }
-  }
-
-  protected _complete() {
-    const destination = this.destination;
-    if (this.index >= 0) {
-      if (typeof this.defaultValue !== 'undefined') {
-        destination.next(this.defaultValue);
-      } else {
-        destination.error(new ArgumentOutOfRangeError);
-      }
-    }
-    destination.complete();
-  }
+  return higherOrder(index, defaultValue)(this);
 }

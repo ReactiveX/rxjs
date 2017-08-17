@@ -1,4 +1,4 @@
-import { MergeMapOperator } from './mergeMap';
+import { concatMap as higherOrderConcatMap } from '../operators';
 import { Observable, ObservableInput } from '../Observable';
 
 /* tslint:disable:max-line-length */
@@ -67,5 +67,5 @@ export function concatMap<T, I, R>(this: Observable<T>, project: (value: T, inde
  */
 export function concatMap<T, I, R>(this: Observable<T>, project: (value: T, index: number) =>  ObservableInput<I>,
                                    resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {
-  return this.lift(new MergeMapOperator(project, resultSelector, 1));
+  return higherOrderConcatMap(project, resultSelector)(this);
 }

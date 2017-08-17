@@ -3,7 +3,7 @@ import { Observable } from '../Observable';
 import { ArrayObservable } from '../observable/ArrayObservable';
 import { ScalarObservable } from '../observable/ScalarObservable';
 import { EmptyObservable } from '../observable/EmptyObservable';
-import { concatStatic } from './concat';
+import { concat as concatStatic } from '../observable/concat';
 import { isScheduler } from '../util/isScheduler';
 
 /* tslint:disable:max-line-length */

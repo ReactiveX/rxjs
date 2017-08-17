@@ -1,9 +1,6 @@
-import { Operator } from '../Operator';
+
 import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
-import { Subscription, TeardownLogic } from '../Subscription';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
+import { exhaust as higherOrder } from '../operators';
 
 /**
  * Converts a higher-order Observable into a first-order Observable by dropping
@@ -41,47 +38,5 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @owner Observable
  */
 export function exhaust<T>(this: Observable<T>): Observable<T> {
-  return this.lift(new SwitchFirstOperator<T>());
-}
-
-class SwitchFirstOperator<T> implements Operator<T, T> {
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new SwitchFirstSubscriber(subscriber));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class SwitchFirstSubscriber<T> extends OuterSubscriber<T, T> {
-  private hasCompleted: boolean = false;
-  private hasSubscription: boolean = false;
-
-  constructor(destination: Subscriber<T>) {
-    super(destination);
-  }
-
-  protected _next(value: T): void {
-    if (!this.hasSubscription) {
-      this.hasSubscription = true;
-      this.add(subscribeToResult(this, value));
-    }
-  }
-
-  protected _complete(): void {
-    this.hasCompleted = true;
-    if (!this.hasSubscription) {
-      this.destination.complete();
-    }
-  }
-
-  notifyComplete(innerSub: Subscription): void {
-    this.remove(innerSub);
-    this.hasSubscription = false;
-    if (this.hasCompleted) {
-      this.destination.complete();
-    }
-  }
+  return higherOrder()(this);
 }

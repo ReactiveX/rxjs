@@ -1,7 +1,7 @@
-import { Operator } from '../Operator';
+
 import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
 import { Notification } from '../Notification';
+import { dematerialize as higherOrder } from '../operators';
 
 /**
  * Converts an Observable of {@link Notification} objects into the emissions
@@ -43,27 +43,6 @@ import { Notification } from '../Notification';
  * @method dematerialize
  * @owner Observable
  */
-export function dematerialize<T>(this: Observable<T>): Observable<any> {
-  return this.lift(new DeMaterializeOperator());
-}
-
-class DeMaterializeOperator<T extends Notification<any>, R> implements Operator<T, R> {
-  call(subscriber: Subscriber<any>, source: any): any {
-    return source.subscribe(new DeMaterializeSubscriber(subscriber));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class DeMaterializeSubscriber<T extends Notification<any>> extends Subscriber<T> {
-  constructor(destination: Subscriber<any>) {
-    super(destination);
-  }
-
-  protected _next(value: T) {
-    value.observe(this.destination);
-  }
+export function dematerialize<T>(this: Observable<Notification<T>>): Observable<T> {
+  return higherOrder()(this);
 }
