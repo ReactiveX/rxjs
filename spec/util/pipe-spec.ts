@@ -1,16 +1,16 @@
 import { expect } from 'chai';
-import { compose } from '../../dist/cjs/util/compose';
+import { pipe } from '../../dist/cjs/util/pipe';
 
-describe('compose', () => {
+describe('pipe', () => {
   it('should exist', () => {
-    expect(compose).to.be.a('function');
+    expect(pipe).to.be.a('function');
   });
 
-  it('should compose two functions together', () => {
+  it('should pipe two functions together', () => {
     const a = x => x + x;
     const b = x => x - 1;
 
-    const c = compose(a, b);
+    const c = pipe(a, b);
     expect(c).to.be.a('function');
     expect(c(1)).to.equal(1);
     expect(c(10)).to.equal(19);
@@ -18,13 +18,13 @@ describe('compose', () => {
 
   it('should return the same function if only one is passed', () => {
     const a = x => x;
-    const c = compose(a);
+    const c = pipe(a);
 
     expect(c).to.equal(a);
   });
 
   it('should return a noop if not passed a function', () => {
-    const c = compose();
+    const c = pipe();
 
     expect(c('whatever')).to.equal('whatever');
     const someObj = {};

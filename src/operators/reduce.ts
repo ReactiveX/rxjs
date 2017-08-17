@@ -3,7 +3,7 @@ import { scan } from './scan';
 import { takeLast } from './takeLast';
 import { defaultIfEmpty } from './defaultIfEmpty';
 import { OperatorFunction, MonoTypeOperatorFunction } from '../interfaces';
-import { compose } from '../util/compose';
+import { pipe } from '../util/pipe';
 
 /* tslint:disable:max-line-length */
 export function reduce<T>(accumulator: (acc: T, value: T, index: number) => T, seed?: T): MonoTypeOperatorFunction<T>;
@@ -63,11 +63,11 @@ export function reduce<T, R>(accumulator: (acc: R, value: T, index?: number) => 
   // means they didn't provide anything or if they literally provided `undefined`
   if (arguments.length >= 2) {
     return function reduceOperatorFunctionWithSeed(source: Observable<T>): Observable<R> {
-      return compose(scan(accumulator, seed), takeLast(1), defaultIfEmpty(seed))(source);
+      return pipe(scan(accumulator, seed), takeLast(1), defaultIfEmpty(seed))(source);
     };
   }
   return function reduceOperatorFunction(source: Observable<T>): Observable<R> {
-    return compose(scan<T, T | R>((acc, value, index) => {
+    return pipe(scan<T, T | R>((acc, value, index) => {
       return accumulator(<R>acc, value, index + 1);
     }), takeLast(1))(source);
   };

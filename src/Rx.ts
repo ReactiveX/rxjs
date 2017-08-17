@@ -162,7 +162,7 @@ export {Timestamp} from './operators/timestamp';
 export {TestScheduler} from './testing/TestScheduler';
 export {VirtualTimeScheduler} from './scheduler/VirtualTimeScheduler';
 export {AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError} from './observable/dom/AjaxObservable';
-export { compose } from './util/compose';
+export { pipe } from './util/pipe';
 
 import { asap } from './scheduler/asap';
 import { async } from './scheduler/async';

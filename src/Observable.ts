@@ -8,7 +8,7 @@ import { IfObservable } from './observable/IfObservable';
 import { ErrorObservable } from './observable/ErrorObservable';
 import { observable as Symbol_observable } from './symbol/observable';
 import { OperatorFunction } from './interfaces';
-import { composeFromArray } from './util/compose';
+import { pipeFromArray } from './util/pipe';
 
 export interface Subscribable<T> {
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
@@ -325,6 +325,6 @@ export class Observable<T> implements Subscribable<T> {
       return this as any;
     }
 
-    return composeFromArray(operations)(this);
+    return pipeFromArray(operations)(this);
   }
 }
