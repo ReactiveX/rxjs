@@ -350,7 +350,7 @@ describe('Observable.prototype.reduce', () => {
         value.a = acc.a;
         value.b = acc.b;
         return acc;
-      }, {});
+      }, {a: 1, b: 'b'});
 
       reduced.subscribe(r => {
         r.a.toExponential();

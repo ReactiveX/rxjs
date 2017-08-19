@@ -242,7 +242,7 @@ describe('Observable.prototype.scan', () => {
         value.a = acc.a;
         value.b = acc.b;
         return acc;
-      }, {});
+      });
     });
   });
 
