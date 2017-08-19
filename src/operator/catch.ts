@@ -65,10 +65,9 @@ import { ErrorObservable } from '../Observable/ErrorObservable';
  * @name catch
  * @owner Observable
  */
-export function _catch<T, R = T>(this: Observable<T>, selector: (err: any, caught: Observable<R>) => ObservableInput<R>): Observable<R> {
 export function _catch<T>(this: Observable<T>, selector: (err: any, caught: Observable<T>) => ErrorObservable): Observable<T>;
-export function _catch<T, R>(this: Observable<T>, selector: (err: any, caught: Observable<T>) => ObservableInput<R>): Observable<T | R>;
-export function _catch<T, R>(this: Observable<T>, selector: (err: any, caught: Observable<T>) => ObservableInput<R>): Observable<T | R> {
+export function _catch<T, R = T>(this: Observable<T>, selector: (err: any, caught: Observable<R>) => ObservableInput<R>): Observable<R>;
+export function _catch<T, R = T>(this: Observable<T>, selector: (err: any, caught: Observable<R>) => ObservableInput<R>): Observable<R> {
   const operator = new CatchOperator(selector);
   const caught = this.lift(operator);
   return (operator.caught = caught);
