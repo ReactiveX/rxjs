@@ -4,6 +4,7 @@ import { Observable, ObservableInput } from '../Observable';
 
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
+import { ErrorObservable } from '../Observable/ErrorObservable';
 
 /**
  * Catches errors on the observable to be handled by returning a new observable or throwing an error.
@@ -65,6 +66,9 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @owner Observable
  */
 export function _catch<T, R = T>(this: Observable<T>, selector: (err: any, caught: Observable<R>) => ObservableInput<R>): Observable<R> {
+export function _catch<T>(this: Observable<T>, selector: (err: any, caught: Observable<T>) => ErrorObservable): Observable<T>;
+export function _catch<T, R>(this: Observable<T>, selector: (err: any, caught: Observable<T>) => ObservableInput<R>): Observable<T | R>;
+export function _catch<T, R>(this: Observable<T>, selector: (err: any, caught: Observable<T>) => ObservableInput<R>): Observable<T | R> {
   const operator = new CatchOperator(selector);
   const caught = this.lift(operator);
   return (operator.caught = caught);

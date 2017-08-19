@@ -358,4 +358,11 @@ describe('Observable.prototype.catch', () => {
     });
   });
 
+  it('should return a T typed Observable when selector returns an ErrorObservable', (done: MochaDone) => {
+    const input$ = Observable.of(class { });
+
+    input$.catch((err, caught) => Observable.throw(Error(err)))
+      .map(C => class extends C { })
+      .subscribe({ complete: done });
+  });
 });
