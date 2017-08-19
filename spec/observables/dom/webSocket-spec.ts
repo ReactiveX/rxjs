@@ -280,8 +280,8 @@ describe('Observable.webSocket', () => {
 
       const subject = Observable.webSocket({
         url: 'ws://mysocket',
-        resultSelector: (e: any) => {
-          return e.data + '!';
+        resultSelector: e => {
+          return e.data + '!' as any;
         }
       });
 

@@ -76,8 +76,9 @@ describe('Observable.fromPromise', () => {
     class CustomPromise<T> implements PromiseLike<T> {
       constructor(private promise: PromiseLike<T>) {
       }
-      then(onFulfilled?, onRejected?): PromiseLike<T> {
-        return new CustomPromise(this.promise.then(onFulfilled, onRejected));
+      // tslint:disable-next-line:max-line-length
+      then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): PromiseLike<TResult1 | TResult2> {
+      return new CustomPromise(this.promise.then(onfulfilled, onrejected));
       }
     }
     const promise = new CustomPromise(Promise.resolve(42));
