@@ -1,5 +1,8 @@
+import { not } from '../util/not';
+import { filter } from './filter';
 import { Observable } from '../Observable';
-import { partition as higherOrder } from '../operators/partition';
+import { UnaryFunction } from '../interfaces';
+
 /**
  * Splits the source Observable into two, one with values that satisfy a
  * predicate, and another with values that don't satisfy the predicate.
@@ -41,6 +44,9 @@ import { partition as higherOrder } from '../operators/partition';
  * @method partition
  * @owner Observable
  */
-export function partition<T>(this: Observable<T>, predicate: (value: T) => boolean, thisArg?: any): [Observable<T>, Observable<T>] {
-  return higherOrder(predicate, thisArg)(this);
+export function partition<T>(predicate: (value: T) => boolean, thisArg?: any): UnaryFunction<Observable<T>, [Observable<T>, Observable<T>]> {
+  return (source: Observable<T>) => [
+    filter(predicate, thisArg)(source),
+    filter(not(predicate, thisArg) as any)(source)
+  ];
 }
