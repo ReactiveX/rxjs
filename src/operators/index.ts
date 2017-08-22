@@ -45,6 +45,7 @@ export { mergeScan } from './mergeScan';
 export { min } from './min';
 export { multicast } from './multicast';
 export { observeOn } from './observeOn';
+export { onErrorResumeNext } from './onErrorResumeNext';
 export { publish } from './publish';
 export { race } from './race';
 export { reduce } from './reduce';

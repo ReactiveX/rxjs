@@ -1,3 +1,3 @@
-import { onErrorResumeNextStatic } from '../operator/onErrorResumeNext';
+import { onErrorResumeNextStatic } from '../operators/onErrorResumeNext';
 
 export const onErrorResumeNext = onErrorResumeNextStatic;
