@@ -46,6 +46,7 @@ export { min } from './min';
 export { multicast } from './multicast';
 export { observeOn } from './observeOn';
 export { onErrorResumeNext } from './onErrorResumeNext';
+export { pairwise } from './pairwise';
 export { publish } from './publish';
 export { race } from './race';
 export { reduce } from './reduce';
