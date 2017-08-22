@@ -48,6 +48,7 @@ export { observeOn } from './observeOn';
 export { onErrorResumeNext } from './onErrorResumeNext';
 export { pairwise } from './pairwise';
 export { partition } from './partition';
+export { pluck } from './pluck';
 export { publish } from './publish';
 export { race } from './race';
 export { reduce } from './reduce';
