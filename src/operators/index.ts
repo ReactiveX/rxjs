@@ -34,6 +34,7 @@ export { ignoreElements } from './ignoreElements';
 export { isEmpty } from './isEmpty';
 export { last } from './last';
 export { map } from './map';
+export { mapTo } from './mapTo';
 export { materialize } from './materialize';
 export { max } from './max';
 export { merge } from './merge';
