@@ -40,6 +40,7 @@ export { max } from './max';
 export { merge } from './merge';
 export { mergeAll } from './mergeAll';
 export { mergeMap } from './mergeMap';
+export { mergeMapTo } from './mergeMapTo';
 export { min } from './min';
 export { multicast } from './multicast';
 export { observeOn } from './observeOn';
