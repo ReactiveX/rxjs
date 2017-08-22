@@ -50,6 +50,7 @@ export { pairwise } from './pairwise';
 export { partition } from './partition';
 export { pluck } from './pluck';
 export { publish } from './publish';
+export { publishBehavior } from './publishBehavior';
 export { race } from './race';
 export { reduce } from './reduce';
 export { refCount } from './refCount';
