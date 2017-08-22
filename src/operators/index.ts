@@ -32,6 +32,7 @@ export { first } from './first';
 export { groupBy } from './groupBy';
 export { ignoreElements } from './ignoreElements';
 export { isEmpty } from './isEmpty';
+export { last } from './last';
 export { map } from './map';
 export { materialize } from './materialize';
 export { max } from './max';
