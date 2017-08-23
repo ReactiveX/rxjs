@@ -34,6 +34,7 @@ export { ignoreElements } from './ignoreElements';
 export { map } from './map';
 export { materialize } from './materialize';
 export { max } from './max';
+export { merge } from './merge';
 export { mergeAll } from './mergeAll';
 export { mergeMap } from './mergeMap';
 export { min } from './min';
