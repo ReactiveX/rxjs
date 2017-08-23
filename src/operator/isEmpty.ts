@@ -1,6 +1,6 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
+
 import { Observable } from '../Observable';
+import { isEmpty as higherOrder } from '../operators';
 
 /**
  * If the source Observable is empty it returns an Observable that emits true, otherwise it emits false.
@@ -12,37 +12,5 @@ import { Observable } from '../Observable';
  * @owner Observable
  */
 export function isEmpty<T>(this: Observable<T>): Observable<boolean> {
-  return this.lift(new IsEmptyOperator());
-}
-
-class IsEmptyOperator implements Operator<any, boolean> {
-  call (observer: Subscriber<boolean>, source: any): any {
-    return source.subscribe(new IsEmptySubscriber(observer));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class IsEmptySubscriber extends Subscriber<any> {
-  constructor(destination: Subscriber<boolean>) {
-    super(destination);
-  }
-
-  private notifyComplete(isEmpty: boolean): void {
-    const destination = this.destination;
-
-    destination.next(isEmpty);
-    destination.complete();
-  }
-
-  protected _next(value: boolean) {
-    this.notifyComplete(false);
-  }
-
-  protected _complete() {
-    this.notifyComplete(true);
-  }
+  return higherOrder()(this);
 }

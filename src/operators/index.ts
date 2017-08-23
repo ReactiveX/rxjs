@@ -31,6 +31,7 @@ export { findIndex } from './findIndex';
 export { first } from './first';
 export { groupBy } from './groupBy';
 export { ignoreElements } from './ignoreElements';
+export { isEmpty } from './isEmpty';
 export { map } from './map';
 export { materialize } from './materialize';
 export { max } from './max';
