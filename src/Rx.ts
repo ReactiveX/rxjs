@@ -36,6 +36,7 @@ import './add/observable/zip';
 
 //dom
 import './add/observable/dom/ajax';
+import './add/observable/dom/fromDOMObserver';
 import './add/observable/dom/webSocket';
 
 //operators
