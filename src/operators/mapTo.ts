@@ -1,5 +1,7 @@
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { mapTo as higherOrder } from '../operators';
+import { OperatorFunction } from '../interfaces';
 
 /**
  * Emits the given constant value on the output Observable every time the source
@@ -27,6 +29,38 @@ import { mapTo as higherOrder } from '../operators';
  * @method mapTo
  * @owner Observable
  */
-export function mapTo<T, R>(this: Observable<T>, value: R): Observable<R> {
-  return higherOrder(value)(this);
+export function mapTo<T, R>(value: R): OperatorFunction<T, R> {
+  return (source: Observable<T>) => source.lift(new MapToOperator(value));
+}
+
+class MapToOperator<T, R> implements Operator<T, R> {
+
+  value: R;
+
+  constructor(value: R) {
+    this.value = value;
+  }
+
+  call(subscriber: Subscriber<R>, source: any): any {
+    return source.subscribe(new MapToSubscriber(subscriber, this.value));
+  }
+}
+
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+class MapToSubscriber<T, R> extends Subscriber<T> {
+
+  value: R;
+
+  constructor(destination: Subscriber<R>, value: R) {
+    super(destination);
+    this.value = value;
+  }
+
+  protected _next(x: T) {
+    this.destination.next(this.value);
+  }
 }
