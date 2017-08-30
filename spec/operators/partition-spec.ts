@@ -45,6 +45,20 @@ describe('Observable.prototype.partition', () => {
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
   });
 
+  it('should partition an observable into two using a predicate that takes an index', () => {
+    const e1 =    hot('--a-b---a------d--e---c--|');
+    const e1subs =    '^                        !';
+    const expected = ['--a-----a---------e------|',
+                      '----b----------d------c--|'];
+
+    function predicate(value, index: number) {
+      return index % 2 === 0;
+    }
+
+    expectObservableArray(e1.partition(predicate), expected);
+    expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+  });
+
   it('should partition an observable into two using a predicate and thisArg', () => {
     const e1 =    hot('--a-b---a------d--a---c--|');
     const e1subs =    '^                        !';
