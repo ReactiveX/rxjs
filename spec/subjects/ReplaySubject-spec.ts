@@ -100,6 +100,22 @@ describe('ReplaySubject', () => {
     });
   });
 
+  it('should gracefully handle multiple calls to unsubscribe', () => {
+    const subject = new ReplaySubject(1);
+
+    subject.next(1);
+
+    const subscription = subject.subscribe((x: number) => {
+      expect(x).to.equal(1);
+    });
+
+    subject.next(1);
+    subscription.unsubscribe();
+
+    subject.next(2);
+    subscription.unsubscribe();
+  });
+
   describe('with bufferSize=2', () => {
     it('should replay 2 previous values when subscribed', () => {
       const replaySubject = new ReplaySubject(2);
