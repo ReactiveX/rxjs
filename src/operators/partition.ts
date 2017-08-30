@@ -44,7 +44,8 @@ import { UnaryFunction } from '../interfaces';
  * @method partition
  * @owner Observable
  */
-export function partition<T>(predicate: (value: T, index: number) => boolean, thisArg?: any): UnaryFunction<Observable<T>, [Observable<T>, Observable<T>]> {
+export function partition<T>(predicate: (value: T, index: number) => boolean,
+                             thisArg?: any): UnaryFunction<Observable<T>, [Observable<T>, Observable<T>]> {
   return (source: Observable<T>) => [
     filter(predicate, thisArg)(source),
     filter(not(predicate, thisArg) as any)(source)
