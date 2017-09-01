@@ -42,7 +42,7 @@ export function distinctUntilChanged<T, K>(this: Observable<T>, compare: (x: K, 
  * @see {@link distinctUntilKeyChanged}
  *
  * @param {function} [compare] Optional comparison function called to test if an item is distinct from the previous item in the source.
- * @return {Observable} An Observable that emits items from the source Observable with distinct values.
+ * @return { Observable } An Observable that emits items from the source Observable with distinct values.
  * @method distinctUntilChanged
  * @owner Observable
  */

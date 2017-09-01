@@ -39,9 +39,9 @@ import { delayWhen as higherOrder } from '../operators';
  * returns an Observable for each value emitted by the source Observable, which
  * is then used to delay the emission of that item on the output Observable
  * until the Observable returned from this function emits a value.
- * @param {Observable} subscriptionDelay An Observable that triggers the
+ * @param { Observable } subscriptionDelay An Observable that triggers the
  * subscription to the source Observable once it emits any value.
- * @return {Observable} An Observable that delays the emissions of the source
+ * @return { Observable } An Observable that delays the emissions of the source
  * Observable by an amount of time specified by the Observable returned by
  * `delayDurationSelector`.
  * @method delayWhen

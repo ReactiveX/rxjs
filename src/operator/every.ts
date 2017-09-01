@@ -12,7 +12,7 @@ import { every as higherOrder } from '../operators';
  *
  * @param {function} predicate A function for determining if an item meets a specified condition.
  * @param {any} [thisArg] Optional object to use for `this` in the callback.
- * @return {Observable} An Observable of booleans that determines if all items of the source Observable meet the condition specified.
+ * @return { Observable } An Observable of booleans that determines if all items of the source Observable meet the condition specified.
  * @method every
  * @owner Observable
  */

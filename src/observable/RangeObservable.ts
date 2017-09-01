@@ -34,7 +34,7 @@ export class RangeObservable extends Observable<number> {
    * @param {number} [count=0] The number of sequential integers to generate.
    * @param {Scheduler} [scheduler] A {@link IScheduler} to use for scheduling
    * the emissions of the notifications.
-   * @return {Observable} An Observable of numbers that emits a finite range of
+   * @return { Observable } An Observable of numbers that emits a finite range of
    * sequential integers.
    * @static true
    * @name range

@@ -56,7 +56,7 @@ export function concatMapTo<T, I, R>(this: Observable<T>, observable: Observable
  * - `innerValue`: the value that came from the projected Observable
  * - `outerIndex`: the "index" of the value that came from the source
  * - `innerIndex`: the "index" of the value from the projected Observable
- * @return {Observable} An observable of values merged together by joining the
+ * @return { Observable } An observable of values merged together by joining the
  * passed observable with itself, one after the other, for each value emitted
  * from the source.
  * @method concatMapTo

@@ -4,7 +4,7 @@
 // definition
 export {Subject, AnonymousSubject} from './Subject';
 /* tslint:enable:no-unused-variable */
-export {Observable} from './Observable';
+export { Observable } from './Observable';
 
 // statics
 /* tslint:disable:no-use-before-declare */

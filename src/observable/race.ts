@@ -11,7 +11,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
 /**
  * Returns an Observable that mirrors the first source Observable to emit an item.
  * @param {...Observables} ...observables sources used to race for which Observable emits first.
- * @return {Observable} an Observable that mirrors the output of the first Observable to emit an item.
+ * @return { Observable } an Observable that mirrors the output of the first Observable to emit an item.
  * @static true
  * @name race
  * @owner Observable

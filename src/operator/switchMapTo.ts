@@ -46,7 +46,7 @@ export function switchMapTo<T, I, R>(this: Observable<T>, observable: Observable
  * - `innerValue`: the value that came from the projected Observable
  * - `outerIndex`: the "index" of the value that came from the source
  * - `innerIndex`: the "index" of the value from the projected Observable
- * @return {Observable} An Observable that emits items from the given
+ * @return { Observable } An Observable that emits items from the given
  * `innerObservable` (and optionally transformed through `resultSelector`) every
  * time a value is emitted on the source Observable, and taking only the values
  * from the most recently projected inner Observable.

@@ -34,7 +34,7 @@ export class NeverObservable<T> extends Observable<T> {
    * @see {@link of}
    * @see {@link throw}
    *
-   * @return {Observable} A "never" Observable: never emits anything.
+   * @return { Observable } A "never" Observable: never emits anything.
    * @static true
    * @name never
    * @owner Observable

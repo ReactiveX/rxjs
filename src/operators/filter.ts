@@ -45,7 +45,7 @@ export function filter<T>(predicate: (value: T, index: number) => boolean,
  * `0`.
  * @param {any} [thisArg] An optional argument to determine the value of `this`
  * in the `predicate` function.
- * @return {Observable} An Observable of values from the source that were
+ * @return { Observable } An Observable of values from the source that were
  * allowed by the `predicate` function.
  * @method filter
  * @owner Observable

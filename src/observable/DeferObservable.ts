@@ -51,7 +51,7 @@ export class DeferObservable<T> extends Observable<T> {
    * factory function to invoke for each Observer that subscribes to the output
    * Observable. May also return a Promise, which will be converted on the fly
    * to an Observable.
-   * @return {Observable} An Observable whose Observers' subscriptions trigger
+   * @return { Observable } An Observable whose Observers' subscriptions trigger
    * an invocation of the given Observable factory function.
    * @static true
    * @name defer

@@ -55,7 +55,7 @@ import { catchError as higherOrder } from '../operators';
  * @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which
  *  is the source observable, in case you'd like to "retry" that observable by returning it again. Whatever observable
  *  is returned by the `selector` will be used to continue the observable chain.
- * @return {Observable} An observable that originates from either the source or the observable returned by the
+ * @return { Observable } An observable that originates from either the source or the observable returned by the
  *  catch `selector` function.
  * @method catch
  * @name catch

@@ -47,8 +47,8 @@ import { ISet, Set } from '../util/Set';
  * @see {@link distinctUntilKeyChanged}
  *
  * @param {function} [keySelector] Optional function to select which value you want to check as distinct.
- * @param {Observable} [flushes] Optional Observable for flushing the internal HashSet of the operator.
- * @return {Observable} An Observable that emits items from the source Observable with distinct values.
+ * @param { Observable } [flushes] Optional Observable for flushing the internal HashSet of the operator.
+ * @return { Observable } An Observable that emits items from the source Observable with distinct values.
  * @method distinct
  * @owner Observable
  */

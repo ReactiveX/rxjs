@@ -39,7 +39,7 @@ import { elementAt as higherOrder } from '../operators';
  * @param {number} index Is the number `i` for the i-th source emission that has
  * happened since the subscription, starting from the number `0`.
  * @param {T} [defaultValue] The default value returned for missing indices.
- * @return {Observable} An Observable that emits a single item, if it is found.
+ * @return { Observable } An Observable that emits a single item, if it is found.
  * Otherwise, will emit the default value if given. If not, then emits an error.
  * @method elementAt
  * @owner Observable

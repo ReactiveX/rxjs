@@ -31,7 +31,7 @@ export function last<T>(predicate: (value: T, index: number, source: Observable<
  * @throws {EmptyError} Delivers an EmptyError to the Observer's `error`
  * callback if the Observable completes before any `next` notification was sent.
  * @param {function} predicate - The condition any source emitted item has to satisfy.
- * @return {Observable} An Observable that emits only the last item satisfying the given condition
+ * @return { Observable } An Observable that emits only the last item satisfying the given condition
  * from the source, or an NoSuchElementException if no such items are emitted.
  * @throws - Throws if no items that match the predicate are emitted by the source Observable.
  * @method last

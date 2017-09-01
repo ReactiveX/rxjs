@@ -46,7 +46,7 @@ export function exhaustMap<T, I, R>(this: Observable<T>, project: (value: T, ind
  * - `innerValue`: the value that came from the projected Observable
  * - `outerIndex`: the "index" of the value that came from the source
  * - `innerIndex`: the "index" of the value from the projected Observable
- * @return {Observable} An Observable containing projected Observables
+ * @return { Observable } An Observable containing projected Observables
  * of each item of the source, ignoring projected Observables that start before
  * their preceding Observable has completed.
  * @method exhaustMap

@@ -44,7 +44,7 @@ import { MonoTypeOperatorFunction } from '../interfaces';
  * @param {function(value: T): SubscribableOrPromise} durationSelector A function
  * that receives a value from the source Observable, for computing the timeout
  * duration for each source value, returned as an Observable or a Promise.
- * @return {Observable} An Observable that delays the emissions of the source
+ * @return { Observable } An Observable that delays the emissions of the source
  * Observable by the specified duration Observable returned by
  * `durationSelector`, and may drop some values if they occur too frequently.
  * @method debounce

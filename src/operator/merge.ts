@@ -62,7 +62,7 @@ export function merge<T, R>(this: Observable<T>, ...observables: Array<Observabl
  * Observables being subscribed to concurrently.
  * @param {Scheduler} [scheduler=null] The IScheduler to use for managing
  * concurrency of input Observables.
- * @return {Observable} An Observable that emits items that are the result of
+ * @return { Observable } An Observable that emits items that are the result of
  * every input Observable.
  * @method merge
  * @owner Observable
