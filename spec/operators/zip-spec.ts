@@ -2,6 +2,7 @@ import {expect} from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
+declare const type;
 declare const hot: typeof marbleTestingSignature.hot;
 declare const cold: typeof marbleTestingSignature.cold;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
@@ -594,5 +595,29 @@ describe('Observable.prototype.zip', () => {
     expectObservable(r, unsub).toBe(expected, { x: ['1', '4'], y: ['2', '5']});
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
+  });
+
+  type('should support rest parameter observables', () => {
+    /* tslint:disable:no-unused-variable */
+    let o: Rx.Observable<number>;
+    let z: Rx.Observable<number>[];
+    let a: Rx.Observable<number[]> = o.zip(...z);
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type('should support projected rest parameter observables', () => {
+    /* tslint:disable:no-unused-variable */
+    let o: Rx.Observable<number>;
+    let z: Rx.Observable<number>[];
+    let a: Rx.Observable<string[]> = o.zip(...z, (...r) => r.map(v => v.toString()));
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type('should support projected arrays of observables', () => {
+    /* tslint:disable:no-unused-variable */
+    let o: Rx.Observable<number>;
+    let z: Rx.Observable<number>[];
+    let a: Rx.Observable<string[]> = o.zip(z, (...r) => r.map(v => v.toString()));
+    /* tslint:enable:no-unused-variable */
   });
 });
