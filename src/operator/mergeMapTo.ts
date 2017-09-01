@@ -43,7 +43,7 @@ export function mergeMapTo<T, I, R>(this: Observable<T>, observable: ObservableI
  * - `innerIndex`: the "index" of the value from the projected Observable
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
  * Observables being subscribed to concurrently.
- * @return {Observable} An Observable that emits items from the given
+ * @return { Observable } An Observable that emits items from the given
  * `innerObservable` (and optionally transformed through `resultSelector`) every
  * time a value is emitted on the source Observable.
  * @method mergeMapTo

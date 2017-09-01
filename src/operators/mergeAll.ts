@@ -42,7 +42,7 @@ import { MonoTypeOperatorFunction } from '../interfaces';
  *
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of inner
  * Observables being subscribed to concurrently.
- * @return {Observable} An Observable that emits values coming from all the
+ * @return { Observable } An Observable that emits values coming from all the
  * inner Observables emitted by the source Observable.
  * @method mergeAll
  * @owner Observable

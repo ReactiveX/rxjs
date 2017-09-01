@@ -49,7 +49,7 @@ export class TimerObservable extends Observable<number> {
    * subsequent numbers.
    * @param {Scheduler} [scheduler=async] The IScheduler to use for scheduling
    * the emission of values, and providing a notion of "time".
-   * @return {Observable} An Observable that emits a `0` after the
+   * @return { Observable } An Observable that emits a `0` after the
    * `initialDelay` and ever increasing numbers after each `period` of time
    * thereafter.
    * @static true

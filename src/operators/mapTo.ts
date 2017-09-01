@@ -24,7 +24,7 @@ import { OperatorFunction } from '../interfaces';
  * @see {@link map}
  *
  * @param {any} value The value to map each source value to.
- * @return {Observable} An Observable that emits the given `value` every time
+ * @return { Observable } An Observable that emits the given `value` every time
  * the source Observable emits something.
  * @method mapTo
  * @owner Observable

@@ -96,7 +96,7 @@ export function mergeStatic<T, R>(...observables: (ObservableInput<any> | ISched
  * Observables being subscribed to concurrently.
  * @param {Scheduler} [scheduler=null] The IScheduler to use for managing
  * concurrency of input Observables.
- * @return {Observable} an Observable that emits items that are the result of
+ * @return { Observable } an Observable that emits items that are the result of
  * every input Observable.
  * @static true
  * @name merge

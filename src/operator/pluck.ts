@@ -23,7 +23,7 @@ import { pluck as higherOrder } from '../operators/pluck';
  *
  * @param {...string} properties The nested properties to pluck from each source
  * value (an object).
- * @return {Observable} A new Observable of property values from the source values.
+ * @return { Observable } A new Observable of property values from the source values.
  * @method pluck
  * @owner Observable
  */

@@ -45,7 +45,7 @@ export function expand<T, R>(this: Observable<T>, project: (value: T, index: num
  * Observables being subscribed to concurrently.
  * @param {Scheduler} [scheduler=null] The IScheduler to use for subscribing to
  * each projected inner Observable.
- * @return {Observable} An Observable that emits the source values and also
+ * @return { Observable } An Observable that emits the source values and also
  * result of applying the projection function to each value emitted on the
  * output Observable and and merging the results of the Observables obtained
  * from this transformation.

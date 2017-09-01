@@ -63,7 +63,7 @@ export function mergeMap<T, I, R>(project: (value: T, index: number) => Observab
  * - `innerIndex`: the "index" of the value from the projected Observable
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
  * Observables being subscribed to concurrently.
- * @return {Observable} An Observable that emits the result of applying the
+ * @return { Observable } An Observable that emits the result of applying the
  * projection function (and the optional `resultSelector`) to each item emitted
  * by the source Observable and merging the results of the Observables obtained
  * from this transformation.

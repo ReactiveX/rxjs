@@ -37,7 +37,7 @@ export class IntervalObservable extends Observable<number> {
    * or the time unit determined by the scheduler's clock.
    * @param {Scheduler} [scheduler=async] The IScheduler to use for scheduling
    * the emission of values, and providing a notion of "time".
-   * @return {Observable} An Observable that emits a sequential number each time
+   * @return { Observable } An Observable that emits a sequential number each time
    * interval.
    * @static true
    * @name interval

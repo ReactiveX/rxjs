@@ -23,7 +23,7 @@ function expectFullObserver(val) {
   expect(val.closed).to.be.a('boolean');
 }
 
-/** @test {Observable} */
+/** @test { Observable } */
 describe('Observable', () => {
   it('should be constructed with a subscriber function', (done: MochaDone) => {
     const source = new Observable(function (observer) {
@@ -652,7 +652,7 @@ describe('Observable', () => {
   });
 });
 
-/** @test {Observable} */
+/** @test { Observable } */
 describe('Observable.create', () => {
   asDiagram('create(obs => { obs.next(1); })')
   ('should create a cold observable that emits just 1', () => {
@@ -696,7 +696,7 @@ describe('Observable.create', () => {
   });
 });
 
-/** @test {Observable} */
+/** @test { Observable } */
 describe('Observable.lift', () => {
 
   class MyCustomObservable<T> extends Rx.Observable<T> {

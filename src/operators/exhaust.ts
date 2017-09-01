@@ -36,7 +36,7 @@ import { MonoTypeOperatorFunction } from '../interfaces';
  * @see {@link exhaustMap}
  * @see {@link zipAll}
  *
- * @return {Observable} An Observable that takes a source of Observables and propagates the first observable
+ * @return { Observable } An Observable that takes a source of Observables and propagates the first observable
  * exclusively until it completes before subscribing to the next.
  * @method exhaust
  * @owner Observable

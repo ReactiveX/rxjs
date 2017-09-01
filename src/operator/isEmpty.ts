@@ -7,7 +7,7 @@ import { isEmpty as higherOrder } from '../operators';
  *
  * <img src="./img/isEmpty.png" width="100%">
  *
- * @return {Observable} An Observable that emits a Boolean.
+ * @return { Observable } An Observable that emits a Boolean.
  * @method isEmpty
  * @owner Observable
  */

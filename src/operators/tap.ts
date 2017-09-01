@@ -47,7 +47,7 @@ export function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T
  * callback for `next`.
  * @param {function} [error] Callback for errors in the source.
  * @param {function} [complete] Callback for the completion of the source.
- * @return {Observable} An Observable identical to the source, but runs the
+ * @return { Observable } An Observable identical to the source, but runs the
  * specified Observer or callback(s) for each item.
  * @name tap
  */

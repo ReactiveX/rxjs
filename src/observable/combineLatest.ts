@@ -129,7 +129,7 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * the combined latest values into a new value on the output Observable.
  * @param {Scheduler} [scheduler=null] The IScheduler to use for subscribing to
  * each input Observable.
- * @return {Observable} An Observable of projected values from the most recent
+ * @return { Observable } An Observable of projected values from the most recent
  * values from each input Observable, or an array of the most recent values from
  * each input Observable.
  * @static true

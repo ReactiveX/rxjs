@@ -129,7 +129,7 @@ export class ObservableDoc {
    * function that accepts an Observer, and invokes its `next`,
    * `error`, and `complete` methods as appropriate, and optionally returns some
    * logic for cleaning up resources.
-   * @return {Observable} An Observable that, whenever subscribed, will execute the
+   * @return { Observable } An Observable that, whenever subscribed, will execute the
    * specified function.
    * @static true
    * @name create

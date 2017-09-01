@@ -53,7 +53,7 @@ export class Observable<T> implements Subscribable<T> {
    * @owner Observable
    * @method create
    * @param {Function} subscribe? the subscriber function to be passed to the Observable constructor
-   * @return {Observable} a new cold observable
+   * @return { Observable } a new cold observable
    */
   static create: Function = <T>(subscribe?: (subscriber: Subscriber<T>) => TeardownLogic) => {
     return new Observable<T>(subscribe);
@@ -64,7 +64,7 @@ export class Observable<T> implements Subscribable<T> {
    * operator defined as the new observable's operator.
    * @method lift
    * @param {Operator} operator the operator defining the operation to take on the observable
-   * @return {Observable} a new observable with the Operator applied
+   * @return { Observable } a new observable with the Operator applied
    */
   lift<R>(operator: Operator<T, R>): Observable<R> {
     const observable = new Observable<R>();
@@ -283,7 +283,7 @@ export class Observable<T> implements Subscribable<T> {
   /**
    * An interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable
    * @method Symbol.observable
-   * @return {Observable} this instance of the observable
+   * @return { Observable } this instance of the observable
    */
   [Symbol_observable]() {
     return this;
@@ -305,7 +305,7 @@ export class Observable<T> implements Subscribable<T> {
   /**
    * Used to stitch together functional operators into a chain.
    * @method pipe
-   * @return {Observable} the Observable result of all of the operators having
+   * @return { Observable } the Observable result of all of the operators having
    * been called in the order they were passed in.
    *
    * @example

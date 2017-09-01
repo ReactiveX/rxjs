@@ -32,7 +32,7 @@ export function defaultIfEmpty<T, R>(defaultValue?: R): OperatorFunction<T, T | 
  *
  * @param {any} [defaultValue=null] The default value used if the source
  * Observable is empty.
- * @return {Observable} An Observable that emits either the specified
+ * @return { Observable } An Observable that emits either the specified
  * `defaultValue` if the source Observable emits no items, or the values emitted
  * by the source Observable.
  * @method defaultIfEmpty

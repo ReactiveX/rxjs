@@ -38,7 +38,7 @@ import { dematerialize as higherOrder } from '../operators';
  * @see {@link Notification}
  * @see {@link materialize}
  *
- * @return {Observable} An Observable that emits items and notifications
+ * @return { Observable } An Observable that emits items and notifications
  * embedded in Notification objects emitted by the source Observable.
  * @method dematerialize
  * @owner Observable

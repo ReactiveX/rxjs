@@ -45,7 +45,7 @@ export function _do<T>(this: Observable<T>, observer: PartialObserver<T>): Obser
  * callback for `next`.
  * @param {function} [error] Callback for errors in the source.
  * @param {function} [complete] Callback for the completion of the source.
- * @return {Observable} An Observable identical to the source, but runs the
+ * @return { Observable } An Observable identical to the source, but runs the
  * specified Observer or callback(s) for each item.
  * @method do
  * @name do

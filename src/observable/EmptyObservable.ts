@@ -51,7 +51,7 @@ export class EmptyObservable<T> extends Observable<T> {
    *
    * @param {Scheduler} [scheduler] A {@link IScheduler} to use for scheduling
    * the emission of the complete notification.
-   * @return {Observable} An "empty" Observable: emits only the complete
+   * @return { Observable } An "empty" Observable: emits only the complete
    * notification.
    * @static true
    * @name empty

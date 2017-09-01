@@ -32,7 +32,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @see {@link takeWhile}
  * @see {@link skip}
  *
- * @param {Observable} notifier The Observable whose first emitted value will
+ * @param { Observable } notifier The Observable whose first emitted value will
  * cause the output Observable of `takeUntil` to stop emitting values from the
  * source Observable.
  * @return {Observable<T>} An Observable that emits the values from the source

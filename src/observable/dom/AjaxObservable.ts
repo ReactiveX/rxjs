@@ -127,7 +127,7 @@ export class AjaxObservable<T> extends Observable<T> {
    *   XMLHttpRequest implementation.
    *   - resultSelector: a function to use to alter the output value type of
    *   the Observable. Gets {@link AjaxResponse} as an argument.
-   * @return {Observable} An observable sequence containing the XMLHttpRequest.
+   * @return { Observable } An observable sequence containing the XMLHttpRequest.
    * @static true
    * @name ajax
    * @owner Observable

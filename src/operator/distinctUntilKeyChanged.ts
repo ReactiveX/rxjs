@@ -60,7 +60,7 @@ export function distinctUntilKeyChanged<T, K>(this: Observable<T>, key: string, 
  *
  * @param {string} key String key for object property lookup on each item.
  * @param {function} [compare] Optional comparison function called to test if an item is distinct from the previous item in the source.
- * @return {Observable} An Observable that emits items from the source Observable with distinct values based on the key specified.
+ * @return { Observable } An Observable that emits items from the source Observable with distinct values based on the key specified.
  * @method distinctUntilKeyChanged
  * @owner Observable
  */

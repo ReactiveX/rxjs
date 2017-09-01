@@ -29,7 +29,7 @@ import { findIndex as higherOrder } from '../operators';
  * A function called with each item to test for condition matching.
  * @param {any} [thisArg] An optional argument to determine the value of `this`
  * in the `predicate` function.
- * @return {Observable} An Observable of the index of the first item that
+ * @return { Observable } An Observable of the index of the first item that
  * matches the condition.
  * @method find
  * @owner Observable

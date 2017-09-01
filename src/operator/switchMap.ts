@@ -47,7 +47,7 @@ export function switchMap<T, I, R>(this: Observable<T>, project: (value: T, inde
  * - `innerValue`: the value that came from the projected Observable
  * - `outerIndex`: the "index" of the value that came from the source
  * - `innerIndex`: the "index" of the value from the projected Observable
- * @return {Observable} An Observable that emits the result of applying the
+ * @return { Observable } An Observable that emits the result of applying the
  * projection function (and the optional `resultSelector`) to each item emitted
  * by the source Observable and taking only the values from the most recently
  * projected inner Observable.

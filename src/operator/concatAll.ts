@@ -50,7 +50,7 @@ export function concatAll<T, R>(this: Observable<T>): Subscribable<R>;
  * @see {@link switch}
  * @see {@link zipAll}
  *
- * @return {Observable} An Observable emitting values from all the inner
+ * @return { Observable } An Observable emitting values from all the inner
  * Observables concatenated.
  * @method concatAll
  * @owner Observable

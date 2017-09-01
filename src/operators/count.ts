@@ -47,7 +47,7 @@ import { OperatorFunction } from '../interfaces';
  * - `value`: the value from the source Observable.
  * - `index`: the (zero-based) "index" of the value from the source Observable.
  * - `source`: the source Observable instance itself.
- * @return {Observable} An Observable of one number that represents the count as
+ * @return { Observable } An Observable of one number that represents the count as
  * described above.
  * @method count
  * @owner Observable

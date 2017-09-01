@@ -54,7 +54,7 @@ export function withLatestFrom<T, R>(this: Observable<T>, array: ObservableInput
  * first parameter is a value from the source Observable. (e.g.
  * `a.withLatestFrom(b, c, (a1, b1, c1) => a1 + b1 + c1)`). If this is not
  * passed, arrays will be emitted on the output Observable.
- * @return {Observable} An Observable of projected values from the most recent
+ * @return { Observable } An Observable of projected values from the most recent
  * values from each input Observable, or an array of the most recent values from
  * each input Observable.
  * @method withLatestFrom
