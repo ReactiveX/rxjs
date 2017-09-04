@@ -1,5 +1,6 @@
-import { CombineLatestOperator } from '../operators/combineLatest';
+
 import { Observable } from '../Observable';
+import { combineAll as higherOrder } from '../operators';
 
 /**
  * Converts a higher-order Observable into a first-order Observable by waiting
@@ -42,5 +43,5 @@ import { Observable } from '../Observable';
  * @owner Observable
  */
 export function combineAll<T, R>(this: Observable<T>, project?: (...values: Array<any>) => R): Observable<R> {
-  return this.lift(new CombineLatestOperator(project));
+  return higherOrder(project)(this);
 }

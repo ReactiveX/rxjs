@@ -6,6 +6,7 @@ export { bufferTime } from './bufferTime';
 export { bufferToggle } from './bufferToggle';
 export { bufferWhen } from './bufferWhen';
 export { catchError } from './catchError';
+export { combineAll } from './combineAll';
 export { combineLatest } from './combineLatest';
 export { concat } from './concat';
 export { concatAll } from './concatAll';
