@@ -3,7 +3,7 @@ import {  IScheduler  } from '../Scheduler';
 import {  isScheduler  } from '../util/isScheduler';
 import {  isArray  } from '../util/isArray';
 import {  ArrayObservable  } from './ArrayObservable';
-import {  CombineLatestOperator  } from '../operator/combineLatest';
+import {  CombineLatestOperator  } from '../operators/combineLatest';
 
 /* tslint:disable:max-line-length */
 export function combineLatest<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>, scheduler?: IScheduler): Observable<[T, T2]>;
