@@ -1,8 +1,7 @@
 import { Observable } from '../Observable';
-import { ReplaySubject } from '../ReplaySubject';
 import { IScheduler } from '../Scheduler';
-import { multicast } from './multicast';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
+import { publishReplay as higherOrder } from '../operators';
 
 /**
  * @param bufferSize
@@ -15,5 +14,5 @@ import { ConnectableObservable } from '../observable/ConnectableObservable';
 export function publishReplay<T>(this: Observable<T>, bufferSize: number = Number.POSITIVE_INFINITY,
                                  windowTime: number = Number.POSITIVE_INFINITY,
                                  scheduler?: IScheduler): ConnectableObservable<T> {
-  return multicast.call(this, new ReplaySubject<T>(bufferSize, windowTime, scheduler));
+  return higherOrder(bufferSize, windowTime, scheduler)(this);
 }

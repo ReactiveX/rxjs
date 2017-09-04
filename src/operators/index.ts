@@ -55,6 +55,7 @@ export { pluck } from './pluck';
 export { publish } from './publish';
 export { publishBehavior } from './publishBehavior';
 export { publishLast } from './publishLast';
+export { publishReplay } from './publishReplay';
 export { race } from './race';
 export { reduce } from './reduce';
 export { refCount } from './refCount';
