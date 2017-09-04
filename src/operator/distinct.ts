@@ -1,11 +1,5 @@
 import { Observable } from '../Observable';
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { TeardownLogic } from '../Subscription';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
-import { ISet, Set } from '../util/Set';
+import { distinct as higherOrder } from '../operators';
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items.
@@ -55,70 +49,5 @@ import { ISet, Set } from '../util/Set';
 export function distinct<T, K>(this: Observable<T>,
                                keySelector?: (value: T) => K,
                                flushes?: Observable<any>): Observable<T> {
-  return this.lift(new DistinctOperator(keySelector, flushes));
-}
-
-class DistinctOperator<T, K> implements Operator<T, T> {
-  constructor(private keySelector: (value: T) => K, private flushes: Observable<any>) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new DistinctSubscriber(subscriber, this.keySelector, this.flushes));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-export class DistinctSubscriber<T, K> extends OuterSubscriber<T, T> {
-  private values: ISet<K> = new Set<K>();
-
-  constructor(destination: Subscriber<T>, private keySelector: (value: T) => K, flushes: Observable<any>) {
-    super(destination);
-
-    if (flushes) {
-      this.add(subscribeToResult(this, flushes));
-    }
-  }
-
-  notifyNext(outerValue: T, innerValue: T,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, T>): void {
-    this.values.clear();
-  }
-
-  notifyError(error: any, innerSub: InnerSubscriber<T, T>): void {
-    this._error(error);
-  }
-
-  protected _next(value: T): void {
-    if (this.keySelector) {
-      this._useKeySelector(value);
-    } else {
-      this._finalizeNext(value, value);
-    }
-  }
-
-  private _useKeySelector(value: T): void {
-    let key: K;
-    const { destination } = this;
-    try {
-      key = this.keySelector(value);
-    } catch (err) {
-      destination.error(err);
-      return;
-    }
-    this._finalizeNext(key, value);
-  }
-
-  private _finalizeNext(key: K|T, value: T) {
-    const { values } = this;
-    if (!values.has(<K>key)) {
-      values.add(<K>key);
-      this.destination.next(value);
-    }
-  }
-
+  return higherOrder(keySelector, flushes)(this);
 }

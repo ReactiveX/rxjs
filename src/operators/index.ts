@@ -19,6 +19,7 @@ export { defaultIfEmpty } from './defaultIfEmpty';
 export { delay } from './delay';
 export { delayWhen } from './delayWhen';
 export { dematerialize } from './dematerialize';
+export { distinct } from './distinct';
 export { distinctUntilChanged } from './distinctUntilChanged';
 export { distinctUntilKeyChanged } from './distinctUntilKeyChanged';
 export { elementAt } from './elementAt';
