@@ -54,6 +54,7 @@ export { partition } from './partition';
 export { pluck } from './pluck';
 export { publish } from './publish';
 export { publishBehavior } from './publishBehavior';
+export { publishLast } from './publishLast';
 export { race } from './race';
 export { reduce } from './reduce';
 export { refCount } from './refCount';

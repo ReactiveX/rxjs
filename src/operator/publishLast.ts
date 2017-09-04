@@ -1,13 +1,12 @@
 import { Observable } from '../Observable';
-import { AsyncSubject } from '../AsyncSubject';
-import { multicast } from './multicast';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
-
+import { publishLast as higherOrder } from '../operators';
 /**
  * @return {ConnectableObservable<T>}
  * @method publishLast
  * @owner Observable
  */
 export function publishLast<T>(this: Observable<T>): ConnectableObservable<T> {
-  return multicast.call(this, new AsyncSubject<T>());
+  //TODO(benlesh): correct type-flow through here.
+  return higherOrder()(this) as ConnectableObservable<T>;
 }
