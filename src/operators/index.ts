@@ -58,6 +58,7 @@ export { repeatWhen } from './repeatWhen';
 export { retry } from './retry';
 export { retryWhen } from './retryWhen';
 export { refCount } from './refCount';
+export { sample } from './sample';
 export { scan } from './scan';
 export { subscribeOn } from './subscribeOn';
 export { switchAll } from './switchAll';

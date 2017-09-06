@@ -1,10 +1,5 @@
-import { Operator } from '../Operator';
 import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
-import { TeardownLogic } from '../Subscription';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
+import { sample as higherOrder } from '../operators/sample';
 
 /**
  * Emits the most recently emitted value from the source Observable whenever
@@ -41,49 +36,5 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @owner Observable
  */
 export function sample<T>(this: Observable<T>, notifier: Observable<any>): Observable<T> {
-  return this.lift(new SampleOperator(notifier));
-}
-
-class SampleOperator<T> implements Operator<T, T> {
-  constructor(private notifier: Observable<any>) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    const sampleSubscriber = new SampleSubscriber(subscriber);
-    const subscription = source.subscribe(sampleSubscriber);
-    subscription.add(subscribeToResult(sampleSubscriber, this.notifier));
-    return subscription;
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class SampleSubscriber<T, R> extends OuterSubscriber<T, R> {
-  private value: T;
-  private hasValue: boolean = false;
-
-  protected _next(value: T) {
-    this.value = value;
-    this.hasValue = true;
-  }
-
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
-    this.emitValue();
-  }
-
-  notifyComplete(): void {
-    this.emitValue();
-  }
-
-  emitValue() {
-    if (this.hasValue) {
-      this.hasValue = false;
-      this.destination.next(this.value);
-    }
-  }
+  return higherOrder(notifier)(this);
 }
