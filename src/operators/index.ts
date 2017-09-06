@@ -54,6 +54,7 @@ export { publishBehavior } from './publishBehavior';
 export { race } from './race';
 export { reduce } from './reduce';
 export { repeat } from './repeat';
+export { repeatWhen } from './repeatWhen';
 export { refCount } from './refCount';
 export { scan } from './scan';
 export { subscribeOn } from './subscribeOn';
