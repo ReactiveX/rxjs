@@ -62,6 +62,7 @@ export { sample } from './sample';
 export { sampleTime } from './sampleTime';
 export { scan } from './scan';
 export { sequenceEqual } from './sequenceEqual';
+export { share } from './share';
 export { subscribeOn } from './subscribeOn';
 export { switchAll } from './switchAll';
 export { switchMap } from './switchMap';
