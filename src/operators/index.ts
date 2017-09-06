@@ -61,6 +61,7 @@ export { refCount } from './refCount';
 export { sample } from './sample';
 export { sampleTime } from './sampleTime';
 export { scan } from './scan';
+export { sequenceEqual } from './sequenceEqual';
 export { subscribeOn } from './subscribeOn';
 export { switchAll } from './switchAll';
 export { switchMap } from './switchMap';
