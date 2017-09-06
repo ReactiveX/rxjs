@@ -56,6 +56,7 @@ export { reduce } from './reduce';
 export { repeat } from './repeat';
 export { repeatWhen } from './repeatWhen';
 export { retry } from './retry';
+export { retryWhen } from './retryWhen';
 export { refCount } from './refCount';
 export { scan } from './scan';
 export { subscribeOn } from './subscribeOn';
