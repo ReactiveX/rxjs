@@ -64,6 +64,7 @@ export { scan } from './scan';
 export { sequenceEqual } from './sequenceEqual';
 export { share } from './share';
 export { shareReplay } from './shareReplay';
+export { single } from './single';
 export { subscribeOn } from './subscribeOn';
 export { switchAll } from './switchAll';
 export { switchMap } from './switchMap';
