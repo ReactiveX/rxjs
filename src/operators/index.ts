@@ -69,6 +69,7 @@ export { subscribeOn } from './subscribeOn';
 export { switchAll } from './switchAll';
 export { switchMap } from './switchMap';
 export { switchMapTo } from './switchMapTo';
+export { take } from './take';
 export { takeLast } from './takeLast';
 export { tap } from './tap';
 export { timestamp } from './timestamp';
