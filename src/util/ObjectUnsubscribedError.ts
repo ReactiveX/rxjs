@@ -7,11 +7,26 @@
  *
  * @class ObjectUnsubscribedError
  */
-export class ObjectUnsubscribedError extends Error {
-  constructor() {
-    const err: any = super('object unsubscribed');
-    (<any> this).name = err.name = 'ObjectUnsubscribedError';
-    (<any> this).stack = err.stack;
-    (<any> this).message = err.message;
-  }
+export interface ObjectUnsubscribedError extends Error {}
+export interface ObjectUnsubscribedErrorConstructor {
+    new(): ObjectUnsubscribedError;
+    readonly prototype: ObjectUnsubscribedError;
 }
+
+function ObjectUnsubscribedErrorCtor(this: ObjectUnsubscribedError): ObjectUnsubscribedError {
+  const err = Error.call(this, 'object unsubscribed');
+  this.name = 'ObjectUnsubscribedError';
+  this.stack = err.stack;
+  this.message = err.message;
+  return this;
+}
+ObjectUnsubscribedErrorCtor.prototype = Object.create(Error.prototype, {
+  constructor: {
+    value: ObjectUnsubscribedErrorCtor,
+    enumerable: false,
+    writable: true,
+    configurable: true
+  }
+});
+
+export const ObjectUnsubscribedError = ObjectUnsubscribedErrorCtor as any as ObjectUnsubscribedErrorConstructor;
