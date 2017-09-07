@@ -63,6 +63,7 @@ export { scan } from './scan';
 export { skip } from './skip';
 export { skipLast } from './skipLast';
 export { skipUntil } from './skipUntil';
+export { skipWhile } from './skipWhile';
 export { subscribeOn } from './subscribeOn';
 export { switchAll } from './switchAll';
 export { switchMap } from './switchMap';
