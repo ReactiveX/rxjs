@@ -62,6 +62,7 @@ export { refCount } from './refCount';
 export { scan } from './scan';
 export { skip } from './skip';
 export { skipLast } from './skipLast';
+export { skipUntil } from './skipUntil';
 export { subscribeOn } from './subscribeOn';
 export { switchAll } from './switchAll';
 export { switchMap } from './switchMap';

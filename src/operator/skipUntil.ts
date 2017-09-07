@@ -1,10 +1,5 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { TeardownLogic } from '../Subscription';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
+import { skipUntil as higherOrder } from '../operators/skipUntil';
 
 /**
  * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.
@@ -19,58 +14,5 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @owner Observable
  */
 export function skipUntil<T>(this: Observable<T>, notifier: Observable<any>): Observable<T> {
-  return this.lift(new SkipUntilOperator(notifier));
-}
-
-class SkipUntilOperator<T> implements Operator<T, T> {
-  constructor(private notifier: Observable<any>) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new SkipUntilSubscriber(subscriber, this.notifier));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class SkipUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
-
-  private hasValue: boolean = false;
-  private isInnerStopped: boolean = false;
-
-  constructor(destination: Subscriber<any>,
-              notifier: Observable<any>) {
-    super(destination);
-    this.add(subscribeToResult(this, notifier));
-  }
-
-  protected _next(value: T) {
-    if (this.hasValue) {
-      super._next(value);
-    }
-  }
-
-  protected _complete() {
-    if (this.isInnerStopped) {
-      super._complete();
-    } else {
-      this.unsubscribe();
-    }
-  }
-
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
-    this.hasValue = true;
-  }
-
-  notifyComplete(): void {
-    this.isInnerStopped = true;
-    if (this.isStopped) {
-      super._complete();
-    }
-  }
+  return higherOrder(notifier)(this);
 }
