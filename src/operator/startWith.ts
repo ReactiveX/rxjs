@@ -1,10 +1,6 @@
 import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
-import { ArrayObservable } from '../observable/ArrayObservable';
-import { ScalarObservable } from '../observable/ScalarObservable';
-import { EmptyObservable } from '../observable/EmptyObservable';
-import { concat as concatStatic } from '../observable/concat';
-import { isScheduler } from '../util/isScheduler';
+import { startWith as higherOrder } from '../operators/startWith';
 
 /* tslint:disable:max-line-length */
 export function startWith<T>(this: Observable<T>, v1: T, scheduler?: IScheduler): Observable<T>;
@@ -31,19 +27,5 @@ export function startWith<T>(this: Observable<T>, ...array: Array<T | IScheduler
  * @owner Observable
  */
 export function startWith<T>(this: Observable<T>, ...array: Array<T | IScheduler>): Observable<T> {
-  let scheduler = <IScheduler>array[array.length - 1];
-  if (isScheduler(scheduler)) {
-    array.pop();
-  } else {
-    scheduler = null;
-  }
-
-  const len = array.length;
-  if (len === 1) {
-    return concatStatic(new ScalarObservable<T>(<T>array[0], scheduler), <Observable<T>>this);
-  } else if (len > 1) {
-    return concatStatic(new ArrayObservable<T>(<T[]>array, scheduler), <Observable<T>>this);
-  } else {
-    return concatStatic(new EmptyObservable<T>(scheduler), <Observable<T>>this);
-  }
+  return higherOrder(...array)(this);
 }
