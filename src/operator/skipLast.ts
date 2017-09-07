@@ -1,8 +1,5 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
 import { Observable } from '../Observable';
-import { TeardownLogic } from '../Subscription';
+import { skipLast as higherOrder } from '../operators/skipLast';
 
 /**
  * Skip the last `count` values emitted by the source Observable.
@@ -37,54 +34,5 @@ import { TeardownLogic } from '../Subscription';
  * @owner Observable
  */
 export function skipLast<T>(this: Observable<T>, count: number): Observable<T> {
-  return this.lift(new SkipLastOperator(count));
-}
-
-class SkipLastOperator<T> implements Operator<T, T> {
-  constructor(private _skipCount: number) {
-    if (this._skipCount < 0) {
-      throw new ArgumentOutOfRangeError;
-    }
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    if (this._skipCount === 0) {
-      // If we don't want to skip any values then just subscribe
-      // to Subscriber without any further logic.
-      return source.subscribe(new Subscriber(subscriber));
-    } else {
-      return source.subscribe(new SkipLastSubscriber(subscriber, this._skipCount));
-    }
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class SkipLastSubscriber<T> extends Subscriber<T> {
-  private _ring: T[];
-  private _count: number = 0;
-
-  constructor(destination: Subscriber<T>, private _skipCount: number) {
-    super(destination);
-    this._ring = new Array<T>(_skipCount);
-  }
-
-  protected _next(value: T): void {
-    const skipCount = this._skipCount;
-    const count = this._count++;
-
-    if (count < skipCount) {
-      this._ring[count] = value;
-    } else {
-      const currentIndex = count % skipCount;
-      const ring = this._ring;
-      const oldValue = ring[currentIndex];
-
-      ring[currentIndex] = value;
-      this.destination.next(oldValue);
-    }
-  }
+  return higherOrder(count)(this);
 }
