@@ -1,12 +1,5 @@
 import { Observable, ObservableInput } from '../Observable';
-import { ArrayObservable } from '../observable/ArrayObservable';
-import { isArray } from '../util/isArray';
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
-const none = {};
+import { combineLatest as higherOrder } from '../operators';
 
 /* tslint:disable:max-line-length */
 export function combineLatest<T, R>(this: Observable<T>, project: (v1: T) => R): Observable<R>;
@@ -71,99 +64,5 @@ export function combineLatest<T, TOther, R>(this: Observable<T>, array: Observab
 export function combineLatest<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> |
                                                        Array<ObservableInput<any>> |
                                                        ((...values: Array<any>) => R)>): Observable<R> {
-  let project: (...values: Array<any>) => R = null;
-  if (typeof observables[observables.length - 1] === 'function') {
-    project = <(...values: Array<any>) => R>observables.pop();
-  }
-
-  // if the first and only other argument besides the resultSelector is an array
-  // assume it's been called with `combineLatest([obs1, obs2, obs3], project)`
-  if (observables.length === 1 && isArray(observables[0])) {
-    observables = (<any>observables[0]).slice();
-  }
-
-  observables.unshift(this);
-
-  return this.lift.call(new ArrayObservable(observables), new CombineLatestOperator(project));
-}
-
-export class CombineLatestOperator<T, R> implements Operator<T, R> {
-  constructor(private project?: (...values: Array<any>) => R) {
-  }
-
-  call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new CombineLatestSubscriber(subscriber, this.project));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
-  private active: number = 0;
-  private values: any[] = [];
-  private observables: any[] = [];
-  private toRespond: number;
-
-  constructor(destination: Subscriber<R>, private project?: (...values: Array<any>) => R) {
-    super(destination);
-  }
-
-  protected _next(observable: any) {
-    this.values.push(none);
-    this.observables.push(observable);
-  }
-
-  protected _complete() {
-    const observables = this.observables;
-    const len = observables.length;
-    if (len === 0) {
-      this.destination.complete();
-    } else {
-      this.active = len;
-      this.toRespond = len;
-      for (let i = 0; i < len; i++) {
-        const observable = observables[i];
-        this.add(subscribeToResult(this, observable, observable, i));
-      }
-    }
-  }
-
-  notifyComplete(unused: Subscriber<R>): void {
-    if ((this.active -= 1) === 0) {
-      this.destination.complete();
-    }
-  }
-
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
-    const values = this.values;
-    const oldVal = values[outerIndex];
-    const toRespond = !this.toRespond
-      ? 0
-      : oldVal === none ? --this.toRespond : this.toRespond;
-    values[outerIndex] = innerValue;
-
-    if (toRespond === 0) {
-      if (this.project) {
-        this._tryProject(values);
-      } else {
-        this.destination.next(values.slice());
-      }
-    }
-  }
-
-  private _tryProject(values: any[]) {
-    let result: any;
-    try {
-      result = this.project.apply(this, values);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    this.destination.next(result);
-  }
+  return higherOrder(...observables)(this);
 }
