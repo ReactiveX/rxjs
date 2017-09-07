@@ -71,6 +71,7 @@ export { switchMap } from './switchMap';
 export { switchMapTo } from './switchMapTo';
 export { take } from './take';
 export { takeLast } from './takeLast';
+export { takeUntil } from './takeUntil';
 export { tap } from './tap';
 export { timestamp } from './timestamp';
 export { toArray } from './toArray';
