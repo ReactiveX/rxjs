@@ -80,3 +80,4 @@ export { windowToggle } from './windowToggle';
 export { windowWhen } from './windowWhen';
 export { withLatestFrom } from './withLatestFrom';
 export { zip } from './zip';
+export { zipAll } from './zipAll';
