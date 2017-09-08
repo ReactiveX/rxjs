@@ -69,6 +69,7 @@ export { throttle } from './throttle';
 export { throttleTime } from './throttleTime';
 export { timeInterval } from './timeInterval';
 export { timeout } from './timeout';
+export { timeoutWith } from './timeoutWith';
 export { timestamp } from './timestamp';
 export { toArray } from './toArray';
 export { window } from './window';
