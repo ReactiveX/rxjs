@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
+import * as Rx from '../../dist/package/Rx';
 
 const { Observable, UnsubscriptionError } = Rx;
 

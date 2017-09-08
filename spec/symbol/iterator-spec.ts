@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { $$iterator, symbolIteratorPonyfill } from '../../dist/cjs/symbol/iterator';
+import { $$iterator, symbolIteratorPonyfill } from '../../dist/package/symbol/iterator';
 
 describe('iterator symbol', () => {
   it('should exist', () => {

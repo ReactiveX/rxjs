@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../../dist/cjs/Rx';
+import * as Rx from '../../dist/package/Rx';
 
 declare const process: any;
 const Observable = Rx.Observable;
