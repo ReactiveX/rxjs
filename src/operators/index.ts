@@ -65,6 +65,7 @@ export { switchAll } from './switchAll';
 export { switchMap } from './switchMap';
 export { takeLast } from './takeLast';
 export { tap } from './tap';
+export { throttle } from './throttle';
 export { timestamp } from './timestamp';
 export { toArray } from './toArray';
 export { window } from './window';
