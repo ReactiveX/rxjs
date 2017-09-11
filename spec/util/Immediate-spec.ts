@@ -1,6 +1,6 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as sinon from 'sinon';
-import {ImmediateDefinition} from '../../dist/cjs/util/Immediate';
+import { ImmediateDefinition } from '../../dist/cjs/util/Immediate';
 import * as Rx from '../../dist/cjs/Rx';
 
 declare const __root__: any;

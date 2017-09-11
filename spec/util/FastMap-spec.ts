@@ -1,5 +1,5 @@
-import {expect} from 'chai';
-import {FastMap} from '../../dist/cjs/util/FastMap';
+import { expect } from 'chai';
+import { FastMap } from '../../dist/cjs/util/FastMap';
 
 /** @test {FastMap} */
 describe('FastMap', () => {

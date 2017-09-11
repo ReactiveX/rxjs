@@ -1,4 +1,4 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as Rx from '../../dist/cjs/Rx';
 import { VirtualAction } from '../../dist/cjs/scheduler/VirtualTimeScheduler';
 

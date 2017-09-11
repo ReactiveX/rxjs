@@ -1,5 +1,5 @@
-import {expect} from 'chai';
-import {MapPolyfill} from '../../dist/cjs/util/MapPolyfill';
+import { expect } from 'chai';
+import { MapPolyfill } from '../../dist/cjs/util/MapPolyfill';
 
 /** @test {MapPolyfill} */
 describe('MapPolyfill', () => {

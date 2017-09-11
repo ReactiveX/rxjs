@@ -1,7 +1,7 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as Rx from '../../../dist/cjs/Rx';
-import {root} from '../../../dist/cjs/util/root';
+import { root } from '../../../dist/cjs/util/root';
 
 declare const global: any;
 

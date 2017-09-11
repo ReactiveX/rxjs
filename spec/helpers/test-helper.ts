@@ -2,8 +2,8 @@
 declare const global: any;
 
 import * as Rx from '../../dist/cjs/Rx';
-import {ObservableInput} from '../../dist/cjs/Observable';
-import {root} from '../../dist/cjs/util/root';
+import { ObservableInput } from '../../dist/cjs/Observable';
+import { root } from '../../dist/cjs/util/root';
 import {$$iterator} from '../../dist/cjs/symbol/iterator';
 import $$symbolObservable from 'symbol-observable';
 
