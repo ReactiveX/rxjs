@@ -1,5 +1,13 @@
 import { Observable } from '../Observable';
-import { share as higherOrder } from '../operators/share';
+import { multicast } from './multicast';
+import { refCount } from './refCount';
+import { Subject } from '../Subject';
+
+import { MonoTypeOperatorFunction } from '../interfaces';
+
+function shareSubjectFactory() {
+  return new Subject();
+}
 
 /**
  * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one
@@ -13,6 +21,6 @@ import { share as higherOrder } from '../operators/share';
  * @method share
  * @owner Observable
  */
-export function share<T>(this: Observable<T>): Observable<T> {
-  return higherOrder()(this);
+export function share<T>(): MonoTypeOperatorFunction<T> {
+  return (source: Observable<T>) => refCount()(multicast(shareSubjectFactory)(source));
 };

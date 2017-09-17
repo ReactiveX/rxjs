@@ -1,7 +1,5 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { TeardownLogic } from '../Subscription';
+import { retry as higherOrder } from '../operators/retry';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable
@@ -20,39 +18,5 @@ import { TeardownLogic } from '../Subscription';
  * @owner Observable
  */
 export function retry<T>(this: Observable<T>, count: number = -1): Observable<T> {
-  return this.lift(new RetryOperator(count, this));
-}
-
-class RetryOperator<T> implements Operator<T, T> {
-  constructor(private count: number,
-              private source: Observable<T>) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new RetrySubscriber(subscriber, this.count, this.source));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class RetrySubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<any>,
-              private count: number,
-              private source: Observable<T>) {
-    super(destination);
-  }
-  error(err: any) {
-    if (!this.isStopped) {
-      const { source, count } = this;
-      if (count === 0) {
-        return super.error(err);
-      } else if (count > -1) {
-        this.count = count - 1;
-      }
-      source.subscribe(this._unsubscribeAndRecycle());
-    }
-  }
+  return higherOrder(count)(this);
 }
