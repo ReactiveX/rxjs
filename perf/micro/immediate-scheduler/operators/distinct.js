@@ -1,5 +1,5 @@
 var RxOld = require('rx');
-var RxNew = require('../../../../dist/cjs/Rx');
+var RxNew = require('../../../../dist/package/Rx');
 
 module.exports = function (suite) {
   var source = Array.from({ length: 25 }, function (_, i) { return i % 3; });

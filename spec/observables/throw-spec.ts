@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
-import {ErrorObservable} from '../../dist/cjs/observable/ErrorObservable';
+import * as Rx from '../../dist/package/Rx';
+import {ErrorObservable} from '../../dist/package/observable/ErrorObservable';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram };

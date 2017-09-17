@@ -1,7 +1,7 @@
 import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
-import {queue} from '../../dist/cjs/scheduler/queue';
-import {IteratorObservable} from '../../dist/cjs/observable/IteratorObservable';
+import * as Rx from '../../dist/package/Rx';
+import {queue} from '../../dist/package/scheduler/queue';
+import {IteratorObservable} from '../../dist/package/observable/IteratorObservable';
 
 declare const expectObservable;
 declare const rxTestScheduler: Rx.TestScheduler;

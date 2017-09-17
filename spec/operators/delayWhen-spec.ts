@@ -1,4 +1,4 @@
-import * as Rx from '../../dist/cjs/Rx';
+import * as Rx from '../../dist/package/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 import { expect } from 'chai';
 

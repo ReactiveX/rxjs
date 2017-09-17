@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { assign, getAssign, assignImpl } from '../../dist/cjs/util/assign';
+import { assign, getAssign, assignImpl } from '../../dist/package/util/assign';
 
 describe('assign', () => {
   it('should exist', () => {

@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
-import {ScalarObservable} from '../../dist/cjs/observable/ScalarObservable';
+import * as Rx from '../../dist/package/Rx';
+import {ScalarObservable} from '../../dist/package/observable/ScalarObservable';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { pipe } from '../../dist/cjs/util/pipe';
+import { pipe } from '../../dist/package/util/pipe';
 
 describe('pipe', () => {
   it('should exist', () => {

@@ -5,7 +5,7 @@ var source = fs.readFileSync('dist/global/Rx.js', 'utf8');
 
 var compilerFlags = {
   jsCode: [{src: source}],
-  languageIn: 'ES5',
+  languageIn: 'ES2015',
   createSourceMap: true,
 };
 
