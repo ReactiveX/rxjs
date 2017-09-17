@@ -1,9 +1,10 @@
 import { Observable } from '../Observable';
-import { toPromise as higherOrder } from '../operators/toPromise';
+import { root } from '../util/root';
+import { UnaryFunction } from '../interfaces';
 
 /* tslint:disable:max-line-length */
-export function toPromise<T>(this: Observable<T>): Promise<T>;
-export function toPromise<T>(this: Observable<T>, PromiseCtor: typeof Promise): Promise<T>;
+export function toPromise<T>(): UnaryFunction<Observable<T>, Promise<T>>;
+export function toPromise<T>(PromiseCtor: typeof Promise): UnaryFunction<Observable<T>, Promise<T>>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -55,6 +56,23 @@ export function toPromise<T>(this: Observable<T>, PromiseCtor: typeof Promise): 
  * @method toPromise
  * @owner Observable
  */
-export function toPromise<T>(this: Observable<T>, PromiseCtor?: typeof Promise): Promise<T> {
-  return higherOrder(PromiseCtor)(this);
+export function toPromise<T>(PromiseCtor?: typeof Promise): UnaryFunction<Observable<T>, Promise<T>> {
+  return (source: Observable<T>) => {
+    if (!PromiseCtor) {
+      if (root.Rx && root.Rx.config && root.Rx.config.Promise) {
+        PromiseCtor = root.Rx.config.Promise;
+      } else if (root.Promise) {
+        PromiseCtor = root.Promise;
+      }
+    }
+
+    if (!PromiseCtor) {
+      throw new Error('no Promise impl found');
+    }
+
+    return new PromiseCtor((resolve, reject) => {
+      let value: any;
+      source.subscribe((x: T) => value = x, (err: any) => reject(err), () => resolve(value));
+    });
+  };
 }
