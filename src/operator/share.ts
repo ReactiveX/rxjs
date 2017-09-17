@@ -1,10 +1,5 @@
 import { Observable } from '../Observable';
-import { multicast } from './multicast';
-import { Subject } from '../Subject';
-
-function shareSubjectFactory() {
-  return new Subject();
-}
+import { share as higherOrder } from '../operators/share';
 
 /**
  * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one
@@ -19,5 +14,5 @@ function shareSubjectFactory() {
  * @owner Observable
  */
 export function share<T>(this: Observable<T>): Observable<T> {
-  return multicast.call(this, shareSubjectFactory).refCount();
+  return higherOrder()(this);
 };

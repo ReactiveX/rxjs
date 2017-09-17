@@ -1,11 +1,11 @@
 import { expect } from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
-import { subscribeToResult } from '../../dist/cjs/util/subscribeToResult';
-import { OuterSubscriber } from '../../dist/cjs/OuterSubscriber';
-import { $$iterator } from '../../dist/cjs/symbol/iterator';
+import * as Rx from '../../dist/package/Rx';
+import { subscribeToResult } from '../../dist/package/util/subscribeToResult';
+import { OuterSubscriber } from '../../dist/package/OuterSubscriber';
+import { $$iterator } from '../../dist/package/symbol/iterator';
 import $$symbolObservable from 'symbol-observable';
-import { Observable } from '../../dist/cjs/Observable';
-import { Subject } from '../../dist/cjs/Subject';
+import { Observable } from '../../dist/package/Observable';
+import { Subject } from '../../dist/package/Subject';
 
 describe('subscribeToResult', () => {
   it('should synchronously complete when subscribe to scalarObservable', () => {

@@ -1,9 +1,9 @@
 import {expect} from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../dist/cjs/Rx';
-import {TeardownLogic} from '../dist/cjs/Subscription';
+import * as Rx from '../dist/package/Rx';
+import {TeardownLogic} from '../dist/package/Subscription';
 import marbleTestingSignature = require('./helpers/marble-testing'); // tslint:disable-line:no-require-imports
-import { map } from '../dist/cjs/operators';
+import { map } from '../dist/package/operators';
 
 declare const { asDiagram, rxTestScheduler };
 declare const cold: typeof marbleTestingSignature.cold;

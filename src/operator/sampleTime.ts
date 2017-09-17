@@ -1,10 +1,7 @@
 import { Observable } from '../Observable';
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
 import { IScheduler } from '../Scheduler';
-import { Action } from '../scheduler/Action';
 import { async } from '../scheduler/async';
-import { TeardownLogic } from '../Subscription';
+import { sampleTime as higherOrder } from '../operators/sampleTime';
 
 /**
  * Emits the most recently emitted value from the source Observable within
@@ -43,50 +40,5 @@ import { TeardownLogic } from '../Subscription';
  * @owner Observable
  */
 export function sampleTime<T>(this: Observable<T>, period: number, scheduler: IScheduler = async): Observable<T> {
-  return this.lift(new SampleTimeOperator(period, scheduler));
-}
-
-class SampleTimeOperator<T> implements Operator<T, T> {
-  constructor(private period: number,
-              private scheduler: IScheduler) {
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new SampleTimeSubscriber(subscriber, this.period, this.scheduler));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class SampleTimeSubscriber<T> extends Subscriber<T> {
-  lastValue: T;
-  hasValue: boolean = false;
-
-  constructor(destination: Subscriber<T>,
-              private period: number,
-              private scheduler: IScheduler) {
-    super(destination);
-    this.add(scheduler.schedule(dispatchNotification, period, { subscriber: this, period }));
-  }
-
-  protected _next(value: T) {
-    this.lastValue = value;
-    this.hasValue = true;
-  }
-
-  notifyNext() {
-    if (this.hasValue) {
-      this.hasValue = false;
-      this.destination.next(this.lastValue);
-    }
-  }
-}
-
-function dispatchNotification<T>(this: Action<any>, state: any) {
-  let { subscriber, period } = state;
-  subscriber.notifyNext();
-  this.schedule(state, period);
+  return higherOrder(period, scheduler)(this);
 }

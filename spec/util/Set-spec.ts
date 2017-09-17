@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import { Set as TestSet, minimalSetImpl } from '../../dist/cjs/util/Set';
+import { Set as TestSet, minimalSetImpl } from '../../dist/package/util/Set';
 
 describe('Set', () => {
   if (typeof Set === 'function') {
