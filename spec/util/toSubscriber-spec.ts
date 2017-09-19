@@ -1,5 +1,5 @@
-import {expect} from 'chai';
-import {toSubscriber} from '../../dist/package/util/toSubscriber';
+import { expect } from 'chai';
+import { toSubscriber } from '../../dist/package/util/toSubscriber';
 
 describe('toSubscriber', () => {
   it('should not be closed when other subscriber created with no arguments completes', () => {

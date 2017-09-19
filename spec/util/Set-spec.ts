@@ -1,4 +1,4 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import { Set as TestSet, minimalSetImpl } from '../../dist/package/util/Set';
 
 describe('Set', () => {

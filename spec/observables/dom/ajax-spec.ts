@@ -1,7 +1,7 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as Rx from '../../../dist/package/Rx';
-import {root} from '../../../dist/package/util/root';
+import { root } from '../../../dist/package/util/root';
 
 declare const global: any;
 
@@ -450,7 +450,7 @@ describe('Observable.ajax', () => {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: { '🌟': '🚀' }
+        body: { 'ð': 'ð' }
       };
 
       Rx.Observable.ajax(obj).subscribe();
@@ -460,7 +460,7 @@ describe('Observable.ajax', () => {
 
     it('should send by form-urlencoded format', () => {
       const body = {
-        '🌟': '🚀'
+        'ð': 'ð'
       };
       const obj = {
         url: '/flibbertyJibbet',
@@ -479,7 +479,7 @@ describe('Observable.ajax', () => {
 
     it('should send by JSON', () => {
       const body = {
-        '🌟': '🚀'
+        'ð': 'ð'
       };
       const obj = {
         url: '/flibbertyJibbet',
@@ -493,7 +493,7 @@ describe('Observable.ajax', () => {
       Rx.Observable.ajax(obj).subscribe();
 
       expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
-      expect(MockXMLHttpRequest.mostRecent.data).to.equal('{"🌟":"🚀"}');
+      expect(MockXMLHttpRequest.mostRecent.data).to.equal('{"ð":"ð"}');
     });
 
     it('should error if send request throws', (done: MochaDone) => {

@@ -1,7 +1,7 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as Rx from '../dist/package/Rx';
-import {TeardownLogic} from '../dist/package/Subscription';
+import { TeardownLogic } from '../dist/package/Subscription';
 import marbleTestingSignature = require('./helpers/marble-testing'); // tslint:disable-line:no-require-imports
 import { map } from '../dist/package/operators';
 

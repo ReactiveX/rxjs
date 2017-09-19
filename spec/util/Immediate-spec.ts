@@ -1,6 +1,6 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as sinon from 'sinon';
-import {ImmediateDefinition} from '../../dist/package/util/Immediate';
+import { ImmediateDefinition } from '../../dist/package/util/Immediate';
 import * as Rx from '../../dist/package/Rx';
 
 declare const __root__: any;

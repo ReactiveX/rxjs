@@ -1,6 +1,6 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as Rx from '../../dist/package/Rx';
-import {lowerCaseO} from '../helpers/test-helper';
+import { lowerCaseO } from '../helpers/test-helper';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram };
