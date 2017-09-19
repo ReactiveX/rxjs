@@ -41,6 +41,6 @@ import { partition as higherOrder } from '../operators/partition';
  * @method partition
  * @owner Observable
  */
-export function partition<T>(this: Observable<T>, predicate: (value: T) => boolean, thisArg?: any): [Observable<T>, Observable<T>] {
+export function partition<T>(this: Observable<T>, predicate: (value: T, index: number) => boolean, thisArg?: any): [Observable<T>, Observable<T>] {
   return higherOrder(predicate, thisArg)(this);
 }
