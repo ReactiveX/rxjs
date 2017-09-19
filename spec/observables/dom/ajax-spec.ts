@@ -450,7 +450,7 @@ describe('Observable.ajax', () => {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: { 'ð': 'ð' }
+        body: { '🌟': '🚀' }
       };
 
       Rx.Observable.ajax(obj).subscribe();
@@ -460,7 +460,7 @@ describe('Observable.ajax', () => {
 
     it('should send by form-urlencoded format', () => {
       const body = {
-        'ð': 'ð'
+        '🌟': '🚀'
       };
       const obj = {
         url: '/flibbertyJibbet',
@@ -479,7 +479,7 @@ describe('Observable.ajax', () => {
 
     it('should send by JSON', () => {
       const body = {
-        'ð': 'ð'
+        '🌟': '🚀'
       };
       const obj = {
         url: '/flibbertyJibbet',
@@ -493,7 +493,7 @@ describe('Observable.ajax', () => {
       Rx.Observable.ajax(obj).subscribe();
 
       expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
-      expect(MockXMLHttpRequest.mostRecent.data).to.equal('{"ð":"ð"}');
+      expect(MockXMLHttpRequest.mostRecent.data).to.equal('{"🌟":"🚀"}');
     });
 
     it('should error if send request throws', (done: MochaDone) => {
