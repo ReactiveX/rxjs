@@ -1,5 +1,8 @@
+import { Operator } from '../Operator';
 import { Observable } from '../Observable';
-import { takeWhile as higherOrder } from '../operators/takeWhile';
+import { Subscriber } from '../Subscriber';
+import { TeardownLogic } from '../Subscription';
+import { MonoTypeOperatorFunction } from '../interfaces';
 
 /**
  * Emits values emitted by the source Observable so long as each value satisfies
@@ -37,6 +40,50 @@ import { takeWhile as higherOrder } from '../operators/takeWhile';
  * @method takeWhile
  * @owner Observable
  */
-export function takeWhile<T>(this: Observable<T>, predicate: (value: T, index: number) => boolean): Observable<T> {
-  return higherOrder(predicate)(this);
+export function takeWhile<T>(predicate: (value: T, index: number) => boolean): MonoTypeOperatorFunction<T> {
+  return (source: Observable<T>) => source.lift(new TakeWhileOperator(predicate));
+}
+
+class TakeWhileOperator<T> implements Operator<T, T> {
+  constructor(private predicate: (value: T, index: number) => boolean) {
+  }
+
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+    return source.subscribe(new TakeWhileSubscriber(subscriber, this.predicate));
+  }
+}
+
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+class TakeWhileSubscriber<T> extends Subscriber<T> {
+  private index: number = 0;
+
+  constructor(destination: Subscriber<T>,
+              private predicate: (value: T, index: number) => boolean) {
+    super(destination);
+  }
+
+  protected _next(value: T): void {
+    const destination = this.destination;
+    let result: boolean;
+    try {
+      result = this.predicate(value, this.index++);
+    } catch (err) {
+      destination.error(err);
+      return;
+    }
+    this.nextOrComplete(value, result);
+  }
+
+  private nextOrComplete(value: T, predicateResult: boolean): void {
+    const destination = this.destination;
+    if (Boolean(predicateResult)) {
+      destination.next(value);
+    } else {
+      destination.complete();
+    }
+  }
 }

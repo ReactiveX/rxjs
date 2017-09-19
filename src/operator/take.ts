@@ -1,9 +1,5 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
-import { EmptyObservable } from '../observable/EmptyObservable';
 import { Observable } from '../Observable';
-import { TeardownLogic } from '../Subscription';
+import { take as higherOrder } from '../operators/take';
 
 /**
  * Emits only the first `count` values emitted by the source Observable.
@@ -39,46 +35,5 @@ import { TeardownLogic } from '../Subscription';
  * @owner Observable
  */
 export function take<T>(this: Observable<T>, count: number): Observable<T> {
-  if (count === 0) {
-    return new EmptyObservable<T>();
-  } else {
-    return this.lift(new TakeOperator(count));
-  }
-}
-
-class TakeOperator<T> implements Operator<T, T> {
-  constructor(private total: number) {
-    if (this.total < 0) {
-      throw new ArgumentOutOfRangeError;
-    }
-  }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new TakeSubscriber(subscriber, this.total));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class TakeSubscriber<T> extends Subscriber<T> {
-  private count: number = 0;
-
-  constructor(destination: Subscriber<T>, private total: number) {
-    super(destination);
-  }
-
-  protected _next(value: T): void {
-    const total = this.total;
-    const count = ++this.count;
-    if (count <= total) {
-      this.destination.next(value);
-      if (count === total) {
-        this.destination.complete();
-        this.unsubscribe();
-      }
-    }
-  }
+  return higherOrder(count)(this);
 }
