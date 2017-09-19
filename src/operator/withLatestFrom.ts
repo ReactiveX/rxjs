@@ -1,9 +1,5 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
 import { Observable, ObservableInput } from '../Observable';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
+import { withLatestFrom as higherOrder } from '../operators/withLatestFrom';
 
 /* tslint:disable:max-line-length */
 export function withLatestFrom<T, R>(this: Observable<T>, project: (v1: T) => R): Observable<R>;
@@ -61,86 +57,5 @@ export function withLatestFrom<T, R>(this: Observable<T>, array: ObservableInput
  * @owner Observable
  */
 export function withLatestFrom<T, R>(this: Observable<T>, ...args: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R> {
-  let project: any;
-  if (typeof args[args.length - 1] === 'function') {
-    project = args.pop();
-  }
-  const observables = <Observable<any>[]>args;
-  return this.lift(new WithLatestFromOperator(observables, project));
-}
-
-class WithLatestFromOperator<T, R> implements Operator<T, R> {
-  constructor(private observables: Observable<any>[],
-              private project?: (...values: any[]) => Observable<R>) {
-  }
-
-  call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new WithLatestFromSubscriber(subscriber, this.observables, this.project));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class WithLatestFromSubscriber<T, R> extends OuterSubscriber<T, R> {
-  private values: any[];
-  private toRespond: number[] = [];
-
-  constructor(destination: Subscriber<R>,
-              private observables: Observable<any>[],
-              private project?: (...values: any[]) => Observable<R>) {
-    super(destination);
-    const len = observables.length;
-    this.values = new Array(len);
-
-    for (let i = 0; i < len; i++) {
-      this.toRespond.push(i);
-    }
-
-    for (let i = 0; i < len; i++) {
-      let observable = observables[i];
-      this.add(subscribeToResult<T, R>(this, observable, <any>observable, i));
-    }
-  }
-
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
-    this.values[outerIndex] = innerValue;
-    const toRespond = this.toRespond;
-    if (toRespond.length > 0) {
-      const found = toRespond.indexOf(outerIndex);
-      if (found !== -1) {
-        toRespond.splice(found, 1);
-      }
-    }
-  }
-
-  notifyComplete() {
-    // noop
-  }
-
-  protected _next(value: T) {
-    if (this.toRespond.length === 0) {
-      const args = [value, ...this.values];
-      if (this.project) {
-        this._tryProject(args);
-      } else {
-        this.destination.next(args);
-      }
-    }
-  }
-
-  private _tryProject(args: any[]) {
-    let result: any;
-    try {
-      result = this.project.apply(this, args);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    this.destination.next(result);
-  }
+  return higherOrder(...args)(this);
 }
