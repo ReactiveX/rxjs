@@ -1,4 +1,4 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as Rx from '../dist/package/Rx';
 
 const Scheduler = Rx.Scheduler;

@@ -2,8 +2,8 @@
 declare const global: any;
 
 import * as Rx from '../../dist/package/Rx';
-import {ObservableInput} from '../../dist/package/Observable';
-import {root} from '../../dist/package/util/root';
+import { ObservableInput } from '../../dist/package/Observable';
+import { root } from '../../dist/package/util/root';
 import {$$iterator} from '../../dist/package/symbol/iterator';
 import $$symbolObservable from 'symbol-observable';
 

@@ -1,7 +1,7 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as Rx from '../../dist/package/Rx';
-import {SubscribeOnObservable} from '../../dist/package/observable/SubscribeOnObservable';
+import { SubscribeOnObservable } from '../../dist/package/observable/SubscribeOnObservable';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const hot: typeof marbleTestingSignature.hot;
