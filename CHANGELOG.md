@@ -1,6 +1,7 @@
 <a name="5.5.0-beta.0"></a>
 # [5.5.0-beta.0](https://github.com/ReactiveX/RxJS/compare/5.4.3...5.5.0-beta.0) (2017-09-22)
 
+**Important! Checkout the explanation of the new [lettable operators features here](doc/lettable-operators.md)**
 
 ### Bug Fixes
 
