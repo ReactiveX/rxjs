@@ -31,7 +31,7 @@ There is also a `pipe` utility function at `rxjs/utils/pipe` that can be used to
 
 ## Usage
 
-You pull in any operator you nee from one spot, under `'rxjs/operators'` (**plural!**). It's also recommended to pull in the Observable creation methods you need directly as shown below with `range`:
+You pull in any operator you need from one spot, under `'rxjs/operators'` (**plural!**). It's also recommended to pull in the Observable creation methods you need directly as shown below with `range`:
 
 ```ts
 import { range } from 'rxjs/observable/range';
