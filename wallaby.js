@@ -1,7 +1,7 @@
 module.exports = wallaby => ({
   files: [
     'src/**/*.ts',
-    {pattern: 'spec/helpers/*.ts', instrument: false}
+    { pattern: 'spec/helpers/*.ts', instrument: false }
   ],
 
   tests: ['spec/**/*-spec.ts'],
@@ -23,19 +23,9 @@ module.exports = wallaby => ({
     type: 'node'
   },
 
-  workers: {initial: 1, regular: 1},
+  workers: { initial: 1, regular: 1 },
 
   bootstrap: function (w) {
-    // Remapping all require calls to `dist/cjs` right to `src`
-    const Module = require('module').Module;
-    if (!Module._originalRequire) {
-      const modulePrototype = Module.prototype;
-      Module._originalRequire = modulePrototype.require;
-      modulePrototype.require = function (filePath) {
-        return Module._originalRequire.call(this, filePath.replace('dist/cjs', 'src'));
-      };
-    }
-
     // Global test helpers
     global.mocha = require('mocha');
     global.Suite = global.mocha.Suite;

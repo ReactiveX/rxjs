@@ -8,6 +8,19 @@
       "path": "cz-conventional-changelog"
     }
   },
+  "nyc": {
+    "exclude": [
+      "node_modules",
+      "typings",
+      "*.d.ts",
+      "src/MiscJSDoc.ts",
+      "**/spec/**/*"
+    ],
+    "reporter": [
+      "json",
+      "html"
+    ]
+  },
   "lint-staged": {
     "*.@(js)": [
       "eslint --fix",
@@ -28,11 +41,9 @@
     "build_global": "Build Global package, then minify build",
     "build_perf": "Build CJS & Global build, run macro performance test",
     "build_test": "Build CJS package & test spec, execute mocha test runner",
-    "build_cover": "Run lint to current code, build CJS & test spec, execute test coverage",
     "build_docs": "Build ESM2015 & global package, create documentation using it",
     "build_spec": "Build test specs",
     "check_circular_dependencies": "Check codebase has circular dependencies",
-    "clean_spec": "Clean up existing test spec build output",
     "clean_dist_cjs": "Clean up existing CJS package output",
     "clean_dist_esm5": "Clean up existing ESM/ES5 package output",
     "clean_dist_esm2015": "Clean up existing ESM/ES2015 package output",
@@ -68,13 +79,10 @@
     "build_global": "npm-run-all clean_dist_global build_esm5_for_rollup && mkdirp ./dist/global && node ./tools/make-umd-bundle.js && npm-run-all build_closure_core clean_dist_esm5_for_rollup",
     "build_umd": "npm-run-all clean_dist_global && mkdirp ./dist/global && node ./tools/make-umd-bundle.js && npm-run-all build_closure_core",
     "build_perf": "webdriver-manager update && npm-run-all build_cjs build_global perf",
-    "build_test": "shx rm -rf ./dist/ && npm-run-all copy_sources build_cjs generate_packages clean_spec build_spec test_mocha",
-    "build_cover": "shx rm -rf ./dist/ && npm-run-all build_all build_spec cover",
-    "build_docs": "npm-run-all build_global build_esm2015_for_docs build_cjs clean_spec build_spec tests2png decision_tree_widget && esdoc -c esdoc.json && npm-run-all clean_dist_esm2015",
+    "build_docs": "npm-run-all build_global build_esm2015_for_docs build_cjs build_spec tests2png decision_tree_widget && esdoc -c esdoc.json && npm-run-all clean_dist_esm2015",
     "build_spec": "tsc --project ./spec --pretty",
     "build_spec_browser": "webpack --config spec/support/webpack.mocha.config.js",
     "check_circular_dependencies": "madge ./dist/cjs --circular",
-    "clean_spec": "shx rm -rf spec-js",
     "clean_dist": "shx rm -rf ./dist",
     "clean_dist_cjs": "shx rm -rf ./dist/cjs",
     "clean_dist_esm5": "shx rm -rf ./dist/esm5",
@@ -82,12 +90,12 @@
     "clean_dist_esm2015": "shx rm -rf ./dist/esm2015",
     "clean_dist_global": "shx rm -rf ./dist/global",
     "commit": "git-cz",
-    "compile_dist_cjs": "tsc   ./dist/src/Rx.ts ./dist/src/add/observable/of.ts ./dist/src/operator/toPromise.ts -m commonjs --lib es5,es2015.iterable,es2015.collection,es2015.promise,dom --sourceMap --inlineSources --outDir ./dist/cjs   --target ES5    --diagnostics --pretty --noImplicitAny --noImplicitReturns --noImplicitThis --suppressImplicitAnyIndexErrors --moduleResolution node -d --declarationDir ./dist/typings",
-    "compile_dist_esm5": "tsc  ./dist/src/Rx.ts ./dist/src/add/observable/of.ts ./dist/src/operator/toPromise.ts -m es2015   --lib es5,es2015.iterable,es2015.collection,es2015.promise,dom --sourceMap --outDir ./dist/esm5  --target ES5    --diagnostics --pretty --noImplicitAny --noImplicitReturns --noImplicitThis --suppressImplicitAnyIndexErrors --moduleResolution node",
-    "compile_dist_esm2015": "tsc ./dist/src/Rx.ts ./dist/src/add/observable/of.ts ./dist/src/operator/toPromise.ts -m es2015   --lib es5,es2015.iterable,es2015.collection,es2015.promise,dom --sourceMap --outDir ./dist/esm2015 --target es2015 --diagnostics --pretty --noImplicitAny --noImplicitReturns --noImplicitThis --suppressImplicitAnyIndexErrors --moduleResolution node",
-    "compile_dist_esm2015_for_docs": "tsc ./dist/src/Rx.ts ./dist/src/add/observable/of.ts ./dist/src/MiscJSDoc.ts ./dist/src/operator/toPromise.ts -m es2015   --sourceMap --outDir ./dist/es6 --target es2015 -d --diagnostics --pretty --noImplicitAny --noImplicitReturns --noImplicitThis --suppressImplicitAnyIndexErrors --moduleResolution node",
-    "compile_dist_esm5_for_rollup": "tsc  ./dist/src/Rx.ts ./dist/src/add/observable/of.ts ./dist/src/operator/toPromise.ts -m es2015   --lib es5,es2015.iterable,es2015.collection,es2015.promise,dom --sourceMap --outDir ./dist/esm5_for_rollup  --target ES5    --diagnostics --pretty --noImplicitAny --noImplicitReturns --noImplicitThis --suppressImplicitAnyIndexErrors --moduleResolution node --noEmitHelpers",
-    "copy_sources": "mkdirp dist && shx cp -r ./src/ ./dist/src",
+    "compile_dist_cjs": "tsc   ./dist/src/Rx.ts ./dist/src/add/observable/of.ts -m commonjs --lib es5,es2015.iterable,es2015.collection,es2015.promise,dom --sourceMap --outDir ./dist/cjs   --target ES5    --diagnostics --pretty --noImplicitAny --noImplicitReturns --noImplicitThis --suppressImplicitAnyIndexErrors --moduleResolution node -d --declarationDir ./dist/typings",
+    "compile_dist_esm5": "tsc  ./dist/src/Rx.ts ./dist/src/add/observable/of.ts -m es2015   --lib es5,es2015.iterable,es2015.collection,es2015.promise,dom --sourceMap --outDir ./dist/esm5  --target ES5    --diagnostics --pretty --noImplicitAny --noImplicitReturns --noImplicitThis --suppressImplicitAnyIndexErrors --moduleResolution node",
+    "compile_dist_esm2015": "tsc ./dist/src/Rx.ts ./dist/src/add/observable/of.ts -m es2015   --lib es5,es2015.iterable,es2015.collection,es2015.promise,dom --sourceMap --outDir ./dist/esm2015 --target es2015 --diagnostics --pretty --noImplicitAny --noImplicitReturns --noImplicitThis --suppressImplicitAnyIndexErrors --moduleResolution node",
+    "compile_dist_esm2015_for_docs": "tsc ./dist/src/Rx.ts ./dist/src/add/observable/of.ts ./dist/src/MiscJSDoc.ts -m es2015   --sourceMap --outDir ./dist/es6 --target es2015 -d --diagnostics --pretty --noImplicitAny --noImplicitReturns --noImplicitThis --suppressImplicitAnyIndexErrors --moduleResolution node",
+    "compile_dist_esm5_for_rollup": "tsc  ./dist/src/Rx.ts ./dist/src/add/observable/of.ts -m es2015   --lib es5,es2015.iterable,es2015.collection,es2015.promise,dom --sourceMap --outDir ./dist/esm5_for_rollup  --target ES5    --diagnostics --pretty --noImplicitAny --noImplicitReturns --noImplicitThis --suppressImplicitAnyIndexErrors --moduleResolution node --noEmitHelpers",
+    "copy_sources": "mkdir -p dist && rsync -a ./src/ ./dist/src",
     "cover": "shx rm -rf dist/cjs && tsc dist/src/Rx.ts dist/src/add/observable/of.ts -m commonjs --lib es5,es2015.iterable,es2015.collection,es2015.promise,dom --outDir dist/cjs --sourceMap --target ES5 -d && nyc --reporter=lcov --reporter=html --exclude=spec/support/**/* --exclude=spec-js/**/* --exclude=node_modules mocha --opts spec/support/default.opts spec-js",
     "decision_tree_widget": "cd doc/decision-tree-widget && npm run build && cd ../..",
     "doctoc": "doctoc CONTRIBUTING.md",
@@ -100,10 +108,8 @@
     "perf_micro": "node ./perf/micro/index.js",
     "prepublish": "shx rm -rf ./typings && typings install && npm run build_all",
     "publish_docs": "./publish_docs.sh",
-    "test_mocha": "mocha --opts spec/support/default.opts spec-js",
-    "debug_mocha": "node --inspect --debug-brk ./node_modules/.bin/_mocha --opts spec/support/debug.opts spec-js",
     "test_browser": "npm-run-all build_spec_browser && opn spec/support/mocha-browser-runner.html",
-    "test": "npm-run-all clean_spec build_spec test_mocha clean_spec",
+    "test": "shx rm -rf ./.out && tsc && mocha --opts spec/support/default.opts ./.out/spec/**/*-spec.js",
     "tests2png": "npm run build_spec && mkdirp tmp/docs/img && mkdirp spec-js/support && shx cp spec/support/*.opts spec-js/support/ && mocha --opts spec/support/tests2png.opts spec-js",
     "watch": "watch \"echo triggering build && npm run build_test && echo build completed\" src -d -u -w=15"
   },
