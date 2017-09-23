@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import * as Rx from '../dist/package/Rx';
 import { TeardownLogic } from '../dist/package/Subscription';
 import marbleTestingSignature = require('./helpers/marble-testing'); // tslint:disable-line:no-require-imports
-import { map } from '../dist/package/operators';
+import { map } from '../dist/package/operators/map';
 
 declare const { asDiagram, rxTestScheduler };
 declare const cold: typeof marbleTestingSignature.cold;
