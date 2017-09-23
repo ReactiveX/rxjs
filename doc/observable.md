@@ -410,7 +410,7 @@ function subscribe(observer) {
     observer.next('hi');
   }, 1000);
 
-  return function unsubscribe() {
+  return () => {
     clearInterval(intervalID);
   };
 }
