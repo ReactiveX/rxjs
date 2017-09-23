@@ -34,7 +34,7 @@ There is also a `pipe` utility function at `rxjs/utils/pipe` that can be used to
 You pull in any operator you need from one spot, under `'rxjs/operators'` (**plural!**). It's also recommended to pull in the Observable creation methods you need directly as shown below with `range`:
 
 ```ts
-import { range } from 'rxjs/observable/range';
+import { range } from 'rxjs/Observable/range';
 import { map, filter, scan } from 'rxjs/operators';
 
 const source$ = range(0, 10);
@@ -52,7 +52,7 @@ source$.pipe(
 You, in fact, could _always_ do this with `let`... but building your own operator is as simple as writing a function now. Notice, that you can compose your custom operator in with other rxjs operators seamlessly.
 
 ```ts
-import { interval } from 'rxjs/observable/interval';
+import { interval } from 'rxjs/Observable/interval';
 import { map, take, toArray } from 'rxjs/operators';
 
 /**
