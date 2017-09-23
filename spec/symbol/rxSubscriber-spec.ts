@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { root } from '../../dist/package/util/root';
-import {$$rxSubscriber} from '../../dist/package/symbol/rxSubscriber';
+import { root } from '../../src/util/root';
+import {$$rxSubscriber} from '../../src/symbol/rxSubscriber';
 
 describe('rxSubscriber symbol', () => {
   it('should exist in the proper form', () => {

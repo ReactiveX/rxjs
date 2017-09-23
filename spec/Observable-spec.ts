@@ -1,11 +1,13 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../dist/package/Rx';
-import { TeardownLogic } from '../dist/package/Subscription';
+import * as Rx from '../src/Rx';
+import { TeardownLogic } from '../src/Subscription';
 import marbleTestingSignature = require('./helpers/marble-testing'); // tslint:disable-line:no-require-imports
-import { map } from '../dist/package/operators/map';
+import { map } from '../src/operators/map';
+//tslint:disable-next-line
+require('./helpers/test-helper');
 
-declare const { asDiagram, rxTestScheduler };
+declare const asDiagram: any, rxTestScheduler: any;
 declare const cold: typeof marbleTestingSignature.cold;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
@@ -15,7 +17,7 @@ const Observable = Rx.Observable;
 
 declare const __root__: any;
 
-function expectFullObserver(val) {
+function expectFullObserver(val: any) {
   expect(val).to.be.a('object');
   expect(val.next).to.be.a('function');
   expect(val.error).to.be.a('function');

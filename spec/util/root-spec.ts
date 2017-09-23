@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { root } from '../../dist/package/util/root';
+import { root } from '../../src/util/root';
 
 /** @test {root} */
 describe('root', () => {

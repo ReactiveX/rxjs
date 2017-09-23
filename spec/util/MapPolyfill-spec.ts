@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { MapPolyfill } from '../../dist/package/util/MapPolyfill';
+import { MapPolyfill } from '../../src/util/MapPolyfill';
 
 /** @test {MapPolyfill} */
 describe('MapPolyfill', () => {

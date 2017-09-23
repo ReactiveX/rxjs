@@ -1,14 +1,14 @@
 import { expect } from 'chai';
-import { assign, getAssign, assignImpl } from '../../dist/package/util/assign';
+import { assign, getAssign, assignImpl } from '../../src/util/assign';
 
 describe('assign', () => {
   it('should exist', () => {
     expect(assign).to.be.a('function');
   });
 
-  if (Object.assign) {
+  if ((Object as any).assign) {
     it('should use Object.assign if available', () => {
-      expect(assign).to.equal(Object.assign);
+      expect(assign).to.equal(((Object as any).assign));
     });
   }
 

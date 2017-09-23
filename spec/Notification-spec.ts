@@ -1,7 +1,8 @@
 import { expect } from 'chai';
-import * as Rx from '../dist/package/Rx';
+import * as Rx from '../src/Rx';
+import marbleTestingSignature = require('./helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
-declare const expectObservable;
+declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 const Notification = Rx.Notification;
 
 /** @test {Notification} */
