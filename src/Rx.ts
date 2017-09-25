@@ -176,6 +176,10 @@ import { rxSubscriber } from './symbol/rxSubscriber';
 import { iterator } from './symbol/iterator';
 import { observable } from './symbol/observable';
 
+import * as _operators from './operators';
+
+export const operators = _operators;
+
 /* tslint:enable:no-unused-variable */
 
 /**
