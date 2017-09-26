@@ -107,7 +107,6 @@ class ThrottleTimeSubscriber<T> extends Subscriber<T> {
 
     if (throttled) {
       throttled.unsubscribe();
-      this.remove(throttled);
       this.throttled = null;
 
       if (this.trailing && this._hasTrailingValue) {
