@@ -86,6 +86,7 @@ class ThrottleTimeSubscriber<T> extends Subscriber<T> {
 
   protected _next(value: T) {
     if (!this.throttled && this.leading) {
+      this.throttle();
       this.destination.next(value);
     } else if (this.trailing) {
       this._trailingValue = value;
@@ -110,10 +111,11 @@ class ThrottleTimeSubscriber<T> extends Subscriber<T> {
       this.throttled = null;
 
       if (this.trailing && this._hasTrailingValue) {
-        this.destination.next(this._trailingValue);
+        const trailingValue = this._trailingValue;
         this._trailingValue = null;
         this._hasTrailingValue = false;
         this.throttle();
+        this.destination.next(trailingValue);
       }
     }
   }
