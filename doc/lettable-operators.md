@@ -19,7 +19,7 @@ Problems with the patched operators for dot-chaining are:
 1. Any library that imports a patch operator will augment the `Observable.prototype` for all consumers of that library, creating blind dependencies. If the library removes their usage, they unknowingly break everyone else. With lettables, you have to import the operators you need into each file you use them in.
 2. Operators patched directly onto the prototype are not "tree-shakeable" by tools like rollup or webpack. Lettable operators will be as they are just functions pulled in from modules directly.
 3. Unused operators that are being imported in apps cannot be detected reliably by any sort of build tooling or lint rule. That means that you might import `scan`, but stop using it, and it's still being added to your output bundle. With lettable operators, if you're not using it, a lint rule can pick it up for you.
-4. Functional composition is awesome. Building your own custom operators becomes much, much easier, and now they work and look just like all other operators from rxjs. You dont' need to extend Observable or override `lift` anymore.
+4. Functional composition is awesome. Building your own custom operators becomes much, much easier, and now they work and look just like all other operators from rxjs. You don't need to extend Observable or override `lift` anymore.
 
 ## What?
 
