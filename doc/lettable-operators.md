@@ -25,7 +25,7 @@ Problems with the patched operators for dot-chaining are:
 
 What is a lettable operator? Simply put, a function that can be used with the current `let` operator. It's the origin of the name, for better or worse. A lettable operator is basically any function that returns a function with the signature: `<T, R>(source: Observable<T>) => Observable<R>`.
 
-There is a `pipe` method built into `Observable` now at `Observable.prototype.pipe` that an be used to compose the operators in similar manner to what you're used to with dot-chaining (shown below).
+There is a `pipe` method built into `Observable` now at `Observable.prototype.pipe` that сan be used to compose the operators in similar manner to what you're used to with dot-chaining (shown below).
 
 There is also a `pipe` utility function at `rxjs/utils/pipe` that can be used to build reusable lettable operators from other lettable operators.
 
