@@ -55,12 +55,48 @@ describe('Observable.prototype.throttleTime', () => {
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
-  it('should handle a busy producer emitting a regular repeating sequence', () => {
-    const e1 =   hot('abcdefabcdefabcdefabcdefa|');
-    const subs =     '^                        !';
-    const expected = 'a-----a-----a-----a-----a|';
+  it('should handle a busy producer emitting a regular repeating sequence with leading: true, trailing: false', () => {
+    const e1 =   hot('a12345b12345c12345d123|');
+    const subs =     '^                     !';
+    const expected = 'a-----b-----c-----d---|';
 
-    expectObservable(e1.throttleTime(50, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.throttleTime(50, rxTestScheduler, {leading: true, trailing: false})).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
+  });
+
+  it('should handle a busy producer emitting a regular repeating sequence with leading: true, trailing: true', () => {
+    const e1 =   hot('a1234b1234c1234d12e--|');
+    const subs =     '^                    !';
+    const expected = 'a----b----c----d----e|';
+
+    expectObservable(e1.throttleTime(50, rxTestScheduler, {leading: true, trailing: true})).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
+  });
+
+  it('should not drop values if values are far apart with leading: true, trailing: true', () => {
+    const e1 =   hot('ab-----------c|');
+    const subs =     '^             !';
+    const expected = 'a----b-------c|';
+
+    expectObservable(e1.throttleTime(50, rxTestScheduler, {leading: true, trailing: true})).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
+  });
+
+  it('should handle a busy producer emitting a regular repeating sequence with leading: false, trailing: true', () => {
+    const e1 =   hot('12345a1234b1234c12d--|');
+    const subs =     '^                    !';
+    const expected = '-----a----b----c----d|';
+
+    expectObservable(e1.throttleTime(50, rxTestScheduler, {leading: false, trailing: true})).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
+  });
+
+  it('should only emit trailing values with leading: false, trailing: true', () => {
+    const e1 =   hot('ab-----------c--d--|');
+    const subs =     '^                  !';
+    const expected = '-----b------------d|';
+
+    expectObservable(e1.throttleTime(50, rxTestScheduler, {leading: false, trailing: true})).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -141,33 +177,5 @@ describe('Observable.prototype.throttleTime', () => {
 
     expectObservable(e1.throttleTime(50, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
-  });
-
-  describe('throttleTime(fn, { leading: true, trailing: true })', () => {
-    asDiagram('throttleTime(fn, { leading: true, trailing: true })')('should immediately emit the first value in each time window', () =>  {
-      const e1 =   hot('-a-xy-----b--x--cxxx--|');
-      const e1subs =   '^                     !';
-      const t =  time( '----|                 ');
-      const expected = '-a---y----b---x-c---x-|';
-
-      const result = e1.throttleTime(t, rxTestScheduler, { leading: true, trailing: true });
-
-      expectObservable(result).toBe(expected);
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    });
-  });
-
-  describe('throttleTime(fn, { leading: false, trailing: true })', () => {
-    asDiagram('throttleTime(fn, { leading: false, trailing: true })')('should immediately emit the first value in each time window', () =>  {
-      const e1 =   hot('-a-xy-----b--x--cxxx--|');
-      const e1subs =   '^                     !';
-      const t =  time( '----|                 ');
-      const expected = '-----y--------x-----x-|';
-
-      const result = e1.throttleTime(t, rxTestScheduler, { leading: false, trailing: true });
-
-      expectObservable(result).toBe(expected);
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    });
   });
 });
