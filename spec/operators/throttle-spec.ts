@@ -7,6 +7,8 @@ declare const hot: typeof marbleTestingSignature.hot;
 declare const cold: typeof marbleTestingSignature.cold;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
+declare const time: typeof marbleTestingSignature.time;
+declare const rxTestScheduler: typeof marbleTestingSignature.rxTestScheduler;
 
 const Observable = Rx.Observable;
 
@@ -212,28 +214,24 @@ describe('Observable.prototype.throttle', () =>  {
   });
 
   it('should propagate error thrown from durationSelector function', () =>  {
-    const e1 =   hot('abcdefabcdabcdefghabca|   ');
-    const e1subs =   '^         !               ';
-    const e2 = [cold('-----|                    '),
-              cold(      '---|                '),
-              cold(          '-------|        ')];
-    const e2subs =  ['^    !                    ',
-                   '      ^  !                '];
-    const expected = 'a-----a---#               ';
+    const s1 = hot('--^--x--x--x--x--x--x--e--x--x--x--|');
+    const s1Subs =   '^                    !';
+    const n1 = cold( '----|');
+    const n1Subs =  ['   ^   !                          ',
+                     '         ^   !                    ',
+                     '               ^   !              '];
+    const exp =      '---x-----x-----x-----(e#)';
 
     let i = 0;
-    const result = e1.throttle(() =>  {
-      if (i === 2) {
-        throw 'error';
+    const result = s1.throttle(() => {
+      if (i++ === 3) {
+        throw new Error('lol');
       }
-      return e2[i++];
+      return n1;
     });
-
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    for (let j = 0; j < e2subs.length; j++) {
-      expectSubscriptions(e2[j].subscriptions).toBe(e2subs[j]);
-    }
+    expectObservable(result).toBe(exp, undefined, new Error('lol'));
+    expectSubscriptions(s1.subscriptions).toBe(s1Subs);
+    expectSubscriptions(n1.subscriptions).toBe(n1Subs);
   });
 
   it('should complete when source does not emit', () =>  {
@@ -340,19 +338,35 @@ describe('Observable.prototype.throttle', () =>  {
 
   describe('throttle(fn, { leading: true, trailing: true })', () => {
     asDiagram('throttle(fn, { leading: true, trailing: true })')('should immediately emit the first value in each time window', () =>  {
-      const e1 =   hot('-a-xy-----b--x--cxxx--|');
-      const e1subs =   '^                     !';
-      const e2 =  cold( '----|                 ');
-      const e2subs =  [' ^   !                 ',
-                       '          ^   !        ',
-                       '                ^   !  '];
-      const expected = '-a---y----b---x-c---x-|';
+      const e1 =   hot('-a-xy-----b--x--cxxx------|');
+      const e1subs =   '^                         !';
+      const e2 =  cold( '----|                     ');
+      const e2subs =  [' ^   !                     ',
+                       '     ^   !                 ',
+                       '          ^   !            ',
+                       '              ^   !        ',
+                       '                  ^   !    ',
+                       '                      ^   !'];
+      const expected = '-a---y----b---x---x---x---|';
 
       const result = e1.throttle(() =>  e2, { leading: true, trailing: true });
 
       expectObservable(result).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+
+    it('should work for individual values', () => {
+      const s1 = hot('-^-x------------------|');
+      const s1Subs =  '^                    !';
+      const n1 = cold(  '------------------------|');
+      const n1Subs = ['  ^                  !'];
+      const exp =     '--x------------------|';
+
+      const result = s1.throttle(() => n1, { leading: true, trailing: true });
+      expectObservable(result).toBe(exp);
+      expectSubscriptions(s1.subscriptions).toBe(s1Subs);
+      expectSubscriptions(n1.subscriptions).toBe(n1Subs);
     });
   });
 
@@ -362,15 +376,26 @@ describe('Observable.prototype.throttle', () =>  {
       const e1subs =   '^                     !';
       const e2 =  cold( '----|                 ');
       const e2subs =  [' ^   !                 ',
+                       '     ^   !             ',
                        '          ^   !        ',
-                       '                ^   !  '];
-      const expected = '-----y--------x-----x-|';
+                       '              ^   !    ',
+                       '                  ^   !'];
+      const expected = '-----y--------x---x---|';
 
       const result = e1.throttle(() =>  e2, { leading: false, trailing: true });
 
       expectObservable(result).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+
+    it('should work for individual values', () => {
+      const s1 = cold('---------x---------x--------x------|');
+      const n =  cold('----(n|)');
+      const exp =     '-------------x---------x--------x--|';
+
+      expectObservable(s1.throttle(() => n, { trailing: true }))
+        .toBe(exp);
     });
   });
 });
