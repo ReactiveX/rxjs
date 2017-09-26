@@ -20,7 +20,7 @@ const CJS_PKG = PKG_ROOT + '_cjs/';
 const ESM5_PKG = PKG_ROOT + '_esm5/';
 const ESM2015_PKG = PKG_ROOT + '_esm2015/';
 const UMD_PKG = PKG_ROOT + 'bundles/';
-const TYPE_PKG = PKG_ROOT + '_typings/';
+const TYPE_PKG = PKG_ROOT;
 
 
 // License info for minified files
@@ -35,7 +35,7 @@ let rootPackageJson = Object.assign({}, pkg, {
   main: './_cjs/Rx.js',
   module: './_esm5/Rx.js',
   es2015: './_esm2015/Rx.js',
-  typings: './_typings/Rx.d.ts'
+  typings: './Rx.d.ts'
 });
 
 // Read the files and create package.json files for each. This allows Node,
@@ -84,7 +84,6 @@ klawSync(CJS_ROOT, {
 mkdirp.sync(PKG_ROOT);
 
 // Copy over the sources
-copySources('src/', PKG_ROOT + 'src/');
 copySources(CJS_ROOT, CJS_PKG);
 copySources(ESM5_ROOT, ESM5_PKG);
 copySources(ESM2015_ROOT, ESM2015_PKG);
