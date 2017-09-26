@@ -4,6 +4,8 @@ Starting in version 5.5 we have shipped "lettable operators", which can be acces
 
 **NOTE**: During 5.5 beta we will be bikeshedding a few of the names for operators that we had to give new names to due to keyword restrictions in javascript. 
 
+**NOTE**: If you're using TypeScript, version >= 2.4 is required, otherwise lettable operators will lose the type and compilation will break. 
+
 These operators are:
 
 1. `do` -> `tap`
