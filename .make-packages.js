@@ -84,6 +84,7 @@ klawSync(CJS_ROOT, {
 mkdirp.sync(PKG_ROOT);
 
 // Copy over the sources
+copySources('src/', PKG_ROOT + 'src/');
 copySources(CJS_ROOT, CJS_PKG);
 copySources(ESM5_ROOT, ESM5_PKG);
 copySources(ESM2015_ROOT, ESM2015_PKG);
