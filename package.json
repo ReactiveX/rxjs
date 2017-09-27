@@ -68,7 +68,7 @@
     "build_global": "npm-run-all clean_dist_global build_esm5_for_rollup && mkdirp ./dist/global && node ./tools/make-umd-bundle.js && npm-run-all build_closure_core clean_dist_esm5_for_rollup",
     "build_umd": "npm-run-all clean_dist_global && mkdirp ./dist/global && node ./tools/make-umd-bundle.js && npm-run-all build_closure_core",
     "build_perf": "webdriver-manager update && npm-run-all build_cjs build_global perf",
-    "build_test": "shx rm -rf ./dist/ && npm-run-all build_all clean_spec build_spec test_mocha",
+    "build_test": "shx rm -rf ./dist/ && npm-run-all copy_sources build_cjs generate_packages clean_spec build_spec test_mocha",
     "build_cover": "shx rm -rf ./dist/ && npm-run-all build_all build_spec cover",
     "build_docs": "npm-run-all build_global build_esm2015_for_docs build_cjs clean_spec build_spec tests2png decision_tree_widget && esdoc -c esdoc.json && npm-run-all clean_dist_esm2015",
     "build_spec": "tsc --project ./spec --pretty",
