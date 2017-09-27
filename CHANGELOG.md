@@ -1,3 +1,22 @@
+<a name="5.5.0-beta.1"></a>
+# [5.5.0-beta.1](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.0...v5.5.0-beta.1) (2017-09-27)
+
+
+### Bug Fixes
+
+* **package:** published from a Linux machine to prevent a strange issue where
+  the Observable directory was not showing up when installed on some Linux
+  environments.
+* **build:** fix source maps by adding back sources and fixing path ([#2872](https://github.com/ReactiveX/RxJS/issues/2872)) ([daaf424](https://github.com/ReactiveX/RxJS/commit/daaf424))
+* **package:** remove src directory and fix typings location ([#2866](https://github.com/ReactiveX/RxJS/issues/2866)) ([c57eea7](https://github.com/ReactiveX/RxJS/commit/c57eea7))
+
+
+### Features
+
+* **global:** export lettables as Rx.operators ([#2862](https://github.com/ReactiveX/RxJS/issues/2862)) ([ba2f586](https://github.com/ReactiveX/RxJS/commit/ba2f586)), closes [#2861](https://github.com/ReactiveX/RxJS/issues/2861)
+
+
+
 <a name="5.5.0-beta.0"></a>
 # [5.5.0-beta.0](https://github.com/ReactiveX/RxJS/compare/5.4.3...5.5.0-beta.0) (2017-09-22)
 
