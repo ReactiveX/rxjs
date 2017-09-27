@@ -1,10 +1,9 @@
-import { Observable } from '../Observable';
-import { Subscribable } from '../Observable';
+import { Observable, ObservableInput } from '../Observable';
 import { MergeAllOperator } from './mergeAll';
 
 /* tslint:disable:max-line-length */
-export function concatAll<T>(this: Observable<T>): T;
-export function concatAll<T, R>(this: Observable<T>): Subscribable<R>;
+export function concatAll<T>(this: Observable<T[]>): Observable<T>;
+export function concatAll<T extends ObservableInput<R>, R>(this: Observable<T>): Observable<R>;
 /* tslint:enable:max-line-length */
 
 /**

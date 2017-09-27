@@ -1,13 +1,12 @@
-import { Observable } from '../Observable';
+import { Observable, ObservableInput } from '../Observable';
 import { Operator } from '../Operator';
 import { Observer } from '../Observer';
 import { Subscription } from '../Subscription';
 import { OuterSubscriber } from '../OuterSubscriber';
-import { Subscribable } from '../Observable';
 import { subscribeToResult } from '../util/subscribeToResult';
 
-export function mergeAll<T>(this: Observable<T>, concurrent?: number): T;
-export function mergeAll<T, R>(this: Observable<T>, concurrent?: number): Subscribable<R>;
+export function mergeAll<T>(this: Observable<T[]>, concurrent?: number): Observable<T>;
+export function mergeAll<T extends ObservableInput<R>, R>(this: Observable<T>, concurrent?: number): Observable<R>;
 
 /**
  * Converts a higher-order Observable into a first-order Observable which
