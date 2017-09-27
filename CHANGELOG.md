@@ -1,3 +1,13 @@
+<a name="5.5.0-beta.2"></a>
+# [5.5.0-beta.2](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.1...v5.5.0-beta.2) (2017-09-27)
+
+
+### Bug Fixes
+
+* **build:** make CJS references to import X from '../operators' work correctly with SystemJS ([#2874](https://github.com/ReactiveX/RxJS/issues/2874)) ([3dd4cc4](https://github.com/ReactiveX/RxJS/commit/3dd4cc4))
+
+
+
 <a name="5.5.0-beta.1"></a>
 # [5.5.0-beta.1](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.0...v5.5.0-beta.1) (2017-09-27)
 
