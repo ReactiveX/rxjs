@@ -86,28 +86,34 @@ mkdirp.sync(PKG_ROOT);
 // Copy over the sources
 copySources('src/', PKG_ROOT + 'src/');
 copySources(CJS_ROOT, CJS_PKG);
-copySources(ESM5_ROOT, ESM5_PKG);
-copySources(ESM2015_ROOT, ESM2015_PKG);
 fs.copySync(TYPE_ROOT, TYPE_PKG);
+
+copySources(ESM5_ROOT, ESM5_PKG, true);
+copySources(ESM2015_ROOT, ESM2015_PKG, true);
+
 
 fs.writeJsonSync(PKG_ROOT + 'package.json', rootPackageJson);
 
-fs.copySync(UMD_ROOT, UMD_PKG);
-// Add licenses to tops of bundles
-addLicenseToFile('LICENSE.txt', UMD_PKG + 'Rx.js');
-addLicenseTextToFile(license, UMD_PKG + 'Rx.min.js');
-addLicenseToFile('LICENSE.txt', UMD_PKG + 'Rx.js');
-addLicenseTextToFile(license, UMD_PKG + 'Rx.min.js');
+if (fs.existsSync(UMD_ROOT)) {
+  fs.copySync(UMD_ROOT, UMD_PKG);
+  // Add licenses to tops of bundles
+  addLicenseToFile('LICENSE.txt', UMD_PKG + 'Rx.js');
+  addLicenseTextToFile(license, UMD_PKG + 'Rx.min.js');
+  addLicenseToFile('LICENSE.txt', UMD_PKG + 'Rx.js');
+  addLicenseTextToFile(license, UMD_PKG + 'Rx.min.js');
+}
 
-// Copy over the ESM5 files
-fs.copySync(ESM5_ROOT, ESM5_PKG);
-
-function copySources(rootDir, packageDir, packageJson) {
+function copySources(rootDir, packageDir, ignoreMissing) {
+  // If we are ignoring missing directories, early return when source doesn't exist
+  if (!fs.existsSync(rootDir)) {
+    if (ignoreMissing) {
+      return;
+    } else {
+      throw "Source root dir does not exist!";
+    }
+  }
   // Copy over the CommonJS files
   fs.copySync(rootDir, packageDir);
   fs.copySync('./LICENSE.txt', packageDir + 'LICENSE.txt');
   fs.copySync('./README.md', packageDir + 'README.md');
-  if (packageJson) {
-    fs.writeJsonSync(packageDir + 'package.json', packageJson);
-  }
 }
