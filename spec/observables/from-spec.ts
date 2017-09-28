@@ -24,7 +24,6 @@ describe('Observable.from', () => {
     expect(r).to.throw();
   });
 
-  it('', () => {
     type('should return T for ObservableLike objects', () => {
       /* tslint:disable:no-unused-variable */
       let o1: Rx.Observable<number> = Observable.from(<number[]>[], Rx.Scheduler.asap);
@@ -32,15 +31,12 @@ describe('Observable.from', () => {
       let o3: Rx.Observable<{ b: number }> = Observable.from(new Promise<{b: number}>(resolve => resolve()));
       /* tslint:enable:no-unused-variable */
     });
-  });
 
-  it('', () => {
     type('should return T for arrays', () => {
       /* tslint:disable:no-unused-variable */
       let o1: Rx.Observable<number> = Observable.from(<number[]>[], Rx.Scheduler.asap);
       /* tslint:enable:no-unused-variable */
     });
-  });
 
   const fakervable = (...values) => ({
     [<symbol>Symbol.observable]: () => ({

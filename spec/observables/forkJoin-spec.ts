@@ -360,7 +360,6 @@ describe('Observable.forkJoin', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('', () => {
     type('should support promises', () => {
       /* tslint:disable:no-unused-variable */
       let a: Promise<number>;
@@ -370,9 +369,7 @@ describe('Observable.forkJoin', () => {
       let o2: Rx.Observable<boolean> = Observable.forkJoin(a, b, c, (aa, bb, cc) => !!aa && !!bb && cc);
       /* tslint:enable:no-unused-variable */
     });
-  });
 
-  it('', () => {
     type('should support observables', () => {
       /* tslint:disable:no-unused-variable */
       let a: Rx.Observable<number>;
@@ -382,9 +379,7 @@ describe('Observable.forkJoin', () => {
       let o2: Rx.Observable<boolean> = Observable.forkJoin(a, b, c, (aa, bb, cc) => !!aa && !!bb && cc);
       /* tslint:enable:no-unused-variable */
     });
-  });
 
-  it('', () => {
     type('should support mixed observables and promises', () => {
       /* tslint:disable:no-unused-variable */
       let a: Promise<number>;
@@ -395,9 +390,7 @@ describe('Observable.forkJoin', () => {
       let o2: Rx.Observable<boolean> = Observable.forkJoin(a, b, c, d, (aa, bb, cc, dd) => !!aa && !!bb && cc && !!dd.length);
       /* tslint:enable:no-unused-variable */
     });
-  });
 
-  it('', () => {
     type('should support arrays of promises', () => {
       /* tslint:disable:no-unused-variable */
       let a: Promise<number>[];
@@ -406,9 +399,7 @@ describe('Observable.forkJoin', () => {
       let o3: Rx.Observable<number> = Observable.forkJoin(a, (...x) => x.length);
       /* tslint:enable:no-unused-variable */
     });
-  });
 
-  it('', () => {
     type('should support arrays of observables', () => {
       /* tslint:disable:no-unused-variable */
       let a: Rx.Observable<number>[];
@@ -417,23 +408,18 @@ describe('Observable.forkJoin', () => {
       let o3: Rx.Observable<number> = Observable.forkJoin(a, (...x) => x.length);
       /* tslint:enable:no-unused-variable */
     });
-  });
 
-  it('', () => {
     type('should return Array<T> when given a single promise', () => {
       /* tslint:disable:no-unused-variable */
       let a: Promise<number>;
       let o1: Rx.Observable<number[]> = Observable.forkJoin(a);
       /* tslint:enable:no-unused-variable */
     });
-  });
 
-  it('', () => {
     type('should return Array<T> when given a single observable', () => {
       /* tslint:disable:no-unused-variable */
       let a: Rx.Observable<number>;
       let o1: Rx.Observable<number[]> = Observable.forkJoin(a);
       /* tslint:enable:no-unused-variable */
     });
-  });
 });

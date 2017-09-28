@@ -457,7 +457,6 @@ describe('Observable.prototype.mergeMapTo', () => {
     expect(completed).to.be.true;
   });
 
-  it('', () => {
     type('should support type signatures', () => {
       let o: Rx.Observable<number>;
       let m: Rx.Observable<string>;
@@ -469,5 +468,4 @@ describe('Observable.prototype.mergeMapTo', () => {
       let a4: Rx.Observable<{ o: number; i: string; }> = o.mergeMapTo(m, (o, i) => ({ o, i }), 3);
       /* tslint:enable:no-unused-variable */
     });
-  });
 });

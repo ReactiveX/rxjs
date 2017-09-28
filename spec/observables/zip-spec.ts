@@ -582,7 +582,6 @@ describe('Observable.zip', () => {
     }, null, done);
   });
 
-  it('', () => {
     type('should support observables', () => {
       /* tslint:disable:no-unused-variable */
       let a: Rx.Observable<number>;
@@ -591,9 +590,7 @@ describe('Observable.zip', () => {
       let o1: Rx.Observable<[number, string, boolean]> = Observable.zip(a, b, c);
       /* tslint:enable:no-unused-variable */
     });
-  });
 
-  it('', () => {
     type('should support mixed observables and promises', () => {
       /* tslint:disable:no-unused-variable */
       let a: Promise<number>;
@@ -603,9 +600,7 @@ describe('Observable.zip', () => {
       let o1: Rx.Observable<[number, string, boolean, string[]]> = Observable.zip(a, b, c, d);
       /* tslint:enable:no-unused-variable */
     });
-  });
 
-  it('', () => {
     type('should support arrays of promises', () => {
       /* tslint:disable:no-unused-variable */
       let a: Promise<number>[];
@@ -613,9 +608,7 @@ describe('Observable.zip', () => {
       let o2: Rx.Observable<number[]> = Observable.zip(...a);
       /* tslint:enable:no-unused-variable */
     });
-  });
 
-  it('', () => {
     type('should support arrays of observables', () => {
       /* tslint:disable:no-unused-variable */
       let a: Rx.Observable<number>[];
@@ -623,23 +616,18 @@ describe('Observable.zip', () => {
       let o2: Rx.Observable<number[]> = Observable.zip(...a);
       /* tslint:enable:no-unused-variable */
     });
-  });
 
-  it('', () => {
     type('should return Array<T> when given a single promise', () => {
       /* tslint:disable:no-unused-variable */
       let a: Promise<number>;
       let o1: Rx.Observable<number[]> = Observable.zip(a);
       /* tslint:enable:no-unused-variable */
     });
-  });
 
-  it('', () => {
     type('should return Array<T> when given a single observable', () => {
       /* tslint:disable:no-unused-variable */
       let a: Rx.Observable<number>;
       let o1: Rx.Observable<number[]> = Observable.zip(a);
       /* tslint:enable:no-unused-variable */
     });
-  });
 });
