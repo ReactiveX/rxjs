@@ -1,6 +1,6 @@
 
 import { Observable, SubscribableOrPromise } from '../Observable';
-import { audit as higherOrder } from '../operators';
+import { audit as higherOrder } from '../operators/audit';
 
 /**
  * Ignores source values for a duration determined by another Observable, then

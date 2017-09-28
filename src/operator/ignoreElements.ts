@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { ignoreElements as higherOrder } from '../operators';
+import { ignoreElements as higherOrder } from '../operators/ignoreElements';
 
 /**
  * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.

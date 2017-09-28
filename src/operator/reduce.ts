@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { reduce as higherOrderReduce } from '../operators';
+import { reduce as higherOrderReduce } from '../operators/reduce';
 
 /* tslint:disable:max-line-length */
 export function reduce<T>(this: Observable<T>, accumulator: (acc: T, value: T, index: number) => T, seed?: T): Observable<T>;

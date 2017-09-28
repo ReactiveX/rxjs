@@ -1,7 +1,7 @@
 import { async } from '../scheduler/async';
 import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
-import { auditTime as higherOrder } from '../operators';
+import { auditTime as higherOrder } from '../operators/auditTime';
 
 /**
  * Ignores source values for `duration` milliseconds, then emits the most recent

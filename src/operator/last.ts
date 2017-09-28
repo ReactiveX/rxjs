@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { last as higherOrder } from '../operators';
+import { last as higherOrder } from '../operators/last';
 
 /* tslint:disable:max-line-length */
 export function last<T, S extends T>(this: Observable<T>,

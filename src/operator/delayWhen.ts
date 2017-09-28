@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { delayWhen as higherOrder } from '../operators';
+import { delayWhen as higherOrder } from '../operators/delayWhen';
 
 /**
  * Delays the emission of items from the source Observable by a given time span

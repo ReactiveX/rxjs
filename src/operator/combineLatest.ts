@@ -1,5 +1,5 @@
 import { Observable, ObservableInput } from '../Observable';
-import { combineLatest as higherOrder } from '../operators';
+import { combineLatest as higherOrder } from '../operators/combineLatest';
 
 /* tslint:disable:max-line-length */
 export function combineLatest<T, R>(this: Observable<T>, project: (v1: T) => R): Observable<R>;

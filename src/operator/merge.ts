@@ -1,6 +1,6 @@
 import { Observable, ObservableInput } from '../Observable';
 import { IScheduler } from '../Scheduler';
-import { merge as higherOrder } from '../operators';
+import { merge as higherOrder } from '../operators/merge';
 
 export { mergeStatic } from '../operators/merge';
 

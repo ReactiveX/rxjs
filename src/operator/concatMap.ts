@@ -1,4 +1,4 @@
-import { concatMap as higherOrderConcatMap } from '../operators';
+import { concatMap as higherOrderConcatMap } from '../operators/concatMap';
 import { Observable, ObservableInput } from '../Observable';
 
 /* tslint:disable:max-line-length */

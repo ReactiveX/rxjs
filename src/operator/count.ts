@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { count as higherOrder } from '../operators';
+import { count as higherOrder } from '../operators/count';
 
 /**
  * Counts the number of emissions on the source and emits that number when the

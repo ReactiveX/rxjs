@@ -1,6 +1,6 @@
 import { Observable } from '../Observable';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
-import { publishLast as higherOrder } from '../operators';
+import { publishLast as higherOrder } from '../operators/publishLast';
 /**
  * @return {ConnectableObservable<T>}
  * @method publishLast

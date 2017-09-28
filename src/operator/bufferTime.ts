@@ -2,7 +2,7 @@ import { IScheduler } from '../Scheduler';
 import { async } from '../scheduler/async';
 import { Observable } from '../Observable';
 import { isScheduler } from '../util/isScheduler';
-import { bufferTime as higherOrder } from '../operators';
+import { bufferTime as higherOrder } from '../operators/bufferTime';
 
 /* tslint:disable:max-line-length */
 export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, scheduler?: IScheduler): Observable<T[]>;

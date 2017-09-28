@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { exhaust as higherOrder } from '../operators';
+import { exhaust as higherOrder } from '../operators/exhaust';
 
 /**
  * Converts a higher-order Observable into a first-order Observable by dropping

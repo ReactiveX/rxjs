@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { IScheduler } from '../Scheduler';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
-import { publishReplay as higherOrder } from '../operators';
+import { publishReplay as higherOrder } from '../operators/publishReplay';
 
 /**
  * @param bufferSize

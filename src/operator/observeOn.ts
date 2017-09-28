@@ -1,6 +1,6 @@
 import { Observable } from '../Observable';
 import { IScheduler } from '../Scheduler';
-import { observeOn as higherOrder } from '../operators';
+import { observeOn as higherOrder } from '../operators/observeOn';
 
 /**
  *
