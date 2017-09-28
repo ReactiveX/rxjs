@@ -228,26 +228,26 @@ describe('Observable.prototype.scan', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-    type('should accept array typed reducers', () => {
-      let a: Rx.Observable<{ a: number; b: string }>;
-      a.scan((acc, value) => acc.concat(value), []);
-    });
+  type('should accept array typed reducers', () => {
+    let a: Rx.Observable<{ a: number; b: string }>;
+    a.reduce((acc, value) => acc.concat(value), []);
+  });
 
-    type('should accept T typed reducers', () => {
-      let a: Rx.Observable<{ a?: number; b?: string }>;
-      a.scan((acc, value) => {
-        acc.a = value.a;
-        acc.b = value.b;
-        return acc;
-      }, {});
-    });
+  type('should accept T typed reducers', () => {
+    let a: Rx.Observable<{ a?: number; b?: string }>;
+    a.reduce((acc, value) => {
+      value.a = acc.a;
+      value.b = acc.b;
+      return acc;
+    }, {});
+  });
 
-    type('should accept R typed reducers', () => {
-      let a: Rx.Observable<{ a: number; b: string }>;
-      a.scan<{ a?: number; b?: string }>((acc, value) => {
-        acc.a = value.a;
-        acc.b = value.b;
-        return acc;
-      }, {});
-    });
+  type('should accept R typed reducers', () => {
+    let a: Rx.Observable<{ a: number; b: string }>;
+    a.reduce<{ a?: number; b?: string }>((acc, value) => {
+      value.a = acc.a;
+      value.b = acc.b;
+      return acc;
+    }, {});
+  });
 });
