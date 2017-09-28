@@ -108,7 +108,7 @@ describe('Observable.prototype.toArray', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  type(() => {
+  type('should infer the element type', () => {
     const typeValue = {
       val: 3
     };

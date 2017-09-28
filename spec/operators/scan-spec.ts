@@ -228,15 +228,15 @@ describe('Observable.prototype.scan', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should accept array types', () => {
-    type(() => {
+  it('', () => {
+    type('should accept array typed reducers', () => {
       let a: Rx.Observable<{ a: number; b: string }>;
       a.scan((acc, value) => acc.concat(value), []);
     });
   });
 
-  it('should accept T types', () => {
-    type(() => {
+  it('', () => {
+    type('should accept T typed reducers', () => {
       let a: Rx.Observable<{ a?: number; b?: string }>;
       a.scan((acc, value) => {
         acc.a = value.a;
@@ -246,8 +246,8 @@ describe('Observable.prototype.scan', () => {
     });
   });
 
-  it('should accept R typed reducers', () => {
-    type(() => {
+  it('', () => {
+    type('should accept R typed reducers', () => {
       let a: Rx.Observable<{ a: number; b: string }>;
       a.scan<{ a?: number; b?: string }>((acc, value) => {
         acc.a = value.a;

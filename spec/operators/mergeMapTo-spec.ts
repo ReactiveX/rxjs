@@ -457,8 +457,8 @@ describe('Observable.prototype.mergeMapTo', () => {
     expect(completed).to.be.true;
   });
 
-  it('should support type signatures', () => {
-    type(() => {
+  it('', () => {
+    type('should support type signatures', () => {
       let o: Rx.Observable<number>;
       let m: Rx.Observable<string>;
 

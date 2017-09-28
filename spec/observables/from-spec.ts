@@ -24,8 +24,8 @@ describe('Observable.from', () => {
     expect(r).to.throw();
   });
 
-  it('should return T for ObservableLike objects', () => {
-    type(() => {
+  it('', () => {
+    type('should return T for ObservableLike objects', () => {
       /* tslint:disable:no-unused-variable */
       let o1: Rx.Observable<number> = Observable.from(<number[]>[], Rx.Scheduler.asap);
       let o2: Rx.Observable<{ a: string }> = Observable.from(Observable.empty<{ a: string }>());
@@ -34,8 +34,8 @@ describe('Observable.from', () => {
     });
   });
 
-  it('should return T for arrays', () => {
-    type(() => {
+  it('', () => {
+    type('should return T for arrays', () => {
       /* tslint:disable:no-unused-variable */
       let o1: Rx.Observable<number> = Observable.from(<number[]>[], Rx.Scheduler.asap);
       /* tslint:enable:no-unused-variable */

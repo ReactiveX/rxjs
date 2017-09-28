@@ -766,8 +766,8 @@ describe('Observable.prototype.mergeMap', () => {
     expect(completed).to.be.true;
   });
 
-  it('should support type signatures', () => {
-    type(() => {
+  it('', () => {
+    type('should support type signatures', () => {
       let o: Rx.Observable<number>;
 
       /* tslint:disable:no-unused-variable */

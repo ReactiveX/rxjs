@@ -293,15 +293,15 @@ describe('Observable.prototype.reduce', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should accept array typed reducers', () => {
-    type(() => {
+  it('', () => {
+    type('should accept array typed reducers', () => {
       let a: Rx.Observable<{ a: number; b: string }>;
       a.reduce((acc, value) => acc.concat(value), []);
     });
   });
 
-  it('should accept T typed reducers', () => {
-    type(() => {
+  it('', () => {
+    type('should accept T typed reducers', () => {
       let a: Rx.Observable<{ a: number; b: string }>;
       const reduced = a.reduce((acc, value) => {
         value.a = acc.a;
@@ -316,8 +316,8 @@ describe('Observable.prototype.reduce', () => {
     });
   });
 
-  it('should accept T typed reducers when T is an array', () => {
-    type(() => {
+  it('', () => {
+    type('should accept T typed reducers when T is an array', () => {
       let a: Rx.Observable<number[]>;
       const reduced = a.reduce((acc, value) => {
         return acc.concat(value);
@@ -329,8 +329,8 @@ describe('Observable.prototype.reduce', () => {
     });
   });
 
-  it('should accept R typed reduces when R is an array of T', () => {
-    type(() => {
+  it('', () => {
+    type('should accept R typed reduces when R is an array of T', () => {
       let a: Rx.Observable<number>;
       const reduced = a.reduce((acc, value) => {
         acc.push(value);
@@ -343,8 +343,8 @@ describe('Observable.prototype.reduce', () => {
     });
   });
 
-  it('should accept R typed reducers when R is assignable to T', () => {
-    type(() => {
+  it('', () => {
+    type('should accept R typed reducers when R is assignable to T', () => {
       let a: Rx.Observable<{ a?: number; b?: string }>;
       const reduced = a.reduce((acc, value) => {
         value.a = acc.a;
@@ -359,8 +359,8 @@ describe('Observable.prototype.reduce', () => {
     });
   });
 
-  it('should accept R typed reducers when R is not assignable to T', () => {
-    type(() => {
+  it('', () => {
+    type('should accept R typed reducers when R is not assignable to T', () => {
       let a: Rx.Observable<{ a: number; b: string }>;
       const seed = {
         as: [1],
@@ -379,8 +379,8 @@ describe('Observable.prototype.reduce', () => {
     });
   });
 
-  it('should accept R typed reducers and reduce to type R', () => {
-    type(() => {
+  it('', () => {
+    type('should accept R typed reducers and reduce to type R', () => {
       let a: Rx.Observable<{ a: number; b: string }>;
       const reduced = a.reduce<{ a?: number; b?: string }>((acc, value) => {
         value.a = acc.a;
@@ -395,8 +395,8 @@ describe('Observable.prototype.reduce', () => {
     });
   });
 
-  it('should accept array of R typed reducers and reduce to array of R', () => {
-    type(() => {
+  it('', () => {
+    type('should accept array of R typed reducers and reduce to array of R', () => {
       let a: Rx.Observable<number>;
       const reduced = a.reduce((acc, cur) => {
         console.log(acc);
