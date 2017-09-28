@@ -16,7 +16,7 @@ const ESM2015_ROOT = ROOT + 'esm2015/';
 const UMD_ROOT = ROOT + 'global/';
 const TYPE_ROOT = ROOT + 'typings/';
 const PKG_ROOT = ROOT + 'package/';
-const CJS_PKG = PKG_ROOT + '_cjs/';
+const CJS_PKG = PKG_ROOT + '';
 const ESM5_PKG = PKG_ROOT + '_esm5/';
 const ESM2015_PKG = PKG_ROOT + '_esm2015/';
 const UMD_PKG = PKG_ROOT + 'bundles/';
@@ -32,16 +32,15 @@ fs.removeSync(PKG_ROOT);
 
 let rootPackageJson = Object.assign({}, pkg, {
   name: 'rxjs',
-  main: './_cjs/Rx.js',
+  main: './Rx.js',
   module: './_esm5/Rx.js',
   es2015: './_esm2015/Rx.js',
   typings: './Rx.d.ts'
 });
 
-// Read the files and create package.json files for each. This allows Node,
-// Webpack, and any other tool to resolve using the "main", "module", or
-// other keys we add to package.json.
-klawSync(CJS_ROOT, {
+// Create an object of key/value pairs resolving the "from" side
+// of an import/require to the file name.
+const importTargets = klawSync(CJS_ROOT, {
   nodir: true,
   filter: function(item) {
     return item.path.endsWith('.js');
@@ -49,36 +48,16 @@ klawSync(CJS_ROOT, {
 })
 .map(item => item.path)
 .map(path => path.slice((`${__dirname}/${CJS_ROOT}`).length))
-.forEach(fileName => {
-  // Get the name of the directory to create
-  let parentDirectory = path.dirname(fileName);
+.reduce((acc, fileName) => {
   // Get the name of the file to be the new directory
-  let directory = fileName.slice(0, fileName.length - 3);
-  let targetFileName = path.basename(directory);
+  const directory = fileName.slice(0, fileName.length - 3);
 
-  fs.ensureDirSync(PKG_ROOT + parentDirectory);
+  acc[directory] = fileName;
+  return acc;
+}, {});
 
-  // For "index.js" files, these are re-exports and need a package.json
-  // in-place rather than in a directory
-  if (targetFileName !== "index") {
-    fs.ensureDirSync(PKG_ROOT + directory);
-    fs.writeJsonSync(PKG_ROOT + directory + '/package.json', {
-      main: path.relative(PKG_ROOT + directory, CJS_PKG + directory) + '.js',
-      module: path.relative(PKG_ROOT + directory, ESM5_PKG + directory) + '.js',
-      es2015: path.relative(PKG_ROOT + directory, ESM2015_PKG + directory) + '.js',
-      typings: path.relative(PKG_ROOT + directory, TYPE_PKG + directory) + '.d.ts'
-    });
-  } else {
-    // If targeting an "index", there is no directory
-    directory = directory.split('/').slice(0, -1).join('/');
-    fs.writeJsonSync(PKG_ROOT + directory + '/package.json', {
-      main: path.relative(PKG_ROOT + directory, CJS_PKG + directory + '/index.js'),
-      module: path.relative(PKG_ROOT + directory, ESM5_PKG + directory + '/index.js'),
-      es2015: path.relative(PKG_ROOT + directory, ESM2015_PKG + directory + '/index.js'),
-      typings: path.relative(PKG_ROOT + directory, TYPE_PKG + directory + '/index.d.ts')
-    });
-  }
-});
+createImportTargets(importTargets, "_esm5/", ESM5_PKG);
+createImportTargets(importTargets, "_esm2015/", ESM2015_PKG);
 
 // Make the distribution folder
 mkdirp.sync(PKG_ROOT);
@@ -116,4 +95,25 @@ function copySources(rootDir, packageDir, ignoreMissing) {
   fs.copySync(rootDir, packageDir);
   fs.copySync('./LICENSE.txt', packageDir + 'LICENSE.txt');
   fs.copySync('./README.md', packageDir + 'README.md');
+}
+
+// Create a file that exports the importTargets object
+function createImportTargets(importTargets, targetName, targetDirectory) {
+  const importMap = {};
+  for (const x in importTargets) {
+    importMap['rxjs/' + x] = 'rxjs/' + targetName + importTargets[x];
+  }
+
+  const outputData =
+`
+"use strict"
+
+var path = require('path');
+
+module.exports = function(PATH_REPLACEMENT) {
+  return ${JSON.stringify(importMap, null, 4).replace(/(: )(".+")(,?)/g, "$1path.resolve(PATH_REPLACEMENT, $2)$3")};
+}
+`
+
+  fs.outputFileSync(targetDirectory + 'path-mapping.js', outputData);
 }
