@@ -409,4 +409,15 @@ describe('Observable.prototype.publishReplay', () => {
 
     published.connect();
   });
+
+  it('should mirror a simple source Observable with selector', () => {
+    const selector = observable => observable.map(v => String.fromCharCode(96 + parseInt(v)));
+    const source = cold('--1-2---3-4---|');
+    const sourceSubs =  '^             !';
+    const published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
+    const expected =    '--a-b---c-d---|';
+
+    expectObservable(published).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
 });
