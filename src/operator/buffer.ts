@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { buffer as higherOrder } from '../operators';
+import { buffer as higherOrder } from '../operators/buffer';
 
 /**
  * Buffers the source Observable values until `closingNotifier` emits.

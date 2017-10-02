@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { bufferCount as higherOrder } from '../operators';
+import { bufferCount as higherOrder } from '../operators/bufferCount';
 
 /**
  * Buffers the source Observable values until the size hits the maximum

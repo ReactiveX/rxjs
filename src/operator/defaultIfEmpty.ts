@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { defaultIfEmpty as higherOrder } from '../operators';
+import { defaultIfEmpty as higherOrder } from '../operators/defaultIfEmpty';
 
 /* tslint:disable:max-line-length */
 export function defaultIfEmpty<T>(this: Observable<T>, defaultValue?: T): Observable<T>;

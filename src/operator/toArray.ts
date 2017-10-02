@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { toArray as higherOrder } from '../operators';
+import { toArray as higherOrder } from '../operators/toArray';
 
 /**
  * @return {Observable<any[]>|WebSocketSubject<T>|Observable<T>}

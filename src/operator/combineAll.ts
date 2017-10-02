@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { combineAll as higherOrder } from '../operators';
+import { combineAll as higherOrder } from '../operators/combineAll';
 
 /**
  * Converts a higher-order Observable into a first-order Observable by waiting

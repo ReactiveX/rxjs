@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { windowCount as higherOrder } from '../operators';
+import { windowCount as higherOrder } from '../operators/windowCount';
 
 /**
  * Branch out the source Observable values as a nested Observable with each

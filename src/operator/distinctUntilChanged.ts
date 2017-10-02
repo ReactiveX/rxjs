@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { distinctUntilChanged as higherOrder } from '../operators';
+import { distinctUntilChanged as higherOrder } from '../operators/distinctUntilChanged';
 
 /* tslint:disable:max-line-length */
 export function distinctUntilChanged<T>(this: Observable<T>, compare?: (x: T, y: T) => boolean): Observable<T>;

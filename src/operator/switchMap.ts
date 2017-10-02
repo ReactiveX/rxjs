@@ -1,6 +1,6 @@
 
 import { Observable, ObservableInput } from '../Observable';
-import { switchMap as higherOrderSwitchMap } from '../operators';
+import { switchMap as higherOrderSwitchMap } from '../operators/switchMap';
 
 /* tslint:disable:max-line-length */
 export function switchMap<T, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<R>): Observable<R>;

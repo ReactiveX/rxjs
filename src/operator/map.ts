@@ -1,4 +1,4 @@
-import { map as higherOrderMap } from '../operators';
+import { map as higherOrderMap } from '../operators/map';
 import { Observable } from '../Observable';
 
 /**

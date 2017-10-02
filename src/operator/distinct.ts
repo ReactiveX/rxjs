@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { distinct as higherOrder } from '../operators';
+import { distinct as higherOrder } from '../operators/distinct';
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items.

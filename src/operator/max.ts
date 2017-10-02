@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { max as higherOrderMax } from '../operators';
+import { max as higherOrderMax } from '../operators/max';
 
 /**
  * The Max operator operates on an Observable that emits numbers (or items that can be compared with a provided function),

@@ -1,7 +1,7 @@
 
 import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
-import { subscribeOn as higherOrder } from '../operators';
+import { subscribeOn as higherOrder } from '../operators/subscribeOn';
 
 /**
  * Asynchronously subscribes Observers to this Observable on the specified IScheduler.

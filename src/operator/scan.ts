@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { scan as higherOrderScan } from '../operators';
+import { scan as higherOrderScan } from '../operators/scan';
 
 /* tslint:disable:max-line-length */
 export function scan<T>(this: Observable<T>, accumulator: (acc: T, value: T, index: number) => T, seed?: T): Observable<T>;

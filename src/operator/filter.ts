@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { filter as higherOrderFilter } from '../operators';
+import { filter as higherOrderFilter } from '../operators/filter';
 
 /* tslint:disable:max-line-length */
 export function filter<T, S extends T>(this: Observable<T>,

@@ -1,7 +1,7 @@
 
 import { Observable } from '../Observable';
 import { Notification } from '../Notification';
-import { materialize as higherOrder } from '../operators';
+import { materialize as higherOrder } from '../operators/materialize';
 
 /**
  * Represents all of the notifications from the source Observable as `next`
