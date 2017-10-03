@@ -3,11 +3,12 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { ConnectableObservable, connectableObservableDescriptor } from '../observable/ConnectableObservable';
-import { FactoryOrValue, MonoTypeOperatorFunction } from '../interfaces';
+import { FactoryOrValue, MonoTypeOperatorFunction, OperatorFunction } from '../interfaces';
 
 /* tslint:disable:max-line-length */
 export function multicast<T>(subjectOrSubjectFactory: FactoryOrValue<Subject<T>>): MonoTypeOperatorFunction<T>;
 export function multicast<T>(SubjectFactory: (this: Observable<T>) => Subject<T>, selector?: MonoTypeOperatorFunction<T>): MonoTypeOperatorFunction<T>;
+export function multicast<T, R>(SubjectFactory: (this: Observable<T>) => Subject<T>, selector?: OperatorFunction<T, R>): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -29,9 +30,9 @@ export function multicast<T>(SubjectFactory: (this: Observable<T>) => Subject<T>
  * @method multicast
  * @owner Observable
  */
-export function multicast<T>(subjectOrSubjectFactory: Subject<T> | (() => Subject<T>),
-                             selector?: (source: Observable<T>) => Observable<T>): MonoTypeOperatorFunction<T> {
-  return function multicastOperatorFunction(source: Observable<T>): Observable<T> {
+export function multicast<T, R>(subjectOrSubjectFactory: Subject<T> | (() => Subject<T>),
+                                selector?: (source: Observable<T>) => Observable<R>): OperatorFunction<T, R> {
+  return function multicastOperatorFunction(source: Observable<T>): Observable<R> {
     let subjectFactory: () => Subject<T>;
     if (typeof subjectOrSubjectFactory === 'function') {
       subjectFactory = <() => Subject<T>>subjectOrSubjectFactory;
@@ -49,15 +50,15 @@ export function multicast<T>(subjectOrSubjectFactory: Subject<T> | (() => Subjec
     connectable.source = source;
     connectable.subjectFactory = subjectFactory;
 
-    return <ConnectableObservable<T>> connectable;
+    return <ConnectableObservable<R>> connectable;
   };
 }
 
-export class MulticastOperator<T> implements Operator<T, T> {
+export class MulticastOperator<T, R> implements Operator<T, R> {
   constructor(private subjectFactory: () => Subject<T>,
-              private selector: (source: Observable<T>) => Observable<T>) {
+              private selector: (source: Observable<T>) => Observable<R>) {
   }
-  call(subscriber: Subscriber<T>, source: any): any {
+  call(subscriber: Subscriber<R>, source: any): any {
     const { selector } = this;
     const subject = this.subjectFactory();
     const subscription = selector(subject).subscribe(subscriber);
