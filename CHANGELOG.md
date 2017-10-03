@@ -1,3 +1,15 @@
+<a name="5.5.0-beta.3"></a>
+# [5.5.0-beta.3](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.2...v5.5.0-beta.3) (2017-10-03)
+
+
+### Bug Fixes
+
+* **build:** revert to 5.4.x build output for CJS & add configurable support for ESM ([#2878](https://github.com/ReactiveX/RxJS/issues/2878)) ([167456a](https://github.com/ReactiveX/RxJS/commit/167456a))
+* **concatAll:** use higher-order lettable version of concatAll ([60c96ab](https://github.com/ReactiveX/RxJS/commit/60c96ab))
+* **mergeAll:** use higher-order lettable version of mergeAll ([f0b703b](https://github.com/ReactiveX/RxJS/commit/f0b703b))
+
+
+
 <a name="5.5.0-beta.2"></a>
 # [5.5.0-beta.2](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.1...v5.5.0-beta.2) (2017-09-27)
 
