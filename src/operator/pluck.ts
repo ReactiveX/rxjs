@@ -27,7 +27,9 @@ import { map } from './map';
  * @method pluck
  * @owner Observable
  */
-export function pluck<T, R>(this: Observable<T>, ...properties: string[]): Observable<R> {
+export function pluck<T, R extends keyof T>(this: Observable<T>, property: R): Observable<T[R]>;
+export function pluck<T, R>(this: Observable<T>, ...properties: string[]): Observable<R>;
+export function pluck<T, R, U extends keyof T>(this: Observable<T>, ...properties: string[]): Observable<T[U] | R> {
   const length = properties.length;
   if (length === 0) {
     throw new Error('list of properties cannot be empty.');
