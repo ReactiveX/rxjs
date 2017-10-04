@@ -76,7 +76,7 @@ describe('Observable.fromPromise', () => {
     class CustomPromise<T> implements PromiseLike<T> {
       constructor(private promise: PromiseLike<T>) {
       }
-      then(onFulfilled?, onRejected?): PromiseLike<T> {
+      then(onFulfilled?, onRejected?) {
         return new CustomPromise(this.promise.then(onFulfilled, onRejected));
       }
     }
