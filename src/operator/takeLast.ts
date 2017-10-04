@@ -39,5 +39,5 @@ import { takeLast as higherOrderTakeLast } from '../operators/takeLast';
  * @owner Observable
  */
 export function takeLast<T>(this: Observable<T>, count: number): Observable<T> {
-  return higherOrderTakeLast(count)(this);
+  return higherOrderTakeLast(count)(this) as Observable<T>;
 }

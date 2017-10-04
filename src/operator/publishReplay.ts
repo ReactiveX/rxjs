@@ -14,5 +14,5 @@ import { publishReplay as higherOrder } from '../operators/publishReplay';
 export function publishReplay<T>(this: Observable<T>, bufferSize: number = Number.POSITIVE_INFINITY,
                                  windowTime: number = Number.POSITIVE_INFINITY,
                                  scheduler?: IScheduler): ConnectableObservable<T> {
-  return higherOrder(bufferSize, windowTime, scheduler)(this);
+  return higherOrder(bufferSize, windowTime, scheduler)(this) as ConnectableObservable<T>;
 }

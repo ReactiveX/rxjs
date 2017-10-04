@@ -50,7 +50,7 @@ export class ConnectableObservable<T> extends Observable<T> {
   }
 
   refCount(): Observable<T> {
-    return higherOrderRefCount()(this);
+    return higherOrderRefCount()(this) as Observable<T>;
   }
 }
 

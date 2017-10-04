@@ -11,5 +11,5 @@ import { finalize } from '../operators/finalize';
  * @owner Observable
  */
 export function _finally<T>(this: Observable<T>, callback: () => void): Observable<T> {
-  return finalize(callback)(this);
+  return finalize(callback)(this) as Observable<T>;
 }

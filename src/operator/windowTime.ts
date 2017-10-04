@@ -98,5 +98,5 @@ export function windowTime<T>(this: Observable<T>,
     windowCreationInterval = arguments[1];
   }
 
-  return higherOrder(windowTimeSpan, windowCreationInterval, maxWindowSize, scheduler)(this);
+  return higherOrder(windowTimeSpan, windowCreationInterval, maxWindowSize, scheduler)(this) as Observable<Observable<T>>;
 }

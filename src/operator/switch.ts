@@ -44,5 +44,5 @@ import { switchAll as higherOrder } from '../operators/switchAll';
  * @owner Observable
  */
 export function _switch<T>(this: Observable<Observable<T>>): Observable<T> {
-  return higherOrder()(this);
+  return higherOrder()(this) as Observable<T>;
 }

@@ -39,9 +39,7 @@ export function defaultIfEmpty<T, R>(defaultValue?: R): OperatorFunction<T, T | 
  * @owner Observable
  */
 export function defaultIfEmpty<T, R>(defaultValue: R = null): OperatorFunction<T, T | R> {
-  return function defaultIfEmptyOperatorFunction(source: Observable<T>) {
-    return source.lift(new DefaultIfEmptyOperator(defaultValue));
-  };
+  return (source: Observable<T>) => source.lift(new DefaultIfEmptyOperator(defaultValue)) as Observable<T | R>;
 }
 
 class DefaultIfEmptyOperator<T, R> implements Operator<T, T | R> {

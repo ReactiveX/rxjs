@@ -47,7 +47,7 @@ export function scan<T, R>(this: Observable<T>, accumulator: (acc: R, value: T, 
  */
 export function scan<T, R>(this: Observable<T>, accumulator: (acc: R, value: T, index: number) => R, seed?: T | R): Observable<R> {
   if (arguments.length >= 2) {
-    return higherOrderScan(accumulator, seed)(this);
+    return higherOrderScan(accumulator, seed)(this) as Observable<R>;
   }
   return higherOrderScan(accumulator)(this);
 }

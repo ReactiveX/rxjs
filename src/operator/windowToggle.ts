@@ -45,5 +45,5 @@ import { windowToggle as higherOrder } from '../operators/windowToggle';
  */
 export function windowToggle<T, O>(this: Observable<T>, openings: Observable<O>,
                                    closingSelector: (openValue: O) => Observable<any>): Observable<Observable<T>> {
-  return higherOrder(openings, closingSelector)(this);
+  return higherOrder(openings, closingSelector)(this) as Observable<Observable<T>>;
 }

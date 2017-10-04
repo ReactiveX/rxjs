@@ -35,5 +35,5 @@ import { take as higherOrder } from '../operators/take';
  * @owner Observable
  */
 export function take<T>(this: Observable<T>, count: number): Observable<T> {
-  return higherOrder(count)(this);
+  return higherOrder(count)(this) as Observable<T>;
 }

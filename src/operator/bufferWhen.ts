@@ -36,5 +36,5 @@ import { bufferWhen as higherOrder } from '../operators/bufferWhen';
  * @owner Observable
  */
 export function bufferWhen<T>(this: Observable<T>, closingSelector: () => Observable<any>): Observable<T[]> {
-  return higherOrder(closingSelector)(this);
+  return higherOrder(closingSelector)(this) as Observable<T[]>;
 }

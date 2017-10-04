@@ -10,5 +10,5 @@ import { Timestamp } from '../operators/timestamp';
  * @owner Observable
  */
 export function timestamp<T>(this: Observable<T>, scheduler: IScheduler = async): Observable<Timestamp<T>> {
-  return higherOrder(scheduler)(this);
+  return higherOrder(scheduler)(this) as Observable<Timestamp<T>>;
 }

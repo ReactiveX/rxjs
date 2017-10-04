@@ -15,5 +15,5 @@ import { retryWhen as higherOrder } from '../operators/retryWhen';
  * @owner Observable
  */
 export function retryWhen<T>(this: Observable<T>, notifier: (errors: Observable<any>) => Observable<any>): Observable<T> {
-  return higherOrder(notifier)(this);
+  return higherOrder(notifier)(this) as Observable<T>;
 }

@@ -51,5 +51,5 @@ import { debounceTime as higherOrder } from '../operators/debounceTime';
  * @owner Observable
  */
 export function debounceTime<T>(this: Observable<T>, dueTime: number, scheduler: IScheduler = async): Observable<T> {
-  return higherOrder(dueTime, scheduler)(this);
+  return higherOrder(dueTime, scheduler)(this) as Observable<T>;
 }

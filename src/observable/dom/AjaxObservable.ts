@@ -255,7 +255,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       // timeout, responseType and withCredentials can be set once the XHR is open
       if (async) {
         xhr.timeout = request.timeout;
-        xhr.responseType = request.responseType;
+        xhr.responseType = request.responseType as any;
       }
 
       if ('withCredentials' in xhr) {

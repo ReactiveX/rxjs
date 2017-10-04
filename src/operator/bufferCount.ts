@@ -44,5 +44,5 @@ import { bufferCount as higherOrder } from '../operators/bufferCount';
  * @owner Observable
  */
 export function bufferCount<T>(this: Observable<T>, bufferSize: number, startBufferEvery: number = null): Observable<T[]> {
-  return higherOrder(bufferSize, startBufferEvery)(this);
+  return higherOrder(bufferSize, startBufferEvery)(this) as Observable<T[]>;
 }

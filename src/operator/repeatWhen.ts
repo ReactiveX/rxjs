@@ -16,5 +16,5 @@ import { repeatWhen as higherOrder } from '../operators/repeatWhen';
  * @owner Observable
  */
 export function repeatWhen<T>(this: Observable<T>, notifier: (notifications: Observable<any>) => Observable<any>): Observable<T> {
-  return higherOrder(notifier)(this);
+  return higherOrder(notifier)(this) as Observable<T>;
 }

@@ -46,5 +46,5 @@ import { auditTime as higherOrder } from '../operators/auditTime';
  * @owner Observable
  */
 export function auditTime<T>(this: Observable<T>, duration: number, scheduler: IScheduler = async): Observable<T> {
-  return higherOrder(duration, scheduler)(this);
+  return higherOrder(duration, scheduler)(this) as Observable<T>;
 }

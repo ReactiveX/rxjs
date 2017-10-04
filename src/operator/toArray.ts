@@ -8,5 +8,5 @@ import { toArray as higherOrder } from '../operators/toArray';
  * @owner Observable
  */
 export function toArray<T>(this: Observable<T>): Observable<T[]> {
-  return higherOrder()(this);
+  return higherOrder()(this) as Observable<T[]>;
 }

@@ -44,5 +44,5 @@ import { dematerialize as higherOrder } from '../operators/dematerialize';
  * @owner Observable
  */
 export function dematerialize<T>(this: Observable<Notification<T>>): Observable<T> {
-  return higherOrder()(this);
+  return higherOrder()(this) as Observable<T>;
 }
