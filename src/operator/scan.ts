@@ -3,8 +3,6 @@ import { Observable } from '../Observable';
 import { scan as higherOrderScan } from '../operators/scan';
 
 /* tslint:disable:max-line-length */
-export function scan<T>(this: Observable<T>, accumulator: (acc: T, value: T, index: number) => T, seed?: T): Observable<T>;
-export function scan<T>(this: Observable<T>, accumulator: (acc: T[], value: T, index: number) => T[], seed?: T[]): Observable<T[]>;
 export function scan<T, R>(this: Observable<T>, accumulator: (acc: R, value: T, index: number) => R, seed?: R): Observable<R>;
 /* tslint:enable:max-line-length */
 
