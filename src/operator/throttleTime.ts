@@ -47,5 +47,5 @@ export function throttleTime<T>(this: Observable<T>,
                                 duration: number,
                                 scheduler: IScheduler = async,
                                 config: ThrottleConfig = defaultThrottleConfig): Observable<T> {
-  return higherOrder(duration, scheduler, config)(this);
+  return higherOrder(duration, scheduler, config)(this) as Observable<T>;
 }

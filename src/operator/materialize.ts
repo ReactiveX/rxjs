@@ -48,5 +48,5 @@ import { materialize as higherOrder } from '../operators/materialize';
  * @owner Observable
  */
 export function materialize<T>(this: Observable<T>): Observable<Notification<T>> {
-  return higherOrder()(this);
+  return higherOrder()(this) as Observable<Notification<T>>;
 }

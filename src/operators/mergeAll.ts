@@ -1,4 +1,5 @@
 
+import { ObservableInput } from '../Observable';
 import { mergeMap } from './mergeMap';
 import { identity } from '../util/identity';
 import { MonoTypeOperatorFunction } from '../interfaces';
@@ -48,5 +49,5 @@ import { MonoTypeOperatorFunction } from '../interfaces';
  * @owner Observable
  */
 export function mergeAll<T>(concurrent: number = Number.POSITIVE_INFINITY): MonoTypeOperatorFunction<T> {
-  return mergeMap(identity, null, concurrent);
+  return mergeMap(identity as (value: T, index: number) => ObservableInput<{}>, null, concurrent);
 }

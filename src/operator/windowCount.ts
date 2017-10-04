@@ -52,5 +52,5 @@ import { windowCount as higherOrder } from '../operators/windowCount';
  */
 export function windowCount<T>(this: Observable<T>, windowSize: number,
                                startWindowEvery: number = 0): Observable<Observable<T>> {
-  return higherOrder(windowSize, startWindowEvery)(this);
+  return higherOrder(windowSize, startWindowEvery)(this) as Observable<Observable<T>>;
 }

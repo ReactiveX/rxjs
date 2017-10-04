@@ -72,5 +72,5 @@ export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number): Obse
     maxBufferSize = arguments[2];
   }
 
-  return higherOrder(bufferTimeSpan, bufferCreationInterval, maxBufferSize, scheduler)(this);
+  return higherOrder(bufferTimeSpan, bufferCreationInterval, maxBufferSize, scheduler)(this) as Observable<T[]>;
 }

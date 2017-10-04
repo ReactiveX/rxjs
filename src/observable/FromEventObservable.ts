@@ -101,13 +101,13 @@ export class FromEventObservable<T> extends Observable<T> {
    */
   static create<T>(target: EventTargetLike,
                    eventName: string,
-                   options?: EventListenerOptions,
+                   options?: EventListenerOptions | SelectorMethodSignature<T>,
                    selector?: SelectorMethodSignature<T>): Observable<T> {
     if (isFunction(options)) {
       selector = <any>options;
       options = undefined;
     }
-    return new FromEventObservable(target, eventName, selector, options);
+    return new FromEventObservable(target, eventName, selector, options as EventListenerOptions | undefined);
   }
 
   constructor(private sourceObj: EventTargetLike,

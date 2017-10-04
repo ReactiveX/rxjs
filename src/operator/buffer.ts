@@ -35,5 +35,5 @@ import { buffer as higherOrder } from '../operators/buffer';
  * @owner Observable
  */
 export function buffer<T>(this: Observable<T>, closingNotifier: Observable<any>): Observable<T[]> {
-  return higherOrder(closingNotifier)(this);
+  return higherOrder(closingNotifier)(this) as Observable<T[]>;
 }

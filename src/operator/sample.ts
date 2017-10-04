@@ -36,5 +36,5 @@ import { sample as higherOrder } from '../operators/sample';
  * @owner Observable
  */
 export function sample<T>(this: Observable<T>, notifier: Observable<any>): Observable<T> {
-  return higherOrder(notifier)(this);
+  return higherOrder(notifier)(this) as Observable<T>;
 }

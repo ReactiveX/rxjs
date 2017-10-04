@@ -68,5 +68,5 @@ export function merge<T, R>(this: Observable<T>, ...observables: Array<Observabl
  * @owner Observable
  */
 export function merge<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> | IScheduler | number>): Observable<R> {
-  return higherOrder(...observables)(this);
+  return higherOrder(...observables)(this) as Observable<R>;
 }

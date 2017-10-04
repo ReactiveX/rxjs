@@ -49,6 +49,6 @@ export function mergeAll<T, R>(this: Observable<T>, concurrent?: number): Subscr
  * @method mergeAll
  * @owner Observable
  */
-export function mergeAll<T>(this: Observable<T>, concurrent: number = Number.POSITIVE_INFINITY): T {
-  return <any>higherOrder(concurrent)(this);
+export function mergeAll<T>(this: Observable<T>, concurrent: number = Number.POSITIVE_INFINITY): Observable<T> {
+  return higherOrder(concurrent)(this) as Observable<T>;
 }

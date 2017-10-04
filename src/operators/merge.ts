@@ -119,5 +119,5 @@ export function mergeStatic<T, R>(...observables: Array<ObservableInput<any> | I
     return <Observable<R>>observables[0];
   }
 
-  return mergeAll(concurrent)(new ArrayObservable(<any>observables, scheduler));
+  return mergeAll(concurrent)(new ArrayObservable(<any>observables, scheduler)) as Observable<R>;
 }

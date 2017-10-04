@@ -37,5 +37,5 @@ import { pairwise as higherOrder } from '../operators/pairwise';
  * @owner Observable
  */
 export function pairwise<T>(this: Observable<T>): Observable<[T, T]> {
-  return higherOrder()(this);
+  return higherOrder()(this) as Observable<[T, T]>;
 }

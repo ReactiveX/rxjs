@@ -179,7 +179,7 @@ export class GenerateObservable<T, S> extends Observable<T> {
         (<GenerateOptions<T, S>>initialStateOrOptions).initialState,
         (<GenerateOptions<T, S>>initialStateOrOptions).condition,
         (<GenerateOptions<T, S>>initialStateOrOptions).iterate,
-        (<GenerateOptions<T, S>>initialStateOrOptions).resultSelector || selfSelector,
+        (<GenerateOptions<T, S>>initialStateOrOptions).resultSelector || selfSelector as ResultFunc<S, T>,
         (<GenerateOptions<T, S>>initialStateOrOptions).scheduler);
     }
 
@@ -188,7 +188,7 @@ export class GenerateObservable<T, S> extends Observable<T> {
         <S>initialStateOrOptions,
         condition,
         iterate,
-        selfSelector,
+        selfSelector as ResultFunc<S, T>,
         <IScheduler>resultSelectorOrObservable);
     }
 

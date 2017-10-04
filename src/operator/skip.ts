@@ -13,5 +13,5 @@ import { skip as higherOrder } from '../operators/skip';
  * @owner Observable
  */
 export function skip<T>(this: Observable<T>, count: number): Observable<T> {
-  return higherOrder(count)(this);
+  return higherOrder(count)(this) as Observable<T>;
 }

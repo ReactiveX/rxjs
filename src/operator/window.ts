@@ -39,5 +39,5 @@ import { window as higherOrder } from '../operators/window';
  * @owner Observable
  */
 export function window<T>(this: Observable<T>, windowBoundaries: Observable<any>): Observable<Observable<T>> {
-  return higherOrder(windowBoundaries)(this);
+  return higherOrder(windowBoundaries)(this) as Observable<Observable<T>>;
 }

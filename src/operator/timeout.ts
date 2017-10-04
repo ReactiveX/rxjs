@@ -71,5 +71,5 @@ import { timeout as higherOrder } from '../operators/timeout';
 export function timeout<T>(this: Observable<T>,
                            due: number | Date,
                            scheduler: IScheduler = async): Observable<T> {
-  return higherOrder(due, scheduler)(this);
+  return higherOrder(due, scheduler)(this) as Observable<T>;
 }

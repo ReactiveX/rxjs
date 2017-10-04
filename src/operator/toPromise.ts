@@ -56,5 +56,5 @@ export function toPromise<T>(this: Observable<T>, PromiseCtor: typeof Promise): 
  * @owner Observable
  */
 export function toPromise<T>(this: Observable<T>, PromiseCtor?: typeof Promise): Promise<T> {
-  return higherOrder(PromiseCtor)(this);
+  return higherOrder(PromiseCtor)(this) as Promise<T>;
 }

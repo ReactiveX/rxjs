@@ -54,5 +54,5 @@ export function _do<T>(this: Observable<T>, observer: PartialObserver<T>): Obser
 export function _do<T>(this: Observable<T>, nextOrObserver?: PartialObserver<T> | ((x: T) => void),
                        error?: (e: any) => void,
                        complete?: () => void): Observable<T> {
-  return higherOrder(<any>nextOrObserver, error, complete)(this);
+  return higherOrder(<any>nextOrObserver, error, complete)(this) as Observable<T>;
 }

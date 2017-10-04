@@ -41,5 +41,5 @@ import { windowWhen as higherOrder } from '../operators/windowWhen';
  * @owner Observable
  */
 export function windowWhen<T>(this: Observable<T>, closingSelector: () => Observable<any>): Observable<Observable<T>> {
-  return higherOrder(closingSelector)(this);
+  return higherOrder(closingSelector)(this) as Observable<Observable<T>>;
 }

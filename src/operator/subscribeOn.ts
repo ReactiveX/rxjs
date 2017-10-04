@@ -15,5 +15,5 @@ import { subscribeOn as higherOrder } from '../operators/subscribeOn';
  * @owner Observable
  */
 export function subscribeOn<T>(this: Observable<T>, scheduler: IScheduler, delay: number = 0): Observable<T> {
-  return higherOrder(scheduler, delay)(this);
+  return higherOrder(scheduler, delay)(this) as Observable<T>;
 }

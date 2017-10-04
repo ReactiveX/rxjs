@@ -12,5 +12,5 @@ import { ignoreElements as higherOrder } from '../operators/ignoreElements';
  * @owner Observable
  */
 export function ignoreElements<T>(this: Observable<T>): Observable<T> {
-  return higherOrder()(this);
+  return higherOrder()(this) as Observable<T>;
 };

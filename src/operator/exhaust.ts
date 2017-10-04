@@ -38,5 +38,5 @@ import { exhaust as higherOrder } from '../operators/exhaust';
  * @owner Observable
  */
 export function exhaust<T>(this: Observable<T>): Observable<T> {
-  return higherOrder()(this);
+  return higherOrder()(this) as Observable<T>;
 }

@@ -15,5 +15,5 @@ import { repeat as higherOrder } from '../operators/repeat';
  * @owner Observable
  */
 export function repeat<T>(this: Observable<T>, count: number = -1): Observable<T> {
-  return higherOrder(count)(this);
+  return higherOrder(count)(this) as Observable<T>;
 }
