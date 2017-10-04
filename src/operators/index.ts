@@ -75,7 +75,13 @@ export { skipLast } from './skipLast';
 export { skipUntil } from './skipUntil';
 export { skipWhile } from './skipWhile';
 export { startWith } from './startWith';
-export { subscribeOn } from './subscribeOn';
+/**
+ * TODO(jasonaden): Add back subscribeOn once it can be
+ * treeshaken. Currently if this export is added back, it
+ * forces apps to bring in asap scheduler along with
+ * Immediate, root, and other supporting code.
+ */
+// export { subscribeOn } from './subscribeOn';
 export { switchAll } from './switchAll';
 export { switchMap } from './switchMap';
 export { switchMapTo } from './switchMapTo';
