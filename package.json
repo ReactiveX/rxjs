@@ -87,7 +87,7 @@
     "compile_dist_esm2015": "tsc ./dist/src/Rx.ts ./dist/src/add/observable/of.ts -m es2015   --lib es5,es2015.iterable,es2015.collection,es2015.promise,dom --sourceMap --outDir ./dist/esm2015 --target es2015 --diagnostics --pretty --noImplicitAny --noImplicitReturns --noImplicitThis --suppressImplicitAnyIndexErrors --moduleResolution node",
     "compile_dist_esm2015_for_docs": "tsc ./dist/src/Rx.ts ./dist/src/add/observable/of.ts ./dist/src/MiscJSDoc.ts -m es2015   --sourceMap --outDir ./dist/es6 --target es2015 -d --diagnostics --pretty --noImplicitAny --noImplicitReturns --noImplicitThis --suppressImplicitAnyIndexErrors --moduleResolution node",
     "compile_dist_esm5_for_rollup": "tsc  ./dist/src/Rx.ts ./dist/src/add/observable/of.ts -m es2015   --lib es5,es2015.iterable,es2015.collection,es2015.promise,dom --sourceMap --outDir ./dist/esm5_for_rollup  --target ES5    --diagnostics --pretty --noImplicitAny --noImplicitReturns --noImplicitThis --suppressImplicitAnyIndexErrors --moduleResolution node --noEmitHelpers",
-    "copy_sources": "mkdir -p dist && rsync -a ./src/ ./dist/src",
+    "copy_sources": "mkdirp dist && shx cp -r ./src/ ./dist/src",
     "cover": "shx rm -rf dist/cjs && tsc dist/src/Rx.ts dist/src/add/observable/of.ts -m commonjs --lib es5,es2015.iterable,es2015.collection,es2015.promise,dom --outDir dist/cjs --sourceMap --target ES5 -d && nyc --reporter=lcov --reporter=html --exclude=spec/support/**/* --exclude=spec-js/**/* --exclude=node_modules mocha --opts spec/support/default.opts spec-js",
     "decision_tree_widget": "cd doc/decision-tree-widget && npm run build && cd ../..",
     "doctoc": "doctoc CONTRIBUTING.md",
