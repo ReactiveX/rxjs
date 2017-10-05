@@ -5,7 +5,8 @@ import { publish as higherOrder } from '../operators/publish';
 
 /* tslint:disable:max-line-length */
 export function publish<T>(this: Observable<T>): ConnectableObservable<T>;
-export function publish<T>(this: Observable<T>, selector: selector<T>): Observable<T>;
+export function publish<T>(this: Observable<T>, selector: (source: Observable<T>) => Observable<T>): Observable<T>;
+export function publish<T, R>(this: Observable<T>, selector: (source: Observable<T>) => Observable<R>): Observable<R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -21,7 +22,7 @@ export function publish<T>(this: Observable<T>, selector: selector<T>): Observab
  * @method publish
  * @owner Observable
  */
-export function publish<T>(this: Observable<T>, selector?: (source: Observable<T>) => Observable<T>): Observable<T> | ConnectableObservable<T> {
+export function publish<T, R>(this: Observable<T>, selector?: (source: Observable<T>) => Observable<R>): Observable<R> | ConnectableObservable<R> {
   return higherOrder(selector)(this);
 }
 
