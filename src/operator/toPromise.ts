@@ -4,6 +4,7 @@ import { toPromise as higherOrder } from '../operators/toPromise';
 /* tslint:disable:max-line-length */
 export function toPromise<T>(this: Observable<T>): Promise<T>;
 export function toPromise<T>(this: Observable<T>, PromiseCtor: typeof Promise): Promise<T>;
+export function toPromise<T>(this: Observable<T>, PromiseCtor: PromiseConstructorLike): Promise<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -55,6 +56,6 @@ export function toPromise<T>(this: Observable<T>, PromiseCtor: typeof Promise): 
  * @method toPromise
  * @owner Observable
  */
-export function toPromise<T>(this: Observable<T>, PromiseCtor?: typeof Promise): Promise<T> {
+export function toPromise<T>(this: Observable<T>, PromiseCtor?: PromiseConstructorLike): Promise<T> {
   return higherOrder(PromiseCtor)(this) as Promise<T>;
 }

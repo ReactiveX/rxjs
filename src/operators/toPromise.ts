@@ -5,6 +5,7 @@ import { UnaryFunction } from '../interfaces';
 /* tslint:disable:max-line-length */
 export function toPromise<T>(): UnaryFunction<Observable<T>, Promise<T>>;
 export function toPromise<T>(PromiseCtor: typeof Promise): UnaryFunction<Observable<T>, Promise<T>>;
+export function toPromise<T>(PromiseCtor: PromiseConstructorLike): UnaryFunction<Observable<T>, Promise<T>>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -56,7 +57,7 @@ export function toPromise<T>(PromiseCtor: typeof Promise): UnaryFunction<Observa
  * @method toPromise
  * @owner Observable
  */
-export function toPromise<T>(PromiseCtor?: typeof Promise): UnaryFunction<Observable<T>, Promise<T>> {
+export function toPromise<T>(PromiseCtor?: PromiseConstructorLike): UnaryFunction<Observable<T>, Promise<T>> {
   return (source: Observable<T>) => {
     if (!PromiseCtor) {
       if (root.Rx && root.Rx.config && root.Rx.config.Promise) {
@@ -73,6 +74,6 @@ export function toPromise<T>(PromiseCtor?: typeof Promise): UnaryFunction<Observ
     return new PromiseCtor((resolve, reject) => {
       let value: any;
       source.subscribe((x: T) => value = x, (err: any) => reject(err), () => resolve(value));
-    });
+    }) as Promise<T>;
   };
 }
