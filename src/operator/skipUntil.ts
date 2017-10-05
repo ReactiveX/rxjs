@@ -14,5 +14,5 @@ import { skipUntil as higherOrder } from '../operators/skipUntil';
  * @owner Observable
  */
 export function skipUntil<T>(this: Observable<T>, notifier: Observable<any>): Observable<T> {
-  return higherOrder(notifier)(this);
+  return higherOrder(notifier)(this) as Observable<T>;
 }

@@ -1,6 +1,6 @@
 
 import { Observable, ObservableInput } from '../Observable';
-import { exhaustMap as higherOrder } from '../operators';
+import { exhaustMap as higherOrder } from '../operators/exhaustMap';
 
 /* tslint:disable:max-line-length */
 export function exhaustMap<T, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<R>): Observable<R>;

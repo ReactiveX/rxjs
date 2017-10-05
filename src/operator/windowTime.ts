@@ -3,7 +3,7 @@ import { async } from '../scheduler/async';
 import { Observable } from '../Observable';
 import { isNumeric } from '../util/isNumeric';
 import { isScheduler } from '../util/isScheduler';
-import { windowTime as higherOrder } from '../operators';
+import { windowTime as higherOrder } from '../operators/windowTime';
 
 /**
  * Branch out the source Observable values as a nested Observable periodically
@@ -98,5 +98,5 @@ export function windowTime<T>(this: Observable<T>,
     windowCreationInterval = arguments[1];
   }
 
-  return higherOrder(windowTimeSpan, windowCreationInterval, maxWindowSize, scheduler)(this);
+  return higherOrder(windowTimeSpan, windowCreationInterval, maxWindowSize, scheduler)(this) as Observable<Observable<T>>;
 }

@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { windowWhen as higherOrder } from '../operators';
+import { windowWhen as higherOrder } from '../operators/windowWhen';
 
 /**
  * Branch out the source Observable values as a nested Observable using a
@@ -41,5 +41,5 @@ import { windowWhen as higherOrder } from '../operators';
  * @owner Observable
  */
 export function windowWhen<T>(this: Observable<T>, closingSelector: () => Observable<any>): Observable<Observable<T>> {
-  return higherOrder(closingSelector)(this);
+  return higherOrder(closingSelector)(this) as Observable<Observable<T>>;
 }

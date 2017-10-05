@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { finalize } from '../operators';
+import { finalize } from '../operators/finalize';
 
 /**
  * Returns an Observable that mirrors the source Observable, but will call a specified function when
@@ -11,5 +11,5 @@ import { finalize } from '../operators';
  * @owner Observable
  */
 export function _finally<T>(this: Observable<T>, callback: () => void): Observable<T> {
-  return finalize(callback)(this);
+  return finalize(callback)(this) as Observable<T>;
 }

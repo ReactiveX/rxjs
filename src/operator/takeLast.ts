@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { takeLast as higherOrderTakeLast } from '../operators';
+import { takeLast as higherOrderTakeLast } from '../operators/takeLast';
 
 /**
  * Emits only the last `count` values emitted by the source Observable.
@@ -39,5 +39,5 @@ import { takeLast as higherOrderTakeLast } from '../operators';
  * @owner Observable
  */
 export function takeLast<T>(this: Observable<T>, count: number): Observable<T> {
-  return higherOrderTakeLast(count)(this);
+  return higherOrderTakeLast(count)(this) as Observable<T>;
 }

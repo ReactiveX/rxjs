@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { bufferWhen as higherOrder } from '../operators';
+import { bufferWhen as higherOrder } from '../operators/bufferWhen';
 
 /**
  * Buffers the source Observable values, using a factory function of closing
@@ -36,5 +36,5 @@ import { bufferWhen as higherOrder } from '../operators';
  * @owner Observable
  */
 export function bufferWhen<T>(this: Observable<T>, closingSelector: () => Observable<any>): Observable<T[]> {
-  return higherOrder(closingSelector)(this);
+  return higherOrder(closingSelector)(this) as Observable<T[]>;
 }

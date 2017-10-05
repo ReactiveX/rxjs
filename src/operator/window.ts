@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { window as higherOrder } from '../operators';
+import { window as higherOrder } from '../operators/window';
 
 /**
  * Branch out the source Observable values as a nested Observable whenever
@@ -39,5 +39,5 @@ import { window as higherOrder } from '../operators';
  * @owner Observable
  */
 export function window<T>(this: Observable<T>, windowBoundaries: Observable<any>): Observable<Observable<T>> {
-  return higherOrder(windowBoundaries)(this);
+  return higherOrder(windowBoundaries)(this) as Observable<Observable<T>>;
 }

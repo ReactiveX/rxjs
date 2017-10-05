@@ -1,7 +1,7 @@
 
 import { Observable } from '../Observable';
 import { Notification } from '../Notification';
-import { dematerialize as higherOrder } from '../operators';
+import { dematerialize as higherOrder } from '../operators/dematerialize';
 
 /**
  * Converts an Observable of {@link Notification} objects into the emissions
@@ -44,5 +44,5 @@ import { dematerialize as higherOrder } from '../operators';
  * @owner Observable
  */
 export function dematerialize<T>(this: Observable<Notification<T>>): Observable<T> {
-  return higherOrder()(this);
+  return higherOrder()(this) as Observable<T>;
 }

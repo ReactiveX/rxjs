@@ -7,5 +7,5 @@ function toArrayReducer<T>(arr: T[], item: T, index: number) {
 }
 
 export function toArray<T>(): OperatorFunction<T, T[]> {
-  return reduce(toArrayReducer, []);
+  return reduce(toArrayReducer, []) as OperatorFunction<T, T[]>;
 }

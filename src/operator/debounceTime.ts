@@ -2,7 +2,7 @@
 import { Observable } from '../Observable';
 import { IScheduler } from '../Scheduler';
 import { async } from '../scheduler/async';
-import { debounceTime as higherOrder } from '../operators';
+import { debounceTime as higherOrder } from '../operators/debounceTime';
 
 /**
  * Emits a value from the source Observable only after a particular time span
@@ -51,5 +51,5 @@ import { debounceTime as higherOrder } from '../operators';
  * @owner Observable
  */
 export function debounceTime<T>(this: Observable<T>, dueTime: number, scheduler: IScheduler = async): Observable<T> {
-  return higherOrder(dueTime, scheduler)(this);
+  return higherOrder(dueTime, scheduler)(this) as Observable<T>;
 }

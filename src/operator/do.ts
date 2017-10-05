@@ -1,7 +1,7 @@
 
 import { Observable } from '../Observable';
 import { PartialObserver } from '../Observer';
-import { tap as higherOrder } from '../operators';
+import { tap as higherOrder } from '../operators/tap';
 
 /* tslint:disable:max-line-length */
 export function _do<T>(this: Observable<T>, next: (x: T) => void, error?: (e: any) => void, complete?: () => void): Observable<T>;
@@ -54,5 +54,5 @@ export function _do<T>(this: Observable<T>, observer: PartialObserver<T>): Obser
 export function _do<T>(this: Observable<T>, nextOrObserver?: PartialObserver<T> | ((x: T) => void),
                        error?: (e: any) => void,
                        complete?: () => void): Observable<T> {
-  return higherOrder(<any>nextOrObserver, error, complete)(this);
+  return higherOrder(<any>nextOrObserver, error, complete)(this) as Observable<T>;
 }

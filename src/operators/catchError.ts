@@ -67,7 +67,7 @@ export function catchError<T, R>(selector: (err: any, caught: Observable<T>) => 
   return function catchErrorOperatorFunction(source: Observable<T>): Observable<T | R> {
     const operator = new CatchOperator(selector);
     const caught = source.lift(operator);
-    return (operator.caught = caught);
+    return (operator.caught = caught as Observable<T>);
   };
 }
 

@@ -64,7 +64,5 @@ export function concat<T, R>(...observables: Array<ObservableInput<any> | ISched
  * @owner Observable
  */
 export function concat<T, R>(...observables: Array<ObservableInput<any> | IScheduler>): OperatorFunction<T, R> {
-  return function concatOperatorFunction(source: Observable<T>): Observable<T | R> {
-    return source.lift.call(concatStatic<T, R>(source, ...observables));
-  };
+  return (source: Observable<T>) => source.lift.call(concatStatic<T, R>(source, ...observables));
 }

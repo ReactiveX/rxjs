@@ -1,7 +1,7 @@
 
 import { Observable } from '../Observable';
 import { Notification } from '../Notification';
-import { materialize as higherOrder } from '../operators';
+import { materialize as higherOrder } from '../operators/materialize';
 
 /**
  * Represents all of the notifications from the source Observable as `next`
@@ -48,5 +48,5 @@ import { materialize as higherOrder } from '../operators';
  * @owner Observable
  */
 export function materialize<T>(this: Observable<T>): Observable<Notification<T>> {
-  return higherOrder()(this);
+  return higherOrder()(this) as Observable<Notification<T>>;
 }

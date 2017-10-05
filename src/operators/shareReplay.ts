@@ -21,5 +21,5 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
       return (subject = new ReplaySubject<T>(bufferSize, windowTime, scheduler));
     }
   });
-  return (source: Observable<T>) => refCount()(connectable(source));
+  return ((source: Observable<T>) => refCount()(connectable(source))) as MonoTypeOperatorFunction<T>;
 };

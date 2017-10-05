@@ -1,5 +1,5 @@
 import { Observable, ObservableInput } from '../Observable';
-import { zip as higherOrder } from '../operators';
+import { zip as higherOrder } from '../operators/zip';
 
 /* tslint:disable:max-line-length */
 export function zipProto<T, R>(this: Observable<T>, project: (v1: T) => R): Observable<R>;

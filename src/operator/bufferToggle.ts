@@ -1,6 +1,6 @@
 
 import { Observable, SubscribableOrPromise } from '../Observable';
-import { bufferToggle as higherOrder } from '../operators';
+import { bufferToggle as higherOrder } from '../operators/bufferToggle';
 
 /**
  * Buffers the source Observable values starting from an emission from
@@ -42,5 +42,5 @@ import { bufferToggle as higherOrder } from '../operators';
  */
 export function bufferToggle<T, O>(this: Observable<T>, openings: SubscribableOrPromise<O>,
                                    closingSelector: (value: O) => SubscribableOrPromise<any>): Observable<T[]> {
-  return higherOrder(openings, closingSelector)(this);
+  return higherOrder(openings, closingSelector)(this) as Observable<T[]>;
 }

@@ -28,5 +28,5 @@ import { pluck as higherOrder } from '../operators/pluck';
  * @owner Observable
  */
 export function pluck<T, R>(this: Observable<T>, ...properties: string[]): Observable<R> {
-  return higherOrder(...properties)(this);
+  return higherOrder(...properties)(this) as Observable<R>;
 }

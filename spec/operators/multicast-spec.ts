@@ -3,6 +3,7 @@ import * as Rx from '../../dist/package/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram, time, rxTestScheduler };
+declare const type;
 declare const hot: typeof marbleTestingSignature.hot;
 declare const cold: typeof marbleTestingSignature.cold;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
@@ -636,6 +637,29 @@ describe('Observable.prototype.multicast', () => {
           expect(expected.length).to.equal(0);
           done();
         });
+    });
+  });
+
+  describe('typings', () => {
+    type('should infer the type', () => {
+      /* tslint:disable:no-unused-variable */
+      const source = Rx.Observable.of<number>(1, 2, 3);
+      const result: Rx.Observable<number> = source.multicast(() => new Subject<number>());
+      /* tslint:enable:no-unused-variable */
+    });
+
+    type('should infer the type with a selector', () => {
+      /* tslint:disable:no-unused-variable */
+      const source = Rx.Observable.of<number>(1, 2, 3);
+      const result: Rx.Observable<number> = source.multicast(() => new Subject<number>(), s => s.map(x => x));
+      /* tslint:enable:no-unused-variable */
+    });
+
+    type('should infer the type with a type-changing selector', () => {
+      /* tslint:disable:no-unused-variable */
+      const source = Rx.Observable.of<number>(1, 2, 3);
+      const result: Rx.Observable<string> = source.multicast(() => new Subject<number>(), s => s.map(x => x + '!'));
+      /* tslint:enable:no-unused-variable */
     });
   });
 });

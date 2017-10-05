@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { race as higherOrder } from '../operators';
+import { race as higherOrder } from '../operators/race';
 
 // NOTE: to support backwards compatability with 5.4.* and lower
 export { race as raceStatic } from '../observable/race';

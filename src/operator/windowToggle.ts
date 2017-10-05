@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { windowToggle as higherOrder } from '../operators';
+import { windowToggle as higherOrder } from '../operators/windowToggle';
 
 /**
  * Branch out the source Observable values as a nested Observable starting from
@@ -45,5 +45,5 @@ import { windowToggle as higherOrder } from '../operators';
  */
 export function windowToggle<T, O>(this: Observable<T>, openings: Observable<O>,
                                    closingSelector: (openValue: O) => Observable<any>): Observable<Observable<T>> {
-  return higherOrder(openings, closingSelector)(this);
+  return higherOrder(openings, closingSelector)(this) as Observable<Observable<T>>;
 }

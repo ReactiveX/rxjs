@@ -40,5 +40,5 @@ import { sampleTime as higherOrder } from '../operators/sampleTime';
  * @owner Observable
  */
 export function sampleTime<T>(this: Observable<T>, period: number, scheduler: IScheduler = async): Observable<T> {
-  return higherOrder(period, scheduler)(this);
+  return higherOrder(period, scheduler)(this) as Observable<T>;
 }

@@ -35,5 +35,5 @@ import { takeUntil as higherOrder } from '../operators/takeUntil';
  * @owner Observable
  */
 export function takeUntil<T>(this: Observable<T>, notifier: Observable<any>): Observable<T> {
-  return higherOrder(notifier)(this);
+  return higherOrder(notifier)(this) as Observable<T>;
 }

@@ -1,7 +1,7 @@
 
 import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
-import { subscribeOn as higherOrder } from '../operators';
+import { subscribeOn as higherOrder } from '../operators/subscribeOn';
 
 /**
  * Asynchronously subscribes Observers to this Observable on the specified IScheduler.
@@ -15,5 +15,5 @@ import { subscribeOn as higherOrder } from '../operators';
  * @owner Observable
  */
 export function subscribeOn<T>(this: Observable<T>, scheduler: IScheduler, delay: number = 0): Observable<T> {
-  return higherOrder(scheduler, delay)(this);
+  return higherOrder(scheduler, delay)(this) as Observable<T>;
 }

@@ -1,10 +1,11 @@
 import { Subject } from '../Subject';
 import { multicast } from './multicast';
-import { MonoTypeOperatorFunction } from '../interfaces';
+import { MonoTypeOperatorFunction, OperatorFunction } from '../interfaces';
 
 /* tslint:disable:max-line-length */
 export function publish<T>(): MonoTypeOperatorFunction<T>;
 export function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOperatorFunction<T>;
+export function publish<T, R>(selector: OperatorFunction<T, R>): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -20,7 +21,7 @@ export function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOpera
  * @method publish
  * @owner Observable
  */
-export function publish<T>(selector?: MonoTypeOperatorFunction<T>): MonoTypeOperatorFunction<T> {
+export function publish<T, R>(selector?: OperatorFunction<T, R>): MonoTypeOperatorFunction<T> | OperatorFunction<T, R> {
   return selector ?
     multicast(() => new Subject<T>(), selector) :
     multicast(new Subject<T>());

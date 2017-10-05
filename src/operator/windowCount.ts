@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { windowCount as higherOrder } from '../operators';
+import { windowCount as higherOrder } from '../operators/windowCount';
 
 /**
  * Branch out the source Observable values as a nested Observable with each
@@ -52,5 +52,5 @@ import { windowCount as higherOrder } from '../operators';
  */
 export function windowCount<T>(this: Observable<T>, windowSize: number,
                                startWindowEvery: number = 0): Observable<Observable<T>> {
-  return higherOrder(windowSize, startWindowEvery)(this);
+  return higherOrder(windowSize, startWindowEvery)(this) as Observable<Observable<T>>;
 }

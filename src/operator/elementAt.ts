@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { elementAt as higherOrder } from '../operators';
+import { elementAt as higherOrder } from '../operators/elementAt';
 
 /**
  * Emits the single value at the specified `index` in a sequence of emissions

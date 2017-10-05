@@ -1,7 +1,7 @@
 import { async } from '../scheduler/async';
 import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
-import { auditTime as higherOrder } from '../operators';
+import { auditTime as higherOrder } from '../operators/auditTime';
 
 /**
  * Ignores source values for `duration` milliseconds, then emits the most recent
@@ -46,5 +46,5 @@ import { auditTime as higherOrder } from '../operators';
  * @owner Observable
  */
 export function auditTime<T>(this: Observable<T>, duration: number, scheduler: IScheduler = async): Observable<T> {
-  return higherOrder(duration, scheduler)(this);
+  return higherOrder(duration, scheduler)(this) as Observable<T>;
 }

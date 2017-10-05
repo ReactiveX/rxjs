@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { min as higherOrderMin } from '../operators';
+import { min as higherOrderMin } from '../operators/min';
 
 /**
  * The Min operator operates on an Observable that emits numbers (or items that can be compared with a provided function),

@@ -1,5 +1,5 @@
 import { Observable, ObservableInput } from '../Observable';
-import { mergeMap as higherOrderMergeMap } from '../operators';
+import { mergeMap as higherOrderMergeMap } from '../operators/mergeMap';
 
 /* tslint:disable:max-line-length */
 export function mergeMap<T, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<R>, concurrent?: number): Observable<R>;
@@ -67,5 +67,5 @@ export function mergeMap<T, I, R>(this: Observable<T>, project: (value: T, index
 export function mergeMap<T, I, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<I>,
                                   resultSelector?: ((outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) | number,
                                   concurrent: number = Number.POSITIVE_INFINITY): Observable<I | R> {
-  return higherOrderMergeMap(project, <any>resultSelector, concurrent)(this);
+  return higherOrderMergeMap(project, <any>resultSelector, concurrent)(this) as Observable<I | R>;
 }

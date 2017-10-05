@@ -1,7 +1,7 @@
 import { async } from '../scheduler/async';
 import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
-import { delay as higherOrder } from '../operators';
+import { delay as higherOrder } from '../operators/delay';
 
 /**
  * Delays the emission of items from the source Observable by a given timeout or

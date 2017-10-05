@@ -18,5 +18,5 @@ import { retry as higherOrder } from '../operators/retry';
  * @owner Observable
  */
 export function retry<T>(this: Observable<T>, count: number = -1): Observable<T> {
-  return higherOrder(count)(this);
+  return higherOrder(count)(this) as Observable<T>;
 }

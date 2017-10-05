@@ -81,3 +81,25 @@ interval(1000).pipe(
 .subscribe(x => console.log(x));
 // [0, 12, 24]
 ```
+
+## Known Issues
+
+In TypeScript 2.3 and lower, typings will need to be added to functions passed to operators, as types cannot be inferred prior to TypeScript 2.4. In TypeScript 2.4, types will infer via composition properly.
+
+**TS 2.3 and under**
+
+```ts
+range(0, 10).pipe(
+  map((n: number) => n + '!'),
+  map((s: string) => 'Hello, ' + s),
+).subscribe(x => console.log(x))
+```
+
+**TS 2.4 and up**
+
+```ts
+range(0, 10).pipe(
+  map(n => n + '!'),
+  map(s => 'Hello, ' + s),
+).subscribe(x => console.log(x))
+```

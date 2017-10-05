@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { isEmpty as higherOrder } from '../operators';
+import { isEmpty as higherOrder } from '../operators/isEmpty';
 
 /**
  * If the source Observable is empty it returns an Observable that emits true, otherwise it emits false.

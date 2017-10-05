@@ -11,5 +11,5 @@ export {TimeInterval};
  * @owner Observable
  */
 export function timeInterval<T>(this: Observable<T>, scheduler: IScheduler = async): Observable<TimeInterval<T>> {
-  return higherOrder(scheduler)(this);
+  return higherOrder(scheduler)(this) as Observable<TimeInterval<T>>;
 }

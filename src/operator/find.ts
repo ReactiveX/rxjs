@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { find as higherOrder } from '../operators';
+import { find as higherOrder } from '../operators/find';
 
 /* tslint:disable:max-line-length */
 export function find<T, S extends T>(this: Observable<T>,

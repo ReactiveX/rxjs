@@ -1,6 +1,6 @@
 import { Observable, ObservableInput } from '../Observable';
 import { IScheduler } from '../Scheduler';
-import { concat as higherOrder } from '../operators';
+import { concat as higherOrder } from '../operators/concat';
 
 /* tslint:disable:max-line-length */
 export function concat<T>(this: Observable<T>, scheduler?: IScheduler): Observable<T>;

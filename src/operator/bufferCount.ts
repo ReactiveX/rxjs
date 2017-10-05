@@ -1,6 +1,6 @@
 
 import { Observable } from '../Observable';
-import { bufferCount as higherOrder } from '../operators';
+import { bufferCount as higherOrder } from '../operators/bufferCount';
 
 /**
  * Buffers the source Observable values until the size hits the maximum
@@ -44,5 +44,5 @@ import { bufferCount as higherOrder } from '../operators';
  * @owner Observable
  */
 export function bufferCount<T>(this: Observable<T>, bufferSize: number, startBufferEvery: number = null): Observable<T[]> {
-  return higherOrder(bufferSize, startBufferEvery)(this);
+  return higherOrder(bufferSize, startBufferEvery)(this) as Observable<T[]>;
 }

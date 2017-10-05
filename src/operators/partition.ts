@@ -49,5 +49,5 @@ export function partition<T>(predicate: (value: T, index: number) => boolean,
   return (source: Observable<T>) => [
     filter(predicate, thisArg)(source),
     filter(not(predicate, thisArg) as any)(source)
-  ];
+  ] as [Observable<T>, Observable<T>];
 }

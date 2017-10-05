@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { ignoreElements as higherOrder } from '../operators';
+import { ignoreElements as higherOrder } from '../operators/ignoreElements';
 
 /**
  * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.
@@ -12,5 +12,5 @@ import { ignoreElements as higherOrder } from '../operators';
  * @owner Observable
  */
 export function ignoreElements<T>(this: Observable<T>): Observable<T> {
-  return higherOrder()(this);
+  return higherOrder()(this) as Observable<T>;
 };
