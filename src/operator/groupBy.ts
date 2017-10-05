@@ -2,6 +2,7 @@
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { groupBy as higherOrder, GroupedObservable } from '../operators/groupBy';
+export { GroupedObservable };
 
 /* tslint:disable:max-line-length */
 export function groupBy<T, K>(this: Observable<T>, keySelector: (value: T) => K): Observable<GroupedObservable<K, T>>;
