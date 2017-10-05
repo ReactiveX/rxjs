@@ -8,6 +8,14 @@ let klawSync = require('klaw-sync');
 let licenseTool = require('./tools/add-license-to-file');
 let addLicenseToFile = licenseTool.addLicenseToFile;
 let addLicenseTextToFile = licenseTool.addLicenseTextToFile;
+let bo = null;
+// Build Optimizer is not available on Node 4.x. Using a try/catch
+// here to make sure the build passes on Travis using Node 4, but
+// the NPM distribution will run through build-optimizer.
+try {
+  bo = require('@angular-devkit/build-optimizer');
+} catch (e) {}
+
 
 const ROOT = 'dist/';
 const CJS_ROOT = ROOT + 'cjs/';
@@ -48,6 +56,17 @@ const importTargets = klawSync(CJS_ROOT, {
 })
 .map(item => item.path)
 .map(path => path.slice((`${__dirname}/${CJS_ROOT}`).length))
+.map(fileName => {
+  if (!bo) return fileName;
+  let fullPath = path.resolve(__dirname, ESM5_ROOT, fileName);
+  let content = fs.readFileSync(fullPath).toString();
+  let transformed = bo.transformJavascript({
+    content: content,
+    getTransforms: [bo.getPrefixClassesTransformer, bo.getPrefixFunctionsTransformer, bo.getFoldFileTransformer]
+  });
+  fs.writeFileSync(fullPath, transformed.content);
+  return fileName;
+})
 .reduce((acc, fileName) => {
   // Get the name of the file to be the new directory
   const directory = fileName.slice(0, fileName.length - 3);
