@@ -7,6 +7,8 @@ declare const hot: typeof marbleTestingSignature.hot;
 declare const cold: typeof marbleTestingSignature.cold;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
+declare const time: typeof marbleTestingSignature.time;
+declare const rxTestScheduler: typeof marbleTestingSignature.rxTestScheduler;
 
 const Observable = Rx.Observable;
 
@@ -163,5 +165,18 @@ describe('Observable.prototype.shareReplay', () => {
     expectObservable(subscriber2).toBe(expected2);
     expectObservable(subscriber3).toBe(expected3);
     expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should not restart if refCount hits 0 due to unsubscriptions', () => {
+    const results = [];
+    const source = Rx.Observable.interval(10, rxTestScheduler)
+      .take(10)
+      .shareReplay(1);
+    const subs = source.subscribe(x => results.push(x));
+    rxTestScheduler.schedule(() => subs.unsubscribe(), 35);
+    rxTestScheduler.schedule(() => source.subscribe(x => results.push(x)), 54);
+
+    rxTestScheduler.flush();
+    expect(results).to.deep.equal([0, 1, 2, 4, 5, 6, 7, 8, 9]);
   });
 });

@@ -1,25 +1,45 @@
 import { Observable } from '../Observable';
-import { multicast } from './multicast';
-import { refCount } from './refCount';
 import { ReplaySubject } from '../ReplaySubject';
-import { ConnectableObservable } from '../observable/ConnectableObservable';
 import { IScheduler } from '../Scheduler';
-
+import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction } from '../interfaces';
-
 /**
  * @method shareReplay
  * @owner Observable
  */
 export function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: IScheduler ): MonoTypeOperatorFunction<T> {
   let subject: ReplaySubject<T>;
+  let refCount = 0;
+  let subscription: Subscription;
+  let hasError = false;
+  let isComplete = true;
 
-  const connectable = multicast(function shareReplaySubjectFactory(this: ConnectableObservable<T>) {
-    if (this._isComplete) {
-      return subject;
-    } else {
-      return (subject = new ReplaySubject<T>(bufferSize, windowTime, scheduler));
+  return (source: Observable<T>) => new Observable<T>(observer => {
+    refCount++;
+    if (!subject || hasError) {
+      hasError = false;
+      subject = new ReplaySubject<T>(bufferSize, windowTime, scheduler);
+      subscription = source.subscribe({
+        next(value) { subject.next(value); },
+        error(err) {
+          hasError = true;
+          subject.error(err);
+        },
+        complete() {
+          isComplete = true;
+          subject.complete();
+        },
+      });
     }
+
+    const innerSub = subject.subscribe(observer);
+
+    return () => {
+      refCount--;
+      innerSub.unsubscribe();
+      if (subscription && refCount === 0 && !isComplete) {
+        subscription.unsubscribe();
+      }
+    };
   });
-  return ((source: Observable<T>) => refCount()(connectable(source))) as MonoTypeOperatorFunction<T>;
 };
