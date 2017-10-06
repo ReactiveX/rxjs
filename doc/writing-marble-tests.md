@@ -107,7 +107,7 @@ expectObservable(e1.merge(e2)).toBe(expected);
 ```
 
 - The `^` characters of `hot` observables should **always** be aligned.
-- The **first charactor** of `cold` observables or expected observables should **always** be aligned
+- The **first character** of `cold` observables or expected observables should **always** be aligned
   with each other, and with the `^` of hot observables.
 - Use default emission values when you can. Specify `values` when you have to.
 
