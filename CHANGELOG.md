@@ -1,3 +1,18 @@
+<a name="5.5.0-beta.5"></a>
+# [5.5.0-beta.5](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.4...v5.5.0-beta.5) (2017-10-06)
+
+
+### Bug Fixes
+
+* **toPromise:** remove lettable version of toPromise ([031edca](https://github.com/ReactiveX/RxJS/commit/031edca)), closes [#2868](https://github.com/ReactiveX/RxJS/issues/2868)
+
+
+### Features
+
+* **toPromise:** now exists as a permanent method on Observable ([2e49a5c](https://github.com/ReactiveX/RxJS/commit/2e49a5c))
+
+
+
 <a name="5.5.0-beta.4"></a>
 # [5.5.0-beta.4](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.3...v5.5.0-beta.4) (2017-10-06)
 
