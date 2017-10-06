@@ -2,19 +2,27 @@ import { Observable } from '../Observable';
 import { IScheduler } from '../Scheduler';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
 import { publishReplay as higherOrder } from '../operators/publishReplay';
+import { OperatorFunction, MonoTypeOperatorFunction } from '../interfaces';
+
+/* tslint:disable:max-line-length */
+export function publishReplay<T>(this: Observable<T>, bufferSize?: number, windowTime?: number, scheduler?: IScheduler): ConnectableObservable<T>;
+export function publishReplay<T>(this: Observable<T>, bufferSize?: number, windowTime?: number, selector?: MonoTypeOperatorFunction<T>, scheduler?: IScheduler): Observable<T>;
+export function publishReplay<T, R>(this: Observable<T>, bufferSize?: number, windowTime?: number, selector?: OperatorFunction<T, R>): Observable<R>;
+/* tslint:enable:max-line-length */
 
 /**
  * @param bufferSize
  * @param windowTime
- * @param selector
+ * @param selectorOrScheduler
  * @param scheduler
  * @return {Observable<T> | ConnectableObservable<T>}
  * @method publishReplay
  * @owner Observable
  */
-export function publishReplay<T>(this: Observable<T>, bufferSize: number = Number.POSITIVE_INFINITY,
-                                 windowTime: number = Number.POSITIVE_INFINITY,
-                                 selector?: (source: Observable<T>) => Observable<T>,
-                                 scheduler?: IScheduler): Observable<T> | ConnectableObservable<T> {
-  return higherOrder(bufferSize, windowTime, selector, scheduler)(this);
+export function publishReplay<T, R>(this: Observable<T>, bufferSize?: number,
+                                    windowTime?: number,
+                                    selectorOrScheduler?: IScheduler | OperatorFunction<T, R>,
+                                    scheduler?: IScheduler): Observable<R> | ConnectableObservable<R> {
+
+  return higherOrder(bufferSize, windowTime, selectorOrScheduler as any, scheduler)(this);
 }
