@@ -1,3 +1,15 @@
+<a name="5.5.0-beta.4"></a>
+# [5.5.0-beta.4](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.3...v5.5.0-beta.4) (2017-10-06)
+
+
+### Bug Fixes
+
+* **publish:** fix selector typings ([#2891](https://github.com/ReactiveX/RxJS/issues/2891)) ([9ee234d](https://github.com/ReactiveX/RxJS/commit/9ee234d)), closes [#2889](https://github.com/ReactiveX/RxJS/issues/2889)
+* **shareReplay:** properly retains history on subscribe ([#2910](https://github.com/ReactiveX/RxJS/issues/2910)) ([accbcd0](https://github.com/ReactiveX/RxJS/commit/accbcd0)), closes [#2908](https://github.com/ReactiveX/RxJS/issues/2908)
+* **subscribeOn:** remove subscribeOn from reexport to support treesha… ([#2899](https://github.com/ReactiveX/RxJS/issues/2899)) ([fb51a02](https://github.com/ReactiveX/RxJS/commit/fb51a02))
+
+
+
 <a name="5.5.0-beta.3"></a>
 # [5.5.0-beta.3](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.2...v5.5.0-beta.3) (2017-10-03)
 
