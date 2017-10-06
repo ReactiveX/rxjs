@@ -97,7 +97,6 @@ export { timeout } from './timeout';
 export { timeoutWith } from './timeoutWith';
 export { timestamp } from './timestamp';
 export { toArray } from './toArray';
-export { toPromise } from './toPromise';
 export { window } from './window';
 export { windowCount } from './windowCount';
 export { windowTime } from './windowTime';
