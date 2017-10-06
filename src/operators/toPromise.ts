@@ -1,5 +1,4 @@
 import { Observable } from '../Observable';
-import { root } from '../util/root';
 import { UnaryFunction } from '../interfaces';
 
 /* tslint:disable:max-line-length */
@@ -58,22 +57,5 @@ export function toPromise<T>(PromiseCtor: PromiseConstructorLike): UnaryFunction
  * @owner Observable
  */
 export function toPromise<T>(PromiseCtor?: PromiseConstructorLike): UnaryFunction<Observable<T>, Promise<T>> {
-  return (source: Observable<T>) => {
-    if (!PromiseCtor) {
-      if (root.Rx && root.Rx.config && root.Rx.config.Promise) {
-        PromiseCtor = root.Rx.config.Promise;
-      } else if (root.Promise) {
-        PromiseCtor = root.Promise;
-      }
-    }
-
-    if (!PromiseCtor) {
-      throw new Error('no Promise impl found');
-    }
-
-    return new PromiseCtor((resolve, reject) => {
-      let value: any;
-      source.subscribe((x: T) => value = x, (err: any) => reject(err), () => resolve(value));
-    }) as Promise<T>;
-  };
+  return (source: Observable<T>) => source.toPromise();
 }

@@ -327,4 +327,29 @@ export class Observable<T> implements Subscribable<T> {
 
     return pipeFromArray(operations)(this);
   }
+
+  /* tslint:disable:max-line-length */
+  toPromise<T>(this: Observable<T>): Promise<T>;
+  toPromise<T>(this: Observable<T>, PromiseCtor: typeof Promise): Promise<T>;
+  toPromise<T>(this: Observable<T>, PromiseCtor: PromiseConstructorLike): Promise<T>;
+  /* tslint:enable:max-line-length */
+
+  toPromise(PromiseCtor?: PromiseConstructorLike) {
+    if (!PromiseCtor) {
+      if (root.Rx && root.Rx.config && root.Rx.config.Promise) {
+        PromiseCtor = root.Rx.config.Promise;
+      } else if (root.Promise) {
+        PromiseCtor = root.Promise;
+      }
+    }
+
+    if (!PromiseCtor) {
+      throw new Error('no Promise impl found');
+    }
+
+    return new PromiseCtor((resolve, reject) => {
+      let value: any;
+      this.subscribe((x: T) => value = x, (err: any) => reject(err), () => resolve(value));
+    }) as Promise<T>;
+  }
 }
