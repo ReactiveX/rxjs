@@ -487,7 +487,7 @@ describe('Subject', () => {
     it('should handle subject never emits', () => {
       const observable = hot('-').asObservable();
 
-      expectObservable(observable).toBe(<any>[]);
+      expectObservable(observable).toBe('-');
     });
 
     it('should handle subject completes without emits', () => {

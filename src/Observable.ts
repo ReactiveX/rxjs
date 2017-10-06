@@ -6,6 +6,7 @@ import { root } from './util/root';
 import { toSubscriber } from './util/toSubscriber';
 import { IfObservable } from './observable/IfObservable';
 import { ErrorObservable } from './observable/ErrorObservable';
+import { compose } from './util/compose';
 import { observable as Symbol_observable } from './symbol/observable';
 import { OperatorFunction } from './interfaces';
 import { pipeFromArray } from './util/pipe';
@@ -270,6 +271,11 @@ export class Observable<T> implements Subscribable<T> {
         }
       }, reject, resolve);
     });
+  }
+
+  pipe(...fns: ((x: Observable<T>) => Observable<T>)[]): Observable<T> {
+    const composed = compose.apply(this, fns);
+    return composed(this);
   }
 
   protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
