@@ -43,6 +43,7 @@ export { max } from './max';
 export { merge } from './merge';
 export { mergeAll } from './mergeAll';
 export { mergeMap } from './mergeMap';
+export { mergeMap as flatMap } from './mergeMap';
 export { mergeMapTo } from './mergeMapTo';
 export { mergeScan } from './mergeScan';
 export { min } from './min';
