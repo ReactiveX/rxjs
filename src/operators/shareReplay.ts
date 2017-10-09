@@ -13,7 +13,7 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
   return (source: Observable<T>) => source.lift(shareReplayOperator(bufferSize, windowTime, scheduler));
 }
 
-export function shareReplayOperator<T>(bufferSize?: number, windowTime?: number, scheduler?: IScheduler) {
+function shareReplayOperator<T>(bufferSize?: number, windowTime?: number, scheduler?: IScheduler) {
   let subject: ReplaySubject<T>;
   let refCount = 0;
   let subscription: Subscription;
