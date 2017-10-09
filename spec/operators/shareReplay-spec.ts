@@ -179,4 +179,36 @@ describe('Observable.prototype.shareReplay', () => {
     rxTestScheduler.flush();
     expect(results).to.deep.equal([0, 1, 2, 4, 5, 6, 7, 8, 9]);
   });
+
+  it('should not break lift() composability', (done: MochaDone) => {
+    class MyCustomObservable<T> extends Rx.Observable<T> {
+      lift<R>(operator: Rx.Operator<T, R>): Rx.Observable<R> {
+        const observable = new MyCustomObservable<R>();
+        (<any>observable).source = this;
+        (<any>observable).operator = operator;
+        return observable;
+      }
+    }
+
+    const result = new MyCustomObservable((observer: Rx.Observer<number>) => {
+      observer.next(1);
+      observer.next(2);
+      observer.next(3);
+      observer.complete();
+    }).shareReplay();
+
+    expect(result instanceof MyCustomObservable).to.be.true;
+
+    const expected = [1, 2, 3];
+
+    result
+      .subscribe((n: any) => {
+        expect(expected.length).to.be.greaterThan(0);
+        expect(n).to.equal(expected.shift());
+      }, (x) => {
+        done(new Error('should not be called'));
+      }, () => {
+        done();
+      });
+  });
 });
