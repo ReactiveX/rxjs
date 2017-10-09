@@ -3,18 +3,24 @@ import { ReplaySubject } from '../ReplaySubject';
 import { IScheduler } from '../Scheduler';
 import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction } from '../interfaces';
+import { Subscriber } from '../Subscriber';
+
 /**
  * @method shareReplay
  * @owner Observable
  */
 export function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: IScheduler ): MonoTypeOperatorFunction<T> {
+  return (source: Observable<T>) => source.lift(shareReplayOperator(bufferSize, windowTime, scheduler));
+}
+
+export function shareReplayOperator<T>(bufferSize?: number, windowTime?: number, scheduler?: IScheduler) {
   let subject: ReplaySubject<T>;
   let refCount = 0;
   let subscription: Subscription;
   let hasError = false;
   let isComplete = false;
 
-  return (source: Observable<T>) => new Observable<T>(observer => {
+  return function shareReplayOperation(this: Subscriber<T>, source: Observable<T>) {
     refCount++;
     if (!subject || hasError) {
       hasError = false;
@@ -32,7 +38,7 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
       });
     }
 
-    const innerSub = subject.subscribe(observer);
+    const innerSub = subject.subscribe(this);
 
     return () => {
       refCount--;
@@ -41,5 +47,5 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
         subscription.unsubscribe();
       }
     };
-  });
+  };
 };
