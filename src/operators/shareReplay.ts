@@ -12,7 +12,7 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
   let refCount = 0;
   let subscription: Subscription;
   let hasError = false;
-  let isComplete = true;
+  let isComplete = false;
 
   return (source: Observable<T>) => new Observable<T>(observer => {
     refCount++;
@@ -37,7 +37,7 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
     return () => {
       refCount--;
       innerSub.unsubscribe();
-      if (subscription && refCount === 0 && !isComplete) {
+      if (subscription && refCount === 0 && isComplete) {
         subscription.unsubscribe();
       }
     };
