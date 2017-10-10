@@ -8,6 +8,7 @@ environment:
 install:
   - ps: Install-Product node $env:nodejs_version
   - set PATH=%APPDATA%\npm;%PATH%
+  - npm install -g npm@4
   - node -v && npm -v
   - npm install
 
