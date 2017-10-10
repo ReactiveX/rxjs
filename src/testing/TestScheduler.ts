@@ -207,9 +207,10 @@ export class TestScheduler extends VirtualTimeScheduler {
         return values[x];
       };
     let groupStart = -1;
+    let groupsOffset = 0;
 
     for (let i = 0; i < len; i++) {
-      const frame = i * this.frameTimeFactor + frameOffset;
+      const frame = i * this.frameTimeFactor + frameOffset - groupsOffset;
       let notification: Notification<any>;
       const c = marbles[i];
       switch (c) {
@@ -234,6 +235,12 @@ export class TestScheduler extends VirtualTimeScheduler {
           notification = Notification.createNext(getValue(c));
           break;
       }
+
+      /*
+      if (((groupStart > -1) && notification) || (c === ')')) {
+        groupsOffset += this.frameTimeFactor;
+      }
+      */
 
       if (notification) {
         testMessages.push({ frame: groupStart > -1 ? groupStart : frame, notification });
