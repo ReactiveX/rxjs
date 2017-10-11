@@ -69,6 +69,8 @@ Observable::of(1,2,3)::map(x => x + '!!!'); // etc
 
 ### CommonJS via npm
 
+To install this library for CommonJS (CJS) usage, use the following command:
+
 ```sh
 npm install rxjs
 ```
@@ -111,6 +113,8 @@ To install this library via [npm](https://www.npmjs.org) **version 3**, use the 
 ```sh
 npm install @reactivex/rxjs
 ```
+
+This will include CJS/Global builds and can be used for all module types.
 
 If you are using npm **version 2** before this library has achieved a stable version, you need to specify the library version explicitly:
 
