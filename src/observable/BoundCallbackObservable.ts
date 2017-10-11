@@ -42,62 +42,58 @@ export class BoundCallbackObservable<T> extends Observable<T> {
    * Observable.</span>
    *
    * `bindCallback` is not an operator because its input and output are not
-   * Observables. The input is a function `func` with some parameters, but the
+   * Observables. The input is a function `func` with some parameters, the
    * last parameter must be a callback function that `func` calls when it is
    * done.
    *
    * The output of `bindCallback` is a function that takes the same parameters
    * as `func`, except the last one (the callback). When the output function
-   * is called with arguments, it will return an Observable. If `func` function
-   * calls its callback with one argument, the Observable will emit that value.
-   * If on the other hand callback is called with multiple values, resulting
-   * Observable will emit an array with these arguments.
+   * is called with arguments it will return an Observable. If function `func`
+   * calls its callback with one argument the Observable will emit that value.
+   * If on the other hand the callback is called with multiple values the resulting
+   * Observable will emit an array with said values as arguments.
    *
-   * It is very important to remember, that input function `func` is not called
-   * when output function is, but rather when Observable returned by output
-   * function is subscribed. This means if `func` makes AJAX request, that request
-   * will be made every time someone subscribes to resulting Observable, but not before.
+   * It is very important to remember that input function `func` is not called
+   * when the output function is, but rather when the Observable returned by the output
+   * function is subscribed. This means if `func` makes an AJAX request, that request
+   * will be made every time someone subscribes to the resulting Observable, but not before.
    *
-   * Optionally, selector function can be passed to `bindObservable`. That function
-   * takes the same arguments as callback, and returns value
-   * that will be emitted by Observable instead of callback parameters themselves.
-   * Even though by default multiple arguments passed to callback appear in the stream as array,
-   * selector function will be called with arguments directly, just as callback would.
-   * This means you can imagine default selector (when one is not provided explicitly)
-   * as function that aggregates all its arguments into array, or simply returns first argument,
+   * Optionally, a selector function can be passed to `bindObservable`. The selector function
+   * takes the same arguments as the callback and returns the value that will be emitted by the Observable.
+   * Even though by default multiple arguments passed to callback appear in the stream as an array
+   * the selector function will be called with arguments directly, just as the callback would.
+   * This means you can imagine the default selector (when one is not provided explicitly)
+   * as a function that aggregates all its arguments into an array, or simply returns first argument
    * if there is only one.
    *
-   * Last optional parameter - {@link Scheduler} - can be used to control when call
+   * The last optional parameter - {@link Scheduler} - can be used to control when the call
    * to `func` happens after someone subscribes to Observable, as well as when results
-   * passed to callback will be emitted. By default subscription to Observable calls `func`
-   * synchronously, but using `Scheduler.async` as last parameter will defer call to input function,
-   * just like wrapping that call in `setTimeout` with time `0` would. So if you use async Scheduler
-   * and call `subscribe` on output Observable, all function calls that are currently executing,
+   * passed to callback will be emitted. By default, the subscription to  an Observable calls `func`
+   * synchronously, but using `Scheduler.async` as the last parameter will defer the call to `func`,
+   * just like wrapping the call in `setTimeout` with a timeout of `0` would. If you use the async Scheduler
+   * and call `subscribe` on the output Observable all function calls that are currently executing
    * will end before `func` is invoked.
    *
-   * When it comes to emitting results passed to callback, by default they are emitted
-   * immediately after `func` invokes callback. In particular, if callback is called synchronously,
-   * then subscription to resulting Observable will call `next` function synchronously as well.
-   * If you want to defer that call, using `Scheduler.async` will, again, do the job.
-   * This means that by using `Scheduler.async` you can, in a sense, ensure that `func`
-   * always calls its callback asynchronously, thus avoiding terrifying Zalgo.
+   * By default results passed to the callback are emitted immediately after `func` invokes the callback.
+   * In particular, if the callback is called synchronously the subscription of the resulting Observable
+   * will call the `next` function synchronously as well.  If you want to defer that call,
+   * you may use `Scheduler.async` just as before.  This means that by using `Scheduler.async` you can
+   * ensure that `func` always calls its callback asynchronously, thus avoiding terrifying Zalgo.
    *
-   * Note that Observable created by output function will always emit only one value
-   * and then complete right after. Even if `func` calls callback multiple times, values from
-   * second and following calls will never appear in the stream. If you need to
-   * listen for multiple calls, you probably want to use {@link fromEvent} or
-   * {@link fromEventPattern} instead.
+   * Note that the Observable created by the output function will always emit a single value
+   * and then complete immediately. If `func` calls the callback multiple times, values from subsequent
+   * calls will not appear in the stream. If you need to listen for multiple calls,
+   *  you probably want to use {@link fromEvent} or {@link fromEventPattern} instead.
    *
-   * If `func` depends on some context (`this` property), that context will be set
-   * to the same context that output function has at call time. In particular, if `func`
-   * is called as method of some object, in order to preserve proper behaviour,
-   * it is recommended to set context of output function to that object as well,
-   * provided `func` is not already bound.
+   * If `func` depends on some context (`this` property) and is not already bound the context of `func`
+   * will be the context that the output function has at call time. In particular, if `func`
+   * is called as a method of some objec and if `func` is not already bound, in order to preserve the context
+   * it is recommended that the context of the output function is set to that object as well.
    *
-   * If input function calls its callback in "node style" (i.e. first argument to callback is
-   * optional error parameter signaling whether call failed or not), {@link bindNodeCallback}
+   * If the input function calls its callback in the "node style" (i.e. first argument to callback is
+   * optional error parameter signaling whether the call failed or not), {@link bindNodeCallback}
    * provides convenient error handling and probably is a better choice.
-   * `bindCallback` will treat such functions without any difference and error parameter
+   * `bindCallback` will treat such functions the same as any other and error parameters
    * (whether passed or not) will always be interpreted as regular callback argument.
    *
    *
@@ -108,7 +104,7 @@ export class BoundCallbackObservable<T> extends Observable<T> {
    * result.subscribe(x => console.log(x), e => console.error(e));
    *
    *
-   * @example <caption>Receive array of arguments passed to callback</caption>
+   * @example <caption>Receive an array of arguments passed to a callback</caption>
    * someFunction((a, b, c) => {
    *   console.log(a); // 5
    *   console.log(b); // 'some string'
@@ -121,7 +117,7 @@ export class BoundCallbackObservable<T> extends Observable<T> {
    * });
    *
    *
-   * @example <caption>Use bindCallback with selector function</caption>
+   * @example <caption>Use bindCallback with a selector function</caption>
    * someFunction((a, b, c) => {
    *   console.log(a); // 'a'
    *   console.log(b); // 'b'
@@ -152,7 +148,7 @@ export class BoundCallbackObservable<T> extends Observable<T> {
    * // I was async!
    *
    *
-   * @example <caption>Use bindCallback on object method</caption>
+   * @example <caption>Use bindCallback on an object method</caption>
    * const boundMethod = Rx.Observable.bindCallback(someObject.methodWithCallback);
    * boundMethod.call(someObject) // make sure methodWithCallback has access to someObject
    * .subscribe(subscriber);
@@ -162,9 +158,9 @@ export class BoundCallbackObservable<T> extends Observable<T> {
    * @see {@link from}
    * @see {@link fromPromise}
    *
-   * @param {function} func Function with a callback as the last parameter.
+   * @param {function} func A function with a callback as the last parameter.
    * @param {function} [selector] A function which takes the arguments from the
-   * callback and maps those to a value to emit on the output Observable.
+   * callback and maps them to a value that is emitted on the output Observable.
    * @param {Scheduler} [scheduler] The scheduler on which to schedule the
    * callbacks.
    * @return {function(...params: *): Observable} A function which returns the
