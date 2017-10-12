@@ -13,7 +13,7 @@ export interface DispatchArg {
  * @extends {Ignored}
  * @hide true
  */
-export class ErrorObservable extends Observable<any> {
+export class ErrorObservable extends Observable<never> {
 
   /**
    * Creates an Observable that emits no items to the Observer and immediately
