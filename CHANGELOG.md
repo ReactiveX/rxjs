@@ -1,6 +1,7 @@
 <a name="5.5.0-beta.7"></a>
 # [5.5.0-beta.7](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.5...5.5.0-beta.7) (2017-10-13)
 
+(Due to a publish snafu, there is no 5.5.0-beta.6) (womp womp 👎)
 
 ### Bug Fixes
 
