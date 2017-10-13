@@ -1,11 +1,12 @@
-<a name="5.5.0-beta.6"></a>
-# [5.5.0-beta.6](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.5...5.5.0-beta.6) (2017-10-13)
+<a name="5.5.0-beta.7"></a>
+# [5.5.0-beta.7](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.5...5.5.0-beta.7) (2017-10-13)
 
 
 ### Bug Fixes
 
 * **build:** sourceMaps updated to support CJS properly again ([75f7f11](https://github.com/ReactiveX/RxJS/commit/75f7f11)), closes [#2934](https://github.com/ReactiveX/RxJS/issues/2934)
 * **flatMap:** reexport flatMap as alias of mergeMap ([#2920](https://github.com/ReactiveX/RxJS/issues/2920)) ([9922c02](https://github.com/ReactiveX/RxJS/commit/9922c02))
+* **publish:** correct the name and republish to sync packages ([464b115](https://github.com/ReactiveX/RxJS/commit/464b115))
 * **shareReplay:** no longer exporting function unnecessarily ([#2928](https://github.com/ReactiveX/RxJS/issues/2928)) ([e159578](https://github.com/ReactiveX/RxJS/commit/e159578))
 * **shareReplay:** properly uses `lift` ([#2924](https://github.com/ReactiveX/RxJS/issues/2924)) ([3d9cf87](https://github.com/ReactiveX/RxJS/commit/3d9cf87)), closes [#2921](https://github.com/ReactiveX/RxJS/issues/2921)
 * **toPromise:** include toPromise in build output ([#2923](https://github.com/ReactiveX/RxJS/issues/2923)) ([f55bfa5](https://github.com/ReactiveX/RxJS/commit/f55bfa5)), closes [#2922](https://github.com/ReactiveX/RxJS/issues/2922)
