@@ -26,7 +26,7 @@ The unit tests have helper methods that have been added to make creating tests e
 
 ### Ergonomic defaults for `hot` and `cold`
 
-In both `hot` and `cold` methods, value charecters specified in marble diagrams are emitted as strings unless a `values`
+In both `hot` and `cold` methods, value characters specified in marble diagrams are emitted as strings unless a `values`
 argument is passed to the method. Therefor:
 
 `hot('--a--b')` will emit `"a"` and `"b"` whereas
@@ -42,14 +42,14 @@ Likewise, unspecified errors will just default to the string `"error"`, so:
 
 ## Marble Syntax
 
-Marble syntax is a string represents events happening over "time". The first character of any marble string
+Marble syntax is a string representing events happening over "time". The first character of any marble string
 always represents the "zero frame". A "frame" is somewhat analogous to a virtual millisecond.
 
 - `"-"` time: 10 "frames" of time passage.
 - `"|"` complete: The successful completion of an observable. This is the observable producer signaling `complete()`
 - `"#"` error: An error terminating the observable. This is the observable producer signaling `error()`
-- `"a"` any character: All other characters represent a value being emitted by the producure signaling `next()`
-- `"()"` sync groupings: When multiple events need to single in the same frame synchronously, parenthesis are used
+- `"a"` any character: All other characters represent a value being emitted by the producer signaling `next()`
+- `"()"` sync groupings: When multiple events need to be in the same frame synchronously, parentheses are used
   to group those events. You can group nexted values, a completion or an error in this manner. The position of the 
   initial `(` determines the time at which its values are emitted.
 - `"^"` subscription point: (hot observables only) shows the point at which the tested observables will be subscribed
@@ -65,13 +65,13 @@ always represents the "zero frame". A "frame" is somewhat analogous to a virtual
 
 `'--a--'`: An observable that waits 20 "frames", emits value `a` and then never completes.
 
-`'--a--b--|`: On frame 20 emit `a`, on frame 50 emit `b`, and on frame 80, `complete`
+`'--a--b--|`: On frame 20 emit `a`, on frame 40 emit `b`, and on frame 60, `complete`
 
-`'--a--b--#`: On frame 20 emit `a`, on frame 50 emit `b`, and on frame 80, `error`
+`'--a--b--#`: On frame 20 emit `a`, on frame 40 emit `b`, and on frame 60, `error`
 
-`'-a-^-b--|`: In a hot observable, on frame -20 emit `a`, then on frame 20 emit `b`, and on frame 50, `complete`.
+`'-a-^-b--|`: In a hot observable, on frame -10 emit `a`, then on frame 10 emit `b`, and on frame 30, `complete`.
 
-`'--(abc)-|'`: on frame 20, emit `a`, `b`, and `c`, then on frame 80 `complete`
+`'--(abc)-|'`: on frame 20, emit `a`, `b`, and `c`, then on frame 30 `complete`
 
 `'-----(a|)'`: on frame 50, emit `a` and `complete`.
 
@@ -91,7 +91,7 @@ There should be **at most one** `^` point in a subscription marble diagram, and 
 
 `'--^--'`: a subscription happened after 20 "frames" of time passed, and the subscription was not unsubscribed.
 
-`'--^--!-`: on frame 20 a subscription happened, and on frame 50 was unsubscribed.
+`'--^--!-`: on frame 20 a subscription happened, and on frame 40 was unsubscribed.
 
 ## Anatomy of a Test
 
@@ -154,7 +154,7 @@ expectSubscriptions(y.subscriptions).toBe(ysubs);
 - Align the start of `xsubs` and `ysubs` diagrams with `expected` diagram.
 - Notice how the `x` cold observable is unsubscribed at the same time `e1` emits `y`.
 
-In most tests it will be unnecessary to test subscription and unsubscription points, be either obvious or can be implied from the `expected` diagram. In those cases do not write subscription assertions. In test cases that have inner subscriptions or cold observables with multiple subscribers, these subscription assertions can be useful.
+In most tests it will be unnecessary to test subscription and unsubscription points, being either obvious or implied from the `expected` diagram. In those cases do not write subscription assertions. In test cases that have inner subscriptions or cold observables with multiple subscribers, these subscription assertions can be useful.
 
 ## Generating PNG marble diagrams from tests
 
