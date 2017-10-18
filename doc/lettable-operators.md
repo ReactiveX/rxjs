@@ -2,9 +2,11 @@
 
 Starting in version 5.5 we have shipped "lettable operators", which can be accessed in `rxjs/operators` (notice the pluralized "operators"). These are meant to be a better approach for pulling in just the operators you need than the "patch" operators found in `rxjs/add/operator/*`.
 
-**NOTE**: During 5.5 beta we will be bikeshedding a few of the names for operators that we had to give new names to due to keyword restrictions in javascript. 
+**NOTE**: Using `rxjs/operators` without making changes to your build process can result in larger bundles. See [Known Issues](#known-issues) section below.
 
-These operators are:
+**Renamed Operators**
+
+Due to having operators available independent of an Observable, operator names cannot conflict with JavaScript keyword restrictions. Therefore the names of the lettable version of some operators have changed. These operators are:
 
 1. `do` -> `tap`
 2. `catch` -> `catchError`
@@ -84,6 +86,7 @@ interval(1000).pipe(
 
 ## Known Issues
 
+### TypeScript < 2.4
 In TypeScript 2.3 and lower, typings will need to be added to functions passed to operators, as types cannot be inferred prior to TypeScript 2.4. In TypeScript 2.4, types will infer via composition properly.
 
 **TS 2.3 and under**
@@ -102,4 +105,132 @@ range(0, 10).pipe(
   map(n => n + '!'),
   map(s => 'Hello, ' + s),
 ).subscribe(x => console.log(x))
+```
+
+### Build and Treeshaking
+
+When importing from a manifest (or re-export) file, an application bundle can sometimes grow. Lettable operators can now be imported from `rxjs/operators`, but doing so without changing your build process will often result in a larger application bundle. This is because by default `rxjs/operators` will resolve to the CommonJS output of rxjs.
+
+In order to use the new lettable operators and not gain bundle size, you will need to change your Webpack configuration. This will only work with Webpack 3+ as it relies on the new `ModuleConcatenationPlugin` from Webpack 3.
+
+**path-mapping**
+
+Published along with rxjs 5.5 is builds of rxjs in ECMAScript Module format (imports and exports) with both ES5 and ES2015 language level. You can find these distributions in `node_modules/rxjs/_esm5` and `node_modules/rxjs/_esm2015` ("esm" stands for ECMAScript Modules and the number "5" or "2015" is for the ES language level). In your application source code, you should import from `rxjs/operators`, but in your Webpack configuration file you will need to re-map imports to the ESM5 (or ESM2015) version.
+
+If you `require('rxjs/_esm5/path-mapping')`, you will receive a function that takes a path to your node modules (or any directory containing the rxjs distribution) and returns an object of key-value pairs mapping each input to it's file location on disk. Utilize this mapping as follows:
+
+**webpack.config.js**
+
+Simple configuration:
+
+<!-- skip-example -->
+```js
+const rxPaths = require('rxjs/_esm5/path-mapping');
+const webpack = require('webpack');
+const path = require('path');
+
+module.exports = {
+  entry: 'index.js',
+  output: 'bundle.js',
+  resolve: {
+    // Use the "alias" key to resolve to an ESM distribution
+    alias: rxPaths(path.resolve(__dirname, 'node_modules'))
+  },
+  plugins: [
+    new webpack.optimize.ModuleConcatenationPlugin()
+  ]
+};
+```
+
+More complete configuration (closer to a real-world scenario):
+
+<!-- skip-example -->
+```js
+const webpack = require('webpack');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const DashboardPlugin = require('webpack-dashboard/plugin');
+const nodeEnv = process.env.NODE_ENV || 'development';
+const isProd = nodeEnv === 'production';
+const rxPaths = require('rxjs/_esm5/path-mapping');
+
+var config = {
+    devtool: isProd ? 'hidden-source-map' : 'cheap-eval-source-map',
+    context: path.resolve('./src'),
+    entry: {
+        app: './index.ts',
+        vendor: './vendor.ts'
+    },
+    output: {
+        path: path.resolve('./dist'),
+        filename: '[name].bundle.js',
+        sourceMapFilename: '[name].map',
+        devtoolModuleFilenameTemplate: function (info) {
+            return "file:///" + info.absoluteResourcePath;
+        }
+    },
+    module: {
+        rules: [
+            { enforce: 'pre', test: /\.ts$|\.tsx$/, exclude: ["node_modules"], loader: 'ts-loader' },
+            { test: /\.html$/, loader: "html" },
+            { test: /\.css$/, loaders: ['style', 'css'] }
+        ]
+    },
+    resolve: {
+        extensions: [".ts", ".js"],
+        modules: [path.resolve('./src'), 'node_modules'],
+        alias: rxPaths(path.resolve(__dirname, 'node_modules'))
+    },
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env': { // eslint-disable-line quote-props
+                NODE_ENV: JSON.stringify(nodeEnv)
+            }
+        }),
+        new webpack.HashedModuleIdsPlugin(),
+        new webpack.optimize.ModuleConcatenationPlugin(),
+        new HtmlWebpackPlugin({
+            title: 'Typescript Webpack Starter',
+            template: '!!ejs-loader!src/index.html'
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor',
+            minChunks: Infinity,
+            filename: 'vendor.bundle.js'
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            mangle: false,
+            compress: { warnings: false, pure_getters: true, passes: 3, screw_ie8: true, sequences: false },
+            output: { comments: false, beautify: true },
+            sourceMap: false
+        }),
+        new DashboardPlugin(),
+        new webpack.LoaderOptionsPlugin({
+            options: {
+                tslint: {
+                    emitErrors: true,
+                    failOnHint: true
+                }
+            }
+        })
+    ]
+};
+
+module.exports = config;
+```
+
+**No Control over Build Process**
+
+If you have no control over your build process (or are unable to upgrade to Webpack 3+), the above solution will not work. Therefore importing from `rxjs/operators` will likely make your application bundle larger. However, there's still a way you can use lettable operators. You will have to use deep imports, similar to how you import prior to version 5.5 and lettable operators:
+
+```ts
+import { map, filter, reduce } from 'rxjs/operators';
+```
+
+becomes:
+
+```ts
+import { map } from 'rxjs/operators/map';
+import { filter } from 'rxjs/operators/filter';
+import { reduce } from 'rxjs/operators/reduce';
 ```
