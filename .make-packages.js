@@ -138,9 +138,10 @@ function createImportTargets(importTargets, targetName, targetDirectory) {
 "use strict"
 
 var path = require('path');
+var dir = path.resolve(__dirname);
 
-module.exports = function(PATH_REPLACEMENT) {
-  return ${JSON.stringify(importMap, null, 4).replace(/(: )(".+")(,?)/g, "$1path.resolve(PATH_REPLACEMENT, $2)$3")};
+module.exports = function() {
+  return ${JSON.stringify(importMap, null, 4).replace(/(: )"rxjs\/_esm(5|2015)\/(.+")(,?)/g, "$1path.join(dir, \"$3)$4")};
 }
 `
 
