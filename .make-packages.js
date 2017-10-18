@@ -30,6 +30,8 @@ const ESM2015_PKG = PKG_ROOT + '_esm2015/';
 const UMD_PKG = PKG_ROOT + 'bundles/';
 const TYPE_PKG = PKG_ROOT;
 
+const EXPORT_FILE = 'index.js';
+
 
 // License info for minified files
 let licenseUrl = 'https://github.com/ReactiveX/RxJS/blob/master/LICENSE.txt';
@@ -72,6 +74,14 @@ const importTargets = klawSync(CJS_ROOT, {
   const directory = fileName.slice(0, fileName.length - 3);
 
   acc[directory] = fileName;
+  // If the fileName is index.js (re-export file), create another entry
+  // for the root of the export. Example:
+  // fileName = 'rxjs/operators/index.js'
+  // create entry:
+  // {'rxjs/operators': 'rxjs/operators/index.js'}
+  if (fileName.slice(fileName.length - EXPORT_FILE.length) === EXPORT_FILE) {
+    acc[fileName.slice(0, EXPORT_FILE.length + 1)] = fileName;
+  }
   return acc;
 }, {});
 
