@@ -409,4 +409,75 @@ describe('Observable.prototype.publishReplay', () => {
 
     published.connect();
   });
+
+  it('should mirror a simple source Observable with selector', () => {
+    const values = {a: 2, b: 4, c: 6, d: 8};
+    const selector = observable => observable.map(v => 2 * v);
+    const source = cold('--1-2---3-4---|');
+    const sourceSubs =  '^             !';
+    const published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
+    const expected =    '--a-b---c-d---|';
+
+    expectObservable(published).toBe(expected, values);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
+  it('should emit an error when the selector throws an exception', () => {
+    const error = "It's broken";
+    const selector = () => {
+      throw error;
+    };
+    const source = cold('--1-2---3-4---|');
+    const published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
+
+    // The exception is thrown outside Rx chain (not as an error notification).
+    expect(() => published.subscribe()).to.throw(error);
+  });
+
+  it('should emit an error when the selector returns an Observable that emits an error', () => {
+    const error = "It's broken";
+    const innerObservable = cold('--5-6----#', undefined, error);
+    const selector = observable => observable.mergeMapTo(innerObservable);
+    const source = cold('--1--2---3---|');
+    const sourceSubs =  '^          !';
+    const published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
+    const expected =    '----5-65-6-#';
+
+    expectObservable(published).toBe(expected, undefined, error);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
+  it('should terminate immediately when the selector returns an empty Observable', () => {
+    const selector = () => Observable.empty();
+    const source = cold('--1--2---3---|');
+    const sourceSubs =  '(^!)';
+    const published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
+    const expected =    '|';
+
+    expectObservable(published).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
+  it('should not emit and should not complete/error when the selector returns never', () => {
+    const selector = () => Observable.never();
+    const source = cold('-');
+    const sourceSubs =  '^';
+    const published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
+    const expected =    '-';
+
+    expectObservable(published).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
+  it('should emit error when the selector returns Observable.throw', () => {
+    const error = "It's broken";
+    const selector = () => Observable.throw(error);
+    const source = cold('--1--2---3---|');
+    const sourceSubs =  '(^!)';
+    const published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
+    const expected =    '#';
+
+    expectObservable(published).toBe(expected, undefined, error);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
 });
