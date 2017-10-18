@@ -1,3 +1,17 @@
+<a name="5.5.0"></a>
+# [5.5.0](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.7...v5.5.0) (2017-10-18)
+
+### Bug Fixes
+
+* **build:** CJS sourceMaps now inlined into sourcesContent ([39b4af5](https://github.com/ReactiveX/RxJS/commit/39b4af5)), closes [#2934](https://github.com/ReactiveX/RxJS/issues/2934)
+
+
+### Features
+
+* **publishReplay:** add selector function to publishReplay ([#2885](https://github.com/ReactiveX/RxJS/issues/2885)) ([e0efd13](https://github.com/ReactiveX/RxJS/commit/e0efd13))
+
+
+
 <a name="5.5.0-beta.7"></a>
 # [5.5.0-beta.7](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.5...5.5.0-beta.7) (2017-10-13)
 
