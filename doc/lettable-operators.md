@@ -219,6 +219,65 @@ var config = {
 module.exports = config;
 ```
 
+**Use ts-import-plugin**
+You can use [ts-import-plugin](https://www.npmjs.com/package/ts-import-plugin) to transform your import clause with ts-loader.
+For example, it can transform
+
+```ts
+import { map } from 'rxjs/operators'
+```
+
+into
+
+```ts
+import { map } from 'rxjs/operators/map'
+```
+
+here is an example config:
+
+```ts
+const { resolve } = require('path')
+const tsImportPluginFactory = require('ts-import-plugin')
+
+const importPlugin = tsImportPluginFactory({
+  libraryName: 'rxjs/operators',
+  style: false,
+  libraryDirectory: '',
+  camel2DashComponentName: false,
+  transformToDefaultImport: false
+})
+
+module.exports = {
+  entry: {
+    app: './src/app.ts'
+  },
+  output: {
+    filename: '[name].js',
+    path: resolve(process.cwd(), 'dist')
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js', '.jsx']
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(jsx|tsx|js|ts)$/,
+        loader: 'ts-loader',
+        options: {
+          transpileOnly: true,
+          getCustomTransformers: () => ({
+            before: [ importPlugin ]
+          })
+        },
+        exclude: /node_modules/
+      }
+    ]
+  }
+}
+```
+
+You can find full example project in https://github.com/Brooooooklyn/rxjs-webpack-treeshaking-example
+
 **No Control over Build Process**
 
 If you have no control over your build process (or are unable to upgrade to Webpack 3+), the above solution will not work. Therefore importing from `rxjs/operators` will likely make your application bundle larger. However, there's still a way you can use lettable operators. You will have to use deep imports, similar to how you import prior to version 5.5 and lettable operators:
