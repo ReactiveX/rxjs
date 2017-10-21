@@ -129,11 +129,14 @@ function mySimpleOperator(someCallback) {
 }
 ```
 
-This can now be used with the `let()` method on the Observable:
+This can now be used with the `let()` method or the `pipe()` method on the Observable:
 
 <!-- skip-example -->
 ```js
+// Observable.let
 const obs = someObservable.let(mySimpleOperator(x => x + '!'));
+// Observable.pipe
+const obs = someObservable.pipe(mySimpleOperator(x => x + '!'));
 ```
 
 ## Publish your operator as a separate library
