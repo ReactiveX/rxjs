@@ -3,6 +3,7 @@ import * as Rx from '../../dist/package/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram };
+declare const type;
 declare const hot: typeof marbleTestingSignature.hot;
 declare const cold: typeof marbleTestingSignature.cold;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
@@ -256,5 +257,20 @@ describe('Observable.prototype.publishLast', () => {
     expect(results2).to.deep.equal([4]);
     expect(subscriptions).to.equal(1);
     done();
+  });
+
+  type('should infer the type', () => {
+    /* tslint:disable:no-unused-variable */
+    const source = Rx.Observable.of<number>(1, 2, 3);
+    const result: Rx.ConnectableObservable<number> = source.publishLast();
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type('should infer the type for the pipeable operator', () => {
+    /* tslint:disable:no-unused-variable */
+    const source = Rx.Observable.of<number>(1, 2, 3);
+    // TODO: https://github.com/ReactiveX/rxjs/issues/2972
+    const result: Rx.ConnectableObservable<number> = Rx.operators.publishLast()(source);
+    /* tslint:enable:no-unused-variable */
   });
 });

@@ -3,6 +3,7 @@ import * as Rx from '../../dist/package/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram };
+declare const type;
 declare const hot: typeof marbleTestingSignature.hot;
 declare const cold: typeof marbleTestingSignature.cold;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
@@ -479,5 +480,48 @@ describe('Observable.prototype.publishReplay', () => {
 
     expectObservable(published).toBe(expected, undefined, error);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
+  type('should infer the type', () => {
+    /* tslint:disable:no-unused-variable */
+    const source = Rx.Observable.of<number>(1, 2, 3);
+    const result: Rx.ConnectableObservable<number> = source.publishReplay(1);
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type('should infer the type with a selector', () => {
+    /* tslint:disable:no-unused-variable */
+    const source = Rx.Observable.of<number>(1, 2, 3);
+    const result: Rx.Observable<number> = source.publishReplay(1, undefined, s => s.map(x => x));
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type('should infer the type with a type-changing selector', () => {
+    /* tslint:disable:no-unused-variable */
+    const source = Rx.Observable.of<number>(1, 2, 3);
+    const result: Rx.Observable<string> = source.publishReplay(1, undefined, s => s.map(x => x + '!'));
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type('should infer the type for the pipeable operator', () => {
+    /* tslint:disable:no-unused-variable */
+    const source = Rx.Observable.of<number>(1, 2, 3);
+    // TODO: https://github.com/ReactiveX/rxjs/issues/2972
+    const result: Rx.ConnectableObservable<number> = Rx.operators.publishReplay(1)(source);
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type('should infer the type for the pipeable operator with a selector', () => {
+    /* tslint:disable:no-unused-variable */
+    const source = Rx.Observable.of<number>(1, 2, 3);
+    const result: Rx.Observable<number> = source.pipe(Rx.operators.publishReplay(1, undefined, s => s.map(x => x)));
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type('should infer the type for the pipeable operator with a type-changing selector', () => {
+    /* tslint:disable:no-unused-variable */
+    const source = Rx.Observable.of<number>(1, 2, 3);
+    const result: Rx.Observable<string> = source.pipe(Rx.operators.publishReplay(1, undefined, s => s.map(x => x + '!')));
+    /* tslint:enable:no-unused-variable */
   });
 });
