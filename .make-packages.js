@@ -43,8 +43,6 @@ fs.removeSync(PKG_ROOT);
 let rootPackageJson = Object.assign({}, pkg, {
   name: 'rxjs',
   main: './Rx.js',
-  module: './_esm5/Rx.js',
-  es2015: './_esm2015/Rx.js',
   typings: './Rx.d.ts'
 });
 
