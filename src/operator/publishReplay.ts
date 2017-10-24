@@ -24,5 +24,5 @@ export function publishReplay<T, R>(this: Observable<T>, bufferSize?: number,
                                     selectorOrScheduler?: IScheduler | OperatorFunction<T, R>,
                                     scheduler?: IScheduler): Observable<R> | ConnectableObservable<R> {
 
-  return higherOrder(bufferSize, windowTime, selectorOrScheduler as any, scheduler)(this);
+  return higherOrder<T, R>(bufferSize, windowTime, selectorOrScheduler as any, scheduler)(this);
 }
