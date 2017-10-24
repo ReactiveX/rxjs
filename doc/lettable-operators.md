@@ -29,7 +29,7 @@ What is a lettable operator? Simply put, a function that can be used with the cu
 
 There is a `pipe` method built into `Observable` now at `Observable.prototype.pipe` that сan be used to compose the operators in similar manner to what you're used to with dot-chaining (shown below).
 
-There is also a `pipe` utility function at `rxjs/utils/pipe` that can be used to build reusable lettable operators from other lettable operators.
+There is also a `pipe` utility function at `rxjs/util/pipe` that can be used to build reusable lettable operators from other lettable operators.
 
 ## Usage
 
