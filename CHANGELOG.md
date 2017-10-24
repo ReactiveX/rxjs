@@ -1,3 +1,14 @@
+<a name="5.5.1"></a>
+## [5.5.1](https://github.com/ReactiveX/RxJS/compare/5.5.0...v5.5.1) (2017-10-24)
+
+
+### Bug Fixes
+
+* **build:** Remove `module` and `es2015` keys to avoid resolution conflicts ([5073139](https:/github.com/ReactiveX/RxJS/commit/5073139))
+* **ajaxobservable:** fix operator import path ([d9b62ed](https://github.com/ReactiveX/RxJS/commit/d9b62ed))
+
+
+
 <a name="5.5.0"></a>
 # [5.5.0](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.7...v5.5.0) (2017-10-18)
 
