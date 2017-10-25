@@ -1,3 +1,16 @@
+<a name="5.5.2"></a>
+## [5.5.2](https://github.com/ReactiveX/RxJS/compare/5.5.1...v5.5.2) (2017-10-25)
+
+
+### Bug Fixes
+
+* **package:** fixed import failures in Webpack ([#2987](https://github.com/ReactiveX/RxJS/issues/2987)) ([e16202d](https://github.com/ReactiveX/RxJS/commit/e16202d))
+* **typings:** improved type inference for arguments to publishReplay ([#2992](https://github.com/ReactiveX/RxJS/issues/2992)) ([0753ff7](https://github.com/ReactiveX/RxJS/commit/0753ff7)), closes [#2991](https://github.com/ReactiveX/RxJS/issues/2991)
+* **typings:** ensure TS types for `zip` and `combineLatest` are properly inferred. ([b8e6cf8](https://github.com/ReactiveX/RxJS/commit/b8e6cf8))
+* **typings:** publish variants will properly return ConnectableObservable([#2983](https://github.com/ReactiveX/RxJS/issues/2983)) ([d563bfa](https://github.com/ReactiveX/RxJS/commit/d563bfa))
+
+
+
 <a name="5.5.1"></a>
 ## [5.5.1](https://github.com/ReactiveX/RxJS/compare/5.5.0...v5.5.1) (2017-10-24)
 
