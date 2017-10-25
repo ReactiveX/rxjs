@@ -33,5 +33,5 @@ script:
   - npm test
 
 after_success:
-  - if [ "$FULL_VALIDATE" == "true" ]; then npm run test:cover && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js; fi
+  - if [ "$FULL_VALIDATE" == "true" ]; then npm run test:cover && npx nyc report --reporter=text-lcov | npx coveralls; fi
   - if [ "$FULL_VALIDATE" == "true" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ -n "$SAUCE_ACCESS_KEY" ]; then npm run build_spec_browser && grunt --gruntfile spec/support/mocha.sauce.gruntfile.js; fi
