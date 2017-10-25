@@ -46,17 +46,18 @@ let rootPackageJson = Object.assign({}, pkg, {
   typings: './Rx.d.ts'
 });
 
-// Create an object of key/value pairs resolving the "from" side
-// of an import/require to the file name.
-const importTargets = klawSync(CJS_ROOT, {
+// Get a list of the file names
+const fileNames = klawSync(CJS_ROOT, {
   nodir: true,
   filter: function(item) {
     return item.path.endsWith('.js');
   }
 })
 .map(item => item.path)
-.map(path => path.slice((`${__dirname}/${CJS_ROOT}`).length))
-.map(fileName => {
+.map(path => path.slice((`${__dirname}/${CJS_ROOT}`).length));
+
+// Execute build optimizer transforms on ESM5 files
+fileNames.map(fileName => {
   if (!bo) return fileName;
   let fullPath = path.resolve(__dirname, ESM5_ROOT, fileName);
   let content = fs.readFileSync(fullPath).toString();
@@ -66,12 +67,21 @@ const importTargets = klawSync(CJS_ROOT, {
   });
   fs.writeFileSync(fullPath, transformed.content);
   return fileName;
-})
-.reduce((acc, fileName) => {
+});
+
+// Create an object hash mapping imports to file names
+const fileMappings = fileNames.reduce((acc, fileName) => {
   // Get the name of the file to be the new directory
   const directory = fileName.slice(0, fileName.length - 3);
 
   acc[directory] = fileName;
+  return acc;
+}, {});
+
+// For node-resolved imports (rxjs/operators resolves to rxjs/operators/index.js), Webpack's "alias"
+// functionality requires that the most broad mapping (rxjs/operators) be at the end of the alias
+// mapping object. Created Webpack issue: https://github.com/webpack/webpack/issues/5870
+const importTargets = Object.assign({}, fileMappings, fileNames.reduce((acc, fileName) => {
   // If the fileName is index.js (re-export file), create another entry
   // for the root of the export. Example:
   // fileName = 'rxjs/operators/index.js'
@@ -81,7 +91,7 @@ const importTargets = klawSync(CJS_ROOT, {
     acc[fileName.slice(0, EXPORT_FILE.length + 1)] = fileName;
   }
   return acc;
-}, {});
+}, {}));
 
 createImportTargets(importTargets, "_esm5/", ESM5_PKG);
 createImportTargets(importTargets, "_esm2015/", ESM2015_PKG);
