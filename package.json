@@ -9,17 +9,27 @@
     }
   },
   "nyc": {
+    "include": [
+      "src/*.ts",
+      "src/**/*.ts"
+    ],
     "exclude": [
       "node_modules",
       "typings",
       "*.d.ts",
-      "src/MiscJSDoc.ts",
-      "**/spec/**/*"
+      "src/**/MiscJSDoc.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register"
     ],
     "reporter": [
       "json",
       "html"
-    ]
+    ],
+    "all": true
   },
   "lint-staged": {
     "*.@(js)": [
@@ -52,7 +62,6 @@
     "compile_dist_cjs": "Compile codebase into CJS module",
     "compile_module_esm5": "Compile codebase into ESM/ES5",
     "compile_dist_esm2015": "Compile codebase into ESM/ES2015",
-    "cover": "Execute test coverage",
     "lint_perf": "Run lint against performance test suite",
     "lint_spec": "Run lint against test spec",
     "lint_src": "Run lint against source",
@@ -62,6 +71,7 @@
     "test_mocha": "Execute mocha test runner against existing test spec build",
     "test_browser": "Execute mocha test runner on browser against existing test spec build",
     "test": "Clean up existing test spec build, build test spec and execute mocha test runner",
+    "test:cover": "Execute test coverage",
     "tests2png": "Generate marble diagram image from test spec",
     "watch": "Watch codebase, trigger compile when source code changes"
   },
@@ -96,7 +106,6 @@
     "compile_dist_esm2015_for_docs": "tsc ./dist/src/Rx.ts ./dist/src/add/observable/of.ts ./dist/src/MiscJSDoc.ts -m es2015   --sourceMap --outDir ./dist/es6 --target es2015 -d --diagnostics --pretty --noImplicitAny --noImplicitReturns --noImplicitThis --suppressImplicitAnyIndexErrors --moduleResolution node",
     "compile_dist_esm5_for_rollup": "tsc  ./dist/src/Rx.ts ./dist/src/add/observable/of.ts -m es2015   --lib es5,es2015.iterable,es2015.collection,es2015.promise,dom --sourceMap --outDir ./dist/esm5_for_rollup  --target ES5    --diagnostics --pretty --noImplicitAny --noImplicitReturns --noImplicitThis --suppressImplicitAnyIndexErrors --moduleResolution node --noEmitHelpers",
     "copy_sources": "mkdir -p dist && rsync -a ./src/ ./dist/src",
-    "cover": "shx rm -rf dist/cjs && tsc dist/src/Rx.ts dist/src/add/observable/of.ts -m commonjs --lib es5,es2015.iterable,es2015.collection,es2015.promise,dom --outDir dist/cjs --sourceMap --target ES5 -d && nyc --reporter=lcov --reporter=html --exclude=spec/support/**/* --exclude=spec-js/**/* --exclude=node_modules mocha --opts spec/support/default.opts spec-js",
     "decision_tree_widget": "cd doc/decision-tree-widget && npm run build && cd ../..",
     "doctoc": "doctoc CONTRIBUTING.md",
     "generate_packages": "node .make-packages.js",
@@ -109,7 +118,8 @@
     "prepublish": "shx rm -rf ./typings && typings install && npm run build_all",
     "publish_docs": "./publish_docs.sh",
     "test_browser": "npm-run-all build_spec_browser && opn spec/support/mocha-browser-runner.html",
-    "test": "shx rm -rf ./.out && tsc && mocha --opts spec/support/default.opts ./.out/spec/**/*-spec.js",
+    "test": "shx rm -rf ./.out && tsc && mocha --opts spec/support/default.opts '.out/spec/**/*-spec.js'",
+    "test:cover": "nyc mocha --compilers ts:ts-node/register --opts spec/support/coverage.opts 'spec/**/*-spec.ts'",
     "tests2png": "npm run build_spec && mkdirp tmp/docs/img && mkdirp spec-js/support && shx cp spec/support/*.opts spec-js/support/ && mocha --opts spec/support/tests2png.opts spec-js",
     "watch": "watch \"echo triggering build && npm run build_test && echo build completed\" src -d -u -w=15"
   },
@@ -196,7 +206,7 @@
     "mocha-in-sauce": "0.0.1",
     "npm-run-all": "^4.0.2",
     "npm-scripts-info": "^0.3.4",
-    "nyc": "^10.2.0",
+    "nyc": "^11.3.0",
     "opn-cli": "^3.1.0",
     "platform": "^1.3.1",
     "promise": "^7.1.1",
@@ -210,6 +220,7 @@
     "sinon": "^2.1.0",
     "sinon-chai": "^2.9.0",
     "source-map-support": "^0.4.0",
+    "ts-node": "^3.3.0",
     "tslib": "^1.5.0",
     "tslint": "^4.4.2",
     "typescript": "~2.0.6",
