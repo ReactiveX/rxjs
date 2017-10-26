@@ -125,7 +125,7 @@ npm install @reactivex/rxjs@5.0.0
 ### CDN
 
 For CDN, you can use [unpkg](https://unpkg.com/):
-  
+
 https://unpkg.com/rxjs/bundles/Rx.min.js
 
 #### Node.js Usage:
@@ -202,3 +202,25 @@ For Windows and other Operating Systems, check the download instructions here:
 - http://imagemagick.org
 - http://www.graphicsmagick.org
 - http://www.ghostscript.com/
+
+## Support [![OpenCollective](https://opencollective.com/rxjs/backers/badge.svg)](#backers) [![OpenCollective](https://opencollective.com/rxjs/sponsors/badge.svg)](#sponsors)
+
+### Backers
+
+Support us with a monthly donation and help us continue our activities. [[Become a backer](https://opencollective.com/rxjs#backer)]
+
+<a href="https://opencollective.com/rxjs/backer/0/website" target="_blank"><img src="https://opencollective.com/rxjs/backer/0/avatar.svg"></a>
+<a href="https://opencollective.com/rxjs/backer/1/website" target="_blank"><img src="https://opencollective.com/rxjs/backer/1/avatar.svg"></a>
+<a href="https://opencollective.com/rxjs/backer/2/website" target="_blank"><img src="https://opencollective.com/rxjs/backer/2/avatar.svg"></a>
+
+### Sponsors
+
+Become a sponsor and get your logo on our README on Github with a link to your site. [[Become a sponsor](https://opencollective.com/rxjs#sponsor)]
+
+<a href="https://opencollective.com/rxjs/sponsor/0/website" target="_blank"><img src="https://opencollective.com/rxjs/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/rxjs/sponsor/1/website" target="_blank"><img src="https://opencollective.com/rxjs/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/rxjs/sponsor/2/website" target="_blank"><img src="https://opencollective.com/rxjs/sponsor/2/avatar.svg"></a>
+
+## LICENSE
+
+[The Apache License](https://github.com/ReactiveX/rxjs/blob/master/LICENSE.txt)
