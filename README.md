@@ -210,8 +210,6 @@ For Windows and other Operating Systems, check the download instructions here:
 Support us with a monthly donation and help us continue our activities. [[Become a backer](https://opencollective.com/rxjs#backer)]
 
 <a href="https://opencollective.com/rxjs/backer/0/website" target="_blank"><img src="https://opencollective.com/rxjs/backer/0/avatar.svg"></a>
-<a href="https://opencollective.com/rxjs/backer/1/website" target="_blank"><img src="https://opencollective.com/rxjs/backer/1/avatar.svg"></a>
-<a href="https://opencollective.com/rxjs/backer/2/website" target="_blank"><img src="https://opencollective.com/rxjs/backer/2/avatar.svg"></a>
 
 ### Sponsors
 
