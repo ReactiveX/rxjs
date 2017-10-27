@@ -216,54 +216,6 @@ describe('Observable.prototype.repeat', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should terminate repeat and throw if source subscription to _next throws', () => {
-    const e1 = Observable.of<number>(1, 2, rxTestScheduler);
-    e1.subscribe(() => { throw new Error('error'); });
-
-    expect(() => {
-      e1.repeat(3);
-      rxTestScheduler.flush();
-    }).to.throw();
-  });
-
-  it('should terminate repeat and throw if source subscription to _complete throws', () => {
-    const e1 = Observable.of<number>(1, 2, rxTestScheduler);
-    e1.subscribe(() => {
-      //noop
-    }, () => {
-      //noop
-    }, () => { throw new Error('error'); });
-
-    expect(() => {
-      e1.repeat(3);
-      rxTestScheduler.flush();
-    }).to.throw();
-  });
-
-  it('should terminate repeat and throw if source subscription to _next throws when repeating infinitely', () => {
-    const e1 = Observable.of<number>(1, 2, rxTestScheduler);
-    e1.subscribe(() => { throw new Error('error'); });
-
-    expect(() => {
-      e1.repeat();
-      rxTestScheduler.flush();
-    }).to.throw();
-  });
-
-  it('should terminate repeat and throw if source subscription to _complete throws when repeating infinitely', () => {
-    const e1 = Observable.of<number>(1, 2, rxTestScheduler);
-    e1.subscribe(() => {
-      //noop
-    }, () => {
-      //noop
-    }, () => { throw new Error('error'); });
-
-    expect(() => {
-      e1.repeat();
-      rxTestScheduler.flush();
-    }).to.throw();
-  });
-
   it('should raise error after first emit succeed', () => {
     let repeated = false;
 
