@@ -16,7 +16,6 @@
     "exclude": [
       "node_modules",
       "dist",
-      "typings",
       "*.d.ts",
       "src/**/MiscJSDoc.ts"
     ],
@@ -111,7 +110,7 @@
     "lint": "npm-run-all --parallel lint_*",
     "perf": "protractor protractor.conf.js",
     "perf_micro": "node ./perf/micro/index.js",
-    "prepublish": "shx rm -rf ./typings && typings install && npm run build_all",
+    "prepublish": "shx rm -rf ./typings && npm run build_all",
     "publish_docs": "./publish_docs.sh",
     "test_browser": "npm-run-all build_spec_browser && opn spec/support/mocha-browser-runner.html",
     "test": "cross-env TS_NODE_FAST=true mocha --compilers ts:ts-node/register --opts spec/support/coverage.opts \"spec/**/*-spec.ts\"",
@@ -170,6 +169,12 @@
   "homepage": "https://github.com/ReactiveX/RxJS",
   "devDependencies": {
     "@angular-devkit/build-optimizer": "0.0.24",
+    "@types/chai": "^4.0.4",
+    "@types/lodash": "^4.14.80",
+    "@types/mocha": "^2.2.44",
+    "@types/node": "^8.0.47",
+    "@types/sinon": "^2.3.7",
+    "@types/sinon-chai": "^2.7.29",
     "babel-polyfill": "^6.23.0",
     "benchmark": "^2.1.0",
     "benchpress": "2.0.0-beta.1",
@@ -223,7 +228,6 @@
     "tslib": "^1.5.0",
     "tslint": "^4.4.2",
     "typescript": "latest",
-    "typings": "^2.0.0",
     "validate-commit-msg": "^2.14.0",
     "watch": "^1.0.1",
     "webpack": "^1.13.1",
