@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../../../dist/package/Rx';
-import { root } from '../../../dist/package/util/root';
+import * as Rx from '../../../src/Rx';
+import { root } from '../../../src/util/root';
 
 declare const global: any;
 

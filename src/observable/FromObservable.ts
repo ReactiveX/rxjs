@@ -2,7 +2,7 @@ import { isArray } from '../util/isArray';
 import { isArrayLike } from '../util/isArrayLike';
 import { isPromise } from '../util/isPromise';
 import { PromiseObservable } from './PromiseObservable';
-import { IteratorObservable } from'./IteratorObservable';
+import { IteratorObservable } from './IteratorObservable';
 import { ArrayObservable } from './ArrayObservable';
 import { ArrayLikeObservable } from './ArrayLikeObservable';
 

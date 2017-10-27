@@ -13,9 +13,9 @@ install:
   - npm install
 
 build_script:
-  - npm run build_spec
+  - npm run build_all
 
 test_script:
-  - npm run cover
+  - npm test
 
 version: "{build}"

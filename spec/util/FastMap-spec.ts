@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { FastMap } from '../../dist/package/util/FastMap';
+import { FastMap } from '../../src/util/FastMap';
 
 /** @test {FastMap} */
 describe('FastMap', () => {

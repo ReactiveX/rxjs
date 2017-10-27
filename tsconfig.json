@@ -4,13 +4,12 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "declaration": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "noImplicitReturns": true,
-    "noImplicitThis": true,
     "suppressImplicitAnyIndexErrors": true,
     "moduleResolution": "node",
-    "target": "es6",
-    "outDir": "dist/es6",
+    "target": "es5",
+    "outDir": "./.out",
     "lib": [
       "es5",
       "es2015.iterable",
@@ -22,8 +21,5 @@
   "formatCodeOptions": {
     "indentSize": 2,
     "tabSize": 2
-  },
-  "files": [
-    "src/Rx.ts"
-  ]
+  }
 }

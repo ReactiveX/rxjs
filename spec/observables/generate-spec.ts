@@ -1,6 +1,6 @@
-import * as Rx from '../../dist/package/Rx';
-import '../../dist/package/add/observable/generate';
-import { TestScheduler } from '../../dist/package/testing/TestScheduler';
+import * as Rx from '../../src/Rx';
+import '../../src/add/observable/generate';
+import { TestScheduler } from '../../src/testing/TestScheduler';
 import { expect } from 'chai';
 declare const {asDiagram, expectObservable};
 declare const rxTestScheduler: TestScheduler;

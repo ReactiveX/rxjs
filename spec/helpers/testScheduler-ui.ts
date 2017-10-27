@@ -1,19 +1,23 @@
 ///<reference path='../../typings/index.d.ts'/>
-///<reference path='ambient.d.ts'/>
 
 import * as _ from 'lodash';
-import * as commonInterface from 'mocha/lib/interfaces/common';
-import * as escapeRe from 'escape-string-regexp';
+//import * as commonInterface from 'mocha/lib/interfaces/common';
+//import * as escapeRe from 'escape-string-regexp';
 import * as chai from 'chai';
 import * as sinonChai from 'sinon-chai';
 
-import * as Rx from '../../dist/package/Rx';
+import * as Rx from '../../src/Rx';
 import * as marble from './marble-testing';
+
+//tslint:disable:no-var-requires no-require-imports
+const commonInterface = require('mocha/lib/interfaces/common');
+const escapeRe = require('escape-string-regexp');
+//tslint:enable:no-var-requires no-require-imports
 
 //setup sinon-chai
 chai.use(sinonChai);
 
-declare const module, global, Suite, Test: any;
+declare const module: any, global: any, Suite: any, Test: any;
 
 if (global && !(typeof window !== 'undefined')) {
   global.mocha = require('mocha'); // tslint:disable-line:no-require-imports no-var-requires
@@ -29,10 +33,10 @@ const diagramFunction = global.asDiagram;
 
 //mocha creates own global context per each test suite, simple patching to global won't deliver its context into test cases.
 //this custom interface is just mimic of existing one amending test scheduler behavior previously test-helper does via global patching.
-module.exports = function(suite) {
+module.exports = function(suite: any) {
   const suites = [suite];
 
-  suite.on('pre-require', function(context, file, mocha) {
+  suite.on('pre-require', function(context: any, file: any, mocha: any) {
     const common = (<any>commonInterface)(suites, context);
 
     context.before = common.before;
@@ -57,7 +61,7 @@ module.exports = function(suite) {
      * and/or tests.
      */
 
-    context.describe = context.context = function(title, fn) {
+    context.describe = context.context = function(title: any, fn: any) {
       const suite = (<any>Suite).create(suites[0], title);
       suite.file = file;
       suites.unshift(suite);
@@ -70,7 +74,7 @@ module.exports = function(suite) {
      * Pending describe.
      */
 
-    context.xdescribe = context.xcontext = context.describe.skip = function(title, fn) {
+    context.xdescribe = context.xcontext = context.describe.skip = function(title: any, fn: any) {
       const suite = (<any>Suite).create(suites[0], title);
       suite.pending = true;
       suites.unshift(suite);
@@ -82,7 +86,7 @@ module.exports = function(suite) {
      * Exclusive suite.
      */
 
-    context.describe.only = function(title, fn) {
+    context.describe.only = function(title: any, fn: any) {
       const suite = context.describe(title, fn);
       mocha.grep(suite.fullTitle());
       return suite;
@@ -94,13 +98,13 @@ module.exports = function(suite) {
      * exceptional type definition won't be used in test cases.
      */
 
-    context.type = function (title, fn) {
+    context.type = function(title: any, fn: any) {
       //intentionally does not execute to avoid unexpected side effect occurs by subscription,
       //or infinite source. Suffecient to check build time only.
     };
 
-    function stringify(x): string {
-      return JSON.stringify(x, function (key, value) {
+    function stringify(x: any): string {
+      return JSON.stringify(x, function (key: string, value: any) {
         if (Array.isArray(value)) {
           return '[' + value
             .map(function (i) {
@@ -114,7 +118,7 @@ module.exports = function(suite) {
       .replace(/\\n/g, '\n');
     }
 
-    function deleteErrorNotificationStack(marble) {
+    function deleteErrorNotificationStack(marble: any) {
       const { notification } = marble;
       if (notification) {
         const { kind, error } = notification;
@@ -129,7 +133,7 @@ module.exports = function(suite) {
      * custom assertion formatter for expectObservable test
      */
 
-    function observableMatcher(actual, expected) {
+    function observableMatcher(actual: any, expected: any) {
       if (Array.isArray(actual) && Array.isArray(expected)) {
         actual = actual.map(deleteErrorNotificationStack);
         expected = expected.map(deleteErrorNotificationStack);
@@ -139,10 +143,10 @@ module.exports = function(suite) {
         }
 
         let message = '\nExpected \n';
-        actual.forEach((x) => message += `\t${stringify(x)}\n`);
+        actual.forEach((x: any) => message += `\t${stringify(x)}\n`);
 
         message += '\t\nto deep equal \n';
-        expected.forEach((x) => message += `\t${stringify(x)}\n`);
+        expected.forEach((x: any) => message += `\t${stringify(x)}\n`);
 
         chai.assert(passed, message);
       } else {
@@ -156,7 +160,7 @@ module.exports = function(suite) {
      * acting as a thunk.
      */
 
-    const it = context.it = context.specify = function(title, fn) {
+    const it = context.it = context.specify = function(title: any, fn: any) {
       context.rxTestScheduler = null;
       let modified = fn;
 
@@ -188,7 +192,7 @@ module.exports = function(suite) {
      * to be represented as marble diagram png.
      * It will still serve as normal test cases as well.
      */
-    context.asDiagram = function (label) {
+    context.asDiagram = function (label: any) {
       if (diagramFunction) {
         return diagramFunction(label, it);
       }
@@ -199,7 +203,7 @@ module.exports = function(suite) {
      * Exclusive test-case.
      */
 
-    context.it.only = function(title, fn) {
+    context.it.only = function(title: any, fn: any) {
       const test = it(title, fn);
       const reString = '^' + (<any>escapeRe)(test.fullTitle()) + '$';
       mocha.grep(new RegExp(reString));
@@ -210,14 +214,14 @@ module.exports = function(suite) {
      * Pending test case.
      */
 
-    context.xit = context.xspecify = context.it.skip = function(title) {
+    context.xit = context.xspecify = context.it.skip = function(title: string) {
       context.it(title);
     };
 
     /**
      * Number of attempts to retry.
      */
-    context.it.retries = function(n) {
+    context.it.retries = function(n: number) {
       context.retries(n);
     };
   });
@@ -232,10 +236,10 @@ if (global.Mocha) {
 
 //overrides JSON.toStringfy to serialize error object
 Object.defineProperty(Error.prototype, 'toJSON', {
-  value: function () {
+  value: function (this: any) {
     const alt = {};
 
-    Object.getOwnPropertyNames(this).forEach(function (key) {
+    Object.getOwnPropertyNames(this).forEach(function (this: any, key: string) {
       if (key !== 'stack') {
         alt[key] = this[key];
       }
