@@ -60,6 +60,8 @@ const fileNames = klawSync(CJS_ROOT, {
 fileNames.map(fileName => {
   if (!bo) return fileName;
   let fullPath = path.resolve(__dirname, ESM5_ROOT, fileName);
+  // The file won't exist when running build_test as we don't create the ESM5 sources
+  if (!fs.existsSync(fullPath)) return fileName;
   let content = fs.readFileSync(fullPath).toString();
   let transformed = bo.transformJavascript({
     content: content,
