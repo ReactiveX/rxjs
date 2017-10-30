@@ -1,4 +1,3 @@
-///<reference path='../../typings/index.d.ts'/>
 import { Observable } from '../../src/Observable';
 import { SubscriptionLog } from '../../src/testing/SubscriptionLog';
 import { ColdObservable } from '../../src/testing/ColdObservable';

@@ -26,7 +26,7 @@ before_install:
 
 install:
   - npm install
-  - if [ "$FULL_VALIDATE" == "true" ]; then npm run lint && npm run check_circular_dependencies; fi
+  - if [ "$FULL_VALIDATE" == "true" ]; then npm run lint && npm run test:circular; fi
 
 script:
   - if [ "$FULL_VALIDATE" == "true" ] && [ -n "DANGER_GITHUB_API_TOKEN" ]; then echo {} > ./.babelrc && npx danger; fi

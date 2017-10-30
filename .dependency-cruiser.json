@@ -1,0 +1,107 @@
+{
+  "forbidden": [
+    {
+      "name": "not-to-spec",
+      "comment": "Don't allow dependencies from outside the spec folder to spec",
+      "severity": "error",
+      "from": {
+        "pathNot": "^spec"
+      },
+      "to": {
+        "path": "^spec"
+      }
+    },
+    {
+      "name": "not-to-spec",
+      "comment": "Don't allow dependencies to (typescript/ javascript/ coffeescript) spec files",
+      "severity": "error",
+      "from": {},
+      "to": {
+        "path": "\\.spec\\.[js|ts|ls|coffee|litcoffee|coffee\\.md]$"
+      }
+    },
+    {
+      "name": "no-deprecated-core",
+      "comment": "Warn about dependencies on deprecated core modules.",
+      "severity": "warn",
+      "from": {},
+      "to": {
+        "dependencyTypes": [
+          "core"
+        ],
+        "path": "^(punycode|domain)$"
+      }
+    },
+    {
+      "name": "no-deprecated-npm",
+      "comment": "These npm modules are deprecated - find an alternative.",
+      "severity": "warn",
+      "from": {},
+      "to": {
+        "dependencyTypes": [
+          "deprecated"
+        ]
+      }
+    },
+    {
+      "name": "not-to-dev-dep",
+      "severity": "error",
+      "comment": "Don't allow dependencies from src/app/lib to a development only package",
+      "from": {
+        "path": "^(src|app|lib)"
+      },
+      "to": {
+        "dependencyTypes": [
+          "npm-dev"
+        ]
+      }
+    },
+    {
+      "name": "no-non-package-json",
+      "severity": "error",
+      "comment": "Don't allow dependencies to packages not in package.json (except from within node_modules)",
+      "from": {
+        "pathNot": "^node_modules"
+      },
+      "to": {
+        "dependencyTypes": [
+          "undetermined",
+          "npm-no-pkg",
+          "npm-unknown"
+        ],
+        "pathNot": "^electron"
+      }
+    },
+    {
+      "name": "peer-deps-used",
+      "comment": "Error about the use of a peer dependency (peer dependencies are deprecated).",
+      "severity": "error",
+      "from": {},
+      "to": {
+        "dependencyTypes": [
+          "npm-peer"
+        ]
+      }
+    },
+    {
+      "name": "no-duplicate-dep-types",
+      "comment": "Warn if a dependency occurs in your package.json more than once (technically: has more than one dependency type)",
+      "severity": "warn",
+      "from": {},
+      "to": {
+        "moreThanOneDependencyType": true
+      }
+    },
+    {
+      "name": "no-circular",
+      "severity": "error",
+      "comment": "Error in case we have circular dependencies",
+      "from": {
+        "path": "^src"
+      },
+      "to": {
+        "circular": true
+      }
+    }
+  ]
+}

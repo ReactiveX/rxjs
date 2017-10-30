@@ -1,4 +1,3 @@
-///<reference path='../../typings/index.d.ts'/>
 declare const global: any;
 
 import * as Rx from '../../src/Rx';
@@ -6,7 +5,6 @@ import { ObservableInput } from '../../src/Observable';
 import { root } from '../../src/util/root';
 import { $$iterator } from '../../src/symbol/iterator';
 import $$symbolObservable from 'symbol-observable';
-import { Observable } from '../../src/Observable';
 
 export function lowerCaseO<T>(...args: Array<any>): Rx.Observable<T> {
 

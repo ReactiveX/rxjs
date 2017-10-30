@@ -1,5 +1,3 @@
-///<reference path='../../typings/index.d.ts'/>
-
 import * as _ from 'lodash';
 //import * as commonInterface from 'mocha/lib/interfaces/common';
 //import * as escapeRe from 'escape-string-regexp';
