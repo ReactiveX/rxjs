@@ -255,11 +255,6 @@ describe('Observable.prototype.partition', () => {
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
   });
 
-  it('should throw without predicate', () => {
-    const e1 = hot('--a-b---a------d----');
-    expect(e1.partition).to.throw();
-  });
-
   it('should accept thisArg', () => {
     const thisArg = {};
 
