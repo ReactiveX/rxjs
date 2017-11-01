@@ -7,7 +7,7 @@ import { skipWhile as higherOrder } from '../operators/skipWhile';
  *
  * <img src="./img/skipWhile.png" width="100%">
  *
- * @param {Function} predicate - A function to test each item emitted from the source Observable.
+ * @param {function(value: T, index: number): boolean} predicate - A function to test each item emitted from the source Observable.
  * @return {Observable<T>} An Observable that begins emitting items emitted by the source Observable when the
  * specified predicate becomes false.
  * @method skipWhile
