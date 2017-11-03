@@ -30,9 +30,6 @@ const ESM2015_PKG = PKG_ROOT + '_esm2015/';
 const UMD_PKG = PKG_ROOT + 'bundles/';
 const TYPE_PKG = PKG_ROOT;
 
-const EXPORT_FILE = 'index.js';
-
-
 // License info for minified files
 let licenseUrl = 'https://github.com/ReactiveX/RxJS/blob/master/LICENSE.txt';
 let license = 'Apache License 2.0 ' + licenseUrl;
@@ -46,7 +43,13 @@ let rootPackageJson = Object.assign({}, pkg, {
   typings: './Rx.d.ts'
 });
 
-// Get a list of the file names
+// Get a list of the file names. Sort in reverse order so re-export files
+// such as "operators.js" are AFTER their more specfic exports, such as
+// "operators/map.js". This is due to a Webpack bug for node-resolved imports
+// (rxjs/operators resolves to rxjs/operators.js), Webpack's "alias"
+// functionality requires that the most broad mapping (rxjs/operators) be at
+// the end of the alias mapping object. Created Webpack issue:
+// https://github.com/webpack/webpack/issues/5870
 const fileNames = klawSync(CJS_ROOT, {
   nodir: true,
   filter: function(item) {
@@ -54,12 +57,15 @@ const fileNames = klawSync(CJS_ROOT, {
   }
 })
 .map(item => item.path)
-.map(path => path.slice((`${__dirname}/${CJS_ROOT}`).length));
+.map(path => path.slice((`${__dirname}/${CJS_ROOT}`).length))
+.sort().reverse();
 
 // Execute build optimizer transforms on ESM5 files
 fileNames.map(fileName => {
   if (!bo) return fileName;
   let fullPath = path.resolve(__dirname, ESM5_ROOT, fileName);
+  // The file won't exist when running build_test as we don't create the ESM5 sources
+  if (!fs.existsSync(fullPath)) return fileName;
   let content = fs.readFileSync(fullPath).toString();
   let transformed = bo.transformJavascript({
     content: content,
@@ -70,28 +76,13 @@ fileNames.map(fileName => {
 });
 
 // Create an object hash mapping imports to file names
-const fileMappings = fileNames.reduce((acc, fileName) => {
+const importTargets = fileNames.reduce((acc, fileName) => {
   // Get the name of the file to be the new directory
   const directory = fileName.slice(0, fileName.length - 3);
 
   acc[directory] = fileName;
   return acc;
 }, {});
-
-// For node-resolved imports (rxjs/operators resolves to rxjs/operators/index.js), Webpack's "alias"
-// functionality requires that the most broad mapping (rxjs/operators) be at the end of the alias
-// mapping object. Created Webpack issue: https://github.com/webpack/webpack/issues/5870
-const importTargets = Object.assign({}, fileMappings, fileNames.reduce((acc, fileName) => {
-  // If the fileName is index.js (re-export file), create another entry
-  // for the root of the export. Example:
-  // fileName = 'rxjs/operators/index.js'
-  // create entry:
-  // {'rxjs/operators': 'rxjs/operators/index.js'}
-  if (fileName.slice(fileName.length - EXPORT_FILE.length) === EXPORT_FILE) {
-    acc[fileName.slice(0, EXPORT_FILE.length + 1)] = fileName;
-  }
-  return acc;
-}, {}));
 
 createImportTargets(importTargets, "_esm5/", ESM5_PKG);
 createImportTargets(importTargets, "_esm2015/", ESM2015_PKG);
