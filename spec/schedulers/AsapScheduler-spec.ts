@@ -43,7 +43,8 @@ describe('Scheduler.asap', () => {
   it('should reuse the interval for recursively scheduled actions with the same delay', () => {
     const sandbox = sinon.sandbox.create();
     const fakeTimer = sandbox.useFakeTimers();
-    const stubSetInterval = sinon.stub(global, 'setInterval').callThrough();
+    // callThrough is missing from the declarations installed by the typings tool in stable
+    const stubSetInterval = (<any> sinon.stub(global, 'setInterval')).callThrough();
     function dispatch(state: any): void {
       state.index += 1;
       if (state.index < 3) {
@@ -68,7 +69,8 @@ describe('Scheduler.asap', () => {
   it('should not reuse the interval for recursively scheduled actions with a different delay', () => {
     const sandbox = sinon.sandbox.create();
     const fakeTimer = sandbox.useFakeTimers();
-    const stubSetInterval = sinon.stub(global, 'setInterval').callThrough();
+    // callThrough is missing from the declarations installed by the typings tool in stable
+    const stubSetInterval = (<any> sinon.stub(global, 'setInterval')).callThrough();
     function dispatch(state: any): void {
       state.index += 1;
       state.period -= 1;

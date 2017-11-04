@@ -29,10 +29,6 @@ export class AsyncAction<T> extends Action<T> {
     // Always replace the current state with the new state.
     this.state = state;
 
-    // Set the pending flag indicating that this action has been scheduled, or
-    // has recursively rescheduled itself.
-    this.pending = true;
-
     const id = this.id;
     const scheduler = this.scheduler;
 
@@ -60,6 +56,10 @@ export class AsyncAction<T> extends Action<T> {
     if (id != null) {
       this.id = this.recycleAsyncId(scheduler, id, delay);
     }
+
+    // Set the pending flag indicating that this action has been scheduled, or
+    // has recursively rescheduled itself.
+    this.pending = true;
 
     this.delay = delay;
     // If this action has already an async Id, don't request a new one.
