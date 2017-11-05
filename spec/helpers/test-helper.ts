@@ -24,27 +24,25 @@ export function lowerCaseO<T>(...args: Array<any>): Rx.Observable<T> {
   return <any>o;
 };
 
-export function createObservableInputs<T>(value: T): Rx.Observable<ObservableInput<T>> {
-  return Rx.Observable.of<ObservableInput<T>>(
-    Rx.Observable.of<T>(value),
-    Rx.Observable.of<T>(value, Rx.Scheduler.async),
-    [value],
-    Promise.resolve(value),
-    <any>({
-    [$$iterator]: () => {
-      const iteratorResults = [
-        { value, done: false },
-        { done: true }
-      ];
-      return {
-        next: () => {
-          return iteratorResults.shift();
-        }
-      };
-    }
-    }),
-    <any>({ [$$symbolObservable]: () => Rx.Observable.of(value) })
-  );
-}
+export const createObservableInputs = <T>(value: T) => Rx.Observable.of<ObservableInput<T>>(
+  Rx.Observable.of<T>(value),
+  Rx.Observable.of<T>(value, Rx.Scheduler.async),
+  [value],
+  Promise.resolve(value),
+  <any>({
+  [$$iterator]: () => {
+    const iteratorResults = [
+      { value, done: false },
+      { done: true }
+    ];
+    return {
+      next: () => {
+        return iteratorResults.shift();
+      }
+    };
+  }
+  }),
+  <any>({ [$$symbolObservable]: () => Rx.Observable.of(value) })
+);
 
 global.__root__ = root;
