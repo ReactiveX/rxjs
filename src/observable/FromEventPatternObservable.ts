@@ -75,7 +75,17 @@ export class FromEventPatternObservable<T> extends Observable<T> {
 
     const handler = !!this.selector ? (...args: Array<any>) => {
       this._callSelector(subscriber, args);
-    } : function(e: any) { subscriber.next(e); };
+    } : function(...args: any[]) { // could be more than one parameters from an event emmiter
+      if (args && args.length > 1) {
+        let value: any = []; // use an array to capsule all parameters
+        for (let elem of args) {
+          value.push(elem);
+        }
+        subscriber.next(value);
+      } else {
+        subscriber.next(...args); // pass 0 or 1 parameter
+      }
+    };
 
     const retValue = this._callAddHandler(handler, subscriber);
 
