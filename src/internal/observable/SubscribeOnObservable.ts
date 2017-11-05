@@ -43,7 +43,7 @@ export class SubscribeOnObservable<T> extends Observable<T> {
     const source = this.source;
     const scheduler = this.scheduler;
 
-    return scheduler.schedule(SubscribeOnObservable.dispatch, delay, {
+    return scheduler.schedule<DispatchArg<any>>(SubscribeOnObservable.dispatch, delay, {
       source, subscriber
     });
   }

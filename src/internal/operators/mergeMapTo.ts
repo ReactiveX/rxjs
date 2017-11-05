@@ -56,7 +56,7 @@ export function mergeMapTo<T, I, R>(observable: ObservableInput<I>, resultSelect
  * @method mergeMapTo
  * @owner Observable
  */
-export function mergeMapTo<T, I, R>(innerObservable: Observable<I>,
+export function mergeMapTo<T, I, R>(innerObservable: ObservableInput<I>,
                                     resultSelector?: ((outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) | number,
                                     concurrent: number = Number.POSITIVE_INFINITY): OperatorFunction<T, R> {
   if (typeof resultSelector === 'number') {

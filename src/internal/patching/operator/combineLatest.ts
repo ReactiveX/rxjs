@@ -77,5 +77,5 @@ export function combineLatest<T, R>(this: Observable<T>, ...observables: Array<O
     observables = (<any>observables[0]).slice();
   }
 
-  return this.lift.call(of(this, ...observables), new CombineLatestOperator(project));
+  return this.lift.call(of(this, ...observables as Array<Observable<any>>), new CombineLatestOperator(project));
 }

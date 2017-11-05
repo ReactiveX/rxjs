@@ -46,7 +46,7 @@ export function startWith<T>(...array: Array<T | IScheduler>): MonoTypeOperatorF
     } else if (len > 0) {
       return concatStatic(fromArray(array as T[], scheduler), source);
     } else {
-      return concatStatic<T>(empty(scheduler), source);
+      return concatStatic<T>(empty(scheduler) as any, source);
     }
   };
 }

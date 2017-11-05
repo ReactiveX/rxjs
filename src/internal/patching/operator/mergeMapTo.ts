@@ -49,7 +49,7 @@ export function mergeMapTo<T, I, R>(this: Observable<T>, observable: ObservableI
  * @method mergeMapTo
  * @owner Observable
  */
-export function mergeMapTo<T, I, R>(this: Observable<T>, innerObservable: Observable<I>,
+export function mergeMapTo<T, I, R>(this: Observable<T>, innerObservable: ObservableInput<I>,
                                     resultSelector?: ((outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) | number,
                                     concurrent: number = Number.POSITIVE_INFINITY): Observable<R> {
   return higherOrder(innerObservable, resultSelector as any, concurrent)(this) as Observable<R>;

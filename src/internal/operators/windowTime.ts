@@ -177,11 +177,11 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
     if (windowCreationInterval !== null && windowCreationInterval >= 0) {
       const closeState: CloseState<T> = { subscriber: this, window, context: <any>null };
       const creationState: CreationState<T> = { windowTimeSpan, windowCreationInterval, subscriber: this, scheduler };
-      this.add(scheduler.schedule(dispatchWindowClose, windowTimeSpan, closeState));
-      this.add(scheduler.schedule(dispatchWindowCreation, windowCreationInterval, creationState));
+      this.add(scheduler.schedule<CloseState<T>>(dispatchWindowClose, windowTimeSpan, closeState));
+      this.add(scheduler.schedule<CreationState<T>>(dispatchWindowCreation, windowCreationInterval, creationState));
     } else {
       const timeSpanOnlyState: TimeSpanOnlyState<T> = { subscriber: this, window, windowTimeSpan };
-      this.add(scheduler.schedule(dispatchWindowTimeSpanOnly, windowTimeSpan, timeSpanOnlyState));
+      this.add(scheduler.schedule<TimeSpanOnlyState<T>>(dispatchWindowTimeSpanOnly, windowTimeSpan, timeSpanOnlyState));
     }
   }
 
@@ -248,7 +248,7 @@ function dispatchWindowCreation<T>(this: Action<CreationState<T>>, state: Creati
   const action = this;
   let context: CloseWindowContext<T> = { action, subscription: <any>null };
   const timeSpanState: CloseState<T> = { subscriber, window, context };
-  context.subscription = scheduler.schedule(dispatchWindowClose, windowTimeSpan, timeSpanState);
+  context.subscription = scheduler.schedule<CloseState<T>>(dispatchWindowClose, windowTimeSpan, timeSpanState);
   action.add(context.subscription);
   action.schedule(state, windowCreationInterval);
 }

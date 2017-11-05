@@ -87,7 +87,7 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
               private openings: Observable<O>,
               private closingSelector: (openValue: O) => Observable<any>) {
     super(destination);
-    this.add(this.openSubscription = subscribeToResult(this, openings, openings));
+    this.add(this.openSubscription = subscribeToResult(this, openings, openings as any));
   }
 
   protected _next(value: T) {
@@ -164,7 +164,7 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
         const subscription = new Subscription();
         const context = { window, subscription };
         this.contexts.push(context);
-        const innerSubscription = subscribeToResult(this, closingNotifier, context);
+        const innerSubscription = subscribeToResult(this, closingNotifier, context as any);
 
         if (innerSubscription.closed) {
           this.closeWindow(this.contexts.length - 1);

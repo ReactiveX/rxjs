@@ -1,6 +1,7 @@
 import { AsyncAction } from './AsyncAction';
 import { Subscription } from '../Subscription';
 import { QueueScheduler } from './QueueScheduler';
+import { Action } from './Action';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -10,7 +11,7 @@ import { QueueScheduler } from './QueueScheduler';
 export class QueueAction<T> extends AsyncAction<T> {
 
   constructor(protected scheduler: QueueScheduler,
-              protected work: (this: QueueAction<T>, state?: T) => void) {
+              protected work: (this: Action<T>, state?: T) => void) {
     super(scheduler, work);
   }
 

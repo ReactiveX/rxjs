@@ -1,6 +1,7 @@
 import { AsyncAction } from './AsyncAction';
 import { AnimationFrame } from '..//util/AnimationFrame';
 import { AnimationFrameScheduler } from './AnimationFrameScheduler';
+import { Action } from './Action';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -10,7 +11,7 @@ import { AnimationFrameScheduler } from './AnimationFrameScheduler';
 export class AnimationFrameAction<T> extends AsyncAction<T> {
 
   constructor(protected scheduler: AnimationFrameScheduler,
-              protected work: (this: AnimationFrameAction<T>, state?: T) => void) {
+              protected work: (this: Action<T>, state?: T) => void) {
     super(scheduler, work);
   }
 

@@ -8,5 +8,5 @@ import { publishLast as higherOrder } from '../../operators/publishLast';
  */
 export function publishLast<T>(this: Observable<T>): ConnectableObservable<T> {
   //TODO(benlesh): correct type-flow through here.
-  return higherOrder()(this) as ConnectableObservable<T>;
+  return higherOrder<T>()(this) as ConnectableObservable<T>;
 }

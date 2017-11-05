@@ -62,7 +62,7 @@ export function concatMapTo<T, I, R>(this: Observable<T>, observable: Observable
  * @method concatMapTo
  * @owner Observable
  */
-export function concatMapTo<T, I, R>(this: Observable<T>, innerObservable: Observable<I>,
+export function concatMapTo<T, I, R>(this: Observable<T>, innerObservable: ObservableInput<I>,
                                      resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R> {
   return higherOrder(innerObservable, resultSelector)(this);
 }

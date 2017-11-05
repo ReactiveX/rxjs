@@ -1,6 +1,7 @@
 import { AsyncAction } from './AsyncAction';
 import { Subscription } from '../Subscription';
 import { AsyncScheduler } from './AsyncScheduler';
+import { Action } from './Action';
 
 export class VirtualTimeScheduler extends AsyncScheduler {
 
@@ -9,7 +10,7 @@ export class VirtualTimeScheduler extends AsyncScheduler {
   public frame: number = 0;
   public index: number = -1;
 
-  constructor(SchedulerAction: typeof AsyncAction = VirtualAction,
+  constructor(SchedulerAction: typeof AsyncAction = VirtualAction as any,
               public maxFrames: number = Number.POSITIVE_INFINITY) {
     super(SchedulerAction, () => this.frame);
   }
@@ -49,7 +50,7 @@ export class VirtualAction<T> extends AsyncAction<T> {
   protected active: boolean = true;
 
   constructor(protected scheduler: VirtualTimeScheduler,
-              protected work: (this: VirtualAction<T>, state?: T) => void,
+              protected work: (this: Action<T>, state?: T) => void,
               protected index: number = scheduler.index += 1) {
     super(scheduler, work);
     this.index = scheduler.index = index;
@@ -73,7 +74,7 @@ export class VirtualAction<T> extends AsyncAction<T> {
     this.delay = scheduler.frame + delay;
     const {actions} = scheduler;
     actions.push(this);
-    actions.sort(VirtualAction.sortActions);
+    (actions as Array<VirtualAction<T>>).sort(VirtualAction.sortActions);
     return true;
   }
 

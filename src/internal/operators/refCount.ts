@@ -8,7 +8,7 @@ import { Observable } from '../Observable';
 export function refCount<T>(): MonoTypeOperatorFunction<T> {
   return function refCountOperatorFunction(source: ConnectableObservable<T>): Observable<T> {
     return source.lift(new RefCountOperator(source));
-  };
+  } as MonoTypeOperatorFunction<T>;
 }
 
 class RefCountOperator<T> implements Operator<T, T> {

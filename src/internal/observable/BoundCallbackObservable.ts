@@ -172,7 +172,7 @@ export class BoundCallbackObservable<T> extends Observable<T> {
   static create<T>(func: Function,
                    selector: Function | void = undefined,
                    scheduler?: IScheduler): (...args: any[]) => Observable<T> {
-    return function(this: any, ...args: any[]): Observable<T> {
+    return function (this: any, ...args: any[]): Observable<T> {
       return new BoundCallbackObservable<T>(func, <any>selector, args, this, scheduler);
     };
   }
@@ -201,7 +201,7 @@ export class BoundCallbackObservable<T> extends Observable<T> {
             const result = tryCatch(selector).apply(this, innerArgs);
             if (result === errorObject) {
               subject.error(errorObject.e);
-          } else {
+            } else {
               subject.next(result);
               subject.complete();
             }
@@ -220,7 +220,8 @@ export class BoundCallbackObservable<T> extends Observable<T> {
       }
       return subject.subscribe(subscriber);
     } else {
-      return scheduler.schedule(BoundCallbackObservable.dispatch, 0, { source: this, subscriber, context: this.context });
+      return scheduler.schedule<{ source: BoundCallbackObservable<T>, subscriber: Subscriber<T>, context: any }>
+        (BoundCallbackObservable.dispatch, 0, { source: this, subscriber, context: this.context });
     }
   }
 
@@ -239,13 +240,13 @@ export class BoundCallbackObservable<T> extends Observable<T> {
         if (selector) {
           const result = tryCatch(selector).apply(this, innerArgs);
           if (result === errorObject) {
-            self.add(scheduler.schedule(dispatchError, 0, { err: errorObject.e, subject }));
+            self.add(scheduler.schedule<DispatchErrorArg<T>>(dispatchError, 0, { err: errorObject.e, subject }));
           } else {
-            self.add(scheduler.schedule(dispatchNext, 0, { value: result, subject }));
+            self.add(scheduler.schedule<DispatchNextArg<T>>(dispatchNext, 0, { value: result, subject }));
           }
         } else {
           const value = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
-          self.add(scheduler.schedule(dispatchNext, 0, { value, subject }));
+          self.add(scheduler.schedule<DispatchNextArg<T>>(dispatchNext, 0, { value, subject }));
         }
       };
       // use named function to pass values in without closure

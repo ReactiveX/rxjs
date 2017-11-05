@@ -119,7 +119,7 @@ class GroupByOperator<T, K, R> implements Operator<T, GroupedObservable<K, R>> {
  * @extends {Ignored}
  */
 class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscription {
-  private groups: Map<K, Subject<T|R>> = null;
+  private groups: Map<K, Subject<T | R>> = null;
   public attemptedToUnsubscribe: boolean = false;
   public count: number = 0;
 
@@ -147,7 +147,7 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
     let groups = this.groups;
 
     if (!groups) {
-      groups = this.groups = new Map<K, Subject<T|R>>();
+      groups = this.groups = new Map<K, Subject<T | R>>();
     }
 
     let group = groups.get(key);
@@ -164,7 +164,7 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
     }
 
     if (!group) {
-      group = this.subjectSelector ? this.subjectSelector() : new Subject<R>();
+      group = (this.subjectSelector ? this.subjectSelector() : new Subject<R>()) as Subject<T | R>;
       groups.set(key, group);
       const groupedObservable = new GroupedObservable(key, group, this);
       this.destination.next(groupedObservable);
@@ -231,7 +231,7 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
 class GroupDurationSubscriber<K, T> extends Subscriber<T> {
   constructor(private key: K,
               private group: Subject<T>,
-              private parent: GroupBySubscriber<any, K, T>) {
+              private parent: GroupBySubscriber<any, K, T | any>) {
     super(group);
   }
 
@@ -265,7 +265,7 @@ export class GroupedObservable<K, T> extends Observable<T> {
 
   protected _subscribe(subscriber: Subscriber<T>) {
     const subscription = new Subscription();
-    const {refCountSubscription, groupSubject} = this;
+    const { refCountSubscription, groupSubject } = this;
     if (refCountSubscription && !refCountSubscription.closed) {
       subscription.add(new InnerRefCountSubscription(refCountSubscription));
     }

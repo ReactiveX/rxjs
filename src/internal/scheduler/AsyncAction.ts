@@ -16,7 +16,7 @@ export class AsyncAction<T> extends Action<T> {
   protected pending: boolean = false;
 
   constructor(protected scheduler: AsyncScheduler,
-              protected work: (this: AsyncAction<T>, state?: T) => void) {
+              protected work: (this: Action<T>, state?: T) => void) {
     super(scheduler, work);
   }
 

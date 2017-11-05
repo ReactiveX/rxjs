@@ -207,7 +207,7 @@ export class BoundNodeCallbackObservable<T> extends Observable<T> {
       }
       return subject.subscribe(subscriber);
     } else {
-      return scheduler.schedule(dispatch, 0, { source: this, subscriber, context: this.context });
+      return scheduler.schedule<DispatchState<T>>(dispatch, 0, { source: this, subscriber, context: this.context });
     }
   }
 }
