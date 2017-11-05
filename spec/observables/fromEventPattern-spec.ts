@@ -133,4 +133,28 @@ describe('Observable.fromEventPattern', () => {
 
     trigger('test');
   });
+
+  it('should accept and pass multiple parameters from an event emitter', (done: MochaDone) => {
+    let target: Function = () => '';
+    const trigger = (...args: any[]) => {
+      if (target) {
+        target(...args);
+      }
+    };
+
+    const addHandler = (handler: any) => {
+      target = handler;
+    };
+
+    Observable.fromEventPattern(addHandler).take(1)
+      .subscribe((x: any) => {
+        expect(x).eql(['a', 'b', 'c']);
+      }, (err: any) => {
+        done(new Error('should not be called'));
+      }, () => {
+        done();
+      });
+
+    trigger('a', 'b', 'c');
+  });
 });
