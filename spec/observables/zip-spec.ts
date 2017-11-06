@@ -582,64 +582,52 @@ describe('Observable.zip', () => {
     }, null, done);
   });
 
-  it('should support observables', () => {
-    type(() => {
-      /* tslint:disable:no-unused-variable */
-      let a: Rx.Observable<number>;
-      let b: Rx.Observable<string>;
-      let c: Rx.Observable<boolean>;
-      let o1: Rx.Observable<[number, string, boolean]> = Observable.zip(a, b, c);
-      /* tslint:enable:no-unused-variable */
-    });
+  type('should support observables', () => {
+    /* tslint:disable:no-unused-variable */
+    let a: Rx.Observable<number>;
+    let b: Rx.Observable<string>;
+    let c: Rx.Observable<boolean>;
+    let o1: Rx.Observable<[number, string, boolean]> = Observable.zip(a, b, c);
+    /* tslint:enable:no-unused-variable */
   });
 
-  it('should support mixed observables and promises', () => {
-    type(() => {
-      /* tslint:disable:no-unused-variable */
-      let a: Promise<number>;
-      let b: Rx.Observable<string>;
-      let c: Promise<boolean>;
-      let d: Rx.Observable<string[]>;
-      let o1: Rx.Observable<[number, string, boolean, string[]]> = Observable.zip(a, b, c, d);
-      /* tslint:enable:no-unused-variable */
-    });
+  type('should support mixed observables and promises', () => {
+    /* tslint:disable:no-unused-variable */
+    let a: Promise<number>;
+    let b: Rx.Observable<string>;
+    let c: Promise<boolean>;
+    let d: Rx.Observable<string[]>;
+    let o1: Rx.Observable<[number, string, boolean, string[]]> = Observable.zip(a, b, c, d);
+    /* tslint:enable:no-unused-variable */
   });
 
-  it('should support arrays of promises', () => {
-    type(() => {
-      /* tslint:disable:no-unused-variable */
-      let a: Promise<number>[];
-      let o1: Rx.Observable<number[]> = Observable.zip(a);
-      let o2: Rx.Observable<number[]> = Observable.zip(...a);
-      /* tslint:enable:no-unused-variable */
-    });
+  type('should support arrays of promises', () => {
+    /* tslint:disable:no-unused-variable */
+    let a: Promise<number>[];
+    let o1: Rx.Observable<number[]> = Observable.zip(a);
+    let o2: Rx.Observable<number[]> = Observable.zip(...a);
+    /* tslint:enable:no-unused-variable */
   });
 
-  it('should support arrays of observables', () => {
-    type(() => {
-      /* tslint:disable:no-unused-variable */
-      let a: Rx.Observable<number>[];
-      let o1: Rx.Observable<number[]> = Observable.zip(a);
-      let o2: Rx.Observable<number[]> = Observable.zip(...a);
-      /* tslint:enable:no-unused-variable */
-    });
+  type('should support arrays of observables', () => {
+    /* tslint:disable:no-unused-variable */
+    let a: Rx.Observable<number>[];
+    let o1: Rx.Observable<number[]> = Observable.zip(a);
+    let o2: Rx.Observable<number[]> = Observable.zip(...a);
+    /* tslint:enable:no-unused-variable */
   });
 
-  it('should return Array<T> when given a single promise', () => {
-    type(() => {
-      /* tslint:disable:no-unused-variable */
-      let a: Promise<number>;
-      let o1: Rx.Observable<number[]> = Observable.zip(a);
-      /* tslint:enable:no-unused-variable */
-    });
+  type('should return Array<T> when given a single promise', () => {
+    /* tslint:disable:no-unused-variable */
+    let a: Promise<number>;
+    let o1: Rx.Observable<number[]> = Observable.zip(a);
+    /* tslint:enable:no-unused-variable */
   });
 
-  it('should return Array<T> when given a single observable', () => {
-    type(() => {
-      /* tslint:disable:no-unused-variable */
-      let a: Rx.Observable<number>;
-      let o1: Rx.Observable<number[]> = Observable.zip(a);
-      /* tslint:enable:no-unused-variable */
-    });
+  type('should return Array<T> when given a single observable', () => {
+    /* tslint:disable:no-unused-variable */
+    let a: Rx.Observable<number>;
+    let o1: Rx.Observable<number[]> = Observable.zip(a);
+    /* tslint:enable:no-unused-variable */
   });
 });

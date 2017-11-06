@@ -766,16 +766,14 @@ describe('Observable.prototype.mergeMap', () => {
     expect(completed).to.be.true;
   });
 
-  it('should support type signatures', () => {
-    type(() => {
-      let o: Rx.Observable<number>;
+  type('should support type signatures', () => {
+    let o: Rx.Observable<number>;
 
-      /* tslint:disable:no-unused-variable */
-      let a1: Rx.Observable<string> = o.mergeMap(x => x.toString());
-      let a2: Rx.Observable<string> = o.mergeMap(x => x.toString(), 3);
-      let a3: Rx.Observable<{ o: number; i: string; }> = o.mergeMap(x => x.toString(), (o, i) => ({ o, i }));
-      let a4: Rx.Observable<{ o: number; i: string; }> = o.mergeMap(x => x.toString(), (o, i) => ({ o, i }), 3);
-      /* tslint:enable:no-unused-variable */
-    });
+    /* tslint:disable:no-unused-variable */
+    let a1: Rx.Observable<string> = o.mergeMap(x => x.toString());
+    let a2: Rx.Observable<string> = o.mergeMap(x => x.toString(), 3);
+    let a3: Rx.Observable<{ o: number; i: string; }> = o.mergeMap(x => x.toString(), (o, i) => ({ o, i }));
+    let a4: Rx.Observable<{ o: number; i: string; }> = o.mergeMap(x => x.toString(), (o, i) => ({ o, i }), 3);
+    /* tslint:enable:no-unused-variable */
   });
 });

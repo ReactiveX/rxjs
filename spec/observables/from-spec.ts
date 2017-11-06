@@ -24,22 +24,18 @@ describe('Observable.from', () => {
     expect(r).to.throw();
   });
 
-  it('should return T for ObservableLike objects', () => {
-    type(() => {
-      /* tslint:disable:no-unused-variable */
-      let o1: Rx.Observable<number> = Observable.from(<number[]>[], Rx.Scheduler.asap);
-      let o2: Rx.Observable<{ a: string }> = Observable.from(Observable.empty<{ a: string }>());
-      let o3: Rx.Observable<{ b: number }> = Observable.from(new Promise<{b: number}>(resolve => resolve()));
-      /* tslint:enable:no-unused-variable */
-    });
+  type('should return T for ObservableLike objects', () => {
+    /* tslint:disable:no-unused-variable */
+    let o1: Rx.Observable<number> = Observable.from(<number[]>[], Rx.Scheduler.asap);
+    let o2: Rx.Observable<{ a: string }> = Observable.from(Observable.empty<{ a: string }>());
+    let o3: Rx.Observable<{ b: number }> = Observable.from(new Promise<{b: number}>(resolve => resolve()));
+    /* tslint:enable:no-unused-variable */
   });
 
-  it('should return T for arrays', () => {
-    type(() => {
-      /* tslint:disable:no-unused-variable */
-      let o1: Rx.Observable<number> = Observable.from(<number[]>[], Rx.Scheduler.asap);
-      /* tslint:enable:no-unused-variable */
-    });
+  type('should return T for arrays', () => {
+    /* tslint:disable:no-unused-variable */
+    let o1: Rx.Observable<number> = Observable.from(<number[]>[], Rx.Scheduler.asap);
+    /* tslint:enable:no-unused-variable */
   });
 
   const fakervable = (...values) => ({
