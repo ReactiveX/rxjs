@@ -39,7 +39,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
 
   public syncErrorValue: any = null;
   public syncErrorThrown: boolean = false;
-  public syncErrorThrowable: boolean = false;
+  public syncErrorThrowable: boolean = true;
 
   protected isStopped: boolean = false;
   protected destination: PartialObserver<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
@@ -60,10 +60,12 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     switch (arguments.length) {
       case 0:
         this.destination = emptyObserver;
+        this.syncErrorThrowable = false;
         break;
       case 1:
         if (!destinationOrNext) {
           this.destination = emptyObserver;
+          this.syncErrorThrowable = false;
           break;
         }
         if (typeof destinationOrNext === 'object') {
@@ -71,13 +73,11 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
             this.destination = (<Subscriber<any>> destinationOrNext);
             (<any> this.destination).add(this);
           } else {
-            this.syncErrorThrowable = true;
             this.destination = new SafeSubscriber<T>(this, <PartialObserver<any>> destinationOrNext);
           }
           break;
         }
       default:
-        this.syncErrorThrowable = true;
         this.destination = new SafeSubscriber<T>(this, <((value: T) => void)> destinationOrNext, error, complete);
         break;
     }
