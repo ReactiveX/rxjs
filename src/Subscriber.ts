@@ -33,13 +33,8 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
                    error?: (e?: any) => void,
                    complete?: () => void): Subscriber<T> {
     const subscriber = new Subscriber(next, error, complete);
-    subscriber.syncErrorThrowable = false;
     return subscriber;
   }
-
-  public syncErrorValue: any = null;
-  public syncErrorThrown: boolean = false;
-  public syncErrorThrowable: boolean = false;
 
   protected isStopped: boolean = false;
   protected destination: PartialObserver<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
@@ -71,14 +66,12 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
             this.destination = (<Subscriber<any>> destinationOrNext);
             (<any> this.destination).add(this);
           } else {
-            this.syncErrorThrowable = true;
-            this.destination = new SafeSubscriber<T>(this, <PartialObserver<any>> destinationOrNext);
+            this.destination = new SafeSubscriber<T>(<PartialObserver<any>> destinationOrNext);
           }
           break;
         }
       default:
-        this.syncErrorThrowable = true;
-        this.destination = new SafeSubscriber<T>(this, <((value: T) => void)> destinationOrNext, error, complete);
+        this.destination = new SafeSubscriber<T>(<((value: T) => void)> destinationOrNext, error, complete);
         break;
     }
   }
@@ -167,8 +160,7 @@ class SafeSubscriber<T> extends Subscriber<T> {
 
   private _context: any;
 
-  constructor(private _parentSubscriber: Subscriber<T>,
-              observerOrNext?: PartialObserver<T> | ((value: T) => void),
+  constructor(observerOrNext?: PartialObserver<T> | ((value: T) => void),
               error?: (e?: any) => void,
               complete?: () => void) {
     super();
@@ -199,10 +191,10 @@ class SafeSubscriber<T> extends Subscriber<T> {
 
   next(value?: T): void {
     if (!this.isStopped && this._next) {
-      const { _parentSubscriber } = this;
-      if (!_parentSubscriber.syncErrorThrowable) {
-        this.__tryOrUnsub(this._next, value);
-      } else if (this.__tryOrSetError(_parentSubscriber, this._next, value)) {
+      try {
+        this._next.call(this._context, value);
+      } catch (err) {
+        this._hostReportError(err);
         this.unsubscribe();
       }
     }
@@ -210,69 +202,37 @@ class SafeSubscriber<T> extends Subscriber<T> {
 
   error(err?: any): void {
     if (!this.isStopped) {
-      const { _parentSubscriber } = this;
       if (this._error) {
-        if (!_parentSubscriber.syncErrorThrowable) {
-          this.__tryOrUnsub(this._error, err);
-          this.unsubscribe();
-        } else {
-          this.__tryOrSetError(_parentSubscriber, this._error, err);
-          this.unsubscribe();
+        try {
+          this._error.call(this._context, err);
+        } catch (err) {
+          this._hostReportError(err);
         }
-      } else if (!_parentSubscriber.syncErrorThrowable) {
-        this.unsubscribe();
-        throw err;
       } else {
-        _parentSubscriber.syncErrorValue = err;
-        _parentSubscriber.syncErrorThrown = true;
-        this.unsubscribe();
+        this._hostReportError(err);
       }
+      this.unsubscribe();
     }
   }
 
   complete(): void {
     if (!this.isStopped) {
-      const { _parentSubscriber } = this;
       if (this._complete) {
-        const wrappedComplete = () => this._complete.call(this._context);
-
-        if (!_parentSubscriber.syncErrorThrowable) {
-          this.__tryOrUnsub(wrappedComplete);
-          this.unsubscribe();
-        } else {
-          this.__tryOrSetError(_parentSubscriber, wrappedComplete);
-          this.unsubscribe();
+        try {
+          this._complete.call(this._context);
+        } catch (err) {
+          this._hostReportError(err);
         }
-      } else {
-        this.unsubscribe();
       }
-    }
-  }
-
-  private __tryOrUnsub(fn: Function, value?: any): void {
-    try {
-      fn.call(this._context, value);
-    } catch (err) {
       this.unsubscribe();
-      throw err;
     }
-  }
-
-  private __tryOrSetError(parent: Subscriber<T>, fn: Function, value?: any): boolean {
-    try {
-      fn.call(this._context, value);
-    } catch (err) {
-      parent.syncErrorValue = err;
-      parent.syncErrorThrown = true;
-      return true;
-    }
-    return false;
   }
 
   protected _unsubscribe(): void {
-    const { _parentSubscriber } = this;
     this._context = null;
-    this._parentSubscriber = null;
-    _parentSubscriber.unsubscribe();
+  }
+
+  private _hostReportError(err: any) {
+    setTimeout(() => { throw err; });
   }
 }

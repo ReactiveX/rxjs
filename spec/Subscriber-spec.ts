@@ -1,36 +1,10 @@
 import { expect } from 'chai';
-import * as sinon from 'sinon';
 import * as Rx from '../src/Rx';
 
 const Subscriber = Rx.Subscriber;
 
 /** @test {Subscriber} */
 describe('Subscriber', () => {
-  describe('when created through create()', () => {
-    it('should not call error() if next() handler throws an error', () => {
-      const errorSpy = sinon.spy();
-      const completeSpy = sinon.spy();
-
-      const subscriber = Subscriber.create(
-        (value: any) => {
-          if (value === 2) {
-            throw 'error!';
-          }
-        },
-        errorSpy,
-        completeSpy
-      );
-
-      subscriber.next(1);
-      expect(() => {
-        subscriber.next(2);
-      }).to.throw('error!');
-
-      expect(errorSpy).not.have.been.called;
-      expect(completeSpy).not.have.been.called;
-    });
-  });
-
   it('should ignore next messages after unsubscription', () => {
     let times = 0;
 

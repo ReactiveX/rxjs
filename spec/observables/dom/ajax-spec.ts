@@ -57,7 +57,7 @@ describe('Observable.ajax', () => {
     expect(axObjectStub).to.have.been.called;
   });
 
-  it('should throw if not able to create XMLHttpRequest', () => {
+  it('should raise an error if not able to create XMLHttpRequest', () => {
     root.XMLHttpRequest = null;
     root.ActiveXObject = null;
 
@@ -66,9 +66,7 @@ describe('Observable.ajax', () => {
       method: ''
     };
 
-    expect(() => {
-      Rx.Observable.ajax(obj).subscribe();
-    }).to.throw();
+    Rx.Observable.ajax(obj).subscribe(null, err => expect(err).to.exist);
   });
 
   it('should create XMLHttpRequest for CORS', () => {
@@ -100,7 +98,7 @@ describe('Observable.ajax', () => {
     expect(xDomainStub).to.have.been.called;
   });
 
-  it('should throw if not able to create CORS request', () => {
+  it('should raise an error if not able to create CORS request', () => {
     root.XMLHttpRequest = null;
     root.XDomainRequest = null;
 
@@ -111,9 +109,7 @@ describe('Observable.ajax', () => {
       withCredentials: true
     };
 
-    expect(() => {
-      Rx.Observable.ajax(obj).subscribe();
-    }).to.throw();
+    Rx.Observable.ajax(obj).subscribe(null, err => expect(err).to.exist);
   });
 
   it('should set headers', () => {
@@ -805,7 +801,7 @@ describe('Observable.ajax', () => {
 
   it('should work fine when XMLHttpRequest ontimeout property is monkey patched', function() {
     Object.defineProperty(root.XMLHttpRequest.prototype, 'ontimeout', {
-      set: function (fn: (e: ProgressEvent) => any) {
+      set(fn: (e: ProgressEvent) => any) {
         const wrapFn = (ev: ProgressEvent) => {
           const result = fn.call(this, ev);
           if (result === false) {
@@ -825,7 +821,11 @@ describe('Observable.ajax', () => {
     };
 
     Rx.Observable.ajax(ajaxRequest)
-      .subscribe();
+      .subscribe({
+        error(err) {
+          /* expected, ignore */
+        }
+      });
 
     const request = MockXMLHttpRequest.mostRecent;
     try {
@@ -881,7 +881,7 @@ describe('Observable.ajax', () => {
 
   it('should work fine when XMLHttpRequest onerror property is monkey patched', function() {
     Object.defineProperty(root.XMLHttpRequest.prototype, 'onerror', {
-      set: function (fn: (e: ProgressEvent) => any) {
+      set(fn: (e: ProgressEvent) => any) {
         const wrapFn = (ev: ProgressEvent) => {
           const result = fn.call(this, ev);
           if (result === false) {
@@ -899,7 +899,11 @@ describe('Observable.ajax', () => {
     Rx.Observable.ajax({
       url: '/flibbertyJibbet'
     })
-      .subscribe();
+      .subscribe({
+        error(err) {
+          /* expected */
+        }
+      });
 
     const request = MockXMLHttpRequest.mostRecent;
 

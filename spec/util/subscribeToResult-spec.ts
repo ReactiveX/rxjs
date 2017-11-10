@@ -4,8 +4,6 @@ import { subscribeToResult } from '../../src/util/subscribeToResult';
 import { OuterSubscriber } from '../../src/OuterSubscriber';
 import { $$iterator } from '../../src/symbol/iterator';
 import $$symbolObservable from 'symbol-observable';
-import { Observable } from '../../src/Observable';
-import { Subject } from '../../src/Subject';
 
 describe('subscribeToResult', () => {
   it('should synchronously complete when subscribe to scalarObservable', () => {
@@ -179,15 +177,5 @@ describe('subscribeToResult', () => {
     });
 
     subscribeToResult(subscriber, null);
-  });
-
-  it('should not swallow exception in inner subscriber', () => {
-    const source = new Subject();
-
-    source.mergeMapTo(Observable.of(1, 2, 3)).subscribe(() => {
-      throw new Error('meh');
-    });
-
-    expect(() => source.next()).to.throw();
   });
 });
