@@ -125,8 +125,9 @@ describe('Observable.fromEvent', () => {
       }
     };
 
-    const subscribe = () => Observable.fromEvent(<any>obj, 'click').subscribe();
-    expect(subscribe).to.throw(TypeError, 'Invalid event target');
+    Observable.fromEvent(obj as any, 'click').subscribe({
+      error(err) { expect(err).to.deep.equal(new TypeError('Invalid event target')); }
+    });
   });
 
   it('should pass through options to addEventListener', () => {

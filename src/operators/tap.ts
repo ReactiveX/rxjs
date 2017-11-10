@@ -4,6 +4,8 @@ import { Observable } from '../Observable';
 import { PartialObserver } from '../Observer';
 import { TeardownLogic } from '../Subscription';
 import { MonoTypeOperatorFunction } from '../interfaces';
+import { noop } from '../util/noop';
+import { isFunction } from '../util/isFunction';
 
 /* tslint:disable:max-line-length */
 export function tap<T>(next: (x: T) => void, error?: (e: any) => void, complete?: () => void): MonoTypeOperatorFunction<T>;
@@ -65,7 +67,7 @@ class DoOperator<T> implements Operator<T, T> {
               private complete?: () => void) {
   }
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new DoSubscriber(subscriber, this.nextOrObserver, this.error, this.complete));
+    return source.subscribe(new TapSubscriber(subscriber, this.nextOrObserver, this.error, this.complete));
   }
 }
 
@@ -74,49 +76,61 @@ class DoOperator<T> implements Operator<T, T> {
  * @ignore
  * @extends {Ignored}
  */
-class DoSubscriber<T> extends Subscriber<T> {
 
-  private safeSubscriber: Subscriber<T>;
+class TapSubscriber<T> extends Subscriber<T> {
+  private _context: any;
+
+  private _tapNext: ((value: T) => void) = noop;
+
+  private _tapError: ((err: any) => void) = noop;
+
+  private _tapComplete: (() => void) = noop;
 
   constructor(destination: Subscriber<T>,
-              nextOrObserver?: PartialObserver<T> | ((x: T) => void),
-              error?: (e: any) => void,
+              observerOrNext?: PartialObserver<T> | ((value: T) => void),
+              error?: (e?: any) => void,
               complete?: () => void) {
-    super(destination);
-
-    const safeSubscriber = new Subscriber<T>(nextOrObserver, error, complete);
-    safeSubscriber.syncErrorThrowable = true;
-    this.add(safeSubscriber);
-    this.safeSubscriber = safeSubscriber;
-  }
-
-  protected _next(value: T): void {
-    const { safeSubscriber } = this;
-    safeSubscriber.next(value);
-    if (safeSubscriber.syncErrorThrown) {
-      this.destination.error(safeSubscriber.syncErrorValue);
-    } else {
-      this.destination.next(value);
+      super(destination);
+      this._tapError = error || noop;
+      this._tapComplete = complete || noop;
+      if (isFunction(observerOrNext)) {
+        this._context = this;
+        this._tapNext = observerOrNext;
+      } else if (observerOrNext) {
+        this._context = observerOrNext;
+        this._tapNext = observerOrNext.next || noop;
+        this._tapError = observerOrNext.error || noop;
+        this._tapComplete = observerOrNext.complete || noop;
+      }
     }
-  }
 
-  protected _error(err: any): void {
-    const { safeSubscriber } = this;
-    safeSubscriber.error(err);
-    if (safeSubscriber.syncErrorThrown) {
-      this.destination.error(safeSubscriber.syncErrorValue);
-    } else {
+  _next(value: T) {
+    try {
+      this._tapNext.call(this._context, value);
+    } catch (err) {
       this.destination.error(err);
+      return;
     }
+    this.destination.next(value);
   }
 
-  protected _complete(): void {
-    const { safeSubscriber } = this;
-    safeSubscriber.complete();
-    if (safeSubscriber.syncErrorThrown) {
-      this.destination.error(safeSubscriber.syncErrorValue);
-    } else {
-      this.destination.complete();
+  _error(err: any) {
+    try {
+      this._tapError.call(this._context, err);
+    } catch (err) {
+      this.destination.error(err);
+      return;
     }
+    this.destination.error(err);
+  }
+
+  _complete() {
+    try {
+      this._tapComplete.call(this._context, );
+    } catch (err) {
+      this.destination.error(err);
+      return;
+    }
+    return this.destination.complete();
   }
 }
