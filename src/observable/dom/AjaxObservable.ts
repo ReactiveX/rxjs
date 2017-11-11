@@ -402,21 +402,35 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
  * @class AjaxResponse
  */
 export class AjaxResponse {
-  /** @type {number} The HTTP status code */
   status: number;
-
-  /** @type {string|ArrayBuffer|Document|object|any} The response data */
   response: any;
-
   /** @type {string} The raw responseText */
   responseText: string;
-
-  /** @type {string} The responseType (e.g. 'json', 'arraybuffer', or 'xml') */
   responseType: string;
 
+  /**
+   * @constructor
+   * @param {Event} originalEvent Event triggered creation of the response.
+   * @param {XMLHttpRequest} xhr The XHR instance associated with the response.
+   * @param {AjaxRequest} request The AjaxRequest associated with the response.
+   */
   constructor(public originalEvent: Event, public xhr: XMLHttpRequest, public request: AjaxRequest) {
+    /**
+     * The HTTP status code.
+     * @type {number}
+     */
     this.status = xhr.status;
+
+    /**
+     * The responseType (e.g. 'json', 'arraybuffer', or 'xml').
+     * @type {string}
+     */
     this.responseType = xhr.responseType || request.responseType;
+
+    /**
+     * The response data
+     * @type {string|ArrayBuffer|Document|object|any}
+     */
     this.response = parseXhrResponse(this.responseType, xhr);
   }
 }
@@ -429,28 +443,50 @@ export class AjaxResponse {
  * @class AjaxError
  */
 export class AjaxError extends Error {
-  /** @type {XMLHttpRequest} The XHR instance associated with the error */
   xhr: XMLHttpRequest;
-
-  /** @type {AjaxRequest} The AjaxRequest associated with the error */
   request: AjaxRequest;
-
-  /** @type {number} The HTTP status code */
   status: number;
-
-  /** @type {string} The responseType (e.g. 'json', 'arraybuffer', or 'xml') */
   responseType: string;
-
-  /** @type {string|ArrayBuffer|Document|object|any} The response data */
   response: any;
 
+  /**
+   * @constructor
+   * @param {string} message Human-readable description of the error.
+   * @param {XMLHttpRequest} xhr The XHR instance associated with the error.
+   * @param {AjaxRequest} request The AjaxRequest associated with the error.
+   */
   constructor(message: string, xhr: XMLHttpRequest, request: AjaxRequest) {
     super(message);
     this.message = message;
+
+    /**
+     * The XHR instance associated with the error.
+     * @type {XMLHttpRequest}
+     */
     this.xhr = xhr;
+
+    /**
+     * The AjaxRequest associated with the error.
+     * @type {AjaxRequest}
+     */
     this.request = request;
+
+    /**
+     * The HTTP status code.
+     * @type {number}
+     */
     this.status = xhr.status;
+
+    /**
+     * The responseType (e.g. 'json', 'arraybuffer', or 'xml').
+     * @type {string}
+     */
     this.responseType = xhr.responseType || request.responseType;
+
+    /**
+     * The response data.
+     * @type {string|ArrayBuffer|Document|object|any}
+     */
     this.response = parseXhrResponse(this.responseType, xhr);
 
     this.name = 'AjaxError';
