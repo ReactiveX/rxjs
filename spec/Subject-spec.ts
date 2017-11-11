@@ -1,6 +1,8 @@
 import { expect } from 'chai';
 import * as Rx from '../src/Rx';
+import { empty } from '../src/observable/empty';
 import marbleTestingSignature = require('./helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { ISubscription } from '../src/Subscription';
 
 declare const { time };
 declare const hot: typeof marbleTestingSignature.hot;
@@ -43,6 +45,22 @@ describe('Subject', () => {
     subject.next('foo');
     subject.next('bar');
     subject.complete();
+  });
+
+  it('should call start with the right Subscription', () => {
+    const subject = new Subject();
+    const observable = empty();
+    const sub1 = observable.subscribe(subject);
+    let sub2: ISubscription;
+    const sub3 = subject.subscribe({
+      start(subscription) {
+        sub2 = subscription;
+      },
+      complete() {/* added to meet type requirements */},
+    });
+
+    expect(sub1).not.to.equal(sub2);
+    expect(sub2).to.equal(sub3);
   });
 
   it('should handle subscribers that arrive and leave at different times, ' +

@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as Rx from '../src/Rx';
+import { ISubscription } from '../src/Subscription';
 import { TeardownLogic } from '../src/Subscription';
 import marbleTestingSignature = require('./helpers/marble-testing'); // tslint:disable-line:no-require-imports
 import { map } from '../src/operators/map';
@@ -533,6 +534,51 @@ describe('Observable', () => {
           complete() { completeCalled = true; }
         });
 
+      });
+
+      it('should allow a start method that provides the subscription object ' +
+        'prior to setting up the observable', () => {
+          let setup = false;
+          const source = new Observable<number>(observer => {
+            setup = true;
+            observer.next(1);
+            observer.complete();
+          });
+
+          let sub1: ISubscription;
+          let sub2: ISubscription;
+
+          sub1 = source.subscribe({
+            start(sub: ISubscription) {
+              expect(setup).to.be.false;
+              sub2 = sub;
+            },
+            next(value: number) {
+              expect(sub2).to.exist;
+            }
+          });
+
+          expect(sub1).to.equal(sub2);
+        });
+
+      it('should not let you call the start method in the body of the Observable', () => {
+        let startCalls = 0;
+        let nextCalls = 0;
+
+        new Observable(observer => {
+          observer.start(new Rx.Subscription());
+          observer.next(1);
+          observer.start(new Rx.Subscription());
+          observer.next(2);
+          observer.start(new Rx.Subscription());
+        })
+        .subscribe({
+          start() { startCalls++; },
+          next() { nextCalls++; },
+        });
+
+        expect(startCalls).to.equal(1);
+        expect(nextCalls).to.equal(2);
       });
     });
   });
