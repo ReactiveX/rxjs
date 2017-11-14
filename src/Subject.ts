@@ -49,7 +49,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     return <any>subject;
   }
 
-  next(value?: T) {
+  next(value: T) {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     }
