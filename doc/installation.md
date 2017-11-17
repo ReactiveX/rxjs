@@ -7,7 +7,7 @@ npm install rxjs
 To import the entire core set of functionality:
 
 ```js
-import Rx from 'rxjs/Rx';
+import * as Rx from 'rxjs-es/Rx';
 
 Rx.Observable.of(1,2,3)
 ```
