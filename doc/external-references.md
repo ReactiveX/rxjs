@@ -34,7 +34,7 @@ Can't get enough RxJS? Check out these other great resources!
 - [Asynchronous JavaScript at Netflix - MountainWest JavaScript 2014 - Jafar Husain](https://www.youtube.com/watch?v=XE692Clb5LU)
 - [Asynchronous JavaScript at Netflix - HTML5DevConf - Jafar Husain](https://www.youtube.com/watch?v=5uxSu-F5Kj0)
 - [Adding Even More Fun to Functional Programming With RXJS - Ryan Anklam](https://www.youtube.com/watch?v=8EExNfm0gt4)
-- [Reactive Angular - Devoxx France 2014 - Martin Gontovnikas](http://parleys.com/play/53677646e4b0593229b85841/chapter0/about)
+- [Reactive Angular - Devoxx France 2014 - Martin Gontovnikas](https://www.youtube.com/watch?v=q_WdJguyRrg)
 - [Reactive Game Programming for the Discerning Hipster - JSConf 2014 - Bodil Stokke](https://www.youtube.com/watch?v=x8mmAu7ZR9Y)
 
 ## Presentations
