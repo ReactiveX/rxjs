@@ -1,13 +1,13 @@
 {
-  "name": "@rxjs/docs",
+  "name": "@rxjs/ajax",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
-    "@rxjs/core": "1.0.0",
+    "@reactivex/rxjs": "latest",
     "typescript": "latest"
   },
   "scripts": {
-    "build": "echo building docs..."
+    "build": "tsc -p ./tsconfig.esm5.json"
   }
 }
