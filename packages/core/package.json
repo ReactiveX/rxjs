@@ -1,0 +1,13 @@
+{
+  "name": "@rxjs/core",
+  "version": "1.0.0",
+  "description": "Core of rxjs",
+  "main": "src/index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "latest"
+  },
+  "scripts": {
+    "build": "tsc -p ../../tsconfig/tsconfig.esm5.json --outDir ./dist/"
+  }
+}

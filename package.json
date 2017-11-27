@@ -117,7 +117,9 @@
     "test:cover": "cross-env TS_NODE_FAST=true nyc npm test",
     "test:circular": "dependency-cruise --validate .dependency-cruiser.json -x \"^node_modules\" src",
     "tests2png": "tsc && mkdirp tmp/docs/img && mkdirp spec-js/support && shx cp spec/support/*.opts spec-js/support/ && mocha --opts spec/support/tests2png.opts spec-js",
-    "watch": "watch \"echo triggering build && npm run build_test && echo build completed\" src -d -u -w=15"
+    "watch": "watch \"echo triggering build && npm run build_test && echo build completed\" src -d -u -w=15",
+    "postinstall": "lerna bootstrap --hoist",
+    "build": "lerna run build"
   },
   "repository": {
     "type": "git",
@@ -200,6 +202,7 @@
     "http-server": "^0.9.0",
     "husky": "^0.13.3",
     "klaw-sync": "^3.0.0",
+    "lerna": "^2.4.0",
     "lint-staged": "3.2.5",
     "lodash": "^4.15.0",
     "madge": "^1.4.3",
