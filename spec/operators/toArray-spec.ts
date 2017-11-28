@@ -1,5 +1,6 @@
 import * as Rx from '../../dist/package/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { expect } from 'chai';
 
 declare const { asDiagram, type };
 declare const hot: typeof marbleTestingSignature.hot;
@@ -74,6 +75,17 @@ describe('Observable.prototype.toArray', () => {
     expectObservable(result).toBe(expected, { w: ['y'] });
     expectObservable(result).toBe(expected, { w: ['y'] });
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+  });
+
+  it('should return different arrays for each subscription', () => {
+    const source = Observable.of(1, 2, 3).toArray();
+
+    let arr1: number[];
+    let arr2: number[];
+    source.subscribe(x => arr1 = x);
+    source.subscribe(x => arr2 = x);
+    expect(arr1).to.deep.equal(arr2);
+    expect(arr1).not.to.equal(arr2);
   });
 
   it('should allow unsubscribing explicitly and early', () => {
