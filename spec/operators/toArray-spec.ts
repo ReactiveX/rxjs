@@ -65,6 +65,17 @@ describe('Observable.prototype.toArray', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should allow multiple subscriptions', () => {
+    const e1 = hot('-x-^--y--|');
+    const e1subs =    '^     !';
+    const expected =  '------(w|)';
+
+    const result = e1.toArray();
+    expectObservable(result).toBe(expected, { w: ['y'] });
+    expectObservable(result).toBe(expected, { w: ['y'] });
+    expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+  });
+
   it('should allow unsubscribing explicitly and early', () => {
     const e1 =   hot('--a--b----c-----d----e---|');
     const unsub =    '        !                 ';
