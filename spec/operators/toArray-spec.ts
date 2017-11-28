@@ -1,4 +1,4 @@
-import * as Rx from '../../dist/package/Rx';
+import * as Rx from '../../src/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 import { expect } from 'chai';
 
@@ -131,7 +131,7 @@ describe('Observable.prototype.toArray', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  type(() => {
+  type('should infer the element type', () => {
     const typeValue = {
       val: 3
     };

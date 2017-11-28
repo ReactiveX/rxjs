@@ -11,8 +11,6 @@ import { Subscriber } from '../Subscriber';
  * @hide true
  */
 export class IteratorObservable<T> extends Observable<T> {
-  private iterator: any;
-
   static create<T>(iterator: any, scheduler?: IScheduler): IteratorObservable<T> {
     return new IteratorObservable(iterator, scheduler);
   }
@@ -45,20 +43,20 @@ export class IteratorObservable<T> extends Observable<T> {
     (<any> this).schedule(state);
   }
 
-  constructor(iterator: any, private scheduler?: IScheduler) {
+  constructor(private readonly iteratorObject: any, private scheduler?: IScheduler) {
     super();
 
-    if (iterator == null) {
+    if (iteratorObject == null) {
       throw new Error('iterator cannot be null.');
+    } else if (!iteratorObject[Symbol_iterator]) {
+      throw new TypeError('object is not iterable');
     }
-
-    this.iterator = getIterator(iterator);
   }
 
   protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
-
     let index = 0;
-    const { iterator, scheduler } = this;
+    const { scheduler } = this;
+    const iterator = getIterator(this.iteratorObject);
 
     if (scheduler) {
       return scheduler.schedule(IteratorObservable.dispatch, 0, {

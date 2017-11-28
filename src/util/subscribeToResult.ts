@@ -30,7 +30,6 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
       destination.complete();
       return null;
     } else {
-      destination.syncErrorThrowable = true;
       return result.subscribe(destination);
     }
   } else if (isArrayLike(result)) {

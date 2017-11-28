@@ -203,13 +203,6 @@ export class Observable<T> implements Subscribable<T> {
       sink.add(this.source ? this._subscribe(sink) : this._trySubscribe(sink));
     }
 
-    if (sink.syncErrorThrowable) {
-      sink.syncErrorThrowable = false;
-      if (sink.syncErrorThrown) {
-        throw sink.syncErrorValue;
-      }
-    }
-
     return sink;
   }
 
@@ -217,8 +210,6 @@ export class Observable<T> implements Subscribable<T> {
     try {
       return this._subscribe(sink);
     } catch (err) {
-      sink.syncErrorThrown = true;
-      sink.syncErrorValue = err;
       sink.error(err);
     }
   }
@@ -248,25 +239,13 @@ export class Observable<T> implements Subscribable<T> {
       // accessing subscription below in the closure due to Temporal Dead Zone.
       let subscription: Subscription;
       subscription = this.subscribe((value) => {
-        if (subscription) {
-          // if there is a subscription, then we can surmise
-          // the next handling is asynchronous. Any errors thrown
-          // need to be rejected explicitly and unsubscribe must be
-          // called manually
-          try {
-            next(value);
-          } catch (err) {
-            reject(err);
+        try {
+          next(value);
+        } catch (err) {
+          reject(err);
+          if (subscription) {
             subscription.unsubscribe();
           }
-        } else {
-          // if there is NO subscription, then we're getting a nexted
-          // value synchronously during subscription. We can just call it.
-          // If it errors, Observable's `subscribe` will ensure the
-          // unsubscription logic is called, then synchronously rethrow the error.
-          // After that, Promise will trap the error and send it
-          // down the rejection path.
-          next(value);
         }
       }, reject, resolve);
     });

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as Rx from '../dist/package/Rx';
+import * as Rx from '../src/Rx';
 
 describe('Root Module', () => {
   it('should contain exports from commonjs modules', () => {
