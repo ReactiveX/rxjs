@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { getSymbolObservable } from '../../dist/package/symbol/observable';
+import { getSymbolObservable } from '../../src/symbol/observable';
 
 describe('observable symbol', () => {
   it('should exist in the proper form when Symbol does not exist', () => {

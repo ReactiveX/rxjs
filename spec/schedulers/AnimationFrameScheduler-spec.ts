@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../../dist/package/Rx';
+import * as Rx from '../../src/Rx';
 
 const animationFrame = Rx.Scheduler.animationFrame;
 

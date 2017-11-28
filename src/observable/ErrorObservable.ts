@@ -72,8 +72,6 @@ export class ErrorObservable extends Observable<any> {
     const error = this.error;
     const scheduler = this.scheduler;
 
-    subscriber.syncErrorThrowable = true;
-
     if (scheduler) {
       return scheduler.schedule(ErrorObservable.dispatch, 0, {
         error, subscriber

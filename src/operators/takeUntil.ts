@@ -14,14 +14,15 @@ import { MonoTypeOperatorFunction } from '../interfaces';
  * Observable emits a value.
  *
  * <span class="informal">Lets values pass until a second Observable,
- * `notifier`, emits something. Then, it completes.</span>
+ * `notifier`, emits a value. Then, it completes.</span>
  *
  * <img src="./img/takeUntil.png" width="100%">
  *
  * `takeUntil` subscribes and begins mirroring the source Observable. It also
  * monitors a second Observable, `notifier` that you provide. If the `notifier`
- * emits a value or a complete notification, the output Observable stops
- * mirroring the source Observable and completes.
+ * emits a value, the output Observable stops mirroring the source Observable
+ * and completes. If the `notifier` doesn't emit any value and completes
+ * then `takeUntil` will pass all values.
  *
  * @example <caption>Tick every second until the first click happens</caption>
  * var interval = Rx.Observable.interval(1000);

@@ -3,9 +3,12 @@ import { Subscription } from '../Subscription';
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subject } from '../Subject';
-import { Map } from '../util/Map';
-import { FastMap } from '../util/FastMap';
 import { OperatorFunction } from '../interfaces';
+
+/** Assert that map is present for this operator */
+if (!Map) {
+  throw new Error('Map not found, please polyfill');
+}
 
 /* tslint:disable:max-line-length */
 export function groupBy<T, K>(keySelector: (value: T) => K): OperatorFunction<T, GroupedObservable<K, T>>;
@@ -144,7 +147,7 @@ class GroupBySubscriber<T, K, R> extends Subscriber<T> implements RefCountSubscr
     let groups = this.groups;
 
     if (!groups) {
-      groups = this.groups = typeof key === 'string' ? new FastMap() : new Map();
+      groups = this.groups = new Map<K, Subject<T|R>>();
     }
 
     let group = groups.get(key);

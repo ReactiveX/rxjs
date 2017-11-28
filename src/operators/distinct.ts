@@ -5,8 +5,11 @@ import { TeardownLogic } from '../Subscription';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
-import { ISet, Set } from '../util/Set';
 import { MonoTypeOperatorFunction } from '../interfaces';
+
+if (!Set) {
+  throw new Error('Set is not present, please polyfill');
+}
 
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items.
@@ -73,7 +76,7 @@ class DistinctOperator<T, K> implements Operator<T, T> {
  * @extends {Ignored}
  */
 export class DistinctSubscriber<T, K> extends OuterSubscriber<T, T> {
-  private values: ISet<K> = new Set<K>();
+  private values = new Set<K>();
 
   constructor(destination: Subscriber<T>, private keySelector: (value: T) => K, flushes: Observable<any>) {
     super(destination);
