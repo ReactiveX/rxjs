@@ -1,6 +1,6 @@
-import { IScheduler } from '../../../Scheduler';
-import { Observable } from '../../../Observable';
-import { startWith as higherOrder } from '../../../internal/operators/startWith';
+import { IScheduler } from '../../Scheduler';
+import { Observable } from '../../Observable';
+import { startWith as higherOrder } from '../../operators/startWith';
 
 /* tslint:disable:max-line-length */
 export function startWith<T>(this: Observable<T>, v1: T, scheduler?: IScheduler): Observable<T>;

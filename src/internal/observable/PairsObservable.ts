@@ -1,8 +1,8 @@
-import { IScheduler } from '../../Scheduler';
-import { Action } from '../../scheduler/Action';
-import { Observable } from '../../Observable';
-import { Subscriber } from '../../Subscriber';
-import { TeardownLogic } from '../../Subscription';
+import { IScheduler } from '../Scheduler';
+import { Action } from '../scheduler/Action';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { TeardownLogic } from '../Subscription';
 
 interface PairsContext<T> {
   obj: Object;

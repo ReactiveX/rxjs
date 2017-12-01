@@ -1,4 +1,4 @@
-import { Observable } from '../../Observable';
+import { Observable } from '../Observable';
 import { scan } from './scan';
 import { takeLast } from './takeLast';
 import { defaultIfEmpty } from './defaultIfEmpty';

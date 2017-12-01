@@ -1,9 +1,9 @@
 import { root } from '../../util/root';
-import { IScheduler } from '../../Scheduler';
-import { Observable } from '../../Observable';
+import { IScheduler } from '../Scheduler';
+import { Observable } from '../Observable';
 import { iterator as Symbol_iterator } from '../../symbol/iterator';
-import { TeardownLogic } from '../../Subscription';
-import { Subscriber } from '../../Subscriber';
+import { TeardownLogic } from '../Subscription';
+import { Subscriber } from '../Subscriber';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

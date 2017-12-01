@@ -1,8 +1,8 @@
-import { Observable } from '../../Observable';
-import { ReplaySubject } from '../../ReplaySubject';
-import { IScheduler } from '../../Scheduler';
+import { Observable } from '../Observable';
+import { ReplaySubject } from '../ReplaySubject';
+import { IScheduler } from '../Scheduler';
 import { multicast } from './multicast';
-import { ConnectableObservable } from '../../internal/observable/ConnectableObservable';
+import { ConnectableObservable } from '../observable/ConnectableObservable';
 import { UnaryFunction, MonoTypeOperatorFunction, OperatorFunction } from '../../interfaces';
 
 /* tslint:disable:max-line-length */

@@ -1,9 +1,9 @@
-import { Action } from '../../scheduler/Action';
-import { IScheduler } from '../../Scheduler';
-import { Subscriber } from '../../Subscriber';
-import { Subscription } from '../../Subscription';
-import { Observable } from '../../Observable';
-import { asap } from '../../scheduler/asap';
+import { Action } from '../scheduler/Action';
+import { IScheduler } from '../Scheduler';
+import { Subscriber } from '../Subscriber';
+import { Subscription } from '../Subscription';
+import { Observable } from '../Observable';
+import { asap } from '../scheduler/asap';
 import { isNumeric } from '../../util/isNumeric';
 
 export interface DispatchArg<T> {

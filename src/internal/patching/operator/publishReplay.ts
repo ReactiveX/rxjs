@@ -1,7 +1,7 @@
-import { Observable } from '../../../Observable';
-import { IScheduler } from '../../../Scheduler';
-import { ConnectableObservable } from '../../../internal/observable/ConnectableObservable';
-import { publishReplay as higherOrder } from '../../../internal/operators/publishReplay';
+import { Observable } from '../../Observable';
+import { IScheduler } from '../../Scheduler';
+import { ConnectableObservable } from '../../observable/ConnectableObservable';
+import { publishReplay as higherOrder } from '../../operators/publishReplay';
 import { OperatorFunction, MonoTypeOperatorFunction } from '../../../interfaces';
 
 /* tslint:disable:max-line-length */

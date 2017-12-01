@@ -1,10 +1,10 @@
-import { Observable } from '../../Observable';
-import { Subscriber } from '../../Subscriber';
-import { Subscription } from '../../Subscription';
-import { IScheduler } from '../../Scheduler';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { Subscription } from '../Subscription';
+import { IScheduler } from '../Scheduler';
 import { tryCatch } from '../../util/tryCatch';
 import { errorObject } from '../../util/errorObject';
-import { AsyncSubject } from '../../AsyncSubject';
+import { AsyncSubject } from '../../internal/AsyncSubject';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

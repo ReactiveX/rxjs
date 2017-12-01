@@ -1,11 +1,11 @@
-import { Observable } from '../../Observable';
+import { Observable } from '../Observable';
 import { isArray } from '../../util/isArray';
 import { ArrayObservable } from '../../internal/observable/ArrayObservable';
-import { Operator } from '../../Operator';
-import { Subscriber } from '../../Subscriber';
-import { Subscription, TeardownLogic } from '../../Subscription';
-import { OuterSubscriber } from '../../OuterSubscriber';
-import { InnerSubscriber } from '../../InnerSubscriber';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Subscription, TeardownLogic } from '../Subscription';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../../util/subscribeToResult';
 
 /**

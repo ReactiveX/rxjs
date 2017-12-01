@@ -1,6 +1,6 @@
 
-import { Observable } from '../../../Observable';
-import { mergeScan as higherOrder } from '../../../internal/operators/mergeScan';
+import { Observable } from '../../Observable';
+import { mergeScan as higherOrder } from '../../operators/mergeScan';
 
 /**
  * Applies an accumulator function over the source Observable where the

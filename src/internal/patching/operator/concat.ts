@@ -1,6 +1,6 @@
-import { Observable, ObservableInput } from '../../../Observable';
-import { IScheduler } from '../../../Scheduler';
-import { concat as concatStatic } from '../../../internal/observable/concat';
+import { Observable, ObservableInput } from '../../Observable';
+import { IScheduler } from '../../Scheduler';
+import { concat as concatStatic } from '../../observable/concat';
 
 export { concat as concatStatic } from '../observable/concat';
 

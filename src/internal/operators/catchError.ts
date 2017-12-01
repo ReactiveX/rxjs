@@ -1,8 +1,8 @@
-import { Operator } from '../../Operator';
-import { Subscriber } from '../../Subscriber';
-import { Observable, ObservableInput } from '../../Observable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Observable, ObservableInput } from '../Observable';
 
-import { OuterSubscriber } from '../../OuterSubscriber';
+import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../../util/subscribeToResult';
 import { OperatorFunction } from '../../interfaces';
 

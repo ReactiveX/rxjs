@@ -1,5 +1,5 @@
-import { Observable } from '../../../Observable';
-import { retryWhen as higherOrder } from '../../../internal/operators/retryWhen';
+import { Observable } from '../../Observable';
+import { retryWhen as higherOrder } from '../../operators/retryWhen';
 /**
  * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable
  * calls `error`, this method will emit the Throwable that caused the error to the Observable returned from `notifier`.

@@ -1,6 +1,6 @@
-import { Operator } from '../../Operator';
-import { Subscriber } from '../../Subscriber';
-import { Observable } from '../../Observable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable';
 import { OperatorFunction } from '../../interfaces';
 
 export function isEmpty<T>(): OperatorFunction<T, boolean> {

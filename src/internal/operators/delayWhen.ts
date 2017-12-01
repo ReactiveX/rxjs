@@ -1,9 +1,9 @@
-import { Operator } from '../../Operator';
-import { Subscriber } from '../../Subscriber';
-import { Observable } from '../../Observable';
-import { Subscription, TeardownLogic } from '../../Subscription';
-import { OuterSubscriber } from '../../OuterSubscriber';
-import { InnerSubscriber } from '../../InnerSubscriber';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable';
+import { Subscription, TeardownLogic } from '../Subscription';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../../util/subscribeToResult';
 import { MonoTypeOperatorFunction } from '../../interfaces';
 

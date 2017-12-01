@@ -1,5 +1,5 @@
 
-import { ObservableInput } from '../../Observable';
+import { ObservableInput } from '../Observable';
 import { mergeMap } from './mergeMap';
 import { identity } from '../../util/identity';
 import { MonoTypeOperatorFunction } from '../../interfaces';

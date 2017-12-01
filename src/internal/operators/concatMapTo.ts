@@ -1,4 +1,4 @@
-import { Observable, ObservableInput } from '../../Observable';
+import { Observable, ObservableInput } from '../Observable';
 import { concatMap } from './concatMap';
 import { OperatorFunction } from '../../interfaces';
 

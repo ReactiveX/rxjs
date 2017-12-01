@@ -1,11 +1,11 @@
-import { Observable, ObservableInput } from '../../Observable';
+import { Observable, ObservableInput } from '../Observable';
 import { ArrayObservable } from '../../internal/observable/ArrayObservable';
 import { isArray } from '../../util/isArray';
-import { Operator } from '../../Operator';
-import { PartialObserver } from '../../Observer';
-import { Subscriber } from '../../Subscriber';
-import { OuterSubscriber } from '../../OuterSubscriber';
-import { InnerSubscriber } from '../../InnerSubscriber';
+import { Operator } from '../Operator';
+import { PartialObserver } from '../Observer';
+import { Subscriber } from '../Subscriber';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../../util/subscribeToResult';
 import { iterator as Symbol_iterator } from '../../symbol/iterator';
 

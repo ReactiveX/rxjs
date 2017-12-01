@@ -1,5 +1,5 @@
-import { Observable } from '../../../Observable';
-import { sequenceEqual as higherOrder } from '../../../internal/operators/sequenceEqual';
+import { Observable } from '../../Observable';
+import { sequenceEqual as higherOrder } from '../../operators/sequenceEqual';
 
 /**
  * Compares all values of two observables in sequence using an optional comparor function

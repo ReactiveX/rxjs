@@ -1,5 +1,5 @@
-import { Observable, ObservableInput } from '../../../Observable';
-import { mergeMapTo as higherOrder } from '../../../internal/operators/mergeMapTo';
+import { Observable, ObservableInput } from '../../Observable';
+import { mergeMapTo as higherOrder } from '../../operators/mergeMapTo';
 
 /* tslint:disable:max-line-length */
 export function mergeMapTo<T, R>(this: Observable<T>, observable: ObservableInput<R>, concurrent?: number): Observable<R>;

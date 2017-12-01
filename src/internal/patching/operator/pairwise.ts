@@ -1,5 +1,5 @@
-import { Observable } from '../../../Observable';
-import { pairwise as higherOrder } from '../../../internal/operators/pairwise';
+import { Observable } from '../../Observable';
+import { pairwise as higherOrder } from '../../operators/pairwise';
 
 /**
  * Groups pairs of consecutive emissions together and emits them as an array of

@@ -129,21 +129,21 @@ export { withLatestFrom } from './internal/operators/withLatestFrom';
 export { zipAll } from './internal/operators/zipAll';
 
 /* Subjects */
-export { Subject } from './Subject';
-export { BehaviorSubject } from './BehaviorSubject';
-export { ReplaySubject } from './ReplaySubject';
+export { Subject } from './internal/Subject';
+export { BehaviorSubject } from './internal/BehaviorSubject';
+export { ReplaySubject } from './internal/ReplaySubject';
 
 /* Schedulers */
-export { asap as asapScheduler } from './scheduler/asap';
-export { async as asyncScheduler } from './scheduler/async';
-export { queue as queueScheduler } from './scheduler/queue';
-export { animationFrame as animationFrameScheduler } from './scheduler/animationFrame';
+export { asap as asapScheduler } from './internal/scheduler/asap';
+export { async as asyncScheduler } from './internal/scheduler/async';
+export { queue as queueScheduler } from './internal/scheduler/queue';
+export { animationFrame as animationFrameScheduler } from './internal/scheduler/animationFrame';
 
 /* Subscription */
-export { Subscription } from './Subscription';
+export { Subscription } from './internal/Subscription';
 
 /* Notification */
-export { Notification } from './Notification';
+export { Notification } from './internal/Notification';
 
 /* Utils */
 export { pipe } from './util/pipe';

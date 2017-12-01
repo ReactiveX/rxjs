@@ -1,5 +1,5 @@
-import { Observable } from '../../../Observable';
-import { skipWhile as higherOrder } from '../../../internal/operators/skipWhile';
+import { Observable } from '../../Observable';
+import { skipWhile as higherOrder } from '../../operators/skipWhile';
 
 /**
  * Returns an Observable that skips all items emitted by the source Observable as long as a specified condition holds

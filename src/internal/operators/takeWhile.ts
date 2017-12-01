@@ -1,7 +1,7 @@
-import { Operator } from '../../Operator';
-import { Observable } from '../../Observable';
-import { Subscriber } from '../../Subscriber';
-import { TeardownLogic } from '../../Subscription';
+import { Operator } from '../Operator';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { TeardownLogic } from '../Subscription';
 import { MonoTypeOperatorFunction } from '../../interfaces';
 
 /**

@@ -1,6 +1,6 @@
-import { Observable } from '../../../Observable';
-import { Subscribable } from '../../../Observable';
-import { mergeAll as higherOrder } from '../../../internal/operators/mergeAll';
+import { Observable } from '../../Observable';
+import { Subscribable } from '../../Observable';
+import { mergeAll as higherOrder } from '../../operators/mergeAll';
 
 export function mergeAll<T>(this: Observable<T>, concurrent?: number): T;
 export function mergeAll<T, R>(this: Observable<T>, concurrent?: number): Subscribable<R>;

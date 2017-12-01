@@ -1,11 +1,11 @@
-import { Observable } from '../../Observable';
+import { Observable } from '../Observable';
 import { OperatorFunction } from '../../interfaces';
-import { Subject } from '../../Subject';
-import { Subscriber } from '../../Subscriber';
-import { OuterSubscriber } from '../../OuterSubscriber';
-import { InnerSubscriber } from '../../InnerSubscriber';
+import { Subject } from '../Subject';
+import { Subscriber } from '../Subscriber';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../../util/subscribeToResult';
-import { Operator } from '../../Operator';
+import { Operator } from '../Operator';
 
 /**
  * Branch out the source Observable values as a nested Observable whenever

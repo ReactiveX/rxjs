@@ -1,5 +1,5 @@
-import { Observable } from '../../../Observable';
-import { pluck as higherOrder } from '../../../internal/operators/pluck';
+import { Observable } from '../../Observable';
+import { pluck as higherOrder } from '../../operators/pluck';
 
 /**
  * Maps each source value (an object) to its specified nested property.

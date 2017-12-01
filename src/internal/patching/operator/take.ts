@@ -1,5 +1,5 @@
-import { Observable } from '../../../Observable';
-import { take as higherOrder } from '../../../internal/operators/take';
+import { Observable } from '../../Observable';
+import { take as higherOrder } from '../../operators/take';
 
 /**
  * Emits only the first `count` values emitted by the source Observable.

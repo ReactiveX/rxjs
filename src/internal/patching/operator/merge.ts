@@ -1,6 +1,6 @@
-import { Observable, ObservableInput } from '../../../Observable';
-import { IScheduler } from '../../../Scheduler';
-import { merge as mergeStatic } from '../../../internal/observable/merge';
+import { Observable, ObservableInput } from '../../Observable';
+import { IScheduler } from '../../Scheduler';
+import { merge as mergeStatic } from '../../observable/merge';
 
 /* tslint:disable:max-line-length */
 export function merge<T>(this: Observable<T>, scheduler?: IScheduler): Observable<T>;

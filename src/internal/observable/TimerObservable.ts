@@ -1,11 +1,11 @@
 import { isNumeric } from '../../util/isNumeric';
-import { IScheduler } from '../../Scheduler';
-import { Observable } from '../../Observable';
-import { async } from '../../scheduler/async';
+import { IScheduler } from '../Scheduler';
+import { Observable } from '../Observable';
+import { async } from '../scheduler/async';
 import { isScheduler } from '../../util/isScheduler';
 import { isDate } from '../../util/isDate';
-import { TeardownLogic } from '../../Subscription';
-import { Subscriber } from '../../Subscriber';
+import { TeardownLogic } from '../Subscription';
+import { Subscriber } from '../Subscriber';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

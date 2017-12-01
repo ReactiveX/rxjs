@@ -1,8 +1,8 @@
 import { PartialObserver } from './Observer';
 import { Observable } from './Observable';
-import { empty } from './internal/observable/empty';
-import { of } from './internal/observable/of';
-import { _throw } from './internal/observable/throw';
+import { empty } from './observable/empty';
+import { of } from './observable/of';
+import { _throw } from './observable/throw';
 
 /**
  * Represents a push-based event or value that an {@link Observable} can emit.

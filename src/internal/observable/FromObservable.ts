@@ -6,10 +6,10 @@ import { IteratorObservable } from './IteratorObservable';
 import { ArrayObservable } from './ArrayObservable';
 import { ArrayLikeObservable } from './ArrayLikeObservable';
 
-import { IScheduler } from '../../Scheduler';
+import { IScheduler } from '../Scheduler';
 import { iterator as Symbol_iterator } from '../../symbol/iterator';
-import { Observable, ObservableInput } from '../../Observable';
-import { Subscriber } from '../../Subscriber';
+import { Observable, ObservableInput } from '../Observable';
+import { Subscriber } from '../Subscriber';
 import { ObserveOnSubscriber } from '../../internal/operators/observeOn';
 import { observable as Symbol_observable } from '../../symbol/observable';
 

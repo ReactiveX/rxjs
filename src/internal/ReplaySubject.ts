@@ -3,8 +3,8 @@ import { IScheduler } from './Scheduler';
 import { queue } from './scheduler/queue';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
-import { ObserveOnSubscriber } from './internal/operators/observeOn';
-import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
+import { ObserveOnSubscriber } from './operators/observeOn';
+import { ObjectUnsubscribedError } from '../util/ObjectUnsubscribedError';
 import { SubjectSubscription } from './SubjectSubscription';
 /**
  * @class ReplaySubject<T>
