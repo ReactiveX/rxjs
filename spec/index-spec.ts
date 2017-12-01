@@ -132,4 +132,11 @@ describe('index', () => {
     expect(index.BehaviorSubject).to.exist;
     expect(index.ReplaySubject).to.exist;
   });
+
+  it('should export the schedulers', () => {
+    expect(index.asapScheduler).to.exist;
+    expect(index.asyncScheduler).to.exist;
+    expect(index.queueScheduler).to.exist;
+    expect(index.animationFrameScheduler).to.exist;
+  });
 });
