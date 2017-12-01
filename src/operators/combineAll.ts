@@ -1,4 +1,4 @@
-import { CombineLatestOperator } from '../operators/combineLatest';
+import { CombineLatestOperator } from '../internal/observable/combineLatest';
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../interfaces';
 

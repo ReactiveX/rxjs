@@ -1,5 +1,5 @@
 import { Observable, ObservableInput } from '../../../Observable';
-import { zip as higherOrder } from '../../../operators/zip';
+import { zip as zipStatic } from '../../../internal/observable/zip';
 
 /* tslint:disable:max-line-length */
 export function zipProto<T, R>(this: Observable<T>, project: (v1: T) => R): Observable<R>;
@@ -26,5 +26,5 @@ export function zipProto<T, TOther, R>(this: Observable<T>, array: Array<Observa
  * @owner Observable
  */
 export function zipProto<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R> {
-  return higherOrder(...observables)(this);
+  return this.lift.call(zipStatic(this, ...observables));
 }

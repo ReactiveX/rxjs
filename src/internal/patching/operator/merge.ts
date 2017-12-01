@@ -1,7 +1,6 @@
 import { Observable, ObservableInput } from '../../../Observable';
 import { IScheduler } from '../../../Scheduler';
-import { merge as higherOrder } from '../../../operators/merge';
-export { merge as mergeStatic } from '../../../observable/merge';
+import { merge as mergeStatic } from '../../../internal/observable/merge';
 
 /* tslint:disable:max-line-length */
 export function merge<T>(this: Observable<T>, scheduler?: IScheduler): Observable<T>;
@@ -67,5 +66,5 @@ export function merge<T, R>(this: Observable<T>, ...observables: Array<Observabl
  * @owner Observable
  */
 export function merge<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> | IScheduler | number>): Observable<R> {
-  return higherOrder(...observables)(this) as Observable<R>;
+  return this.lift.call(mergeStatic(this, ...observables));
 }
