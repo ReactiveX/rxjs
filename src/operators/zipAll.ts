@@ -1,4 +1,4 @@
-import { ZipOperator } from './zip';
+import { ZipOperator } from '../internal/observable/zip';
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../interfaces';
 

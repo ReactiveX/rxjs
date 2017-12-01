@@ -1,5 +1,7 @@
 import { Observable, ObservableInput } from '../../../Observable';
-import { combineLatest as higherOrder } from '../../../operators/combineLatest';
+import { CombineLatestOperator } from '../../../internal/observable/combineLatest';
+import { ArrayObservable } from '../../../internal/observable/ArrayObservable';
+import { isArray } from '../../../util/isArray';
 
 /* tslint:disable:max-line-length */
 export function combineLatest<T, R>(this: Observable<T>, project: (v1: T) => R): Observable<R>;
@@ -64,5 +66,16 @@ export function combineLatest<T, TOther, R>(this: Observable<T>, array: Observab
 export function combineLatest<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> |
                                                        Array<ObservableInput<any>> |
                                                        ((...values: Array<any>) => R)>): Observable<R> {
-  return higherOrder(...observables)(this);
+  let project: (...values: Array<any>) => R = null;
+  if (typeof observables[observables.length - 1] === 'function') {
+    project = <(...values: Array<any>) => R>observables.pop();
+  }
+
+  // if the first and only other argument besides the resultSelector is an array
+  // assume it's been called with `combineLatest([obs1, obs2, obs3], project)`
+  if (observables.length === 1 && isArray(observables[0])) {
+    observables = (<any>observables[0]).slice();
+  }
+
+  return this.lift.call(new ArrayObservable([this, ...observables]), new CombineLatestOperator(project));
 }

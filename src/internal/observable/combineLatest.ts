@@ -1,9 +1,15 @@
-import {  Observable, ObservableInput  } from '../../Observable';
-import {  IScheduler  } from '../../Scheduler';
-import {  isScheduler  } from '../../util/isScheduler';
-import {  isArray  } from '../../util/isArray';
-import {  ArrayObservable  } from './ArrayObservable';
-import {  CombineLatestOperator  } from '../../operators/combineLatest';
+import { Observable, ObservableInput  } from '../../Observable';
+import { IScheduler  } from '../../Scheduler';
+import { isScheduler  } from '../../util/isScheduler';
+import { isArray  } from '../../util/isArray';
+import { ArrayObservable  } from './ArrayObservable';
+import { Subscriber } from '../../Subscriber';
+import { OuterSubscriber } from '../../OuterSubscriber';
+import { Operator } from '../../Operator';
+import { InnerSubscriber } from '../../InnerSubscriber';
+import { subscribeToResult } from '../../util/subscribeToResult';
+
+const NONE = {};
 
 /* tslint:disable:max-line-length */
 export function combineLatest<T, R>(v1: ObservableInput<T>, project: (v1: T) => R, scheduler?: IScheduler): Observable<R>;
@@ -158,4 +164,85 @@ export function combineLatest<T, R>(...observables: Array<any | ObservableInput<
   }
 
   return new ArrayObservable(observables, scheduler).lift(new CombineLatestOperator<T, R>(project));
+}
+
+export class CombineLatestOperator<T, R> implements Operator<T, R> {
+  constructor(private project?: (...values: Array<any>) => R) {
+  }
+
+  call(subscriber: Subscriber<R>, source: any): any {
+    return source.subscribe(new CombineLatestSubscriber(subscriber, this.project));
+  }
+}
+
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+export class CombineLatestSubscriber<T, R> extends OuterSubscriber<T, R> {
+  private active: number = 0;
+  private values: any[] = [];
+  private observables: any[] = [];
+  private toRespond: number;
+
+  constructor(destination: Subscriber<R>, private project?: (...values: Array<any>) => R) {
+    super(destination);
+  }
+
+  protected _next(observable: any) {
+    this.values.push(NONE);
+    this.observables.push(observable);
+  }
+
+  protected _complete() {
+    const observables = this.observables;
+    const len = observables.length;
+    if (len === 0) {
+      this.destination.complete();
+    } else {
+      this.active = len;
+      this.toRespond = len;
+      for (let i = 0; i < len; i++) {
+        const observable = observables[i];
+        this.add(subscribeToResult(this, observable, observable, i));
+      }
+    }
+  }
+
+  notifyComplete(unused: Subscriber<R>): void {
+    if ((this.active -= 1) === 0) {
+      this.destination.complete();
+    }
+  }
+
+  notifyNext(outerValue: T, innerValue: R,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, R>): void {
+    const values = this.values;
+    const oldVal = values[outerIndex];
+    const toRespond = !this.toRespond
+      ? 0
+      : oldVal === NONE ? --this.toRespond : this.toRespond;
+    values[outerIndex] = innerValue;
+
+    if (toRespond === 0) {
+      if (this.project) {
+        this._tryProject(values);
+      } else {
+        this.destination.next(values.slice());
+      }
+    }
+  }
+
+  private _tryProject(values: any[]) {
+    let result: any;
+    try {
+      result = this.project.apply(this, values);
+    } catch (err) {
+      this.destination.error(err);
+      return;
+    }
+    this.destination.next(result);
+  }
 }

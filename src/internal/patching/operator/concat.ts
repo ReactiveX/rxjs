@@ -1,6 +1,6 @@
 import { Observable, ObservableInput } from '../../../Observable';
 import { IScheduler } from '../../../Scheduler';
-import { concat as higherOrder } from '../../../operators/concat';
+import { concat as concatStatic } from '../../../internal/observable/concat';
 
 export { concat as concatStatic } from '../observable/concat';
 
@@ -65,5 +65,5 @@ export function concat<T, R>(this: Observable<T>, ...observables: Array<Observab
  * @owner Observable
  */
 export function concat<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> | IScheduler>): Observable<R> {
-  return higherOrder(...observables)(this);
+  return this.lift.call(concatStatic(this, ...observables));
 }
