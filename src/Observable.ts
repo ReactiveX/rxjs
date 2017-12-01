@@ -73,8 +73,7 @@ export class Observable<T> implements Subscribable<T> {
     return observable;
   }
 
-  subscribe(): Subscription;
-  subscribe(observer: PartialObserver<T>): Subscription;
+  subscribe(observer?: PartialObserver<T>): Subscription;
   subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Subscription;
   /**
    * Invokes an execution of an Observable and registers Observer handlers for notifications it will emit.
