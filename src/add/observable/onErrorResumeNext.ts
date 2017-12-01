@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { onErrorResumeNext as staticOnErrorResumeNext } from '../../observable/onErrorResumeNext';
+import { onErrorResumeNext as staticOnErrorResumeNext } from '../../internal/observable/onErrorResumeNext';
 
 Observable.onErrorResumeNext = staticOnErrorResumeNext;
 

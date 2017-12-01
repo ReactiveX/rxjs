@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { fromPromise as staticFromPromise } from '../../observable/fromPromise';
+import { fromPromise as staticFromPromise } from '../../internal/observable/fromPromise';
 
 Observable.fromPromise = staticFromPromise;
 

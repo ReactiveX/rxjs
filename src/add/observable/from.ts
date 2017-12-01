@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { from as staticFrom } from '../../observable/from';
+import { from as staticFrom } from '../../internal/observable/from';
 
 Observable.from = staticFrom;
 

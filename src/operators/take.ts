@@ -1,7 +1,7 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
-import { EmptyObservable } from '../observable/EmptyObservable';
+import { EmptyObservable } from '../internal/observable/EmptyObservable';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
 import { MonoTypeOperatorFunction } from '../interfaces';

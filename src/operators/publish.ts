@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { multicast } from './multicast';
-import { ConnectableObservable } from '../observable/ConnectableObservable';
+import { ConnectableObservable } from '../internal/observable/ConnectableObservable';
 import { MonoTypeOperatorFunction, OperatorFunction, UnaryFunction } from '../interfaces';
 
 /* tslint:disable:max-line-length */

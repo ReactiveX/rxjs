@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { generate as staticGenerate } from '../../observable/generate';
+import { generate as staticGenerate } from '../../internal/observable/generate';
 
 Observable.generate = staticGenerate;
 

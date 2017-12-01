@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { fromEvent as staticFromEvent } from '../../observable/fromEvent';
+import { fromEvent as staticFromEvent } from '../../internal/observable/fromEvent';
 
 Observable.fromEvent = staticFromEvent;
 

@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { isArray } from '../util/isArray';
 import { MonoTypeOperatorFunction, OperatorFunction } from '../interfaces';
-import { race as raceStatic } from '../observable/race';
+import { race as raceStatic } from '../internal/observable/race';
 
 /* tslint:disable:max-line-length */
 export function race<T>(observables: Array<Observable<T>>): MonoTypeOperatorFunction<T>;

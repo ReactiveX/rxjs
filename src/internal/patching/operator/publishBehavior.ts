@@ -1,5 +1,5 @@
 import { Observable } from '../../../Observable';
-import { ConnectableObservable } from '../../../observable/ConnectableObservable';
+import { ConnectableObservable } from '../../../internal/observable/ConnectableObservable';
 import { publishBehavior as higherOrder } from '../../../operators/publishBehavior';
 
 /**

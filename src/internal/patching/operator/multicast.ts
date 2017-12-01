@@ -1,6 +1,6 @@
 import { Subject } from '../../../Subject';
 import { Observable } from '../../../Observable';
-import { ConnectableObservable } from '../../../observable/ConnectableObservable';
+import { ConnectableObservable } from '../../../internal/observable/ConnectableObservable';
 import { multicast as higherOrder } from '../../../operators/multicast';
 import { FactoryOrValue, MonoTypeOperatorFunction, OperatorFunction } from '../../../interfaces';
 

@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as Rx from '../../src/Rx';
-import { RangeObservable } from '../../src/observable/RangeObservable';
+import { RangeObservable } from '../../src/internal/observable/RangeObservable';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram };

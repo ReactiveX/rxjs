@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { forkJoin as staticForkJoin } from '../../observable/forkJoin';
+import { forkJoin as staticForkJoin } from '../../internal/observable/forkJoin';
 
 Observable.forkJoin = staticForkJoin;
 

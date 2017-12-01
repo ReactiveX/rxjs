@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { using as staticUsing } from '../../observable/using';
+import { using as staticUsing } from '../../internal/observable/using';
 
 Observable.using = staticUsing;
 

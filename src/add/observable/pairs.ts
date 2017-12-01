@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { pairs as staticPairs } from '../../observable/pairs';
+import { pairs as staticPairs } from '../../internal/observable/pairs';
 
 Observable.pairs = staticPairs;
 

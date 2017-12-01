@@ -1,6 +1,6 @@
 
 import { Observable } from '../../../Observable';
-import { ConnectableObservable } from '../../../observable/ConnectableObservable';
+import { ConnectableObservable } from '../../../internal/observable/ConnectableObservable';
 import { publish as higherOrder } from '../../../operators/publish';
 
 /* tslint:disable:max-line-length */

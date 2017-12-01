@@ -7,7 +7,7 @@
  */
 import { TeardownLogic } from './Subscription';
 import { Observable } from './Observable';
-import './observable/dom/MiscJSDoc';
+import './internal/observable/dom/MiscJSDoc';
 import { Observer } from './Observer';
 
 /**

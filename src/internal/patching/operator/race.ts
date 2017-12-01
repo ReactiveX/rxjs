@@ -2,7 +2,7 @@ import { Observable } from '../../../Observable';
 import { race as higherOrder } from '../../../operators/race';
 
 // NOTE: to support backwards compatability with 5.4.* and lower
-export { race as raceStatic } from '../../../observable/race';
+export { race as raceStatic } from '../../../internal/observable/race';
 
 /* tslint:disable:max-line-length */
 export function race<T>(this: Observable<T>, observables: Array<Observable<T>>): Observable<T>;

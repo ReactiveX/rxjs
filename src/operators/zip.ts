@@ -1,5 +1,5 @@
 import { Observable, ObservableInput } from '../Observable';
-import { ArrayObservable } from '../observable/ArrayObservable';
+import { ArrayObservable } from '../internal/observable/ArrayObservable';
 import { isArray } from '../util/isArray';
 import { Operator } from '../Operator';
 import { PartialObserver } from '../Observer';

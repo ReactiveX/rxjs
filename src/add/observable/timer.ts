@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { timer as staticTimer } from '../../observable/timer';
+import { timer as staticTimer } from '../../internal/observable/timer';
 
 Observable.timer = staticTimer;
 

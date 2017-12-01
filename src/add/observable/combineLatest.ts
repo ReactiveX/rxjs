@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { combineLatest as combineLatestStatic } from '../../observable/combineLatest';
+import { combineLatest as combineLatestStatic } from '../../internal/observable/combineLatest';
 
 Observable.combineLatest = combineLatestStatic;
 
