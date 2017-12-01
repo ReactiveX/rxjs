@@ -1,7 +1,7 @@
 import { Observable } from '../../../Observable';
 import { IScheduler } from '../../../Scheduler';
 import { async } from '../../../scheduler/async';
-import { sampleTime as higherOrder } from '../../../operators/sampleTime';
+import { sampleTime as higherOrder } from '../../../internal/operators/sampleTime';
 
 /**
  * Emits the most recently emitted value from the source Observable within

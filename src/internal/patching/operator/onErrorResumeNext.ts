@@ -1,5 +1,5 @@
 import { Observable, ObservableInput } from '../../../Observable';
-import { onErrorResumeNext as higherOrder } from '../../../operators/onErrorResumeNext';
+import { onErrorResumeNext as higherOrder } from '../../../internal/operators/onErrorResumeNext';
 
 /* tslint:disable:max-line-length */
 export function onErrorResumeNext<T, R>(this: Observable<T>, v: ObservableInput<R>): Observable<R>;

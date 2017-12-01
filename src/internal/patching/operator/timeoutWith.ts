@@ -1,7 +1,7 @@
 import { IScheduler } from '../../../Scheduler';
 import { async } from '../../../scheduler/async';
 import { Observable, ObservableInput } from '../../../Observable';
-import { timeoutWith as higherOrder } from '../../../operators/timeoutWith';
+import { timeoutWith as higherOrder } from '../../../internal/operators/timeoutWith';
 
 /* tslint:disable:max-line-length */
 export function timeoutWith<T>(this: Observable<T>, due: number | Date, withObservable: ObservableInput<T>, scheduler?: IScheduler): Observable<T>;

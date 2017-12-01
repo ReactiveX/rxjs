@@ -1,5 +1,5 @@
 import { Observable } from '../../../Observable';
-import { skip as higherOrder } from '../../../operators/skip';
+import { skip as higherOrder } from '../../../internal/operators/skip';
 
 /**
  * Returns an Observable that skips the first `count` items emitted by the source Observable.

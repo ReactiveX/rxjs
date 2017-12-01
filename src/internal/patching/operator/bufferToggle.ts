@@ -1,6 +1,6 @@
 
 import { Observable, SubscribableOrPromise } from '../../../Observable';
-import { bufferToggle as higherOrder } from '../../../operators/bufferToggle';
+import { bufferToggle as higherOrder } from '../../../internal/operators/bufferToggle';
 
 /**
  * Buffers the source Observable values starting from an emission from

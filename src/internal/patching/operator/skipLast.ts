@@ -1,5 +1,5 @@
 import { Observable } from '../../../Observable';
-import { skipLast as higherOrder } from '../../../operators/skipLast';
+import { skipLast as higherOrder } from '../../../internal/operators/skipLast';
 
 /**
  * Skip the last `count` values emitted by the source Observable.

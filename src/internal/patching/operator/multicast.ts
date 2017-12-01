@@ -1,7 +1,7 @@
 import { Subject } from '../../../Subject';
 import { Observable } from '../../../Observable';
 import { ConnectableObservable } from '../../../internal/observable/ConnectableObservable';
-import { multicast as higherOrder } from '../../../operators/multicast';
+import { multicast as higherOrder } from '../../../internal/operators/multicast';
 import { FactoryOrValue, MonoTypeOperatorFunction, OperatorFunction } from '../../../interfaces';
 
 /* tslint:disable:max-line-length */

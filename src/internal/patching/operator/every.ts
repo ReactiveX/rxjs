@@ -1,6 +1,6 @@
 
 import { Observable } from '../../../Observable';
-import { every as higherOrder } from '../../../operators/every';
+import { every as higherOrder } from '../../../internal/operators/every';
 
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.

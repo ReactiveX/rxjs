@@ -1,7 +1,7 @@
 import { Observable } from '../../../Observable';
 import { IScheduler } from '../../../Scheduler';
 import { async } from '../../../scheduler/async';
-import { timeInterval as higherOrder, TimeInterval } from '../../../operators/timeInterval';
+import { timeInterval as higherOrder, TimeInterval } from '../../../internal/operators/timeInterval';
 export {TimeInterval};
 
 /**

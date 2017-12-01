@@ -1,6 +1,6 @@
 
 import { Observable } from '../../../Observable';
-import { distinctUntilKeyChanged as higherOrder } from '../../../operators/distinctUntilKeyChanged';
+import { distinctUntilKeyChanged as higherOrder } from '../../../internal/operators/distinctUntilKeyChanged';
 
 /* tslint:disable:max-line-length */
 export function distinctUntilKeyChanged<T>(this: Observable<T>, key: string): Observable<T>;

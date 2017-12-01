@@ -1,6 +1,6 @@
 
 import { Observable, ObservableInput } from '../../../Observable';
-import { catchError as higherOrder } from '../../../operators/catchError';
+import { catchError as higherOrder } from '../../../internal/operators/catchError';
 
 /**
  * Catches errors on the observable to be handled by returning a new observable or throwing an error.

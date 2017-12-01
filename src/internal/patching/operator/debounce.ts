@@ -1,6 +1,6 @@
 
 import { Observable, SubscribableOrPromise } from '../../../Observable';
-import { debounce as higherOrder } from '../../../operators/debounce';
+import { debounce as higherOrder } from '../../../internal/operators/debounce';
 
 /**
  * Emits a value from the source Observable only after a particular time span

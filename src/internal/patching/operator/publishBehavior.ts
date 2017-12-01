@@ -1,6 +1,6 @@
 import { Observable } from '../../../Observable';
 import { ConnectableObservable } from '../../../internal/observable/ConnectableObservable';
-import { publishBehavior as higherOrder } from '../../../operators/publishBehavior';
+import { publishBehavior as higherOrder } from '../../../internal/operators/publishBehavior';
 
 /**
  * @param value

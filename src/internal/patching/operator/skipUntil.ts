@@ -1,5 +1,5 @@
 import { Observable } from '../../../Observable';
-import { skipUntil as higherOrder } from '../../../operators/skipUntil';
+import { skipUntil as higherOrder } from '../../../internal/operators/skipUntil';
 
 /**
  * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.

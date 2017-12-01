@@ -1,5 +1,5 @@
 import { Observable } from '../../../Observable';
-import { retry as higherOrder } from '../../../operators/retry';
+import { retry as higherOrder } from '../../../internal/operators/retry';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable

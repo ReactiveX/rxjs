@@ -1,8 +1,8 @@
 import { Observable } from '../../../Observable';
 import { IScheduler } from '../../../Scheduler';
 import { async } from '../../../scheduler/async';
-import { ThrottleConfig, defaultThrottleConfig } from '../../../operators/throttle';
-import { throttleTime as higherOrder } from '../../../operators/throttleTime';
+import { ThrottleConfig, defaultThrottleConfig } from '../../../internal/operators/throttle';
+import { throttleTime as higherOrder } from '../../../internal/operators/throttleTime';
 
 /**
  * Emits a value from the source Observable, then ignores subsequent source

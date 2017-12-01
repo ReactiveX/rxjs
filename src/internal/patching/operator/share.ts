@@ -1,5 +1,5 @@
 import { Observable } from '../../../Observable';
-import { share as higherOrder } from '../../../operators/share';
+import { share as higherOrder } from '../../../internal/operators/share';
 
 /**
  * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one

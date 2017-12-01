@@ -1,5 +1,5 @@
 import { Observable } from '../../../Observable';
-import { zipAll as higherOrder } from '../../../operators/zipAll';
+import { zipAll as higherOrder } from '../../../internal/operators/zipAll';
 
 /**
  * @param project
