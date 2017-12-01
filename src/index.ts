@@ -144,3 +144,6 @@ export { Subscription } from './Subscription';
 
 /* Notification */
 export { Notification } from './Notification';
+
+/* Utils */
+export { pipe } from './util/pipe';
