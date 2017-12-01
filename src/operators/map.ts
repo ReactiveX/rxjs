@@ -1,7 +1,7 @@
-import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { OperatorFunction } from '../interfaces';
+import { Subscription } from '../Subscription';
 
 /**
  * Applies a given `project` function to each value emitted by the source
@@ -41,17 +41,14 @@ export function map<T, R>(project: (value: T, index: number) => R, thisArg?: any
     if (typeof project !== 'function') {
       throw new TypeError('argument is not a function. Are you looking for `mapTo()`?');
     }
-    return source.lift(new MapOperator(project, thisArg));
+    return source.lift(mapOperator(project, thisArg));
   };
 }
 
-export class MapOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (value: T, index: number) => R, private thisArg: any) {
-  }
-
-  call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new MapSubscriber(subscriber, this.project, this.thisArg));
-  }
+export function mapOperator<T, R> (project: (value: T, index: number) => R, thisArg?: any) {
+  return function mapOperation(this: Subscriber<R>, source: Observable<T>): Subscription {
+    return source.subscribe(new MapSubscriber(this, project, thisArg));
+  };
 }
 
 /**
