@@ -127,3 +127,8 @@ export { windowToggle } from './operators/windowToggle';
 export { windowWhen } from './operators/windowWhen';
 export { withLatestFrom } from './operators/withLatestFrom';
 export { zipAll } from './operators/zipAll';
+
+/* Subjects */
+export { Subject } from './Subject';
+export { BehaviorSubject } from './BehaviorSubject';
+export { ReplaySubject } from './ReplaySubject';

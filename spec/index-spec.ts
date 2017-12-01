@@ -126,4 +126,10 @@ describe('index', () => {
     expect(index.withLatestFrom).to.exist;
     expect(index.zipAll).to.exist;
   });
+
+  it('should export the Subject types', () => {
+    expect(index.Subject).to.exist;
+    expect(index.BehaviorSubject).to.exist;
+    expect(index.ReplaySubject).to.exist;
+  });
 });
