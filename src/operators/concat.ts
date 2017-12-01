@@ -3,6 +3,8 @@ import { IScheduler } from '../Scheduler';
 import { OperatorFunction, MonoTypeOperatorFunction } from '../interfaces';
 import { concat as concatStatic } from '../observable/concat';
 
+export { concat as concatStatic } from '../observable/concat';
+
 /* tslint:disable:max-line-length */
 export function concat<T>(scheduler?: IScheduler): MonoTypeOperatorFunction<T>;
 export function concat<T, T2>(v2: ObservableInput<T2>, scheduler?: IScheduler): OperatorFunction<T, T | T2>;
