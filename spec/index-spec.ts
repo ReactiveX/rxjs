@@ -139,4 +139,12 @@ describe('index', () => {
     expect(index.queueScheduler).to.exist;
     expect(index.animationFrameScheduler).to.exist;
   });
+
+  it('should export Subscription', () => {
+    expect(index.Subscription).to.exist;
+  });
+
+  it('should export Notification', () => {
+    expect(index.Notification).to.exist;
+  });
 });

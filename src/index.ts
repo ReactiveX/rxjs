@@ -134,8 +134,13 @@ export { BehaviorSubject } from './BehaviorSubject';
 export { ReplaySubject } from './ReplaySubject';
 
 /* Schedulers */
-
 export { asap as asapScheduler } from './scheduler/asap';
 export { async as asyncScheduler } from './scheduler/async';
 export { queue as queueScheduler } from './scheduler/queue';
 export { animationFrame as animationFrameScheduler } from './scheduler/animationFrame';
+
+/* Subscription */
+export { Subscription } from './Subscription';
+
+/* Notification */
+export { Notification } from './Notification';
