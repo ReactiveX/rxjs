@@ -1,8 +1,8 @@
-import { Subject } from '../../Subject';
-import { Operator } from '../../Operator';
-import { Subscriber } from '../../Subscriber';
-import { Observable } from '../../Observable';
-import { ConnectableObservable, connectableObservableDescriptor } from '../../internal/observable/ConnectableObservable';
+import { Subject } from '../Subject';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable';
+import { ConnectableObservable, connectableObservableDescriptor } from '../observable/ConnectableObservable';
 import { FactoryOrValue, MonoTypeOperatorFunction, OperatorFunction, UnaryFunction } from '../../interfaces';
 
 /* tslint:disable:max-line-length */

@@ -1,5 +1,5 @@
 import { OperatorFunction } from '../../interfaces';
-import { Observable } from '../../Observable';
+import { Observable } from '../Observable';
 import { switchMap } from './switchMap';
 import { identity } from '../../util/identity';
 

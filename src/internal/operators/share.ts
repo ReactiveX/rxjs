@@ -1,7 +1,7 @@
-import { Observable } from '../../Observable';
+import { Observable } from '../Observable';
 import { multicast } from './multicast';
 import { refCount } from './refCount';
-import { Subject } from '../../Subject';
+import { Subject } from '../Subject';
 
 import { MonoTypeOperatorFunction } from '../../interfaces';
 

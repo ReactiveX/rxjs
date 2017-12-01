@@ -1,5 +1,5 @@
-import { Observable } from '../../../Observable';
-import { findIndex as higherOrder } from '../../../internal/operators/findIndex';
+import { Observable } from '../../Observable';
+import { findIndex as higherOrder } from '../../operators/findIndex';
 /**
  * Emits only the index of the first value emitted by the source Observable that
  * meets some condition.

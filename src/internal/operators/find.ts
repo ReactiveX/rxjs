@@ -1,6 +1,6 @@
-import { Observable } from '../../Observable';
-import { Operator } from '../../Operator';
-import { Subscriber } from '../../Subscriber';
+import { Observable } from '../Observable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
 import { OperatorFunction, MonoTypeOperatorFunction } from '../../interfaces';
 
 export function find<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S,

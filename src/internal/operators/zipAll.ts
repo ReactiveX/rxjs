@@ -1,5 +1,5 @@
-import { ZipOperator } from '../../internal/observable/zip';
-import { Observable } from '../../Observable';
+import { ZipOperator } from '../observable/zip';
+import { Observable } from '../Observable';
 import { OperatorFunction } from '../../interfaces';
 
 export function zipAll<T, R>(project?: (...values: Array<any>) => R): OperatorFunction<T, R> {

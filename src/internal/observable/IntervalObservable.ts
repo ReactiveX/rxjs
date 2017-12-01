@@ -1,8 +1,8 @@
-import { Subscriber } from '../../Subscriber';
+import { Subscriber } from '../Subscriber';
 import { isNumeric } from '../../util/isNumeric';
-import { IScheduler } from '../../Scheduler';
-import { Observable } from '../../Observable';
-import { async } from '../../scheduler/async';
+import { IScheduler } from '../Scheduler';
+import { Observable } from '../Observable';
+import { async } from '../scheduler/async';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

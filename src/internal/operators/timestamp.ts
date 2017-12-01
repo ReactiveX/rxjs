@@ -1,6 +1,6 @@
 
-import { IScheduler } from '../../Scheduler';
-import { async } from '../../scheduler/async';
+import { IScheduler } from '../Scheduler';
+import { async } from '../scheduler/async';
 import { OperatorFunction } from '../../interfaces';
 import { map } from './map';
 

@@ -1,5 +1,5 @@
-import { Observable } from '../../../Observable';
-import { repeatWhen as higherOrder } from '../../../internal/operators/repeatWhen';
+import { Observable } from '../../Observable';
+import { repeatWhen as higherOrder } from '../../operators/repeatWhen';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of a `complete`. If the source

@@ -1,4 +1,4 @@
-import { Observable, ObservableInput } from '../../../Observable';
+import { Observable, ObservableInput } from '../../Observable';
 import { mergeScan as higherOrder } from '../../operators/mergeScan';
 
 /**

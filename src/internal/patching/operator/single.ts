@@ -1,5 +1,5 @@
-import { Observable } from '../../../Observable';
-import { single as higherOrder } from '../../../internal/operators/single';
+import { Observable } from '../../Observable';
+import { single as higherOrder } from '../../operators/single';
 
 /**
  * Returns an Observable that emits the single item emitted by the source Observable that matches a specified

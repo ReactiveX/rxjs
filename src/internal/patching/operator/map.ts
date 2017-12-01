@@ -1,5 +1,5 @@
-import { map as higherOrderMap } from '../../../internal/operators/map';
-import { Observable } from '../../../Observable';
+import { map as higherOrderMap } from '../../operators/map';
+import { Observable } from '../../Observable';
 
 /**
  * Applies a given `project` function to each value emitted by the source

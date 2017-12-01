@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as Rx from '../../src/Rx';
-import { queue } from '../../src/scheduler/queue';
+import { queue } from '../../src/internal/scheduler/queue';
 import { IteratorObservable } from '../../src/internal/observable/IteratorObservable';
 
 declare const expectObservable;

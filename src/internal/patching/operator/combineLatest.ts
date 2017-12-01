@@ -1,6 +1,6 @@
-import { Observable, ObservableInput } from '../../../Observable';
-import { CombineLatestOperator } from '../../../internal/observable/combineLatest';
-import { ArrayObservable } from '../../../internal/observable/ArrayObservable';
+import { Observable, ObservableInput } from '../../Observable';
+import { CombineLatestOperator } from '../../observable/combineLatest';
+import { ArrayObservable } from '../../observable/ArrayObservable';
 import { isArray } from '../../../util/isArray';
 
 /* tslint:disable:max-line-length */

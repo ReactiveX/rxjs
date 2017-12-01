@@ -1,8 +1,8 @@
-import { Operator } from '../../Operator';
-import { Observable } from '../../Observable';
-import { Subscriber } from '../../Subscriber';
-import { IScheduler } from '../../Scheduler';
-import { async } from '../../scheduler/async';
+import { Operator } from '../Operator';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
+import { IScheduler } from '../Scheduler';
+import { async } from '../scheduler/async';
 import { OperatorFunction } from '../../interfaces';
 
 export function timeInterval<T>(scheduler: IScheduler = async): OperatorFunction<T, TimeInterval<T>> {

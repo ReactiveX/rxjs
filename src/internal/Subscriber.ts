@@ -1,8 +1,7 @@
-import { isFunction } from './util/isFunction';
-import { Observer, PartialObserver } from './Observer';
+import { isFunction } from '../util/isFunction';
+import { Observer, PartialObserver, empty as emptyObserver } from './Observer';
 import { Subscription } from './Subscription';
-import { empty as emptyObserver } from './Observer';
-import { rxSubscriber as rxSubscriberSymbol } from './symbol/rxSubscriber';
+import { rxSubscriber as rxSubscriberSymbol } from '../symbol/rxSubscriber';
 
 /**
  * Implements the {@link Observer} interface and extends the

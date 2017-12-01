@@ -1,7 +1,7 @@
-import { Operator } from '../../Operator';
-import { Observer } from '../../Observer';
-import { Observable } from '../../Observable';
-import { Subscriber } from '../../Subscriber';
+import { Operator } from '../Operator';
+import { Observer } from '../Observer';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
 import { OperatorFunction } from '../../interfaces';
 
 /**

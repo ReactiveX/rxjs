@@ -1,9 +1,9 @@
-import { Operator } from '../../Operator';
-import { Subscriber } from '../../Subscriber';
-import { IScheduler } from '../../Scheduler';
-import { Subscription, TeardownLogic } from '../../Subscription';
-import { async } from '../../scheduler/async';
-import { Observable } from '../../Observable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { IScheduler } from '../Scheduler';
+import { Subscription, TeardownLogic } from '../Subscription';
+import { async } from '../scheduler/async';
+import { Observable } from '../Observable';
 import { ThrottleConfig, defaultThrottleConfig } from './throttle';
 import { MonoTypeOperatorFunction } from '../../interfaces';
 

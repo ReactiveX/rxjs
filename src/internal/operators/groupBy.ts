@@ -1,8 +1,8 @@
-import { Subscriber } from '../../Subscriber';
-import { Subscription } from '../../Subscription';
-import { Observable } from '../../Observable';
-import { Operator } from '../../Operator';
-import { Subject } from '../../Subject';
+import { Subscriber } from '../Subscriber';
+import { Subscription } from '../Subscription';
+import { Observable } from '../Observable';
+import { Operator } from '../Operator';
+import { Subject } from '../Subject';
 import { OperatorFunction } from '../../interfaces';
 
 /** Assert that map is present for this operator */

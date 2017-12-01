@@ -1,9 +1,9 @@
-import { Observable } from '../../Observable';
-import { Operator } from '../../Operator';
-import { Subscriber } from '../../Subscriber';
-import { Observer } from '../../Observer';
+import { Observable } from '../Observable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Observer } from '../Observer';
 import { EmptyError } from '../../util/EmptyError';
-import { TeardownLogic } from '../../Subscription';
+import { TeardownLogic } from '../Subscription';
 
 import { MonoTypeOperatorFunction } from '../../interfaces';
 

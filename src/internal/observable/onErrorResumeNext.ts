@@ -1,10 +1,10 @@
-import { Observable, ObservableInput } from '../../Observable';
+import { Observable, ObservableInput } from '../Observable';
 import { FromObservable } from '../../internal/observable/FromObservable';
-import { Operator } from '../../Operator';
-import { Subscriber } from '../../Subscriber';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
 import { isArray } from '../../util/isArray';
-import { OuterSubscriber } from '../../OuterSubscriber';
-import { InnerSubscriber } from '../../InnerSubscriber';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../../util/subscribeToResult';
 
 /* tslint:disable:max-line-length */

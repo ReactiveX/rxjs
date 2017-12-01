@@ -1,5 +1,5 @@
-import { Observable, ObservableInput } from '../../../Observable';
-import { withLatestFrom as higherOrder } from '../../../internal/operators/withLatestFrom';
+import { Observable, ObservableInput } from '../../Observable';
+import { withLatestFrom as higherOrder } from '../../operators/withLatestFrom';
 
 /* tslint:disable:max-line-length */
 export function withLatestFrom<T, R>(this: Observable<T>, project: (v1: T) => R): Observable<R>;

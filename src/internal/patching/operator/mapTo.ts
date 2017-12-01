@@ -1,5 +1,5 @@
-import { Observable } from '../../../Observable';
-import { mapTo as higherOrder } from '../../../internal/operators/mapTo';
+import { Observable } from '../../Observable';
+import { mapTo as higherOrder } from '../../operators/mapTo';
 
 /**
  * Emits the given constant value on the output Observable every time the source

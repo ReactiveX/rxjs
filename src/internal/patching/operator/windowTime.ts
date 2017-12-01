@@ -1,9 +1,9 @@
-import { IScheduler } from '../../../Scheduler';
-import { async } from '../../../scheduler/async';
-import { Observable } from '../../../Observable';
+import { IScheduler } from '../../Scheduler';
+import { async } from '../../scheduler/async';
+import { Observable } from '../../Observable';
 import { isNumeric } from '../../../util/isNumeric';
 import { isScheduler } from '../../../util/isScheduler';
-import { windowTime as higherOrder } from '../../../internal/operators/windowTime';
+import { windowTime as higherOrder } from '../../operators/windowTime';
 
 /**
  * Branch out the source Observable values as a nested Observable periodically

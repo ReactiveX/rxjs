@@ -1,5 +1,5 @@
-import { Observable } from '../../../Observable';
-import { takeWhile as higherOrder } from '../../../internal/operators/takeWhile';
+import { Observable } from '../../Observable';
+import { takeWhile as higherOrder } from '../../operators/takeWhile';
 
 /**
  * Emits values emitted by the source Observable so long as each value satisfies

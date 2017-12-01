@@ -1,9 +1,9 @@
-import { Observable } from '../../Observable';
-import { ReplaySubject } from '../../ReplaySubject';
-import { IScheduler } from '../../Scheduler';
-import { Subscription } from '../../Subscription';
+import { Observable } from '../Observable';
+import { ReplaySubject } from '../ReplaySubject';
+import { IScheduler } from '../Scheduler';
+import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction } from '../../interfaces';
-import { Subscriber } from '../../Subscriber';
+import { Subscriber } from '../Subscriber';
 
 /**
  * @method shareReplay

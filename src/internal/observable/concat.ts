@@ -1,5 +1,5 @@
-import { Observable, ObservableInput } from '../../Observable';
-import { IScheduler } from '../../Scheduler';
+import { Observable, ObservableInput } from '../Observable';
+import { IScheduler } from '../Scheduler';
 import { isScheduler } from '../../util/isScheduler';
 import { of } from './of';
 import { from } from './from';

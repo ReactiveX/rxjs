@@ -1,6 +1,6 @@
 
-import { Observable } from '../../../Observable';
-import { toArray as higherOrder } from '../../../internal/operators/toArray';
+import { Observable } from '../../Observable';
+import { toArray as higherOrder } from '../../operators/toArray';
 
 /**
  * Collects all source emissions and emits them as an array when the source completes.

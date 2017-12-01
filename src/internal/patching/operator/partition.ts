@@ -1,5 +1,5 @@
-import { Observable } from '../../../Observable';
-import { partition as higherOrder } from '../../../internal/operators/partition';
+import { Observable } from '../../Observable';
+import { partition as higherOrder } from '../../operators/partition';
 /**
  * Splits the source Observable into two, one with values that satisfy a
  * predicate, and another with values that don't satisfy the predicate.

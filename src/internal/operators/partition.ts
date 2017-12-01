@@ -1,6 +1,6 @@
 import { not } from '../../util/not';
 import { filter } from './filter';
-import { Observable } from '../../Observable';
+import { Observable } from '../Observable';
 import { UnaryFunction } from '../../interfaces';
 
 /**

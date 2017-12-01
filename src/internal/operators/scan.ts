@@ -1,6 +1,6 @@
-import { Operator } from '../../Operator';
-import { Observable } from '../../Observable';
-import { Subscriber } from '../../Subscriber';
+import { Operator } from '../Operator';
+import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
 import { OperatorFunction, MonoTypeOperatorFunction } from '../../interfaces';
 
 /* tslint:disable:max-line-length */

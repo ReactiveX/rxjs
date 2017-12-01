@@ -1,10 +1,10 @@
-import { Observable, ObservableInput } from '../../Observable';
-import { Operator } from '../../Operator';
-import { PartialObserver } from '../../Observer';
-import { Subscriber } from '../../Subscriber';
-import { Subscription } from '../../Subscription';
-import { OuterSubscriber } from '../../OuterSubscriber';
-import { InnerSubscriber } from '../../InnerSubscriber';
+import { Observable, ObservableInput } from '../Observable';
+import { Operator } from '../Operator';
+import { PartialObserver } from '../Observer';
+import { Subscriber } from '../Subscriber';
+import { Subscription } from '../Subscription';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../../util/subscribeToResult';
 import { OperatorFunction } from '../../interfaces';
 

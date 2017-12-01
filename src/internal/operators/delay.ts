@@ -1,13 +1,13 @@
-import { async } from '../../scheduler/async';
+import { async } from '../scheduler/async';
 import { isDate } from '../../util/isDate';
-import { Operator } from '../../Operator';
-import { IScheduler } from '../../Scheduler';
-import { Subscriber } from '../../Subscriber';
-import { Action } from '../../scheduler/Action';
-import { Notification } from '../../Notification';
-import { Observable } from '../../Observable';
-import { PartialObserver } from '../../Observer';
-import { TeardownLogic } from '../../Subscription';
+import { Operator } from '../Operator';
+import { IScheduler } from '../Scheduler';
+import { Subscriber } from '../Subscriber';
+import { Action } from '../scheduler/Action';
+import { Notification } from '../Notification';
+import { Observable } from '../Observable';
+import { PartialObserver } from '../Observer';
+import { TeardownLogic } from '../Subscription';
 import { MonoTypeOperatorFunction } from '../../interfaces';
 
 /**

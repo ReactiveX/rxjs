@@ -1,6 +1,6 @@
-import { Observable } from '../../Observable';
-import { Operator } from '../../Operator';
-import { Subscriber } from '../../Subscriber';
+import { Observable } from '../Observable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
 import { MonoTypeOperatorFunction } from '../../interfaces';
 
 /**

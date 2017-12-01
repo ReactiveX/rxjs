@@ -1,11 +1,11 @@
-import { Observable } from '../Observable';
-import { Subscription } from '../Subscription';
-import { Scheduler } from '../Scheduler';
+import { Observable } from '../internal/Observable';
+import { Subscription } from '../internal/Subscription';
+import { Scheduler } from '../internal/Scheduler';
 import { TestMessage } from './TestMessage';
 import { SubscriptionLog } from './SubscriptionLog';
 import { SubscriptionLoggable } from './SubscriptionLoggable';
 import { applyMixins } from '../util/applyMixins';
-import { Subscriber } from '../Subscriber';
+import { Subscriber } from '../internal/Subscriber';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

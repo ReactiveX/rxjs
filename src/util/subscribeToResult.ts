@@ -2,12 +2,12 @@ import { root } from './root';
 import { isArrayLike } from './isArrayLike';
 import { isPromise } from './isPromise';
 import { isObject } from './isObject';
-import { Subscriber } from '../Subscriber';
-import { Observable, ObservableInput } from '../Observable';
+import { Subscriber } from '../internal/Subscriber';
+import { Observable, ObservableInput } from '../internal/Observable';
 import { iterator as Symbol_iterator } from '../symbol/iterator';
-import { Subscription } from '../Subscription';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { OuterSubscriber } from '../OuterSubscriber';
+import { Subscription } from '../internal/Subscription';
+import { InnerSubscriber } from '../internal/InnerSubscriber';
+import { OuterSubscriber } from '../internal/OuterSubscriber';
 import { observable as Symbol_observable } from '../symbol/observable';
 
 export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,

@@ -1,6 +1,6 @@
-import { Observable } from '../../../Observable';
-import { IScheduler } from '../../../Scheduler';
-import { shareReplay as higherOrder } from '../../../internal/operators/shareReplay';
+import { Observable } from '../../Observable';
+import { IScheduler } from '../../Scheduler';
+import { shareReplay as higherOrder } from '../../operators/shareReplay';
 
 /**
  * @method shareReplay

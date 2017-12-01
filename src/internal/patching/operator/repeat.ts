@@ -1,6 +1,6 @@
 
-import { Observable } from '../../../Observable';
-import { repeat as higherOrder } from '../../../internal/operators/repeat';
+import { Observable } from '../../Observable';
+import { repeat as higherOrder } from '../../operators/repeat';
 
 /**
  * Returns an Observable that repeats the stream of items emitted by the source Observable at most count times.

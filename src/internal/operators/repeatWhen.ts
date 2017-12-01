@@ -1,13 +1,13 @@
-import { Operator } from '../../Operator';
-import { Subscriber } from '../../Subscriber';
-import { Observable } from '../../Observable';
-import { Subject } from '../../Subject';
-import { Subscription, TeardownLogic } from '../../Subscription';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable';
+import { Subject } from '../Subject';
+import { Subscription, TeardownLogic } from '../Subscription';
 import { tryCatch } from '../../util/tryCatch';
 import { errorObject } from '../../util/errorObject';
 
-import { OuterSubscriber } from '../../OuterSubscriber';
-import { InnerSubscriber } from '../../InnerSubscriber';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../../util/subscribeToResult';
 
 import { MonoTypeOperatorFunction } from '../../interfaces';

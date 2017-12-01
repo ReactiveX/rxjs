@@ -1,5 +1,5 @@
 import { mergeMap } from './mergeMap';
-import { ObservableInput } from '../../Observable';
+import { ObservableInput } from '../Observable';
 import { OperatorFunction } from '../../interfaces';
 
 /* tslint:disable:max-line-length */

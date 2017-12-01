@@ -1,9 +1,9 @@
-import { Operator } from '../../Operator';
-import { Subscriber } from '../../Subscriber';
-import { Subscription, TeardownLogic } from '../../Subscription';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Subscription, TeardownLogic } from '../Subscription';
 import { MonoTypeOperatorFunction } from '../../interfaces';
-import { ConnectableObservable } from '../../internal/observable/ConnectableObservable';
-import { Observable } from '../../Observable';
+import { ConnectableObservable } from '../observable/ConnectableObservable';
+import { Observable } from '../Observable';
 
 export function refCount<T>(): MonoTypeOperatorFunction<T> {
   return function refCountOperatorFunction(source: ConnectableObservable<T>): Observable<T> {

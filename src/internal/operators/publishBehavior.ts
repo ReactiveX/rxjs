@@ -1,7 +1,7 @@
-import { Observable } from '../../Observable';
-import { BehaviorSubject } from '../../BehaviorSubject';
+import { Observable } from '../Observable';
+import { BehaviorSubject } from '../BehaviorSubject';
 import { multicast } from './multicast';
-import { ConnectableObservable } from '../../internal/observable/ConnectableObservable';
+import { ConnectableObservable } from '../observable/ConnectableObservable';
 import { UnaryFunction } from '../../interfaces';
 
 /**

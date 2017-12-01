@@ -1,5 +1,5 @@
-import { CombineLatestOperator } from '../../internal/observable/combineLatest';
-import { Observable } from '../../Observable';
+import { CombineLatestOperator } from '../observable/combineLatest';
+import { Observable } from '../Observable';
 import { OperatorFunction } from '../../interfaces';
 
 export function combineAll<T, R>(project?: (...values: Array<any>) => R): OperatorFunction<T, R> {

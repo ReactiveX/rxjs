@@ -1,9 +1,9 @@
-import { IScheduler } from '../../Scheduler';
-import { Observable } from '../../Observable';
+import { IScheduler } from '../Scheduler';
+import { Observable } from '../Observable';
 import { ScalarObservable } from './ScalarObservable';
 import { EmptyObservable } from './EmptyObservable';
-import { Subscriber } from '../../Subscriber';
-import { TeardownLogic } from '../../Subscription';
+import { Subscriber } from '../Subscriber';
+import { TeardownLogic } from '../Subscription';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

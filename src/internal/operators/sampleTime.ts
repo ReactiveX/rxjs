@@ -1,10 +1,10 @@
-import { Observable } from '../../Observable';
-import { Operator } from '../../Operator';
-import { Subscriber } from '../../Subscriber';
-import { IScheduler } from '../../Scheduler';
-import { Action } from '../../scheduler/Action';
-import { async } from '../../scheduler/async';
-import { TeardownLogic } from '../../Subscription';
+import { Observable } from '../Observable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { IScheduler } from '../Scheduler';
+import { Action } from '../scheduler/Action';
+import { async } from '../scheduler/async';
+import { TeardownLogic } from '../Subscription';
 
 import { MonoTypeOperatorFunction } from '../../interfaces';
 
