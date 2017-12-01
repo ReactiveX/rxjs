@@ -1,6 +1,6 @@
 
 import { Observable } from '../../../Observable';
-import { finalize } from '../../../operators/finalize';
+import { finalize } from '../../../internal/operators/finalize';
 
 /**
  * Returns an Observable that mirrors the source Observable, but will call a specified function when

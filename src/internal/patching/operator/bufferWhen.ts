@@ -1,6 +1,6 @@
 
 import { Observable } from '../../../Observable';
-import { bufferWhen as higherOrder } from '../../../operators/bufferWhen';
+import { bufferWhen as higherOrder } from '../../../internal/operators/bufferWhen';
 
 /**
  * Buffers the source Observable values, using a factory function of closing

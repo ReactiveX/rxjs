@@ -1,5 +1,5 @@
 import { Observable } from '../../../Observable';
-import { takeUntil as higherOrder } from '../../../operators/takeUntil';
+import { takeUntil as higherOrder } from '../../../internal/operators/takeUntil';
 
 /**
  * Emits the values emitted by the source Observable until a `notifier`

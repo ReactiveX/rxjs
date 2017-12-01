@@ -1,7 +1,7 @@
 
 import { Observable } from '../../../Observable';
 import { ConnectableObservable } from '../../../internal/observable/ConnectableObservable';
-import { publish as higherOrder } from '../../../operators/publish';
+import { publish as higherOrder } from '../../../internal/operators/publish';
 
 /* tslint:disable:max-line-length */
 export function publish<T>(this: Observable<T>): ConnectableObservable<T>;

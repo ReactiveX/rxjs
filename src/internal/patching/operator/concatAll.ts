@@ -1,6 +1,6 @@
 import { Observable } from '../../../Observable';
 import { Subscribable } from '../../../Observable';
-import { concatAll as higherOrder } from '../../../operators/concatAll';
+import { concatAll as higherOrder } from '../../../internal/operators/concatAll';
 
 /* tslint:disable:max-line-length */
 export function concatAll<T>(this: Observable<T>): T;

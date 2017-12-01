@@ -1,5 +1,5 @@
 import { Observable, SubscribableOrPromise } from '../../../Observable';
-import { throttle as higherOrder, ThrottleConfig, defaultThrottleConfig } from '../../../operators/throttle';
+import { throttle as higherOrder, ThrottleConfig, defaultThrottleConfig } from '../../../internal/operators/throttle';
 
 /**
  * Emits a value from the source Observable, then ignores subsequent source

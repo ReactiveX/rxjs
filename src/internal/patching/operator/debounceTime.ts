@@ -2,7 +2,7 @@
 import { Observable } from '../../../Observable';
 import { IScheduler } from '../../../Scheduler';
 import { async } from '../../../scheduler/async';
-import { debounceTime as higherOrder } from '../../../operators/debounceTime';
+import { debounceTime as higherOrder } from '../../../internal/operators/debounceTime';
 
 /**
  * Emits a value from the source Observable only after a particular time span

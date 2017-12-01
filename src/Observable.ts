@@ -288,7 +288,7 @@ export class Observable<T> implements Subscribable<T> {
    *
    * @example
    *
-   * import { map, filter, scan } from 'rxjs/operators';
+   * import { map, filter, scan } from 'rxjs/internal/operators';
    *
    * Rx.Observable.interval(1000)
    *   .pipe(

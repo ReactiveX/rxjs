@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import * as Rx from '../src/Rx';
 import { TeardownLogic } from '../src/Subscription';
 import marbleTestingSignature = require('./helpers/marble-testing'); // tslint:disable-line:no-require-imports
-import { map } from '../src/operators/map';
+import { map } from '../src/internal/operators/map';
 //tslint:disable-next-line
 require('./helpers/test-helper');
 

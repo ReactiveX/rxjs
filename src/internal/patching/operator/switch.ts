@@ -1,5 +1,5 @@
 import { Observable } from '../../../Observable';
-import { switchAll as higherOrder } from '../../../operators/switchAll';
+import { switchAll as higherOrder } from '../../../internal/operators/switchAll';
 
 /**
  * Converts a higher-order Observable into a first-order Observable by

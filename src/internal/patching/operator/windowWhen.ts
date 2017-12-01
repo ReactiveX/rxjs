@@ -1,6 +1,6 @@
 
 import { Observable } from '../../../Observable';
-import { windowWhen as higherOrder } from '../../../operators/windowWhen';
+import { windowWhen as higherOrder } from '../../../internal/operators/windowWhen';
 
 /**
  * Branch out the source Observable values as a nested Observable using a

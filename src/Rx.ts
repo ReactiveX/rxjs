@@ -38,7 +38,7 @@ import './add/observable/zip';
 import './add/observable/dom/ajax';
 import './add/observable/dom/webSocket';
 
-//operators
+//internal/operators
 import './add/operator/buffer';
 import './add/operator/bufferCount';
 import './add/operator/bufferTime';
@@ -158,7 +158,7 @@ export {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
 export {TimeoutError} from './util/TimeoutError';
 export {UnsubscriptionError} from './util/UnsubscriptionError';
 export {TimeInterval} from './internal/patching/operator/timeInterval';
-export {Timestamp} from './operators/timestamp';
+export {Timestamp} from './internal/operators/timestamp';
 export {TestScheduler} from './testing/TestScheduler';
 export {VirtualTimeScheduler} from './scheduler/VirtualTimeScheduler';
 export {AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError} from './internal/observable/dom/AjaxObservable';
@@ -176,7 +176,7 @@ import { rxSubscriber } from './symbol/rxSubscriber';
 import { iterator } from './symbol/iterator';
 import { observable } from './symbol/observable';
 
-import * as _operators from './operators';
+import * as _operators from './internal/operators';
 
 export const operators = _operators;
 

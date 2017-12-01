@@ -1,7 +1,7 @@
 import { async } from '../../../scheduler/async';
 import { IScheduler } from '../../../Scheduler';
 import { Observable } from '../../../Observable';
-import { timeout as higherOrder } from '../../../operators/timeout';
+import { timeout as higherOrder } from '../../../internal/operators/timeout';
 
 /**
  *

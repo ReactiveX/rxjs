@@ -4,7 +4,7 @@ import { errorObject } from '../../../util/errorObject';
 import { Observable } from '../../../Observable';
 import { Subscriber } from '../../../Subscriber';
 import { TeardownLogic } from '../../../Subscription';
-import { map } from '../../../operators/map';
+import { map } from '../../../internal/operators/map';
 
 export interface AjaxRequest {
   url?: string;

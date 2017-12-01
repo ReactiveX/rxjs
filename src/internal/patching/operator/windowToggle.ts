@@ -1,6 +1,6 @@
 
 import { Observable } from '../../../Observable';
-import { windowToggle as higherOrder } from '../../../operators/windowToggle';
+import { windowToggle as higherOrder } from '../../../internal/operators/windowToggle';
 
 /**
  * Branch out the source Observable values as a nested Observable starting from

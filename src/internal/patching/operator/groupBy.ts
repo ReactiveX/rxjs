@@ -1,7 +1,7 @@
 
 import { Observable } from '../../../Observable';
 import { Subject } from '../../../Subject';
-import { groupBy as higherOrder, GroupedObservable } from '../../../operators/groupBy';
+import { groupBy as higherOrder, GroupedObservable } from '../../../internal/operators/groupBy';
 export { GroupedObservable };
 
 /* tslint:disable:max-line-length */

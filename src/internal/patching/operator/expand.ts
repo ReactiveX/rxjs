@@ -1,6 +1,6 @@
 import { Observable } from '../../../Observable';
 import { IScheduler } from '../../../Scheduler';
-import { expand as higherOrder } from '../../../operators/expand';
+import { expand as higherOrder } from '../../../internal/operators/expand';
 
 /* tslint:disable:max-line-length */
 export function expand<T>(this: Observable<T>, project: (value: T, index: number) => Observable<T>, concurrent?: number, scheduler?: IScheduler): Observable<T>;

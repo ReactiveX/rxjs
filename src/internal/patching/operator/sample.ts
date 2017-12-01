@@ -1,5 +1,5 @@
 import { Observable } from '../../../Observable';
-import { sample as higherOrder } from '../../../operators/sample';
+import { sample as higherOrder } from '../../../internal/operators/sample';
 
 /**
  * Emits the most recently emitted value from the source Observable whenever
