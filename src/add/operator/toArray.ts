@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { toArray } from '../../operator/toArray';
+import { toArray } from '../../internal/patching/operator/toArray';
 
 Observable.prototype.toArray = toArray;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { groupBy } from '../../operator/groupBy';
+import { groupBy } from '../../internal/patching/operator/groupBy';
 
 Observable.prototype.groupBy = <any>groupBy;
 

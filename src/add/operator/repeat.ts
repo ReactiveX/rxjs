@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { repeat } from '../../operator/repeat';
+import { repeat } from '../../internal/patching/operator/repeat';
 
 Observable.prototype.repeat = repeat;
 

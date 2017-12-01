@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { bufferToggle } from '../../operator/bufferToggle';
+import { bufferToggle } from '../../internal/patching/operator/bufferToggle';
 
 Observable.prototype.bufferToggle = bufferToggle;
 

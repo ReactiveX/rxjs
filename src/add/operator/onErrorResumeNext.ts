@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { onErrorResumeNext } from '../../operator/onErrorResumeNext';
+import { onErrorResumeNext } from '../../internal/patching/operator/onErrorResumeNext';
 
 Observable.prototype.onErrorResumeNext = onErrorResumeNext;
 

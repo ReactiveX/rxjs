@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { concatMap } from '../../operator/concatMap';
+import { concatMap } from '../../internal/patching/operator/concatMap';
 
 Observable.prototype.concatMap = concatMap;
 

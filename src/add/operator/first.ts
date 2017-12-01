@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { first } from '../../operator/first';
+import { first } from '../../internal/patching/operator/first';
 
 Observable.prototype.first = <any>first;
 

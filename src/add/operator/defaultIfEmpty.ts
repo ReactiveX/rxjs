@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { defaultIfEmpty } from '../../operator/defaultIfEmpty';
+import { defaultIfEmpty } from '../../internal/patching/operator/defaultIfEmpty';
 
 Observable.prototype.defaultIfEmpty = defaultIfEmpty;
 

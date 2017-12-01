@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { buffer } from '../../operator/buffer';
+import { buffer } from '../../internal/patching/operator/buffer';
 
 Observable.prototype.buffer = buffer;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { min } from '../../operator/min';
+import { min } from '../../internal/patching/operator/min';
 
 Observable.prototype.min = min;
 

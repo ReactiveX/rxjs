@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { pluck } from '../../operator/pluck';
+import { pluck } from '../../internal/patching/operator/pluck';
 
 Observable.prototype.pluck = pluck;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { retryWhen } from '../../operator/retryWhen';
+import { retryWhen } from '../../internal/patching/operator/retryWhen';
 
 Observable.prototype.retryWhen = retryWhen;
 

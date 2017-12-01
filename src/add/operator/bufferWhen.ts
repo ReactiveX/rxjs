@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { bufferWhen } from '../../operator/bufferWhen';
+import { bufferWhen } from '../../internal/patching/operator/bufferWhen';
 
 Observable.prototype.bufferWhen = bufferWhen;
 

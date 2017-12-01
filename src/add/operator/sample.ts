@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { sample } from '../../operator/sample';
+import { sample } from '../../internal/patching/operator/sample';
 
 Observable.prototype.sample = sample;
 

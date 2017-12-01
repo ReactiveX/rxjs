@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { zipAll } from '../../operator/zipAll';
+import { zipAll } from '../../internal/patching/operator/zipAll';
 
 Observable.prototype.zipAll = zipAll;
 

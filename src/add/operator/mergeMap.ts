@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { mergeMap } from '../../operator/mergeMap';
+import { mergeMap } from '../../internal/patching/operator/mergeMap';
 
 Observable.prototype.mergeMap = <any>mergeMap;
 Observable.prototype.flatMap = <any>mergeMap;

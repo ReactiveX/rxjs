@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { startWith } from '../../operator/startWith';
+import { startWith } from '../../internal/patching/operator/startWith';
 
 Observable.prototype.startWith = startWith;
 

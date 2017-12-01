@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { filter } from '../../operator/filter';
+import { filter } from '../../internal/patching/operator/filter';
 
 Observable.prototype.filter = filter;
 

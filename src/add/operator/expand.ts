@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { expand } from '../../operator/expand';
+import { expand } from '../../internal/patching/operator/expand';
 
 Observable.prototype.expand = expand;
 

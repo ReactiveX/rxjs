@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { distinct } from '../../operator/distinct';
+import { distinct } from '../../internal/patching/operator/distinct';
 
 Observable.prototype.distinct = distinct;
 

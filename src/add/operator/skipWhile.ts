@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { skipWhile } from '../../operator/skipWhile';
+import { skipWhile } from '../../internal/patching/operator/skipWhile';
 
 Observable.prototype.skipWhile = skipWhile;
 

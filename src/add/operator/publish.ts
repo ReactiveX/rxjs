@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { publish } from '../../operator/publish';
+import { publish } from '../../internal/patching/operator/publish';
 
 Observable.prototype.publish = <any>publish;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { bufferTime } from '../../operator/bufferTime';
+import { bufferTime } from '../../internal/patching/operator/bufferTime';
 
 Observable.prototype.bufferTime = bufferTime;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { distinctUntilKeyChanged } from '../../operator/distinctUntilKeyChanged';
+import { distinctUntilKeyChanged } from '../../internal/patching/operator/distinctUntilKeyChanged';
 
 Observable.prototype.distinctUntilKeyChanged = distinctUntilKeyChanged;
 

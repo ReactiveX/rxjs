@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { windowWhen } from '../../operator/windowWhen';
+import { windowWhen } from '../../internal/patching/operator/windowWhen';
 
 Observable.prototype.windowWhen = windowWhen;
 

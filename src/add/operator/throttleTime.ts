@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { throttleTime } from '../../operator/throttleTime';
+import { throttleTime } from '../../internal/patching/operator/throttleTime';
 
 Observable.prototype.throttleTime = throttleTime;
 

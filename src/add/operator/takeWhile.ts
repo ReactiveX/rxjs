@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { takeWhile } from '../../operator/takeWhile';
+import { takeWhile } from '../../internal/patching/operator/takeWhile';
 
 Observable.prototype.takeWhile = takeWhile;
 

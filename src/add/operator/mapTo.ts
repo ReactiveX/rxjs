@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { mapTo } from '../../operator/mapTo';
+import { mapTo } from '../../internal/patching/operator/mapTo';
 
 Observable.prototype.mapTo = mapTo;
 

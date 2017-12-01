@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { sequenceEqual } from '../../operator/sequenceEqual';
+import { sequenceEqual } from '../../internal/patching/operator/sequenceEqual';
 
 Observable.prototype.sequenceEqual = sequenceEqual;
 

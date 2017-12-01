@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { concat } from '../../operator/concat';
+import { concat } from '../../internal/patching/operator/concat';
 
 Observable.prototype.concat = concat;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { debounceTime } from '../../operator/debounceTime';
+import { debounceTime } from '../../internal/patching/operator/debounceTime';
 
 Observable.prototype.debounceTime = debounceTime;
 

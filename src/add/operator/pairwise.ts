@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { pairwise } from '../../operator/pairwise';
+import { pairwise } from '../../internal/patching/operator/pairwise';
 
 Observable.prototype.pairwise = pairwise;
 

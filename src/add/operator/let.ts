@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { letProto } from '../../operator/let';
+import { letProto } from '../../internal/patching/operator/let';
 
 Observable.prototype.let = letProto;
 Observable.prototype.letBind = letProto;

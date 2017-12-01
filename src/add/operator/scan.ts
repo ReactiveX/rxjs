@@ -1,7 +1,7 @@
 
 import { Observable } from '../../Observable';
 
-import { scan } from '../../operator/scan';
+import { scan } from '../../internal/patching/operator/scan';
 
 Observable.prototype.scan = scan;
 

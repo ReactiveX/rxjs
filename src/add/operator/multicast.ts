@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { multicast } from '../../operator/multicast';
+import { multicast } from '../../internal/patching/operator/multicast';
 
 Observable.prototype.multicast = <any>multicast;
 
