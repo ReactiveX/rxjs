@@ -150,7 +150,7 @@ export {Subscriber} from './Subscriber';
 export {AsyncSubject} from './AsyncSubject';
 export {ReplaySubject} from './ReplaySubject';
 export {BehaviorSubject} from './BehaviorSubject';
-export {ConnectableObservable} from './observable/ConnectableObservable';
+export {ConnectableObservable} from './internal/observable/ConnectableObservable';
 export {Notification} from './Notification';
 export {EmptyError} from './util/EmptyError';
 export {ArgumentOutOfRangeError} from './util/ArgumentOutOfRangeError';
@@ -161,7 +161,7 @@ export {TimeInterval} from './internal/patching/operator/timeInterval';
 export {Timestamp} from './operators/timestamp';
 export {TestScheduler} from './testing/TestScheduler';
 export {VirtualTimeScheduler} from './scheduler/VirtualTimeScheduler';
-export {AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError} from './observable/dom/AjaxObservable';
+export {AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError} from './internal/observable/dom/AjaxObservable';
 export { pipe } from './util/pipe';
 
 import { asap } from './scheduler/asap';

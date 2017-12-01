@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { zip as zipStatic } from '../../observable/zip';
+import { zip as zipStatic } from '../../internal/observable/zip';
 
 Observable.zip = zipStatic;
 

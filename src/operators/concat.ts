@@ -1,7 +1,7 @@
 import { Observable, ObservableInput } from '../Observable';
 import { IScheduler } from '../Scheduler';
 import { OperatorFunction, MonoTypeOperatorFunction } from '../interfaces';
-import { concat as concatStatic } from '../observable/concat';
+import { concat as concatStatic } from '../internal/observable/concat';
 
 export { concat as concatStatic } from '../observable/concat';
 

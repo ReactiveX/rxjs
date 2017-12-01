@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { race as staticRace } from '../../observable/race';
+import { race as staticRace } from '../../internal/observable/race';
 
 Observable.race = staticRace;
 

@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { merge as mergeStatic } from '../../observable/merge';
+import { merge as mergeStatic } from '../../internal/observable/merge';
 
 Observable.merge = mergeStatic;
 

@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { bindCallback as staticBindCallback } from '../../observable/bindCallback';
+import { bindCallback as staticBindCallback } from '../../internal/observable/bindCallback';
 
 Observable.bindCallback = staticBindCallback;
 

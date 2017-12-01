@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { defer as staticDefer } from '../../observable/defer';
+import { defer as staticDefer } from '../../internal/observable/defer';
 
 Observable.defer = staticDefer;
 

@@ -1,9 +1,9 @@
 import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
-import { ArrayObservable } from '../observable/ArrayObservable';
-import { ScalarObservable } from '../observable/ScalarObservable';
-import { EmptyObservable } from '../observable/EmptyObservable';
-import { concat as concatStatic } from '../observable/concat';
+import { ArrayObservable } from '../internal/observable/ArrayObservable';
+import { ScalarObservable } from '../internal/observable/ScalarObservable';
+import { EmptyObservable } from '../internal/observable/EmptyObservable';
+import { concat as concatStatic } from '../internal/observable/concat';
 import { isScheduler } from '../util/isScheduler';
 import { MonoTypeOperatorFunction } from '../interfaces';
 
