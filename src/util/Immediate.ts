@@ -1,7 +1,3 @@
-/**
-Some credit for this helper goes to http://github.com/YuzuJS/setImmediate
-*/
-
 let nextHandle = 0;
 
 const tasksByHandle: { [handle: string]: () => void } = {};
