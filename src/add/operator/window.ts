@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { window } from '../../operator/window';
+import { window } from '../../internal/patching/operator/window';
 
 Observable.prototype.window = window;
 

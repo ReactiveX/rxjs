@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { delay } from '../../operator/delay';
+import { delay } from '../../internal/patching/operator/delay';
 
 Observable.prototype.delay = delay;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { skip } from '../../operator/skip';
+import { skip } from '../../internal/patching/operator/skip';
 
 Observable.prototype.skip = skip;
 

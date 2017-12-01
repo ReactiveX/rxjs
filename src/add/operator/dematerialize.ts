@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { dematerialize } from '../../operator/dematerialize';
+import { dematerialize } from '../../internal/patching/operator/dematerialize';
 
 Observable.prototype.dematerialize = dematerialize;
 

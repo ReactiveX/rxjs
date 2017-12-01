@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { skipLast } from '../../operator/skipLast';
+import { skipLast } from '../../internal/patching/operator/skipLast';
 
 Observable.prototype.skipLast = skipLast;
 

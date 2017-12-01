@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { takeLast } from '../../operator/takeLast';
+import { takeLast } from '../../internal/patching/operator/takeLast';
 
 Observable.prototype.takeLast = takeLast;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { publishBehavior } from '../../operator/publishBehavior';
+import { publishBehavior } from '../../internal/patching/operator/publishBehavior';
 
 Observable.prototype.publishBehavior = publishBehavior;
 

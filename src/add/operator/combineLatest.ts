@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { combineLatest } from '../../operator/combineLatest';
+import { combineLatest } from '../../internal/patching/operator/combineLatest';
 
 Observable.prototype.combineLatest = combineLatest;
 

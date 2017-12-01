@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { zipProto } from '../../operator/zip';
+import { zipProto } from '../../internal/patching/operator/zip';
 
 Observable.prototype.zip = zipProto;
 

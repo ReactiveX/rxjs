@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { timeInterval } from '../../operator/timeInterval';
+import { timeInterval } from '../../internal/patching/operator/timeInterval';
 
 Observable.prototype.timeInterval = timeInterval;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { takeUntil } from '../../operator/takeUntil';
+import { takeUntil } from '../../internal/patching/operator/takeUntil';
 
 Observable.prototype.takeUntil = takeUntil;
 

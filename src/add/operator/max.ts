@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { max } from '../../operator/max';
+import { max } from '../../internal/patching/operator/max';
 
 Observable.prototype.max = max;
 

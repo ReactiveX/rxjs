@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { switchMapTo } from '../../operator/switchMapTo';
+import { switchMapTo } from '../../internal/patching/operator/switchMapTo';
 
 Observable.prototype.switchMapTo = switchMapTo;
 

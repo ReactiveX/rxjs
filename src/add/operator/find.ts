@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { find } from '../../operator/find';
+import { find } from '../../internal/patching/operator/find';
 
 Observable.prototype.find = find;
 

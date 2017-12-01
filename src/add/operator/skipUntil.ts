@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { skipUntil } from '../../operator/skipUntil';
+import { skipUntil } from '../../internal/patching/operator/skipUntil';
 
 Observable.prototype.skipUntil = skipUntil;
 

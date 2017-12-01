@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { merge } from '../../operator/merge';
+import { merge } from '../../internal/patching/operator/merge';
 
 Observable.prototype.merge = merge;
 

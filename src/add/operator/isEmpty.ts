@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { isEmpty } from '../../operator/isEmpty';
+import { isEmpty } from '../../internal/patching/operator/isEmpty';
 
 Observable.prototype.isEmpty = isEmpty;
 

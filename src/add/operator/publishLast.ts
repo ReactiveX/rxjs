@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { publishLast } from '../../operator/publishLast';
+import { publishLast } from '../../internal/patching/operator/publishLast';
 
 Observable.prototype.publishLast = publishLast;
 

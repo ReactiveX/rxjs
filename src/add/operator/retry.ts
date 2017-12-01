@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { retry } from '../../operator/retry';
+import { retry } from '../../internal/patching/operator/retry';
 
 Observable.prototype.retry = retry;
 

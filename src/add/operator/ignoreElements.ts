@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { ignoreElements } from '../../operator/ignoreElements';
+import { ignoreElements } from '../../internal/patching/operator/ignoreElements';
 
 Observable.prototype.ignoreElements = ignoreElements;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { observeOn } from '../../operator/observeOn';
+import { observeOn } from '../../internal/patching/operator/observeOn';
 
 Observable.prototype.observeOn = observeOn;
 

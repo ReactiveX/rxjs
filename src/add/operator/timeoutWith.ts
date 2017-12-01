@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { timeoutWith } from '../../operator/timeoutWith';
+import { timeoutWith } from '../../internal/patching/operator/timeoutWith';
 
 Observable.prototype.timeoutWith = timeoutWith;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { reduce } from '../../operator/reduce';
+import { reduce } from '../../internal/patching/operator/reduce';
 
 Observable.prototype.reduce = reduce;
 

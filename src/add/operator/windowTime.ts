@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { windowTime } from '../../operator/windowTime';
+import { windowTime } from '../../internal/patching/operator/windowTime';
 
 Observable.prototype.windowTime = windowTime;
 

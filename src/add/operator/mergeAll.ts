@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { mergeAll } from '../../operator/mergeAll';
+import { mergeAll } from '../../internal/patching/operator/mergeAll';
 
 Observable.prototype.mergeAll = mergeAll;
 

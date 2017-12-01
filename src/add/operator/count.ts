@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { count } from '../../operator/count';
+import { count } from '../../internal/patching/operator/count';
 
 Observable.prototype.count = count;
 

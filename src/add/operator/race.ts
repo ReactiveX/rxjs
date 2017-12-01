@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { race } from '../../operator/race';
+import { race } from '../../internal/patching/operator/race';
 
 Observable.prototype.race = race;
 

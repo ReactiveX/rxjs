@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { exhaust } from '../../operator/exhaust';
+import { exhaust } from '../../internal/patching/operator/exhaust';
 
 Observable.prototype.exhaust = exhaust;
 

@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { timestamp } from '../../operator/timestamp';
+import { timestamp } from '../../internal/patching/operator/timestamp';
 
 Observable.prototype.timestamp = timestamp;
 

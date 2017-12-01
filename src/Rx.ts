@@ -157,7 +157,7 @@ export {ArgumentOutOfRangeError} from './util/ArgumentOutOfRangeError';
 export {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
 export {TimeoutError} from './util/TimeoutError';
 export {UnsubscriptionError} from './util/UnsubscriptionError';
-export {TimeInterval} from './operator/timeInterval';
+export {TimeInterval} from './internal/patching/operator/timeInterval';
 export {Timestamp} from './operators/timestamp';
 export {TestScheduler} from './testing/TestScheduler';
 export {VirtualTimeScheduler} from './scheduler/VirtualTimeScheduler';

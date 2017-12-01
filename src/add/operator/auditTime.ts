@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { auditTime } from '../../operator/auditTime';
+import { auditTime } from '../../internal/patching/operator/auditTime';
 
 Observable.prototype.auditTime = auditTime;
 

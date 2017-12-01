@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { findIndex } from '../../operator/findIndex';
+import { findIndex } from '../../internal/patching/operator/findIndex';
 
 Observable.prototype.findIndex = findIndex;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { single } from '../../operator/single';
+import { single } from '../../internal/patching/operator/single';
 
 Observable.prototype.single = single;
 

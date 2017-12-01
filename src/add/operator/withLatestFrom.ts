@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { withLatestFrom } from '../../operator/withLatestFrom';
+import { withLatestFrom } from '../../internal/patching/operator/withLatestFrom';
 
 Observable.prototype.withLatestFrom = withLatestFrom;
 
