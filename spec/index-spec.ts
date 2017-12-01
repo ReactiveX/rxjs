@@ -147,4 +147,8 @@ describe('index', () => {
   it('should export Notification', () => {
     expect(index.Notification).to.exist;
   });
+
+  it('should export the pipe utility', () => {
+    expect(index.pipe).to.exist;
+  });
 });
