@@ -20,8 +20,8 @@ Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Exten
 
 ## Versions In This Repository
 
-- [master](https://github.com/ReactiveX/rxjs/commits/master) - commits that will be included in the next _minor_ or _patch_ release
-- [next](https://github.com/ReactiveX/rxjs/commits/next) - commits that will be included in the next _major_ release (breaking changes)
+- [master](https://github.com/ReactiveX/rxjs/commits/master) - commits that will be included in the next _major_ release (breaking changes)
+- [next](https://github.com/ReactiveX/rxjs/commits/stable) - commits that will be included in the next _minor_ or _patch_ release
 
 Most PRs should be made to **master**, unless you know it is a breaking change.
 
@@ -125,7 +125,7 @@ npm install @reactivex/rxjs@5.0.0
 ### CDN
 
 For CDN, you can use [unpkg](https://unpkg.com/):
-  
+
 https://unpkg.com/rxjs/bundles/Rx.min.js
 
 #### Node.js Usage:
