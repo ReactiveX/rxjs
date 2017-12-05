@@ -68,6 +68,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
         }
         if (typeof destinationOrNext === 'object') {
           if (destinationOrNext instanceof Subscriber) {
+            this.syncErrorThrowable = destinationOrNext.syncErrorThrowable;
             this.destination = (<Subscriber<any>> destinationOrNext);
             (<any> this.destination).add(this);
           } else {
