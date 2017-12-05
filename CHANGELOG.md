@@ -1,3 +1,13 @@
+<a name="5.5.4"></a>
+## [5.5.4](https://github.com/ReactiveX/RxJS/compare/5.5.3...v5.5.4) (2017-12-05)
+
+
+### Bug Fixes
+
+* **scheduler:** resolve regression on angular router with zones ([#3158](https://github.com/ReactiveX/RxJS/issues/3158)) ([520b06a](https://github.com/ReactiveX/RxJS/commit/520b06a))
+* **publish:** re-publish after having built with proper version of TypeScript. ([#3155](https://github.com/ReactiveX/rxjs/issues/3155))
+
+
 <a name="5.5.3"></a>
 ## [5.5.3](https://github.com/ReactiveX/RxJS/compare/5.5.2...v5.5.3) (2017-12-01)
 
