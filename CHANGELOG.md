@@ -5,7 +5,7 @@
 ### Bug Fixes
 
 * **scheduler:** resolve regression on angular router with zones ([#3158](https://github.com/ReactiveX/RxJS/issues/3158)) ([520b06a](https://github.com/ReactiveX/RxJS/commit/520b06a))
-* **publish:** re-publish after having built with proper version of TypeScript. ([#3155](https://github.com/ReactiveX/rxjs/issues/3155))
+* **publish:** re-publish after having built with proper version of TypeScript. ([f0ff5bc](https://github.com/ReactiveX/RxJS/commit/f0ff5bc), closes[#3155](https://github.com/ReactiveX/rxjs/issues/3155))
 
 
 <a name="5.5.3"></a>
