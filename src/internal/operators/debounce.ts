@@ -50,12 +50,12 @@ import { MonoTypeOperatorFunction } from '../../internal/types';
  * @method debounce
  * @owner Observable
  */
-export function debounce<T>(durationSelector: (value: T) => SubscribableOrPromise<number>): MonoTypeOperatorFunction<T> {
+export function debounce<T>(durationSelector: (value: T) => SubscribableOrPromise<any>): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new DebounceOperator(durationSelector));
 }
 
 class DebounceOperator<T> implements Operator<T, T> {
-  constructor(private durationSelector: (value: T) => SubscribableOrPromise<number>) {
+  constructor(private durationSelector: (value: T) => SubscribableOrPromise<any>) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -74,7 +74,7 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
   private durationSubscription: Subscription = null;
 
   constructor(destination: Subscriber<R>,
-              private durationSelector: (value: T) => SubscribableOrPromise<number>) {
+              private durationSelector: (value: T) => SubscribableOrPromise<any>) {
     super(destination);
   }
 
@@ -95,7 +95,7 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.destination.complete();
   }
 
-  private _tryNext(value: T, duration: SubscribableOrPromise<number>): void {
+  private _tryNext(value: T, duration: SubscribableOrPromise<any>): void {
     let subscription = this.durationSubscription;
     this.value = value;
     this.hasValue = true;
