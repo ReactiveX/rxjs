@@ -1,3 +1,10 @@
+<a name="5.5.5"></a>
+## [5.5.5](https://github.com/ReactiveX/RxJS/compare/5.5.4...v5.5.5) (2017-12-06)
+
+### Support Added
+
+* **Bazel:** Add files to support users that want Bazel builds with RxJS ([12dac3b](https://github.com/ReactiveX/rxjs/commit/12dac3b))
+
 <a name="5.5.4"></a>
 ## [5.5.4](https://github.com/ReactiveX/RxJS/compare/5.5.3...v5.5.4) (2017-12-05)
 
