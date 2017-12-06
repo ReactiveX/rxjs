@@ -1,6 +1,7 @@
 import { isArray } from './util/isArray';
 import { isObject } from './util/isObject';
 import { isFunction } from './util/isFunction';
+import { isPromise } from './util/isPromise';
 import { tryCatch } from './util/tryCatch';
 import { errorObject } from './util/errorObject';
 import { UnsubscriptionError } from './util/UnsubscriptionError';
@@ -9,7 +10,7 @@ export interface AnonymousSubscription {
   unsubscribe(): void;
 }
 
-export type TeardownLogic = AnonymousSubscription | Function | void;
+export type TeardownLogic = AnonymousSubscription | Function | void | Promise<AnonymousSubscription | Function | void>;
 
 export interface ISubscription extends AnonymousSubscription {
   unsubscribe(): void;
@@ -156,6 +157,12 @@ export class Subscription implements ISubscription {
     }
 
     let subscription = (<Subscription> teardown);
+
+    if (isPromise(teardown)) {
+      subscription = new Subscription(() => {
+        teardown.then(logic => this.add(logic).unsubscribe());
+      });
+    }
 
     switch (typeof teardown) {
       case 'function':

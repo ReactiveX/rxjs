@@ -112,6 +112,26 @@ describe('Subscription', () => {
       expect(isCalled).to.equal(true);
     });
 
+    it('Should return a new Subscription created with teardown function if it is passed a promise', (done: MochaDone) => {
+      const sub = new Subscription();
+
+      let resolvePromise;
+      let isCalled = false;
+
+      const promise = new Promise(resolve => {
+        resolvePromise = () => resolve(() => isCalled = true);
+      });
+      const ret = sub.add(promise);
+
+      promise.then(() => {
+        ret.unsubscribe();
+      }).then(() => {
+        expect(isCalled).to.equal(true);
+      }).then(() => done(), err => done(err));
+
+      resolvePromise();
+    });
+
     it('Should wrap the AnonymousSubscription and return a subscription that unsubscribes and removes it when unsubbed', () => {
       const sub: any = new Subscription();
       let called = false;
