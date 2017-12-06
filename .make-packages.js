@@ -98,6 +98,8 @@ fs.copySync(TYPE_ROOT, TYPE_PKG);
 copySources(ESM5_ROOT, ESM5_PKG, true);
 copySources(ESM2015_ROOT, ESM2015_PKG, true);
 
+// Copy over tsconfig.json for bazel build support
+fs.copySync('./tsconfig.json', PKG_ROOT + 'src/tsconfig.json');
 
 fs.writeJsonSync(PKG_ROOT + 'package.json', rootPackageJson);
 
