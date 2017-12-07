@@ -73,6 +73,16 @@ describe('TestScheduler', () => {
         { frame: 30, notification: Notification.createNext('c') }
       ]);
     });
+
+    it('should handle group length', () => {
+      const result = TestScheduler.parseMarbles('--(ab)-c-|');
+      expect(result).deep.equal([
+        { frame: 20, notification: Notification.createNext('a') },
+        { frame: 20, notification: Notification.createNext('b') },
+        { frame: 40, notification: Notification.createNext('c') },
+        { frame: 60, notification: Notification.createComplete() }
+      ]);
+    });
   });
 
   describe('parseMarblesAsSubscriptions()', () => {
