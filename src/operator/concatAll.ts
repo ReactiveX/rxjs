@@ -3,6 +3,7 @@ import { Subscribable } from '../Observable';
 import { concatAll as higherOrder } from '../operators/concatAll';
 
 /* tslint:disable:max-line-length */
+export function concatAll<T>(this: Observable<ArrayLike<T>>): Observable<T>;
 export function concatAll<T>(this: Observable<T>): T;
 export function concatAll<T, R>(this: Observable<T>): Subscribable<R>;
 /* tslint:enable:max-line-length */
