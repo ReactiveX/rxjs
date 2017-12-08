@@ -8,7 +8,6 @@ import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction, MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
 
 /* tslint:disable:max-line-length */
-export function timeoutWith<T>(due: number | Date, withObservable: ObservableInput<T>, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 export function timeoutWith<T, R>(due: number | Date, withObservable: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;
 /* tslint:enable:max-line-length */
 
