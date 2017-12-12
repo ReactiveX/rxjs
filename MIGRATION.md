@@ -81,7 +81,6 @@ enabling "composite" subscription behavior.
 |`groupJoin`|No longer implemented|
 |`includes(v)`|`.first(x => x === v, () => true, false)`|
 |`indexOf(v)`|`.map((x, i) => [x === v, i]).filter(([x]) => x).map(([_, i]) => i).first()`|
-|`join`|No longer implemented|
 |`jortSortUntil`|No longer implemented|
 |`jortSort`|No longer implemented|
 |`just(v)` or `just(a, b, c)`|`of(v)`, `of(a, b, c)`|
