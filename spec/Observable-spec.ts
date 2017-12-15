@@ -59,6 +59,20 @@ describe('Observable', () => {
     }).to.throw();
   });
 
+  it('should rethrow if sink has syncErrorThrowable = false', () => {
+    const observable = new Observable(observer => {
+      observer.next(1);
+    });
+
+    const sink = Subscriber.create(() => {
+      throw 'error!';
+    });
+
+    expect(() => {
+      observable.subscribe(sink);
+    }).to.throw('error!');
+  });
+
   describe('forEach', () => {
     it('should iterate and return a Promise', (done: MochaDone) => {
       const expected = [1, 2, 3];
