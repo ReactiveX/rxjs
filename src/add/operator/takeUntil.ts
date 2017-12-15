@@ -1,10 +1,10 @@
 
-import { Observable } from '../../Observable';
-import { takeUntil } from '../../operator/takeUntil';
+import { Observable } from '../../internal/Observable';
+import { takeUntil } from '../../internal/patching/operator/takeUntil';
 
 Observable.prototype.takeUntil = takeUntil;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   interface Observable<T> {
     takeUntil: typeof takeUntil;
   }

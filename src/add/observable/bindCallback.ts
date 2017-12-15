@@ -1,9 +1,9 @@
-import { Observable } from '../../Observable';
-import { bindCallback as staticBindCallback } from '../../observable/bindCallback';
+import { Observable } from '../../internal/Observable';
+import { bindCallback as staticBindCallback } from '../../internal/observable/bindCallback';
 
 Observable.bindCallback = staticBindCallback;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   namespace Observable {
     export let bindCallback: typeof staticBindCallback;
   }

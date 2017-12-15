@@ -1,10 +1,10 @@
 
-import { Observable } from '../../Observable';
-import { timeInterval } from '../../operator/timeInterval';
+import { Observable } from '../../internal/Observable';
+import { timeInterval } from '../../internal/patching/operator/timeInterval';
 
 Observable.prototype.timeInterval = timeInterval;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   interface Observable<T> {
     timeInterval: typeof timeInterval;
   }

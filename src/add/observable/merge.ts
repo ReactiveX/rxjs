@@ -1,9 +1,9 @@
-import { Observable } from '../../Observable';
-import { merge as mergeStatic } from '../../observable/merge';
+import { Observable } from '../../internal/Observable';
+import { merge as mergeStatic } from '../../internal/observable/merge';
 
 Observable.merge = mergeStatic;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   namespace Observable {
     export let merge: typeof mergeStatic;
   }

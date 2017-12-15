@@ -1,7 +1,7 @@
-import { Subject } from '../Subject';
-import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
-import { Scheduler } from '../Scheduler';
+import { Subject } from '../internal/Subject';
+import { Subscriber } from '../internal/Subscriber';
+import { Subscription } from '../internal/Subscription';
+import { Scheduler } from '../internal/Scheduler';
 import { TestMessage } from './TestMessage';
 import { SubscriptionLog } from './SubscriptionLog';
 import { SubscriptionLoggable } from './SubscriptionLoggable';

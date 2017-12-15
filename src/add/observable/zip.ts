@@ -1,9 +1,9 @@
-import { Observable } from '../../Observable';
-import { zip as zipStatic } from '../../observable/zip';
+import { Observable } from '../../internal/Observable';
+import { zip as zipStatic } from '../../internal/observable/zip';
 
 Observable.zip = zipStatic;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   namespace Observable {
     export let zip: typeof zipStatic;
   }

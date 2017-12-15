@@ -1,10 +1,10 @@
 
-import { Observable } from '../../Observable';
-import { defaultIfEmpty } from '../../operator/defaultIfEmpty';
+import { Observable } from '../../internal/Observable';
+import { defaultIfEmpty } from '../../internal/patching/operator/defaultIfEmpty';
 
 Observable.prototype.defaultIfEmpty = defaultIfEmpty;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   interface Observable<T> {
     defaultIfEmpty: typeof defaultIfEmpty;
   }
