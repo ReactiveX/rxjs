@@ -49,7 +49,6 @@
     "build_closure_core": "Minify Global core build using closure compiler",
     "build_global": "Build Global package, then minify build",
     "build_perf": "Build CJS & Global build, run macro performance test",
-    "build_test": "Build CJS package & test spec, execute mocha test runner",
     "build_docs": "Build ESM2015 & global package, create documentation using it",
     "clean_dist_cjs": "Clean up existing CJS package output",
     "clean_dist_esm5": "Clean up existing ESM/ES5 package output",
@@ -65,9 +64,8 @@
     "lint": "Run lint against everything",
     "perf": "Run macro performance benchmark",
     "perf_micro": "Run micro performance benchmark",
-    "test_mocha": "Execute mocha test runner against existing test spec build",
     "test_browser": "Execute mocha test runner on browser against existing test spec build",
-    "test": "Clean up existing test spec build, build test spec and execute mocha test runner",
+    "test": "Execute mocha test runner",
     "test:cover": "Execute test coverage",
     "tests2png": "Generate marble diagram image from test spec",
     "watch": "Watch codebase, trigger compile when source code changes"
@@ -117,7 +115,7 @@
     "test:cover": "cross-env TS_NODE_FAST=true nyc npm test",
     "test:circular": "dependency-cruise --validate .dependency-cruiser.json -x \"^node_modules\" src",
     "tests2png": "tsc && mkdirp tmp/docs/img && mkdirp spec-js/support && shx cp spec/support/*.opts spec-js/support/ && mocha --opts spec/support/tests2png.opts spec-js",
-    "watch": "watch \"echo triggering build && npm run build_test && echo build completed\" src -d -u -w=15"
+    "watch": "watch \"echo triggering build && npm run test && echo build completed\" src -d -u -w=15"
   },
   "repository": {
     "type": "git",
