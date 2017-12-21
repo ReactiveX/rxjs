@@ -1,3 +1,13 @@
+<a name="5.5.6"></a>
+## [5.5.6](https://github.com/ReactiveX/RxJS/compare/5.5.5...v5.5.6) (2017-12-21)
+
+
+### Bug Fixes
+
+* **Observable:** rethrow errors when syncErrorThrowable and inherit it from destination. Fixes [#2813](https://github.com/ReactiveX/RxJS/issues/2813) ([541b49d](https://github.com/ReactiveX/RxJS/commit/541b49d))
+
+
+
 <a name="5.5.5"></a>
 ## [5.5.5](https://github.com/ReactiveX/RxJS/compare/5.5.4...v5.5.5) (2017-12-06)
 
