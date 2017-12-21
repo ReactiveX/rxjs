@@ -13,14 +13,37 @@ Due to having operators available independent of an Observable, operator names c
 3. `switch` -> `switchAll`
 4. `finally` -> `finalize`
 
+The `let` operator is now part of `Observable` as `pipe` and cannot be imported.
+
+`source$.let(myOperator) -> source$.pipe(myOperator)`
+
+See "[Build Your Own Operators](#build-your-own-operators-easily)" below.
+
+The former `toPromise()` "operator" has been removed
+because an operator returns an `Observable`,
+not a `Promise`.
+There is now an `Observable.toPromise()`instance method.
+
+Because `throw` is a key word you could use `_throw` after `import { _throw } from 'rxjs/observable/throw`.
+
+If the leading `_` bothers you (because a leading `_` typically means "_Internal - Do not use_"), you can do as follows:
+```
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+...
+const e = ErrorObservable.create(new Error('My bad'));
+const e2 = new ErrorObservable(new Error('My bad too'));
+```
 
 ## Why?
 
 Problems with the patched operators for dot-chaining are:
 
 1. Any library that imports a patch operator will augment the `Observable.prototype` for all consumers of that library, creating blind dependencies. If the library removes their usage, they unknowingly break everyone else. With lettables, you have to import the operators you need into each file you use them in.
+
 2. Operators patched directly onto the prototype are not "tree-shakeable" by tools like rollup or webpack. Lettable operators will be as they are just functions pulled in from modules directly.
+
 3. Unused operators that are being imported in apps cannot be detected reliably by any sort of build tooling or lint rule. That means that you might import `scan`, but stop using it, and it's still being added to your output bundle. With lettable operators, if you're not using it, a lint rule can pick it up for you.
+
 4. Functional composition is awesome. Building your own custom operators becomes much, much easier, and now they work and look just like all other operators from rxjs. You don't need to extend Observable or override `lift` anymore.
 
 ## What?
