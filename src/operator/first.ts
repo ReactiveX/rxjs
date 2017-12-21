@@ -3,22 +3,22 @@ import { first as higherOrder } from '../operators/first';
 
 /* tslint:disable:max-line-length */
 export function first<T, S extends T>(this: Observable<T>,
-                                      predicate: (value: T, index: number, source: Observable<T>) => value is S): Observable<S>;
+                                      predicate: (value: T, index: number) => value is S): Observable<S>;
 export function first<T, S extends T, R>(this: Observable<T>,
-                                         predicate: (value: T | S, index: number, source: Observable<T>) => value is S,
+                                         predicate: (value: T | S, index: number) => value is S,
                                          resultSelector: (value: S, index: number) => R, defaultValue?: R): Observable<R>;
 export function first<T, S extends T>(this: Observable<T>,
-                                      predicate: (value: T, index: number, source: Observable<T>) => value is S,
+                                      predicate: (value: T, index: number) => value is S,
                                       resultSelector: void,
                                       defaultValue?: S): Observable<S>;
 export function first<T>(this: Observable<T>,
-                         predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<T>;
+                         predicate?: (value: T, index: number) => boolean): Observable<T>;
 export function first<T, R>(this: Observable<T>,
-                            predicate: (value: T, index: number, source: Observable<T>) => boolean,
+                            predicate: (value: T, index: number) => boolean,
                             resultSelector?: (value: T, index: number) => R,
                             defaultValue?: R): Observable<R>;
 export function first<T>(this: Observable<T>,
-                         predicate: (value: T, index: number, source: Observable<T>) => boolean,
+                         predicate: (value: T, index: number) => boolean,
                          resultSelector: void,
                          defaultValue?: T): Observable<T>;
 
@@ -56,7 +56,7 @@ export function first<T>(this: Observable<T>,
  * @throws {EmptyError} Delivers an EmptyError to the Observer's `error`
  * callback if the Observable completes before any `next` notification was sent.
  *
- * @param {function(value: T, index: number, source: Observable<T>): boolean} [predicate]
+ * @param {function(value: T, index: number): boolean} [predicate]
  * An optional function called with each item to test for condition matching.
  * @param {function(value: T, index: number): R} [resultSelector] A function to
  * produce the value on the output Observable based on the values
@@ -71,7 +71,7 @@ export function first<T>(this: Observable<T>,
  * @method first
  * @owner Observable
  */
-export function first<T, R>(this: Observable<T>, predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+export function first<T, R>(this: Observable<T>, predicate?: (value: T, index: number) => boolean,
                             resultSelector?: ((value: T, index: number) => R) | void,
                             defaultValue?: R): Observable<T | R> {
   return higherOrder(predicate, resultSelector as any, defaultValue)(this);

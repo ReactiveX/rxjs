@@ -1,20 +1,28 @@
 import { Observable } from '../Observable';
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
 import { EmptyError } from '../util/EmptyError';
 import { OperatorFunction, MonoTypeOperatorFunction } from '../interfaces';
+
+import { concat } from '../observable/concat';
+import { filter } from './filter';
+import { of } from '../observable/of';
+import { _throw } from '../observable/throw';
+import { identity } from '../util/identity';
+import { take } from './take';
+import { map } from './map';
+import { pipe } from '../util/pipe';
+
 /* tslint:disable:max-line-length */
-export function first<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S): OperatorFunction<T, S>;
-export function first<T, S extends T, R>(predicate: (value: T | S, index: number, source: Observable<T>) => value is S,
+export function first<T, S extends T>(predicate: (value: T, index: number) => value is S): OperatorFunction<T, S>;
+export function first<T, S extends T, R>(predicate: (value: T | S, index: number) => value is S,
                                          resultSelector: (value: S, index: number) => R, defaultValue?: R): OperatorFunction<T, R>;
-export function first<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S,
+export function first<T, S extends T>(predicate: (value: T, index: number) => value is S,
                                       resultSelector: void,
                                       defaultValue?: S): OperatorFunction<T, S>;
-export function first<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T>;
-export function first<T, R>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
+export function first<T>(predicate?: (value: T, index: number) => boolean): MonoTypeOperatorFunction<T>;
+export function first<T, R>(predicate: (value: T, index: number) => boolean,
                             resultSelector?: (value: T, index: number) => R,
                             defaultValue?: R): OperatorFunction<T, R>;
-export function first<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
+export function first<T>(predicate: (value: T, index: number) => boolean,
                          resultSelector: void,
                          defaultValue?: T): MonoTypeOperatorFunction<T>;
 
@@ -52,7 +60,7 @@ export function first<T>(predicate: (value: T, index: number, source: Observable
  * @throws {EmptyError} Delivers an EmptyError to the Observer's `error`
  * callback if the Observable completes before any `next` notification was sent.
  *
- * @param {function(value: T, index: number, source: Observable<T>): boolean} [predicate]
+ * @param {function(value: T, index: number): boolean} [predicate]
  * An optional function called with each item to test for condition matching.
  * @param {function(value: T, index: number): R} [resultSelector] A function to
  * produce the value on the output Observable based on the values
@@ -67,100 +75,34 @@ export function first<T>(predicate: (value: T, index: number, source: Observable
  * @method first
  * @owner Observable
  */
-export function first<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+export function first<T, R>(predicate?: (value: T, index: number) => boolean,
                             resultSelector?: ((value: T, index: number) => R) | void,
                             defaultValue?: R): OperatorFunction<T, T | R> {
-  return (source: Observable<T>) => source.lift(new FirstOperator(predicate, resultSelector, defaultValue, source));
-}
+  let operate: OperatorFunction<T, T|R>;
 
-class FirstOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: ((value: T, index: number) => R) | void,
-              private defaultValue?: any,
-              private source?: Observable<T>) {
-  }
-
-  call(observer: Subscriber<R>, source: any): any {
-    return source.subscribe(new FirstSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class FirstSubscriber<T, R> extends Subscriber<T> {
-  private index: number = 0;
-  private hasCompleted: boolean = false;
-  private _emitted: boolean = false;
-
-  constructor(destination: Subscriber<R>,
-              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: ((value: T, index: number) => R) | void,
-              private defaultValue?: any,
-              private source?: Observable<T>) {
-    super(destination);
-  }
-
-  protected _next(value: T): void {
-    const index = this.index++;
-    if (this.predicate) {
-      this._tryPredicate(value, index);
+  if (!predicate) {
+    if (resultSelector) {
+      operate = map(resultSelector);
     } else {
-      this._emit(value, index);
+      operate = identity;
+    }
+  } else {
+    if (resultSelector) {
+      operate = pipe(
+        map((value, index) => ({ value, index })),
+        filter(({ value, index }) => predicate(value, index)),
+        map(({ value, index }) => resultSelector(value, index))
+      );
+    } else {
+      operate = filter(predicate);
     }
   }
 
-  private _tryPredicate(value: T, index: number) {
-    let result: any;
-    try {
-      result = this.predicate(value, index, this.source);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    if (result) {
-      this._emit(value, index);
-    }
-  }
+  const after = defaultValue ? of(defaultValue) : _throw(new EmptyError());
 
-  private _emit(value: any, index: number) {
-    if (this.resultSelector) {
-      this._tryResultSelector(value, index);
-      return;
-    }
-    this._emitFinal(value);
-  }
-
-  private _tryResultSelector(value: T, index: number) {
-    let result: any;
-    try {
-      result = (<any>this).resultSelector(value, index);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    this._emitFinal(result);
-  }
-
-  private _emitFinal(value: any) {
-    const destination = this.destination;
-    if (!this._emitted) {
-      this._emitted = true;
-      destination.next(value);
-      destination.complete();
-      this.hasCompleted = true;
-    }
-  }
-
-  protected _complete(): void {
-    const destination = this.destination;
-    if (!this.hasCompleted && typeof this.defaultValue !== 'undefined') {
-      destination.next(this.defaultValue);
-      destination.complete();
-    } else if (!this.hasCompleted) {
-      destination.error(new EmptyError);
-    }
-  }
+  return (source: Observable<T>) =>
+    concat(
+      source.pipe(operate),
+      after,
+    ).pipe(take(1));
 }
