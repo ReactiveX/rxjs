@@ -1,8 +1,9 @@
 import { isFunction } from './util/isFunction';
 import { Observer, PartialObserver } from './Observer';
-import { Subscription } from './Subscription';
+import { Subscription, ISubscription } from './Subscription';
 import { empty as emptyObserver } from './Observer';
 import { rxSubscriber as rxSubscriberSymbol } from './symbol/rxSubscriber';
+import { noop } from './util/noop';
 
 /**
  * Implements the {@link Observer} interface and extends the
@@ -116,6 +117,17 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     }
   }
 
+  /**
+   * The {@link Observer} callback to recieve the subscription prior to the
+   * observable's subscriber function being executed.
+   * @param subscription The same {@link Subscription} returned by subscribe.
+   */
+  start(subscription: ISubscription) {
+    if (!this.isStopped) {
+      this._start(subscription);
+    }
+  }
+
   unsubscribe(): void {
     if (this.closed) {
       return;
@@ -136,6 +148,13 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   protected _complete(): void {
     this.destination.complete();
     this.unsubscribe();
+  }
+
+  protected _start(subscription: ISubscription): void {
+    const { destination } = this;
+    if (destination.start) {
+      destination.start(subscription);
+    }
   }
 
   protected _unsubscribeAndRecycle(): Subscriber<T> {
@@ -159,6 +178,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
 class SafeSubscriber<T> extends Subscriber<T> {
 
   private _context: any;
+  private isStarted = false;
 
   constructor(observerOrNext?: PartialObserver<T> | ((value: T) => void),
               error?: (e?: any) => void,
@@ -167,6 +187,7 @@ class SafeSubscriber<T> extends Subscriber<T> {
 
     let next: ((value: T) => void);
     let context: any = this;
+    let start: ((subscription: ISubscription) => void) = noop;
 
     if (isFunction(observerOrNext)) {
       next = (<((value: T) => void)> observerOrNext);
@@ -174,6 +195,7 @@ class SafeSubscriber<T> extends Subscriber<T> {
       next = (<PartialObserver<T>> observerOrNext).next;
       error = (<PartialObserver<T>> observerOrNext).error;
       complete = (<PartialObserver<T>> observerOrNext).complete;
+      start = (<PartialObserver<T>> observerOrNext).start;
       if (observerOrNext !== emptyObserver) {
         context = Object.create(observerOrNext);
         if (isFunction(context.unsubscribe)) {
@@ -187,6 +209,7 @@ class SafeSubscriber<T> extends Subscriber<T> {
     this._next = next;
     this._error = error;
     this._complete = complete;
+    this._start = start;
   }
 
   next(value?: T): void {
@@ -225,6 +248,20 @@ class SafeSubscriber<T> extends Subscriber<T> {
         }
       }
       this.unsubscribe();
+    }
+  }
+
+  start(subscription: ISubscription): void {
+    if (!this.isStopped && !this.isStarted) {
+      this.isStarted = true;
+      if (this._start) {
+        try {
+          this._start.call(this._context, subscription);
+        } catch (err) {
+          this._hostReportError(err);
+          this.unsubscribe();
+        }
+      }
     }
   }
 
