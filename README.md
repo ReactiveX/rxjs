@@ -48,7 +48,7 @@ Rx.Observable.of(1,2,3)
 To import only what you need by patching (this is useful for size-sensitive bundling):
 
 ```js
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 
@@ -60,7 +60,7 @@ To import what you need and use it with proposed [bind operator](https://github.
 > Note: This additional syntax requires [transpiler support](http://babeljs.io/docs/plugins/transform-function-bind/) and this syntax may be completely withdrawn from TC39 without notice! Use at your own risk.
 
 ```js
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs/Rx';
 import { of } from 'rxjs/observable/of';
 import { map } from 'rxjs/operator/map';
 
@@ -86,7 +86,7 @@ Rx.Observable.of(1,2,3); // etc
 Import only what you need and patch Observable (this is useful in size-sensitive bundling scenarios):
 
 ```js
-var Observable = require('rxjs/Observable').Observable;
+var Observable = require('rxjs/Rx').Observable;
 // patch Observable with appropriate methods
 require('rxjs/add/observable/of');
 require('rxjs/add/operator/map');
