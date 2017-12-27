@@ -17,7 +17,7 @@ import { AnimationFrameScheduler } from './AnimationFrameScheduler';
  * @example <caption>Schedule div height animation</caption>
  * const div = document.querySelector('.some-div');
  *
- * Rx.Scheduler.schedule(function(height) {
+ * Rx.Scheduler.animationFrame.schedule(function(height) {
  *   div.style.height = height + "px";
  *
  *   this.schedule(height + 1);  // `this` references currently executing Action,
