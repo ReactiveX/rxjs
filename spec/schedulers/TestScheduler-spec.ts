@@ -197,6 +197,10 @@ describe('TestScheduler', () => {
         expect(expectObservable(Rx.Observable.of(1)).toBe).to.be.a('function');
       });
 
+      it('should return an object with a to function', () => {
+        expect(expectObservable(Rx.Observable.of(1)).to).to.be.a('function');
+      });
+
       it('should append to flushTests array', () => {
         expectObservable(Rx.Observable.empty());
         expect((<any>rxTestScheduler).flushTests.length).to.equal(1);
@@ -216,6 +220,11 @@ describe('TestScheduler', () => {
         const unsubscribe  =  '---!';
         const expected =      '--a';
         expectObservable(source, unsubscribe).toBe(expected);
+      });
+
+      it('should accept a comparison function', () => {
+        const source = hot('--a-b-|', { a: 6, b: 12});
+        expectObservable(source).to((actual) => { expect(actual).greaterThan(5); }, '--a-b-|');
       });
     });
 

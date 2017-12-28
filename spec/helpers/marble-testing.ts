@@ -2,7 +2,7 @@ import { Observable } from '../../src/Observable';
 import { SubscriptionLog } from '../../src/testing/SubscriptionLog';
 import { ColdObservable } from '../../src/testing/ColdObservable';
 import { HotObservable } from '../../src/testing/HotObservable';
-import { TestScheduler, observableToBeFn, subscriptionLogsToBeFn } from '../../src/testing/TestScheduler';
+import { TestScheduler, observableToBeFn, observableToFn, subscriptionLogsToBeFn } from '../../src/testing/TestScheduler';
 
 declare const global: any;
 
@@ -23,7 +23,7 @@ export function cold(marbles: string, values?: any, error?: any): ColdObservable
 }
 
 export function expectObservable(observable: Observable<any>,
-                                 unsubscriptionMarbles: string = null): ({ toBe: observableToBeFn }) {
+                                 unsubscriptionMarbles: string = null): ({ toBe: observableToBeFn, to: observableToFn }) {
   if (!global.rxTestScheduler) {
     throw 'tried to use expectObservable() in async test';
   }
