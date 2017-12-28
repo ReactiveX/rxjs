@@ -1,5 +1,5 @@
 
-import { Observable } from '../Observable';
+import { Observable, ObservableInput } from '../Observable';
 import { mergeScan as higherOrder } from '../operators/mergeScan';
 
 /**
@@ -34,7 +34,7 @@ import { mergeScan as higherOrder } from '../operators/mergeScan';
  * @owner Observable
  */
 export function mergeScan<T, R>(this: Observable<T>,
-                                accumulator: (acc: R, value: T) => Observable<R>,
+                                accumulator: (acc: R, value: T) => ObservableInput<R>,
                                 seed: R,
                                 concurrent: number = Number.POSITIVE_INFINITY): Observable<R> {
   return higherOrder(accumulator, seed, concurrent)(this);

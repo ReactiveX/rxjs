@@ -1,5 +1,5 @@
 import { Operator } from '../Operator';
-import { Observable } from '../Observable';
+import { Observable, ObservableInput } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { tryCatch } from '../util/tryCatch';
@@ -40,14 +40,14 @@ import { OperatorFunction } from '../interfaces';
  * @method mergeScan
  * @owner Observable
  */
-export function mergeScan<T, R>(accumulator: (acc: R, value: T) => Observable<R>,
+export function mergeScan<T, R>(accumulator: (acc: R, value: T) => ObservableInput<R>,
                                 seed: R,
                                 concurrent: number = Number.POSITIVE_INFINITY): OperatorFunction<T, R> {
   return (source: Observable<T>) => source.lift(new MergeScanOperator(accumulator, seed, concurrent));
 }
 
 export class MergeScanOperator<T, R> implements Operator<T, R> {
-  constructor(private accumulator: (acc: R, value: T) => Observable<R>,
+  constructor(private accumulator: (acc: R, value: T) => ObservableInput<R>,
               private seed: R,
               private concurrent: number) {
   }
@@ -72,7 +72,7 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
   protected index: number = 0;
 
   constructor(destination: Subscriber<R>,
-              private accumulator: (acc: R, value: T) => Observable<R>,
+              private accumulator: (acc: R, value: T) => ObservableInput<R>,
               private acc: R,
               private concurrent: number) {
     super(destination);
