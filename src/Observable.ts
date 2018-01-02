@@ -14,6 +14,12 @@ export interface Subscribable<T> {
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
             error?: (error: any) => void,
             complete?: () => void): AnonymousSubscription;
+
+  createSubscription(observerOrNext?: PartialObserver<T> | ((value: T) => void),
+            error?: (error: any) => void,
+            complete?: () => void): AnonymousSubscription;
+
+  startSubscription(sink?: AnonymousSubscription): void;
 }
 
 export type SubscribableOrPromise<T> = Subscribable<T> | PromiseLike<T>;
@@ -203,6 +209,58 @@ export class Observable<T> implements Subscribable<T> {
     }
 
     return sink;
+  }
+
+  /**
+   *
+   * split the method “subscribe” into two steps
+   * for this case: we need to get the subscription instance in the handle function
+   *
+   * @example <caption>unsubscribe in the handle function</caption>
+   *
+   * const subscription = Rx.Observable.of(1, 2, 3)
+   * .subscribe(
+   *   function(value) {
+   *     // do handle here, then we need unsubscribe immediately!
+   *     subscription.unsubscribe();// error: subscription undefined!
+   *   },
+   *   undefined,
+   *   undefined
+   * );
+   * 
+   * 
+   * @example <caption>unsubscribe in the handle function</caption>
+   *
+   * const stream = Rx.Observable.of(1, 2, 3);
+   *
+   * const subscription = stream.createSubscription(
+   *   function(value) {
+   *     // do handle here, then we need unsubscribe immediately!
+   *     subscription.unsubscribe();// correct
+   *   },
+   *   undefined,
+   *   undefined
+   * );
+   * 
+   * stream.startSubscription(subscription);
+   *
+   */
+  createSubscription(observerOrNext?: PartialObserver<T> | ((value: T) => void),
+            error?: (error: any) => void,
+            complete?: () => void): Subscription {
+
+    return toSubscriber(observerOrNext, error, complete);
+  }
+
+  startSubscription(sink?: Subscription): void {
+
+    const { operator } = this;
+
+    if (operator) {
+      operator.call(sink, this.source);
+    } else {
+      sink.add(this.source ? this._subscribe(sink) : this._trySubscribe(sink));
+    }
   }
 
   protected _trySubscribe(sink: Subscriber<T>): TeardownLogic {
