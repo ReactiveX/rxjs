@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import * as Rx from '../../src/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
+declare const type;
 declare const { asDiagram };
 declare const hot: typeof marbleTestingSignature.hot;
 declare const cold: typeof marbleTestingSignature.cold;
@@ -336,6 +337,22 @@ describe('Observable.prototype.throttle', () =>  {
         done(new Error('should not be called'));
       }
     );
+  });
+
+  type('should support selectors of the same type', () => {
+    /* tslint:disable:no-unused-variable */
+    let o: Rx.Observable<number>;
+    let s: Rx.Observable<number>;
+    let r: Rx.Observable<number> = o.throttle((n) => s);
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type('should support selectors of a different type', () => {
+    /* tslint:disable:no-unused-variable */
+    let o: Rx.Observable<number>;
+    let s: Rx.Observable<string>;
+    let r: Rx.Observable<number> = o.throttle((n) => s);
+    /* tslint:enable:no-unused-variable */
   });
 
   describe('throttle(fn, { leading: true, trailing: true })', () => {
