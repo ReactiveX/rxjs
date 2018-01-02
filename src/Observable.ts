@@ -19,7 +19,7 @@ export interface Subscribable<T> {
             error?: (error: any) => void,
             complete?: () => void): AnonymousSubscription;
 
-  startSubscription(sink?: AnonymousSubscription): void;
+  startSubscription(sink: AnonymousSubscription<T>): void;
 }
 
 export type SubscribableOrPromise<T> = Subscribable<T> | PromiseLike<T>;
@@ -252,7 +252,7 @@ export class Observable<T> implements Subscribable<T> {
     return toSubscriber(observerOrNext, error, complete);
   }
 
-  startSubscription(sink?: Subscription): void {
+  startSubscription(sink: Subscriber<T>): void {
 
     const { operator } = this;
 
