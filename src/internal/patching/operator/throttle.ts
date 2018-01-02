@@ -42,7 +42,7 @@ import { throttle as higherOrder, ThrottleConfig, defaultThrottleConfig } from '
  * @owner Observable
  */
 export function throttle<T>(this: Observable<T>,
-                            durationSelector: (value: T) => SubscribableOrPromise<number>,
+                            durationSelector: (value: T) => SubscribableOrPromise<any>,
                             config: ThrottleConfig = defaultThrottleConfig): Observable<T> {
   return higherOrder(durationSelector, config)(this);
 }
