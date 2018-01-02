@@ -13,7 +13,7 @@ export interface DispatchArg {
  * @extends {Ignored}
  * @hide true
  */
-export class ErrorObservable extends Observable<any> {
+export class ErrorObservable extends Observable<never> {
 
   /**
    * Creates an Observable that emits no items to the Observer and immediately
@@ -68,7 +68,7 @@ export class ErrorObservable extends Observable<any> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
+  protected _subscribe(subscriber: Subscriber<never>): TeardownLogic {
     const error = this.error;
     const scheduler = this.scheduler;
 
