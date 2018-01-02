@@ -212,8 +212,7 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /**
-   *
-   * split the method “subscribe” into two steps
+   * Split the method “subscribe” into two steps
    * for this case: we need to get the subscription instance in the handle function
    *
    * @example <caption>unsubscribe in the handle function</caption>
