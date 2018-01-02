@@ -19,7 +19,7 @@ export interface Subscribable<T> {
             error?: (error: any) => void,
             complete?: () => void): AnonymousSubscription;
 
-  startSubscription(sink: AnonymousSubscription<T>): void;
+  startSubscription(sink: Subscriber<T>): void;
 }
 
 export type SubscribableOrPromise<T> = Subscribable<T> | PromiseLike<T>;
