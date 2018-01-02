@@ -16,8 +16,8 @@ export interface Subscribable<T> {
             complete?: () => void): AnonymousSubscription;
 
   createSubscription(observerOrNext?: PartialObserver<T> | ((value: T) => void),
-            error?: (error: any) => void,
-            complete?: () => void): AnonymousSubscription;
+                     error?: (error: any) => void,
+                     complete?: () => void): AnonymousSubscription;
 
   startSubscription(sink: Subscriber<T>): void;
 }
@@ -227,8 +227,8 @@ export class Observable<T> implements Subscribable<T> {
    *   undefined,
    *   undefined
    * );
-   * 
-   * 
+   *
+   *
    * @example <caption>unsubscribe in the handle function</caption>
    *
    * const stream = Rx.Observable.of(1, 2, 3);
@@ -241,13 +241,13 @@ export class Observable<T> implements Subscribable<T> {
    *   undefined,
    *   undefined
    * );
-   * 
+   *
    * stream.startSubscription(subscription);
    *
    */
   createSubscription(observerOrNext?: PartialObserver<T> | ((value: T) => void),
-            error?: (error: any) => void,
-            complete?: () => void): Subscription {
+                     error?: (error: any) => void,
+                     complete?: () => void): Subscription {
 
     return toSubscriber(observerOrNext, error, complete);
   }
