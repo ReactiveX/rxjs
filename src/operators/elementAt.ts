@@ -1,9 +1,12 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
+
 import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
 import { Observable } from '../Observable';
-import { TeardownLogic } from '../Subscription';
 import { MonoTypeOperatorFunction } from '../interfaces';
+import { first } from './first';
+import { EmptyError } from '../util/EmptyError';
+import { catchError } from './catchError';
+import { _throw } from '../observable/throw';
+import { pipe } from '../util/pipe';
 
 /**
  * Emits the single value at the specified `index` in a sequence of emissions
@@ -48,49 +51,11 @@ import { MonoTypeOperatorFunction } from '../interfaces';
  * @owner Observable
  */
 export function elementAt<T>(index: number, defaultValue?: T): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new ElementAtOperator(index, defaultValue));
-}
-
-class ElementAtOperator<T> implements Operator<T, T> {
-
-  constructor(private index: number, private defaultValue?: T) {
-    if (index < 0) {
-      throw new ArgumentOutOfRangeError;
-    }
+  if (index < 0) {
+    throw new ArgumentOutOfRangeError();
   }
-
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new ElementAtSubscriber(subscriber, this.index, this.defaultValue));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class ElementAtSubscriber<T> extends Subscriber<T> {
-
-  constructor(destination: Subscriber<T>, private index: number, private defaultValue?: T) {
-    super(destination);
-  }
-
-  protected _next(x: T) {
-    if (this.index-- === 0) {
-      this.destination.next(x);
-      this.destination.complete();
-    }
-  }
-
-  protected _complete() {
-    const destination = this.destination;
-    if (this.index >= 0) {
-      if (typeof this.defaultValue !== 'undefined') {
-        destination.next(this.defaultValue);
-      } else {
-        destination.error(new ArgumentOutOfRangeError);
-      }
-    }
-    destination.complete();
-  }
+  return pipe(
+    first((_, i) => i === index, undefined, defaultValue),
+    catchError(err => _throw(err instanceof EmptyError ? new ArgumentOutOfRangeError() : err)),
+  );
 }
