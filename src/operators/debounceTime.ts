@@ -97,9 +97,15 @@ class DebounceTimeSubscriber<T> extends Subscriber<T> {
     this.clearDebounce();
 
     if (this.hasValue) {
-      this.destination.next(this.lastValue);
+      const { lastValue } = this;
+      // This must be done *before* passing the value
+      // along to the destination because it's possible for
+      // the value to synchronously re-enter this operator
+      // recursively when scheduled with things like
+      // VirtualScheduler/TestScheduler.
       this.lastValue = null;
       this.hasValue = false;
+      this.destination.next(lastValue);
     }
   }
 
