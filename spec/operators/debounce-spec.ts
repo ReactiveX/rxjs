@@ -399,4 +399,20 @@ describe('Observable.prototype.debounce', () => {
         done(new Error('should not be called'));
       });
   });
+
+  it('should debounce correctly when synchronously reentered', () => {
+    const results = [];
+    const source = new Rx.Subject();
+
+    source.debounce(() => Observable.of(null)).subscribe(value => {
+      results.push(value);
+
+      if (value === 1) {
+        source.next(2);
+      }
+    });
+    source.next(1);
+
+    expect(results).to.deep.equal([1, 2]);
+  });
 });

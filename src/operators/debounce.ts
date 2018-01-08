@@ -129,6 +129,11 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
         subscription.unsubscribe();
         this.remove(subscription);
       }
+      // This must be done *before* passing the value
+      // along to the destination because it's possible for
+      // the value to synchronously re-enter this operator
+      // recursively if the duration selector Observable
+      // emits synchronously
       this.value = null;
       this.hasValue = false;
       super._next(value);

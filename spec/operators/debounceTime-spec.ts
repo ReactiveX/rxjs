@@ -1,5 +1,7 @@
+import { expect } from 'chai';
 import * as Rx from '../../src/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { VirtualTimeScheduler } from '../../src/scheduler/VirtualTimeScheduler';
 
 declare const { asDiagram };
 declare const hot: typeof marbleTestingSignature.hot;
@@ -152,5 +154,23 @@ describe('Observable.prototype.debounceTime', () => {
 
     expectObservable(e1.debounceTime(40, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should debounce correctly when synchronously reentered', () => {
+    const results = [];
+    const source = new Rx.Subject();
+    const scheduler = new VirtualTimeScheduler();
+
+    source.debounceTime(0, scheduler).subscribe(value => {
+      results.push(value);
+
+      if (value === 1) {
+        source.next(2);
+      }
+    });
+    source.next(1);
+    scheduler.flush();
+
+    expect(results).to.deep.equal([1, 2]);
   });
 });
