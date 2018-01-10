@@ -24,7 +24,7 @@ because an operator returns an `Observable`,
 not a `Promise`.
 There is now an `Observable.toPromise()`instance method.
 
-Because `throw` is a key word you could use `_throw` after `import { _throw } from 'rxjs/observable/throw`.
+Because `throw` is a key word you could use `_throw` after `import { _throw } from 'rxjs/observable/throw'`.
 
 If the leading `_` bothers you (because a leading `_` typically means "_Internal - Do not use_"), you can do as follows:
 ```
