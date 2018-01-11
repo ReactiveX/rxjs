@@ -207,7 +207,6 @@ There are operators for different purposes, and they may be categorized as: crea
 
 ### Multicasting Operators
 
-- [`cache`](../class/es6/Observable.js~Observable.html#instance-method-cache)
 - [`multicast`](../class/es6/Observable.js~Observable.html#instance-method-multicast)
 - [`publish`](../class/es6/Observable.js~Observable.html#instance-method-publish)
 - [`publishBehavior`](../class/es6/Observable.js~Observable.html#instance-method-publishBehavior)
