@@ -7,15 +7,25 @@ import { SubscriptionLog } from './SubscriptionLog';
 import { Subscription } from '../Subscription';
 import { VirtualTimeScheduler, VirtualAction } from '../scheduler/VirtualTimeScheduler';
 
+import * as _ from 'lodash';
+
 const defaultMaxFrame: number = 750;
 
 interface FlushableTest {
   ready: boolean;
   actual?: any[];
   expected?: any[];
+  assertion?: (actual: any, expected: any) => boolean | void;
 }
 
+type Emission<T> = { frame: number, notification: Notification<T> };
+
 export type observableToBeFn = (marbles: string, values?: any, errorValue?: any) => void;
+export type observableToFn = (
+  assertion: (actual: any, expected: any) => boolean | void,
+  marbles: string,
+  values?: any, errorValue?: any
+) => void;
 export type subscriptionLogsToBeFn = (marbles: string | string[]) => void;
 
 export class TestScheduler extends VirtualTimeScheduler {
@@ -72,7 +82,7 @@ export class TestScheduler extends VirtualTimeScheduler {
   }
 
   expectObservable(observable: Observable<any>,
-                   unsubscriptionMarbles: string = null): ({ toBe: observableToBeFn }) {
+                   unsubscriptionMarbles: string = null): ({ toBe: observableToBeFn, to: observableToFn }) {
     const actual: TestMessage[] = [];
     const flushTest: FlushableTest = { actual, ready: false };
     const unsubscriptionFrame = TestScheduler
@@ -99,9 +109,16 @@ export class TestScheduler extends VirtualTimeScheduler {
     }
 
     this.flushTests.push(flushTest);
+    const equal = _.isEqual;
 
     return {
       toBe(marbles: string, values?: any, errorValue?: any) {
+        flushTest.assertion = equal;
+        flushTest.ready = true;
+        flushTest.expected = TestScheduler.parseMarbles(marbles, values, errorValue, true);
+      },
+      to(assertion: (actual: any, expected: any) => boolean | void, marbles: string, values?: any, errorValue?: any) {
+        flushTest.assertion = assertion;
         flushTest.ready = true;
         flushTest.expected = TestScheduler.parseMarbles(marbles, values, errorValue, true);
       }
@@ -122,6 +139,77 @@ export class TestScheduler extends VirtualTimeScheduler {
     };
   }
 
+  stringify(x: any): string {
+    return JSON.stringify(x, (key: string, value: any) => {
+      if (Array.isArray(value)) {
+        return '[' + value
+          .map((i) => {
+            return '\n\t' + this.stringify(i);
+          }) + '\n]';
+      }
+      return value;
+    })
+      .replace(/\\"/g, '"')
+      .replace(/\\t/g, '\t')
+      .replace(/\\n/g, '\n');
+  }
+
+  notificationToString(notification: Notification<any>, frame: number): string | void {
+    switch (notification.kind) {
+      case 'N':
+        return `value of ${this.stringify(notification.value)} at frame ${frame}`;
+      case 'E':
+        return `error of '${notification.error}' at frame ${frame}`;
+      case 'C':
+        return `completed at frame ${frame}`;
+    }
+  }
+
+  private normalizeEmission(emission: Emission<any>) {
+    const { notification } = emission;
+    if (notification) {
+      const { kind, error } = notification;
+      if (kind === 'E' && error instanceof Error) {
+        notification.error = { name: error.name, message: error.message };
+      }
+    }
+    return emission;
+  }
+
+  private assertEmission(actual: Emission<any>, expected: Emission<any>, assertion: (actual: any, expected: any) => void) {
+    actual = this.normalizeEmission(actual);
+    expected = this.normalizeEmission(expected);
+
+    if (
+      !actual
+      || !expected
+      || (actual.frame !== expected.frame)
+      || (actual.notification.kind !== expected.notification.kind)
+      || (expected.notification.kind === 'E' && !_.isEqual(actual, expected))
+    ) {
+      const expectedString = expected ? this.notificationToString(expected.notification, expected.frame) : undefined;
+      const actualString = actual ? this.notificationToString(actual.notification, actual.frame) : undefined;
+
+      const expectedErrorString = expectedString ? `Expected observable to emit ${expectedString}` : '';
+      const isExpected = !expectedString ? 'unexpectedly ' : '';
+      const actualErrorString = actualString ? `Observable ${isExpected}emitted ${actualString}` : '';
+      const combinedErrorString = [expectedErrorString, actualErrorString]
+        .filter(string => string != '')
+        .join('; ');
+
+      throw new Error(combinedErrorString);
+    }
+
+    if (expected.notification.kind === 'N') {
+      try {
+        assertion(actual.notification.value, expected.notification.value);
+      } catch (e) {
+        e.message = e.message + ` at frame ${expected.frame}`;
+        throw e;
+      }
+    }
+  }
+
   flush() {
     const hotObservables = this.hotObservables;
     while (hotObservables.length > 0) {
@@ -132,7 +220,19 @@ export class TestScheduler extends VirtualTimeScheduler {
     const readyFlushTests = this.flushTests.filter(test => test.ready);
     while (readyFlushTests.length > 0) {
       const test = readyFlushTests.shift();
-      this.assertDeepEqual(test.actual, test.expected);
+      const streamLength = test.expected.length >= test.actual.length ? test.expected.length : test.actual.length;
+
+      for (let idx = 0; idx < streamLength; idx++) {
+        const expectedEmission = (idx in test.expected) ? test.expected[idx] : undefined;
+        const actualEmission = (idx in test.actual) ? test.actual[idx] : undefined;
+
+        if (actualEmission instanceof SubscriptionLog || expectedEmission instanceof SubscriptionLog) {
+          _.isEqual(actualEmission, expectedEmission);
+          continue;
+        }
+
+        this.assertEmission(actualEmission, expectedEmission, test.assertion);
+      }
     }
   }
 
