@@ -1,7 +1,6 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { noop } from '../util/noop';
 import { MonoTypeOperatorFunction } from '../interfaces';
 
 /**
@@ -33,6 +32,6 @@ class IgnoreElementsOperator<T, R> implements Operator<T, R> {
  */
 class IgnoreElementsSubscriber<T> extends Subscriber<T> {
   protected _next(unused: T): void {
-    noop();
+    // Do nothing
   }
 }
