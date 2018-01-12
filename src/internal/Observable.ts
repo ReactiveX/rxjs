@@ -6,7 +6,7 @@ import { root } from '../util/root';
 import { toSubscriber } from '../util/toSubscriber';
 import { IfObservable } from './observable/IfObservable';
 import { ErrorObservable } from './observable/ErrorObservable';
-import { observable as Symbol_observable } from '../symbol/observable';
+import { observable as Symbol_observable } from '../internal/symbol/observable';
 import { OperatorFunction } from '../interfaces';
 import { pipeFromArray } from '../util/pipe';
 

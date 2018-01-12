@@ -4,11 +4,11 @@ import { isPromise } from './isPromise';
 import { isObject } from './isObject';
 import { Subscriber } from '../internal/Subscriber';
 import { Observable, ObservableInput } from '../internal/Observable';
-import { iterator as Symbol_iterator } from '../symbol/iterator';
+import { iterator as Symbol_iterator } from '../internal/symbol/iterator';
 import { Subscription } from '../internal/Subscription';
 import { InnerSubscriber } from '../internal/InnerSubscriber';
 import { OuterSubscriber } from '../internal/OuterSubscriber';
-import { observable as Symbol_observable } from '../symbol/observable';
+import { observable as Symbol_observable } from '../internal/symbol/observable';
 
 export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
                                         result: any,

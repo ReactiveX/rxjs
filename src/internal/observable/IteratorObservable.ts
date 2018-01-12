@@ -1,7 +1,7 @@
 import { root } from '../../util/root';
 import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
-import { iterator as Symbol_iterator } from '../../symbol/iterator';
+import { iterator as Symbol_iterator } from '../../internal/symbol/iterator';
 import { TeardownLogic } from '../Subscription';
 import { Subscriber } from '../Subscriber';
 

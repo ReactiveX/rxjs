@@ -1,5 +1,5 @@
 import { Subscriber } from '../internal/Subscriber';
-import { rxSubscriber as rxSubscriberSymbol } from '../symbol/rxSubscriber';
+import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscriber';
 import { PartialObserver, empty as emptyObserver } from '../internal/Observer';
 
 export function toSubscriber<T>(

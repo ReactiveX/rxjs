@@ -7,7 +7,7 @@ import { Subscriber } from '../Subscriber';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../../util/subscribeToResult';
-import { iterator as Symbol_iterator } from '../../symbol/iterator';
+import { iterator as Symbol_iterator } from '../../internal/symbol/iterator';
 
 /* tslint:disable:max-line-length */
 export function zip<T, R>(v1: ObservableInput<T>, project: (v1: T) => R): Observable<R>;

@@ -172,9 +172,9 @@ import { AsapScheduler } from './internal/scheduler/AsapScheduler';
 import { AsyncScheduler } from './internal/scheduler/AsyncScheduler';
 import { QueueScheduler } from './internal/scheduler/QueueScheduler';
 import { AnimationFrameScheduler } from './internal/scheduler/AnimationFrameScheduler';
-import { rxSubscriber } from './symbol/rxSubscriber';
-import { iterator } from './symbol/iterator';
-import { observable } from './symbol/observable';
+import { rxSubscriber } from './internal/symbol/rxSubscriber';
+import { iterator } from './internal/symbol/iterator';
+import { observable } from './internal/symbol/observable';
 
 import * as _operators from './internal/operators';
 

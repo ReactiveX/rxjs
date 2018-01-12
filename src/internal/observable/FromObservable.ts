@@ -7,11 +7,11 @@ import { ArrayObservable } from './ArrayObservable';
 import { ArrayLikeObservable } from './ArrayLikeObservable';
 
 import { IScheduler } from '../Scheduler';
-import { iterator as Symbol_iterator } from '../../symbol/iterator';
+import { iterator as Symbol_iterator } from '../../internal/symbol/iterator';
 import { Observable, ObservableInput } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { ObserveOnSubscriber } from '../../internal/operators/observeOn';
-import { observable as Symbol_observable } from '../../symbol/observable';
+import { observable as Symbol_observable } from '../../internal/symbol/observable';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
