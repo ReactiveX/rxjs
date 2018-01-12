@@ -78,13 +78,13 @@ You, in fact, could _always_ do this with `let`... but building your own operato
 
 ```ts
 import { interval } from 'rxjs/observable/interval';
-import { map, take, toArray } from 'rxjs/operators';
+import { filter, map, take, toArray } from 'rxjs/operators';
 
 /**
  * an operator that takes every Nth value
  */
 const takeEveryNth = (n: number) => <T>(source: Observable<T>) =>
-  new Observable(observer => {
+  new Observable<T>(observer => {
     let count = 0;
     return source.subscribe({
       next(x) {
@@ -95,11 +95,13 @@ const takeEveryNth = (n: number) => <T>(source: Observable<T>) =>
     })
   });
 
+const takeEveryNthSimple = (n: number) => <T>(source: Observable<T>) =>
+  source.pipe(filter((value, index) => index % n === 0 ))
 
 interval(1000).pipe(
   takeEveryNth(2),
   map(x => x + x),
-  takeEveryNth(3),
+  takeEveryNthSimple(3),
   take(3),
   toArray()
 )
