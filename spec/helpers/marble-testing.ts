@@ -1,4 +1,4 @@
-import { Observable } from '../../src/Observable';
+import { Observable } from '../../src/internal/Observable';
 import { SubscriptionLog } from '../../src/internal/testing/SubscriptionLog';
 import { ColdObservable } from '../../src/internal/testing/ColdObservable';
 import { HotObservable } from '../../src/internal/testing/HotObservable';
