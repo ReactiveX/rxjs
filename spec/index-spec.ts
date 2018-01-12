@@ -29,5 +29,7 @@ describe('index', () => {
 
   it('should export the pipe utility', () => {
     expect(index.pipe).to.exist;
+    expect(index.noop).to.exist;
+    expect(index.identity).to.exist;
   });
 });

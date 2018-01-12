@@ -20,6 +20,8 @@ export { Notification } from './internal/Notification';
 
 /* Utils */
 export { pipe } from './util/pipe';
+export { noop } from './util/noop';
+export { identity } from './util/identity';
 
 /* Types */
 export * from './internal/types';
