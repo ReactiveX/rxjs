@@ -1,10 +1,10 @@
 
-import { Observable } from '../../Observable';
-import { publishLast } from '../../operator/publishLast';
+import { Observable } from '../../internal/Observable';
+import { publishLast } from '../../internal/patching/operator/publishLast';
 
 Observable.prototype.publishLast = publishLast;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   interface Observable<T> {
     publishLast: typeof publishLast;
   }

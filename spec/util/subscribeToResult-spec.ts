@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import * as Rx from '../../src/Rx';
-import { subscribeToResult } from '../../src/util/subscribeToResult';
-import { OuterSubscriber } from '../../src/OuterSubscriber';
-import { $$iterator } from '../../src/symbol/iterator';
+import { subscribeToResult } from '../../src/internal/util/subscribeToResult';
+import { OuterSubscriber } from '../../src/internal/OuterSubscriber';
+import { $$iterator } from '../../src/internal/symbol/iterator';
 import $$symbolObservable from 'symbol-observable';
 
 describe('subscribeToResult', () => {

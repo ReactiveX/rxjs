@@ -1,9 +1,9 @@
-import { Observable } from '../../Observable';
-import { timer as staticTimer } from '../../observable/timer';
+import { Observable } from '../../internal/Observable';
+import { timer as staticTimer } from '../../internal/observable/timer';
 
 Observable.timer = staticTimer;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   namespace Observable {
     export let timer: typeof staticTimer;
   }

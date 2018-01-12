@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as Rx from '../../src/Rx';
-import { TestScheduler } from '../../src/testing/TestScheduler';
+import { TestScheduler } from '../../src/internal/testing/TestScheduler';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const hot: typeof marbleTestingSignature.hot;

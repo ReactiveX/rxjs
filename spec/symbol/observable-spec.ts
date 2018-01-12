@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import $$symbolObservable from 'symbol-observable';
 
-import { root } from '../../src/util/root';
-import { getSymbolObservable } from '../../src/symbol/observable';
+import { root } from '../../src/internal/util/root';
+import { getSymbolObservable } from '../../src/internal/symbol/observable';
 
 describe('observable symbol', () => {
   it('should exist in the proper form', () => {
