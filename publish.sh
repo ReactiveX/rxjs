@@ -41,6 +41,9 @@ select branch in "master" "stable"; do
     git diff
     read -p "Examine and correct CHANGELOG.md. [Enter] to continue"
 
+    # Now commit to make sure CHANGELOG is updated.
+    git commit -am "chore(publish): $version"
+
     git tag $version
 
 
