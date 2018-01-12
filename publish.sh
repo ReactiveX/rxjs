@@ -2,7 +2,6 @@
 
 echo "Publish master or stable?"
 select branch in "master" "stable"; do
-
   read -p "You selected $branch. [Enter] to continue"
   git checkout $branch
 
@@ -17,6 +16,11 @@ select branch in "master" "stable"; do
       No) echo "Skipped clearing node_modules"; break;;
     esac
   done
+
+  if [ $branch = "master" ]; then
+    echo "You cannot publish master from this script at this time. To continue, publish manually from this point."
+    exit 1
+  fi
 
   echo "What type of publish?"
   select version_type in "patch" "minor" "major"; do
