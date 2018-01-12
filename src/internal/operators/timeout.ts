@@ -7,7 +7,7 @@ import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
 import { TimeoutError } from '../../util/TimeoutError';
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**
  *

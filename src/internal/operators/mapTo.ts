@@ -1,7 +1,7 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { OperatorFunction } from '../../interfaces';
+import { OperatorFunction } from '../../internal/types';
 
 /**
  * Emits the given constant value on the output Observable every time the source

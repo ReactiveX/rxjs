@@ -5,7 +5,7 @@ import { Subscriber } from '../Subscriber';
 import { tryCatch } from '../../util/tryCatch';
 import { errorObject } from '../../util/errorObject';
 
-import { OperatorFunction } from '../../interfaces';
+import { OperatorFunction } from '../../internal/types';
 
 /**
  * Compares all values of two observables in sequence using an optional comparor function

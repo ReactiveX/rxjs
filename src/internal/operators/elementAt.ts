@@ -3,7 +3,7 @@ import { Subscriber } from '../Subscriber';
 import { ArgumentOutOfRangeError } from '../../util/ArgumentOutOfRangeError';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**
  * Emits the single value at the specified `index` in a sequence of emissions

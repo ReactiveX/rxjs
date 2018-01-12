@@ -4,7 +4,7 @@ import { Observable, ObservableInput } from '../Observable';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../../util/subscribeToResult';
-import { OperatorFunction } from '../../interfaces';
+import { OperatorFunction } from '../../internal/types';
 
 /* tslint:disable:max-line-length */
 export function withLatestFrom<T, R>(project: (v1: T) => R): OperatorFunction<T, R>;

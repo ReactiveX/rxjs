@@ -4,7 +4,7 @@ import { Subscriber } from '../Subscriber';
 import { Subscription, TeardownLogic } from '../Subscription';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../../util/subscribeToResult';
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**
  * Converts a higher-order Observable into a first-order Observable by dropping

@@ -5,7 +5,7 @@ import { TeardownLogic } from '../Subscription';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../../util/subscribeToResult';
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 if (!Set) {
   throw new Error('Set is not present, please polyfill');

@@ -4,7 +4,7 @@ import { Subscriber } from '../Subscriber';
 import { IScheduler } from '../Scheduler';
 import { Subscription, TeardownLogic } from '../Subscription';
 import { async } from '../scheduler/async';
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**
  * Emits a value from the source Observable only after a particular time span

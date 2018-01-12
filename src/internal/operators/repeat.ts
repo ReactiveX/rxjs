@@ -3,7 +3,7 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { EmptyObservable } from '../observable/EmptyObservable';
 import { TeardownLogic } from '../Subscription';
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**
  * Returns an Observable that repeats the stream of items emitted by the source Observable at most count times.

@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { BehaviorSubject } from '../BehaviorSubject';
 import { multicast } from './multicast';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
-import { UnaryFunction } from '../../interfaces';
+import { UnaryFunction } from '../../internal/types';
 
 /**
  * @param value

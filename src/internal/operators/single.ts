@@ -5,7 +5,7 @@ import { Observer } from '../Observer';
 import { EmptyError } from '../../util/EmptyError';
 import { TeardownLogic } from '../Subscription';
 
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**
  * Returns an Observable that emits the single item emitted by the source Observable that matches a specified

@@ -147,3 +147,6 @@ export { Notification } from './internal/Notification';
 
 /* Utils */
 export { pipe } from './util/pipe';
+
+/* Types */
+export * from './internal/types';

@@ -1,7 +1,7 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { OperatorFunction } from '../../interfaces';
+import { OperatorFunction } from '../../internal/types';
 
 export function isEmpty<T>(): OperatorFunction<T, boolean> {
   return (source: Observable<T>) => source.lift(new IsEmptyOperator());

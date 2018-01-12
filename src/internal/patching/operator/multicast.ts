@@ -2,7 +2,7 @@ import { Subject } from '../../Subject';
 import { Observable } from '../../Observable';
 import { ConnectableObservable } from '../../observable/ConnectableObservable';
 import { multicast as higherOrder } from '../../operators/multicast';
-import { FactoryOrValue, MonoTypeOperatorFunction, OperatorFunction } from '../../../interfaces';
+import { FactoryOrValue, MonoTypeOperatorFunction, OperatorFunction } from '../../../internal/types';
 
 /* tslint:disable:max-line-length */
 export function multicast<T>(this: Observable<T>, subjectOrSubjectFactory: FactoryOrValue<Subject<T>>): ConnectableObservable<T>;

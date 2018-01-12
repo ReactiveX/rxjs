@@ -8,7 +8,7 @@ import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { isNumeric } from '../../util/isNumeric';
 import { isScheduler } from '../../util/isScheduler';
-import { OperatorFunction } from '../../interfaces';
+import { OperatorFunction } from '../../internal/types';
 
 /**
  * Branch out the source Observable values as a nested Observable periodically

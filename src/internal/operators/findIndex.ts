@@ -1,6 +1,6 @@
 import { Observable } from '../Observable';
 import { FindValueOperator } from '../operators/find';
-import { OperatorFunction } from '../../interfaces';
+import { OperatorFunction } from '../../internal/types';
 /**
  * Emits only the index of the first value emitted by the source Observable that
  * meets some condition.

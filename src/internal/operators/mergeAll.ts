@@ -2,7 +2,7 @@
 import { ObservableInput } from '../Observable';
 import { mergeMap } from './mergeMap';
 import { identity } from '../../util/identity';
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**
  * Converts a higher-order Observable into a first-order Observable which

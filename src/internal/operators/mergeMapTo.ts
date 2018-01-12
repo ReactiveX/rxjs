@@ -6,7 +6,7 @@ import { Subscription } from '../Subscription';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../../util/subscribeToResult';
-import { OperatorFunction } from '../../interfaces';
+import { OperatorFunction } from '../../internal/types';
 
 /* tslint:disable:max-line-length */
 export function mergeMapTo<T, R>(observable: ObservableInput<R>, concurrent?: number): OperatorFunction<T, R>;

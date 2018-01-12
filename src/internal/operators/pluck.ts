@@ -1,6 +1,6 @@
 import { Observable } from '../Observable';
 import { map } from './map';
-import { OperatorFunction } from '../../interfaces';
+import { OperatorFunction } from '../../internal/types';
 
 /**
  * Maps each source value (an object) to its specified nested property.

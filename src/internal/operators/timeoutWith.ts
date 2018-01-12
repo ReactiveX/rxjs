@@ -8,7 +8,7 @@ import { Observable, ObservableInput } from '../Observable';
 import { isDate } from '../../util/isDate';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../../util/subscribeToResult';
-import { OperatorFunction, MonoTypeOperatorFunction } from '../../interfaces';
+import { OperatorFunction, MonoTypeOperatorFunction } from '../../internal/types';
 
 /* tslint:disable:max-line-length */
 export function timeoutWith<T>(due: number | Date, withObservable: ObservableInput<T>, scheduler?: IScheduler): MonoTypeOperatorFunction<T>;

@@ -5,7 +5,7 @@ import { Subscription } from '../Subscription';
 import { subscribeToResult } from '../../util/subscribeToResult';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
-import { OperatorFunction } from '../../interfaces';
+import { OperatorFunction } from '../../internal/types';
 
 /**
  * Buffers the source Observable values starting from an emission from

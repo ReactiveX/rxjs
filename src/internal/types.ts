@@ -1,4 +1,4 @@
-import { Observable } from './internal/Observable';
+import { Observable } from './Observable';
 
 export interface UnaryFunction<T, R> { (source: T): R; }
 

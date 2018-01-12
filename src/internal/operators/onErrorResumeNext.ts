@@ -6,7 +6,7 @@ import { isArray } from '../../util/isArray';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../../util/subscribeToResult';
-import { OperatorFunction } from '../../interfaces';
+import { OperatorFunction } from '../../internal/types';
 
 /* tslint:disable:max-line-length */
 export function onErrorResumeNext<T, R>(v: ObservableInput<R>): OperatorFunction<T, R>;

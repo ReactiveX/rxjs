@@ -3,7 +3,7 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
 
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable

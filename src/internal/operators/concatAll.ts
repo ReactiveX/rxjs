@@ -1,6 +1,6 @@
 
 import { mergeAll } from './mergeAll';
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**
  * Converts a higher-order Observable into a first-order Observable by

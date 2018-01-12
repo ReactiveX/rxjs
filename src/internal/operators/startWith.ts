@@ -5,7 +5,7 @@ import { ScalarObservable } from '../observable/ScalarObservable';
 import { EmptyObservable } from '../observable/EmptyObservable';
 import { concat as concatStatic } from '../observable/concat';
 import { isScheduler } from '../../util/isScheduler';
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /* tslint:disable:max-line-length */
 export function startWith<T>(v1: T, scheduler?: IScheduler): MonoTypeOperatorFunction<T>;

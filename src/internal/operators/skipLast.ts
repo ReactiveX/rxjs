@@ -3,7 +3,7 @@ import { Subscriber } from '../Subscriber';
 import { ArgumentOutOfRangeError } from '../../util/ArgumentOutOfRangeError';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**
  * Skip the last `count` values emitted by the source Observable.

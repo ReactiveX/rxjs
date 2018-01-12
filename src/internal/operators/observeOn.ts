@@ -6,7 +6,7 @@ import { Subscriber } from '../Subscriber';
 import { Notification } from '../Notification';
 import { TeardownLogic } from '../Subscription';
 import { Action } from '../scheduler/Action';
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**
  *

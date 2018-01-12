@@ -8,7 +8,7 @@ import { Subscription } from '../Subscription';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../../util/subscribeToResult';
-import { MonoTypeOperatorFunction, OperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction, OperatorFunction } from '../../internal/types';
 
 /* tslint:disable:max-line-length */
 export function expand<T>(project: (value: T, index: number) => Observable<T>, concurrent?: number, scheduler?: IScheduler): MonoTypeOperatorFunction<T>;

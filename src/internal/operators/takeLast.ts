@@ -4,7 +4,7 @@ import { ArgumentOutOfRangeError } from '../../util/ArgumentOutOfRangeError';
 import { EmptyObservable } from '../observable/EmptyObservable';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**
  * Emits only the last `count` values emitted by the source Observable.

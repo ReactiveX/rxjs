@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { scan } from './scan';
 import { takeLast } from './takeLast';
 import { defaultIfEmpty } from './defaultIfEmpty';
-import { OperatorFunction, MonoTypeOperatorFunction } from '../../interfaces';
+import { OperatorFunction, MonoTypeOperatorFunction } from '../../internal/types';
 import { pipe } from '../../util/pipe';
 
 /* tslint:disable:max-line-length */

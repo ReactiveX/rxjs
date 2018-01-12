@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { OperatorFunction } from '../../interfaces';
+import { OperatorFunction } from '../../internal/types';
 import { Subject } from '../Subject';
 import { Subscriber } from '../Subscriber';
 import { OuterSubscriber } from '../OuterSubscriber';

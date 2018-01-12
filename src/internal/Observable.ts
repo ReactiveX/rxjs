@@ -7,7 +7,7 @@ import { toSubscriber } from '../util/toSubscriber';
 import { IfObservable } from './observable/IfObservable';
 import { ErrorObservable } from './observable/ErrorObservable';
 import { observable as Symbol_observable } from '../internal/symbol/observable';
-import { OperatorFunction } from '../interfaces';
+import { OperatorFunction } from '../internal/types';
 import { pipeFromArray } from '../util/pipe';
 
 export interface Subscribable<T> {

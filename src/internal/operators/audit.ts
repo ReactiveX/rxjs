@@ -7,7 +7,7 @@ import { tryCatch } from '../../util/tryCatch';
 import { errorObject } from '../../util/errorObject';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../../util/subscribeToResult';
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**
  * Ignores source values for a duration determined by another Observable, then

@@ -1,5 +1,5 @@
 import { reduce } from './reduce';
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**
  * The Min operator operates on an Observable that emits numbers (or items that can be compared with a provided function),

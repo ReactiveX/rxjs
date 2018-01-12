@@ -1,7 +1,7 @@
 import { not } from '../../util/not';
 import { filter } from './filter';
 import { Observable } from '../Observable';
-import { UnaryFunction } from '../../interfaces';
+import { UnaryFunction } from '../../internal/types';
 
 /**
  * Splits the source Observable into two, one with values that satisfy a

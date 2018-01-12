@@ -2,7 +2,7 @@ import { Observable } from '../../Observable';
 import { IScheduler } from '../../Scheduler';
 import { ConnectableObservable } from '../../observable/ConnectableObservable';
 import { publishReplay as higherOrder } from '../../operators/publishReplay';
-import { OperatorFunction, MonoTypeOperatorFunction } from '../../../interfaces';
+import { OperatorFunction, MonoTypeOperatorFunction } from '../../../internal/types';
 
 /* tslint:disable:max-line-length */
 export function publishReplay<T>(this: Observable<T>, bufferSize?: number, windowTime?: number, scheduler?: IScheduler): ConnectableObservable<T>;

@@ -8,7 +8,7 @@ import { Notification } from '../Notification';
 import { Observable } from '../Observable';
 import { PartialObserver } from '../Observer';
 import { TeardownLogic } from '../Subscription';
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**
  * Delays the emission of items from the source Observable by a given timeout or

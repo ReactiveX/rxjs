@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { ReplaySubject } from '../ReplaySubject';
 import { IScheduler } from '../Scheduler';
 import { Subscription } from '../Subscription';
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 import { Subscriber } from '../Subscriber';
 
 /**

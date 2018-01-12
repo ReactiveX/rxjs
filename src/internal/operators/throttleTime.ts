@@ -5,7 +5,7 @@ import { Subscription, TeardownLogic } from '../Subscription';
 import { async } from '../scheduler/async';
 import { Observable } from '../Observable';
 import { ThrottleConfig, defaultThrottleConfig } from './throttle';
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**
  * Emits a value from the source Observable, then ignores subsequent source

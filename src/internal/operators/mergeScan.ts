@@ -7,7 +7,7 @@ import { errorObject } from '../../util/errorObject';
 import { subscribeToResult } from '../../util/subscribeToResult';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
-import { OperatorFunction } from '../../interfaces';
+import { OperatorFunction } from '../../internal/types';
 
 /**
  * Applies an accumulator function over the source Observable where the

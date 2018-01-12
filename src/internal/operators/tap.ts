@@ -3,7 +3,7 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { PartialObserver } from '../Observer';
 import { TeardownLogic } from '../Subscription';
-import { MonoTypeOperatorFunction } from '../../interfaces';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 import { noop } from '../../util/noop';
 import { isFunction } from '../../util/isFunction';
 
