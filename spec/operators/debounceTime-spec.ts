@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as Rx from '../../src/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
-import { VirtualTimeScheduler } from '../../src/scheduler/VirtualTimeScheduler';
+import { VirtualTimeScheduler } from '../../src/internal/scheduler/VirtualTimeScheduler';
 
 declare const { asDiagram };
 declare const hot: typeof marbleTestingSignature.hot;
