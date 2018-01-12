@@ -159,7 +159,7 @@ export {TimeoutError} from './util/TimeoutError';
 export {UnsubscriptionError} from './util/UnsubscriptionError';
 export {TimeInterval} from './internal/patching/operator/timeInterval';
 export {Timestamp} from './internal/operators/timestamp';
-export {TestScheduler} from './testing/TestScheduler';
+export {TestScheduler} from './internal/testing/TestScheduler';
 export {VirtualTimeScheduler} from './internal/scheduler/VirtualTimeScheduler';
 export {AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError} from './internal/observable/dom/AjaxObservable';
 export { pipe } from './util/pipe';

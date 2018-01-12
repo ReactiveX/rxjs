@@ -1,4 +1,4 @@
-import { Scheduler } from '../internal/Scheduler';
+import { Scheduler } from '../Scheduler';
 import { SubscriptionLog } from './SubscriptionLog';
 
 export class SubscriptionLoggable {

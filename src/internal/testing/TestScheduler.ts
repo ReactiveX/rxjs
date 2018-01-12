@@ -1,11 +1,11 @@
-import { Observable } from '../internal/Observable';
-import { Notification } from '../internal/Notification';
+import { Observable } from '../Observable';
+import { Notification } from '../Notification';
 import { ColdObservable } from './ColdObservable';
 import { HotObservable } from './HotObservable';
 import { TestMessage } from './TestMessage';
 import { SubscriptionLog } from './SubscriptionLog';
-import { Subscription } from '../internal/Subscription';
-import { VirtualTimeScheduler, VirtualAction } from '../internal/scheduler/VirtualTimeScheduler';
+import { Subscription } from '../Subscription';
+import { VirtualTimeScheduler, VirtualAction } from '../scheduler/VirtualTimeScheduler';
 
 const defaultMaxFrame: number = 750;
 
