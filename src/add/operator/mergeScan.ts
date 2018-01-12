@@ -1,10 +1,10 @@
 
-import { Observable } from '../../Observable';
-import { mergeScan } from '../../operator/mergeScan';
+import { Observable } from '../../internal/Observable';
+import { mergeScan } from '../../internal/patching/operator/mergeScan';
 
 Observable.prototype.mergeScan = mergeScan;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   interface Observable<T> {
     mergeScan: typeof mergeScan;
   }

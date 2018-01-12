@@ -43,7 +43,7 @@ children:
         - label: based on a given amount
           children:
           - label: takeLast
-      - label: until another Observable emits a value or completes
+      - label: until another Observable emits a value
         children:
         - label: takeUntil
     - label: I want to ignore values
@@ -59,6 +59,9 @@ children:
         - label: based on custom logic
           children:
           - label: skipWhile
+      - label: from the end of the Observable
+        children:
+        - label: skipLast
       - label: until another Observable emits a value
         children:
         - label: skipUntil
@@ -310,7 +313,7 @@ children:
         - label: race
       - label: I want to output the values from either of them
         children:
-        - label: Observable.merge
+        - label: merge
       - label: I want to output a value computed from values of the source Observables
         children:
         - label: using the latest value of each source whenever any source emits

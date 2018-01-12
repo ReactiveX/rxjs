@@ -7,7 +7,7 @@
 
 # RxJS 5
 
-Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Extensions/RxJS](https://github.com/Reactive-Extensions/RxJS) and is intended to supersede it once this is ready. This rewrite is meant to have better performance, better modularity, better debuggable call stacks, while staying mostly backwards compatible, with some breaking changes that reduce the API surface.
+Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Extensions/RxJS](https://github.com/Reactive-Extensions/RxJS) and is the latest production-ready version of RxJS. This rewrite is meant to have better performance, better modularity, better debuggable call stacks, while staying mostly backwards compatible, with some breaking changes that reduce the API surface.
 
 [Apache 2.0 License](LICENSE.txt)
 
@@ -20,8 +20,8 @@ Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Exten
 
 ## Versions In This Repository
 
-- [master](https://github.com/ReactiveX/rxjs/commits/master) - commits that will be included in the next _minor_ or _patch_ release
-- [next](https://github.com/ReactiveX/rxjs/commits/next) - commits that will be included in the next _major_ release (breaking changes)
+- [master](https://github.com/ReactiveX/rxjs/commits/master) - commits that will be included in the next _major_ release (breaking changes)
+- [next](https://github.com/ReactiveX/rxjs/commits/stable) - commits that will be included in the next _minor_ or _patch_ release
 
 Most PRs should be made to **master**, unless you know it is a breaking change.
 
@@ -69,6 +69,8 @@ Observable::of(1,2,3)::map(x => x + '!!!'); // etc
 
 ### CommonJS via npm
 
+To install this library for CommonJS (CJS) usage, use the following command:
+
 ```sh
 npm install rxjs
 ```
@@ -112,6 +114,8 @@ To install this library via [npm](https://www.npmjs.org) **version 3**, use the 
 npm install @reactivex/rxjs
 ```
 
+This will include CJS/Global builds and can be used for all module types.
+
 If you are using npm **version 2** before this library has achieved a stable version, you need to specify the library version explicitly:
 
 ```sh
@@ -121,7 +125,7 @@ npm install @reactivex/rxjs@5.0.0
 ### CDN
 
 For CDN, you can use [unpkg](https://unpkg.com/):
-  
+
 https://unpkg.com/rxjs/bundles/Rx.min.js
 
 #### Node.js Usage:

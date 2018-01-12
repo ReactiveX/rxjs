@@ -1,11 +1,11 @@
 
-import { Observable } from '../../Observable';
+import { Observable } from '../../internal/Observable';
 
-import { scan } from '../../operator/scan';
+import { scan } from '../../internal/patching/operator/scan';
 
 Observable.prototype.scan = scan;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   interface Observable<T> {
     scan: typeof scan;
   }

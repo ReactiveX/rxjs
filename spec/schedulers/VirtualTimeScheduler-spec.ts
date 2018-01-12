@@ -1,6 +1,6 @@
-import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
-import { VirtualAction } from '../../dist/cjs/scheduler/VirtualTimeScheduler';
+import { expect } from 'chai';
+import * as Rx from '../../src/Rx';
+import { VirtualAction } from '../../src/internal/scheduler/VirtualTimeScheduler';
 
 const VirtualTimeScheduler = Rx.VirtualTimeScheduler;
 
@@ -79,5 +79,16 @@ describe('VirtualTimeScheduler', () => {
 
     v.flush();
     expect(count).to.equal(3);
+  });
+
+  it('should not execute virtual actions that have been rescheduled before flush', () => {
+    const v = new VirtualTimeScheduler();
+    let messages = [];
+    let action: VirtualAction<string> = <VirtualAction<string>> v.schedule(function(state: string) {
+      messages.push(state);
+    }, 10, 'first message');
+    action = <VirtualAction<string>> action.schedule('second message' , 10);
+    v.flush();
+    expect(messages).to.deep.equal(['second message']);
   });
 });

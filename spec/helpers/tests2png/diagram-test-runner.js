@@ -1,5 +1,5 @@
-var root = require('../../../dist/cjs/util/root').root;
-var Rx = require('../../../dist/cjs/Rx');
+var root = require('../../../dist/package/util/root').root;
+var Rx = require('../../../dist/package/Rx');
 var painter = require('./painter');
 
 function getInputStreams(rxTestScheduler) {

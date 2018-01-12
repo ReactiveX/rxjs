@@ -1,5 +1,5 @@
-import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
+import { expect } from 'chai';
+import * as Rx from '../../src/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram };
@@ -119,6 +119,18 @@ describe('Observable.prototype.audit', () => {
     const e1 =   hot('abcdefabcdefabcdefabcdefa|');
     const e1subs =   '^                        !';
     const e2 =  cold('|');
+    const expected = 'abcdefabcdefabcdefabcdefa|';
+
+    const result = e1.audit(() => e2);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should mirror source if durations are Observable.empty()', () => {
+    const e1 =   hot('abcdefabcdefabcdefabcdefa|');
+    const e1subs =   '^                        !';
+    const e2 =  Rx.Observable.empty();
     const expected = 'abcdefabcdefabcdefabcdefa|';
 
     const result = e1.audit(() => e2);

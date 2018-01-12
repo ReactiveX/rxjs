@@ -1,16 +1,15 @@
-///<reference path='../../typings/index.d.ts'/>
 declare const global: any;
 
-import * as Rx from '../../dist/cjs/Rx';
-import {ObservableInput} from '../../dist/cjs/Observable';
-import {root} from '../../dist/cjs/util/root';
-import {$$iterator} from '../../dist/cjs/symbol/iterator';
+import * as Rx from '../../src/Rx';
+import { ObservableInput } from '../../src/internal/Observable';
+import { root } from '../../src/internal/util/root';
+import { $$iterator } from '../../src/internal/symbol/iterator';
 import $$symbolObservable from 'symbol-observable';
 
-export function lowerCaseO<T>(...args): Rx.Observable<T> {
+export function lowerCaseO<T>(...args: Array<any>): Rx.Observable<T> {
 
   const o = {
-    subscribe: function (observer) {
+    subscribe: function (observer: any) {
       args.forEach(function (v) {
         observer.next(v);
       });
@@ -18,7 +17,7 @@ export function lowerCaseO<T>(...args): Rx.Observable<T> {
     }
   };
 
-  o[$$symbolObservable] = function () {
+  o[$$symbolObservable] = function (this: any) {
     return this;
   };
 
@@ -30,17 +29,19 @@ export const createObservableInputs = <T>(value: T) => Rx.Observable.of<Observab
   Rx.Observable.of<T>(value, Rx.Scheduler.async),
   [value],
   Promise.resolve(value),
-  <any>({ [$$iterator]: () => {
-      const iteratorResults = [
-        {value, done: false},
-        {done: true}
-      ];
-      return {
-        next: () => {
-          return iteratorResults.shift();
-        }
-      };
-    }}),
+  <any>({
+  [$$iterator]: () => {
+    const iteratorResults = [
+      { value, done: false },
+      { done: true }
+    ];
+    return {
+      next: () => {
+        return iteratorResults.shift();
+      }
+    };
+  }
+  }),
   <any>({ [$$symbolObservable]: () => Rx.Observable.of(value) })
 );
 

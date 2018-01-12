@@ -1,9 +1,9 @@
-import { Observable } from '../../Observable';
-import { fromPromise as staticFromPromise } from '../../observable/fromPromise';
+import { Observable } from '../../internal/Observable';
+import { fromPromise as staticFromPromise } from '../../internal/observable/fromPromise';
 
 Observable.fromPromise = staticFromPromise;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   namespace Observable {
     export let fromPromise: typeof staticFromPromise;
   }

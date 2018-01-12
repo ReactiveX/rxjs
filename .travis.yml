@@ -8,30 +8,31 @@ addons:
     sauce_connect: true
 
 cache:
+  timeout: 1000
   directories:
-    - node_modules
+    - $HOME/.npm
 
 env:
   matrix:
   - NODE_VER=4 FULL_VALIDATE=false
-  - NODE_VER=6 FULL_VALIDATE=true alias grunt=./node_modules/grunt-cli/bin/grunt danger=./node_modules/danger/distribution/danger
+  - NODE_VER=6 FULL_VALIDATE=true alias grunt=./node_modules/grunt-cli/bin/grunt
   - NODE_VER=7 FULL_VALIDATE=false
 matrix:
   fast_finish: true
 
 before_install:
   - nvm install $NODE_VER
-  - npm install -g npm@4 && node -v && npm -v
+  - npm install -g npm@5.6.0 && npm install -g npx && node -v && npm -v
   - if [ "$FULL_VALIDATE" == "true" ]; then npm install grunt@0.4.1 grunt-cli grunt-contrib-connect grunt-run; fi
-  - if [ "$FULL_VALIDATE" == "true" ] && [ -n "DANGER_GITHUB_API_TOKEN" ]; then npm install danger && danger; fi
 
 install:
   - npm install
-  - if [ "$FULL_VALIDATE" == "true" ]; then npm run lint && npm run check_circular_dependencies; fi
+  - if [ "$FULL_VALIDATE" == "true" ]; then npm run lint && npm run test:circular; fi
 
 script:
-  - npm run build_spec && npm run test_mocha && node ./node_modules/markdown-doctest/bin/cmd.js
+  - if [ "$FULL_VALIDATE" == "true" ] && [ -n "DANGER_GITHUB_API_TOKEN" ]; then echo {} > ./.babelrc && npx danger; fi
+  - npm test
 
 after_success:
-  - if [ "$FULL_VALIDATE" == "true" ]; then npm run cover && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js; fi
+  - if [ "$FULL_VALIDATE" == "true" ]; then npm run test:cover && npx nyc report --reporter=text-lcov | npx coveralls; fi
   - if [ "$FULL_VALIDATE" == "true" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ -n "$SAUCE_ACCESS_KEY" ]; then npm run build_spec_browser && grunt --gruntfile spec/support/mocha.sauce.gruntfile.js; fi

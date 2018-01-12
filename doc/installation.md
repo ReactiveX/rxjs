@@ -1,7 +1,7 @@
 ## ES6 via npm
 
 ```none
-npm install rxjs-es
+npm install rxjs
 ```
 
 To import the entire core set of functionality:

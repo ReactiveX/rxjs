@@ -9,14 +9,14 @@ Contents
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-  - [Submitting a Pull Request (PR)](#submitting-a-pull-request-pr)
-    - [After your pull request is merged](#after-your-pull-request-is-merged)
-  - [Coding Style Guidelines](#coding-style-guidelines)
-  - [Unit Tests](#unit-tests)
-    - [CI Tests](#ci-tests)
-  - [Performance Tests](#performance-tests)
-    - [Macro](#macro)
-    - [Micro](#micro)
+- [Submitting a Pull Request (PR)](#submitting-a-pull-request-pr)
+  - [After your pull request is merged](#after-your-pull-request-is-merged)
+- [Coding Style Guidelines](#coding-style-guidelines)
+- [Unit Tests](#unit-tests)
+  - [CI Tests](#ci-tests)
+- [Performance Tests](#performance-tests)
+  - [Macro](#macro)
+  - [Micro](#micro)
 - [Commit Message Guidelines](#commit-message-guidelines)
   - [Commit Message Format](#commit-message-format)
   - [Revert](#revert)
@@ -29,19 +29,15 @@ Contents
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ---
-- [Pull Requests](#pull-requests)
-  - [Coding Style](#coding)
-  - [Commit Messages](#commit)
-- [Creating Operators](doc/operator-creation.md)
-- [Unit Tests](#unit-tests)
+- Related documents
+  - [Creating Operators](doc/operator-creation.md)
   - [Writing Marble Tests](doc/writing-marble-tests.md)
-- [Performance Tests](#performance-tests)
-  - [Macro](#macro)
-  - [Micro](#micro)
+
+---
 
 (This document is a work and progress and is subject to change)
 
-### Submitting a Pull Request (PR)
+## Submitting a Pull Request (PR)
 Before you submit your Pull Request (PR) consider the following guidelines:
 
 * Search [GitHub](https://github.com/ReactiveX/RxJS/pulls) for an open or closed PR
@@ -52,12 +48,12 @@ Before you submit your Pull Request (PR) consider the following guidelines:
      git checkout -b my-fix-branch master
      ```
 
-* Create your patch, following [code style guidelines](#code), and **including appropriate test cases**.
+* Create your patch, following [code style guidelines](#coding-style-guidelines), and **including appropriate test cases**.
 * Run the full test suite and ensure that all tests pass.
 * Run the micro and macro performance tests against your feature branch and compare against master
   to ensure performance wasn't changed for the worse.
 * Commit your changes using a descriptive commit message that follows our
-  [commit message conventions](#commit). Adherence to these conventions
+  [commit message guidelines](#commit-message-guidelines). Adherence to these conventions
   is necessary because release notes are automatically generated from these messages.
 
      ```shell
@@ -86,7 +82,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 That's it! Thank you for your contribution!
 
 
-#### After your pull request is merged
+### After your pull request is merged
 
 After your pull request is merged, you can safely delete your branch and pull the changes
 from the main (upstream) repository:
@@ -115,7 +111,7 @@ from the main (upstream) repository:
     git pull --ff upstream master
     ```
 
-### Coding Style Guidelines
+## Coding Style Guidelines
 
 - Please use proper types and generics throughout your code.
 - 2 space indentation only
@@ -124,7 +120,7 @@ from the main (upstream) repository:
 (TBD): For now try to follow the style that exists elsewhere in the source, and use your best judgment.
 
 
-### Unit Tests
+## Unit Tests
 
 Unit tests are located under the [spec directory](/spec). Unit tests over synchronous operators and operations
 can be written in a standard [jasmine](http://jasmine.github.io/) style. Unit tests written against any
@@ -146,14 +142,14 @@ then it must cover the following cases:
 - Success with the context, if any allowed in the operator signature
 - If an error is thrown
 
-#### CI Tests
+### CI Tests
 - Using [Travis](https://travis-ci.org/) on your forked version of RxJS will allow running CI tests on that fork before submitting a PR to master
  - Simply create a `Travis` account and add your fork as a new project
 - [Sauce Labs](https://saucelabs.com/) setup will allow performing automated browser tests on the fork. Since `saucelabs` doesn't perform browser tests on a PR, this will help verify test results before PR's are checked into master.
  - In your `Travis` repo configuration, set the environment variables SAUCE_USERNAME and SAUCE_ACCESS_KEY to your `saucelabs` account ([reference](https://cloud.githubusercontent.com/assets/1210596/12679038/b9ba4eb6-c656-11e5-8c9b-b063c9a3f9dc.png))
 - As master runs both of these tests per each check in, it'd be welcome to setup those test before creating your PR
 
-### Performance Tests
+## Performance Tests
 
 One of the primary goals of this library is (and will continue to be) great performance. As such, we've employed a variety of performance
 testing techniques.
@@ -168,7 +164,7 @@ testing techniques.
     please add tests for those scenarios
 
 
-#### Macro
+### Macro
 
 [Macro performance tests](perf/macro) are best written for scenarios where many object instance allocations (or deallocations) are occurring. Operators
 that create a lot of child subscriptions, or operators that emit new objects like Observables and Subjects are definitely worth creating
@@ -187,7 +183,7 @@ protractor protractor.conf.js
 ```
 
 
-#### Micro
+### Micro
 
 [Micro performance tests](perf/micro) really only serve to test operations per second. They're quick and easy to develop, and provide a reasonable look into the
 relative performance of our operators versus prior versions. All operators should have corresponding micro performance tests.
@@ -226,7 +222,7 @@ format that includes a **type**, a **scope** and a **subject**:
 
 The **header** is mandatory and the **scope** of the header is optional.
 
-Any line of the commit message cannot be longer 100 characters! This allows the message to be easier
+Any line of the commit message cannot be longer than 100 characters! This allows the message to be easier
 to read on GitHub as well as in various git tools.
 
 ### Revert

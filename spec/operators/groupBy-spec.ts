@@ -1,6 +1,6 @@
-import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
-import {GroupedObservable} from '../../dist/cjs/operator/groupBy';
+import { expect } from 'chai';
+import * as Rx from '../../src/Rx';
+import { GroupedObservable } from '../../src/internal/operators/groupBy';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram };
@@ -901,6 +901,39 @@ describe('Observable.prototype.groupBy', () => {
       });
 
     expectObservable(source, unsub).toBe(expected, expectedGroups);
+  });
+
+  it('should dispose a durationSelector after closing the group',
+  () => {
+    const obs = hot('-0-1--------2-|');
+    const sub =     '^              !' ;
+    let unsubs = [
+                    '-^--!',
+                    '---^--!',
+                    '------------^-!',
+    ];
+    const dur =     '---s';
+    const durations = [
+      cold(dur),
+      cold(dur),
+      cold(dur)
+    ];
+
+    const unsubscribedFrame = Rx.TestScheduler
+      .parseMarblesAsSubscriptions(sub)
+      .unsubscribedFrame;
+
+    obs.groupBy(
+      (val: string) => val,
+      (val: string) => val,
+      (group: any) => durations[group.key]
+    ).subscribe();
+
+    rxTestScheduler.schedule(() => {
+      durations.forEach((d, i) => {
+        expectSubscriptions(d.subscriptions).toBe(unsubs[i]);
+      });
+    }, unsubscribedFrame);
   });
 
   it('should allow using a durationSelector, but keySelector throws', () => {

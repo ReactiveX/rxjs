@@ -1,9 +1,9 @@
-import { Observable } from '../../Observable';
-import { concat as concatStatic } from '../../observable/concat';
+import { Observable } from '../../internal/Observable';
+import { concat as concatStatic } from '../../internal/observable/concat';
 
 Observable.concat = concatStatic;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   namespace Observable {
     export let concat: typeof concatStatic;
   }

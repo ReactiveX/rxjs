@@ -1,10 +1,10 @@
 
-import { Observable } from '../../Observable';
-import { windowTime } from '../../operator/windowTime';
+import { Observable } from '../../internal/Observable';
+import { windowTime } from '../../internal/patching/operator/windowTime';
 
 Observable.prototype.windowTime = windowTime;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   interface Observable<T> {
     windowTime: typeof windowTime;
   }

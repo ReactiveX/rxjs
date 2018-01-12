@@ -1,20 +1,22 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../dist/cjs/Rx';
-import {TeardownLogic} from '../dist/cjs/Subscription';
+import * as Rx from '../src/Rx';
+import { TeardownLogic } from '../src/Subscription';
 import marbleTestingSignature = require('./helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { map } from '../src/internal/operators/map';
+//tslint:disable-next-line
+require('./helpers/test-helper');
 
-declare const { asDiagram, rxTestScheduler };
+declare const asDiagram: any, rxTestScheduler: any;
 declare const cold: typeof marbleTestingSignature.cold;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
 
-const Subscriber = Rx.Subscriber;
 const Observable = Rx.Observable;
 
 declare const __root__: any;
 
-function expectFullObserver(val) {
+function expectFullObserver(val: any) {
   expect(val).to.be.a('object');
   expect(val.next).to.be.a('function');
   expect(val.error).to.be.a('function');
@@ -108,66 +110,62 @@ describe('Observable', () => {
       });
     });
 
-    it('should handle a synchronous throw from the next handler and tear down', (done: MochaDone) => {
-      const expected = new Error('I told, you Bobby Boucher, twos are the debil!');
-      let unsubscribeCalled = false;
+    it('should handle a synchronous throw from the next handler', () => {
+      const expected = new Error('I told, you Bobby Boucher, threes are the debil!');
       const syncObservable = new Observable<number>((observer: Rx.Observer<number>) => {
         observer.next(1);
         observer.next(2);
         observer.next(3);
-
-        return () => {
-          unsubscribeCalled = true;
-        };
+        observer.next(4);
       });
 
-      const results = [];
-      syncObservable.forEach((x) => {
+      const results: Array<number | Error> = [];
+
+      return syncObservable.forEach((x) => {
         results.push(x);
-        if (x === 2) {
+        if (x === 3) {
           throw expected;
         }
       }).then(
         () => {
-          done(new Error('should not be called'));
+          throw new Error('should not be called');
         },
         (err) => {
           results.push(err);
-          expect(results).to.deep.equal([1, 2, expected]);
-          expect(unsubscribeCalled).to.be.true;
-          done();
-        });
+          // Since the consuming code can no longer interfere with the synchronous
+          // producer, the remaining results are nexted.
+          expect(results).to.deep.equal([1, 2, 3, 4, expected]);
+        }
+      );
     });
 
-    it('should handle an asynchronous throw from the next handler and tear down', (done: MochaDone) => {
+    it('should handle an asynchronous throw from the next handler and tear down', () => {
       const expected = new Error('I told, you Bobby Boucher, twos are the debil!');
-      let unsubscribeCalled = false;
-      const syncObservable = new Observable<number>((observer: Rx.Observer<number>) => {
+      const asyncObservable = new Observable<number>((observer: Rx.Observer<number>) => {
         let i = 1;
         const id = setInterval(() => observer.next(i++), 1);
 
         return () => {
           clearInterval(id);
-          unsubscribeCalled = true;
         };
       });
 
-      const results = [];
-      syncObservable.forEach((x) => {
+      const results: Array<number | Error> = [];
+
+      return asyncObservable.forEach((x) => {
         results.push(x);
         if (x === 2) {
           throw expected;
         }
       }).then(
         () => {
-          done(new Error('should not be called'));
+          throw new Error('should not be called');
         },
         (err) => {
           results.push(err);
           expect(results).to.deep.equal([1, 2, expected]);
-          expect(unsubscribeCalled).to.be.true;
-          done();
-        });
+        }
+      );
     });
   });
 
@@ -210,22 +208,42 @@ describe('Observable', () => {
       source.subscribe();
     });
 
-    it('should run unsubscription logic when an error is sent synchronously and subscribe is called with no arguments', () => {
+    it('should not be unsubscribed when other empty subscription completes', () => {
       let unsubscribeCalled = false;
-      const source = new Observable((subscriber: Rx.Subscriber<string>) => {
-        subscriber.error(0);
+      const source = new Observable(() => {
         return () => {
           unsubscribeCalled = true;
         };
       });
 
-      try {
-        source.subscribe();
-      } catch (e) {
-        // error'ing to an empty Observer re-throws, so catch and ignore it here.
-      }
+      source.subscribe();
 
-      expect(unsubscribeCalled).to.be.true;
+      expect(unsubscribeCalled).to.be.false;
+
+      Observable.empty().subscribe();
+
+      expect(unsubscribeCalled).to.be.false;
+    });
+
+    it('should not be unsubscribed when other subscription with same observer completes', () => {
+      let unsubscribeCalled = false;
+      const source = new Observable(() => {
+        return () => {
+          unsubscribeCalled = true;
+        };
+      });
+
+      let observer = {
+        next: function () { /*noop*/ }
+      };
+
+      source.subscribe(observer);
+
+      expect(unsubscribeCalled).to.be.false;
+
+      Observable.empty().subscribe(observer);
+
+      expect(unsubscribeCalled).to.be.false;
     });
 
     it('should run unsubscription logic when an error is sent asynchronously and subscribe is called with no arguments', (done: MochaDone) => {
@@ -233,13 +251,9 @@ describe('Observable', () => {
       const fakeTimer = sandbox.useFakeTimers();
 
       let unsubscribeCalled = false;
-      const source = new Observable((subscriber: Rx.Subscriber<string>) => {
+      const source = new Observable<number>(observer => {
         const id = setInterval(() => {
-          try {
-            subscriber.error(0);
-          } catch (e) {
-            // asynchronously error'ing to an empty Observer re-throws, so catch and ignore it here.
-          }
+          observer.error(0);
         }, 1);
         return () => {
           clearInterval(id);
@@ -247,7 +261,11 @@ describe('Observable', () => {
         };
       });
 
-      source.subscribe();
+      source.subscribe({
+        error (err) {
+          /* noop: expected error */
+        }
+      });
 
       setTimeout(() => {
         let err;
@@ -290,128 +308,93 @@ describe('Observable', () => {
       expect(unsubscribeCalled).to.be.true;
     });
 
-    it('should run unsubscription logic when an error is thrown sending messages synchronously', () => {
-      let messageError = false;
-      let messageErrorValue = false;
-      let unsubscribeCalled = false;
-
-      let sub;
-      const source = new Observable((observer: Rx.Observer<string>) => {
-        observer.next('boo!');
-        return () => {
-          unsubscribeCalled = true;
-        };
-      });
-
-      try {
-        sub = source.subscribe((x: string) => { throw x; });
-      } catch (e) {
-        messageError = true;
-        messageErrorValue = e;
-      }
-
-      expect(sub).to.be.a('undefined');
-      expect(unsubscribeCalled).to.be.true;
-      expect(messageError).to.be.true;
-      expect(messageErrorValue).to.equal('boo!');
-    });
-
-    it('should dispose of the subscriber when an error is thrown sending messages synchronously', () => {
-      let messageError = false;
-      let messageErrorValue = false;
-      let unsubscribeCalled = false;
-
-      let sub;
-      const subscriber = new Subscriber((x: string) => { throw x; });
-      const source = new Observable((observer: Rx.Observer<string>) => {
-        observer.next('boo!');
-        return () => {
-          unsubscribeCalled = true;
-        };
-      });
-
-      try {
-        sub = source.subscribe(subscriber);
-      } catch (e) {
-        messageError = true;
-        messageErrorValue = e;
-      }
-
-      expect(sub).to.be.a('undefined');
-      expect(subscriber.closed).to.be.true;
-      expect(unsubscribeCalled).to.be.true;
-      expect(messageError).to.be.true;
-      expect(messageErrorValue).to.equal('boo!');
-    });
-
-    it('should ignore next messages after unsubscription', () => {
+    it('should ignore next messages after unsubscription', (done) => {
       let times = 0;
 
-      new Observable((observer: Rx.Observer<number>) => {
-        observer.next(0);
-        observer.next(0);
-        observer.next(0);
-        observer.next(0);
+      const subscription = new Observable((observer: Rx.Observer<number>) => {
+        let i = 0;
+        const id = setInterval(() => {
+          observer.next(i++);
+        });
+
+        return () => {
+          clearInterval(id);
+          expect(times).to.equal(2);
+          done();
+        };
       })
       .do(() => times += 1)
       .subscribe(
         function() {
           if (times === 2) {
-            this.unsubscribe();
+            subscription.unsubscribe();
           }
         }
       );
 
-      expect(times).to.equal(2);
     });
 
-    it('should ignore error messages after unsubscription', () => {
+    it('should ignore error messages after unsubscription', (done) => {
       let times = 0;
       let errorCalled = false;
 
-      new Observable((observer: Rx.Observer<number>) => {
-        observer.next(0);
-        observer.next(0);
-        observer.next(0);
-        observer.error(0);
+      const subscription = new Observable((observer: Rx.Observer<number>) => {
+        let i = 0;
+        const id = setInterval(() => {
+          observer.next(i++);
+          if (i === 3) {
+            observer.error(new Error());
+          }
+        });
+
+        return () => {
+          clearInterval(id);
+          expect(times).to.equal(2);
+          expect(errorCalled).to.be.false;
+          done();
+        };
       })
       .do(() => times += 1)
       .subscribe(
         function() {
           if (times === 2) {
-            this.unsubscribe();
+            subscription.unsubscribe();
           }
         },
         function() { errorCalled = true; }
       );
-
-      expect(times).to.equal(2);
-      expect(errorCalled).to.be.false;
     });
 
-    it('should ignore complete messages after unsubscription', () => {
+    it('should ignore complete messages after unsubscription', (done) => {
       let times = 0;
       let completeCalled = false;
 
-      new Observable((observer: Rx.Observer<number>) => {
-        observer.next(0);
-        observer.next(0);
-        observer.next(0);
-        observer.complete();
+      const subscription = new Observable((observer: Rx.Observer<number>) => {
+        let i = 0;
+        const id = setInterval(() => {
+          observer.next(i++);
+          if (i === 3) {
+            observer.complete();
+          }
+        });
+
+        return () => {
+          clearInterval(id);
+          expect(times).to.equal(2);
+          expect(completeCalled).to.be.false;
+          done();
+        };
       })
       .do(() => times += 1)
       .subscribe(
         function() {
           if (times === 2) {
-            this.unsubscribe();
+            subscription.unsubscribe();
           }
         },
         null,
         function() { completeCalled = true; }
       );
-
-      expect(times).to.equal(2);
-      expect(completeCalled).to.be.false;
     });
 
     describe('when called with an anonymous observer', () => {
@@ -419,8 +402,9 @@ describe('Observable', () => {
         ' of the anonymous observer', (done: MochaDone) => {
         //intentionally not using lambda to avoid typescript's this context capture
         const o = {
+          myValue: 'foo',
           next: function next(x) {
-            expect(this).to.equal(o);
+            expect(this.myValue).to.equal('foo');
             expect(x).to.equal(1);
             done();
           }
@@ -433,8 +417,9 @@ describe('Observable', () => {
         ' of the anonymous observer', (done: MochaDone) => {
         //intentionally not using lambda to avoid typescript's this context capture
         const o = {
+          myValue: 'foo',
           error: function error(err) {
-            expect(this).to.equal(o);
+            expect(this.myValue).to.equal('foo');
             expect(err).to.equal('bad');
             done();
           }
@@ -447,8 +432,9 @@ describe('Observable', () => {
         ' context of the anonymous observer', (done: MochaDone) => {
         //intentionally not using lambda to avoid typescript's this context capture
          const o = {
+          myValue: 'foo',
           complete: function complete() {
-            expect(this).to.equal(o);
+            expect(this.myValue).to.equal('foo');
             done();
           }
         };
@@ -462,109 +448,120 @@ describe('Observable', () => {
         }).not.to.throw();
       });
 
-      it('should run unsubscription logic when an error is thrown sending messages synchronously to an' +
-        ' anonymous observer', () => {
-        let messageError = false;
-        let messageErrorValue = false;
-        let unsubscribeCalled = false;
-
-        //intentionally not using lambda to avoid typescript's this context capture
-        const o = {
-          next: function next(x) {
-            expect(this).to.equal(o);
-            throw x;
-          }
-        };
-
-        let sub;
-        const source = new Observable((observer: Rx.Observer<string>) => {
-          observer.next('boo!');
-          return () => {
-            unsubscribeCalled = true;
-          };
-        });
-
-        try {
-          sub = source.subscribe(o);
-        } catch (e) {
-          messageError = true;
-          messageErrorValue = e;
-        }
-
-        expect(sub).to.be.a('undefined');
-        expect(unsubscribeCalled).to.be.true;
-        expect(messageError).to.be.true;
-        expect(messageErrorValue).to.equal('boo!');
-      });
-
-      it('should ignore next messages after unsubscription', () => {
+      it('should ignore next messages after unsubscription', (done) => {
         let times = 0;
 
-        new Observable((observer: Rx.Observer<number>) => {
-          observer.next(0);
-          observer.next(0);
-          observer.next(0);
-          observer.next(0);
+        const subscription = new Observable((observer: Rx.Observer<number>) => {
+          let i = 0;
+          const id = setInterval(() => {
+            observer.next(i++);
+          });
+
+          return () => {
+            clearInterval(id);
+            expect(times).to.equal(2);
+            done();
+          };
         })
         .do(() => times += 1)
         .subscribe({
           next() {
             if (times === 2) {
-              this.unsubscribe();
+              subscription.unsubscribe();
             }
           }
         });
-
-        expect(times).to.equal(2);
       });
 
-      it('should ignore error messages after unsubscription', () => {
+      it('should ignore error messages after unsubscription', (done) => {
         let times = 0;
         let errorCalled = false;
 
-        new Observable((observer: Rx.Observer<number>) => {
-          observer.next(0);
-          observer.next(0);
-          observer.next(0);
-          observer.error(0);
+        const subscription = new Observable((observer: Rx.Observer<number>) => {
+          let i = 0;
+          const id = setInterval(() => {
+            observer.next(i++);
+            if (i === 3) {
+              observer.error(new Error());
+            }
+          });
+          return () => {
+            clearInterval(id);
+            expect(times).to.equal(2);
+            expect(errorCalled).to.be.false;
+            done();
+          };
         })
         .do(() => times += 1)
         .subscribe({
           next() {
             if (times === 2) {
-              this.unsubscribe();
+              subscription.unsubscribe();
             }
           },
           error() { errorCalled = true; }
         });
-
-        expect(times).to.equal(2);
-        expect(errorCalled).to.be.false;
       });
 
-      it('should ignore complete messages after unsubscription', () => {
+      it('should ignore complete messages after unsubscription', (done) => {
         let times = 0;
         let completeCalled = false;
 
-        new Observable((observer: Rx.Observer<number>) => {
-          observer.next(0);
-          observer.next(0);
-          observer.next(0);
-          observer.complete();
+        const subscription = new Observable((observer: Rx.Observer<number>) => {
+          let i = 0;
+          const id = setInterval(() => {
+            observer.next(i++);
+            if (i === 3) {
+              observer.complete();
+            }
+          });
+
+          return () => {
+            clearInterval(id);
+            expect(times).to.equal(2);
+            expect(completeCalled).to.be.false;
+            done();
+          };
         })
         .do(() => times += 1)
         .subscribe({
           next() {
             if (times === 2) {
-              this.unsubscribe();
+              subscription.unsubscribe();
             }
           },
           complete() { completeCalled = true; }
         });
 
-        expect(times).to.equal(2);
-        expect(completeCalled).to.be.false;
       });
+    });
+  });
+
+  describe('pipe', () => {
+    it('should exist', () => {
+      const source = Observable.of('test');
+      expect(source.pipe).to.be.a('function');
+    });
+
+    it('should pipe multiple operations', (done) => {
+      Observable.of('test')
+        .pipe(
+          map((x: string) => x + x),
+          map((x: string) => x + '!!!')
+        )
+        .subscribe(
+          x => {
+            expect(x).to.equal('testtest!!!');
+          },
+          null,
+          done
+        );
+    });
+
+    it('should return the same observable if there are no arguments', () => {
+      const source = Observable.of('test');
+      const result = source.pipe();
+      expect(result).to.equal(source);
     });
   });
 });

@@ -1,10 +1,10 @@
-import { Observable } from '../../Observable';
-import { GenerateObservable } from '../../observable/GenerateObservable';
+import { Observable } from '../../internal/Observable';
+import { generate as staticGenerate } from '../../internal/observable/generate';
 
-Observable.generate = GenerateObservable.create;
+Observable.generate = staticGenerate;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   namespace Observable {
-    export let generate: typeof GenerateObservable.create;
+    export let generate: typeof staticGenerate;
   }
 }

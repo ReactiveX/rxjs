@@ -1,9 +1,9 @@
-import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
-import {lowerCaseO} from '../helpers/test-helper';
+import { expect } from 'chai';
+import * as Rx from '../../src/Rx';
+import { lowerCaseO } from '../helpers/test-helper';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
-declare const {type};
+declare const {type, asDiagram};
 declare const hot: typeof marbleTestingSignature.hot;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
@@ -12,6 +12,17 @@ const Observable = Rx.Observable;
 
 /** @test {forkJoin} */
 describe('Observable.forkJoin', () => {
+  asDiagram('forkJoin')
+    ('should join the last values of the provided observables into an array', () => {
+      const e1 = Observable.forkJoin(
+                   hot('---a---b---c---d---|'),
+                   hot('-1---2---3---|')
+      );
+      const expected = '-------------------(x|)';
+
+      expectObservable(e1).toBe(expected, {x: ['d', '3']});
+    });
+
   it('should join the last values of the provided observables into an array', () => {
     const e1 = Observable.forkJoin(
                hot('--a--b--c--d--|'),
@@ -194,6 +205,35 @@ describe('Observable.forkJoin', () => {
     expectObservable(e1).toBe(expected);
   });
 
+  it('should not complete when only source never completes', () => {
+    const e1 = Observable.forkJoin(
+      hot('--------------')
+    );
+    const expected = '-';
+
+    expectObservable(e1).toBe(expected);
+  });
+
+  it('should not complete when one of the sources never completes', () => {
+    const e1 = Observable.forkJoin(
+      hot('--------------'),
+      hot('-a---b--c--|')
+    );
+    const expected = '-';
+
+    expectObservable(e1).toBe(expected);
+  });
+
+  it('should complete when one of the sources never completes but other completes without values', () => {
+    const e1 = Observable.forkJoin(
+                 hot('--------------'),
+                 hot('------|')
+    );
+    const expected = '------|';
+
+    expectObservable(e1).toBe(expected);
+  });
+
   it('should complete if source is not provided', () => {
     const e1 = Observable.forkJoin();
     const expected = '|';
@@ -240,6 +280,15 @@ describe('Observable.forkJoin', () => {
     const e1 = Observable.forkJoin(
                hot('------#'),
                hot('---------|'));
+    const expected = '------#';
+
+    expectObservable(e1).toBe(expected);
+  });
+
+  it('should raise error when any of source raises error with source that never completes', () => {
+    const e1 = Observable.forkJoin(
+                 hot('------#'),
+                 hot('----------'));
     const expected = '------#';
 
     expectObservable(e1).toBe(expected);
@@ -297,80 +346,80 @@ describe('Observable.forkJoin', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should support promises', () => {
-    type(() => {
-      /* tslint:disable:no-unused-variable */
-      let a: Promise<number>;
-      let b: Promise<string>;
-      let c: Promise<boolean>;
-      let o1: Rx.Observable<[number, string, boolean]> = Observable.forkJoin(a, b, c);
-      let o2: Rx.Observable<boolean> = Observable.forkJoin(a, b, c, (aa, bb, cc) => !!aa && !!bb && cc);
-      /* tslint:enable:no-unused-variable */
-    });
+  it('should unsubscribe other Observables, when one of them errors', () => {
+    const e1 =   hot('--a--^--b--c---d-| ');
+    const e1subs =        '^        !    ';
+    const e2 =   hot('---e-^---f--g-#');
+    const e2subs =        '^        !    ';
+    const expected =      '---------#    ';
+
+    const result = Observable.forkJoin(e1, e2);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should support observables', () => {
-    type(() => {
-      /* tslint:disable:no-unused-variable */
-      let a: Rx.Observable<number>;
-      let b: Rx.Observable<string>;
-      let c: Rx.Observable<boolean>;
-      let o1: Rx.Observable<[number, string, boolean]> = Observable.forkJoin(a, b, c);
-      let o2: Rx.Observable<boolean> = Observable.forkJoin(a, b, c, (aa, bb, cc) => !!aa && !!bb && cc);
-      /* tslint:enable:no-unused-variable */
-    });
+  type('should support promises', () => {
+    /* tslint:disable:no-unused-variable */
+    let a: Promise<number>;
+    let b: Promise<string>;
+    let c: Promise<boolean>;
+    let o1: Rx.Observable<[number, string, boolean]> = Observable.forkJoin(a, b, c);
+    let o2: Rx.Observable<boolean> = Observable.forkJoin(a, b, c, (aa, bb, cc) => !!aa && !!bb && cc);
+    /* tslint:enable:no-unused-variable */
   });
 
-  it('should support mixed observables and promises', () => {
-    type(() => {
-      /* tslint:disable:no-unused-variable */
-      let a: Promise<number>;
-      let b: Rx.Observable<string>;
-      let c: Promise<boolean>;
-      let d: Rx.Observable<string[]>;
-      let o1: Rx.Observable<[number, string, boolean, string[]]> = Observable.forkJoin(a, b, c, d);
-      let o2: Rx.Observable<boolean> = Observable.forkJoin(a, b, c, d, (aa, bb, cc, dd) => !!aa && !!bb && cc && !!dd.length);
-      /* tslint:enable:no-unused-variable */
-    });
+  type('should support observables', () => {
+    /* tslint:disable:no-unused-variable */
+    let a: Rx.Observable<number>;
+    let b: Rx.Observable<string>;
+    let c: Rx.Observable<boolean>;
+    let o1: Rx.Observable<[number, string, boolean]> = Observable.forkJoin(a, b, c);
+    let o2: Rx.Observable<boolean> = Observable.forkJoin(a, b, c, (aa, bb, cc) => !!aa && !!bb && cc);
+    /* tslint:enable:no-unused-variable */
   });
 
-  it('should support arrays of promises', () => {
-    type(() => {
-      /* tslint:disable:no-unused-variable */
-      let a: Promise<number>[];
-      let o1: Rx.Observable<number[]> = Observable.forkJoin(a);
-      let o2: Rx.Observable<number[]> = Observable.forkJoin(...a);
-      let o3: Rx.Observable<number> = Observable.forkJoin(a, (...x) => x.length);
-      /* tslint:enable:no-unused-variable */
-    });
+  type('should support mixed observables and promises', () => {
+    /* tslint:disable:no-unused-variable */
+    let a: Promise<number>;
+    let b: Rx.Observable<string>;
+    let c: Promise<boolean>;
+    let d: Rx.Observable<string[]>;
+    let o1: Rx.Observable<[number, string, boolean, string[]]> = Observable.forkJoin(a, b, c, d);
+    let o2: Rx.Observable<boolean> = Observable.forkJoin(a, b, c, d, (aa, bb, cc, dd) => !!aa && !!bb && cc && !!dd.length);
+    /* tslint:enable:no-unused-variable */
   });
 
-  it('should support arrays of observables', () => {
-    type(() => {
-      /* tslint:disable:no-unused-variable */
-      let a: Rx.Observable<number>[];
-      let o1: Rx.Observable<number[]> = Observable.forkJoin(a);
-      let o2: Rx.Observable<number[]> = Observable.forkJoin(...a);
-      let o3: Rx.Observable<number> = Observable.forkJoin(a, (...x) => x.length);
-      /* tslint:enable:no-unused-variable */
-    });
+  type('should support arrays of promises', () => {
+    /* tslint:disable:no-unused-variable */
+    let a: Promise<number>[];
+    let o1: Rx.Observable<number[]> = Observable.forkJoin(a);
+    let o2: Rx.Observable<number[]> = Observable.forkJoin(...a);
+    let o3: Rx.Observable<number> = Observable.forkJoin(a, (...x) => x.length);
+    /* tslint:enable:no-unused-variable */
   });
 
-  it('should return Array<T> when given a single promise', () => {
-    type(() => {
-      /* tslint:disable:no-unused-variable */
-      let a: Promise<number>;
-      let o1: Rx.Observable<number[]> = Observable.forkJoin(a);
-      /* tslint:enable:no-unused-variable */
-    });
+  type('should support arrays of observables', () => {
+    /* tslint:disable:no-unused-variable */
+    let a: Rx.Observable<number>[];
+    let o1: Rx.Observable<number[]> = Observable.forkJoin(a);
+    let o2: Rx.Observable<number[]> = Observable.forkJoin(...a);
+    let o3: Rx.Observable<number> = Observable.forkJoin(a, (...x) => x.length);
+    /* tslint:enable:no-unused-variable */
   });
 
-  it('should return Array<T> when given a single observable', () => {
-    type(() => {
-      /* tslint:disable:no-unused-variable */
-      let a: Rx.Observable<number>;
-      let o1: Rx.Observable<number[]> = Observable.forkJoin(a);
-      /* tslint:enable:no-unused-variable */
-    });
+  type('should return Array<T> when given a single promise', () => {
+    /* tslint:disable:no-unused-variable */
+    let a: Promise<number>;
+    let o1: Rx.Observable<number[]> = Observable.forkJoin(a);
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type('should return Array<T> when given a single observable', () => {
+    /* tslint:disable:no-unused-variable */
+    let a: Rx.Observable<number>;
+    let o1: Rx.Observable<number[]> = Observable.forkJoin(a);
+    /* tslint:enable:no-unused-variable */
   });
 });

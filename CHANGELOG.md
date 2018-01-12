@@ -1,3 +1,475 @@
+<a name="6.0.0-alpha.1"></a>
+# [6.0.0-alpha.1](https://github.com/ReactiveX/RxJS/compare/5.5.3...v6.0.0-alpha.1) (2018-01-12)
+
+
+### Bug Fixes
+
+* Revert "fix(scheduler): prevent unwanted clearInterval ([#3044](https://github.com/ReactiveX/RxJS/issues/3044))" ([ad5c7c6](https://github.com/ReactiveX/RxJS/commit/ad5c7c6))
+* Revert "fix(scheduler): prevent unwanted clearInterval ([#3044](https://github.com/ReactiveX/RxJS/issues/3044))" ([64f9285](https://github.com/ReactiveX/RxJS/commit/64f9285))
+* **debounceTime:** synchronous reentrancy of debounceTime no longer swallows the second value ([#3218](https://github.com/ReactiveX/RxJS/issues/3218)) ([598e9ce](https://github.com/ReactiveX/RxJS/commit/598e9ce)), closes [#2748](https://github.com/ReactiveX/RxJS/issues/2748)
+* **dependency:** move symbol-observable into devdependency ([4400628](https://github.com/ReactiveX/RxJS/commit/4400628))
+* **IteratorObservable:** get new iterator for each subscription ([#2497](https://github.com/ReactiveX/RxJS/issues/2497)) ([1bd0a58](https://github.com/ReactiveX/RxJS/commit/1bd0a58)), closes [#2496](https://github.com/ReactiveX/RxJS/issues/2496)
+* **Observable.toArray:** Fix toArray with multiple subscriptions. ([#3134](https://github.com/ReactiveX/RxJS/issues/3134)) ([3390926](https://github.com/ReactiveX/RxJS/commit/3390926))
+* **SystemJS:** avoid node module resolution of pipeable operators ([#3025](https://github.com/ReactiveX/RxJS/issues/3025)) ([0f3cf71](https://github.com/ReactiveX/RxJS/commit/0f3cf71)), closes [#2971](https://github.com/ReactiveX/RxJS/issues/2971) [#2996](https://github.com/ReactiveX/RxJS/issues/2996) [#3011](https://github.com/ReactiveX/RxJS/issues/3011)
+* **tap:** make next optional ([#3073](https://github.com/ReactiveX/RxJS/issues/3073)) ([e659f0c](https://github.com/ReactiveX/RxJS/commit/e659f0c)), closes [#2534](https://github.com/ReactiveX/RxJS/issues/2534)
+* **TSC:** Fixing TSC errors. Fixes [#3020](https://github.com/ReactiveX/RxJS/issues/3020) ([01d1575](https://github.com/ReactiveX/RxJS/commit/01d1575))
+* **typings:** the return type of project of mergeScan should be ObservableInput<R> ([23fe17d](https://github.com/ReactiveX/RxJS/commit/23fe17d))
+
+
+### Chores
+
+* **TypeScript:** Bump up typescript to latest ([#3009](https://github.com/ReactiveX/RxJS/issues/3009)) ([2f395da](https://github.com/ReactiveX/RxJS/commit/2f395da))
+
+
+### Code Refactoring
+
+* **asap:** Remove setImmediate polyfill ([5eb6af7](https://github.com/ReactiveX/RxJS/commit/5eb6af7))
+* **distinct:** Remove Set polyfill ([68ee499](https://github.com/ReactiveX/RxJS/commit/68ee499))
+* **groupBy:** Remove Map polyfill ([74b5b1a](https://github.com/ReactiveX/RxJS/commit/74b5b1a))
+
+
+### Features
+
+* **Observable:** unhandled errors are now reported to HostReportErrors ([#3062](https://github.com/ReactiveX/RxJS/issues/3062)) ([cd9626a](https://github.com/ReactiveX/RxJS/commit/cd9626a))
+* **reorganize:** move ./interfaces.ts to internal/types.ts ([cfbfaac](https://github.com/ReactiveX/RxJS/commit/cfbfaac))
+* **reorganize:** internal utils hidden ([70058cd](https://github.com/ReactiveX/RxJS/commit/70058cd))
+* **reorganize:** add `rxjs/create` exports ([c9963bd](https://github.com/ReactiveX/RxJS/commit/c9963bd))
+* **reorganize:** ajax observable creator now exported from `rxjs/ajax` ([e971c93](https://github.com/ReactiveX/RxJS/commit/e971c93))
+* **reorganize:** all patch operators moved to `internal` directory ([7342401](https://github.com/ReactiveX/RxJS/commit/7342401))
+* **reorganize:** export `noop` and `identity` from `rxjs` ([810c4d0](https://github.com/ReactiveX/RxJS/commit/810c4d0))
+* **reorganize:** export `Notification` from `rxjs` ([8809b48](https://github.com/ReactiveX/RxJS/commit/8809b48))
+* **reorganize:** export schedulers from `rxjs` ([abd3b61](https://github.com/ReactiveX/RxJS/commit/abd3b61))
+* **reorganize:** export Subject, ReplaySubject, BehaviorSubject from rxjs ([bd683ca](https://github.com/ReactiveX/RxJS/commit/bd683ca))
+* **reorganize:** export the `pipe` utility function from `rxjs` ([4574310](https://github.com/ReactiveX/RxJS/commit/4574310))
+* **reorganize:** hid testing implementation details ([b981666](https://github.com/ReactiveX/RxJS/commit/b981666))
+* **reorganize:** move observable implementations under internal directory ([2d5c3f8](https://github.com/ReactiveX/RxJS/commit/2d5c3f8))
+* **reorganize:** move operator impls under internal directory ([207976f](https://github.com/ReactiveX/RxJS/commit/207976f))
+* **reorganize:** move top-level impls under internal directory ([c3bb705](https://github.com/ReactiveX/RxJS/commit/c3bb705))
+* **reorganize:** moved symbols to be internal ([80783ab](https://github.com/ReactiveX/RxJS/commit/80783ab))
+* **reorganize:** operators all exported from `rxjs/operators` ([b1f8bfe](https://github.com/ReactiveX/RxJS/commit/b1f8bfe))
+* **reorganize:** websocket subject creator now exported from `rxjs/websocket` ([5ac62c0](https://github.com/ReactiveX/RxJS/commit/5ac62c0))
+
+
+### BREAKING CHANGES
+
+* **webSocket:** `webSocket` creator function now exported from `rxjs/websocket` as `websocket`.
+* **IteratorObservable:** IteratorObservable no longer share iterator between
+subscription
+* **utils:** Many internal use utilities like `isArray` are now hidden under `rxjs/internal`, they are implementation details and should not be used.
+* **testing observables:** `HotObservable` and `ColdObservable`, and other testing support types are no longer exported directly.
+* **creation functions:** All create functions such as `of`, `from`, `combineLatest` and `fromEvent` should now be imported from `rxjs/create`.
+* **types and interfaces:** Can no longer explicitly import types from `rxjs/interfaces`, import them from `rxjs` instead
+* **symbols:** Symbols are no longer exported directly from modules such as `rxjs/symbol/observable` please use `Symbol.observable` and `Symbol.iterator` (polyfills may be required)
+* **deep imports:** Can no longer deep import top-level types such as `rxjs/Observable`, `rxjs/Subject`, `rxjs/ReplaySubject`, et al. All imports should be done directly from `rxjs`, for example: `import \{ Observable, Subject \} from 'rxjs';`
+* **schedulers:** Scheduler instances have changed names to be suffixed with `Scheduler`, (e.g. `asap` -> `asapScheduler`)
+* **operators:** Pipeable operators must now be imported from `rxjs`
+like so: `import { map, filter, switchMap } from 'rxjs/operators';`. No deep imports.
+* **ajax:** Ajax observable should be imported from `rxjs/ajax`.
+* **Observable:** You should no longer deep import custom Observable
+implementations such as `ArrayObservable` or `ForkJoinObservable`.
+* **_throw:** `_throw` is now exported as `throwError`
+* **if:** `if` is now exported as `iif`
+* **operators:** Deep imports to `rxjs/operator/*` will no longer work. Again, pipe operators are still where they were.
+* **error handling:** Unhandled errors are no longer caught and rethrown, rather they are caught and scheduled to be thrown, which causes them to be reported to window.onerror or process.on('error'), depending on the environment. Consequently, teardown after a synchronous, unhandled, error will no longer occur, as the teardown would not exist, and producer interference cannot occur
+* **distinct:** Using `distinct` requires a `Set` implementation and must be polyfilled in older runtimes
+* **asap:** Old runtimes must polyfill Promise in order to use ASAP scheduling.
+* **groupBy:** Older runtimes will require Map to be polyfilled to use
+`groupBy`
+* **TypeScript:** IE10 and lower will need to polyfill `Object.setPrototypeOf`
+* **operators removed:** Operator versions of static observable creators such as
+`merge`, `concat`, `zip`, `onErrorResumeNext`, and `race` have been
+removed. Please use the static versions of those operations. e.g.
+`a.pipe(concat(b, c))` becomes `concat(a, b, c)`.
+
+<a name="5.5.6"></a>
+## [5.5.6](https://github.com/ReactiveX/RxJS/compare/5.5.5...v5.5.6) (2017-12-21)
+
+
+### Bug Fixes
+
+* **Observable:** rethrow errors when syncErrorThrowable and inherit it from destination. Fixes [#2813](https://github.com/ReactiveX/RxJS/issues/2813) ([541b49d](https://github.com/ReactiveX/RxJS/commit/541b49d))
+
+
+
+<a name="5.5.5"></a>
+## [5.5.5](https://github.com/ReactiveX/RxJS/compare/5.5.4...v5.5.5) (2017-12-06)
+
+### Support Added
+
+* **Bazel:** Add files to support users that want Bazel builds with RxJS ([12dac3b](https://github.com/ReactiveX/rxjs/commit/12dac3b))
+
+<a name="5.5.4"></a>
+## [5.5.4](https://github.com/ReactiveX/RxJS/compare/5.5.3...v5.5.4) (2017-12-05)
+
+
+### Bug Fixes
+
+* **scheduler:** resolve regression on angular router with zones ([#3158](https://github.com/ReactiveX/RxJS/issues/3158)) ([520b06a](https://github.com/ReactiveX/RxJS/commit/520b06a))
+* **publish:** re-publish after having built with proper version of TypeScript. ([f0ff5bc](https://github.com/ReactiveX/RxJS/commit/f0ff5bc), closes[#3155](https://github.com/ReactiveX/rxjs/issues/3155))
+
+
+<a name="5.5.3"></a>
+## [5.5.3](https://github.com/ReactiveX/RxJS/compare/5.5.2...v5.5.3) (2017-12-01)
+
+
+### Bug Fixes
+
+* **concatStatic:** missing exports for mergeStatic and concatStatic ([#2999](https://github.com/ReactiveX/RxJS/issues/2999)) ([cae5f9b](https://github.com/ReactiveX/RxJS/commit/cae5f9b))
+* **scheduler:** prevent unwanted clearInterval ([#3044](https://github.com/ReactiveX/RxJS/issues/3044)) ([7d722d4](https://github.com/ReactiveX/RxJS/commit/7d722d4)), closes [#3042](https://github.com/ReactiveX/RxJS/issues/3042)
+* **SystemJS:** avoid node module resolution of pipeable operators ([#3025](https://github.com/ReactiveX/RxJS/issues/3025)) ([d77e3d7](https://github.com/ReactiveX/RxJS/commit/d77e3d7)), closes [#2971](https://github.com/ReactiveX/RxJS/issues/2971) [#2996](https://github.com/ReactiveX/RxJS/issues/2996) [#3011](https://github.com/ReactiveX/RxJS/issues/3011)
+* **typings:** fix subscribe overloads ([#3053](https://github.com/ReactiveX/RxJS/issues/3053)) ([1a9fd42](https://github.com/ReactiveX/RxJS/commit/1a9fd42)), closes [#3052](https://github.com/ReactiveX/RxJS/issues/3052)
+
+
+
+<a name="5.5.2"></a>
+## [5.5.2](https://github.com/ReactiveX/RxJS/compare/5.5.1...v5.5.2) (2017-10-25)
+
+
+### Bug Fixes
+
+* **package:** fixed import failures in Webpack ([#2987](https://github.com/ReactiveX/RxJS/issues/2987)) ([e16202d](https://github.com/ReactiveX/RxJS/commit/e16202d))
+* **typings:** improved type inference for arguments to publishReplay ([#2992](https://github.com/ReactiveX/RxJS/issues/2992)) ([0753ff7](https://github.com/ReactiveX/RxJS/commit/0753ff7)), closes [#2991](https://github.com/ReactiveX/RxJS/issues/2991)
+* **typings:** ensure TS types for `zip` and `combineLatest` are properly inferred. ([b8e6cf8](https://github.com/ReactiveX/RxJS/commit/b8e6cf8))
+* **typings:** publish variants will properly return ConnectableObservable([#2983](https://github.com/ReactiveX/RxJS/issues/2983)) ([d563bfa](https://github.com/ReactiveX/RxJS/commit/d563bfa))
+
+
+
+<a name="5.5.1"></a>
+## [5.5.1](https://github.com/ReactiveX/RxJS/compare/5.5.0...v5.5.1) (2017-10-24)
+
+
+### Bug Fixes
+
+* **build:** Remove `module` and `es2015` keys to avoid resolution conflicts ([5073139](https:/github.com/ReactiveX/RxJS/commit/5073139))
+* **ajaxobservable:** fix operator import path ([d9b62ed](https://github.com/ReactiveX/RxJS/commit/d9b62ed))
+
+
+
+<a name="5.5.0"></a>
+# [5.5.0](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.7...v5.5.0) (2017-10-18)
+
+### Bug Fixes
+
+* **build:** CJS sourceMaps now inlined into sourcesContent ([39b4af5](https://github.com/ReactiveX/RxJS/commit/39b4af5)), closes [#2934](https://github.com/ReactiveX/RxJS/issues/2934)
+
+
+### Features
+
+* **publishReplay:** add selector function to publishReplay ([#2885](https://github.com/ReactiveX/RxJS/issues/2885)) ([e0efd13](https://github.com/ReactiveX/RxJS/commit/e0efd13))
+
+
+
+<a name="5.5.0-beta.7"></a>
+# [5.5.0-beta.7](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.5...5.5.0-beta.7) (2017-10-13)
+
+(Due to a publish snafu, there is no 5.5.0-beta.6) (womp womp 👎)
+
+### Bug Fixes
+
+* **build:** sourceMaps updated to support CJS properly again ([75f7f11](https://github.com/ReactiveX/RxJS/commit/75f7f11)), closes [#2934](https://github.com/ReactiveX/RxJS/issues/2934)
+* **flatMap:** reexport flatMap as alias of mergeMap ([#2920](https://github.com/ReactiveX/RxJS/issues/2920)) ([9922c02](https://github.com/ReactiveX/RxJS/commit/9922c02))
+* **publish:** correct the name and republish to sync packages ([464b115](https://github.com/ReactiveX/RxJS/commit/464b115))
+* **shareReplay:** no longer exporting function unnecessarily ([#2928](https://github.com/ReactiveX/RxJS/issues/2928)) ([e159578](https://github.com/ReactiveX/RxJS/commit/e159578))
+* **shareReplay:** properly uses `lift` ([#2924](https://github.com/ReactiveX/RxJS/issues/2924)) ([3d9cf87](https://github.com/ReactiveX/RxJS/commit/3d9cf87)), closes [#2921](https://github.com/ReactiveX/RxJS/issues/2921)
+* **toPromise:** include toPromise in build output ([#2923](https://github.com/ReactiveX/RxJS/issues/2923)) ([f55bfa5](https://github.com/ReactiveX/RxJS/commit/f55bfa5)), closes [#2922](https://github.com/ReactiveX/RxJS/issues/2922)
+
+
+
+<a name="5.5.0-beta.5"></a>
+# [5.5.0-beta.5](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.4...v5.5.0-beta.5) (2017-10-06)
+
+
+### Bug Fixes
+
+* **toPromise:** remove lettable version of toPromise ([031edca](https://github.com/ReactiveX/RxJS/commit/031edca)), closes [#2868](https://github.com/ReactiveX/RxJS/issues/2868)
+
+
+### Features
+
+* **toPromise:** now exists as a permanent method on Observable ([2e49a5c](https://github.com/ReactiveX/RxJS/commit/2e49a5c))
+
+
+
+<a name="5.5.0-beta.4"></a>
+# [5.5.0-beta.4](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.3...v5.5.0-beta.4) (2017-10-06)
+
+
+### Bug Fixes
+
+* **publish:** fix selector typings ([#2891](https://github.com/ReactiveX/RxJS/issues/2891)) ([9ee234d](https://github.com/ReactiveX/RxJS/commit/9ee234d)), closes [#2889](https://github.com/ReactiveX/RxJS/issues/2889)
+* **shareReplay:** properly retains history on subscribe ([#2910](https://github.com/ReactiveX/RxJS/issues/2910)) ([accbcd0](https://github.com/ReactiveX/RxJS/commit/accbcd0)), closes [#2908](https://github.com/ReactiveX/RxJS/issues/2908)
+* **subscribeOn:** remove subscribeOn from reexport to support treesha… ([#2899](https://github.com/ReactiveX/RxJS/issues/2899)) ([fb51a02](https://github.com/ReactiveX/RxJS/commit/fb51a02))
+
+
+
+<a name="5.5.0-beta.3"></a>
+# [5.5.0-beta.3](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.2...v5.5.0-beta.3) (2017-10-03)
+
+
+### Bug Fixes
+
+* **build:** revert to 5.4.x build output for CJS & add configurable support for ESM ([#2878](https://github.com/ReactiveX/RxJS/issues/2878)) ([167456a](https://github.com/ReactiveX/RxJS/commit/167456a))
+* **concatAll:** use higher-order lettable version of concatAll ([60c96ab](https://github.com/ReactiveX/RxJS/commit/60c96ab))
+* **mergeAll:** use higher-order lettable version of mergeAll ([f0b703b](https://github.com/ReactiveX/RxJS/commit/f0b703b))
+
+
+
+<a name="5.5.0-beta.2"></a>
+# [5.5.0-beta.2](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.1...v5.5.0-beta.2) (2017-09-27)
+
+
+### Bug Fixes
+
+* **build:** make CJS references to import X from '../operators' work correctly with SystemJS ([#2874](https://github.com/ReactiveX/RxJS/issues/2874)) ([3dd4cc4](https://github.com/ReactiveX/RxJS/commit/3dd4cc4))
+
+
+
+<a name="5.5.0-beta.1"></a>
+# [5.5.0-beta.1](https://github.com/ReactiveX/RxJS/compare/5.5.0-beta.0...v5.5.0-beta.1) (2017-09-27)
+
+
+### Bug Fixes
+
+* **package:** published from a Linux machine to prevent a strange issue where
+  the Observable directory was not showing up when installed on some Linux
+  environments.
+* **build:** fix source maps by adding back sources and fixing path ([#2872](https://github.com/ReactiveX/RxJS/issues/2872)) ([daaf424](https://github.com/ReactiveX/RxJS/commit/daaf424))
+* **package:** remove src directory and fix typings location ([#2866](https://github.com/ReactiveX/RxJS/issues/2866)) ([c57eea7](https://github.com/ReactiveX/RxJS/commit/c57eea7))
+
+
+### Features
+
+* **global:** export lettables as Rx.operators ([#2862](https://github.com/ReactiveX/RxJS/issues/2862)) ([ba2f586](https://github.com/ReactiveX/RxJS/commit/ba2f586)), closes [#2861](https://github.com/ReactiveX/RxJS/issues/2861)
+
+
+
+<a name="5.5.0-beta.0"></a>
+# [5.5.0-beta.0](https://github.com/ReactiveX/RxJS/compare/5.4.3...5.5.0-beta.0) (2017-09-22)
+
+**Important! Checkout the explanation of the new [lettable operators features here](doc/lettable-operators.md)**
+
+### Bug Fixes
+
+* **package:** correct errors generated during rollup for UMD generation ([#2839](https://github.com/ReactiveX/RxJS/issues/2839)) ([124cc93](https://github.com/ReactiveX/RxJS/commit/124cc93))
+* **partition:** update TypeScript signature to match docs and filter operator ([#2819](https://github.com/ReactiveX/RxJS/issues/2819)) ([755df9b](https://github.com/ReactiveX/RxJS/commit/755df9b))
+* **subscribeToResult:** throw error in subscriber with inner observable ([d7bffa9](https://github.com/ReactiveX/RxJS/commit/d7bffa9)), closes [#2618](https://github.com/ReactiveX/RxJS/issues/2618)
+
+
+### Features
+
+* **ajax:** Include the response on instances of AjaxError ([3f6553c](https://github.com/ReactiveX/RxJS/commit/3f6553c))
+* **audit:** add higher-order lettable version of audit ([e2daefe](https://github.com/ReactiveX/RxJS/commit/e2daefe))
+* **auditTime:** add higher-order lettable version of auditTime ([9e963aa](https://github.com/ReactiveX/RxJS/commit/9e963aa))
+* **buffer:** add higher-order lettable version of buffer ([d8ca9de](https://github.com/ReactiveX/RxJS/commit/d8ca9de))
+* **bufferCount:** add higher-order lettable version of bufferCount ([0ae2ed5](https://github.com/ReactiveX/RxJS/commit/0ae2ed5))
+* **bufferTime:** add higher-order lettable version of bufferTime operator ([0377ca6](https://github.com/ReactiveX/RxJS/commit/0377ca6))
+* **bufferToggle:** add higher-order lettable version of bufferToggle ([ea1c3ee](https://github.com/ReactiveX/RxJS/commit/ea1c3ee))
+* **bufferWhen:** add higher-order lettable version of bufferWhen ([ec3eceb](https://github.com/ReactiveX/RxJS/commit/ec3eceb))
+* **catchError:** add higher-order lettable version of `catch` ([408a2af](https://github.com/ReactiveX/RxJS/commit/408a2af))
+* **combineAll:** add higher-order lettable version of combineAll ([97704b3](https://github.com/ReactiveX/RxJS/commit/97704b3))
+* **combineLatest:** add higher-order lettable version of combineLatest ([b7154f2](https://github.com/ReactiveX/RxJS/commit/b7154f2))
+* **concatMap:** add higher-order lettable version of concatMap ([c4125ff](https://github.com/ReactiveX/RxJS/commit/c4125ff))
+* **concatMapTo:** add higher-order lettable version of concatMapTo ([0a6672e](https://github.com/ReactiveX/RxJS/commit/0a6672e))
+* **count:** add higher-order lettable version of count ([caf713e](https://github.com/ReactiveX/RxJS/commit/caf713e))
+* **debounce:** add higher-order lettable version of debounce ([cb8ce46](https://github.com/ReactiveX/RxJS/commit/cb8ce46))
+* **debounceTime:** add higher-order lettable version of debounceTime ([df0d439](https://github.com/ReactiveX/RxJS/commit/df0d439))
+* **delay:** add higher-order lettable version of delay ([7efb803](https://github.com/ReactiveX/RxJS/commit/7efb803))
+* **delayWhen:** add higher-order lettable version of delayWhen ([cb91c3f](https://github.com/ReactiveX/RxJS/commit/cb91c3f))
+* **dematerialize:** add higher-ordeer lettable version of dematerialize ([b5948f9](https://github.com/ReactiveX/RxJS/commit/b5948f9))
+* **distinct:** add higher-order lettable version of distinct ([0429a69](https://github.com/ReactiveX/RxJS/commit/0429a69))
+* **distinctUntilChanged:** add higher-order lettable version of distinctUntilChanged ([b2725e7](https://github.com/ReactiveX/RxJS/commit/b2725e7))
+* **distinctUntilKeyChanged:** add higher-order lettable version of distinctUntilKeyChanged ([9db141c](https://github.com/ReactiveX/RxJS/commit/9db141c))
+* **elementAt:** add higher-order lettable version of elementAt ([b8e956b](https://github.com/ReactiveX/RxJS/commit/b8e956b))
+* **every:** add higher-order lettable version of every ([13f3503](https://github.com/ReactiveX/RxJS/commit/13f3503))
+* **exhaust:** add higher-order lettable version of exhaust ([b145dca](https://github.com/ReactiveX/RxJS/commit/b145dca))
+* **exhaustMap:** add higher-order lettable exhaustMap ([b134e0c](https://github.com/ReactiveX/RxJS/commit/b134e0c))
+* **expand:** add higher-order lettable expand ([6ec8a19](https://github.com/ReactiveX/RxJS/commit/6ec8a19))
+* **filter:** add higher-order lettable version of filter ([2848556](https://github.com/ReactiveX/RxJS/commit/2848556))
+* **finalize:** add higher-order lettable version of finally, called finalize ([cfeae9f](https://github.com/ReactiveX/RxJS/commit/cfeae9f))
+* **find:** add higher-order lettable version of find ([ff6d5af](https://github.com/ReactiveX/RxJS/commit/ff6d5af))
+* **findIndex:** add higher-order lettable findIndex ([40e680e](https://github.com/ReactiveX/RxJS/commit/40e680e))
+* **first:** add higher-order lettable first ([33eac1e](https://github.com/ReactiveX/RxJS/commit/33eac1e))
+* **groupBy:** add higher-order lettable groupBy ([5281229](https://github.com/ReactiveX/RxJS/commit/5281229))
+* **ignoreElements:** add higher-order lettable version of ignoreElements ([68286d4](https://github.com/ReactiveX/RxJS/commit/68286d4))
+* **isEmpty:** add higher-order lettable version of isEmpty ([aad1833](https://github.com/ReactiveX/RxJS/commit/aad1833))
+* **last:** add higher-order lettable version of last ([bf33b97](https://github.com/ReactiveX/RxJS/commit/bf33b97))
+* **lettables:** add higher-order lettable versions of concat, concatAll, mergeAll ([d7e8be7](https://github.com/ReactiveX/RxJS/commit/d7e8be7))
+* **map:** add higher-order lettable map operator ([ce40b2d](https://github.com/ReactiveX/RxJS/commit/ce40b2d))
+* **mapTo:** add higher-order lettable version of mapTo ([e97530f](https://github.com/ReactiveX/RxJS/commit/e97530f))
+* **materialize:** add higher-order lettable materialize operator ([ce42477](https://github.com/ReactiveX/RxJS/commit/ce42477))
+* **merge:** add higher-order lettable version of merge ([#2809](https://github.com/ReactiveX/RxJS/issues/2809)) ([3136403](https://github.com/ReactiveX/RxJS/commit/3136403))
+* **mergeMap:** add higher-order lettable version of mergeMap ([417efde](https://github.com/ReactiveX/RxJS/commit/417efde))
+* **mergeMapTo:** add higher-order lettable version of mergeMapTo ([653b47a](https://github.com/ReactiveX/RxJS/commit/653b47a))
+* **mergeScan:** add higher-order lettable version of mergeScan ([fde7205](https://github.com/ReactiveX/RxJS/commit/fde7205))
+* **multicast:** add higher-order lettable variant of multicast ([fb6014d](https://github.com/ReactiveX/RxJS/commit/fb6014d))
+* **observeOn:** add higher-order lettable version of observeOn ([feb0f5a](https://github.com/ReactiveX/RxJS/commit/feb0f5a))
+* **onErrorResumeNext:** add higher-order lettable version of onErrorResumeNext ([badec6a](https://github.com/ReactiveX/RxJS/commit/badec6a))
+* **operators:** higher-order lettables of reduce, min, max and defaultIfEmpty added ([9974fc2](https://github.com/ReactiveX/RxJS/commit/9974fc2))
+* **package:** rxjs distribution now supports main, module and es2015 keys in package.json ([988e1af](https://github.com/ReactiveX/RxJS/commit/988e1af))
+* **pairwise:** add higher-order lettable version of pairwise ([bb21a44](https://github.com/ReactiveX/RxJS/commit/bb21a44))
+* **partition:** add higher-order lettable version of partition ([595e588](https://github.com/ReactiveX/RxJS/commit/595e588))
+* **pipe:** add pipe method ot Observable ([9f6312d](https://github.com/ReactiveX/RxJS/commit/9f6312d))
+* **pipe:** add pipe utility function([42f9daf](https://github.com/ReactiveX/RxJS/commit/42f9daf))
+* **pluck:** add higher-order lettable version of pluck ([8ab0914](https://github.com/ReactiveX/RxJS/commit/8ab0914))
+* **publish:** add higher-order lettable variant of publish ([4ccf794](https://github.com/ReactiveX/RxJS/commit/4ccf794))
+* **publishBehavior:** add higher-order lettable version of publishBehavior ([e911aef](https://github.com/ReactiveX/RxJS/commit/e911aef))
+* **publishLast:** add higher-order lettable version of publishLast ([684728c](https://github.com/ReactiveX/RxJS/commit/684728c))
+* **publishReplay:** add higher-order lettable version of publishReplay ([2958917](https://github.com/ReactiveX/RxJS/commit/2958917))
+* **race:** add higher-order lettable version of race ([e646851](https://github.com/ReactiveX/RxJS/commit/e646851))
+* **refCount:** add higher-order lettable version of refCount ([21fba63](https://github.com/ReactiveX/RxJS/commit/21fba63))
+* **repeat:** add higher-order lettable version of repeat ([8473fe5](https://github.com/ReactiveX/RxJS/commit/8473fe5))
+* **repeatWhen:** add higher-order lettable version of repeatWhen ([1d1cecd](https://github.com/ReactiveX/RxJS/commit/1d1cecd))
+* **retry:** add higher-order lettable version of retry ([28e9b13](https://github.com/ReactiveX/RxJS/commit/28e9b13))
+* **retryWhen:** add higher-order lettable version of retryWhen ([1290e3c](https://github.com/ReactiveX/RxJS/commit/1290e3c))
+* **sample:** add higher-order lettable version of sample ([8c73e6e](https://github.com/ReactiveX/RxJS/commit/8c73e6e))
+* **sampleTime:** add higher-order lettable version of sampleTime ([ba6a9ce](https://github.com/ReactiveX/RxJS/commit/ba6a9ce))
+* **scan:** add higher-order lettable version of scan ([2cc5d75](https://github.com/ReactiveX/RxJS/commit/2cc5d75))
+* **sequenceEqual:** add higher-order lettable version of sequenceEqual ([7cd3165](https://github.com/ReactiveX/RxJS/commit/7cd3165))
+* **share:** add higher-order lettable version of share ([f10c42e](https://github.com/ReactiveX/RxJS/commit/f10c42e))
+* **shareReplay:** add higher-order lettable version of shareReplay ([e8be197](https://github.com/ReactiveX/RxJS/commit/e8be197))
+* **single:** add higher-order lettable version of single ([3bc050a](https://github.com/ReactiveX/RxJS/commit/3bc050a))
+* **skip:** add higher-order lettable version of skip ([baed383](https://github.com/ReactiveX/RxJS/commit/baed383))
+* **skipLast:** add higher-order lettable version of skipLast ([6e1ff3c](https://github.com/ReactiveX/RxJS/commit/6e1ff3c))
+* **skipUntil:** add higher-order lettable version of skipUntil ([6cc2cd6](https://github.com/ReactiveX/RxJS/commit/6cc2cd6))
+* **skipWhile:** add higher-order lettable version of skipWhile ([76d8ffa](https://github.com/ReactiveX/RxJS/commit/76d8ffa))
+* **subscribeOn:** add higher-order lettable version of subscribeOn ([866af37](https://github.com/ReactiveX/RxJS/commit/866af37))
+* **switchAll:** add higher-order lettable version of switch ([2f12572](https://github.com/ReactiveX/RxJS/commit/2f12572))
+* **switchMap:** add higher-order lettable version of switchMap ([b6e5b56](https://github.com/ReactiveX/RxJS/commit/b6e5b56))
+* **switchMapTo:** add higher-order lettable version of switchMapTo ([2640184](https://github.com/ReactiveX/RxJS/commit/2640184))
+* **take:** add higher-order lettable version of take ([089a5a6](https://github.com/ReactiveX/RxJS/commit/089a5a6))
+* **takeLast:** add higher-order lettable version of takeLast ([cd7e7dd](https://github.com/ReactiveX/RxJS/commit/cd7e7dd))
+* **takeUntil:** add higher-order lettable version of takeUntil ([bb2ddaa](https://github.com/ReactiveX/RxJS/commit/bb2ddaa))
+* **takeWhile:** add higher-order lettable version of takeWhile ([f86c862](https://github.com/ReactiveX/RxJS/commit/f86c862))
+* **tap:** add higher-order lettable version of do ([f85c60e](https://github.com/ReactiveX/RxJS/commit/f85c60e))
+* **throttle:** add higher-order lettable version of throttle ([e4dd1fd](https://github.com/ReactiveX/RxJS/commit/e4dd1fd))
+* **throttleTime:** add higher-order lettable version of throttleTime ([34a592d](https://github.com/ReactiveX/RxJS/commit/34a592d))
+* **timeInterval:** add higher-order lettable version of timeInterval ([fcad034](https://github.com/ReactiveX/RxJS/commit/fcad034))
+* **timeout:** add higher-order lettable version of timeout ([2546750](https://github.com/ReactiveX/RxJS/commit/2546750))
+* **timeoutWith:** add higher-order lettable version of timeoutWith ([bd7f5ed](https://github.com/ReactiveX/RxJS/commit/bd7f5ed))
+* **timestamp:** add higher-order lettable version of timestamp ([a780bf2](https://github.com/ReactiveX/RxJS/commit/a780bf2))
+* **toArray:** add higher-order lettable version of toArray ([82480cf](https://github.com/ReactiveX/RxJS/commit/82480cf))
+* **toArray:** add higher-order lettable version of toArray ([a03a50c](https://github.com/ReactiveX/RxJS/commit/a03a50c))
+* **toPromise:** add higher-order lettable version of toPromise ([1627da2](https://github.com/ReactiveX/RxJS/commit/1627da2))
+* **window:** add higher-order lettable version of window ([9f6373e](https://github.com/ReactiveX/RxJS/commit/9f6373e))
+* **windowCount:** add higher-order lettable version of windowCount ([2a9e54c](https://github.com/ReactiveX/RxJS/commit/2a9e54c))
+* **windowTime:** add higher-order lettable version of windowTime ([29ffa1b](https://github.com/ReactiveX/RxJS/commit/29ffa1b))
+* **windowToggle:** add higher-order lettable version of windowToggle ([81ec389](https://github.com/ReactiveX/RxJS/commit/81ec389))
+* **windowWhen:** add higher-order lettable version of windowWhen ([0b73208](https://github.com/ReactiveX/RxJS/commit/0b73208))
+* **withLatestFrom:** add higher-order lettable version of withLatestFrom ([509c97c](https://github.com/ReactiveX/RxJS/commit/509c97c))
+* **zip:** add higher-order lettable version of zip ([8a9b9b2](https://github.com/ReactiveX/RxJS/commit/8a9b9b2))
+* **zipAll:** add higher-order lettable version of zipAll ([f6bd51f](https://github.com/ReactiveX/RxJS/commit/f6bd51f))
+
+
+
+<a name="5.4.3"></a>
+## [5.4.3](https://github.com/ReactiveX/RxJS/compare/5.4.2...v5.4.3) (2017-08-10)
+
+
+### Bug Fixes
+
+* **compilation:** compiles under typescript 2.4.2 ([#2780](https://github.com/ReactiveX/RxJS/issues/2780)) ([d2a32f9](https://github.com/ReactiveX/RxJS/commit/d2a32f9))
+* **exports:** add exports for missing static operators: generate, ([08c4196](https://github.com/ReactiveX/RxJS/commit/08c4196))
+
+
+
+<a name="5.4.2"></a>
+## [5.4.2](https://github.com/ReactiveX/RxJS/compare/5.4.1...v5.4.2) (2017-07-05)
+
+
+### Bug Fixes
+
+* **Notification:** Don't reference `this` from static methods. ([9f8e375](https://github.com/ReactiveX/RxJS/commit/9f8e375))
+* **Subject:** lift signature is now appropriate for stricter TypeScript 2.4 checks ([#2722](https://github.com/ReactiveX/RxJS/issues/2722)) ([9804de7](https://github.com/ReactiveX/RxJS/commit/9804de7))
+
+
+
+<a name="5.4.1"></a>
+## [5.4.1](https://github.com/ReactiveX/RxJS/compare/5.4.0...v5.4.1) (2017-06-14)
+
+
+### Bug Fixes
+
+* **ajax:** Only set timeout & responseType if request is asynchronous ([#2486](https://github.com/ReactiveX/RxJS/issues/2486)) ([380fbcf](https://github.com/ReactiveX/RxJS/commit/380fbcf))
+* **audit:** will now properly mirror source if durations are Observable.empty() ([#2595](https://github.com/ReactiveX/RxJS/issues/2595)) ([6ded82e](https://github.com/ReactiveX/RxJS/commit/6ded82e))
+* **elementAt:** will now properly unsubscribe when it completes or errors ([#2501](https://github.com/ReactiveX/RxJS/issues/2501)) ([a400cab](https://github.com/ReactiveX/RxJS/commit/a400cab))
+* **ErrorObservable:** will now propagate errors properly when used in a `catch` after `fromPromise`. ([#2552](https://github.com/ReactiveX/RxJS/issues/2552)) ([cf88a20](https://github.com/ReactiveX/RxJS/commit/cf88a20))
+* **groupBy:** group duration notifiers will now properly unsubscribe and clean up ([#2662](https://github.com/ReactiveX/RxJS/issues/2662)) ([ab92083](https://github.com/ReactiveX/RxJS/commit/ab92083)), closes [#2660](https://github.com/ReactiveX/RxJS/issues/2660) [#2661](https://github.com/ReactiveX/RxJS/issues/2661)
+* **Observable:** errors thrown in observer/handlers without an operator applied will no longer be swallowed ([#2626](https://github.com/ReactiveX/RxJS/issues/2626)) ([c250afc](https://github.com/ReactiveX/RxJS/commit/c250afc)), closes [#2565](https://github.com/ReactiveX/RxJS/issues/2565)
+* **reduce:** type definitions overloads for TypeScript are now in proper order ([#2523](https://github.com/ReactiveX/RxJS/issues/2523)) ([ccc0647](https://github.com/ReactiveX/RxJS/commit/ccc0647))
+* **Schedulers:** Fix issue where canceling an asap or animationFrame action early could throw ([#2638](https://github.com/ReactiveX/RxJS/issues/2638)) ([fc39043](https://github.com/ReactiveX/RxJS/commit/fc39043))
+
+
+
+<a name="5.4.0"></a>
+# [5.4.0](https://github.com/ReactiveX/RxJS/) (2017-05-09)
+
+
+### Features
+
+* **shareReplay:** adds `shareReplay` variant of `publishReplay` ([#2443](https://github.com/ReactiveX/RxJS/issues/2443)) ([5a2266a](https://github.com/ReactiveX/RxJS/commit/5a2266a))
+* **skipLast:** add skipLast operator  ([#2316](https://github.com/ReactiveX/RxJS/issues/2316)) ([4ffbbe5](https://github.com/ReactiveX/RxJS/commit/4ffbbe5)), closes [#1404](https://github.com/ReactiveX/RxJS/issues/1404)
+* **TypeScript:** fromPromise accepts PromiseLike object ([#2505](https://github.com/ReactiveX/RxJS/issues/2505)) ([ade1fd5](https://github.com/ReactiveX/RxJS/commit/ade1fd5))
+
+
+<a name="5.3.3"></a>
+## [5.3.3](https://github.com/ReactiveX/RxJS/compare/5.3.1...5.3.3) (2017-05-09)
+
+
+### Bug Fixes
+
+* **delayWhen:** correctly handle synchronous duration observable ([#2589](https://github.com/ReactiveX/RxJS/issues/2589)) ([695f280](https://github.com/ReactiveX/RxJS/commit/695f280)), closes [#2587](https://github.com/ReactiveX/RxJS/issues/2587)
+* **race:** allow TypeScript support for array of observables other than rest param ([#2548](https://github.com/ReactiveX/RxJS/issues/2548)) ([ace553c](https://github.com/ReactiveX/RxJS/commit/ace553c))
+* **Subscriber:** do not call complete with undefined value param ([#2559](https://github.com/ReactiveX/RxJS/issues/2559)) ([3d63de2](https://github.com/ReactiveX/RxJS/commit/3d63de2))
+
+
+**(NOTE: 5.3.2 was a broken release and was removed)**
+
+
+<a name="5.3.1"></a>
+## [5.3.1](https://github.com/ReactiveX/RxJS/compare/5.3.0...v5.3.1) (2017-05-02)
+
+
+### Bug Fixes
+
+* **AsyncAction:** rescheduling an action with the same delay before it has executed will now schedule appropriately. ([#2580](https://github.com/ReactiveX/RxJS/issues/2580)) ([281760e](https://github.com/ReactiveX/RxJS/commit/281760e))
+* **closure:** make root.ts work with closure ([#2546](https://github.com/ReactiveX/RxJS/issues/2546)) ([0ecf55d](https://github.com/ReactiveX/RxJS/commit/0ecf55d))
+* **tests:** add missing babel-polyfill to package.json ([b277ce9](https://github.com/ReactiveX/RxJS/commit/b277ce9)), closes [#2261](https://github.com/ReactiveX/RxJS/issues/2261)
+* **withLatestFrom:** change from hot to cold observable in marble test ([0c65446](https://github.com/ReactiveX/RxJS/commit/0c65446)), closes [#2526](https://github.com/ReactiveX/RxJS/issues/2526)
+
+
+
+<a name="5.3.0"></a>
+# [5.3.0](https://github.com/ReactiveX/RxJS/compare/5.2.0...v5.3.0) (2017-04-03)
+
+
+### Bug Fixes
+
+* **catch:** return type is now the union of input types ([#2478](https://github.com/ReactiveX/RxJS/issues/2478)) ([840def0](https://github.com/ReactiveX/RxJS/commit/840def0))
+* **forEach:** fix a temporal dead zone issue in forEach. ([#2474](https://github.com/ReactiveX/RxJS/issues/2474)) ([e9e9801](https://github.com/ReactiveX/RxJS/commit/e9e9801))
+* **multicast:** Ensure ConnectableObservables returned by multicast are state-isolated. ([aaa9e6b](https://github.com/ReactiveX/RxJS/commit/aaa9e6b))
+* **reduce:** proper TypeScript signature overload ordering ([#2382](https://github.com/ReactiveX/RxJS/issues/2382)) ([f6a4951](https://github.com/ReactiveX/RxJS/commit/f6a4951)), closes [#2338](https://github.com/ReactiveX/RxJS/issues/2338)
+* **SafeSubscriber:** SafeSubscriber shouldn't mutate incoming Observers. ([a1778e0](https://github.com/ReactiveX/RxJS/commit/a1778e0))
+* **timeout:** Cancels scheduled timeout, if no longer needed ([3e9d529](https://github.com/ReactiveX/RxJS/commit/3e9d529)), closes [#2134](https://github.com/ReactiveX/RxJS/issues/2134) [#2244](https://github.com/ReactiveX/RxJS/issues/2244) [#2355](https://github.com/ReactiveX/RxJS/issues/2355) [#2347](https://github.com/ReactiveX/RxJS/issues/2347) [#2353](https://github.com/ReactiveX/RxJS/issues/2353) [#2254](https://github.com/ReactiveX/RxJS/issues/2254) [#2372](https://github.com/ReactiveX/RxJS/issues/2372) [#1301](https://github.com/ReactiveX/RxJS/issues/1301)
+* **zipAll:** complete when the source is empty ([712fece](https://github.com/ReactiveX/RxJS/commit/712fece))
+
+
+### Features
+
+* **delayWhen:** add index to the selector function ([5d6291e](https://github.com/ReactiveX/RxJS/commit/5d6291e))
+* **symbol exports:** symbols now also exported without `$$` prefix to work with Babel UMD exporting ([#2435](https://github.com/ReactiveX/RxJS/issues/2435)) ([747bef6](https://github.com/ReactiveX/RxJS/commit/747bef6)), closes [#2415](https://github.com/ReactiveX/RxJS/issues/2415)
+
+
+### Performance Improvements
+
+* **bufferCount:** optimize bufferCount operator ([#2359](https://github.com/ReactiveX/RxJS/issues/2359)) ([28d0883](https://github.com/ReactiveX/RxJS/commit/28d0883))
+
+
+### April Fools
+
+* **smooth:** `smooth()` was never really a thing. Sorry, folks. :D
+
+
+
 <a name="5.2.0"></a>
 # [5.2.0](https://github.com/ReactiveX/RxJS/compare/5.1.1...v5.2.0) (2017-02-21)
 

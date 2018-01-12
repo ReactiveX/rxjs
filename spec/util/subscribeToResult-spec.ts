@@ -1,8 +1,8 @@
-import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
-import {subscribeToResult} from '../../dist/cjs/util/subscribeToResult';
-import {OuterSubscriber} from '../../dist/cjs/OuterSubscriber';
-import {$$iterator} from '../../dist/cjs/symbol/iterator';
+import { expect } from 'chai';
+import * as Rx from '../../src/Rx';
+import { subscribeToResult } from '../../src/internal/util/subscribeToResult';
+import { OuterSubscriber } from '../../src/internal/OuterSubscriber';
+import { $$iterator } from '../../src/internal/symbol/iterator';
 import $$symbolObservable from 'symbol-observable';
 
 describe('subscribeToResult', () => {
@@ -59,7 +59,7 @@ describe('subscribeToResult', () => {
   });
 
   it('should subscribe to an array-like and emit synchronously', () => {
-    const result = {0: 0, 1: 1, 2: 2, length: 3};
+    const result = { 0: 0, 1: 1, 2: 2, length: 3 };
     const expected = [];
 
     const subscriber = new OuterSubscriber(x => expected.push(x));
@@ -105,12 +105,13 @@ describe('subscribeToResult', () => {
 
     const iterable = {
       [$$iterator]: () => {
-      return {
-        next: () => {
-          return iteratorResults.shift();
-        }
-      };
-    }};
+        return {
+          next: () => {
+            return iteratorResults.shift();
+          }
+        };
+      }
+    };
 
     const subscriber = new OuterSubscriber((x: number) => expected = x);
 

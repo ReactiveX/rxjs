@@ -1,8 +1,8 @@
-import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
-import {ArrayObservable} from '../../dist/cjs/observable/ArrayObservable';
-import {ScalarObservable} from '../../dist/cjs/observable/ScalarObservable';
-import {EmptyObservable} from '../../dist/cjs/observable/EmptyObservable';
+import { expect } from 'chai';
+import * as Rx from '../../src/Rx';
+import { ArrayObservable } from '../../src/internal/observable/ArrayObservable';
+import { ScalarObservable } from '../../src/internal/observable/ScalarObservable';
+import { EmptyObservable } from '../../src/internal/observable/EmptyObservable';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram };
