@@ -2,6 +2,10 @@ import * as index from '../src/index';
 import { expect } from 'chai';
 
 describe('index', () => {
+  it('should export Observable', () => {
+    expect(index.Observable).to.exist;
+  });
+
   it('should export the Subject types', () => {
     expect(index.Subject).to.exist;
     expect(index.BehaviorSubject).to.exist;
