@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { root } from '../../src/util/root';
+import { root } from '../../src/internal/util/root';
 import {$$rxSubscriber} from '../../src/internal/symbol/rxSubscriber';
 
 describe('rxSubscriber symbol', () => {

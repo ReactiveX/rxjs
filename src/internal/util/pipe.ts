@@ -1,5 +1,5 @@
 import { noop } from './noop';
-import { UnaryFunction } from '../internal/types';
+import { UnaryFunction } from '../types';
 
 /* tslint:disable:max-line-length */
 export function pipe<T>(): UnaryFunction<T, T>;

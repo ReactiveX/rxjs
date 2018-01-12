@@ -1,4 +1,4 @@
-import { root } from '../../util/root';
+import { root } from '..//util/root';
 import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
 import { iterator as Symbol_iterator } from '../../internal/symbol/iterator';

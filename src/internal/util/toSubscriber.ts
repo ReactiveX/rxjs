@@ -1,6 +1,6 @@
-import { Subscriber } from '../internal/Subscriber';
-import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscriber';
-import { PartialObserver, empty as emptyObserver } from '../internal/Observer';
+import { Subscriber } from '../Subscriber';
+import { rxSubscriber as rxSubscriberSymbol } from '../symbol/rxSubscriber';
+import { PartialObserver, empty as emptyObserver } from '../Observer';
 
 export function toSubscriber<T>(
   nextOrObserver?: PartialObserver<T> | ((value: T) => void),

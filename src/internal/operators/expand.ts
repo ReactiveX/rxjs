@@ -2,12 +2,12 @@ import { Observable } from '../Observable';
 import { IScheduler } from '../Scheduler';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { tryCatch } from '../../util/tryCatch';
-import { errorObject } from '../../util/errorObject';
+import { tryCatch } from '..//util/tryCatch';
+import { errorObject } from '..//util/errorObject';
 import { Subscription } from '../Subscription';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../../util/subscribeToResult';
+import { subscribeToResult } from '..//util/subscribeToResult';
 import { MonoTypeOperatorFunction, OperatorFunction } from '../../internal/types';
 
 /* tslint:disable:max-line-length */

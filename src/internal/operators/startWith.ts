@@ -4,7 +4,7 @@ import { ArrayObservable } from '../observable/ArrayObservable';
 import { ScalarObservable } from '../observable/ScalarObservable';
 import { EmptyObservable } from '../observable/EmptyObservable';
 import { concat as concatStatic } from '../observable/concat';
-import { isScheduler } from '../../util/isScheduler';
+import { isScheduler } from '..//util/isScheduler';
 import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /* tslint:disable:max-line-length */

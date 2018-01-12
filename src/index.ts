@@ -19,9 +19,9 @@ export { Subscription } from './internal/Subscription';
 export { Notification } from './internal/Notification';
 
 /* Utils */
-export { pipe } from './util/pipe';
-export { noop } from './util/noop';
-export { identity } from './util/identity';
+export { pipe } from './internal/util/pipe';
+export { noop } from './internal/util/noop';
+export { identity } from './internal/util/identity';
 
 /* Types */
 export * from './internal/types';

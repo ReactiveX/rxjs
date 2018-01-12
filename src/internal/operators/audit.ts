@@ -3,10 +3,10 @@ import { Subscriber } from '../Subscriber';
 import { Observable, SubscribableOrPromise } from '../Observable';
 import { Subscription, TeardownLogic } from '../Subscription';
 
-import { tryCatch } from '../../util/tryCatch';
-import { errorObject } from '../../util/errorObject';
+import { tryCatch } from '..//util/tryCatch';
+import { errorObject } from '..//util/errorObject';
 import { OuterSubscriber } from '../OuterSubscriber';
-import { subscribeToResult } from '../../util/subscribeToResult';
+import { subscribeToResult } from '..//util/subscribeToResult';
 import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**

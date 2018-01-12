@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { EmptyError } from '../../util/EmptyError';
+import { EmptyError } from '..//util/EmptyError';
 import { OperatorFunction, MonoTypeOperatorFunction } from '../../internal/types';
 
 /* tslint:disable:max-line-length */

@@ -1,4 +1,4 @@
-import { root } from '../../util/root';
+import { root } from '..//util/root';
 import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';

@@ -1,6 +1,6 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { ArgumentOutOfRangeError } from '../../util/ArgumentOutOfRangeError';
+import { ArgumentOutOfRangeError } from '..//util/ArgumentOutOfRangeError';
 import { Observable } from '../Observable';
 import { TeardownLogic } from '../Subscription';
 import { MonoTypeOperatorFunction } from '../../internal/types';

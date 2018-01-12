@@ -1,4 +1,4 @@
-import { not } from '../../util/not';
+import { not } from '..//util/not';
 import { filter } from './filter';
 import { Observable } from '../Observable';
 import { UnaryFunction } from '../../internal/types';

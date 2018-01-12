@@ -3,7 +3,7 @@ import { Observable } from '../Observable';
 import { ScalarObservable } from './ScalarObservable';
 import { EmptyObservable } from './EmptyObservable';
 import { Subscriber } from '../Subscriber';
-import { isScheduler } from '../../util/isScheduler';
+import { isScheduler } from '..//util/isScheduler';
 import { TeardownLogic } from '../Subscription';
 
 /**

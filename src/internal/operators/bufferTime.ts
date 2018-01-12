@@ -5,7 +5,7 @@ import { async } from '../scheduler/async';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { isScheduler } from '../../util/isScheduler';
+import { isScheduler } from '..//util/isScheduler';
 import { OperatorFunction } from '../../internal/types';
 
 /* tslint:disable:max-line-length */

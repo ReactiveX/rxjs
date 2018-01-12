@@ -1,5 +1,5 @@
 import { async } from '../scheduler/async';
-import { isDate } from '../../util/isDate';
+import { isDate } from '..//util/isDate';
 import { Operator } from '../Operator';
 import { IScheduler } from '../Scheduler';
 import { Subscriber } from '../Subscriber';

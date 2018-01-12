@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { assign, getAssign, assignImpl } from '../../src/util/assign';
+import { assign, getAssign, assignImpl } from '../../src/internal/util/assign';
 
 describe('assign', () => {
   it('should exist', () => {

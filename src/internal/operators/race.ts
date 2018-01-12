@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { isArray } from '../../util/isArray';
+import { isArray } from '..//util/isArray';
 import { MonoTypeOperatorFunction, OperatorFunction } from '../../internal/types';
 import { race as raceStatic } from '../observable/race';
 

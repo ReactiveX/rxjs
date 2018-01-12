@@ -1,7 +1,7 @@
 import { Observable, ObservableInput } from '../../Observable';
 import { CombineLatestOperator } from '../../observable/combineLatest';
 import { ArrayObservable } from '../../observable/ArrayObservable';
-import { isArray } from '../../../util/isArray';
+import { isArray } from '../..//util/isArray';
 
 /* tslint:disable:max-line-length */
 export function combineLatest<T, R>(this: Observable<T>, project: (v1: T) => R): Observable<R>;

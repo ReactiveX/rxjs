@@ -2,13 +2,13 @@ import { PartialObserver } from './Observer';
 import { Operator } from './Operator';
 import { Subscriber } from './Subscriber';
 import { Subscription, AnonymousSubscription, TeardownLogic } from './Subscription';
-import { root } from '../util/root';
-import { toSubscriber } from '../util/toSubscriber';
+import { root } from './util/root';
+import { toSubscriber } from './util/toSubscriber';
 import { IfObservable } from './observable/IfObservable';
 import { ErrorObservable } from './observable/ErrorObservable';
 import { observable as Symbol_observable } from '../internal/symbol/observable';
 import { OperatorFunction } from '../internal/types';
-import { pipeFromArray } from '../util/pipe';
+import { pipeFromArray } from './util/pipe';
 
 export interface Subscribable<T> {
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),

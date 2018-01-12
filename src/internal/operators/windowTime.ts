@@ -6,8 +6,8 @@ import { async } from '../scheduler/async';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
-import { isNumeric } from '../../util/isNumeric';
-import { isScheduler } from '../../util/isScheduler';
+import { isNumeric } from '..//util/isNumeric';
+import { isScheduler } from '..//util/isScheduler';
 import { OperatorFunction } from '../../internal/types';
 
 /**
