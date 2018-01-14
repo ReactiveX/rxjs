@@ -1,3 +1,13 @@
+<a name="6.0.0-alpha.2"></a>
+# [6.0.0-alpha.2](https://github.com/ReactiveX/RxJS/compare/6.0.0-alpha.1...6.0.0-alpha.2) (2018-01-14)
+
+
+### Bug Fixes
+
+* **build:** properly output subdirectories like `rxjs/operators` ([34fe560](https://github.com/ReactiveX/RxJS/commit/34fe560))
+
+
+
 <a name="6.0.0-alpha.1"></a>
 # [6.0.0-alpha.1](https://github.com/ReactiveX/RxJS/compare/5.5.3...v6.0.0-alpha.1) (2018-01-12)
 
