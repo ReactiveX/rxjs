@@ -4,7 +4,7 @@
 
 ### Bug Fixes
 
-* **build:** properly output subdirectories like `rxjs/operators` ([34fe560](https://github.com/ReactiveX/RxJS/commit/34fe560))
+* **build:** properly outputs subdirectories like `rxjs/operators` ([34fe560](https://github.com/ReactiveX/RxJS/commit/34fe560))
 
 
 
