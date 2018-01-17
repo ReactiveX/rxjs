@@ -165,7 +165,7 @@ class SafeSubscriber<T> extends Subscriber<T> {
     super();
 
     let next: ((value: T) => void);
-    let context: any = this;
+    let context: any = undefined;
 
     if (isFunction(observerOrNext)) {
       next = (<((value: T) => void)> observerOrNext);
