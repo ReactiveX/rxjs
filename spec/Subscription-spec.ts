@@ -7,7 +7,7 @@ const Subscription = Rx.Subscription;
 /** @test {Subscription} */
 describe('Subscription', () => {
   it('should not leak', (done: MochaDone) => {
-    const tearDowns = [];
+    const tearDowns: number[] = [];
 
     const source1 = Observable.create((observer: Rx.Observer<any>) => {
       return () => {
@@ -40,7 +40,7 @@ describe('Subscription', () => {
   });
 
   it('should not leak when adding a bad custom subscription to a subscription', (done: MochaDone) => {
-    const tearDowns = [];
+    const tearDowns: number[] = [];
 
     const sub = new Subscription();
 
