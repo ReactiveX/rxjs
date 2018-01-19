@@ -1,7 +1,8 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as Rx from '../src/Rx';
-import { TeardownLogic } from '../src/Subscription';
+import { Observer } from './../src/internal/Observer';
+import { TeardownLogic } from '../src/internal/Subscription';
 import marbleTestingSignature = require('./helpers/marble-testing'); // tslint:disable-line:no-require-imports
 import { map } from '../src/internal/operators/map';
 //tslint:disable-next-line
@@ -77,7 +78,7 @@ describe('Observable', () => {
 
       __root__.Rx = {};
       __root__.Rx.config = {};
-      __root__.Rx.config.Promise = function MyPromise(callback) {
+      __root__.Rx.config.Promise = function MyPromise(callback: any) {
         wasCalled = true;
         return new Promise(callback);
       };
@@ -92,7 +93,7 @@ describe('Observable', () => {
     });
 
     it('should reject promise if nextHandler throws', (done: MochaDone) => {
-      const results = [];
+      const results: number[] = [];
 
       Observable.of(1, 2, 3).forEach((x: number) => {
         if (x === 3) {
@@ -172,8 +173,8 @@ describe('Observable', () => {
   describe('subscribe', () => {
     it('should be synchronous', () => {
       let subscribed = false;
-      let nexted;
-      let completed;
+      let nexted: string;
+      let completed: boolean;
       const source = new Observable((observer: Rx.Observer<string>) => {
         subscribed = true;
         observer.next('wee');
@@ -403,7 +404,7 @@ describe('Observable', () => {
         //intentionally not using lambda to avoid typescript's this context capture
         const o = {
           myValue: 'foo',
-          next: function next(x) {
+          next: function next(x: number) {
             expect(this.myValue).to.equal('foo');
             expect(x).to.equal(1);
             done();
@@ -418,7 +419,7 @@ describe('Observable', () => {
         //intentionally not using lambda to avoid typescript's this context capture
         const o = {
           myValue: 'foo',
-          error: function error(err) {
+          error: function error(err: string) {
             expect(this.myValue).to.equal('foo');
             expect(err).to.equal('bad');
             done();
@@ -570,7 +571,7 @@ describe('Observable', () => {
 describe('Observable.create', () => {
   asDiagram('create(obs => { obs.next(1); })')
   ('should create a cold observable that emits just 1', () => {
-    const e1 = Observable.create(obs => { obs.next(1); });
+    const e1 = Observable.create((obs: Observer<number>) => { obs.next(1); });
     const expected = 'x';
     expectObservable(e1).toBe(expected, {x: 1});
   });
@@ -598,11 +599,11 @@ describe('Observable.create', () => {
   });
 
   it('should send errors thrown in the passed function down the error path', (done) => {
-    Observable.create((observer) => {
+    Observable.create((observer: Observer<any>) => {
       throw new Error('this should be handled');
     })
     .subscribe({
-      error(err) {
+      error(err: Error) {
         expect(err).to.deep.equal(new Error('this should be handled'));
         done();
       }
