@@ -44,7 +44,11 @@ describe('Observable.prototype.debounce', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should debounce by scalar selector observable', () => {
+  it('should support a scalar selector observable', () => {
+
+    // If the selector returns a scalar observable, the debounce operator
+    // should emit the value immediately.
+
     const e1 =   hot('--a--bc--d----|');
     const e1subs =   '^             !';
     const expected = '--a--bc--d----|';
