@@ -1,6 +1,6 @@
 import { Observable } from '../Observable';
 import { isArray } from '..//util/isArray';
-import { ArrayObservable } from '../../internal/observable/ArrayObservable';
+import { fromArray } from './fromArray';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Subscription, TeardownLogic } from '../Subscription';
@@ -30,7 +30,7 @@ export function race<T>(...observables: Array<Observable<any> | Array<Observable
     }
   }
 
-  return new ArrayObservable<T>(<any>observables).lift(new RaceOperator<T>());
+  return fromArray(observables, undefined).lift(new RaceOperator<T>());
 }
 
 export class RaceOperator<T> implements Operator<T, T> {

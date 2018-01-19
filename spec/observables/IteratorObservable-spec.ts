@@ -1,41 +1,24 @@
 import { expect } from 'chai';
 import * as Rx from '../../src/Rx';
 import { queue } from '../../src/internal/scheduler/queue';
-import { IteratorObservable } from '../../src/internal/observable/IteratorObservable';
+import { fromIterable } from '../../src/internal/observable/fromIterable';
 
-declare const expectObservable;
+declare const expectObservable: any;
 declare const rxTestScheduler: Rx.TestScheduler;
 
-describe('IteratorObservable', () => {
-  it('should create an Observable via constructor', () => {
-    const source = new IteratorObservable([]);
-    expect(source instanceof IteratorObservable).to.be.true;
-  });
-
-  it('should create IteratorObservable via static create function', () => {
-    const s = new IteratorObservable([]);
-    const r = IteratorObservable.create([]);
-    expect(s).to.deep.equal(r);
-  });
-
+describe('fromIterable', () => {
   it('should not accept null (or truthy-equivalent to null) iterator', () => {
     expect(() => {
-      IteratorObservable.create(null);
-    }).to.throw(Error, 'iterator cannot be null.');
+      fromIterable(null, undefined);
+    }).to.throw(Error, 'Iterable cannot be null');
     expect(() => {
-      IteratorObservable.create(void 0);
-    }).to.throw(Error, 'iterator cannot be null.');
-  });
-
-  it('should not accept boolean as iterator', () => {
-    expect(() => {
-      IteratorObservable.create(false);
-    }).to.throw(Error, 'object is not iterable');
+      fromIterable(void 0, undefined);
+    }).to.throw(Error, 'Iterable cannot be null');
   });
 
   it('should emit members of an array iterator', (done: MochaDone) => {
     const expected = [10, 20, 30, 40];
-    IteratorObservable.create([10, 20, 30, 40])
+    fromIterable([10, 20, 30, 40], undefined)
       .subscribe(
         (x: number) => { expect(x).to.equal(expected.shift()); },
         (x) => {
@@ -54,7 +37,7 @@ describe('IteratorObservable', () => {
       Rx.Notification.createComplete()
     ];
 
-    const e1 = IteratorObservable.create<number>(new Int32Array([10, 20])).observeOn(rxTestScheduler);
+    const e1 = fromIterable<number>(new Int32Array([10, 20]), undefined).observeOn(rxTestScheduler);
 
     let v1, v2: Array<Rx.Notification<any>>;
     e1.materialize().toArray().subscribe((x) => v1 = x);
@@ -82,9 +65,9 @@ describe('IteratorObservable', () => {
       }
     };
 
-    const results = [];
+    const results: any[] = [];
 
-    IteratorObservable.create(iterable)
+    fromIterable(iterable as any, undefined)
       .take(3)
       .subscribe(
         x => results.push(x),
@@ -113,9 +96,9 @@ describe('IteratorObservable', () => {
       }
     };
 
-    const results = [];
+    const results: any[] = [];
 
-    IteratorObservable.create(iterable, queue)
+    fromIterable(iterable as any, queue)
       .take(3)
       .subscribe(
         x => results.push(x),
@@ -128,7 +111,7 @@ describe('IteratorObservable', () => {
   });
 
   it('should emit members of an array iterator on a particular scheduler', () => {
-    const source = IteratorObservable.create(
+    const source = fromIterable(
       [10, 20, 30, 40],
       rxTestScheduler
     );
@@ -142,7 +125,7 @@ describe('IteratorObservable', () => {
   'but is unsubscribed early', (done: MochaDone) => {
     const expected = [10, 20, 30, 40];
 
-    const source = IteratorObservable.create(
+    const source = fromIterable(
       [10, 20, 30, 40],
       Rx.Scheduler.queue
     );
@@ -165,9 +148,9 @@ describe('IteratorObservable', () => {
 
   it('should emit characters of a string iterator', (done: MochaDone) => {
     const expected = ['f', 'o', 'o'];
-    IteratorObservable.create('foo')
+    fromIterable('foo', undefined)
       .subscribe(
-        (x: number) => { expect(x).to.equal(expected.shift()); },
+        (x: string) => { expect(x).to.equal(expected.shift()); },
         (x) => {
           done(new Error('should not be called'));
         }, () => {
@@ -194,6 +177,6 @@ describe('IteratorObservable', () => {
       }
     );
 
-    IteratorObservable.create([10, 20, 30, 40, 50, 60]).subscribe(subscriber);
+    fromIterable([10, 20, 30, 40, 50, 60], undefined).subscribe(subscriber);
   });
 });

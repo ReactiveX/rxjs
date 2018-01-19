@@ -7,13 +7,13 @@ import { $$iterator } from '../../src/internal/symbol/iterator';
 import $$symbolObservable from 'symbol-observable';
 
 export function lowerCaseO<T>(...args: Array<any>): Rx.Observable<T> {
-
   const o = {
-    subscribe: function (observer: any) {
-      args.forEach(function (v) {
-        observer.next(v);
-      });
+    subscribe(observer: any) {
+      args.forEach(v => observer.next(v));
       observer.complete();
+      return {
+        unsubscribe() { /* do nothing */ }
+      };
     }
   };
 

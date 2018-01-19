@@ -1,5 +1,5 @@
 import { Observable, ObservableInput } from '../Observable';
-import { FromObservable } from '../observable/FromObservable';
+import { from } from '../observable/from';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { isArray } from '..//util/isArray';
@@ -111,7 +111,7 @@ export function onErrorResumeNextStatic<T, R>(...nextSources: Array<ObservableIn
   }
   source = nextSources.shift();
 
-  return new FromObservable(source, null).lift(new OnErrorResumeNextOperator<T, R>(nextSources));
+  return from(source, null).lift(new OnErrorResumeNextOperator<T, R>(nextSources));
 }
 
 class OnErrorResumeNextOperator<T, R> implements Operator<T, R> {
