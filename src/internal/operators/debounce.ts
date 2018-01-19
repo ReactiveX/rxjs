@@ -105,7 +105,7 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
 
     subscription = subscribeToResult(this, duration);
-    if (!subscription.closed) {
+    if (subscription && !subscription.closed) {
       this.add(this.durationSubscription = subscription);
     }
   }
