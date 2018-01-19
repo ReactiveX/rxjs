@@ -1,15 +1,15 @@
 import { expect } from 'chai';
-import * as Rx from '../../src/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { TestScheduler } from '../../src/testing';
+import { pairs } from '../../src/create';
 
-declare const { asDiagram };
+declare const asDiagram: any;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const rxTestScheduler: Rx.TestScheduler;
-const Observable = Rx.Observable;
+declare const rxTestScheduler: TestScheduler;
 
-describe('Observable.pairs', () => {
+describe('pairs', () => {
   asDiagram('pairs({a: 1, b:2})')('should create an observable emits key-value pair', () => {
-    const e1 = Observable.pairs({a: 1, b: 2}, rxTestScheduler);
+    const e1 = pairs({a: 1, b: 2}, rxTestScheduler);
     const expected = '(ab|)';
     const values = {
       a: ['a', 1],
@@ -26,7 +26,7 @@ describe('Observable.pairs', () => {
       ['c', 3]
     ];
 
-    Observable.pairs({a: 1, b: 2, c: 3}).subscribe(x => {
+    pairs({a: 1, b: 2, c: 3}).subscribe(x => {
       expect(x).to.deep.equal(expected.shift());
     }, x => {
       done(new Error('should not be called'));
@@ -37,7 +37,7 @@ describe('Observable.pairs', () => {
   });
 
   it('should work with empty object', () => {
-    const e1 = Observable.pairs({}, rxTestScheduler);
+    const e1 = pairs({}, rxTestScheduler);
     const expected = '|';
 
     expectObservable(e1).toBe(expected);
