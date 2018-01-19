@@ -44,6 +44,15 @@ describe('Observable.prototype.debounce', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should debounce by scalar selector observable', () => {
+    const e1 =   hot('--a--bc--d----|');
+    const e1subs =   '^             !';
+    const expected = '--a--bc--d----|';
+
+    expectObservable(e1.debounce(() => Rx.Observable.of(0))).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should complete when source does not emit', () => {
     const e1 =   hot('-----|');
     const e1subs =   '^    !';
