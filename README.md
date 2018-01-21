@@ -67,7 +67,7 @@ import { map } from 'rxjs/operator/map';
 Observable::of(1,2,3)::map(x => x + '!!!'); // etc
 ```
 
-Alternatively, you can use the built-in `pipe` method on Observables. See [lettable operators](https://github.com/ReactiveX/rxjs/blob/master/doc/lettable-operators.md) for more information.
+Alternatively, you can use the built-in `pipe` method on Observables. See [lettable operators](https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md) for more information.
 
 ### CommonJS via npm
 
