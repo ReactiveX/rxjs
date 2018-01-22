@@ -1,3 +1,3 @@
 import {  IfObservable  } from './IfObservable';
 
-export const _if = IfObservable.create;
+export const iif = IfObservable.create;
