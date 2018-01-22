@@ -4,7 +4,7 @@ import { Subscriber } from './Subscriber';
 import { Subscription, AnonymousSubscription, TeardownLogic } from './Subscription';
 import { root } from './util/root';
 import { toSubscriber } from './util/toSubscriber';
-import { IfObservable } from './observable/IfObservable';
+import { iif } from './observable/iif';
 import { ErrorObservable } from './observable/ErrorObservable';
 import { observable as Symbol_observable } from '../internal/symbol/observable';
 import { OperatorFunction } from '../internal/types';
@@ -254,8 +254,9 @@ export class Observable<T> implements Subscribable<T> {
     return this.source.subscribe(subscriber);
   }
 
+  // TODO(benlesh): determine if this is still necessary
   // `if` and `throw` are special snow flakes, the compiler sees them as reserved words
-  static if: typeof IfObservable.create;
+  static if: typeof iif;
   static throw: typeof ErrorObservable.create;
 
   /**
