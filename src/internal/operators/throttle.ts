@@ -59,13 +59,13 @@ export const defaultThrottleConfig: ThrottleConfig = {
  * @method throttle
  * @owner Observable
  */
-export function throttle<T>(durationSelector: (value: T) => SubscribableOrPromise<number>,
+export function throttle<T>(durationSelector: (value: T) => SubscribableOrPromise<any>,
                             config: ThrottleConfig = defaultThrottleConfig): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new ThrottleOperator(durationSelector, config.leading, config.trailing));
 }
 
 class ThrottleOperator<T> implements Operator<T, T> {
-  constructor(private durationSelector: (value: T) => SubscribableOrPromise<number>,
+  constructor(private durationSelector: (value: T) => SubscribableOrPromise<any>,
               private leading: boolean,
               private trailing: boolean) {
   }
@@ -88,7 +88,7 @@ class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
   private _hasTrailingValue = false;
 
   constructor(protected destination: Subscriber<T>,
-              private durationSelector: (value: T) => SubscribableOrPromise<number>,
+              private durationSelector: (value: T) => SubscribableOrPromise<any>,
               private _leading: boolean,
               private _trailing: boolean) {
     super(destination);
