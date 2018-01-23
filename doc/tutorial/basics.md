@@ -96,14 +96,14 @@ input.pluck('target', 'value')
   .subscribe(value => console.log(value)); // "h"
 
 // Pass the two previous values
-input.pluck('target', 'value').pairwise()
+input.pluck('data').pairwise()
   .subscribe(value => console.log(value)); // ["h", "e"]
 
 // Only pass unique values through
-input.pluck('target', 'value').distinct()
-  .subscribe(value => console.log(value)); // "helo wrd"
+input.pluck('data').distinct()
+  .subscribe(value => console.log(value)); // "h", "e", "l", "o", " ", "w", "r", "d"
 
 // Do not pass repeating values through
-input.pluck('target', 'value').distinctUntilChanged()
-  .subscribe(value => console.log(value)); // "helo world"
+input.pluck('data').distinctUntilChanged()
+  .subscribe(value => console.log(value)); // "h", "e", "l", "o", " ", "w", "o", "r", "l", "d"
 ```
