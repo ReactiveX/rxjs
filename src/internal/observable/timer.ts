@@ -62,13 +62,15 @@ export function timer(dueTime: number | Date = 0,
     scheduler = async;
   }
 
-  const due = isNumeric(dueTime)
-    ? (dueTime as number)
-    : (+dueTime - scheduler.now());
+  return new Observable(subscriber => {
+    const due = isNumeric(dueTime)
+      ? (dueTime as number)
+      : (+dueTime - scheduler.now());
 
-  return new Observable(subscriber => scheduler.schedule(dispatch, due, {
-    index: 0, period, subscriber
-  }));
+    return scheduler.schedule(dispatch, due, {
+      index: 0, period, subscriber
+    });
+  });
 }
 
 interface TimerState {

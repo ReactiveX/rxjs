@@ -1,10 +1,12 @@
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
-import { timer, never } from '../../src/create';
+import { timer, never, merge } from '../../src/create';
 import { TestScheduler } from '../../src/testing';
+import { mergeMap } from '../../src/operators';
 
 declare const asDiagram: any;
 declare const time: typeof marbleTestingSignature.time;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
+declare const cold: typeof marbleTestingSignature.cold;
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {timer} */
@@ -88,5 +90,22 @@ describe('timer', () => {
     const source = timer(dueTime, period, rxTestScheduler).take(5);
     const values = { a: 0, b: 1, c: 2, d: 3, e: 4};
     expectObservable(source).toBe(expected, values);
+  });
+
+  it('should still target the same date if a date is provided even for the ' +
+    'second subscription', () => {
+      const offset = time('----|    ');
+      const t1 = cold(    'a|       ');
+      const t2 = cold(    '--a|     ');
+      const expected =    '----(aa|)';
+
+      const dueTime = new Date(rxTestScheduler.now() + offset);
+      const source = timer(dueTime, null, rxTestScheduler);
+
+      const testSource = merge(t1, t2).pipe(
+        mergeMap(() => source)
+      );
+
+      expectObservable(testSource).toBe(expected, {a: 0});
   });
 });
