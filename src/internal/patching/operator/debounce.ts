@@ -44,6 +44,6 @@ import { debounce as higherOrder } from '../../operators/debounce';
  * @method debounce
  * @owner Observable
  */
-export function debounce<T>(this: Observable<T>, durationSelector: (value: T) => SubscribableOrPromise<number>): Observable<T> {
+export function debounce<T>(this: Observable<T>, durationSelector: (value: T) => SubscribableOrPromise<any>): Observable<T> {
   return higherOrder(durationSelector)(this);
 }
