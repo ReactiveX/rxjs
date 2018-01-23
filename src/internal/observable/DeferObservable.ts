@@ -1,4 +1,4 @@
-import { Observable, SubscribableOrPromise } from '../Observable';
+import { Observable, ObservableInput } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 
@@ -47,7 +47,7 @@ export class DeferObservable<T> extends Observable<T> {
    *
    * @see {@link create}
    *
-   * @param {function(): SubscribableOrPromise} observableFactory The Observable
+   * @param {function(): ObservableInput} observableFactory The Observable
    * factory function to invoke for each Observer that subscribes to the output
    * Observable. May also return a Promise, which will be converted on the fly
    * to an Observable.
@@ -57,11 +57,11 @@ export class DeferObservable<T> extends Observable<T> {
    * @name defer
    * @owner Observable
    */
-  static create<T>(observableFactory: () => SubscribableOrPromise<T> | void): Observable<T> {
+  static create<T>(observableFactory: () => ObservableInput<T> | void): Observable<T> {
     return new DeferObservable(observableFactory);
   }
 
-  constructor(private observableFactory: () => SubscribableOrPromise<T> | void) {
+  constructor(private observableFactory: () => ObservableInput<T> | void) {
     super();
   }
 
@@ -72,7 +72,7 @@ export class DeferObservable<T> extends Observable<T> {
 
 class DeferSubscriber<T> extends OuterSubscriber<T, T> {
   constructor(destination: Subscriber<T>,
-              private factory: () => SubscribableOrPromise<T> | void) {
+              private factory: () => ObservableInput<T> | void) {
     super(destination);
     this.tryDefer();
   }
