@@ -1,24 +1,35 @@
 import { expect } from 'chai';
-import * as Rx from '../../src/Rx';
+import { TestScheduler } from '../../src/testing';
+import { Observable, asapScheduler, asyncScheduler, Observer } from '../../src';
+import { of, from } from '../../src/create';
 
-declare const {asDiagram, expectObservable, Symbol, type};
-declare const rxTestScheduler: Rx.TestScheduler;
-const Observable = Rx.Observable;
+// tslint:disable:no-any
+declare const asDiagram: any;
+declare const expectObservable: any;
+declare const Symbol: any;
+declare const type: any;
+declare const rxTestScheduler: TestScheduler;
+// tslint:enable:no-any
+
+function getArguments<T>(...args: T[]) {
+  return arguments;
+}
 
 /** @test {from} */
-describe('Observable.from', () => {
+describe('from', () => {
   asDiagram('from([10, 20, 30])')
   ('should create an observable from an array', () => {
-    const e1 = Observable.from([10, 20, 30])
+    const e1 = from([10, 20, 30])
       // for the purpose of making a nice diagram, spread out the synchronous emissions
-      .concatMap((x, i) => Observable.of(x).delay(i === 0 ? 0 : 20, rxTestScheduler));
+      .concatMap((x, i) => of(x).delay(i === 0 ? 0 : 20, rxTestScheduler));
     const expected = 'x-y-(z|)';
     expectObservable(e1).toBe(expected, {x: 10, y: 20, z: 30});
   });
 
   it('should throw for non observable object', () => {
     const r = () => {
-      Observable.from(<any>{}).subscribe();
+      // tslint:disable-next-line:no-any needed for the test
+      from({} as any).subscribe();
     };
 
     expect(r).to.throw();
@@ -26,21 +37,21 @@ describe('Observable.from', () => {
 
   type('should return T for ObservableLike objects', () => {
     /* tslint:disable:no-unused-variable */
-    let o1: Rx.Observable<number> = Observable.from(<number[]>[], Rx.Scheduler.asap);
-    let o2: Rx.Observable<{ a: string }> = Observable.from(Observable.empty<{ a: string }>());
-    let o3: Rx.Observable<{ b: number }> = Observable.from(new Promise<{b: number}>(resolve => resolve()));
+    const o1: Observable<number> = from([] as number[], asapScheduler);
+    const o2: Observable<{ a: string }> = from(Observable.empty<{ a: string }>());
+    const o3: Observable<{ b: number }> = from(new Promise<{b: number}>(resolve => resolve()));
     /* tslint:enable:no-unused-variable */
   });
 
   type('should return T for arrays', () => {
     /* tslint:disable:no-unused-variable */
-    let o1: Rx.Observable<number> = Observable.from(<number[]>[], Rx.Scheduler.asap);
+    const o1: Observable<number> = from([] as number[], asapScheduler);
     /* tslint:enable:no-unused-variable */
   });
 
-  const fakervable = (...values) => ({
-    [<symbol>Symbol.observable]: () => ({
-      subscribe: (observer: Rx.Observer<string>) => {
+  const fakervable = <T>(...values: T[]) => ({
+    [Symbol.observable as symbol]: () => ({
+      subscribe: (observer: Observer<T>) => {
         for (const value of values) {
           observer.next(value);
         }
@@ -49,8 +60,8 @@ describe('Observable.from', () => {
     })
   });
 
-  const fakerator = (...values) => ({
-    [<symbol>Symbol.iterator]: () => {
+  const fakerator = <T>(...values: T[]) => ({
+    [Symbol.iterator as symbol]: () => {
       const clone = [...values];
       return {
         next: () => ({
@@ -61,21 +72,22 @@ describe('Observable.from', () => {
     }
   });
 
-  const sources: { name: string, value: any }[] = [
-    { name: 'observable', value: Observable.of('x') },
+  // tslint:disable-next-line:no-any it's silly to define all of these types.
+  const sources: Array<{ name: string, value: any }> = [
+    { name: 'observable', value: of('x') },
     { name: 'observable-like', value: fakervable('x') },
     { name: 'array', value: ['x'] },
     { name: 'promise', value: Promise.resolve('x') },
     { name: 'iterator', value: fakerator('x') },
     { name: 'array-like', value: { [0]: 'x', length: 1 }},
     { name: 'string', value: 'x'},
-    { name: 'arguments', value: function(x) { return arguments; }('x') },
+    { name: 'arguments', value: getArguments('x') },
   ];
 
   for (const source of sources) {
     it(`should accept ${source.name}`, (done: MochaDone) => {
       let nextInvoked = false;
-      Observable.from(source.value)
+      from(source.value)
         .subscribe(
           (x: string) => {
             nextInvoked = true;
@@ -92,7 +104,7 @@ describe('Observable.from', () => {
     });
     it(`should accept ${source.name} and scheduler`, (done: MochaDone) => {
       let nextInvoked = false;
-      Observable.from(source.value, Rx.Scheduler.async)
+      from(source.value, asyncScheduler)
         .subscribe(
           (x: string) => {
             nextInvoked = true;

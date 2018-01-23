@@ -2,7 +2,7 @@ import { Observable, ObservableInput } from '../Observable';
 import { IScheduler } from '../Scheduler';
 import { isScheduler } from '..//util/isScheduler';
 import { mergeAll } from '../../internal/operators/mergeAll';
-import { ArrayObservable } from './ArrayObservable';
+import { fromArray } from './fromArray';
 
 /* tslint:disable:max-line-length */
 export function merge<T>(v1: ObservableInput<T>, scheduler?: IScheduler): Observable<T>;
@@ -97,5 +97,5 @@ export function merge<T, R>(...observables: Array<ObservableInput<any> | ISchedu
     return <Observable<R>>observables[0];
   }
 
-  return mergeAll(concurrent)(new ArrayObservable(<any>observables, scheduler)) as Observable<R>;
+  return mergeAll(concurrent)(fromArray(observables, scheduler)) as Observable<R>;
 }

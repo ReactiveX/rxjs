@@ -2,12 +2,12 @@ import { Observable, ObservableInput  } from '../Observable';
 import { IScheduler  } from '../Scheduler';
 import { isScheduler  } from '..//util/isScheduler';
 import { isArray  } from '..//util/isArray';
-import { ArrayObservable  } from './ArrayObservable';
 import { Subscriber } from '../Subscriber';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { Operator } from '../Operator';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '..//util/subscribeToResult';
+import { fromArray } from './fromArray';
 
 const NONE = {};
 
@@ -163,7 +163,7 @@ export function combineLatest<T, R>(...observables: Array<any | ObservableInput<
     observables = <Array<Observable<any>>>observables[0];
   }
 
-  return new ArrayObservable(observables, scheduler).lift(new CombineLatestOperator<T, R>(project));
+  return fromArray(observables, scheduler).lift(new CombineLatestOperator<T, R>(project));
 }
 
 export class CombineLatestOperator<T, R> implements Operator<T, R> {

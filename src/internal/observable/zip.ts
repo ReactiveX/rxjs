@@ -1,5 +1,5 @@
 import { Observable, ObservableInput } from '../Observable';
-import { ArrayObservable } from '../../internal/observable/ArrayObservable';
+import { fromArray } from './fromArray';
 import { isArray } from '..//util/isArray';
 import { Operator } from '../Operator';
 import { PartialObserver } from '../Observer';
@@ -69,7 +69,7 @@ export function zip<T, R>(...observables: Array<ObservableInput<any> | ((...valu
   if (typeof project === 'function') {
     observables.pop();
   }
-  return new ArrayObservable(observables).lift(new ZipOperator(project));
+  return fromArray(observables, undefined).lift(new ZipOperator(project));
 }
 
 export class ZipOperator<T, R> implements Operator<T, R> {

@@ -1,6 +1,6 @@
 import { Observable, ObservableInput } from '../../Observable';
 import { CombineLatestOperator } from '../../observable/combineLatest';
-import { ArrayObservable } from '../../observable/ArrayObservable';
+import { of } from '../../observable/of';
 import { isArray } from '../..//util/isArray';
 
 /* tslint:disable:max-line-length */
@@ -77,5 +77,5 @@ export function combineLatest<T, R>(this: Observable<T>, ...observables: Array<O
     observables = (<any>observables[0]).slice();
   }
 
-  return this.lift.call(new ArrayObservable([this, ...observables]), new CombineLatestOperator(project));
+  return this.lift.call(of(this, ...observables), new CombineLatestOperator(project));
 }
