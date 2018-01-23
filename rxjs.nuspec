@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>rxjs</id>
+        <version>5.0.3</version>
+        <title>Reactive Extensions for modern JavaScript</title>
+        <authors>Ben Lesh &lt;blesh@netflix.com&gt;</authors>
+        <owners>Ben Lesh &lt;blesh@netflix.com&gt;</owners>
+        <licenseUrl>https://github.com/ReactiveX/rxjs/blob/master/LICENSE.txt</licenseUrl>
+        <projectUrl>https://github.com/reactivex/rxjs</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Reactive Extensions Library for JavaScript. This is a rewrite of Reactive-Extensions/RxJS and is intended to supersede it once this is ready. This rewrite is meant to have better performance, better modularity, better debuggable call stacks, while staying mostly backwards compatible, with some breaking changes that reduce the API surface.</description>
+        <summary>Reactive Extensions Library for JavaScript. This is a rewrite of Reactive-Extensions/RxJS and is intended to supersede it once this is ready.</summary>
+        <releaseNotes />
+        <copyright>Apache-2.0</copyright>
+        <tags>Rx RxJS ReactiveX ReactiveExtensions Streams ES6 ES2015</tags>
+    </metadata>
+    <files>
+        <file src="content\Scripts\rxjs\rx.bundle.umd.js" target="content\Scripts\rxjs\rx.bundle.umd.js" />
+        <file src="content\Scripts\rxjs\rx.bundle.umd.min.js" target="content\Scripts\rxjs\rx.bundle.umd.min.js" />
+    </files>
+</package>
