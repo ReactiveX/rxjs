@@ -1,10 +1,10 @@
 
-import { Observable } from '../../Observable';
-import { concatMapTo } from '../../operator/concatMapTo';
+import { Observable } from '../../internal/Observable';
+import { concatMapTo } from '../../internal/patching/operator/concatMapTo';
 
 Observable.prototype.concatMapTo = concatMapTo;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   interface Observable<T> {
     concatMapTo: typeof concatMapTo;
   }

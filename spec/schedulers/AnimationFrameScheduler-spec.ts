@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../../dist/package/Rx';
+import * as Rx from '../../src/Rx';
 
 const animationFrame = Rx.Scheduler.animationFrame;
 
@@ -25,7 +25,7 @@ describe('Scheduler.animationFrame', () => {
     sandbox.restore();
   });
 
-  it('should cancel animationFrame actions when delay > 0', () => {
+  it('should cancel animationFrame actions when unsubscribed', () => {
     let actionHappened = false;
     const sandbox = sinon.sandbox.create();
     const fakeTimer = sandbox.useFakeTimers();

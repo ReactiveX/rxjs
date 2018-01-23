@@ -1,10 +1,10 @@
 
-import { Observable } from '../../Observable';
-import { observeOn } from '../../operator/observeOn';
+import { Observable } from '../../internal/Observable';
+import { observeOn } from '../../internal/patching/operator/observeOn';
 
 Observable.prototype.observeOn = observeOn;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   interface Observable<T> {
     observeOn: typeof observeOn;
   }

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as Rx from '../../dist/package/Rx';
+import * as Rx from '../../src/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram };
@@ -41,6 +41,19 @@ describe('Observable.prototype.debounce', () => {
     const expected = '----a---c--d--|';
 
     expectObservable(e1.debounce(getTimerSelector(20))).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should support a scalar selector observable', () => {
+
+    // If the selector returns a scalar observable, the debounce operator
+    // should emit the value immediately.
+
+    const e1 =   hot('--a--bc--d----|');
+    const e1subs =   '^             !';
+    const expected = '--a--bc--d----|';
+
+    expectObservable(e1.debounce(() => Rx.Observable.of(0))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -398,5 +411,21 @@ describe('Observable.prototype.debounce', () => {
       }, () => {
         done(new Error('should not be called'));
       });
+  });
+
+  it('should debounce correctly when synchronously reentered', () => {
+    const results = [];
+    const source = new Rx.Subject();
+
+    source.debounce(() => Observable.of(null)).subscribe(value => {
+      results.push(value);
+
+      if (value === 1) {
+        source.next(2);
+      }
+    });
+    source.next(1);
+
+    expect(results).to.deep.equal([1, 2]);
   });
 });

@@ -1,11 +1,9 @@
 import { expect } from 'chai';
-import * as Rx from '../../dist/package/Rx';
-import { subscribeToResult } from '../../dist/package/util/subscribeToResult';
-import { OuterSubscriber } from '../../dist/package/OuterSubscriber';
-import { $$iterator } from '../../dist/package/symbol/iterator';
+import * as Rx from '../../src/Rx';
+import { subscribeToResult } from '../../src/internal/util/subscribeToResult';
+import { OuterSubscriber } from '../../src/internal/OuterSubscriber';
+import { $$iterator } from '../../src/internal/symbol/iterator';
 import $$symbolObservable from 'symbol-observable';
-import { Observable } from '../../dist/package/Observable';
-import { Subject } from '../../dist/package/Subject';
 
 describe('subscribeToResult', () => {
   it('should synchronously complete when subscribe to scalarObservable', () => {
@@ -179,15 +177,5 @@ describe('subscribeToResult', () => {
     });
 
     subscribeToResult(subscriber, null);
-  });
-
-  it('should not swallow exception in inner subscriber', () => {
-    const source = new Subject();
-
-    source.mergeMapTo(Observable.of(1, 2, 3)).subscribe(() => {
-      throw new Error('meh');
-    });
-
-    expect(() => source.next()).to.throw();
   });
 });

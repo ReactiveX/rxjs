@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as Rx from '../../dist/package/Rx';
+import * as Rx from '../../src/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram };
@@ -253,11 +253,6 @@ describe('Observable.prototype.partition', () => {
     expectObservable(result[0], unsub).toBe(expected[0]);
     expectObservable(result[1], unsub).toBe(expected[1]);
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
-  });
-
-  it('should throw without predicate', () => {
-    const e1 = hot('--a-b---a------d----');
-    expect(e1.partition).to.throw();
   });
 
   it('should accept thisArg', () => {

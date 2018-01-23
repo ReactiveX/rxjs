@@ -20,8 +20,8 @@ Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Exten
 
 ## Versions In This Repository
 
-- [master](https://github.com/ReactiveX/rxjs/commits/master) - commits that will be included in the next _minor_ or _patch_ release
-- [next](https://github.com/ReactiveX/rxjs/commits/next) - commits that will be included in the next _major_ release (breaking changes)
+- [master](https://github.com/ReactiveX/rxjs/commits/master) - commits that will be included in the next _major_ release (breaking changes)
+- [next](https://github.com/ReactiveX/rxjs/commits/stable) - commits that will be included in the next _minor_ or _patch_ release
 
 Most PRs should be made to **master**, unless you know it is a breaking change.
 
@@ -125,7 +125,7 @@ npm install @reactivex/rxjs@5.0.0
 ### CDN
 
 For CDN, you can use [unpkg](https://unpkg.com/):
-  
+
 https://unpkg.com/rxjs/bundles/Rx.min.js
 
 #### Node.js Usage:
@@ -153,11 +153,10 @@ The build and test structure is fairly primitive at the moment. There are variou
 - build_amd: Transpiles the ES6 files from `dist/es6` to `dist/amd`
 - build_global: Transpiles/Bundles the CommonJS files from `dist/cjs` to `dist/global/Rx.js`
 - build_all: Performs all of the above in the proper order.
-- build_test: builds ES6, then CommonJS, then runs the tests with `jasmine`
 - build_perf: builds ES6, CommonJS, then global, then runs the performance tests with `protractor`
 - build_docs: generates API documentation from `dist/es6` to `dist/docs`
 - build_cover: runs `istanbul` code coverage against test cases
-- test: runs tests with `jasmine`, must have built prior to running.
+- test: runs tests with `mocha`
 - tests2png: generates PNG marble diagrams from test cases.
 
 `npm run info` will list available script.
@@ -172,7 +171,8 @@ npm run build_all
 ## Performance Tests
 
 Run `npm run build_perf` or `npm run perf` to run the performance tests with `protractor`.
-Run `npm run perf_micro` to run micro performance test benchmarking operator.
+
+Run `npm run perf_micro [operator]` to run micro performance test benchmarking operator.
 
 ## Adding documentation
 RxNext uses [ESDoc](https://esdoc.org/) to generate API documentation. Refer to ESDoc's documentation for syntax. Run `npm run build_docs` to generate.

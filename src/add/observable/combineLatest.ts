@@ -1,9 +1,9 @@
-import { Observable } from '../../Observable';
-import { combineLatest as combineLatestStatic } from '../../observable/combineLatest';
+import { Observable } from '../../internal/Observable';
+import { combineLatest as combineLatestStatic } from '../../internal/observable/combineLatest';
 
 Observable.combineLatest = combineLatestStatic;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   namespace Observable {
     export let combineLatest: typeof combineLatestStatic;
   }

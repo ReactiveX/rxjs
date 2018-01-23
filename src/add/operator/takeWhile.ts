@@ -1,10 +1,10 @@
 
-import { Observable } from '../../Observable';
-import { takeWhile } from '../../operator/takeWhile';
+import { Observable } from '../../internal/Observable';
+import { takeWhile } from '../../internal/patching/operator/takeWhile';
 
 Observable.prototype.takeWhile = takeWhile;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   interface Observable<T> {
     takeWhile: typeof takeWhile;
   }

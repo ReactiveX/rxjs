@@ -1,9 +1,9 @@
-import { Observable } from '../../Observable';
-import { range as staticRange } from '../../observable/range';
+import { Observable } from '../../internal/Observable';
+import { range as staticRange } from '../../internal/observable/range';
 
 Observable.range = staticRange;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   namespace Observable {
     export let range: typeof staticRange;
   }

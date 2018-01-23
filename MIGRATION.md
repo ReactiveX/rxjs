@@ -106,7 +106,6 @@ enabling "composite" subscription behavior.
 |`selectMany(observable)`|`mergeMapTo(observable)`|
 |`selectManyObserver` or `flatMapObserver`|No longer implemented|
 |`select`|`map`|
-|`shareReplay`|`publishReplay().refCount()`|
 |`shareValue`|No longer implemented|
 |`singleInstance`|`share`|
 |`skipLastWithTime`|No longer implemented|

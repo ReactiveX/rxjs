@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as Rx from '../../dist/package/Rx';
+import * as Rx from '../../src/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram, type };
@@ -457,17 +457,15 @@ describe('Observable.prototype.mergeMapTo', () => {
     expect(completed).to.be.true;
   });
 
-  it('should support type signatures', () => {
-    type(() => {
-      let o: Rx.Observable<number>;
-      let m: Rx.Observable<string>;
+  type('should support type signatures', () => {
+    let o: Rx.Observable<number>;
+    let m: Rx.Observable<string>;
 
-      /* tslint:disable:no-unused-variable */
-      let a1: Rx.Observable<string> = o.mergeMapTo(m);
-      let a2: Rx.Observable<string> = o.mergeMapTo(m, 3);
-      let a3: Rx.Observable<{ o: number; i: string; }> = o.mergeMapTo(m, (o, i) => ({ o, i }));
-      let a4: Rx.Observable<{ o: number; i: string; }> = o.mergeMapTo(m, (o, i) => ({ o, i }), 3);
-      /* tslint:enable:no-unused-variable */
-    });
+    /* tslint:disable:no-unused-variable */
+    let a1: Rx.Observable<string> = o.mergeMapTo(m);
+    let a2: Rx.Observable<string> = o.mergeMapTo(m, 3);
+    let a3: Rx.Observable<{ o: number; i: string; }> = o.mergeMapTo(m, (o, i) => ({ o, i }));
+    let a4: Rx.Observable<{ o: number; i: string; }> = o.mergeMapTo(m, (o, i) => ({ o, i }), 3);
+    /* tslint:enable:no-unused-variable */
   });
 });
