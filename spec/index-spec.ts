@@ -27,7 +27,7 @@ describe('index', () => {
     expect(index.Notification).to.exist;
   });
 
-  it('should export the pipe utility', () => {
+  it('should export the appropriate utilities', () => {
     expect(index.pipe).to.exist;
     expect(index.noop).to.exist;
     expect(index.identity).to.exist;
