@@ -1,6 +1,10 @@
 import { Observable } from '../Observable';
 import { IScheduler } from '../Scheduler';
 
+/**
+ * The same Observable instance returned by any call to {@link empty} without a
+ * {@link Scheduler}. It is preferrable to use this over `empty()`.
+ */
 export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
 
 /**

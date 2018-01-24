@@ -32,4 +32,8 @@ describe('index', () => {
     expect(index.noop).to.exist;
     expect(index.identity).to.exist;
   });
+
+  it('should export constants', () => {
+    expect(index.EMPTY).to.exist;
+  });
 });
