@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/last-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObservableInputDoc.html">ObservableInput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SubscribableOrPromiseDoc.html">SubscribableOrPromise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~TeardownLogicDoc.html">TeardownLogic</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Symbol">Rx.Symbol</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxTimeoutError.html">AjaxTimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html">AjaxRequest</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operators</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operators/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-catchError">catchError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-tap">tap</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/scheduler/Action.js~Action.html">Action</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animationFrame">animationFrame</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asap">asap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-async">async</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-queue">queue</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$iterator">$$iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$observable">$$observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/TimeoutError.js~TimeoutError.html">TimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/last-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var chai_1 = require(&apos;chai&apos;);
+var Rx = require(&apos;../../dist/package/Rx&apos;);
+var Observable = Rx.Observable;
+/** @test {last} */
+describe(&apos;Observable.prototype.last&apos;, function () {
+    asDiagram(&apos;last&apos;)(&apos;should take the last value of an observable&apos;, function () {
+        var e1 = hot(&apos;--a----b--c--|&apos;);
+        var e1subs = &apos;^            !&apos;;
+        var expected = &apos;-------------(c|)&apos;;
+        expectObservable(e1.last()).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should error on nothing sent but completed&apos;, function () {
+        var e1 = hot(&apos;--a--^----|&apos;);
+        var e1subs = &apos;^    !&apos;;
+        var expected = &apos;-----#&apos;;
+        expectObservable(e1.last()).toBe(expected, null, new Rx.EmptyError());
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should error on empty&apos;, function () {
+        var e1 = cold(&apos;|&apos;);
+        var e1subs = &apos;(^!)&apos;;
+        var expected = &apos;#&apos;;
+        expectObservable(e1.last()).toBe(expected, null, new Rx.EmptyError());
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should go on forever on never&apos;, function () {
+        var e1 = cold(&apos;-&apos;);
+        var e1subs = &apos;^&apos;;
+        var expected = &apos;-&apos;;
+        expectObservable(e1.last()).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should return last element matches with predicate&apos;, function () {
+        var e1 = hot(&apos;--a--b--a--b--|&apos;);
+        var e1subs = &apos;^             !&apos;;
+        var expected = &apos;--------------(b|)&apos;;
+        var predicate = function (value) {
+            return value === &apos;b&apos;;
+        };
+        expectObservable(e1.last(predicate)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should allow unsubscribing explicitly and early&apos;, function () {
+        var e1 = hot(&apos;--a--b--c--d--|&apos;);
+        var unsub = &apos;       !       &apos;;
+        var e1subs = &apos;^      !       &apos;;
+        var expected = &apos;--------       &apos;;
+        expectObservable(e1.last(), unsub).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should not break unsubscription chains when result is unsubscribed explicitly&apos;, function () {
+        var e1 = hot(&apos;--a--b--c--d--|&apos;);
+        var e1subs = &apos;^      !       &apos;;
+        var expected = &apos;--------       &apos;;
+        var unsub = &apos;       !       &apos;;
+        var result = e1
+            .mergeMap(function (x) { return Rx.Observable.of(x); })
+            .last()
+            .mergeMap(function (x) { return Rx.Observable.of(x); });
+        expectObservable(result, unsub).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should return a default value if no element found&apos;, function () {
+        var e1 = cold(&apos;|&apos;);
+        var e1subs = &apos;(^!)&apos;;
+        var expected = &apos;(a|)&apos;;
+        expectObservable(e1.last(null, null, &apos;a&apos;)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should not return default value if an element is found&apos;, function () {
+        var e1 = hot(&apos;--a---^---b---c---d---|&apos;);
+        var e1subs = &apos;^               !&apos;;
+        var expected = &apos;----------------(d|)&apos;;
+        expectObservable(e1.last(null, null, &apos;x&apos;)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should support a result selector argument&apos;, function () {
+        var e1 = hot(&apos;--a--^---b---c---d---e--|&apos;);
+        var e1subs = &apos;^                  !&apos;;
+        var expected = &apos;-------------------(x|)&apos;;
+        var predicate = function (x) { return x === &apos;c&apos;; };
+        var resultSelector = function (x, i) {
+            chai_1.expect(i).to.equal(1);
+            chai_1.expect(x).to.equal(&apos;c&apos;);
+            return &apos;x&apos;;
+        };
+        expectObservable(e1.last(predicate, resultSelector)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should raise error when predicate throws&apos;, function () {
+        var e1 = hot(&apos;--a--^---b---c---d---e--|&apos;);
+        var e1subs = &apos;^       !           &apos;;
+        var expected = &apos;--------#           &apos;;
+        var predicate = function (x) {
+            if (x === &apos;c&apos;) {
+                throw &apos;error&apos;;
+            }
+            else {
+                return false;
+            }
+        };
+        expectObservable(e1.last(predicate)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should raise error when result selector throws&apos;, function () {
+        var e1 = hot(&apos;--a--^---b---c---d---e--|&apos;);
+        var e1subs = &apos;^       !           &apos;;
+        var expected = &apos;--------#           &apos;;
+        var predicate = function (x) { return x === &apos;c&apos;; };
+        var resultSelector = function (x, i) {
+            throw &apos;error&apos;;
+        };
+        expectObservable(e1.last(predicate, resultSelector)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should support type guards without breaking previous behavior&apos;, function () {
+        // tslint:disable no-unused-variable
+        // type guards with interfaces and classes
+        {
+            var Foo = (function () {
+                function Foo(bar, baz) {
+                    if (bar === void 0) { bar = &apos;name&apos;; }
+                    if (baz === void 0) { baz = 42; }
+                    this.bar = bar;
+                    this.baz = baz;
+                }
+                return Foo;
+            }());
+            var isBar = function (x) { return x &amp;&amp; x.bar !== undefined; };
+            var isBaz = function (x) { return x &amp;&amp; x.baz !== undefined; };
+            var foo = new Foo();
+            Observable.of(foo).last()
+                .subscribe(function (x) { return x.baz; }); // x is Foo
+            Observable.of(foo).last(function (foo) { return foo.bar === &apos;name&apos;; })
+                .subscribe(function (x) { return x.baz; }); // x is still Foo
+            Observable.of(foo).last(isBar)
+                .subscribe(function (x) { return x.bar; }); // x is Bar!
+            var foobar = new Foo(); // type is the interface, not the class
+            Observable.of(foobar).last()
+                .subscribe(function (x) { return x.bar; }); // x is Bar
+            Observable.of(foobar).last(function (foobar) { return foobar.bar === &apos;name&apos;; })
+                .subscribe(function (x) { return x.bar; }); // x is still Bar
+            Observable.of(foobar).last(isBaz)
+                .subscribe(function (x) { return x.baz; }); // x is Baz!
+            var barish = { bar: &apos;quack&apos;, baz: 42 }; // type can quack like a Bar
+            Observable.of(barish).last()
+                .subscribe(function (x) { return x.baz; }); // x is still { bar: string; baz: number; }
+            Observable.of(barish).last(function (x) { return x.bar === &apos;quack&apos;; })
+                .subscribe(function (x) { return x.bar; }); // x is still { bar: string; baz: number; }
+            Observable.of(barish).last(isBar)
+                .subscribe(function (x) { return x.bar; }); // x is Bar!
+        }
+        // type guards with primitive types
+        {
+            var xs = Observable.from([1, &apos;aaa&apos;, 3, &apos;bb&apos;]);
+            // This type guard will narrow a `string | number` to a string in the examples below
+            var isString = function (x) { return typeof x === &apos;string&apos;; };
+            // missing predicate preserves the type
+            xs.last().subscribe(function (x) { return x; }); // x is still string | number
+            // After the type guard `last` predicates, the type is narrowed to string
+            xs.last(isString)
+                .subscribe(function (s) { return s.length; }); // s is string
+            xs.last(isString, function (s) { return s.substr(0); }) // s is string in predicate
+                .subscribe(function (s) { return s.length; }); // s is string
+            // boolean predicates preserve the type
+            xs.last(function (x) { return typeof x === &apos;string&apos;; })
+                .subscribe(function (x) { return x; }); // x is still string | number
+            xs.last(function (x) { return !!x; }, function (x) { return x; })
+                .subscribe(function (x) { return x; }); // x is still string | number
+            xs.last(function (x) { return typeof x === &apos;string&apos;; }, function (x) { return x; }, &apos;&apos;) // default is string; x remains string | number
+                .subscribe(function (x) { return x; }); // x is still string | number
+            // `last` still uses the `resultSelector` return type, if it exists.
+            xs.last(function (x) { return typeof x === &apos;string&apos;; }, function (x) { return ({ str: &quot;&quot; + x }); }) // x remains string | number
+                .subscribe(function (o) { return o.str; }); // o is { str: string }
+            xs.last(function (x) { return typeof x === &apos;string&apos;; }, function (x) { return ({ str: &quot;&quot; + x }); }, { str: &apos;&apos; })
+                .subscribe(function (o) { return o.str; }); // o is { str: string }
+        }
+        // tslint:disable enable
+    });
+});
+//# sourceMappingURL=last-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

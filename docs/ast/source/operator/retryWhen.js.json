@@ -1,0 +1,452 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              22,
+              33
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 22
+              },
+              "end": {
+                "line": 1,
+                "column": 33
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "retryWhen",
+            "range": [
+              9,
+              18
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 18
+              }
+            }
+          },
+          "range": [
+            9,
+            33
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 33
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/retryWhen",
+        "raw": "'../operators/retryWhen'",
+        "range": [
+          41,
+          65
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 41
+          },
+          "end": {
+            "line": 1,
+            "column": 65
+          }
+        }
+      },
+      "range": [
+        0,
+        66
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 66
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable\n * calls `error`, this method will emit the Throwable that caused the error to the Observable returned from `notifier`.\n * If that Observable calls `complete` or `error` then this method will call `complete` or `error` on the child\n * subscription. Otherwise this method will resubscribe to the source Observable.\n *\n * <img src=\"./img/retryWhen.png\" width=\"100%\">\n *\n * @param {function(errors: Observable): Observable} notifier - Receives an Observable of notifications with which a\n * user can `complete` or `error`, aborting the retry.\n * @return {Observable} The source Observable modified with retry logic.\n * @method retryWhen\n * @owner Observable\n ",
+          "range": [
+            67,
+            848
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 15,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "retryWhen",
+          "range": [
+            865,
+            874
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 16
+            },
+            "end": {
+              "line": 16,
+              "column": 25
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "notifier",
+            "range": [
+              875,
+              883
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 26
+              },
+              "end": {
+                "line": 16,
+                "column": 34
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      898,
+                      909
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 17,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 17,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "notifier",
+                      "range": [
+                        910,
+                        918
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 17,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 17,
+                          "column": 31
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    898,
+                    919
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 17,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 17,
+                      "column": 32
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      920,
+                      924
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 17,
+                        "column": 33
+                      },
+                      "end": {
+                        "line": 17,
+                        "column": 37
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  898,
+                  925
+                ],
+                "loc": {
+                  "start": {
+                    "line": 17,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 17,
+                    "column": 38
+                  }
+                }
+              },
+              "range": [
+                891,
+                926
+              ],
+              "loc": {
+                "start": {
+                  "line": 17,
+                  "column": 4
+                },
+                "end": {
+                  "line": 17,
+                  "column": 39
+                }
+              }
+            }
+          ],
+          "range": [
+            885,
+            928
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 36
+            },
+            "end": {
+              "line": 18,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          856,
+          928
+        ],
+        "loc": {
+          "start": {
+            "line": 16,
+            "column": 7
+          },
+          "end": {
+            "line": 18,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable\n * calls `error`, this method will emit the Throwable that caused the error to the Observable returned from `notifier`.\n * If that Observable calls `complete` or `error` then this method will call `complete` or `error` on the child\n * subscription. Otherwise this method will resubscribe to the source Observable.\n *\n * <img src=\"./img/retryWhen.png\" width=\"100%\">\n *\n * @param {function(errors: Observable): Observable} notifier - Receives an Observable of notifications with which a\n * user can `complete` or `error`, aborting the retry.\n * @return {Observable} The source Observable modified with retry logic.\n * @method retryWhen\n * @owner Observable\n ",
+            "range": [
+              67,
+              848
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 15,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=retryWhen.js.map",
+            "range": [
+              929,
+              966
+            ],
+            "loc": {
+              "start": {
+                "line": 19,
+                "column": 0
+              },
+              "end": {
+                "line": 19,
+                "column": 37
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        849,
+        928
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 0
+        },
+        "end": {
+          "line": 18,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable\n * calls `error`, this method will emit the Throwable that caused the error to the Observable returned from `notifier`.\n * If that Observable calls `complete` or `error` then this method will call `complete` or `error` on the child\n * subscription. Otherwise this method will resubscribe to the source Observable.\n *\n * <img src=\"./img/retryWhen.png\" width=\"100%\">\n *\n * @param {function(errors: Observable): Observable} notifier - Receives an Observable of notifications with which a\n * user can `complete` or `error`, aborting the retry.\n * @return {Observable} The source Observable modified with retry logic.\n * @method retryWhen\n * @owner Observable\n ",
+          "range": [
+            67,
+            848
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 15,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=retryWhen.js.map",
+          "range": [
+            929,
+            966
+          ],
+          "loc": {
+            "start": {
+              "line": 19,
+              "column": 0
+            },
+            "end": {
+              "line": 19,
+              "column": 37
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    928
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 18,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable\n * calls `error`, this method will emit the Throwable that caused the error to the Observable returned from `notifier`.\n * If that Observable calls `complete` or `error` then this method will call `complete` or `error` on the child\n * subscription. Otherwise this method will resubscribe to the source Observable.\n *\n * <img src=\"./img/retryWhen.png\" width=\"100%\">\n *\n * @param {function(errors: Observable): Observable} notifier - Receives an Observable of notifications with which a\n * user can `complete` or `error`, aborting the retry.\n * @return {Observable} The source Observable modified with retry logic.\n * @method retryWhen\n * @owner Observable\n ",
+      "range": [
+        67,
+        848
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 15,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=retryWhen.js.map",
+      "range": [
+        929,
+        966
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 0
+        },
+        "end": {
+          "line": 19,
+          "column": 37
+        }
+      }
+    }
+  ]
+}

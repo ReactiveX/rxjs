@@ -1,0 +1,614 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "async",
+            "range": [
+              9,
+              14
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 14
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "async",
+            "range": [
+              9,
+              14
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            9,
+            14
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 14
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../scheduler/async",
+        "raw": "'../scheduler/async'",
+        "range": [
+          22,
+          42
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 22
+          },
+          "end": {
+            "line": 1,
+            "column": 42
+          }
+        }
+      },
+      "range": [
+        0,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              64,
+              75
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 20
+              },
+              "end": {
+                "line": 2,
+                "column": 31
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "timeout",
+            "range": [
+              53,
+              60
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 16
+              }
+            }
+          },
+          "range": [
+            53,
+            75
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 9
+            },
+            "end": {
+              "line": 2,
+              "column": 31
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/timeout",
+        "raw": "'../operators/timeout'",
+        "range": [
+          83,
+          105
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 39
+          },
+          "end": {
+            "line": 2,
+            "column": 61
+          }
+        }
+      },
+      "range": [
+        44,
+        106
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 62
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n *\n * Errors if Observable does not emit a value in given time span.\n *\n * <span class=\"informal\">Timeouts on Observable that doesn't emit values fast enough.</span>\n *\n * <img src=\"./img/timeout.png\" width=\"100%\">\n *\n * `timeout` operator accepts as an argument either a number or a Date.\n *\n * If number was provided, it returns an Observable that behaves like a source\n * Observable, unless there is a period of time where there is no value emitted.\n * So if you provide `100` as argument and first value comes after 50ms from\n * the moment of subscription, this value will be simply re-emitted by the resulting\n * Observable. If however after that 100ms passes without a second value being emitted,\n * stream will end with an error and source Observable will be unsubscribed.\n * These checks are performed throughout whole lifecycle of Observable - from the moment\n * it was subscribed to, until it completes or errors itself. Thus every value must be\n * emitted within specified period since previous value.\n *\n * If provided argument was Date, returned Observable behaves differently. It throws\n * if Observable did not complete before provided Date. This means that periods between\n * emission of particular values do not matter in this case. If Observable did not complete\n * before provided Date, source Observable will be unsubscribed. Other than that, resulting\n * stream behaves just as source Observable.\n *\n * `timeout` accepts also a Scheduler as a second parameter. It is used to schedule moment (or moments)\n * when returned Observable will check if source stream emitted value or completed.\n *\n * @example <caption>Check if ticks are emitted within certain timespan</caption>\n * const seconds = Rx.Observable.interval(1000);\n *\n * seconds.timeout(1100) // Let's use bigger timespan to be safe,\n *                       // since `interval` might fire a bit later then scheduled.\n * .subscribe(\n *     value => console.log(value), // Will emit numbers just as regular `interval` would.\n *     err => console.log(err) // Will never be called.\n * );\n *\n * seconds.timeout(900).subscribe(\n *     value => console.log(value), // Will never be called.\n *     err => console.log(err) // Will emit error before even first value is emitted,\n *                             // since it did not arrive within 900ms period.\n * );\n *\n * @example <caption>Use Date to check if Observable completed</caption>\n * const seconds = Rx.Observable.interval(1000);\n *\n * seconds.timeout(new Date(\"December 17, 2020 03:24:00\"))\n * .subscribe(\n *     value => console.log(value), // Will emit values as regular `interval` would\n *                                  // until December 17, 2020 at 03:24:00.\n *     err => console.log(err) // On December 17, 2020 at 03:24:00 it will emit an error,\n *                             // since Observable did not complete by then.\n * );\n *\n * @see {@link timeoutWith}\n *\n * @param {number|Date} due Number specifying period within which Observable must emit values\n *                          or Date specifying before when Observable should complete\n * @param {Scheduler} [scheduler] Scheduler controlling when timeout checks occur.\n * @return {Observable<T>} Observable that mirrors behaviour of source, unless timeout checks fail.\n * @method timeout\n * @owner Observable\n ",
+          "range": [
+            107,
+            3420
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 67,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "timeout",
+          "range": [
+            3437,
+            3444
+          ],
+          "loc": {
+            "start": {
+              "line": 68,
+              "column": 16
+            },
+            "end": {
+              "line": 68,
+              "column": 23
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "due",
+            "range": [
+              3445,
+              3448
+            ],
+            "loc": {
+              "start": {
+                "line": 68,
+                "column": 24
+              },
+              "end": {
+                "line": 68,
+                "column": 27
+              }
+            }
+          },
+          {
+            "type": "AssignmentPattern",
+            "left": {
+              "type": "Identifier",
+              "name": "scheduler",
+              "range": [
+                3450,
+                3459
+              ],
+              "loc": {
+                "start": {
+                  "line": 68,
+                  "column": 29
+                },
+                "end": {
+                  "line": 68,
+                  "column": 38
+                }
+              }
+            },
+            "right": {
+              "type": "Identifier",
+              "name": "async",
+              "range": [
+                3462,
+                3467
+              ],
+              "loc": {
+                "start": {
+                  "line": 68,
+                  "column": 41
+                },
+                "end": {
+                  "line": 68,
+                  "column": 46
+                }
+              }
+            },
+            "range": [
+              3450,
+              3467
+            ],
+            "loc": {
+              "start": {
+                "line": 68,
+                "column": 29
+              },
+              "end": {
+                "line": 68,
+                "column": 46
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      3482,
+                      3493
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 69,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 69,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "due",
+                      "range": [
+                        3494,
+                        3497
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 69,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 69,
+                          "column": 26
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "scheduler",
+                      "range": [
+                        3499,
+                        3508
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 69,
+                          "column": 28
+                        },
+                        "end": {
+                          "line": 69,
+                          "column": 37
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    3482,
+                    3509
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 69,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 69,
+                      "column": 38
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      3510,
+                      3514
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 69,
+                        "column": 39
+                      },
+                      "end": {
+                        "line": 69,
+                        "column": 43
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  3482,
+                  3515
+                ],
+                "loc": {
+                  "start": {
+                    "line": 69,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 69,
+                    "column": 44
+                  }
+                }
+              },
+              "range": [
+                3475,
+                3516
+              ],
+              "loc": {
+                "start": {
+                  "line": 69,
+                  "column": 4
+                },
+                "end": {
+                  "line": 69,
+                  "column": 45
+                }
+              }
+            }
+          ],
+          "range": [
+            3469,
+            3518
+          ],
+          "loc": {
+            "start": {
+              "line": 68,
+              "column": 48
+            },
+            "end": {
+              "line": 70,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          3428,
+          3518
+        ],
+        "loc": {
+          "start": {
+            "line": 68,
+            "column": 7
+          },
+          "end": {
+            "line": 70,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n *\n * Errors if Observable does not emit a value in given time span.\n *\n * <span class=\"informal\">Timeouts on Observable that doesn't emit values fast enough.</span>\n *\n * <img src=\"./img/timeout.png\" width=\"100%\">\n *\n * `timeout` operator accepts as an argument either a number or a Date.\n *\n * If number was provided, it returns an Observable that behaves like a source\n * Observable, unless there is a period of time where there is no value emitted.\n * So if you provide `100` as argument and first value comes after 50ms from\n * the moment of subscription, this value will be simply re-emitted by the resulting\n * Observable. If however after that 100ms passes without a second value being emitted,\n * stream will end with an error and source Observable will be unsubscribed.\n * These checks are performed throughout whole lifecycle of Observable - from the moment\n * it was subscribed to, until it completes or errors itself. Thus every value must be\n * emitted within specified period since previous value.\n *\n * If provided argument was Date, returned Observable behaves differently. It throws\n * if Observable did not complete before provided Date. This means that periods between\n * emission of particular values do not matter in this case. If Observable did not complete\n * before provided Date, source Observable will be unsubscribed. Other than that, resulting\n * stream behaves just as source Observable.\n *\n * `timeout` accepts also a Scheduler as a second parameter. It is used to schedule moment (or moments)\n * when returned Observable will check if source stream emitted value or completed.\n *\n * @example <caption>Check if ticks are emitted within certain timespan</caption>\n * const seconds = Rx.Observable.interval(1000);\n *\n * seconds.timeout(1100) // Let's use bigger timespan to be safe,\n *                       // since `interval` might fire a bit later then scheduled.\n * .subscribe(\n *     value => console.log(value), // Will emit numbers just as regular `interval` would.\n *     err => console.log(err) // Will never be called.\n * );\n *\n * seconds.timeout(900).subscribe(\n *     value => console.log(value), // Will never be called.\n *     err => console.log(err) // Will emit error before even first value is emitted,\n *                             // since it did not arrive within 900ms period.\n * );\n *\n * @example <caption>Use Date to check if Observable completed</caption>\n * const seconds = Rx.Observable.interval(1000);\n *\n * seconds.timeout(new Date(\"December 17, 2020 03:24:00\"))\n * .subscribe(\n *     value => console.log(value), // Will emit values as regular `interval` would\n *                                  // until December 17, 2020 at 03:24:00.\n *     err => console.log(err) // On December 17, 2020 at 03:24:00 it will emit an error,\n *                             // since Observable did not complete by then.\n * );\n *\n * @see {@link timeoutWith}\n *\n * @param {number|Date} due Number specifying period within which Observable must emit values\n *                          or Date specifying before when Observable should complete\n * @param {Scheduler} [scheduler] Scheduler controlling when timeout checks occur.\n * @return {Observable<T>} Observable that mirrors behaviour of source, unless timeout checks fail.\n * @method timeout\n * @owner Observable\n ",
+            "range": [
+              107,
+              3420
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 67,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=timeout.js.map",
+            "range": [
+              3519,
+              3554
+            ],
+            "loc": {
+              "start": {
+                "line": 71,
+                "column": 0
+              },
+              "end": {
+                "line": 71,
+                "column": 35
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        3421,
+        3518
+      ],
+      "loc": {
+        "start": {
+          "line": 68,
+          "column": 0
+        },
+        "end": {
+          "line": 70,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n *\n * Errors if Observable does not emit a value in given time span.\n *\n * <span class=\"informal\">Timeouts on Observable that doesn't emit values fast enough.</span>\n *\n * <img src=\"./img/timeout.png\" width=\"100%\">\n *\n * `timeout` operator accepts as an argument either a number or a Date.\n *\n * If number was provided, it returns an Observable that behaves like a source\n * Observable, unless there is a period of time where there is no value emitted.\n * So if you provide `100` as argument and first value comes after 50ms from\n * the moment of subscription, this value will be simply re-emitted by the resulting\n * Observable. If however after that 100ms passes without a second value being emitted,\n * stream will end with an error and source Observable will be unsubscribed.\n * These checks are performed throughout whole lifecycle of Observable - from the moment\n * it was subscribed to, until it completes or errors itself. Thus every value must be\n * emitted within specified period since previous value.\n *\n * If provided argument was Date, returned Observable behaves differently. It throws\n * if Observable did not complete before provided Date. This means that periods between\n * emission of particular values do not matter in this case. If Observable did not complete\n * before provided Date, source Observable will be unsubscribed. Other than that, resulting\n * stream behaves just as source Observable.\n *\n * `timeout` accepts also a Scheduler as a second parameter. It is used to schedule moment (or moments)\n * when returned Observable will check if source stream emitted value or completed.\n *\n * @example <caption>Check if ticks are emitted within certain timespan</caption>\n * const seconds = Rx.Observable.interval(1000);\n *\n * seconds.timeout(1100) // Let's use bigger timespan to be safe,\n *                       // since `interval` might fire a bit later then scheduled.\n * .subscribe(\n *     value => console.log(value), // Will emit numbers just as regular `interval` would.\n *     err => console.log(err) // Will never be called.\n * );\n *\n * seconds.timeout(900).subscribe(\n *     value => console.log(value), // Will never be called.\n *     err => console.log(err) // Will emit error before even first value is emitted,\n *                             // since it did not arrive within 900ms period.\n * );\n *\n * @example <caption>Use Date to check if Observable completed</caption>\n * const seconds = Rx.Observable.interval(1000);\n *\n * seconds.timeout(new Date(\"December 17, 2020 03:24:00\"))\n * .subscribe(\n *     value => console.log(value), // Will emit values as regular `interval` would\n *                                  // until December 17, 2020 at 03:24:00.\n *     err => console.log(err) // On December 17, 2020 at 03:24:00 it will emit an error,\n *                             // since Observable did not complete by then.\n * );\n *\n * @see {@link timeoutWith}\n *\n * @param {number|Date} due Number specifying period within which Observable must emit values\n *                          or Date specifying before when Observable should complete\n * @param {Scheduler} [scheduler] Scheduler controlling when timeout checks occur.\n * @return {Observable<T>} Observable that mirrors behaviour of source, unless timeout checks fail.\n * @method timeout\n * @owner Observable\n ",
+          "range": [
+            107,
+            3420
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 67,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=timeout.js.map",
+          "range": [
+            3519,
+            3554
+          ],
+          "loc": {
+            "start": {
+              "line": 71,
+              "column": 0
+            },
+            "end": {
+              "line": 71,
+              "column": 35
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    3518
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 70,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n *\n * Errors if Observable does not emit a value in given time span.\n *\n * <span class=\"informal\">Timeouts on Observable that doesn't emit values fast enough.</span>\n *\n * <img src=\"./img/timeout.png\" width=\"100%\">\n *\n * `timeout` operator accepts as an argument either a number or a Date.\n *\n * If number was provided, it returns an Observable that behaves like a source\n * Observable, unless there is a period of time where there is no value emitted.\n * So if you provide `100` as argument and first value comes after 50ms from\n * the moment of subscription, this value will be simply re-emitted by the resulting\n * Observable. If however after that 100ms passes without a second value being emitted,\n * stream will end with an error and source Observable will be unsubscribed.\n * These checks are performed throughout whole lifecycle of Observable - from the moment\n * it was subscribed to, until it completes or errors itself. Thus every value must be\n * emitted within specified period since previous value.\n *\n * If provided argument was Date, returned Observable behaves differently. It throws\n * if Observable did not complete before provided Date. This means that periods between\n * emission of particular values do not matter in this case. If Observable did not complete\n * before provided Date, source Observable will be unsubscribed. Other than that, resulting\n * stream behaves just as source Observable.\n *\n * `timeout` accepts also a Scheduler as a second parameter. It is used to schedule moment (or moments)\n * when returned Observable will check if source stream emitted value or completed.\n *\n * @example <caption>Check if ticks are emitted within certain timespan</caption>\n * const seconds = Rx.Observable.interval(1000);\n *\n * seconds.timeout(1100) // Let's use bigger timespan to be safe,\n *                       // since `interval` might fire a bit later then scheduled.\n * .subscribe(\n *     value => console.log(value), // Will emit numbers just as regular `interval` would.\n *     err => console.log(err) // Will never be called.\n * );\n *\n * seconds.timeout(900).subscribe(\n *     value => console.log(value), // Will never be called.\n *     err => console.log(err) // Will emit error before even first value is emitted,\n *                             // since it did not arrive within 900ms period.\n * );\n *\n * @example <caption>Use Date to check if Observable completed</caption>\n * const seconds = Rx.Observable.interval(1000);\n *\n * seconds.timeout(new Date(\"December 17, 2020 03:24:00\"))\n * .subscribe(\n *     value => console.log(value), // Will emit values as regular `interval` would\n *                                  // until December 17, 2020 at 03:24:00.\n *     err => console.log(err) // On December 17, 2020 at 03:24:00 it will emit an error,\n *                             // since Observable did not complete by then.\n * );\n *\n * @see {@link timeoutWith}\n *\n * @param {number|Date} due Number specifying period within which Observable must emit values\n *                          or Date specifying before when Observable should complete\n * @param {Scheduler} [scheduler] Scheduler controlling when timeout checks occur.\n * @return {Observable<T>} Observable that mirrors behaviour of source, unless timeout checks fail.\n * @method timeout\n * @owner Observable\n ",
+      "range": [
+        107,
+        3420
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 67,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=timeout.js.map",
+      "range": [
+        3519,
+        3554
+      ],
+      "loc": {
+        "start": {
+          "line": 71,
+          "column": 0
+        },
+        "end": {
+          "line": 71,
+          "column": 35
+        }
+      }
+    }
+  ]
+}

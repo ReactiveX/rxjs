@@ -1,0 +1,560 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              24,
+              35
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 24
+              },
+              "end": {
+                "line": 1,
+                "column": 35
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "switchMapTo",
+            "range": [
+              9,
+              20
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 20
+              }
+            }
+          },
+          "range": [
+            9,
+            35
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 35
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/switchMapTo",
+        "raw": "'../operators/switchMapTo'",
+        "range": [
+          43,
+          69
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 43
+          },
+          "end": {
+            "line": 1,
+            "column": 69
+          }
+        }
+      },
+      "range": [
+        0,
+        70
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 70
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": " tslint:enable:max-line-length ",
+          "range": [
+            71,
+            106
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 35
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Projects each source value to the same Observable which is flattened multiple\n * times with {@link switch} in the output Observable.\n *\n * <span class=\"informal\">It's like {@link switchMap}, but maps each value\n * always to the same inner Observable.</span>\n *\n * <img src=\"./img/switchMapTo.png\" width=\"100%\">\n *\n * Maps each source value to the given Observable `innerObservable` regardless\n * of the source value, and then flattens those resulting Observables into one\n * single Observable, which is the output Observable. The output Observables\n * emits values only from the most recently emitted instance of\n * `innerObservable`.\n *\n * @example <caption>Rerun an interval Observable on every click event</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.switchMapTo(Rx.Observable.interval(1000));\n * result.subscribe(x => console.log(x));\n *\n * @see {@link concatMapTo}\n * @see {@link switch}\n * @see {@link switchMap}\n * @see {@link mergeMapTo}\n *\n * @param {ObservableInput} innerObservable An Observable to replace each value from\n * the source Observable.\n * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]\n * A function to produce the value on the output Observable based on the values\n * and the indices of the source (outer) emission and the inner Observable\n * emission. The arguments passed to this function are:\n * - `outerValue`: the value that came from the source\n * - `innerValue`: the value that came from the projected Observable\n * - `outerIndex`: the \"index\" of the value that came from the source\n * - `innerIndex`: the \"index\" of the value from the projected Observable\n * @return {Observable} An Observable that emits items from the given\n * `innerObservable` (and optionally transformed through `resultSelector`) every\n * time a value is emitted on the source Observable, and taking only the values\n * from the most recently projected inner Observable.\n * @method switchMapTo\n * @owner Observable\n ",
+          "range": [
+            107,
+            2146
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 44,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "switchMapTo",
+          "range": [
+            2163,
+            2174
+          ],
+          "loc": {
+            "start": {
+              "line": 45,
+              "column": 16
+            },
+            "end": {
+              "line": 45,
+              "column": 27
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "innerObservable",
+            "range": [
+              2175,
+              2190
+            ],
+            "loc": {
+              "start": {
+                "line": 45,
+                "column": 28
+              },
+              "end": {
+                "line": 45,
+                "column": 43
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "resultSelector",
+            "range": [
+              2192,
+              2206
+            ],
+            "loc": {
+              "start": {
+                "line": 45,
+                "column": 45
+              },
+              "end": {
+                "line": 45,
+                "column": 59
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      2221,
+                      2232
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 46,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 46,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "innerObservable",
+                      "range": [
+                        2233,
+                        2248
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 46,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 46,
+                          "column": 38
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "resultSelector",
+                      "range": [
+                        2250,
+                        2264
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 46,
+                          "column": 40
+                        },
+                        "end": {
+                          "line": 46,
+                          "column": 54
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    2221,
+                    2265
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 46,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 46,
+                      "column": 55
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      2266,
+                      2270
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 46,
+                        "column": 56
+                      },
+                      "end": {
+                        "line": 46,
+                        "column": 60
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2221,
+                  2271
+                ],
+                "loc": {
+                  "start": {
+                    "line": 46,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 46,
+                    "column": 61
+                  }
+                }
+              },
+              "range": [
+                2214,
+                2272
+              ],
+              "loc": {
+                "start": {
+                  "line": 46,
+                  "column": 4
+                },
+                "end": {
+                  "line": 46,
+                  "column": 62
+                }
+              }
+            }
+          ],
+          "range": [
+            2208,
+            2274
+          ],
+          "loc": {
+            "start": {
+              "line": 45,
+              "column": 61
+            },
+            "end": {
+              "line": 47,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          2154,
+          2274
+        ],
+        "loc": {
+          "start": {
+            "line": 45,
+            "column": 7
+          },
+          "end": {
+            "line": 47,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": " tslint:enable:max-line-length ",
+            "range": [
+              71,
+              106
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 2,
+                "column": 35
+              }
+            }
+          },
+          {
+            "type": "Block",
+            "value": "*\n * Projects each source value to the same Observable which is flattened multiple\n * times with {@link switch} in the output Observable.\n *\n * <span class=\"informal\">It's like {@link switchMap}, but maps each value\n * always to the same inner Observable.</span>\n *\n * <img src=\"./img/switchMapTo.png\" width=\"100%\">\n *\n * Maps each source value to the given Observable `innerObservable` regardless\n * of the source value, and then flattens those resulting Observables into one\n * single Observable, which is the output Observable. The output Observables\n * emits values only from the most recently emitted instance of\n * `innerObservable`.\n *\n * @example <caption>Rerun an interval Observable on every click event</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.switchMapTo(Rx.Observable.interval(1000));\n * result.subscribe(x => console.log(x));\n *\n * @see {@link concatMapTo}\n * @see {@link switch}\n * @see {@link switchMap}\n * @see {@link mergeMapTo}\n *\n * @param {ObservableInput} innerObservable An Observable to replace each value from\n * the source Observable.\n * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]\n * A function to produce the value on the output Observable based on the values\n * and the indices of the source (outer) emission and the inner Observable\n * emission. The arguments passed to this function are:\n * - `outerValue`: the value that came from the source\n * - `innerValue`: the value that came from the projected Observable\n * - `outerIndex`: the \"index\" of the value that came from the source\n * - `innerIndex`: the \"index\" of the value from the projected Observable\n * @return {Observable} An Observable that emits items from the given\n * `innerObservable` (and optionally transformed through `resultSelector`) every\n * time a value is emitted on the source Observable, and taking only the values\n * from the most recently projected inner Observable.\n * @method switchMapTo\n * @owner Observable\n ",
+            "range": [
+              107,
+              2146
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 44,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=switchMapTo.js.map",
+            "range": [
+              2275,
+              2314
+            ],
+            "loc": {
+              "start": {
+                "line": 48,
+                "column": 0
+              },
+              "end": {
+                "line": 48,
+                "column": 39
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        2147,
+        2274
+      ],
+      "loc": {
+        "start": {
+          "line": 45,
+          "column": 0
+        },
+        "end": {
+          "line": 47,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": " tslint:enable:max-line-length ",
+          "range": [
+            71,
+            106
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 35
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Projects each source value to the same Observable which is flattened multiple\n * times with {@link switch} in the output Observable.\n *\n * <span class=\"informal\">It's like {@link switchMap}, but maps each value\n * always to the same inner Observable.</span>\n *\n * <img src=\"./img/switchMapTo.png\" width=\"100%\">\n *\n * Maps each source value to the given Observable `innerObservable` regardless\n * of the source value, and then flattens those resulting Observables into one\n * single Observable, which is the output Observable. The output Observables\n * emits values only from the most recently emitted instance of\n * `innerObservable`.\n *\n * @example <caption>Rerun an interval Observable on every click event</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.switchMapTo(Rx.Observable.interval(1000));\n * result.subscribe(x => console.log(x));\n *\n * @see {@link concatMapTo}\n * @see {@link switch}\n * @see {@link switchMap}\n * @see {@link mergeMapTo}\n *\n * @param {ObservableInput} innerObservable An Observable to replace each value from\n * the source Observable.\n * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]\n * A function to produce the value on the output Observable based on the values\n * and the indices of the source (outer) emission and the inner Observable\n * emission. The arguments passed to this function are:\n * - `outerValue`: the value that came from the source\n * - `innerValue`: the value that came from the projected Observable\n * - `outerIndex`: the \"index\" of the value that came from the source\n * - `innerIndex`: the \"index\" of the value from the projected Observable\n * @return {Observable} An Observable that emits items from the given\n * `innerObservable` (and optionally transformed through `resultSelector`) every\n * time a value is emitted on the source Observable, and taking only the values\n * from the most recently projected inner Observable.\n * @method switchMapTo\n * @owner Observable\n ",
+          "range": [
+            107,
+            2146
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 44,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=switchMapTo.js.map",
+          "range": [
+            2275,
+            2314
+          ],
+          "loc": {
+            "start": {
+              "line": 48,
+              "column": 0
+            },
+            "end": {
+              "line": 48,
+              "column": 39
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    2274
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 47,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": " tslint:enable:max-line-length ",
+      "range": [
+        71,
+        106
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Projects each source value to the same Observable which is flattened multiple\n * times with {@link switch} in the output Observable.\n *\n * <span class=\"informal\">It's like {@link switchMap}, but maps each value\n * always to the same inner Observable.</span>\n *\n * <img src=\"./img/switchMapTo.png\" width=\"100%\">\n *\n * Maps each source value to the given Observable `innerObservable` regardless\n * of the source value, and then flattens those resulting Observables into one\n * single Observable, which is the output Observable. The output Observables\n * emits values only from the most recently emitted instance of\n * `innerObservable`.\n *\n * @example <caption>Rerun an interval Observable on every click event</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.switchMapTo(Rx.Observable.interval(1000));\n * result.subscribe(x => console.log(x));\n *\n * @see {@link concatMapTo}\n * @see {@link switch}\n * @see {@link switchMap}\n * @see {@link mergeMapTo}\n *\n * @param {ObservableInput} innerObservable An Observable to replace each value from\n * the source Observable.\n * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]\n * A function to produce the value on the output Observable based on the values\n * and the indices of the source (outer) emission and the inner Observable\n * emission. The arguments passed to this function are:\n * - `outerValue`: the value that came from the source\n * - `innerValue`: the value that came from the projected Observable\n * - `outerIndex`: the \"index\" of the value that came from the source\n * - `innerIndex`: the \"index\" of the value from the projected Observable\n * @return {Observable} An Observable that emits items from the given\n * `innerObservable` (and optionally transformed through `resultSelector`) every\n * time a value is emitted on the source Observable, and taking only the values\n * from the most recently projected inner Observable.\n * @method switchMapTo\n * @owner Observable\n ",
+      "range": [
+        107,
+        2146
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 44,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=switchMapTo.js.map",
+      "range": [
+        2275,
+        2314
+      ],
+      "loc": {
+        "start": {
+          "line": 48,
+          "column": 0
+        },
+        "end": {
+          "line": 48,
+          "column": 39
+        }
+      }
+    }
+  ]
+}

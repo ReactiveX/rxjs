@@ -1,0 +1,452 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              22,
+              33
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 22
+              },
+              "end": {
+                "line": 1,
+                "column": 33
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "takeWhile",
+            "range": [
+              9,
+              18
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 18
+              }
+            }
+          },
+          "range": [
+            9,
+            33
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 33
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/takeWhile",
+        "raw": "'../operators/takeWhile'",
+        "range": [
+          41,
+          65
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 41
+          },
+          "end": {
+            "line": 1,
+            "column": 65
+          }
+        }
+      },
+      "range": [
+        0,
+        66
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 66
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Emits values emitted by the source Observable so long as each value satisfies\n * the given `predicate`, and then completes as soon as this `predicate` is not\n * satisfied.\n *\n * <span class=\"informal\">Takes values from the source only while they pass the\n * condition given. When the first value does not satisfy, it completes.</span>\n *\n * <img src=\"./img/takeWhile.png\" width=\"100%\">\n *\n * `takeWhile` subscribes and begins mirroring the source Observable. Each value\n * emitted on the source is given to the `predicate` function which returns a\n * boolean, representing a condition to be satisfied by the source values. The\n * output Observable emits the source values until such time as the `predicate`\n * returns false, at which point `takeWhile` stops mirroring the source\n * Observable and completes the output Observable.\n *\n * @example <caption>Emit click events only while the clientX property is greater than 200</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.takeWhile(ev => ev.clientX > 200);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link take}\n * @see {@link takeLast}\n * @see {@link takeUntil}\n * @see {@link skip}\n *\n * @param {function(value: T, index: number): boolean} predicate A function that\n * evaluates a value emitted by the source Observable and returns a boolean.\n * Also takes the (zero-based) index as the second argument.\n * @return {Observable<T>} An Observable that emits the values from the source\n * Observable so long as each value satisfies the condition defined by the\n * `predicate`, then completes.\n * @method takeWhile\n * @owner Observable\n ",
+          "range": [
+            67,
+            1717
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 37,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "takeWhile",
+          "range": [
+            1734,
+            1743
+          ],
+          "loc": {
+            "start": {
+              "line": 38,
+              "column": 16
+            },
+            "end": {
+              "line": 38,
+              "column": 25
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "predicate",
+            "range": [
+              1744,
+              1753
+            ],
+            "loc": {
+              "start": {
+                "line": 38,
+                "column": 26
+              },
+              "end": {
+                "line": 38,
+                "column": 35
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      1768,
+                      1779
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 39,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 39,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "predicate",
+                      "range": [
+                        1780,
+                        1789
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 39,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 39,
+                          "column": 32
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    1768,
+                    1790
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 39,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 39,
+                      "column": 33
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      1791,
+                      1795
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 39,
+                        "column": 34
+                      },
+                      "end": {
+                        "line": 39,
+                        "column": 38
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1768,
+                  1796
+                ],
+                "loc": {
+                  "start": {
+                    "line": 39,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 39,
+                    "column": 39
+                  }
+                }
+              },
+              "range": [
+                1761,
+                1797
+              ],
+              "loc": {
+                "start": {
+                  "line": 39,
+                  "column": 4
+                },
+                "end": {
+                  "line": 39,
+                  "column": 40
+                }
+              }
+            }
+          ],
+          "range": [
+            1755,
+            1799
+          ],
+          "loc": {
+            "start": {
+              "line": 38,
+              "column": 37
+            },
+            "end": {
+              "line": 40,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1725,
+          1799
+        ],
+        "loc": {
+          "start": {
+            "line": 38,
+            "column": 7
+          },
+          "end": {
+            "line": 40,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Emits values emitted by the source Observable so long as each value satisfies\n * the given `predicate`, and then completes as soon as this `predicate` is not\n * satisfied.\n *\n * <span class=\"informal\">Takes values from the source only while they pass the\n * condition given. When the first value does not satisfy, it completes.</span>\n *\n * <img src=\"./img/takeWhile.png\" width=\"100%\">\n *\n * `takeWhile` subscribes and begins mirroring the source Observable. Each value\n * emitted on the source is given to the `predicate` function which returns a\n * boolean, representing a condition to be satisfied by the source values. The\n * output Observable emits the source values until such time as the `predicate`\n * returns false, at which point `takeWhile` stops mirroring the source\n * Observable and completes the output Observable.\n *\n * @example <caption>Emit click events only while the clientX property is greater than 200</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.takeWhile(ev => ev.clientX > 200);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link take}\n * @see {@link takeLast}\n * @see {@link takeUntil}\n * @see {@link skip}\n *\n * @param {function(value: T, index: number): boolean} predicate A function that\n * evaluates a value emitted by the source Observable and returns a boolean.\n * Also takes the (zero-based) index as the second argument.\n * @return {Observable<T>} An Observable that emits the values from the source\n * Observable so long as each value satisfies the condition defined by the\n * `predicate`, then completes.\n * @method takeWhile\n * @owner Observable\n ",
+            "range": [
+              67,
+              1717
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 37,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=takeWhile.js.map",
+            "range": [
+              1800,
+              1837
+            ],
+            "loc": {
+              "start": {
+                "line": 41,
+                "column": 0
+              },
+              "end": {
+                "line": 41,
+                "column": 37
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1718,
+        1799
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 0
+        },
+        "end": {
+          "line": 40,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Emits values emitted by the source Observable so long as each value satisfies\n * the given `predicate`, and then completes as soon as this `predicate` is not\n * satisfied.\n *\n * <span class=\"informal\">Takes values from the source only while they pass the\n * condition given. When the first value does not satisfy, it completes.</span>\n *\n * <img src=\"./img/takeWhile.png\" width=\"100%\">\n *\n * `takeWhile` subscribes and begins mirroring the source Observable. Each value\n * emitted on the source is given to the `predicate` function which returns a\n * boolean, representing a condition to be satisfied by the source values. The\n * output Observable emits the source values until such time as the `predicate`\n * returns false, at which point `takeWhile` stops mirroring the source\n * Observable and completes the output Observable.\n *\n * @example <caption>Emit click events only while the clientX property is greater than 200</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.takeWhile(ev => ev.clientX > 200);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link take}\n * @see {@link takeLast}\n * @see {@link takeUntil}\n * @see {@link skip}\n *\n * @param {function(value: T, index: number): boolean} predicate A function that\n * evaluates a value emitted by the source Observable and returns a boolean.\n * Also takes the (zero-based) index as the second argument.\n * @return {Observable<T>} An Observable that emits the values from the source\n * Observable so long as each value satisfies the condition defined by the\n * `predicate`, then completes.\n * @method takeWhile\n * @owner Observable\n ",
+          "range": [
+            67,
+            1717
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 37,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=takeWhile.js.map",
+          "range": [
+            1800,
+            1837
+          ],
+          "loc": {
+            "start": {
+              "line": 41,
+              "column": 0
+            },
+            "end": {
+              "line": 41,
+              "column": 37
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1799
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 40,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Emits values emitted by the source Observable so long as each value satisfies\n * the given `predicate`, and then completes as soon as this `predicate` is not\n * satisfied.\n *\n * <span class=\"informal\">Takes values from the source only while they pass the\n * condition given. When the first value does not satisfy, it completes.</span>\n *\n * <img src=\"./img/takeWhile.png\" width=\"100%\">\n *\n * `takeWhile` subscribes and begins mirroring the source Observable. Each value\n * emitted on the source is given to the `predicate` function which returns a\n * boolean, representing a condition to be satisfied by the source values. The\n * output Observable emits the source values until such time as the `predicate`\n * returns false, at which point `takeWhile` stops mirroring the source\n * Observable and completes the output Observable.\n *\n * @example <caption>Emit click events only while the clientX property is greater than 200</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.takeWhile(ev => ev.clientX > 200);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link take}\n * @see {@link takeLast}\n * @see {@link takeUntil}\n * @see {@link skip}\n *\n * @param {function(value: T, index: number): boolean} predicate A function that\n * evaluates a value emitted by the source Observable and returns a boolean.\n * Also takes the (zero-based) index as the second argument.\n * @return {Observable<T>} An Observable that emits the values from the source\n * Observable so long as each value satisfies the condition defined by the\n * `predicate`, then completes.\n * @method takeWhile\n * @owner Observable\n ",
+      "range": [
+        67,
+        1717
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 37,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=takeWhile.js.map",
+      "range": [
+        1800,
+        1837
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 0
+        },
+        "end": {
+          "line": 41,
+          "column": 37
+        }
+      }
+    }
+  ]
+}

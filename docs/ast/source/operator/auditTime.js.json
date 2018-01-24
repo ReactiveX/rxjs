@@ -1,0 +1,614 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "async",
+            "range": [
+              9,
+              14
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 14
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "async",
+            "range": [
+              9,
+              14
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            9,
+            14
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 14
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../scheduler/async",
+        "raw": "'../scheduler/async'",
+        "range": [
+          22,
+          42
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 22
+          },
+          "end": {
+            "line": 1,
+            "column": 42
+          }
+        }
+      },
+      "range": [
+        0,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              66,
+              77
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 22
+              },
+              "end": {
+                "line": 2,
+                "column": 33
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "auditTime",
+            "range": [
+              53,
+              62
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 18
+              }
+            }
+          },
+          "range": [
+            53,
+            77
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 9
+            },
+            "end": {
+              "line": 2,
+              "column": 33
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/auditTime",
+        "raw": "'../operators/auditTime'",
+        "range": [
+          85,
+          109
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 41
+          },
+          "end": {
+            "line": 2,
+            "column": 65
+          }
+        }
+      },
+      "range": [
+        44,
+        110
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 66
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Ignores source values for `duration` milliseconds, then emits the most recent\n * value from the source Observable, then repeats this process.\n *\n * <span class=\"informal\">When it sees a source values, it ignores that plus\n * the next ones for `duration` milliseconds, and then it emits the most recent\n * value from the source.</span>\n *\n * <img src=\"./img/auditTime.png\" width=\"100%\">\n *\n * `auditTime` is similar to `throttleTime`, but emits the last value from the\n * silenced time window, instead of the first value. `auditTime` emits the most\n * recent value from the source Observable on the output Observable as soon as\n * its internal timer becomes disabled, and ignores source values while the\n * timer is enabled. Initially, the timer is disabled. As soon as the first\n * source value arrives, the timer is enabled. After `duration` milliseconds (or\n * the time unit determined internally by the optional `scheduler`) has passed,\n * the timer is disabled, then the most recent source value is emitted on the\n * output Observable, and this process repeats for the next source value.\n * Optionally takes a {@link IScheduler} for managing timers.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.auditTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sampleTime}\n * @see {@link throttleTime}\n *\n * @param {number} duration Time to wait before emitting the most recent source\n * value, measured in milliseconds or the time unit determined internally\n * by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for\n * managing the timers that handle the rate-limiting behavior.\n * @return {Observable<T>} An Observable that performs rate-limiting of\n * emissions from the source Observable.\n * @method auditTime\n * @owner Observable\n ",
+          "range": [
+            111,
+            2118
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 44,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "auditTime",
+          "range": [
+            2135,
+            2144
+          ],
+          "loc": {
+            "start": {
+              "line": 45,
+              "column": 16
+            },
+            "end": {
+              "line": 45,
+              "column": 25
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "duration",
+            "range": [
+              2145,
+              2153
+            ],
+            "loc": {
+              "start": {
+                "line": 45,
+                "column": 26
+              },
+              "end": {
+                "line": 45,
+                "column": 34
+              }
+            }
+          },
+          {
+            "type": "AssignmentPattern",
+            "left": {
+              "type": "Identifier",
+              "name": "scheduler",
+              "range": [
+                2155,
+                2164
+              ],
+              "loc": {
+                "start": {
+                  "line": 45,
+                  "column": 36
+                },
+                "end": {
+                  "line": 45,
+                  "column": 45
+                }
+              }
+            },
+            "right": {
+              "type": "Identifier",
+              "name": "async",
+              "range": [
+                2167,
+                2172
+              ],
+              "loc": {
+                "start": {
+                  "line": 45,
+                  "column": 48
+                },
+                "end": {
+                  "line": 45,
+                  "column": 53
+                }
+              }
+            },
+            "range": [
+              2155,
+              2172
+            ],
+            "loc": {
+              "start": {
+                "line": 45,
+                "column": 36
+              },
+              "end": {
+                "line": 45,
+                "column": 53
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      2187,
+                      2198
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 46,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 46,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "duration",
+                      "range": [
+                        2199,
+                        2207
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 46,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 46,
+                          "column": 31
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "scheduler",
+                      "range": [
+                        2209,
+                        2218
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 46,
+                          "column": 33
+                        },
+                        "end": {
+                          "line": 46,
+                          "column": 42
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    2187,
+                    2219
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 46,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 46,
+                      "column": 43
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      2220,
+                      2224
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 46,
+                        "column": 44
+                      },
+                      "end": {
+                        "line": 46,
+                        "column": 48
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2187,
+                  2225
+                ],
+                "loc": {
+                  "start": {
+                    "line": 46,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 46,
+                    "column": 49
+                  }
+                }
+              },
+              "range": [
+                2180,
+                2226
+              ],
+              "loc": {
+                "start": {
+                  "line": 46,
+                  "column": 4
+                },
+                "end": {
+                  "line": 46,
+                  "column": 50
+                }
+              }
+            }
+          ],
+          "range": [
+            2174,
+            2228
+          ],
+          "loc": {
+            "start": {
+              "line": 45,
+              "column": 55
+            },
+            "end": {
+              "line": 47,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          2126,
+          2228
+        ],
+        "loc": {
+          "start": {
+            "line": 45,
+            "column": 7
+          },
+          "end": {
+            "line": 47,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Ignores source values for `duration` milliseconds, then emits the most recent\n * value from the source Observable, then repeats this process.\n *\n * <span class=\"informal\">When it sees a source values, it ignores that plus\n * the next ones for `duration` milliseconds, and then it emits the most recent\n * value from the source.</span>\n *\n * <img src=\"./img/auditTime.png\" width=\"100%\">\n *\n * `auditTime` is similar to `throttleTime`, but emits the last value from the\n * silenced time window, instead of the first value. `auditTime` emits the most\n * recent value from the source Observable on the output Observable as soon as\n * its internal timer becomes disabled, and ignores source values while the\n * timer is enabled. Initially, the timer is disabled. As soon as the first\n * source value arrives, the timer is enabled. After `duration` milliseconds (or\n * the time unit determined internally by the optional `scheduler`) has passed,\n * the timer is disabled, then the most recent source value is emitted on the\n * output Observable, and this process repeats for the next source value.\n * Optionally takes a {@link IScheduler} for managing timers.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.auditTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sampleTime}\n * @see {@link throttleTime}\n *\n * @param {number} duration Time to wait before emitting the most recent source\n * value, measured in milliseconds or the time unit determined internally\n * by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for\n * managing the timers that handle the rate-limiting behavior.\n * @return {Observable<T>} An Observable that performs rate-limiting of\n * emissions from the source Observable.\n * @method auditTime\n * @owner Observable\n ",
+            "range": [
+              111,
+              2118
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 44,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=auditTime.js.map",
+            "range": [
+              2229,
+              2266
+            ],
+            "loc": {
+              "start": {
+                "line": 48,
+                "column": 0
+              },
+              "end": {
+                "line": 48,
+                "column": 37
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        2119,
+        2228
+      ],
+      "loc": {
+        "start": {
+          "line": 45,
+          "column": 0
+        },
+        "end": {
+          "line": 47,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Ignores source values for `duration` milliseconds, then emits the most recent\n * value from the source Observable, then repeats this process.\n *\n * <span class=\"informal\">When it sees a source values, it ignores that plus\n * the next ones for `duration` milliseconds, and then it emits the most recent\n * value from the source.</span>\n *\n * <img src=\"./img/auditTime.png\" width=\"100%\">\n *\n * `auditTime` is similar to `throttleTime`, but emits the last value from the\n * silenced time window, instead of the first value. `auditTime` emits the most\n * recent value from the source Observable on the output Observable as soon as\n * its internal timer becomes disabled, and ignores source values while the\n * timer is enabled. Initially, the timer is disabled. As soon as the first\n * source value arrives, the timer is enabled. After `duration` milliseconds (or\n * the time unit determined internally by the optional `scheduler`) has passed,\n * the timer is disabled, then the most recent source value is emitted on the\n * output Observable, and this process repeats for the next source value.\n * Optionally takes a {@link IScheduler} for managing timers.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.auditTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sampleTime}\n * @see {@link throttleTime}\n *\n * @param {number} duration Time to wait before emitting the most recent source\n * value, measured in milliseconds or the time unit determined internally\n * by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for\n * managing the timers that handle the rate-limiting behavior.\n * @return {Observable<T>} An Observable that performs rate-limiting of\n * emissions from the source Observable.\n * @method auditTime\n * @owner Observable\n ",
+          "range": [
+            111,
+            2118
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 44,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=auditTime.js.map",
+          "range": [
+            2229,
+            2266
+          ],
+          "loc": {
+            "start": {
+              "line": 48,
+              "column": 0
+            },
+            "end": {
+              "line": 48,
+              "column": 37
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    2228
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 47,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Ignores source values for `duration` milliseconds, then emits the most recent\n * value from the source Observable, then repeats this process.\n *\n * <span class=\"informal\">When it sees a source values, it ignores that plus\n * the next ones for `duration` milliseconds, and then it emits the most recent\n * value from the source.</span>\n *\n * <img src=\"./img/auditTime.png\" width=\"100%\">\n *\n * `auditTime` is similar to `throttleTime`, but emits the last value from the\n * silenced time window, instead of the first value. `auditTime` emits the most\n * recent value from the source Observable on the output Observable as soon as\n * its internal timer becomes disabled, and ignores source values while the\n * timer is enabled. Initially, the timer is disabled. As soon as the first\n * source value arrives, the timer is enabled. After `duration` milliseconds (or\n * the time unit determined internally by the optional `scheduler`) has passed,\n * the timer is disabled, then the most recent source value is emitted on the\n * output Observable, and this process repeats for the next source value.\n * Optionally takes a {@link IScheduler} for managing timers.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.auditTime(1000);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounceTime}\n * @see {@link delay}\n * @see {@link sampleTime}\n * @see {@link throttleTime}\n *\n * @param {number} duration Time to wait before emitting the most recent source\n * value, measured in milliseconds or the time unit determined internally\n * by the optional `scheduler`.\n * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for\n * managing the timers that handle the rate-limiting behavior.\n * @return {Observable<T>} An Observable that performs rate-limiting of\n * emissions from the source Observable.\n * @method auditTime\n * @owner Observable\n ",
+      "range": [
+        111,
+        2118
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 44,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=auditTime.js.map",
+      "range": [
+        2229,
+        2266
+      ],
+      "loc": {
+        "start": {
+          "line": 48,
+          "column": 0
+        },
+        "end": {
+          "line": 48,
+          "column": 37
+        }
+      }
+    }
+  ]
+}

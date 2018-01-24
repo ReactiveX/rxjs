@@ -1,0 +1,595 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              22,
+              33
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 22
+              },
+              "end": {
+                "line": 1,
+                "column": 33
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "mergeScan",
+            "range": [
+              9,
+              18
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 18
+              }
+            }
+          },
+          "range": [
+            9,
+            33
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 33
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/mergeScan",
+        "raw": "'../operators/mergeScan'",
+        "range": [
+          41,
+          65
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 41
+          },
+          "end": {
+            "line": 1,
+            "column": 65
+          }
+        }
+      },
+      "range": [
+        0,
+        66
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 66
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Applies an accumulator function over the source Observable where the\n * accumulator function itself returns an Observable, then each intermediate\n * Observable returned is merged into the output Observable.\n *\n * <span class=\"informal\">It's like {@link scan}, but the Observables returned\n * by the accumulator are merged into the outer Observable.</span>\n *\n * @example <caption>Count the number of click events</caption>\n * const click$ = Rx.Observable.fromEvent(document, 'click');\n * const one$ = click$.mapTo(1);\n * const seed = 0;\n * const count$ = one$.mergeScan((acc, one) => Rx.Observable.of(acc + one), seed);\n * count$.subscribe(x => console.log(x));\n *\n * // Results:\n * 1\n * 2\n * 3\n * 4\n * // ...and so on for each click\n *\n * @param {function(acc: R, value: T): Observable<R>} accumulator\n * The accumulator function called on each source value.\n * @param seed The initial accumulation value.\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of\n * input Observables being subscribed to concurrently.\n * @return {Observable<R>} An observable of the accumulated values.\n * @method mergeScan\n * @owner Observable\n ",
+          "range": [
+            67,
+            1224
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 32,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "mergeScan",
+          "range": [
+            1241,
+            1250
+          ],
+          "loc": {
+            "start": {
+              "line": 33,
+              "column": 16
+            },
+            "end": {
+              "line": 33,
+              "column": 25
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "accumulator",
+            "range": [
+              1251,
+              1262
+            ],
+            "loc": {
+              "start": {
+                "line": 33,
+                "column": 26
+              },
+              "end": {
+                "line": 33,
+                "column": 37
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "seed",
+            "range": [
+              1264,
+              1268
+            ],
+            "loc": {
+              "start": {
+                "line": 33,
+                "column": 39
+              },
+              "end": {
+                "line": 33,
+                "column": 43
+              }
+            }
+          },
+          {
+            "type": "AssignmentPattern",
+            "left": {
+              "type": "Identifier",
+              "name": "concurrent",
+              "range": [
+                1270,
+                1280
+              ],
+              "loc": {
+                "start": {
+                  "line": 33,
+                  "column": 45
+                },
+                "end": {
+                  "line": 33,
+                  "column": 55
+                }
+              }
+            },
+            "right": {
+              "type": "MemberExpression",
+              "computed": false,
+              "object": {
+                "type": "Identifier",
+                "name": "Number",
+                "range": [
+                  1283,
+                  1289
+                ],
+                "loc": {
+                  "start": {
+                    "line": 33,
+                    "column": 58
+                  },
+                  "end": {
+                    "line": 33,
+                    "column": 64
+                  }
+                }
+              },
+              "property": {
+                "type": "Identifier",
+                "name": "POSITIVE_INFINITY",
+                "range": [
+                  1290,
+                  1307
+                ],
+                "loc": {
+                  "start": {
+                    "line": 33,
+                    "column": 65
+                  },
+                  "end": {
+                    "line": 33,
+                    "column": 82
+                  }
+                }
+              },
+              "range": [
+                1283,
+                1307
+              ],
+              "loc": {
+                "start": {
+                  "line": 33,
+                  "column": 58
+                },
+                "end": {
+                  "line": 33,
+                  "column": 82
+                }
+              }
+            },
+            "range": [
+              1270,
+              1307
+            ],
+            "loc": {
+              "start": {
+                "line": 33,
+                "column": 45
+              },
+              "end": {
+                "line": 33,
+                "column": 82
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      1322,
+                      1333
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 34,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 34,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "accumulator",
+                      "range": [
+                        1334,
+                        1345
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 34,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 34,
+                          "column": 34
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "seed",
+                      "range": [
+                        1347,
+                        1351
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 34,
+                          "column": 36
+                        },
+                        "end": {
+                          "line": 34,
+                          "column": 40
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "concurrent",
+                      "range": [
+                        1353,
+                        1363
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 34,
+                          "column": 42
+                        },
+                        "end": {
+                          "line": 34,
+                          "column": 52
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    1322,
+                    1364
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 34,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 34,
+                      "column": 53
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      1365,
+                      1369
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 34,
+                        "column": 54
+                      },
+                      "end": {
+                        "line": 34,
+                        "column": 58
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1322,
+                  1370
+                ],
+                "loc": {
+                  "start": {
+                    "line": 34,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 34,
+                    "column": 59
+                  }
+                }
+              },
+              "range": [
+                1315,
+                1371
+              ],
+              "loc": {
+                "start": {
+                  "line": 34,
+                  "column": 4
+                },
+                "end": {
+                  "line": 34,
+                  "column": 60
+                }
+              }
+            }
+          ],
+          "range": [
+            1309,
+            1373
+          ],
+          "loc": {
+            "start": {
+              "line": 33,
+              "column": 84
+            },
+            "end": {
+              "line": 35,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1232,
+          1373
+        ],
+        "loc": {
+          "start": {
+            "line": 33,
+            "column": 7
+          },
+          "end": {
+            "line": 35,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Applies an accumulator function over the source Observable where the\n * accumulator function itself returns an Observable, then each intermediate\n * Observable returned is merged into the output Observable.\n *\n * <span class=\"informal\">It's like {@link scan}, but the Observables returned\n * by the accumulator are merged into the outer Observable.</span>\n *\n * @example <caption>Count the number of click events</caption>\n * const click$ = Rx.Observable.fromEvent(document, 'click');\n * const one$ = click$.mapTo(1);\n * const seed = 0;\n * const count$ = one$.mergeScan((acc, one) => Rx.Observable.of(acc + one), seed);\n * count$.subscribe(x => console.log(x));\n *\n * // Results:\n * 1\n * 2\n * 3\n * 4\n * // ...and so on for each click\n *\n * @param {function(acc: R, value: T): Observable<R>} accumulator\n * The accumulator function called on each source value.\n * @param seed The initial accumulation value.\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of\n * input Observables being subscribed to concurrently.\n * @return {Observable<R>} An observable of the accumulated values.\n * @method mergeScan\n * @owner Observable\n ",
+            "range": [
+              67,
+              1224
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 32,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=mergeScan.js.map",
+            "range": [
+              1374,
+              1411
+            ],
+            "loc": {
+              "start": {
+                "line": 36,
+                "column": 0
+              },
+              "end": {
+                "line": 36,
+                "column": 37
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1225,
+        1373
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 0
+        },
+        "end": {
+          "line": 35,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Applies an accumulator function over the source Observable where the\n * accumulator function itself returns an Observable, then each intermediate\n * Observable returned is merged into the output Observable.\n *\n * <span class=\"informal\">It's like {@link scan}, but the Observables returned\n * by the accumulator are merged into the outer Observable.</span>\n *\n * @example <caption>Count the number of click events</caption>\n * const click$ = Rx.Observable.fromEvent(document, 'click');\n * const one$ = click$.mapTo(1);\n * const seed = 0;\n * const count$ = one$.mergeScan((acc, one) => Rx.Observable.of(acc + one), seed);\n * count$.subscribe(x => console.log(x));\n *\n * // Results:\n * 1\n * 2\n * 3\n * 4\n * // ...and so on for each click\n *\n * @param {function(acc: R, value: T): Observable<R>} accumulator\n * The accumulator function called on each source value.\n * @param seed The initial accumulation value.\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of\n * input Observables being subscribed to concurrently.\n * @return {Observable<R>} An observable of the accumulated values.\n * @method mergeScan\n * @owner Observable\n ",
+          "range": [
+            67,
+            1224
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 32,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=mergeScan.js.map",
+          "range": [
+            1374,
+            1411
+          ],
+          "loc": {
+            "start": {
+              "line": 36,
+              "column": 0
+            },
+            "end": {
+              "line": 36,
+              "column": 37
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1373
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 35,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Applies an accumulator function over the source Observable where the\n * accumulator function itself returns an Observable, then each intermediate\n * Observable returned is merged into the output Observable.\n *\n * <span class=\"informal\">It's like {@link scan}, but the Observables returned\n * by the accumulator are merged into the outer Observable.</span>\n *\n * @example <caption>Count the number of click events</caption>\n * const click$ = Rx.Observable.fromEvent(document, 'click');\n * const one$ = click$.mapTo(1);\n * const seed = 0;\n * const count$ = one$.mergeScan((acc, one) => Rx.Observable.of(acc + one), seed);\n * count$.subscribe(x => console.log(x));\n *\n * // Results:\n * 1\n * 2\n * 3\n * 4\n * // ...and so on for each click\n *\n * @param {function(acc: R, value: T): Observable<R>} accumulator\n * The accumulator function called on each source value.\n * @param seed The initial accumulation value.\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of\n * input Observables being subscribed to concurrently.\n * @return {Observable<R>} An observable of the accumulated values.\n * @method mergeScan\n * @owner Observable\n ",
+      "range": [
+        67,
+        1224
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 32,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=mergeScan.js.map",
+      "range": [
+        1374,
+        1411
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 0
+        },
+        "end": {
+          "line": 36,
+          "column": 37
+        }
+      }
+    }
+  ]
+}

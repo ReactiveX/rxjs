@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/reduce-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObservableInputDoc.html">ObservableInput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SubscribableOrPromiseDoc.html">SubscribableOrPromise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~TeardownLogicDoc.html">TeardownLogic</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Symbol">Rx.Symbol</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxTimeoutError.html">AjaxTimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html">AjaxRequest</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operators</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operators/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-catchError">catchError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-tap">tap</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/scheduler/Action.js~Action.html">Action</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animationFrame">animationFrame</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asap">asap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-async">async</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-queue">queue</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$iterator">$$iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$observable">$$observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/TimeoutError.js~TimeoutError.html">TimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/reduce-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var chai_1 = require(&apos;chai&apos;);
+var Rx = require(&apos;../../dist/package/Rx&apos;);
+var Observable = Rx.Observable;
+/** @test {reduce} */
+describe(&apos;Observable.prototype.reduce&apos;, function () {
+    asDiagram(&apos;reduce((acc, curr) =&gt; acc + curr, 0)&apos;)(&apos;should reduce&apos;, function () {
+        var values = {
+            a: 1, b: 3, c: 5, x: 9
+        };
+        var e1 = hot(&apos;--a--b--c--|&apos;, values);
+        var e1subs = &apos;^          !&apos;;
+        var expected = &apos;-----------(x|)&apos;;
+        var reduceFunction = function (o, x) {
+            return o + x;
+        };
+        expectObservable(e1.reduce(reduceFunction, 0)).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should reduce with seed&apos;, function () {
+        var e1 = hot(&apos;--a--b--|&apos;);
+        var e1subs = &apos;^       !&apos;;
+        var expected = &apos;--------(x|)&apos;;
+        var seed = &apos;n&apos;;
+        var reduceFunction = function (o, x) {
+            return o + x;
+        };
+        expectObservable(e1.reduce(reduceFunction, seed)).toBe(expected, { x: seed + &apos;ab&apos; });
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should reduce with a seed of undefined&apos;, function () {
+        var e1 = hot(&apos;--a--^--b--c--d--e--f--g--|&apos;);
+        var e1subs = &apos;^                    !&apos;;
+        var expected = &apos;---------------------(x|)&apos;;
+        var values = {
+            x: &apos;undefined b c d e f g&apos;
+        };
+        var source = e1.reduce(function (acc, x) { return acc + &apos; &apos; + x; }, undefined);
+        expectObservable(source).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should reduce without a seed&apos;, function () {
+        var e1 = hot(&apos;--a--^--b--c--d--e--f--g--|&apos;);
+        var e1subs = &apos;^                    !&apos;;
+        var expected = &apos;---------------------(x|)&apos;;
+        var values = {
+            x: &apos;b c d e f g&apos;
+        };
+        var source = e1.reduce(function (acc, x) { return acc + &apos; &apos; + x; });
+        expectObservable(source).toBe(expected, values);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should reduce with index without seed&apos;, function (done) {
+        var idx = [1, 2, 3, 4, 5];
+        Observable.range(0, 6).reduce(function (acc, value, index) {
+            chai_1.expect(idx.shift()).to.equal(index);
+            return value;
+        }).subscribe(null, null, function () {
+            chai_1.expect(idx).to.be.empty;
+            done();
+        });
+    });
+    it(&apos;should reduce with index with seed&apos;, function (done) {
+        var idx = [0, 1, 2, 3, 4, 5];
+        Observable.range(0, 6).reduce(function (acc, value, index) {
+            chai_1.expect(idx.shift()).to.equal(index);
+            return value;
+        }, -1).subscribe(null, null, function () {
+            chai_1.expect(idx).to.be.empty;
+            done();
+        });
+    });
+    it(&apos;should reduce with seed if source is empty&apos;, function () {
+        var e1 = hot(&apos;--a--^-------|&apos;);
+        var e1subs = &apos;^       !&apos;;
+        var expected = &apos;--------(x|)&apos;;
+        var expectedValue = &apos;42&apos;;
+        var reduceFunction = function (o, x) {
+            return o + x;
+        };
+        expectObservable(e1.reduce(reduceFunction, expectedValue)).toBe(expected, { x: expectedValue });
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should raise error if reduce function throws without seed&apos;, function () {
+        var e1 = hot(&apos;--a--b--|&apos;);
+        var e1subs = &apos;^    !   &apos;;
+        var expected = &apos;-----#   &apos;;
+        var reduceFunction = function (o, x) {
+            throw &apos;error&apos;;
+        };
+        expectObservable(e1.reduce(reduceFunction)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should allow unsubscribing explicitly and early&apos;, function () {
+        var e1 = hot(&apos;--a--b--|&apos;);
+        var unsub = &apos;      !  &apos;;
+        var e1subs = &apos;^     !  &apos;;
+        var expected = &apos;-------  &apos;;
+        var reduceFunction = function (o, x) {
+            return o + x;
+        };
+        var result = e1.reduce(reduceFunction);
+        expectObservable(result, unsub).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should not break unsubscription chains when result is unsubscribed explicitly&apos;, function () {
+        var e1 = hot(&apos;--a--b--|&apos;);
+        var e1subs = &apos;^     !  &apos;;
+        var expected = &apos;-------  &apos;;
+        var unsub = &apos;      !  &apos;;
+        var reduceFunction = function (o, x) {
+            return o + x;
+        };
+        var result = e1
+            .mergeMap(function (x) { return Observable.of(x); })
+            .reduce(reduceFunction)
+            .mergeMap(function (x) { return Observable.of(x); });
+        expectObservable(result, unsub).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should raise error if source emits and raises error with seed&apos;, function () {
+        var e1 = hot(&apos;--a--b--#&apos;);
+        var e1subs = &apos;^       !&apos;;
+        var expected = &apos;--------#&apos;;
+        var expectedValue = &apos;42&apos;;
+        var reduceFunction = function (o, x) {
+            return o + x;
+        };
+        expectObservable(e1.reduce(reduceFunction, expectedValue)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should raise error if source raises error with seed&apos;, function () {
+        var e1 = hot(&apos;----#&apos;);
+        var e1subs = &apos;^   !&apos;;
+        var expected = &apos;----#&apos;;
+        var expectedValue = &apos;42&apos;;
+        var reduceFunction = function (o, x) {
+            return o + x;
+        };
+        expectObservable(e1.reduce(reduceFunction, expectedValue)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should raise error if reduce function throws with seed&apos;, function () {
+        var e1 = hot(&apos;--a--b--|&apos;);
+        var e1subs = &apos;^ !     &apos;;
+        var expected = &apos;--#     &apos;;
+        var seed = &apos;n&apos;;
+        var reduceFunction = function (o, x) {
+            throw &apos;error&apos;;
+        };
+        expectObservable(e1.reduce(reduceFunction, seed)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should not complete with seed if source emits but does not completes&apos;, function () {
+        var e1 = hot(&apos;--a--&apos;);
+        var e1subs = &apos;^    &apos;;
+        var expected = &apos;-----&apos;;
+        var seed = &apos;n&apos;;
+        var reduceFunction = function (o, x) {
+            return o + x;
+        };
+        expectObservable(e1.reduce(reduceFunction, seed)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should not complete with seed if source never completes&apos;, function () {
+        var e1 = cold(&apos;-&apos;);
+        var e1subs = &apos;^&apos;;
+        var expected = &apos;-&apos;;
+        var seed = &apos;n&apos;;
+        var reduceFunction = function (o, x) {
+            return o + x;
+        };
+        expectObservable(e1.reduce(reduceFunction, seed)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should not complete without seed if source emits but does not completes&apos;, function () {
+        var e1 = hot(&apos;--a--b--&apos;);
+        var e1subs = &apos;^       &apos;;
+        var expected = &apos;--------&apos;;
+        var reduceFunction = function (o, x) {
+            return o + x;
+        };
+        expectObservable(e1.reduce(reduceFunction)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should not complete without seed if source never completes&apos;, function () {
+        var e1 = cold(&apos;-&apos;);
+        var e1subs = &apos;^&apos;;
+        var expected = &apos;-&apos;;
+        var reduceFunction = function (o, x) {
+            return o + x;
+        };
+        expectObservable(e1.reduce(reduceFunction)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should reduce if source does not emit without seed&apos;, function () {
+        var e1 = hot(&apos;--a--^-------|&apos;);
+        var e1subs = &apos;^       !&apos;;
+        var expected = &apos;--------|&apos;;
+        var reduceFunction = function (o, x) {
+            return o + x;
+        };
+        expectObservable(e1.reduce(reduceFunction)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should raise error if source emits and raises error without seed&apos;, function () {
+        var e1 = hot(&apos;--a--b--#&apos;);
+        var e1subs = &apos;^       !&apos;;
+        var expected = &apos;--------#&apos;;
+        var reduceFunction = function (o, x) {
+            return o + x;
+        };
+        expectObservable(e1.reduce(reduceFunction)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should raise error if source raises error without seed&apos;, function () {
+        var e1 = hot(&apos;----#&apos;);
+        var e1subs = &apos;^   !&apos;;
+        var expected = &apos;----#&apos;;
+        var reduceFunction = function (o, x) {
+            return o + x;
+        };
+        expectObservable(e1.reduce(reduceFunction)).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+    it(&apos;should accept array typed reducers&apos;, function () {
+        type(function () {
+            var a;
+            a.reduce(function (acc, value) { return acc.concat(value); }, []);
+        });
+    });
+    it(&apos;should accept T typed reducers&apos;, function () {
+        type(function () {
+            var a;
+            var reduced = a.reduce(function (acc, value) {
+                value.a = acc.a;
+                value.b = acc.b;
+                return acc;
+            });
+            reduced.subscribe(function (r) {
+                r.a.toExponential();
+                r.b.toLowerCase();
+            });
+        });
+    });
+    it(&apos;should accept T typed reducers when T is an array&apos;, function () {
+        type(function () {
+            var a;
+            var reduced = a.reduce(function (acc, value) {
+                return acc.concat(value);
+            }, []);
+            reduced.subscribe(function (rs) {
+                rs[0].toExponential();
+            });
+        });
+    });
+    it(&apos;should accept R typed reduces when R is an array of T&apos;, function () {
+        type(function () {
+            var a;
+            var reduced = a.reduce(function (acc, value) {
+                acc.push(value);
+                return acc;
+            }, []);
+            reduced.subscribe(function (rs) {
+                rs[0].toExponential();
+            });
+        });
+    });
+    it(&apos;should accept R typed reducers when R is assignable to T&apos;, function () {
+        type(function () {
+            var a;
+            var reduced = a.reduce(function (acc, value) {
+                value.a = acc.a;
+                value.b = acc.b;
+                return acc;
+            }, {});
+            reduced.subscribe(function (r) {
+                r.a.toExponential();
+                r.b.toLowerCase();
+            });
+        });
+    });
+    it(&apos;should accept R typed reducers when R is not assignable to T&apos;, function () {
+        type(function () {
+            var a;
+            var seed = {
+                as: [1],
+                bs: [&apos;a&apos;]
+            };
+            var reduced = a.reduce(function (acc, value) {
+                acc.as.push(value.a);
+                acc.bs.push(value.b);
+                return acc;
+            }, seed);
+            reduced.subscribe(function (r) {
+                r.as[0].toExponential();
+                r.bs[0].toLowerCase();
+            });
+        });
+    });
+    it(&apos;should accept R typed reducers and reduce to type R&apos;, function () {
+        type(function () {
+            var a;
+            var reduced = a.reduce(function (acc, value) {
+                value.a = acc.a;
+                value.b = acc.b;
+                return acc;
+            }, {});
+            reduced.subscribe(function (r) {
+                r.a.toExponential();
+                r.b.toLowerCase();
+            });
+        });
+    });
+    it(&apos;should accept array of R typed reducers and reduce to array of R&apos;, function () {
+        type(function () {
+            var a;
+            var reduced = a.reduce(function (acc, cur) {
+                console.log(acc);
+                acc.push(cur.toString());
+                return acc;
+            }, []);
+            reduced.subscribe(function (rs) {
+                rs[0].toLowerCase();
+            });
+        });
+    });
+});
+//# sourceMappingURL=reduce-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

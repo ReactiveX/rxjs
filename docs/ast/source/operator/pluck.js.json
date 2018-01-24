@@ -1,0 +1,486 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              18,
+              29
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 18
+              },
+              "end": {
+                "line": 1,
+                "column": 29
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "pluck",
+            "range": [
+              9,
+              14
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            9,
+            29
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 29
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/pluck",
+        "raw": "'../operators/pluck'",
+        "range": [
+          37,
+          57
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 37
+          },
+          "end": {
+            "line": 1,
+            "column": 57
+          }
+        }
+      },
+      "range": [
+        0,
+        58
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 58
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Maps each source value (an object) to its specified nested property.\n *\n * <span class=\"informal\">Like {@link map}, but meant only for picking one of\n * the nested properties of every emitted object.</span>\n *\n * <img src=\"./img/pluck.png\" width=\"100%\">\n *\n * Given a list of strings describing a path to an object property, retrieves\n * the value of a specified nested property from all values in the source\n * Observable. If a property can't be resolved, it will return `undefined` for\n * that value.\n *\n * @example <caption>Map every click to the tagName of the clicked target element</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var tagNames = clicks.pluck('target', 'tagName');\n * tagNames.subscribe(x => console.log(x));\n *\n * @see {@link map}\n *\n * @param {...string} properties The nested properties to pluck from each source\n * value (an object).\n * @return {Observable} A new Observable of property values from the source values.\n * @method pluck\n * @owner Observable\n ",
+          "range": [
+            59,
+            1075
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 27,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "pluck",
+          "range": [
+            1092,
+            1097
+          ],
+          "loc": {
+            "start": {
+              "line": 28,
+              "column": 16
+            },
+            "end": {
+              "line": 28,
+              "column": 21
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "RestElement",
+            "argument": {
+              "type": "Identifier",
+              "name": "properties",
+              "range": [
+                1101,
+                1111
+              ],
+              "loc": {
+                "start": {
+                  "line": 28,
+                  "column": 25
+                },
+                "end": {
+                  "line": 28,
+                  "column": 35
+                }
+              }
+            },
+            "range": [
+              1098,
+              1111
+            ],
+            "loc": {
+              "start": {
+                "line": 28,
+                "column": 22
+              },
+              "end": {
+                "line": 28,
+                "column": 35
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      1126,
+                      1137
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 29,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 29,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "SpreadElement",
+                      "argument": {
+                        "type": "Identifier",
+                        "name": "properties",
+                        "range": [
+                          1141,
+                          1151
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 29,
+                            "column": 26
+                          },
+                          "end": {
+                            "line": 29,
+                            "column": 36
+                          }
+                        }
+                      },
+                      "range": [
+                        1138,
+                        1151
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 29,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 29,
+                          "column": 36
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    1126,
+                    1152
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 29,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 29,
+                      "column": 37
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      1153,
+                      1157
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 29,
+                        "column": 38
+                      },
+                      "end": {
+                        "line": 29,
+                        "column": 42
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1126,
+                  1158
+                ],
+                "loc": {
+                  "start": {
+                    "line": 29,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 29,
+                    "column": 43
+                  }
+                }
+              },
+              "range": [
+                1119,
+                1159
+              ],
+              "loc": {
+                "start": {
+                  "line": 29,
+                  "column": 4
+                },
+                "end": {
+                  "line": 29,
+                  "column": 44
+                }
+              }
+            }
+          ],
+          "range": [
+            1113,
+            1161
+          ],
+          "loc": {
+            "start": {
+              "line": 28,
+              "column": 37
+            },
+            "end": {
+              "line": 30,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1083,
+          1161
+        ],
+        "loc": {
+          "start": {
+            "line": 28,
+            "column": 7
+          },
+          "end": {
+            "line": 30,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Maps each source value (an object) to its specified nested property.\n *\n * <span class=\"informal\">Like {@link map}, but meant only for picking one of\n * the nested properties of every emitted object.</span>\n *\n * <img src=\"./img/pluck.png\" width=\"100%\">\n *\n * Given a list of strings describing a path to an object property, retrieves\n * the value of a specified nested property from all values in the source\n * Observable. If a property can't be resolved, it will return `undefined` for\n * that value.\n *\n * @example <caption>Map every click to the tagName of the clicked target element</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var tagNames = clicks.pluck('target', 'tagName');\n * tagNames.subscribe(x => console.log(x));\n *\n * @see {@link map}\n *\n * @param {...string} properties The nested properties to pluck from each source\n * value (an object).\n * @return {Observable} A new Observable of property values from the source values.\n * @method pluck\n * @owner Observable\n ",
+            "range": [
+              59,
+              1075
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 27,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=pluck.js.map",
+            "range": [
+              1162,
+              1195
+            ],
+            "loc": {
+              "start": {
+                "line": 31,
+                "column": 0
+              },
+              "end": {
+                "line": 31,
+                "column": 33
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1076,
+        1161
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 0
+        },
+        "end": {
+          "line": 30,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Maps each source value (an object) to its specified nested property.\n *\n * <span class=\"informal\">Like {@link map}, but meant only for picking one of\n * the nested properties of every emitted object.</span>\n *\n * <img src=\"./img/pluck.png\" width=\"100%\">\n *\n * Given a list of strings describing a path to an object property, retrieves\n * the value of a specified nested property from all values in the source\n * Observable. If a property can't be resolved, it will return `undefined` for\n * that value.\n *\n * @example <caption>Map every click to the tagName of the clicked target element</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var tagNames = clicks.pluck('target', 'tagName');\n * tagNames.subscribe(x => console.log(x));\n *\n * @see {@link map}\n *\n * @param {...string} properties The nested properties to pluck from each source\n * value (an object).\n * @return {Observable} A new Observable of property values from the source values.\n * @method pluck\n * @owner Observable\n ",
+          "range": [
+            59,
+            1075
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 27,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=pluck.js.map",
+          "range": [
+            1162,
+            1195
+          ],
+          "loc": {
+            "start": {
+              "line": 31,
+              "column": 0
+            },
+            "end": {
+              "line": 31,
+              "column": 33
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1161
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 30,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Maps each source value (an object) to its specified nested property.\n *\n * <span class=\"informal\">Like {@link map}, but meant only for picking one of\n * the nested properties of every emitted object.</span>\n *\n * <img src=\"./img/pluck.png\" width=\"100%\">\n *\n * Given a list of strings describing a path to an object property, retrieves\n * the value of a specified nested property from all values in the source\n * Observable. If a property can't be resolved, it will return `undefined` for\n * that value.\n *\n * @example <caption>Map every click to the tagName of the clicked target element</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var tagNames = clicks.pluck('target', 'tagName');\n * tagNames.subscribe(x => console.log(x));\n *\n * @see {@link map}\n *\n * @param {...string} properties The nested properties to pluck from each source\n * value (an object).\n * @return {Observable} A new Observable of property values from the source values.\n * @method pluck\n * @owner Observable\n ",
+      "range": [
+        59,
+        1075
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 27,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=pluck.js.map",
+      "range": [
+        1162,
+        1195
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 0
+        },
+        "end": {
+          "line": 31,
+          "column": 33
+        }
+      }
+    }
+  ]
+}

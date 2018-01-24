@@ -1,0 +1,414 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              22,
+              33
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 22
+              },
+              "end": {
+                "line": 1,
+                "column": 33
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "switchAll",
+            "range": [
+              9,
+              18
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 18
+              }
+            }
+          },
+          "range": [
+            9,
+            33
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 33
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/switchAll",
+        "raw": "'../operators/switchAll'",
+        "range": [
+          41,
+          65
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 41
+          },
+          "end": {
+            "line": 1,
+            "column": 65
+          }
+        }
+      },
+      "range": [
+        0,
+        66
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 66
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Converts a higher-order Observable into a first-order Observable by\n * subscribing to only the most recently emitted of those inner Observables.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables by dropping the\n * previous inner Observable once a new one appears.</span>\n *\n * <img src=\"./img/switch.png\" width=\"100%\">\n *\n * `switch` subscribes to an Observable that emits Observables, also known as a\n * higher-order Observable. Each time it observes one of these emitted inner\n * Observables, the output Observable subscribes to the inner Observable and\n * begins emitting the items emitted by that. So far, it behaves\n * like {@link mergeAll}. However, when a new inner Observable is emitted,\n * `switch` unsubscribes from the earlier-emitted inner Observable and\n * subscribes to the new inner Observable and begins emitting items from it. It\n * continues to behave like this for subsequent inner Observables.\n *\n * @example <caption>Rerun an interval Observable on every click event</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * // Each click event is mapped to an Observable that ticks every second\n * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000));\n * var switched = higherOrder.switch();\n * // The outcome is that `switched` is essentially a timer that restarts\n * // on every click. The interval Observables from older clicks do not merge\n * // with the current interval Observable.\n * switched.subscribe(x => console.log(x));\n *\n * @see {@link combineAll}\n * @see {@link concatAll}\n * @see {@link exhaust}\n * @see {@link mergeAll}\n * @see {@link switchMap}\n * @see {@link switchMapTo}\n * @see {@link zipAll}\n *\n * @return {Observable<T>} An Observable that emits the items emitted by the\n * Observable most recently emitted by the source Observable.\n * @method switch\n * @name switch\n * @owner Observable\n ",
+          "range": [
+            67,
+            1956
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 43,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "_switch",
+          "range": [
+            1973,
+            1980
+          ],
+          "loc": {
+            "start": {
+              "line": 44,
+              "column": 16
+            },
+            "end": {
+              "line": 44,
+              "column": 23
+            }
+          }
+        },
+        "params": [],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      1996,
+                      2007
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 45,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 45,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [],
+                  "range": [
+                    1996,
+                    2009
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 45,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 45,
+                      "column": 24
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      2010,
+                      2014
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 45,
+                        "column": 25
+                      },
+                      "end": {
+                        "line": 45,
+                        "column": 29
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1996,
+                  2015
+                ],
+                "loc": {
+                  "start": {
+                    "line": 45,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 45,
+                    "column": 30
+                  }
+                }
+              },
+              "range": [
+                1989,
+                2016
+              ],
+              "loc": {
+                "start": {
+                  "line": 45,
+                  "column": 4
+                },
+                "end": {
+                  "line": 45,
+                  "column": 31
+                }
+              }
+            }
+          ],
+          "range": [
+            1983,
+            2018
+          ],
+          "loc": {
+            "start": {
+              "line": 44,
+              "column": 26
+            },
+            "end": {
+              "line": 46,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1964,
+          2018
+        ],
+        "loc": {
+          "start": {
+            "line": 44,
+            "column": 7
+          },
+          "end": {
+            "line": 46,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Converts a higher-order Observable into a first-order Observable by\n * subscribing to only the most recently emitted of those inner Observables.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables by dropping the\n * previous inner Observable once a new one appears.</span>\n *\n * <img src=\"./img/switch.png\" width=\"100%\">\n *\n * `switch` subscribes to an Observable that emits Observables, also known as a\n * higher-order Observable. Each time it observes one of these emitted inner\n * Observables, the output Observable subscribes to the inner Observable and\n * begins emitting the items emitted by that. So far, it behaves\n * like {@link mergeAll}. However, when a new inner Observable is emitted,\n * `switch` unsubscribes from the earlier-emitted inner Observable and\n * subscribes to the new inner Observable and begins emitting items from it. It\n * continues to behave like this for subsequent inner Observables.\n *\n * @example <caption>Rerun an interval Observable on every click event</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * // Each click event is mapped to an Observable that ticks every second\n * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000));\n * var switched = higherOrder.switch();\n * // The outcome is that `switched` is essentially a timer that restarts\n * // on every click. The interval Observables from older clicks do not merge\n * // with the current interval Observable.\n * switched.subscribe(x => console.log(x));\n *\n * @see {@link combineAll}\n * @see {@link concatAll}\n * @see {@link exhaust}\n * @see {@link mergeAll}\n * @see {@link switchMap}\n * @see {@link switchMapTo}\n * @see {@link zipAll}\n *\n * @return {Observable<T>} An Observable that emits the items emitted by the\n * Observable most recently emitted by the source Observable.\n * @method switch\n * @name switch\n * @owner Observable\n ",
+            "range": [
+              67,
+              1956
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 43,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=switch.js.map",
+            "range": [
+              2019,
+              2053
+            ],
+            "loc": {
+              "start": {
+                "line": 47,
+                "column": 0
+              },
+              "end": {
+                "line": 47,
+                "column": 34
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1957,
+        2018
+      ],
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 0
+        },
+        "end": {
+          "line": 46,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Converts a higher-order Observable into a first-order Observable by\n * subscribing to only the most recently emitted of those inner Observables.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables by dropping the\n * previous inner Observable once a new one appears.</span>\n *\n * <img src=\"./img/switch.png\" width=\"100%\">\n *\n * `switch` subscribes to an Observable that emits Observables, also known as a\n * higher-order Observable. Each time it observes one of these emitted inner\n * Observables, the output Observable subscribes to the inner Observable and\n * begins emitting the items emitted by that. So far, it behaves\n * like {@link mergeAll}. However, when a new inner Observable is emitted,\n * `switch` unsubscribes from the earlier-emitted inner Observable and\n * subscribes to the new inner Observable and begins emitting items from it. It\n * continues to behave like this for subsequent inner Observables.\n *\n * @example <caption>Rerun an interval Observable on every click event</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * // Each click event is mapped to an Observable that ticks every second\n * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000));\n * var switched = higherOrder.switch();\n * // The outcome is that `switched` is essentially a timer that restarts\n * // on every click. The interval Observables from older clicks do not merge\n * // with the current interval Observable.\n * switched.subscribe(x => console.log(x));\n *\n * @see {@link combineAll}\n * @see {@link concatAll}\n * @see {@link exhaust}\n * @see {@link mergeAll}\n * @see {@link switchMap}\n * @see {@link switchMapTo}\n * @see {@link zipAll}\n *\n * @return {Observable<T>} An Observable that emits the items emitted by the\n * Observable most recently emitted by the source Observable.\n * @method switch\n * @name switch\n * @owner Observable\n ",
+          "range": [
+            67,
+            1956
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 43,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=switch.js.map",
+          "range": [
+            2019,
+            2053
+          ],
+          "loc": {
+            "start": {
+              "line": 47,
+              "column": 0
+            },
+            "end": {
+              "line": 47,
+              "column": 34
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    2018
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 46,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Converts a higher-order Observable into a first-order Observable by\n * subscribing to only the most recently emitted of those inner Observables.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables by dropping the\n * previous inner Observable once a new one appears.</span>\n *\n * <img src=\"./img/switch.png\" width=\"100%\">\n *\n * `switch` subscribes to an Observable that emits Observables, also known as a\n * higher-order Observable. Each time it observes one of these emitted inner\n * Observables, the output Observable subscribes to the inner Observable and\n * begins emitting the items emitted by that. So far, it behaves\n * like {@link mergeAll}. However, when a new inner Observable is emitted,\n * `switch` unsubscribes from the earlier-emitted inner Observable and\n * subscribes to the new inner Observable and begins emitting items from it. It\n * continues to behave like this for subsequent inner Observables.\n *\n * @example <caption>Rerun an interval Observable on every click event</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * // Each click event is mapped to an Observable that ticks every second\n * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000));\n * var switched = higherOrder.switch();\n * // The outcome is that `switched` is essentially a timer that restarts\n * // on every click. The interval Observables from older clicks do not merge\n * // with the current interval Observable.\n * switched.subscribe(x => console.log(x));\n *\n * @see {@link combineAll}\n * @see {@link concatAll}\n * @see {@link exhaust}\n * @see {@link mergeAll}\n * @see {@link switchMap}\n * @see {@link switchMapTo}\n * @see {@link zipAll}\n *\n * @return {Observable<T>} An Observable that emits the items emitted by the\n * Observable most recently emitted by the source Observable.\n * @method switch\n * @name switch\n * @owner Observable\n ",
+      "range": [
+        67,
+        1956
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 43,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=switch.js.map",
+      "range": [
+        2019,
+        2053
+      ],
+      "loc": {
+        "start": {
+          "line": 47,
+          "column": 0
+        },
+        "end": {
+          "line": 47,
+          "column": 34
+        }
+      }
+    }
+  ]
+}

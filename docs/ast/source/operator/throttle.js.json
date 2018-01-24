@@ -1,0 +1,576 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              21,
+              32
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 21
+              },
+              "end": {
+                "line": 1,
+                "column": 32
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "throttle",
+            "range": [
+              9,
+              17
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 17
+              }
+            }
+          },
+          "range": [
+            9,
+            32
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 32
+            }
+          }
+        },
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "defaultThrottleConfig",
+            "range": [
+              34,
+              55
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 34
+              },
+              "end": {
+                "line": 1,
+                "column": 55
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "defaultThrottleConfig",
+            "range": [
+              34,
+              55
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 34
+              },
+              "end": {
+                "line": 1,
+                "column": 55
+              }
+            }
+          },
+          "range": [
+            34,
+            55
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 34
+            },
+            "end": {
+              "line": 1,
+              "column": 55
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/throttle",
+        "raw": "'../operators/throttle'",
+        "range": [
+          63,
+          86
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 63
+          },
+          "end": {
+            "line": 1,
+            "column": 86
+          }
+        }
+      },
+      "range": [
+        0,
+        87
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 87
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Emits a value from the source Observable, then ignores subsequent source\n * values for a duration determined by another Observable, then repeats this\n * process.\n *\n * <span class=\"informal\">It's like {@link throttleTime}, but the silencing\n * duration is determined by a second Observable.</span>\n *\n * <img src=\"./img/throttle.png\" width=\"100%\">\n *\n * `throttle` emits the source Observable values on the output Observable\n * when its internal timer is disabled, and ignores source values when the timer\n * is enabled. Initially, the timer is disabled. As soon as the first source\n * value arrives, it is forwarded to the output Observable, and then the timer\n * is enabled by calling the `durationSelector` function with the source value,\n * which returns the \"duration\" Observable. When the duration Observable emits a\n * value or completes, the timer is disabled, and this process repeats for the\n * next source value.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.throttle(ev => Rx.Observable.interval(1000));\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounce}\n * @see {@link delayWhen}\n * @see {@link sample}\n * @see {@link throttleTime}\n *\n * @param {function(value: T): SubscribableOrPromise} durationSelector A function\n * that receives a value from the source Observable, for computing the silencing\n * duration for each source value, returned as an Observable or a Promise.\n * @param {Object} config a configuration object to define `leading` and `trailing` behavior. Defaults\n * to `{ leading: true, trailing: false }`.\n * @return {Observable<T>} An Observable that performs the throttle operation to\n * limit the rate of emissions from the source.\n * @method throttle\n * @owner Observable\n ",
+          "range": [
+            88,
+            1967
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 41,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "throttle",
+          "range": [
+            1984,
+            1992
+          ],
+          "loc": {
+            "start": {
+              "line": 42,
+              "column": 16
+            },
+            "end": {
+              "line": 42,
+              "column": 24
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "durationSelector",
+            "range": [
+              1993,
+              2009
+            ],
+            "loc": {
+              "start": {
+                "line": 42,
+                "column": 25
+              },
+              "end": {
+                "line": 42,
+                "column": 41
+              }
+            }
+          },
+          {
+            "type": "AssignmentPattern",
+            "left": {
+              "type": "Identifier",
+              "name": "config",
+              "range": [
+                2011,
+                2017
+              ],
+              "loc": {
+                "start": {
+                  "line": 42,
+                  "column": 43
+                },
+                "end": {
+                  "line": 42,
+                  "column": 49
+                }
+              }
+            },
+            "right": {
+              "type": "Identifier",
+              "name": "defaultThrottleConfig",
+              "range": [
+                2020,
+                2041
+              ],
+              "loc": {
+                "start": {
+                  "line": 42,
+                  "column": 52
+                },
+                "end": {
+                  "line": 42,
+                  "column": 73
+                }
+              }
+            },
+            "range": [
+              2011,
+              2041
+            ],
+            "loc": {
+              "start": {
+                "line": 42,
+                "column": 43
+              },
+              "end": {
+                "line": 42,
+                "column": 73
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      2056,
+                      2067
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 43,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 43,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "durationSelector",
+                      "range": [
+                        2068,
+                        2084
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 43,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 43,
+                          "column": 39
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "config",
+                      "range": [
+                        2086,
+                        2092
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 43,
+                          "column": 41
+                        },
+                        "end": {
+                          "line": 43,
+                          "column": 47
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    2056,
+                    2093
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 43,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 43,
+                      "column": 48
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      2094,
+                      2098
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 43,
+                        "column": 49
+                      },
+                      "end": {
+                        "line": 43,
+                        "column": 53
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2056,
+                  2099
+                ],
+                "loc": {
+                  "start": {
+                    "line": 43,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 43,
+                    "column": 54
+                  }
+                }
+              },
+              "range": [
+                2049,
+                2100
+              ],
+              "loc": {
+                "start": {
+                  "line": 43,
+                  "column": 4
+                },
+                "end": {
+                  "line": 43,
+                  "column": 55
+                }
+              }
+            }
+          ],
+          "range": [
+            2043,
+            2102
+          ],
+          "loc": {
+            "start": {
+              "line": 42,
+              "column": 75
+            },
+            "end": {
+              "line": 44,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1975,
+          2102
+        ],
+        "loc": {
+          "start": {
+            "line": 42,
+            "column": 7
+          },
+          "end": {
+            "line": 44,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Emits a value from the source Observable, then ignores subsequent source\n * values for a duration determined by another Observable, then repeats this\n * process.\n *\n * <span class=\"informal\">It's like {@link throttleTime}, but the silencing\n * duration is determined by a second Observable.</span>\n *\n * <img src=\"./img/throttle.png\" width=\"100%\">\n *\n * `throttle` emits the source Observable values on the output Observable\n * when its internal timer is disabled, and ignores source values when the timer\n * is enabled. Initially, the timer is disabled. As soon as the first source\n * value arrives, it is forwarded to the output Observable, and then the timer\n * is enabled by calling the `durationSelector` function with the source value,\n * which returns the \"duration\" Observable. When the duration Observable emits a\n * value or completes, the timer is disabled, and this process repeats for the\n * next source value.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.throttle(ev => Rx.Observable.interval(1000));\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounce}\n * @see {@link delayWhen}\n * @see {@link sample}\n * @see {@link throttleTime}\n *\n * @param {function(value: T): SubscribableOrPromise} durationSelector A function\n * that receives a value from the source Observable, for computing the silencing\n * duration for each source value, returned as an Observable or a Promise.\n * @param {Object} config a configuration object to define `leading` and `trailing` behavior. Defaults\n * to `{ leading: true, trailing: false }`.\n * @return {Observable<T>} An Observable that performs the throttle operation to\n * limit the rate of emissions from the source.\n * @method throttle\n * @owner Observable\n ",
+            "range": [
+              88,
+              1967
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 41,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=throttle.js.map",
+            "range": [
+              2103,
+              2139
+            ],
+            "loc": {
+              "start": {
+                "line": 45,
+                "column": 0
+              },
+              "end": {
+                "line": 45,
+                "column": 36
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1968,
+        2102
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 0
+        },
+        "end": {
+          "line": 44,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Emits a value from the source Observable, then ignores subsequent source\n * values for a duration determined by another Observable, then repeats this\n * process.\n *\n * <span class=\"informal\">It's like {@link throttleTime}, but the silencing\n * duration is determined by a second Observable.</span>\n *\n * <img src=\"./img/throttle.png\" width=\"100%\">\n *\n * `throttle` emits the source Observable values on the output Observable\n * when its internal timer is disabled, and ignores source values when the timer\n * is enabled. Initially, the timer is disabled. As soon as the first source\n * value arrives, it is forwarded to the output Observable, and then the timer\n * is enabled by calling the `durationSelector` function with the source value,\n * which returns the \"duration\" Observable. When the duration Observable emits a\n * value or completes, the timer is disabled, and this process repeats for the\n * next source value.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.throttle(ev => Rx.Observable.interval(1000));\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounce}\n * @see {@link delayWhen}\n * @see {@link sample}\n * @see {@link throttleTime}\n *\n * @param {function(value: T): SubscribableOrPromise} durationSelector A function\n * that receives a value from the source Observable, for computing the silencing\n * duration for each source value, returned as an Observable or a Promise.\n * @param {Object} config a configuration object to define `leading` and `trailing` behavior. Defaults\n * to `{ leading: true, trailing: false }`.\n * @return {Observable<T>} An Observable that performs the throttle operation to\n * limit the rate of emissions from the source.\n * @method throttle\n * @owner Observable\n ",
+          "range": [
+            88,
+            1967
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 41,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=throttle.js.map",
+          "range": [
+            2103,
+            2139
+          ],
+          "loc": {
+            "start": {
+              "line": 45,
+              "column": 0
+            },
+            "end": {
+              "line": 45,
+              "column": 36
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    2102
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 44,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Emits a value from the source Observable, then ignores subsequent source\n * values for a duration determined by another Observable, then repeats this\n * process.\n *\n * <span class=\"informal\">It's like {@link throttleTime}, but the silencing\n * duration is determined by a second Observable.</span>\n *\n * <img src=\"./img/throttle.png\" width=\"100%\">\n *\n * `throttle` emits the source Observable values on the output Observable\n * when its internal timer is disabled, and ignores source values when the timer\n * is enabled. Initially, the timer is disabled. As soon as the first source\n * value arrives, it is forwarded to the output Observable, and then the timer\n * is enabled by calling the `durationSelector` function with the source value,\n * which returns the \"duration\" Observable. When the duration Observable emits a\n * value or completes, the timer is disabled, and this process repeats for the\n * next source value.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.throttle(ev => Rx.Observable.interval(1000));\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounce}\n * @see {@link delayWhen}\n * @see {@link sample}\n * @see {@link throttleTime}\n *\n * @param {function(value: T): SubscribableOrPromise} durationSelector A function\n * that receives a value from the source Observable, for computing the silencing\n * duration for each source value, returned as an Observable or a Promise.\n * @param {Object} config a configuration object to define `leading` and `trailing` behavior. Defaults\n * to `{ leading: true, trailing: false }`.\n * @return {Observable<T>} An Observable that performs the throttle operation to\n * limit the rate of emissions from the source.\n * @method throttle\n * @owner Observable\n ",
+      "range": [
+        88,
+        1967
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 41,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=throttle.js.map",
+      "range": [
+        2103,
+        2139
+      ],
+      "loc": {
+        "start": {
+          "line": 45,
+          "column": 0
+        },
+        "end": {
+          "line": 45,
+          "column": 36
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,412 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              18,
+              29
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 18
+              },
+              "end": {
+                "line": 1,
+                "column": 29
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "share",
+            "range": [
+              9,
+              14
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            9,
+            29
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 29
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/share",
+        "raw": "'../operators/share'",
+        "range": [
+          37,
+          57
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 37
+          },
+          "end": {
+            "line": 1,
+            "column": 57
+          }
+        }
+      },
+      "range": [
+        0,
+        58
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 58
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one\n * Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will\n * unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.\n *\n * This behaves similarly to .publish().refCount(), with a behavior difference when the source observable emits complete.\n * .publish().refCount() will not resubscribe to the original source, however .share() will resubscribe to the original source.\n * Observable.of(\"test\").publish().refCount() will not re-emit \"test\" on new subscriptions, Observable.of(\"test\").share() will\n * re-emit \"test\" to new subscriptions.\n *\n * <img src=\"./img/share.png\" width=\"100%\">\n *\n * @return {Observable<T>} An Observable that upon connection causes the source Observable to emit items to its Observers.\n * @method share\n * @owner Observable\n ",
+          "range": [
+            59,
+            1032
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 17,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "share",
+          "range": [
+            1049,
+            1054
+          ],
+          "loc": {
+            "start": {
+              "line": 18,
+              "column": 16
+            },
+            "end": {
+              "line": 18,
+              "column": 21
+            }
+          }
+        },
+        "params": [],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      1070,
+                      1081
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 19,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 19,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [],
+                  "range": [
+                    1070,
+                    1083
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 19,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 19,
+                      "column": 24
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      1084,
+                      1088
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 19,
+                        "column": 25
+                      },
+                      "end": {
+                        "line": 19,
+                        "column": 29
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1070,
+                  1089
+                ],
+                "loc": {
+                  "start": {
+                    "line": 19,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 19,
+                    "column": 30
+                  }
+                }
+              },
+              "range": [
+                1063,
+                1090
+              ],
+              "loc": {
+                "start": {
+                  "line": 19,
+                  "column": 4
+                },
+                "end": {
+                  "line": 19,
+                  "column": 31
+                }
+              }
+            }
+          ],
+          "range": [
+            1057,
+            1092
+          ],
+          "loc": {
+            "start": {
+              "line": 18,
+              "column": 24
+            },
+            "end": {
+              "line": 20,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1040,
+          1092
+        ],
+        "loc": {
+          "start": {
+            "line": 18,
+            "column": 7
+          },
+          "end": {
+            "line": 20,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one\n * Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will\n * unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.\n *\n * This behaves similarly to .publish().refCount(), with a behavior difference when the source observable emits complete.\n * .publish().refCount() will not resubscribe to the original source, however .share() will resubscribe to the original source.\n * Observable.of(\"test\").publish().refCount() will not re-emit \"test\" on new subscriptions, Observable.of(\"test\").share() will\n * re-emit \"test\" to new subscriptions.\n *\n * <img src=\"./img/share.png\" width=\"100%\">\n *\n * @return {Observable<T>} An Observable that upon connection causes the source Observable to emit items to its Observers.\n * @method share\n * @owner Observable\n ",
+            "range": [
+              59,
+              1032
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 17,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1033,
+        1092
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 0
+        },
+        "end": {
+          "line": 20,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one\n * Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will\n * unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.\n *\n * This behaves similarly to .publish().refCount(), with a behavior difference when the source observable emits complete.\n * .publish().refCount() will not resubscribe to the original source, however .share() will resubscribe to the original source.\n * Observable.of(\"test\").publish().refCount() will not re-emit \"test\" on new subscriptions, Observable.of(\"test\").share() will\n * re-emit \"test\" to new subscriptions.\n *\n * <img src=\"./img/share.png\" width=\"100%\">\n *\n * @return {Observable<T>} An Observable that upon connection causes the source Observable to emit items to its Observers.\n * @method share\n * @owner Observable\n ",
+          "range": [
+            59,
+            1032
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 17,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "EmptyStatement",
+      "range": [
+        1093,
+        1094
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 0
+        },
+        "end": {
+          "line": 21,
+          "column": 1
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=share.js.map",
+          "range": [
+            1095,
+            1128
+          ],
+          "loc": {
+            "start": {
+              "line": 22,
+              "column": 0
+            },
+            "end": {
+              "line": 22,
+              "column": 33
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1094
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 21,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one\n * Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will\n * unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.\n *\n * This behaves similarly to .publish().refCount(), with a behavior difference when the source observable emits complete.\n * .publish().refCount() will not resubscribe to the original source, however .share() will resubscribe to the original source.\n * Observable.of(\"test\").publish().refCount() will not re-emit \"test\" on new subscriptions, Observable.of(\"test\").share() will\n * re-emit \"test\" to new subscriptions.\n *\n * <img src=\"./img/share.png\" width=\"100%\">\n *\n * @return {Observable<T>} An Observable that upon connection causes the source Observable to emit items to its Observers.\n * @method share\n * @owner Observable\n ",
+      "range": [
+        59,
+        1032
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 17,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=share.js.map",
+      "range": [
+        1095,
+        1128
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 0
+        },
+        "end": {
+          "line": 22,
+          "column": 33
+        }
+      }
+    }
+  ]
+}

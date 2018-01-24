@@ -1,0 +1,469 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "QueueAction",
+            "range": [
+              9,
+              20
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 20
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "QueueAction",
+            "range": [
+              9,
+              20
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 20
+              }
+            }
+          },
+          "range": [
+            9,
+            20
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 20
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./QueueAction",
+        "raw": "'./QueueAction'",
+        "range": [
+          28,
+          43
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 28
+          },
+          "end": {
+            "line": 1,
+            "column": 43
+          }
+        }
+      },
+      "range": [
+        0,
+        44
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "QueueScheduler",
+            "range": [
+              54,
+              68
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 23
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "QueueScheduler",
+            "range": [
+              54,
+              68
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 23
+              }
+            }
+          },
+          "range": [
+            54,
+            68
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 9
+            },
+            "end": {
+              "line": 2,
+              "column": 23
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "./QueueScheduler",
+        "raw": "'./QueueScheduler'",
+        "range": [
+          76,
+          94
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 31
+          },
+          "end": {
+            "line": 2,
+            "column": 49
+          }
+        }
+      },
+      "range": [
+        45,
+        95
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 50
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n *\n * Queue Scheduler\n *\n * <span class=\"informal\">Put every next task on a queue, instead of executing it immediately</span>\n *\n * `queue` scheduler, when used with delay, behaves the same as {@link async} scheduler.\n *\n * When used without delay, it schedules given task synchronously - executes it right when\n * it is scheduled. However when called recursively, that is when inside the scheduled task,\n * another task is scheduled with queue scheduler, instead of executing immediately as well,\n * that task will be put on a queue and wait for current one to finish.\n *\n * This means that when you execute task with `queue` scheduler, you are sure it will end\n * before any other task scheduled with that scheduler will start.\n *\n * @examples <caption>Schedule recursively first, then do something</caption>\n *\n * Rx.Scheduler.queue.schedule(() => {\n *   Rx.Scheduler.queue.schedule(() => console.log('second')); // will not happen now, but will be put on a queue\n *\n *   console.log('first');\n * });\n *\n * // Logs:\n * // \"first\"\n * // \"second\"\n *\n *\n * @example <caption>Reschedule itself recursively</caption>\n *\n * Rx.Scheduler.queue.schedule(function(state) {\n *   if (state !== 0) {\n *     console.log('before', state);\n *     this.schedule(state - 1); // `this` references currently executing Action,\n *                               // which we reschedule with new state\n *     console.log('after', state);\n *   }\n * }, 0, 3);\n *\n * // In scheduler that runs recursively, you would expect:\n * // \"before\", 3\n * // \"before\", 2\n * // \"before\", 1\n * // \"after\", 1\n * // \"after\", 2\n * // \"after\", 3\n *\n * // But with queue it logs:\n * // \"before\", 3\n * // \"after\", 3\n * // \"before\", 2\n * // \"after\", 2\n * // \"before\", 1\n * // \"after\", 1\n *\n *\n * @static true\n * @name queue\n * @owner Scheduler\n ",
+          "range": [
+            96,
+            1903
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 63,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "VariableDeclaration",
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "id": {
+              "type": "Identifier",
+              "name": "queue",
+              "range": [
+                1917,
+                1922
+              ],
+              "loc": {
+                "start": {
+                  "line": 64,
+                  "column": 13
+                },
+                "end": {
+                  "line": 64,
+                  "column": 18
+                }
+              }
+            },
+            "init": {
+              "type": "NewExpression",
+              "callee": {
+                "type": "Identifier",
+                "name": "QueueScheduler",
+                "range": [
+                  1929,
+                  1943
+                ],
+                "loc": {
+                  "start": {
+                    "line": 64,
+                    "column": 25
+                  },
+                  "end": {
+                    "line": 64,
+                    "column": 39
+                  }
+                }
+              },
+              "arguments": [
+                {
+                  "type": "Identifier",
+                  "name": "QueueAction",
+                  "range": [
+                    1944,
+                    1955
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 64,
+                      "column": 40
+                    },
+                    "end": {
+                      "line": 64,
+                      "column": 51
+                    }
+                  }
+                }
+              ],
+              "range": [
+                1925,
+                1956
+              ],
+              "loc": {
+                "start": {
+                  "line": 64,
+                  "column": 21
+                },
+                "end": {
+                  "line": 64,
+                  "column": 52
+                }
+              }
+            },
+            "range": [
+              1917,
+              1956
+            ],
+            "loc": {
+              "start": {
+                "line": 64,
+                "column": 13
+              },
+              "end": {
+                "line": 64,
+                "column": 52
+              }
+            }
+          }
+        ],
+        "kind": "const",
+        "range": [
+          1911,
+          1957
+        ],
+        "loc": {
+          "start": {
+            "line": 64,
+            "column": 7
+          },
+          "end": {
+            "line": 64,
+            "column": 53
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n *\n * Queue Scheduler\n *\n * <span class=\"informal\">Put every next task on a queue, instead of executing it immediately</span>\n *\n * `queue` scheduler, when used with delay, behaves the same as {@link async} scheduler.\n *\n * When used without delay, it schedules given task synchronously - executes it right when\n * it is scheduled. However when called recursively, that is when inside the scheduled task,\n * another task is scheduled with queue scheduler, instead of executing immediately as well,\n * that task will be put on a queue and wait for current one to finish.\n *\n * This means that when you execute task with `queue` scheduler, you are sure it will end\n * before any other task scheduled with that scheduler will start.\n *\n * @examples <caption>Schedule recursively first, then do something</caption>\n *\n * Rx.Scheduler.queue.schedule(() => {\n *   Rx.Scheduler.queue.schedule(() => console.log('second')); // will not happen now, but will be put on a queue\n *\n *   console.log('first');\n * });\n *\n * // Logs:\n * // \"first\"\n * // \"second\"\n *\n *\n * @example <caption>Reschedule itself recursively</caption>\n *\n * Rx.Scheduler.queue.schedule(function(state) {\n *   if (state !== 0) {\n *     console.log('before', state);\n *     this.schedule(state - 1); // `this` references currently executing Action,\n *                               // which we reschedule with new state\n *     console.log('after', state);\n *   }\n * }, 0, 3);\n *\n * // In scheduler that runs recursively, you would expect:\n * // \"before\", 3\n * // \"before\", 2\n * // \"before\", 1\n * // \"after\", 1\n * // \"after\", 2\n * // \"after\", 3\n *\n * // But with queue it logs:\n * // \"before\", 3\n * // \"after\", 3\n * // \"before\", 2\n * // \"after\", 2\n * // \"before\", 1\n * // \"after\", 1\n *\n *\n * @static true\n * @name queue\n * @owner Scheduler\n ",
+            "range": [
+              96,
+              1903
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 63,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=queue.js.map",
+            "range": [
+              1958,
+              1991
+            ],
+            "loc": {
+              "start": {
+                "line": 65,
+                "column": 0
+              },
+              "end": {
+                "line": 65,
+                "column": 33
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1904,
+        1957
+      ],
+      "loc": {
+        "start": {
+          "line": 64,
+          "column": 0
+        },
+        "end": {
+          "line": 64,
+          "column": 53
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n *\n * Queue Scheduler\n *\n * <span class=\"informal\">Put every next task on a queue, instead of executing it immediately</span>\n *\n * `queue` scheduler, when used with delay, behaves the same as {@link async} scheduler.\n *\n * When used without delay, it schedules given task synchronously - executes it right when\n * it is scheduled. However when called recursively, that is when inside the scheduled task,\n * another task is scheduled with queue scheduler, instead of executing immediately as well,\n * that task will be put on a queue and wait for current one to finish.\n *\n * This means that when you execute task with `queue` scheduler, you are sure it will end\n * before any other task scheduled with that scheduler will start.\n *\n * @examples <caption>Schedule recursively first, then do something</caption>\n *\n * Rx.Scheduler.queue.schedule(() => {\n *   Rx.Scheduler.queue.schedule(() => console.log('second')); // will not happen now, but will be put on a queue\n *\n *   console.log('first');\n * });\n *\n * // Logs:\n * // \"first\"\n * // \"second\"\n *\n *\n * @example <caption>Reschedule itself recursively</caption>\n *\n * Rx.Scheduler.queue.schedule(function(state) {\n *   if (state !== 0) {\n *     console.log('before', state);\n *     this.schedule(state - 1); // `this` references currently executing Action,\n *                               // which we reschedule with new state\n *     console.log('after', state);\n *   }\n * }, 0, 3);\n *\n * // In scheduler that runs recursively, you would expect:\n * // \"before\", 3\n * // \"before\", 2\n * // \"before\", 1\n * // \"after\", 1\n * // \"after\", 2\n * // \"after\", 3\n *\n * // But with queue it logs:\n * // \"before\", 3\n * // \"after\", 3\n * // \"before\", 2\n * // \"after\", 2\n * // \"before\", 1\n * // \"after\", 1\n *\n *\n * @static true\n * @name queue\n * @owner Scheduler\n ",
+          "range": [
+            96,
+            1903
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 63,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=queue.js.map",
+          "range": [
+            1958,
+            1991
+          ],
+          "loc": {
+            "start": {
+              "line": 65,
+              "column": 0
+            },
+            "end": {
+              "line": 65,
+              "column": 33
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1957
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 64,
+      "column": 53
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n *\n * Queue Scheduler\n *\n * <span class=\"informal\">Put every next task on a queue, instead of executing it immediately</span>\n *\n * `queue` scheduler, when used with delay, behaves the same as {@link async} scheduler.\n *\n * When used without delay, it schedules given task synchronously - executes it right when\n * it is scheduled. However when called recursively, that is when inside the scheduled task,\n * another task is scheduled with queue scheduler, instead of executing immediately as well,\n * that task will be put on a queue and wait for current one to finish.\n *\n * This means that when you execute task with `queue` scheduler, you are sure it will end\n * before any other task scheduled with that scheduler will start.\n *\n * @examples <caption>Schedule recursively first, then do something</caption>\n *\n * Rx.Scheduler.queue.schedule(() => {\n *   Rx.Scheduler.queue.schedule(() => console.log('second')); // will not happen now, but will be put on a queue\n *\n *   console.log('first');\n * });\n *\n * // Logs:\n * // \"first\"\n * // \"second\"\n *\n *\n * @example <caption>Reschedule itself recursively</caption>\n *\n * Rx.Scheduler.queue.schedule(function(state) {\n *   if (state !== 0) {\n *     console.log('before', state);\n *     this.schedule(state - 1); // `this` references currently executing Action,\n *                               // which we reschedule with new state\n *     console.log('after', state);\n *   }\n * }, 0, 3);\n *\n * // In scheduler that runs recursively, you would expect:\n * // \"before\", 3\n * // \"before\", 2\n * // \"before\", 1\n * // \"after\", 1\n * // \"after\", 2\n * // \"after\", 3\n *\n * // But with queue it logs:\n * // \"before\", 3\n * // \"after\", 3\n * // \"before\", 2\n * // \"after\", 2\n * // \"before\", 1\n * // \"after\", 1\n *\n *\n * @static true\n * @name queue\n * @owner Scheduler\n ",
+      "range": [
+        96,
+        1903
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 63,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=queue.js.map",
+      "range": [
+        1958,
+        1991
+      ],
+      "loc": {
+        "start": {
+          "line": 65,
+          "column": 0
+        },
+        "end": {
+          "line": 65,
+          "column": 33
+        }
+      }
+    }
+  ]
+}

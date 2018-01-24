@@ -1,0 +1,1960 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "async",
+            "range": [
+              9,
+              14
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 14
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "async",
+            "range": [
+              9,
+              14
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            9,
+            14
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 14
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../scheduler/async",
+        "raw": "'../scheduler/async'",
+        "range": [
+          22,
+          42
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 22
+          },
+          "end": {
+            "line": 1,
+            "column": 42
+          }
+        }
+      },
+      "range": [
+        0,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "isScheduler",
+            "range": [
+              53,
+              64
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 20
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "isScheduler",
+            "range": [
+              53,
+              64
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 20
+              }
+            }
+          },
+          "range": [
+            53,
+            64
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 9
+            },
+            "end": {
+              "line": 2,
+              "column": 20
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../util/isScheduler",
+        "raw": "'../util/isScheduler'",
+        "range": [
+          72,
+          93
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 28
+          },
+          "end": {
+            "line": 2,
+            "column": 49
+          }
+        }
+      },
+      "range": [
+        44,
+        94
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              118,
+              129
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 23
+              },
+              "end": {
+                "line": 3,
+                "column": 34
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "bufferTime",
+            "range": [
+              104,
+              114
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 9
+              },
+              "end": {
+                "line": 3,
+                "column": 19
+              }
+            }
+          },
+          "range": [
+            104,
+            129
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 9
+            },
+            "end": {
+              "line": 3,
+              "column": 34
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/bufferTime",
+        "raw": "'../operators/bufferTime'",
+        "range": [
+          137,
+          162
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 42
+          },
+          "end": {
+            "line": 3,
+            "column": 67
+          }
+        }
+      },
+      "range": [
+        95,
+        163
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 68
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": " tslint:enable:max-line-length ",
+          "range": [
+            164,
+            199
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 4,
+              "column": 35
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Buffers the source Observable values for a specific time period.\n *\n * <span class=\"informal\">Collects values from the past as an array, and emits\n * those arrays periodically in time.</span>\n *\n * <img src=\"./img/bufferTime.png\" width=\"100%\">\n *\n * Buffers values from the source for a specific time duration `bufferTimeSpan`.\n * Unless the optional argument `bufferCreationInterval` is given, it emits and\n * resets the buffer every `bufferTimeSpan` milliseconds. If\n * `bufferCreationInterval` is given, this operator opens the buffer every\n * `bufferCreationInterval` milliseconds and closes (emits and resets) the\n * buffer every `bufferTimeSpan` milliseconds. When the optional argument\n * `maxBufferSize` is specified, the buffer will be closed either after\n * `bufferTimeSpan` milliseconds or when it contains `maxBufferSize` elements.\n *\n * @example <caption>Every second, emit an array of the recent click events</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var buffered = clicks.bufferTime(1000);\n * buffered.subscribe(x => console.log(x));\n *\n * @example <caption>Every 5 seconds, emit the click events from the next 2 seconds</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var buffered = clicks.bufferTime(2000, 5000);\n * buffered.subscribe(x => console.log(x));\n *\n * @see {@link buffer}\n * @see {@link bufferCount}\n * @see {@link bufferToggle}\n * @see {@link bufferWhen}\n * @see {@link windowTime}\n *\n * @param {number} bufferTimeSpan The amount of time to fill each buffer array.\n * @param {number} [bufferCreationInterval] The interval at which to start new\n * buffers.\n * @param {number} [maxBufferSize] The maximum buffer size.\n * @param {Scheduler} [scheduler=async] The scheduler on which to schedule the\n * intervals that determine buffer boundaries.\n * @return {Observable<T[]>} An observable of arrays of buffered values.\n * @method bufferTime\n * @owner Observable\n ",
+          "range": [
+            200,
+            2153
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 47,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "bufferTime",
+          "range": [
+            2170,
+            2180
+          ],
+          "loc": {
+            "start": {
+              "line": 48,
+              "column": 16
+            },
+            "end": {
+              "line": 48,
+              "column": 26
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "bufferTimeSpan",
+            "range": [
+              2181,
+              2195
+            ],
+            "loc": {
+              "start": {
+                "line": 48,
+                "column": 27
+              },
+              "end": {
+                "line": 48,
+                "column": 41
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "VariableDeclaration",
+              "declarations": [
+                {
+                  "type": "VariableDeclarator",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "length",
+                    "range": [
+                      2207,
+                      2213
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 49,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 49,
+                        "column": 14
+                      }
+                    }
+                  },
+                  "init": {
+                    "type": "MemberExpression",
+                    "computed": false,
+                    "object": {
+                      "type": "Identifier",
+                      "name": "arguments",
+                      "range": [
+                        2216,
+                        2225
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 49,
+                          "column": 17
+                        },
+                        "end": {
+                          "line": 49,
+                          "column": 26
+                        }
+                      }
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "name": "length",
+                      "range": [
+                        2226,
+                        2232
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 49,
+                          "column": 27
+                        },
+                        "end": {
+                          "line": 49,
+                          "column": 33
+                        }
+                      }
+                    },
+                    "range": [
+                      2216,
+                      2232
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 49,
+                        "column": 17
+                      },
+                      "end": {
+                        "line": 49,
+                        "column": 33
+                      }
+                    }
+                  },
+                  "range": [
+                    2207,
+                    2232
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 49,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 49,
+                      "column": 33
+                    }
+                  }
+                }
+              ],
+              "kind": "let",
+              "range": [
+                2203,
+                2233
+              ],
+              "loc": {
+                "start": {
+                  "line": 49,
+                  "column": 4
+                },
+                "end": {
+                  "line": 49,
+                  "column": 34
+                }
+              }
+            },
+            {
+              "type": "VariableDeclaration",
+              "declarations": [
+                {
+                  "type": "VariableDeclarator",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "scheduler",
+                    "range": [
+                      2242,
+                      2251
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 50,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 50,
+                        "column": 17
+                      }
+                    }
+                  },
+                  "init": {
+                    "type": "Identifier",
+                    "name": "async",
+                    "range": [
+                      2254,
+                      2259
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 50,
+                        "column": 20
+                      },
+                      "end": {
+                        "line": 50,
+                        "column": 25
+                      }
+                    }
+                  },
+                  "range": [
+                    2242,
+                    2259
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 50,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 50,
+                      "column": 25
+                    }
+                  }
+                }
+              ],
+              "kind": "let",
+              "range": [
+                2238,
+                2260
+              ],
+              "loc": {
+                "start": {
+                  "line": 50,
+                  "column": 4
+                },
+                "end": {
+                  "line": 50,
+                  "column": 26
+                }
+              }
+            },
+            {
+              "type": "IfStatement",
+              "test": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "Identifier",
+                  "name": "isScheduler",
+                  "range": [
+                    2269,
+                    2280
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 51,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 51,
+                      "column": 19
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "MemberExpression",
+                    "computed": true,
+                    "object": {
+                      "type": "Identifier",
+                      "name": "arguments",
+                      "range": [
+                        2281,
+                        2290
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 51,
+                          "column": 20
+                        },
+                        "end": {
+                          "line": 51,
+                          "column": 29
+                        }
+                      }
+                    },
+                    "property": {
+                      "type": "BinaryExpression",
+                      "operator": "-",
+                      "left": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "arguments",
+                          "range": [
+                            2291,
+                            2300
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 51,
+                              "column": 30
+                            },
+                            "end": {
+                              "line": 51,
+                              "column": 39
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "length",
+                          "range": [
+                            2301,
+                            2307
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 51,
+                              "column": 40
+                            },
+                            "end": {
+                              "line": 51,
+                              "column": 46
+                            }
+                          }
+                        },
+                        "range": [
+                          2291,
+                          2307
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 51,
+                            "column": 30
+                          },
+                          "end": {
+                            "line": 51,
+                            "column": 46
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "Literal",
+                        "value": 1,
+                        "raw": "1",
+                        "range": [
+                          2310,
+                          2311
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 51,
+                            "column": 49
+                          },
+                          "end": {
+                            "line": 51,
+                            "column": 50
+                          }
+                        }
+                      },
+                      "range": [
+                        2291,
+                        2311
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 51,
+                          "column": 30
+                        },
+                        "end": {
+                          "line": 51,
+                          "column": 50
+                        }
+                      }
+                    },
+                    "range": [
+                      2281,
+                      2312
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 51,
+                        "column": 20
+                      },
+                      "end": {
+                        "line": 51,
+                        "column": 51
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2269,
+                  2313
+                ],
+                "loc": {
+                  "start": {
+                    "line": 51,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 51,
+                    "column": 52
+                  }
+                }
+              },
+              "consequent": {
+                "type": "BlockStatement",
+                "body": [
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "AssignmentExpression",
+                      "operator": "=",
+                      "left": {
+                        "type": "Identifier",
+                        "name": "scheduler",
+                        "range": [
+                          2325,
+                          2334
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 52,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 52,
+                            "column": 17
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "MemberExpression",
+                        "computed": true,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "arguments",
+                          "range": [
+                            2337,
+                            2346
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 52,
+                              "column": 20
+                            },
+                            "end": {
+                              "line": 52,
+                              "column": 29
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "BinaryExpression",
+                          "operator": "-",
+                          "left": {
+                            "type": "MemberExpression",
+                            "computed": false,
+                            "object": {
+                              "type": "Identifier",
+                              "name": "arguments",
+                              "range": [
+                                2347,
+                                2356
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 52,
+                                  "column": 30
+                                },
+                                "end": {
+                                  "line": 52,
+                                  "column": 39
+                                }
+                              }
+                            },
+                            "property": {
+                              "type": "Identifier",
+                              "name": "length",
+                              "range": [
+                                2357,
+                                2363
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 52,
+                                  "column": 40
+                                },
+                                "end": {
+                                  "line": 52,
+                                  "column": 46
+                                }
+                              }
+                            },
+                            "range": [
+                              2347,
+                              2363
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 52,
+                                "column": 30
+                              },
+                              "end": {
+                                "line": 52,
+                                "column": 46
+                              }
+                            }
+                          },
+                          "right": {
+                            "type": "Literal",
+                            "value": 1,
+                            "raw": "1",
+                            "range": [
+                              2366,
+                              2367
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 52,
+                                "column": 49
+                              },
+                              "end": {
+                                "line": 52,
+                                "column": 50
+                              }
+                            }
+                          },
+                          "range": [
+                            2347,
+                            2367
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 52,
+                              "column": 30
+                            },
+                            "end": {
+                              "line": 52,
+                              "column": 50
+                            }
+                          }
+                        },
+                        "range": [
+                          2337,
+                          2368
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 52,
+                            "column": 20
+                          },
+                          "end": {
+                            "line": 52,
+                            "column": 51
+                          }
+                        }
+                      },
+                      "range": [
+                        2325,
+                        2368
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 52,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 52,
+                          "column": 51
+                        }
+                      }
+                    },
+                    "range": [
+                      2325,
+                      2369
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 52,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 52,
+                        "column": 52
+                      }
+                    }
+                  },
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "UpdateExpression",
+                      "operator": "--",
+                      "argument": {
+                        "type": "Identifier",
+                        "name": "length",
+                        "range": [
+                          2378,
+                          2384
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 53,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 53,
+                            "column": 14
+                          }
+                        }
+                      },
+                      "prefix": false,
+                      "range": [
+                        2378,
+                        2386
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 53,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 53,
+                          "column": 16
+                        }
+                      }
+                    },
+                    "range": [
+                      2378,
+                      2387
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 53,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 53,
+                        "column": 17
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2315,
+                  2393
+                ],
+                "loc": {
+                  "start": {
+                    "line": 51,
+                    "column": 54
+                  },
+                  "end": {
+                    "line": 54,
+                    "column": 5
+                  }
+                }
+              },
+              "alternate": null,
+              "range": [
+                2265,
+                2393
+              ],
+              "loc": {
+                "start": {
+                  "line": 51,
+                  "column": 4
+                },
+                "end": {
+                  "line": 54,
+                  "column": 5
+                }
+              }
+            },
+            {
+              "type": "VariableDeclaration",
+              "declarations": [
+                {
+                  "type": "VariableDeclarator",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "bufferCreationInterval",
+                    "range": [
+                      2402,
+                      2424
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 55,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 55,
+                        "column": 30
+                      }
+                    }
+                  },
+                  "init": {
+                    "type": "Literal",
+                    "value": null,
+                    "raw": "null",
+                    "range": [
+                      2427,
+                      2431
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 55,
+                        "column": 33
+                      },
+                      "end": {
+                        "line": 55,
+                        "column": 37
+                      }
+                    }
+                  },
+                  "range": [
+                    2402,
+                    2431
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 55,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 55,
+                      "column": 37
+                    }
+                  }
+                }
+              ],
+              "kind": "let",
+              "range": [
+                2398,
+                2432
+              ],
+              "loc": {
+                "start": {
+                  "line": 55,
+                  "column": 4
+                },
+                "end": {
+                  "line": 55,
+                  "column": 38
+                }
+              }
+            },
+            {
+              "type": "IfStatement",
+              "test": {
+                "type": "BinaryExpression",
+                "operator": ">=",
+                "left": {
+                  "type": "Identifier",
+                  "name": "length",
+                  "range": [
+                    2441,
+                    2447
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 56,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 56,
+                      "column": 14
+                    }
+                  }
+                },
+                "right": {
+                  "type": "Literal",
+                  "value": 2,
+                  "raw": "2",
+                  "range": [
+                    2451,
+                    2452
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 56,
+                      "column": 18
+                    },
+                    "end": {
+                      "line": 56,
+                      "column": 19
+                    }
+                  }
+                },
+                "range": [
+                  2441,
+                  2452
+                ],
+                "loc": {
+                  "start": {
+                    "line": 56,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 56,
+                    "column": 19
+                  }
+                }
+              },
+              "consequent": {
+                "type": "BlockStatement",
+                "body": [
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "AssignmentExpression",
+                      "operator": "=",
+                      "left": {
+                        "type": "Identifier",
+                        "name": "bufferCreationInterval",
+                        "range": [
+                          2464,
+                          2486
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 57,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 57,
+                            "column": 30
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "MemberExpression",
+                        "computed": true,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "arguments",
+                          "range": [
+                            2489,
+                            2498
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 57,
+                              "column": 33
+                            },
+                            "end": {
+                              "line": 57,
+                              "column": 42
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Literal",
+                          "value": 1,
+                          "raw": "1",
+                          "range": [
+                            2499,
+                            2500
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 57,
+                              "column": 43
+                            },
+                            "end": {
+                              "line": 57,
+                              "column": 44
+                            }
+                          }
+                        },
+                        "range": [
+                          2489,
+                          2501
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 57,
+                            "column": 33
+                          },
+                          "end": {
+                            "line": 57,
+                            "column": 45
+                          }
+                        }
+                      },
+                      "range": [
+                        2464,
+                        2501
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 57,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 57,
+                          "column": 45
+                        }
+                      }
+                    },
+                    "range": [
+                      2464,
+                      2502
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 57,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 57,
+                        "column": 46
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2454,
+                  2508
+                ],
+                "loc": {
+                  "start": {
+                    "line": 56,
+                    "column": 21
+                  },
+                  "end": {
+                    "line": 58,
+                    "column": 5
+                  }
+                }
+              },
+              "alternate": null,
+              "range": [
+                2437,
+                2508
+              ],
+              "loc": {
+                "start": {
+                  "line": 56,
+                  "column": 4
+                },
+                "end": {
+                  "line": 58,
+                  "column": 5
+                }
+              }
+            },
+            {
+              "type": "VariableDeclaration",
+              "declarations": [
+                {
+                  "type": "VariableDeclarator",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "maxBufferSize",
+                    "range": [
+                      2517,
+                      2530
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 59,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 59,
+                        "column": 21
+                      }
+                    }
+                  },
+                  "init": {
+                    "type": "MemberExpression",
+                    "computed": false,
+                    "object": {
+                      "type": "Identifier",
+                      "name": "Number",
+                      "range": [
+                        2533,
+                        2539
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 59,
+                          "column": 24
+                        },
+                        "end": {
+                          "line": 59,
+                          "column": 30
+                        }
+                      }
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "name": "POSITIVE_INFINITY",
+                      "range": [
+                        2540,
+                        2557
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 59,
+                          "column": 31
+                        },
+                        "end": {
+                          "line": 59,
+                          "column": 48
+                        }
+                      }
+                    },
+                    "range": [
+                      2533,
+                      2557
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 59,
+                        "column": 24
+                      },
+                      "end": {
+                        "line": 59,
+                        "column": 48
+                      }
+                    }
+                  },
+                  "range": [
+                    2517,
+                    2557
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 59,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 59,
+                      "column": 48
+                    }
+                  }
+                }
+              ],
+              "kind": "let",
+              "range": [
+                2513,
+                2558
+              ],
+              "loc": {
+                "start": {
+                  "line": 59,
+                  "column": 4
+                },
+                "end": {
+                  "line": 59,
+                  "column": 49
+                }
+              }
+            },
+            {
+              "type": "IfStatement",
+              "test": {
+                "type": "BinaryExpression",
+                "operator": ">=",
+                "left": {
+                  "type": "Identifier",
+                  "name": "length",
+                  "range": [
+                    2567,
+                    2573
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 60,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 60,
+                      "column": 14
+                    }
+                  }
+                },
+                "right": {
+                  "type": "Literal",
+                  "value": 3,
+                  "raw": "3",
+                  "range": [
+                    2577,
+                    2578
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 60,
+                      "column": 18
+                    },
+                    "end": {
+                      "line": 60,
+                      "column": 19
+                    }
+                  }
+                },
+                "range": [
+                  2567,
+                  2578
+                ],
+                "loc": {
+                  "start": {
+                    "line": 60,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 60,
+                    "column": 19
+                  }
+                }
+              },
+              "consequent": {
+                "type": "BlockStatement",
+                "body": [
+                  {
+                    "type": "ExpressionStatement",
+                    "expression": {
+                      "type": "AssignmentExpression",
+                      "operator": "=",
+                      "left": {
+                        "type": "Identifier",
+                        "name": "maxBufferSize",
+                        "range": [
+                          2590,
+                          2603
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 61,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 61,
+                            "column": 21
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "MemberExpression",
+                        "computed": true,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "arguments",
+                          "range": [
+                            2606,
+                            2615
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 61,
+                              "column": 24
+                            },
+                            "end": {
+                              "line": 61,
+                              "column": 33
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "Literal",
+                          "value": 2,
+                          "raw": "2",
+                          "range": [
+                            2616,
+                            2617
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 61,
+                              "column": 34
+                            },
+                            "end": {
+                              "line": 61,
+                              "column": 35
+                            }
+                          }
+                        },
+                        "range": [
+                          2606,
+                          2618
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 61,
+                            "column": 24
+                          },
+                          "end": {
+                            "line": 61,
+                            "column": 36
+                          }
+                        }
+                      },
+                      "range": [
+                        2590,
+                        2618
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 61,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 61,
+                          "column": 36
+                        }
+                      }
+                    },
+                    "range": [
+                      2590,
+                      2619
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 61,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 61,
+                        "column": 37
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2580,
+                  2625
+                ],
+                "loc": {
+                  "start": {
+                    "line": 60,
+                    "column": 21
+                  },
+                  "end": {
+                    "line": 62,
+                    "column": 5
+                  }
+                }
+              },
+              "alternate": null,
+              "range": [
+                2563,
+                2625
+              ],
+              "loc": {
+                "start": {
+                  "line": 60,
+                  "column": 4
+                },
+                "end": {
+                  "line": 62,
+                  "column": 5
+                }
+              }
+            },
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      2637,
+                      2648
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 63,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 63,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "bufferTimeSpan",
+                      "range": [
+                        2649,
+                        2663
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 63,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 63,
+                          "column": 37
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "bufferCreationInterval",
+                      "range": [
+                        2665,
+                        2687
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 63,
+                          "column": 39
+                        },
+                        "end": {
+                          "line": 63,
+                          "column": 61
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "maxBufferSize",
+                      "range": [
+                        2689,
+                        2702
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 63,
+                          "column": 63
+                        },
+                        "end": {
+                          "line": 63,
+                          "column": 76
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "scheduler",
+                      "range": [
+                        2704,
+                        2713
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 63,
+                          "column": 78
+                        },
+                        "end": {
+                          "line": 63,
+                          "column": 87
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    2637,
+                    2714
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 63,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 63,
+                      "column": 88
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      2715,
+                      2719
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 63,
+                        "column": 89
+                      },
+                      "end": {
+                        "line": 63,
+                        "column": 93
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2637,
+                  2720
+                ],
+                "loc": {
+                  "start": {
+                    "line": 63,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 63,
+                    "column": 94
+                  }
+                }
+              },
+              "range": [
+                2630,
+                2721
+              ],
+              "loc": {
+                "start": {
+                  "line": 63,
+                  "column": 4
+                },
+                "end": {
+                  "line": 63,
+                  "column": 95
+                }
+              }
+            }
+          ],
+          "range": [
+            2197,
+            2723
+          ],
+          "loc": {
+            "start": {
+              "line": 48,
+              "column": 43
+            },
+            "end": {
+              "line": 64,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          2161,
+          2723
+        ],
+        "loc": {
+          "start": {
+            "line": 48,
+            "column": 7
+          },
+          "end": {
+            "line": 64,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": " tslint:enable:max-line-length ",
+            "range": [
+              164,
+              199
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 4,
+                "column": 35
+              }
+            }
+          },
+          {
+            "type": "Block",
+            "value": "*\n * Buffers the source Observable values for a specific time period.\n *\n * <span class=\"informal\">Collects values from the past as an array, and emits\n * those arrays periodically in time.</span>\n *\n * <img src=\"./img/bufferTime.png\" width=\"100%\">\n *\n * Buffers values from the source for a specific time duration `bufferTimeSpan`.\n * Unless the optional argument `bufferCreationInterval` is given, it emits and\n * resets the buffer every `bufferTimeSpan` milliseconds. If\n * `bufferCreationInterval` is given, this operator opens the buffer every\n * `bufferCreationInterval` milliseconds and closes (emits and resets) the\n * buffer every `bufferTimeSpan` milliseconds. When the optional argument\n * `maxBufferSize` is specified, the buffer will be closed either after\n * `bufferTimeSpan` milliseconds or when it contains `maxBufferSize` elements.\n *\n * @example <caption>Every second, emit an array of the recent click events</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var buffered = clicks.bufferTime(1000);\n * buffered.subscribe(x => console.log(x));\n *\n * @example <caption>Every 5 seconds, emit the click events from the next 2 seconds</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var buffered = clicks.bufferTime(2000, 5000);\n * buffered.subscribe(x => console.log(x));\n *\n * @see {@link buffer}\n * @see {@link bufferCount}\n * @see {@link bufferToggle}\n * @see {@link bufferWhen}\n * @see {@link windowTime}\n *\n * @param {number} bufferTimeSpan The amount of time to fill each buffer array.\n * @param {number} [bufferCreationInterval] The interval at which to start new\n * buffers.\n * @param {number} [maxBufferSize] The maximum buffer size.\n * @param {Scheduler} [scheduler=async] The scheduler on which to schedule the\n * intervals that determine buffer boundaries.\n * @return {Observable<T[]>} An observable of arrays of buffered values.\n * @method bufferTime\n * @owner Observable\n ",
+            "range": [
+              200,
+              2153
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 0
+              },
+              "end": {
+                "line": 47,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=bufferTime.js.map",
+            "range": [
+              2724,
+              2762
+            ],
+            "loc": {
+              "start": {
+                "line": 65,
+                "column": 0
+              },
+              "end": {
+                "line": 65,
+                "column": 38
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        2154,
+        2723
+      ],
+      "loc": {
+        "start": {
+          "line": 48,
+          "column": 0
+        },
+        "end": {
+          "line": 64,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": " tslint:enable:max-line-length ",
+          "range": [
+            164,
+            199
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 4,
+              "column": 35
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Buffers the source Observable values for a specific time period.\n *\n * <span class=\"informal\">Collects values from the past as an array, and emits\n * those arrays periodically in time.</span>\n *\n * <img src=\"./img/bufferTime.png\" width=\"100%\">\n *\n * Buffers values from the source for a specific time duration `bufferTimeSpan`.\n * Unless the optional argument `bufferCreationInterval` is given, it emits and\n * resets the buffer every `bufferTimeSpan` milliseconds. If\n * `bufferCreationInterval` is given, this operator opens the buffer every\n * `bufferCreationInterval` milliseconds and closes (emits and resets) the\n * buffer every `bufferTimeSpan` milliseconds. When the optional argument\n * `maxBufferSize` is specified, the buffer will be closed either after\n * `bufferTimeSpan` milliseconds or when it contains `maxBufferSize` elements.\n *\n * @example <caption>Every second, emit an array of the recent click events</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var buffered = clicks.bufferTime(1000);\n * buffered.subscribe(x => console.log(x));\n *\n * @example <caption>Every 5 seconds, emit the click events from the next 2 seconds</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var buffered = clicks.bufferTime(2000, 5000);\n * buffered.subscribe(x => console.log(x));\n *\n * @see {@link buffer}\n * @see {@link bufferCount}\n * @see {@link bufferToggle}\n * @see {@link bufferWhen}\n * @see {@link windowTime}\n *\n * @param {number} bufferTimeSpan The amount of time to fill each buffer array.\n * @param {number} [bufferCreationInterval] The interval at which to start new\n * buffers.\n * @param {number} [maxBufferSize] The maximum buffer size.\n * @param {Scheduler} [scheduler=async] The scheduler on which to schedule the\n * intervals that determine buffer boundaries.\n * @return {Observable<T[]>} An observable of arrays of buffered values.\n * @method bufferTime\n * @owner Observable\n ",
+          "range": [
+            200,
+            2153
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 47,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=bufferTime.js.map",
+          "range": [
+            2724,
+            2762
+          ],
+          "loc": {
+            "start": {
+              "line": 65,
+              "column": 0
+            },
+            "end": {
+              "line": 65,
+              "column": 38
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    2723
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 64,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": " tslint:enable:max-line-length ",
+      "range": [
+        164,
+        199
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Buffers the source Observable values for a specific time period.\n *\n * <span class=\"informal\">Collects values from the past as an array, and emits\n * those arrays periodically in time.</span>\n *\n * <img src=\"./img/bufferTime.png\" width=\"100%\">\n *\n * Buffers values from the source for a specific time duration `bufferTimeSpan`.\n * Unless the optional argument `bufferCreationInterval` is given, it emits and\n * resets the buffer every `bufferTimeSpan` milliseconds. If\n * `bufferCreationInterval` is given, this operator opens the buffer every\n * `bufferCreationInterval` milliseconds and closes (emits and resets) the\n * buffer every `bufferTimeSpan` milliseconds. When the optional argument\n * `maxBufferSize` is specified, the buffer will be closed either after\n * `bufferTimeSpan` milliseconds or when it contains `maxBufferSize` elements.\n *\n * @example <caption>Every second, emit an array of the recent click events</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var buffered = clicks.bufferTime(1000);\n * buffered.subscribe(x => console.log(x));\n *\n * @example <caption>Every 5 seconds, emit the click events from the next 2 seconds</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var buffered = clicks.bufferTime(2000, 5000);\n * buffered.subscribe(x => console.log(x));\n *\n * @see {@link buffer}\n * @see {@link bufferCount}\n * @see {@link bufferToggle}\n * @see {@link bufferWhen}\n * @see {@link windowTime}\n *\n * @param {number} bufferTimeSpan The amount of time to fill each buffer array.\n * @param {number} [bufferCreationInterval] The interval at which to start new\n * buffers.\n * @param {number} [maxBufferSize] The maximum buffer size.\n * @param {Scheduler} [scheduler=async] The scheduler on which to schedule the\n * intervals that determine buffer boundaries.\n * @return {Observable<T[]>} An observable of arrays of buffered values.\n * @method bufferTime\n * @owner Observable\n ",
+      "range": [
+        200,
+        2153
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 47,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=bufferTime.js.map",
+      "range": [
+        2724,
+        2762
+      ],
+      "loc": {
+        "start": {
+          "line": 65,
+          "column": 0
+        },
+        "end": {
+          "line": 65,
+          "column": 38
+        }
+      }
+    }
+  ]
+}

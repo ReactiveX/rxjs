@@ -1,0 +1,488 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              18,
+              29
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 18
+              },
+              "end": {
+                "line": 1,
+                "column": 29
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "every",
+            "range": [
+              9,
+              14
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            9,
+            29
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 29
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/every",
+        "raw": "'../operators/every'",
+        "range": [
+          37,
+          57
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 37
+          },
+          "end": {
+            "line": 1,
+            "column": 57
+          }
+        }
+      },
+      "range": [
+        0,
+        58
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 58
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.\n *\n * @example <caption>A simple example emitting true if all elements are less than 5, false otherwise</caption>\n *  Observable.of(1, 2, 3, 4, 5, 6)\n *     .every(x => x < 5)\n *     .subscribe(x => console.log(x)); // -> false\n *\n * @param {function} predicate A function for determining if an item meets a specified condition.\n * @param {any} [thisArg] Optional object to use for `this` in the callback.\n * @return {Observable} An Observable of booleans that determines if all items of the source Observable meet the condition specified.\n * @method every\n * @owner Observable\n ",
+          "range": [
+            59,
+            755
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 15,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "every",
+          "range": [
+            772,
+            777
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 16
+            },
+            "end": {
+              "line": 16,
+              "column": 21
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "predicate",
+            "range": [
+              778,
+              787
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 22
+              },
+              "end": {
+                "line": 16,
+                "column": 31
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "thisArg",
+            "range": [
+              789,
+              796
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 33
+              },
+              "end": {
+                "line": 16,
+                "column": 40
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      811,
+                      822
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 17,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 17,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "predicate",
+                      "range": [
+                        823,
+                        832
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 17,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 17,
+                          "column": 32
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "thisArg",
+                      "range": [
+                        834,
+                        841
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 17,
+                          "column": 34
+                        },
+                        "end": {
+                          "line": 17,
+                          "column": 41
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    811,
+                    842
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 17,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 17,
+                      "column": 42
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      843,
+                      847
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 17,
+                        "column": 43
+                      },
+                      "end": {
+                        "line": 17,
+                        "column": 47
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  811,
+                  848
+                ],
+                "loc": {
+                  "start": {
+                    "line": 17,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 17,
+                    "column": 48
+                  }
+                }
+              },
+              "range": [
+                804,
+                849
+              ],
+              "loc": {
+                "start": {
+                  "line": 17,
+                  "column": 4
+                },
+                "end": {
+                  "line": 17,
+                  "column": 49
+                }
+              }
+            }
+          ],
+          "range": [
+            798,
+            851
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 42
+            },
+            "end": {
+              "line": 18,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          763,
+          851
+        ],
+        "loc": {
+          "start": {
+            "line": 16,
+            "column": 7
+          },
+          "end": {
+            "line": 18,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.\n *\n * @example <caption>A simple example emitting true if all elements are less than 5, false otherwise</caption>\n *  Observable.of(1, 2, 3, 4, 5, 6)\n *     .every(x => x < 5)\n *     .subscribe(x => console.log(x)); // -> false\n *\n * @param {function} predicate A function for determining if an item meets a specified condition.\n * @param {any} [thisArg] Optional object to use for `this` in the callback.\n * @return {Observable} An Observable of booleans that determines if all items of the source Observable meet the condition specified.\n * @method every\n * @owner Observable\n ",
+            "range": [
+              59,
+              755
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 15,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=every.js.map",
+            "range": [
+              852,
+              885
+            ],
+            "loc": {
+              "start": {
+                "line": 19,
+                "column": 0
+              },
+              "end": {
+                "line": 19,
+                "column": 33
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        756,
+        851
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 0
+        },
+        "end": {
+          "line": 18,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.\n *\n * @example <caption>A simple example emitting true if all elements are less than 5, false otherwise</caption>\n *  Observable.of(1, 2, 3, 4, 5, 6)\n *     .every(x => x < 5)\n *     .subscribe(x => console.log(x)); // -> false\n *\n * @param {function} predicate A function for determining if an item meets a specified condition.\n * @param {any} [thisArg] Optional object to use for `this` in the callback.\n * @return {Observable} An Observable of booleans that determines if all items of the source Observable meet the condition specified.\n * @method every\n * @owner Observable\n ",
+          "range": [
+            59,
+            755
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 15,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=every.js.map",
+          "range": [
+            852,
+            885
+          ],
+          "loc": {
+            "start": {
+              "line": 19,
+              "column": 0
+            },
+            "end": {
+              "line": 19,
+              "column": 33
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    851
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 18,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.\n *\n * @example <caption>A simple example emitting true if all elements are less than 5, false otherwise</caption>\n *  Observable.of(1, 2, 3, 4, 5, 6)\n *     .every(x => x < 5)\n *     .subscribe(x => console.log(x)); // -> false\n *\n * @param {function} predicate A function for determining if an item meets a specified condition.\n * @param {any} [thisArg] Optional object to use for `this` in the callback.\n * @return {Observable} An Observable of booleans that determines if all items of the source Observable meet the condition specified.\n * @method every\n * @owner Observable\n ",
+      "range": [
+        59,
+        755
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 15,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=every.js.map",
+      "range": [
+        852,
+        885
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 0
+        },
+        "end": {
+          "line": 19,
+          "column": 33
+        }
+      }
+    }
+  ]
+}

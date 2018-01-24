@@ -1,0 +1,452 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              23,
+              34
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 23
+              },
+              "end": {
+                "line": 1,
+                "column": 34
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "repeatWhen",
+            "range": [
+              9,
+              19
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 19
+              }
+            }
+          },
+          "range": [
+            9,
+            34
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 34
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/repeatWhen",
+        "raw": "'../operators/repeatWhen'",
+        "range": [
+          42,
+          67
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 42
+          },
+          "end": {
+            "line": 1,
+            "column": 67
+          }
+        }
+      },
+      "range": [
+        0,
+        68
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 68
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns an Observable that mirrors the source Observable with the exception of a `complete`. If the source\n * Observable calls `complete`, this method will emit to the Observable returned from `notifier`. If that Observable\n * calls `complete` or `error`, then this method will call `complete` or `error` on the child subscription. Otherwise\n * this method will resubscribe to the source Observable.\n *\n * <img src=\"./img/repeatWhen.png\" width=\"100%\">\n *\n * @param {function(notifications: Observable): Observable} notifier - Receives an Observable of notifications with\n * which a user can `complete` or `error`, aborting the repetition.\n * @return {Observable} The source Observable modified with repeat logic.\n * @method repeatWhen\n * @owner Observable\n ",
+          "range": [
+            69,
+            835
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 15,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "repeatWhen",
+          "range": [
+            852,
+            862
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 16
+            },
+            "end": {
+              "line": 16,
+              "column": 26
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "notifier",
+            "range": [
+              863,
+              871
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 27
+              },
+              "end": {
+                "line": 16,
+                "column": 35
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      886,
+                      897
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 17,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 17,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "notifier",
+                      "range": [
+                        898,
+                        906
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 17,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 17,
+                          "column": 31
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    886,
+                    907
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 17,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 17,
+                      "column": 32
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      908,
+                      912
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 17,
+                        "column": 33
+                      },
+                      "end": {
+                        "line": 17,
+                        "column": 37
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  886,
+                  913
+                ],
+                "loc": {
+                  "start": {
+                    "line": 17,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 17,
+                    "column": 38
+                  }
+                }
+              },
+              "range": [
+                879,
+                914
+              ],
+              "loc": {
+                "start": {
+                  "line": 17,
+                  "column": 4
+                },
+                "end": {
+                  "line": 17,
+                  "column": 39
+                }
+              }
+            }
+          ],
+          "range": [
+            873,
+            916
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 37
+            },
+            "end": {
+              "line": 18,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          843,
+          916
+        ],
+        "loc": {
+          "start": {
+            "line": 16,
+            "column": 7
+          },
+          "end": {
+            "line": 18,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Returns an Observable that mirrors the source Observable with the exception of a `complete`. If the source\n * Observable calls `complete`, this method will emit to the Observable returned from `notifier`. If that Observable\n * calls `complete` or `error`, then this method will call `complete` or `error` on the child subscription. Otherwise\n * this method will resubscribe to the source Observable.\n *\n * <img src=\"./img/repeatWhen.png\" width=\"100%\">\n *\n * @param {function(notifications: Observable): Observable} notifier - Receives an Observable of notifications with\n * which a user can `complete` or `error`, aborting the repetition.\n * @return {Observable} The source Observable modified with repeat logic.\n * @method repeatWhen\n * @owner Observable\n ",
+            "range": [
+              69,
+              835
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 15,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=repeatWhen.js.map",
+            "range": [
+              917,
+              955
+            ],
+            "loc": {
+              "start": {
+                "line": 19,
+                "column": 0
+              },
+              "end": {
+                "line": 19,
+                "column": 38
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        836,
+        916
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 0
+        },
+        "end": {
+          "line": 18,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns an Observable that mirrors the source Observable with the exception of a `complete`. If the source\n * Observable calls `complete`, this method will emit to the Observable returned from `notifier`. If that Observable\n * calls `complete` or `error`, then this method will call `complete` or `error` on the child subscription. Otherwise\n * this method will resubscribe to the source Observable.\n *\n * <img src=\"./img/repeatWhen.png\" width=\"100%\">\n *\n * @param {function(notifications: Observable): Observable} notifier - Receives an Observable of notifications with\n * which a user can `complete` or `error`, aborting the repetition.\n * @return {Observable} The source Observable modified with repeat logic.\n * @method repeatWhen\n * @owner Observable\n ",
+          "range": [
+            69,
+            835
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 15,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=repeatWhen.js.map",
+          "range": [
+            917,
+            955
+          ],
+          "loc": {
+            "start": {
+              "line": 19,
+              "column": 0
+            },
+            "end": {
+              "line": 19,
+              "column": 38
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    916
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 18,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Returns an Observable that mirrors the source Observable with the exception of a `complete`. If the source\n * Observable calls `complete`, this method will emit to the Observable returned from `notifier`. If that Observable\n * calls `complete` or `error`, then this method will call `complete` or `error` on the child subscription. Otherwise\n * this method will resubscribe to the source Observable.\n *\n * <img src=\"./img/repeatWhen.png\" width=\"100%\">\n *\n * @param {function(notifications: Observable): Observable} notifier - Receives an Observable of notifications with\n * which a user can `complete` or `error`, aborting the repetition.\n * @return {Observable} The source Observable modified with repeat logic.\n * @method repeatWhen\n * @owner Observable\n ",
+      "range": [
+        69,
+        835
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 15,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=repeatWhen.js.map",
+      "range": [
+        917,
+        955
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 0
+        },
+        "end": {
+          "line": 19,
+          "column": 38
+        }
+      }
+    }
+  ]
+}

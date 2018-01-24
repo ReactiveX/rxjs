@@ -1,0 +1,759 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              20,
+              31
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 20
+              },
+              "end": {
+                "line": 1,
+                "column": 31
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "groupBy",
+            "range": [
+              9,
+              16
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 16
+              }
+            }
+          },
+          "range": [
+            9,
+            31
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 31
+            }
+          }
+        },
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "GroupedObservable",
+            "range": [
+              33,
+              50
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 33
+              },
+              "end": {
+                "line": 1,
+                "column": 50
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "GroupedObservable",
+            "range": [
+              33,
+              50
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 33
+              },
+              "end": {
+                "line": 1,
+                "column": 50
+              }
+            }
+          },
+          "range": [
+            33,
+            50
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 33
+            },
+            "end": {
+              "line": 1,
+              "column": 50
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/groupBy",
+        "raw": "'../operators/groupBy'",
+        "range": [
+          58,
+          80
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 58
+          },
+          "end": {
+            "line": 1,
+            "column": 80
+          }
+        }
+      },
+      "range": [
+        0,
+        81
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 81
+        }
+      }
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": null,
+      "specifiers": [
+        {
+          "type": "ExportSpecifier",
+          "exported": {
+            "type": "Identifier",
+            "name": "GroupedObservable",
+            "range": [
+              91,
+              108
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 26
+              }
+            }
+          },
+          "local": {
+            "type": "Identifier",
+            "name": "GroupedObservable",
+            "range": [
+              91,
+              108
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 26
+              }
+            }
+          },
+          "range": [
+            91,
+            108
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 9
+            },
+            "end": {
+              "line": 2,
+              "column": 26
+            }
+          }
+        }
+      ],
+      "source": null,
+      "range": [
+        82,
+        111
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 29
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": " tslint:enable:max-line-length ",
+          "range": [
+            112,
+            147
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 35
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Groups the items emitted by an Observable according to a specified criterion,\n * and emits these grouped items as `GroupedObservables`, one\n * {@link GroupedObservable} per group.\n *\n * <img src=\"./img/groupBy.png\" width=\"100%\">\n *\n * @example <caption>Group objects by id and return as array</caption>\n * Observable.of<Obj>({id: 1, name: 'aze1'},\n *                    {id: 2, name: 'sf2'},\n *                    {id: 2, name: 'dg2'},\n *                    {id: 1, name: 'erg1'},\n *                    {id: 1, name: 'df1'},\n *                    {id: 2, name: 'sfqfb2'},\n *                    {id: 3, name: 'qfs3'},\n *                    {id: 2, name: 'qsgqsfg2'}\n *     )\n *     .groupBy(p => p.id)\n *     .flatMap( (group$) => group$.reduce((acc, cur) => [...acc, cur], []))\n *     .subscribe(p => console.log(p));\n *\n * // displays:\n * // [ { id: 1, name: 'aze1' },\n * //   { id: 1, name: 'erg1' },\n * //   { id: 1, name: 'df1' } ]\n * //\n * // [ { id: 2, name: 'sf2' },\n * //   { id: 2, name: 'dg2' },\n * //   { id: 2, name: 'sfqfb2' },\n * //   { id: 2, name: 'qsgqsfg2' } ]\n * //\n * // [ { id: 3, name: 'qfs3' } ]\n *\n * @example <caption>Pivot data on the id field</caption>\n * Observable.of<Obj>({id: 1, name: 'aze1'},\n *                    {id: 2, name: 'sf2'},\n *                    {id: 2, name: 'dg2'},\n *                    {id: 1, name: 'erg1'},\n *                    {id: 1, name: 'df1'},\n *                    {id: 2, name: 'sfqfb2'},\n *                    {id: 3, name: 'qfs1'},\n *                    {id: 2, name: 'qsgqsfg2'}\n *                   )\n *     .groupBy(p => p.id, p => p.name)\n *     .flatMap( (group$) => group$.reduce((acc, cur) => [...acc, cur], [\"\" + group$.key]))\n *     .map(arr => ({'id': parseInt(arr[0]), 'values': arr.slice(1)}))\n *     .subscribe(p => console.log(p));\n *\n * // displays:\n * // { id: 1, values: [ 'aze1', 'erg1', 'df1' ] }\n * // { id: 2, values: [ 'sf2', 'dg2', 'sfqfb2', 'qsgqsfg2' ] }\n * // { id: 3, values: [ 'qfs1' ] }\n *\n * @param {function(value: T): K} keySelector A function that extracts the key\n * for each item.\n * @param {function(value: T): R} [elementSelector] A function that extracts the\n * return element for each item.\n * @param {function(grouped: GroupedObservable<K,R>): Observable<any>} [durationSelector]\n * A function that returns an Observable to determine how long each group should\n * exist.\n * @return {Observable<GroupedObservable<K,R>>} An Observable that emits\n * GroupedObservables, each of which corresponds to a unique key value and each\n * of which emits those items from the source Observable that share that key\n * value.\n * @method groupBy\n * @owner Observable\n ",
+          "range": [
+            148,
+            2811
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 70,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "groupBy",
+          "range": [
+            2828,
+            2835
+          ],
+          "loc": {
+            "start": {
+              "line": 71,
+              "column": 16
+            },
+            "end": {
+              "line": 71,
+              "column": 23
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "keySelector",
+            "range": [
+              2836,
+              2847
+            ],
+            "loc": {
+              "start": {
+                "line": 71,
+                "column": 24
+              },
+              "end": {
+                "line": 71,
+                "column": 35
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "elementSelector",
+            "range": [
+              2849,
+              2864
+            ],
+            "loc": {
+              "start": {
+                "line": 71,
+                "column": 37
+              },
+              "end": {
+                "line": 71,
+                "column": 52
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "durationSelector",
+            "range": [
+              2866,
+              2882
+            ],
+            "loc": {
+              "start": {
+                "line": 71,
+                "column": 54
+              },
+              "end": {
+                "line": 71,
+                "column": 70
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "subjectSelector",
+            "range": [
+              2884,
+              2899
+            ],
+            "loc": {
+              "start": {
+                "line": 71,
+                "column": 72
+              },
+              "end": {
+                "line": 71,
+                "column": 87
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      2914,
+                      2925
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 72,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 72,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "keySelector",
+                      "range": [
+                        2926,
+                        2937
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 72,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 72,
+                          "column": 34
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "elementSelector",
+                      "range": [
+                        2939,
+                        2954
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 72,
+                          "column": 36
+                        },
+                        "end": {
+                          "line": 72,
+                          "column": 51
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "durationSelector",
+                      "range": [
+                        2956,
+                        2972
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 72,
+                          "column": 53
+                        },
+                        "end": {
+                          "line": 72,
+                          "column": 69
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "subjectSelector",
+                      "range": [
+                        2974,
+                        2989
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 72,
+                          "column": 71
+                        },
+                        "end": {
+                          "line": 72,
+                          "column": 86
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    2914,
+                    2990
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 72,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 72,
+                      "column": 87
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      2991,
+                      2995
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 72,
+                        "column": 88
+                      },
+                      "end": {
+                        "line": 72,
+                        "column": 92
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2914,
+                  2996
+                ],
+                "loc": {
+                  "start": {
+                    "line": 72,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 72,
+                    "column": 93
+                  }
+                }
+              },
+              "range": [
+                2907,
+                2997
+              ],
+              "loc": {
+                "start": {
+                  "line": 72,
+                  "column": 4
+                },
+                "end": {
+                  "line": 72,
+                  "column": 94
+                }
+              }
+            }
+          ],
+          "range": [
+            2901,
+            2999
+          ],
+          "loc": {
+            "start": {
+              "line": 71,
+              "column": 89
+            },
+            "end": {
+              "line": 73,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          2819,
+          2999
+        ],
+        "loc": {
+          "start": {
+            "line": 71,
+            "column": 7
+          },
+          "end": {
+            "line": 73,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": " tslint:enable:max-line-length ",
+            "range": [
+              112,
+              147
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 35
+              }
+            }
+          },
+          {
+            "type": "Block",
+            "value": "*\n * Groups the items emitted by an Observable according to a specified criterion,\n * and emits these grouped items as `GroupedObservables`, one\n * {@link GroupedObservable} per group.\n *\n * <img src=\"./img/groupBy.png\" width=\"100%\">\n *\n * @example <caption>Group objects by id and return as array</caption>\n * Observable.of<Obj>({id: 1, name: 'aze1'},\n *                    {id: 2, name: 'sf2'},\n *                    {id: 2, name: 'dg2'},\n *                    {id: 1, name: 'erg1'},\n *                    {id: 1, name: 'df1'},\n *                    {id: 2, name: 'sfqfb2'},\n *                    {id: 3, name: 'qfs3'},\n *                    {id: 2, name: 'qsgqsfg2'}\n *     )\n *     .groupBy(p => p.id)\n *     .flatMap( (group$) => group$.reduce((acc, cur) => [...acc, cur], []))\n *     .subscribe(p => console.log(p));\n *\n * // displays:\n * // [ { id: 1, name: 'aze1' },\n * //   { id: 1, name: 'erg1' },\n * //   { id: 1, name: 'df1' } ]\n * //\n * // [ { id: 2, name: 'sf2' },\n * //   { id: 2, name: 'dg2' },\n * //   { id: 2, name: 'sfqfb2' },\n * //   { id: 2, name: 'qsgqsfg2' } ]\n * //\n * // [ { id: 3, name: 'qfs3' } ]\n *\n * @example <caption>Pivot data on the id field</caption>\n * Observable.of<Obj>({id: 1, name: 'aze1'},\n *                    {id: 2, name: 'sf2'},\n *                    {id: 2, name: 'dg2'},\n *                    {id: 1, name: 'erg1'},\n *                    {id: 1, name: 'df1'},\n *                    {id: 2, name: 'sfqfb2'},\n *                    {id: 3, name: 'qfs1'},\n *                    {id: 2, name: 'qsgqsfg2'}\n *                   )\n *     .groupBy(p => p.id, p => p.name)\n *     .flatMap( (group$) => group$.reduce((acc, cur) => [...acc, cur], [\"\" + group$.key]))\n *     .map(arr => ({'id': parseInt(arr[0]), 'values': arr.slice(1)}))\n *     .subscribe(p => console.log(p));\n *\n * // displays:\n * // { id: 1, values: [ 'aze1', 'erg1', 'df1' ] }\n * // { id: 2, values: [ 'sf2', 'dg2', 'sfqfb2', 'qsgqsfg2' ] }\n * // { id: 3, values: [ 'qfs1' ] }\n *\n * @param {function(value: T): K} keySelector A function that extracts the key\n * for each item.\n * @param {function(value: T): R} [elementSelector] A function that extracts the\n * return element for each item.\n * @param {function(grouped: GroupedObservable<K,R>): Observable<any>} [durationSelector]\n * A function that returns an Observable to determine how long each group should\n * exist.\n * @return {Observable<GroupedObservable<K,R>>} An Observable that emits\n * GroupedObservables, each of which corresponds to a unique key value and each\n * of which emits those items from the source Observable that share that key\n * value.\n * @method groupBy\n * @owner Observable\n ",
+            "range": [
+              148,
+              2811
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 70,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=groupBy.js.map",
+            "range": [
+              3000,
+              3035
+            ],
+            "loc": {
+              "start": {
+                "line": 74,
+                "column": 0
+              },
+              "end": {
+                "line": 74,
+                "column": 35
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        2812,
+        2999
+      ],
+      "loc": {
+        "start": {
+          "line": 71,
+          "column": 0
+        },
+        "end": {
+          "line": 73,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": " tslint:enable:max-line-length ",
+          "range": [
+            112,
+            147
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 35
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Groups the items emitted by an Observable according to a specified criterion,\n * and emits these grouped items as `GroupedObservables`, one\n * {@link GroupedObservable} per group.\n *\n * <img src=\"./img/groupBy.png\" width=\"100%\">\n *\n * @example <caption>Group objects by id and return as array</caption>\n * Observable.of<Obj>({id: 1, name: 'aze1'},\n *                    {id: 2, name: 'sf2'},\n *                    {id: 2, name: 'dg2'},\n *                    {id: 1, name: 'erg1'},\n *                    {id: 1, name: 'df1'},\n *                    {id: 2, name: 'sfqfb2'},\n *                    {id: 3, name: 'qfs3'},\n *                    {id: 2, name: 'qsgqsfg2'}\n *     )\n *     .groupBy(p => p.id)\n *     .flatMap( (group$) => group$.reduce((acc, cur) => [...acc, cur], []))\n *     .subscribe(p => console.log(p));\n *\n * // displays:\n * // [ { id: 1, name: 'aze1' },\n * //   { id: 1, name: 'erg1' },\n * //   { id: 1, name: 'df1' } ]\n * //\n * // [ { id: 2, name: 'sf2' },\n * //   { id: 2, name: 'dg2' },\n * //   { id: 2, name: 'sfqfb2' },\n * //   { id: 2, name: 'qsgqsfg2' } ]\n * //\n * // [ { id: 3, name: 'qfs3' } ]\n *\n * @example <caption>Pivot data on the id field</caption>\n * Observable.of<Obj>({id: 1, name: 'aze1'},\n *                    {id: 2, name: 'sf2'},\n *                    {id: 2, name: 'dg2'},\n *                    {id: 1, name: 'erg1'},\n *                    {id: 1, name: 'df1'},\n *                    {id: 2, name: 'sfqfb2'},\n *                    {id: 3, name: 'qfs1'},\n *                    {id: 2, name: 'qsgqsfg2'}\n *                   )\n *     .groupBy(p => p.id, p => p.name)\n *     .flatMap( (group$) => group$.reduce((acc, cur) => [...acc, cur], [\"\" + group$.key]))\n *     .map(arr => ({'id': parseInt(arr[0]), 'values': arr.slice(1)}))\n *     .subscribe(p => console.log(p));\n *\n * // displays:\n * // { id: 1, values: [ 'aze1', 'erg1', 'df1' ] }\n * // { id: 2, values: [ 'sf2', 'dg2', 'sfqfb2', 'qsgqsfg2' ] }\n * // { id: 3, values: [ 'qfs1' ] }\n *\n * @param {function(value: T): K} keySelector A function that extracts the key\n * for each item.\n * @param {function(value: T): R} [elementSelector] A function that extracts the\n * return element for each item.\n * @param {function(grouped: GroupedObservable<K,R>): Observable<any>} [durationSelector]\n * A function that returns an Observable to determine how long each group should\n * exist.\n * @return {Observable<GroupedObservable<K,R>>} An Observable that emits\n * GroupedObservables, each of which corresponds to a unique key value and each\n * of which emits those items from the source Observable that share that key\n * value.\n * @method groupBy\n * @owner Observable\n ",
+          "range": [
+            148,
+            2811
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 70,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=groupBy.js.map",
+          "range": [
+            3000,
+            3035
+          ],
+          "loc": {
+            "start": {
+              "line": 74,
+              "column": 0
+            },
+            "end": {
+              "line": 74,
+              "column": 35
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    2999
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 73,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": " tslint:enable:max-line-length ",
+      "range": [
+        112,
+        147
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Groups the items emitted by an Observable according to a specified criterion,\n * and emits these grouped items as `GroupedObservables`, one\n * {@link GroupedObservable} per group.\n *\n * <img src=\"./img/groupBy.png\" width=\"100%\">\n *\n * @example <caption>Group objects by id and return as array</caption>\n * Observable.of<Obj>({id: 1, name: 'aze1'},\n *                    {id: 2, name: 'sf2'},\n *                    {id: 2, name: 'dg2'},\n *                    {id: 1, name: 'erg1'},\n *                    {id: 1, name: 'df1'},\n *                    {id: 2, name: 'sfqfb2'},\n *                    {id: 3, name: 'qfs3'},\n *                    {id: 2, name: 'qsgqsfg2'}\n *     )\n *     .groupBy(p => p.id)\n *     .flatMap( (group$) => group$.reduce((acc, cur) => [...acc, cur], []))\n *     .subscribe(p => console.log(p));\n *\n * // displays:\n * // [ { id: 1, name: 'aze1' },\n * //   { id: 1, name: 'erg1' },\n * //   { id: 1, name: 'df1' } ]\n * //\n * // [ { id: 2, name: 'sf2' },\n * //   { id: 2, name: 'dg2' },\n * //   { id: 2, name: 'sfqfb2' },\n * //   { id: 2, name: 'qsgqsfg2' } ]\n * //\n * // [ { id: 3, name: 'qfs3' } ]\n *\n * @example <caption>Pivot data on the id field</caption>\n * Observable.of<Obj>({id: 1, name: 'aze1'},\n *                    {id: 2, name: 'sf2'},\n *                    {id: 2, name: 'dg2'},\n *                    {id: 1, name: 'erg1'},\n *                    {id: 1, name: 'df1'},\n *                    {id: 2, name: 'sfqfb2'},\n *                    {id: 3, name: 'qfs1'},\n *                    {id: 2, name: 'qsgqsfg2'}\n *                   )\n *     .groupBy(p => p.id, p => p.name)\n *     .flatMap( (group$) => group$.reduce((acc, cur) => [...acc, cur], [\"\" + group$.key]))\n *     .map(arr => ({'id': parseInt(arr[0]), 'values': arr.slice(1)}))\n *     .subscribe(p => console.log(p));\n *\n * // displays:\n * // { id: 1, values: [ 'aze1', 'erg1', 'df1' ] }\n * // { id: 2, values: [ 'sf2', 'dg2', 'sfqfb2', 'qsgqsfg2' ] }\n * // { id: 3, values: [ 'qfs1' ] }\n *\n * @param {function(value: T): K} keySelector A function that extracts the key\n * for each item.\n * @param {function(value: T): R} [elementSelector] A function that extracts the\n * return element for each item.\n * @param {function(grouped: GroupedObservable<K,R>): Observable<any>} [durationSelector]\n * A function that returns an Observable to determine how long each group should\n * exist.\n * @return {Observable<GroupedObservable<K,R>>} An Observable that emits\n * GroupedObservables, each of which corresponds to a unique key value and each\n * of which emits those items from the source Observable that share that key\n * value.\n * @method groupBy\n * @owner Observable\n ",
+      "range": [
+        148,
+        2811
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 70,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=groupBy.js.map",
+      "range": [
+        3000,
+        3035
+      ],
+      "loc": {
+        "start": {
+          "line": 74,
+          "column": 0
+        },
+        "end": {
+          "line": 74,
+          "column": 35
+        }
+      }
+    }
+  ]
+}

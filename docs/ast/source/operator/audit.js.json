@@ -1,0 +1,452 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              18,
+              29
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 18
+              },
+              "end": {
+                "line": 1,
+                "column": 29
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "audit",
+            "range": [
+              9,
+              14
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            9,
+            29
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 29
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/audit",
+        "raw": "'../operators/audit'",
+        "range": [
+          37,
+          57
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 37
+          },
+          "end": {
+            "line": 1,
+            "column": 57
+          }
+        }
+      },
+      "range": [
+        0,
+        58
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 58
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Ignores source values for a duration determined by another Observable, then\n * emits the most recent value from the source Observable, then repeats this\n * process.\n *\n * <span class=\"informal\">It's like {@link auditTime}, but the silencing\n * duration is determined by a second Observable.</span>\n *\n * <img src=\"./img/audit.png\" width=\"100%\">\n *\n * `audit` is similar to `throttle`, but emits the last value from the silenced\n * time window, instead of the first value. `audit` emits the most recent value\n * from the source Observable on the output Observable as soon as its internal\n * timer becomes disabled, and ignores source values while the timer is enabled.\n * Initially, the timer is disabled. As soon as the first source value arrives,\n * the timer is enabled by calling the `durationSelector` function with the\n * source value, which returns the \"duration\" Observable. When the duration\n * Observable emits a value or completes, the timer is disabled, then the most\n * recent source value is emitted on the output Observable, and this process\n * repeats for the next source value.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.audit(ev => Rx.Observable.interval(1000));\n * result.subscribe(x => console.log(x));\n *\n * @see {@link auditTime}\n * @see {@link debounce}\n * @see {@link delayWhen}\n * @see {@link sample}\n * @see {@link throttle}\n *\n * @param {function(value: T): SubscribableOrPromise} durationSelector A function\n * that receives a value from the source Observable, for computing the silencing\n * duration, returned as an Observable or a Promise.\n * @return {Observable<T>} An Observable that performs rate-limiting of\n * emissions from the source Observable.\n * @method audit\n * @owner Observable\n ",
+          "range": [
+            59,
+            1917
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 41,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "audit",
+          "range": [
+            1934,
+            1939
+          ],
+          "loc": {
+            "start": {
+              "line": 42,
+              "column": 16
+            },
+            "end": {
+              "line": 42,
+              "column": 21
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "durationSelector",
+            "range": [
+              1940,
+              1956
+            ],
+            "loc": {
+              "start": {
+                "line": 42,
+                "column": 22
+              },
+              "end": {
+                "line": 42,
+                "column": 38
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      1971,
+                      1982
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 43,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 43,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "durationSelector",
+                      "range": [
+                        1983,
+                        1999
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 43,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 43,
+                          "column": 39
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    1971,
+                    2000
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 43,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 43,
+                      "column": 40
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      2001,
+                      2005
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 43,
+                        "column": 41
+                      },
+                      "end": {
+                        "line": 43,
+                        "column": 45
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1971,
+                  2006
+                ],
+                "loc": {
+                  "start": {
+                    "line": 43,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 43,
+                    "column": 46
+                  }
+                }
+              },
+              "range": [
+                1964,
+                2007
+              ],
+              "loc": {
+                "start": {
+                  "line": 43,
+                  "column": 4
+                },
+                "end": {
+                  "line": 43,
+                  "column": 47
+                }
+              }
+            }
+          ],
+          "range": [
+            1958,
+            2009
+          ],
+          "loc": {
+            "start": {
+              "line": 42,
+              "column": 40
+            },
+            "end": {
+              "line": 44,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1925,
+          2009
+        ],
+        "loc": {
+          "start": {
+            "line": 42,
+            "column": 7
+          },
+          "end": {
+            "line": 44,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Ignores source values for a duration determined by another Observable, then\n * emits the most recent value from the source Observable, then repeats this\n * process.\n *\n * <span class=\"informal\">It's like {@link auditTime}, but the silencing\n * duration is determined by a second Observable.</span>\n *\n * <img src=\"./img/audit.png\" width=\"100%\">\n *\n * `audit` is similar to `throttle`, but emits the last value from the silenced\n * time window, instead of the first value. `audit` emits the most recent value\n * from the source Observable on the output Observable as soon as its internal\n * timer becomes disabled, and ignores source values while the timer is enabled.\n * Initially, the timer is disabled. As soon as the first source value arrives,\n * the timer is enabled by calling the `durationSelector` function with the\n * source value, which returns the \"duration\" Observable. When the duration\n * Observable emits a value or completes, the timer is disabled, then the most\n * recent source value is emitted on the output Observable, and this process\n * repeats for the next source value.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.audit(ev => Rx.Observable.interval(1000));\n * result.subscribe(x => console.log(x));\n *\n * @see {@link auditTime}\n * @see {@link debounce}\n * @see {@link delayWhen}\n * @see {@link sample}\n * @see {@link throttle}\n *\n * @param {function(value: T): SubscribableOrPromise} durationSelector A function\n * that receives a value from the source Observable, for computing the silencing\n * duration, returned as an Observable or a Promise.\n * @return {Observable<T>} An Observable that performs rate-limiting of\n * emissions from the source Observable.\n * @method audit\n * @owner Observable\n ",
+            "range": [
+              59,
+              1917
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 41,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=audit.js.map",
+            "range": [
+              2010,
+              2043
+            ],
+            "loc": {
+              "start": {
+                "line": 45,
+                "column": 0
+              },
+              "end": {
+                "line": 45,
+                "column": 33
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1918,
+        2009
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 0
+        },
+        "end": {
+          "line": 44,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Ignores source values for a duration determined by another Observable, then\n * emits the most recent value from the source Observable, then repeats this\n * process.\n *\n * <span class=\"informal\">It's like {@link auditTime}, but the silencing\n * duration is determined by a second Observable.</span>\n *\n * <img src=\"./img/audit.png\" width=\"100%\">\n *\n * `audit` is similar to `throttle`, but emits the last value from the silenced\n * time window, instead of the first value. `audit` emits the most recent value\n * from the source Observable on the output Observable as soon as its internal\n * timer becomes disabled, and ignores source values while the timer is enabled.\n * Initially, the timer is disabled. As soon as the first source value arrives,\n * the timer is enabled by calling the `durationSelector` function with the\n * source value, which returns the \"duration\" Observable. When the duration\n * Observable emits a value or completes, the timer is disabled, then the most\n * recent source value is emitted on the output Observable, and this process\n * repeats for the next source value.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.audit(ev => Rx.Observable.interval(1000));\n * result.subscribe(x => console.log(x));\n *\n * @see {@link auditTime}\n * @see {@link debounce}\n * @see {@link delayWhen}\n * @see {@link sample}\n * @see {@link throttle}\n *\n * @param {function(value: T): SubscribableOrPromise} durationSelector A function\n * that receives a value from the source Observable, for computing the silencing\n * duration, returned as an Observable or a Promise.\n * @return {Observable<T>} An Observable that performs rate-limiting of\n * emissions from the source Observable.\n * @method audit\n * @owner Observable\n ",
+          "range": [
+            59,
+            1917
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 41,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=audit.js.map",
+          "range": [
+            2010,
+            2043
+          ],
+          "loc": {
+            "start": {
+              "line": 45,
+              "column": 0
+            },
+            "end": {
+              "line": 45,
+              "column": 33
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    2009
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 44,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Ignores source values for a duration determined by another Observable, then\n * emits the most recent value from the source Observable, then repeats this\n * process.\n *\n * <span class=\"informal\">It's like {@link auditTime}, but the silencing\n * duration is determined by a second Observable.</span>\n *\n * <img src=\"./img/audit.png\" width=\"100%\">\n *\n * `audit` is similar to `throttle`, but emits the last value from the silenced\n * time window, instead of the first value. `audit` emits the most recent value\n * from the source Observable on the output Observable as soon as its internal\n * timer becomes disabled, and ignores source values while the timer is enabled.\n * Initially, the timer is disabled. As soon as the first source value arrives,\n * the timer is enabled by calling the `durationSelector` function with the\n * source value, which returns the \"duration\" Observable. When the duration\n * Observable emits a value or completes, the timer is disabled, then the most\n * recent source value is emitted on the output Observable, and this process\n * repeats for the next source value.\n *\n * @example <caption>Emit clicks at a rate of at most one click per second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.audit(ev => Rx.Observable.interval(1000));\n * result.subscribe(x => console.log(x));\n *\n * @see {@link auditTime}\n * @see {@link debounce}\n * @see {@link delayWhen}\n * @see {@link sample}\n * @see {@link throttle}\n *\n * @param {function(value: T): SubscribableOrPromise} durationSelector A function\n * that receives a value from the source Observable, for computing the silencing\n * duration, returned as an Observable or a Promise.\n * @return {Observable<T>} An Observable that performs rate-limiting of\n * emissions from the source Observable.\n * @method audit\n * @owner Observable\n ",
+      "range": [
+        59,
+        1917
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 41,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=audit.js.map",
+      "range": [
+        2010,
+        2043
+      ],
+      "loc": {
+        "start": {
+          "line": 45,
+          "column": 0
+        },
+        "end": {
+          "line": 45,
+          "column": 33
+        }
+      }
+    }
+  ]
+}

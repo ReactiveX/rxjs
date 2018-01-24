@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/filter-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObservableInputDoc.html">ObservableInput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SubscribableOrPromiseDoc.html">SubscribableOrPromise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~TeardownLogicDoc.html">TeardownLogic</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Symbol">Rx.Symbol</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxTimeoutError.html">AjaxTimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html">AjaxRequest</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operators</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operators/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-catchError">catchError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-tap">tap</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/scheduler/Action.js~Action.html">Action</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animationFrame">animationFrame</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asap">asap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-async">async</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-queue">queue</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$iterator">$$iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$observable">$$observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/TimeoutError.js~TimeoutError.html">TimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/filter-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var chai_1 = require(&apos;chai&apos;);
+var Rx = require(&apos;../../dist/package/Rx&apos;);
+var Observable = Rx.Observable;
+/** @test {filter} */
+describe(&apos;Observable.prototype.filter&apos;, function () {
+    function oddFilter(x) {
+        return (+x) % 2 === 1;
+    }
+    function isPrime(i) {
+        if (+i &lt;= 1) {
+            return false;
+        }
+        var max = Math.floor(Math.sqrt(+i));
+        for (var j = 2; j &lt;= max; ++j) {
+            if (+i % j === 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+    asDiagram(&apos;filter(x =&gt; x % 2 === 1)&apos;)(&apos;should filter out even values&apos;, function () {
+        var source = hot(&apos;--0--1--2--3--4--|&apos;);
+        var subs = &apos;^                !&apos;;
+        var expected = &apos;-----1-----3-----|&apos;;
+        expectObservable(source.filter(oddFilter)).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should filter in only prime numbers&apos;, function () {
+        var source = hot(&apos;-1--2--^-3-4-5-6--7-8--9--|&apos;);
+        var subs = &apos;^                  !&apos;;
+        var expected = &apos;--3---5----7-------|&apos;;
+        expectObservable(source.filter(isPrime)).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should filter with an always-true predicate&apos;, function () {
+        var source = hot(&apos;-1--2--^-3-4-5-6--7-8--9--|&apos;);
+        var expected = &apos;--3-4-5-6--7-8--9--|&apos;;
+        var predicate = function () { return true; };
+        expectObservable(source.filter(predicate)).toBe(expected);
+    });
+    it(&apos;should filter with an always-false predicate&apos;, function () {
+        var source = hot(&apos;-1--2--^-3-4-5-6--7-8--9--|&apos;);
+        var expected = &apos;-------------------|&apos;;
+        var predicate = function () { return false; };
+        expectObservable(source.filter(predicate)).toBe(expected);
+    });
+    it(&apos;should filter in only prime numbers, source unsubscribes early&apos;, function () {
+        var source = hot(&apos;-1--2--^-3-4-5-6--7-8--9--|&apos;);
+        var subs = &apos;^           !       &apos;;
+        var unsub = &apos;            !       &apos;;
+        var expected = &apos;--3---5----7-       &apos;;
+        expectObservable(source.filter(isPrime), unsub).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should filter in only prime numbers, source throws&apos;, function () {
+        var source = hot(&apos;-1--2--^-3-4-5-6--7-8--9--#&apos;);
+        var subs = &apos;^                  !&apos;;
+        var expected = &apos;--3---5----7-------#&apos;;
+        expectObservable(source.filter(isPrime)).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should filter in only prime numbers, but predicate throws&apos;, function () {
+        var source = hot(&apos;-1--2--^-3-4-5-6--7-8--9--|&apos;);
+        var subs = &apos;^       !           &apos;;
+        var expected = &apos;--3---5-#           &apos;;
+        var invoked = 0;
+        function predicate(x, index) {
+            invoked++;
+            if (invoked === 4) {
+                throw &apos;error&apos;;
+            }
+            return isPrime(x);
+        }
+        ;
+        expectObservable(source.filter(predicate)).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should filter in only prime numbers, predicate with index&apos;, function () {
+        var source = hot(&apos;-1--2--^-3-4-5-6--7-8--9--|&apos;);
+        var subs = &apos;^                  !&apos;;
+        var expected = &apos;--3--------7-------|&apos;;
+        function predicate(x, i) {
+            return isPrime((+x) + i * 10);
+        }
+        expectObservable(source.filter(predicate)).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should invoke predicate once for each checked value&apos;, function () {
+        var source = hot(&apos;-1--2--^-3-4-5-6--7-8--9--|&apos;);
+        var expected = &apos;--3---5----7-------|&apos;;
+        var invoked = 0;
+        var predicate = function (x) {
+            invoked++;
+            return isPrime(x);
+        };
+        var r = source
+            .filter(predicate)
+            .do(null, null, function () {
+            chai_1.expect(invoked).to.equal(7);
+        });
+        expectObservable(r).toBe(expected);
+    });
+    it(&apos;should filter in only prime numbers, predicate with index, &apos; +
+        &apos;source unsubscribes early&apos;, function () {
+        var source = hot(&apos;-1--2--^-3-4-5-6--7-8--9--|&apos;);
+        var subs = &apos;^           !       &apos;;
+        var unsub = &apos;            !       &apos;;
+        var expected = &apos;--3--------7-       &apos;;
+        function predicate(x, i) {
+            return isPrime((+x) + i * 10);
+        }
+        expectObservable(source.filter(predicate), unsub).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should filter in only prime numbers, predicate with index, source throws&apos;, function () {
+        var source = hot(&apos;-1--2--^-3-4-5-6--7-8--9--#&apos;);
+        var subs = &apos;^                  !&apos;;
+        var expected = &apos;--3--------7-------#&apos;;
+        function predicate(x, i) {
+            return isPrime((+x) + i * 10);
+        }
+        expectObservable(source.filter(predicate)).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should filter in only prime numbers, predicate with index and throws&apos;, function () {
+        var source = hot(&apos;-1--2--^-3-4-5-6--7-8--9--|&apos;);
+        var subs = &apos;^       !           &apos;;
+        var expected = &apos;--3-----#           &apos;;
+        var invoked = 0;
+        function predicate(x, i) {
+            invoked++;
+            if (invoked === 4) {
+                throw &apos;error&apos;;
+            }
+            return isPrime((+x) + i * 10);
+        }
+        ;
+        expectObservable(source.filter(predicate)).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should compose with another filter to allow multiples of six&apos;, function () {
+        var source = hot(&apos;-1--2--^-3-4-5-6--7-8--9--|&apos;);
+        var expected = &apos;--------6----------|&apos;;
+        expectObservable(source
+            .filter(function (x) { return x % 2 === 0; })
+            .filter(function (x) { return x % 3 === 0; })).toBe(expected);
+    });
+    it(&apos;should be able to accept and use a thisArg&apos;, function () {
+        var source = hot(&apos;-1--2--^-3-4-5-6--7-8--9--|&apos;);
+        var expected = &apos;--------6----------|&apos;;
+        function Filterer() {
+            this.filter1 = function (x) { return x % 2 === 0; };
+            this.filter2 = function (x) { return x % 3 === 0; };
+        }
+        var filterer = new Filterer();
+        expectObservable(source
+            .filter(function (x) { return this.filter1(x); }, filterer)
+            .filter(function (x) { return this.filter2(x); }, filterer)
+            .filter(function (x) { return this.filter1(x); }, filterer)).toBe(expected);
+    });
+    it(&apos;should be able to use filter and map composed&apos;, function () {
+        var source = hot(&apos;-1--2--^-3-4-5-6--7-8--9--|&apos;);
+        var expected = &apos;----a---b----c-----|&apos;;
+        var values = { a: 16, b: 36, c: 64 };
+        expectObservable(source
+            .filter(function (x) { return x % 2 === 0; })
+            .map(function (x) { return x * x; })).toBe(expected, values);
+    });
+    it(&apos;should propagate errors from the source&apos;, function () {
+        var source = hot(&apos;--0--1--2--3--4--#&apos;);
+        var subs = &apos;^                !&apos;;
+        var expected = &apos;-----1-----3-----#&apos;;
+        expectObservable(source.filter(oddFilter)).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should support Observable.empty&apos;, function () {
+        var source = cold(&apos;|&apos;);
+        var subs = &apos;(^!)&apos;;
+        var expected = &apos;|&apos;;
+        expectObservable(source.filter(oddFilter)).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should support Observable.never&apos;, function () {
+        var source = cold(&apos;-&apos;);
+        var subs = &apos;^&apos;;
+        var expected = &apos;-&apos;;
+        expectObservable(source.filter(oddFilter)).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should support Observable.throw&apos;, function () {
+        var source = cold(&apos;#&apos;);
+        var subs = &apos;(^!)&apos;;
+        var expected = &apos;#&apos;;
+        expectObservable(source.filter(oddFilter)).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should send errors down the error path&apos;, function (done) {
+        Observable.of(42).filter((function (x, index) {
+            throw &apos;bad&apos;;
+        }))
+            .subscribe(function (x) {
+            done(new Error(&apos;should not be called&apos;));
+        }, function (err) {
+            chai_1.expect(err).to.equal(&apos;bad&apos;);
+            done();
+        }, function () {
+            done(new Error(&apos;should not be called&apos;));
+        });
+    });
+    it(&apos;should not break unsubscription chain when unsubscribed explicitly&apos;, function () {
+        var source = hot(&apos;-1--2--^-3-4-5-6--7-8--9--|&apos;);
+        var subs = &apos;^           !       &apos;;
+        var unsub = &apos;            !       &apos;;
+        var expected = &apos;--3---5----7-       &apos;;
+        var r = source
+            .mergeMap(function (x) { return Observable.of(x); })
+            .filter(isPrime)
+            .mergeMap(function (x) { return Observable.of(x); });
+        expectObservable(r, unsub).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should support type guards without breaking previous behavior&apos;, function () {
+        // tslint:disable no-unused-variable
+        // type guards with interfaces and classes
+        {
+            var Foo = (function () {
+                function Foo(bar, baz) {
+                    if (bar === void 0) { bar = &apos;name&apos;; }
+                    if (baz === void 0) { baz = 42; }
+                    this.bar = bar;
+                    this.baz = baz;
+                }
+                return Foo;
+            }());
+            var isBar = function (x) { return x &amp;&amp; x.bar !== undefined; };
+            var isBaz = function (x) { return x &amp;&amp; x.baz !== undefined; };
+            var foo = new Foo();
+            Observable.of(foo).filter(function (foo) { return foo.baz === 42; })
+                .subscribe(function (x) { return x.baz; }); // x is still Foo
+            Observable.of(foo).filter(isBar)
+                .subscribe(function (x) { return x.bar; }); // x is Bar!
+            var foobar = new Foo(); // type is interface, not the class
+            Observable.of(foobar).filter(function (foobar) { return foobar.bar === &apos;name&apos;; })
+                .subscribe(function (x) { return x.bar; }); // &lt;-- x is still Bar
+            Observable.of(foobar).filter(isBar)
+                .subscribe(function (x) { return x.bar; }); // &lt;--- x is Bar!
+            var barish = { bar: &apos;quack&apos;, baz: 42 }; // type can quack like a Bar
+            Observable.of(barish).filter(function (x) { return x.bar === &apos;quack&apos;; })
+                .subscribe(function (x) { return x.bar; }); // x is still { bar: string; baz: number; }
+            Observable.of(barish).filter(isBar)
+                .subscribe(function (bar) { return bar.bar; }); // x is Bar!
+        }
+        // type guards with primitive types
+        {
+            var xs = Observable.from([1, &apos;aaa&apos;, 3, &apos;bb&apos;]);
+            // This type guard will narrow a `string | number` to a string in the examples below
+            var isString = function (x) { return typeof x === &apos;string&apos;; };
+            xs.filter(isString)
+                .subscribe(function (s) { return s.length; }); // s is string
+            // In contrast, this type of regular boolean predicate still maintains the original type
+            xs.filter(function (x) { return typeof x === &apos;number&apos;; })
+                .subscribe(function (x) { return x; }); // x is still string | number
+            xs.filter(function (x, i) { return typeof x === &apos;number&apos; &amp;&amp; x &gt; i; })
+                .subscribe(function (x) { return x; }); // x is still string | number
+        }
+        // tslint:disable enable
+    });
+});
+//# sourceMappingURL=filter-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

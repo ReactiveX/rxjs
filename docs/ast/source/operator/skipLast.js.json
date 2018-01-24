@@ -1,0 +1,452 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              21,
+              32
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 21
+              },
+              "end": {
+                "line": 1,
+                "column": 32
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "skipLast",
+            "range": [
+              9,
+              17
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 17
+              }
+            }
+          },
+          "range": [
+            9,
+            32
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 32
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/skipLast",
+        "raw": "'../operators/skipLast'",
+        "range": [
+          40,
+          63
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 40
+          },
+          "end": {
+            "line": 1,
+            "column": 63
+          }
+        }
+      },
+      "range": [
+        0,
+        64
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 64
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Skip the last `count` values emitted by the source Observable.\n *\n * <img src=\"./img/skipLast.png\" width=\"100%\">\n *\n * `skipLast` returns an Observable that accumulates a queue with a length\n * enough to store the first `count` values. As more values are received,\n * values are taken from the front of the queue and produced on the result\n * sequence. This causes values to be delayed.\n *\n * @example <caption>Skip the last 2 values of an Observable with many values</caption>\n * var many = Rx.Observable.range(1, 5);\n * var skipLastTwo = many.skipLast(2);\n * skipLastTwo.subscribe(x => console.log(x));\n *\n * // Results in:\n * // 1 2 3\n *\n * @see {@link skip}\n * @see {@link skipUntil}\n * @see {@link skipWhile}\n * @see {@link take}\n *\n * @throws {ArgumentOutOfRangeError} When using `skipLast(i)`, it throws\n * ArgumentOutOrRangeError if `i < 0`.\n *\n * @param {number} count Number of elements to skip from the end of the source Observable.\n * @returns {Observable<T>} An Observable that skips the last count values\n * emitted by the source Observable.\n * @method skipLast\n * @owner Observable\n ",
+          "range": [
+            65,
+            1172
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 33,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "skipLast",
+          "range": [
+            1189,
+            1197
+          ],
+          "loc": {
+            "start": {
+              "line": 34,
+              "column": 16
+            },
+            "end": {
+              "line": 34,
+              "column": 24
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "count",
+            "range": [
+              1198,
+              1203
+            ],
+            "loc": {
+              "start": {
+                "line": 34,
+                "column": 25
+              },
+              "end": {
+                "line": 34,
+                "column": 30
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      1218,
+                      1229
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 35,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 35,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "count",
+                      "range": [
+                        1230,
+                        1235
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 35,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 35,
+                          "column": 28
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    1218,
+                    1236
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 35,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 35,
+                      "column": 29
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      1237,
+                      1241
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 35,
+                        "column": 30
+                      },
+                      "end": {
+                        "line": 35,
+                        "column": 34
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1218,
+                  1242
+                ],
+                "loc": {
+                  "start": {
+                    "line": 35,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 35,
+                    "column": 35
+                  }
+                }
+              },
+              "range": [
+                1211,
+                1243
+              ],
+              "loc": {
+                "start": {
+                  "line": 35,
+                  "column": 4
+                },
+                "end": {
+                  "line": 35,
+                  "column": 36
+                }
+              }
+            }
+          ],
+          "range": [
+            1205,
+            1245
+          ],
+          "loc": {
+            "start": {
+              "line": 34,
+              "column": 32
+            },
+            "end": {
+              "line": 36,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1180,
+          1245
+        ],
+        "loc": {
+          "start": {
+            "line": 34,
+            "column": 7
+          },
+          "end": {
+            "line": 36,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Skip the last `count` values emitted by the source Observable.\n *\n * <img src=\"./img/skipLast.png\" width=\"100%\">\n *\n * `skipLast` returns an Observable that accumulates a queue with a length\n * enough to store the first `count` values. As more values are received,\n * values are taken from the front of the queue and produced on the result\n * sequence. This causes values to be delayed.\n *\n * @example <caption>Skip the last 2 values of an Observable with many values</caption>\n * var many = Rx.Observable.range(1, 5);\n * var skipLastTwo = many.skipLast(2);\n * skipLastTwo.subscribe(x => console.log(x));\n *\n * // Results in:\n * // 1 2 3\n *\n * @see {@link skip}\n * @see {@link skipUntil}\n * @see {@link skipWhile}\n * @see {@link take}\n *\n * @throws {ArgumentOutOfRangeError} When using `skipLast(i)`, it throws\n * ArgumentOutOrRangeError if `i < 0`.\n *\n * @param {number} count Number of elements to skip from the end of the source Observable.\n * @returns {Observable<T>} An Observable that skips the last count values\n * emitted by the source Observable.\n * @method skipLast\n * @owner Observable\n ",
+            "range": [
+              65,
+              1172
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 33,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=skipLast.js.map",
+            "range": [
+              1246,
+              1282
+            ],
+            "loc": {
+              "start": {
+                "line": 37,
+                "column": 0
+              },
+              "end": {
+                "line": 37,
+                "column": 36
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1173,
+        1245
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 0
+        },
+        "end": {
+          "line": 36,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Skip the last `count` values emitted by the source Observable.\n *\n * <img src=\"./img/skipLast.png\" width=\"100%\">\n *\n * `skipLast` returns an Observable that accumulates a queue with a length\n * enough to store the first `count` values. As more values are received,\n * values are taken from the front of the queue and produced on the result\n * sequence. This causes values to be delayed.\n *\n * @example <caption>Skip the last 2 values of an Observable with many values</caption>\n * var many = Rx.Observable.range(1, 5);\n * var skipLastTwo = many.skipLast(2);\n * skipLastTwo.subscribe(x => console.log(x));\n *\n * // Results in:\n * // 1 2 3\n *\n * @see {@link skip}\n * @see {@link skipUntil}\n * @see {@link skipWhile}\n * @see {@link take}\n *\n * @throws {ArgumentOutOfRangeError} When using `skipLast(i)`, it throws\n * ArgumentOutOrRangeError if `i < 0`.\n *\n * @param {number} count Number of elements to skip from the end of the source Observable.\n * @returns {Observable<T>} An Observable that skips the last count values\n * emitted by the source Observable.\n * @method skipLast\n * @owner Observable\n ",
+          "range": [
+            65,
+            1172
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 33,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=skipLast.js.map",
+          "range": [
+            1246,
+            1282
+          ],
+          "loc": {
+            "start": {
+              "line": 37,
+              "column": 0
+            },
+            "end": {
+              "line": 37,
+              "column": 36
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1245
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 36,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Skip the last `count` values emitted by the source Observable.\n *\n * <img src=\"./img/skipLast.png\" width=\"100%\">\n *\n * `skipLast` returns an Observable that accumulates a queue with a length\n * enough to store the first `count` values. As more values are received,\n * values are taken from the front of the queue and produced on the result\n * sequence. This causes values to be delayed.\n *\n * @example <caption>Skip the last 2 values of an Observable with many values</caption>\n * var many = Rx.Observable.range(1, 5);\n * var skipLastTwo = many.skipLast(2);\n * skipLastTwo.subscribe(x => console.log(x));\n *\n * // Results in:\n * // 1 2 3\n *\n * @see {@link skip}\n * @see {@link skipUntil}\n * @see {@link skipWhile}\n * @see {@link take}\n *\n * @throws {ArgumentOutOfRangeError} When using `skipLast(i)`, it throws\n * ArgumentOutOrRangeError if `i < 0`.\n *\n * @param {number} count Number of elements to skip from the end of the source Observable.\n * @returns {Observable<T>} An Observable that skips the last count values\n * emitted by the source Observable.\n * @method skipLast\n * @owner Observable\n ",
+      "range": [
+        65,
+        1172
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 33,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=skipLast.js.map",
+      "range": [
+        1246,
+        1282
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 0
+        },
+        "end": {
+          "line": 37,
+          "column": 36
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">spec-js/Subject-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObservableInputDoc.html">ObservableInput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SubscribableOrPromiseDoc.html">SubscribableOrPromise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~TeardownLogicDoc.html">TeardownLogic</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Symbol">Rx.Symbol</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxTimeoutError.html">AjaxTimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html">AjaxRequest</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operators</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operators/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-catchError">catchError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-tap">tap</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/scheduler/Action.js~Action.html">Action</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animationFrame">animationFrame</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asap">asap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-async">async</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-queue">queue</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$iterator">$$iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$observable">$$observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/TimeoutError.js~TimeoutError.html">TimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/Subject-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var _this = this;
+var chai_1 = require(&apos;chai&apos;);
+var Rx = require(&apos;../dist/package/Rx&apos;);
+var Subject = Rx.Subject;
+var Observable = Rx.Observable;
+/** @test {Subject} */
+describe(&apos;Subject&apos;, function () {
+    it(&apos;should pump values right on through itself&apos;, function (done) {
+        var subject = new Subject();
+        var expected = [&apos;foo&apos;, &apos;bar&apos;];
+        subject.subscribe(function (x) {
+            chai_1.expect(x).to.equal(expected.shift());
+        }, null, done);
+        subject.next(&apos;foo&apos;);
+        subject.next(&apos;bar&apos;);
+        subject.complete();
+    });
+    it(&apos;should pump values to multiple subscribers&apos;, function (done) {
+        var subject = new Subject();
+        var expected = [&apos;foo&apos;, &apos;bar&apos;];
+        var i = 0;
+        var j = 0;
+        subject.subscribe(function (x) {
+            chai_1.expect(x).to.equal(expected[i++]);
+        });
+        subject.subscribe(function (x) {
+            chai_1.expect(x).to.equal(expected[j++]);
+        }, null, done);
+        chai_1.expect(subject.observers.length).to.equal(2);
+        subject.next(&apos;foo&apos;);
+        subject.next(&apos;bar&apos;);
+        subject.complete();
+    });
+    it(&apos;should handle subscribers that arrive and leave at different times, &apos; +
+        &apos;subject does not complete&apos;, function () {
+        var subject = new Subject();
+        var results1 = [];
+        var results2 = [];
+        var results3 = [];
+        subject.next(1);
+        subject.next(2);
+        subject.next(3);
+        subject.next(4);
+        var subscription1 = subject.subscribe(function (x) { results1.push(x); }, function (e) { results1.push(&apos;E&apos;); }, function () { results1.push(&apos;C&apos;); });
+        subject.next(5);
+        var subscription2 = subject.subscribe(function (x) { results2.push(x); }, function (e) { results2.push(&apos;E&apos;); }, function () { results2.push(&apos;C&apos;); });
+        subject.next(6);
+        subject.next(7);
+        subscription1.unsubscribe();
+        subject.next(8);
+        subscription2.unsubscribe();
+        subject.next(9);
+        subject.next(10);
+        var subscription3 = subject.subscribe(function (x) { results3.push(x); }, function (e) { results3.push(&apos;E&apos;); }, function () { results3.push(&apos;C&apos;); });
+        subject.next(11);
+        subscription3.unsubscribe();
+        chai_1.expect(results1).to.deep.equal([5, 6, 7]);
+        chai_1.expect(results2).to.deep.equal([6, 7, 8]);
+        chai_1.expect(results3).to.deep.equal([11]);
+    });
+    it(&apos;should handle subscribers that arrive and leave at different times, &apos; +
+        &apos;subject completes&apos;, function () {
+        var subject = new Subject();
+        var results1 = [];
+        var results2 = [];
+        var results3 = [];
+        subject.next(1);
+        subject.next(2);
+        subject.next(3);
+        subject.next(4);
+        var subscription1 = subject.subscribe(function (x) { results1.push(x); }, function (e) { results1.push(&apos;E&apos;); }, function () { results1.push(&apos;C&apos;); });
+        subject.next(5);
+        var subscription2 = subject.subscribe(function (x) { results2.push(x); }, function (e) { results2.push(&apos;E&apos;); }, function () { results2.push(&apos;C&apos;); });
+        subject.next(6);
+        subject.next(7);
+        subscription1.unsubscribe();
+        subject.complete();
+        subscription2.unsubscribe();
+        var subscription3 = subject.subscribe(function (x) { results3.push(x); }, function (e) { results3.push(&apos;E&apos;); }, function () { results3.push(&apos;C&apos;); });
+        subscription3.unsubscribe();
+        chai_1.expect(results1).to.deep.equal([5, 6, 7]);
+        chai_1.expect(results2).to.deep.equal([6, 7, &apos;C&apos;]);
+        chai_1.expect(results3).to.deep.equal([&apos;C&apos;]);
+    });
+    it(&apos;should handle subscribers that arrive and leave at different times, &apos; +
+        &apos;subject terminates with an error&apos;, function () {
+        var subject = new Subject();
+        var results1 = [];
+        var results2 = [];
+        var results3 = [];
+        subject.next(1);
+        subject.next(2);
+        subject.next(3);
+        subject.next(4);
+        var subscription1 = subject.subscribe(function (x) { results1.push(x); }, function (e) { results1.push(&apos;E&apos;); }, function () { results1.push(&apos;C&apos;); });
+        subject.next(5);
+        var subscription2 = subject.subscribe(function (x) { results2.push(x); }, function (e) { results2.push(&apos;E&apos;); }, function () { results2.push(&apos;C&apos;); });
+        subject.next(6);
+        subject.next(7);
+        subscription1.unsubscribe();
+        subject.error(new Error(&apos;err&apos;));
+        subscription2.unsubscribe();
+        var subscription3 = subject.subscribe(function (x) { results3.push(x); }, function (e) { results3.push(&apos;E&apos;); }, function () { results3.push(&apos;C&apos;); });
+        subscription3.unsubscribe();
+        chai_1.expect(results1).to.deep.equal([5, 6, 7]);
+        chai_1.expect(results2).to.deep.equal([6, 7, &apos;E&apos;]);
+        chai_1.expect(results3).to.deep.equal([&apos;E&apos;]);
+    });
+    it(&apos;should handle subscribers that arrive and leave at different times, &apos; +
+        &apos;subject completes before nexting any value&apos;, function () {
+        var subject = new Subject();
+        var results1 = [];
+        var results2 = [];
+        var results3 = [];
+        var subscription1 = subject.subscribe(function (x) { results1.push(x); }, function (e) { results1.push(&apos;E&apos;); }, function () { results1.push(&apos;C&apos;); });
+        var subscription2 = subject.subscribe(function (x) { results2.push(x); }, function (e) { results2.push(&apos;E&apos;); }, function () { results2.push(&apos;C&apos;); });
+        subscription1.unsubscribe();
+        subject.complete();
+        subscription2.unsubscribe();
+        var subscription3 = subject.subscribe(function (x) { results3.push(x); }, function (e) { results3.push(&apos;E&apos;); }, function () { results3.push(&apos;C&apos;); });
+        subscription3.unsubscribe();
+        chai_1.expect(results1).to.deep.equal([]);
+        chai_1.expect(results2).to.deep.equal([&apos;C&apos;]);
+        chai_1.expect(results3).to.deep.equal([&apos;C&apos;]);
+    });
+    it(&apos;should disallow new subscriber once subject has been disposed&apos;, function () {
+        var subject = new Subject();
+        var results1 = [];
+        var results2 = [];
+        var results3 = [];
+        var subscription1 = subject.subscribe(function (x) { results1.push(x); }, function (e) { results1.push(&apos;E&apos;); }, function () { results1.push(&apos;C&apos;); });
+        subject.next(1);
+        subject.next(2);
+        var subscription2 = subject.subscribe(function (x) { results2.push(x); }, function (e) { results2.push(&apos;E&apos;); }, function () { results2.push(&apos;C&apos;); });
+        subject.next(3);
+        subject.next(4);
+        subject.next(5);
+        subscription1.unsubscribe();
+        subscription2.unsubscribe();
+        subject.unsubscribe();
+        chai_1.expect(function () {
+            subject.subscribe(function (x) { results3.push(x); }, function (err) {
+                chai_1.expect(false).to.equal(&apos;should not throw error: &apos; + err.toString());
+            });
+        }).to.throw(Rx.ObjectUnsubscribedError);
+        chai_1.expect(results1).to.deep.equal([1, 2, 3, 4, 5]);
+        chai_1.expect(results2).to.deep.equal([3, 4, 5]);
+        chai_1.expect(results3).to.deep.equal([]);
+    });
+    it(&apos;should not allow values to be nexted after it is unsubscribed&apos;, function (done) {
+        var subject = new Subject();
+        var expected = [&apos;foo&apos;];
+        subject.subscribe(function (x) {
+            chai_1.expect(x).to.equal(expected.shift());
+        });
+        subject.next(&apos;foo&apos;);
+        subject.unsubscribe();
+        chai_1.expect(function () { return subject.next(&apos;bar&apos;); }).to.throw(Rx.ObjectUnsubscribedError);
+        done();
+    });
+    it(&apos;should clean out unsubscribed subscribers&apos;, function (done) {
+        var subject = new Subject();
+        var sub1 = subject.subscribe(function (x) {
+            //noop
+        });
+        var sub2 = subject.subscribe(function (x) {
+            //noop
+        });
+        chai_1.expect(subject.observers.length).to.equal(2);
+        sub1.unsubscribe();
+        chai_1.expect(subject.observers.length).to.equal(1);
+        sub2.unsubscribe();
+        chai_1.expect(subject.observers.length).to.equal(0);
+        done();
+    });
+    it(&apos;should have a static create function that works&apos;, function () {
+        chai_1.expect(Subject.create).to.be.a(&apos;function&apos;);
+        var source = Observable.of(1, 2, 3, 4, 5);
+        var nexts = [];
+        var output = [];
+        var error;
+        var complete = false;
+        var outputComplete = false;
+        var destination = {
+            closed: false,
+            next: function (x) {
+                nexts.push(x);
+            },
+            error: function (err) {
+                error = err;
+                this.closed = true;
+            },
+            complete: function () {
+                complete = true;
+                _this.closed = true;
+            }
+        };
+        var sub = Subject.create(destination, source);
+        sub.subscribe(function (x) {
+            output.push(x);
+        }, null, function () {
+            outputComplete = true;
+        });
+        sub.next(&apos;a&apos;);
+        sub.next(&apos;b&apos;);
+        sub.next(&apos;c&apos;);
+        sub.complete();
+        chai_1.expect(nexts).to.deep.equal([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]);
+        chai_1.expect(complete).to.be.true;
+        chai_1.expect(error).to.be.a(&apos;undefined&apos;);
+        chai_1.expect(output).to.deep.equal([1, 2, 3, 4, 5]);
+        chai_1.expect(outputComplete).to.be.true;
+    });
+    it(&apos;should have a static create function that works also to raise errors&apos;, function () {
+        chai_1.expect(Subject.create).to.be.a(&apos;function&apos;);
+        var source = Observable.of(1, 2, 3, 4, 5);
+        var nexts = [];
+        var output = [];
+        var error;
+        var complete = false;
+        var outputComplete = false;
+        var destination = {
+            closed: false,
+            next: function (x) {
+                nexts.push(x);
+            },
+            error: function (err) {
+                error = err;
+                this.closed = true;
+            },
+            complete: function () {
+                complete = true;
+                _this.closed = true;
+            }
+        };
+        var sub = Subject.create(destination, source);
+        sub.subscribe(function (x) {
+            output.push(x);
+        }, null, function () {
+            outputComplete = true;
+        });
+        sub.next(&apos;a&apos;);
+        sub.next(&apos;b&apos;);
+        sub.next(&apos;c&apos;);
+        sub.error(&apos;boom&apos;);
+        chai_1.expect(nexts).to.deep.equal([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]);
+        chai_1.expect(complete).to.be.false;
+        chai_1.expect(error).to.equal(&apos;boom&apos;);
+        chai_1.expect(output).to.deep.equal([1, 2, 3, 4, 5]);
+        chai_1.expect(outputComplete).to.be.true;
+    });
+    it(&apos;should be an Observer which can be given to Observable.subscribe&apos;, function (done) {
+        var source = Observable.of(1, 2, 3, 4, 5);
+        var subject = new Subject();
+        var expected = [1, 2, 3, 4, 5];
+        subject.subscribe(function (x) {
+            chai_1.expect(x).to.equal(expected.shift());
+        }, function (x) {
+            done(new Error(&apos;should not be called&apos;));
+        }, function () {
+            done();
+        });
+        source.subscribe(subject);
+    });
+    it(&apos;should be usable as an Observer of a finite delayed Observable&apos;, function (done) {
+        var source = Rx.Observable.of(1, 2, 3).delay(50);
+        var subject = new Rx.Subject();
+        var expected = [1, 2, 3];
+        subject.subscribe(function (x) {
+            chai_1.expect(x).to.equal(expected.shift());
+        }, function (x) {
+            done(new Error(&apos;should not be called&apos;));
+        }, function () {
+            done();
+        });
+        source.subscribe(subject);
+    });
+    it(&apos;should throw ObjectUnsubscribedError when emit after unsubscribed&apos;, function () {
+        var subject = new Rx.Subject();
+        subject.unsubscribe();
+        chai_1.expect(function () {
+            subject.next(&apos;a&apos;);
+        }).to.throw(Rx.ObjectUnsubscribedError);
+        chai_1.expect(function () {
+            subject.error(&apos;a&apos;);
+        }).to.throw(Rx.ObjectUnsubscribedError);
+        chai_1.expect(function () {
+            subject.complete();
+        }).to.throw(Rx.ObjectUnsubscribedError);
+    });
+    it(&apos;should not next after completed&apos;, function () {
+        var subject = new Rx.Subject();
+        var results = [];
+        subject.subscribe(function (x) { return results.push(x); }, null, function () { return results.push(&apos;C&apos;); });
+        subject.next(&apos;a&apos;);
+        subject.complete();
+        subject.next(&apos;b&apos;);
+        chai_1.expect(results).to.deep.equal([&apos;a&apos;, &apos;C&apos;]);
+    });
+    it(&apos;should not next after error&apos;, function () {
+        var error = new Error(&apos;wut?&apos;);
+        var subject = new Rx.Subject();
+        var results = [];
+        subject.subscribe(function (x) { return results.push(x); }, function (err) { return results.push(err); });
+        subject.next(&apos;a&apos;);
+        subject.error(error);
+        subject.next(&apos;b&apos;);
+        chai_1.expect(results).to.deep.equal([&apos;a&apos;, error]);
+    });
+    describe(&apos;asObservable&apos;, function () {
+        it(&apos;should hide subject&apos;, function () {
+            var subject = new Rx.Subject();
+            var observable = subject.asObservable();
+            chai_1.expect(subject).not.to.equal(observable);
+            chai_1.expect(observable instanceof Observable).to.be.true;
+            chai_1.expect(observable instanceof Subject).to.be.false;
+        });
+        it(&apos;should handle subject never emits&apos;, function () {
+            var observable = hot(&apos;-&apos;).asObservable();
+            expectObservable(observable).toBe([]);
+        });
+        it(&apos;should handle subject completes without emits&apos;, function () {
+            var observable = hot(&apos;--^--|&apos;).asObservable();
+            var expected = &apos;---|&apos;;
+            expectObservable(observable).toBe(expected);
+        });
+        it(&apos;should handle subject throws&apos;, function () {
+            var observable = hot(&apos;--^--#&apos;).asObservable();
+            var expected = &apos;---#&apos;;
+            expectObservable(observable).toBe(expected);
+        });
+        it(&apos;should handle subject emits&apos;, function () {
+            var observable = hot(&apos;--^--x--|&apos;).asObservable();
+            var expected = &apos;---x--|&apos;;
+            expectObservable(observable).toBe(expected);
+        });
+        it(&apos;should work with inherited subject&apos;, function () {
+            var results = [];
+            var subject = new Rx.AsyncSubject();
+            subject.next(42);
+            subject.complete();
+            var observable = subject.asObservable();
+            observable.subscribe(function (x) { return results.push(x); }, null, function () { return results.push(&apos;done&apos;); });
+            chai_1.expect(results).to.deep.equal([42, &apos;done&apos;]);
+        });
+    });
+});
+describe(&apos;AnonymousSubject&apos;, function () {
+    it(&apos;should be exposed&apos;, function () {
+        chai_1.expect(Rx.AnonymousSubject).to.be.a(&apos;function&apos;);
+    });
+    it(&apos;should not eager&apos;, function () {
+        var subscribed = false;
+        var subject = Rx.Subject.create(null, new Rx.Observable(function (observer) {
+            subscribed = true;
+            var subscription = Rx.Observable.of(&apos;x&apos;).subscribe(observer);
+            return function () {
+                subscription.unsubscribe();
+            };
+        }));
+        var observable = subject.asObservable();
+        chai_1.expect(subscribed).to.be.false;
+        observable.subscribe();
+        chai_1.expect(subscribed).to.be.true;
+    });
+});
+//# sourceMappingURL=Subject-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

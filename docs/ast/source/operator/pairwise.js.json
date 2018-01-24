@@ -1,0 +1,414 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              21,
+              32
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 21
+              },
+              "end": {
+                "line": 1,
+                "column": 32
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "pairwise",
+            "range": [
+              9,
+              17
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 17
+              }
+            }
+          },
+          "range": [
+            9,
+            32
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 32
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/pairwise",
+        "raw": "'../operators/pairwise'",
+        "range": [
+          40,
+          63
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 40
+          },
+          "end": {
+            "line": 1,
+            "column": 63
+          }
+        }
+      },
+      "range": [
+        0,
+        64
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 64
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Groups pairs of consecutive emissions together and emits them as an array of\n * two values.\n *\n * <span class=\"informal\">Puts the current value and previous value together as\n * an array, and emits that.</span>\n *\n * <img src=\"./img/pairwise.png\" width=\"100%\">\n *\n * The Nth emission from the source Observable will cause the output Observable\n * to emit an array [(N-1)th, Nth] of the previous and the current value, as a\n * pair. For this reason, `pairwise` emits on the second and subsequent\n * emissions from the source Observable, but not on the first emission, because\n * there is no previous value in that case.\n *\n * @example <caption>On every click (starting from the second), emit the relative distance to the previous click</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var pairs = clicks.pairwise();\n * var distance = pairs.map(pair => {\n *   var x0 = pair[0].clientX;\n *   var y0 = pair[0].clientY;\n *   var x1 = pair[1].clientX;\n *   var y1 = pair[1].clientY;\n *   return Math.sqrt(Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2));\n * });\n * distance.subscribe(x => console.log(x));\n *\n * @see {@link buffer}\n * @see {@link bufferCount}\n *\n * @return {Observable<Array<T>>} An Observable of pairs (as arrays) of\n * consecutive values from the source Observable.\n * @method pairwise\n * @owner Observable\n ",
+          "range": [
+            65,
+            1415
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 36,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "pairwise",
+          "range": [
+            1432,
+            1440
+          ],
+          "loc": {
+            "start": {
+              "line": 37,
+              "column": 16
+            },
+            "end": {
+              "line": 37,
+              "column": 24
+            }
+          }
+        },
+        "params": [],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      1456,
+                      1467
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 38,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 38,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [],
+                  "range": [
+                    1456,
+                    1469
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 38,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 38,
+                      "column": 24
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      1470,
+                      1474
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 38,
+                        "column": 25
+                      },
+                      "end": {
+                        "line": 38,
+                        "column": 29
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1456,
+                  1475
+                ],
+                "loc": {
+                  "start": {
+                    "line": 38,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 38,
+                    "column": 30
+                  }
+                }
+              },
+              "range": [
+                1449,
+                1476
+              ],
+              "loc": {
+                "start": {
+                  "line": 38,
+                  "column": 4
+                },
+                "end": {
+                  "line": 38,
+                  "column": 31
+                }
+              }
+            }
+          ],
+          "range": [
+            1443,
+            1478
+          ],
+          "loc": {
+            "start": {
+              "line": 37,
+              "column": 27
+            },
+            "end": {
+              "line": 39,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1423,
+          1478
+        ],
+        "loc": {
+          "start": {
+            "line": 37,
+            "column": 7
+          },
+          "end": {
+            "line": 39,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Groups pairs of consecutive emissions together and emits them as an array of\n * two values.\n *\n * <span class=\"informal\">Puts the current value and previous value together as\n * an array, and emits that.</span>\n *\n * <img src=\"./img/pairwise.png\" width=\"100%\">\n *\n * The Nth emission from the source Observable will cause the output Observable\n * to emit an array [(N-1)th, Nth] of the previous and the current value, as a\n * pair. For this reason, `pairwise` emits on the second and subsequent\n * emissions from the source Observable, but not on the first emission, because\n * there is no previous value in that case.\n *\n * @example <caption>On every click (starting from the second), emit the relative distance to the previous click</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var pairs = clicks.pairwise();\n * var distance = pairs.map(pair => {\n *   var x0 = pair[0].clientX;\n *   var y0 = pair[0].clientY;\n *   var x1 = pair[1].clientX;\n *   var y1 = pair[1].clientY;\n *   return Math.sqrt(Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2));\n * });\n * distance.subscribe(x => console.log(x));\n *\n * @see {@link buffer}\n * @see {@link bufferCount}\n *\n * @return {Observable<Array<T>>} An Observable of pairs (as arrays) of\n * consecutive values from the source Observable.\n * @method pairwise\n * @owner Observable\n ",
+            "range": [
+              65,
+              1415
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 36,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=pairwise.js.map",
+            "range": [
+              1479,
+              1515
+            ],
+            "loc": {
+              "start": {
+                "line": 40,
+                "column": 0
+              },
+              "end": {
+                "line": 40,
+                "column": 36
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1416,
+        1478
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 0
+        },
+        "end": {
+          "line": 39,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Groups pairs of consecutive emissions together and emits them as an array of\n * two values.\n *\n * <span class=\"informal\">Puts the current value and previous value together as\n * an array, and emits that.</span>\n *\n * <img src=\"./img/pairwise.png\" width=\"100%\">\n *\n * The Nth emission from the source Observable will cause the output Observable\n * to emit an array [(N-1)th, Nth] of the previous and the current value, as a\n * pair. For this reason, `pairwise` emits on the second and subsequent\n * emissions from the source Observable, but not on the first emission, because\n * there is no previous value in that case.\n *\n * @example <caption>On every click (starting from the second), emit the relative distance to the previous click</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var pairs = clicks.pairwise();\n * var distance = pairs.map(pair => {\n *   var x0 = pair[0].clientX;\n *   var y0 = pair[0].clientY;\n *   var x1 = pair[1].clientX;\n *   var y1 = pair[1].clientY;\n *   return Math.sqrt(Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2));\n * });\n * distance.subscribe(x => console.log(x));\n *\n * @see {@link buffer}\n * @see {@link bufferCount}\n *\n * @return {Observable<Array<T>>} An Observable of pairs (as arrays) of\n * consecutive values from the source Observable.\n * @method pairwise\n * @owner Observable\n ",
+          "range": [
+            65,
+            1415
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 36,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=pairwise.js.map",
+          "range": [
+            1479,
+            1515
+          ],
+          "loc": {
+            "start": {
+              "line": 40,
+              "column": 0
+            },
+            "end": {
+              "line": 40,
+              "column": 36
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1478
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 39,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Groups pairs of consecutive emissions together and emits them as an array of\n * two values.\n *\n * <span class=\"informal\">Puts the current value and previous value together as\n * an array, and emits that.</span>\n *\n * <img src=\"./img/pairwise.png\" width=\"100%\">\n *\n * The Nth emission from the source Observable will cause the output Observable\n * to emit an array [(N-1)th, Nth] of the previous and the current value, as a\n * pair. For this reason, `pairwise` emits on the second and subsequent\n * emissions from the source Observable, but not on the first emission, because\n * there is no previous value in that case.\n *\n * @example <caption>On every click (starting from the second), emit the relative distance to the previous click</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var pairs = clicks.pairwise();\n * var distance = pairs.map(pair => {\n *   var x0 = pair[0].clientX;\n *   var y0 = pair[0].clientY;\n *   var x1 = pair[1].clientX;\n *   var y1 = pair[1].clientY;\n *   return Math.sqrt(Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2));\n * });\n * distance.subscribe(x => console.log(x));\n *\n * @see {@link buffer}\n * @see {@link bufferCount}\n *\n * @return {Observable<Array<T>>} An Observable of pairs (as arrays) of\n * consecutive values from the source Observable.\n * @method pairwise\n * @owner Observable\n ",
+      "range": [
+        65,
+        1415
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 36,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=pairwise.js.map",
+      "range": [
+        1479,
+        1515
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 0
+        },
+        "end": {
+          "line": 40,
+          "column": 36
+        }
+      }
+    }
+  ]
+}

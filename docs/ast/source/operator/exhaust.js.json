@@ -1,0 +1,414 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              20,
+              31
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 20
+              },
+              "end": {
+                "line": 1,
+                "column": 31
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "exhaust",
+            "range": [
+              9,
+              16
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 16
+              }
+            }
+          },
+          "range": [
+            9,
+            31
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 31
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/exhaust",
+        "raw": "'../operators/exhaust'",
+        "range": [
+          39,
+          61
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 39
+          },
+          "end": {
+            "line": 1,
+            "column": 61
+          }
+        }
+      },
+      "range": [
+        0,
+        62
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 62
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Converts a higher-order Observable into a first-order Observable by dropping\n * inner Observables while the previous inner Observable has not yet completed.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables by dropping the\n * next inner Observables while the current inner is still executing.</span>\n *\n * <img src=\"./img/exhaust.png\" width=\"100%\">\n *\n * `exhaust` subscribes to an Observable that emits Observables, also known as a\n * higher-order Observable. Each time it observes one of these emitted inner\n * Observables, the output Observable begins emitting the items emitted by that\n * inner Observable. So far, it behaves like {@link mergeAll}. However,\n * `exhaust` ignores every new inner Observable if the previous Observable has\n * not yet completed. Once that one completes, it will accept and flatten the\n * next inner Observable and repeat this process.\n *\n * @example <caption>Run a finite timer for each click, only if there is no currently active timer</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000).take(5));\n * var result = higherOrder.exhaust();\n * result.subscribe(x => console.log(x));\n *\n * @see {@link combineAll}\n * @see {@link concatAll}\n * @see {@link switch}\n * @see {@link mergeAll}\n * @see {@link exhaustMap}\n * @see {@link zipAll}\n *\n * @return {Observable} An Observable that takes a source of Observables and propagates the first observable\n * exclusively until it completes before subscribing to the next.\n * @method exhaust\n * @owner Observable\n ",
+          "range": [
+            63,
+            1663
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 36,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "exhaust",
+          "range": [
+            1680,
+            1687
+          ],
+          "loc": {
+            "start": {
+              "line": 37,
+              "column": 16
+            },
+            "end": {
+              "line": 37,
+              "column": 23
+            }
+          }
+        },
+        "params": [],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      1703,
+                      1714
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 38,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 38,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [],
+                  "range": [
+                    1703,
+                    1716
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 38,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 38,
+                      "column": 24
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      1717,
+                      1721
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 38,
+                        "column": 25
+                      },
+                      "end": {
+                        "line": 38,
+                        "column": 29
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1703,
+                  1722
+                ],
+                "loc": {
+                  "start": {
+                    "line": 38,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 38,
+                    "column": 30
+                  }
+                }
+              },
+              "range": [
+                1696,
+                1723
+              ],
+              "loc": {
+                "start": {
+                  "line": 38,
+                  "column": 4
+                },
+                "end": {
+                  "line": 38,
+                  "column": 31
+                }
+              }
+            }
+          ],
+          "range": [
+            1690,
+            1725
+          ],
+          "loc": {
+            "start": {
+              "line": 37,
+              "column": 26
+            },
+            "end": {
+              "line": 39,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1671,
+          1725
+        ],
+        "loc": {
+          "start": {
+            "line": 37,
+            "column": 7
+          },
+          "end": {
+            "line": 39,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Converts a higher-order Observable into a first-order Observable by dropping\n * inner Observables while the previous inner Observable has not yet completed.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables by dropping the\n * next inner Observables while the current inner is still executing.</span>\n *\n * <img src=\"./img/exhaust.png\" width=\"100%\">\n *\n * `exhaust` subscribes to an Observable that emits Observables, also known as a\n * higher-order Observable. Each time it observes one of these emitted inner\n * Observables, the output Observable begins emitting the items emitted by that\n * inner Observable. So far, it behaves like {@link mergeAll}. However,\n * `exhaust` ignores every new inner Observable if the previous Observable has\n * not yet completed. Once that one completes, it will accept and flatten the\n * next inner Observable and repeat this process.\n *\n * @example <caption>Run a finite timer for each click, only if there is no currently active timer</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000).take(5));\n * var result = higherOrder.exhaust();\n * result.subscribe(x => console.log(x));\n *\n * @see {@link combineAll}\n * @see {@link concatAll}\n * @see {@link switch}\n * @see {@link mergeAll}\n * @see {@link exhaustMap}\n * @see {@link zipAll}\n *\n * @return {Observable} An Observable that takes a source of Observables and propagates the first observable\n * exclusively until it completes before subscribing to the next.\n * @method exhaust\n * @owner Observable\n ",
+            "range": [
+              63,
+              1663
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 36,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=exhaust.js.map",
+            "range": [
+              1726,
+              1761
+            ],
+            "loc": {
+              "start": {
+                "line": 40,
+                "column": 0
+              },
+              "end": {
+                "line": 40,
+                "column": 35
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1664,
+        1725
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 0
+        },
+        "end": {
+          "line": 39,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Converts a higher-order Observable into a first-order Observable by dropping\n * inner Observables while the previous inner Observable has not yet completed.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables by dropping the\n * next inner Observables while the current inner is still executing.</span>\n *\n * <img src=\"./img/exhaust.png\" width=\"100%\">\n *\n * `exhaust` subscribes to an Observable that emits Observables, also known as a\n * higher-order Observable. Each time it observes one of these emitted inner\n * Observables, the output Observable begins emitting the items emitted by that\n * inner Observable. So far, it behaves like {@link mergeAll}. However,\n * `exhaust` ignores every new inner Observable if the previous Observable has\n * not yet completed. Once that one completes, it will accept and flatten the\n * next inner Observable and repeat this process.\n *\n * @example <caption>Run a finite timer for each click, only if there is no currently active timer</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000).take(5));\n * var result = higherOrder.exhaust();\n * result.subscribe(x => console.log(x));\n *\n * @see {@link combineAll}\n * @see {@link concatAll}\n * @see {@link switch}\n * @see {@link mergeAll}\n * @see {@link exhaustMap}\n * @see {@link zipAll}\n *\n * @return {Observable} An Observable that takes a source of Observables and propagates the first observable\n * exclusively until it completes before subscribing to the next.\n * @method exhaust\n * @owner Observable\n ",
+          "range": [
+            63,
+            1663
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 36,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=exhaust.js.map",
+          "range": [
+            1726,
+            1761
+          ],
+          "loc": {
+            "start": {
+              "line": 40,
+              "column": 0
+            },
+            "end": {
+              "line": 40,
+              "column": 35
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1725
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 39,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Converts a higher-order Observable into a first-order Observable by dropping\n * inner Observables while the previous inner Observable has not yet completed.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables by dropping the\n * next inner Observables while the current inner is still executing.</span>\n *\n * <img src=\"./img/exhaust.png\" width=\"100%\">\n *\n * `exhaust` subscribes to an Observable that emits Observables, also known as a\n * higher-order Observable. Each time it observes one of these emitted inner\n * Observables, the output Observable begins emitting the items emitted by that\n * inner Observable. So far, it behaves like {@link mergeAll}. However,\n * `exhaust` ignores every new inner Observable if the previous Observable has\n * not yet completed. Once that one completes, it will accept and flatten the\n * next inner Observable and repeat this process.\n *\n * @example <caption>Run a finite timer for each click, only if there is no currently active timer</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000).take(5));\n * var result = higherOrder.exhaust();\n * result.subscribe(x => console.log(x));\n *\n * @see {@link combineAll}\n * @see {@link concatAll}\n * @see {@link switch}\n * @see {@link mergeAll}\n * @see {@link exhaustMap}\n * @see {@link zipAll}\n *\n * @return {Observable} An Observable that takes a source of Observables and propagates the first observable\n * exclusively until it completes before subscribing to the next.\n * @method exhaust\n * @owner Observable\n ",
+      "range": [
+        63,
+        1663
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 36,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=exhaust.js.map",
+      "range": [
+        1726,
+        1761
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 0
+        },
+        "end": {
+          "line": 40,
+          "column": 35
+        }
+      }
+    }
+  ]
+}

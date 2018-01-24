@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/operators/shareReplay-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObservableInputDoc.html">ObservableInput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SubscribableOrPromiseDoc.html">SubscribableOrPromise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~TeardownLogicDoc.html">TeardownLogic</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Symbol">Rx.Symbol</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxTimeoutError.html">AjaxTimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html">AjaxRequest</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operators</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operators/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-catchError">catchError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-tap">tap</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/scheduler/Action.js~Action.html">Action</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animationFrame">animationFrame</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asap">asap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-async">async</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-queue">queue</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$iterator">$$iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$observable">$$observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/TimeoutError.js~TimeoutError.html">TimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/shareReplay-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var __extends = (this &amp;&amp; this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var chai_1 = require(&apos;chai&apos;);
+var Rx = require(&apos;../../dist/package/Rx&apos;);
+var Observable = Rx.Observable;
+/** @test {shareReplay} */
+describe(&apos;Observable.prototype.shareReplay&apos;, function () {
+    it(&apos;should mirror a simple source Observable&apos;, function () {
+        var source = cold(&apos;--1-2---3-4--5-|&apos;);
+        var sourceSubs = &apos;^              !&apos;;
+        var published = source.shareReplay();
+        var expected = &apos;--1-2---3-4--5-|&apos;;
+        expectObservable(published).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should do nothing if result is not subscribed&apos;, function () {
+        var subscribed = false;
+        var source = new Observable(function () {
+            subscribed = true;
+        });
+        source.shareReplay();
+        chai_1.expect(subscribed).to.be.false;
+    });
+    it(&apos;should multicast the same values to multiple observers, bufferSize=1&apos;, function () {
+        var source = cold(&apos;-1-2-3----4-|&apos;);
+        var shared = source.shareReplay(1);
+        var sourceSubs = &apos;^           !&apos;;
+        var subscriber1 = hot(&apos;a|           &apos;).mergeMapTo(shared);
+        var expected1 = &apos;-1-2-3----4-|&apos;;
+        var subscriber2 = hot(&apos;    b|       &apos;).mergeMapTo(shared);
+        var expected2 = &apos;    23----4-|&apos;;
+        var subscriber3 = hot(&apos;        c|   &apos;).mergeMapTo(shared);
+        var expected3 = &apos;        3-4-|&apos;;
+        expectObservable(subscriber1).toBe(expected1);
+        expectObservable(subscriber2).toBe(expected2);
+        expectObservable(subscriber3).toBe(expected3);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should multicast the same values to multiple observers, bufferSize=2&apos;, function () {
+        var source = cold(&apos;-1-2-----3------4-|&apos;);
+        var shared = source.shareReplay(2);
+        var sourceSubs = &apos;^                 !&apos;;
+        var subscriber1 = hot(&apos;a|                 &apos;).mergeMapTo(shared);
+        var expected1 = &apos;-1-2-----3------4-|&apos;;
+        var subscriber2 = hot(&apos;    b|             &apos;).mergeMapTo(shared);
+        var expected2 = &apos;    (12)-3------4-|&apos;;
+        var subscriber3 = hot(&apos;           c|       &apos;).mergeMapTo(shared);
+        var expected3 = &apos;           (23)-4-|&apos;;
+        expectObservable(subscriber1).toBe(expected1);
+        expectObservable(subscriber2).toBe(expected2);
+        expectObservable(subscriber3).toBe(expected3);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should multicast an error from the source to multiple observers&apos;, function () {
+        var source = cold(&apos;-1-2-3----4-#&apos;);
+        var shared = source.shareReplay(1);
+        var sourceSubs = &apos;^           !&apos;;
+        var subscriber1 = hot(&apos;a|           &apos;).mergeMapTo(shared);
+        var expected1 = &apos;-1-2-3----4-#&apos;;
+        var subscriber2 = hot(&apos;    b|       &apos;).mergeMapTo(shared);
+        var expected2 = &apos;    23----4-#&apos;;
+        var subscriber3 = hot(&apos;        c|   &apos;).mergeMapTo(shared);
+        var expected3 = &apos;        3-4-#&apos;;
+        expectObservable(subscriber1).toBe(expected1);
+        expectObservable(subscriber2).toBe(expected2);
+        expectObservable(subscriber3).toBe(expected3);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should multicast an empty source&apos;, function () {
+        var source = cold(&apos;|&apos;);
+        var sourceSubs = &apos;(^!)&apos;;
+        var shared = source.shareReplay(1);
+        var expected = &apos;|&apos;;
+        expectObservable(shared).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should multicast a never source&apos;, function () {
+        var source = cold(&apos;-&apos;);
+        var sourceSubs = &apos;^&apos;;
+        var shared = source.shareReplay(1);
+        var expected = &apos;-&apos;;
+        expectObservable(shared).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should multicast a throw source&apos;, function () {
+        var source = cold(&apos;#&apos;);
+        var sourceSubs = &apos;(^!)&apos;;
+        var shared = source.shareReplay(1);
+        var expected = &apos;#&apos;;
+        expectObservable(shared).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should replay results to subsequent subscriptions if source completes, bufferSize=2&apos;, function () {
+        var source = cold(&apos;-1-2-----3-|        &apos;);
+        var shared = source.shareReplay(2);
+        var sourceSubs = &apos;^          !        &apos;;
+        var subscriber1 = hot(&apos;a|                  &apos;).mergeMapTo(shared);
+        var expected1 = &apos;-1-2-----3-|        &apos;;
+        var subscriber2 = hot(&apos;    b|              &apos;).mergeMapTo(shared);
+        var expected2 = &apos;    (12)-3-|        &apos;;
+        var subscriber3 = hot(&apos;               (c|) &apos;).mergeMapTo(shared);
+        var expected3 = &apos;               (23|)&apos;;
+        expectObservable(subscriber1).toBe(expected1);
+        expectObservable(subscriber2).toBe(expected2);
+        expectObservable(subscriber3).toBe(expected3);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should completely restart for subsequent subscriptions if source errors, bufferSize=2&apos;, function () {
+        var source = cold(&apos;-1-2-----3-#               &apos;);
+        var shared = source.shareReplay(2);
+        var sourceSubs1 = &apos;^          !               &apos;;
+        var subscriber1 = hot(&apos;a|                         &apos;).mergeMapTo(shared);
+        var expected1 = &apos;-1-2-----3-#               &apos;;
+        var subscriber2 = hot(&apos;    b|                     &apos;).mergeMapTo(shared);
+        var expected2 = &apos;    (12)-3-#               &apos;;
+        var subscriber3 = hot(&apos;               (c|)        &apos;).mergeMapTo(shared);
+        var expected3 = &apos;               -1-2-----3-#&apos;;
+        var sourceSubs2 = &apos;               ^          !&apos;;
+        expectObservable(subscriber1).toBe(expected1);
+        expectObservable(subscriber2).toBe(expected2);
+        expectObservable(subscriber3).toBe(expected3);
+        expectSubscriptions(source.subscriptions).toBe([sourceSubs1, sourceSubs2]);
+    });
+    it(&apos;should be retryable, bufferSize=2&apos;, function () {
+        var subs = [];
+        var source = cold(&apos;-1-2-----3-#                      &apos;);
+        var shared = source.shareReplay(2).retry(1);
+        subs.push(&apos;^          !                      &apos;);
+        subs.push(&apos;           ^          !           &apos;);
+        subs.push(&apos;                      ^          !&apos;);
+        var subscriber1 = hot(&apos;a|                                &apos;).mergeMapTo(shared);
+        var expected1 = &apos;-1-2-----3--1-2-----3-#           &apos;;
+        var subscriber2 = hot(&apos;    b|                            &apos;).mergeMapTo(shared);
+        var expected2 = &apos;    (12)-3--1-2-----3-#           &apos;;
+        var subscriber3 = hot(&apos;               (c|)               &apos;).mergeMapTo(shared);
+        var expected3 = &apos;               (12)-3--1-2-----3-#&apos;;
+        expectObservable(subscriber1).toBe(expected1);
+        expectObservable(subscriber2).toBe(expected2);
+        expectObservable(subscriber3).toBe(expected3);
+        expectSubscriptions(source.subscriptions).toBe(subs);
+    });
+    it(&apos;should not restart if refCount hits 0 due to unsubscriptions&apos;, function () {
+        var results = [];
+        var source = Rx.Observable.interval(10, rxTestScheduler)
+            .take(10)
+            .shareReplay(1);
+        var subs = source.subscribe(function (x) { return results.push(x); });
+        rxTestScheduler.schedule(function () { return subs.unsubscribe(); }, 35);
+        rxTestScheduler.schedule(function () { return source.subscribe(function (x) { return results.push(x); }); }, 54);
+        rxTestScheduler.flush();
+        chai_1.expect(results).to.deep.equal([0, 1, 2, 4, 5, 6, 7, 8, 9]);
+    });
+    it(&apos;should not break lift() composability&apos;, function (done) {
+        var MyCustomObservable = (function (_super) {
+            __extends(MyCustomObservable, _super);
+            function MyCustomObservable() {
+                _super.apply(this, arguments);
+            }
+            MyCustomObservable.prototype.lift = function (operator) {
+                var observable = new MyCustomObservable();
+                observable.source = this;
+                observable.operator = operator;
+                return observable;
+            };
+            return MyCustomObservable;
+        }(Rx.Observable));
+        var result = new MyCustomObservable(function (observer) {
+            observer.next(1);
+            observer.next(2);
+            observer.next(3);
+            observer.complete();
+        }).shareReplay();
+        chai_1.expect(result instanceof MyCustomObservable).to.be.true;
+        var expected = [1, 2, 3];
+        result
+            .subscribe(function (n) {
+            chai_1.expect(expected.length).to.be.greaterThan(0);
+            chai_1.expect(n).to.equal(expected.shift());
+        }, function (x) {
+            done(new Error(&apos;should not be called&apos;));
+        }, function () {
+            done();
+        });
+    });
+});
+//# sourceMappingURL=shareReplay-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

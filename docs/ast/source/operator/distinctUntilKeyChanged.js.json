@@ -1,0 +1,560 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              36,
+              47
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 36
+              },
+              "end": {
+                "line": 1,
+                "column": 47
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "distinctUntilKeyChanged",
+            "range": [
+              9,
+              32
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 32
+              }
+            }
+          },
+          "range": [
+            9,
+            47
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 47
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/distinctUntilKeyChanged",
+        "raw": "'../operators/distinctUntilKeyChanged'",
+        "range": [
+          55,
+          93
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 55
+          },
+          "end": {
+            "line": 1,
+            "column": 93
+          }
+        }
+      },
+      "range": [
+        0,
+        94
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 94
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": " tslint:enable:max-line-length ",
+          "range": [
+            95,
+            130
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 35
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n *\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n *\n * If a comparator function is not provided, an equality check is used by default.\n *\n * @example <caption>An example comparing the name of persons</caption>\n *\n *  interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo'},\n *     { age: 6, name: 'Foo'})\n *     .distinctUntilKeyChanged('name')\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo' }\n *\n * @example <caption>An example comparing the first letters of the name</caption>\n *\n * interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo1'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo2'},\n *     { age: 6, name: 'Foo3'})\n *     .distinctUntilKeyChanged('name', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3))\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo1' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo2' }\n *\n * @see {@link distinct}\n * @see {@link distinctUntilChanged}\n *\n * @param {string} key String key for object property lookup on each item.\n * @param {function} [compare] Optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} An Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
+          "range": [
+            131,
+            2117
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 59,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "distinctUntilKeyChanged",
+          "range": [
+            2134,
+            2157
+          ],
+          "loc": {
+            "start": {
+              "line": 60,
+              "column": 16
+            },
+            "end": {
+              "line": 60,
+              "column": 39
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "key",
+            "range": [
+              2158,
+              2161
+            ],
+            "loc": {
+              "start": {
+                "line": 60,
+                "column": 40
+              },
+              "end": {
+                "line": 60,
+                "column": 43
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "compare",
+            "range": [
+              2163,
+              2170
+            ],
+            "loc": {
+              "start": {
+                "line": 60,
+                "column": 45
+              },
+              "end": {
+                "line": 60,
+                "column": 52
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      2185,
+                      2196
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 61,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 61,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "key",
+                      "range": [
+                        2197,
+                        2200
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 61,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 61,
+                          "column": 26
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "compare",
+                      "range": [
+                        2202,
+                        2209
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 61,
+                          "column": 28
+                        },
+                        "end": {
+                          "line": 61,
+                          "column": 35
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    2185,
+                    2210
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 61,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 61,
+                      "column": 36
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      2211,
+                      2215
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 61,
+                        "column": 37
+                      },
+                      "end": {
+                        "line": 61,
+                        "column": 41
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2185,
+                  2216
+                ],
+                "loc": {
+                  "start": {
+                    "line": 61,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 61,
+                    "column": 42
+                  }
+                }
+              },
+              "range": [
+                2178,
+                2217
+              ],
+              "loc": {
+                "start": {
+                  "line": 61,
+                  "column": 4
+                },
+                "end": {
+                  "line": 61,
+                  "column": 43
+                }
+              }
+            }
+          ],
+          "range": [
+            2172,
+            2219
+          ],
+          "loc": {
+            "start": {
+              "line": 60,
+              "column": 54
+            },
+            "end": {
+              "line": 62,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          2125,
+          2219
+        ],
+        "loc": {
+          "start": {
+            "line": 60,
+            "column": 7
+          },
+          "end": {
+            "line": 62,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": " tslint:enable:max-line-length ",
+            "range": [
+              95,
+              130
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 2,
+                "column": 35
+              }
+            }
+          },
+          {
+            "type": "Block",
+            "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n *\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n *\n * If a comparator function is not provided, an equality check is used by default.\n *\n * @example <caption>An example comparing the name of persons</caption>\n *\n *  interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo'},\n *     { age: 6, name: 'Foo'})\n *     .distinctUntilKeyChanged('name')\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo' }\n *\n * @example <caption>An example comparing the first letters of the name</caption>\n *\n * interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo1'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo2'},\n *     { age: 6, name: 'Foo3'})\n *     .distinctUntilKeyChanged('name', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3))\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo1' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo2' }\n *\n * @see {@link distinct}\n * @see {@link distinctUntilChanged}\n *\n * @param {string} key String key for object property lookup on each item.\n * @param {function} [compare] Optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} An Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
+            "range": [
+              131,
+              2117
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 59,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=distinctUntilKeyChanged.js.map",
+            "range": [
+              2220,
+              2271
+            ],
+            "loc": {
+              "start": {
+                "line": 63,
+                "column": 0
+              },
+              "end": {
+                "line": 63,
+                "column": 51
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        2118,
+        2219
+      ],
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 0
+        },
+        "end": {
+          "line": 62,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": " tslint:enable:max-line-length ",
+          "range": [
+            95,
+            130
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 35
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n *\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n *\n * If a comparator function is not provided, an equality check is used by default.\n *\n * @example <caption>An example comparing the name of persons</caption>\n *\n *  interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo'},\n *     { age: 6, name: 'Foo'})\n *     .distinctUntilKeyChanged('name')\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo' }\n *\n * @example <caption>An example comparing the first letters of the name</caption>\n *\n * interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo1'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo2'},\n *     { age: 6, name: 'Foo3'})\n *     .distinctUntilKeyChanged('name', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3))\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo1' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo2' }\n *\n * @see {@link distinct}\n * @see {@link distinctUntilChanged}\n *\n * @param {string} key String key for object property lookup on each item.\n * @param {function} [compare] Optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} An Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
+          "range": [
+            131,
+            2117
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 59,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=distinctUntilKeyChanged.js.map",
+          "range": [
+            2220,
+            2271
+          ],
+          "loc": {
+            "start": {
+              "line": 63,
+              "column": 0
+            },
+            "end": {
+              "line": 63,
+              "column": 51
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    2219
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 62,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": " tslint:enable:max-line-length ",
+      "range": [
+        95,
+        130
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,\n * using a property accessed by using the key provided to check if the two items are distinct.\n *\n * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.\n *\n * If a comparator function is not provided, an equality check is used by default.\n *\n * @example <caption>An example comparing the name of persons</caption>\n *\n *  interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo'},\n *     { age: 6, name: 'Foo'})\n *     .distinctUntilKeyChanged('name')\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo' }\n *\n * @example <caption>An example comparing the first letters of the name</caption>\n *\n * interface Person {\n *     age: number,\n *     name: string\n *  }\n *\n * Observable.of<Person>(\n *     { age: 4, name: 'Foo1'},\n *     { age: 7, name: 'Bar'},\n *     { age: 5, name: 'Foo2'},\n *     { age: 6, name: 'Foo3'})\n *     .distinctUntilKeyChanged('name', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3))\n *     .subscribe(x => console.log(x));\n *\n * // displays:\n * // { age: 4, name: 'Foo1' }\n * // { age: 7, name: 'Bar' }\n * // { age: 5, name: 'Foo2' }\n *\n * @see {@link distinct}\n * @see {@link distinctUntilChanged}\n *\n * @param {string} key String key for object property lookup on each item.\n * @param {function} [compare] Optional comparison function called to test if an item is distinct from the previous item in the source.\n * @return {Observable} An Observable that emits items from the source Observable with distinct values based on the key specified.\n * @method distinctUntilKeyChanged\n * @owner Observable\n ",
+      "range": [
+        131,
+        2117
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 59,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=distinctUntilKeyChanged.js.map",
+      "range": [
+        2220,
+        2271
+      ],
+      "loc": {
+        "start": {
+          "line": 63,
+          "column": 0
+        },
+        "end": {
+          "line": 63,
+          "column": 51
+        }
+      }
+    }
+  ]
+}

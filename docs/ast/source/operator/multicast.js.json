@@ -1,0 +1,560 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              22,
+              33
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 22
+              },
+              "end": {
+                "line": 1,
+                "column": 33
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "multicast",
+            "range": [
+              9,
+              18
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 18
+              }
+            }
+          },
+          "range": [
+            9,
+            33
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 33
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/multicast",
+        "raw": "'../operators/multicast'",
+        "range": [
+          41,
+          65
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 41
+          },
+          "end": {
+            "line": 1,
+            "column": 65
+          }
+        }
+      },
+      "range": [
+        0,
+        66
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 66
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": " tslint:enable:max-line-length ",
+          "range": [
+            67,
+            102
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 35
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Allows source Observable to be subscribed only once with a Subject of choice,\n * while still sharing its values between multiple subscribers.\n *\n * <span class=\"informal\">Subscribe to Observable once, but send its values to multiple subscribers.</span>\n *\n * <img src=\"./img/multicast.png\" width=\"100%\">\n *\n * `multicast` is an operator that works in two modes.\n *\n * In the first mode you provide a single argument to it, which can be either an initialized Subject or a Subject\n * factory. As a result you will get a special kind of an Observable - a {@link ConnectableObservable}. It can be\n * subscribed multiple times, just as regular Observable, but it won't subscribe to the source Observable at that\n * moment. It will do it only if you call its `connect` method. This means you can essentially control by hand, when\n * source Observable will be actually subscribed. What is more, ConnectableObservable will share this one subscription\n * between all of its subscribers. This means that, for example, `ajax` Observable will only send a request once,\n * even though usually it would send a request per every subscriber. Since it sends a request at the moment of\n * subscription, here request would be sent when the `connect` method of a ConnectableObservable is called.\n *\n * The most common pattern of using ConnectableObservable is calling `connect` when the first consumer subscribes,\n * keeping the subscription alive while several consumers come and go and finally unsubscribing from the source\n * Observable, when the last consumer unsubscribes. To not implement that logic over and over again,\n * ConnectableObservable has a special operator, `refCount`. When called, it returns an Observable, which will count\n * the number of consumers subscribed to it and keep ConnectableObservable connected as long as there is at least\n * one consumer. So if you don't actually need to decide yourself when to connect and disconnect a\n * ConnectableObservable, use `refCount`.\n *\n * The second mode is invoked by calling `multicast` with an additional, second argument - selector function.\n * This function accepts an Observable - which basically mirrors the source Observable - and returns Observable\n * as well, which should be the input stream modified by any operators you want. Note that in this\n * mode you cannot provide initialized Subject as a first argument - it has to be a Subject factory. If\n * you provide selector function, `multicast` returns just a regular Observable, instead of ConnectableObservable.\n * Thus, as usual, each subscription to this stream triggers subscription to the source Observable. However,\n * if inside the selector function you subscribe to the input Observable multiple times, actual source stream\n * will be subscribed only once. So if you have a chain of operators that use some Observable many times,\n * but you want to subscribe to that Observable only once, this is the mode you would use.\n *\n * Subject provided as a first parameter of `multicast` is used as a proxy for the single subscription to the\n * source Observable. It means that all values from the source stream go through that Subject. Thus, if a Subject\n * has some special properties, Observable returned by `multicast` will have them as well. If you want to use\n * `multicast` with a Subject that is one of the ones included in RxJS by default - {@link Subject},\n * {@link AsyncSubject}, {@link BehaviorSubject}, or {@link ReplaySubject} - simply use {@link publish},\n * {@link publishLast}, {@link publishBehavior} or {@link publishReplay} respectively. These are actually\n * just wrappers around `multicast`, with a specific Subject hardcoded inside.\n *\n * Also, if you use {@link publish} or {@link publishReplay} with a ConnectableObservables `refCount` operator,\n * you can simply use {@link share} and {@link shareReplay} respectively, which chain these two.\n *\n * @example <caption>Use ConnectableObservable</caption>\n * const seconds = Rx.Observable.interval(1000);\n * const connectableSeconds = seconds.multicast(new Subject());\n *\n * connectableSeconds.subscribe(value => console.log('first: ' + value));\n * connectableSeconds.subscribe(value => console.log('second: ' + value));\n *\n * // At this point still nothing happens, even though we subscribed twice.\n *\n * connectableSeconds.connect();\n *\n * // From now on `seconds` are being logged to the console,\n * // twice per every second. `seconds` Observable was however only subscribed once,\n * // so under the hood Observable.interval had only one clock started.\n *\n * @example <caption>Use selector</caption>\n * const seconds = Rx.Observable.interval(1000);\n *\n * seconds\n *     .multicast(\n *         () => new Subject(),\n *         seconds => seconds.zip(seconds) // Usually zip would subscribe to `seconds` twice.\n *                                         // Because we are inside selector, `seconds` is subscribed once,\n *     )                                   // thus starting only one clock used internally by Observable.interval.\n *     .subscribe();\n *\n * @see {@link publish}\n * @see {@link publishLast}\n * @see {@link publishBehavior}\n * @see {@link publishReplay}\n * @see {@link share}\n * @see {@link shareReplay}\n *\n * @param {Function|Subject} subjectOrSubjectFactory - Factory function to create an intermediate Subject through\n * which the source sequence's elements will be multicast to the selector function input Observable or\n * ConnectableObservable returned by the operator.\n * @param {Function} [selector] - Optional selector function that can use the input stream\n * as many times as needed, without causing multiple subscriptions to the source stream.\n * Subscribers to the input source will receive all notifications of the source from the\n * time of the subscription forward.\n * @return {Observable<T>|ConnectableObservable<T>} An Observable that emits the results of invoking the selector\n * on the source stream or a special {@link ConnectableObservable}, if selector was not provided.\n *\n * @method multicast\n * @owner Observable\n ",
+          "range": [
+            103,
+            6152
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 96,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "multicast",
+          "range": [
+            6169,
+            6178
+          ],
+          "loc": {
+            "start": {
+              "line": 97,
+              "column": 16
+            },
+            "end": {
+              "line": 97,
+              "column": 25
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "subjectOrSubjectFactory",
+            "range": [
+              6179,
+              6202
+            ],
+            "loc": {
+              "start": {
+                "line": 97,
+                "column": 26
+              },
+              "end": {
+                "line": 97,
+                "column": 49
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "selector",
+            "range": [
+              6204,
+              6212
+            ],
+            "loc": {
+              "start": {
+                "line": 97,
+                "column": 51
+              },
+              "end": {
+                "line": 97,
+                "column": 59
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      6227,
+                      6238
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 98,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 98,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "subjectOrSubjectFactory",
+                      "range": [
+                        6239,
+                        6262
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 98,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 98,
+                          "column": 46
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "selector",
+                      "range": [
+                        6264,
+                        6272
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 98,
+                          "column": 48
+                        },
+                        "end": {
+                          "line": 98,
+                          "column": 56
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    6227,
+                    6273
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 98,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 98,
+                      "column": 57
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      6274,
+                      6278
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 98,
+                        "column": 58
+                      },
+                      "end": {
+                        "line": 98,
+                        "column": 62
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  6227,
+                  6279
+                ],
+                "loc": {
+                  "start": {
+                    "line": 98,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 98,
+                    "column": 63
+                  }
+                }
+              },
+              "range": [
+                6220,
+                6280
+              ],
+              "loc": {
+                "start": {
+                  "line": 98,
+                  "column": 4
+                },
+                "end": {
+                  "line": 98,
+                  "column": 64
+                }
+              }
+            }
+          ],
+          "range": [
+            6214,
+            6282
+          ],
+          "loc": {
+            "start": {
+              "line": 97,
+              "column": 61
+            },
+            "end": {
+              "line": 99,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          6160,
+          6282
+        ],
+        "loc": {
+          "start": {
+            "line": 97,
+            "column": 7
+          },
+          "end": {
+            "line": 99,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": " tslint:enable:max-line-length ",
+            "range": [
+              67,
+              102
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 2,
+                "column": 35
+              }
+            }
+          },
+          {
+            "type": "Block",
+            "value": "*\n * Allows source Observable to be subscribed only once with a Subject of choice,\n * while still sharing its values between multiple subscribers.\n *\n * <span class=\"informal\">Subscribe to Observable once, but send its values to multiple subscribers.</span>\n *\n * <img src=\"./img/multicast.png\" width=\"100%\">\n *\n * `multicast` is an operator that works in two modes.\n *\n * In the first mode you provide a single argument to it, which can be either an initialized Subject or a Subject\n * factory. As a result you will get a special kind of an Observable - a {@link ConnectableObservable}. It can be\n * subscribed multiple times, just as regular Observable, but it won't subscribe to the source Observable at that\n * moment. It will do it only if you call its `connect` method. This means you can essentially control by hand, when\n * source Observable will be actually subscribed. What is more, ConnectableObservable will share this one subscription\n * between all of its subscribers. This means that, for example, `ajax` Observable will only send a request once,\n * even though usually it would send a request per every subscriber. Since it sends a request at the moment of\n * subscription, here request would be sent when the `connect` method of a ConnectableObservable is called.\n *\n * The most common pattern of using ConnectableObservable is calling `connect` when the first consumer subscribes,\n * keeping the subscription alive while several consumers come and go and finally unsubscribing from the source\n * Observable, when the last consumer unsubscribes. To not implement that logic over and over again,\n * ConnectableObservable has a special operator, `refCount`. When called, it returns an Observable, which will count\n * the number of consumers subscribed to it and keep ConnectableObservable connected as long as there is at least\n * one consumer. So if you don't actually need to decide yourself when to connect and disconnect a\n * ConnectableObservable, use `refCount`.\n *\n * The second mode is invoked by calling `multicast` with an additional, second argument - selector function.\n * This function accepts an Observable - which basically mirrors the source Observable - and returns Observable\n * as well, which should be the input stream modified by any operators you want. Note that in this\n * mode you cannot provide initialized Subject as a first argument - it has to be a Subject factory. If\n * you provide selector function, `multicast` returns just a regular Observable, instead of ConnectableObservable.\n * Thus, as usual, each subscription to this stream triggers subscription to the source Observable. However,\n * if inside the selector function you subscribe to the input Observable multiple times, actual source stream\n * will be subscribed only once. So if you have a chain of operators that use some Observable many times,\n * but you want to subscribe to that Observable only once, this is the mode you would use.\n *\n * Subject provided as a first parameter of `multicast` is used as a proxy for the single subscription to the\n * source Observable. It means that all values from the source stream go through that Subject. Thus, if a Subject\n * has some special properties, Observable returned by `multicast` will have them as well. If you want to use\n * `multicast` with a Subject that is one of the ones included in RxJS by default - {@link Subject},\n * {@link AsyncSubject}, {@link BehaviorSubject}, or {@link ReplaySubject} - simply use {@link publish},\n * {@link publishLast}, {@link publishBehavior} or {@link publishReplay} respectively. These are actually\n * just wrappers around `multicast`, with a specific Subject hardcoded inside.\n *\n * Also, if you use {@link publish} or {@link publishReplay} with a ConnectableObservables `refCount` operator,\n * you can simply use {@link share} and {@link shareReplay} respectively, which chain these two.\n *\n * @example <caption>Use ConnectableObservable</caption>\n * const seconds = Rx.Observable.interval(1000);\n * const connectableSeconds = seconds.multicast(new Subject());\n *\n * connectableSeconds.subscribe(value => console.log('first: ' + value));\n * connectableSeconds.subscribe(value => console.log('second: ' + value));\n *\n * // At this point still nothing happens, even though we subscribed twice.\n *\n * connectableSeconds.connect();\n *\n * // From now on `seconds` are being logged to the console,\n * // twice per every second. `seconds` Observable was however only subscribed once,\n * // so under the hood Observable.interval had only one clock started.\n *\n * @example <caption>Use selector</caption>\n * const seconds = Rx.Observable.interval(1000);\n *\n * seconds\n *     .multicast(\n *         () => new Subject(),\n *         seconds => seconds.zip(seconds) // Usually zip would subscribe to `seconds` twice.\n *                                         // Because we are inside selector, `seconds` is subscribed once,\n *     )                                   // thus starting only one clock used internally by Observable.interval.\n *     .subscribe();\n *\n * @see {@link publish}\n * @see {@link publishLast}\n * @see {@link publishBehavior}\n * @see {@link publishReplay}\n * @see {@link share}\n * @see {@link shareReplay}\n *\n * @param {Function|Subject} subjectOrSubjectFactory - Factory function to create an intermediate Subject through\n * which the source sequence's elements will be multicast to the selector function input Observable or\n * ConnectableObservable returned by the operator.\n * @param {Function} [selector] - Optional selector function that can use the input stream\n * as many times as needed, without causing multiple subscriptions to the source stream.\n * Subscribers to the input source will receive all notifications of the source from the\n * time of the subscription forward.\n * @return {Observable<T>|ConnectableObservable<T>} An Observable that emits the results of invoking the selector\n * on the source stream or a special {@link ConnectableObservable}, if selector was not provided.\n *\n * @method multicast\n * @owner Observable\n ",
+            "range": [
+              103,
+              6152
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 96,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=multicast.js.map",
+            "range": [
+              6283,
+              6320
+            ],
+            "loc": {
+              "start": {
+                "line": 100,
+                "column": 0
+              },
+              "end": {
+                "line": 100,
+                "column": 37
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        6153,
+        6282
+      ],
+      "loc": {
+        "start": {
+          "line": 97,
+          "column": 0
+        },
+        "end": {
+          "line": 99,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": " tslint:enable:max-line-length ",
+          "range": [
+            67,
+            102
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 35
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Allows source Observable to be subscribed only once with a Subject of choice,\n * while still sharing its values between multiple subscribers.\n *\n * <span class=\"informal\">Subscribe to Observable once, but send its values to multiple subscribers.</span>\n *\n * <img src=\"./img/multicast.png\" width=\"100%\">\n *\n * `multicast` is an operator that works in two modes.\n *\n * In the first mode you provide a single argument to it, which can be either an initialized Subject or a Subject\n * factory. As a result you will get a special kind of an Observable - a {@link ConnectableObservable}. It can be\n * subscribed multiple times, just as regular Observable, but it won't subscribe to the source Observable at that\n * moment. It will do it only if you call its `connect` method. This means you can essentially control by hand, when\n * source Observable will be actually subscribed. What is more, ConnectableObservable will share this one subscription\n * between all of its subscribers. This means that, for example, `ajax` Observable will only send a request once,\n * even though usually it would send a request per every subscriber. Since it sends a request at the moment of\n * subscription, here request would be sent when the `connect` method of a ConnectableObservable is called.\n *\n * The most common pattern of using ConnectableObservable is calling `connect` when the first consumer subscribes,\n * keeping the subscription alive while several consumers come and go and finally unsubscribing from the source\n * Observable, when the last consumer unsubscribes. To not implement that logic over and over again,\n * ConnectableObservable has a special operator, `refCount`. When called, it returns an Observable, which will count\n * the number of consumers subscribed to it and keep ConnectableObservable connected as long as there is at least\n * one consumer. So if you don't actually need to decide yourself when to connect and disconnect a\n * ConnectableObservable, use `refCount`.\n *\n * The second mode is invoked by calling `multicast` with an additional, second argument - selector function.\n * This function accepts an Observable - which basically mirrors the source Observable - and returns Observable\n * as well, which should be the input stream modified by any operators you want. Note that in this\n * mode you cannot provide initialized Subject as a first argument - it has to be a Subject factory. If\n * you provide selector function, `multicast` returns just a regular Observable, instead of ConnectableObservable.\n * Thus, as usual, each subscription to this stream triggers subscription to the source Observable. However,\n * if inside the selector function you subscribe to the input Observable multiple times, actual source stream\n * will be subscribed only once. So if you have a chain of operators that use some Observable many times,\n * but you want to subscribe to that Observable only once, this is the mode you would use.\n *\n * Subject provided as a first parameter of `multicast` is used as a proxy for the single subscription to the\n * source Observable. It means that all values from the source stream go through that Subject. Thus, if a Subject\n * has some special properties, Observable returned by `multicast` will have them as well. If you want to use\n * `multicast` with a Subject that is one of the ones included in RxJS by default - {@link Subject},\n * {@link AsyncSubject}, {@link BehaviorSubject}, or {@link ReplaySubject} - simply use {@link publish},\n * {@link publishLast}, {@link publishBehavior} or {@link publishReplay} respectively. These are actually\n * just wrappers around `multicast`, with a specific Subject hardcoded inside.\n *\n * Also, if you use {@link publish} or {@link publishReplay} with a ConnectableObservables `refCount` operator,\n * you can simply use {@link share} and {@link shareReplay} respectively, which chain these two.\n *\n * @example <caption>Use ConnectableObservable</caption>\n * const seconds = Rx.Observable.interval(1000);\n * const connectableSeconds = seconds.multicast(new Subject());\n *\n * connectableSeconds.subscribe(value => console.log('first: ' + value));\n * connectableSeconds.subscribe(value => console.log('second: ' + value));\n *\n * // At this point still nothing happens, even though we subscribed twice.\n *\n * connectableSeconds.connect();\n *\n * // From now on `seconds` are being logged to the console,\n * // twice per every second. `seconds` Observable was however only subscribed once,\n * // so under the hood Observable.interval had only one clock started.\n *\n * @example <caption>Use selector</caption>\n * const seconds = Rx.Observable.interval(1000);\n *\n * seconds\n *     .multicast(\n *         () => new Subject(),\n *         seconds => seconds.zip(seconds) // Usually zip would subscribe to `seconds` twice.\n *                                         // Because we are inside selector, `seconds` is subscribed once,\n *     )                                   // thus starting only one clock used internally by Observable.interval.\n *     .subscribe();\n *\n * @see {@link publish}\n * @see {@link publishLast}\n * @see {@link publishBehavior}\n * @see {@link publishReplay}\n * @see {@link share}\n * @see {@link shareReplay}\n *\n * @param {Function|Subject} subjectOrSubjectFactory - Factory function to create an intermediate Subject through\n * which the source sequence's elements will be multicast to the selector function input Observable or\n * ConnectableObservable returned by the operator.\n * @param {Function} [selector] - Optional selector function that can use the input stream\n * as many times as needed, without causing multiple subscriptions to the source stream.\n * Subscribers to the input source will receive all notifications of the source from the\n * time of the subscription forward.\n * @return {Observable<T>|ConnectableObservable<T>} An Observable that emits the results of invoking the selector\n * on the source stream or a special {@link ConnectableObservable}, if selector was not provided.\n *\n * @method multicast\n * @owner Observable\n ",
+          "range": [
+            103,
+            6152
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 96,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=multicast.js.map",
+          "range": [
+            6283,
+            6320
+          ],
+          "loc": {
+            "start": {
+              "line": 100,
+              "column": 0
+            },
+            "end": {
+              "line": 100,
+              "column": 37
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    6282
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 99,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": " tslint:enable:max-line-length ",
+      "range": [
+        67,
+        102
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Allows source Observable to be subscribed only once with a Subject of choice,\n * while still sharing its values between multiple subscribers.\n *\n * <span class=\"informal\">Subscribe to Observable once, but send its values to multiple subscribers.</span>\n *\n * <img src=\"./img/multicast.png\" width=\"100%\">\n *\n * `multicast` is an operator that works in two modes.\n *\n * In the first mode you provide a single argument to it, which can be either an initialized Subject or a Subject\n * factory. As a result you will get a special kind of an Observable - a {@link ConnectableObservable}. It can be\n * subscribed multiple times, just as regular Observable, but it won't subscribe to the source Observable at that\n * moment. It will do it only if you call its `connect` method. This means you can essentially control by hand, when\n * source Observable will be actually subscribed. What is more, ConnectableObservable will share this one subscription\n * between all of its subscribers. This means that, for example, `ajax` Observable will only send a request once,\n * even though usually it would send a request per every subscriber. Since it sends a request at the moment of\n * subscription, here request would be sent when the `connect` method of a ConnectableObservable is called.\n *\n * The most common pattern of using ConnectableObservable is calling `connect` when the first consumer subscribes,\n * keeping the subscription alive while several consumers come and go and finally unsubscribing from the source\n * Observable, when the last consumer unsubscribes. To not implement that logic over and over again,\n * ConnectableObservable has a special operator, `refCount`. When called, it returns an Observable, which will count\n * the number of consumers subscribed to it and keep ConnectableObservable connected as long as there is at least\n * one consumer. So if you don't actually need to decide yourself when to connect and disconnect a\n * ConnectableObservable, use `refCount`.\n *\n * The second mode is invoked by calling `multicast` with an additional, second argument - selector function.\n * This function accepts an Observable - which basically mirrors the source Observable - and returns Observable\n * as well, which should be the input stream modified by any operators you want. Note that in this\n * mode you cannot provide initialized Subject as a first argument - it has to be a Subject factory. If\n * you provide selector function, `multicast` returns just a regular Observable, instead of ConnectableObservable.\n * Thus, as usual, each subscription to this stream triggers subscription to the source Observable. However,\n * if inside the selector function you subscribe to the input Observable multiple times, actual source stream\n * will be subscribed only once. So if you have a chain of operators that use some Observable many times,\n * but you want to subscribe to that Observable only once, this is the mode you would use.\n *\n * Subject provided as a first parameter of `multicast` is used as a proxy for the single subscription to the\n * source Observable. It means that all values from the source stream go through that Subject. Thus, if a Subject\n * has some special properties, Observable returned by `multicast` will have them as well. If you want to use\n * `multicast` with a Subject that is one of the ones included in RxJS by default - {@link Subject},\n * {@link AsyncSubject}, {@link BehaviorSubject}, or {@link ReplaySubject} - simply use {@link publish},\n * {@link publishLast}, {@link publishBehavior} or {@link publishReplay} respectively. These are actually\n * just wrappers around `multicast`, with a specific Subject hardcoded inside.\n *\n * Also, if you use {@link publish} or {@link publishReplay} with a ConnectableObservables `refCount` operator,\n * you can simply use {@link share} and {@link shareReplay} respectively, which chain these two.\n *\n * @example <caption>Use ConnectableObservable</caption>\n * const seconds = Rx.Observable.interval(1000);\n * const connectableSeconds = seconds.multicast(new Subject());\n *\n * connectableSeconds.subscribe(value => console.log('first: ' + value));\n * connectableSeconds.subscribe(value => console.log('second: ' + value));\n *\n * // At this point still nothing happens, even though we subscribed twice.\n *\n * connectableSeconds.connect();\n *\n * // From now on `seconds` are being logged to the console,\n * // twice per every second. `seconds` Observable was however only subscribed once,\n * // so under the hood Observable.interval had only one clock started.\n *\n * @example <caption>Use selector</caption>\n * const seconds = Rx.Observable.interval(1000);\n *\n * seconds\n *     .multicast(\n *         () => new Subject(),\n *         seconds => seconds.zip(seconds) // Usually zip would subscribe to `seconds` twice.\n *                                         // Because we are inside selector, `seconds` is subscribed once,\n *     )                                   // thus starting only one clock used internally by Observable.interval.\n *     .subscribe();\n *\n * @see {@link publish}\n * @see {@link publishLast}\n * @see {@link publishBehavior}\n * @see {@link publishReplay}\n * @see {@link share}\n * @see {@link shareReplay}\n *\n * @param {Function|Subject} subjectOrSubjectFactory - Factory function to create an intermediate Subject through\n * which the source sequence's elements will be multicast to the selector function input Observable or\n * ConnectableObservable returned by the operator.\n * @param {Function} [selector] - Optional selector function that can use the input stream\n * as many times as needed, without causing multiple subscriptions to the source stream.\n * Subscribers to the input source will receive all notifications of the source from the\n * time of the subscription forward.\n * @return {Observable<T>|ConnectableObservable<T>} An Observable that emits the results of invoking the selector\n * on the source stream or a special {@link ConnectableObservable}, if selector was not provided.\n *\n * @method multicast\n * @owner Observable\n ",
+      "range": [
+        103,
+        6152
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 96,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=multicast.js.map",
+      "range": [
+        6283,
+        6320
+      ],
+      "loc": {
+        "start": {
+          "line": 100,
+          "column": 0
+        },
+        "end": {
+          "line": 100,
+          "column": 37
+        }
+      }
+    }
+  ]
+}

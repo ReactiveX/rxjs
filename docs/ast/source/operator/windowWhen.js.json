@@ -1,0 +1,452 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              23,
+              34
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 23
+              },
+              "end": {
+                "line": 1,
+                "column": 34
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "windowWhen",
+            "range": [
+              9,
+              19
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 19
+              }
+            }
+          },
+          "range": [
+            9,
+            34
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 34
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/windowWhen",
+        "raw": "'../operators/windowWhen'",
+        "range": [
+          42,
+          67
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 42
+          },
+          "end": {
+            "line": 1,
+            "column": 67
+          }
+        }
+      },
+      "range": [
+        0,
+        68
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 68
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Branch out the source Observable values as a nested Observable using a\n * factory function of closing Observables to determine when to start a new\n * window.\n *\n * <span class=\"informal\">It's like {@link bufferWhen}, but emits a nested\n * Observable instead of an array.</span>\n *\n * <img src=\"./img/windowWhen.png\" width=\"100%\">\n *\n * Returns an Observable that emits windows of items it collects from the source\n * Observable. The output Observable emits connected, non-overlapping windows.\n * It emits the current window and opens a new one whenever the Observable\n * produced by the specified `closingSelector` function emits an item. The first\n * window is opened immediately when subscribing to the output Observable.\n *\n * @example <caption>Emit only the first two clicks events in every window of [1-5] random seconds</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks\n *   .windowWhen(() => Rx.Observable.interval(1000 + Math.random() * 4000))\n *   .map(win => win.take(2)) // each window has at most 2 emissions\n *   .mergeAll(); // flatten the Observable-of-Observables\n * result.subscribe(x => console.log(x));\n *\n * @see {@link window}\n * @see {@link windowCount}\n * @see {@link windowTime}\n * @see {@link windowToggle}\n * @see {@link bufferWhen}\n *\n * @param {function(): Observable} closingSelector A function that takes no\n * arguments and returns an Observable that signals (on either `next` or\n * `complete`) when to close the previous window and start a new one.\n * @return {Observable<Observable<T>>} An observable of windows, which in turn\n * are Observables.\n * @method windowWhen\n * @owner Observable\n ",
+          "range": [
+            69,
+            1745
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 39,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "windowWhen",
+          "range": [
+            1762,
+            1772
+          ],
+          "loc": {
+            "start": {
+              "line": 40,
+              "column": 16
+            },
+            "end": {
+              "line": 40,
+              "column": 26
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "closingSelector",
+            "range": [
+              1773,
+              1788
+            ],
+            "loc": {
+              "start": {
+                "line": 40,
+                "column": 27
+              },
+              "end": {
+                "line": 40,
+                "column": 42
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      1803,
+                      1814
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 41,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 41,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "closingSelector",
+                      "range": [
+                        1815,
+                        1830
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 41,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 41,
+                          "column": 38
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    1803,
+                    1831
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 41,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 41,
+                      "column": 39
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      1832,
+                      1836
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 41,
+                        "column": 40
+                      },
+                      "end": {
+                        "line": 41,
+                        "column": 44
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1803,
+                  1837
+                ],
+                "loc": {
+                  "start": {
+                    "line": 41,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 41,
+                    "column": 45
+                  }
+                }
+              },
+              "range": [
+                1796,
+                1838
+              ],
+              "loc": {
+                "start": {
+                  "line": 41,
+                  "column": 4
+                },
+                "end": {
+                  "line": 41,
+                  "column": 46
+                }
+              }
+            }
+          ],
+          "range": [
+            1790,
+            1840
+          ],
+          "loc": {
+            "start": {
+              "line": 40,
+              "column": 44
+            },
+            "end": {
+              "line": 42,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1753,
+          1840
+        ],
+        "loc": {
+          "start": {
+            "line": 40,
+            "column": 7
+          },
+          "end": {
+            "line": 42,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Branch out the source Observable values as a nested Observable using a\n * factory function of closing Observables to determine when to start a new\n * window.\n *\n * <span class=\"informal\">It's like {@link bufferWhen}, but emits a nested\n * Observable instead of an array.</span>\n *\n * <img src=\"./img/windowWhen.png\" width=\"100%\">\n *\n * Returns an Observable that emits windows of items it collects from the source\n * Observable. The output Observable emits connected, non-overlapping windows.\n * It emits the current window and opens a new one whenever the Observable\n * produced by the specified `closingSelector` function emits an item. The first\n * window is opened immediately when subscribing to the output Observable.\n *\n * @example <caption>Emit only the first two clicks events in every window of [1-5] random seconds</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks\n *   .windowWhen(() => Rx.Observable.interval(1000 + Math.random() * 4000))\n *   .map(win => win.take(2)) // each window has at most 2 emissions\n *   .mergeAll(); // flatten the Observable-of-Observables\n * result.subscribe(x => console.log(x));\n *\n * @see {@link window}\n * @see {@link windowCount}\n * @see {@link windowTime}\n * @see {@link windowToggle}\n * @see {@link bufferWhen}\n *\n * @param {function(): Observable} closingSelector A function that takes no\n * arguments and returns an Observable that signals (on either `next` or\n * `complete`) when to close the previous window and start a new one.\n * @return {Observable<Observable<T>>} An observable of windows, which in turn\n * are Observables.\n * @method windowWhen\n * @owner Observable\n ",
+            "range": [
+              69,
+              1745
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 39,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=windowWhen.js.map",
+            "range": [
+              1841,
+              1879
+            ],
+            "loc": {
+              "start": {
+                "line": 43,
+                "column": 0
+              },
+              "end": {
+                "line": 43,
+                "column": 38
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1746,
+        1840
+      ],
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 0
+        },
+        "end": {
+          "line": 42,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Branch out the source Observable values as a nested Observable using a\n * factory function of closing Observables to determine when to start a new\n * window.\n *\n * <span class=\"informal\">It's like {@link bufferWhen}, but emits a nested\n * Observable instead of an array.</span>\n *\n * <img src=\"./img/windowWhen.png\" width=\"100%\">\n *\n * Returns an Observable that emits windows of items it collects from the source\n * Observable. The output Observable emits connected, non-overlapping windows.\n * It emits the current window and opens a new one whenever the Observable\n * produced by the specified `closingSelector` function emits an item. The first\n * window is opened immediately when subscribing to the output Observable.\n *\n * @example <caption>Emit only the first two clicks events in every window of [1-5] random seconds</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks\n *   .windowWhen(() => Rx.Observable.interval(1000 + Math.random() * 4000))\n *   .map(win => win.take(2)) // each window has at most 2 emissions\n *   .mergeAll(); // flatten the Observable-of-Observables\n * result.subscribe(x => console.log(x));\n *\n * @see {@link window}\n * @see {@link windowCount}\n * @see {@link windowTime}\n * @see {@link windowToggle}\n * @see {@link bufferWhen}\n *\n * @param {function(): Observable} closingSelector A function that takes no\n * arguments and returns an Observable that signals (on either `next` or\n * `complete`) when to close the previous window and start a new one.\n * @return {Observable<Observable<T>>} An observable of windows, which in turn\n * are Observables.\n * @method windowWhen\n * @owner Observable\n ",
+          "range": [
+            69,
+            1745
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 39,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=windowWhen.js.map",
+          "range": [
+            1841,
+            1879
+          ],
+          "loc": {
+            "start": {
+              "line": 43,
+              "column": 0
+            },
+            "end": {
+              "line": 43,
+              "column": 38
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1840
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 42,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Branch out the source Observable values as a nested Observable using a\n * factory function of closing Observables to determine when to start a new\n * window.\n *\n * <span class=\"informal\">It's like {@link bufferWhen}, but emits a nested\n * Observable instead of an array.</span>\n *\n * <img src=\"./img/windowWhen.png\" width=\"100%\">\n *\n * Returns an Observable that emits windows of items it collects from the source\n * Observable. The output Observable emits connected, non-overlapping windows.\n * It emits the current window and opens a new one whenever the Observable\n * produced by the specified `closingSelector` function emits an item. The first\n * window is opened immediately when subscribing to the output Observable.\n *\n * @example <caption>Emit only the first two clicks events in every window of [1-5] random seconds</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks\n *   .windowWhen(() => Rx.Observable.interval(1000 + Math.random() * 4000))\n *   .map(win => win.take(2)) // each window has at most 2 emissions\n *   .mergeAll(); // flatten the Observable-of-Observables\n * result.subscribe(x => console.log(x));\n *\n * @see {@link window}\n * @see {@link windowCount}\n * @see {@link windowTime}\n * @see {@link windowToggle}\n * @see {@link bufferWhen}\n *\n * @param {function(): Observable} closingSelector A function that takes no\n * arguments and returns an Observable that signals (on either `next` or\n * `complete`) when to close the previous window and start a new one.\n * @return {Observable<Observable<T>>} An observable of windows, which in turn\n * are Observables.\n * @method windowWhen\n * @owner Observable\n ",
+      "range": [
+        69,
+        1745
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 39,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=windowWhen.js.map",
+      "range": [
+        1841,
+        1879
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 0
+        },
+        "end": {
+          "line": 43,
+          "column": 38
+        }
+      }
+    }
+  ]
+}

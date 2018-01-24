@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">spec-js/observables/dom/webSocket-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObservableInputDoc.html">ObservableInput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SubscribableOrPromiseDoc.html">SubscribableOrPromise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~TeardownLogicDoc.html">TeardownLogic</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Symbol">Rx.Symbol</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxTimeoutError.html">AjaxTimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html">AjaxRequest</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operators</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operators/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-catchError">catchError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-tap">tap</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/scheduler/Action.js~Action.html">Action</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animationFrame">animationFrame</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asap">asap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-async">async</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-queue">queue</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$iterator">$$iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$observable">$$observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/TimeoutError.js~TimeoutError.html">TimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/observables/dom/webSocket-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var chai_1 = require(&apos;chai&apos;);
+var sinon = require(&apos;sinon&apos;);
+var Rx = require(&apos;../../../dist/package/Rx&apos;);
+var Observable = Rx.Observable;
+/** @test {webSocket} */
+describe(&apos;Observable.webSocket&apos;, function () {
+    var __ws;
+    function setupMockWebSocket() {
+        MockWebSocket.clearSockets();
+        __ws = __root__.WebSocket;
+        __root__.WebSocket = MockWebSocket;
+    }
+    function teardownMockWebSocket() {
+        __root__.WebSocket = __ws;
+        MockWebSocket.clearSockets();
+    }
+    beforeEach(function () {
+        setupMockWebSocket();
+    });
+    afterEach(function () {
+        teardownMockWebSocket();
+    });
+    it(&apos;should send and receive messages&apos;, function () {
+        var messageReceived = false;
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        subject.next(&apos;ping&apos;);
+        subject.subscribe(function (x) {
+            chai_1.expect(x).to.equal(&apos;pong&apos;);
+            messageReceived = true;
+        });
+        var socket = MockWebSocket.lastSocket;
+        chai_1.expect(socket.url).to.equal(&apos;ws://mysocket&apos;);
+        socket.open();
+        chai_1.expect(socket.lastMessageSent).to.equal(&apos;ping&apos;);
+        socket.triggerMessage(JSON.stringify(&apos;pong&apos;));
+        chai_1.expect(messageReceived).to.be.true;
+        subject.unsubscribe();
+    });
+    it(&apos;should allow the user to chain operators&apos;, function () {
+        var messageReceived = false;
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        subject
+            .map(function (x) { return x + &apos;?&apos;; })
+            .map(function (x) { return x + &apos;!&apos;; })
+            .map(function (x) { return x + &apos;!&apos;; })
+            .subscribe(function (x) {
+            chai_1.expect(x).to.equal(&apos;pong?!!&apos;);
+            messageReceived = true;
+        });
+        var socket = MockWebSocket.lastSocket;
+        socket.open();
+        socket.triggerMessage(JSON.stringify(&apos;pong&apos;));
+        chai_1.expect(messageReceived).to.be.true;
+        subject.unsubscribe();
+    });
+    it(&apos;receive multiple messages&apos;, function () {
+        var expected = [&apos;what&apos;, &apos;do&apos;, &apos;you&apos;, &apos;do&apos;, &apos;with&apos;, &apos;a&apos;, &apos;drunken&apos;, &apos;sailor?&apos;];
+        var results = [];
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        subject.subscribe(function (x) {
+            results.push(x);
+        });
+        var socket = MockWebSocket.lastSocket;
+        socket.open();
+        expected.forEach(function (x) {
+            socket.triggerMessage(JSON.stringify(x));
+        });
+        chai_1.expect(results).to.deep.equal(expected);
+        subject.unsubscribe();
+    });
+    it(&apos;should queue messages prior to subscription&apos;, function () {
+        var expected = [&apos;make&apos;, &apos;him&apos;, &apos;walk&apos;, &apos;the&apos;, &apos;plank&apos;];
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        expected.forEach(function (x) {
+            subject.next(x);
+        });
+        var socket = MockWebSocket.lastSocket;
+        chai_1.expect(socket).not.exist;
+        subject.subscribe();
+        socket = MockWebSocket.lastSocket;
+        chai_1.expect(socket.sent.length).to.equal(0);
+        socket.open();
+        chai_1.expect(socket.sent.length).to.equal(expected.length);
+        subject.unsubscribe();
+    });
+    it(&apos;should send messages immediately if already open&apos;, function () {
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        subject.subscribe();
+        var socket = MockWebSocket.lastSocket;
+        socket.open();
+        subject.next(&apos;avast!&apos;);
+        chai_1.expect(socket.lastMessageSent).to.equal(&apos;avast!&apos;);
+        subject.next(&apos;ye swab!&apos;);
+        chai_1.expect(socket.lastMessageSent).to.equal(&apos;ye swab!&apos;);
+        subject.unsubscribe();
+    });
+    it(&apos;should close the socket when completed&apos;, function () {
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        subject.subscribe();
+        var socket = MockWebSocket.lastSocket;
+        socket.open();
+        chai_1.expect(socket.readyState).to.equal(1); // open
+        sinon.spy(socket, &apos;close&apos;);
+        chai_1.expect(socket.close).not.have.been.called;
+        subject.complete();
+        chai_1.expect(socket.close).have.been.called;
+        chai_1.expect(socket.readyState).to.equal(3); // closed
+        subject.unsubscribe();
+        socket.close.restore();
+    });
+    it(&apos;should close the socket with a code and a reason when errored&apos;, function () {
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        subject.subscribe();
+        var socket = MockWebSocket.lastSocket;
+        socket.open();
+        sinon.spy(socket, &apos;close&apos;);
+        chai_1.expect(socket.close).not.have.been.called;
+        subject.error({ code: 1337, reason: &apos;Too bad, so sad :(&apos; });
+        chai_1.expect(socket.close).have.been.calledWith(1337, &apos;Too bad, so sad :(&apos;);
+        subject.unsubscribe();
+        socket.close.restore();
+    });
+    it(&apos;should allow resubscription after closure via complete&apos;, function () {
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        subject.subscribe();
+        var socket1 = MockWebSocket.lastSocket;
+        socket1.open();
+        subject.complete();
+        subject.next(&apos;a mariner yer not. yarrr.&apos;);
+        subject.subscribe();
+        var socket2 = MockWebSocket.lastSocket;
+        socket2.open();
+        chai_1.expect(socket2).not.to.equal(socket1);
+        chai_1.expect(socket2.lastMessageSent).to.equal(&apos;a mariner yer not. yarrr.&apos;);
+        subject.unsubscribe();
+    });
+    it(&apos;should allow resubscription after closure via error&apos;, function () {
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        subject.subscribe();
+        var socket1 = MockWebSocket.lastSocket;
+        socket1.open();
+        subject.error({ code: 1337 });
+        subject.next(&apos;yo-ho! yo-ho!&apos;);
+        subject.subscribe();
+        var socket2 = MockWebSocket.lastSocket;
+        socket2.open();
+        chai_1.expect(socket2).not.to.equal(socket1);
+        chai_1.expect(socket2.lastMessageSent).to.equal(&apos;yo-ho! yo-ho!&apos;);
+        subject.unsubscribe();
+    });
+    it(&apos;should have a default resultSelector that parses message data as JSON&apos;, function () {
+        var result;
+        var expected = { mork: &apos;shazbot!&apos; };
+        var subject = Observable.webSocket(&apos;ws://mysocket&apos;);
+        subject.subscribe(function (x) {
+            result = x;
+        });
+        var socket = MockWebSocket.lastSocket;
+        socket.open();
+        socket.triggerMessage(JSON.stringify(expected));
+        chai_1.expect(result).to.deep.equal(expected);
+        subject.unsubscribe();
+    });
+    describe(&apos;with a config object&apos;, function () {
+        it(&apos;should send and receive messages&apos;, function () {
+            var messageReceived = false;
+            var subject = Observable.webSocket({ url: &apos;ws://mysocket&apos; });
+            subject.next(&apos;ping&apos;);
+            subject.subscribe(function (x) {
+                chai_1.expect(x).to.equal(&apos;pong&apos;);
+                messageReceived = true;
+            });
+            var socket = MockWebSocket.lastSocket;
+            chai_1.expect(socket.url).to.equal(&apos;ws://mysocket&apos;);
+            socket.open();
+            chai_1.expect(socket.lastMessageSent).to.equal(&apos;ping&apos;);
+            socket.triggerMessage(JSON.stringify(&apos;pong&apos;));
+            chai_1.expect(messageReceived).to.be.true;
+            subject.unsubscribe();
+        });
+        it(&apos;should take a protocol and set it properly on the web socket&apos;, function () {
+            var subject = Observable.webSocket({
+                url: &apos;ws://mysocket&apos;,
+                protocol: &apos;someprotocol&apos;
+            });
+            subject.subscribe();
+            var socket = MockWebSocket.lastSocket;
+            chai_1.expect(socket.protocol).to.equal(&apos;someprotocol&apos;);
+            subject.unsubscribe();
+        });
+        it(&apos;should take a binaryType and set it properly on the web socket&apos;, function () {
+            var subject = Observable.webSocket({
+                url: &apos;ws://mysocket&apos;,
+                binaryType: &apos;blob&apos;
+            });
+            subject.subscribe();
+            var socket = MockWebSocket.lastSocket;
+            chai_1.expect(socket.binaryType).to.equal(&apos;blob&apos;);
+            subject.unsubscribe();
+        });
+        it(&apos;should take a resultSelector&apos;, function () {
+            var results = [];
+            var subject = Observable.webSocket({
+                url: &apos;ws://mysocket&apos;,
+                resultSelector: function (e) {
+                    return e.data + &apos;!&apos;;
+                }
+            });
+            subject.subscribe(function (x) {
+                results.push(x);
+            });
+            var socket = MockWebSocket.lastSocket;
+            socket.open();
+            [&apos;ahoy&apos;, &apos;yarr&apos;, &apos;shove off&apos;].forEach(function (x) {
+                socket.triggerMessage(x);
+            });
+            chai_1.expect(results).to.deep.equal([&apos;ahoy!&apos;, &apos;yarr!&apos;, &apos;shove off!&apos;]);
+            subject.unsubscribe();
+        });
+        it(&apos;if the resultSelector fails it should go down the error path&apos;, function () {
+            var subject = Observable.webSocket({
+                url: &apos;ws://mysocket&apos;,
+                resultSelector: function (e) {
+                    throw new Error(&apos;I am a bad error&apos;);
+                }
+            });
+            subject.subscribe(function (x) {
+                chai_1.expect(x).to.equal(&apos;this should not happen&apos;);
+            }, function (err) {
+                chai_1.expect(err).to.be.an(&apos;error&apos;, &apos;I am a bad error&apos;);
+            });
+            var socket = MockWebSocket.lastSocket;
+            socket.open();
+            socket.triggerMessage(&apos;weee!&apos;);
+            subject.unsubscribe();
+        });
+        it(&apos;should accept a closingObserver&apos;, function () {
+            var calls = 0;
+            var subject = Observable.webSocket({
+                url: &apos;ws://mysocket&apos;,
+                closingObserver: {
+                    next: function (x) {
+                        calls++;
+                        chai_1.expect(x).to.be.an(&apos;undefined&apos;);
+                    }
+                }
+            });
+            subject.subscribe();
+            var socket = MockWebSocket.lastSocket;
+            socket.open();
+            chai_1.expect(calls).to.equal(0);
+            subject.complete();
+            chai_1.expect(calls).to.equal(1);
+            subject.subscribe();
+            socket = MockWebSocket.lastSocket;
+            socket.open();
+            subject.error({ code: 1337 });
+            chai_1.expect(calls).to.equal(2);
+            subject.unsubscribe();
+        });
+        it(&apos;should accept a closeObserver&apos;, function () {
+            var expected = [{ wasClean: true }, { wasClean: false }];
+            var closes = [];
+            var subject = Observable.webSocket({
+                url: &apos;ws://mysocket&apos;,
+                closeObserver: {
+                    next: function (e) {
+                        closes.push(e);
+                    }
+                }
+            });
+            subject.subscribe();
+            var socket = MockWebSocket.lastSocket;
+            socket.open();
+            chai_1.expect(closes.length).to.equal(0);
+            socket.triggerClose(expected[0]);
+            chai_1.expect(closes.length).to.equal(1);
+            subject.subscribe(null, function (err) {
+                chai_1.expect(err).to.equal(expected[1]);
+            });
+            socket = MockWebSocket.lastSocket;
+            socket.open();
+            socket.triggerClose(expected[1]);
+            chai_1.expect(closes.length).to.equal(2);
+            chai_1.expect(closes[0]).to.equal(expected[0]);
+            chai_1.expect(closes[1]).to.equal(expected[1]);
+            subject.unsubscribe();
+        });
+        it(&apos;should handle constructor errors&apos;, function () {
+            var subject = Observable.webSocket({
+                url: &apos;bad_url&apos;,
+                WebSocketCtor: function (url, protocol) {
+                    throw new Error(&quot;connection refused&quot;);
+                }
+            });
+            subject.subscribe(function (x) {
+                chai_1.expect(x).to.equal(&apos;this should not happen&apos;);
+            }, function (err) {
+                chai_1.expect(err).to.be.an(&apos;error&apos;, &apos;connection refused&apos;);
+            });
+            subject.unsubscribe();
+        });
+    });
+    describe(&apos;multiplex&apos;, function () {
+        it(&apos;should be retryable&apos;, function () {
+            var results = [];
+            var subject = Observable.webSocket(&apos;ws://websocket&apos;);
+            var source = subject.multiplex(function () {
+                return { sub: &apos;foo&apos; };
+            }, function () {
+                return { unsub: &apos;foo&apos; };
+            }, function (value) {
+                return value.name === &apos;foo&apos;;
+            });
+            source
+                .retry(1)
+                .map(function (x) { return x.value; })
+                .take(2)
+                .subscribe(function (x) {
+                results.push(x);
+            });
+            var socket = MockWebSocket.lastSocket;
+            socket.open();
+            chai_1.expect(socket.lastMessageSent).to.deep.equal({ sub: &apos;foo&apos; });
+            socket.triggerClose({ wasClean: false }); // Bad connection
+            var socket2 = MockWebSocket.lastSocket;
+            chai_1.expect(socket2).not.to.equal(socket);
+            socket2.open();
+            chai_1.expect(socket2.lastMessageSent).to.deep.equal({ sub: &apos;foo&apos; });
+            socket2.triggerMessage(JSON.stringify({ name: &apos;foo&apos;, value: &apos;test&apos; }));
+            socket2.triggerMessage(JSON.stringify({ name: &apos;foo&apos;, value: &apos;this&apos; }));
+            chai_1.expect(results).to.deep.equal([&apos;test&apos;, &apos;this&apos;]);
+        });
+        it(&apos;should be repeatable&apos;, function () {
+            var results = [];
+            var subject = Observable.webSocket(&apos;ws://websocket&apos;);
+            var source = subject.multiplex(function () {
+                return { sub: &apos;foo&apos; };
+            }, function () {
+                return { unsub: &apos;foo&apos; };
+            }, function (value) {
+                return value.name === &apos;foo&apos;;
+            });
+            source
+                .repeat(2)
+                .map(function (x) { return x.value; })
+                .subscribe(function (x) {
+                results.push(x);
+            });
+            var socket = MockWebSocket.lastSocket;
+            socket.open();
+            chai_1.expect(socket.lastMessageSent).to.deep.equal({ sub: &apos;foo&apos; }, &apos;first multiplexed sub&apos;);
+            socket.triggerMessage(JSON.stringify({ name: &apos;foo&apos;, value: &apos;test&apos; }));
+            socket.triggerMessage(JSON.stringify({ name: &apos;foo&apos;, value: &apos;this&apos; }));
+            socket.triggerClose({ wasClean: true });
+            var socket2 = MockWebSocket.lastSocket;
+            chai_1.expect(socket2).not.to.equal(socket, &apos;a new socket was not created&apos;);
+            socket2.open();
+            chai_1.expect(socket2.lastMessageSent).to.deep.equal({ sub: &apos;foo&apos; }, &apos;second multiplexed sub&apos;);
+            socket2.triggerMessage(JSON.stringify({ name: &apos;foo&apos;, value: &apos;test&apos; }));
+            socket2.triggerMessage(JSON.stringify({ name: &apos;foo&apos;, value: &apos;this&apos; }));
+            socket2.triggerClose({ wasClean: true });
+            chai_1.expect(results).to.deep.equal([&apos;test&apos;, &apos;this&apos;, &apos;test&apos;, &apos;this&apos;], &apos;results were not equal&apos;);
+        });
+        it(&apos;should multiplex over the websocket&apos;, function () {
+            var results = [];
+            var subject = Observable.webSocket(&apos;ws://websocket&apos;);
+            var source = subject.multiplex(function () {
+                return { sub: &apos;foo&apos; };
+            }, function () {
+                return { unsub: &apos;foo&apos; };
+            }, function (value) {
+                return value.name === &apos;foo&apos;;
+            });
+            var sub = source.subscribe(function (x) {
+                results.push(x.value);
+            });
+            var socket = MockWebSocket.lastSocket;
+            socket.open();
+            chai_1.expect(socket.lastMessageSent).to.deep.equal({ sub: &apos;foo&apos; });
+            [1, 2, 3, 4, 5].map(function (x) {
+                return {
+                    name: x % 3 === 0 ? &apos;bar&apos; : &apos;foo&apos;,
+                    value: x
+                };
+            }).forEach(function (x) {
+                socket.triggerMessage(JSON.stringify(x));
+            });
+            chai_1.expect(results).to.deep.equal([1, 2, 4, 5]);
+            sinon.spy(socket, &apos;close&apos;);
+            sub.unsubscribe();
+            chai_1.expect(socket.lastMessageSent).to.deep.equal({ unsub: &apos;foo&apos; });
+            chai_1.expect(socket.close).have.been.called;
+            socket.close.restore();
+        });
+        it(&apos;should keep the same socket for multiple multiplex subscriptions&apos;, function () {
+            var socketSubject = Rx.Observable.webSocket({ url: &apos;ws://mysocket&apos; });
+            var results = [];
+            var socketMessages = [
+                { id: &apos;A&apos; },
+                { id: &apos;B&apos; },
+                { id: &apos;A&apos; },
+                { id: &apos;B&apos; },
+                { id: &apos;B&apos; },
+            ];
+            var sub1 = socketSubject.multiplex(function () { return &apos;no-op&apos;; }, function () { return results.push(&apos;A unsub&apos;); }, function (req) { return req.id === &apos;A&apos;; })
+                .takeWhile(function (req) { return !req.complete; })
+                .subscribe(function () { return results.push(&apos;A next&apos;); }, function (e) { return results.push(&apos;A error &apos; + e); }, function () { return results.push(&apos;A complete&apos;); });
+            socketSubject.multiplex(function () { return &apos;no-op&apos;; }, function () { return results.push(&apos;B unsub&apos;); }, function (req) { return req.id === &apos;B&apos;; })
+                .subscribe(function () { return results.push(&apos;B next&apos;); }, function (e) { return results.push(&apos;B error &apos; + e); }, function () { return results.push(&apos;B complete&apos;); });
+            // Setup socket and send messages
+            var socket = MockWebSocket.lastSocket;
+            socket.open();
+            socketMessages.forEach(function (msg, i) {
+                if (i === 1) {
+                    sub1.unsubscribe();
+                    chai_1.expect(socketSubject.socket).to.equal(socket);
+                }
+                socket.triggerMessage(JSON.stringify(msg));
+            });
+            socket.triggerClose({ wasClean: true });
+            chai_1.expect(results).to.deep.equal([
+                &apos;A next&apos;,
+                &apos;A unsub&apos;,
+                &apos;B next&apos;,
+                &apos;B next&apos;,
+                &apos;B next&apos;,
+                &apos;B complete&apos;,
+                &apos;B unsub&apos;,
+            ]);
+        });
+        it(&apos;should not close the socket until all subscriptions complete&apos;, function () {
+            var socketSubject = Rx.Observable.webSocket({ url: &apos;ws://mysocket&apos; });
+            var results = [];
+            var socketMessages = [
+                { id: &apos;A&apos; },
+                { id: &apos;B&apos; },
+                { id: &apos;A&apos;, complete: true },
+                { id: &apos;B&apos; },
+                { id: &apos;B&apos;, complete: true },
+            ];
+            socketSubject.multiplex(function () { return &apos;no-op&apos;; }, function () { return results.push(&apos;A unsub&apos;); }, function (req) { return req.id === &apos;A&apos;; })
+                .takeWhile(function (req) { return !req.complete; })
+                .subscribe(function () { return results.push(&apos;A next&apos;); }, function (e) { return results.push(&apos;A error &apos; + e); }, function () { return results.push(&apos;A complete&apos;); });
+            socketSubject.multiplex(function () { return &apos;no-op&apos;; }, function () { return results.push(&apos;B unsub&apos;); }, function (req) { return req.id === &apos;B&apos;; })
+                .takeWhile(function (req) { return !req.complete; })
+                .subscribe(function () { return results.push(&apos;B next&apos;); }, function (e) { return results.push(&apos;B error &apos; + e); }, function () { return results.push(&apos;B complete&apos;); });
+            // Setup socket and send messages
+            var socket = MockWebSocket.lastSocket;
+            socket.open();
+            socketMessages.forEach(function (msg) {
+                socket.triggerMessage(JSON.stringify(msg));
+            });
+            chai_1.expect(results).to.deep.equal([
+                &apos;A next&apos;,
+                &apos;B next&apos;,
+                &apos;A complete&apos;,
+                &apos;A unsub&apos;,
+                &apos;B next&apos;,
+                &apos;B complete&apos;,
+                &apos;B unsub&apos;,
+            ]);
+        });
+    });
+});
+var MockWebSocket = (function () {
+    function MockWebSocket(url, protocol) {
+        this.url = url;
+        this.protocol = protocol;
+        this.sent = [];
+        this.handlers = {};
+        this.readyState = 0;
+        MockWebSocket.sockets.push(this);
+    }
+    Object.defineProperty(MockWebSocket, &quot;lastSocket&quot;, {
+        get: function () {
+            var socket = MockWebSocket.sockets;
+            var length = socket.length;
+            return length &gt; 0 ? socket[length - 1] : undefined;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MockWebSocket.clearSockets = function () {
+        MockWebSocket.sockets.length = 0;
+    };
+    MockWebSocket.prototype.send = function (data) {
+        this.sent.push(data);
+    };
+    Object.defineProperty(MockWebSocket.prototype, &quot;lastMessageSent&quot;, {
+        get: function () {
+            var sent = this.sent;
+            var length = sent.length;
+            return length &gt; 0 ? sent[length - 1] : undefined;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MockWebSocket.prototype.triggerClose = function (e) {
+        this.readyState = 3;
+        this.trigger(&apos;close&apos;, e);
+    };
+    MockWebSocket.prototype.triggerMessage = function (data) {
+        var messageEvent = {
+            data: data,
+            origin: &apos;mockorigin&apos;,
+            ports: undefined,
+            source: __root__,
+        };
+        this.trigger(&apos;message&apos;, messageEvent);
+    };
+    MockWebSocket.prototype.open = function () {
+        this.readyState = 1;
+        this.trigger(&apos;open&apos;, {});
+    };
+    MockWebSocket.prototype.close = function (code, reason) {
+        if (this.readyState &lt; 2) {
+            this.readyState = 2;
+            this.closeCode = code;
+            this.closeReason = reason;
+            this.triggerClose({ wasClean: true });
+        }
+    };
+    MockWebSocket.prototype.trigger = function (name, e) {
+        if (this[&apos;on&apos; + name]) {
+            this[&apos;on&apos; + name](e);
+        }
+        var lookup = this.handlers[name];
+        if (lookup) {
+            for (var i = 0; i &lt; lookup.length; i++) {
+                lookup[i](e);
+            }
+        }
+    };
+    MockWebSocket.sockets = [];
+    return MockWebSocket;
+}());
+//# sourceMappingURL=webSocket-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

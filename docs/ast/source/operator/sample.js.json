@@ -1,0 +1,452 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              19,
+              30
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 19
+              },
+              "end": {
+                "line": 1,
+                "column": 30
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "sample",
+            "range": [
+              9,
+              15
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 15
+              }
+            }
+          },
+          "range": [
+            9,
+            30
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 30
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/sample",
+        "raw": "'../operators/sample'",
+        "range": [
+          38,
+          59
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 38
+          },
+          "end": {
+            "line": 1,
+            "column": 59
+          }
+        }
+      },
+      "range": [
+        0,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 60
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Emits the most recently emitted value from the source Observable whenever\n * another Observable, the `notifier`, emits.\n *\n * <span class=\"informal\">It's like {@link sampleTime}, but samples whenever\n * the `notifier` Observable emits something.</span>\n *\n * <img src=\"./img/sample.png\" width=\"100%\">\n *\n * Whenever the `notifier` Observable emits a value or completes, `sample`\n * looks at the source Observable and emits whichever value it has most recently\n * emitted since the previous sampling, unless the source has not emitted\n * anything since the previous sampling. The `notifier` is subscribed to as soon\n * as the output Observable is subscribed.\n *\n * @example <caption>On every click, sample the most recent \"seconds\" timer</caption>\n * var seconds = Rx.Observable.interval(1000);\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = seconds.sample(clicks);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounce}\n * @see {@link sampleTime}\n * @see {@link throttle}\n *\n * @param {Observable<any>} notifier The Observable to use for sampling the\n * source Observable.\n * @return {Observable<T>} An Observable that emits the results of sampling the\n * values emitted by the source Observable whenever the notifier Observable\n * emits value or completes.\n * @method sample\n * @owner Observable\n ",
+          "range": [
+            61,
+            1434
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 35,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "sample",
+          "range": [
+            1451,
+            1457
+          ],
+          "loc": {
+            "start": {
+              "line": 36,
+              "column": 16
+            },
+            "end": {
+              "line": 36,
+              "column": 22
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "notifier",
+            "range": [
+              1458,
+              1466
+            ],
+            "loc": {
+              "start": {
+                "line": 36,
+                "column": 23
+              },
+              "end": {
+                "line": 36,
+                "column": 31
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      1481,
+                      1492
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 37,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 37,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "notifier",
+                      "range": [
+                        1493,
+                        1501
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 37,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 37,
+                          "column": 31
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    1481,
+                    1502
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 37,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 37,
+                      "column": 32
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      1503,
+                      1507
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 37,
+                        "column": 33
+                      },
+                      "end": {
+                        "line": 37,
+                        "column": 37
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1481,
+                  1508
+                ],
+                "loc": {
+                  "start": {
+                    "line": 37,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 37,
+                    "column": 38
+                  }
+                }
+              },
+              "range": [
+                1474,
+                1509
+              ],
+              "loc": {
+                "start": {
+                  "line": 37,
+                  "column": 4
+                },
+                "end": {
+                  "line": 37,
+                  "column": 39
+                }
+              }
+            }
+          ],
+          "range": [
+            1468,
+            1511
+          ],
+          "loc": {
+            "start": {
+              "line": 36,
+              "column": 33
+            },
+            "end": {
+              "line": 38,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1442,
+          1511
+        ],
+        "loc": {
+          "start": {
+            "line": 36,
+            "column": 7
+          },
+          "end": {
+            "line": 38,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Emits the most recently emitted value from the source Observable whenever\n * another Observable, the `notifier`, emits.\n *\n * <span class=\"informal\">It's like {@link sampleTime}, but samples whenever\n * the `notifier` Observable emits something.</span>\n *\n * <img src=\"./img/sample.png\" width=\"100%\">\n *\n * Whenever the `notifier` Observable emits a value or completes, `sample`\n * looks at the source Observable and emits whichever value it has most recently\n * emitted since the previous sampling, unless the source has not emitted\n * anything since the previous sampling. The `notifier` is subscribed to as soon\n * as the output Observable is subscribed.\n *\n * @example <caption>On every click, sample the most recent \"seconds\" timer</caption>\n * var seconds = Rx.Observable.interval(1000);\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = seconds.sample(clicks);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounce}\n * @see {@link sampleTime}\n * @see {@link throttle}\n *\n * @param {Observable<any>} notifier The Observable to use for sampling the\n * source Observable.\n * @return {Observable<T>} An Observable that emits the results of sampling the\n * values emitted by the source Observable whenever the notifier Observable\n * emits value or completes.\n * @method sample\n * @owner Observable\n ",
+            "range": [
+              61,
+              1434
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 35,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=sample.js.map",
+            "range": [
+              1512,
+              1546
+            ],
+            "loc": {
+              "start": {
+                "line": 39,
+                "column": 0
+              },
+              "end": {
+                "line": 39,
+                "column": 34
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1435,
+        1511
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 0
+        },
+        "end": {
+          "line": 38,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Emits the most recently emitted value from the source Observable whenever\n * another Observable, the `notifier`, emits.\n *\n * <span class=\"informal\">It's like {@link sampleTime}, but samples whenever\n * the `notifier` Observable emits something.</span>\n *\n * <img src=\"./img/sample.png\" width=\"100%\">\n *\n * Whenever the `notifier` Observable emits a value or completes, `sample`\n * looks at the source Observable and emits whichever value it has most recently\n * emitted since the previous sampling, unless the source has not emitted\n * anything since the previous sampling. The `notifier` is subscribed to as soon\n * as the output Observable is subscribed.\n *\n * @example <caption>On every click, sample the most recent \"seconds\" timer</caption>\n * var seconds = Rx.Observable.interval(1000);\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = seconds.sample(clicks);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounce}\n * @see {@link sampleTime}\n * @see {@link throttle}\n *\n * @param {Observable<any>} notifier The Observable to use for sampling the\n * source Observable.\n * @return {Observable<T>} An Observable that emits the results of sampling the\n * values emitted by the source Observable whenever the notifier Observable\n * emits value or completes.\n * @method sample\n * @owner Observable\n ",
+          "range": [
+            61,
+            1434
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 35,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=sample.js.map",
+          "range": [
+            1512,
+            1546
+          ],
+          "loc": {
+            "start": {
+              "line": 39,
+              "column": 0
+            },
+            "end": {
+              "line": 39,
+              "column": 34
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1511
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 38,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Emits the most recently emitted value from the source Observable whenever\n * another Observable, the `notifier`, emits.\n *\n * <span class=\"informal\">It's like {@link sampleTime}, but samples whenever\n * the `notifier` Observable emits something.</span>\n *\n * <img src=\"./img/sample.png\" width=\"100%\">\n *\n * Whenever the `notifier` Observable emits a value or completes, `sample`\n * looks at the source Observable and emits whichever value it has most recently\n * emitted since the previous sampling, unless the source has not emitted\n * anything since the previous sampling. The `notifier` is subscribed to as soon\n * as the output Observable is subscribed.\n *\n * @example <caption>On every click, sample the most recent \"seconds\" timer</caption>\n * var seconds = Rx.Observable.interval(1000);\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = seconds.sample(clicks);\n * result.subscribe(x => console.log(x));\n *\n * @see {@link audit}\n * @see {@link debounce}\n * @see {@link sampleTime}\n * @see {@link throttle}\n *\n * @param {Observable<any>} notifier The Observable to use for sampling the\n * source Observable.\n * @return {Observable<T>} An Observable that emits the results of sampling the\n * values emitted by the source Observable whenever the notifier Observable\n * emits value or completes.\n * @method sample\n * @owner Observable\n ",
+      "range": [
+        61,
+        1434
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 35,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=sample.js.map",
+      "range": [
+        1512,
+        1546
+      ],
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 0
+        },
+        "end": {
+          "line": 39,
+          "column": 34
+        }
+      }
+    }
+  ]
+}

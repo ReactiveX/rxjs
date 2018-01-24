@@ -1,0 +1,936 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              19,
+              30
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 19
+              },
+              "end": {
+                "line": 1,
+                "column": 30
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "expand",
+            "range": [
+              9,
+              15
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 15
+              }
+            }
+          },
+          "range": [
+            9,
+            30
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 30
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/expand",
+        "raw": "'../operators/expand'",
+        "range": [
+          38,
+          59
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 38
+          },
+          "end": {
+            "line": 1,
+            "column": 59
+          }
+        }
+      },
+      "range": [
+        0,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 60
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": " tslint:enable:max-line-length ",
+          "range": [
+            61,
+            96
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 35
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Recursively projects each source value to an Observable which is merged in\n * the output Observable.\n *\n * <span class=\"informal\">It's similar to {@link mergeMap}, but applies the\n * projection function to every source value as well as every output value.\n * It's recursive.</span>\n *\n * <img src=\"./img/expand.png\" width=\"100%\">\n *\n * Returns an Observable that emits items based on applying a function that you\n * supply to each item emitted by the source Observable, where that function\n * returns an Observable, and then merging those resulting Observables and\n * emitting the results of this merger. *Expand* will re-emit on the output\n * Observable every source value. Then, each output value is given to the\n * `project` function which returns an inner Observable to be merged on the\n * output Observable. Those output values resulting from the projection are also\n * given to the `project` function to produce new output values. This is how\n * *expand* behaves recursively.\n *\n * @example <caption>Start emitting the powers of two on every click, at most 10 of them</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var powersOfTwo = clicks\n *   .mapTo(1)\n *   .expand(x => Rx.Observable.of(2 * x).delay(1000))\n *   .take(10);\n * powersOfTwo.subscribe(x => console.log(x));\n *\n * @see {@link mergeMap}\n * @see {@link mergeScan}\n *\n * @param {function(value: T, index: number) => Observable} project A function\n * that, when applied to an item emitted by the source or the output Observable,\n * returns an Observable.\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input\n * Observables being subscribed to concurrently.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for subscribing to\n * each projected inner Observable.\n * @return {Observable} An Observable that emits the source values and also\n * result of applying the projection function to each value emitted on the\n * output Observable and and merging the results of the Observables obtained\n * from this transformation.\n * @method expand\n * @owner Observable\n ",
+          "range": [
+            97,
+            2197
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 47,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "expand",
+          "range": [
+            2214,
+            2220
+          ],
+          "loc": {
+            "start": {
+              "line": 48,
+              "column": 16
+            },
+            "end": {
+              "line": 48,
+              "column": 22
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "project",
+            "range": [
+              2221,
+              2228
+            ],
+            "loc": {
+              "start": {
+                "line": 48,
+                "column": 23
+              },
+              "end": {
+                "line": 48,
+                "column": 30
+              }
+            }
+          },
+          {
+            "type": "AssignmentPattern",
+            "left": {
+              "type": "Identifier",
+              "name": "concurrent",
+              "range": [
+                2230,
+                2240
+              ],
+              "loc": {
+                "start": {
+                  "line": 48,
+                  "column": 32
+                },
+                "end": {
+                  "line": 48,
+                  "column": 42
+                }
+              }
+            },
+            "right": {
+              "type": "MemberExpression",
+              "computed": false,
+              "object": {
+                "type": "Identifier",
+                "name": "Number",
+                "range": [
+                  2243,
+                  2249
+                ],
+                "loc": {
+                  "start": {
+                    "line": 48,
+                    "column": 45
+                  },
+                  "end": {
+                    "line": 48,
+                    "column": 51
+                  }
+                }
+              },
+              "property": {
+                "type": "Identifier",
+                "name": "POSITIVE_INFINITY",
+                "range": [
+                  2250,
+                  2267
+                ],
+                "loc": {
+                  "start": {
+                    "line": 48,
+                    "column": 52
+                  },
+                  "end": {
+                    "line": 48,
+                    "column": 69
+                  }
+                }
+              },
+              "range": [
+                2243,
+                2267
+              ],
+              "loc": {
+                "start": {
+                  "line": 48,
+                  "column": 45
+                },
+                "end": {
+                  "line": 48,
+                  "column": 69
+                }
+              }
+            },
+            "range": [
+              2230,
+              2267
+            ],
+            "loc": {
+              "start": {
+                "line": 48,
+                "column": 32
+              },
+              "end": {
+                "line": 48,
+                "column": 69
+              }
+            }
+          },
+          {
+            "type": "AssignmentPattern",
+            "left": {
+              "type": "Identifier",
+              "name": "scheduler",
+              "range": [
+                2269,
+                2278
+              ],
+              "loc": {
+                "start": {
+                  "line": 48,
+                  "column": 71
+                },
+                "end": {
+                  "line": 48,
+                  "column": 80
+                }
+              }
+            },
+            "right": {
+              "type": "Identifier",
+              "name": "undefined",
+              "range": [
+                2281,
+                2290
+              ],
+              "loc": {
+                "start": {
+                  "line": 48,
+                  "column": 83
+                },
+                "end": {
+                  "line": 48,
+                  "column": 92
+                }
+              }
+            },
+            "range": [
+              2269,
+              2290
+            ],
+            "loc": {
+              "start": {
+                "line": 48,
+                "column": 71
+              },
+              "end": {
+                "line": 48,
+                "column": 92
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ExpressionStatement",
+              "expression": {
+                "type": "AssignmentExpression",
+                "operator": "=",
+                "left": {
+                  "type": "Identifier",
+                  "name": "concurrent",
+                  "range": [
+                    2298,
+                    2308
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 49,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 49,
+                      "column": 14
+                    }
+                  }
+                },
+                "right": {
+                  "type": "ConditionalExpression",
+                  "test": {
+                    "type": "BinaryExpression",
+                    "operator": "<",
+                    "left": {
+                      "type": "LogicalExpression",
+                      "operator": "||",
+                      "left": {
+                        "type": "Identifier",
+                        "name": "concurrent",
+                        "range": [
+                          2312,
+                          2322
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 49,
+                            "column": 18
+                          },
+                          "end": {
+                            "line": 49,
+                            "column": 28
+                          }
+                        }
+                      },
+                      "right": {
+                        "type": "Literal",
+                        "value": 0,
+                        "raw": "0",
+                        "range": [
+                          2326,
+                          2327
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 49,
+                            "column": 32
+                          },
+                          "end": {
+                            "line": 49,
+                            "column": 33
+                          }
+                        }
+                      },
+                      "range": [
+                        2312,
+                        2327
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 49,
+                          "column": 18
+                        },
+                        "end": {
+                          "line": 49,
+                          "column": 33
+                        }
+                      }
+                    },
+                    "right": {
+                      "type": "Literal",
+                      "value": 1,
+                      "raw": "1",
+                      "range": [
+                        2331,
+                        2332
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 49,
+                          "column": 37
+                        },
+                        "end": {
+                          "line": 49,
+                          "column": 38
+                        }
+                      }
+                    },
+                    "range": [
+                      2311,
+                      2332
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 49,
+                        "column": 17
+                      },
+                      "end": {
+                        "line": 49,
+                        "column": 38
+                      }
+                    }
+                  },
+                  "consequent": {
+                    "type": "MemberExpression",
+                    "computed": false,
+                    "object": {
+                      "type": "Identifier",
+                      "name": "Number",
+                      "range": [
+                        2335,
+                        2341
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 49,
+                          "column": 41
+                        },
+                        "end": {
+                          "line": 49,
+                          "column": 47
+                        }
+                      }
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "name": "POSITIVE_INFINITY",
+                      "range": [
+                        2342,
+                        2359
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 49,
+                          "column": 48
+                        },
+                        "end": {
+                          "line": 49,
+                          "column": 65
+                        }
+                      }
+                    },
+                    "range": [
+                      2335,
+                      2359
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 49,
+                        "column": 41
+                      },
+                      "end": {
+                        "line": 49,
+                        "column": 65
+                      }
+                    }
+                  },
+                  "alternate": {
+                    "type": "Identifier",
+                    "name": "concurrent",
+                    "range": [
+                      2362,
+                      2372
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 49,
+                        "column": 68
+                      },
+                      "end": {
+                        "line": 49,
+                        "column": 78
+                      }
+                    }
+                  },
+                  "range": [
+                    2311,
+                    2372
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 49,
+                      "column": 17
+                    },
+                    "end": {
+                      "line": 49,
+                      "column": 78
+                    }
+                  }
+                },
+                "range": [
+                  2298,
+                  2372
+                ],
+                "loc": {
+                  "start": {
+                    "line": 49,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 49,
+                    "column": 78
+                  }
+                }
+              },
+              "range": [
+                2298,
+                2373
+              ],
+              "loc": {
+                "start": {
+                  "line": 49,
+                  "column": 4
+                },
+                "end": {
+                  "line": 49,
+                  "column": 79
+                }
+              }
+            },
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      2385,
+                      2396
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 50,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 50,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "project",
+                      "range": [
+                        2397,
+                        2404
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 50,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 50,
+                          "column": 30
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "concurrent",
+                      "range": [
+                        2406,
+                        2416
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 50,
+                          "column": 32
+                        },
+                        "end": {
+                          "line": 50,
+                          "column": 42
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "scheduler",
+                      "range": [
+                        2418,
+                        2427
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 50,
+                          "column": 44
+                        },
+                        "end": {
+                          "line": 50,
+                          "column": 53
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    2385,
+                    2428
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 50,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 50,
+                      "column": 54
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      2429,
+                      2433
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 50,
+                        "column": 55
+                      },
+                      "end": {
+                        "line": 50,
+                        "column": 59
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2385,
+                  2434
+                ],
+                "loc": {
+                  "start": {
+                    "line": 50,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 50,
+                    "column": 60
+                  }
+                }
+              },
+              "range": [
+                2378,
+                2435
+              ],
+              "loc": {
+                "start": {
+                  "line": 50,
+                  "column": 4
+                },
+                "end": {
+                  "line": 50,
+                  "column": 61
+                }
+              }
+            }
+          ],
+          "range": [
+            2292,
+            2437
+          ],
+          "loc": {
+            "start": {
+              "line": 48,
+              "column": 94
+            },
+            "end": {
+              "line": 51,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          2205,
+          2437
+        ],
+        "loc": {
+          "start": {
+            "line": 48,
+            "column": 7
+          },
+          "end": {
+            "line": 51,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": " tslint:enable:max-line-length ",
+            "range": [
+              61,
+              96
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 2,
+                "column": 35
+              }
+            }
+          },
+          {
+            "type": "Block",
+            "value": "*\n * Recursively projects each source value to an Observable which is merged in\n * the output Observable.\n *\n * <span class=\"informal\">It's similar to {@link mergeMap}, but applies the\n * projection function to every source value as well as every output value.\n * It's recursive.</span>\n *\n * <img src=\"./img/expand.png\" width=\"100%\">\n *\n * Returns an Observable that emits items based on applying a function that you\n * supply to each item emitted by the source Observable, where that function\n * returns an Observable, and then merging those resulting Observables and\n * emitting the results of this merger. *Expand* will re-emit on the output\n * Observable every source value. Then, each output value is given to the\n * `project` function which returns an inner Observable to be merged on the\n * output Observable. Those output values resulting from the projection are also\n * given to the `project` function to produce new output values. This is how\n * *expand* behaves recursively.\n *\n * @example <caption>Start emitting the powers of two on every click, at most 10 of them</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var powersOfTwo = clicks\n *   .mapTo(1)\n *   .expand(x => Rx.Observable.of(2 * x).delay(1000))\n *   .take(10);\n * powersOfTwo.subscribe(x => console.log(x));\n *\n * @see {@link mergeMap}\n * @see {@link mergeScan}\n *\n * @param {function(value: T, index: number) => Observable} project A function\n * that, when applied to an item emitted by the source or the output Observable,\n * returns an Observable.\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input\n * Observables being subscribed to concurrently.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for subscribing to\n * each projected inner Observable.\n * @return {Observable} An Observable that emits the source values and also\n * result of applying the projection function to each value emitted on the\n * output Observable and and merging the results of the Observables obtained\n * from this transformation.\n * @method expand\n * @owner Observable\n ",
+            "range": [
+              97,
+              2197
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 47,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=expand.js.map",
+            "range": [
+              2438,
+              2472
+            ],
+            "loc": {
+              "start": {
+                "line": 52,
+                "column": 0
+              },
+              "end": {
+                "line": 52,
+                "column": 34
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        2198,
+        2437
+      ],
+      "loc": {
+        "start": {
+          "line": 48,
+          "column": 0
+        },
+        "end": {
+          "line": 51,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": " tslint:enable:max-line-length ",
+          "range": [
+            61,
+            96
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 35
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Recursively projects each source value to an Observable which is merged in\n * the output Observable.\n *\n * <span class=\"informal\">It's similar to {@link mergeMap}, but applies the\n * projection function to every source value as well as every output value.\n * It's recursive.</span>\n *\n * <img src=\"./img/expand.png\" width=\"100%\">\n *\n * Returns an Observable that emits items based on applying a function that you\n * supply to each item emitted by the source Observable, where that function\n * returns an Observable, and then merging those resulting Observables and\n * emitting the results of this merger. *Expand* will re-emit on the output\n * Observable every source value. Then, each output value is given to the\n * `project` function which returns an inner Observable to be merged on the\n * output Observable. Those output values resulting from the projection are also\n * given to the `project` function to produce new output values. This is how\n * *expand* behaves recursively.\n *\n * @example <caption>Start emitting the powers of two on every click, at most 10 of them</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var powersOfTwo = clicks\n *   .mapTo(1)\n *   .expand(x => Rx.Observable.of(2 * x).delay(1000))\n *   .take(10);\n * powersOfTwo.subscribe(x => console.log(x));\n *\n * @see {@link mergeMap}\n * @see {@link mergeScan}\n *\n * @param {function(value: T, index: number) => Observable} project A function\n * that, when applied to an item emitted by the source or the output Observable,\n * returns an Observable.\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input\n * Observables being subscribed to concurrently.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for subscribing to\n * each projected inner Observable.\n * @return {Observable} An Observable that emits the source values and also\n * result of applying the projection function to each value emitted on the\n * output Observable and and merging the results of the Observables obtained\n * from this transformation.\n * @method expand\n * @owner Observable\n ",
+          "range": [
+            97,
+            2197
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 47,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=expand.js.map",
+          "range": [
+            2438,
+            2472
+          ],
+          "loc": {
+            "start": {
+              "line": 52,
+              "column": 0
+            },
+            "end": {
+              "line": 52,
+              "column": 34
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    2437
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 51,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": " tslint:enable:max-line-length ",
+      "range": [
+        61,
+        96
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Recursively projects each source value to an Observable which is merged in\n * the output Observable.\n *\n * <span class=\"informal\">It's similar to {@link mergeMap}, but applies the\n * projection function to every source value as well as every output value.\n * It's recursive.</span>\n *\n * <img src=\"./img/expand.png\" width=\"100%\">\n *\n * Returns an Observable that emits items based on applying a function that you\n * supply to each item emitted by the source Observable, where that function\n * returns an Observable, and then merging those resulting Observables and\n * emitting the results of this merger. *Expand* will re-emit on the output\n * Observable every source value. Then, each output value is given to the\n * `project` function which returns an inner Observable to be merged on the\n * output Observable. Those output values resulting from the projection are also\n * given to the `project` function to produce new output values. This is how\n * *expand* behaves recursively.\n *\n * @example <caption>Start emitting the powers of two on every click, at most 10 of them</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var powersOfTwo = clicks\n *   .mapTo(1)\n *   .expand(x => Rx.Observable.of(2 * x).delay(1000))\n *   .take(10);\n * powersOfTwo.subscribe(x => console.log(x));\n *\n * @see {@link mergeMap}\n * @see {@link mergeScan}\n *\n * @param {function(value: T, index: number) => Observable} project A function\n * that, when applied to an item emitted by the source or the output Observable,\n * returns an Observable.\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input\n * Observables being subscribed to concurrently.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for subscribing to\n * each projected inner Observable.\n * @return {Observable} An Observable that emits the source values and also\n * result of applying the projection function to each value emitted on the\n * output Observable and and merging the results of the Observables obtained\n * from this transformation.\n * @method expand\n * @owner Observable\n ",
+      "range": [
+        97,
+        2197
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 47,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=expand.js.map",
+      "range": [
+        2438,
+        2472
+      ],
+      "loc": {
+        "start": {
+          "line": 52,
+          "column": 0
+        },
+        "end": {
+          "line": 52,
+          "column": 34
+        }
+      }
+    }
+  ]
+}

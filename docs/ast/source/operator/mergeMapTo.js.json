@@ -1,0 +1,667 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              23,
+              34
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 23
+              },
+              "end": {
+                "line": 1,
+                "column": 34
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "mergeMapTo",
+            "range": [
+              9,
+              19
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 19
+              }
+            }
+          },
+          "range": [
+            9,
+            34
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 34
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/mergeMapTo",
+        "raw": "'../operators/mergeMapTo'",
+        "range": [
+          42,
+          67
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 42
+          },
+          "end": {
+            "line": 1,
+            "column": 67
+          }
+        }
+      },
+      "range": [
+        0,
+        68
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 68
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": " tslint:enable:max-line-length ",
+          "range": [
+            69,
+            104
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 35
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Projects each source value to the same Observable which is merged multiple\n * times in the output Observable.\n *\n * <span class=\"informal\">It's like {@link mergeMap}, but maps each value always\n * to the same inner Observable.</span>\n *\n * <img src=\"./img/mergeMapTo.png\" width=\"100%\">\n *\n * Maps each source value to the given Observable `innerObservable` regardless\n * of the source value, and then merges those resulting Observables into one\n * single Observable, which is the output Observable.\n *\n * @example <caption>For each click event, start an interval Observable ticking every 1 second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.mergeMapTo(Rx.Observable.interval(1000));\n * result.subscribe(x => console.log(x));\n *\n * @see {@link concatMapTo}\n * @see {@link merge}\n * @see {@link mergeAll}\n * @see {@link mergeMap}\n * @see {@link mergeScan}\n * @see {@link switchMapTo}\n *\n * @param {ObservableInput} innerObservable An Observable to replace each value from\n * the source Observable.\n * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]\n * A function to produce the value on the output Observable based on the values\n * and the indices of the source (outer) emission and the inner Observable\n * emission. The arguments passed to this function are:\n * - `outerValue`: the value that came from the source\n * - `innerValue`: the value that came from the projected Observable\n * - `outerIndex`: the \"index\" of the value that came from the source\n * - `innerIndex`: the \"index\" of the value from the projected Observable\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input\n * Observables being subscribed to concurrently.\n * @return {Observable} An Observable that emits items from the given\n * `innerObservable` (and optionally transformed through `resultSelector`) every\n * time a value is emitted on the source Observable.\n * @method mergeMapTo\n * @owner Observable\n ",
+          "range": [
+            105,
+            2129
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 45,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "mergeMapTo",
+          "range": [
+            2146,
+            2156
+          ],
+          "loc": {
+            "start": {
+              "line": 46,
+              "column": 16
+            },
+            "end": {
+              "line": 46,
+              "column": 26
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "innerObservable",
+            "range": [
+              2157,
+              2172
+            ],
+            "loc": {
+              "start": {
+                "line": 46,
+                "column": 27
+              },
+              "end": {
+                "line": 46,
+                "column": 42
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "resultSelector",
+            "range": [
+              2174,
+              2188
+            ],
+            "loc": {
+              "start": {
+                "line": 46,
+                "column": 44
+              },
+              "end": {
+                "line": 46,
+                "column": 58
+              }
+            }
+          },
+          {
+            "type": "AssignmentPattern",
+            "left": {
+              "type": "Identifier",
+              "name": "concurrent",
+              "range": [
+                2190,
+                2200
+              ],
+              "loc": {
+                "start": {
+                  "line": 46,
+                  "column": 60
+                },
+                "end": {
+                  "line": 46,
+                  "column": 70
+                }
+              }
+            },
+            "right": {
+              "type": "MemberExpression",
+              "computed": false,
+              "object": {
+                "type": "Identifier",
+                "name": "Number",
+                "range": [
+                  2203,
+                  2209
+                ],
+                "loc": {
+                  "start": {
+                    "line": 46,
+                    "column": 73
+                  },
+                  "end": {
+                    "line": 46,
+                    "column": 79
+                  }
+                }
+              },
+              "property": {
+                "type": "Identifier",
+                "name": "POSITIVE_INFINITY",
+                "range": [
+                  2210,
+                  2227
+                ],
+                "loc": {
+                  "start": {
+                    "line": 46,
+                    "column": 80
+                  },
+                  "end": {
+                    "line": 46,
+                    "column": 97
+                  }
+                }
+              },
+              "range": [
+                2203,
+                2227
+              ],
+              "loc": {
+                "start": {
+                  "line": 46,
+                  "column": 73
+                },
+                "end": {
+                  "line": 46,
+                  "column": 97
+                }
+              }
+            },
+            "range": [
+              2190,
+              2227
+            ],
+            "loc": {
+              "start": {
+                "line": 46,
+                "column": 60
+              },
+              "end": {
+                "line": 46,
+                "column": 97
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      2242,
+                      2253
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 47,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 47,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "innerObservable",
+                      "range": [
+                        2254,
+                        2269
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 47,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 47,
+                          "column": 38
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "resultSelector",
+                      "range": [
+                        2271,
+                        2285
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 47,
+                          "column": 40
+                        },
+                        "end": {
+                          "line": 47,
+                          "column": 54
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "concurrent",
+                      "range": [
+                        2287,
+                        2297
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 47,
+                          "column": 56
+                        },
+                        "end": {
+                          "line": 47,
+                          "column": 66
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    2242,
+                    2298
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 47,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 47,
+                      "column": 67
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      2299,
+                      2303
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 47,
+                        "column": 68
+                      },
+                      "end": {
+                        "line": 47,
+                        "column": 72
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2242,
+                  2304
+                ],
+                "loc": {
+                  "start": {
+                    "line": 47,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 47,
+                    "column": 73
+                  }
+                }
+              },
+              "range": [
+                2235,
+                2305
+              ],
+              "loc": {
+                "start": {
+                  "line": 47,
+                  "column": 4
+                },
+                "end": {
+                  "line": 47,
+                  "column": 74
+                }
+              }
+            }
+          ],
+          "range": [
+            2229,
+            2307
+          ],
+          "loc": {
+            "start": {
+              "line": 46,
+              "column": 99
+            },
+            "end": {
+              "line": 48,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          2137,
+          2307
+        ],
+        "loc": {
+          "start": {
+            "line": 46,
+            "column": 7
+          },
+          "end": {
+            "line": 48,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": " tslint:enable:max-line-length ",
+            "range": [
+              69,
+              104
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 2,
+                "column": 35
+              }
+            }
+          },
+          {
+            "type": "Block",
+            "value": "*\n * Projects each source value to the same Observable which is merged multiple\n * times in the output Observable.\n *\n * <span class=\"informal\">It's like {@link mergeMap}, but maps each value always\n * to the same inner Observable.</span>\n *\n * <img src=\"./img/mergeMapTo.png\" width=\"100%\">\n *\n * Maps each source value to the given Observable `innerObservable` regardless\n * of the source value, and then merges those resulting Observables into one\n * single Observable, which is the output Observable.\n *\n * @example <caption>For each click event, start an interval Observable ticking every 1 second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.mergeMapTo(Rx.Observable.interval(1000));\n * result.subscribe(x => console.log(x));\n *\n * @see {@link concatMapTo}\n * @see {@link merge}\n * @see {@link mergeAll}\n * @see {@link mergeMap}\n * @see {@link mergeScan}\n * @see {@link switchMapTo}\n *\n * @param {ObservableInput} innerObservable An Observable to replace each value from\n * the source Observable.\n * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]\n * A function to produce the value on the output Observable based on the values\n * and the indices of the source (outer) emission and the inner Observable\n * emission. The arguments passed to this function are:\n * - `outerValue`: the value that came from the source\n * - `innerValue`: the value that came from the projected Observable\n * - `outerIndex`: the \"index\" of the value that came from the source\n * - `innerIndex`: the \"index\" of the value from the projected Observable\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input\n * Observables being subscribed to concurrently.\n * @return {Observable} An Observable that emits items from the given\n * `innerObservable` (and optionally transformed through `resultSelector`) every\n * time a value is emitted on the source Observable.\n * @method mergeMapTo\n * @owner Observable\n ",
+            "range": [
+              105,
+              2129
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 45,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=mergeMapTo.js.map",
+            "range": [
+              2308,
+              2346
+            ],
+            "loc": {
+              "start": {
+                "line": 49,
+                "column": 0
+              },
+              "end": {
+                "line": 49,
+                "column": 38
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        2130,
+        2307
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 0
+        },
+        "end": {
+          "line": 48,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": " tslint:enable:max-line-length ",
+          "range": [
+            69,
+            104
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 35
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Projects each source value to the same Observable which is merged multiple\n * times in the output Observable.\n *\n * <span class=\"informal\">It's like {@link mergeMap}, but maps each value always\n * to the same inner Observable.</span>\n *\n * <img src=\"./img/mergeMapTo.png\" width=\"100%\">\n *\n * Maps each source value to the given Observable `innerObservable` regardless\n * of the source value, and then merges those resulting Observables into one\n * single Observable, which is the output Observable.\n *\n * @example <caption>For each click event, start an interval Observable ticking every 1 second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.mergeMapTo(Rx.Observable.interval(1000));\n * result.subscribe(x => console.log(x));\n *\n * @see {@link concatMapTo}\n * @see {@link merge}\n * @see {@link mergeAll}\n * @see {@link mergeMap}\n * @see {@link mergeScan}\n * @see {@link switchMapTo}\n *\n * @param {ObservableInput} innerObservable An Observable to replace each value from\n * the source Observable.\n * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]\n * A function to produce the value on the output Observable based on the values\n * and the indices of the source (outer) emission and the inner Observable\n * emission. The arguments passed to this function are:\n * - `outerValue`: the value that came from the source\n * - `innerValue`: the value that came from the projected Observable\n * - `outerIndex`: the \"index\" of the value that came from the source\n * - `innerIndex`: the \"index\" of the value from the projected Observable\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input\n * Observables being subscribed to concurrently.\n * @return {Observable} An Observable that emits items from the given\n * `innerObservable` (and optionally transformed through `resultSelector`) every\n * time a value is emitted on the source Observable.\n * @method mergeMapTo\n * @owner Observable\n ",
+          "range": [
+            105,
+            2129
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 45,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=mergeMapTo.js.map",
+          "range": [
+            2308,
+            2346
+          ],
+          "loc": {
+            "start": {
+              "line": 49,
+              "column": 0
+            },
+            "end": {
+              "line": 49,
+              "column": 38
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    2307
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 48,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": " tslint:enable:max-line-length ",
+      "range": [
+        69,
+        104
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Projects each source value to the same Observable which is merged multiple\n * times in the output Observable.\n *\n * <span class=\"informal\">It's like {@link mergeMap}, but maps each value always\n * to the same inner Observable.</span>\n *\n * <img src=\"./img/mergeMapTo.png\" width=\"100%\">\n *\n * Maps each source value to the given Observable `innerObservable` regardless\n * of the source value, and then merges those resulting Observables into one\n * single Observable, which is the output Observable.\n *\n * @example <caption>For each click event, start an interval Observable ticking every 1 second</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var result = clicks.mergeMapTo(Rx.Observable.interval(1000));\n * result.subscribe(x => console.log(x));\n *\n * @see {@link concatMapTo}\n * @see {@link merge}\n * @see {@link mergeAll}\n * @see {@link mergeMap}\n * @see {@link mergeScan}\n * @see {@link switchMapTo}\n *\n * @param {ObservableInput} innerObservable An Observable to replace each value from\n * the source Observable.\n * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]\n * A function to produce the value on the output Observable based on the values\n * and the indices of the source (outer) emission and the inner Observable\n * emission. The arguments passed to this function are:\n * - `outerValue`: the value that came from the source\n * - `innerValue`: the value that came from the projected Observable\n * - `outerIndex`: the \"index\" of the value that came from the source\n * - `innerIndex`: the \"index\" of the value from the projected Observable\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input\n * Observables being subscribed to concurrently.\n * @return {Observable} An Observable that emits items from the given\n * `innerObservable` (and optionally transformed through `resultSelector`) every\n * time a value is emitted on the source Observable.\n * @method mergeMapTo\n * @owner Observable\n ",
+      "range": [
+        105,
+        2129
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 45,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=mergeMapTo.js.map",
+      "range": [
+        2308,
+        2346
+      ],
+      "loc": {
+        "start": {
+          "line": 49,
+          "column": 0
+        },
+        "end": {
+          "line": 49,
+          "column": 38
+        }
+      }
+    }
+  ]
+}

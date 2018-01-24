@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">spec-js/Observable-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObservableInputDoc.html">ObservableInput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SubscribableOrPromiseDoc.html">SubscribableOrPromise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~TeardownLogicDoc.html">TeardownLogic</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Symbol">Rx.Symbol</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxTimeoutError.html">AjaxTimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html">AjaxRequest</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operators</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operators/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-catchError">catchError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-tap">tap</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/scheduler/Action.js~Action.html">Action</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animationFrame">animationFrame</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asap">asap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-async">async</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-queue">queue</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$iterator">$$iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$observable">$$observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/TimeoutError.js~TimeoutError.html">TimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/Observable-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var __extends = (this &amp;&amp; this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var chai_1 = require(&apos;chai&apos;);
+var sinon = require(&apos;sinon&apos;);
+var Rx = require(&apos;../dist/package/Rx&apos;);
+var map_1 = require(&apos;../dist/package/operators/map&apos;);
+var Subscriber = Rx.Subscriber;
+var Observable = Rx.Observable;
+function expectFullObserver(val) {
+    chai_1.expect(val).to.be.a(&apos;object&apos;);
+    chai_1.expect(val.next).to.be.a(&apos;function&apos;);
+    chai_1.expect(val.error).to.be.a(&apos;function&apos;);
+    chai_1.expect(val.complete).to.be.a(&apos;function&apos;);
+    chai_1.expect(val.closed).to.be.a(&apos;boolean&apos;);
+}
+/** @test {Observable} */
+describe(&apos;Observable&apos;, function () {
+    it(&apos;should be constructed with a subscriber function&apos;, function (done) {
+        var source = new Observable(function (observer) {
+            expectFullObserver(observer);
+            observer.next(1);
+            observer.complete();
+        });
+        source.subscribe(function (x) { chai_1.expect(x).to.equal(1); }, null, done);
+    });
+    it(&apos;should send errors thrown in the constructor down the error path&apos;, function (done) {
+        new Observable(function (observer) {
+            throw new Error(&apos;this should be handled&apos;);
+        })
+            .subscribe({
+            error: function (err) {
+                chai_1.expect(err).to.deep.equal(new Error(&apos;this should be handled&apos;));
+                done();
+            }
+        });
+    });
+    it(&apos;should not send error to error handler for observable have source&apos;, function () {
+        var source = Observable.of(1);
+        var observable = new Observable();
+        observable.source = source;
+        chai_1.expect(function () {
+            observable.subscribe(function (x) {
+                throw new Error(&apos;error&apos;);
+            });
+        }).to.throw();
+    });
+    it(&apos;should rethrow if sink has syncErrorThrowable = false&apos;, function () {
+        var observable = new Observable(function (observer) {
+            observer.next(1);
+        });
+        var sink = Subscriber.create(function () {
+            throw &apos;error!&apos;;
+        });
+        chai_1.expect(function () {
+            observable.subscribe(sink);
+        }).to.throw(&apos;error!&apos;);
+    });
+    describe(&apos;forEach&apos;, function () {
+        it(&apos;should iterate and return a Promise&apos;, function (done) {
+            var expected = [1, 2, 3];
+            var result = Observable.of(1, 2, 3).forEach(function (x) {
+                chai_1.expect(x).to.equal(expected.shift());
+            }, Promise)
+                .then(function () {
+                done();
+            });
+            chai_1.expect(result.then).to.be.a(&apos;function&apos;);
+        });
+        it(&apos;should reject promise when in error&apos;, function (done) {
+            Observable.throw(&apos;bad&apos;).forEach(function (x) {
+                done(new Error(&apos;should not be called&apos;));
+            }, Promise).then(function () {
+                done(new Error(&apos;should not complete&apos;));
+            }, function (err) {
+                chai_1.expect(err).to.equal(&apos;bad&apos;);
+                done();
+            });
+        });
+        it(&apos;should allow Promise to be globally configured&apos;, function (done) {
+            var wasCalled = false;
+            __root__.Rx = {};
+            __root__.Rx.config = {};
+            __root__.Rx.config.Promise = function MyPromise(callback) {
+                wasCalled = true;
+                return new Promise(callback);
+            };
+            Observable.of(42).forEach(function (x) {
+                chai_1.expect(x).to.equal(42);
+            }).then(function () {
+                chai_1.expect(wasCalled).to.be.true;
+                delete __root__.Rx;
+                done();
+            });
+        });
+        it(&apos;should reject promise if nextHandler throws&apos;, function (done) {
+            var results = [];
+            Observable.of(1, 2, 3).forEach(function (x) {
+                if (x === 3) {
+                    throw new Error(&apos;NO THREES!&apos;);
+                }
+                results.push(x);
+            }, Promise)
+                .then(function () {
+                done(new Error(&apos;should not be called&apos;));
+            }, function (err) {
+                chai_1.expect(err).to.be.an(&apos;error&apos;, &apos;NO THREES!&apos;);
+                chai_1.expect(results).to.deep.equal([1, 2]);
+            }).then(function () {
+                done();
+            });
+        });
+        it(&apos;should handle a synchronous throw from the next handler and tear down&apos;, function (done) {
+            var expected = new Error(&apos;I told, you Bobby Boucher, twos are the debil!&apos;);
+            var unsubscribeCalled = false;
+            var syncObservable = new Observable(function (observer) {
+                observer.next(1);
+                observer.next(2);
+                observer.next(3);
+                return function () {
+                    unsubscribeCalled = true;
+                };
+            });
+            var results = [];
+            syncObservable.forEach(function (x) {
+                results.push(x);
+                if (x === 2) {
+                    throw expected;
+                }
+            }).then(function () {
+                done(new Error(&apos;should not be called&apos;));
+            }, function (err) {
+                results.push(err);
+                chai_1.expect(results).to.deep.equal([1, 2, expected]);
+                chai_1.expect(unsubscribeCalled).to.be.true;
+                done();
+            });
+        });
+        it(&apos;should handle an asynchronous throw from the next handler and tear down&apos;, function (done) {
+            var expected = new Error(&apos;I told, you Bobby Boucher, twos are the debil!&apos;);
+            var unsubscribeCalled = false;
+            var syncObservable = new Observable(function (observer) {
+                var i = 1;
+                var id = setInterval(function () { return observer.next(i++); }, 1);
+                return function () {
+                    clearInterval(id);
+                    unsubscribeCalled = true;
+                };
+            });
+            var results = [];
+            syncObservable.forEach(function (x) {
+                results.push(x);
+                if (x === 2) {
+                    throw expected;
+                }
+            }).then(function () {
+                done(new Error(&apos;should not be called&apos;));
+            }, function (err) {
+                results.push(err);
+                chai_1.expect(results).to.deep.equal([1, 2, expected]);
+                chai_1.expect(unsubscribeCalled).to.be.true;
+                done();
+            });
+        });
+    });
+    describe(&apos;subscribe&apos;, function () {
+        it(&apos;should be synchronous&apos;, function () {
+            var subscribed = false;
+            var nexted;
+            var completed;
+            var source = new Observable(function (observer) {
+                subscribed = true;
+                observer.next(&apos;wee&apos;);
+                chai_1.expect(nexted).to.equal(&apos;wee&apos;);
+                observer.complete();
+                chai_1.expect(completed).to.be.true;
+            });
+            chai_1.expect(subscribed).to.be.false;
+            var mutatedByNext = false;
+            var mutatedByComplete = false;
+            source.subscribe(function (x) {
+                nexted = x;
+                mutatedByNext = true;
+            }, null, function () {
+                completed = true;
+                mutatedByComplete = true;
+            });
+            chai_1.expect(mutatedByNext).to.be.true;
+            chai_1.expect(mutatedByComplete).to.be.true;
+        });
+        it(&apos;should work when subscribe is called with no arguments&apos;, function () {
+            var source = new Observable(function (subscriber) {
+                subscriber.next(&apos;foo&apos;);
+                subscriber.complete();
+            });
+            source.subscribe();
+        });
+        it(&apos;should not be unsubscribed when other empty subscription completes&apos;, function () {
+            var unsubscribeCalled = false;
+            var source = new Observable(function () {
+                return function () {
+                    unsubscribeCalled = true;
+                };
+            });
+            source.subscribe();
+            chai_1.expect(unsubscribeCalled).to.be.false;
+            Observable.empty().subscribe();
+            chai_1.expect(unsubscribeCalled).to.be.false;
+        });
+        it(&apos;should not be unsubscribed when other subscription with same observer completes&apos;, function () {
+            var unsubscribeCalled = false;
+            var source = new Observable(function () {
+                return function () {
+                    unsubscribeCalled = true;
+                };
+            });
+            var observer = {
+                next: function () { }
+            };
+            source.subscribe(observer);
+            chai_1.expect(unsubscribeCalled).to.be.false;
+            Observable.empty().subscribe(observer);
+            chai_1.expect(unsubscribeCalled).to.be.false;
+        });
+        it(&apos;should run unsubscription logic when an error is sent synchronously and subscribe is called with no arguments&apos;, function () {
+            var unsubscribeCalled = false;
+            var source = new Observable(function (subscriber) {
+                subscriber.error(0);
+                return function () {
+                    unsubscribeCalled = true;
+                };
+            });
+            try {
+                source.subscribe();
+            }
+            catch (e) {
+            }
+            chai_1.expect(unsubscribeCalled).to.be.true;
+        });
+        it(&apos;should run unsubscription logic when an error is sent asynchronously and subscribe is called with no arguments&apos;, function (done) {
+            var sandbox = sinon.sandbox.create();
+            var fakeTimer = sandbox.useFakeTimers();
+            var unsubscribeCalled = false;
+            var source = new Observable(function (subscriber) {
+                var id = setInterval(function () {
+                    try {
+                        subscriber.error(0);
+                    }
+                    catch (e) {
+                    }
+                }, 1);
+                return function () {
+                    clearInterval(id);
+                    unsubscribeCalled = true;
+                };
+            });
+            source.subscribe();
+            setTimeout(function () {
+                var err;
+                var errHappened = false;
+                try {
+                    chai_1.expect(unsubscribeCalled).to.be.true;
+                }
+                catch (e) {
+                    err = e;
+                    errHappened = true;
+                }
+                finally {
+                    if (!errHappened) {
+                        done();
+                    }
+                    else {
+                        done(err);
+                    }
+                }
+            }, 100);
+            fakeTimer.tick(110);
+            sandbox.restore();
+        });
+        it(&apos;should return a Subscription that calls the unsubscribe function returned by the subscriber&apos;, function () {
+            var unsubscribeCalled = false;
+            var source = new Observable(function () {
+                return function () {
+                    unsubscribeCalled = true;
+                };
+            });
+            var sub = source.subscribe(function () {
+                //noop
+            });
+            chai_1.expect(sub instanceof Rx.Subscription).to.be.true;
+            chai_1.expect(unsubscribeCalled).to.be.false;
+            chai_1.expect(sub.unsubscribe).to.be.a(&apos;function&apos;);
+            sub.unsubscribe();
+            chai_1.expect(unsubscribeCalled).to.be.true;
+        });
+        it(&apos;should run unsubscription logic when an error is thrown sending messages synchronously&apos;, function () {
+            var messageError = false;
+            var messageErrorValue = false;
+            var unsubscribeCalled = false;
+            var sub;
+            var source = new Observable(function (observer) {
+                observer.next(&apos;boo!&apos;);
+                return function () {
+                    unsubscribeCalled = true;
+                };
+            });
+            try {
+                sub = source.subscribe(function (x) { throw x; });
+            }
+            catch (e) {
+                messageError = true;
+                messageErrorValue = e;
+            }
+            chai_1.expect(sub).to.be.a(&apos;undefined&apos;);
+            chai_1.expect(unsubscribeCalled).to.be.true;
+            chai_1.expect(messageError).to.be.true;
+            chai_1.expect(messageErrorValue).to.equal(&apos;boo!&apos;);
+        });
+        it(&apos;should dispose of the subscriber when an error is thrown sending messages synchronously&apos;, function () {
+            var messageError = false;
+            var messageErrorValue = false;
+            var unsubscribeCalled = false;
+            var sub;
+            var subscriber = new Subscriber(function (x) { throw x; });
+            var source = new Observable(function (observer) {
+                observer.next(&apos;boo!&apos;);
+                return function () {
+                    unsubscribeCalled = true;
+                };
+            });
+            try {
+                sub = source.subscribe(subscriber);
+            }
+            catch (e) {
+                messageError = true;
+                messageErrorValue = e;
+            }
+            chai_1.expect(sub).to.be.a(&apos;undefined&apos;);
+            chai_1.expect(subscriber.closed).to.be.true;
+            chai_1.expect(unsubscribeCalled).to.be.true;
+            chai_1.expect(messageError).to.be.true;
+            chai_1.expect(messageErrorValue).to.equal(&apos;boo!&apos;);
+        });
+        it(&apos;should ignore next messages after unsubscription&apos;, function () {
+            var times = 0;
+            new Observable(function (observer) {
+                observer.next(0);
+                observer.next(0);
+                observer.next(0);
+                observer.next(0);
+            })
+                .do(function () { return times += 1; })
+                .subscribe(function () {
+                if (times === 2) {
+                    this.unsubscribe();
+                }
+            });
+            chai_1.expect(times).to.equal(2);
+        });
+        it(&apos;should ignore error messages after unsubscription&apos;, function () {
+            var times = 0;
+            var errorCalled = false;
+            new Observable(function (observer) {
+                observer.next(0);
+                observer.next(0);
+                observer.next(0);
+                observer.error(0);
+            })
+                .do(function () { return times += 1; })
+                .subscribe(function () {
+                if (times === 2) {
+                    this.unsubscribe();
+                }
+            }, function () { errorCalled = true; });
+            chai_1.expect(times).to.equal(2);
+            chai_1.expect(errorCalled).to.be.false;
+        });
+        it(&apos;should ignore complete messages after unsubscription&apos;, function () {
+            var times = 0;
+            var completeCalled = false;
+            new Observable(function (observer) {
+                observer.next(0);
+                observer.next(0);
+                observer.next(0);
+                observer.complete();
+            })
+                .do(function () { return times += 1; })
+                .subscribe(function () {
+                if (times === 2) {
+                    this.unsubscribe();
+                }
+            }, null, function () { completeCalled = true; });
+            chai_1.expect(times).to.equal(2);
+            chai_1.expect(completeCalled).to.be.false;
+        });
+        describe(&apos;when called with an anonymous observer&apos;, function () {
+            it(&apos;should accept an anonymous observer with just a next function and call the next function in the context&apos; +
+                &apos; of the anonymous observer&apos;, function (done) {
+                //intentionally not using lambda to avoid typescript&apos;s this context capture
+                var o = {
+                    myValue: &apos;foo&apos;,
+                    next: function next(x) {
+                        chai_1.expect(this.myValue).to.equal(&apos;foo&apos;);
+                        chai_1.expect(x).to.equal(1);
+                        done();
+                    }
+                };
+                Observable.of(1).subscribe(o);
+            });
+            it(&apos;should accept an anonymous observer with just an error function and call the error function in the context&apos; +
+                &apos; of the anonymous observer&apos;, function (done) {
+                //intentionally not using lambda to avoid typescript&apos;s this context capture
+                var o = {
+                    myValue: &apos;foo&apos;,
+                    error: function error(err) {
+                        chai_1.expect(this.myValue).to.equal(&apos;foo&apos;);
+                        chai_1.expect(err).to.equal(&apos;bad&apos;);
+                        done();
+                    }
+                };
+                Observable.throw(&apos;bad&apos;).subscribe(o);
+            });
+            it(&apos;should accept an anonymous observer with just a complete function and call the complete function in the&apos; +
+                &apos; context of the anonymous observer&apos;, function (done) {
+                //intentionally not using lambda to avoid typescript&apos;s this context capture
+                var o = {
+                    myValue: &apos;foo&apos;,
+                    complete: function complete() {
+                        chai_1.expect(this.myValue).to.equal(&apos;foo&apos;);
+                        done();
+                    }
+                };
+                Observable.empty().subscribe(o);
+            });
+            it(&apos;should accept an anonymous observer with no functions at all&apos;, function () {
+                chai_1.expect(function () {
+                    Observable.empty().subscribe({});
+                }).not.to.throw();
+            });
+            it(&apos;should run unsubscription logic when an error is thrown sending messages synchronously to an&apos; +
+                &apos; anonymous observer&apos;, function () {
+                var messageError = false;
+                var messageErrorValue = false;
+                var unsubscribeCalled = false;
+                //intentionally not using lambda to avoid typescript&apos;s this context capture
+                var o = {
+                    myValue: &apos;foo&apos;,
+                    next: function next(x) {
+                        chai_1.expect(this.myValue).to.equal(&apos;foo&apos;);
+                        throw x;
+                    }
+                };
+                var sub;
+                var source = new Observable(function (observer) {
+                    observer.next(&apos;boo!&apos;);
+                    return function () {
+                        unsubscribeCalled = true;
+                    };
+                });
+                try {
+                    sub = source.subscribe(o);
+                }
+                catch (e) {
+                    messageError = true;
+                    messageErrorValue = e;
+                }
+                chai_1.expect(sub).to.be.a(&apos;undefined&apos;);
+                chai_1.expect(unsubscribeCalled).to.be.true;
+                chai_1.expect(messageError).to.be.true;
+                chai_1.expect(messageErrorValue).to.equal(&apos;boo!&apos;);
+            });
+            it(&apos;should ignore next messages after unsubscription&apos;, function () {
+                var times = 0;
+                new Observable(function (observer) {
+                    observer.next(0);
+                    observer.next(0);
+                    observer.next(0);
+                    observer.next(0);
+                })
+                    .do(function () { return times += 1; })
+                    .subscribe({
+                    next: function () {
+                        if (times === 2) {
+                            this.unsubscribe();
+                        }
+                    }
+                });
+                chai_1.expect(times).to.equal(2);
+            });
+            it(&apos;should ignore error messages after unsubscription&apos;, function () {
+                var times = 0;
+                var errorCalled = false;
+                new Observable(function (observer) {
+                    observer.next(0);
+                    observer.next(0);
+                    observer.next(0);
+                    observer.error(0);
+                })
+                    .do(function () { return times += 1; })
+                    .subscribe({
+                    next: function () {
+                        if (times === 2) {
+                            this.unsubscribe();
+                        }
+                    },
+                    error: function () { errorCalled = true; }
+                });
+                chai_1.expect(times).to.equal(2);
+                chai_1.expect(errorCalled).to.be.false;
+            });
+            it(&apos;should ignore complete messages after unsubscription&apos;, function () {
+                var times = 0;
+                var completeCalled = false;
+                new Observable(function (observer) {
+                    observer.next(0);
+                    observer.next(0);
+                    observer.next(0);
+                    observer.complete();
+                })
+                    .do(function () { return times += 1; })
+                    .subscribe({
+                    next: function () {
+                        if (times === 2) {
+                            this.unsubscribe();
+                        }
+                    },
+                    complete: function () { completeCalled = true; }
+                });
+                chai_1.expect(times).to.equal(2);
+                chai_1.expect(completeCalled).to.be.false;
+            });
+        });
+    });
+    describe(&apos;pipe&apos;, function () {
+        it(&apos;should exist&apos;, function () {
+            var source = Observable.of(&apos;test&apos;);
+            chai_1.expect(source.pipe).to.be.a(&apos;function&apos;);
+        });
+        it(&apos;should pipe multiple operations&apos;, function (done) {
+            Observable.of(&apos;test&apos;)
+                .pipe(map_1.map(function (x) { return x + x; }), map_1.map(function (x) { return x + &apos;!!!&apos;; }))
+                .subscribe(function (x) {
+                chai_1.expect(x).to.equal(&apos;testtest!!!&apos;);
+            }, null, done);
+        });
+        it(&apos;should return the same observable if there are no arguments&apos;, function () {
+            var source = Observable.of(&apos;test&apos;);
+            var result = source.pipe();
+            chai_1.expect(result).to.equal(source);
+        });
+    });
+});
+/** @test {Observable} */
+describe(&apos;Observable.create&apos;, function () {
+    asDiagram(&apos;create(obs =&gt; { obs.next(1); })&apos;)(&apos;should create a cold observable that emits just 1&apos;, function () {
+        var e1 = Observable.create(function (obs) { obs.next(1); });
+        var expected = &apos;x&apos;;
+        expectObservable(e1).toBe(expected, { x: 1 });
+    });
+    it(&apos;should create an Observable&apos;, function () {
+        var result = Observable.create(function () {
+            //noop
+        });
+        chai_1.expect(result instanceof Observable).to.be.true;
+    });
+    it(&apos;should provide an observer to the function&apos;, function () {
+        var called = false;
+        var result = Observable.create(function (observer) {
+            called = true;
+            expectFullObserver(observer);
+            observer.complete();
+        });
+        chai_1.expect(called).to.be.false;
+        result.subscribe(function () {
+            //noop
+        });
+        chai_1.expect(called).to.be.true;
+    });
+    it(&apos;should send errors thrown in the passed function down the error path&apos;, function (done) {
+        Observable.create(function (observer) {
+            throw new Error(&apos;this should be handled&apos;);
+        })
+            .subscribe({
+            error: function (err) {
+                chai_1.expect(err).to.deep.equal(new Error(&apos;this should be handled&apos;));
+                done();
+            }
+        });
+    });
+});
+/** @test {Observable} */
+describe(&apos;Observable.lift&apos;, function () {
+    var MyCustomObservable = (function (_super) {
+        __extends(MyCustomObservable, _super);
+        function MyCustomObservable() {
+            _super.apply(this, arguments);
+        }
+        MyCustomObservable.from = function (source) {
+            var observable = new MyCustomObservable();
+            observable.source = source;
+            return observable;
+        };
+        MyCustomObservable.prototype.lift = function (operator) {
+            var observable = new MyCustomObservable();
+            observable.source = this;
+            observable.operator = operator;
+            return observable;
+        };
+        return MyCustomObservable;
+    }(Rx.Observable));
+    it(&apos;should be overrideable in a custom Observable type that composes&apos;, function (done) {
+        var result = new MyCustomObservable(function (observer) {
+            observer.next(1);
+            observer.next(2);
+            observer.next(3);
+            observer.complete();
+        }).map(function (x) { return 10 * x; });
+        chai_1.expect(result instanceof MyCustomObservable).to.be.true;
+        var expected = [10, 20, 30];
+        result.subscribe(function (x) {
+            chai_1.expect(x).to.equal(expected.shift());
+        }, function (x) {
+            done(new Error(&apos;should not be called&apos;));
+        }, function () {
+            done();
+        });
+    });
+    it(&apos;should compose through multicast and refCount&apos;, function (done) {
+        var result = new MyCustomObservable(function (observer) {
+            observer.next(1);
+            observer.next(2);
+            observer.next(3);
+            observer.complete();
+        })
+            .multicast(function () { return new Rx.Subject(); })
+            .refCount()
+            .map(function (x) { return 10 * x; });
+        chai_1.expect(result instanceof MyCustomObservable).to.be.true;
+        var expected = [10, 20, 30];
+        result.subscribe(function (x) {
+            chai_1.expect(x).to.equal(expected.shift());
+        }, function (x) {
+            done(new Error(&apos;should not be called&apos;));
+        }, function () {
+            done();
+        });
+    });
+    it(&apos;should compose through multicast with selector function&apos;, function (done) {
+        var result = new MyCustomObservable(function (observer) {
+            observer.next(1);
+            observer.next(2);
+            observer.next(3);
+            observer.complete();
+        })
+            .multicast(function () { return new Rx.Subject(); }, function (shared) { return shared.map(function (x) { return 10 * x; }); });
+        chai_1.expect(result instanceof MyCustomObservable).to.be.true;
+        var expected = [10, 20, 30];
+        result.subscribe(function (x) {
+            chai_1.expect(x).to.equal(expected.shift());
+        }, function (x) {
+            done(new Error(&apos;should not be called&apos;));
+        }, function () {
+            done();
+        });
+    });
+    it(&apos;should compose through combineLatest&apos;, function () {
+        var e1 = cold(&apos;-a--b-----c-d-e-|&apos;);
+        var e2 = cold(&apos;--1--2-3-4---|   &apos;);
+        var expected = &apos;--A-BC-D-EF-G-H-|&apos;;
+        var result = MyCustomObservable.from(e1).combineLatest(e2, function (a, b) { return String(a) + String(b); });
+        chai_1.expect(result instanceof MyCustomObservable).to.be.true;
+        expectObservable(result).toBe(expected, {
+            A: &apos;a1&apos;, B: &apos;b1&apos;, C: &apos;b2&apos;, D: &apos;b3&apos;, E: &apos;b4&apos;, F: &apos;c4&apos;, G: &apos;d4&apos;, H: &apos;e4&apos;
+        });
+    });
+    it(&apos;should compose through concat&apos;, function () {
+        var e1 = cold(&apos;--a--b-|&apos;);
+        var e2 = cold(&apos;--x---y--|&apos;);
+        var expected = &apos;--a--b---x---y--|&apos;;
+        var result = MyCustomObservable.from(e1).concat(e2, rxTestScheduler);
+        chai_1.expect(result instanceof MyCustomObservable).to.be.true;
+        expectObservable(result).toBe(expected);
+    });
+    it(&apos;should compose through merge&apos;, function () {
+        var e1 = cold(&apos;-a--b-| &apos;);
+        var e2 = cold(&apos;--x--y-|&apos;);
+        var expected = &apos;-ax-by-|&apos;;
+        var result = MyCustomObservable.from(e1).merge(e2, rxTestScheduler);
+        chai_1.expect(result instanceof MyCustomObservable).to.be.true;
+        expectObservable(result).toBe(expected);
+    });
+    it(&apos;should compose through race&apos;, function () {
+        var e1 = cold(&apos;---a-----b-----c----|&apos;);
+        var e1subs = &apos;^                   !&apos;;
+        var e2 = cold(&apos;------x-----y-----z----|&apos;);
+        var e2subs = &apos;^  !&apos;;
+        var expected = &apos;---a-----b-----c----|&apos;;
+        var result = MyCustomObservable.from(e1).race(e2);
+        chai_1.expect(result instanceof MyCustomObservable).to.be.true;
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+    it(&apos;should compose through zip&apos;, function () {
+        var e1 = cold(&apos;-a--b-----c-d-e-|&apos;);
+        var e2 = cold(&apos;--1--2-3-4---|   &apos;);
+        var expected = (&apos;--A--B----C-D|   &apos;);
+        var result = MyCustomObservable.from(e1).zip(e2, function (a, b) { return String(a) + String(b); });
+        chai_1.expect(result instanceof MyCustomObservable).to.be.true;
+        expectObservable(result).toBe(expected, {
+            A: &apos;a1&apos;, B: &apos;b2&apos;, C: &apos;c3&apos;, D: &apos;d4&apos;
+        });
+    });
+    it(&apos;should allow injecting behaviors into all subscribers in an operator &apos; +
+        &apos;chain when overridden&apos;, function (done) {
+        // The custom Subscriber
+        var log = [];
+        var LogSubscriber = (function (_super) {
+            __extends(LogSubscriber, _super);
+            function LogSubscriber() {
+                _super.apply(this, arguments);
+            }
+            LogSubscriber.prototype.next = function (value) {
+                log.push(&apos;next &apos; + value);
+                if (!this.isStopped) {
+                    this._next(value);
+                }
+            };
+            return LogSubscriber;
+        }(Rx.Subscriber));
+        // The custom Operator
+        var LogOperator = (function () {
+            function LogOperator(childOperator) {
+                this.childOperator = childOperator;
+            }
+            LogOperator.prototype.call = function (subscriber, source) {
+                return this.childOperator.call(new LogSubscriber(subscriber), source);
+            };
+            return LogOperator;
+        }());
+        // The custom Observable
+        var LogObservable = (function (_super) {
+            __extends(LogObservable, _super);
+            function LogObservable() {
+                _super.apply(this, arguments);
+            }
+            LogObservable.prototype.lift = function (operator) {
+                var observable = new LogObservable();
+                observable.source = this;
+                observable.operator = new LogOperator(operator);
+                return observable;
+            };
+            return LogObservable;
+        }(Observable));
+        // Use the LogObservable
+        var result = new LogObservable(function (observer) {
+            observer.next(1);
+            observer.next(2);
+            observer.next(3);
+            observer.complete();
+        })
+            .map(function (x) { return 10 * x; })
+            .filter(function (x) { return x &gt; 15; })
+            .count();
+        chai_1.expect(result instanceof LogObservable).to.be.true;
+        var expected = [2];
+        result.subscribe(function (x) {
+            chai_1.expect(x).to.equal(expected.shift());
+        }, function (x) {
+            done(new Error(&apos;should not be called&apos;));
+        }, function () {
+            chai_1.expect(log).to.deep.equal([
+                &apos;next 10&apos;,
+                &apos;next 20&apos;,
+                &apos;next 20&apos;,
+                &apos;next 30&apos;,
+                &apos;next 30&apos;,
+                &apos;next 2&apos; // count
+            ]);
+            done();
+        });
+    });
+});
+//# sourceMappingURL=Observable-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

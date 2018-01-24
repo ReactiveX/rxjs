@@ -1,0 +1,558 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              26,
+              37
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 26
+              },
+              "end": {
+                "line": 1,
+                "column": 37
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "combineLatest",
+            "range": [
+              9,
+              22
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 22
+              }
+            }
+          },
+          "range": [
+            9,
+            37
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 37
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/combineLatest",
+        "raw": "'../operators/combineLatest'",
+        "range": [
+          45,
+          73
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 45
+          },
+          "end": {
+            "line": 1,
+            "column": 73
+          }
+        }
+      },
+      "range": [
+        0,
+        74
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 74
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": " tslint:enable:max-line-length ",
+          "range": [
+            75,
+            110
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 35
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Combines multiple Observables to create an Observable whose values are\n * calculated from the latest values of each of its input Observables.\n *\n * <span class=\"informal\">Whenever any input Observable emits a value, it\n * computes a formula using the latest values from all the inputs, then emits\n * the output of that formula.</span>\n *\n * <img src=\"./img/combineLatest.png\" width=\"100%\">\n *\n * `combineLatest` combines the values from this Observable with values from\n * Observables passed as arguments. This is done by subscribing to each\n * Observable, in order, and collecting an array of each of the most recent\n * values any time any of the input Observables emits, then either taking that\n * array and passing it as arguments to an optional `project` function and\n * emitting the return value of that, or just emitting the array of recent\n * values directly if there is no `project` function.\n *\n * @example <caption>Dynamically calculate the Body-Mass Index from an Observable of weight and one for height</caption>\n * var weight = Rx.Observable.of(70, 72, 76, 79, 75);\n * var height = Rx.Observable.of(1.76, 1.77, 1.78);\n * var bmi = weight.combineLatest(height, (w, h) => w / (h * h));\n * bmi.subscribe(x => console.log('BMI is ' + x));\n *\n * // With output to console:\n * // BMI is 24.212293388429753\n * // BMI is 23.93948099205209\n * // BMI is 23.671253629592222\n *\n * @see {@link combineAll}\n * @see {@link merge}\n * @see {@link withLatestFrom}\n *\n * @param {ObservableInput} other An input Observable to combine with the source\n * Observable. More than one input Observables may be given as argument.\n * @param {function} [project] An optional function to project the values from\n * the combined latest values into a new value on the output Observable.\n * @return {Observable} An Observable of projected values from the most recent\n * values from each input Observable, or an array of the most recent values from\n * each input Observable.\n * @method combineLatest\n * @owner Observable\n ",
+          "range": [
+            111,
+            2121
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 45,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "combineLatest",
+          "range": [
+            2138,
+            2151
+          ],
+          "loc": {
+            "start": {
+              "line": 46,
+              "column": 16
+            },
+            "end": {
+              "line": 46,
+              "column": 29
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "RestElement",
+            "argument": {
+              "type": "Identifier",
+              "name": "observables",
+              "range": [
+                2155,
+                2166
+              ],
+              "loc": {
+                "start": {
+                  "line": 46,
+                  "column": 33
+                },
+                "end": {
+                  "line": 46,
+                  "column": 44
+                }
+              }
+            },
+            "range": [
+              2152,
+              2166
+            ],
+            "loc": {
+              "start": {
+                "line": 46,
+                "column": 30
+              },
+              "end": {
+                "line": 46,
+                "column": 44
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      2181,
+                      2192
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 47,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 47,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "SpreadElement",
+                      "argument": {
+                        "type": "Identifier",
+                        "name": "observables",
+                        "range": [
+                          2196,
+                          2207
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 47,
+                            "column": 26
+                          },
+                          "end": {
+                            "line": 47,
+                            "column": 37
+                          }
+                        }
+                      },
+                      "range": [
+                        2193,
+                        2207
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 47,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 47,
+                          "column": 37
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    2181,
+                    2208
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 47,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 47,
+                      "column": 38
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      2209,
+                      2213
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 47,
+                        "column": 39
+                      },
+                      "end": {
+                        "line": 47,
+                        "column": 43
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2181,
+                  2214
+                ],
+                "loc": {
+                  "start": {
+                    "line": 47,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 47,
+                    "column": 44
+                  }
+                }
+              },
+              "range": [
+                2174,
+                2215
+              ],
+              "loc": {
+                "start": {
+                  "line": 47,
+                  "column": 4
+                },
+                "end": {
+                  "line": 47,
+                  "column": 45
+                }
+              }
+            }
+          ],
+          "range": [
+            2168,
+            2217
+          ],
+          "loc": {
+            "start": {
+              "line": 46,
+              "column": 46
+            },
+            "end": {
+              "line": 48,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          2129,
+          2217
+        ],
+        "loc": {
+          "start": {
+            "line": 46,
+            "column": 7
+          },
+          "end": {
+            "line": 48,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": " tslint:enable:max-line-length ",
+            "range": [
+              75,
+              110
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 2,
+                "column": 35
+              }
+            }
+          },
+          {
+            "type": "Block",
+            "value": "*\n * Combines multiple Observables to create an Observable whose values are\n * calculated from the latest values of each of its input Observables.\n *\n * <span class=\"informal\">Whenever any input Observable emits a value, it\n * computes a formula using the latest values from all the inputs, then emits\n * the output of that formula.</span>\n *\n * <img src=\"./img/combineLatest.png\" width=\"100%\">\n *\n * `combineLatest` combines the values from this Observable with values from\n * Observables passed as arguments. This is done by subscribing to each\n * Observable, in order, and collecting an array of each of the most recent\n * values any time any of the input Observables emits, then either taking that\n * array and passing it as arguments to an optional `project` function and\n * emitting the return value of that, or just emitting the array of recent\n * values directly if there is no `project` function.\n *\n * @example <caption>Dynamically calculate the Body-Mass Index from an Observable of weight and one for height</caption>\n * var weight = Rx.Observable.of(70, 72, 76, 79, 75);\n * var height = Rx.Observable.of(1.76, 1.77, 1.78);\n * var bmi = weight.combineLatest(height, (w, h) => w / (h * h));\n * bmi.subscribe(x => console.log('BMI is ' + x));\n *\n * // With output to console:\n * // BMI is 24.212293388429753\n * // BMI is 23.93948099205209\n * // BMI is 23.671253629592222\n *\n * @see {@link combineAll}\n * @see {@link merge}\n * @see {@link withLatestFrom}\n *\n * @param {ObservableInput} other An input Observable to combine with the source\n * Observable. More than one input Observables may be given as argument.\n * @param {function} [project] An optional function to project the values from\n * the combined latest values into a new value on the output Observable.\n * @return {Observable} An Observable of projected values from the most recent\n * values from each input Observable, or an array of the most recent values from\n * each input Observable.\n * @method combineLatest\n * @owner Observable\n ",
+            "range": [
+              111,
+              2121
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 45,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=combineLatest.js.map",
+            "range": [
+              2218,
+              2259
+            ],
+            "loc": {
+              "start": {
+                "line": 49,
+                "column": 0
+              },
+              "end": {
+                "line": 49,
+                "column": 41
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        2122,
+        2217
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 0
+        },
+        "end": {
+          "line": 48,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": " tslint:enable:max-line-length ",
+          "range": [
+            75,
+            110
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 35
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * Combines multiple Observables to create an Observable whose values are\n * calculated from the latest values of each of its input Observables.\n *\n * <span class=\"informal\">Whenever any input Observable emits a value, it\n * computes a formula using the latest values from all the inputs, then emits\n * the output of that formula.</span>\n *\n * <img src=\"./img/combineLatest.png\" width=\"100%\">\n *\n * `combineLatest` combines the values from this Observable with values from\n * Observables passed as arguments. This is done by subscribing to each\n * Observable, in order, and collecting an array of each of the most recent\n * values any time any of the input Observables emits, then either taking that\n * array and passing it as arguments to an optional `project` function and\n * emitting the return value of that, or just emitting the array of recent\n * values directly if there is no `project` function.\n *\n * @example <caption>Dynamically calculate the Body-Mass Index from an Observable of weight and one for height</caption>\n * var weight = Rx.Observable.of(70, 72, 76, 79, 75);\n * var height = Rx.Observable.of(1.76, 1.77, 1.78);\n * var bmi = weight.combineLatest(height, (w, h) => w / (h * h));\n * bmi.subscribe(x => console.log('BMI is ' + x));\n *\n * // With output to console:\n * // BMI is 24.212293388429753\n * // BMI is 23.93948099205209\n * // BMI is 23.671253629592222\n *\n * @see {@link combineAll}\n * @see {@link merge}\n * @see {@link withLatestFrom}\n *\n * @param {ObservableInput} other An input Observable to combine with the source\n * Observable. More than one input Observables may be given as argument.\n * @param {function} [project] An optional function to project the values from\n * the combined latest values into a new value on the output Observable.\n * @return {Observable} An Observable of projected values from the most recent\n * values from each input Observable, or an array of the most recent values from\n * each input Observable.\n * @method combineLatest\n * @owner Observable\n ",
+          "range": [
+            111,
+            2121
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 45,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=combineLatest.js.map",
+          "range": [
+            2218,
+            2259
+          ],
+          "loc": {
+            "start": {
+              "line": 49,
+              "column": 0
+            },
+            "end": {
+              "line": 49,
+              "column": 41
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    2217
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 48,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": " tslint:enable:max-line-length ",
+      "range": [
+        75,
+        110
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * Combines multiple Observables to create an Observable whose values are\n * calculated from the latest values of each of its input Observables.\n *\n * <span class=\"informal\">Whenever any input Observable emits a value, it\n * computes a formula using the latest values from all the inputs, then emits\n * the output of that formula.</span>\n *\n * <img src=\"./img/combineLatest.png\" width=\"100%\">\n *\n * `combineLatest` combines the values from this Observable with values from\n * Observables passed as arguments. This is done by subscribing to each\n * Observable, in order, and collecting an array of each of the most recent\n * values any time any of the input Observables emits, then either taking that\n * array and passing it as arguments to an optional `project` function and\n * emitting the return value of that, or just emitting the array of recent\n * values directly if there is no `project` function.\n *\n * @example <caption>Dynamically calculate the Body-Mass Index from an Observable of weight and one for height</caption>\n * var weight = Rx.Observable.of(70, 72, 76, 79, 75);\n * var height = Rx.Observable.of(1.76, 1.77, 1.78);\n * var bmi = weight.combineLatest(height, (w, h) => w / (h * h));\n * bmi.subscribe(x => console.log('BMI is ' + x));\n *\n * // With output to console:\n * // BMI is 24.212293388429753\n * // BMI is 23.93948099205209\n * // BMI is 23.671253629592222\n *\n * @see {@link combineAll}\n * @see {@link merge}\n * @see {@link withLatestFrom}\n *\n * @param {ObservableInput} other An input Observable to combine with the source\n * Observable. More than one input Observables may be given as argument.\n * @param {function} [project] An optional function to project the values from\n * the combined latest values into a new value on the output Observable.\n * @return {Observable} An Observable of projected values from the most recent\n * values from each input Observable, or an array of the most recent values from\n * each input Observable.\n * @method combineLatest\n * @owner Observable\n ",
+      "range": [
+        111,
+        2121
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 45,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=combineLatest.js.map",
+      "range": [
+        2218,
+        2259
+      ],
+      "loc": {
+        "start": {
+          "line": 49,
+          "column": 0
+        },
+        "end": {
+          "line": 49,
+          "column": 41
+        }
+      }
+    }
+  ]
+}

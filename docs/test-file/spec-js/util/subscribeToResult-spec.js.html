@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">spec-js/util/subscribeToResult-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObservableInputDoc.html">ObservableInput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SubscribableOrPromiseDoc.html">SubscribableOrPromise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~TeardownLogicDoc.html">TeardownLogic</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Symbol">Rx.Symbol</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxTimeoutError.html">AjaxTimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html">AjaxRequest</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operators</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operators/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-catchError">catchError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-tap">tap</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/scheduler/Action.js~Action.html">Action</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animationFrame">animationFrame</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asap">asap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-async">async</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-queue">queue</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$iterator">$$iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$observable">$$observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/TimeoutError.js~TimeoutError.html">TimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/util/subscribeToResult-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var chai_1 = require(&apos;chai&apos;);
+var Rx = require(&apos;../../dist/package/Rx&apos;);
+var subscribeToResult_1 = require(&apos;../../dist/package/util/subscribeToResult&apos;);
+var OuterSubscriber_1 = require(&apos;../../dist/package/OuterSubscriber&apos;);
+var iterator_1 = require(&apos;../../dist/package/symbol/iterator&apos;);
+var symbol_observable_1 = require(&apos;symbol-observable&apos;);
+var Observable_1 = require(&apos;../../dist/package/Observable&apos;);
+var Subject_1 = require(&apos;../../dist/package/Subject&apos;);
+describe(&apos;subscribeToResult&apos;, function () {
+    it(&apos;should synchronously complete when subscribe to scalarObservable&apos;, function () {
+        var result = Rx.Observable.of(42);
+        var expected;
+        var subscriber = new OuterSubscriber_1.OuterSubscriber(function (x) { return expected = x; });
+        var subscription = subscribeToResult_1.subscribeToResult(subscriber, result);
+        chai_1.expect(expected).to.be.equal(42);
+        chai_1.expect(subscription).to.be.null;
+    });
+    it(&apos;should subscribe to observables that are an instanceof Rx.Observable&apos;, function (done) {
+        var expected = [1, 2, 3];
+        var result = Rx.Observable.range(1, 3);
+        var subscriber = new OuterSubscriber_1.OuterSubscriber(function (x) {
+            chai_1.expect(expected.shift()).to.be.equal(x);
+        }, function () {
+            done(new Error(&apos;should not be called&apos;));
+        }, function () {
+            chai_1.expect(expected).to.be.empty;
+            done();
+        });
+        subscribeToResult_1.subscribeToResult(subscriber, result);
+    });
+    it(&apos;should emit error when observable emits error&apos;, function (done) {
+        var result = Rx.Observable.throw(new Error(&apos;error&apos;));
+        var subscriber = new OuterSubscriber_1.OuterSubscriber(function (x) {
+            done(new Error(&apos;should not be called&apos;));
+        }, function (err) {
+            chai_1.expect(err).to.be.an(&apos;error&apos;, &apos;error&apos;);
+            done();
+        }, function () {
+            done(new Error(&apos;should not be called&apos;));
+        });
+        subscribeToResult_1.subscribeToResult(subscriber, result);
+    });
+    it(&apos;should subscribe to an array and emit synchronously&apos;, function () {
+        var result = [1, 2, 3];
+        var expected = [];
+        var subscriber = new OuterSubscriber_1.OuterSubscriber(function (x) { return expected.push(x); });
+        subscribeToResult_1.subscribeToResult(subscriber, result);
+        chai_1.expect(expected).to.be.deep.equal(result);
+    });
+    it(&apos;should subscribe to an array-like and emit synchronously&apos;, function () {
+        var result = { 0: 0, 1: 1, 2: 2, length: 3 };
+        var expected = [];
+        var subscriber = new OuterSubscriber_1.OuterSubscriber(function (x) { return expected.push(x); });
+        subscribeToResult_1.subscribeToResult(subscriber, result);
+        chai_1.expect(expected).to.be.deep.equal([0, 1, 2]);
+    });
+    it(&apos;should subscribe to a promise&apos;, function (done) {
+        var result = Promise.resolve(42);
+        var subscriber = new OuterSubscriber_1.OuterSubscriber(function (x) {
+            chai_1.expect(x).to.be.equal(42);
+        }, function () {
+            done(new Error(&apos;should not be called&apos;));
+        }, done);
+        subscribeToResult_1.subscribeToResult(subscriber, result);
+    });
+    it(&apos;should emits error when the promise rejects&apos;, function (done) {
+        var result = Promise.reject(42);
+        var subscriber = new OuterSubscriber_1.OuterSubscriber(function (x) {
+            done(new Error(&apos;should not be called&apos;));
+        }, function (x) {
+            chai_1.expect(x).to.be.equal(42);
+            done();
+        }, function () {
+            done(new Error(&apos;should not be called&apos;));
+        });
+        subscribeToResult_1.subscribeToResult(subscriber, result);
+    });
+    it(&apos;should subscribe an iterable and emit results synchronously&apos;, function () {
+        var expected;
+        var iteratorResults = [
+            { value: 42, done: false },
+            { done: true }
+        ];
+        var iterable = (_a = {},
+            _a[iterator_1.$$iterator] = function () {
+                return {
+                    next: function () {
+                        return iteratorResults.shift();
+                    }
+                };
+            },
+            _a
+        );
+        var subscriber = new OuterSubscriber_1.OuterSubscriber(function (x) { return expected = x; });
+        subscribeToResult_1.subscribeToResult(subscriber, iterable);
+        chai_1.expect(expected).to.be.equal(42);
+        var _a;
+    });
+    it(&apos;should subscribe to to an object that implements Symbol.observable&apos;, function (done) {
+        var observableSymbolObject = (_a = {}, _a[symbol_observable_1.default] = function () { return Rx.Observable.of(42); }, _a);
+        var subscriber = new OuterSubscriber_1.OuterSubscriber(function (x) {
+            chai_1.expect(x).to.be.equal(42);
+        }, function () {
+            done(new Error(&apos;should not be called&apos;));
+        }, done);
+        subscribeToResult_1.subscribeToResult(subscriber, observableSymbolObject);
+        var _a;
+    });
+    it(&apos;should emit an error if value returned by Symbol.observable call is not a valid observable&apos;, function (done) {
+        var observableSymbolObject = (_a = {}, _a[symbol_observable_1.default] = function () { return ({}); }, _a);
+        var subscriber = new OuterSubscriber_1.OuterSubscriber(function (x) {
+            done(new Error(&apos;should not be called&apos;));
+        }, function (x) {
+            chai_1.expect(x).to.be.an(&apos;error&apos;);
+            chai_1.expect(x.message).to.be.equal(&apos;Provided object does not correctly implement Symbol.observable&apos;);
+            done();
+        }, function () {
+            done(new Error(&apos;should not be called&apos;));
+        });
+        subscribeToResult_1.subscribeToResult(subscriber, observableSymbolObject);
+        var _a;
+    });
+    it(&apos;should emit an error when trying to subscribe to an unknown type of object&apos;, function (done) {
+        var subscriber = new OuterSubscriber_1.OuterSubscriber(function (x) {
+            done(new Error(&apos;should not be called&apos;));
+        }, function (x) {
+            chai_1.expect(x).to.be.an(&apos;error&apos;);
+            var msg = &apos;You provided an invalid object where a stream was expected.&apos;
+                + &apos; You can provide an Observable, Promise, Array, or Iterable.&apos;;
+            chai_1.expect(x.message).to.be.equal(msg);
+            done();
+        }, function () {
+            done(new Error(&apos;should not be called&apos;));
+        });
+        subscribeToResult_1.subscribeToResult(subscriber, {});
+    });
+    it(&apos;should emit an error when trying to subscribe to a non-object&apos;, function (done) {
+        var subscriber = new OuterSubscriber_1.OuterSubscriber(function (x) {
+            done(new Error(&apos;should not be called&apos;));
+        }, function (x) {
+            chai_1.expect(x).to.be.an(&apos;error&apos;);
+            var msg = &apos;You provided \&apos;null\&apos; where a stream was expected.&apos;
+                + &apos; You can provide an Observable, Promise, Array, or Iterable.&apos;;
+            chai_1.expect(x.message).to.be.equal(msg);
+            done();
+        }, function () {
+            done(new Error(&apos;should not be called&apos;));
+        });
+        subscribeToResult_1.subscribeToResult(subscriber, null);
+    });
+    it(&apos;should not swallow exception in inner subscriber&apos;, function () {
+        var source = new Subject_1.Subject();
+        source.mergeMapTo(Observable_1.Observable.of(1, 2, 3)).subscribe(function () {
+            throw new Error(&apos;meh&apos;);
+        });
+        chai_1.expect(function () { return source.next(); }).to.throw();
+    });
+});
+//# sourceMappingURL=subscribeToResult-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

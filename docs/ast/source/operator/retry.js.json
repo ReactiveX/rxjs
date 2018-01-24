@@ -1,0 +1,507 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              18,
+              29
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 18
+              },
+              "end": {
+                "line": 1,
+                "column": 29
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "retry",
+            "range": [
+              9,
+              14
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            9,
+            29
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 29
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/retry",
+        "raw": "'../operators/retry'",
+        "range": [
+          37,
+          57
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 37
+          },
+          "end": {
+            "line": 1,
+            "column": 57
+          }
+        }
+      },
+      "range": [
+        0,
+        58
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 58
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable\n * calls `error`, this method will resubscribe to the source Observable for a maximum of `count` resubscriptions (given\n * as a number parameter) rather than propagating the `error` call.\n *\n * <img src=\"./img/retry.png\" width=\"100%\">\n *\n * Any and all items emitted by the source Observable will be emitted by the resulting Observable, even those emitted\n * during failed subscriptions. For example, if an Observable fails at first but emits [1, 2] then succeeds the second\n * time and emits: [1, 2, 3, 4, 5] then the complete stream of emissions and notifications\n * would be: [1, 2, 1, 2, 3, 4, 5, `complete`].\n * @param {number} count - Number of retry attempts before failing.\n * @return {Observable} The source Observable modified with the retry logic.\n * @method retry\n * @owner Observable\n ",
+          "range": [
+            59,
+            982
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 17,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "retry",
+          "range": [
+            999,
+            1004
+          ],
+          "loc": {
+            "start": {
+              "line": 18,
+              "column": 16
+            },
+            "end": {
+              "line": 18,
+              "column": 21
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "AssignmentPattern",
+            "left": {
+              "type": "Identifier",
+              "name": "count",
+              "range": [
+                1005,
+                1010
+              ],
+              "loc": {
+                "start": {
+                  "line": 18,
+                  "column": 22
+                },
+                "end": {
+                  "line": 18,
+                  "column": 27
+                }
+              }
+            },
+            "right": {
+              "type": "UnaryExpression",
+              "operator": "-",
+              "argument": {
+                "type": "Literal",
+                "value": 1,
+                "raw": "1",
+                "range": [
+                  1014,
+                  1015
+                ],
+                "loc": {
+                  "start": {
+                    "line": 18,
+                    "column": 31
+                  },
+                  "end": {
+                    "line": 18,
+                    "column": 32
+                  }
+                }
+              },
+              "prefix": true,
+              "range": [
+                1013,
+                1015
+              ],
+              "loc": {
+                "start": {
+                  "line": 18,
+                  "column": 30
+                },
+                "end": {
+                  "line": 18,
+                  "column": 32
+                }
+              }
+            },
+            "range": [
+              1005,
+              1015
+            ],
+            "loc": {
+              "start": {
+                "line": 18,
+                "column": 22
+              },
+              "end": {
+                "line": 18,
+                "column": 32
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      1030,
+                      1041
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 19,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 19,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "count",
+                      "range": [
+                        1042,
+                        1047
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 19,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 19,
+                          "column": 28
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    1030,
+                    1048
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 19,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 19,
+                      "column": 29
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      1049,
+                      1053
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 19,
+                        "column": 30
+                      },
+                      "end": {
+                        "line": 19,
+                        "column": 34
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1030,
+                  1054
+                ],
+                "loc": {
+                  "start": {
+                    "line": 19,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 19,
+                    "column": 35
+                  }
+                }
+              },
+              "range": [
+                1023,
+                1055
+              ],
+              "loc": {
+                "start": {
+                  "line": 19,
+                  "column": 4
+                },
+                "end": {
+                  "line": 19,
+                  "column": 36
+                }
+              }
+            }
+          ],
+          "range": [
+            1017,
+            1057
+          ],
+          "loc": {
+            "start": {
+              "line": 18,
+              "column": 34
+            },
+            "end": {
+              "line": 20,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          990,
+          1057
+        ],
+        "loc": {
+          "start": {
+            "line": 18,
+            "column": 7
+          },
+          "end": {
+            "line": 20,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable\n * calls `error`, this method will resubscribe to the source Observable for a maximum of `count` resubscriptions (given\n * as a number parameter) rather than propagating the `error` call.\n *\n * <img src=\"./img/retry.png\" width=\"100%\">\n *\n * Any and all items emitted by the source Observable will be emitted by the resulting Observable, even those emitted\n * during failed subscriptions. For example, if an Observable fails at first but emits [1, 2] then succeeds the second\n * time and emits: [1, 2, 3, 4, 5] then the complete stream of emissions and notifications\n * would be: [1, 2, 1, 2, 3, 4, 5, `complete`].\n * @param {number} count - Number of retry attempts before failing.\n * @return {Observable} The source Observable modified with the retry logic.\n * @method retry\n * @owner Observable\n ",
+            "range": [
+              59,
+              982
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 17,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=retry.js.map",
+            "range": [
+              1058,
+              1091
+            ],
+            "loc": {
+              "start": {
+                "line": 21,
+                "column": 0
+              },
+              "end": {
+                "line": 21,
+                "column": 33
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        983,
+        1057
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 0
+        },
+        "end": {
+          "line": 20,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable\n * calls `error`, this method will resubscribe to the source Observable for a maximum of `count` resubscriptions (given\n * as a number parameter) rather than propagating the `error` call.\n *\n * <img src=\"./img/retry.png\" width=\"100%\">\n *\n * Any and all items emitted by the source Observable will be emitted by the resulting Observable, even those emitted\n * during failed subscriptions. For example, if an Observable fails at first but emits [1, 2] then succeeds the second\n * time and emits: [1, 2, 3, 4, 5] then the complete stream of emissions and notifications\n * would be: [1, 2, 1, 2, 3, 4, 5, `complete`].\n * @param {number} count - Number of retry attempts before failing.\n * @return {Observable} The source Observable modified with the retry logic.\n * @method retry\n * @owner Observable\n ",
+          "range": [
+            59,
+            982
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 17,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=retry.js.map",
+          "range": [
+            1058,
+            1091
+          ],
+          "loc": {
+            "start": {
+              "line": 21,
+              "column": 0
+            },
+            "end": {
+              "line": 21,
+              "column": 33
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1057
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 20,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable\n * calls `error`, this method will resubscribe to the source Observable for a maximum of `count` resubscriptions (given\n * as a number parameter) rather than propagating the `error` call.\n *\n * <img src=\"./img/retry.png\" width=\"100%\">\n *\n * Any and all items emitted by the source Observable will be emitted by the resulting Observable, even those emitted\n * during failed subscriptions. For example, if an Observable fails at first but emits [1, 2] then succeeds the second\n * time and emits: [1, 2, 3, 4, 5] then the complete stream of emissions and notifications\n * would be: [1, 2, 1, 2, 3, 4, 5, `complete`].\n * @param {number} count - Number of retry attempts before failing.\n * @return {Observable} The source Observable modified with the retry logic.\n * @method retry\n * @owner Observable\n ",
+      "range": [
+        59,
+        982
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 17,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=retry.js.map",
+      "range": [
+        1058,
+        1091
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 0
+        },
+        "end": {
+          "line": 21,
+          "column": 33
+        }
+      }
+    }
+  ]
+}

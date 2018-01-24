@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">spec-js/observables/dom/ajax-spec.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObservableInputDoc.html">ObservableInput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SubscribableOrPromiseDoc.html">SubscribableOrPromise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~TeardownLogicDoc.html">TeardownLogic</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Symbol">Rx.Symbol</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxTimeoutError.html">AjaxTimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html">AjaxRequest</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operators</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operators/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-catchError">catchError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-tap">tap</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/scheduler/Action.js~Action.html">Action</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animationFrame">animationFrame</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asap">asap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-async">async</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-queue">queue</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$iterator">$$iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$observable">$$observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/TimeoutError.js~TimeoutError.html">TimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">spec-js/observables/dom/ajax-spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+var __extends = (this &amp;&amp; this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var chai_1 = require(&apos;chai&apos;);
+var sinon = require(&apos;sinon&apos;);
+var Rx = require(&apos;../../../dist/package/Rx&apos;);
+var root_1 = require(&apos;../../../dist/package/util/root&apos;);
+/** @test {ajax} */
+describe(&apos;Observable.ajax&apos;, function () {
+    var gXHR;
+    var rXHR;
+    var sandbox;
+    beforeEach(function () {
+        sandbox = sinon.sandbox.create();
+        gXHR = global.XMLHttpRequest;
+        rXHR = root_1.root.XMLHttpRequest;
+        global.XMLHttpRequest = MockXMLHttpRequest;
+        root_1.root.XMLHttpRequest = MockXMLHttpRequest;
+    });
+    afterEach(function () {
+        sandbox.restore();
+        MockXMLHttpRequest.clearRequest();
+        global.XMLHttpRequest = gXHR;
+        root_1.root.XMLHttpRequest = rXHR;
+        root_1.root.XDomainRequest = null;
+        root_1.root.ActiveXObject = null;
+    });
+    it(&apos;should create default XMLHttpRequest for non CORS&apos;, function () {
+        var obj = {
+            url: &apos;/&apos;,
+            method: &apos;&apos;
+        };
+        Rx.Observable.ajax(obj).subscribe();
+        chai_1.expect(MockXMLHttpRequest.mostRecent.withCredentials).to.be.false;
+    });
+    it(&apos;should try to create AXObject for XHR in old version of IE&apos;, function () {
+        var axObjectStub = sandbox.stub();
+        axObjectStub.returns(sinon.stub(new MockXMLHttpRequest()));
+        root_1.root.ActiveXObject = axObjectStub;
+        root_1.root.XMLHttpRequest = null;
+        var obj = {
+            url: &apos;/&apos;,
+            method: &apos;&apos;
+        };
+        Rx.Observable.ajax(obj).subscribe();
+        chai_1.expect(axObjectStub).to.have.been.called;
+    });
+    it(&apos;should throw if not able to create XMLHttpRequest&apos;, function () {
+        root_1.root.XMLHttpRequest = null;
+        root_1.root.ActiveXObject = null;
+        var obj = {
+            url: &apos;/&apos;,
+            method: &apos;&apos;
+        };
+        chai_1.expect(function () {
+            Rx.Observable.ajax(obj).subscribe();
+        }).to.throw();
+    });
+    it(&apos;should create XMLHttpRequest for CORS&apos;, function () {
+        var obj = {
+            url: &apos;/&apos;,
+            method: &apos;&apos;,
+            crossDomain: true,
+            withCredentials: true
+        };
+        Rx.Observable.ajax(obj).subscribe();
+        chai_1.expect(MockXMLHttpRequest.mostRecent.withCredentials).to.be.true;
+    });
+    it(&apos;should try to create XDomainRequest for CORS if XMLHttpRequest is not available&apos;, function () {
+        var xDomainStub = sandbox.stub();
+        xDomainStub.returns(sinon.stub(new MockXMLHttpRequest()));
+        root_1.root.XDomainRequest = xDomainStub;
+        root_1.root.XMLHttpRequest = null;
+        var obj = {
+            url: &apos;/&apos;,
+            method: &apos;&apos;,
+            crossDomain: true,
+            withCredentials: true
+        };
+        Rx.Observable.ajax(obj).subscribe();
+        chai_1.expect(xDomainStub).to.have.been.called;
+    });
+    it(&apos;should throw if not able to create CORS request&apos;, function () {
+        root_1.root.XMLHttpRequest = null;
+        root_1.root.XDomainRequest = null;
+        var obj = {
+            url: &apos;/&apos;,
+            method: &apos;&apos;,
+            crossDomain: true,
+            withCredentials: true
+        };
+        chai_1.expect(function () {
+            Rx.Observable.ajax(obj).subscribe();
+        }).to.throw();
+    });
+    it(&apos;should set headers&apos;, function () {
+        var obj = {
+            url: &apos;/talk-to-me-goose&apos;,
+            headers: {
+                &apos;Content-Type&apos;: &apos;kenny/loggins&apos;,
+                &apos;Fly-Into-The&apos;: &apos;Dangah Zone!&apos;,
+                &apos;Take-A-Ride-Into-The&apos;: &apos;Danger ZoooOoone!&apos;
+            },
+            method: &apos;&apos;
+        };
+        Rx.Observable.ajax(obj).subscribe();
+        var request = MockXMLHttpRequest.mostRecent;
+        chai_1.expect(request.url).to.equal(&apos;/talk-to-me-goose&apos;);
+        chai_1.expect(request.requestHeaders).to.deep.equal({
+            &apos;Content-Type&apos;: &apos;kenny/loggins&apos;,
+            &apos;Fly-Into-The&apos;: &apos;Dangah Zone!&apos;,
+            &apos;Take-A-Ride-Into-The&apos;: &apos;Danger ZoooOoone!&apos;,
+            &apos;X-Requested-With&apos;: &apos;XMLHttpRequest&apos;
+        });
+    });
+    it(&apos;should not set default Content-Type header when no body is sent&apos;, function () {
+        var obj = {
+            url: &apos;/talk-to-me-goose&apos;,
+            method: &apos;GET&apos;
+        };
+        Rx.Observable.ajax(obj).subscribe();
+        var request = MockXMLHttpRequest.mostRecent;
+        chai_1.expect(request.url).to.equal(&apos;/talk-to-me-goose&apos;);
+        chai_1.expect(request.requestHeaders).to.not.have.keys(&apos;Content-Type&apos;);
+    });
+    it(&apos;should error if createXHR throws&apos;, function () {
+        var error;
+        var obj = {
+            url: &apos;/flibbertyJibbet&apos;,
+            responseType: &apos;text&apos;,
+            createXHR: function () {
+                throw new Error(&apos;wokka wokka&apos;);
+            }
+        };
+        Rx.Observable.ajax(obj)
+            .subscribe(function (x) {
+            throw &apos;should not next&apos;;
+        }, function (err) {
+            error = err;
+        }, function () {
+            throw &apos;should not complete&apos;;
+        });
+        chai_1.expect(error).to.be.an(&apos;error&apos;, &apos;wokka wokka&apos;);
+    });
+    it(&apos;should error if send request throws&apos;, function (done) {
+        var expected = new Error(&apos;xhr send failure&apos;);
+        var obj = {
+            url: &apos;/flibbertyJibbet&apos;,
+            responseType: &apos;text&apos;,
+            method: &apos;&apos;,
+            createXHR: function () {
+                var ret = new MockXMLHttpRequest();
+                ret.send = function () {
+                    throw expected;
+                };
+                return ret;
+            }
+        };
+        Rx.Observable.ajax(obj)
+            .subscribe(function () {
+            done(new Error(&apos;should not be called&apos;));
+        }, function (e) {
+            chai_1.expect(e).to.be.equal(expected);
+            done();
+        }, function () {
+            done(new Error(&apos;should not be called&apos;));
+        });
+    });
+    it(&apos;should succeed on 200&apos;, function () {
+        var expected = { foo: &apos;bar&apos; };
+        var result;
+        var complete = false;
+        var obj = {
+            url: &apos;/flibbertyJibbet&apos;,
+            responseType: &apos;text&apos;,
+            method: &apos;&apos;
+        };
+        Rx.Observable.ajax(obj)
+            .subscribe(function (x) {
+            result = x;
+        }, null, function () {
+            complete = true;
+        });
+        chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+        MockXMLHttpRequest.mostRecent.respondWith({
+            &apos;status&apos;: 200,
+            &apos;contentType&apos;: &apos;application/json&apos;,
+            &apos;responseText&apos;: JSON.stringify(expected)
+        });
+        chai_1.expect(result.xhr).exist;
+        chai_1.expect(result.response).to.deep.equal(JSON.stringify({ foo: &apos;bar&apos; }));
+        chai_1.expect(complete).to.be.true;
+    });
+    it(&apos;should fail on 404&apos;, function () {
+        var error;
+        var obj = {
+            url: &apos;/flibbertyJibbet&apos;,
+            normalizeError: function (e, xhr, type) {
+                return xhr.response || xhr.responseText;
+            },
+            responseType: &apos;text&apos;,
+            method: &apos;&apos;
+        };
+        Rx.Observable.ajax(obj)
+            .subscribe(function (x) {
+            throw &apos;should not next&apos;;
+        }, function (err) {
+            error = err;
+        }, function () {
+            throw &apos;should not complete&apos;;
+        });
+        chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+        MockXMLHttpRequest.mostRecent.respondWith({
+            &apos;status&apos;: 404,
+            &apos;contentType&apos;: &apos;text/plain&apos;,
+            &apos;responseText&apos;: &apos;Wee! I am text!&apos;
+        });
+        chai_1.expect(error instanceof Rx.AjaxError).to.be.true;
+        chai_1.expect(error.message).to.equal(&apos;ajax error 404&apos;);
+        chai_1.expect(error.status).to.equal(404);
+    });
+    it(&apos;should fail on 404&apos;, function () {
+        var error;
+        var obj = {
+            url: &apos;/flibbertyJibbet&apos;,
+            normalizeError: function (e, xhr, type) {
+                return xhr.response || xhr.responseText;
+            },
+            responseType: &apos;text&apos;,
+            method: &apos;&apos;
+        };
+        Rx.Observable.ajax(obj).subscribe(function (x) {
+            throw &apos;should not next&apos;;
+        }, function (err) {
+            error = err;
+        }, function () {
+            throw &apos;should not complete&apos;;
+        });
+        chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+        MockXMLHttpRequest.mostRecent.respondWith({
+            &apos;status&apos;: 300,
+            &apos;contentType&apos;: &apos;text/plain&apos;,
+            &apos;responseText&apos;: &apos;Wee! I am text!&apos;
+        });
+        chai_1.expect(error instanceof Rx.AjaxError).to.be.true;
+        chai_1.expect(error.message).to.equal(&apos;ajax error 300&apos;);
+        chai_1.expect(error.status).to.equal(300);
+    });
+    it(&apos;should succeed no settings&apos;, function () {
+        var expected = JSON.stringify({ foo: &apos;bar&apos; });
+        Rx.Observable.ajax(&apos;/flibbertyJibbet&apos;)
+            .subscribe(function (x) {
+            chai_1.expect(x.status).to.equal(200);
+            chai_1.expect(x.xhr.method).to.equal(&apos;GET&apos;);
+            chai_1.expect(x.xhr.responseText).to.equal(expected);
+        }, function () {
+            throw &apos;should not have been called&apos;;
+        });
+        chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+        MockXMLHttpRequest.mostRecent.respondWith({
+            &apos;status&apos;: 200,
+            &apos;contentType&apos;: &apos;text/plain&apos;,
+            &apos;responseText&apos;: expected
+        });
+    });
+    it(&apos;should fail no settings&apos;, function () {
+        var expected = JSON.stringify({ foo: &apos;bar&apos; });
+        Rx.Observable.ajax(&apos;/flibbertyJibbet&apos;)
+            .subscribe(function () {
+            throw &apos;should not have been called&apos;;
+        }, function (x) {
+            chai_1.expect(x.status).to.equal(500);
+            chai_1.expect(x.xhr.method).to.equal(&apos;GET&apos;);
+            chai_1.expect(x.xhr.responseText).to.equal(expected);
+        }, function () {
+            throw &apos;should not have been called&apos;;
+        });
+        chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+        MockXMLHttpRequest.mostRecent.respondWith({
+            &apos;status&apos;: 500,
+            &apos;contentType&apos;: &apos;text/plain&apos;,
+            &apos;responseText&apos;: expected
+        });
+    });
+    it(&apos;should create an asynchronous request&apos;, function () {
+        var obj = {
+            url: &apos;/flibbertyJibbet&apos;,
+            responseType: &apos;text&apos;,
+            timeout: 10
+        };
+        Rx.Observable.ajax(obj)
+            .subscribe(function (x) {
+            chai_1.expect(x.status).to.equal(200);
+            chai_1.expect(x.xhr.method).to.equal(&apos;GET&apos;);
+            chai_1.expect(x.xhr.async).to.equal(true);
+            chai_1.expect(x.xhr.timeout).to.equal(10);
+            chai_1.expect(x.xhr.responseType).to.equal(&apos;text&apos;);
+        }, function () {
+            throw &apos;should not have been called&apos;;
+        });
+        var request = MockXMLHttpRequest.mostRecent;
+        chai_1.expect(request.url).to.equal(&apos;/flibbertyJibbet&apos;);
+        request.respondWith({
+            &apos;status&apos;: 200,
+            &apos;contentType&apos;: &apos;text/plain&apos;,
+            &apos;responseText&apos;: &apos;Wee! I am text!&apos;
+        });
+    });
+    it(&apos;should create a synchronous request&apos;, function () {
+        var obj = {
+            url: &apos;/flibbertyJibbet&apos;,
+            responseType: &apos;text&apos;,
+            timeout: 10,
+            async: false
+        };
+        Rx.Observable.ajax(obj)
+            .subscribe(function (x) {
+            chai_1.expect(x.status).to.equal(200);
+            chai_1.expect(x.xhr.method).to.equal(&apos;GET&apos;);
+            chai_1.expect(x.xhr.async).to.equal(false);
+            chai_1.expect(x.xhr.timeout).to.be.undefined;
+            chai_1.expect(x.xhr.responseType).to.equal(&apos;&apos;);
+        }, function () {
+            throw &apos;should not have been called&apos;;
+        });
+        var request = MockXMLHttpRequest.mostRecent;
+        chai_1.expect(request.url).to.equal(&apos;/flibbertyJibbet&apos;);
+        request.respondWith({
+            &apos;status&apos;: 200,
+            &apos;contentType&apos;: &apos;text/plain&apos;,
+            &apos;responseText&apos;: &apos;Wee! I am text!&apos;
+        });
+    });
+    describe(&apos;ajax request body&apos;, function () {
+        var rFormData;
+        beforeEach(function () {
+            rFormData = root_1.root.FormData;
+            root_1.root.FormData = root_1.root.FormData || (function () {
+                function class_1() {
+                }
+                return class_1;
+            }());
+        });
+        afterEach(function () {
+            root_1.root.FormData = rFormData;
+        });
+        it(&apos;can take string body&apos;, function () {
+            var obj = {
+                url: &apos;/flibbertyJibbet&apos;,
+                method: &apos;&apos;,
+                body: &apos;foobar&apos;
+            };
+            Rx.Observable.ajax(obj).subscribe();
+            chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(MockXMLHttpRequest.mostRecent.data).to.equal(&apos;foobar&apos;);
+        });
+        it(&apos;can take FormData body&apos;, function () {
+            var body = new root_1.root.FormData();
+            var obj = {
+                url: &apos;/flibbertyJibbet&apos;,
+                method: &apos;&apos;,
+                body: body
+            };
+            Rx.Observable.ajax(obj).subscribe();
+            chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(MockXMLHttpRequest.mostRecent.data).to.deep.equal(body);
+            chai_1.expect(MockXMLHttpRequest.mostRecent.requestHeaders).to.deep.equal({
+                &apos;X-Requested-With&apos;: &apos;XMLHttpRequest&apos;,
+            });
+        });
+        it(&apos;should not fail when FormData is undefined&apos;, function () {
+            root_1.root.FormData = void 0;
+            var obj = {
+                url: &apos;/flibbertyJibbet&apos;,
+                method: &apos;&apos;,
+                headers: {
+                    &apos;Content-Type&apos;: &apos;application/x-www-form-urlencoded&apos;
+                },
+                body: { &apos;&#x1F31F;&apos;: &apos;&#x1F680;&apos; }
+            };
+            Rx.Observable.ajax(obj).subscribe();
+            chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+        });
+        it(&apos;should send by form-urlencoded format&apos;, function () {
+            var body = {
+                &apos;&#x1F31F;&apos;: &apos;&#x1F680;&apos;
+            };
+            var obj = {
+                url: &apos;/flibbertyJibbet&apos;,
+                method: &apos;&apos;,
+                headers: {
+                    &apos;Content-Type&apos;: &apos;application/x-www-form-urlencoded&apos;
+                },
+                body: body
+            };
+            Rx.Observable.ajax(obj).subscribe();
+            chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(MockXMLHttpRequest.mostRecent.data).to.equal(&apos;%F0%9F%8C%9F=%F0%9F%9A%80&apos;);
+        });
+        it(&apos;should send by JSON&apos;, function () {
+            var body = {
+                &apos;&#x1F31F;&apos;: &apos;&#x1F680;&apos;
+            };
+            var obj = {
+                url: &apos;/flibbertyJibbet&apos;,
+                method: &apos;&apos;,
+                headers: {
+                    &apos;Content-Type&apos;: &apos;application/json&apos;
+                },
+                body: body
+            };
+            Rx.Observable.ajax(obj).subscribe();
+            chai_1.expect(MockXMLHttpRequest.mostRecent.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(MockXMLHttpRequest.mostRecent.data).to.equal(&apos;{&quot;&#x1F31F;&quot;:&quot;&#x1F680;&quot;}&apos;);
+        });
+        it(&apos;should error if send request throws&apos;, function (done) {
+            var expected = new Error(&apos;xhr send failure&apos;);
+            var obj = {
+                url: &apos;/flibbertyJibbet&apos;,
+                responseType: &apos;text&apos;,
+                method: &apos;&apos;,
+                body: &apos;foobar&apos;,
+                createXHR: function () {
+                    var ret = new MockXMLHttpRequest();
+                    ret.send = function () {
+                        throw expected;
+                    };
+                    return ret;
+                }
+            };
+            Rx.Observable.ajax(obj)
+                .subscribe(function () {
+                done(new Error(&apos;should not be called&apos;));
+            }, function (e) {
+                chai_1.expect(e).to.be.equal(expected);
+                done();
+            }, function () {
+                done(new Error(&apos;should not be called&apos;));
+            });
+        });
+    });
+    describe(&apos;ajax.get&apos;, function () {
+        it(&apos;should succeed on 200&apos;, function () {
+            var expected = { foo: &apos;bar&apos; };
+            var result;
+            var complete = false;
+            Rx.Observable
+                .ajax.get(&apos;/flibbertyJibbet&apos;)
+                .subscribe(function (x) {
+                result = x.response;
+            }, null, function () {
+                complete = true;
+            });
+            var request = MockXMLHttpRequest.mostRecent;
+            chai_1.expect(request.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            request.respondWith({
+                &apos;status&apos;: 200,
+                &apos;contentType&apos;: &apos;application/json&apos;,
+                &apos;responseText&apos;: JSON.stringify(expected)
+            });
+            chai_1.expect(result).to.deep.equal(expected);
+            chai_1.expect(complete).to.be.true;
+        });
+        it(&apos;should succeed on 204 No Content&apos;, function () {
+            var expected = null;
+            var result;
+            var complete = false;
+            Rx.Observable
+                .ajax.get(&apos;/flibbertyJibbet&apos;)
+                .subscribe(function (x) {
+                result = x.response;
+            }, null, function () {
+                complete = true;
+            });
+            var request = MockXMLHttpRequest.mostRecent;
+            chai_1.expect(request.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            request.respondWith({
+                &apos;status&apos;: 204,
+                &apos;contentType&apos;: &apos;application/json&apos;,
+                &apos;responseText&apos;: expected
+            });
+            chai_1.expect(result).to.deep.equal(expected);
+            chai_1.expect(complete).to.be.true;
+        });
+        it(&apos;should able to select json response via getJSON&apos;, function () {
+            var expected = { foo: &apos;bar&apos; };
+            var result;
+            var complete = false;
+            Rx.Observable
+                .ajax.getJSON(&apos;/flibbertyJibbet&apos;)
+                .subscribe(function (x) {
+                result = x;
+            }, null, function () {
+                complete = true;
+            });
+            var request = MockXMLHttpRequest.mostRecent;
+            chai_1.expect(request.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            request.respondWith({
+                &apos;status&apos;: 200,
+                &apos;contentType&apos;: &apos;application/json&apos;,
+                &apos;responseText&apos;: JSON.stringify(expected)
+            });
+            chai_1.expect(result).to.deep.equal(expected);
+            chai_1.expect(complete).to.be.true;
+        });
+    });
+    describe(&apos;ajax.post&apos;, function () {
+        it(&apos;should succeed on 200&apos;, function () {
+            var expected = { foo: &apos;bar&apos;, hi: &apos;there you&apos; };
+            var result;
+            var complete = false;
+            Rx.Observable
+                .ajax.post(&apos;/flibbertyJibbet&apos;, expected)
+                .subscribe(function (x) {
+                result = x;
+            }, null, function () {
+                complete = true;
+            });
+            var request = MockXMLHttpRequest.mostRecent;
+            chai_1.expect(request.method).to.equal(&apos;POST&apos;);
+            chai_1.expect(request.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(request.requestHeaders).to.deep.equal({
+                &apos;X-Requested-With&apos;: &apos;XMLHttpRequest&apos;,
+                &apos;Content-Type&apos;: &apos;application/x-www-form-urlencoded; charset=UTF-8&apos;
+            });
+            request.respondWith({
+                &apos;status&apos;: 200,
+                &apos;contentType&apos;: &apos;application/json&apos;,
+                &apos;responseText&apos;: JSON.stringify(expected)
+            });
+            chai_1.expect(request.data).to.equal(&apos;foo=bar&amp;hi=there%20you&apos;);
+            chai_1.expect(result.response).to.deep.equal(expected);
+            chai_1.expect(complete).to.be.true;
+        });
+        it(&apos;should succeed on 204 No Content&apos;, function () {
+            var expected = null;
+            var result;
+            var complete = false;
+            Rx.Observable
+                .ajax.post(&apos;/flibbertyJibbet&apos;, expected)
+                .subscribe(function (x) {
+                result = x;
+            }, null, function () {
+                complete = true;
+            });
+            var request = MockXMLHttpRequest.mostRecent;
+            chai_1.expect(request.method).to.equal(&apos;POST&apos;);
+            chai_1.expect(request.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(request.requestHeaders).to.deep.equal({
+                &apos;X-Requested-With&apos;: &apos;XMLHttpRequest&apos;,
+                &apos;Content-Type&apos;: &apos;application/x-www-form-urlencoded; charset=UTF-8&apos;
+            });
+            request.respondWith({
+                &apos;status&apos;: 204,
+                &apos;contentType&apos;: &apos;application/json&apos;,
+                &apos;responseType&apos;: &apos;json&apos;,
+                &apos;responseText&apos;: expected
+            });
+            chai_1.expect(result.response).to.equal(expected);
+            chai_1.expect(complete).to.be.true;
+        });
+        it(&apos;should succeed in IE on 204 No Content&apos;, function () {
+            var expected = null;
+            var result;
+            var complete = false;
+            root_1.root.XMLHttpRequest = MockXMLHttpRequestInternetExplorer;
+            Rx.Observable
+                .ajax.post(&apos;/flibbertyJibbet&apos;, expected)
+                .subscribe(function (x) {
+                result = x;
+            }, null, function () {
+                complete = true;
+            });
+            var request = MockXMLHttpRequest.mostRecent;
+            chai_1.expect(request.method).to.equal(&apos;POST&apos;);
+            chai_1.expect(request.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(request.requestHeaders).to.deep.equal({
+                &apos;X-Requested-With&apos;: &apos;XMLHttpRequest&apos;,
+                &apos;Content-Type&apos;: &apos;application/x-www-form-urlencoded; charset=UTF-8&apos;
+            });
+            //IE behavior: IE does not provide the a responseText property, so also exercise the code which handles this.
+            request.respondWith({
+                &apos;status&apos;: 204,
+                &apos;contentType&apos;: &apos;application/json&apos;
+            });
+            chai_1.expect(result.response).to.equal(expected);
+            chai_1.expect(complete).to.be.true;
+        });
+        it(&apos;should emit progress event when progressSubscriber is specified&apos;, function () {
+            var spy = sinon.spy();
+            var progressSubscriber = {
+                next: spy,
+                error: function () {
+                    // noop
+                },
+                complete: function () {
+                    // noop
+                }
+            };
+            Rx.Observable.ajax({
+                url: &apos;/flibbertyJibbet&apos;,
+                progressSubscriber: progressSubscriber
+            })
+                .subscribe();
+            var request = MockXMLHttpRequest.mostRecent;
+            request.respondWith({
+                &apos;status&apos;: 200,
+                &apos;contentType&apos;: &apos;application/json&apos;,
+                &apos;responseText&apos;: JSON.stringify({})
+            }, 3);
+            chai_1.expect(spy).to.be.calledThrice;
+        });
+        it(&apos;should emit progress event when progressSubscriber is specified in IE&apos;, function () {
+            var spy = sinon.spy();
+            var progressSubscriber = {
+                next: spy,
+                error: function () {
+                    // noop
+                },
+                complete: function () {
+                    // noop
+                }
+            };
+            root_1.root.XMLHttpRequest = MockXMLHttpRequestInternetExplorer;
+            root_1.root.XDomainRequest = MockXMLHttpRequestInternetExplorer;
+            Rx.Observable.ajax({
+                url: &apos;/flibbertyJibbet&apos;,
+                progressSubscriber: progressSubscriber
+            })
+                .subscribe();
+            var request = MockXMLHttpRequest.mostRecent;
+            request.respondWith({
+                &apos;status&apos;: 200,
+                &apos;contentType&apos;: &apos;application/json&apos;,
+                &apos;responseText&apos;: JSON.stringify({})
+            }, 3);
+            chai_1.expect(spy.callCount).to.equal(3);
+        });
+    });
+    it(&apos;should work fine when XMLHttpRequest onreadystatechange property is monkey patched&apos;, function () {
+        Object.defineProperty(root_1.root.XMLHttpRequest.prototype, &apos;onreadystatechange&apos;, {
+            set: function (fn) {
+                var _this = this;
+                var wrapFn = function (ev) {
+                    var result = fn.call(_this, ev);
+                    if (result === false) {
+                        ev.preventDefault();
+                    }
+                };
+                this[&apos;_onreadystatechange&apos;] = wrapFn;
+            },
+            get: function () {
+                return this[&apos;_onreadystatechange&apos;];
+            },
+            configurable: true
+        });
+        Rx.Observable.ajax({
+            url: &apos;/flibbertyJibbet&apos;
+        })
+            .subscribe();
+        var request = MockXMLHttpRequest.mostRecent;
+        chai_1.expect(function () {
+            request.onreadystatechange(&apos;onreadystatechange&apos;);
+        }).not.throw();
+        delete root_1.root.XMLHttpRequest.prototype.onreadystatechange;
+    });
+    it(&apos;should work fine when XMLHttpRequest ontimeout property is monkey patched&apos;, function () {
+        Object.defineProperty(root_1.root.XMLHttpRequest.prototype, &apos;ontimeout&apos;, {
+            set: function (fn) {
+                var _this = this;
+                var wrapFn = function (ev) {
+                    var result = fn.call(_this, ev);
+                    if (result === false) {
+                        ev.preventDefault();
+                    }
+                };
+                this[&apos;_ontimeout&apos;] = wrapFn;
+            },
+            get: function () {
+                return this[&apos;_ontimeout&apos;];
+            },
+            configurable: true
+        });
+        var ajaxRequest = {
+            url: &apos;/flibbertyJibbet&apos;
+        };
+        Rx.Observable.ajax(ajaxRequest)
+            .subscribe();
+        var request = MockXMLHttpRequest.mostRecent;
+        try {
+            request.ontimeout(&apos;ontimeout&apos;);
+        }
+        catch (e) {
+            chai_1.expect(e.message).to.equal(new Rx.AjaxTimeoutError(request, ajaxRequest).message);
+        }
+        delete root_1.root.XMLHttpRequest.prototype.ontimeout;
+    });
+    it(&apos;should work fine when XMLHttpRequest onprogress property is monkey patched&apos;, function () {
+        Object.defineProperty(root_1.root.XMLHttpRequest.prototype, &apos;onprogress&apos;, {
+            set: function (fn) {
+                var _this = this;
+                var wrapFn = function (ev) {
+                    var result = fn.call(_this, ev);
+                    if (result === false) {
+                        ev.preventDefault();
+                    }
+                };
+                this[&apos;_onprogress&apos;] = wrapFn;
+            },
+            get: function () {
+                return this[&apos;_onprogress&apos;];
+            },
+            configurable: true
+        });
+        Rx.Observable.ajax({
+            url: &apos;/flibbertyJibbet&apos;,
+            progressSubscriber: {
+                next: function () {
+                    // noop
+                },
+                error: function () {
+                    // noop
+                },
+                complete: function () {
+                    // noop
+                }
+            }
+        })
+            .subscribe();
+        var request = MockXMLHttpRequest.mostRecent;
+        chai_1.expect(function () {
+            request.upload.onprogress(&apos;onprogress&apos;);
+        }).not.throw();
+        delete root_1.root.XMLHttpRequest.prototype.onprogress;
+        delete root_1.root.XMLHttpRequest.prototype.upload;
+    });
+    it(&apos;should work fine when XMLHttpRequest onerror property is monkey patched&apos;, function () {
+        Object.defineProperty(root_1.root.XMLHttpRequest.prototype, &apos;onerror&apos;, {
+            set: function (fn) {
+                var _this = this;
+                var wrapFn = function (ev) {
+                    var result = fn.call(_this, ev);
+                    if (result === false) {
+                        ev.preventDefault();
+                    }
+                };
+                this[&apos;_onerror&apos;] = wrapFn;
+            },
+            get: function () {
+                return this[&apos;_onerror&apos;];
+            },
+            configurable: true
+        });
+        Rx.Observable.ajax({
+            url: &apos;/flibbertyJibbet&apos;
+        })
+            .subscribe();
+        var request = MockXMLHttpRequest.mostRecent;
+        try {
+            request.onerror(&apos;onerror&apos;);
+        }
+        catch (e) {
+            chai_1.expect(e.message).to.equal(&apos;ajax error&apos;);
+        }
+        delete root_1.root.XMLHttpRequest.prototype.onerror;
+        delete root_1.root.XMLHttpRequest.prototype.upload;
+    });
+    describe(&apos;ajax.patch&apos;, function () {
+        it(&apos;should create an AjaxObservable with correct options&apos;, function () {
+            var body = { foo: &apos;bar&apos; };
+            var headers = { first: &apos;first&apos; };
+            // returns Observable, not AjaxObservable, so needs a cast
+            var request = Rx.Observable
+                .ajax.patch(&apos;/flibbertyJibbet&apos;, body, headers).request;
+            chai_1.expect(request.method).to.equal(&apos;PATCH&apos;);
+            chai_1.expect(request.url).to.equal(&apos;/flibbertyJibbet&apos;);
+            chai_1.expect(request.body).to.equal(body);
+            chai_1.expect(request.headers).to.equal(headers);
+        });
+    });
+});
+var MockXMLHttpRequest = (function () {
+    function MockXMLHttpRequest() {
+        this.responseType = &apos;&apos;;
+        this.eventHandlers = [];
+        this.readyState = 0;
+        this.async = true;
+        this.requestHeaders = {};
+        this.withCredentials = false;
+        this.upload = {};
+        this.previousRequest = MockXMLHttpRequest.recentRequest;
+        MockXMLHttpRequest.recentRequest = this;
+        MockXMLHttpRequest.requests.push(this);
+    }
+    Object.defineProperty(MockXMLHttpRequest, &quot;mostRecent&quot;, {
+        get: function () {
+            return MockXMLHttpRequest.recentRequest;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MockXMLHttpRequest, &quot;allRequests&quot;, {
+        get: function () {
+            return MockXMLHttpRequest.requests;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MockXMLHttpRequest.clearRequest = function () {
+        MockXMLHttpRequest.requests.length = 0;
+        MockXMLHttpRequest.recentRequest = null;
+    };
+    MockXMLHttpRequest.prototype.send = function (data) {
+        this.data = data;
+    };
+    MockXMLHttpRequest.prototype.open = function (method, url, async, user, password) {
+        this.method = method;
+        this.url = url;
+        this.async = async;
+        this.user = user;
+        this.password = password;
+        this.readyState = 1;
+        this.triggerEvent(&apos;readyStateChange&apos;);
+        var originalProgressHandler = this.upload.onprogress;
+        Object.defineProperty(this.upload, &apos;progress&apos;, {
+            get: function () {
+                return originalProgressHandler;
+            }
+        });
+    };
+    MockXMLHttpRequest.prototype.setRequestHeader = function (key, value) {
+        this.requestHeaders[key] = value;
+    };
+    MockXMLHttpRequest.prototype.addEventListener = function (name, handler) {
+        this.eventHandlers.push({ name: name, handler: handler });
+    };
+    MockXMLHttpRequest.prototype.removeEventListener = function (name, handler) {
+        for (var i = this.eventHandlers.length - 1; i--;) {
+            var eh = this.eventHandlers[i];
+            if (eh.name === name &amp;&amp; eh.handler === handler) {
+                this.eventHandlers.splice(i, 1);
+            }
+        }
+    };
+    MockXMLHttpRequest.prototype.throwError = function (err) {
+        // TODO: something better with errors
+        this.triggerEvent(&apos;error&apos;);
+    };
+    MockXMLHttpRequest.prototype.jsonResponseValue = function (response) {
+        try {
+            this.response = JSON.parse(response.responseText);
+        }
+        catch (err) {
+            throw new Error(&apos;unable to JSON.parse: \n&apos; + response.responseText);
+        }
+    };
+    MockXMLHttpRequest.prototype.defaultResponseValue = function () {
+        if (this.async === false) {
+            this.response = this.responseText;
+        }
+        else {
+            throw new Error(&apos;unhandled type &quot;&apos; + this.responseType + &apos;&quot;&apos;);
+        }
+    };
+    MockXMLHttpRequest.prototype.respondWith = function (response, progressTimes) {
+        if (progressTimes) {
+            for (var i = 1; i &lt;= progressTimes; ++i) {
+                this.triggerUploadEvent(&apos;progress&apos;, { type: &apos;ProgressEvent&apos;, total: progressTimes, loaded: i });
+            }
+        }
+        this.readyState = 4;
+        this.responseHeaders = {
+            &apos;Content-Type&apos;: response.contentType || &apos;text/plain&apos;
+        };
+        this.status = response.status || 200;
+        this.responseText = response.responseText;
+        if (!(&apos;response&apos; in response)) {
+            switch (this.responseType) {
+                case &apos;json&apos;:
+                    this.jsonResponseValue(response);
+                    break;
+                case &apos;text&apos;:
+                    this.response = response.responseText;
+                    break;
+                default:
+                    this.defaultResponseValue();
+            }
+        }
+        // TODO: pass better event to onload.
+        this.triggerEvent(&apos;load&apos;);
+        this.triggerEvent(&apos;readystatechange&apos;);
+    };
+    MockXMLHttpRequest.prototype.triggerEvent = function (name, eventObj) {
+        // TODO: create a better default event
+        var e = eventObj || {};
+        if (this[&apos;on&apos; + name]) {
+            this[&apos;on&apos; + name](e);
+        }
+        this.eventHandlers.forEach(function (eh) {
+            if (eh.name === name) {
+                eh.handler.call(this, e);
+            }
+        });
+    };
+    MockXMLHttpRequest.prototype.triggerUploadEvent = function (name, eventObj) {
+        // TODO: create a better default event
+        var e = eventObj || {};
+        if (this.upload[&apos;on&apos; + name]) {
+            this.upload[&apos;on&apos; + name](e);
+        }
+    };
+    MockXMLHttpRequest.requests = [];
+    return MockXMLHttpRequest;
+}());
+var MockXMLHttpRequestInternetExplorer = (function (_super) {
+    __extends(MockXMLHttpRequestInternetExplorer, _super);
+    function MockXMLHttpRequestInternetExplorer() {
+        _super.apply(this, arguments);
+    }
+    MockXMLHttpRequestInternetExplorer.prototype.mockHttp204 = function () {
+        this.responseType = &apos;&apos;;
+        this.responseText = &apos;&apos;;
+        this.response = &apos;&apos;;
+    };
+    MockXMLHttpRequestInternetExplorer.prototype.jsonResponseValue = function (response) {
+        if (this.status == 204) {
+            this.mockHttp204();
+            return;
+        }
+        return _super.prototype.jsonResponseValue.call(this, response);
+    };
+    MockXMLHttpRequestInternetExplorer.prototype.defaultResponseValue = function () {
+        if (this.status == 204) {
+            this.mockHttp204();
+            return;
+        }
+        return _super.prototype.defaultResponseValue.call(this);
+    };
+    MockXMLHttpRequestInternetExplorer.prototype.triggerUploadEvent = function (name, eventObj) {
+        // TODO: create a better default event
+        var e = eventObj || {};
+        if (this[&apos;on&apos; + name]) {
+            this[&apos;on&apos; + name](e);
+        }
+    };
+    return MockXMLHttpRequestInternetExplorer;
+}(MockXMLHttpRequest));
+//# sourceMappingURL=ajax-spec.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

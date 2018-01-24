@@ -1,0 +1,488 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              26,
+              37
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 26
+              },
+              "end": {
+                "line": 1,
+                "column": 37
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "sequenceEqual",
+            "range": [
+              9,
+              22
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 22
+              }
+            }
+          },
+          "range": [
+            9,
+            37
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 37
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/sequenceEqual",
+        "raw": "'../operators/sequenceEqual'",
+        "range": [
+          45,
+          73
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 45
+          },
+          "end": {
+            "line": 1,
+            "column": 73
+          }
+        }
+      },
+      "range": [
+        0,
+        74
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 74
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Compares all values of two observables in sequence using an optional comparor function\n * and returns an observable of a single boolean value representing whether or not the two sequences\n * are equal.\n *\n * <span class=\"informal\">Checks to see of all values emitted by both observables are equal, in order.</span>\n *\n * <img src=\"./img/sequenceEqual.png\" width=\"100%\">\n *\n * `sequenceEqual` subscribes to two observables and buffers incoming values from each observable. Whenever either\n * observable emits a value, the value is buffered and the buffers are shifted and compared from the bottom\n * up; If any value pair doesn't match, the returned observable will emit `false` and complete. If one of the\n * observables completes, the operator will wait for the other observable to complete; If the other\n * observable emits before completing, the returned observable will emit `false` and complete. If one observable never\n * completes or emits after the other complets, the returned observable will never complete.\n *\n * @example <caption>figure out if the Konami code matches</caption>\n * var code = Rx.Observable.from([\n *  \"ArrowUp\",\n *  \"ArrowUp\",\n *  \"ArrowDown\",\n *  \"ArrowDown\",\n *  \"ArrowLeft\",\n *  \"ArrowRight\",\n *  \"ArrowLeft\",\n *  \"ArrowRight\",\n *  \"KeyB\",\n *  \"KeyA\",\n *  \"Enter\" // no start key, clearly.\n * ]);\n *\n * var keys = Rx.Observable.fromEvent(document, 'keyup')\n *  .map(e => e.code);\n * var matches = keys.bufferCount(11, 1)\n *  .mergeMap(\n *    last11 =>\n *      Rx.Observable.from(last11)\n *        .sequenceEqual(code)\n *   );\n * matches.subscribe(matched => console.log('Successful cheat at Contra? ', matched));\n *\n * @see {@link combineLatest}\n * @see {@link zip}\n * @see {@link withLatestFrom}\n *\n * @param {Observable} compareTo The observable sequence to compare the source sequence to.\n * @param {function} [comparor] An optional function to compare each value pair\n * @return {Observable} An Observable of a single boolean value representing whether or not\n * the values emitted by both observables were equal in sequence.\n * @method sequenceEqual\n * @owner Observable\n ",
+          "range": [
+            75,
+            2192
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 53,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "sequenceEqual",
+          "range": [
+            2209,
+            2222
+          ],
+          "loc": {
+            "start": {
+              "line": 54,
+              "column": 16
+            },
+            "end": {
+              "line": 54,
+              "column": 29
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "compareTo",
+            "range": [
+              2223,
+              2232
+            ],
+            "loc": {
+              "start": {
+                "line": 54,
+                "column": 30
+              },
+              "end": {
+                "line": 54,
+                "column": 39
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "comparor",
+            "range": [
+              2234,
+              2242
+            ],
+            "loc": {
+              "start": {
+                "line": 54,
+                "column": 41
+              },
+              "end": {
+                "line": 54,
+                "column": 49
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      2257,
+                      2268
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 55,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 55,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "compareTo",
+                      "range": [
+                        2269,
+                        2278
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 55,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 55,
+                          "column": 32
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "comparor",
+                      "range": [
+                        2280,
+                        2288
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 55,
+                          "column": 34
+                        },
+                        "end": {
+                          "line": 55,
+                          "column": 42
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    2257,
+                    2289
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 55,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 55,
+                      "column": 43
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      2290,
+                      2294
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 55,
+                        "column": 44
+                      },
+                      "end": {
+                        "line": 55,
+                        "column": 48
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  2257,
+                  2295
+                ],
+                "loc": {
+                  "start": {
+                    "line": 55,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 55,
+                    "column": 49
+                  }
+                }
+              },
+              "range": [
+                2250,
+                2296
+              ],
+              "loc": {
+                "start": {
+                  "line": 55,
+                  "column": 4
+                },
+                "end": {
+                  "line": 55,
+                  "column": 50
+                }
+              }
+            }
+          ],
+          "range": [
+            2244,
+            2298
+          ],
+          "loc": {
+            "start": {
+              "line": 54,
+              "column": 51
+            },
+            "end": {
+              "line": 56,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          2200,
+          2298
+        ],
+        "loc": {
+          "start": {
+            "line": 54,
+            "column": 7
+          },
+          "end": {
+            "line": 56,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Compares all values of two observables in sequence using an optional comparor function\n * and returns an observable of a single boolean value representing whether or not the two sequences\n * are equal.\n *\n * <span class=\"informal\">Checks to see of all values emitted by both observables are equal, in order.</span>\n *\n * <img src=\"./img/sequenceEqual.png\" width=\"100%\">\n *\n * `sequenceEqual` subscribes to two observables and buffers incoming values from each observable. Whenever either\n * observable emits a value, the value is buffered and the buffers are shifted and compared from the bottom\n * up; If any value pair doesn't match, the returned observable will emit `false` and complete. If one of the\n * observables completes, the operator will wait for the other observable to complete; If the other\n * observable emits before completing, the returned observable will emit `false` and complete. If one observable never\n * completes or emits after the other complets, the returned observable will never complete.\n *\n * @example <caption>figure out if the Konami code matches</caption>\n * var code = Rx.Observable.from([\n *  \"ArrowUp\",\n *  \"ArrowUp\",\n *  \"ArrowDown\",\n *  \"ArrowDown\",\n *  \"ArrowLeft\",\n *  \"ArrowRight\",\n *  \"ArrowLeft\",\n *  \"ArrowRight\",\n *  \"KeyB\",\n *  \"KeyA\",\n *  \"Enter\" // no start key, clearly.\n * ]);\n *\n * var keys = Rx.Observable.fromEvent(document, 'keyup')\n *  .map(e => e.code);\n * var matches = keys.bufferCount(11, 1)\n *  .mergeMap(\n *    last11 =>\n *      Rx.Observable.from(last11)\n *        .sequenceEqual(code)\n *   );\n * matches.subscribe(matched => console.log('Successful cheat at Contra? ', matched));\n *\n * @see {@link combineLatest}\n * @see {@link zip}\n * @see {@link withLatestFrom}\n *\n * @param {Observable} compareTo The observable sequence to compare the source sequence to.\n * @param {function} [comparor] An optional function to compare each value pair\n * @return {Observable} An Observable of a single boolean value representing whether or not\n * the values emitted by both observables were equal in sequence.\n * @method sequenceEqual\n * @owner Observable\n ",
+            "range": [
+              75,
+              2192
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 53,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=sequenceEqual.js.map",
+            "range": [
+              2299,
+              2340
+            ],
+            "loc": {
+              "start": {
+                "line": 57,
+                "column": 0
+              },
+              "end": {
+                "line": 57,
+                "column": 41
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        2193,
+        2298
+      ],
+      "loc": {
+        "start": {
+          "line": 54,
+          "column": 0
+        },
+        "end": {
+          "line": 56,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Compares all values of two observables in sequence using an optional comparor function\n * and returns an observable of a single boolean value representing whether or not the two sequences\n * are equal.\n *\n * <span class=\"informal\">Checks to see of all values emitted by both observables are equal, in order.</span>\n *\n * <img src=\"./img/sequenceEqual.png\" width=\"100%\">\n *\n * `sequenceEqual` subscribes to two observables and buffers incoming values from each observable. Whenever either\n * observable emits a value, the value is buffered and the buffers are shifted and compared from the bottom\n * up; If any value pair doesn't match, the returned observable will emit `false` and complete. If one of the\n * observables completes, the operator will wait for the other observable to complete; If the other\n * observable emits before completing, the returned observable will emit `false` and complete. If one observable never\n * completes or emits after the other complets, the returned observable will never complete.\n *\n * @example <caption>figure out if the Konami code matches</caption>\n * var code = Rx.Observable.from([\n *  \"ArrowUp\",\n *  \"ArrowUp\",\n *  \"ArrowDown\",\n *  \"ArrowDown\",\n *  \"ArrowLeft\",\n *  \"ArrowRight\",\n *  \"ArrowLeft\",\n *  \"ArrowRight\",\n *  \"KeyB\",\n *  \"KeyA\",\n *  \"Enter\" // no start key, clearly.\n * ]);\n *\n * var keys = Rx.Observable.fromEvent(document, 'keyup')\n *  .map(e => e.code);\n * var matches = keys.bufferCount(11, 1)\n *  .mergeMap(\n *    last11 =>\n *      Rx.Observable.from(last11)\n *        .sequenceEqual(code)\n *   );\n * matches.subscribe(matched => console.log('Successful cheat at Contra? ', matched));\n *\n * @see {@link combineLatest}\n * @see {@link zip}\n * @see {@link withLatestFrom}\n *\n * @param {Observable} compareTo The observable sequence to compare the source sequence to.\n * @param {function} [comparor] An optional function to compare each value pair\n * @return {Observable} An Observable of a single boolean value representing whether or not\n * the values emitted by both observables were equal in sequence.\n * @method sequenceEqual\n * @owner Observable\n ",
+          "range": [
+            75,
+            2192
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 53,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=sequenceEqual.js.map",
+          "range": [
+            2299,
+            2340
+          ],
+          "loc": {
+            "start": {
+              "line": 57,
+              "column": 0
+            },
+            "end": {
+              "line": 57,
+              "column": 41
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    2298
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 56,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Compares all values of two observables in sequence using an optional comparor function\n * and returns an observable of a single boolean value representing whether or not the two sequences\n * are equal.\n *\n * <span class=\"informal\">Checks to see of all values emitted by both observables are equal, in order.</span>\n *\n * <img src=\"./img/sequenceEqual.png\" width=\"100%\">\n *\n * `sequenceEqual` subscribes to two observables and buffers incoming values from each observable. Whenever either\n * observable emits a value, the value is buffered and the buffers are shifted and compared from the bottom\n * up; If any value pair doesn't match, the returned observable will emit `false` and complete. If one of the\n * observables completes, the operator will wait for the other observable to complete; If the other\n * observable emits before completing, the returned observable will emit `false` and complete. If one observable never\n * completes or emits after the other complets, the returned observable will never complete.\n *\n * @example <caption>figure out if the Konami code matches</caption>\n * var code = Rx.Observable.from([\n *  \"ArrowUp\",\n *  \"ArrowUp\",\n *  \"ArrowDown\",\n *  \"ArrowDown\",\n *  \"ArrowLeft\",\n *  \"ArrowRight\",\n *  \"ArrowLeft\",\n *  \"ArrowRight\",\n *  \"KeyB\",\n *  \"KeyA\",\n *  \"Enter\" // no start key, clearly.\n * ]);\n *\n * var keys = Rx.Observable.fromEvent(document, 'keyup')\n *  .map(e => e.code);\n * var matches = keys.bufferCount(11, 1)\n *  .mergeMap(\n *    last11 =>\n *      Rx.Observable.from(last11)\n *        .sequenceEqual(code)\n *   );\n * matches.subscribe(matched => console.log('Successful cheat at Contra? ', matched));\n *\n * @see {@link combineLatest}\n * @see {@link zip}\n * @see {@link withLatestFrom}\n *\n * @param {Observable} compareTo The observable sequence to compare the source sequence to.\n * @param {function} [comparor] An optional function to compare each value pair\n * @return {Observable} An Observable of a single boolean value representing whether or not\n * the values emitted by both observables were equal in sequence.\n * @method sequenceEqual\n * @owner Observable\n ",
+      "range": [
+        75,
+        2192
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 53,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=sequenceEqual.js.map",
+      "range": [
+        2299,
+        2340
+      ],
+      "loc": {
+        "start": {
+          "line": 57,
+          "column": 0
+        },
+        "end": {
+          "line": 57,
+          "column": 41
+        }
+      }
+    }
+  ]
+}

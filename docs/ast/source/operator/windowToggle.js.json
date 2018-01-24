@@ -1,0 +1,488 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "higherOrder",
+            "range": [
+              25,
+              36
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 25
+              },
+              "end": {
+                "line": 1,
+                "column": 36
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "windowToggle",
+            "range": [
+              9,
+              21
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 9
+              },
+              "end": {
+                "line": 1,
+                "column": 21
+              }
+            }
+          },
+          "range": [
+            9,
+            36
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 36
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../operators/windowToggle",
+        "raw": "'../operators/windowToggle'",
+        "range": [
+          44,
+          71
+        ],
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 44
+          },
+          "end": {
+            "line": 1,
+            "column": 71
+          }
+        }
+      },
+      "range": [
+        0,
+        72
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 72
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Branch out the source Observable values as a nested Observable starting from\n * an emission from `openings` and ending when the output of `closingSelector`\n * emits.\n *\n * <span class=\"informal\">It's like {@link bufferToggle}, but emits a nested\n * Observable instead of an array.</span>\n *\n * <img src=\"./img/windowToggle.png\" width=\"100%\">\n *\n * Returns an Observable that emits windows of items it collects from the source\n * Observable. The output Observable emits windows that contain those items\n * emitted by the source Observable between the time when the `openings`\n * Observable emits an item and when the Observable returned by\n * `closingSelector` emits an item.\n *\n * @example <caption>Every other second, emit the click events from the next 500ms</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var openings = Rx.Observable.interval(1000);\n * var result = clicks.windowToggle(openings, i =>\n *   i % 2 ? Rx.Observable.interval(500) : Rx.Observable.empty()\n * ).mergeAll();\n * result.subscribe(x => console.log(x));\n *\n * @see {@link window}\n * @see {@link windowCount}\n * @see {@link windowTime}\n * @see {@link windowWhen}\n * @see {@link bufferToggle}\n *\n * @param {Observable<O>} openings An observable of notifications to start new\n * windows.\n * @param {function(value: O): Observable} closingSelector A function that takes\n * the value emitted by the `openings` observable and returns an Observable,\n * which, when it emits (either `next` or `complete`), signals that the\n * associated window should complete.\n * @return {Observable<Observable<T>>} An observable of windows, which in turn\n * are Observables.\n * @method windowToggle\n * @owner Observable\n ",
+          "range": [
+            73,
+            1780
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 42,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "FunctionDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "windowToggle",
+          "range": [
+            1797,
+            1809
+          ],
+          "loc": {
+            "start": {
+              "line": 43,
+              "column": 16
+            },
+            "end": {
+              "line": 43,
+              "column": 28
+            }
+          }
+        },
+        "params": [
+          {
+            "type": "Identifier",
+            "name": "openings",
+            "range": [
+              1810,
+              1818
+            ],
+            "loc": {
+              "start": {
+                "line": 43,
+                "column": 29
+              },
+              "end": {
+                "line": 43,
+                "column": 37
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "closingSelector",
+            "range": [
+              1820,
+              1835
+            ],
+            "loc": {
+              "start": {
+                "line": 43,
+                "column": 39
+              },
+              "end": {
+                "line": 43,
+                "column": 54
+              }
+            }
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
+                    "range": [
+                      1850,
+                      1861
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 44,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 44,
+                        "column": 22
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "openings",
+                      "range": [
+                        1862,
+                        1870
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 44,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 44,
+                          "column": 31
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "closingSelector",
+                      "range": [
+                        1872,
+                        1887
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 44,
+                          "column": 33
+                        },
+                        "end": {
+                          "line": 44,
+                          "column": 48
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    1850,
+                    1888
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 44,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 44,
+                      "column": 49
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      1889,
+                      1893
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 44,
+                        "column": 50
+                      },
+                      "end": {
+                        "line": 44,
+                        "column": 54
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  1850,
+                  1894
+                ],
+                "loc": {
+                  "start": {
+                    "line": 44,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 44,
+                    "column": 55
+                  }
+                }
+              },
+              "range": [
+                1843,
+                1895
+              ],
+              "loc": {
+                "start": {
+                  "line": 44,
+                  "column": 4
+                },
+                "end": {
+                  "line": 44,
+                  "column": 56
+                }
+              }
+            }
+          ],
+          "range": [
+            1837,
+            1897
+          ],
+          "loc": {
+            "start": {
+              "line": 43,
+              "column": 56
+            },
+            "end": {
+              "line": 45,
+              "column": 1
+            }
+          }
+        },
+        "generator": false,
+        "expression": false,
+        "range": [
+          1788,
+          1897
+        ],
+        "loc": {
+          "start": {
+            "line": 43,
+            "column": 7
+          },
+          "end": {
+            "line": 45,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Branch out the source Observable values as a nested Observable starting from\n * an emission from `openings` and ending when the output of `closingSelector`\n * emits.\n *\n * <span class=\"informal\">It's like {@link bufferToggle}, but emits a nested\n * Observable instead of an array.</span>\n *\n * <img src=\"./img/windowToggle.png\" width=\"100%\">\n *\n * Returns an Observable that emits windows of items it collects from the source\n * Observable. The output Observable emits windows that contain those items\n * emitted by the source Observable between the time when the `openings`\n * Observable emits an item and when the Observable returned by\n * `closingSelector` emits an item.\n *\n * @example <caption>Every other second, emit the click events from the next 500ms</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var openings = Rx.Observable.interval(1000);\n * var result = clicks.windowToggle(openings, i =>\n *   i % 2 ? Rx.Observable.interval(500) : Rx.Observable.empty()\n * ).mergeAll();\n * result.subscribe(x => console.log(x));\n *\n * @see {@link window}\n * @see {@link windowCount}\n * @see {@link windowTime}\n * @see {@link windowWhen}\n * @see {@link bufferToggle}\n *\n * @param {Observable<O>} openings An observable of notifications to start new\n * windows.\n * @param {function(value: O): Observable} closingSelector A function that takes\n * the value emitted by the `openings` observable and returns an Observable,\n * which, when it emits (either `next` or `complete`), signals that the\n * associated window should complete.\n * @return {Observable<Observable<T>>} An observable of windows, which in turn\n * are Observables.\n * @method windowToggle\n * @owner Observable\n ",
+            "range": [
+              73,
+              1780
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 42,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=windowToggle.js.map",
+            "range": [
+              1898,
+              1938
+            ],
+            "loc": {
+              "start": {
+                "line": 46,
+                "column": 0
+              },
+              "end": {
+                "line": 46,
+                "column": 40
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1781,
+        1897
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 0
+        },
+        "end": {
+          "line": 45,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Branch out the source Observable values as a nested Observable starting from\n * an emission from `openings` and ending when the output of `closingSelector`\n * emits.\n *\n * <span class=\"informal\">It's like {@link bufferToggle}, but emits a nested\n * Observable instead of an array.</span>\n *\n * <img src=\"./img/windowToggle.png\" width=\"100%\">\n *\n * Returns an Observable that emits windows of items it collects from the source\n * Observable. The output Observable emits windows that contain those items\n * emitted by the source Observable between the time when the `openings`\n * Observable emits an item and when the Observable returned by\n * `closingSelector` emits an item.\n *\n * @example <caption>Every other second, emit the click events from the next 500ms</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var openings = Rx.Observable.interval(1000);\n * var result = clicks.windowToggle(openings, i =>\n *   i % 2 ? Rx.Observable.interval(500) : Rx.Observable.empty()\n * ).mergeAll();\n * result.subscribe(x => console.log(x));\n *\n * @see {@link window}\n * @see {@link windowCount}\n * @see {@link windowTime}\n * @see {@link windowWhen}\n * @see {@link bufferToggle}\n *\n * @param {Observable<O>} openings An observable of notifications to start new\n * windows.\n * @param {function(value: O): Observable} closingSelector A function that takes\n * the value emitted by the `openings` observable and returns an Observable,\n * which, when it emits (either `next` or `complete`), signals that the\n * associated window should complete.\n * @return {Observable<Observable<T>>} An observable of windows, which in turn\n * are Observables.\n * @method windowToggle\n * @owner Observable\n ",
+          "range": [
+            73,
+            1780
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 42,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=windowToggle.js.map",
+          "range": [
+            1898,
+            1938
+          ],
+          "loc": {
+            "start": {
+              "line": 46,
+              "column": 0
+            },
+            "end": {
+              "line": 46,
+              "column": 40
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    0,
+    1897
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 45,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Branch out the source Observable values as a nested Observable starting from\n * an emission from `openings` and ending when the output of `closingSelector`\n * emits.\n *\n * <span class=\"informal\">It's like {@link bufferToggle}, but emits a nested\n * Observable instead of an array.</span>\n *\n * <img src=\"./img/windowToggle.png\" width=\"100%\">\n *\n * Returns an Observable that emits windows of items it collects from the source\n * Observable. The output Observable emits windows that contain those items\n * emitted by the source Observable between the time when the `openings`\n * Observable emits an item and when the Observable returned by\n * `closingSelector` emits an item.\n *\n * @example <caption>Every other second, emit the click events from the next 500ms</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var openings = Rx.Observable.interval(1000);\n * var result = clicks.windowToggle(openings, i =>\n *   i % 2 ? Rx.Observable.interval(500) : Rx.Observable.empty()\n * ).mergeAll();\n * result.subscribe(x => console.log(x));\n *\n * @see {@link window}\n * @see {@link windowCount}\n * @see {@link windowTime}\n * @see {@link windowWhen}\n * @see {@link bufferToggle}\n *\n * @param {Observable<O>} openings An observable of notifications to start new\n * windows.\n * @param {function(value: O): Observable} closingSelector A function that takes\n * the value emitted by the `openings` observable and returns an Observable,\n * which, when it emits (either `next` or `complete`), signals that the\n * associated window should complete.\n * @return {Observable<Observable<T>>} An observable of windows, which in turn\n * are Observables.\n * @method windowToggle\n * @owner Observable\n ",
+      "range": [
+        73,
+        1780
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 42,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=windowToggle.js.map",
+      "range": [
+        1898,
+        1938
+      ],
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 0
+        },
+        "end": {
+          "line": 46,
+          "column": 40
+        }
+      }
+    }
+  ]
+}

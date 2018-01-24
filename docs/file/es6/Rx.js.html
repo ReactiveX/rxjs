@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">es6/Rx.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObservableInputDoc.html">ObservableInput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SubscribableOrPromiseDoc.html">SubscribableOrPromise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~TeardownLogicDoc.html">TeardownLogic</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Symbol">Rx.Symbol</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxTimeoutError.html">AjaxTimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html">AjaxRequest</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operators</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operators/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-catchError">catchError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-tap">tap</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/scheduler/Action.js~Action.html">Action</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animationFrame">animationFrame</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asap">asap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-async">async</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-queue">queue</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$iterator">$$iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$observable">$$observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/TimeoutError.js~TimeoutError.html">TimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">es6/Rx.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/* tslint:disable:no-unused-variable */
+// Subject imported before Observable to bypass circular dependency issue since
+// Subject extends Observable and Observable references Subject in it&apos;s
+// definition
+export { Subject, AnonymousSubject } from &apos;./Subject&apos;;
+/* tslint:enable:no-unused-variable */
+export { Observable } from &apos;./Observable&apos;;
+import &apos;./add/observable/bindCallback&apos;;
+import &apos;./add/observable/bindNodeCallback&apos;;
+import &apos;./add/observable/combineLatest&apos;;
+import &apos;./add/observable/concat&apos;;
+import &apos;./add/observable/defer&apos;;
+import &apos;./add/observable/empty&apos;;
+import &apos;./add/observable/forkJoin&apos;;
+import &apos;./add/observable/from&apos;;
+import &apos;./add/observable/fromEvent&apos;;
+import &apos;./add/observable/fromEventPattern&apos;;
+import &apos;./add/observable/fromPromise&apos;;
+import &apos;./add/observable/generate&apos;;
+import &apos;./add/observable/if&apos;;
+import &apos;./add/observable/interval&apos;;
+import &apos;./add/observable/merge&apos;;
+import &apos;./add/observable/race&apos;;
+import &apos;./add/observable/never&apos;;
+import &apos;./add/observable/of&apos;;
+import &apos;./add/observable/onErrorResumeNext&apos;;
+import &apos;./add/observable/pairs&apos;;
+import &apos;./add/observable/range&apos;;
+import &apos;./add/observable/using&apos;;
+import &apos;./add/observable/throw&apos;;
+import &apos;./add/observable/timer&apos;;
+import &apos;./add/observable/zip&apos;;
+import &apos;./add/observable/dom/ajax&apos;;
+import &apos;./add/observable/dom/webSocket&apos;;
+import &apos;./add/operator/buffer&apos;;
+import &apos;./add/operator/bufferCount&apos;;
+import &apos;./add/operator/bufferTime&apos;;
+import &apos;./add/operator/bufferToggle&apos;;
+import &apos;./add/operator/bufferWhen&apos;;
+import &apos;./add/operator/catch&apos;;
+import &apos;./add/operator/combineAll&apos;;
+import &apos;./add/operator/combineLatest&apos;;
+import &apos;./add/operator/concat&apos;;
+import &apos;./add/operator/concatAll&apos;;
+import &apos;./add/operator/concatMap&apos;;
+import &apos;./add/operator/concatMapTo&apos;;
+import &apos;./add/operator/count&apos;;
+import &apos;./add/operator/dematerialize&apos;;
+import &apos;./add/operator/debounce&apos;;
+import &apos;./add/operator/debounceTime&apos;;
+import &apos;./add/operator/defaultIfEmpty&apos;;
+import &apos;./add/operator/delay&apos;;
+import &apos;./add/operator/delayWhen&apos;;
+import &apos;./add/operator/distinct&apos;;
+import &apos;./add/operator/distinctUntilChanged&apos;;
+import &apos;./add/operator/distinctUntilKeyChanged&apos;;
+import &apos;./add/operator/do&apos;;
+import &apos;./add/operator/exhaust&apos;;
+import &apos;./add/operator/exhaustMap&apos;;
+import &apos;./add/operator/expand&apos;;
+import &apos;./add/operator/elementAt&apos;;
+import &apos;./add/operator/filter&apos;;
+import &apos;./add/operator/finally&apos;;
+import &apos;./add/operator/find&apos;;
+import &apos;./add/operator/findIndex&apos;;
+import &apos;./add/operator/first&apos;;
+import &apos;./add/operator/groupBy&apos;;
+import &apos;./add/operator/ignoreElements&apos;;
+import &apos;./add/operator/isEmpty&apos;;
+import &apos;./add/operator/audit&apos;;
+import &apos;./add/operator/auditTime&apos;;
+import &apos;./add/operator/last&apos;;
+import &apos;./add/operator/let&apos;;
+import &apos;./add/operator/every&apos;;
+import &apos;./add/operator/map&apos;;
+import &apos;./add/operator/mapTo&apos;;
+import &apos;./add/operator/materialize&apos;;
+import &apos;./add/operator/max&apos;;
+import &apos;./add/operator/merge&apos;;
+import &apos;./add/operator/mergeAll&apos;;
+import &apos;./add/operator/mergeMap&apos;;
+import &apos;./add/operator/mergeMapTo&apos;;
+import &apos;./add/operator/mergeScan&apos;;
+import &apos;./add/operator/min&apos;;
+import &apos;./add/operator/multicast&apos;;
+import &apos;./add/operator/observeOn&apos;;
+import &apos;./add/operator/onErrorResumeNext&apos;;
+import &apos;./add/operator/pairwise&apos;;
+import &apos;./add/operator/partition&apos;;
+import &apos;./add/operator/pluck&apos;;
+import &apos;./add/operator/publish&apos;;
+import &apos;./add/operator/publishBehavior&apos;;
+import &apos;./add/operator/publishReplay&apos;;
+import &apos;./add/operator/publishLast&apos;;
+import &apos;./add/operator/race&apos;;
+import &apos;./add/operator/reduce&apos;;
+import &apos;./add/operator/repeat&apos;;
+import &apos;./add/operator/repeatWhen&apos;;
+import &apos;./add/operator/retry&apos;;
+import &apos;./add/operator/retryWhen&apos;;
+import &apos;./add/operator/sample&apos;;
+import &apos;./add/operator/sampleTime&apos;;
+import &apos;./add/operator/scan&apos;;
+import &apos;./add/operator/sequenceEqual&apos;;
+import &apos;./add/operator/share&apos;;
+import &apos;./add/operator/shareReplay&apos;;
+import &apos;./add/operator/single&apos;;
+import &apos;./add/operator/skip&apos;;
+import &apos;./add/operator/skipLast&apos;;
+import &apos;./add/operator/skipUntil&apos;;
+import &apos;./add/operator/skipWhile&apos;;
+import &apos;./add/operator/startWith&apos;;
+import &apos;./add/operator/subscribeOn&apos;;
+import &apos;./add/operator/switch&apos;;
+import &apos;./add/operator/switchMap&apos;;
+import &apos;./add/operator/switchMapTo&apos;;
+import &apos;./add/operator/take&apos;;
+import &apos;./add/operator/takeLast&apos;;
+import &apos;./add/operator/takeUntil&apos;;
+import &apos;./add/operator/takeWhile&apos;;
+import &apos;./add/operator/throttle&apos;;
+import &apos;./add/operator/throttleTime&apos;;
+import &apos;./add/operator/timeInterval&apos;;
+import &apos;./add/operator/timeout&apos;;
+import &apos;./add/operator/timeoutWith&apos;;
+import &apos;./add/operator/timestamp&apos;;
+import &apos;./add/operator/toArray&apos;;
+import &apos;./add/operator/toPromise&apos;;
+import &apos;./add/operator/window&apos;;
+import &apos;./add/operator/windowCount&apos;;
+import &apos;./add/operator/windowTime&apos;;
+import &apos;./add/operator/windowToggle&apos;;
+import &apos;./add/operator/windowWhen&apos;;
+import &apos;./add/operator/withLatestFrom&apos;;
+import &apos;./add/operator/zip&apos;;
+import &apos;./add/operator/zipAll&apos;;
+/* tslint:disable:no-unused-variable */
+export { Subscription } from &apos;./Subscription&apos;;
+export { Subscriber } from &apos;./Subscriber&apos;;
+export { AsyncSubject } from &apos;./AsyncSubject&apos;;
+export { ReplaySubject } from &apos;./ReplaySubject&apos;;
+export { BehaviorSubject } from &apos;./BehaviorSubject&apos;;
+export { ConnectableObservable } from &apos;./observable/ConnectableObservable&apos;;
+export { Notification } from &apos;./Notification&apos;;
+export { EmptyError } from &apos;./util/EmptyError&apos;;
+export { ArgumentOutOfRangeError } from &apos;./util/ArgumentOutOfRangeError&apos;;
+export { ObjectUnsubscribedError } from &apos;./util/ObjectUnsubscribedError&apos;;
+export { TimeoutError } from &apos;./util/TimeoutError&apos;;
+export { UnsubscriptionError } from &apos;./util/UnsubscriptionError&apos;;
+export { TimeInterval } from &apos;./operator/timeInterval&apos;;
+export { Timestamp } from &apos;./operators/timestamp&apos;;
+export { TestScheduler } from &apos;./testing/TestScheduler&apos;;
+export { VirtualTimeScheduler } from &apos;./scheduler/VirtualTimeScheduler&apos;;
+export { AjaxResponse, AjaxError, AjaxTimeoutError } from &apos;./observable/dom/AjaxObservable&apos;;
+export { pipe } from &apos;./util/pipe&apos;;
+import { asap } from &apos;./scheduler/asap&apos;;
+import { async } from &apos;./scheduler/async&apos;;
+import { queue } from &apos;./scheduler/queue&apos;;
+import { animationFrame } from &apos;./scheduler/animationFrame&apos;;
+import { rxSubscriber } from &apos;./symbol/rxSubscriber&apos;;
+import { iterator } from &apos;./symbol/iterator&apos;;
+import { observable } from &apos;./symbol/observable&apos;;
+import * as _operators from &apos;./operators&apos;;
+export const operators = _operators;
+/* tslint:enable:no-unused-variable */
+/**
+ * @typedef {Object} Rx.Scheduler
+ * @property {Scheduler} queue Schedules on a queue in the current event frame
+ * (trampoline scheduler). Use this for iteration operations.
+ * @property {Scheduler} asap Schedules on the micro task queue, which uses the
+ * fastest transport mechanism available, either Node.js&apos; `process.nextTick()`
+ * or Web Worker MessageChannel or setTimeout or others. Use this for
+ * asynchronous conversions.
+ * @property {Scheduler} async Schedules work with `setInterval`. Use this for
+ * time-based operations.
+ * @property {Scheduler} animationFrame Schedules work with `requestAnimationFrame`.
+ * Use this for synchronizing with the platform&apos;s painting
+ */
+let Scheduler = {
+    asap,
+    queue,
+    animationFrame,
+    async
+};
+/**
+ * @typedef {Object} Rx.Symbol
+ * @property {Symbol|string} rxSubscriber A symbol to use as a property name to
+ * retrieve an &quot;Rx safe&quot; Observer from an object. &quot;Rx safety&quot; can be defined as
+ * an object that has all of the traits of an Rx Subscriber, including the
+ * ability to add and remove subscriptions to the subscription chain and
+ * guarantees involving event triggering (can&apos;t &quot;next&quot; after unsubscription,
+ * etc).
+ * @property {Symbol|string} observable A symbol to use as a property name to
+ * retrieve an Observable as defined by the [ECMAScript &quot;Observable&quot; spec](https://github.com/zenparsing/es-observable).
+ * @property {Symbol|string} iterator The ES6 symbol to use as a property name
+ * to retrieve an iterator from an object.
+ */
+let Symbol = {
+    rxSubscriber,
+    observable,
+    iterator
+};
+export { Scheduler, Symbol };
+//# sourceMappingURL=Rx.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
