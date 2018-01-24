@@ -1,21 +1,18 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../../src/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { asapScheduler, Observable, animationFrameScheduler, queueScheduler } from '../../src';
+import { TestScheduler } from '../../src/testing';
+import { interval } from '../../src/create';
 
-declare const { asDiagram };
+declare const asDiagram: any;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-
-declare const rxTestScheduler: Rx.TestScheduler;
-const Observable = Rx.Observable;
-const asap = Rx.Scheduler.asap;
-const queue = Rx.Scheduler.queue;
-const animationFrame = Rx.Scheduler.animationFrame;
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {interval} */
-describe('Observable.interval', () => {
+describe('interval', () => {
   asDiagram('interval(1000)')('should create an observable emitting periodically', () => {
-    const e1 = Observable.interval(20, rxTestScheduler)
+    const e1 = interval(20, rxTestScheduler)
       .take(6) // make it actually finite, so it can be rendered
       .concat(Observable.never()); // but pretend it's infinite by not completing
     const expected = '--a-b-c-d-e-f-';
@@ -32,33 +29,25 @@ describe('Observable.interval', () => {
 
   it('should set up an interval', () => {
     const expected = '----------0---------1---------2---------3---------4---------5---------6-----';
-    expectObservable(Observable.interval(100, rxTestScheduler)).toBe(expected, [0, 1, 2, 3, 4, 5, 6]);
-  });
-
-  it('should specify default scheduler if incorrect scheduler specified', () => {
-    const scheduler = (<any>Observable.interval(10, <any>sinon.stub())).scheduler;
-
-    expect(scheduler).to.equal(Rx.Scheduler.async);
+    expectObservable(interval(100, rxTestScheduler)).toBe(expected, [0, 1, 2, 3, 4, 5, 6]);
   });
 
   it('should emit when relative interval set to zero', () => {
-    const e1 = Observable.interval(0, rxTestScheduler).take(7);
+    const e1 = interval(0, rxTestScheduler).take(7);
     const expected = '(0123456|)';
-
     expectObservable(e1).toBe(expected, [0, 1, 2, 3, 4, 5, 6]);
   });
 
   it('should consider negative interval as zero', () => {
-    const e1 = Observable.interval(-1, rxTestScheduler).take(7);
+    const e1 = interval(-1, rxTestScheduler).take(7);
     const expected = '(0123456|)';
-
     expectObservable(e1).toBe(expected, [0, 1, 2, 3, 4, 5, 6]);
   });
 
   it('should emit values until unsubscribed', (done: MochaDone) => {
-    const values = [];
+    const values: number[] = [];
     const expected = [0, 1, 2, 3, 4, 5, 6];
-    const e1 = Observable.interval(5);
+    const e1 = interval(5);
     const subscription = e1.subscribe((x: number) => {
       values.push(x);
       if (x === 6) {
@@ -76,9 +65,9 @@ describe('Observable.interval', () => {
   it('should create an observable emitting periodically with the AsapScheduler', (done: MochaDone) => {
     const sandbox = sinon.sandbox.create();
     const fakeTimer = sandbox.useFakeTimers();
-    const interval = 10;
+    const period = 10;
     const events = [0, 1, 2, 3, 4, 5];
-    const source = Observable.interval(interval, asap).take(6);
+    const source = interval(period, asapScheduler).take(6);
     source.subscribe({
       next(x) {
         expect(x).to.equal(events.shift());
@@ -88,24 +77,24 @@ describe('Observable.interval', () => {
         done(e);
       },
       complete() {
-        expect(asap.actions.length).to.equal(0);
-        expect(asap.scheduled).to.equal(undefined);
+        expect(asapScheduler.actions.length).to.equal(0);
+        expect(asapScheduler.scheduled).to.equal(undefined);
         sandbox.restore();
         done();
       }
     });
     let i = -1, n = events.length;
     while (++i < n) {
-      fakeTimer.tick(interval);
+      fakeTimer.tick(period);
     }
   });
 
   it('should create an observable emitting periodically with the QueueScheduler', (done: MochaDone) => {
     const sandbox = sinon.sandbox.create();
     const fakeTimer = sandbox.useFakeTimers();
-    const interval = 10;
+    const period = 10;
     const events = [0, 1, 2, 3, 4, 5];
-    const source = Observable.interval(interval, queue).take(6);
+    const source = interval(period, queueScheduler).take(6);
     source.subscribe({
       next(x) {
         expect(x).to.equal(events.shift());
@@ -115,24 +104,24 @@ describe('Observable.interval', () => {
         done(e);
       },
       complete() {
-        expect(queue.actions.length).to.equal(0);
-        expect(queue.scheduled).to.equal(undefined);
+        expect(queueScheduler.actions.length).to.equal(0);
+        expect(queueScheduler.scheduled).to.equal(undefined);
         sandbox.restore();
         done();
       }
     });
     let i = -1, n = events.length;
     while (++i < n) {
-      fakeTimer.tick(interval);
+      fakeTimer.tick(period);
     }
   });
 
   it('should create an observable emitting periodically with the AnimationFrameScheduler', (done: MochaDone) => {
     const sandbox = sinon.sandbox.create();
     const fakeTimer = sandbox.useFakeTimers();
-    const interval = 10;
+    const period = 10;
     const events = [0, 1, 2, 3, 4, 5];
-    const source = Observable.interval(interval, animationFrame).take(6);
+    const source = interval(period, animationFrameScheduler).take(6);
     source.subscribe({
       next(x) {
         expect(x).to.equal(events.shift());
@@ -142,15 +131,15 @@ describe('Observable.interval', () => {
         done(e);
       },
       complete() {
-        expect(animationFrame.actions.length).to.equal(0);
-        expect(animationFrame.scheduled).to.equal(undefined);
+        expect(animationFrameScheduler.actions.length).to.equal(0);
+        expect(animationFrameScheduler.scheduled).to.equal(undefined);
         sandbox.restore();
         done();
       }
     });
     let i = -1, n = events.length;
     while (++i < n) {
-      fakeTimer.tick(interval);
+      fakeTimer.tick(period);
     }
   });
 });
