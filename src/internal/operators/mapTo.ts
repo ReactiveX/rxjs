@@ -7,8 +7,8 @@ import { OperatorFunction } from '../../internal/types';
  * Emits the given constant value on the output Observable every time the source
  * Observable emits a value.
  *
- * <span class="informal">Like {@link map}, but it maps every source value to
- * the same output value every time.</span>
+ * Like {@link map}, but it maps every source value to
+ * the same output value every time.
  *
  * <img src="./img/mapTo.png" width="100%">
  *

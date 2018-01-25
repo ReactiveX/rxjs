@@ -7,9 +7,9 @@ import { OperatorFunction } from '../../internal/types';
  * Applies a given `project` function to each value emitted by the source
  * Observable, and emits the resulting values as an Observable.
  *
- * <span class="informal">Like [Array.prototype.map()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map),
+ * Like [Array.prototype.map()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map),
  * it passes each source value through a transformation function to get
- * corresponding output values.</span>
+ * corresponding output values.
  *
  * <img src="./img/map.png" width="100%">
  *
