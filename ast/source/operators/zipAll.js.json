@@ -60,11 +60,11 @@
       ],
       "source": {
         "type": "Literal",
-        "value": "./zip-support",
-        "raw": "'./zip-support'",
+        "value": "./zip",
+        "raw": "'./zip'",
         "range": [
           28,
-          43
+          35
         ],
         "loc": {
           "start": {
@@ -73,13 +73,13 @@
           },
           "end": {
             "line": 1,
-            "column": 43
+            "column": 35
           }
         }
       },
       "range": [
         0,
-        44
+        36
       ],
       "loc": {
         "start": {
@@ -88,29 +88,29 @@
         },
         "end": {
           "line": 1,
-          "column": 44
+          "column": 36
         }
       }
     },
     {
-      "type": "ExportDefaultDeclaration",
+      "type": "ExportNamedDeclaration",
       "declaration": {
         "type": "FunctionDeclaration",
         "id": {
           "type": "Identifier",
           "name": "zipAll",
           "range": [
-            69,
-            75
+            53,
+            59
           ],
           "loc": {
             "start": {
               "line": 2,
-              "column": 24
+              "column": 16
             },
             "end": {
               "line": 2,
-              "column": 30
+              "column": 22
             }
           }
         },
@@ -119,17 +119,17 @@
             "type": "Identifier",
             "name": "project",
             "range": [
-              76,
-              83
+              60,
+              67
             ],
             "loc": {
               "start": {
                 "line": 2,
-                "column": 31
+                "column": 23
               },
               "end": {
                 "line": 2,
-                "column": 38
+                "column": 30
               }
             }
           }
@@ -140,120 +140,161 @@
             {
               "type": "ReturnStatement",
               "argument": {
-                "type": "CallExpression",
-                "callee": {
-                  "type": "MemberExpression",
-                  "computed": false,
-                  "object": {
-                    "type": "ThisExpression",
-                    "range": [
-                      98,
-                      102
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 3,
-                        "column": 11
-                      },
-                      "end": {
-                        "line": 3,
-                        "column": 15
-                      }
-                    }
-                  },
-                  "property": {
-                    "type": "Identifier",
-                    "name": "lift",
-                    "range": [
-                      103,
-                      107
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 3,
-                        "column": 16
-                      },
-                      "end": {
-                        "line": 3,
-                        "column": 20
-                      }
-                    }
-                  },
-                  "range": [
-                    98,
-                    107
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 3,
-                      "column": 11
-                    },
-                    "end": {
-                      "line": 3,
-                      "column": 20
-                    }
-                  }
-                },
-                "arguments": [
+                "type": "ArrowFunctionExpression",
+                "id": null,
+                "params": [
                   {
-                    "type": "NewExpression",
-                    "callee": {
-                      "type": "Identifier",
-                      "name": "ZipOperator",
-                      "range": [
-                        112,
-                        123
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 3,
-                          "column": 25
-                        },
-                        "end": {
-                          "line": 3,
-                          "column": 36
-                        }
-                      }
-                    },
-                    "arguments": [
-                      {
-                        "type": "Identifier",
-                        "name": "project",
-                        "range": [
-                          124,
-                          131
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 3,
-                            "column": 37
-                          },
-                          "end": {
-                            "line": 3,
-                            "column": 44
-                          }
-                        }
-                      }
-                    ],
+                    "type": "Identifier",
+                    "name": "source",
                     "range": [
-                      108,
-                      132
+                      83,
+                      89
                     ],
                     "loc": {
                       "start": {
                         "line": 3,
-                        "column": 21
+                        "column": 12
                       },
                       "end": {
                         "line": 3,
-                        "column": 45
+                        "column": 18
                       }
                     }
                   }
                 ],
+                "body": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "MemberExpression",
+                    "computed": false,
+                    "object": {
+                      "type": "Identifier",
+                      "name": "source",
+                      "range": [
+                        94,
+                        100
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 3,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 29
+                        }
+                      }
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "name": "lift",
+                      "range": [
+                        101,
+                        105
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 3,
+                          "column": 30
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 34
+                        }
+                      }
+                    },
+                    "range": [
+                      94,
+                      105
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 23
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 34
+                      }
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "type": "NewExpression",
+                      "callee": {
+                        "type": "Identifier",
+                        "name": "ZipOperator",
+                        "range": [
+                          110,
+                          121
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 3,
+                            "column": 39
+                          },
+                          "end": {
+                            "line": 3,
+                            "column": 50
+                          }
+                        }
+                      },
+                      "arguments": [
+                        {
+                          "type": "Identifier",
+                          "name": "project",
+                          "range": [
+                            122,
+                            129
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 3,
+                              "column": 51
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 58
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        106,
+                        130
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 3,
+                          "column": 35
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 59
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    94,
+                    131
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 23
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 60
+                    }
+                  }
+                },
+                "generator": false,
+                "expression": true,
                 "range": [
-                  98,
-                  133
+                  82,
+                  131
                 ],
                 "loc": {
                   "start": {
@@ -262,13 +303,13 @@
                   },
                   "end": {
                     "line": 3,
-                    "column": 46
+                    "column": 60
                   }
                 }
               },
               "range": [
-                91,
-                134
+                75,
+                132
               ],
               "loc": {
                 "start": {
@@ -277,19 +318,19 @@
                 },
                 "end": {
                   "line": 3,
-                  "column": 47
+                  "column": 61
                 }
               }
             }
           ],
           "range": [
-            85,
-            136
+            69,
+            134
           ],
           "loc": {
             "start": {
               "line": 2,
-              "column": 40
+              "column": 32
             },
             "end": {
               "line": 4,
@@ -300,13 +341,13 @@
         "generator": false,
         "expression": false,
         "range": [
-          60,
-          136
+          44,
+          134
         ],
         "loc": {
           "start": {
             "line": 2,
-            "column": 15
+            "column": 7
           },
           "end": {
             "line": 4,
@@ -314,11 +355,32 @@
           }
         },
         "leadingComments": [],
-        "trailingComments": []
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=zipAll.js.map",
+            "range": [
+              135,
+              169
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 0
+              },
+              "end": {
+                "line": 5,
+                "column": 34
+              }
+            }
+          }
+        ]
       },
+      "specifiers": [],
+      "source": null,
       "range": [
-        45,
-        136
+        37,
+        134
       ],
       "loc": {
         "start": {
@@ -329,13 +391,33 @@
           "line": 4,
           "column": 1
         }
-      }
+      },
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=zipAll.js.map",
+          "range": [
+            135,
+            169
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 0
+            },
+            "end": {
+              "line": 5,
+              "column": 34
+            }
+          }
+        }
+      ]
     }
   ],
   "sourceType": "module",
   "range": [
     0,
-    136
+    134
   ],
   "loc": {
     "start": {
@@ -347,5 +429,24 @@
       "column": 1
     }
   },
-  "comments": []
+  "comments": [
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=zipAll.js.map",
+      "range": [
+        135,
+        169
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 34
+        }
+      }
+    }
+  ]
 }

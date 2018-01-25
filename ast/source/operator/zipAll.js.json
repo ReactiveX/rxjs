@@ -8,28 +8,28 @@
           "type": "ImportSpecifier",
           "local": {
             "type": "Identifier",
-            "name": "ZipOperator",
+            "name": "higherOrder",
             "range": [
-              9,
-              20
+              19,
+              30
             ],
             "loc": {
               "start": {
                 "line": 1,
-                "column": 9
+                "column": 19
               },
               "end": {
                 "line": 1,
-                "column": 20
+                "column": 30
               }
             }
           },
           "imported": {
             "type": "Identifier",
-            "name": "ZipOperator",
+            "name": "zipAll",
             "range": [
               9,
-              20
+              15
             ],
             "loc": {
               "start": {
@@ -38,13 +38,13 @@
               },
               "end": {
                 "line": 1,
-                "column": 20
+                "column": 15
               }
             }
           },
           "range": [
             9,
-            20
+            30
           ],
           "loc": {
             "start": {
@@ -53,33 +53,33 @@
             },
             "end": {
               "line": 1,
-              "column": 20
+              "column": 30
             }
           }
         }
       ],
       "source": {
         "type": "Literal",
-        "value": "./zip",
-        "raw": "'./zip'",
+        "value": "../operators/zipAll",
+        "raw": "'../operators/zipAll'",
         "range": [
-          28,
-          35
+          38,
+          59
         ],
         "loc": {
           "start": {
             "line": 1,
-            "column": 28
+            "column": 38
           },
           "end": {
             "line": 1,
-            "column": 35
+            "column": 59
           }
         }
       },
       "range": [
         0,
-        36
+        60
       ],
       "loc": {
         "start": {
@@ -88,7 +88,7 @@
         },
         "end": {
           "line": 1,
-          "column": 36
+          "column": 60
         }
       },
       "trailingComments": [
@@ -96,8 +96,8 @@
           "type": "Block",
           "value": "*\n * @param project\n * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}\n * @method zipAll\n * @owner Observable\n ",
           "range": [
-            37,
-            162
+            61,
+            186
           ],
           "loc": {
             "start": {
@@ -120,8 +120,8 @@
           "type": "Identifier",
           "name": "zipAll",
           "range": [
-            179,
-            185
+            203,
+            209
           ],
           "loc": {
             "start": {
@@ -139,8 +139,8 @@
             "type": "Identifier",
             "name": "project",
             "range": [
-              186,
-              193
+              210,
+              217
             ],
             "loc": {
               "start": {
@@ -162,13 +162,13 @@
               "argument": {
                 "type": "CallExpression",
                 "callee": {
-                  "type": "MemberExpression",
-                  "computed": false,
-                  "object": {
-                    "type": "ThisExpression",
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
                     "range": [
-                      208,
-                      212
+                      232,
+                      243
                     ],
                     "loc": {
                       "start": {
@@ -177,31 +177,33 @@
                       },
                       "end": {
                         "line": 9,
-                        "column": 15
+                        "column": 22
                       }
                     }
                   },
-                  "property": {
-                    "type": "Identifier",
-                    "name": "lift",
-                    "range": [
-                      213,
-                      217
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 9,
-                        "column": 16
-                      },
-                      "end": {
-                        "line": 9,
-                        "column": 20
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "project",
+                      "range": [
+                        244,
+                        251
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 9,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 9,
+                          "column": 30
+                        }
                       }
                     }
-                  },
+                  ],
                   "range": [
-                    208,
-                    217
+                    232,
+                    252
                   ],
                   "loc": {
                     "start": {
@@ -210,70 +212,32 @@
                     },
                     "end": {
                       "line": 9,
-                      "column": 20
+                      "column": 31
                     }
                   }
                 },
                 "arguments": [
                   {
-                    "type": "NewExpression",
-                    "callee": {
-                      "type": "Identifier",
-                      "name": "ZipOperator",
-                      "range": [
-                        222,
-                        233
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 9,
-                          "column": 25
-                        },
-                        "end": {
-                          "line": 9,
-                          "column": 36
-                        }
-                      }
-                    },
-                    "arguments": [
-                      {
-                        "type": "Identifier",
-                        "name": "project",
-                        "range": [
-                          234,
-                          241
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 9,
-                            "column": 37
-                          },
-                          "end": {
-                            "line": 9,
-                            "column": 44
-                          }
-                        }
-                      }
-                    ],
+                    "type": "ThisExpression",
                     "range": [
-                      218,
-                      242
+                      253,
+                      257
                     ],
                     "loc": {
                       "start": {
                         "line": 9,
-                        "column": 21
+                        "column": 32
                       },
                       "end": {
                         "line": 9,
-                        "column": 45
+                        "column": 36
                       }
                     }
                   }
                 ],
                 "range": [
-                  208,
-                  243
+                  232,
+                  258
                 ],
                 "loc": {
                   "start": {
@@ -282,13 +246,13 @@
                   },
                   "end": {
                     "line": 9,
-                    "column": 46
+                    "column": 37
                   }
                 }
               },
               "range": [
-                201,
-                244
+                225,
+                259
               ],
               "loc": {
                 "start": {
@@ -297,14 +261,14 @@
                 },
                 "end": {
                   "line": 9,
-                  "column": 47
+                  "column": 38
                 }
               }
             }
           ],
           "range": [
-            195,
-            246
+            219,
+            261
           ],
           "loc": {
             "start": {
@@ -320,8 +284,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          170,
-          246
+          194,
+          261
         ],
         "loc": {
           "start": {
@@ -338,8 +302,8 @@
             "type": "Block",
             "value": "*\n * @param project\n * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}\n * @method zipAll\n * @owner Observable\n ",
             "range": [
-              37,
-              162
+              61,
+              186
             ],
             "loc": {
               "start": {
@@ -358,8 +322,8 @@
             "type": "Line",
             "value": "# sourceMappingURL=zipAll.js.map",
             "range": [
-              247,
-              281
+              262,
+              296
             ],
             "loc": {
               "start": {
@@ -377,8 +341,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        163,
-        246
+        187,
+        261
       ],
       "loc": {
         "start": {
@@ -395,8 +359,8 @@
           "type": "Block",
           "value": "*\n * @param project\n * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}\n * @method zipAll\n * @owner Observable\n ",
           "range": [
-            37,
-            162
+            61,
+            186
           ],
           "loc": {
             "start": {
@@ -415,8 +379,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=zipAll.js.map",
           "range": [
-            247,
-            281
+            262,
+            296
           ],
           "loc": {
             "start": {
@@ -435,7 +399,7 @@
   "sourceType": "module",
   "range": [
     0,
-    246
+    261
   ],
   "loc": {
     "start": {
@@ -452,8 +416,8 @@
       "type": "Block",
       "value": "*\n * @param project\n * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}\n * @method zipAll\n * @owner Observable\n ",
       "range": [
-        37,
-        162
+        61,
+        186
       ],
       "loc": {
         "start": {
@@ -470,8 +434,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=zipAll.js.map",
       "range": [
-        247,
-        281
+        262,
+        296
       ],
       "loc": {
         "start": {

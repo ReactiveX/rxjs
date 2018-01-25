@@ -8,28 +8,28 @@
           "type": "ImportSpecifier",
           "local": {
             "type": "Identifier",
-            "name": "Observable",
+            "name": "higherOrder",
             "range": [
-              9,
-              19
+              18,
+              29
             ],
             "loc": {
               "start": {
                 "line": 1,
-                "column": 9
+                "column": 18
               },
               "end": {
                 "line": 1,
-                "column": 19
+                "column": 29
               }
             }
           },
           "imported": {
             "type": "Identifier",
-            "name": "Observable",
+            "name": "merge",
             "range": [
               9,
-              19
+              14
             ],
             "loc": {
               "start": {
@@ -38,13 +38,13 @@
               },
               "end": {
                 "line": 1,
-                "column": 19
+                "column": 14
               }
             }
           },
           "range": [
             9,
-            19
+            29
           ],
           "loc": {
             "start": {
@@ -53,33 +53,33 @@
             },
             "end": {
               "line": 1,
-              "column": 19
+              "column": 29
             }
           }
         }
       ],
       "source": {
         "type": "Literal",
-        "value": "../Observable",
-        "raw": "'../Observable'",
+        "value": "../operators/merge",
+        "raw": "'../operators/merge'",
         "range": [
-          27,
-          42
+          37,
+          57
         ],
         "loc": {
           "start": {
             "line": 1,
-            "column": 27
+            "column": 37
           },
           "end": {
             "line": 1,
-            "column": 42
+            "column": 57
           }
         }
       },
       "range": [
         0,
-        43
+        58
       ],
       "loc": {
         "start": {
@@ -88,39 +88,40 @@
         },
         "end": {
           "line": 1,
-          "column": 43
+          "column": 58
         }
       }
     },
     {
-      "type": "ImportDeclaration",
+      "type": "ExportNamedDeclaration",
+      "declaration": null,
       "specifiers": [
         {
-          "type": "ImportSpecifier",
-          "local": {
+          "type": "ExportSpecifier",
+          "exported": {
             "type": "Identifier",
-            "name": "ArrayObservable",
+            "name": "mergeStatic",
             "range": [
-              53,
-              68
+              77,
+              88
             ],
             "loc": {
               "start": {
                 "line": 2,
-                "column": 9
+                "column": 18
               },
               "end": {
                 "line": 2,
-                "column": 24
+                "column": 29
               }
             }
           },
-          "imported": {
+          "local": {
             "type": "Identifier",
-            "name": "ArrayObservable",
+            "name": "merge",
             "range": [
-              53,
-              68
+              68,
+              73
             ],
             "loc": {
               "start": {
@@ -129,13 +130,13 @@
               },
               "end": {
                 "line": 2,
-                "column": 24
+                "column": 14
               }
             }
           },
           "range": [
-            53,
-            68
+            68,
+            88
           ],
           "loc": {
             "start": {
@@ -144,33 +145,33 @@
             },
             "end": {
               "line": 2,
-              "column": 24
+              "column": 29
             }
           }
         }
       ],
       "source": {
         "type": "Literal",
-        "value": "../observable/ArrayObservable",
-        "raw": "'../observable/ArrayObservable'",
+        "value": "../observable/merge",
+        "raw": "'../observable/merge'",
         "range": [
-          76,
-          107
+          96,
+          117
         ],
         "loc": {
           "start": {
             "line": 2,
-            "column": 32
+            "column": 37
           },
           "end": {
             "line": 2,
-            "column": 63
+            "column": 58
           }
         }
       },
       "range": [
-        44,
-        108
+        59,
+        118
       ],
       "loc": {
         "start": {
@@ -179,189 +180,7 @@
         },
         "end": {
           "line": 2,
-          "column": 64
-        }
-      }
-    },
-    {
-      "type": "ImportDeclaration",
-      "specifiers": [
-        {
-          "type": "ImportSpecifier",
-          "local": {
-            "type": "Identifier",
-            "name": "MergeAllOperator",
-            "range": [
-              118,
-              134
-            ],
-            "loc": {
-              "start": {
-                "line": 3,
-                "column": 9
-              },
-              "end": {
-                "line": 3,
-                "column": 25
-              }
-            }
-          },
-          "imported": {
-            "type": "Identifier",
-            "name": "MergeAllOperator",
-            "range": [
-              118,
-              134
-            ],
-            "loc": {
-              "start": {
-                "line": 3,
-                "column": 9
-              },
-              "end": {
-                "line": 3,
-                "column": 25
-              }
-            }
-          },
-          "range": [
-            118,
-            134
-          ],
-          "loc": {
-            "start": {
-              "line": 3,
-              "column": 9
-            },
-            "end": {
-              "line": 3,
-              "column": 25
-            }
-          }
-        }
-      ],
-      "source": {
-        "type": "Literal",
-        "value": "./mergeAll",
-        "raw": "'./mergeAll'",
-        "range": [
-          142,
-          154
-        ],
-        "loc": {
-          "start": {
-            "line": 3,
-            "column": 33
-          },
-          "end": {
-            "line": 3,
-            "column": 45
-          }
-        }
-      },
-      "range": [
-        109,
-        155
-      ],
-      "loc": {
-        "start": {
-          "line": 3,
-          "column": 0
-        },
-        "end": {
-          "line": 3,
-          "column": 46
-        }
-      }
-    },
-    {
-      "type": "ImportDeclaration",
-      "specifiers": [
-        {
-          "type": "ImportSpecifier",
-          "local": {
-            "type": "Identifier",
-            "name": "isScheduler",
-            "range": [
-              165,
-              176
-            ],
-            "loc": {
-              "start": {
-                "line": 4,
-                "column": 9
-              },
-              "end": {
-                "line": 4,
-                "column": 20
-              }
-            }
-          },
-          "imported": {
-            "type": "Identifier",
-            "name": "isScheduler",
-            "range": [
-              165,
-              176
-            ],
-            "loc": {
-              "start": {
-                "line": 4,
-                "column": 9
-              },
-              "end": {
-                "line": 4,
-                "column": 20
-              }
-            }
-          },
-          "range": [
-            165,
-            176
-          ],
-          "loc": {
-            "start": {
-              "line": 4,
-              "column": 9
-            },
-            "end": {
-              "line": 4,
-              "column": 20
-            }
-          }
-        }
-      ],
-      "source": {
-        "type": "Literal",
-        "value": "../util/isScheduler",
-        "raw": "'../util/isScheduler'",
-        "range": [
-          184,
-          205
-        ],
-        "loc": {
-          "start": {
-            "line": 4,
-            "column": 28
-          },
-          "end": {
-            "line": 4,
-            "column": 49
-          }
-        }
-      },
-      "range": [
-        156,
-        206
-      ],
-      "loc": {
-        "start": {
-          "line": 4,
-          "column": 0
-        },
-        "end": {
-          "line": 4,
-          "column": 50
+          "column": 59
         }
       },
       "trailingComments": [
@@ -369,16 +188,16 @@
           "type": "Block",
           "value": " tslint:enable:max-line-length ",
           "range": [
-            207,
-            242
+            119,
+            154
           ],
           "loc": {
             "start": {
-              "line": 5,
+              "line": 3,
               "column": 0
             },
             "end": {
-              "line": 5,
+              "line": 3,
               "column": 35
             }
           }
@@ -387,16 +206,16 @@
           "type": "Block",
           "value": "*\n * Creates an output Observable which concurrently emits all values from every\n * given input Observable.\n *\n * <span class=\"informal\">Flattens multiple Observables together by blending\n * their values into one Observable.</span>\n *\n * <img src=\"./img/merge.png\" width=\"100%\">\n *\n * `merge` subscribes to each given input Observable (either the source or an\n * Observable given as argument), and simply forwards (without doing any\n * transformation) all the values from all the input Observables to the output\n * Observable. The output Observable only completes once all input Observables\n * have completed. Any error delivered by an input Observable will be immediately\n * emitted on the output Observable.\n *\n * @example <caption>Merge together two Observables: 1s interval and clicks</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var timer = Rx.Observable.interval(1000);\n * var clicksOrTimer = clicks.merge(timer);\n * clicksOrTimer.subscribe(x => console.log(x));\n *\n * @example <caption>Merge together 3 Observables, but only 2 run concurrently</caption>\n * var timer1 = Rx.Observable.interval(1000).take(10);\n * var timer2 = Rx.Observable.interval(2000).take(6);\n * var timer3 = Rx.Observable.interval(500).take(10);\n * var concurrent = 2; // the argument\n * var merged = timer1.merge(timer2, timer3, concurrent);\n * merged.subscribe(x => console.log(x));\n *\n * @see {@link mergeAll}\n * @see {@link mergeMap}\n * @see {@link mergeMapTo}\n * @see {@link mergeScan}\n *\n * @param {ObservableInput} other An input Observable to merge with the source\n * Observable. More than one input Observables may be given as argument.\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input\n * Observables being subscribed to concurrently.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for managing\n * concurrency of input Observables.\n * @return {Observable} An Observable that emits items that are the result of\n * every input Observable.\n * @method merge\n * @owner Observable\n ",
           "range": [
-            243,
-            2284
+            155,
+            2196
           ],
           "loc": {
             "start": {
-              "line": 6,
+              "line": 4,
               "column": 0
             },
             "end": {
-              "line": 51,
+              "line": 49,
               "column": 3
             }
           }
@@ -411,16 +230,16 @@
           "type": "Identifier",
           "name": "merge",
           "range": [
-            2301,
-            2306
+            2213,
+            2218
           ],
           "loc": {
             "start": {
-              "line": 52,
+              "line": 50,
               "column": 16
             },
             "end": {
-              "line": 52,
+              "line": 50,
               "column": 21
             }
           }
@@ -432,31 +251,31 @@
               "type": "Identifier",
               "name": "observables",
               "range": [
-                2310,
-                2321
+                2222,
+                2233
               ],
               "loc": {
                 "start": {
-                  "line": 52,
+                  "line": 50,
                   "column": 25
                 },
                 "end": {
-                  "line": 52,
+                  "line": 50,
                   "column": 36
                 }
               }
             },
             "range": [
-              2307,
-              2321
+              2219,
+              2233
             ],
             "loc": {
               "start": {
-                "line": 52,
+                "line": 50,
                 "column": 22
               },
               "end": {
-                "line": 52,
+                "line": 50,
                 "column": 36
               }
             }
@@ -470,227 +289,138 @@
               "argument": {
                 "type": "CallExpression",
                 "callee": {
-                  "type": "MemberExpression",
-                  "computed": false,
-                  "object": {
-                    "type": "MemberExpression",
-                    "computed": false,
-                    "object": {
-                      "type": "ThisExpression",
-                      "range": [
-                        2336,
-                        2340
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 53,
-                          "column": 11
-                        },
-                        "end": {
-                          "line": 53,
-                          "column": 15
-                        }
-                      }
-                    },
-                    "property": {
-                      "type": "Identifier",
-                      "name": "lift",
-                      "range": [
-                        2341,
-                        2345
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 53,
-                          "column": 16
-                        },
-                        "end": {
-                          "line": 53,
-                          "column": 20
-                        }
-                      }
-                    },
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
                     "range": [
-                      2336,
-                      2345
+                      2248,
+                      2259
                     ],
                     "loc": {
                       "start": {
-                        "line": 53,
+                        "line": 51,
                         "column": 11
                       },
                       "end": {
-                        "line": 53,
-                        "column": 20
+                        "line": 51,
+                        "column": 22
                       }
                     }
                   },
-                  "property": {
-                    "type": "Identifier",
-                    "name": "call",
-                    "range": [
-                      2346,
-                      2350
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 53,
-                        "column": 21
+                  "arguments": [
+                    {
+                      "type": "SpreadElement",
+                      "argument": {
+                        "type": "Identifier",
+                        "name": "observables",
+                        "range": [
+                          2263,
+                          2274
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 51,
+                            "column": 26
+                          },
+                          "end": {
+                            "line": 51,
+                            "column": 37
+                          }
+                        }
                       },
-                      "end": {
-                        "line": 53,
-                        "column": 25
+                      "range": [
+                        2260,
+                        2274
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 51,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 51,
+                          "column": 37
+                        }
                       }
                     }
-                  },
+                  ],
                   "range": [
-                    2336,
-                    2350
+                    2248,
+                    2275
                   ],
                   "loc": {
                     "start": {
-                      "line": 53,
+                      "line": 51,
                       "column": 11
                     },
                     "end": {
-                      "line": 53,
-                      "column": 25
+                      "line": 51,
+                      "column": 38
                     }
                   }
                 },
                 "arguments": [
                   {
-                    "type": "CallExpression",
-                    "callee": {
-                      "type": "Identifier",
-                      "name": "mergeStatic",
-                      "range": [
-                        2351,
-                        2362
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 53,
-                          "column": 26
-                        },
-                        "end": {
-                          "line": 53,
-                          "column": 37
-                        }
-                      }
-                    },
-                    "arguments": [
-                      {
-                        "type": "ThisExpression",
-                        "range": [
-                          2363,
-                          2367
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 53,
-                            "column": 38
-                          },
-                          "end": {
-                            "line": 53,
-                            "column": 42
-                          }
-                        }
-                      },
-                      {
-                        "type": "SpreadElement",
-                        "argument": {
-                          "type": "Identifier",
-                          "name": "observables",
-                          "range": [
-                            2372,
-                            2383
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 53,
-                              "column": 47
-                            },
-                            "end": {
-                              "line": 53,
-                              "column": 58
-                            }
-                          }
-                        },
-                        "range": [
-                          2369,
-                          2383
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 53,
-                            "column": 44
-                          },
-                          "end": {
-                            "line": 53,
-                            "column": 58
-                          }
-                        }
-                      }
-                    ],
+                    "type": "ThisExpression",
                     "range": [
-                      2351,
-                      2384
+                      2276,
+                      2280
                     ],
                     "loc": {
                       "start": {
-                        "line": 53,
-                        "column": 26
+                        "line": 51,
+                        "column": 39
                       },
                       "end": {
-                        "line": 53,
-                        "column": 59
+                        "line": 51,
+                        "column": 43
                       }
                     }
                   }
                 ],
                 "range": [
-                  2336,
-                  2385
+                  2248,
+                  2281
                 ],
                 "loc": {
                   "start": {
-                    "line": 53,
+                    "line": 51,
                     "column": 11
                   },
                   "end": {
-                    "line": 53,
-                    "column": 60
+                    "line": 51,
+                    "column": 44
                   }
                 }
               },
               "range": [
-                2329,
-                2386
+                2241,
+                2282
               ],
               "loc": {
                 "start": {
-                  "line": 53,
+                  "line": 51,
                   "column": 4
                 },
                 "end": {
-                  "line": 53,
-                  "column": 61
+                  "line": 51,
+                  "column": 45
                 }
               }
             }
           ],
           "range": [
-            2323,
-            2388
+            2235,
+            2284
           ],
           "loc": {
             "start": {
-              "line": 52,
+              "line": 50,
               "column": 38
             },
             "end": {
-              "line": 54,
+              "line": 52,
               "column": 1
             }
           }
@@ -698,16 +428,16 @@
         "generator": false,
         "expression": false,
         "range": [
-          2292,
-          2388
+          2204,
+          2284
         ],
         "loc": {
           "start": {
-            "line": 52,
+            "line": 50,
             "column": 7
           },
           "end": {
-            "line": 54,
+            "line": 52,
             "column": 1
           }
         },
@@ -716,16 +446,16 @@
             "type": "Block",
             "value": " tslint:enable:max-line-length ",
             "range": [
-              207,
-              242
+              119,
+              154
             ],
             "loc": {
               "start": {
-                "line": 5,
+                "line": 3,
                 "column": 0
               },
               "end": {
-                "line": 5,
+                "line": 3,
                 "column": 35
               }
             }
@@ -734,2133 +464,16 @@
             "type": "Block",
             "value": "*\n * Creates an output Observable which concurrently emits all values from every\n * given input Observable.\n *\n * <span class=\"informal\">Flattens multiple Observables together by blending\n * their values into one Observable.</span>\n *\n * <img src=\"./img/merge.png\" width=\"100%\">\n *\n * `merge` subscribes to each given input Observable (either the source or an\n * Observable given as argument), and simply forwards (without doing any\n * transformation) all the values from all the input Observables to the output\n * Observable. The output Observable only completes once all input Observables\n * have completed. Any error delivered by an input Observable will be immediately\n * emitted on the output Observable.\n *\n * @example <caption>Merge together two Observables: 1s interval and clicks</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var timer = Rx.Observable.interval(1000);\n * var clicksOrTimer = clicks.merge(timer);\n * clicksOrTimer.subscribe(x => console.log(x));\n *\n * @example <caption>Merge together 3 Observables, but only 2 run concurrently</caption>\n * var timer1 = Rx.Observable.interval(1000).take(10);\n * var timer2 = Rx.Observable.interval(2000).take(6);\n * var timer3 = Rx.Observable.interval(500).take(10);\n * var concurrent = 2; // the argument\n * var merged = timer1.merge(timer2, timer3, concurrent);\n * merged.subscribe(x => console.log(x));\n *\n * @see {@link mergeAll}\n * @see {@link mergeMap}\n * @see {@link mergeMapTo}\n * @see {@link mergeScan}\n *\n * @param {ObservableInput} other An input Observable to merge with the source\n * Observable. More than one input Observables may be given as argument.\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input\n * Observables being subscribed to concurrently.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for managing\n * concurrency of input Observables.\n * @return {Observable} An Observable that emits items that are the result of\n * every input Observable.\n * @method merge\n * @owner Observable\n ",
             "range": [
-              243,
-              2284
+              155,
+              2196
             ],
             "loc": {
               "start": {
-                "line": 6,
+                "line": 4,
                 "column": 0
               },
               "end": {
-                "line": 51,
-                "column": 3
-              }
-            }
-          }
-        ],
-        "trailingComments": [
-          {
-            "type": "Block",
-            "value": " tslint:enable:max-line-length ",
-            "range": [
-              2389,
-              2424
-            ],
-            "loc": {
-              "start": {
-                "line": 55,
-                "column": 0
-              },
-              "end": {
-                "line": 55,
-                "column": 35
-              }
-            }
-          },
-          {
-            "type": "Block",
-            "value": "*\n * Creates an output Observable which concurrently emits all values from every\n * given input Observable.\n *\n * <span class=\"informal\">Flattens multiple Observables together by blending\n * their values into one Observable.</span>\n *\n * <img src=\"./img/merge.png\" width=\"100%\">\n *\n * `merge` subscribes to each given input Observable (as arguments), and simply\n * forwards (without doing any transformation) all the values from all the input\n * Observables to the output Observable. The output Observable only completes\n * once all input Observables have completed. Any error delivered by an input\n * Observable will be immediately emitted on the output Observable.\n *\n * @example <caption>Merge together two Observables: 1s interval and clicks</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var timer = Rx.Observable.interval(1000);\n * var clicksOrTimer = Rx.Observable.merge(clicks, timer);\n * clicksOrTimer.subscribe(x => console.log(x));\n *\n * // Results in the following:\n * // timer will emit ascending values, one every second(1000ms) to console\n * // clicks logs MouseEvents to console everytime the \"document\" is clicked\n * // Since the two streams are merged you see these happening\n * // as they occur.\n *\n * @example <caption>Merge together 3 Observables, but only 2 run concurrently</caption>\n * var timer1 = Rx.Observable.interval(1000).take(10);\n * var timer2 = Rx.Observable.interval(2000).take(6);\n * var timer3 = Rx.Observable.interval(500).take(10);\n * var concurrent = 2; // the argument\n * var merged = Rx.Observable.merge(timer1, timer2, timer3, concurrent);\n * merged.subscribe(x => console.log(x));\n *\n * // Results in the following:\n * // - First timer1 and timer2 will run concurrently\n * // - timer1 will emit a value every 1000ms for 10 iterations\n * // - timer2 will emit a value every 2000ms for 6 iterations\n * // - after timer1 hits it's max iteration, timer2 will\n * //   continue, and timer3 will start to run concurrently with timer2\n * // - when timer2 hits it's max iteration it terminates, and\n * //   timer3 will continue to emit a value every 500ms until it is complete\n *\n * @see {@link mergeAll}\n * @see {@link mergeMap}\n * @see {@link mergeMapTo}\n * @see {@link mergeScan}\n *\n * @param {...ObservableInput} observables Input Observables to merge together.\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input\n * Observables being subscribed to concurrently.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for managing\n * concurrency of input Observables.\n * @return {Observable} an Observable that emits items that are the result of\n * every input Observable.\n * @static true\n * @name merge\n * @owner Observable\n ",
-            "range": [
-              2425,
-              5154
-            ],
-            "loc": {
-              "start": {
-                "line": 56,
-                "column": 0
-              },
-              "end": {
-                "line": 115,
-                "column": 3
-              }
-            }
-          }
-        ]
-      },
-      "specifiers": [],
-      "source": null,
-      "range": [
-        2285,
-        2388
-      ],
-      "loc": {
-        "start": {
-          "line": 52,
-          "column": 0
-        },
-        "end": {
-          "line": 54,
-          "column": 1
-        }
-      },
-      "leadingComments": [
-        {
-          "type": "Block",
-          "value": " tslint:enable:max-line-length ",
-          "range": [
-            207,
-            242
-          ],
-          "loc": {
-            "start": {
-              "line": 5,
-              "column": 0
-            },
-            "end": {
-              "line": 5,
-              "column": 35
-            }
-          }
-        },
-        {
-          "type": "Block",
-          "value": "*\n * Creates an output Observable which concurrently emits all values from every\n * given input Observable.\n *\n * <span class=\"informal\">Flattens multiple Observables together by blending\n * their values into one Observable.</span>\n *\n * <img src=\"./img/merge.png\" width=\"100%\">\n *\n * `merge` subscribes to each given input Observable (either the source or an\n * Observable given as argument), and simply forwards (without doing any\n * transformation) all the values from all the input Observables to the output\n * Observable. The output Observable only completes once all input Observables\n * have completed. Any error delivered by an input Observable will be immediately\n * emitted on the output Observable.\n *\n * @example <caption>Merge together two Observables: 1s interval and clicks</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var timer = Rx.Observable.interval(1000);\n * var clicksOrTimer = clicks.merge(timer);\n * clicksOrTimer.subscribe(x => console.log(x));\n *\n * @example <caption>Merge together 3 Observables, but only 2 run concurrently</caption>\n * var timer1 = Rx.Observable.interval(1000).take(10);\n * var timer2 = Rx.Observable.interval(2000).take(6);\n * var timer3 = Rx.Observable.interval(500).take(10);\n * var concurrent = 2; // the argument\n * var merged = timer1.merge(timer2, timer3, concurrent);\n * merged.subscribe(x => console.log(x));\n *\n * @see {@link mergeAll}\n * @see {@link mergeMap}\n * @see {@link mergeMapTo}\n * @see {@link mergeScan}\n *\n * @param {ObservableInput} other An input Observable to merge with the source\n * Observable. More than one input Observables may be given as argument.\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input\n * Observables being subscribed to concurrently.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for managing\n * concurrency of input Observables.\n * @return {Observable} An Observable that emits items that are the result of\n * every input Observable.\n * @method merge\n * @owner Observable\n ",
-          "range": [
-            243,
-            2284
-          ],
-          "loc": {
-            "start": {
-              "line": 6,
-              "column": 0
-            },
-            "end": {
-              "line": 51,
-              "column": 3
-            }
-          }
-        }
-      ],
-      "trailingComments": [
-        {
-          "type": "Block",
-          "value": " tslint:enable:max-line-length ",
-          "range": [
-            2389,
-            2424
-          ],
-          "loc": {
-            "start": {
-              "line": 55,
-              "column": 0
-            },
-            "end": {
-              "line": 55,
-              "column": 35
-            }
-          }
-        },
-        {
-          "type": "Block",
-          "value": "*\n * Creates an output Observable which concurrently emits all values from every\n * given input Observable.\n *\n * <span class=\"informal\">Flattens multiple Observables together by blending\n * their values into one Observable.</span>\n *\n * <img src=\"./img/merge.png\" width=\"100%\">\n *\n * `merge` subscribes to each given input Observable (as arguments), and simply\n * forwards (without doing any transformation) all the values from all the input\n * Observables to the output Observable. The output Observable only completes\n * once all input Observables have completed. Any error delivered by an input\n * Observable will be immediately emitted on the output Observable.\n *\n * @example <caption>Merge together two Observables: 1s interval and clicks</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var timer = Rx.Observable.interval(1000);\n * var clicksOrTimer = Rx.Observable.merge(clicks, timer);\n * clicksOrTimer.subscribe(x => console.log(x));\n *\n * // Results in the following:\n * // timer will emit ascending values, one every second(1000ms) to console\n * // clicks logs MouseEvents to console everytime the \"document\" is clicked\n * // Since the two streams are merged you see these happening\n * // as they occur.\n *\n * @example <caption>Merge together 3 Observables, but only 2 run concurrently</caption>\n * var timer1 = Rx.Observable.interval(1000).take(10);\n * var timer2 = Rx.Observable.interval(2000).take(6);\n * var timer3 = Rx.Observable.interval(500).take(10);\n * var concurrent = 2; // the argument\n * var merged = Rx.Observable.merge(timer1, timer2, timer3, concurrent);\n * merged.subscribe(x => console.log(x));\n *\n * // Results in the following:\n * // - First timer1 and timer2 will run concurrently\n * // - timer1 will emit a value every 1000ms for 10 iterations\n * // - timer2 will emit a value every 2000ms for 6 iterations\n * // - after timer1 hits it's max iteration, timer2 will\n * //   continue, and timer3 will start to run concurrently with timer2\n * // - when timer2 hits it's max iteration it terminates, and\n * //   timer3 will continue to emit a value every 500ms until it is complete\n *\n * @see {@link mergeAll}\n * @see {@link mergeMap}\n * @see {@link mergeMapTo}\n * @see {@link mergeScan}\n *\n * @param {...ObservableInput} observables Input Observables to merge together.\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input\n * Observables being subscribed to concurrently.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for managing\n * concurrency of input Observables.\n * @return {Observable} an Observable that emits items that are the result of\n * every input Observable.\n * @static true\n * @name merge\n * @owner Observable\n ",
-          "range": [
-            2425,
-            5154
-          ],
-          "loc": {
-            "start": {
-              "line": 56,
-              "column": 0
-            },
-            "end": {
-              "line": 115,
-              "column": 3
-            }
-          }
-        }
-      ]
-    },
-    {
-      "type": "ExportNamedDeclaration",
-      "declaration": {
-        "type": "FunctionDeclaration",
-        "id": {
-          "type": "Identifier",
-          "name": "mergeStatic",
-          "range": [
-            5171,
-            5182
-          ],
-          "loc": {
-            "start": {
-              "line": 116,
-              "column": 16
-            },
-            "end": {
-              "line": 116,
-              "column": 27
-            }
-          }
-        },
-        "params": [
-          {
-            "type": "RestElement",
-            "argument": {
-              "type": "Identifier",
-              "name": "observables",
-              "range": [
-                5186,
-                5197
-              ],
-              "loc": {
-                "start": {
-                  "line": 116,
-                  "column": 31
-                },
-                "end": {
-                  "line": 116,
-                  "column": 42
-                }
-              }
-            },
-            "range": [
-              5183,
-              5197
-            ],
-            "loc": {
-              "start": {
-                "line": 116,
-                "column": 28
-              },
-              "end": {
-                "line": 116,
-                "column": 42
-              }
-            }
-          }
-        ],
-        "body": {
-          "type": "BlockStatement",
-          "body": [
-            {
-              "type": "VariableDeclaration",
-              "declarations": [
-                {
-                  "type": "VariableDeclarator",
-                  "id": {
-                    "type": "Identifier",
-                    "name": "concurrent",
-                    "range": [
-                      5209,
-                      5219
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 117,
-                        "column": 8
-                      },
-                      "end": {
-                        "line": 117,
-                        "column": 18
-                      }
-                    }
-                  },
-                  "init": {
-                    "type": "MemberExpression",
-                    "computed": false,
-                    "object": {
-                      "type": "Identifier",
-                      "name": "Number",
-                      "range": [
-                        5222,
-                        5228
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 117,
-                          "column": 21
-                        },
-                        "end": {
-                          "line": 117,
-                          "column": 27
-                        }
-                      }
-                    },
-                    "property": {
-                      "type": "Identifier",
-                      "name": "POSITIVE_INFINITY",
-                      "range": [
-                        5229,
-                        5246
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 117,
-                          "column": 28
-                        },
-                        "end": {
-                          "line": 117,
-                          "column": 45
-                        }
-                      }
-                    },
-                    "range": [
-                      5222,
-                      5246
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 117,
-                        "column": 21
-                      },
-                      "end": {
-                        "line": 117,
-                        "column": 45
-                      }
-                    }
-                  },
-                  "range": [
-                    5209,
-                    5246
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 117,
-                      "column": 8
-                    },
-                    "end": {
-                      "line": 117,
-                      "column": 45
-                    }
-                  }
-                }
-              ],
-              "kind": "let",
-              "range": [
-                5205,
-                5247
-              ],
-              "loc": {
-                "start": {
-                  "line": 117,
-                  "column": 4
-                },
-                "end": {
-                  "line": 117,
-                  "column": 46
-                }
-              }
-            },
-            {
-              "type": "VariableDeclaration",
-              "declarations": [
-                {
-                  "type": "VariableDeclarator",
-                  "id": {
-                    "type": "Identifier",
-                    "name": "scheduler",
-                    "range": [
-                      5256,
-                      5265
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 118,
-                        "column": 8
-                      },
-                      "end": {
-                        "line": 118,
-                        "column": 17
-                      }
-                    }
-                  },
-                  "init": {
-                    "type": "Literal",
-                    "value": null,
-                    "raw": "null",
-                    "range": [
-                      5268,
-                      5272
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 118,
-                        "column": 20
-                      },
-                      "end": {
-                        "line": 118,
-                        "column": 24
-                      }
-                    }
-                  },
-                  "range": [
-                    5256,
-                    5272
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 118,
-                      "column": 8
-                    },
-                    "end": {
-                      "line": 118,
-                      "column": 24
-                    }
-                  }
-                }
-              ],
-              "kind": "let",
-              "range": [
-                5252,
-                5273
-              ],
-              "loc": {
-                "start": {
-                  "line": 118,
-                  "column": 4
-                },
-                "end": {
-                  "line": 118,
-                  "column": 25
-                }
-              }
-            },
-            {
-              "type": "VariableDeclaration",
-              "declarations": [
-                {
-                  "type": "VariableDeclarator",
-                  "id": {
-                    "type": "Identifier",
-                    "name": "last",
-                    "range": [
-                      5282,
-                      5286
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 119,
-                        "column": 8
-                      },
-                      "end": {
-                        "line": 119,
-                        "column": 12
-                      }
-                    }
-                  },
-                  "init": {
-                    "type": "MemberExpression",
-                    "computed": true,
-                    "object": {
-                      "type": "Identifier",
-                      "name": "observables",
-                      "range": [
-                        5289,
-                        5300
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 119,
-                          "column": 15
-                        },
-                        "end": {
-                          "line": 119,
-                          "column": 26
-                        }
-                      }
-                    },
-                    "property": {
-                      "type": "BinaryExpression",
-                      "operator": "-",
-                      "left": {
-                        "type": "MemberExpression",
-                        "computed": false,
-                        "object": {
-                          "type": "Identifier",
-                          "name": "observables",
-                          "range": [
-                            5301,
-                            5312
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 119,
-                              "column": 27
-                            },
-                            "end": {
-                              "line": 119,
-                              "column": 38
-                            }
-                          }
-                        },
-                        "property": {
-                          "type": "Identifier",
-                          "name": "length",
-                          "range": [
-                            5313,
-                            5319
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 119,
-                              "column": 39
-                            },
-                            "end": {
-                              "line": 119,
-                              "column": 45
-                            }
-                          }
-                        },
-                        "range": [
-                          5301,
-                          5319
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 119,
-                            "column": 27
-                          },
-                          "end": {
-                            "line": 119,
-                            "column": 45
-                          }
-                        }
-                      },
-                      "right": {
-                        "type": "Literal",
-                        "value": 1,
-                        "raw": "1",
-                        "range": [
-                          5322,
-                          5323
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 119,
-                            "column": 48
-                          },
-                          "end": {
-                            "line": 119,
-                            "column": 49
-                          }
-                        }
-                      },
-                      "range": [
-                        5301,
-                        5323
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 119,
-                          "column": 27
-                        },
-                        "end": {
-                          "line": 119,
-                          "column": 49
-                        }
-                      }
-                    },
-                    "range": [
-                      5289,
-                      5324
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 119,
-                        "column": 15
-                      },
-                      "end": {
-                        "line": 119,
-                        "column": 50
-                      }
-                    }
-                  },
-                  "range": [
-                    5282,
-                    5324
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 119,
-                      "column": 8
-                    },
-                    "end": {
-                      "line": 119,
-                      "column": 50
-                    }
-                  }
-                }
-              ],
-              "kind": "let",
-              "range": [
-                5278,
-                5325
-              ],
-              "loc": {
-                "start": {
-                  "line": 119,
-                  "column": 4
-                },
-                "end": {
-                  "line": 119,
-                  "column": 51
-                }
-              }
-            },
-            {
-              "type": "IfStatement",
-              "test": {
-                "type": "CallExpression",
-                "callee": {
-                  "type": "Identifier",
-                  "name": "isScheduler",
-                  "range": [
-                    5334,
-                    5345
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 120,
-                      "column": 8
-                    },
-                    "end": {
-                      "line": 120,
-                      "column": 19
-                    }
-                  }
-                },
-                "arguments": [
-                  {
-                    "type": "Identifier",
-                    "name": "last",
-                    "range": [
-                      5346,
-                      5350
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 120,
-                        "column": 20
-                      },
-                      "end": {
-                        "line": 120,
-                        "column": 24
-                      }
-                    }
-                  }
-                ],
-                "range": [
-                  5334,
-                  5351
-                ],
-                "loc": {
-                  "start": {
-                    "line": 120,
-                    "column": 8
-                  },
-                  "end": {
-                    "line": 120,
-                    "column": 25
-                  }
-                }
-              },
-              "consequent": {
-                "type": "BlockStatement",
-                "body": [
-                  {
-                    "type": "ExpressionStatement",
-                    "expression": {
-                      "type": "AssignmentExpression",
-                      "operator": "=",
-                      "left": {
-                        "type": "Identifier",
-                        "name": "scheduler",
-                        "range": [
-                          5363,
-                          5372
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 121,
-                            "column": 8
-                          },
-                          "end": {
-                            "line": 121,
-                            "column": 17
-                          }
-                        }
-                      },
-                      "right": {
-                        "type": "CallExpression",
-                        "callee": {
-                          "type": "MemberExpression",
-                          "computed": false,
-                          "object": {
-                            "type": "Identifier",
-                            "name": "observables",
-                            "range": [
-                              5375,
-                              5386
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 121,
-                                "column": 20
-                              },
-                              "end": {
-                                "line": 121,
-                                "column": 31
-                              }
-                            }
-                          },
-                          "property": {
-                            "type": "Identifier",
-                            "name": "pop",
-                            "range": [
-                              5387,
-                              5390
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 121,
-                                "column": 32
-                              },
-                              "end": {
-                                "line": 121,
-                                "column": 35
-                              }
-                            }
-                          },
-                          "range": [
-                            5375,
-                            5390
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 121,
-                              "column": 20
-                            },
-                            "end": {
-                              "line": 121,
-                              "column": 35
-                            }
-                          }
-                        },
-                        "arguments": [],
-                        "range": [
-                          5375,
-                          5392
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 121,
-                            "column": 20
-                          },
-                          "end": {
-                            "line": 121,
-                            "column": 37
-                          }
-                        }
-                      },
-                      "range": [
-                        5363,
-                        5392
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 121,
-                          "column": 8
-                        },
-                        "end": {
-                          "line": 121,
-                          "column": 37
-                        }
-                      }
-                    },
-                    "range": [
-                      5363,
-                      5393
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 121,
-                        "column": 8
-                      },
-                      "end": {
-                        "line": 121,
-                        "column": 38
-                      }
-                    }
-                  },
-                  {
-                    "type": "IfStatement",
-                    "test": {
-                      "type": "LogicalExpression",
-                      "operator": "&&",
-                      "left": {
-                        "type": "BinaryExpression",
-                        "operator": ">",
-                        "left": {
-                          "type": "MemberExpression",
-                          "computed": false,
-                          "object": {
-                            "type": "Identifier",
-                            "name": "observables",
-                            "range": [
-                              5406,
-                              5417
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 122,
-                                "column": 12
-                              },
-                              "end": {
-                                "line": 122,
-                                "column": 23
-                              }
-                            }
-                          },
-                          "property": {
-                            "type": "Identifier",
-                            "name": "length",
-                            "range": [
-                              5418,
-                              5424
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 122,
-                                "column": 24
-                              },
-                              "end": {
-                                "line": 122,
-                                "column": 30
-                              }
-                            }
-                          },
-                          "range": [
-                            5406,
-                            5424
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 122,
-                              "column": 12
-                            },
-                            "end": {
-                              "line": 122,
-                              "column": 30
-                            }
-                          }
-                        },
-                        "right": {
-                          "type": "Literal",
-                          "value": 1,
-                          "raw": "1",
-                          "range": [
-                            5427,
-                            5428
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 122,
-                              "column": 33
-                            },
-                            "end": {
-                              "line": 122,
-                              "column": 34
-                            }
-                          }
-                        },
-                        "range": [
-                          5406,
-                          5428
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 122,
-                            "column": 12
-                          },
-                          "end": {
-                            "line": 122,
-                            "column": 34
-                          }
-                        }
-                      },
-                      "right": {
-                        "type": "BinaryExpression",
-                        "operator": "===",
-                        "left": {
-                          "type": "UnaryExpression",
-                          "operator": "typeof",
-                          "argument": {
-                            "type": "MemberExpression",
-                            "computed": true,
-                            "object": {
-                              "type": "Identifier",
-                              "name": "observables",
-                              "range": [
-                                5439,
-                                5450
-                              ],
-                              "loc": {
-                                "start": {
-                                  "line": 122,
-                                  "column": 45
-                                },
-                                "end": {
-                                  "line": 122,
-                                  "column": 56
-                                }
-                              }
-                            },
-                            "property": {
-                              "type": "BinaryExpression",
-                              "operator": "-",
-                              "left": {
-                                "type": "MemberExpression",
-                                "computed": false,
-                                "object": {
-                                  "type": "Identifier",
-                                  "name": "observables",
-                                  "range": [
-                                    5451,
-                                    5462
-                                  ],
-                                  "loc": {
-                                    "start": {
-                                      "line": 122,
-                                      "column": 57
-                                    },
-                                    "end": {
-                                      "line": 122,
-                                      "column": 68
-                                    }
-                                  }
-                                },
-                                "property": {
-                                  "type": "Identifier",
-                                  "name": "length",
-                                  "range": [
-                                    5463,
-                                    5469
-                                  ],
-                                  "loc": {
-                                    "start": {
-                                      "line": 122,
-                                      "column": 69
-                                    },
-                                    "end": {
-                                      "line": 122,
-                                      "column": 75
-                                    }
-                                  }
-                                },
-                                "range": [
-                                  5451,
-                                  5469
-                                ],
-                                "loc": {
-                                  "start": {
-                                    "line": 122,
-                                    "column": 57
-                                  },
-                                  "end": {
-                                    "line": 122,
-                                    "column": 75
-                                  }
-                                }
-                              },
-                              "right": {
-                                "type": "Literal",
-                                "value": 1,
-                                "raw": "1",
-                                "range": [
-                                  5472,
-                                  5473
-                                ],
-                                "loc": {
-                                  "start": {
-                                    "line": 122,
-                                    "column": 78
-                                  },
-                                  "end": {
-                                    "line": 122,
-                                    "column": 79
-                                  }
-                                }
-                              },
-                              "range": [
-                                5451,
-                                5473
-                              ],
-                              "loc": {
-                                "start": {
-                                  "line": 122,
-                                  "column": 57
-                                },
-                                "end": {
-                                  "line": 122,
-                                  "column": 79
-                                }
-                              }
-                            },
-                            "range": [
-                              5439,
-                              5474
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 122,
-                                "column": 45
-                              },
-                              "end": {
-                                "line": 122,
-                                "column": 80
-                              }
-                            }
-                          },
-                          "prefix": true,
-                          "range": [
-                            5432,
-                            5474
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 122,
-                              "column": 38
-                            },
-                            "end": {
-                              "line": 122,
-                              "column": 80
-                            }
-                          }
-                        },
-                        "right": {
-                          "type": "Literal",
-                          "value": "number",
-                          "raw": "'number'",
-                          "range": [
-                            5479,
-                            5487
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 122,
-                              "column": 85
-                            },
-                            "end": {
-                              "line": 122,
-                              "column": 93
-                            }
-                          }
-                        },
-                        "range": [
-                          5432,
-                          5487
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 122,
-                            "column": 38
-                          },
-                          "end": {
-                            "line": 122,
-                            "column": 93
-                          }
-                        }
-                      },
-                      "range": [
-                        5406,
-                        5487
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 122,
-                          "column": 12
-                        },
-                        "end": {
-                          "line": 122,
-                          "column": 93
-                        }
-                      }
-                    },
-                    "consequent": {
-                      "type": "BlockStatement",
-                      "body": [
-                        {
-                          "type": "ExpressionStatement",
-                          "expression": {
-                            "type": "AssignmentExpression",
-                            "operator": "=",
-                            "left": {
-                              "type": "Identifier",
-                              "name": "concurrent",
-                              "range": [
-                                5503,
-                                5513
-                              ],
-                              "loc": {
-                                "start": {
-                                  "line": 123,
-                                  "column": 12
-                                },
-                                "end": {
-                                  "line": 123,
-                                  "column": 22
-                                }
-                              }
-                            },
-                            "right": {
-                              "type": "CallExpression",
-                              "callee": {
-                                "type": "MemberExpression",
-                                "computed": false,
-                                "object": {
-                                  "type": "Identifier",
-                                  "name": "observables",
-                                  "range": [
-                                    5516,
-                                    5527
-                                  ],
-                                  "loc": {
-                                    "start": {
-                                      "line": 123,
-                                      "column": 25
-                                    },
-                                    "end": {
-                                      "line": 123,
-                                      "column": 36
-                                    }
-                                  }
-                                },
-                                "property": {
-                                  "type": "Identifier",
-                                  "name": "pop",
-                                  "range": [
-                                    5528,
-                                    5531
-                                  ],
-                                  "loc": {
-                                    "start": {
-                                      "line": 123,
-                                      "column": 37
-                                    },
-                                    "end": {
-                                      "line": 123,
-                                      "column": 40
-                                    }
-                                  }
-                                },
-                                "range": [
-                                  5516,
-                                  5531
-                                ],
-                                "loc": {
-                                  "start": {
-                                    "line": 123,
-                                    "column": 25
-                                  },
-                                  "end": {
-                                    "line": 123,
-                                    "column": 40
-                                  }
-                                }
-                              },
-                              "arguments": [],
-                              "range": [
-                                5516,
-                                5533
-                              ],
-                              "loc": {
-                                "start": {
-                                  "line": 123,
-                                  "column": 25
-                                },
-                                "end": {
-                                  "line": 123,
-                                  "column": 42
-                                }
-                              }
-                            },
-                            "range": [
-                              5503,
-                              5533
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 123,
-                                "column": 12
-                              },
-                              "end": {
-                                "line": 123,
-                                "column": 42
-                              }
-                            }
-                          },
-                          "range": [
-                            5503,
-                            5534
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 123,
-                              "column": 12
-                            },
-                            "end": {
-                              "line": 123,
-                              "column": 43
-                            }
-                          }
-                        }
-                      ],
-                      "range": [
-                        5489,
-                        5544
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 122,
-                          "column": 95
-                        },
-                        "end": {
-                          "line": 124,
-                          "column": 9
-                        }
-                      }
-                    },
-                    "alternate": null,
-                    "range": [
-                      5402,
-                      5544
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 122,
-                        "column": 8
-                      },
-                      "end": {
-                        "line": 124,
-                        "column": 9
-                      }
-                    }
-                  }
-                ],
-                "range": [
-                  5353,
-                  5550
-                ],
-                "loc": {
-                  "start": {
-                    "line": 120,
-                    "column": 27
-                  },
-                  "end": {
-                    "line": 125,
-                    "column": 5
-                  }
-                }
-              },
-              "alternate": {
-                "type": "IfStatement",
-                "test": {
-                  "type": "BinaryExpression",
-                  "operator": "===",
-                  "left": {
-                    "type": "UnaryExpression",
-                    "operator": "typeof",
-                    "argument": {
-                      "type": "Identifier",
-                      "name": "last",
-                      "range": [
-                        5571,
-                        5575
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 126,
-                          "column": 20
-                        },
-                        "end": {
-                          "line": 126,
-                          "column": 24
-                        }
-                      }
-                    },
-                    "prefix": true,
-                    "range": [
-                      5564,
-                      5575
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 126,
-                        "column": 13
-                      },
-                      "end": {
-                        "line": 126,
-                        "column": 24
-                      }
-                    }
-                  },
-                  "right": {
-                    "type": "Literal",
-                    "value": "number",
-                    "raw": "'number'",
-                    "range": [
-                      5580,
-                      5588
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 126,
-                        "column": 29
-                      },
-                      "end": {
-                        "line": 126,
-                        "column": 37
-                      }
-                    }
-                  },
-                  "range": [
-                    5564,
-                    5588
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 126,
-                      "column": 13
-                    },
-                    "end": {
-                      "line": 126,
-                      "column": 37
-                    }
-                  }
-                },
-                "consequent": {
-                  "type": "BlockStatement",
-                  "body": [
-                    {
-                      "type": "ExpressionStatement",
-                      "expression": {
-                        "type": "AssignmentExpression",
-                        "operator": "=",
-                        "left": {
-                          "type": "Identifier",
-                          "name": "concurrent",
-                          "range": [
-                            5600,
-                            5610
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 127,
-                              "column": 8
-                            },
-                            "end": {
-                              "line": 127,
-                              "column": 18
-                            }
-                          }
-                        },
-                        "right": {
-                          "type": "CallExpression",
-                          "callee": {
-                            "type": "MemberExpression",
-                            "computed": false,
-                            "object": {
-                              "type": "Identifier",
-                              "name": "observables",
-                              "range": [
-                                5613,
-                                5624
-                              ],
-                              "loc": {
-                                "start": {
-                                  "line": 127,
-                                  "column": 21
-                                },
-                                "end": {
-                                  "line": 127,
-                                  "column": 32
-                                }
-                              }
-                            },
-                            "property": {
-                              "type": "Identifier",
-                              "name": "pop",
-                              "range": [
-                                5625,
-                                5628
-                              ],
-                              "loc": {
-                                "start": {
-                                  "line": 127,
-                                  "column": 33
-                                },
-                                "end": {
-                                  "line": 127,
-                                  "column": 36
-                                }
-                              }
-                            },
-                            "range": [
-                              5613,
-                              5628
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 127,
-                                "column": 21
-                              },
-                              "end": {
-                                "line": 127,
-                                "column": 36
-                              }
-                            }
-                          },
-                          "arguments": [],
-                          "range": [
-                            5613,
-                            5630
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 127,
-                              "column": 21
-                            },
-                            "end": {
-                              "line": 127,
-                              "column": 38
-                            }
-                          }
-                        },
-                        "range": [
-                          5600,
-                          5630
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 127,
-                            "column": 8
-                          },
-                          "end": {
-                            "line": 127,
-                            "column": 38
-                          }
-                        }
-                      },
-                      "range": [
-                        5600,
-                        5631
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 127,
-                          "column": 8
-                        },
-                        "end": {
-                          "line": 127,
-                          "column": 39
-                        }
-                      }
-                    }
-                  ],
-                  "range": [
-                    5590,
-                    5637
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 126,
-                      "column": 39
-                    },
-                    "end": {
-                      "line": 128,
-                      "column": 5
-                    }
-                  }
-                },
-                "alternate": null,
-                "range": [
-                  5560,
-                  5637
-                ],
-                "loc": {
-                  "start": {
-                    "line": 126,
-                    "column": 9
-                  },
-                  "end": {
-                    "line": 128,
-                    "column": 5
-                  }
-                }
-              },
-              "range": [
-                5330,
-                5637
-              ],
-              "loc": {
-                "start": {
-                  "line": 120,
-                  "column": 4
-                },
-                "end": {
-                  "line": 128,
-                  "column": 5
-                }
-              }
-            },
-            {
-              "type": "IfStatement",
-              "test": {
-                "type": "LogicalExpression",
-                "operator": "&&",
-                "left": {
-                  "type": "LogicalExpression",
-                  "operator": "&&",
-                  "left": {
-                    "type": "BinaryExpression",
-                    "operator": "===",
-                    "left": {
-                      "type": "Identifier",
-                      "name": "scheduler",
-                      "range": [
-                        5646,
-                        5655
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 129,
-                          "column": 8
-                        },
-                        "end": {
-                          "line": 129,
-                          "column": 17
-                        }
-                      }
-                    },
-                    "right": {
-                      "type": "Literal",
-                      "value": null,
-                      "raw": "null",
-                      "range": [
-                        5660,
-                        5664
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 129,
-                          "column": 22
-                        },
-                        "end": {
-                          "line": 129,
-                          "column": 26
-                        }
-                      }
-                    },
-                    "range": [
-                      5646,
-                      5664
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 129,
-                        "column": 8
-                      },
-                      "end": {
-                        "line": 129,
-                        "column": 26
-                      }
-                    }
-                  },
-                  "right": {
-                    "type": "BinaryExpression",
-                    "operator": "===",
-                    "left": {
-                      "type": "MemberExpression",
-                      "computed": false,
-                      "object": {
-                        "type": "Identifier",
-                        "name": "observables",
-                        "range": [
-                          5668,
-                          5679
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 129,
-                            "column": 30
-                          },
-                          "end": {
-                            "line": 129,
-                            "column": 41
-                          }
-                        }
-                      },
-                      "property": {
-                        "type": "Identifier",
-                        "name": "length",
-                        "range": [
-                          5680,
-                          5686
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 129,
-                            "column": 42
-                          },
-                          "end": {
-                            "line": 129,
-                            "column": 48
-                          }
-                        }
-                      },
-                      "range": [
-                        5668,
-                        5686
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 129,
-                          "column": 30
-                        },
-                        "end": {
-                          "line": 129,
-                          "column": 48
-                        }
-                      }
-                    },
-                    "right": {
-                      "type": "Literal",
-                      "value": 1,
-                      "raw": "1",
-                      "range": [
-                        5691,
-                        5692
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 129,
-                          "column": 53
-                        },
-                        "end": {
-                          "line": 129,
-                          "column": 54
-                        }
-                      }
-                    },
-                    "range": [
-                      5668,
-                      5692
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 129,
-                        "column": 30
-                      },
-                      "end": {
-                        "line": 129,
-                        "column": 54
-                      }
-                    }
-                  },
-                  "range": [
-                    5646,
-                    5692
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 129,
-                      "column": 8
-                    },
-                    "end": {
-                      "line": 129,
-                      "column": 54
-                    }
-                  }
-                },
-                "right": {
-                  "type": "BinaryExpression",
-                  "operator": "instanceof",
-                  "left": {
-                    "type": "MemberExpression",
-                    "computed": true,
-                    "object": {
-                      "type": "Identifier",
-                      "name": "observables",
-                      "range": [
-                        5696,
-                        5707
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 129,
-                          "column": 58
-                        },
-                        "end": {
-                          "line": 129,
-                          "column": 69
-                        }
-                      }
-                    },
-                    "property": {
-                      "type": "Literal",
-                      "value": 0,
-                      "raw": "0",
-                      "range": [
-                        5708,
-                        5709
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 129,
-                          "column": 70
-                        },
-                        "end": {
-                          "line": 129,
-                          "column": 71
-                        }
-                      }
-                    },
-                    "range": [
-                      5696,
-                      5710
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 129,
-                        "column": 58
-                      },
-                      "end": {
-                        "line": 129,
-                        "column": 72
-                      }
-                    }
-                  },
-                  "right": {
-                    "type": "Identifier",
-                    "name": "Observable",
-                    "range": [
-                      5722,
-                      5732
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 129,
-                        "column": 84
-                      },
-                      "end": {
-                        "line": 129,
-                        "column": 94
-                      }
-                    }
-                  },
-                  "range": [
-                    5696,
-                    5732
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 129,
-                      "column": 58
-                    },
-                    "end": {
-                      "line": 129,
-                      "column": 94
-                    }
-                  }
-                },
-                "range": [
-                  5646,
-                  5732
-                ],
-                "loc": {
-                  "start": {
-                    "line": 129,
-                    "column": 8
-                  },
-                  "end": {
-                    "line": 129,
-                    "column": 94
-                  }
-                }
-              },
-              "consequent": {
-                "type": "BlockStatement",
-                "body": [
-                  {
-                    "type": "ReturnStatement",
-                    "argument": {
-                      "type": "MemberExpression",
-                      "computed": true,
-                      "object": {
-                        "type": "Identifier",
-                        "name": "observables",
-                        "range": [
-                          5751,
-                          5762
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 130,
-                            "column": 15
-                          },
-                          "end": {
-                            "line": 130,
-                            "column": 26
-                          }
-                        }
-                      },
-                      "property": {
-                        "type": "Literal",
-                        "value": 0,
-                        "raw": "0",
-                        "range": [
-                          5763,
-                          5764
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 130,
-                            "column": 27
-                          },
-                          "end": {
-                            "line": 130,
-                            "column": 28
-                          }
-                        }
-                      },
-                      "range": [
-                        5751,
-                        5765
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 130,
-                          "column": 15
-                        },
-                        "end": {
-                          "line": 130,
-                          "column": 29
-                        }
-                      }
-                    },
-                    "range": [
-                      5744,
-                      5766
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 130,
-                        "column": 8
-                      },
-                      "end": {
-                        "line": 130,
-                        "column": 30
-                      }
-                    }
-                  }
-                ],
-                "range": [
-                  5734,
-                  5772
-                ],
-                "loc": {
-                  "start": {
-                    "line": 129,
-                    "column": 96
-                  },
-                  "end": {
-                    "line": 131,
-                    "column": 5
-                  }
-                }
-              },
-              "alternate": null,
-              "range": [
-                5642,
-                5772
-              ],
-              "loc": {
-                "start": {
-                  "line": 129,
-                  "column": 4
-                },
-                "end": {
-                  "line": 131,
-                  "column": 5
-                }
-              }
-            },
-            {
-              "type": "ReturnStatement",
-              "argument": {
-                "type": "CallExpression",
-                "callee": {
-                  "type": "MemberExpression",
-                  "computed": false,
-                  "object": {
-                    "type": "NewExpression",
-                    "callee": {
-                      "type": "Identifier",
-                      "name": "ArrayObservable",
-                      "range": [
-                        5788,
-                        5803
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 132,
-                          "column": 15
-                        },
-                        "end": {
-                          "line": 132,
-                          "column": 30
-                        }
-                      }
-                    },
-                    "arguments": [
-                      {
-                        "type": "Identifier",
-                        "name": "observables",
-                        "range": [
-                          5804,
-                          5815
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 132,
-                            "column": 31
-                          },
-                          "end": {
-                            "line": 132,
-                            "column": 42
-                          }
-                        }
-                      },
-                      {
-                        "type": "Identifier",
-                        "name": "scheduler",
-                        "range": [
-                          5817,
-                          5826
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 132,
-                            "column": 44
-                          },
-                          "end": {
-                            "line": 132,
-                            "column": 53
-                          }
-                        }
-                      }
-                    ],
-                    "range": [
-                      5784,
-                      5827
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 132,
-                        "column": 11
-                      },
-                      "end": {
-                        "line": 132,
-                        "column": 54
-                      }
-                    }
-                  },
-                  "property": {
-                    "type": "Identifier",
-                    "name": "lift",
-                    "range": [
-                      5828,
-                      5832
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 132,
-                        "column": 55
-                      },
-                      "end": {
-                        "line": 132,
-                        "column": 59
-                      }
-                    }
-                  },
-                  "range": [
-                    5784,
-                    5832
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 132,
-                      "column": 11
-                    },
-                    "end": {
-                      "line": 132,
-                      "column": 59
-                    }
-                  }
-                },
-                "arguments": [
-                  {
-                    "type": "NewExpression",
-                    "callee": {
-                      "type": "Identifier",
-                      "name": "MergeAllOperator",
-                      "range": [
-                        5837,
-                        5853
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 132,
-                          "column": 64
-                        },
-                        "end": {
-                          "line": 132,
-                          "column": 80
-                        }
-                      }
-                    },
-                    "arguments": [
-                      {
-                        "type": "Identifier",
-                        "name": "concurrent",
-                        "range": [
-                          5854,
-                          5864
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 132,
-                            "column": 81
-                          },
-                          "end": {
-                            "line": 132,
-                            "column": 91
-                          }
-                        }
-                      }
-                    ],
-                    "range": [
-                      5833,
-                      5865
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 132,
-                        "column": 60
-                      },
-                      "end": {
-                        "line": 132,
-                        "column": 92
-                      }
-                    }
-                  }
-                ],
-                "range": [
-                  5784,
-                  5866
-                ],
-                "loc": {
-                  "start": {
-                    "line": 132,
-                    "column": 11
-                  },
-                  "end": {
-                    "line": 132,
-                    "column": 93
-                  }
-                }
-              },
-              "range": [
-                5777,
-                5867
-              ],
-              "loc": {
-                "start": {
-                  "line": 132,
-                  "column": 4
-                },
-                "end": {
-                  "line": 132,
-                  "column": 94
-                }
-              }
-            }
-          ],
-          "range": [
-            5199,
-            5869
-          ],
-          "loc": {
-            "start": {
-              "line": 116,
-              "column": 44
-            },
-            "end": {
-              "line": 133,
-              "column": 1
-            }
-          }
-        },
-        "generator": false,
-        "expression": false,
-        "range": [
-          5162,
-          5869
-        ],
-        "loc": {
-          "start": {
-            "line": 116,
-            "column": 7
-          },
-          "end": {
-            "line": 133,
-            "column": 1
-          }
-        },
-        "leadingComments": [
-          {
-            "type": "Block",
-            "value": " tslint:enable:max-line-length ",
-            "range": [
-              2389,
-              2424
-            ],
-            "loc": {
-              "start": {
-                "line": 55,
-                "column": 0
-              },
-              "end": {
-                "line": 55,
-                "column": 35
-              }
-            }
-          },
-          {
-            "type": "Block",
-            "value": "*\n * Creates an output Observable which concurrently emits all values from every\n * given input Observable.\n *\n * <span class=\"informal\">Flattens multiple Observables together by blending\n * their values into one Observable.</span>\n *\n * <img src=\"./img/merge.png\" width=\"100%\">\n *\n * `merge` subscribes to each given input Observable (as arguments), and simply\n * forwards (without doing any transformation) all the values from all the input\n * Observables to the output Observable. The output Observable only completes\n * once all input Observables have completed. Any error delivered by an input\n * Observable will be immediately emitted on the output Observable.\n *\n * @example <caption>Merge together two Observables: 1s interval and clicks</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var timer = Rx.Observable.interval(1000);\n * var clicksOrTimer = Rx.Observable.merge(clicks, timer);\n * clicksOrTimer.subscribe(x => console.log(x));\n *\n * // Results in the following:\n * // timer will emit ascending values, one every second(1000ms) to console\n * // clicks logs MouseEvents to console everytime the \"document\" is clicked\n * // Since the two streams are merged you see these happening\n * // as they occur.\n *\n * @example <caption>Merge together 3 Observables, but only 2 run concurrently</caption>\n * var timer1 = Rx.Observable.interval(1000).take(10);\n * var timer2 = Rx.Observable.interval(2000).take(6);\n * var timer3 = Rx.Observable.interval(500).take(10);\n * var concurrent = 2; // the argument\n * var merged = Rx.Observable.merge(timer1, timer2, timer3, concurrent);\n * merged.subscribe(x => console.log(x));\n *\n * // Results in the following:\n * // - First timer1 and timer2 will run concurrently\n * // - timer1 will emit a value every 1000ms for 10 iterations\n * // - timer2 will emit a value every 2000ms for 6 iterations\n * // - after timer1 hits it's max iteration, timer2 will\n * //   continue, and timer3 will start to run concurrently with timer2\n * // - when timer2 hits it's max iteration it terminates, and\n * //   timer3 will continue to emit a value every 500ms until it is complete\n *\n * @see {@link mergeAll}\n * @see {@link mergeMap}\n * @see {@link mergeMapTo}\n * @see {@link mergeScan}\n *\n * @param {...ObservableInput} observables Input Observables to merge together.\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input\n * Observables being subscribed to concurrently.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for managing\n * concurrency of input Observables.\n * @return {Observable} an Observable that emits items that are the result of\n * every input Observable.\n * @static true\n * @name merge\n * @owner Observable\n ",
-            "range": [
-              2425,
-              5154
-            ],
-            "loc": {
-              "start": {
-                "line": 56,
-                "column": 0
-              },
-              "end": {
-                "line": 115,
+                "line": 49,
                 "column": 3
               }
             }
@@ -2871,16 +484,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=merge.js.map",
             "range": [
-              5870,
-              5903
+              2285,
+              2318
             ],
             "loc": {
               "start": {
-                "line": 134,
+                "line": 53,
                 "column": 0
               },
               "end": {
-                "line": 134,
+                "line": 53,
                 "column": 33
               }
             }
@@ -2890,16 +503,16 @@
       "specifiers": [],
       "source": null,
       "range": [
-        5155,
-        5869
+        2197,
+        2284
       ],
       "loc": {
         "start": {
-          "line": 116,
+          "line": 50,
           "column": 0
         },
         "end": {
-          "line": 133,
+          "line": 52,
           "column": 1
         }
       },
@@ -2908,34 +521,34 @@
           "type": "Block",
           "value": " tslint:enable:max-line-length ",
           "range": [
-            2389,
-            2424
+            119,
+            154
           ],
           "loc": {
             "start": {
-              "line": 55,
+              "line": 3,
               "column": 0
             },
             "end": {
-              "line": 55,
+              "line": 3,
               "column": 35
             }
           }
         },
         {
           "type": "Block",
-          "value": "*\n * Creates an output Observable which concurrently emits all values from every\n * given input Observable.\n *\n * <span class=\"informal\">Flattens multiple Observables together by blending\n * their values into one Observable.</span>\n *\n * <img src=\"./img/merge.png\" width=\"100%\">\n *\n * `merge` subscribes to each given input Observable (as arguments), and simply\n * forwards (without doing any transformation) all the values from all the input\n * Observables to the output Observable. The output Observable only completes\n * once all input Observables have completed. Any error delivered by an input\n * Observable will be immediately emitted on the output Observable.\n *\n * @example <caption>Merge together two Observables: 1s interval and clicks</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var timer = Rx.Observable.interval(1000);\n * var clicksOrTimer = Rx.Observable.merge(clicks, timer);\n * clicksOrTimer.subscribe(x => console.log(x));\n *\n * // Results in the following:\n * // timer will emit ascending values, one every second(1000ms) to console\n * // clicks logs MouseEvents to console everytime the \"document\" is clicked\n * // Since the two streams are merged you see these happening\n * // as they occur.\n *\n * @example <caption>Merge together 3 Observables, but only 2 run concurrently</caption>\n * var timer1 = Rx.Observable.interval(1000).take(10);\n * var timer2 = Rx.Observable.interval(2000).take(6);\n * var timer3 = Rx.Observable.interval(500).take(10);\n * var concurrent = 2; // the argument\n * var merged = Rx.Observable.merge(timer1, timer2, timer3, concurrent);\n * merged.subscribe(x => console.log(x));\n *\n * // Results in the following:\n * // - First timer1 and timer2 will run concurrently\n * // - timer1 will emit a value every 1000ms for 10 iterations\n * // - timer2 will emit a value every 2000ms for 6 iterations\n * // - after timer1 hits it's max iteration, timer2 will\n * //   continue, and timer3 will start to run concurrently with timer2\n * // - when timer2 hits it's max iteration it terminates, and\n * //   timer3 will continue to emit a value every 500ms until it is complete\n *\n * @see {@link mergeAll}\n * @see {@link mergeMap}\n * @see {@link mergeMapTo}\n * @see {@link mergeScan}\n *\n * @param {...ObservableInput} observables Input Observables to merge together.\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input\n * Observables being subscribed to concurrently.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for managing\n * concurrency of input Observables.\n * @return {Observable} an Observable that emits items that are the result of\n * every input Observable.\n * @static true\n * @name merge\n * @owner Observable\n ",
+          "value": "*\n * Creates an output Observable which concurrently emits all values from every\n * given input Observable.\n *\n * <span class=\"informal\">Flattens multiple Observables together by blending\n * their values into one Observable.</span>\n *\n * <img src=\"./img/merge.png\" width=\"100%\">\n *\n * `merge` subscribes to each given input Observable (either the source or an\n * Observable given as argument), and simply forwards (without doing any\n * transformation) all the values from all the input Observables to the output\n * Observable. The output Observable only completes once all input Observables\n * have completed. Any error delivered by an input Observable will be immediately\n * emitted on the output Observable.\n *\n * @example <caption>Merge together two Observables: 1s interval and clicks</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var timer = Rx.Observable.interval(1000);\n * var clicksOrTimer = clicks.merge(timer);\n * clicksOrTimer.subscribe(x => console.log(x));\n *\n * @example <caption>Merge together 3 Observables, but only 2 run concurrently</caption>\n * var timer1 = Rx.Observable.interval(1000).take(10);\n * var timer2 = Rx.Observable.interval(2000).take(6);\n * var timer3 = Rx.Observable.interval(500).take(10);\n * var concurrent = 2; // the argument\n * var merged = timer1.merge(timer2, timer3, concurrent);\n * merged.subscribe(x => console.log(x));\n *\n * @see {@link mergeAll}\n * @see {@link mergeMap}\n * @see {@link mergeMapTo}\n * @see {@link mergeScan}\n *\n * @param {ObservableInput} other An input Observable to merge with the source\n * Observable. More than one input Observables may be given as argument.\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input\n * Observables being subscribed to concurrently.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for managing\n * concurrency of input Observables.\n * @return {Observable} An Observable that emits items that are the result of\n * every input Observable.\n * @method merge\n * @owner Observable\n ",
           "range": [
-            2425,
-            5154
+            155,
+            2196
           ],
           "loc": {
             "start": {
-              "line": 56,
+              "line": 4,
               "column": 0
             },
             "end": {
-              "line": 115,
+              "line": 49,
               "column": 3
             }
           }
@@ -2946,16 +559,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=merge.js.map",
           "range": [
-            5870,
-            5903
+            2285,
+            2318
           ],
           "loc": {
             "start": {
-              "line": 134,
+              "line": 53,
               "column": 0
             },
             "end": {
-              "line": 134,
+              "line": 53,
               "column": 33
             }
           }
@@ -2966,7 +579,7 @@
   "sourceType": "module",
   "range": [
     0,
-    5869
+    2284
   ],
   "loc": {
     "start": {
@@ -2974,7 +587,7 @@
       "column": 0
     },
     "end": {
-      "line": 133,
+      "line": 52,
       "column": 1
     }
   },
@@ -2983,16 +596,16 @@
       "type": "Block",
       "value": " tslint:enable:max-line-length ",
       "range": [
-        207,
-        242
+        119,
+        154
       ],
       "loc": {
         "start": {
-          "line": 5,
+          "line": 3,
           "column": 0
         },
         "end": {
-          "line": 5,
+          "line": 3,
           "column": 35
         }
       }
@@ -3001,52 +614,16 @@
       "type": "Block",
       "value": "*\n * Creates an output Observable which concurrently emits all values from every\n * given input Observable.\n *\n * <span class=\"informal\">Flattens multiple Observables together by blending\n * their values into one Observable.</span>\n *\n * <img src=\"./img/merge.png\" width=\"100%\">\n *\n * `merge` subscribes to each given input Observable (either the source or an\n * Observable given as argument), and simply forwards (without doing any\n * transformation) all the values from all the input Observables to the output\n * Observable. The output Observable only completes once all input Observables\n * have completed. Any error delivered by an input Observable will be immediately\n * emitted on the output Observable.\n *\n * @example <caption>Merge together two Observables: 1s interval and clicks</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var timer = Rx.Observable.interval(1000);\n * var clicksOrTimer = clicks.merge(timer);\n * clicksOrTimer.subscribe(x => console.log(x));\n *\n * @example <caption>Merge together 3 Observables, but only 2 run concurrently</caption>\n * var timer1 = Rx.Observable.interval(1000).take(10);\n * var timer2 = Rx.Observable.interval(2000).take(6);\n * var timer3 = Rx.Observable.interval(500).take(10);\n * var concurrent = 2; // the argument\n * var merged = timer1.merge(timer2, timer3, concurrent);\n * merged.subscribe(x => console.log(x));\n *\n * @see {@link mergeAll}\n * @see {@link mergeMap}\n * @see {@link mergeMapTo}\n * @see {@link mergeScan}\n *\n * @param {ObservableInput} other An input Observable to merge with the source\n * Observable. More than one input Observables may be given as argument.\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input\n * Observables being subscribed to concurrently.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for managing\n * concurrency of input Observables.\n * @return {Observable} An Observable that emits items that are the result of\n * every input Observable.\n * @method merge\n * @owner Observable\n ",
       "range": [
-        243,
-        2284
+        155,
+        2196
       ],
       "loc": {
         "start": {
-          "line": 6,
+          "line": 4,
           "column": 0
         },
         "end": {
-          "line": 51,
-          "column": 3
-        }
-      }
-    },
-    {
-      "type": "Block",
-      "value": " tslint:enable:max-line-length ",
-      "range": [
-        2389,
-        2424
-      ],
-      "loc": {
-        "start": {
-          "line": 55,
-          "column": 0
-        },
-        "end": {
-          "line": 55,
-          "column": 35
-        }
-      }
-    },
-    {
-      "type": "Block",
-      "value": "*\n * Creates an output Observable which concurrently emits all values from every\n * given input Observable.\n *\n * <span class=\"informal\">Flattens multiple Observables together by blending\n * their values into one Observable.</span>\n *\n * <img src=\"./img/merge.png\" width=\"100%\">\n *\n * `merge` subscribes to each given input Observable (as arguments), and simply\n * forwards (without doing any transformation) all the values from all the input\n * Observables to the output Observable. The output Observable only completes\n * once all input Observables have completed. Any error delivered by an input\n * Observable will be immediately emitted on the output Observable.\n *\n * @example <caption>Merge together two Observables: 1s interval and clicks</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var timer = Rx.Observable.interval(1000);\n * var clicksOrTimer = Rx.Observable.merge(clicks, timer);\n * clicksOrTimer.subscribe(x => console.log(x));\n *\n * // Results in the following:\n * // timer will emit ascending values, one every second(1000ms) to console\n * // clicks logs MouseEvents to console everytime the \"document\" is clicked\n * // Since the two streams are merged you see these happening\n * // as they occur.\n *\n * @example <caption>Merge together 3 Observables, but only 2 run concurrently</caption>\n * var timer1 = Rx.Observable.interval(1000).take(10);\n * var timer2 = Rx.Observable.interval(2000).take(6);\n * var timer3 = Rx.Observable.interval(500).take(10);\n * var concurrent = 2; // the argument\n * var merged = Rx.Observable.merge(timer1, timer2, timer3, concurrent);\n * merged.subscribe(x => console.log(x));\n *\n * // Results in the following:\n * // - First timer1 and timer2 will run concurrently\n * // - timer1 will emit a value every 1000ms for 10 iterations\n * // - timer2 will emit a value every 2000ms for 6 iterations\n * // - after timer1 hits it's max iteration, timer2 will\n * //   continue, and timer3 will start to run concurrently with timer2\n * // - when timer2 hits it's max iteration it terminates, and\n * //   timer3 will continue to emit a value every 500ms until it is complete\n *\n * @see {@link mergeAll}\n * @see {@link mergeMap}\n * @see {@link mergeMapTo}\n * @see {@link mergeScan}\n *\n * @param {...ObservableInput} observables Input Observables to merge together.\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input\n * Observables being subscribed to concurrently.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for managing\n * concurrency of input Observables.\n * @return {Observable} an Observable that emits items that are the result of\n * every input Observable.\n * @static true\n * @name merge\n * @owner Observable\n ",
-      "range": [
-        2425,
-        5154
-      ],
-      "loc": {
-        "start": {
-          "line": 56,
-          "column": 0
-        },
-        "end": {
-          "line": 115,
+          "line": 49,
           "column": 3
         }
       }
@@ -3055,16 +632,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=merge.js.map",
       "range": [
-        5870,
-        5903
+        2285,
+        2318
       ],
       "loc": {
         "start": {
-          "line": 134,
+          "line": 53,
           "column": 0
         },
         "end": {
-          "line": 134,
+          "line": 53,
           "column": 33
         }
       }

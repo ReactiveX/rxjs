@@ -377,10 +377,10 @@
               "trailingComments": [
                 {
                   "type": "Block",
-                  "value": "*\n     * Creates an Observable that emits no items to the Observer.\n     *\n     * <span class=\"informal\">An Observable that never emits anything.</span>\n     *\n     * <img src=\"./img/never.png\" width=\"100%\">\n     *\n     * This static operator is useful for creating a simple Observable that emits\n     * neither values nor errors nor the completion notification. It can be used\n     * for testing purposes or for composing with other Observables. Please not\n     * that by never emitting a complete notification, this Observable keeps the\n     * subscription from being disposed automatically. Subscriptions need to be\n     * manually disposed.\n     *\n     * @example <caption>Emit the number 7, then never emit anything else (not even complete).</caption>\n     * function info() {\n     *   console.log('Will not be called');\n     * }\n     * var result = Rx.Observable.never().startWith(7);\n     * result.subscribe(x => console.log(x), info, info);\n     *\n     * @see {@link create}\n     * @see {@link empty}\n     * @see {@link of}\n     * @see {@link throw}\n     *\n     * @return {Observable} A \"never\" Observable: never emits anything.\n     * @static true\n     * @name never\n     * @owner Observable\n     ",
+                  "value": "*\n     * Creates an Observable that emits no items to the Observer.\n     *\n     * <span class=\"informal\">An Observable that never emits anything.</span>\n     *\n     * <img src=\"./img/never.png\" width=\"100%\">\n     *\n     * This static operator is useful for creating a simple Observable that emits\n     * neither values nor errors nor the completion notification. It can be used\n     * for testing purposes or for composing with other Observables. Please note\n     * that by never emitting a complete notification, this Observable keeps the\n     * subscription from being disposed automatically. Subscriptions need to be\n     * manually disposed.\n     *\n     * @example <caption>Emit the number 7, then never emit anything else (not even complete).</caption>\n     * function info() {\n     *   console.log('Will not be called');\n     * }\n     * var result = Rx.Observable.never().startWith(7);\n     * result.subscribe(x => console.log(x), info, info);\n     *\n     * @see {@link create}\n     * @see {@link empty}\n     * @see {@link of}\n     * @see {@link throw}\n     *\n     * @return {Observable} A \"never\" Observable: never emits anything.\n     * @static true\n     * @name never\n     * @owner Observable\n     ",
                   "range": [
                     273,
-                    1483
+                    1484
                   ],
                   "loc": {
                     "start": {
@@ -402,8 +402,8 @@
                 "type": "Identifier",
                 "name": "create",
                 "range": [
-                  1495,
-                  1501
+                  1496,
+                  1502
                 ],
                 "loc": {
                   "start": {
@@ -431,8 +431,8 @@
                           "type": "Identifier",
                           "name": "NeverObservable",
                           "range": [
-                            1525,
-                            1540
+                            1526,
+                            1541
                           ],
                           "loc": {
                             "start": {
@@ -447,8 +447,8 @@
                         },
                         "arguments": [],
                         "range": [
-                          1521,
-                          1542
+                          1522,
+                          1543
                         ],
                         "loc": {
                           "start": {
@@ -462,8 +462,8 @@
                         }
                       },
                       "range": [
-                        1514,
-                        1543
+                        1515,
+                        1544
                       ],
                       "loc": {
                         "start": {
@@ -478,8 +478,8 @@
                     }
                   ],
                   "range": [
-                    1504,
-                    1549
+                    1505,
+                    1550
                   ],
                   "loc": {
                     "start": {
@@ -495,8 +495,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  1501,
-                  1549
+                  1502,
+                  1550
                 ],
                 "loc": {
                   "start": {
@@ -512,8 +512,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                1488,
-                1549
+                1489,
+                1550
               ],
               "loc": {
                 "start": {
@@ -528,10 +528,10 @@
               "leadingComments": [
                 {
                   "type": "Block",
-                  "value": "*\n     * Creates an Observable that emits no items to the Observer.\n     *\n     * <span class=\"informal\">An Observable that never emits anything.</span>\n     *\n     * <img src=\"./img/never.png\" width=\"100%\">\n     *\n     * This static operator is useful for creating a simple Observable that emits\n     * neither values nor errors nor the completion notification. It can be used\n     * for testing purposes or for composing with other Observables. Please not\n     * that by never emitting a complete notification, this Observable keeps the\n     * subscription from being disposed automatically. Subscriptions need to be\n     * manually disposed.\n     *\n     * @example <caption>Emit the number 7, then never emit anything else (not even complete).</caption>\n     * function info() {\n     *   console.log('Will not be called');\n     * }\n     * var result = Rx.Observable.never().startWith(7);\n     * result.subscribe(x => console.log(x), info, info);\n     *\n     * @see {@link create}\n     * @see {@link empty}\n     * @see {@link of}\n     * @see {@link throw}\n     *\n     * @return {Observable} A \"never\" Observable: never emits anything.\n     * @static true\n     * @name never\n     * @owner Observable\n     ",
+                  "value": "*\n     * Creates an Observable that emits no items to the Observer.\n     *\n     * <span class=\"informal\">An Observable that never emits anything.</span>\n     *\n     * <img src=\"./img/never.png\" width=\"100%\">\n     *\n     * This static operator is useful for creating a simple Observable that emits\n     * neither values nor errors nor the completion notification. It can be used\n     * for testing purposes or for composing with other Observables. Please note\n     * that by never emitting a complete notification, this Observable keeps the\n     * subscription from being disposed automatically. Subscriptions need to be\n     * manually disposed.\n     *\n     * @example <caption>Emit the number 7, then never emit anything else (not even complete).</caption>\n     * function info() {\n     *   console.log('Will not be called');\n     * }\n     * var result = Rx.Observable.never().startWith(7);\n     * result.subscribe(x => console.log(x), info, info);\n     *\n     * @see {@link create}\n     * @see {@link empty}\n     * @see {@link of}\n     * @see {@link throw}\n     *\n     * @return {Observable} A \"never\" Observable: never emits anything.\n     * @static true\n     * @name never\n     * @owner Observable\n     ",
                   "range": [
                     273,
-                    1483
+                    1484
                   ],
                   "loc": {
                     "start": {
@@ -553,8 +553,8 @@
                 "type": "Identifier",
                 "name": "_subscribe",
                 "range": [
-                  1554,
-                  1564
+                  1555,
+                  1565
                 ],
                 "loc": {
                   "start": {
@@ -575,8 +575,8 @@
                     "type": "Identifier",
                     "name": "subscriber",
                     "range": [
-                      1565,
-                      1575
+                      1566,
+                      1576
                     ],
                     "loc": {
                       "start": {
@@ -601,8 +601,8 @@
                           "type": "Identifier",
                           "name": "noop",
                           "range": [
-                            1587,
-                            1591
+                            1588,
+                            1592
                           ],
                           "loc": {
                             "start": {
@@ -617,8 +617,8 @@
                         },
                         "arguments": [],
                         "range": [
-                          1587,
-                          1593
+                          1588,
+                          1594
                         ],
                         "loc": {
                           "start": {
@@ -632,8 +632,8 @@
                         }
                       },
                       "range": [
-                        1587,
-                        1594
+                        1588,
+                        1595
                       ],
                       "loc": {
                         "start": {
@@ -648,8 +648,8 @@
                     }
                   ],
                   "range": [
-                    1577,
-                    1600
+                    1578,
+                    1601
                   ],
                   "loc": {
                     "start": {
@@ -665,8 +665,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  1564,
-                  1600
+                  1565,
+                  1601
                 ],
                 "loc": {
                   "start": {
@@ -682,8 +682,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                1554,
-                1600
+                1555,
+                1601
               ],
               "loc": {
                 "start": {
@@ -700,7 +700,7 @@
           ],
           "range": [
             224,
-            1602
+            1603
           ],
           "loc": {
             "start": {
@@ -715,7 +715,7 @@
         },
         "range": [
           183,
-          1602
+          1603
         ],
         "loc": {
           "start": {
@@ -752,8 +752,8 @@
             "type": "Line",
             "value": "# sourceMappingURL=NeverObservable.js.map",
             "range": [
-              1603,
-              1646
+              1604,
+              1647
             ],
             "loc": {
               "start": {
@@ -772,7 +772,7 @@
       "source": null,
       "range": [
         176,
-        1602
+        1603
       ],
       "loc": {
         "start": {
@@ -809,8 +809,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=NeverObservable.js.map",
           "range": [
-            1603,
-            1646
+            1604,
+            1647
           ],
           "loc": {
             "start": {
@@ -829,7 +829,7 @@
   "sourceType": "module",
   "range": [
     0,
-    1602
+    1603
   ],
   "loc": {
     "start": {
@@ -862,10 +862,10 @@
     },
     {
       "type": "Block",
-      "value": "*\n     * Creates an Observable that emits no items to the Observer.\n     *\n     * <span class=\"informal\">An Observable that never emits anything.</span>\n     *\n     * <img src=\"./img/never.png\" width=\"100%\">\n     *\n     * This static operator is useful for creating a simple Observable that emits\n     * neither values nor errors nor the completion notification. It can be used\n     * for testing purposes or for composing with other Observables. Please not\n     * that by never emitting a complete notification, this Observable keeps the\n     * subscription from being disposed automatically. Subscriptions need to be\n     * manually disposed.\n     *\n     * @example <caption>Emit the number 7, then never emit anything else (not even complete).</caption>\n     * function info() {\n     *   console.log('Will not be called');\n     * }\n     * var result = Rx.Observable.never().startWith(7);\n     * result.subscribe(x => console.log(x), info, info);\n     *\n     * @see {@link create}\n     * @see {@link empty}\n     * @see {@link of}\n     * @see {@link throw}\n     *\n     * @return {Observable} A \"never\" Observable: never emits anything.\n     * @static true\n     * @name never\n     * @owner Observable\n     ",
+      "value": "*\n     * Creates an Observable that emits no items to the Observer.\n     *\n     * <span class=\"informal\">An Observable that never emits anything.</span>\n     *\n     * <img src=\"./img/never.png\" width=\"100%\">\n     *\n     * This static operator is useful for creating a simple Observable that emits\n     * neither values nor errors nor the completion notification. It can be used\n     * for testing purposes or for composing with other Observables. Please note\n     * that by never emitting a complete notification, this Observable keeps the\n     * subscription from being disposed automatically. Subscriptions need to be\n     * manually disposed.\n     *\n     * @example <caption>Emit the number 7, then never emit anything else (not even complete).</caption>\n     * function info() {\n     *   console.log('Will not be called');\n     * }\n     * var result = Rx.Observable.never().startWith(7);\n     * result.subscribe(x => console.log(x), info, info);\n     *\n     * @see {@link create}\n     * @see {@link empty}\n     * @see {@link of}\n     * @see {@link throw}\n     *\n     * @return {Observable} A \"never\" Observable: never emits anything.\n     * @static true\n     * @name never\n     * @owner Observable\n     ",
       "range": [
         273,
-        1483
+        1484
       ],
       "loc": {
         "start": {
@@ -882,8 +882,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=NeverObservable.js.map",
       "range": [
-        1603,
-        1646
+        1604,
+        1647
       ],
       "loc": {
         "start": {

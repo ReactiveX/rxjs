@@ -119,6 +119,7 @@
       
     <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#class" data-ice="link">Class</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#interface" data-ice="link">Interface</a></li>
+<li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#function" data-ice="link">Function</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#variable" data-ice="link">Variable</a></li>
 <li data-ice="manualNav" class="indent-h1"><span class="manual-dot"></span><a href="identifiers.html#typedef" data-ice="link">Typedef</a></li>
 </ul>
@@ -231,7 +232,7 @@ Rx.Observable.fromEvent(button, &apos;click&apos;)
 <tr>
 <td><strong>Pull</strong></td>
 <td><a href="https://developer.mozilla.org/en-US/docs/Glossary/Function"><code>Function</code></a></td>
-<td><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols">Iterator</a></td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols"><code>Iterator</code></a></td>
 </tr>
 <tr>
 <td><strong>Push</strong></td>
@@ -280,7 +281,7 @@ got value 4
 done</code>
 </code></pre>
 <h2 id="pull-versus-push">Pull versus Push</h2>
-<p><em>Pull</em> and <em>Push</em> are two different protocols how a data <em>Producer</em> can communicate with a data <em>Consumer</em>.</p>
+<p><em>Pull</em> and <em>Push</em> are two different protocols that describe how a data <em>Producer</em> can communicate with a data <em>Consumer</em>.</p>
 <p><strong>What is Pull?</strong> In Pull systems, the Consumer determines when it receives data from the data Producer. The Producer itself is unaware of when the data will be delivered to the Consumer.</p>
 <p>Every JavaScript Function is a Pull system. The function is a Producer of data, and the code that calls the function is consuming it by &quot;pulling&quot; out a <em>single</em> return value from its call.</p>
 <p>ES2015 introduced <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*">generator functions and iterators</a> (<code>function*</code>), another type of Pull system. Code that calls <code>iterator.next()</code> is the Consumer, &quot;pulling&quot; out <em>multiple</em> values from the iterator (the Producer).</p>
@@ -519,8 +520,8 @@ console.log(&apos;after&apos;);</code>
 });</code>
 </code></pre>
 <h3 id="disposing-observable-executions">Disposing Observable Executions</h3>
-<p>Because Observable Executions may be infinite, and it&apos;s common for an Observer to want abort execution in finite time, we need an API for canceling an execution. Since each execution is exclusive to one Observer only, once the Observer is done receiving values, it has to have a way to stop the execution, in order to avoid wasting computation power or memory resources.</p>
-<p>When <code>observable.subscribe</code> is called, the Observer gets attached to the newly created Observable execution, but also this call returns an object, the <code>Subscription</code>:</p>
+<p>Because Observable Executions may be infinite, and it&apos;s common for an Observer to want to abort execution in finite time, we need an API for canceling an execution. Since each execution is exclusive to one Observer only, once the Observer is done receiving values, it has to have a way to stop the execution, in order to avoid wasting computation power or memory resources.</p>
+<p>When <code>observable.subscribe</code> is called, the Observer gets attached to the newly created Observable execution. This call also returns an object, the <code>Subscription</code>:</p>
 <p><!-- skip-example -->
 </p>
 <pre><code class="lang-js"><code class="source-code prettyprint">var subscription = observable.subscribe(x =&gt; console.log(x));</code>
@@ -1047,6 +1048,7 @@ var merged = Rx.Observable.merge(observable1, observable2);</code>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-sampleTime"><code>sampleTime</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-single"><code>single</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-skip"><code>skip</code></a></li>
+<li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-skipLast"><code>skipLast</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-skipUntil"><code>skipUntil</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-skipWhile"><code>skipWhile</code></a></li>
 <li><a href="./manual/../class/es6/Observable.js~Observable.html#instance-method-take"><code>take</code></a></li>

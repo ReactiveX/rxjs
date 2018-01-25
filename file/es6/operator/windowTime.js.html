@@ -60,28 +60,31 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxTimeoutError.html">AjaxTimeoutError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html">AjaxRequest</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operators</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operators/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-catchError">catchError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-tap">tap</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/scheduler/Action.js~Action.html">Action</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animationFrame">animationFrame</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asap">asap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-async">async</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-queue">queue</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$iterator">$$iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$observable">$$observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/TimeoutError.js~TimeoutError.html">TimeoutError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-root">root</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operator/windowTime.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Subject } from &apos;../Subject&apos;;
-import { async } from &apos;../scheduler/async&apos;;
-import { Subscriber } from &apos;../Subscriber&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { async } from &apos;../scheduler/async&apos;;
 import { isNumeric } from &apos;../util/isNumeric&apos;;
 import { isScheduler } from &apos;../util/isScheduler&apos;;
+import { windowTime as higherOrder } from &apos;../operators/windowTime&apos;;
 export function windowTime(windowTimeSpan) {
     let scheduler = async;
     let windowCreationInterval = null;
@@ -101,125 +104,7 @@ export function windowTime(windowTimeSpan) {
     else if (isNumeric(arguments[1])) {
         windowCreationInterval = arguments[1];
     }
-    return this.lift(new WindowTimeOperator(windowTimeSpan, windowCreationInterval, maxWindowSize, scheduler));
-}
-class WindowTimeOperator {
-    constructor(windowTimeSpan, windowCreationInterval, maxWindowSize, scheduler) {
-        this.windowTimeSpan = windowTimeSpan;
-        this.windowCreationInterval = windowCreationInterval;
-        this.maxWindowSize = maxWindowSize;
-        this.scheduler = scheduler;
-    }
-    call(subscriber, source) {
-        return source.subscribe(new WindowTimeSubscriber(subscriber, this.windowTimeSpan, this.windowCreationInterval, this.maxWindowSize, this.scheduler));
-    }
-}
-class CountedSubject extends Subject {
-    constructor() {
-        super(...arguments);
-        this._numberOfNextedValues = 0;
-    }
-    next(value) {
-        this._numberOfNextedValues++;
-        super.next(value);
-    }
-    get numberOfNextedValues() {
-        return this._numberOfNextedValues;
-    }
-}
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class WindowTimeSubscriber extends Subscriber {
-    constructor(destination, windowTimeSpan, windowCreationInterval, maxWindowSize, scheduler) {
-        super(destination);
-        this.destination = destination;
-        this.windowTimeSpan = windowTimeSpan;
-        this.windowCreationInterval = windowCreationInterval;
-        this.maxWindowSize = maxWindowSize;
-        this.scheduler = scheduler;
-        this.windows = [];
-        const window = this.openWindow();
-        if (windowCreationInterval !== null &amp;&amp; windowCreationInterval &gt;= 0) {
-            const closeState = { subscriber: this, window, context: null };
-            const creationState = { windowTimeSpan, windowCreationInterval, subscriber: this, scheduler };
-            this.add(scheduler.schedule(dispatchWindowClose, windowTimeSpan, closeState));
-            this.add(scheduler.schedule(dispatchWindowCreation, windowCreationInterval, creationState));
-        }
-        else {
-            const timeSpanOnlyState = { subscriber: this, window, windowTimeSpan };
-            this.add(scheduler.schedule(dispatchWindowTimeSpanOnly, windowTimeSpan, timeSpanOnlyState));
-        }
-    }
-    _next(value) {
-        const windows = this.windows;
-        const len = windows.length;
-        for (let i = 0; i &lt; len; i++) {
-            const window = windows[i];
-            if (!window.closed) {
-                window.next(value);
-                if (window.numberOfNextedValues &gt;= this.maxWindowSize) {
-                    this.closeWindow(window);
-                }
-            }
-        }
-    }
-    _error(err) {
-        const windows = this.windows;
-        while (windows.length &gt; 0) {
-            windows.shift().error(err);
-        }
-        this.destination.error(err);
-    }
-    _complete() {
-        const windows = this.windows;
-        while (windows.length &gt; 0) {
-            const window = windows.shift();
-            if (!window.closed) {
-                window.complete();
-            }
-        }
-        this.destination.complete();
-    }
-    openWindow() {
-        const window = new CountedSubject();
-        this.windows.push(window);
-        const destination = this.destination;
-        destination.next(window);
-        return window;
-    }
-    closeWindow(window) {
-        window.complete();
-        const windows = this.windows;
-        windows.splice(windows.indexOf(window), 1);
-    }
-}
-function dispatchWindowTimeSpanOnly(state) {
-    const { subscriber, windowTimeSpan, window } = state;
-    if (window) {
-        subscriber.closeWindow(window);
-    }
-    state.window = subscriber.openWindow();
-    this.schedule(state, windowTimeSpan);
-}
-function dispatchWindowCreation(state) {
-    const { windowTimeSpan, subscriber, scheduler, windowCreationInterval } = state;
-    const window = subscriber.openWindow();
-    const action = this;
-    let context = { action, subscription: null };
-    const timeSpanState = { subscriber, window, context };
-    context.subscription = scheduler.schedule(dispatchWindowClose, windowTimeSpan, timeSpanState);
-    action.add(context.subscription);
-    action.schedule(state, windowCreationInterval);
-}
-function dispatchWindowClose(state) {
-    const { subscriber, window, context } = state;
-    if (context &amp;&amp; context.action &amp;&amp; context.subscription) {
-        context.action.remove(context.subscription);
-    }
-    subscriber.closeWindow(window);
+    return higherOrder(windowTimeSpan, windowCreationInterval, maxWindowSize, scheduler)(this);
 }
 //# sourceMappingURL=windowTime.js.map</code></pre>
 

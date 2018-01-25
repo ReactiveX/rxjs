@@ -1031,10 +1031,10 @@
             "type": "VariableDeclarator",
             "id": {
               "type": "Identifier",
-              "name": "$$observable",
+              "name": "observable",
               "range": [
                 490,
-                502
+                500
               ],
               "loc": {
                 "start": {
@@ -1043,7 +1043,7 @@
                 },
                 "end": {
                   "line": 19,
-                  "column": 25
+                  "column": 23
                 }
               }
             },
@@ -1053,17 +1053,17 @@
                 "type": "Identifier",
                 "name": "getSymbolObservable",
                 "range": [
-                  505,
-                  524
+                  503,
+                  522
                 ],
                 "loc": {
                   "start": {
                     "line": 19,
-                    "column": 28
+                    "column": 26
                   },
                   "end": {
                     "line": 19,
-                    "column": 47
+                    "column": 45
                   }
                 }
               },
@@ -1072,39 +1072,39 @@
                   "type": "Identifier",
                   "name": "root",
                   "range": [
-                    525,
-                    529
+                    523,
+                    527
                   ],
                   "loc": {
                     "start": {
                       "line": 19,
-                      "column": 48
+                      "column": 46
                     },
                     "end": {
                       "line": 19,
-                      "column": 52
+                      "column": 50
                     }
                   }
                 }
               ],
               "range": [
-                505,
-                530
+                503,
+                528
               ],
               "loc": {
                 "start": {
                   "line": 19,
-                  "column": 28
+                  "column": 26
                 },
                 "end": {
                   "line": 19,
-                  "column": 53
+                  "column": 51
                 }
               }
             },
             "range": [
               490,
-              530
+              528
             ],
             "loc": {
               "start": {
@@ -1113,7 +1113,7 @@
               },
               "end": {
                 "line": 19,
-                "column": 53
+                "column": 51
               }
             }
           }
@@ -1121,7 +1121,7 @@
         "kind": "const",
         "range": [
           484,
-          531
+          529
         ],
         "loc": {
           "start": {
@@ -1130,17 +1130,17 @@
           },
           "end": {
             "line": 19,
-            "column": 54
+            "column": 52
           }
         },
         "leadingComments": [],
         "trailingComments": [
           {
-            "type": "Line",
-            "value": "# sourceMappingURL=observable.js.map",
+            "type": "Block",
+            "value": "*\n * @deprecated use observable instead\n ",
             "range": [
-              532,
-              570
+              530,
+              575
             ],
             "loc": {
               "start": {
@@ -1148,8 +1148,8 @@
                 "column": 0
               },
               "end": {
-                "line": 20,
-                "column": 38
+                "line": 22,
+                "column": 3
               }
             }
           }
@@ -1159,7 +1159,7 @@
       "source": null,
       "range": [
         477,
-        531
+        529
       ],
       "loc": {
         "start": {
@@ -1168,16 +1168,16 @@
         },
         "end": {
           "line": 19,
-          "column": 54
+          "column": 52
         }
       },
       "trailingComments": [
         {
-          "type": "Line",
-          "value": "# sourceMappingURL=observable.js.map",
+          "type": "Block",
+          "value": "*\n * @deprecated use observable instead\n ",
           "range": [
-            532,
-            570
+            530,
+            575
           ],
           "loc": {
             "start": {
@@ -1185,7 +1185,179 @@
               "column": 0
             },
             "end": {
+              "line": 22,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "VariableDeclaration",
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "id": {
+              "type": "Identifier",
+              "name": "$$observable",
+              "range": [
+                589,
+                601
+              ],
+              "loc": {
+                "start": {
+                  "line": 23,
+                  "column": 13
+                },
+                "end": {
+                  "line": 23,
+                  "column": 25
+                }
+              }
+            },
+            "init": {
+              "type": "Identifier",
+              "name": "observable",
+              "range": [
+                604,
+                614
+              ],
+              "loc": {
+                "start": {
+                  "line": 23,
+                  "column": 28
+                },
+                "end": {
+                  "line": 23,
+                  "column": 38
+                }
+              }
+            },
+            "range": [
+              589,
+              614
+            ],
+            "loc": {
+              "start": {
+                "line": 23,
+                "column": 13
+              },
+              "end": {
+                "line": 23,
+                "column": 38
+              }
+            }
+          }
+        ],
+        "kind": "const",
+        "range": [
+          583,
+          615
+        ],
+        "loc": {
+          "start": {
+            "line": 23,
+            "column": 7
+          },
+          "end": {
+            "line": 23,
+            "column": 39
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * @deprecated use observable instead\n ",
+            "range": [
+              530,
+              575
+            ],
+            "loc": {
+              "start": {
+                "line": 20,
+                "column": 0
+              },
+              "end": {
+                "line": 22,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=observable.js.map",
+            "range": [
+              616,
+              654
+            ],
+            "loc": {
+              "start": {
+                "line": 24,
+                "column": 0
+              },
+              "end": {
+                "line": 24,
+                "column": 38
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        576,
+        615
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 0
+        },
+        "end": {
+          "line": 23,
+          "column": 39
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * @deprecated use observable instead\n ",
+          "range": [
+            530,
+            575
+          ],
+          "loc": {
+            "start": {
               "line": 20,
+              "column": 0
+            },
+            "end": {
+              "line": 22,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=observable.js.map",
+          "range": [
+            616,
+            654
+          ],
+          "loc": {
+            "start": {
+              "line": 24,
+              "column": 0
+            },
+            "end": {
+              "line": 24,
               "column": 38
             }
           }
@@ -1196,7 +1368,7 @@
   "sourceType": "module",
   "range": [
     0,
-    531
+    615
   ],
   "loc": {
     "start": {
@@ -1204,17 +1376,17 @@
       "column": 0
     },
     "end": {
-      "line": 19,
-      "column": 54
+      "line": 23,
+      "column": 39
     }
   },
   "comments": [
     {
-      "type": "Line",
-      "value": "# sourceMappingURL=observable.js.map",
+      "type": "Block",
+      "value": "*\n * @deprecated use observable instead\n ",
       "range": [
-        532,
-        570
+        530,
+        575
       ],
       "loc": {
         "start": {
@@ -1222,7 +1394,25 @@
           "column": 0
         },
         "end": {
-          "line": 20,
+          "line": 22,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=observable.js.map",
+      "range": [
+        616,
+        654
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 0
+        },
+        "end": {
+          "line": 24,
           "column": 38
         }
       }

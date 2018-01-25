@@ -4176,10 +4176,11 @@
                         "type": "MemberExpression",
                         "computed": false,
                         "object": {
-                          "type": "ThisExpression",
+                          "type": "Identifier",
+                          "name": "Notification",
                           "range": [
                             3604,
-                            3608
+                            3616
                           ],
                           "loc": {
                             "start": {
@@ -4188,7 +4189,7 @@
                             },
                             "end": {
                               "line": 102,
-                              "column": 19
+                              "column": 27
                             }
                           }
                         },
@@ -4196,23 +4197,23 @@
                           "type": "Identifier",
                           "name": "undefinedValueNotification",
                           "range": [
-                            3609,
-                            3635
+                            3617,
+                            3643
                           ],
                           "loc": {
                             "start": {
                               "line": 102,
-                              "column": 20
+                              "column": 28
                             },
                             "end": {
                               "line": 102,
-                              "column": 46
+                              "column": 54
                             }
                           }
                         },
                         "range": [
                           3604,
-                          3635
+                          3643
                         ],
                         "loc": {
                           "start": {
@@ -4221,13 +4222,13 @@
                           },
                           "end": {
                             "line": 102,
-                            "column": 46
+                            "column": 54
                           }
                         }
                       },
                       "range": [
                         3597,
-                        3636
+                        3644
                       ],
                       "loc": {
                         "start": {
@@ -4236,14 +4237,14 @@
                         },
                         "end": {
                           "line": 102,
-                          "column": 47
+                          "column": 55
                         }
                       }
                     }
                   ],
                   "range": [
                     3484,
-                    3642
+                    3650
                   ],
                   "loc": {
                     "start": {
@@ -4260,7 +4261,7 @@
                 "expression": false,
                 "range": [
                   3476,
-                  3642
+                  3650
                 ],
                 "loc": {
                   "start": {
@@ -4277,7 +4278,7 @@
               "computed": false,
               "range": [
                 3459,
-                3642
+                3650
               ],
               "loc": {
                 "start": {
@@ -4314,8 +4315,8 @@
                   "type": "Block",
                   "value": "*\n     * A shortcut to create a Notification instance of the type `error` from a\n     * given error.\n     * @param {any} [err] The `error` error.\n     * @return {Notification<T>} The \"error\" Notification representing the\n     * argument.\n     ",
                   "range": [
-                    3647,
-                    3894
+                    3655,
+                    3902
                   ],
                   "loc": {
                     "start": {
@@ -4337,8 +4338,8 @@
                 "type": "Identifier",
                 "name": "createError",
                 "range": [
-                  3906,
-                  3917
+                  3914,
+                  3925
                 ],
                 "loc": {
                   "start": {
@@ -4359,8 +4360,8 @@
                     "type": "Identifier",
                     "name": "err",
                     "range": [
-                      3918,
-                      3921
+                      3926,
+                      3929
                     ],
                     "loc": {
                       "start": {
@@ -4385,8 +4386,8 @@
                           "type": "Identifier",
                           "name": "Notification",
                           "range": [
-                            3944,
-                            3956
+                            3952,
+                            3964
                           ],
                           "loc": {
                             "start": {
@@ -4405,8 +4406,8 @@
                             "value": "E",
                             "raw": "'E'",
                             "range": [
-                              3957,
-                              3960
+                              3965,
+                              3968
                             ],
                             "loc": {
                               "start": {
@@ -4423,8 +4424,8 @@
                             "type": "Identifier",
                             "name": "undefined",
                             "range": [
-                              3962,
-                              3971
+                              3970,
+                              3979
                             ],
                             "loc": {
                               "start": {
@@ -4441,8 +4442,8 @@
                             "type": "Identifier",
                             "name": "err",
                             "range": [
-                              3973,
-                              3976
+                              3981,
+                              3984
                             ],
                             "loc": {
                               "start": {
@@ -4457,8 +4458,8 @@
                           }
                         ],
                         "range": [
-                          3940,
-                          3977
+                          3948,
+                          3985
                         ],
                         "loc": {
                           "start": {
@@ -4472,8 +4473,8 @@
                         }
                       },
                       "range": [
-                        3933,
-                        3978
+                        3941,
+                        3986
                       ],
                       "loc": {
                         "start": {
@@ -4488,8 +4489,8 @@
                     }
                   ],
                   "range": [
-                    3923,
-                    3984
+                    3931,
+                    3992
                   ],
                   "loc": {
                     "start": {
@@ -4505,8 +4506,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  3917,
-                  3984
+                  3925,
+                  3992
                 ],
                 "loc": {
                   "start": {
@@ -4522,8 +4523,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                3899,
-                3984
+                3907,
+                3992
               ],
               "loc": {
                 "start": {
@@ -4540,8 +4541,8 @@
                   "type": "Block",
                   "value": "*\n     * A shortcut to create a Notification instance of the type `error` from a\n     * given error.\n     * @param {any} [err] The `error` error.\n     * @return {Notification<T>} The \"error\" Notification representing the\n     * argument.\n     ",
                   "range": [
-                    3647,
-                    3894
+                    3655,
+                    3902
                   ],
                   "loc": {
                     "start": {
@@ -4560,8 +4561,8 @@
                   "type": "Block",
                   "value": "*\n     * A shortcut to create a Notification instance of the type `complete`.\n     * @return {Notification<any>} The valueless \"complete\" Notification.\n     ",
                   "range": [
-                    3989,
-                    4150
+                    3997,
+                    4158
                   ],
                   "loc": {
                     "start": {
@@ -4583,8 +4584,8 @@
                 "type": "Identifier",
                 "name": "createComplete",
                 "range": [
-                  4162,
-                  4176
+                  4170,
+                  4184
                 ],
                 "loc": {
                   "start": {
@@ -4610,10 +4611,11 @@
                         "type": "MemberExpression",
                         "computed": false,
                         "object": {
-                          "type": "ThisExpression",
+                          "type": "Identifier",
+                          "name": "Notification",
                           "range": [
-                            4196,
-                            4200
+                            4204,
+                            4216
                           ],
                           "loc": {
                             "start": {
@@ -4622,7 +4624,7 @@
                             },
                             "end": {
                               "line": 119,
-                              "column": 19
+                              "column": 27
                             }
                           }
                         },
@@ -4630,23 +4632,23 @@
                           "type": "Identifier",
                           "name": "completeNotification",
                           "range": [
-                            4201,
-                            4221
+                            4217,
+                            4237
                           ],
                           "loc": {
                             "start": {
                               "line": 119,
-                              "column": 20
+                              "column": 28
                             },
                             "end": {
                               "line": 119,
-                              "column": 40
+                              "column": 48
                             }
                           }
                         },
                         "range": [
-                          4196,
-                          4221
+                          4204,
+                          4237
                         ],
                         "loc": {
                           "start": {
@@ -4655,13 +4657,13 @@
                           },
                           "end": {
                             "line": 119,
-                            "column": 40
+                            "column": 48
                           }
                         }
                       },
                       "range": [
-                        4189,
-                        4222
+                        4197,
+                        4238
                       ],
                       "loc": {
                         "start": {
@@ -4670,14 +4672,14 @@
                         },
                         "end": {
                           "line": 119,
-                          "column": 41
+                          "column": 49
                         }
                       }
                     }
                   ],
                   "range": [
-                    4179,
-                    4228
+                    4187,
+                    4244
                   ],
                   "loc": {
                     "start": {
@@ -4693,8 +4695,8 @@
                 "generator": false,
                 "expression": false,
                 "range": [
-                  4176,
-                  4228
+                  4184,
+                  4244
                 ],
                 "loc": {
                   "start": {
@@ -4710,8 +4712,8 @@
               "kind": "method",
               "computed": false,
               "range": [
-                4155,
-                4228
+                4163,
+                4244
               ],
               "loc": {
                 "start": {
@@ -4728,8 +4730,8 @@
                   "type": "Block",
                   "value": "*\n     * A shortcut to create a Notification instance of the type `complete`.\n     * @return {Notification<any>} The valueless \"complete\" Notification.\n     ",
                   "range": [
-                    3989,
-                    4150
+                    3997,
+                    4158
                   ],
                   "loc": {
                     "start": {
@@ -4748,7 +4750,7 @@
           ],
           "range": [
             606,
-            4230
+            4246
           ],
           "loc": {
             "start": {
@@ -4763,7 +4765,7 @@
         },
         "range": [
           587,
-          4230
+          4246
         ],
         "loc": {
           "start": {
@@ -4801,7 +4803,7 @@
       "source": null,
       "range": [
         580,
-        4230
+        4246
       ],
       "loc": {
         "start": {
@@ -4846,8 +4848,8 @@
             "type": "Identifier",
             "name": "Notification",
             "range": [
-              4231,
-              4243
+              4247,
+              4259
             ],
             "loc": {
               "start": {
@@ -4864,8 +4866,8 @@
             "type": "Identifier",
             "name": "completeNotification",
             "range": [
-              4244,
-              4264
+              4260,
+              4280
             ],
             "loc": {
               "start": {
@@ -4879,8 +4881,8 @@
             }
           },
           "range": [
-            4231,
-            4264
+            4247,
+            4280
           ],
           "loc": {
             "start": {
@@ -4899,8 +4901,8 @@
             "type": "Identifier",
             "name": "Notification",
             "range": [
-              4271,
-              4283
+              4287,
+              4299
             ],
             "loc": {
               "start": {
@@ -4919,8 +4921,8 @@
               "value": "C",
               "raw": "'C'",
               "range": [
-                4284,
-                4287
+                4300,
+                4303
               ],
               "loc": {
                 "start": {
@@ -4935,8 +4937,8 @@
             }
           ],
           "range": [
-            4267,
-            4288
+            4283,
+            4304
           ],
           "loc": {
             "start": {
@@ -4950,8 +4952,8 @@
           }
         },
         "range": [
-          4231,
-          4288
+          4247,
+          4304
         ],
         "loc": {
           "start": {
@@ -4965,8 +4967,8 @@
         }
       },
       "range": [
-        4231,
-        4289
+        4247,
+        4305
       ],
       "loc": {
         "start": {
@@ -4991,8 +4993,8 @@
             "type": "Identifier",
             "name": "Notification",
             "range": [
-              4290,
-              4302
+              4306,
+              4318
             ],
             "loc": {
               "start": {
@@ -5009,8 +5011,8 @@
             "type": "Identifier",
             "name": "undefinedValueNotification",
             "range": [
-              4303,
-              4329
+              4319,
+              4345
             ],
             "loc": {
               "start": {
@@ -5024,8 +5026,8 @@
             }
           },
           "range": [
-            4290,
-            4329
+            4306,
+            4345
           ],
           "loc": {
             "start": {
@@ -5044,8 +5046,8 @@
             "type": "Identifier",
             "name": "Notification",
             "range": [
-              4336,
-              4348
+              4352,
+              4364
             ],
             "loc": {
               "start": {
@@ -5064,8 +5066,8 @@
               "value": "N",
               "raw": "'N'",
               "range": [
-                4349,
-                4352
+                4365,
+                4368
               ],
               "loc": {
                 "start": {
@@ -5082,8 +5084,8 @@
               "type": "Identifier",
               "name": "undefined",
               "range": [
-                4354,
-                4363
+                4370,
+                4379
               ],
               "loc": {
                 "start": {
@@ -5098,8 +5100,8 @@
             }
           ],
           "range": [
-            4332,
-            4364
+            4348,
+            4380
           ],
           "loc": {
             "start": {
@@ -5113,8 +5115,8 @@
           }
         },
         "range": [
-          4290,
-          4364
+          4306,
+          4380
         ],
         "loc": {
           "start": {
@@ -5128,8 +5130,8 @@
         }
       },
       "range": [
-        4290,
-        4365
+        4306,
+        4381
       ],
       "loc": {
         "start": {
@@ -5146,8 +5148,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=Notification.js.map",
           "range": [
-            4366,
-            4406
+            4382,
+            4422
           ],
           "loc": {
             "start": {
@@ -5166,7 +5168,7 @@
   "sourceType": "module",
   "range": [
     0,
-    4365
+    4381
   ],
   "loc": {
     "start": {
@@ -5291,8 +5293,8 @@
       "type": "Block",
       "value": "*\n     * A shortcut to create a Notification instance of the type `error` from a\n     * given error.\n     * @param {any} [err] The `error` error.\n     * @return {Notification<T>} The \"error\" Notification representing the\n     * argument.\n     ",
       "range": [
-        3647,
-        3894
+        3655,
+        3902
       ],
       "loc": {
         "start": {
@@ -5309,8 +5311,8 @@
       "type": "Block",
       "value": "*\n     * A shortcut to create a Notification instance of the type `complete`.\n     * @return {Notification<any>} The valueless \"complete\" Notification.\n     ",
       "range": [
-        3989,
-        4150
+        3997,
+        4158
       ],
       "loc": {
         "start": {
@@ -5327,8 +5329,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=Notification.js.map",
       "range": [
-        4366,
-        4406
+        4382,
+        4422
       ],
       "loc": {
         "start": {

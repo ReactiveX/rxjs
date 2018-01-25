@@ -333,11 +333,11 @@
       ],
       "source": {
         "type": "Literal",
-        "value": "../operator/combineLatest",
-        "raw": "'../operator/combineLatest'",
+        "value": "../operators/combineLatest",
+        "raw": "'../operators/combineLatest'",
         "range": [
           185,
-          212
+          213
         ],
         "loc": {
           "start": {
@@ -346,13 +346,13 @@
           },
           "end": {
             "line": 4,
-            "column": 65
+            "column": 66
           }
         }
       },
       "range": [
         147,
-        213
+        214
       ],
       "loc": {
         "start": {
@@ -361,7 +361,7 @@
         },
         "end": {
           "line": 4,
-          "column": 66
+          "column": 67
         }
       },
       "trailingComments": [
@@ -369,8 +369,8 @@
           "type": "Block",
           "value": " tslint:enable:max-line-length ",
           "range": [
-            214,
-            249
+            215,
+            250
           ],
           "loc": {
             "start": {
@@ -387,8 +387,8 @@
           "type": "Block",
           "value": "*\n * Combines multiple Observables to create an Observable whose values are\n * calculated from the latest values of each of its input Observables.\n *\n * <span class=\"informal\">Whenever any input Observable emits a value, it\n * computes a formula using the latest values from all the inputs, then emits\n * the output of that formula.</span>\n *\n * <img src=\"./img/combineLatest.png\" width=\"100%\">\n *\n * `combineLatest` combines the values from all the Observables passed as\n * arguments. This is done by subscribing to each Observable in order and,\n * whenever any Observable emits, collecting an array of the most recent\n * values from each Observable. So if you pass `n` Observables to operator,\n * returned Observable will always emit an array of `n` values, in order\n * corresponding to order of passed Observables (value from the first Observable\n * on the first place and so on).\n *\n * Static version of `combineLatest` accepts either an array of Observables\n * or each Observable can be put directly as an argument. Note that array of\n * Observables is good choice, if you don't know beforehand how many Observables\n * you will combine. Passing empty array will result in Observable that\n * completes immediately.\n *\n * To ensure output array has always the same length, `combineLatest` will\n * actually wait for all input Observables to emit at least once,\n * before it starts emitting results. This means if some Observable emits\n * values before other Observables started emitting, all that values but last\n * will be lost. On the other hand, is some Observable does not emit value but\n * completes, resulting Observable will complete at the same moment without\n * emitting anything, since it will be now impossible to include value from\n * completed Observable in resulting array. Also, if some input Observable does\n * not emit any value and never completes, `combineLatest` will also never emit\n * and never complete, since, again, it will wait for all streams to emit some\n * value.\n *\n * If at least one Observable was passed to `combineLatest` and all passed Observables\n * emitted something, resulting Observable will complete when all combined\n * streams complete. So even if some Observable completes, result of\n * `combineLatest` will still emit values when other Observables do. In case\n * of completed Observable, its value from now on will always be the last\n * emitted value. On the other hand, if any Observable errors, `combineLatest`\n * will error immediately as well, and all other Observables will be unsubscribed.\n *\n * `combineLatest` accepts as optional parameter `project` function, which takes\n * as arguments all values that would normally be emitted by resulting Observable.\n * `project` can return any kind of value, which will be then emitted by Observable\n * instead of default array. Note that `project` does not take as argument that array\n * of values, but values themselves. That means default `project` can be imagined\n * as function that takes all its arguments and puts them into an array.\n *\n *\n * @example <caption>Combine two timer Observables</caption>\n * const firstTimer = Rx.Observable.timer(0, 1000); // emit 0, 1, 2... after every second, starting from now\n * const secondTimer = Rx.Observable.timer(500, 1000); // emit 0, 1, 2... after every second, starting 0,5s from now\n * const combinedTimers = Rx.Observable.combineLatest(firstTimer, secondTimer);\n * combinedTimers.subscribe(value => console.log(value));\n * // Logs\n * // [0, 0] after 0.5s\n * // [1, 0] after 1s\n * // [1, 1] after 1.5s\n * // [2, 1] after 2s\n *\n *\n * @example <caption>Combine an array of Observables</caption>\n * const observables = [1, 5, 10].map(\n *   n => Rx.Observable.of(n).delay(n * 1000).startWith(0) // emit 0 and then emit n after n seconds\n * );\n * const combined = Rx.Observable.combineLatest(observables);\n * combined.subscribe(value => console.log(value));\n * // Logs\n * // [0, 0, 0] immediately\n * // [1, 0, 0] after 1s\n * // [1, 5, 0] after 5s\n * // [1, 5, 10] after 10s\n *\n *\n * @example <caption>Use project function to dynamically calculate the Body-Mass Index</caption>\n * var weight = Rx.Observable.of(70, 72, 76, 79, 75);\n * var height = Rx.Observable.of(1.76, 1.77, 1.78);\n * var bmi = Rx.Observable.combineLatest(weight, height, (w, h) => w / (h * h));\n * bmi.subscribe(x => console.log('BMI is ' + x));\n *\n * // With output to console:\n * // BMI is 24.212293388429753\n * // BMI is 23.93948099205209\n * // BMI is 23.671253629592222\n *\n *\n * @see {@link combineAll}\n * @see {@link merge}\n * @see {@link withLatestFrom}\n *\n * @param {ObservableInput} observable1 An input Observable to combine with other Observables.\n * @param {ObservableInput} observable2 An input Observable to combine with other Observables.\n * More than one input Observables may be given as arguments\n * or an array of Observables may be given as the first argument.\n * @param {function} [project] An optional function to project the values from\n * the combined latest values into a new value on the output Observable.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for subscribing to\n * each input Observable.\n * @return {Observable} An Observable of projected values from the most recent\n * values from each input Observable, or an array of the most recent values from\n * each input Observable.\n * @static true\n * @name combineLatest\n * @owner Observable\n ",
           "range": [
-            250,
-            5647
+            251,
+            5648
           ],
           "loc": {
             "start": {
@@ -411,8 +411,8 @@
           "type": "Identifier",
           "name": "combineLatest",
           "range": [
-            5664,
-            5677
+            5665,
+            5678
           ],
           "loc": {
             "start": {
@@ -432,8 +432,8 @@
               "type": "Identifier",
               "name": "observables",
               "range": [
-                5681,
-                5692
+                5682,
+                5693
               ],
               "loc": {
                 "start": {
@@ -447,8 +447,8 @@
               }
             },
             "range": [
-              5678,
-              5692
+              5679,
+              5693
             ],
             "loc": {
               "start": {
@@ -474,8 +474,8 @@
                     "type": "Identifier",
                     "name": "project",
                     "range": [
-                      5704,
-                      5711
+                      5705,
+                      5712
                     ],
                     "loc": {
                       "start": {
@@ -493,8 +493,8 @@
                     "value": null,
                     "raw": "null",
                     "range": [
-                      5714,
-                      5718
+                      5715,
+                      5719
                     ],
                     "loc": {
                       "start": {
@@ -508,8 +508,8 @@
                     }
                   },
                   "range": [
-                    5704,
-                    5718
+                    5705,
+                    5719
                   ],
                   "loc": {
                     "start": {
@@ -525,8 +525,8 @@
               ],
               "kind": "let",
               "range": [
-                5700,
-                5719
+                5701,
+                5720
               ],
               "loc": {
                 "start": {
@@ -548,8 +548,8 @@
                     "type": "Identifier",
                     "name": "scheduler",
                     "range": [
-                      5728,
-                      5737
+                      5729,
+                      5738
                     ],
                     "loc": {
                       "start": {
@@ -567,8 +567,8 @@
                     "value": null,
                     "raw": "null",
                     "range": [
-                      5740,
-                      5744
+                      5741,
+                      5745
                     ],
                     "loc": {
                       "start": {
@@ -582,8 +582,8 @@
                     }
                   },
                   "range": [
-                    5728,
-                    5744
+                    5729,
+                    5745
                   ],
                   "loc": {
                     "start": {
@@ -599,8 +599,8 @@
               ],
               "kind": "let",
               "range": [
-                5724,
-                5745
+                5725,
+                5746
               ],
               "loc": {
                 "start": {
@@ -621,8 +621,8 @@
                   "type": "Identifier",
                   "name": "isScheduler",
                   "range": [
-                    5754,
-                    5765
+                    5755,
+                    5766
                   ],
                   "loc": {
                     "start": {
@@ -643,8 +643,8 @@
                       "type": "Identifier",
                       "name": "observables",
                       "range": [
-                        5766,
-                        5777
+                        5767,
+                        5778
                       ],
                       "loc": {
                         "start": {
@@ -667,8 +667,8 @@
                           "type": "Identifier",
                           "name": "observables",
                           "range": [
-                            5778,
-                            5789
+                            5779,
+                            5790
                           ],
                           "loc": {
                             "start": {
@@ -685,8 +685,8 @@
                           "type": "Identifier",
                           "name": "length",
                           "range": [
-                            5790,
-                            5796
+                            5791,
+                            5797
                           ],
                           "loc": {
                             "start": {
@@ -700,8 +700,8 @@
                           }
                         },
                         "range": [
-                          5778,
-                          5796
+                          5779,
+                          5797
                         ],
                         "loc": {
                           "start": {
@@ -719,8 +719,8 @@
                         "value": 1,
                         "raw": "1",
                         "range": [
-                          5799,
-                          5800
+                          5800,
+                          5801
                         ],
                         "loc": {
                           "start": {
@@ -734,8 +734,8 @@
                         }
                       },
                       "range": [
-                        5778,
-                        5800
+                        5779,
+                        5801
                       ],
                       "loc": {
                         "start": {
@@ -749,8 +749,8 @@
                       }
                     },
                     "range": [
-                      5766,
-                      5801
+                      5767,
+                      5802
                     ],
                     "loc": {
                       "start": {
@@ -765,8 +765,8 @@
                   }
                 ],
                 "range": [
-                  5754,
-                  5802
+                  5755,
+                  5803
                 ],
                 "loc": {
                   "start": {
@@ -791,8 +791,8 @@
                         "type": "Identifier",
                         "name": "scheduler",
                         "range": [
-                          5814,
-                          5823
+                          5815,
+                          5824
                         ],
                         "loc": {
                           "start": {
@@ -814,8 +814,8 @@
                             "type": "Identifier",
                             "name": "observables",
                             "range": [
-                              5826,
-                              5837
+                              5827,
+                              5838
                             ],
                             "loc": {
                               "start": {
@@ -832,8 +832,8 @@
                             "type": "Identifier",
                             "name": "pop",
                             "range": [
-                              5838,
-                              5841
+                              5839,
+                              5842
                             ],
                             "loc": {
                               "start": {
@@ -847,8 +847,8 @@
                             }
                           },
                           "range": [
-                            5826,
-                            5841
+                            5827,
+                            5842
                           ],
                           "loc": {
                             "start": {
@@ -863,8 +863,8 @@
                         },
                         "arguments": [],
                         "range": [
-                          5826,
-                          5843
+                          5827,
+                          5844
                         ],
                         "loc": {
                           "start": {
@@ -878,8 +878,8 @@
                         }
                       },
                       "range": [
-                        5814,
-                        5843
+                        5815,
+                        5844
                       ],
                       "loc": {
                         "start": {
@@ -893,8 +893,8 @@
                       }
                     },
                     "range": [
-                      5814,
-                      5844
+                      5815,
+                      5845
                     ],
                     "loc": {
                       "start": {
@@ -909,8 +909,8 @@
                   }
                 ],
                 "range": [
-                  5804,
-                  5850
+                  5805,
+                  5851
                 ],
                 "loc": {
                   "start": {
@@ -925,8 +925,8 @@
               },
               "alternate": null,
               "range": [
-                5750,
-                5850
+                5751,
+                5851
               ],
               "loc": {
                 "start": {
@@ -954,8 +954,8 @@
                       "type": "Identifier",
                       "name": "observables",
                       "range": [
-                        5866,
-                        5877
+                        5867,
+                        5878
                       ],
                       "loc": {
                         "start": {
@@ -978,8 +978,8 @@
                           "type": "Identifier",
                           "name": "observables",
                           "range": [
-                            5878,
-                            5889
+                            5879,
+                            5890
                           ],
                           "loc": {
                             "start": {
@@ -996,8 +996,8 @@
                           "type": "Identifier",
                           "name": "length",
                           "range": [
-                            5890,
-                            5896
+                            5891,
+                            5897
                           ],
                           "loc": {
                             "start": {
@@ -1011,8 +1011,8 @@
                           }
                         },
                         "range": [
-                          5878,
-                          5896
+                          5879,
+                          5897
                         ],
                         "loc": {
                           "start": {
@@ -1030,8 +1030,8 @@
                         "value": 1,
                         "raw": "1",
                         "range": [
-                          5899,
-                          5900
+                          5900,
+                          5901
                         ],
                         "loc": {
                           "start": {
@@ -1045,8 +1045,8 @@
                         }
                       },
                       "range": [
-                        5878,
-                        5900
+                        5879,
+                        5901
                       ],
                       "loc": {
                         "start": {
@@ -1060,8 +1060,8 @@
                       }
                     },
                     "range": [
-                      5866,
-                      5901
+                      5867,
+                      5902
                     ],
                     "loc": {
                       "start": {
@@ -1076,8 +1076,8 @@
                   },
                   "prefix": true,
                   "range": [
-                    5859,
-                    5901
+                    5860,
+                    5902
                   ],
                   "loc": {
                     "start": {
@@ -1095,8 +1095,8 @@
                   "value": "function",
                   "raw": "'function'",
                   "range": [
-                    5906,
-                    5916
+                    5907,
+                    5917
                   ],
                   "loc": {
                     "start": {
@@ -1110,8 +1110,8 @@
                   }
                 },
                 "range": [
-                  5859,
-                  5916
+                  5860,
+                  5917
                 ],
                 "loc": {
                   "start": {
@@ -1136,8 +1136,8 @@
                         "type": "Identifier",
                         "name": "project",
                         "range": [
-                          5928,
-                          5935
+                          5929,
+                          5936
                         ],
                         "loc": {
                           "start": {
@@ -1159,8 +1159,8 @@
                             "type": "Identifier",
                             "name": "observables",
                             "range": [
-                              5938,
-                              5949
+                              5939,
+                              5950
                             ],
                             "loc": {
                               "start": {
@@ -1177,8 +1177,8 @@
                             "type": "Identifier",
                             "name": "pop",
                             "range": [
-                              5950,
-                              5953
+                              5951,
+                              5954
                             ],
                             "loc": {
                               "start": {
@@ -1192,8 +1192,8 @@
                             }
                           },
                           "range": [
-                            5938,
-                            5953
+                            5939,
+                            5954
                           ],
                           "loc": {
                             "start": {
@@ -1208,8 +1208,8 @@
                         },
                         "arguments": [],
                         "range": [
-                          5938,
-                          5955
+                          5939,
+                          5956
                         ],
                         "loc": {
                           "start": {
@@ -1223,8 +1223,8 @@
                         }
                       },
                       "range": [
-                        5928,
-                        5955
+                        5929,
+                        5956
                       ],
                       "loc": {
                         "start": {
@@ -1238,8 +1238,8 @@
                       }
                     },
                     "range": [
-                      5928,
-                      5956
+                      5929,
+                      5957
                     ],
                     "loc": {
                       "start": {
@@ -1254,8 +1254,8 @@
                   }
                 ],
                 "range": [
-                  5918,
-                  5962
+                  5919,
+                  5963
                 ],
                 "loc": {
                   "start": {
@@ -1270,8 +1270,8 @@
               },
               "alternate": null,
               "range": [
-                5855,
-                5962
+                5856,
+                5963
               ],
               "loc": {
                 "start": {
@@ -1288,8 +1288,8 @@
                   "type": "Line",
                   "value": " if the first and only other argument besides the resultSelector is an array",
                   "range": [
-                    5967,
-                    6045
+                    5968,
+                    6046
                   ],
                   "loc": {
                     "start": {
@@ -1306,8 +1306,8 @@
                   "type": "Line",
                   "value": " assume it's been called with `combineLatest([obs1, obs2, obs3], project)`",
                   "range": [
-                    6050,
-                    6126
+                    6051,
+                    6127
                   ],
                   "loc": {
                     "start": {
@@ -1337,8 +1337,8 @@
                       "type": "Identifier",
                       "name": "observables",
                       "range": [
-                        6135,
-                        6146
+                        6136,
+                        6147
                       ],
                       "loc": {
                         "start": {
@@ -1355,8 +1355,8 @@
                       "type": "Identifier",
                       "name": "length",
                       "range": [
-                        6147,
-                        6153
+                        6148,
+                        6154
                       ],
                       "loc": {
                         "start": {
@@ -1370,8 +1370,8 @@
                       }
                     },
                     "range": [
-                      6135,
-                      6153
+                      6136,
+                      6154
                     ],
                     "loc": {
                       "start": {
@@ -1389,8 +1389,8 @@
                     "value": 1,
                     "raw": "1",
                     "range": [
-                      6158,
-                      6159
+                      6159,
+                      6160
                     ],
                     "loc": {
                       "start": {
@@ -1404,8 +1404,8 @@
                     }
                   },
                   "range": [
-                    6135,
-                    6159
+                    6136,
+                    6160
                   ],
                   "loc": {
                     "start": {
@@ -1424,8 +1424,8 @@
                     "type": "Identifier",
                     "name": "isArray",
                     "range": [
-                      6163,
-                      6170
+                      6164,
+                      6171
                     ],
                     "loc": {
                       "start": {
@@ -1446,8 +1446,8 @@
                         "type": "Identifier",
                         "name": "observables",
                         "range": [
-                          6171,
-                          6182
+                          6172,
+                          6183
                         ],
                         "loc": {
                           "start": {
@@ -1465,8 +1465,8 @@
                         "value": 0,
                         "raw": "0",
                         "range": [
-                          6183,
-                          6184
+                          6184,
+                          6185
                         ],
                         "loc": {
                           "start": {
@@ -1480,8 +1480,8 @@
                         }
                       },
                       "range": [
-                        6171,
-                        6185
+                        6172,
+                        6186
                       ],
                       "loc": {
                         "start": {
@@ -1496,8 +1496,8 @@
                     }
                   ],
                   "range": [
-                    6163,
-                    6186
+                    6164,
+                    6187
                   ],
                   "loc": {
                     "start": {
@@ -1511,8 +1511,8 @@
                   }
                 },
                 "range": [
-                  6135,
-                  6186
+                  6136,
+                  6187
                 ],
                 "loc": {
                   "start": {
@@ -1537,8 +1537,8 @@
                         "type": "Identifier",
                         "name": "observables",
                         "range": [
-                          6198,
-                          6209
+                          6199,
+                          6210
                         ],
                         "loc": {
                           "start": {
@@ -1558,8 +1558,8 @@
                           "type": "Identifier",
                           "name": "observables",
                           "range": [
-                            6212,
-                            6223
+                            6213,
+                            6224
                           ],
                           "loc": {
                             "start": {
@@ -1577,8 +1577,8 @@
                           "value": 0,
                           "raw": "0",
                           "range": [
-                            6224,
-                            6225
+                            6225,
+                            6226
                           ],
                           "loc": {
                             "start": {
@@ -1592,8 +1592,8 @@
                           }
                         },
                         "range": [
-                          6212,
-                          6226
+                          6213,
+                          6227
                         ],
                         "loc": {
                           "start": {
@@ -1607,8 +1607,8 @@
                         }
                       },
                       "range": [
-                        6198,
-                        6226
+                        6199,
+                        6227
                       ],
                       "loc": {
                         "start": {
@@ -1622,8 +1622,8 @@
                       }
                     },
                     "range": [
-                      6198,
-                      6227
+                      6199,
+                      6228
                     ],
                     "loc": {
                       "start": {
@@ -1638,8 +1638,8 @@
                   }
                 ],
                 "range": [
-                  6188,
-                  6233
+                  6189,
+                  6234
                 ],
                 "loc": {
                   "start": {
@@ -1654,8 +1654,8 @@
               },
               "alternate": null,
               "range": [
-                6131,
-                6233
+                6132,
+                6234
               ],
               "loc": {
                 "start": {
@@ -1672,8 +1672,8 @@
                   "type": "Line",
                   "value": " if the first and only other argument besides the resultSelector is an array",
                   "range": [
-                    5967,
-                    6045
+                    5968,
+                    6046
                   ],
                   "loc": {
                     "start": {
@@ -1690,8 +1690,8 @@
                   "type": "Line",
                   "value": " assume it's been called with `combineLatest([obs1, obs2, obs3], project)`",
                   "range": [
-                    6050,
-                    6126
+                    6051,
+                    6127
                   ],
                   "loc": {
                     "start": {
@@ -1719,8 +1719,8 @@
                       "type": "Identifier",
                       "name": "ArrayObservable",
                       "range": [
-                        6249,
-                        6264
+                        6250,
+                        6265
                       ],
                       "loc": {
                         "start": {
@@ -1738,8 +1738,8 @@
                         "type": "Identifier",
                         "name": "observables",
                         "range": [
-                          6265,
-                          6276
+                          6266,
+                          6277
                         ],
                         "loc": {
                           "start": {
@@ -1756,8 +1756,8 @@
                         "type": "Identifier",
                         "name": "scheduler",
                         "range": [
-                          6278,
-                          6287
+                          6279,
+                          6288
                         ],
                         "loc": {
                           "start": {
@@ -1772,8 +1772,8 @@
                       }
                     ],
                     "range": [
-                      6245,
-                      6288
+                      6246,
+                      6289
                     ],
                     "loc": {
                       "start": {
@@ -1790,8 +1790,8 @@
                     "type": "Identifier",
                     "name": "lift",
                     "range": [
-                      6289,
-                      6293
+                      6290,
+                      6294
                     ],
                     "loc": {
                       "start": {
@@ -1805,8 +1805,8 @@
                     }
                   },
                   "range": [
-                    6245,
-                    6293
+                    6246,
+                    6294
                   ],
                   "loc": {
                     "start": {
@@ -1826,8 +1826,8 @@
                       "type": "Identifier",
                       "name": "CombineLatestOperator",
                       "range": [
-                        6298,
-                        6319
+                        6299,
+                        6320
                       ],
                       "loc": {
                         "start": {
@@ -1845,8 +1845,8 @@
                         "type": "Identifier",
                         "name": "project",
                         "range": [
-                          6320,
-                          6327
+                          6321,
+                          6328
                         ],
                         "loc": {
                           "start": {
@@ -1861,8 +1861,8 @@
                       }
                     ],
                     "range": [
-                      6294,
-                      6328
+                      6295,
+                      6329
                     ],
                     "loc": {
                       "start": {
@@ -1877,8 +1877,8 @@
                   }
                 ],
                 "range": [
-                  6245,
-                  6329
+                  6246,
+                  6330
                 ],
                 "loc": {
                   "start": {
@@ -1892,8 +1892,8 @@
                 }
               },
               "range": [
-                6238,
-                6330
+                6239,
+                6331
               ],
               "loc": {
                 "start": {
@@ -1908,8 +1908,8 @@
             }
           ],
           "range": [
-            5694,
-            6332
+            5695,
+            6333
           ],
           "loc": {
             "start": {
@@ -1925,8 +1925,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          5655,
-          6332
+          5656,
+          6333
         ],
         "loc": {
           "start": {
@@ -1943,8 +1943,8 @@
             "type": "Block",
             "value": " tslint:enable:max-line-length ",
             "range": [
-              214,
-              249
+              215,
+              250
             ],
             "loc": {
               "start": {
@@ -1961,8 +1961,8 @@
             "type": "Block",
             "value": "*\n * Combines multiple Observables to create an Observable whose values are\n * calculated from the latest values of each of its input Observables.\n *\n * <span class=\"informal\">Whenever any input Observable emits a value, it\n * computes a formula using the latest values from all the inputs, then emits\n * the output of that formula.</span>\n *\n * <img src=\"./img/combineLatest.png\" width=\"100%\">\n *\n * `combineLatest` combines the values from all the Observables passed as\n * arguments. This is done by subscribing to each Observable in order and,\n * whenever any Observable emits, collecting an array of the most recent\n * values from each Observable. So if you pass `n` Observables to operator,\n * returned Observable will always emit an array of `n` values, in order\n * corresponding to order of passed Observables (value from the first Observable\n * on the first place and so on).\n *\n * Static version of `combineLatest` accepts either an array of Observables\n * or each Observable can be put directly as an argument. Note that array of\n * Observables is good choice, if you don't know beforehand how many Observables\n * you will combine. Passing empty array will result in Observable that\n * completes immediately.\n *\n * To ensure output array has always the same length, `combineLatest` will\n * actually wait for all input Observables to emit at least once,\n * before it starts emitting results. This means if some Observable emits\n * values before other Observables started emitting, all that values but last\n * will be lost. On the other hand, is some Observable does not emit value but\n * completes, resulting Observable will complete at the same moment without\n * emitting anything, since it will be now impossible to include value from\n * completed Observable in resulting array. Also, if some input Observable does\n * not emit any value and never completes, `combineLatest` will also never emit\n * and never complete, since, again, it will wait for all streams to emit some\n * value.\n *\n * If at least one Observable was passed to `combineLatest` and all passed Observables\n * emitted something, resulting Observable will complete when all combined\n * streams complete. So even if some Observable completes, result of\n * `combineLatest` will still emit values when other Observables do. In case\n * of completed Observable, its value from now on will always be the last\n * emitted value. On the other hand, if any Observable errors, `combineLatest`\n * will error immediately as well, and all other Observables will be unsubscribed.\n *\n * `combineLatest` accepts as optional parameter `project` function, which takes\n * as arguments all values that would normally be emitted by resulting Observable.\n * `project` can return any kind of value, which will be then emitted by Observable\n * instead of default array. Note that `project` does not take as argument that array\n * of values, but values themselves. That means default `project` can be imagined\n * as function that takes all its arguments and puts them into an array.\n *\n *\n * @example <caption>Combine two timer Observables</caption>\n * const firstTimer = Rx.Observable.timer(0, 1000); // emit 0, 1, 2... after every second, starting from now\n * const secondTimer = Rx.Observable.timer(500, 1000); // emit 0, 1, 2... after every second, starting 0,5s from now\n * const combinedTimers = Rx.Observable.combineLatest(firstTimer, secondTimer);\n * combinedTimers.subscribe(value => console.log(value));\n * // Logs\n * // [0, 0] after 0.5s\n * // [1, 0] after 1s\n * // [1, 1] after 1.5s\n * // [2, 1] after 2s\n *\n *\n * @example <caption>Combine an array of Observables</caption>\n * const observables = [1, 5, 10].map(\n *   n => Rx.Observable.of(n).delay(n * 1000).startWith(0) // emit 0 and then emit n after n seconds\n * );\n * const combined = Rx.Observable.combineLatest(observables);\n * combined.subscribe(value => console.log(value));\n * // Logs\n * // [0, 0, 0] immediately\n * // [1, 0, 0] after 1s\n * // [1, 5, 0] after 5s\n * // [1, 5, 10] after 10s\n *\n *\n * @example <caption>Use project function to dynamically calculate the Body-Mass Index</caption>\n * var weight = Rx.Observable.of(70, 72, 76, 79, 75);\n * var height = Rx.Observable.of(1.76, 1.77, 1.78);\n * var bmi = Rx.Observable.combineLatest(weight, height, (w, h) => w / (h * h));\n * bmi.subscribe(x => console.log('BMI is ' + x));\n *\n * // With output to console:\n * // BMI is 24.212293388429753\n * // BMI is 23.93948099205209\n * // BMI is 23.671253629592222\n *\n *\n * @see {@link combineAll}\n * @see {@link merge}\n * @see {@link withLatestFrom}\n *\n * @param {ObservableInput} observable1 An input Observable to combine with other Observables.\n * @param {ObservableInput} observable2 An input Observable to combine with other Observables.\n * More than one input Observables may be given as arguments\n * or an array of Observables may be given as the first argument.\n * @param {function} [project] An optional function to project the values from\n * the combined latest values into a new value on the output Observable.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for subscribing to\n * each input Observable.\n * @return {Observable} An Observable of projected values from the most recent\n * values from each input Observable, or an array of the most recent values from\n * each input Observable.\n * @static true\n * @name combineLatest\n * @owner Observable\n ",
             "range": [
-              250,
-              5647
+              251,
+              5648
             ],
             "loc": {
               "start": {
@@ -1981,8 +1981,8 @@
             "type": "Line",
             "value": "# sourceMappingURL=combineLatest.js.map",
             "range": [
-              6333,
-              6374
+              6334,
+              6375
             ],
             "loc": {
               "start": {
@@ -2000,8 +2000,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        5648,
-        6332
+        5649,
+        6333
       ],
       "loc": {
         "start": {
@@ -2018,8 +2018,8 @@
           "type": "Block",
           "value": " tslint:enable:max-line-length ",
           "range": [
-            214,
-            249
+            215,
+            250
           ],
           "loc": {
             "start": {
@@ -2036,8 +2036,8 @@
           "type": "Block",
           "value": "*\n * Combines multiple Observables to create an Observable whose values are\n * calculated from the latest values of each of its input Observables.\n *\n * <span class=\"informal\">Whenever any input Observable emits a value, it\n * computes a formula using the latest values from all the inputs, then emits\n * the output of that formula.</span>\n *\n * <img src=\"./img/combineLatest.png\" width=\"100%\">\n *\n * `combineLatest` combines the values from all the Observables passed as\n * arguments. This is done by subscribing to each Observable in order and,\n * whenever any Observable emits, collecting an array of the most recent\n * values from each Observable. So if you pass `n` Observables to operator,\n * returned Observable will always emit an array of `n` values, in order\n * corresponding to order of passed Observables (value from the first Observable\n * on the first place and so on).\n *\n * Static version of `combineLatest` accepts either an array of Observables\n * or each Observable can be put directly as an argument. Note that array of\n * Observables is good choice, if you don't know beforehand how many Observables\n * you will combine. Passing empty array will result in Observable that\n * completes immediately.\n *\n * To ensure output array has always the same length, `combineLatest` will\n * actually wait for all input Observables to emit at least once,\n * before it starts emitting results. This means if some Observable emits\n * values before other Observables started emitting, all that values but last\n * will be lost. On the other hand, is some Observable does not emit value but\n * completes, resulting Observable will complete at the same moment without\n * emitting anything, since it will be now impossible to include value from\n * completed Observable in resulting array. Also, if some input Observable does\n * not emit any value and never completes, `combineLatest` will also never emit\n * and never complete, since, again, it will wait for all streams to emit some\n * value.\n *\n * If at least one Observable was passed to `combineLatest` and all passed Observables\n * emitted something, resulting Observable will complete when all combined\n * streams complete. So even if some Observable completes, result of\n * `combineLatest` will still emit values when other Observables do. In case\n * of completed Observable, its value from now on will always be the last\n * emitted value. On the other hand, if any Observable errors, `combineLatest`\n * will error immediately as well, and all other Observables will be unsubscribed.\n *\n * `combineLatest` accepts as optional parameter `project` function, which takes\n * as arguments all values that would normally be emitted by resulting Observable.\n * `project` can return any kind of value, which will be then emitted by Observable\n * instead of default array. Note that `project` does not take as argument that array\n * of values, but values themselves. That means default `project` can be imagined\n * as function that takes all its arguments and puts them into an array.\n *\n *\n * @example <caption>Combine two timer Observables</caption>\n * const firstTimer = Rx.Observable.timer(0, 1000); // emit 0, 1, 2... after every second, starting from now\n * const secondTimer = Rx.Observable.timer(500, 1000); // emit 0, 1, 2... after every second, starting 0,5s from now\n * const combinedTimers = Rx.Observable.combineLatest(firstTimer, secondTimer);\n * combinedTimers.subscribe(value => console.log(value));\n * // Logs\n * // [0, 0] after 0.5s\n * // [1, 0] after 1s\n * // [1, 1] after 1.5s\n * // [2, 1] after 2s\n *\n *\n * @example <caption>Combine an array of Observables</caption>\n * const observables = [1, 5, 10].map(\n *   n => Rx.Observable.of(n).delay(n * 1000).startWith(0) // emit 0 and then emit n after n seconds\n * );\n * const combined = Rx.Observable.combineLatest(observables);\n * combined.subscribe(value => console.log(value));\n * // Logs\n * // [0, 0, 0] immediately\n * // [1, 0, 0] after 1s\n * // [1, 5, 0] after 5s\n * // [1, 5, 10] after 10s\n *\n *\n * @example <caption>Use project function to dynamically calculate the Body-Mass Index</caption>\n * var weight = Rx.Observable.of(70, 72, 76, 79, 75);\n * var height = Rx.Observable.of(1.76, 1.77, 1.78);\n * var bmi = Rx.Observable.combineLatest(weight, height, (w, h) => w / (h * h));\n * bmi.subscribe(x => console.log('BMI is ' + x));\n *\n * // With output to console:\n * // BMI is 24.212293388429753\n * // BMI is 23.93948099205209\n * // BMI is 23.671253629592222\n *\n *\n * @see {@link combineAll}\n * @see {@link merge}\n * @see {@link withLatestFrom}\n *\n * @param {ObservableInput} observable1 An input Observable to combine with other Observables.\n * @param {ObservableInput} observable2 An input Observable to combine with other Observables.\n * More than one input Observables may be given as arguments\n * or an array of Observables may be given as the first argument.\n * @param {function} [project] An optional function to project the values from\n * the combined latest values into a new value on the output Observable.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for subscribing to\n * each input Observable.\n * @return {Observable} An Observable of projected values from the most recent\n * values from each input Observable, or an array of the most recent values from\n * each input Observable.\n * @static true\n * @name combineLatest\n * @owner Observable\n ",
           "range": [
-            250,
-            5647
+            251,
+            5648
           ],
           "loc": {
             "start": {
@@ -2056,8 +2056,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=combineLatest.js.map",
           "range": [
-            6333,
-            6374
+            6334,
+            6375
           ],
           "loc": {
             "start": {
@@ -2076,7 +2076,7 @@
   "sourceType": "module",
   "range": [
     0,
-    6332
+    6333
   ],
   "loc": {
     "start": {
@@ -2093,8 +2093,8 @@
       "type": "Block",
       "value": " tslint:enable:max-line-length ",
       "range": [
-        214,
-        249
+        215,
+        250
       ],
       "loc": {
         "start": {
@@ -2111,8 +2111,8 @@
       "type": "Block",
       "value": "*\n * Combines multiple Observables to create an Observable whose values are\n * calculated from the latest values of each of its input Observables.\n *\n * <span class=\"informal\">Whenever any input Observable emits a value, it\n * computes a formula using the latest values from all the inputs, then emits\n * the output of that formula.</span>\n *\n * <img src=\"./img/combineLatest.png\" width=\"100%\">\n *\n * `combineLatest` combines the values from all the Observables passed as\n * arguments. This is done by subscribing to each Observable in order and,\n * whenever any Observable emits, collecting an array of the most recent\n * values from each Observable. So if you pass `n` Observables to operator,\n * returned Observable will always emit an array of `n` values, in order\n * corresponding to order of passed Observables (value from the first Observable\n * on the first place and so on).\n *\n * Static version of `combineLatest` accepts either an array of Observables\n * or each Observable can be put directly as an argument. Note that array of\n * Observables is good choice, if you don't know beforehand how many Observables\n * you will combine. Passing empty array will result in Observable that\n * completes immediately.\n *\n * To ensure output array has always the same length, `combineLatest` will\n * actually wait for all input Observables to emit at least once,\n * before it starts emitting results. This means if some Observable emits\n * values before other Observables started emitting, all that values but last\n * will be lost. On the other hand, is some Observable does not emit value but\n * completes, resulting Observable will complete at the same moment without\n * emitting anything, since it will be now impossible to include value from\n * completed Observable in resulting array. Also, if some input Observable does\n * not emit any value and never completes, `combineLatest` will also never emit\n * and never complete, since, again, it will wait for all streams to emit some\n * value.\n *\n * If at least one Observable was passed to `combineLatest` and all passed Observables\n * emitted something, resulting Observable will complete when all combined\n * streams complete. So even if some Observable completes, result of\n * `combineLatest` will still emit values when other Observables do. In case\n * of completed Observable, its value from now on will always be the last\n * emitted value. On the other hand, if any Observable errors, `combineLatest`\n * will error immediately as well, and all other Observables will be unsubscribed.\n *\n * `combineLatest` accepts as optional parameter `project` function, which takes\n * as arguments all values that would normally be emitted by resulting Observable.\n * `project` can return any kind of value, which will be then emitted by Observable\n * instead of default array. Note that `project` does not take as argument that array\n * of values, but values themselves. That means default `project` can be imagined\n * as function that takes all its arguments and puts them into an array.\n *\n *\n * @example <caption>Combine two timer Observables</caption>\n * const firstTimer = Rx.Observable.timer(0, 1000); // emit 0, 1, 2... after every second, starting from now\n * const secondTimer = Rx.Observable.timer(500, 1000); // emit 0, 1, 2... after every second, starting 0,5s from now\n * const combinedTimers = Rx.Observable.combineLatest(firstTimer, secondTimer);\n * combinedTimers.subscribe(value => console.log(value));\n * // Logs\n * // [0, 0] after 0.5s\n * // [1, 0] after 1s\n * // [1, 1] after 1.5s\n * // [2, 1] after 2s\n *\n *\n * @example <caption>Combine an array of Observables</caption>\n * const observables = [1, 5, 10].map(\n *   n => Rx.Observable.of(n).delay(n * 1000).startWith(0) // emit 0 and then emit n after n seconds\n * );\n * const combined = Rx.Observable.combineLatest(observables);\n * combined.subscribe(value => console.log(value));\n * // Logs\n * // [0, 0, 0] immediately\n * // [1, 0, 0] after 1s\n * // [1, 5, 0] after 5s\n * // [1, 5, 10] after 10s\n *\n *\n * @example <caption>Use project function to dynamically calculate the Body-Mass Index</caption>\n * var weight = Rx.Observable.of(70, 72, 76, 79, 75);\n * var height = Rx.Observable.of(1.76, 1.77, 1.78);\n * var bmi = Rx.Observable.combineLatest(weight, height, (w, h) => w / (h * h));\n * bmi.subscribe(x => console.log('BMI is ' + x));\n *\n * // With output to console:\n * // BMI is 24.212293388429753\n * // BMI is 23.93948099205209\n * // BMI is 23.671253629592222\n *\n *\n * @see {@link combineAll}\n * @see {@link merge}\n * @see {@link withLatestFrom}\n *\n * @param {ObservableInput} observable1 An input Observable to combine with other Observables.\n * @param {ObservableInput} observable2 An input Observable to combine with other Observables.\n * More than one input Observables may be given as arguments\n * or an array of Observables may be given as the first argument.\n * @param {function} [project] An optional function to project the values from\n * the combined latest values into a new value on the output Observable.\n * @param {Scheduler} [scheduler=null] The IScheduler to use for subscribing to\n * each input Observable.\n * @return {Observable} An Observable of projected values from the most recent\n * values from each input Observable, or an array of the most recent values from\n * each input Observable.\n * @static true\n * @name combineLatest\n * @owner Observable\n ",
       "range": [
-        250,
-        5647
+        251,
+        5648
       ],
       "loc": {
         "start": {
@@ -2129,8 +2129,8 @@
       "type": "Line",
       "value": " if the first and only other argument besides the resultSelector is an array",
       "range": [
-        5967,
-        6045
+        5968,
+        6046
       ],
       "loc": {
         "start": {
@@ -2147,8 +2147,8 @@
       "type": "Line",
       "value": " assume it's been called with `combineLatest([obs1, obs2, obs3], project)`",
       "range": [
-        6050,
-        6126
+        6051,
+        6127
       ],
       "loc": {
         "start": {
@@ -2165,8 +2165,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=combineLatest.js.map",
       "range": [
-        6333,
-        6374
+        6334,
+        6375
       ],
       "loc": {
         "start": {

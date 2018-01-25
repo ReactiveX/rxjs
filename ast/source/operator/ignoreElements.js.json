@@ -8,28 +8,28 @@
           "type": "ImportSpecifier",
           "local": {
             "type": "Identifier",
-            "name": "Subscriber",
+            "name": "higherOrder",
             "range": [
-              9,
-              19
+              27,
+              38
             ],
             "loc": {
               "start": {
                 "line": 1,
-                "column": 9
+                "column": 27
               },
               "end": {
                 "line": 1,
-                "column": 19
+                "column": 38
               }
             }
           },
           "imported": {
             "type": "Identifier",
-            "name": "Subscriber",
+            "name": "ignoreElements",
             "range": [
               9,
-              19
+              23
             ],
             "loc": {
               "start": {
@@ -38,13 +38,13 @@
               },
               "end": {
                 "line": 1,
-                "column": 19
+                "column": 23
               }
             }
           },
           "range": [
             9,
-            19
+            38
           ],
           "loc": {
             "start": {
@@ -53,33 +53,33 @@
             },
             "end": {
               "line": 1,
-              "column": 19
+              "column": 38
             }
           }
         }
       ],
       "source": {
         "type": "Literal",
-        "value": "../Subscriber",
-        "raw": "'../Subscriber'",
+        "value": "../operators/ignoreElements",
+        "raw": "'../operators/ignoreElements'",
         "range": [
-          27,
-          42
+          46,
+          75
         ],
         "loc": {
           "start": {
             "line": 1,
-            "column": 27
+            "column": 46
           },
           "end": {
             "line": 1,
-            "column": 42
+            "column": 75
           }
         }
       },
       "range": [
         0,
-        43
+        76
       ],
       "loc": {
         "start": {
@@ -88,98 +88,7 @@
         },
         "end": {
           "line": 1,
-          "column": 43
-        }
-      }
-    },
-    {
-      "type": "ImportDeclaration",
-      "specifiers": [
-        {
-          "type": "ImportSpecifier",
-          "local": {
-            "type": "Identifier",
-            "name": "noop",
-            "range": [
-              53,
-              57
-            ],
-            "loc": {
-              "start": {
-                "line": 2,
-                "column": 9
-              },
-              "end": {
-                "line": 2,
-                "column": 13
-              }
-            }
-          },
-          "imported": {
-            "type": "Identifier",
-            "name": "noop",
-            "range": [
-              53,
-              57
-            ],
-            "loc": {
-              "start": {
-                "line": 2,
-                "column": 9
-              },
-              "end": {
-                "line": 2,
-                "column": 13
-              }
-            }
-          },
-          "range": [
-            53,
-            57
-          ],
-          "loc": {
-            "start": {
-              "line": 2,
-              "column": 9
-            },
-            "end": {
-              "line": 2,
-              "column": 13
-            }
-          }
-        }
-      ],
-      "source": {
-        "type": "Literal",
-        "value": "../util/noop",
-        "raw": "'../util/noop'",
-        "range": [
-          65,
-          79
-        ],
-        "loc": {
-          "start": {
-            "line": 2,
-            "column": 21
-          },
-          "end": {
-            "line": 2,
-            "column": 35
-          }
-        }
-      },
-      "range": [
-        44,
-        80
-      ],
-      "loc": {
-        "start": {
-          "line": 2,
-          "column": 0
-        },
-        "end": {
-          "line": 2,
-          "column": 36
+          "column": 76
         }
       },
       "trailingComments": [
@@ -187,16 +96,16 @@
           "type": "Block",
           "value": "*\n * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.\n *\n * <img src=\"./img/ignoreElements.png\" width=\"100%\">\n *\n * @return {Observable} An empty Observable that only calls `complete`\n * or `error`, based on which one is called by the source Observable.\n * @method ignoreElements\n * @owner Observable\n ",
           "range": [
-            81,
-            437
+            77,
+            433
           ],
           "loc": {
             "start": {
-              "line": 3,
+              "line": 2,
               "column": 0
             },
             "end": {
-              "line": 12,
+              "line": 11,
               "column": 3
             }
           }
@@ -211,16 +120,16 @@
           "type": "Identifier",
           "name": "ignoreElements",
           "range": [
-            454,
-            468
+            450,
+            464
           ],
           "loc": {
             "start": {
-              "line": 13,
+              "line": 12,
               "column": 16
             },
             "end": {
-              "line": 13,
+              "line": 12,
               "column": 30
             }
           }
@@ -234,138 +143,102 @@
               "argument": {
                 "type": "CallExpression",
                 "callee": {
-                  "type": "MemberExpression",
-                  "computed": false,
-                  "object": {
-                    "type": "ThisExpression",
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
                     "range": [
-                      484,
-                      488
+                      480,
+                      491
                     ],
                     "loc": {
                       "start": {
-                        "line": 14,
+                        "line": 13,
                         "column": 11
                       },
                       "end": {
-                        "line": 14,
-                        "column": 15
+                        "line": 13,
+                        "column": 22
                       }
                     }
                   },
-                  "property": {
-                    "type": "Identifier",
-                    "name": "lift",
-                    "range": [
-                      489,
-                      493
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 14,
-                        "column": 16
-                      },
-                      "end": {
-                        "line": 14,
-                        "column": 20
-                      }
-                    }
-                  },
+                  "arguments": [],
                   "range": [
-                    484,
+                    480,
                     493
                   ],
                   "loc": {
                     "start": {
-                      "line": 14,
+                      "line": 13,
                       "column": 11
                     },
                     "end": {
-                      "line": 14,
-                      "column": 20
+                      "line": 13,
+                      "column": 24
                     }
                   }
                 },
                 "arguments": [
                   {
-                    "type": "NewExpression",
-                    "callee": {
-                      "type": "Identifier",
-                      "name": "IgnoreElementsOperator",
-                      "range": [
-                        498,
-                        520
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 14,
-                          "column": 25
-                        },
-                        "end": {
-                          "line": 14,
-                          "column": 47
-                        }
-                      }
-                    },
-                    "arguments": [],
+                    "type": "ThisExpression",
                     "range": [
                       494,
-                      522
+                      498
                     ],
                     "loc": {
                       "start": {
-                        "line": 14,
-                        "column": 21
+                        "line": 13,
+                        "column": 25
                       },
                       "end": {
-                        "line": 14,
-                        "column": 49
+                        "line": 13,
+                        "column": 29
                       }
                     }
                   }
                 ],
                 "range": [
-                  484,
-                  523
+                  480,
+                  499
                 ],
                 "loc": {
                   "start": {
-                    "line": 14,
+                    "line": 13,
                     "column": 11
                   },
                   "end": {
-                    "line": 14,
-                    "column": 50
+                    "line": 13,
+                    "column": 30
                   }
                 }
               },
               "range": [
-                477,
-                524
+                473,
+                500
               ],
               "loc": {
                 "start": {
-                  "line": 14,
+                  "line": 13,
                   "column": 4
                 },
                 "end": {
-                  "line": 14,
-                  "column": 51
+                  "line": 13,
+                  "column": 31
                 }
               }
             }
           ],
           "range": [
-            471,
-            526
+            467,
+            502
           ],
           "loc": {
             "start": {
-              "line": 13,
+              "line": 12,
               "column": 33
             },
             "end": {
-              "line": 15,
+              "line": 14,
               "column": 1
             }
           }
@@ -373,16 +246,16 @@
         "generator": false,
         "expression": false,
         "range": [
-          445,
-          526
+          441,
+          502
         ],
         "loc": {
           "start": {
-            "line": 13,
+            "line": 12,
             "column": 7
           },
           "end": {
-            "line": 15,
+            "line": 14,
             "column": 1
           }
         },
@@ -391,16 +264,16 @@
             "type": "Block",
             "value": "*\n * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.\n *\n * <img src=\"./img/ignoreElements.png\" width=\"100%\">\n *\n * @return {Observable} An empty Observable that only calls `complete`\n * or `error`, based on which one is called by the source Observable.\n * @method ignoreElements\n * @owner Observable\n ",
             "range": [
-              81,
-              437
+              77,
+              433
             ],
             "loc": {
               "start": {
-                "line": 3,
+                "line": 2,
                 "column": 0
               },
               "end": {
-                "line": 12,
+                "line": 11,
                 "column": 3
               }
             }
@@ -411,16 +284,16 @@
       "specifiers": [],
       "source": null,
       "range": [
-        438,
-        526
+        434,
+        502
       ],
       "loc": {
         "start": {
-          "line": 13,
+          "line": 12,
           "column": 0
         },
         "end": {
-          "line": 15,
+          "line": 14,
           "column": 1
         }
       },
@@ -429,16 +302,16 @@
           "type": "Block",
           "value": "*\n * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.\n *\n * <img src=\"./img/ignoreElements.png\" width=\"100%\">\n *\n * @return {Observable} An empty Observable that only calls `complete`\n * or `error`, based on which one is called by the source Observable.\n * @method ignoreElements\n * @owner Observable\n ",
           "range": [
-            81,
-            437
+            77,
+            433
           ],
           "loc": {
             "start": {
-              "line": 3,
+              "line": 2,
               "column": 0
             },
             "end": {
-              "line": 12,
+              "line": 11,
               "column": 3
             }
           }
@@ -448,611 +321,34 @@
     {
       "type": "EmptyStatement",
       "range": [
-        527,
-        528
+        503,
+        504
       ],
       "loc": {
         "start": {
-          "line": 16,
+          "line": 15,
           "column": 0
         },
         "end": {
-          "line": 16,
-          "column": 1
-        }
-      }
-    },
-    {
-      "type": "ClassDeclaration",
-      "id": {
-        "type": "Identifier",
-        "name": "IgnoreElementsOperator",
-        "range": [
-          535,
-          557
-        ],
-        "loc": {
-          "start": {
-            "line": 17,
-            "column": 6
-          },
-          "end": {
-            "line": 17,
-            "column": 28
-          }
-        }
-      },
-      "superClass": null,
-      "body": {
-        "type": "ClassBody",
-        "body": [
-          {
-            "type": "MethodDefinition",
-            "key": {
-              "type": "Identifier",
-              "name": "call",
-              "range": [
-                564,
-                568
-              ],
-              "loc": {
-                "start": {
-                  "line": 18,
-                  "column": 4
-                },
-                "end": {
-                  "line": 18,
-                  "column": 8
-                }
-              }
-            },
-            "value": {
-              "type": "FunctionExpression",
-              "id": null,
-              "params": [
-                {
-                  "type": "Identifier",
-                  "name": "subscriber",
-                  "range": [
-                    569,
-                    579
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 18,
-                      "column": 9
-                    },
-                    "end": {
-                      "line": 18,
-                      "column": 19
-                    }
-                  }
-                },
-                {
-                  "type": "Identifier",
-                  "name": "source",
-                  "range": [
-                    581,
-                    587
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 18,
-                      "column": 21
-                    },
-                    "end": {
-                      "line": 18,
-                      "column": 27
-                    }
-                  }
-                }
-              ],
-              "body": {
-                "type": "BlockStatement",
-                "body": [
-                  {
-                    "type": "ReturnStatement",
-                    "argument": {
-                      "type": "CallExpression",
-                      "callee": {
-                        "type": "MemberExpression",
-                        "computed": false,
-                        "object": {
-                          "type": "Identifier",
-                          "name": "source",
-                          "range": [
-                            606,
-                            612
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 19,
-                              "column": 15
-                            },
-                            "end": {
-                              "line": 19,
-                              "column": 21
-                            }
-                          }
-                        },
-                        "property": {
-                          "type": "Identifier",
-                          "name": "subscribe",
-                          "range": [
-                            613,
-                            622
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 19,
-                              "column": 22
-                            },
-                            "end": {
-                              "line": 19,
-                              "column": 31
-                            }
-                          }
-                        },
-                        "range": [
-                          606,
-                          622
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 19,
-                            "column": 15
-                          },
-                          "end": {
-                            "line": 19,
-                            "column": 31
-                          }
-                        }
-                      },
-                      "arguments": [
-                        {
-                          "type": "NewExpression",
-                          "callee": {
-                            "type": "Identifier",
-                            "name": "IgnoreElementsSubscriber",
-                            "range": [
-                              627,
-                              651
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 19,
-                                "column": 36
-                              },
-                              "end": {
-                                "line": 19,
-                                "column": 60
-                              }
-                            }
-                          },
-                          "arguments": [
-                            {
-                              "type": "Identifier",
-                              "name": "subscriber",
-                              "range": [
-                                652,
-                                662
-                              ],
-                              "loc": {
-                                "start": {
-                                  "line": 19,
-                                  "column": 61
-                                },
-                                "end": {
-                                  "line": 19,
-                                  "column": 71
-                                }
-                              }
-                            }
-                          ],
-                          "range": [
-                            623,
-                            663
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 19,
-                              "column": 32
-                            },
-                            "end": {
-                              "line": 19,
-                              "column": 72
-                            }
-                          }
-                        }
-                      ],
-                      "range": [
-                        606,
-                        664
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 19,
-                          "column": 15
-                        },
-                        "end": {
-                          "line": 19,
-                          "column": 73
-                        }
-                      }
-                    },
-                    "range": [
-                      599,
-                      665
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 19,
-                        "column": 8
-                      },
-                      "end": {
-                        "line": 19,
-                        "column": 74
-                      }
-                    }
-                  }
-                ],
-                "range": [
-                  589,
-                  671
-                ],
-                "loc": {
-                  "start": {
-                    "line": 18,
-                    "column": 29
-                  },
-                  "end": {
-                    "line": 20,
-                    "column": 5
-                  }
-                }
-              },
-              "generator": false,
-              "expression": false,
-              "range": [
-                568,
-                671
-              ],
-              "loc": {
-                "start": {
-                  "line": 18,
-                  "column": 8
-                },
-                "end": {
-                  "line": 20,
-                  "column": 5
-                }
-              }
-            },
-            "kind": "method",
-            "computed": false,
-            "range": [
-              564,
-              671
-            ],
-            "loc": {
-              "start": {
-                "line": 18,
-                "column": 4
-              },
-              "end": {
-                "line": 20,
-                "column": 5
-              }
-            },
-            "static": false
-          }
-        ],
-        "range": [
-          558,
-          673
-        ],
-        "loc": {
-          "start": {
-            "line": 17,
-            "column": 29
-          },
-          "end": {
-            "line": 21,
-            "column": 1
-          }
-        }
-      },
-      "range": [
-        529,
-        673
-      ],
-      "loc": {
-        "start": {
-          "line": 17,
-          "column": 0
-        },
-        "end": {
-          "line": 21,
+          "line": 15,
           "column": 1
         }
       },
-      "trailingComments": [
-        {
-          "type": "Block",
-          "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
-          "range": [
-            674,
-            765
-          ],
-          "loc": {
-            "start": {
-              "line": 22,
-              "column": 0
-            },
-            "end": {
-              "line": 26,
-              "column": 3
-            }
-          }
-        }
-      ]
-    },
-    {
-      "type": "ClassDeclaration",
-      "id": {
-        "type": "Identifier",
-        "name": "IgnoreElementsSubscriber",
-        "range": [
-          772,
-          796
-        ],
-        "loc": {
-          "start": {
-            "line": 27,
-            "column": 6
-          },
-          "end": {
-            "line": 27,
-            "column": 30
-          }
-        }
-      },
-      "superClass": {
-        "type": "Identifier",
-        "name": "Subscriber",
-        "range": [
-          805,
-          815
-        ],
-        "loc": {
-          "start": {
-            "line": 27,
-            "column": 39
-          },
-          "end": {
-            "line": 27,
-            "column": 49
-          }
-        }
-      },
-      "body": {
-        "type": "ClassBody",
-        "body": [
-          {
-            "type": "MethodDefinition",
-            "key": {
-              "type": "Identifier",
-              "name": "_next",
-              "range": [
-                822,
-                827
-              ],
-              "loc": {
-                "start": {
-                  "line": 28,
-                  "column": 4
-                },
-                "end": {
-                  "line": 28,
-                  "column": 9
-                }
-              }
-            },
-            "value": {
-              "type": "FunctionExpression",
-              "id": null,
-              "params": [
-                {
-                  "type": "Identifier",
-                  "name": "unused",
-                  "range": [
-                    828,
-                    834
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 28,
-                      "column": 10
-                    },
-                    "end": {
-                      "line": 28,
-                      "column": 16
-                    }
-                  }
-                }
-              ],
-              "body": {
-                "type": "BlockStatement",
-                "body": [
-                  {
-                    "type": "ExpressionStatement",
-                    "expression": {
-                      "type": "CallExpression",
-                      "callee": {
-                        "type": "Identifier",
-                        "name": "noop",
-                        "range": [
-                          846,
-                          850
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 29,
-                            "column": 8
-                          },
-                          "end": {
-                            "line": 29,
-                            "column": 12
-                          }
-                        }
-                      },
-                      "arguments": [],
-                      "range": [
-                        846,
-                        852
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 29,
-                          "column": 8
-                        },
-                        "end": {
-                          "line": 29,
-                          "column": 14
-                        }
-                      }
-                    },
-                    "range": [
-                      846,
-                      853
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 29,
-                        "column": 8
-                      },
-                      "end": {
-                        "line": 29,
-                        "column": 15
-                      }
-                    }
-                  }
-                ],
-                "range": [
-                  836,
-                  859
-                ],
-                "loc": {
-                  "start": {
-                    "line": 28,
-                    "column": 18
-                  },
-                  "end": {
-                    "line": 30,
-                    "column": 5
-                  }
-                }
-              },
-              "generator": false,
-              "expression": false,
-              "range": [
-                827,
-                859
-              ],
-              "loc": {
-                "start": {
-                  "line": 28,
-                  "column": 9
-                },
-                "end": {
-                  "line": 30,
-                  "column": 5
-                }
-              }
-            },
-            "kind": "method",
-            "computed": false,
-            "range": [
-              822,
-              859
-            ],
-            "loc": {
-              "start": {
-                "line": 28,
-                "column": 4
-              },
-              "end": {
-                "line": 30,
-                "column": 5
-              }
-            },
-            "static": false
-          }
-        ],
-        "range": [
-          816,
-          861
-        ],
-        "loc": {
-          "start": {
-            "line": 27,
-            "column": 50
-          },
-          "end": {
-            "line": 31,
-            "column": 1
-          }
-        }
-      },
-      "range": [
-        766,
-        861
-      ],
-      "loc": {
-        "start": {
-          "line": 27,
-          "column": 0
-        },
-        "end": {
-          "line": 31,
-          "column": 1
-        }
-      },
-      "leadingComments": [
-        {
-          "type": "Block",
-          "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
-          "range": [
-            674,
-            765
-          ],
-          "loc": {
-            "start": {
-              "line": 22,
-              "column": 0
-            },
-            "end": {
-              "line": 26,
-              "column": 3
-            }
-          }
-        }
-      ],
       "trailingComments": [
         {
           "type": "Line",
           "value": "# sourceMappingURL=ignoreElements.js.map",
           "range": [
-            862,
-            904
+            505,
+            547
           ],
           "loc": {
             "start": {
-              "line": 32,
+              "line": 16,
               "column": 0
             },
             "end": {
-              "line": 32,
+              "line": 16,
               "column": 42
             }
           }
@@ -1063,7 +359,7 @@
   "sourceType": "module",
   "range": [
     0,
-    861
+    504
   ],
   "loc": {
     "start": {
@@ -1071,7 +367,7 @@
       "column": 0
     },
     "end": {
-      "line": 31,
+      "line": 15,
       "column": 1
     }
   },
@@ -1080,34 +376,16 @@
       "type": "Block",
       "value": "*\n * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.\n *\n * <img src=\"./img/ignoreElements.png\" width=\"100%\">\n *\n * @return {Observable} An empty Observable that only calls `complete`\n * or `error`, based on which one is called by the source Observable.\n * @method ignoreElements\n * @owner Observable\n ",
       "range": [
-        81,
-        437
+        77,
+        433
       ],
       "loc": {
         "start": {
-          "line": 3,
+          "line": 2,
           "column": 0
         },
         "end": {
-          "line": 12,
-          "column": 3
-        }
-      }
-    },
-    {
-      "type": "Block",
-      "value": "*\n * We need this JSDoc comment for affecting ESDoc.\n * @ignore\n * @extends {Ignored}\n ",
-      "range": [
-        674,
-        765
-      ],
-      "loc": {
-        "start": {
-          "line": 22,
-          "column": 0
-        },
-        "end": {
-          "line": 26,
+          "line": 11,
           "column": 3
         }
       }
@@ -1116,16 +394,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=ignoreElements.js.map",
       "range": [
-        862,
-        904
+        505,
+        547
       ],
       "loc": {
         "start": {
-          "line": 32,
+          "line": 16,
           "column": 0
         },
         "end": {
-          "line": 32,
+          "line": 16,
           "column": 42
         }
       }

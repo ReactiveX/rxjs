@@ -60,11 +60,11 @@
       ],
       "source": {
         "type": "Literal",
-        "value": "./combineLatest-support",
-        "raw": "'./combineLatest-support'",
+        "value": "../operators/combineLatest",
+        "raw": "'../operators/combineLatest'",
         "range": [
           38,
-          63
+          66
         ],
         "loc": {
           "start": {
@@ -73,13 +73,13 @@
           },
           "end": {
             "line": 1,
-            "column": 63
+            "column": 66
           }
         }
       },
       "range": [
         0,
-        64
+        67
       ],
       "loc": {
         "start": {
@@ -88,49 +88,29 @@
         },
         "end": {
           "line": 1,
-          "column": 64
+          "column": 67
         }
-      },
-      "trailingComments": [
-        {
-          "type": "Block",
-          "value": "*\n * Takes an Observable of Observables, and collects all observables from it. Once the outer observable\n * completes, it subscribes to all collected observables and \"combines\" their values, such that:\n *  - every time an observable emits, the returned observable emits\n *  - when the returned observable emits, it emits all of the most recent values by:\n *    - if a `project` function is provided, it is called with each recent value from each observable in whatever order they arrived,\n *      and the result of the `project` function is what is emitted by the returned observable\n *    - if there is no `project` function, an array of all of the most recent values is emitted by the returned observable.\n * @param {function} [project] an optional function to map the most recent values from each observable into a new result. Takes each of the\n *   most recent values from each collected observable as arguments, in order.\n * @returns {Observable} an observable of projected results or arrays of recent values.\n ",
-          "range": [
-            65,
-            1085
-          ],
-          "loc": {
-            "start": {
-              "line": 2,
-              "column": 0
-            },
-            "end": {
-              "line": 13,
-              "column": 3
-            }
-          }
-        }
-      ]
+      }
     },
     {
-      "type": "ExportDefaultDeclaration",
+      "type": "ExportNamedDeclaration",
       "declaration": {
         "type": "FunctionDeclaration",
         "id": {
           "type": "Identifier",
           "name": "combineAll",
           "range": [
-            1110,
-            1120
+            84,
+            94
           ],
           "loc": {
             "start": {
-              "line": 14,
-              "column": 24
+              "line": 2,
+              "column": 16
             },
             "end": {
-              "line": 14,
-              "column": 34
+              "line": 2,
+              "column": 26
             }
           }
         },
@@ -139,17 +119,17 @@
             "type": "Identifier",
             "name": "project",
             "range": [
-              1121,
-              1128
+              95,
+              102
             ],
             "loc": {
               "start": {
-                "line": 14,
-                "column": 35
+                "line": 2,
+                "column": 27
               },
               "end": {
-                "line": 14,
-                "column": 42
+                "line": 2,
+                "column": 34
               }
             }
           }
@@ -160,159 +140,200 @@
             {
               "type": "ReturnStatement",
               "argument": {
-                "type": "CallExpression",
-                "callee": {
-                  "type": "MemberExpression",
-                  "computed": false,
-                  "object": {
-                    "type": "ThisExpression",
-                    "range": [
-                      1143,
-                      1147
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 15,
-                        "column": 11
-                      },
-                      "end": {
-                        "line": 15,
-                        "column": 15
-                      }
-                    }
-                  },
-                  "property": {
+                "type": "ArrowFunctionExpression",
+                "id": null,
+                "params": [
+                  {
                     "type": "Identifier",
-                    "name": "lift",
+                    "name": "source",
                     "range": [
-                      1148,
-                      1152
+                      118,
+                      124
                     ],
                     "loc": {
                       "start": {
-                        "line": 15,
-                        "column": 16
+                        "line": 3,
+                        "column": 12
                       },
                       "end": {
-                        "line": 15,
-                        "column": 20
+                        "line": 3,
+                        "column": 18
                       }
-                    }
-                  },
-                  "range": [
-                    1143,
-                    1152
-                  ],
-                  "loc": {
-                    "start": {
-                      "line": 15,
-                      "column": 11
-                    },
-                    "end": {
-                      "line": 15,
-                      "column": 20
                     }
                   }
-                },
-                "arguments": [
-                  {
-                    "type": "NewExpression",
-                    "callee": {
+                ],
+                "body": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "MemberExpression",
+                    "computed": false,
+                    "object": {
                       "type": "Identifier",
-                      "name": "CombineLatestOperator",
+                      "name": "source",
                       "range": [
-                        1157,
-                        1178
+                        129,
+                        135
                       ],
                       "loc": {
                         "start": {
-                          "line": 15,
-                          "column": 25
+                          "line": 3,
+                          "column": 23
                         },
                         "end": {
-                          "line": 15,
-                          "column": 46
+                          "line": 3,
+                          "column": 29
                         }
                       }
                     },
-                    "arguments": [
-                      {
-                        "type": "Identifier",
-                        "name": "project",
-                        "range": [
-                          1179,
-                          1186
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 15,
-                            "column": 47
-                          },
-                          "end": {
-                            "line": 15,
-                            "column": 54
-                          }
+                    "property": {
+                      "type": "Identifier",
+                      "name": "lift",
+                      "range": [
+                        136,
+                        140
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 3,
+                          "column": 30
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 34
                         }
                       }
-                    ],
+                    },
                     "range": [
-                      1153,
-                      1187
+                      129,
+                      140
                     ],
                     "loc": {
                       "start": {
-                        "line": 15,
-                        "column": 21
+                        "line": 3,
+                        "column": 23
                       },
                       "end": {
-                        "line": 15,
-                        "column": 55
+                        "line": 3,
+                        "column": 34
                       }
                     }
+                  },
+                  "arguments": [
+                    {
+                      "type": "NewExpression",
+                      "callee": {
+                        "type": "Identifier",
+                        "name": "CombineLatestOperator",
+                        "range": [
+                          145,
+                          166
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 3,
+                            "column": 39
+                          },
+                          "end": {
+                            "line": 3,
+                            "column": 60
+                          }
+                        }
+                      },
+                      "arguments": [
+                        {
+                          "type": "Identifier",
+                          "name": "project",
+                          "range": [
+                            167,
+                            174
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 3,
+                              "column": 61
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 68
+                            }
+                          }
+                        }
+                      ],
+                      "range": [
+                        141,
+                        175
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 3,
+                          "column": 35
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 69
+                        }
+                      }
+                    }
+                  ],
+                  "range": [
+                    129,
+                    176
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 23
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 70
+                    }
                   }
-                ],
+                },
+                "generator": false,
+                "expression": true,
                 "range": [
-                  1143,
-                  1188
+                  117,
+                  176
                 ],
                 "loc": {
                   "start": {
-                    "line": 15,
+                    "line": 3,
                     "column": 11
                   },
                   "end": {
-                    "line": 15,
-                    "column": 56
+                    "line": 3,
+                    "column": 70
                   }
                 }
               },
               "range": [
-                1136,
-                1189
+                110,
+                177
               ],
               "loc": {
                 "start": {
-                  "line": 15,
+                  "line": 3,
                   "column": 4
                 },
                 "end": {
-                  "line": 15,
-                  "column": 57
+                  "line": 3,
+                  "column": 71
                 }
               }
             }
           ],
           "range": [
-            1130,
-            1191
+            104,
+            179
           ],
           "loc": {
             "start": {
-              "line": 14,
-              "column": 44
+              "line": 2,
+              "column": 36
             },
             "end": {
-              "line": 16,
+              "line": 4,
               "column": 1
             }
           }
@@ -320,71 +341,73 @@
         "generator": false,
         "expression": false,
         "range": [
-          1101,
-          1191
+          75,
+          179
         ],
         "loc": {
           "start": {
-            "line": 14,
-            "column": 15
+            "line": 2,
+            "column": 7
           },
           "end": {
-            "line": 16,
+            "line": 4,
             "column": 1
           }
         },
-        "leadingComments": [
+        "leadingComments": [],
+        "trailingComments": [
           {
-            "type": "Block",
-            "value": "*\n * Takes an Observable of Observables, and collects all observables from it. Once the outer observable\n * completes, it subscribes to all collected observables and \"combines\" their values, such that:\n *  - every time an observable emits, the returned observable emits\n *  - when the returned observable emits, it emits all of the most recent values by:\n *    - if a `project` function is provided, it is called with each recent value from each observable in whatever order they arrived,\n *      and the result of the `project` function is what is emitted by the returned observable\n *    - if there is no `project` function, an array of all of the most recent values is emitted by the returned observable.\n * @param {function} [project] an optional function to map the most recent values from each observable into a new result. Takes each of the\n *   most recent values from each collected observable as arguments, in order.\n * @returns {Observable} an observable of projected results or arrays of recent values.\n ",
+            "type": "Line",
+            "value": "# sourceMappingURL=combineAll.js.map",
             "range": [
-              65,
-              1085
+              180,
+              218
             ],
             "loc": {
               "start": {
-                "line": 2,
+                "line": 5,
                 "column": 0
               },
               "end": {
-                "line": 13,
-                "column": 3
+                "line": 5,
+                "column": 38
               }
             }
           }
-        ],
-        "trailingComments": []
+        ]
       },
+      "specifiers": [],
+      "source": null,
       "range": [
-        1086,
-        1191
+        68,
+        179
       ],
       "loc": {
         "start": {
-          "line": 14,
+          "line": 2,
           "column": 0
         },
         "end": {
-          "line": 16,
+          "line": 4,
           "column": 1
         }
       },
-      "leadingComments": [
+      "trailingComments": [
         {
-          "type": "Block",
-          "value": "*\n * Takes an Observable of Observables, and collects all observables from it. Once the outer observable\n * completes, it subscribes to all collected observables and \"combines\" their values, such that:\n *  - every time an observable emits, the returned observable emits\n *  - when the returned observable emits, it emits all of the most recent values by:\n *    - if a `project` function is provided, it is called with each recent value from each observable in whatever order they arrived,\n *      and the result of the `project` function is what is emitted by the returned observable\n *    - if there is no `project` function, an array of all of the most recent values is emitted by the returned observable.\n * @param {function} [project] an optional function to map the most recent values from each observable into a new result. Takes each of the\n *   most recent values from each collected observable as arguments, in order.\n * @returns {Observable} an observable of projected results or arrays of recent values.\n ",
+          "type": "Line",
+          "value": "# sourceMappingURL=combineAll.js.map",
           "range": [
-            65,
-            1085
+            180,
+            218
           ],
           "loc": {
             "start": {
-              "line": 2,
+              "line": 5,
               "column": 0
             },
             "end": {
-              "line": 13,
-              "column": 3
+              "line": 5,
+              "column": 38
             }
           }
         }
@@ -394,7 +417,7 @@
   "sourceType": "module",
   "range": [
     0,
-    1191
+    179
   ],
   "loc": {
     "start": {
@@ -402,26 +425,26 @@
       "column": 0
     },
     "end": {
-      "line": 16,
+      "line": 4,
       "column": 1
     }
   },
   "comments": [
     {
-      "type": "Block",
-      "value": "*\n * Takes an Observable of Observables, and collects all observables from it. Once the outer observable\n * completes, it subscribes to all collected observables and \"combines\" their values, such that:\n *  - every time an observable emits, the returned observable emits\n *  - when the returned observable emits, it emits all of the most recent values by:\n *    - if a `project` function is provided, it is called with each recent value from each observable in whatever order they arrived,\n *      and the result of the `project` function is what is emitted by the returned observable\n *    - if there is no `project` function, an array of all of the most recent values is emitted by the returned observable.\n * @param {function} [project] an optional function to map the most recent values from each observable into a new result. Takes each of the\n *   most recent values from each collected observable as arguments, in order.\n * @returns {Observable} an observable of projected results or arrays of recent values.\n ",
+      "type": "Line",
+      "value": "# sourceMappingURL=combineAll.js.map",
       "range": [
-        65,
-        1085
+        180,
+        218
       ],
       "loc": {
         "start": {
-          "line": 2,
+          "line": 5,
           "column": 0
         },
         "end": {
-          "line": 13,
-          "column": 3
+          "line": 5,
+          "column": 38
         }
       }
     }

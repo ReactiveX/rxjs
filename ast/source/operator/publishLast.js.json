@@ -8,28 +8,28 @@
           "type": "ImportSpecifier",
           "local": {
             "type": "Identifier",
-            "name": "AsyncSubject",
+            "name": "higherOrder",
             "range": [
-              9,
-              21
+              24,
+              35
             ],
             "loc": {
               "start": {
                 "line": 1,
-                "column": 9
+                "column": 24
               },
               "end": {
                 "line": 1,
-                "column": 21
+                "column": 35
               }
             }
           },
           "imported": {
             "type": "Identifier",
-            "name": "AsyncSubject",
+            "name": "publishLast",
             "range": [
               9,
-              21
+              20
             ],
             "loc": {
               "start": {
@@ -38,13 +38,13 @@
               },
               "end": {
                 "line": 1,
-                "column": 21
+                "column": 20
               }
             }
           },
           "range": [
             9,
-            21
+            35
           ],
           "loc": {
             "start": {
@@ -53,33 +53,33 @@
             },
             "end": {
               "line": 1,
-              "column": 21
+              "column": 35
             }
           }
         }
       ],
       "source": {
         "type": "Literal",
-        "value": "../AsyncSubject",
-        "raw": "'../AsyncSubject'",
+        "value": "../operators/publishLast",
+        "raw": "'../operators/publishLast'",
         "range": [
-          29,
-          46
+          43,
+          69
         ],
         "loc": {
           "start": {
             "line": 1,
-            "column": 29
+            "column": 43
           },
           "end": {
             "line": 1,
-            "column": 46
+            "column": 69
           }
         }
       },
       "range": [
         0,
-        47
+        70
       ],
       "loc": {
         "start": {
@@ -88,98 +88,7 @@
         },
         "end": {
           "line": 1,
-          "column": 47
-        }
-      }
-    },
-    {
-      "type": "ImportDeclaration",
-      "specifiers": [
-        {
-          "type": "ImportSpecifier",
-          "local": {
-            "type": "Identifier",
-            "name": "multicast",
-            "range": [
-              57,
-              66
-            ],
-            "loc": {
-              "start": {
-                "line": 2,
-                "column": 9
-              },
-              "end": {
-                "line": 2,
-                "column": 18
-              }
-            }
-          },
-          "imported": {
-            "type": "Identifier",
-            "name": "multicast",
-            "range": [
-              57,
-              66
-            ],
-            "loc": {
-              "start": {
-                "line": 2,
-                "column": 9
-              },
-              "end": {
-                "line": 2,
-                "column": 18
-              }
-            }
-          },
-          "range": [
-            57,
-            66
-          ],
-          "loc": {
-            "start": {
-              "line": 2,
-              "column": 9
-            },
-            "end": {
-              "line": 2,
-              "column": 18
-            }
-          }
-        }
-      ],
-      "source": {
-        "type": "Literal",
-        "value": "./multicast",
-        "raw": "'./multicast'",
-        "range": [
-          74,
-          87
-        ],
-        "loc": {
-          "start": {
-            "line": 2,
-            "column": 26
-          },
-          "end": {
-            "line": 2,
-            "column": 39
-          }
-        }
-      },
-      "range": [
-        48,
-        88
-      ],
-      "loc": {
-        "start": {
-          "line": 2,
-          "column": 0
-        },
-        "end": {
-          "line": 2,
-          "column": 40
+          "column": 70
         }
       },
       "trailingComments": [
@@ -187,16 +96,16 @@
           "type": "Block",
           "value": "*\n * @return {ConnectableObservable<T>}\n * @method publishLast\n * @owner Observable\n ",
           "range": [
-            89,
-            178
+            71,
+            160
           ],
           "loc": {
             "start": {
-              "line": 3,
+              "line": 2,
               "column": 0
             },
             "end": {
-              "line": 7,
+              "line": 6,
               "column": 3
             }
           }
@@ -211,16 +120,16 @@
           "type": "Identifier",
           "name": "publishLast",
           "range": [
-            195,
-            206
+            177,
+            188
           ],
           "loc": {
             "start": {
-              "line": 8,
+              "line": 7,
               "column": 16
             },
             "end": {
-              "line": 8,
+              "line": 7,
               "column": 27
             }
           }
@@ -234,14 +143,13 @@
               "argument": {
                 "type": "CallExpression",
                 "callee": {
-                  "type": "MemberExpression",
-                  "computed": false,
-                  "object": {
+                  "type": "CallExpression",
+                  "callee": {
                     "type": "Identifier",
-                    "name": "multicast",
+                    "name": "higherOrder",
                     "range": [
-                      222,
-                      231
+                      257,
+                      268
                     ],
                     "loc": {
                       "start": {
@@ -250,31 +158,14 @@
                       },
                       "end": {
                         "line": 9,
-                        "column": 20
+                        "column": 22
                       }
                     }
                   },
-                  "property": {
-                    "type": "Identifier",
-                    "name": "call",
-                    "range": [
-                      232,
-                      236
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 9,
-                        "column": 21
-                      },
-                      "end": {
-                        "line": 9,
-                        "column": 25
-                      }
-                    }
-                  },
+                  "arguments": [],
                   "range": [
-                    222,
-                    236
+                    257,
+                    270
                   ],
                   "loc": {
                     "start": {
@@ -283,7 +174,7 @@
                     },
                     "end": {
                       "line": 9,
-                      "column": 25
+                      "column": 24
                     }
                   }
                 },
@@ -291,60 +182,24 @@
                   {
                     "type": "ThisExpression",
                     "range": [
-                      237,
-                      241
+                      271,
+                      275
                     ],
                     "loc": {
                       "start": {
                         "line": 9,
-                        "column": 26
+                        "column": 25
                       },
                       "end": {
                         "line": 9,
-                        "column": 30
-                      }
-                    }
-                  },
-                  {
-                    "type": "NewExpression",
-                    "callee": {
-                      "type": "Identifier",
-                      "name": "AsyncSubject",
-                      "range": [
-                        247,
-                        259
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 9,
-                          "column": 36
-                        },
-                        "end": {
-                          "line": 9,
-                          "column": 48
-                        }
-                      }
-                    },
-                    "arguments": [],
-                    "range": [
-                      243,
-                      261
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 9,
-                        "column": 32
-                      },
-                      "end": {
-                        "line": 9,
-                        "column": 50
+                        "column": 29
                       }
                     }
                   }
                 ],
                 "range": [
-                  222,
-                  262
+                  257,
+                  276
                 ],
                 "loc": {
                   "start": {
@@ -353,13 +208,13 @@
                   },
                   "end": {
                     "line": 9,
-                    "column": 51
+                    "column": 30
                   }
                 }
               },
               "range": [
-                215,
-                263
+                250,
+                277
               ],
               "loc": {
                 "start": {
@@ -368,18 +223,38 @@
                 },
                 "end": {
                   "line": 9,
-                  "column": 52
+                  "column": 31
                 }
-              }
+              },
+              "leadingComments": [
+                {
+                  "type": "Line",
+                  "value": "TODO(benlesh): correct type-flow through here.",
+                  "range": [
+                    197,
+                    245
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 8,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 8,
+                      "column": 52
+                    }
+                  }
+                }
+              ]
             }
           ],
           "range": [
-            209,
-            265
+            191,
+            279
           ],
           "loc": {
             "start": {
-              "line": 8,
+              "line": 7,
               "column": 30
             },
             "end": {
@@ -391,12 +266,12 @@
         "generator": false,
         "expression": false,
         "range": [
-          186,
-          265
+          168,
+          279
         ],
         "loc": {
           "start": {
-            "line": 8,
+            "line": 7,
             "column": 7
           },
           "end": {
@@ -409,16 +284,16 @@
             "type": "Block",
             "value": "*\n * @return {ConnectableObservable<T>}\n * @method publishLast\n * @owner Observable\n ",
             "range": [
-              89,
-              178
+              71,
+              160
             ],
             "loc": {
               "start": {
-                "line": 3,
+                "line": 2,
                 "column": 0
               },
               "end": {
-                "line": 7,
+                "line": 6,
                 "column": 3
               }
             }
@@ -429,8 +304,8 @@
             "type": "Line",
             "value": "# sourceMappingURL=publishLast.js.map",
             "range": [
-              266,
-              305
+              280,
+              319
             ],
             "loc": {
               "start": {
@@ -448,12 +323,12 @@
       "specifiers": [],
       "source": null,
       "range": [
-        179,
-        265
+        161,
+        279
       ],
       "loc": {
         "start": {
-          "line": 8,
+          "line": 7,
           "column": 0
         },
         "end": {
@@ -466,16 +341,16 @@
           "type": "Block",
           "value": "*\n * @return {ConnectableObservable<T>}\n * @method publishLast\n * @owner Observable\n ",
           "range": [
-            89,
-            178
+            71,
+            160
           ],
           "loc": {
             "start": {
-              "line": 3,
+              "line": 2,
               "column": 0
             },
             "end": {
-              "line": 7,
+              "line": 6,
               "column": 3
             }
           }
@@ -486,8 +361,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=publishLast.js.map",
           "range": [
-            266,
-            305
+            280,
+            319
           ],
           "loc": {
             "start": {
@@ -506,7 +381,7 @@
   "sourceType": "module",
   "range": [
     0,
-    265
+    279
   ],
   "loc": {
     "start": {
@@ -523,17 +398,35 @@
       "type": "Block",
       "value": "*\n * @return {ConnectableObservable<T>}\n * @method publishLast\n * @owner Observable\n ",
       "range": [
-        89,
-        178
+        71,
+        160
       ],
       "loc": {
         "start": {
-          "line": 3,
+          "line": 2,
           "column": 0
         },
         "end": {
-          "line": 7,
+          "line": 6,
           "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "TODO(benlesh): correct type-flow through here.",
+      "range": [
+        197,
+        245
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 4
+        },
+        "end": {
+          "line": 8,
+          "column": 52
         }
       }
     },
@@ -541,8 +434,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=publishLast.js.map",
       "range": [
-        266,
-        305
+        280,
+        319
       ],
       "loc": {
         "start": {

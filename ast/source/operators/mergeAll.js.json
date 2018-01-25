@@ -8,10 +8,10 @@
           "type": "ImportSpecifier",
           "local": {
             "type": "Identifier",
-            "name": "MergeAllOperator",
+            "name": "mergeMap",
             "range": [
               9,
-              25
+              17
             ],
             "loc": {
               "start": {
@@ -20,16 +20,16 @@
               },
               "end": {
                 "line": 1,
-                "column": 25
+                "column": 17
               }
             }
           },
           "imported": {
             "type": "Identifier",
-            "name": "MergeAllOperator",
+            "name": "mergeMap",
             "range": [
               9,
-              25
+              17
             ],
             "loc": {
               "start": {
@@ -38,13 +38,13 @@
               },
               "end": {
                 "line": 1,
-                "column": 25
+                "column": 17
               }
             }
           },
           "range": [
             9,
-            25
+            17
           ],
           "loc": {
             "start": {
@@ -53,33 +53,33 @@
             },
             "end": {
               "line": 1,
-              "column": 25
+              "column": 17
             }
           }
         }
       ],
       "source": {
         "type": "Literal",
-        "value": "./mergeAll-support",
-        "raw": "'./mergeAll-support'",
+        "value": "./mergeMap",
+        "raw": "'./mergeMap'",
         "range": [
-          33,
-          53
+          25,
+          37
         ],
         "loc": {
           "start": {
             "line": 1,
-            "column": 33
+            "column": 25
           },
           "end": {
             "line": 1,
-            "column": 53
+            "column": 37
           }
         }
       },
       "range": [
         0,
-        54
+        38
       ],
       "loc": {
         "start": {
@@ -88,29 +88,140 @@
         },
         "end": {
           "line": 1,
-          "column": 54
+          "column": 38
         }
       }
     },
     {
-      "type": "ExportDefaultDeclaration",
+      "type": "ImportDeclaration",
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "identity",
+            "range": [
+              48,
+              56
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 17
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "identity",
+            "range": [
+              48,
+              56
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 9
+              },
+              "end": {
+                "line": 2,
+                "column": 17
+              }
+            }
+          },
+          "range": [
+            48,
+            56
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 9
+            },
+            "end": {
+              "line": 2,
+              "column": 17
+            }
+          }
+        }
+      ],
+      "source": {
+        "type": "Literal",
+        "value": "../util/identity",
+        "raw": "'../util/identity'",
+        "range": [
+          64,
+          82
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 25
+          },
+          "end": {
+            "line": 2,
+            "column": 43
+          }
+        }
+      },
+      "range": [
+        39,
+        83
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 44
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Converts a higher-order Observable into a first-order Observable which\n * concurrently delivers all values that are emitted on the inner Observables.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables.</span>\n *\n * <img src=\"./img/mergeAll.png\" width=\"100%\">\n *\n * `mergeAll` subscribes to an Observable that emits Observables, also known as\n * a higher-order Observable. Each time it observes one of these emitted inner\n * Observables, it subscribes to that and delivers all the values from the\n * inner Observable on the output Observable. The output Observable only\n * completes once all inner Observables have completed. Any error delivered by\n * a inner Observable will be immediately emitted on the output Observable.\n *\n * @example <caption>Spawn a new interval Observable for each click event, and blend their outputs as one Observable</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000));\n * var firstOrder = higherOrder.mergeAll();\n * firstOrder.subscribe(x => console.log(x));\n *\n * @example <caption>Count from 0 to 9 every second for each click, but only allow 2 concurrent timers</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000).take(10));\n * var firstOrder = higherOrder.mergeAll(2);\n * firstOrder.subscribe(x => console.log(x));\n *\n * @see {@link combineAll}\n * @see {@link concatAll}\n * @see {@link exhaust}\n * @see {@link merge}\n * @see {@link mergeMap}\n * @see {@link mergeMapTo}\n * @see {@link mergeScan}\n * @see {@link switch}\n * @see {@link zipAll}\n *\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of inner\n * Observables being subscribed to concurrently.\n * @return {Observable} An Observable that emits values coming from all the\n * inner Observables emitted by the source Observable.\n * @method mergeAll\n * @owner Observable\n ",
+          "range": [
+            84,
+            2063
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 46,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
       "declaration": {
         "type": "FunctionDeclaration",
         "id": {
           "type": "Identifier",
           "name": "mergeAll",
           "range": [
-            79,
-            87
+            2080,
+            2088
           ],
           "loc": {
             "start": {
-              "line": 2,
-              "column": 24
+              "line": 47,
+              "column": 16
             },
             "end": {
-              "line": 2,
-              "column": 32
+              "line": 47,
+              "column": 24
             }
           }
         },
@@ -121,17 +232,17 @@
               "type": "Identifier",
               "name": "concurrent",
               "range": [
-                88,
-                98
+                2089,
+                2099
               ],
               "loc": {
                 "start": {
-                  "line": 2,
-                  "column": 33
+                  "line": 47,
+                  "column": 25
                 },
                 "end": {
-                  "line": 2,
-                  "column": 43
+                  "line": 47,
+                  "column": 35
                 }
               }
             },
@@ -142,17 +253,17 @@
                 "type": "Identifier",
                 "name": "Number",
                 "range": [
-                  101,
-                  107
+                  2102,
+                  2108
                 ],
                 "loc": {
                   "start": {
-                    "line": 2,
-                    "column": 46
+                    "line": 47,
+                    "column": 38
                   },
                   "end": {
-                    "line": 2,
-                    "column": 52
+                    "line": 47,
+                    "column": 44
                   }
                 }
               },
@@ -160,47 +271,47 @@
                 "type": "Identifier",
                 "name": "POSITIVE_INFINITY",
                 "range": [
-                  108,
-                  125
+                  2109,
+                  2126
                 ],
                 "loc": {
                   "start": {
-                    "line": 2,
-                    "column": 53
+                    "line": 47,
+                    "column": 45
                   },
                   "end": {
-                    "line": 2,
-                    "column": 70
+                    "line": 47,
+                    "column": 62
                   }
                 }
               },
               "range": [
-                101,
-                125
+                2102,
+                2126
               ],
               "loc": {
                 "start": {
-                  "line": 2,
-                  "column": 46
+                  "line": 47,
+                  "column": 38
                 },
                 "end": {
-                  "line": 2,
-                  "column": 70
+                  "line": 47,
+                  "column": 62
                 }
               }
             },
             "range": [
-              88,
-              125
+              2089,
+              2126
             ],
             "loc": {
               "start": {
-                "line": 2,
-                "column": 33
+                "line": 47,
+                "column": 25
               },
               "end": {
-                "line": 2,
-                "column": 70
+                "line": 47,
+                "column": 62
               }
             }
           }
@@ -213,157 +324,122 @@
               "argument": {
                 "type": "CallExpression",
                 "callee": {
-                  "type": "MemberExpression",
-                  "computed": false,
-                  "object": {
-                    "type": "ThisExpression",
-                    "range": [
-                      140,
-                      144
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 3,
-                        "column": 11
-                      },
-                      "end": {
-                        "line": 3,
-                        "column": 15
-                      }
-                    }
-                  },
-                  "property": {
-                    "type": "Identifier",
-                    "name": "lift",
-                    "range": [
-                      145,
-                      149
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 3,
-                        "column": 16
-                      },
-                      "end": {
-                        "line": 3,
-                        "column": 20
-                      }
-                    }
-                  },
+                  "type": "Identifier",
+                  "name": "mergeMap",
                   "range": [
-                    140,
-                    149
+                    2141,
+                    2149
                   ],
                   "loc": {
                     "start": {
-                      "line": 3,
+                      "line": 48,
                       "column": 11
                     },
                     "end": {
-                      "line": 3,
-                      "column": 20
+                      "line": 48,
+                      "column": 19
                     }
                   }
                 },
                 "arguments": [
                   {
-                    "type": "NewExpression",
-                    "callee": {
-                      "type": "Identifier",
-                      "name": "MergeAllOperator",
-                      "range": [
-                        154,
-                        170
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 3,
-                          "column": 25
-                        },
-                        "end": {
-                          "line": 3,
-                          "column": 41
-                        }
-                      }
-                    },
-                    "arguments": [
-                      {
-                        "type": "Identifier",
-                        "name": "concurrent",
-                        "range": [
-                          171,
-                          181
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 3,
-                            "column": 42
-                          },
-                          "end": {
-                            "line": 3,
-                            "column": 52
-                          }
-                        }
-                      }
-                    ],
+                    "type": "Identifier",
+                    "name": "identity",
                     "range": [
-                      150,
-                      182
+                      2150,
+                      2158
                     ],
                     "loc": {
                       "start": {
-                        "line": 3,
-                        "column": 21
+                        "line": 48,
+                        "column": 20
                       },
                       "end": {
-                        "line": 3,
-                        "column": 53
+                        "line": 48,
+                        "column": 28
+                      }
+                    }
+                  },
+                  {
+                    "type": "Literal",
+                    "value": null,
+                    "raw": "null",
+                    "range": [
+                      2160,
+                      2164
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 48,
+                        "column": 30
+                      },
+                      "end": {
+                        "line": 48,
+                        "column": 34
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "concurrent",
+                    "range": [
+                      2166,
+                      2176
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 48,
+                        "column": 36
+                      },
+                      "end": {
+                        "line": 48,
+                        "column": 46
                       }
                     }
                   }
                 ],
                 "range": [
-                  140,
-                  183
+                  2141,
+                  2177
                 ],
                 "loc": {
                   "start": {
-                    "line": 3,
+                    "line": 48,
                     "column": 11
                   },
                   "end": {
-                    "line": 3,
-                    "column": 54
+                    "line": 48,
+                    "column": 47
                   }
                 }
               },
               "range": [
-                133,
-                184
+                2134,
+                2178
               ],
               "loc": {
                 "start": {
-                  "line": 3,
+                  "line": 48,
                   "column": 4
                 },
                 "end": {
-                  "line": 3,
-                  "column": 55
+                  "line": 48,
+                  "column": 48
                 }
               }
             }
           ],
           "range": [
-            127,
-            186
+            2128,
+            2180
           ],
           "loc": {
             "start": {
-              "line": 2,
-              "column": 72
+              "line": 47,
+              "column": 64
             },
             "end": {
-              "line": 4,
+              "line": 49,
               "column": 1
             }
           }
@@ -371,42 +447,122 @@
         "generator": false,
         "expression": false,
         "range": [
-          70,
-          186
+          2071,
+          2180
         ],
         "loc": {
           "start": {
-            "line": 2,
-            "column": 15
+            "line": 47,
+            "column": 7
           },
           "end": {
-            "line": 4,
+            "line": 49,
             "column": 1
           }
         },
-        "leadingComments": [],
-        "trailingComments": []
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Converts a higher-order Observable into a first-order Observable which\n * concurrently delivers all values that are emitted on the inner Observables.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables.</span>\n *\n * <img src=\"./img/mergeAll.png\" width=\"100%\">\n *\n * `mergeAll` subscribes to an Observable that emits Observables, also known as\n * a higher-order Observable. Each time it observes one of these emitted inner\n * Observables, it subscribes to that and delivers all the values from the\n * inner Observable on the output Observable. The output Observable only\n * completes once all inner Observables have completed. Any error delivered by\n * a inner Observable will be immediately emitted on the output Observable.\n *\n * @example <caption>Spawn a new interval Observable for each click event, and blend their outputs as one Observable</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000));\n * var firstOrder = higherOrder.mergeAll();\n * firstOrder.subscribe(x => console.log(x));\n *\n * @example <caption>Count from 0 to 9 every second for each click, but only allow 2 concurrent timers</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000).take(10));\n * var firstOrder = higherOrder.mergeAll(2);\n * firstOrder.subscribe(x => console.log(x));\n *\n * @see {@link combineAll}\n * @see {@link concatAll}\n * @see {@link exhaust}\n * @see {@link merge}\n * @see {@link mergeMap}\n * @see {@link mergeMapTo}\n * @see {@link mergeScan}\n * @see {@link switch}\n * @see {@link zipAll}\n *\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of inner\n * Observables being subscribed to concurrently.\n * @return {Observable} An Observable that emits values coming from all the\n * inner Observables emitted by the source Observable.\n * @method mergeAll\n * @owner Observable\n ",
+            "range": [
+              84,
+              2063
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 46,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=mergeAll.js.map",
+            "range": [
+              2181,
+              2217
+            ],
+            "loc": {
+              "start": {
+                "line": 50,
+                "column": 0
+              },
+              "end": {
+                "line": 50,
+                "column": 36
+              }
+            }
+          }
+        ]
       },
+      "specifiers": [],
+      "source": null,
       "range": [
-        55,
-        186
+        2064,
+        2180
       ],
       "loc": {
         "start": {
-          "line": 2,
+          "line": 47,
           "column": 0
         },
         "end": {
-          "line": 4,
+          "line": 49,
           "column": 1
         }
-      }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Converts a higher-order Observable into a first-order Observable which\n * concurrently delivers all values that are emitted on the inner Observables.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables.</span>\n *\n * <img src=\"./img/mergeAll.png\" width=\"100%\">\n *\n * `mergeAll` subscribes to an Observable that emits Observables, also known as\n * a higher-order Observable. Each time it observes one of these emitted inner\n * Observables, it subscribes to that and delivers all the values from the\n * inner Observable on the output Observable. The output Observable only\n * completes once all inner Observables have completed. Any error delivered by\n * a inner Observable will be immediately emitted on the output Observable.\n *\n * @example <caption>Spawn a new interval Observable for each click event, and blend their outputs as one Observable</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000));\n * var firstOrder = higherOrder.mergeAll();\n * firstOrder.subscribe(x => console.log(x));\n *\n * @example <caption>Count from 0 to 9 every second for each click, but only allow 2 concurrent timers</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000).take(10));\n * var firstOrder = higherOrder.mergeAll(2);\n * firstOrder.subscribe(x => console.log(x));\n *\n * @see {@link combineAll}\n * @see {@link concatAll}\n * @see {@link exhaust}\n * @see {@link merge}\n * @see {@link mergeMap}\n * @see {@link mergeMapTo}\n * @see {@link mergeScan}\n * @see {@link switch}\n * @see {@link zipAll}\n *\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of inner\n * Observables being subscribed to concurrently.\n * @return {Observable} An Observable that emits values coming from all the\n * inner Observables emitted by the source Observable.\n * @method mergeAll\n * @owner Observable\n ",
+          "range": [
+            84,
+            2063
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 46,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=mergeAll.js.map",
+          "range": [
+            2181,
+            2217
+          ],
+          "loc": {
+            "start": {
+              "line": 50,
+              "column": 0
+            },
+            "end": {
+              "line": 50,
+              "column": 36
+            }
+          }
+        }
+      ]
     }
   ],
   "sourceType": "module",
   "range": [
     0,
-    186
+    2180
   ],
   "loc": {
     "start": {
@@ -414,9 +570,46 @@
       "column": 0
     },
     "end": {
-      "line": 4,
+      "line": 49,
       "column": 1
     }
   },
-  "comments": []
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Converts a higher-order Observable into a first-order Observable which\n * concurrently delivers all values that are emitted on the inner Observables.\n *\n * <span class=\"informal\">Flattens an Observable-of-Observables.</span>\n *\n * <img src=\"./img/mergeAll.png\" width=\"100%\">\n *\n * `mergeAll` subscribes to an Observable that emits Observables, also known as\n * a higher-order Observable. Each time it observes one of these emitted inner\n * Observables, it subscribes to that and delivers all the values from the\n * inner Observable on the output Observable. The output Observable only\n * completes once all inner Observables have completed. Any error delivered by\n * a inner Observable will be immediately emitted on the output Observable.\n *\n * @example <caption>Spawn a new interval Observable for each click event, and blend their outputs as one Observable</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000));\n * var firstOrder = higherOrder.mergeAll();\n * firstOrder.subscribe(x => console.log(x));\n *\n * @example <caption>Count from 0 to 9 every second for each click, but only allow 2 concurrent timers</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000).take(10));\n * var firstOrder = higherOrder.mergeAll(2);\n * firstOrder.subscribe(x => console.log(x));\n *\n * @see {@link combineAll}\n * @see {@link concatAll}\n * @see {@link exhaust}\n * @see {@link merge}\n * @see {@link mergeMap}\n * @see {@link mergeMapTo}\n * @see {@link mergeScan}\n * @see {@link switch}\n * @see {@link zipAll}\n *\n * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of inner\n * Observables being subscribed to concurrently.\n * @return {Observable} An Observable that emits values coming from all the\n * inner Observables emitted by the source Observable.\n * @method mergeAll\n * @owner Observable\n ",
+      "range": [
+        84,
+        2063
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 46,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=mergeAll.js.map",
+      "range": [
+        2181,
+        2217
+      ],
+      "loc": {
+        "start": {
+          "line": 50,
+          "column": 0
+        },
+        "end": {
+          "line": 50,
+          "column": 36
+        }
+      }
+    }
+  ]
 }

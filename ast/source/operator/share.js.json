@@ -8,28 +8,28 @@
           "type": "ImportSpecifier",
           "local": {
             "type": "Identifier",
-            "name": "multicast",
+            "name": "higherOrder",
             "range": [
-              9,
-              18
+              18,
+              29
             ],
             "loc": {
               "start": {
                 "line": 1,
-                "column": 9
+                "column": 18
               },
               "end": {
                 "line": 1,
-                "column": 18
+                "column": 29
               }
             }
           },
           "imported": {
             "type": "Identifier",
-            "name": "multicast",
+            "name": "share",
             "range": [
               9,
-              18
+              14
             ],
             "loc": {
               "start": {
@@ -38,13 +38,13 @@
               },
               "end": {
                 "line": 1,
-                "column": 18
+                "column": 14
               }
             }
           },
           "range": [
             9,
-            18
+            29
           ],
           "loc": {
             "start": {
@@ -53,33 +53,33 @@
             },
             "end": {
               "line": 1,
-              "column": 18
+              "column": 29
             }
           }
         }
       ],
       "source": {
         "type": "Literal",
-        "value": "./multicast",
-        "raw": "'./multicast'",
+        "value": "../operators/share",
+        "raw": "'../operators/share'",
         "range": [
-          26,
-          39
+          37,
+          57
         ],
         "loc": {
           "start": {
             "line": 1,
-            "column": 26
+            "column": 37
           },
           "end": {
             "line": 1,
-            "column": 39
+            "column": 57
           }
         }
       },
       "range": [
         0,
-        40
+        58
       ],
       "loc": {
         "start": {
@@ -88,221 +88,20 @@
         },
         "end": {
           "line": 1,
-          "column": 40
-        }
-      }
-    },
-    {
-      "type": "ImportDeclaration",
-      "specifiers": [
-        {
-          "type": "ImportSpecifier",
-          "local": {
-            "type": "Identifier",
-            "name": "Subject",
-            "range": [
-              50,
-              57
-            ],
-            "loc": {
-              "start": {
-                "line": 2,
-                "column": 9
-              },
-              "end": {
-                "line": 2,
-                "column": 16
-              }
-            }
-          },
-          "imported": {
-            "type": "Identifier",
-            "name": "Subject",
-            "range": [
-              50,
-              57
-            ],
-            "loc": {
-              "start": {
-                "line": 2,
-                "column": 9
-              },
-              "end": {
-                "line": 2,
-                "column": 16
-              }
-            }
-          },
-          "range": [
-            50,
-            57
-          ],
-          "loc": {
-            "start": {
-              "line": 2,
-              "column": 9
-            },
-            "end": {
-              "line": 2,
-              "column": 16
-            }
-          }
-        }
-      ],
-      "source": {
-        "type": "Literal",
-        "value": "../Subject",
-        "raw": "'../Subject'",
-        "range": [
-          65,
-          77
-        ],
-        "loc": {
-          "start": {
-            "line": 2,
-            "column": 24
-          },
-          "end": {
-            "line": 2,
-            "column": 36
-          }
-        }
-      },
-      "range": [
-        41,
-        78
-      ],
-      "loc": {
-        "start": {
-          "line": 2,
-          "column": 0
-        },
-        "end": {
-          "line": 2,
-          "column": 37
-        }
-      }
-    },
-    {
-      "type": "FunctionDeclaration",
-      "id": {
-        "type": "Identifier",
-        "name": "shareSubjectFactory",
-        "range": [
-          88,
-          107
-        ],
-        "loc": {
-          "start": {
-            "line": 3,
-            "column": 9
-          },
-          "end": {
-            "line": 3,
-            "column": 28
-          }
-        }
-      },
-      "params": [],
-      "body": {
-        "type": "BlockStatement",
-        "body": [
-          {
-            "type": "ReturnStatement",
-            "argument": {
-              "type": "NewExpression",
-              "callee": {
-                "type": "Identifier",
-                "name": "Subject",
-                "range": [
-                  127,
-                  134
-                ],
-                "loc": {
-                  "start": {
-                    "line": 4,
-                    "column": 15
-                  },
-                  "end": {
-                    "line": 4,
-                    "column": 22
-                  }
-                }
-              },
-              "arguments": [],
-              "range": [
-                123,
-                136
-              ],
-              "loc": {
-                "start": {
-                  "line": 4,
-                  "column": 11
-                },
-                "end": {
-                  "line": 4,
-                  "column": 24
-                }
-              }
-            },
-            "range": [
-              116,
-              137
-            ],
-            "loc": {
-              "start": {
-                "line": 4,
-                "column": 4
-              },
-              "end": {
-                "line": 4,
-                "column": 25
-              }
-            }
-          }
-        ],
-        "range": [
-          110,
-          139
-        ],
-        "loc": {
-          "start": {
-            "line": 3,
-            "column": 31
-          },
-          "end": {
-            "line": 5,
-            "column": 1
-          }
-        }
-      },
-      "generator": false,
-      "expression": false,
-      "range": [
-        79,
-        139
-      ],
-      "loc": {
-        "start": {
-          "line": 3,
-          "column": 0
-        },
-        "end": {
-          "line": 5,
-          "column": 1
+          "column": 58
         }
       },
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one\n * Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will\n * unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.\n * This is an alias for .publish().refCount().\n *\n * <img src=\"./img/share.png\" width=\"100%\">\n *\n * @return {Observable<T>} An Observable that upon connection causes the source Observable to emit items to its Observers.\n * @method share\n * @owner Observable\n ",
+          "value": "*\n * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one\n * Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will\n * unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.\n *\n * This behaves similarly to .publish().refCount(), with a behavior difference when the source observable emits complete.\n * .publish().refCount() will not resubscribe to the original source, however .share() will resubscribe to the original source.\n * Observable.of(\"test\").publish().refCount() will not re-emit \"test\" on new subscriptions, Observable.of(\"test\").share() will\n * re-emit \"test\" to new subscriptions.\n *\n * <img src=\"./img/share.png\" width=\"100%\">\n *\n * @return {Observable<T>} An Observable that upon connection causes the source Observable to emit items to its Observers.\n * @method share\n * @owner Observable\n ",
           "range": [
-            140,
-            740
+            59,
+            1032
           ],
           "loc": {
             "start": {
-              "line": 6,
+              "line": 2,
               "column": 0
             },
             "end": {
@@ -321,8 +120,8 @@
           "type": "Identifier",
           "name": "share",
           "range": [
-            757,
-            762
+            1049,
+            1054
           ],
           "loc": {
             "start": {
@@ -344,104 +143,13 @@
               "argument": {
                 "type": "CallExpression",
                 "callee": {
-                  "type": "MemberExpression",
-                  "computed": false,
-                  "object": {
-                    "type": "CallExpression",
-                    "callee": {
-                      "type": "MemberExpression",
-                      "computed": false,
-                      "object": {
-                        "type": "Identifier",
-                        "name": "multicast",
-                        "range": [
-                          778,
-                          787
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 19,
-                            "column": 11
-                          },
-                          "end": {
-                            "line": 19,
-                            "column": 20
-                          }
-                        }
-                      },
-                      "property": {
-                        "type": "Identifier",
-                        "name": "call",
-                        "range": [
-                          788,
-                          792
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 19,
-                            "column": 21
-                          },
-                          "end": {
-                            "line": 19,
-                            "column": 25
-                          }
-                        }
-                      },
-                      "range": [
-                        778,
-                        792
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 19,
-                          "column": 11
-                        },
-                        "end": {
-                          "line": 19,
-                          "column": 25
-                        }
-                      }
-                    },
-                    "arguments": [
-                      {
-                        "type": "ThisExpression",
-                        "range": [
-                          793,
-                          797
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 19,
-                            "column": 26
-                          },
-                          "end": {
-                            "line": 19,
-                            "column": 30
-                          }
-                        }
-                      },
-                      {
-                        "type": "Identifier",
-                        "name": "shareSubjectFactory",
-                        "range": [
-                          799,
-                          818
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 19,
-                            "column": 32
-                          },
-                          "end": {
-                            "line": 19,
-                            "column": 51
-                          }
-                        }
-                      }
-                    ],
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
                     "range": [
-                      778,
-                      819
+                      1070,
+                      1081
                     ],
                     "loc": {
                       "start": {
@@ -450,31 +158,14 @@
                       },
                       "end": {
                         "line": 19,
-                        "column": 52
+                        "column": 22
                       }
                     }
                   },
-                  "property": {
-                    "type": "Identifier",
-                    "name": "refCount",
-                    "range": [
-                      820,
-                      828
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 19,
-                        "column": 53
-                      },
-                      "end": {
-                        "line": 19,
-                        "column": 61
-                      }
-                    }
-                  },
+                  "arguments": [],
                   "range": [
-                    778,
-                    828
+                    1070,
+                    1083
                   ],
                   "loc": {
                     "start": {
@@ -483,14 +174,32 @@
                     },
                     "end": {
                       "line": 19,
-                      "column": 61
+                      "column": 24
                     }
                   }
                 },
-                "arguments": [],
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
+                    "range": [
+                      1084,
+                      1088
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 19,
+                        "column": 25
+                      },
+                      "end": {
+                        "line": 19,
+                        "column": 29
+                      }
+                    }
+                  }
+                ],
                 "range": [
-                  778,
-                  830
+                  1070,
+                  1089
                 ],
                 "loc": {
                   "start": {
@@ -499,13 +208,13 @@
                   },
                   "end": {
                     "line": 19,
-                    "column": 63
+                    "column": 30
                   }
                 }
               },
               "range": [
-                771,
-                831
+                1063,
+                1090
               ],
               "loc": {
                 "start": {
@@ -514,14 +223,14 @@
                 },
                 "end": {
                   "line": 19,
-                  "column": 64
+                  "column": 31
                 }
               }
             }
           ],
           "range": [
-            765,
-            833
+            1057,
+            1092
           ],
           "loc": {
             "start": {
@@ -537,8 +246,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          748,
-          833
+          1040,
+          1092
         ],
         "loc": {
           "start": {
@@ -553,14 +262,14 @@
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one\n * Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will\n * unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.\n * This is an alias for .publish().refCount().\n *\n * <img src=\"./img/share.png\" width=\"100%\">\n *\n * @return {Observable<T>} An Observable that upon connection causes the source Observable to emit items to its Observers.\n * @method share\n * @owner Observable\n ",
+            "value": "*\n * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one\n * Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will\n * unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.\n *\n * This behaves similarly to .publish().refCount(), with a behavior difference when the source observable emits complete.\n * .publish().refCount() will not resubscribe to the original source, however .share() will resubscribe to the original source.\n * Observable.of(\"test\").publish().refCount() will not re-emit \"test\" on new subscriptions, Observable.of(\"test\").share() will\n * re-emit \"test\" to new subscriptions.\n *\n * <img src=\"./img/share.png\" width=\"100%\">\n *\n * @return {Observable<T>} An Observable that upon connection causes the source Observable to emit items to its Observers.\n * @method share\n * @owner Observable\n ",
             "range": [
-              140,
-              740
+              59,
+              1032
             ],
             "loc": {
               "start": {
-                "line": 6,
+                "line": 2,
                 "column": 0
               },
               "end": {
@@ -575,8 +284,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        741,
-        833
+        1033,
+        1092
       ],
       "loc": {
         "start": {
@@ -591,14 +300,14 @@
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one\n * Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will\n * unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.\n * This is an alias for .publish().refCount().\n *\n * <img src=\"./img/share.png\" width=\"100%\">\n *\n * @return {Observable<T>} An Observable that upon connection causes the source Observable to emit items to its Observers.\n * @method share\n * @owner Observable\n ",
+          "value": "*\n * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one\n * Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will\n * unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.\n *\n * This behaves similarly to .publish().refCount(), with a behavior difference when the source observable emits complete.\n * .publish().refCount() will not resubscribe to the original source, however .share() will resubscribe to the original source.\n * Observable.of(\"test\").publish().refCount() will not re-emit \"test\" on new subscriptions, Observable.of(\"test\").share() will\n * re-emit \"test\" to new subscriptions.\n *\n * <img src=\"./img/share.png\" width=\"100%\">\n *\n * @return {Observable<T>} An Observable that upon connection causes the source Observable to emit items to its Observers.\n * @method share\n * @owner Observable\n ",
           "range": [
-            140,
-            740
+            59,
+            1032
           ],
           "loc": {
             "start": {
-              "line": 6,
+              "line": 2,
               "column": 0
             },
             "end": {
@@ -612,8 +321,8 @@
     {
       "type": "EmptyStatement",
       "range": [
-        834,
-        835
+        1093,
+        1094
       ],
       "loc": {
         "start": {
@@ -630,8 +339,8 @@
           "type": "Line",
           "value": "# sourceMappingURL=share.js.map",
           "range": [
-            836,
-            869
+            1095,
+            1128
           ],
           "loc": {
             "start": {
@@ -650,7 +359,7 @@
   "sourceType": "module",
   "range": [
     0,
-    835
+    1094
   ],
   "loc": {
     "start": {
@@ -665,14 +374,14 @@
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one\n * Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will\n * unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.\n * This is an alias for .publish().refCount().\n *\n * <img src=\"./img/share.png\" width=\"100%\">\n *\n * @return {Observable<T>} An Observable that upon connection causes the source Observable to emit items to its Observers.\n * @method share\n * @owner Observable\n ",
+      "value": "*\n * Returns a new Observable that multicasts (shares) the original Observable. As long as there is at least one\n * Subscriber this Observable will be subscribed and emitting data. When all subscribers have unsubscribed it will\n * unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.\n *\n * This behaves similarly to .publish().refCount(), with a behavior difference when the source observable emits complete.\n * .publish().refCount() will not resubscribe to the original source, however .share() will resubscribe to the original source.\n * Observable.of(\"test\").publish().refCount() will not re-emit \"test\" on new subscriptions, Observable.of(\"test\").share() will\n * re-emit \"test\" to new subscriptions.\n *\n * <img src=\"./img/share.png\" width=\"100%\">\n *\n * @return {Observable<T>} An Observable that upon connection causes the source Observable to emit items to its Observers.\n * @method share\n * @owner Observable\n ",
       "range": [
-        140,
-        740
+        59,
+        1032
       ],
       "loc": {
         "start": {
-          "line": 6,
+          "line": 2,
           "column": 0
         },
         "end": {
@@ -685,8 +394,8 @@
       "type": "Line",
       "value": "# sourceMappingURL=share.js.map",
       "range": [
-        836,
-        869
+        1095,
+        1128
       ],
       "loc": {
         "start": {

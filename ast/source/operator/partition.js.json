@@ -8,28 +8,28 @@
           "type": "ImportSpecifier",
           "local": {
             "type": "Identifier",
-            "name": "not",
+            "name": "higherOrder",
             "range": [
-              9,
-              12
+              22,
+              33
             ],
             "loc": {
               "start": {
                 "line": 1,
-                "column": 9
+                "column": 22
               },
               "end": {
                 "line": 1,
-                "column": 12
+                "column": 33
               }
             }
           },
           "imported": {
             "type": "Identifier",
-            "name": "not",
+            "name": "partition",
             "range": [
               9,
-              12
+              18
             ],
             "loc": {
               "start": {
@@ -38,13 +38,13 @@
               },
               "end": {
                 "line": 1,
-                "column": 12
+                "column": 18
               }
             }
           },
           "range": [
             9,
-            12
+            33
           ],
           "loc": {
             "start": {
@@ -53,33 +53,33 @@
             },
             "end": {
               "line": 1,
-              "column": 12
+              "column": 33
             }
           }
         }
       ],
       "source": {
         "type": "Literal",
-        "value": "../util/not",
-        "raw": "'../util/not'",
+        "value": "../operators/partition",
+        "raw": "'../operators/partition'",
         "range": [
-          20,
-          33
+          41,
+          65
         ],
         "loc": {
           "start": {
             "line": 1,
-            "column": 20
+            "column": 41
           },
           "end": {
             "line": 1,
-            "column": 33
+            "column": 65
           }
         }
       },
       "range": [
         0,
-        34
+        66
       ],
       "loc": {
         "start": {
@@ -88,98 +88,7 @@
         },
         "end": {
           "line": 1,
-          "column": 34
-        }
-      }
-    },
-    {
-      "type": "ImportDeclaration",
-      "specifiers": [
-        {
-          "type": "ImportSpecifier",
-          "local": {
-            "type": "Identifier",
-            "name": "filter",
-            "range": [
-              44,
-              50
-            ],
-            "loc": {
-              "start": {
-                "line": 2,
-                "column": 9
-              },
-              "end": {
-                "line": 2,
-                "column": 15
-              }
-            }
-          },
-          "imported": {
-            "type": "Identifier",
-            "name": "filter",
-            "range": [
-              44,
-              50
-            ],
-            "loc": {
-              "start": {
-                "line": 2,
-                "column": 9
-              },
-              "end": {
-                "line": 2,
-                "column": 15
-              }
-            }
-          },
-          "range": [
-            44,
-            50
-          ],
-          "loc": {
-            "start": {
-              "line": 2,
-              "column": 9
-            },
-            "end": {
-              "line": 2,
-              "column": 15
-            }
-          }
-        }
-      ],
-      "source": {
-        "type": "Literal",
-        "value": "./filter",
-        "raw": "'./filter'",
-        "range": [
-          58,
-          68
-        ],
-        "loc": {
-          "start": {
-            "line": 2,
-            "column": 23
-          },
-          "end": {
-            "line": 2,
-            "column": 33
-          }
-        }
-      },
-      "range": [
-        35,
-        69
-      ],
-      "loc": {
-        "start": {
-          "line": 2,
-          "column": 0
-        },
-        "end": {
-          "line": 2,
-          "column": 34
+          "column": 66
         }
       },
       "trailingComments": [
@@ -187,16 +96,16 @@
           "type": "Block",
           "value": "*\n * Splits the source Observable into two, one with values that satisfy a\n * predicate, and another with values that don't satisfy the predicate.\n *\n * <span class=\"informal\">It's like {@link filter}, but returns two Observables:\n * one like the output of {@link filter}, and the other with values that did not\n * pass the condition.</span>\n *\n * <img src=\"./img/partition.png\" width=\"100%\">\n *\n * `partition` outputs an array with two Observables that partition the values\n * from the source Observable through the given `predicate` function. The first\n * Observable in that array emits source values for which the predicate argument\n * returns true. The second Observable emits source values for which the\n * predicate returns false. The first behaves like {@link filter} and the second\n * behaves like {@link filter} with the predicate negated.\n *\n * @example <caption>Partition click events into those on DIV elements and those elsewhere</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var parts = clicks.partition(ev => ev.target.tagName === 'DIV');\n * var clicksOnDivs = parts[0];\n * var clicksElsewhere = parts[1];\n * clicksOnDivs.subscribe(x => console.log('DIV clicked: ', x));\n * clicksElsewhere.subscribe(x => console.log('Other clicked: ', x));\n *\n * @see {@link filter}\n *\n * @param {function(value: T, index: number): boolean} predicate A function that\n * evaluates each value emitted by the source Observable. If it returns `true`,\n * the value is emitted on the first Observable in the returned array, if\n * `false` the value is emitted on the second Observable in the array. The\n * `index` parameter is the number `i` for the i-th source emission that has\n * happened since the subscription, starting from the number `0`.\n * @param {any} [thisArg] An optional argument to determine the value of `this`\n * in the `predicate` function.\n * @return {[Observable<T>, Observable<T>]} An array with two Observables: one\n * with values that passed the predicate, and another with values that did not\n * pass the predicate.\n * @method partition\n * @owner Observable\n ",
           "range": [
-            70,
-            2175
+            67,
+            2172
           ],
           "loc": {
             "start": {
-              "line": 3,
+              "line": 2,
               "column": 0
             },
             "end": {
-              "line": 43,
+              "line": 42,
               "column": 3
             }
           }
@@ -211,16 +120,16 @@
           "type": "Identifier",
           "name": "partition",
           "range": [
-            2192,
-            2201
+            2189,
+            2198
           ],
           "loc": {
             "start": {
-              "line": 44,
+              "line": 43,
               "column": 16
             },
             "end": {
-              "line": 44,
+              "line": 43,
               "column": 25
             }
           }
@@ -230,16 +139,16 @@
             "type": "Identifier",
             "name": "predicate",
             "range": [
-              2202,
-              2211
+              2199,
+              2208
             ],
             "loc": {
               "start": {
-                "line": 44,
+                "line": 43,
                 "column": 26
               },
               "end": {
-                "line": 44,
+                "line": 43,
                 "column": 35
               }
             }
@@ -248,16 +157,16 @@
             "type": "Identifier",
             "name": "thisArg",
             "range": [
-              2213,
-              2220
+              2210,
+              2217
             ],
             "loc": {
               "start": {
-                "line": 44,
+                "line": 43,
                 "column": 37
               },
               "end": {
-                "line": 44,
+                "line": 43,
                 "column": 44
               }
             }
@@ -269,340 +178,141 @@
             {
               "type": "ReturnStatement",
               "argument": {
-                "type": "ArrayExpression",
-                "elements": [
-                  {
-                    "type": "CallExpression",
-                    "callee": {
-                      "type": "MemberExpression",
-                      "computed": false,
-                      "object": {
-                        "type": "Identifier",
-                        "name": "filter",
-                        "range": [
-                          2245,
-                          2251
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 46,
-                            "column": 8
-                          },
-                          "end": {
-                            "line": 46,
-                            "column": 14
-                          }
-                        }
-                      },
-                      "property": {
-                        "type": "Identifier",
-                        "name": "call",
-                        "range": [
-                          2252,
-                          2256
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 46,
-                            "column": 15
-                          },
-                          "end": {
-                            "line": 46,
-                            "column": 19
-                          }
-                        }
-                      },
-                      "range": [
-                        2245,
-                        2256
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 46,
-                          "column": 8
-                        },
-                        "end": {
-                          "line": 46,
-                          "column": 19
-                        }
-                      }
-                    },
-                    "arguments": [
-                      {
-                        "type": "ThisExpression",
-                        "range": [
-                          2257,
-                          2261
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 46,
-                            "column": 20
-                          },
-                          "end": {
-                            "line": 46,
-                            "column": 24
-                          }
-                        }
-                      },
-                      {
-                        "type": "Identifier",
-                        "name": "predicate",
-                        "range": [
-                          2263,
-                          2272
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 46,
-                            "column": 26
-                          },
-                          "end": {
-                            "line": 46,
-                            "column": 35
-                          }
-                        }
-                      },
-                      {
-                        "type": "Identifier",
-                        "name": "thisArg",
-                        "range": [
-                          2274,
-                          2281
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 46,
-                            "column": 37
-                          },
-                          "end": {
-                            "line": 46,
-                            "column": 44
-                          }
-                        }
-                      }
-                    ],
+                "type": "CallExpression",
+                "callee": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "Identifier",
+                    "name": "higherOrder",
                     "range": [
-                      2245,
-                      2282
+                      2232,
+                      2243
                     ],
                     "loc": {
                       "start": {
-                        "line": 46,
-                        "column": 8
+                        "line": 44,
+                        "column": 11
                       },
                       "end": {
-                        "line": 46,
-                        "column": 45
+                        "line": 44,
+                        "column": 22
                       }
                     }
                   },
-                  {
-                    "type": "CallExpression",
-                    "callee": {
-                      "type": "MemberExpression",
-                      "computed": false,
-                      "object": {
-                        "type": "Identifier",
-                        "name": "filter",
-                        "range": [
-                          2292,
-                          2298
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 47,
-                            "column": 8
-                          },
-                          "end": {
-                            "line": 47,
-                            "column": 14
-                          }
-                        }
-                      },
-                      "property": {
-                        "type": "Identifier",
-                        "name": "call",
-                        "range": [
-                          2299,
-                          2303
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 47,
-                            "column": 15
-                          },
-                          "end": {
-                            "line": 47,
-                            "column": 19
-                          }
-                        }
-                      },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "predicate",
                       "range": [
-                        2292,
-                        2303
+                        2244,
+                        2253
                       ],
                       "loc": {
                         "start": {
-                          "line": 47,
-                          "column": 8
+                          "line": 44,
+                          "column": 23
                         },
                         "end": {
-                          "line": 47,
-                          "column": 19
+                          "line": 44,
+                          "column": 32
                         }
                       }
                     },
-                    "arguments": [
-                      {
-                        "type": "ThisExpression",
-                        "range": [
-                          2304,
-                          2308
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 47,
-                            "column": 20
-                          },
-                          "end": {
-                            "line": 47,
-                            "column": 24
-                          }
-                        }
-                      },
-                      {
-                        "type": "CallExpression",
-                        "callee": {
-                          "type": "Identifier",
-                          "name": "not",
-                          "range": [
-                            2310,
-                            2313
-                          ],
-                          "loc": {
-                            "start": {
-                              "line": 47,
-                              "column": 26
-                            },
-                            "end": {
-                              "line": 47,
-                              "column": 29
-                            }
-                          }
+                    {
+                      "type": "Identifier",
+                      "name": "thisArg",
+                      "range": [
+                        2255,
+                        2262
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 44,
+                          "column": 34
                         },
-                        "arguments": [
-                          {
-                            "type": "Identifier",
-                            "name": "predicate",
-                            "range": [
-                              2314,
-                              2323
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 47,
-                                "column": 30
-                              },
-                              "end": {
-                                "line": 47,
-                                "column": 39
-                              }
-                            }
-                          },
-                          {
-                            "type": "Identifier",
-                            "name": "thisArg",
-                            "range": [
-                              2325,
-                              2332
-                            ],
-                            "loc": {
-                              "start": {
-                                "line": 47,
-                                "column": 41
-                              },
-                              "end": {
-                                "line": 47,
-                                "column": 48
-                              }
-                            }
-                          }
-                        ],
-                        "range": [
-                          2310,
-                          2333
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 47,
-                            "column": 26
-                          },
-                          "end": {
-                            "line": 47,
-                            "column": 49
-                          }
+                        "end": {
+                          "line": 44,
+                          "column": 41
                         }
                       }
-                    ],
+                    }
+                  ],
+                  "range": [
+                    2232,
+                    2263
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 44,
+                      "column": 11
+                    },
+                    "end": {
+                      "line": 44,
+                      "column": 42
+                    }
+                  }
+                },
+                "arguments": [
+                  {
+                    "type": "ThisExpression",
                     "range": [
-                      2292,
-                      2334
+                      2264,
+                      2268
                     ],
                     "loc": {
                       "start": {
-                        "line": 47,
-                        "column": 8
+                        "line": 44,
+                        "column": 43
                       },
                       "end": {
-                        "line": 47,
-                        "column": 50
+                        "line": 44,
+                        "column": 47
                       }
                     }
                   }
                 ],
                 "range": [
-                  2235,
-                  2340
+                  2232,
+                  2269
                 ],
                 "loc": {
                   "start": {
-                    "line": 45,
+                    "line": 44,
                     "column": 11
                   },
                   "end": {
-                    "line": 48,
-                    "column": 5
+                    "line": 44,
+                    "column": 48
                   }
                 }
               },
               "range": [
-                2228,
-                2341
+                2225,
+                2270
               ],
               "loc": {
                 "start": {
-                  "line": 45,
+                  "line": 44,
                   "column": 4
                 },
                 "end": {
-                  "line": 48,
-                  "column": 6
+                  "line": 44,
+                  "column": 49
                 }
               }
             }
           ],
           "range": [
-            2222,
-            2343
+            2219,
+            2272
           ],
           "loc": {
             "start": {
-              "line": 44,
+              "line": 43,
               "column": 46
             },
             "end": {
-              "line": 49,
+              "line": 45,
               "column": 1
             }
           }
@@ -610,16 +320,16 @@
         "generator": false,
         "expression": false,
         "range": [
-          2183,
-          2343
+          2180,
+          2272
         ],
         "loc": {
           "start": {
-            "line": 44,
+            "line": 43,
             "column": 7
           },
           "end": {
-            "line": 49,
+            "line": 45,
             "column": 1
           }
         },
@@ -628,16 +338,16 @@
             "type": "Block",
             "value": "*\n * Splits the source Observable into two, one with values that satisfy a\n * predicate, and another with values that don't satisfy the predicate.\n *\n * <span class=\"informal\">It's like {@link filter}, but returns two Observables:\n * one like the output of {@link filter}, and the other with values that did not\n * pass the condition.</span>\n *\n * <img src=\"./img/partition.png\" width=\"100%\">\n *\n * `partition` outputs an array with two Observables that partition the values\n * from the source Observable through the given `predicate` function. The first\n * Observable in that array emits source values for which the predicate argument\n * returns true. The second Observable emits source values for which the\n * predicate returns false. The first behaves like {@link filter} and the second\n * behaves like {@link filter} with the predicate negated.\n *\n * @example <caption>Partition click events into those on DIV elements and those elsewhere</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var parts = clicks.partition(ev => ev.target.tagName === 'DIV');\n * var clicksOnDivs = parts[0];\n * var clicksElsewhere = parts[1];\n * clicksOnDivs.subscribe(x => console.log('DIV clicked: ', x));\n * clicksElsewhere.subscribe(x => console.log('Other clicked: ', x));\n *\n * @see {@link filter}\n *\n * @param {function(value: T, index: number): boolean} predicate A function that\n * evaluates each value emitted by the source Observable. If it returns `true`,\n * the value is emitted on the first Observable in the returned array, if\n * `false` the value is emitted on the second Observable in the array. The\n * `index` parameter is the number `i` for the i-th source emission that has\n * happened since the subscription, starting from the number `0`.\n * @param {any} [thisArg] An optional argument to determine the value of `this`\n * in the `predicate` function.\n * @return {[Observable<T>, Observable<T>]} An array with two Observables: one\n * with values that passed the predicate, and another with values that did not\n * pass the predicate.\n * @method partition\n * @owner Observable\n ",
             "range": [
-              70,
-              2175
+              67,
+              2172
             ],
             "loc": {
               "start": {
-                "line": 3,
+                "line": 2,
                 "column": 0
               },
               "end": {
-                "line": 43,
+                "line": 42,
                 "column": 3
               }
             }
@@ -648,16 +358,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=partition.js.map",
             "range": [
-              2344,
-              2381
+              2273,
+              2310
             ],
             "loc": {
               "start": {
-                "line": 50,
+                "line": 46,
                 "column": 0
               },
               "end": {
-                "line": 50,
+                "line": 46,
                 "column": 37
               }
             }
@@ -667,16 +377,16 @@
       "specifiers": [],
       "source": null,
       "range": [
-        2176,
-        2343
+        2173,
+        2272
       ],
       "loc": {
         "start": {
-          "line": 44,
+          "line": 43,
           "column": 0
         },
         "end": {
-          "line": 49,
+          "line": 45,
           "column": 1
         }
       },
@@ -685,16 +395,16 @@
           "type": "Block",
           "value": "*\n * Splits the source Observable into two, one with values that satisfy a\n * predicate, and another with values that don't satisfy the predicate.\n *\n * <span class=\"informal\">It's like {@link filter}, but returns two Observables:\n * one like the output of {@link filter}, and the other with values that did not\n * pass the condition.</span>\n *\n * <img src=\"./img/partition.png\" width=\"100%\">\n *\n * `partition` outputs an array with two Observables that partition the values\n * from the source Observable through the given `predicate` function. The first\n * Observable in that array emits source values for which the predicate argument\n * returns true. The second Observable emits source values for which the\n * predicate returns false. The first behaves like {@link filter} and the second\n * behaves like {@link filter} with the predicate negated.\n *\n * @example <caption>Partition click events into those on DIV elements and those elsewhere</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var parts = clicks.partition(ev => ev.target.tagName === 'DIV');\n * var clicksOnDivs = parts[0];\n * var clicksElsewhere = parts[1];\n * clicksOnDivs.subscribe(x => console.log('DIV clicked: ', x));\n * clicksElsewhere.subscribe(x => console.log('Other clicked: ', x));\n *\n * @see {@link filter}\n *\n * @param {function(value: T, index: number): boolean} predicate A function that\n * evaluates each value emitted by the source Observable. If it returns `true`,\n * the value is emitted on the first Observable in the returned array, if\n * `false` the value is emitted on the second Observable in the array. The\n * `index` parameter is the number `i` for the i-th source emission that has\n * happened since the subscription, starting from the number `0`.\n * @param {any} [thisArg] An optional argument to determine the value of `this`\n * in the `predicate` function.\n * @return {[Observable<T>, Observable<T>]} An array with two Observables: one\n * with values that passed the predicate, and another with values that did not\n * pass the predicate.\n * @method partition\n * @owner Observable\n ",
           "range": [
-            70,
-            2175
+            67,
+            2172
           ],
           "loc": {
             "start": {
-              "line": 3,
+              "line": 2,
               "column": 0
             },
             "end": {
-              "line": 43,
+              "line": 42,
               "column": 3
             }
           }
@@ -705,16 +415,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=partition.js.map",
           "range": [
-            2344,
-            2381
+            2273,
+            2310
           ],
           "loc": {
             "start": {
-              "line": 50,
+              "line": 46,
               "column": 0
             },
             "end": {
-              "line": 50,
+              "line": 46,
               "column": 37
             }
           }
@@ -725,7 +435,7 @@
   "sourceType": "module",
   "range": [
     0,
-    2343
+    2272
   ],
   "loc": {
     "start": {
@@ -733,7 +443,7 @@
       "column": 0
     },
     "end": {
-      "line": 49,
+      "line": 45,
       "column": 1
     }
   },
@@ -742,16 +452,16 @@
       "type": "Block",
       "value": "*\n * Splits the source Observable into two, one with values that satisfy a\n * predicate, and another with values that don't satisfy the predicate.\n *\n * <span class=\"informal\">It's like {@link filter}, but returns two Observables:\n * one like the output of {@link filter}, and the other with values that did not\n * pass the condition.</span>\n *\n * <img src=\"./img/partition.png\" width=\"100%\">\n *\n * `partition` outputs an array with two Observables that partition the values\n * from the source Observable through the given `predicate` function. The first\n * Observable in that array emits source values for which the predicate argument\n * returns true. The second Observable emits source values for which the\n * predicate returns false. The first behaves like {@link filter} and the second\n * behaves like {@link filter} with the predicate negated.\n *\n * @example <caption>Partition click events into those on DIV elements and those elsewhere</caption>\n * var clicks = Rx.Observable.fromEvent(document, 'click');\n * var parts = clicks.partition(ev => ev.target.tagName === 'DIV');\n * var clicksOnDivs = parts[0];\n * var clicksElsewhere = parts[1];\n * clicksOnDivs.subscribe(x => console.log('DIV clicked: ', x));\n * clicksElsewhere.subscribe(x => console.log('Other clicked: ', x));\n *\n * @see {@link filter}\n *\n * @param {function(value: T, index: number): boolean} predicate A function that\n * evaluates each value emitted by the source Observable. If it returns `true`,\n * the value is emitted on the first Observable in the returned array, if\n * `false` the value is emitted on the second Observable in the array. The\n * `index` parameter is the number `i` for the i-th source emission that has\n * happened since the subscription, starting from the number `0`.\n * @param {any} [thisArg] An optional argument to determine the value of `this`\n * in the `predicate` function.\n * @return {[Observable<T>, Observable<T>]} An array with two Observables: one\n * with values that passed the predicate, and another with values that did not\n * pass the predicate.\n * @method partition\n * @owner Observable\n ",
       "range": [
-        70,
-        2175
+        67,
+        2172
       ],
       "loc": {
         "start": {
-          "line": 3,
+          "line": 2,
           "column": 0
         },
         "end": {
-          "line": 43,
+          "line": 42,
           "column": 3
         }
       }
@@ -760,16 +470,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=partition.js.map",
       "range": [
-        2344,
-        2381
+        2273,
+        2310
       ],
       "loc": {
         "start": {
-          "line": 50,
+          "line": 46,
           "column": 0
         },
         "end": {
-          "line": 50,
+          "line": 46,
           "column": 37
         }
       }

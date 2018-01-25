@@ -60,18 +60,22 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxTimeoutError.html">AjaxTimeoutError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html">AjaxRequest</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operators</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operators/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-catchError">catchError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-tap">tap</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/scheduler/Action.js~Action.html">Action</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animationFrame">animationFrame</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asap">asap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-async">async</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-queue">queue</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$iterator">$$iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$observable">$$observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/TimeoutError.js~TimeoutError.html">TimeoutError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-root">root</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -85,7 +89,8 @@ var __extends = (this &amp;&amp; this.__extends) || function (d, b) {
 };
 var chai_1 = require(&apos;chai&apos;);
 var sinon = require(&apos;sinon&apos;);
-var Rx = require(&apos;../dist/cjs/Rx&apos;);
+var Rx = require(&apos;../dist/package/Rx&apos;);
+var map_1 = require(&apos;../dist/package/operators/map&apos;);
 var Subscriber = Rx.Subscriber;
 var Observable = Rx.Observable;
 function expectFullObserver(val) {
@@ -115,6 +120,27 @@ describe(&apos;Observable&apos;, function () {
                 done();
             }
         });
+    });
+    it(&apos;should not send error to error handler for observable have source&apos;, function () {
+        var source = Observable.of(1);
+        var observable = new Observable();
+        observable.source = source;
+        chai_1.expect(function () {
+            observable.subscribe(function (x) {
+                throw new Error(&apos;error&apos;);
+            });
+        }).to.throw();
+    });
+    it(&apos;should rethrow if sink has syncErrorThrowable = false&apos;, function () {
+        var observable = new Observable(function (observer) {
+            observer.next(1);
+        });
+        var sink = Subscriber.create(function () {
+            throw &apos;error!&apos;;
+        });
+        chai_1.expect(function () {
+            observable.subscribe(sink);
+        }).to.throw(&apos;error!&apos;);
     });
     describe(&apos;forEach&apos;, function () {
         it(&apos;should iterate and return a Promise&apos;, function (done) {
@@ -254,6 +280,33 @@ describe(&apos;Observable&apos;, function () {
                 subscriber.complete();
             });
             source.subscribe();
+        });
+        it(&apos;should not be unsubscribed when other empty subscription completes&apos;, function () {
+            var unsubscribeCalled = false;
+            var source = new Observable(function () {
+                return function () {
+                    unsubscribeCalled = true;
+                };
+            });
+            source.subscribe();
+            chai_1.expect(unsubscribeCalled).to.be.false;
+            Observable.empty().subscribe();
+            chai_1.expect(unsubscribeCalled).to.be.false;
+        });
+        it(&apos;should not be unsubscribed when other subscription with same observer completes&apos;, function () {
+            var unsubscribeCalled = false;
+            var source = new Observable(function () {
+                return function () {
+                    unsubscribeCalled = true;
+                };
+            });
+            var observer = {
+                next: function () { }
+            };
+            source.subscribe(observer);
+            chai_1.expect(unsubscribeCalled).to.be.false;
+            Observable.empty().subscribe(observer);
+            chai_1.expect(unsubscribeCalled).to.be.false;
         });
         it(&apos;should run unsubscription logic when an error is sent synchronously and subscribe is called with no arguments&apos;, function () {
             var unsubscribeCalled = false;
@@ -431,8 +484,9 @@ describe(&apos;Observable&apos;, function () {
                 &apos; of the anonymous observer&apos;, function (done) {
                 //intentionally not using lambda to avoid typescript&apos;s this context capture
                 var o = {
+                    myValue: &apos;foo&apos;,
                     next: function next(x) {
-                        chai_1.expect(this).to.equal(o);
+                        chai_1.expect(this.myValue).to.equal(&apos;foo&apos;);
                         chai_1.expect(x).to.equal(1);
                         done();
                     }
@@ -443,8 +497,9 @@ describe(&apos;Observable&apos;, function () {
                 &apos; of the anonymous observer&apos;, function (done) {
                 //intentionally not using lambda to avoid typescript&apos;s this context capture
                 var o = {
+                    myValue: &apos;foo&apos;,
                     error: function error(err) {
-                        chai_1.expect(this).to.equal(o);
+                        chai_1.expect(this.myValue).to.equal(&apos;foo&apos;);
                         chai_1.expect(err).to.equal(&apos;bad&apos;);
                         done();
                     }
@@ -455,8 +510,9 @@ describe(&apos;Observable&apos;, function () {
                 &apos; context of the anonymous observer&apos;, function (done) {
                 //intentionally not using lambda to avoid typescript&apos;s this context capture
                 var o = {
+                    myValue: &apos;foo&apos;,
                     complete: function complete() {
-                        chai_1.expect(this).to.equal(o);
+                        chai_1.expect(this.myValue).to.equal(&apos;foo&apos;);
                         done();
                     }
                 };
@@ -474,8 +530,9 @@ describe(&apos;Observable&apos;, function () {
                 var unsubscribeCalled = false;
                 //intentionally not using lambda to avoid typescript&apos;s this context capture
                 var o = {
+                    myValue: &apos;foo&apos;,
                     next: function next(x) {
-                        chai_1.expect(this).to.equal(o);
+                        chai_1.expect(this.myValue).to.equal(&apos;foo&apos;);
                         throw x;
                     }
                 };
@@ -558,6 +615,24 @@ describe(&apos;Observable&apos;, function () {
                 chai_1.expect(times).to.equal(2);
                 chai_1.expect(completeCalled).to.be.false;
             });
+        });
+    });
+    describe(&apos;pipe&apos;, function () {
+        it(&apos;should exist&apos;, function () {
+            var source = Observable.of(&apos;test&apos;);
+            chai_1.expect(source.pipe).to.be.a(&apos;function&apos;);
+        });
+        it(&apos;should pipe multiple operations&apos;, function (done) {
+            Observable.of(&apos;test&apos;)
+                .pipe(map_1.map(function (x) { return x + x; }), map_1.map(function (x) { return x + &apos;!!!&apos;; }))
+                .subscribe(function (x) {
+                chai_1.expect(x).to.equal(&apos;testtest!!!&apos;);
+            }, null, done);
+        });
+        it(&apos;should return the same observable if there are no arguments&apos;, function () {
+            var source = Observable.of(&apos;test&apos;);
+            var result = source.pipe();
+            chai_1.expect(result).to.equal(source);
         });
     });
 });

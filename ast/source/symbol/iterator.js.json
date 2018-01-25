@@ -2398,10 +2398,10 @@
             "type": "VariableDeclarator",
             "id": {
               "type": "Identifier",
-              "name": "$$iterator",
+              "name": "iterator",
               "range": [
                 1102,
-                1112
+                1110
               ],
               "loc": {
                 "start": {
@@ -2410,7 +2410,7 @@
                 },
                 "end": {
                   "line": 31,
-                  "column": 23
+                  "column": 21
                 }
               }
             },
@@ -2420,17 +2420,17 @@
                 "type": "Identifier",
                 "name": "symbolIteratorPonyfill",
                 "range": [
-                  1115,
-                  1137
+                  1113,
+                  1135
                 ],
                 "loc": {
                   "start": {
                     "line": 31,
-                    "column": 26
+                    "column": 24
                   },
                   "end": {
                     "line": 31,
-                    "column": 48
+                    "column": 46
                   }
                 }
               },
@@ -2439,39 +2439,39 @@
                   "type": "Identifier",
                   "name": "root",
                   "range": [
-                    1138,
-                    1142
+                    1136,
+                    1140
                   ],
                   "loc": {
                     "start": {
                       "line": 31,
-                      "column": 49
+                      "column": 47
                     },
                     "end": {
                       "line": 31,
-                      "column": 53
+                      "column": 51
                     }
                   }
                 }
               ],
               "range": [
-                1115,
-                1143
+                1113,
+                1141
               ],
               "loc": {
                 "start": {
                   "line": 31,
-                  "column": 26
+                  "column": 24
                 },
                 "end": {
                   "line": 31,
-                  "column": 54
+                  "column": 52
                 }
               }
             },
             "range": [
               1102,
-              1143
+              1141
             ],
             "loc": {
               "start": {
@@ -2480,7 +2480,7 @@
               },
               "end": {
                 "line": 31,
-                "column": 54
+                "column": 52
               }
             }
           }
@@ -2488,7 +2488,7 @@
         "kind": "const",
         "range": [
           1096,
-          1144
+          1142
         ],
         "loc": {
           "start": {
@@ -2497,17 +2497,17 @@
           },
           "end": {
             "line": 31,
-            "column": 55
+            "column": 53
           }
         },
         "leadingComments": [],
         "trailingComments": [
           {
-            "type": "Line",
-            "value": "# sourceMappingURL=iterator.js.map",
+            "type": "Block",
+            "value": "*\n * @deprecated use iterator instead\n ",
             "range": [
-              1145,
-              1181
+              1143,
+              1186
             ],
             "loc": {
               "start": {
@@ -2515,8 +2515,8 @@
                 "column": 0
               },
               "end": {
-                "line": 32,
-                "column": 36
+                "line": 34,
+                "column": 3
               }
             }
           }
@@ -2526,7 +2526,7 @@
       "source": null,
       "range": [
         1089,
-        1144
+        1142
       ],
       "loc": {
         "start": {
@@ -2535,16 +2535,16 @@
         },
         "end": {
           "line": 31,
-          "column": 55
+          "column": 53
         }
       },
       "trailingComments": [
         {
-          "type": "Line",
-          "value": "# sourceMappingURL=iterator.js.map",
+          "type": "Block",
+          "value": "*\n * @deprecated use iterator instead\n ",
           "range": [
-            1145,
-            1181
+            1143,
+            1186
           ],
           "loc": {
             "start": {
@@ -2552,7 +2552,179 @@
               "column": 0
             },
             "end": {
+              "line": 34,
+              "column": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "ExportNamedDeclaration",
+      "declaration": {
+        "type": "VariableDeclaration",
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "id": {
+              "type": "Identifier",
+              "name": "$$iterator",
+              "range": [
+                1200,
+                1210
+              ],
+              "loc": {
+                "start": {
+                  "line": 35,
+                  "column": 13
+                },
+                "end": {
+                  "line": 35,
+                  "column": 23
+                }
+              }
+            },
+            "init": {
+              "type": "Identifier",
+              "name": "iterator",
+              "range": [
+                1213,
+                1221
+              ],
+              "loc": {
+                "start": {
+                  "line": 35,
+                  "column": 26
+                },
+                "end": {
+                  "line": 35,
+                  "column": 34
+                }
+              }
+            },
+            "range": [
+              1200,
+              1221
+            ],
+            "loc": {
+              "start": {
+                "line": 35,
+                "column": 13
+              },
+              "end": {
+                "line": 35,
+                "column": 34
+              }
+            }
+          }
+        ],
+        "kind": "const",
+        "range": [
+          1194,
+          1222
+        ],
+        "loc": {
+          "start": {
+            "line": 35,
+            "column": 7
+          },
+          "end": {
+            "line": 35,
+            "column": 35
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * @deprecated use iterator instead\n ",
+            "range": [
+              1143,
+              1186
+            ],
+            "loc": {
+              "start": {
+                "line": 32,
+                "column": 0
+              },
+              "end": {
+                "line": 34,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "Line",
+            "value": "# sourceMappingURL=iterator.js.map",
+            "range": [
+              1223,
+              1259
+            ],
+            "loc": {
+              "start": {
+                "line": 36,
+                "column": 0
+              },
+              "end": {
+                "line": 36,
+                "column": 36
+              }
+            }
+          }
+        ]
+      },
+      "specifiers": [],
+      "source": null,
+      "range": [
+        1187,
+        1222
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 0
+        },
+        "end": {
+          "line": 35,
+          "column": 35
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * @deprecated use iterator instead\n ",
+          "range": [
+            1143,
+            1186
+          ],
+          "loc": {
+            "start": {
               "line": 32,
+              "column": 0
+            },
+            "end": {
+              "line": 34,
+              "column": 3
+            }
+          }
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Line",
+          "value": "# sourceMappingURL=iterator.js.map",
+          "range": [
+            1223,
+            1259
+          ],
+          "loc": {
+            "start": {
+              "line": 36,
+              "column": 0
+            },
+            "end": {
+              "line": 36,
               "column": 36
             }
           }
@@ -2563,7 +2735,7 @@
   "sourceType": "module",
   "range": [
     0,
-    1144
+    1222
   ],
   "loc": {
     "start": {
@@ -2571,8 +2743,8 @@
       "column": 0
     },
     "end": {
-      "line": 31,
-      "column": 55
+      "line": 35,
+      "column": 35
     }
   },
   "comments": [
@@ -2631,11 +2803,11 @@
       }
     },
     {
-      "type": "Line",
-      "value": "# sourceMappingURL=iterator.js.map",
+      "type": "Block",
+      "value": "*\n * @deprecated use iterator instead\n ",
       "range": [
-        1145,
-        1181
+        1143,
+        1186
       ],
       "loc": {
         "start": {
@@ -2643,7 +2815,25 @@
           "column": 0
         },
         "end": {
-          "line": 32,
+          "line": 34,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Line",
+      "value": "# sourceMappingURL=iterator.js.map",
+      "range": [
+        1223,
+        1259
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 0
+        },
+        "end": {
+          "line": 36,
           "column": 36
         }
       }

@@ -60,18 +60,22 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxTimeoutError.html">AjaxTimeoutError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html">AjaxRequest</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operators</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operators/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-catchError">catchError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-tap">tap</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/scheduler/Action.js~Action.html">Action</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animationFrame">animationFrame</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asap">asap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-async">async</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-queue">queue</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$iterator">$$iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$observable">$$observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/TimeoutError.js~TimeoutError.html">TimeoutError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-root">root</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -79,7 +83,7 @@
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/multicast-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
 var chai_1 = require(&apos;chai&apos;);
-var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var Rx = require(&apos;../../dist/package/Rx&apos;);
 var Observable = Rx.Observable;
 var Subject = Rx.Subject;
 var ReplaySubject = Rx.ReplaySubject;
@@ -103,6 +107,28 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
             done();
         });
         connectable.connect();
+    });
+    it(&apos;should multicast a ConnectableObservable&apos;, function (done) {
+        var expected = [1, 2, 3, 4];
+        var source = new Subject();
+        var connectable = source.multicast(new Subject());
+        var replayed = connectable.multicast(new ReplaySubject());
+        connectable.connect();
+        replayed.connect();
+        source.next(1);
+        source.next(2);
+        source.next(3);
+        source.next(4);
+        source.complete();
+        replayed.do({
+            next: function (x) {
+                chai_1.expect(x).to.equal(expected.shift());
+            },
+            complete: function () {
+                chai_1.expect(expected.length).to.equal(0);
+            }
+        })
+            .subscribe(null, done, done);
     });
     it(&apos;should accept Subject factory functions&apos;, function (done) {
         var expected = [1, 2, 3, 4];
@@ -508,7 +534,7 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
         chai_1.expect(results2).to.deep.equal([]);
         connectable.connect();
         chai_1.expect(results1).to.deep.equal([1, 2, 3, 4]);
-        chai_1.expect(results1).to.deep.equal([1, 2, 3, 4]);
+        chai_1.expect(results2).to.deep.equal([1, 2, 3, 4]);
         chai_1.expect(subscriptions).to.equal(1);
         done();
     });
@@ -574,6 +600,45 @@ describe(&apos;Observable.prototype.multicast&apos;, function () {
                 chai_1.expect(expected.length).to.equal(0);
                 done();
             });
+        });
+    });
+    describe(&apos;typings&apos;, function () {
+        type(&apos;should infer the type&apos;, function () {
+            /* tslint:disable:no-unused-variable */
+            var source = Rx.Observable.of(1, 2, 3);
+            var result = source.multicast(function () { return new Subject(); });
+            /* tslint:enable:no-unused-variable */
+        });
+        type(&apos;should infer the type with a selector&apos;, function () {
+            /* tslint:disable:no-unused-variable */
+            var source = Rx.Observable.of(1, 2, 3);
+            var result = source.multicast(function () { return new Subject(); }, function (s) { return s.map(function (x) { return x; }); });
+            /* tslint:enable:no-unused-variable */
+        });
+        type(&apos;should infer the type with a type-changing selector&apos;, function () {
+            /* tslint:disable:no-unused-variable */
+            var source = Rx.Observable.of(1, 2, 3);
+            var result = source.multicast(function () { return new Subject(); }, function (s) { return s.map(function (x) { return x + &apos;!&apos;; }); });
+            /* tslint:enable:no-unused-variable */
+        });
+        type(&apos;should infer the type for the pipeable operator&apos;, function () {
+            /* tslint:disable:no-unused-variable */
+            var source = Rx.Observable.of(1, 2, 3);
+            // TODO: https://github.com/ReactiveX/rxjs/issues/2972
+            var result = Rx.operators.multicast(function () { return new Subject(); })(source);
+            /* tslint:enable:no-unused-variable */
+        });
+        type(&apos;should infer the type for the pipeable operator with a selector&apos;, function () {
+            /* tslint:disable:no-unused-variable */
+            var source = Rx.Observable.of(1, 2, 3);
+            var result = source.pipe(Rx.operators.multicast(function () { return new Subject(); }, function (s) { return s.map(function (x) { return x; }); }));
+            /* tslint:enable:no-unused-variable */
+        });
+        type(&apos;should infer the type for the pipeable operator with a type-changing selector&apos;, function () {
+            /* tslint:disable:no-unused-variable */
+            var source = Rx.Observable.of(1, 2, 3);
+            var result = source.pipe(Rx.operators.multicast(function () { return new Subject(); }, function (s) { return s.map(function (x) { return x + &apos;!&apos;; }); }));
+            /* tslint:enable:no-unused-variable */
         });
     });
 });

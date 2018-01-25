@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">es6/operators.js | RxJS API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+<script data-ice="userScript" src="user/script/0-Rx.js"></script>
+<script data-ice="userScript" src="user/script/1-devtools-welcome.js"></script>
+<script data-ice="userScript" src="user/script/2-custom-manual-styles.js"></script>
+<script data-ice="userScript" src="user/script/3-decision-tree-widget.min.js"></script>
+<script data-ice="userScript" src="user/script/4-theme-toggler.js"></script>
+<link data-ice="userStyle" rel="stylesheet" href="user/css/0-main.css">
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/ReactiveX/RxJS" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/AsyncSubject.js~AsyncSubject.html">AsyncSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/BehaviorSubject.js~BehaviorSubject.html">BehaviorSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Notification.js~Notification.html">Notification</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Observable.js~Observable.html">Observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/ReplaySubject.js~ReplaySubject.html">ReplaySubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Scheduler.js~Scheduler.html">Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~AnonymousSubject.html">AnonymousSubject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~Subject.html">Subject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subject.js~SubjectSubscriber.html">SubjectSubscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscriber.js~Subscriber.html">Subscriber</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/Subscription.js~Subscription.html">Subscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObservableInputDoc.html">ObservableInput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~ObserverDoc.html">Observer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~SubscribableOrPromiseDoc.html">SubscribableOrPromise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/MiscJSDoc.js~TeardownLogicDoc.html">TeardownLogic</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Scheduler">Rx.Scheduler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Rx.Symbol">Rx.Symbol</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/ConnectableObservable.js~ConnectableObservable.html">ConnectableObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">observable/dom</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxError.html">AjaxError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxTimeoutError.html">AjaxTimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html">AjaxRequest</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operators</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operators/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-catchError">catchError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-tap">tap</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/scheduler/Action.js~Action.html">Action</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animationFrame">animationFrame</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asap">asap</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-async">async</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-queue">queue</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$iterator">$$iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$observable">$$observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/TimeoutError.js~TimeoutError.html">TimeoutError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">es6/operators.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">export { audit } from &apos;./operators/audit&apos;;
+export { auditTime } from &apos;./operators/auditTime&apos;;
+export { buffer } from &apos;./operators/buffer&apos;;
+export { bufferCount } from &apos;./operators/bufferCount&apos;;
+export { bufferTime } from &apos;./operators/bufferTime&apos;;
+export { bufferToggle } from &apos;./operators/bufferToggle&apos;;
+export { bufferWhen } from &apos;./operators/bufferWhen&apos;;
+export { catchError } from &apos;./operators/catchError&apos;;
+export { combineAll } from &apos;./operators/combineAll&apos;;
+export { combineLatest } from &apos;./operators/combineLatest&apos;;
+export { concat } from &apos;./operators/concat&apos;;
+export { concatAll } from &apos;./operators/concatAll&apos;;
+export { concatMap } from &apos;./operators/concatMap&apos;;
+export { concatMapTo } from &apos;./operators/concatMapTo&apos;;
+export { count } from &apos;./operators/count&apos;;
+export { debounce } from &apos;./operators/debounce&apos;;
+export { debounceTime } from &apos;./operators/debounceTime&apos;;
+export { defaultIfEmpty } from &apos;./operators/defaultIfEmpty&apos;;
+export { delay } from &apos;./operators/delay&apos;;
+export { delayWhen } from &apos;./operators/delayWhen&apos;;
+export { dematerialize } from &apos;./operators/dematerialize&apos;;
+export { distinct } from &apos;./operators/distinct&apos;;
+export { distinctUntilChanged } from &apos;./operators/distinctUntilChanged&apos;;
+export { distinctUntilKeyChanged } from &apos;./operators/distinctUntilKeyChanged&apos;;
+export { elementAt } from &apos;./operators/elementAt&apos;;
+export { every } from &apos;./operators/every&apos;;
+export { exhaust } from &apos;./operators/exhaust&apos;;
+export { exhaustMap } from &apos;./operators/exhaustMap&apos;;
+export { expand } from &apos;./operators/expand&apos;;
+export { filter } from &apos;./operators/filter&apos;;
+export { finalize } from &apos;./operators/finalize&apos;;
+export { find } from &apos;./operators/find&apos;;
+export { findIndex } from &apos;./operators/findIndex&apos;;
+export { first } from &apos;./operators/first&apos;;
+export { groupBy } from &apos;./operators/groupBy&apos;;
+export { ignoreElements } from &apos;./operators/ignoreElements&apos;;
+export { isEmpty } from &apos;./operators/isEmpty&apos;;
+export { last } from &apos;./operators/last&apos;;
+export { map } from &apos;./operators/map&apos;;
+export { mapTo } from &apos;./operators/mapTo&apos;;
+export { materialize } from &apos;./operators/materialize&apos;;
+export { max } from &apos;./operators/max&apos;;
+export { merge } from &apos;./operators/merge&apos;;
+export { mergeAll } from &apos;./operators/mergeAll&apos;;
+export { mergeMap } from &apos;./operators/mergeMap&apos;;
+export { mergeMap as flatMap } from &apos;./operators/mergeMap&apos;;
+export { mergeMapTo } from &apos;./operators/mergeMapTo&apos;;
+export { mergeScan } from &apos;./operators/mergeScan&apos;;
+export { min } from &apos;./operators/min&apos;;
+export { multicast } from &apos;./operators/multicast&apos;;
+export { observeOn } from &apos;./operators/observeOn&apos;;
+export { onErrorResumeNext } from &apos;./operators/onErrorResumeNext&apos;;
+export { pairwise } from &apos;./operators/pairwise&apos;;
+export { partition } from &apos;./operators/partition&apos;;
+export { pluck } from &apos;./operators/pluck&apos;;
+export { publish } from &apos;./operators/publish&apos;;
+export { publishBehavior } from &apos;./operators/publishBehavior&apos;;
+export { publishLast } from &apos;./operators/publishLast&apos;;
+export { publishReplay } from &apos;./operators/publishReplay&apos;;
+export { race } from &apos;./operators/race&apos;;
+export { reduce } from &apos;./operators/reduce&apos;;
+export { repeat } from &apos;./operators/repeat&apos;;
+export { repeatWhen } from &apos;./operators/repeatWhen&apos;;
+export { retry } from &apos;./operators/retry&apos;;
+export { retryWhen } from &apos;./operators/retryWhen&apos;;
+export { refCount } from &apos;./operators/refCount&apos;;
+export { sample } from &apos;./operators/sample&apos;;
+export { sampleTime } from &apos;./operators/sampleTime&apos;;
+export { scan } from &apos;./operators/scan&apos;;
+export { sequenceEqual } from &apos;./operators/sequenceEqual&apos;;
+export { share } from &apos;./operators/share&apos;;
+export { shareReplay } from &apos;./operators/shareReplay&apos;;
+export { single } from &apos;./operators/single&apos;;
+export { skip } from &apos;./operators/skip&apos;;
+export { skipLast } from &apos;./operators/skipLast&apos;;
+export { skipUntil } from &apos;./operators/skipUntil&apos;;
+export { skipWhile } from &apos;./operators/skipWhile&apos;;
+export { startWith } from &apos;./operators/startWith&apos;;
+/**
+ * TODO(https://github.com/ReactiveX/rxjs/issues/2900): Add back subscribeOn once it can be
+ * treeshaken. Currently if this export is added back, it
+ * forces apps to bring in asap scheduler along with
+ * Immediate, root, and other supporting code.
+ */
+// export { subscribeOn } from &apos;./operators/subscribeOn&apos;;
+export { switchAll } from &apos;./operators/switchAll&apos;;
+export { switchMap } from &apos;./operators/switchMap&apos;;
+export { switchMapTo } from &apos;./operators/switchMapTo&apos;;
+export { take } from &apos;./operators/take&apos;;
+export { takeLast } from &apos;./operators/takeLast&apos;;
+export { takeUntil } from &apos;./operators/takeUntil&apos;;
+export { takeWhile } from &apos;./operators/takeWhile&apos;;
+export { tap } from &apos;./operators/tap&apos;;
+export { throttle } from &apos;./operators/throttle&apos;;
+export { throttleTime } from &apos;./operators/throttleTime&apos;;
+export { timeInterval } from &apos;./operators/timeInterval&apos;;
+export { timeout } from &apos;./operators/timeout&apos;;
+export { timeoutWith } from &apos;./operators/timeoutWith&apos;;
+export { timestamp } from &apos;./operators/timestamp&apos;;
+export { toArray } from &apos;./operators/toArray&apos;;
+export { window } from &apos;./operators/window&apos;;
+export { windowCount } from &apos;./operators/windowCount&apos;;
+export { windowTime } from &apos;./operators/windowTime&apos;;
+export { windowToggle } from &apos;./operators/windowToggle&apos;;
+export { windowWhen } from &apos;./operators/windowWhen&apos;;
+export { withLatestFrom } from &apos;./operators/withLatestFrom&apos;;
+export { zip } from &apos;./operators/zip&apos;;
+export { zipAll } from &apos;./operators/zipAll&apos;;
+//# sourceMappingURL=operators.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

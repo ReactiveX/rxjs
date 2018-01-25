@@ -60,18 +60,22 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxTimeoutError.html">AjaxTimeoutError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html">AjaxRequest</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operators</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operators/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-catchError">catchError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-tap">tap</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/scheduler/Action.js~Action.html">Action</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animationFrame">animationFrame</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asap">asap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-async">async</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-queue">queue</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$iterator">$$iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$observable">$$observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/TimeoutError.js~TimeoutError.html">TimeoutError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-root">root</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -79,7 +83,7 @@
 <div class="content" data-ice="content"><h1 data-ice="title">spec-js/operators/publishReplay-spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
 var chai_1 = require(&apos;chai&apos;);
-var Rx = require(&apos;../../dist/cjs/Rx&apos;);
+var Rx = require(&apos;../../dist/package/Rx&apos;);
 var Observable = Rx.Observable;
 /** @test {publishReplay} */
 describe(&apos;Observable.prototype.publishReplay&apos;, function () {
@@ -407,6 +411,102 @@ describe(&apos;Observable.prototype.publishReplay&apos;, function () {
         expectObservable(published).toBe(expected);
         expectSubscriptions(source.subscriptions).toBe(sourceSubs);
         published.connect();
+    });
+    it(&apos;should mirror a simple source Observable with selector&apos;, function () {
+        var values = { a: 2, b: 4, c: 6, d: 8 };
+        var selector = function (observable) { return observable.map(function (v) { return 2 * v; }); };
+        var source = cold(&apos;--1-2---3-4---|&apos;);
+        var sourceSubs = &apos;^             !&apos;;
+        var published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
+        var expected = &apos;--a-b---c-d---|&apos;;
+        expectObservable(published).toBe(expected, values);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should emit an error when the selector throws an exception&apos;, function () {
+        var error = &quot;It&apos;s broken&quot;;
+        var selector = function () {
+            throw error;
+        };
+        var source = cold(&apos;--1-2---3-4---|&apos;);
+        var published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
+        // The exception is thrown outside Rx chain (not as an error notification).
+        chai_1.expect(function () { return published.subscribe(); }).to.throw(error);
+    });
+    it(&apos;should emit an error when the selector returns an Observable that emits an error&apos;, function () {
+        var error = &quot;It&apos;s broken&quot;;
+        var innerObservable = cold(&apos;--5-6----#&apos;, undefined, error);
+        var selector = function (observable) { return observable.mergeMapTo(innerObservable); };
+        var source = cold(&apos;--1--2---3---|&apos;);
+        var sourceSubs = &apos;^          !&apos;;
+        var published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
+        var expected = &apos;----5-65-6-#&apos;;
+        expectObservable(published).toBe(expected, undefined, error);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should terminate immediately when the selector returns an empty Observable&apos;, function () {
+        var selector = function () { return Observable.empty(); };
+        var source = cold(&apos;--1--2---3---|&apos;);
+        var sourceSubs = &apos;(^!)&apos;;
+        var published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
+        var expected = &apos;|&apos;;
+        expectObservable(published).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should not emit and should not complete/error when the selector returns never&apos;, function () {
+        var selector = function () { return Observable.never(); };
+        var source = cold(&apos;-&apos;);
+        var sourceSubs = &apos;^&apos;;
+        var published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
+        var expected = &apos;-&apos;;
+        expectObservable(published).toBe(expected);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    it(&apos;should emit error when the selector returns Observable.throw&apos;, function () {
+        var error = &quot;It&apos;s broken&quot;;
+        var selector = function () { return Observable.throw(error); };
+        var source = cold(&apos;--1--2---3---|&apos;);
+        var sourceSubs = &apos;(^!)&apos;;
+        var published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
+        var expected = &apos;#&apos;;
+        expectObservable(published).toBe(expected, undefined, error);
+        expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+    });
+    type(&apos;should infer the type&apos;, function () {
+        /* tslint:disable:no-unused-variable */
+        var source = Rx.Observable.of(1, 2, 3);
+        var result = source.publishReplay(1);
+        /* tslint:enable:no-unused-variable */
+    });
+    type(&apos;should infer the type with a selector&apos;, function () {
+        /* tslint:disable:no-unused-variable */
+        var source = Rx.Observable.of(1, 2, 3);
+        var result = source.publishReplay(1, undefined, function (s) { return s.map(function (x) { return x; }); });
+        /* tslint:enable:no-unused-variable */
+    });
+    type(&apos;should infer the type with a type-changing selector&apos;, function () {
+        /* tslint:disable:no-unused-variable */
+        var source = Rx.Observable.of(1, 2, 3);
+        var result = source.publishReplay(1, undefined, function (s) { return s.map(function (x) { return x + &apos;!&apos;; }); });
+        /* tslint:enable:no-unused-variable */
+    });
+    type(&apos;should infer the type for the pipeable operator&apos;, function () {
+        /* tslint:disable:no-unused-variable */
+        var source = Rx.Observable.of(1, 2, 3);
+        // TODO: https://github.com/ReactiveX/rxjs/issues/2972
+        var result = Rx.operators.publishReplay(1)(source);
+        /* tslint:enable:no-unused-variable */
+    });
+    type(&apos;should infer the type for the pipeable operator with a selector&apos;, function () {
+        /* tslint:disable:no-unused-variable */
+        var source = Rx.Observable.of(1, 2, 3);
+        var result = source.pipe(Rx.operators.publishReplay(1, undefined, function (s) { return s.map(function (x) { return x; }); }));
+        /* tslint:enable:no-unused-variable */
+    });
+    type(&apos;should infer the type for the pipeable operator with a type-changing selector&apos;, function () {
+        /* tslint:disable:no-unused-variable */
+        var source = Rx.Observable.of(1, 2, 3);
+        var result = source.pipe(Rx.operators.publishReplay(1, undefined, function (s) { return s.map(function (x) { return x + &apos;!&apos;; }); }));
+        /* tslint:enable:no-unused-variable */
     });
 });
 //# sourceMappingURL=publishReplay-spec.js.map</code></pre>

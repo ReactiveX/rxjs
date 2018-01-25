@@ -60,27 +60,28 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxResponse.html">AjaxResponse</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/observable/dom/AjaxObservable.js~AjaxTimeoutError.html">AjaxTimeoutError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/es6/observable/dom/MiscJSDoc.js~AjaxRequestDoc.html">AjaxRequest</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operator</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operator/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">operators</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/operators/groupBy.js~GroupedObservable.html">GroupedObservable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-catchError">catchError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-tap">tap</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">scheduler</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/scheduler/Action.js~Action.html">Action</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animationFrame">animationFrame</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-asap">asap</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-async">async</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-queue">queue</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">symbol</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$iterator">$$iterator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$observable">$$observable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-$$rxSubscriber">$$rxSubscriber</a></span></span></li>
 <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ArgumentOutOfRangeError.js~ArgumentOutOfRangeError.html">ArgumentOutOfRangeError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/EmptyError.js~EmptyError.html">EmptyError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/ObjectUnsubscribedError.js~ObjectUnsubscribedError.html">ObjectUnsubscribedError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/TimeoutError.js~TimeoutError.html">TimeoutError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/es6/util/UnsubscriptionError.js~UnsubscriptionError.html">UnsubscriptionError</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-root">root</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">es6/operator/expand.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { tryCatch } from &apos;../util/tryCatch&apos;;
-import { errorObject } from &apos;../util/errorObject&apos;;
-import { OuterSubscriber } from &apos;../OuterSubscriber&apos;;
-import { subscribeToResult } from &apos;../util/subscribeToResult&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { expand as higherOrder } from &apos;../operators/expand&apos;;
 /* tslint:enable:max-line-length */
 /**
  * Recursively projects each source value to an Observable which is merged in
@@ -129,89 +130,7 @@ import { subscribeToResult } from &apos;../util/subscribeToResult&apos;;
  */
 export function expand(project, concurrent = Number.POSITIVE_INFINITY, scheduler = undefined) {
     concurrent = (concurrent || 0) &lt; 1 ? Number.POSITIVE_INFINITY : concurrent;
-    return this.lift(new ExpandOperator(project, concurrent, scheduler));
-}
-export class ExpandOperator {
-    constructor(project, concurrent, scheduler) {
-        this.project = project;
-        this.concurrent = concurrent;
-        this.scheduler = scheduler;
-    }
-    call(subscriber, source) {
-        return source.subscribe(new ExpandSubscriber(subscriber, this.project, this.concurrent, this.scheduler));
-    }
-}
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-export class ExpandSubscriber extends OuterSubscriber {
-    constructor(destination, project, concurrent, scheduler) {
-        super(destination);
-        this.project = project;
-        this.concurrent = concurrent;
-        this.scheduler = scheduler;
-        this.index = 0;
-        this.active = 0;
-        this.hasCompleted = false;
-        if (concurrent &lt; Number.POSITIVE_INFINITY) {
-            this.buffer = [];
-        }
-    }
-    static dispatch(arg) {
-        const { subscriber, result, value, index } = arg;
-        subscriber.subscribeToProjection(result, value, index);
-    }
-    _next(value) {
-        const destination = this.destination;
-        if (destination.closed) {
-            this._complete();
-            return;
-        }
-        const index = this.index++;
-        if (this.active &lt; this.concurrent) {
-            destination.next(value);
-            let result = tryCatch(this.project)(value, index);
-            if (result === errorObject) {
-                destination.error(errorObject.e);
-            }
-            else if (!this.scheduler) {
-                this.subscribeToProjection(result, value, index);
-            }
-            else {
-                const state = { subscriber: this, result, value, index };
-                this.add(this.scheduler.schedule(ExpandSubscriber.dispatch, 0, state));
-            }
-        }
-        else {
-            this.buffer.push(value);
-        }
-    }
-    subscribeToProjection(result, value, index) {
-        this.active++;
-        this.add(subscribeToResult(this, result, value, index));
-    }
-    _complete() {
-        this.hasCompleted = true;
-        if (this.hasCompleted &amp;&amp; this.active === 0) {
-            this.destination.complete();
-        }
-    }
-    notifyNext(outerValue, innerValue, outerIndex, innerIndex, innerSub) {
-        this._next(innerValue);
-    }
-    notifyComplete(innerSub) {
-        const buffer = this.buffer;
-        this.remove(innerSub);
-        this.active--;
-        if (buffer &amp;&amp; buffer.length &gt; 0) {
-            this._next(buffer.shift());
-        }
-        if (this.hasCompleted &amp;&amp; this.active === 0) {
-            this.destination.complete();
-        }
-    }
+    return higherOrder(project, concurrent, scheduler)(this);
 }
 //# sourceMappingURL=expand.js.map</code></pre>
 

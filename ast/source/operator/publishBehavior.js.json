@@ -8,25 +8,25 @@
           "type": "ImportSpecifier",
           "local": {
             "type": "Identifier",
-            "name": "BehaviorSubject",
+            "name": "higherOrder",
             "range": [
-              9,
-              24
+              28,
+              39
             ],
             "loc": {
               "start": {
                 "line": 1,
-                "column": 9
+                "column": 28
               },
               "end": {
                 "line": 1,
-                "column": 24
+                "column": 39
               }
             }
           },
           "imported": {
             "type": "Identifier",
-            "name": "BehaviorSubject",
+            "name": "publishBehavior",
             "range": [
               9,
               24
@@ -44,7 +44,7 @@
           },
           "range": [
             9,
-            24
+            39
           ],
           "loc": {
             "start": {
@@ -53,33 +53,33 @@
             },
             "end": {
               "line": 1,
-              "column": 24
+              "column": 39
             }
           }
         }
       ],
       "source": {
         "type": "Literal",
-        "value": "../BehaviorSubject",
-        "raw": "'../BehaviorSubject'",
+        "value": "../operators/publishBehavior",
+        "raw": "'../operators/publishBehavior'",
         "range": [
-          32,
-          52
+          47,
+          77
         ],
         "loc": {
           "start": {
             "line": 1,
-            "column": 32
+            "column": 47
           },
           "end": {
             "line": 1,
-            "column": 52
+            "column": 77
           }
         }
       },
       "range": [
         0,
-        53
+        78
       ],
       "loc": {
         "start": {
@@ -88,98 +88,7 @@
         },
         "end": {
           "line": 1,
-          "column": 53
-        }
-      }
-    },
-    {
-      "type": "ImportDeclaration",
-      "specifiers": [
-        {
-          "type": "ImportSpecifier",
-          "local": {
-            "type": "Identifier",
-            "name": "multicast",
-            "range": [
-              63,
-              72
-            ],
-            "loc": {
-              "start": {
-                "line": 2,
-                "column": 9
-              },
-              "end": {
-                "line": 2,
-                "column": 18
-              }
-            }
-          },
-          "imported": {
-            "type": "Identifier",
-            "name": "multicast",
-            "range": [
-              63,
-              72
-            ],
-            "loc": {
-              "start": {
-                "line": 2,
-                "column": 9
-              },
-              "end": {
-                "line": 2,
-                "column": 18
-              }
-            }
-          },
-          "range": [
-            63,
-            72
-          ],
-          "loc": {
-            "start": {
-              "line": 2,
-              "column": 9
-            },
-            "end": {
-              "line": 2,
-              "column": 18
-            }
-          }
-        }
-      ],
-      "source": {
-        "type": "Literal",
-        "value": "./multicast",
-        "raw": "'./multicast'",
-        "range": [
-          80,
-          93
-        ],
-        "loc": {
-          "start": {
-            "line": 2,
-            "column": 26
-          },
-          "end": {
-            "line": 2,
-            "column": 39
-          }
-        }
-      },
-      "range": [
-        54,
-        94
-      ],
-      "loc": {
-        "start": {
-          "line": 2,
-          "column": 0
-        },
-        "end": {
-          "line": 2,
-          "column": 40
+          "column": 78
         }
       },
       "trailingComments": [
@@ -187,16 +96,16 @@
           "type": "Block",
           "value": "*\n * @param value\n * @return {ConnectableObservable<T>}\n * @method publishBehavior\n * @owner Observable\n ",
           "range": [
-            95,
-            204
+            79,
+            188
           ],
           "loc": {
             "start": {
-              "line": 3,
+              "line": 2,
               "column": 0
             },
             "end": {
-              "line": 8,
+              "line": 7,
               "column": 3
             }
           }
@@ -211,16 +120,16 @@
           "type": "Identifier",
           "name": "publishBehavior",
           "range": [
-            221,
-            236
+            205,
+            220
           ],
           "loc": {
             "start": {
-              "line": 9,
+              "line": 8,
               "column": 16
             },
             "end": {
-              "line": 9,
+              "line": 8,
               "column": 31
             }
           }
@@ -230,16 +139,16 @@
             "type": "Identifier",
             "name": "value",
             "range": [
-              237,
-              242
+              221,
+              226
             ],
             "loc": {
               "start": {
-                "line": 9,
+                "line": 8,
                 "column": 32
               },
               "end": {
-                "line": 9,
+                "line": 8,
                 "column": 37
               }
             }
@@ -253,56 +162,57 @@
               "argument": {
                 "type": "CallExpression",
                 "callee": {
-                  "type": "MemberExpression",
-                  "computed": false,
-                  "object": {
+                  "type": "CallExpression",
+                  "callee": {
                     "type": "Identifier",
-                    "name": "multicast",
+                    "name": "higherOrder",
                     "range": [
-                      257,
-                      266
+                      241,
+                      252
                     ],
                     "loc": {
                       "start": {
-                        "line": 10,
+                        "line": 9,
                         "column": 11
                       },
                       "end": {
-                        "line": 10,
-                        "column": 20
+                        "line": 9,
+                        "column": 22
                       }
                     }
                   },
-                  "property": {
-                    "type": "Identifier",
-                    "name": "call",
-                    "range": [
-                      267,
-                      271
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 10,
-                        "column": 21
-                      },
-                      "end": {
-                        "line": 10,
-                        "column": 25
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "value",
+                      "range": [
+                        253,
+                        258
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 9,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 9,
+                          "column": 28
+                        }
                       }
                     }
-                  },
+                  ],
                   "range": [
-                    257,
-                    271
+                    241,
+                    259
                   ],
                   "loc": {
                     "start": {
-                      "line": 10,
+                      "line": 9,
                       "column": 11
                     },
                     "end": {
-                      "line": 10,
-                      "column": 25
+                      "line": 9,
+                      "column": 29
                     }
                   }
                 },
@@ -310,118 +220,63 @@
                   {
                     "type": "ThisExpression",
                     "range": [
-                      272,
-                      276
+                      260,
+                      264
                     ],
                     "loc": {
                       "start": {
-                        "line": 10,
-                        "column": 26
-                      },
-                      "end": {
-                        "line": 10,
+                        "line": 9,
                         "column": 30
-                      }
-                    }
-                  },
-                  {
-                    "type": "NewExpression",
-                    "callee": {
-                      "type": "Identifier",
-                      "name": "BehaviorSubject",
-                      "range": [
-                        282,
-                        297
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 10,
-                          "column": 36
-                        },
-                        "end": {
-                          "line": 10,
-                          "column": 51
-                        }
-                      }
-                    },
-                    "arguments": [
-                      {
-                        "type": "Identifier",
-                        "name": "value",
-                        "range": [
-                          298,
-                          303
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 10,
-                            "column": 52
-                          },
-                          "end": {
-                            "line": 10,
-                            "column": 57
-                          }
-                        }
-                      }
-                    ],
-                    "range": [
-                      278,
-                      304
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 10,
-                        "column": 32
                       },
                       "end": {
-                        "line": 10,
-                        "column": 58
+                        "line": 9,
+                        "column": 34
                       }
                     }
                   }
                 ],
                 "range": [
-                  257,
-                  305
+                  241,
+                  265
                 ],
                 "loc": {
                   "start": {
-                    "line": 10,
+                    "line": 9,
                     "column": 11
                   },
                   "end": {
-                    "line": 10,
-                    "column": 59
+                    "line": 9,
+                    "column": 35
                   }
                 }
               },
               "range": [
-                250,
-                306
+                234,
+                266
               ],
               "loc": {
                 "start": {
-                  "line": 10,
+                  "line": 9,
                   "column": 4
                 },
                 "end": {
-                  "line": 10,
-                  "column": 60
+                  "line": 9,
+                  "column": 36
                 }
               }
             }
           ],
           "range": [
-            244,
-            308
+            228,
+            268
           ],
           "loc": {
             "start": {
-              "line": 9,
+              "line": 8,
               "column": 39
             },
             "end": {
-              "line": 11,
+              "line": 10,
               "column": 1
             }
           }
@@ -429,16 +284,16 @@
         "generator": false,
         "expression": false,
         "range": [
-          212,
-          308
+          196,
+          268
         ],
         "loc": {
           "start": {
-            "line": 9,
+            "line": 8,
             "column": 7
           },
           "end": {
-            "line": 11,
+            "line": 10,
             "column": 1
           }
         },
@@ -447,16 +302,16 @@
             "type": "Block",
             "value": "*\n * @param value\n * @return {ConnectableObservable<T>}\n * @method publishBehavior\n * @owner Observable\n ",
             "range": [
-              95,
-              204
+              79,
+              188
             ],
             "loc": {
               "start": {
-                "line": 3,
+                "line": 2,
                 "column": 0
               },
               "end": {
-                "line": 8,
+                "line": 7,
                 "column": 3
               }
             }
@@ -467,16 +322,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=publishBehavior.js.map",
             "range": [
-              309,
-              352
+              269,
+              312
             ],
             "loc": {
               "start": {
-                "line": 12,
+                "line": 11,
                 "column": 0
               },
               "end": {
-                "line": 12,
+                "line": 11,
                 "column": 43
               }
             }
@@ -486,16 +341,16 @@
       "specifiers": [],
       "source": null,
       "range": [
-        205,
-        308
+        189,
+        268
       ],
       "loc": {
         "start": {
-          "line": 9,
+          "line": 8,
           "column": 0
         },
         "end": {
-          "line": 11,
+          "line": 10,
           "column": 1
         }
       },
@@ -504,16 +359,16 @@
           "type": "Block",
           "value": "*\n * @param value\n * @return {ConnectableObservable<T>}\n * @method publishBehavior\n * @owner Observable\n ",
           "range": [
-            95,
-            204
+            79,
+            188
           ],
           "loc": {
             "start": {
-              "line": 3,
+              "line": 2,
               "column": 0
             },
             "end": {
-              "line": 8,
+              "line": 7,
               "column": 3
             }
           }
@@ -524,16 +379,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=publishBehavior.js.map",
           "range": [
-            309,
-            352
+            269,
+            312
           ],
           "loc": {
             "start": {
-              "line": 12,
+              "line": 11,
               "column": 0
             },
             "end": {
-              "line": 12,
+              "line": 11,
               "column": 43
             }
           }
@@ -544,7 +399,7 @@
   "sourceType": "module",
   "range": [
     0,
-    308
+    268
   ],
   "loc": {
     "start": {
@@ -552,7 +407,7 @@
       "column": 0
     },
     "end": {
-      "line": 11,
+      "line": 10,
       "column": 1
     }
   },
@@ -561,16 +416,16 @@
       "type": "Block",
       "value": "*\n * @param value\n * @return {ConnectableObservable<T>}\n * @method publishBehavior\n * @owner Observable\n ",
       "range": [
-        95,
-        204
+        79,
+        188
       ],
       "loc": {
         "start": {
-          "line": 3,
+          "line": 2,
           "column": 0
         },
         "end": {
-          "line": 8,
+          "line": 7,
           "column": 3
         }
       }
@@ -579,16 +434,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=publishBehavior.js.map",
       "range": [
-        309,
-        352
+        269,
+        312
       ],
       "loc": {
         "start": {
-          "line": 12,
+          "line": 11,
           "column": 0
         },
         "end": {
-          "line": 12,
+          "line": 11,
           "column": 43
         }
       }

@@ -8,25 +8,25 @@
           "type": "ImportSpecifier",
           "local": {
             "type": "Identifier",
-            "name": "ReplaySubject",
+            "name": "higherOrder",
             "range": [
-              9,
-              22
+              26,
+              37
             ],
             "loc": {
               "start": {
                 "line": 1,
-                "column": 9
+                "column": 26
               },
               "end": {
                 "line": 1,
-                "column": 22
+                "column": 37
               }
             }
           },
           "imported": {
             "type": "Identifier",
-            "name": "ReplaySubject",
+            "name": "publishReplay",
             "range": [
               9,
               22
@@ -44,7 +44,7 @@
           },
           "range": [
             9,
-            22
+            37
           ],
           "loc": {
             "start": {
@@ -53,33 +53,33 @@
             },
             "end": {
               "line": 1,
-              "column": 22
+              "column": 37
             }
           }
         }
       ],
       "source": {
         "type": "Literal",
-        "value": "../ReplaySubject",
-        "raw": "'../ReplaySubject'",
+        "value": "../operators/publishReplay",
+        "raw": "'../operators/publishReplay'",
         "range": [
-          30,
-          48
+          45,
+          73
         ],
         "loc": {
           "start": {
             "line": 1,
-            "column": 30
+            "column": 45
           },
           "end": {
             "line": 1,
-            "column": 48
+            "column": 73
           }
         }
       },
       "range": [
         0,
-        49
+        74
       ],
       "loc": {
         "start": {
@@ -88,107 +88,34 @@
         },
         "end": {
           "line": 1,
-          "column": 49
-        }
-      }
-    },
-    {
-      "type": "ImportDeclaration",
-      "specifiers": [
-        {
-          "type": "ImportSpecifier",
-          "local": {
-            "type": "Identifier",
-            "name": "multicast",
-            "range": [
-              59,
-              68
-            ],
-            "loc": {
-              "start": {
-                "line": 2,
-                "column": 9
-              },
-              "end": {
-                "line": 2,
-                "column": 18
-              }
-            }
-          },
-          "imported": {
-            "type": "Identifier",
-            "name": "multicast",
-            "range": [
-              59,
-              68
-            ],
-            "loc": {
-              "start": {
-                "line": 2,
-                "column": 9
-              },
-              "end": {
-                "line": 2,
-                "column": 18
-              }
-            }
-          },
-          "range": [
-            59,
-            68
-          ],
-          "loc": {
-            "start": {
-              "line": 2,
-              "column": 9
-            },
-            "end": {
-              "line": 2,
-              "column": 18
-            }
-          }
-        }
-      ],
-      "source": {
-        "type": "Literal",
-        "value": "./multicast",
-        "raw": "'./multicast'",
-        "range": [
-          76,
-          89
-        ],
-        "loc": {
-          "start": {
-            "line": 2,
-            "column": 26
-          },
-          "end": {
-            "line": 2,
-            "column": 39
-          }
-        }
-      },
-      "range": [
-        50,
-        90
-      ],
-      "loc": {
-        "start": {
-          "line": 2,
-          "column": 0
-        },
-        "end": {
-          "line": 2,
-          "column": 40
+          "column": 74
         }
       },
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * @param bufferSize\n * @param windowTime\n * @param scheduler\n * @return {ConnectableObservable<T>}\n * @method publishReplay\n * @owner Observable\n ",
+          "value": " tslint:enable:max-line-length ",
           "range": [
-            91,
-            244
+            75,
+            110
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 35
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * @param bufferSize\n * @param windowTime\n * @param selectorOrScheduler\n * @param scheduler\n * @return {Observable<T> | ConnectableObservable<T>}\n * @method publishReplay\n * @owner Observable\n ",
+          "range": [
+            111,
+            310
           ],
           "loc": {
             "start": {
@@ -196,7 +123,7 @@
               "column": 0
             },
             "end": {
-              "line": 10,
+              "line": 11,
               "column": 3
             }
           }
@@ -211,196 +138,72 @@
           "type": "Identifier",
           "name": "publishReplay",
           "range": [
-            261,
-            274
+            327,
+            340
           ],
           "loc": {
             "start": {
-              "line": 11,
+              "line": 12,
               "column": 16
             },
             "end": {
-              "line": 11,
+              "line": 12,
               "column": 29
             }
           }
         },
         "params": [
           {
-            "type": "AssignmentPattern",
-            "left": {
-              "type": "Identifier",
-              "name": "bufferSize",
-              "range": [
-                275,
-                285
-              ],
-              "loc": {
-                "start": {
-                  "line": 11,
-                  "column": 30
-                },
-                "end": {
-                  "line": 11,
-                  "column": 40
-                }
-              }
-            },
-            "right": {
-              "type": "MemberExpression",
-              "computed": false,
-              "object": {
-                "type": "Identifier",
-                "name": "Number",
-                "range": [
-                  288,
-                  294
-                ],
-                "loc": {
-                  "start": {
-                    "line": 11,
-                    "column": 43
-                  },
-                  "end": {
-                    "line": 11,
-                    "column": 49
-                  }
-                }
-              },
-              "property": {
-                "type": "Identifier",
-                "name": "POSITIVE_INFINITY",
-                "range": [
-                  295,
-                  312
-                ],
-                "loc": {
-                  "start": {
-                    "line": 11,
-                    "column": 50
-                  },
-                  "end": {
-                    "line": 11,
-                    "column": 67
-                  }
-                }
-              },
-              "range": [
-                288,
-                312
-              ],
-              "loc": {
-                "start": {
-                  "line": 11,
-                  "column": 43
-                },
-                "end": {
-                  "line": 11,
-                  "column": 67
-                }
-              }
-            },
+            "type": "Identifier",
+            "name": "bufferSize",
             "range": [
-              275,
-              312
-            ],
-            "loc": {
-              "start": {
-                "line": 11,
-                "column": 30
-              },
-              "end": {
-                "line": 11,
-                "column": 67
-              }
-            }
-          },
-          {
-            "type": "AssignmentPattern",
-            "left": {
-              "type": "Identifier",
-              "name": "windowTime",
-              "range": [
-                314,
-                324
-              ],
-              "loc": {
-                "start": {
-                  "line": 11,
-                  "column": 69
-                },
-                "end": {
-                  "line": 11,
-                  "column": 79
-                }
-              }
-            },
-            "right": {
-              "type": "MemberExpression",
-              "computed": false,
-              "object": {
-                "type": "Identifier",
-                "name": "Number",
-                "range": [
-                  327,
-                  333
-                ],
-                "loc": {
-                  "start": {
-                    "line": 11,
-                    "column": 82
-                  },
-                  "end": {
-                    "line": 11,
-                    "column": 88
-                  }
-                }
-              },
-              "property": {
-                "type": "Identifier",
-                "name": "POSITIVE_INFINITY",
-                "range": [
-                  334,
-                  351
-                ],
-                "loc": {
-                  "start": {
-                    "line": 11,
-                    "column": 89
-                  },
-                  "end": {
-                    "line": 11,
-                    "column": 106
-                  }
-                }
-              },
-              "range": [
-                327,
-                351
-              ],
-              "loc": {
-                "start": {
-                  "line": 11,
-                  "column": 82
-                },
-                "end": {
-                  "line": 11,
-                  "column": 106
-                }
-              }
-            },
-            "range": [
-              314,
+              341,
               351
             ],
             "loc": {
               "start": {
-                "line": 11,
-                "column": 69
+                "line": 12,
+                "column": 30
               },
               "end": {
-                "line": 11,
-                "column": 106
+                "line": 12,
+                "column": 40
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "windowTime",
+            "range": [
+              353,
+              363
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 42
+              },
+              "end": {
+                "line": 12,
+                "column": 52
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "selectorOrScheduler",
+            "range": [
+              365,
+              384
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 54
+              },
+              "end": {
+                "line": 12,
+                "column": 73
               }
             }
           },
@@ -408,17 +211,17 @@
             "type": "Identifier",
             "name": "scheduler",
             "range": [
-              353,
-              362
+              386,
+              395
             ],
             "loc": {
               "start": {
-                "line": 11,
-                "column": 108
+                "line": 12,
+                "column": 75
               },
               "end": {
-                "line": 11,
-                "column": 117
+                "line": 12,
+                "column": 84
               }
             }
           }
@@ -431,56 +234,111 @@
               "argument": {
                 "type": "CallExpression",
                 "callee": {
-                  "type": "MemberExpression",
-                  "computed": false,
-                  "object": {
+                  "type": "CallExpression",
+                  "callee": {
                     "type": "Identifier",
-                    "name": "multicast",
+                    "name": "higherOrder",
                     "range": [
-                      377,
-                      386
+                      410,
+                      421
                     ],
                     "loc": {
                       "start": {
-                        "line": 12,
+                        "line": 13,
                         "column": 11
                       },
                       "end": {
-                        "line": 12,
-                        "column": 20
+                        "line": 13,
+                        "column": 22
                       }
                     }
                   },
-                  "property": {
-                    "type": "Identifier",
-                    "name": "call",
-                    "range": [
-                      387,
-                      391
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 12,
-                        "column": 21
-                      },
-                      "end": {
-                        "line": 12,
-                        "column": 25
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "bufferSize",
+                      "range": [
+                        422,
+                        432
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 13,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 13,
+                          "column": 33
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "windowTime",
+                      "range": [
+                        434,
+                        444
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 13,
+                          "column": 35
+                        },
+                        "end": {
+                          "line": 13,
+                          "column": 45
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "selectorOrScheduler",
+                      "range": [
+                        446,
+                        465
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 13,
+                          "column": 47
+                        },
+                        "end": {
+                          "line": 13,
+                          "column": 66
+                        }
+                      }
+                    },
+                    {
+                      "type": "Identifier",
+                      "name": "scheduler",
+                      "range": [
+                        467,
+                        476
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 13,
+                          "column": 68
+                        },
+                        "end": {
+                          "line": 13,
+                          "column": 77
+                        }
                       }
                     }
-                  },
+                  ],
                   "range": [
-                    377,
-                    391
+                    410,
+                    477
                   ],
                   "loc": {
                     "start": {
-                      "line": 12,
+                      "line": 13,
                       "column": 11
                     },
                     "end": {
-                      "line": 12,
-                      "column": 25
+                      "line": 13,
+                      "column": 78
                     }
                   }
                 },
@@ -488,154 +346,63 @@
                   {
                     "type": "ThisExpression",
                     "range": [
-                      392,
-                      396
+                      478,
+                      482
                     ],
                     "loc": {
                       "start": {
-                        "line": 12,
-                        "column": 26
+                        "line": 13,
+                        "column": 79
                       },
                       "end": {
-                        "line": 12,
-                        "column": 30
-                      }
-                    }
-                  },
-                  {
-                    "type": "NewExpression",
-                    "callee": {
-                      "type": "Identifier",
-                      "name": "ReplaySubject",
-                      "range": [
-                        402,
-                        415
-                      ],
-                      "loc": {
-                        "start": {
-                          "line": 12,
-                          "column": 36
-                        },
-                        "end": {
-                          "line": 12,
-                          "column": 49
-                        }
-                      }
-                    },
-                    "arguments": [
-                      {
-                        "type": "Identifier",
-                        "name": "bufferSize",
-                        "range": [
-                          416,
-                          426
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 12,
-                            "column": 50
-                          },
-                          "end": {
-                            "line": 12,
-                            "column": 60
-                          }
-                        }
-                      },
-                      {
-                        "type": "Identifier",
-                        "name": "windowTime",
-                        "range": [
-                          428,
-                          438
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 12,
-                            "column": 62
-                          },
-                          "end": {
-                            "line": 12,
-                            "column": 72
-                          }
-                        }
-                      },
-                      {
-                        "type": "Identifier",
-                        "name": "scheduler",
-                        "range": [
-                          440,
-                          449
-                        ],
-                        "loc": {
-                          "start": {
-                            "line": 12,
-                            "column": 74
-                          },
-                          "end": {
-                            "line": 12,
-                            "column": 83
-                          }
-                        }
-                      }
-                    ],
-                    "range": [
-                      398,
-                      450
-                    ],
-                    "loc": {
-                      "start": {
-                        "line": 12,
-                        "column": 32
-                      },
-                      "end": {
-                        "line": 12,
-                        "column": 84
+                        "line": 13,
+                        "column": 83
                       }
                     }
                   }
                 ],
                 "range": [
-                  377,
-                  451
+                  410,
+                  483
                 ],
                 "loc": {
                   "start": {
-                    "line": 12,
+                    "line": 13,
                     "column": 11
                   },
                   "end": {
-                    "line": 12,
-                    "column": 85
+                    "line": 13,
+                    "column": 84
                   }
                 }
               },
               "range": [
-                370,
-                452
+                403,
+                484
               ],
               "loc": {
                 "start": {
-                  "line": 12,
+                  "line": 13,
                   "column": 4
                 },
                 "end": {
-                  "line": 12,
-                  "column": 86
+                  "line": 13,
+                  "column": 85
                 }
               }
             }
           ],
           "range": [
-            364,
-            454
+            397,
+            486
           ],
           "loc": {
             "start": {
-              "line": 11,
-              "column": 119
+              "line": 12,
+              "column": 86
             },
             "end": {
-              "line": 13,
+              "line": 14,
               "column": 1
             }
           }
@@ -643,26 +410,44 @@
         "generator": false,
         "expression": false,
         "range": [
-          252,
-          454
+          318,
+          486
         ],
         "loc": {
           "start": {
-            "line": 11,
+            "line": 12,
             "column": 7
           },
           "end": {
-            "line": 13,
+            "line": 14,
             "column": 1
           }
         },
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * @param bufferSize\n * @param windowTime\n * @param scheduler\n * @return {ConnectableObservable<T>}\n * @method publishReplay\n * @owner Observable\n ",
+            "value": " tslint:enable:max-line-length ",
             "range": [
-              91,
-              244
+              75,
+              110
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 2,
+                "column": 35
+              }
+            }
+          },
+          {
+            "type": "Block",
+            "value": "*\n * @param bufferSize\n * @param windowTime\n * @param selectorOrScheduler\n * @param scheduler\n * @return {Observable<T> | ConnectableObservable<T>}\n * @method publishReplay\n * @owner Observable\n ",
+            "range": [
+              111,
+              310
             ],
             "loc": {
               "start": {
@@ -670,7 +455,7 @@
                 "column": 0
               },
               "end": {
-                "line": 10,
+                "line": 11,
                 "column": 3
               }
             }
@@ -681,16 +466,16 @@
             "type": "Line",
             "value": "# sourceMappingURL=publishReplay.js.map",
             "range": [
-              455,
-              496
+              487,
+              528
             ],
             "loc": {
               "start": {
-                "line": 14,
+                "line": 15,
                 "column": 0
               },
               "end": {
-                "line": 14,
+                "line": 15,
                 "column": 41
               }
             }
@@ -700,26 +485,44 @@
       "specifiers": [],
       "source": null,
       "range": [
-        245,
-        454
+        311,
+        486
       ],
       "loc": {
         "start": {
-          "line": 11,
+          "line": 12,
           "column": 0
         },
         "end": {
-          "line": 13,
+          "line": 14,
           "column": 1
         }
       },
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * @param bufferSize\n * @param windowTime\n * @param scheduler\n * @return {ConnectableObservable<T>}\n * @method publishReplay\n * @owner Observable\n ",
+          "value": " tslint:enable:max-line-length ",
           "range": [
-            91,
-            244
+            75,
+            110
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 35
+            }
+          }
+        },
+        {
+          "type": "Block",
+          "value": "*\n * @param bufferSize\n * @param windowTime\n * @param selectorOrScheduler\n * @param scheduler\n * @return {Observable<T> | ConnectableObservable<T>}\n * @method publishReplay\n * @owner Observable\n ",
+          "range": [
+            111,
+            310
           ],
           "loc": {
             "start": {
@@ -727,7 +530,7 @@
               "column": 0
             },
             "end": {
-              "line": 10,
+              "line": 11,
               "column": 3
             }
           }
@@ -738,16 +541,16 @@
           "type": "Line",
           "value": "# sourceMappingURL=publishReplay.js.map",
           "range": [
-            455,
-            496
+            487,
+            528
           ],
           "loc": {
             "start": {
-              "line": 14,
+              "line": 15,
               "column": 0
             },
             "end": {
-              "line": 14,
+              "line": 15,
               "column": 41
             }
           }
@@ -758,7 +561,7 @@
   "sourceType": "module",
   "range": [
     0,
-    454
+    486
   ],
   "loc": {
     "start": {
@@ -766,17 +569,35 @@
       "column": 0
     },
     "end": {
-      "line": 13,
+      "line": 14,
       "column": 1
     }
   },
   "comments": [
     {
       "type": "Block",
-      "value": "*\n * @param bufferSize\n * @param windowTime\n * @param scheduler\n * @return {ConnectableObservable<T>}\n * @method publishReplay\n * @owner Observable\n ",
+      "value": " tslint:enable:max-line-length ",
       "range": [
-        91,
-        244
+        75,
+        110
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n * @param bufferSize\n * @param windowTime\n * @param selectorOrScheduler\n * @param scheduler\n * @return {Observable<T> | ConnectableObservable<T>}\n * @method publishReplay\n * @owner Observable\n ",
+      "range": [
+        111,
+        310
       ],
       "loc": {
         "start": {
@@ -784,7 +605,7 @@
           "column": 0
         },
         "end": {
-          "line": 10,
+          "line": 11,
           "column": 3
         }
       }
@@ -793,16 +614,16 @@
       "type": "Line",
       "value": "# sourceMappingURL=publishReplay.js.map",
       "range": [
-        455,
-        496
+        487,
+        528
       ],
       "loc": {
         "start": {
-          "line": 14,
+          "line": 15,
           "column": 0
         },
         "end": {
-          "line": 14,
+          "line": 15,
           "column": 41
         }
       }
