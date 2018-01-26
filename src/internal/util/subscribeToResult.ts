@@ -1,4 +1,4 @@
-import { root } from './root';
+
 import { isArrayLike } from './isArrayLike';
 import { isPromise } from './isPromise';
 import { isObject } from './isObject';
@@ -11,6 +11,7 @@ import { observable as Symbol_observable } from '../symbol/observable';
 import { Subscriber } from '../Subscriber';
 import { subscribeToObservable } from './subscribeToObservable';
 import { subscribeToArray } from './subscribeToArray';
+import { subscribeToPromise } from './subscribeToPromise';
 
 export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
                                         result: any,
@@ -35,7 +36,7 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
   } else if (isArrayLike(result)) {
     return subscribeToArray(result)(destination);
   } else if (isPromise(result)) {
-    return subscribeToPromise(result as Promise<any>, destination);
+    return subscribeToPromise(result as Promise<any>)(destination);
   } else if (result && typeof result[Symbol_iterator] === 'function') {
     return subscribeToIteratable(result as any, destination);
   } else if (result && typeof result[Symbol_observable] === 'function') {
@@ -53,23 +54,6 @@ function subscribeToScalar<T>(scalar: { value: T }, subscriber: Subscriber<T>): 
   subscriber.next(scalar.value);
   subscriber.complete();
   return null;
-}
-
-function subscribeToPromise<T>(promise: PromiseLike<T>, subscriber: Subscriber<T>): Subscription {
-  promise.then(
-    (value) => {
-      if (!subscriber.closed) {
-        subscriber.next(value);
-        subscriber.complete();
-      }
-    },
-    (err: any) => subscriber.error(err)
-  )
-  .then(null, (err: any) => {
-    // Escaping the Promise trap: globally throw unhandled errors
-    root.setTimeout(() => { throw err; });
-  });
-  return subscriber;
 }
 
 function subscribeToIteratable<T>(iterable: Iterable<T>, subscriber: Subscriber<T>) {
