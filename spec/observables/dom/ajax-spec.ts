@@ -230,7 +230,7 @@ describe('Observable.ajax', () => {
   });
 
   it('should fail on 404', () => {
-    let error;
+    let error: any;
     const obj = {
       url: '/flibbertyJibbet',
       normalizeError: (e: any, xhr: any, type: any) => {

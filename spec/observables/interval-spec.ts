@@ -1,12 +1,11 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { expectObservable } from '../helpers/marble-testing';
 import { asapScheduler, Observable, animationFrameScheduler, queueScheduler } from '../../src';
 import { TestScheduler } from '../../src/testing';
 import { interval } from '../../src/';
 
 declare const asDiagram: any;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {interval} */

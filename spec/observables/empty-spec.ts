@@ -1,10 +1,9 @@
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { expectObservable } from '../helpers/marble-testing';
 import { empty } from '../../src/';
 import { EMPTY } from '../../src';
 import { expect } from 'chai';
 
 declare const asDiagram: any;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 declare const rxTestScheduler: any;
 
 /** @test {empty} */
