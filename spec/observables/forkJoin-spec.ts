@@ -331,6 +331,20 @@ describe('Observable.forkJoin', () => {
     expectObservable(e1).toBe(expected);
   });
 
+  it('should raise error when the selector throws', () => {
+    function selector(x, y) {
+      throw 'error';
+    }
+
+    const e1 = Observable.forkJoin(
+               hot('--a-|'),
+               hot('---b-|'),
+               selector);
+    const expected = '-----#';
+
+    expectObservable(e1).toBe(expected);
+  });
+
   it('should allow unsubscribing early and explicitly', () => {
     const e1 =   hot('--a--^--b--c---d-| ');
     const e1subs =        '^        !    ';
