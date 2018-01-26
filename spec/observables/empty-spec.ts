@@ -1,5 +1,6 @@
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 import { empty } from '../../src/create';
+import { EMPTY } from '../../src';
 import { expect } from 'chai';
 
 declare const asDiagram: any;
@@ -27,6 +28,10 @@ describe('empty', () => {
       complete() { hit = true; }
     });
     expect(hit).to.be.true;
+  });
+
+  it('should equal EMPTY', () => {
+    expect(empty()).to.equal(EMPTY);
   });
 
   it('should take a scheduler', () => {
