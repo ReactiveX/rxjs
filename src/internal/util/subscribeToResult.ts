@@ -10,6 +10,7 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { observable as Symbol_observable } from '../symbol/observable';
 import { Subscriber } from '../Subscriber';
 import { subscribeToObservable } from './subscribeToObservable';
+import { subscribeToArray } from './subscribeToArray';
 
 export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
                                         result: any,
@@ -32,7 +33,7 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
       return result.subscribe(destination);
     }
   } else if (isArrayLike(result)) {
-    return subscribeToArray(result as ArrayLike<any>, destination);
+    return subscribeToArray(result)(destination);
   } else if (isPromise(result)) {
     return subscribeToPromise(result as Promise<any>, destination);
   } else if (result && typeof result[Symbol_iterator] === 'function') {
@@ -52,15 +53,6 @@ function subscribeToScalar<T>(scalar: { value: T }, subscriber: Subscriber<T>): 
   subscriber.next(scalar.value);
   subscriber.complete();
   return null;
-}
-
-function subscribeToArray<T>(array: ArrayLike<T>, subscriber: Subscriber<T>) {
-  for (let i = 0, len = array.length; i < len && !subscriber.closed; i++) {
-    subscriber.next(array[i]);
-  }
-  if (!subscriber.closed) {
-    subscriber.complete();
-  }
 }
 
 function subscribeToPromise<T>(promise: PromiseLike<T>, subscriber: Subscriber<T>): Subscription {
