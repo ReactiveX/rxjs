@@ -8,7 +8,6 @@ import { Subscription } from '../Subscription';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { observable as Symbol_observable } from '../symbol/observable';
-import { Subscriber } from '../Subscriber';
 import { subscribeToObservable } from './subscribeToObservable';
 import { subscribeToArray } from './subscribeToArray';
 import { subscribeToPromise } from './subscribeToPromise';
@@ -30,7 +29,9 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
 
   if (result instanceof Observable) {
     if (result._isScalar) {
-      return subscribeToScalar(result as any, destination);
+      destination.next((result as any).value);
+      destination.complete();
+      return null;
     } else {
       return result.subscribe(destination);
     }
@@ -48,11 +49,5 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
       + ' You can provide an Observable, Promise, Array, or Iterable.';
     destination.error(new TypeError(msg));
   }
-  return null;
-}
-
-function subscribeToScalar<T>(scalar: { value: T }, subscriber: Subscriber<T>): null {
-  subscriber.next(scalar.value);
-  subscriber.complete();
   return null;
 }
