@@ -9,6 +9,7 @@ import { InnerSubscriber } from '../InnerSubscriber';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { observable as Symbol_observable } from '../symbol/observable';
 import { Subscriber } from '../Subscriber';
+import { subscribeToObservable } from './subscribeToObservable';
 
 export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
                                         result: any,
@@ -37,7 +38,7 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
   } else if (result && typeof result[Symbol_iterator] === 'function') {
     return subscribeToIteratable(result as any, destination);
   } else if (result && typeof result[Symbol_observable] === 'function') {
-    return subscribeToObservable(result as any, new InnerSubscriber(outerSubscriber, outerValue, outerIndex));
+    return subscribeToObservable(result as any)(new InnerSubscriber(outerSubscriber, outerValue, outerIndex));
   } else {
     const value = isObject(result) ? 'an invalid object' : `'${result}'`;
     const msg = `You provided ${value} where a stream was expected.`
@@ -92,14 +93,4 @@ function subscribeToIteratable<T>(iterable: Iterable<T>, subscriber: Subscriber<
       break;
     }
   } while (true);
-}
-
-function subscribeToObservable<T>(obj: any, subscriber: Subscriber<T>) {
-  const obs = obj[Symbol_observable]();
-  if (typeof obs.subscribe !== 'function') {
-    // Should be caught by observable subscribe function error handling.
-    throw new TypeError('Provided object does not correctly implement Symbol.observable');
-  } else {
-    return obs.subscribe(subscriber);
-  }
 }
