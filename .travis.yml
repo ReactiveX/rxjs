@@ -17,6 +17,8 @@ env:
   - NODE_VER=4 FULL_VALIDATE=false
   - NODE_VER=6 FULL_VALIDATE=true alias grunt=./node_modules/grunt-cli/bin/grunt
   - NODE_VER=7 FULL_VALIDATE=false
+  - NODE_VER=8 FULL_VALIDATE=false DEPLOY_NIGHTLY=true
+
 matrix:
   fast_finish: true
 
@@ -36,3 +38,11 @@ script:
 after_success:
   - if [ "$FULL_VALIDATE" == "true" ]; then npm run test:cover && npx nyc report --reporter=text-lcov | npx coveralls; fi
   - if [ "$FULL_VALIDATE" == "true" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ -n "$SAUCE_ACCESS_KEY" ]; then npm run build_spec_browser && grunt --gruntfile spec/support/mocha.sauce.gruntfile.js; fi
+
+deploy:
+  provider: script
+  on:
+    branch: master
+    skip_cleanup: true
+    condition: "$TRAVIS_EVENT_TYPE = cron"
+    condition: "$DEPLOY_NIGHTLY = true"
