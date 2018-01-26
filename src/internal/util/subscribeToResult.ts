@@ -12,6 +12,7 @@ import { Subscriber } from '../Subscriber';
 import { subscribeToObservable } from './subscribeToObservable';
 import { subscribeToArray } from './subscribeToArray';
 import { subscribeToPromise } from './subscribeToPromise';
+import { subscribeToIterable } from './subscribeToIterable';
 
 export function subscribeToResult<T, R>(outerSubscriber: OuterSubscriber<T, R>,
                                         result: any,
@@ -38,7 +39,7 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
   } else if (isPromise(result)) {
     return subscribeToPromise(result as Promise<any>)(destination);
   } else if (result && typeof result[Symbol_iterator] === 'function') {
-    return subscribeToIterable(result as any, destination);
+    return subscribeToIterable(result as any)(destination);
   } else if (result && typeof result[Symbol_observable] === 'function') {
     return subscribeToObservable(result as any)(new InnerSubscriber(outerSubscriber, outerValue, outerIndex));
   } else {
@@ -54,19 +55,4 @@ function subscribeToScalar<T>(scalar: { value: T }, subscriber: Subscriber<T>): 
   subscriber.next(scalar.value);
   subscriber.complete();
   return null;
-}
-
-function subscribeToIterable<T>(iterable: Iterable<T>, subscriber: Subscriber<T>) {
-  const iterator = iterable[Symbol_iterator]();
-  do {
-    let item = iterator.next();
-    if (item.done) {
-      subscriber.complete();
-      break;
-    }
-    subscriber.next(item.value);
-    if (subscriber.closed) {
-      break;
-    }
-  } while (true);
 }
