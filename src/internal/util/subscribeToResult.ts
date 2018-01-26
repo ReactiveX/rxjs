@@ -42,7 +42,7 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
   } else if (result && typeof result[Symbol_iterator] === 'function') {
     return subscribeToIterable(result as any)(destination);
   } else if (result && typeof result[Symbol_observable] === 'function') {
-    return subscribeToObservable(result as any)(new InnerSubscriber(outerSubscriber, outerValue, outerIndex));
+    return subscribeToObservable(result as any)(destination);
   } else {
     const value = isObject(result) ? 'an invalid object' : `'${result}'`;
     const msg = `You provided ${value} where a stream was expected.`
