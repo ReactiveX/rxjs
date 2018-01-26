@@ -2,7 +2,6 @@ import { root } from './root';
 import { isArrayLike } from './isArrayLike';
 import { isPromise } from './isPromise';
 import { isObject } from './isObject';
-import { Subscriber } from '../Subscriber';
 import { Observable, ObservableInput } from '../Observable';
 import { iterator as Symbol_iterator } from '../symbol/iterator';
 import { Subscription } from '../Subscription';
@@ -18,7 +17,7 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
                                      result: ObservableInput<T>,
                                      outerValue?: T,
                                      outerIndex?: number): Subscription {
-  let destination: Subscriber<any> = new InnerSubscriber(outerSubscriber, outerValue, outerIndex);
+  const destination = new InnerSubscriber(outerSubscriber, outerValue, outerIndex);
 
   if (destination.closed) {
     return null;
@@ -26,7 +25,7 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
 
   if (result instanceof Observable) {
     if (result._isScalar) {
-      destination.next((<any>result).value);
+      destination.next((result as any).value);
       destination.complete();
       return null;
     } else {
@@ -43,7 +42,7 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
     result.then(
       (value) => {
         if (!destination.closed) {
-          destination.next(<any>value);
+          destination.next(value);
           destination.complete();
         }
       },
@@ -55,7 +54,7 @@ export function subscribeToResult<T>(outerSubscriber: OuterSubscriber<any, any>,
     });
     return destination;
   } else if (result && typeof result[Symbol_iterator] === 'function') {
-    const iterator = <any>result[Symbol_iterator]();
+    const iterator = result[Symbol_iterator]();
     do {
       let item = iterator.next();
       if (item.done) {
