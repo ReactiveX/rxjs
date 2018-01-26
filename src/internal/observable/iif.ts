@@ -1,6 +1,6 @@
 import { Observable, SubscribableOrPromise } from '../Observable';
 import { defer } from './defer';
-import { empty } from './empty';
+import { EMPTY } from './empty';
 
 /**
  * Decides at subscription time which Observable will actually be subscribed.
@@ -85,9 +85,8 @@ import { empty } from './empty';
  */
 export function iif<T, F>(
   condition: () => boolean,
-  // TODO(benlesh): use EMPTY once #3247 lands
-  trueResult: SubscribableOrPromise<T> = empty(),
-  falseResult: SubscribableOrPromise<F> = empty()
+  trueResult: SubscribableOrPromise<T> = EMPTY,
+  falseResult: SubscribableOrPromise<F> = EMPTY
 ): Observable<T|F> {
   return defer<T|F>(() => condition() ? trueResult : falseResult);
 }
