@@ -14,7 +14,7 @@ describe('subscribeToResult', () => {
     const subscription = subscribeToResult(subscriber, result);
 
     expect(expected).to.be.equal(42);
-    expect(subscription).to.be.null;
+    expect(subscription).to.be.empty;
   });
 
   it('should subscribe to observables that are an instanceof Rx.Observable', (done: MochaDone) => {
@@ -147,35 +147,29 @@ describe('subscribeToResult', () => {
         .to.throw(TypeError, 'Provided object does not correctly implement Symbol.observable');
     });
 
-  it('should emit an error when trying to subscribe to an unknown type of object', (done: MochaDone) => {
+  it('should emit an error when trying to subscribe to an unknown type of object', () => {
     const subscriber = new OuterSubscriber(x => {
-      done(new Error('should not be called'));
+      throw new Error('should not be called');
     }, (x) => {
-      expect(x).to.be.an('error');
-      const msg = 'You provided an invalid object where a stream was expected.'
-        + ' You can provide an Observable, Promise, Array, or Iterable.';
-      expect(x.message).to.be.equal(msg);
-      done();
+      throw new Error('should not be called');
     }, () => {
-      done(new Error('should not be called'));
+      throw new Error('should not be called');
     });
 
-    subscribeToResult(subscriber, {});
+    expect(() => subscribeToResult(subscriber, {}))
+      .to.throw(TypeError, 'You provided an invalid object where a stream was expected. You can provide an Observable, Promise, Array, or Iterable.');
   });
 
-  it('should emit an error when trying to subscribe to a non-object', (done: MochaDone) => {
+  it('should emit an error when trying to subscribe to a non-object', () => {
     const subscriber = new OuterSubscriber(x => {
-      done(new Error('should not be called'));
+      throw new Error('should not be called');
     }, (x) => {
-      expect(x).to.be.an('error');
-      const msg = 'You provided \'null\' where a stream was expected.'
-        + ' You can provide an Observable, Promise, Array, or Iterable.';
-      expect(x.message).to.be.equal(msg);
-      done();
+      throw new Error('should not be called');
     }, () => {
-      done(new Error('should not be called'));
+      throw new Error('should not be called');
     });
 
-    subscribeToResult(subscriber, null);
+    expect(() => subscribeToResult(subscriber, null))
+      .to.throw(TypeError, `You provided 'null' where a stream was expected. You can provide an Observable, Promise, Array, or Iterable.`);
   });
 });
