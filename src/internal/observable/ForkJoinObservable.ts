@@ -224,7 +224,13 @@ class ForkJoinSubscriber<T> extends OuterSubscriber<T, T> {
     }
 
     if (haveValues === len) {
-      const value = resultSelector ? resultSelector.apply(this, values) : values;
+      let value: any;
+      try {
+        value = resultSelector ? resultSelector.apply(this, values) : values;
+      } catch (err) {
+        destination.error(err);
+        return;
+      }
       destination.next(value);
     }
 
