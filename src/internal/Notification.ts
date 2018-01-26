@@ -91,7 +91,7 @@ export class Notification<T> {
       case 'E':
         return _throw(this.error);
       case 'C':
-        return empty<T>();
+        return empty();
     }
     throw new Error('unexpected notification kind value');
   }

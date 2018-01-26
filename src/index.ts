@@ -23,5 +23,8 @@ export { pipe } from './internal/util/pipe';
 export { noop } from './internal/util/noop';
 export { identity } from './internal/util/identity';
 
+/* Constants */
+export { EMPTY } from './internal/observable/empty';
+
 /* Types */
 export * from './internal/types';

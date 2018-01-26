@@ -1,7 +1,7 @@
 import { Observable, SubscribableOrPromise } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { EmptyObservable } from './EmptyObservable';
+import { empty } from './empty';
 import { isArray } from '..//util/isArray';
 
 import { subscribeToResult } from '..//util/subscribeToResult';
@@ -140,7 +140,7 @@ export class ForkJoinObservable<T> extends Observable<T> {
                                   Array<SubscribableOrPromise<any>> |
                                   ((...values: Array<any>) => any)>): Observable<T> {
     if (sources === null || arguments.length === 0) {
-      return new EmptyObservable<T>();
+      return empty();
     }
 
     let resultSelector: (...values: Array<any>) => any = null;
@@ -155,7 +155,7 @@ export class ForkJoinObservable<T> extends Observable<T> {
     }
 
     if (sources.length === 0) {
-      return new EmptyObservable<T>();
+      return empty();
     }
 
     return new ForkJoinObservable(<Array<SubscribableOrPromise<any>>>sources, resultSelector);

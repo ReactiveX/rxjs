@@ -2,7 +2,7 @@ import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
 import { fromArray } from '../observable/fromArray';
 import { scalar } from '../observable/scalar';
-import { EmptyObservable } from '../observable/EmptyObservable';
+import { empty } from '../observable/empty';
 import { concat as concatStatic } from '../observable/concat';
 import { isScheduler } from '..//util/isScheduler';
 import { MonoTypeOperatorFunction } from '../../internal/types';
@@ -46,7 +46,7 @@ export function startWith<T>(...array: Array<T | IScheduler>): MonoTypeOperatorF
     } else if (len > 0) {
       return concatStatic(fromArray(array as T[], scheduler), source);
     } else {
-      return concatStatic(new EmptyObservable<T>(scheduler), source);
+      return concatStatic<T>(empty(scheduler), source);
     }
   };
 }
