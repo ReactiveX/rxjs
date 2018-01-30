@@ -1,4 +1,4 @@
 import { Observable } from '../../internal/Observable';
-import { _if } from '../../internal/observable/if';
+import { iif } from '../../internal/observable/iif';
 
-Observable.if = _if;
+Observable.if = iif;
