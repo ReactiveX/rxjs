@@ -5,7 +5,9 @@
 
 [![Selenium Test Status](https://saucelabs.com/browser-matrix/rxjs5.svg)](https://saucelabs.com/u/rxjs5)
 
-# RxJS 5
+# RxJS 6 Alpha
+
+## FOR V 5.X PLEASE GO TO [STABLE BRANCH](https://github.com/ReactiveX/rxjs/tree/stable)
 
 Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Extensions/RxJS](https://github.com/Reactive-Extensions/RxJS) and is the latest production-ready version of RxJS. This rewrite is meant to have better performance, better modularity, better debuggable call stacks, while staying mostly backwards compatible, with some breaking changes that reduce the API surface.
 
@@ -15,7 +17,6 @@ Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Exten
 - [Contribution Guidelines](CONTRIBUTING.md)
 - [Maintainer Guidelines](doc/maintainer-guidelines.md)
 - [Creating Operators](doc/operator-creation.md)
-- [Migrating From RxJS 4 to RxJS 5](MIGRATION.md)
 - [API Documentation (WIP)](http://reactivex.io/rxjs)
 
 ## Versions In This Repository
@@ -34,7 +35,7 @@ By contributing or commenting on issues in this repository, whether you've read 
 ### ES6 via npm
 
 ```sh
-npm install rxjs
+npm install rxjs@alpha
 ```
 
 To import the entire core set of functionality:
@@ -48,23 +49,13 @@ Rx.Observable.of(1,2,3)
 To import only what you need by patching (this is useful for size-sensitive bundling):
 
 ```js
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/map';
+import { Observable, Subject, ReplaySubject } from 'rxjs';
+import { from, of, range } from 'rxjs/create';
+import { map, filter, switchMap } from 'rxjs/operators';
 
-Observable.of(1,2,3).map(x => x + '!!!'); // etc
-```
-
-To import what you need and use it with proposed [bind operator](https://github.com/tc39/proposal-bind-operator):
-
-> Note: This additional syntax requires [transpiler support](http://babeljs.io/docs/plugins/transform-function-bind/) and this syntax may be completely withdrawn from TC39 without notice! Use at your own risk.
-
-```js
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { map } from 'rxjs/operator/map';
-
-Observable::of(1,2,3)::map(x => x + '!!!'); // etc
+range(1, 200)
+  .pipe(filter(x => x % 2 === 1), map(x => x + x))
+  .subscribe(x => console.log(x));
 ```
 
 ### CommonJS via npm
@@ -72,54 +63,19 @@ Observable::of(1,2,3)::map(x => x + '!!!'); // etc
 To install this library for CommonJS (CJS) usage, use the following command:
 
 ```sh
-npm install rxjs
+npm install rxjs@alpha
 ```
 
-Import all core functionality:
+(Note: destructuring available in Node 8+)
 
 ```js
-var Rx = require('rxjs/Rx');
+const { Observable, Subject, ReplaySubject } = require('rxjs');
+const { from, of, range } = require('rxjs/create');
+const { map, filter, switchMap } = require('rxjs/operators');
 
-Rx.Observable.of(1,2,3); // etc
-```
-
-Import only what you need and patch Observable (this is useful in size-sensitive bundling scenarios):
-
-```js
-var Observable = require('rxjs/Observable').Observable;
-// patch Observable with appropriate methods
-require('rxjs/add/observable/of');
-require('rxjs/add/operator/map');
-
-Observable.of(1,2,3).map(function (x) { return x + '!!!'; }); // etc
-```
-
-Import operators and use them _manually_ you can do the following (this is also useful for bundling):
-
-```js
-var of = require('rxjs/observable/of').of;
-var map = require('rxjs/operator/map').map;
-
-map.call(of(1,2,3), function (x) { return x + '!!!'; });
-```
-
-You can also use the above method to build your own Observable and export it from your own module.
-
-
-### All Module Types (CJS/ES6/AMD/TypeScript) via npm
-
-To install this library via [npm](https://www.npmjs.org) **version 3**, use the following command:
-
-```sh
-npm install @reactivex/rxjs
-```
-
-This will include CJS/Global builds and can be used for all module types.
-
-If you are using npm **version 2** before this library has achieved a stable version, you need to specify the library version explicitly:
-
-```sh
-npm install @reactivex/rxjs@5.0.0
+range(1, 200)
+  .pipe(filter(x => x % 2 === 1), map(x => x + x))
+  .subscribe(x => console.log(x));
 ```
 
 ### CDN
@@ -139,6 +95,7 @@ Rx.Observable.of('hello world')
 
 ## Goals
 
+- Smaller overall bundles sizes
 - Provide better performance than preceding versions of RxJS
 - To model/follow the [Observable Spec Proposal](https://github.com/zenparsing/es-observable) to the observable.
 - Provide more modular file structure in a variety of formats
@@ -146,27 +103,10 @@ Rx.Observable.of('hello world')
 
 ## Building/Testing
 
-The build and test structure is fairly primitive at the moment. There are various npm scripts that can be run:
+- `npm run build_all` - builds everything
+- `npm test` - runs tests
 
-- build_es6: Transpiles the TypeScript files from `src/` to `dist/es6`
-- build_cjs: Transpiles the ES6 files from `dist/es6` to `dist/cjs`
-- build_amd: Transpiles the ES6 files from `dist/es6` to `dist/amd`
-- build_global: Transpiles/Bundles the CommonJS files from `dist/cjs` to `dist/global/Rx.js`
-- build_all: Performs all of the above in the proper order.
-- build_perf: builds ES6, CommonJS, then global, then runs the performance tests with `protractor`
-- build_docs: generates API documentation from `dist/es6` to `dist/docs`
-- build_cover: runs `istanbul` code coverage against test cases
-- test: runs tests with `mocha`
-- tests2png: generates PNG marble diagrams from test cases.
-
-`npm run info` will list available script.
-
-### Example
-
-```sh
-# build all the things!
-npm run build_all
-```
+`npm run info` will list available scripts (there are a lot LOL)
 
 ## Performance Tests
 
