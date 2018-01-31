@@ -1,15 +1,11 @@
 import { Observable } from '../Observable';
 import { IScheduler } from '../Scheduler';
 import { Subscription } from '../Subscription';
+import { subscribeToPromise } from '../util/subscribeToPromise';
 
 export function fromPromise<T>(input: Promise<T>, scheduler: IScheduler) {
   if (!scheduler) {
-    return new Observable<T>(subscriber => {
-      input.then(value => {
-        subscriber.next(value);
-        subscriber.complete();
-      }, err => subscriber.error(err));
-    });
+    return new Observable<T>(subscribeToPromise(input));
   } else {
     return new Observable<T>(subscriber => {
       const sub = new Subscription();

@@ -1,15 +1,11 @@
 import { Observable } from '../Observable';
 import { IScheduler } from '../Scheduler';
 import { Subscription } from '../Subscription';
+import { subscribeToArray } from '../util/subscribeToArray';
 
 export function fromArray<T>(input: ArrayLike<T>, scheduler: IScheduler) {
   if (!scheduler) {
-    return new Observable<T>(subscriber => {
-      for (let i = 0; i < input.length && !subscriber.closed; i++) {
-        subscriber.next(input[i]);
-      }
-      subscriber.complete();
-    });
+    return new Observable<T>(subscribeToArray(input));
   } else {
     return new Observable<T>(subscriber => {
       const sub = new Subscription();

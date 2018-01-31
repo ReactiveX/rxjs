@@ -14,7 +14,7 @@ describe('subscribeToResult', () => {
     const subscription = subscribeToResult(subscriber, result);
 
     expect(expected).to.be.equal(42);
-    expect(subscription).to.be.null;
+    expect(subscription).to.be.empty;
   });
 
   it('should subscribe to observables that are an instanceof Rx.Observable', (done: MochaDone) => {
@@ -131,51 +131,45 @@ describe('subscribeToResult', () => {
     subscribeToResult(subscriber, observableSymbolObject);
   });
 
-  it('should emit an error if value returned by Symbol.observable call is not a valid observable', (done: MochaDone) => {
-    const observableSymbolObject = { [$$symbolObservable]: () => ({}) };
+  it('should throw an error if value returned by Symbol.observable call is not ' +
+    'a valid observable', () => {
+      const observableSymbolObject = { [$$symbolObservable]: () => ({}) };
 
-    const subscriber = new OuterSubscriber(x => {
-      done(new Error('should not be called'));
-    }, (x) => {
-      expect(x).to.be.an('error');
-      expect(x.message).to.be.equal('Provided object does not correctly implement Symbol.observable');
-      done();
-    }, () => {
-      done(new Error('should not be called'));
+      const subscriber = new OuterSubscriber(x => {
+        throw new Error('should not be called');
+      }, (x) => {
+        throw new Error('should not be called');
+      }, () => {
+        throw new Error('should not be called');
+      });
+
+      expect(() => subscribeToResult(subscriber, observableSymbolObject))
+        .to.throw(TypeError, 'Provided object does not correctly implement Symbol.observable');
     });
 
-    subscribeToResult(subscriber, observableSymbolObject);
+  it('should emit an error when trying to subscribe to an unknown type of object', () => {
+    const subscriber = new OuterSubscriber(x => {
+      throw new Error('should not be called');
+    }, (x) => {
+      throw new Error('should not be called');
+    }, () => {
+      throw new Error('should not be called');
+    });
+
+    expect(() => subscribeToResult(subscriber, {}))
+      .to.throw(TypeError, 'You provided an invalid object where a stream was expected. You can provide an Observable, Promise, Array, or Iterable.');
   });
 
-  it('should emit an error when trying to subscribe to an unknown type of object', (done: MochaDone) => {
+  it('should emit an error when trying to subscribe to a non-object', () => {
     const subscriber = new OuterSubscriber(x => {
-      done(new Error('should not be called'));
+      throw new Error('should not be called');
     }, (x) => {
-      expect(x).to.be.an('error');
-      const msg = 'You provided an invalid object where a stream was expected.'
-        + ' You can provide an Observable, Promise, Array, or Iterable.';
-      expect(x.message).to.be.equal(msg);
-      done();
+      throw new Error('should not be called');
     }, () => {
-      done(new Error('should not be called'));
+      throw new Error('should not be called');
     });
 
-    subscribeToResult(subscriber, {});
-  });
-
-  it('should emit an error when trying to subscribe to a non-object', (done: MochaDone) => {
-    const subscriber = new OuterSubscriber(x => {
-      done(new Error('should not be called'));
-    }, (x) => {
-      expect(x).to.be.an('error');
-      const msg = 'You provided \'null\' where a stream was expected.'
-        + ' You can provide an Observable, Promise, Array, or Iterable.';
-      expect(x.message).to.be.equal(msg);
-      done();
-    }, () => {
-      done(new Error('should not be called'));
-    });
-
-    subscribeToResult(subscriber, null);
+    expect(() => subscribeToResult(subscriber, null))
+      .to.throw(TypeError, `You provided 'null' where a stream was expected. You can provide an Observable, Promise, Array, or Iterable.`);
   });
 });
