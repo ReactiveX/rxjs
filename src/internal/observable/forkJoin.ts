@@ -156,7 +156,6 @@ export function forkJoin<T, R>(...sources: Array<ObservableInput<T> |
  */
 class ForkJoinSubscriber<T, R> extends OuterSubscriber<T, T> {
   private completed = 0;
-  private total: number;
   private values: T[];
   private haveValues = 0;
 
@@ -166,7 +165,6 @@ class ForkJoinSubscriber<T, R> extends OuterSubscriber<T, T> {
     super(destination);
 
     const len = sources.length;
-    this.total = len;
     this.values = new Array(len);
 
     for (let i = 0; i < len; i++) {
