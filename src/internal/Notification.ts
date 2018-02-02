@@ -2,7 +2,7 @@ import { PartialObserver } from './Observer';
 import { Observable } from './Observable';
 import { empty } from './observable/empty';
 import { of } from './observable/of';
-import { _throw } from './observable/throw';
+import { throwError } from './observable/throwError';
 
 /**
  * Represents a push-based event or value that an {@link Observable} can emit.
@@ -89,7 +89,7 @@ export class Notification<T> {
       case 'N':
         return of(this.value);
       case 'E':
-        return _throw(this.error);
+        return throwError(this.error);
       case 'C':
         return empty();
     }

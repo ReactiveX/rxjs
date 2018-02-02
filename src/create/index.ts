@@ -19,7 +19,7 @@ export { onErrorResumeNext } from '../internal/observable/onErrorResumeNext';
 export { pairs } from '../internal/observable/pairs';
 export { race } from '../internal/observable/race';
 export { range } from '../internal/observable/range';
-export { _throw as throwError } from '../internal/observable/throw';
+export { throwError } from '../internal/observable/throwError';
 export { timer } from '../internal/observable/timer';
 export { using } from '../internal/observable/using';
 export { zip } from '../internal/observable/zip';
