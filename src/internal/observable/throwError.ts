@@ -16,17 +16,21 @@ import { Subscriber } from '../Subscriber';
  * Observables, such as in a {@link mergeMap}.
  *
  * @example <caption>Emit the number 7, then emit an error.</caption>
- * var result = Rx.Observable.throw(new Error('oops!')).startWith(7);
+ * import { throwError, concat, of } from 'rxjs/create';
+ *
+ * const result = concat(of(7), throwError(new Error('oops!')));
  * result.subscribe(x => console.log(x), e => console.error(e));
  *
  * @example <caption>Map and flatten numbers to the sequence 'a', 'b', 'c', but throw an error for 13</caption>
- * var interval = Rx.Observable.interval(1000);
- * var result = interval.mergeMap(x =>
- *   x === 13 ?
- *     Rx.Observable.throw('Thirteens are bad') :
- *     Rx.Observable.of('a', 'b', 'c')
- * );
- * result.subscribe(x => console.log(x), e => console.error(e));
+ * import { throwError, interval, of } from 'rxjs/create';
+ * import { mergeMap } from 'rxjs/operators';
+ *
+ * interval(1000).pipe(
+ *   mergeMap(x => x === 13 ?
+ *     throwError('Thirteens are bad') :
+ *     of('a', 'b', 'c')
+ *   )
+ * ).subscribe(x => console.log(x), e => console.error(e));
  *
  * @see {@link create}
  * @see {@link empty}
