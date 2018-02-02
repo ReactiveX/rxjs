@@ -172,7 +172,6 @@ class ForkJoinSubscriber<T, R> extends OuterSubscriber<T, T> {
       const innerSubscription = subscribeToResult(this, source, null, i);
 
       if (innerSubscription) {
-        (innerSubscription as any).outerIndex = i;
         this.add(innerSubscription);
       }
     }
