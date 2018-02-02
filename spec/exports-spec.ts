@@ -19,7 +19,7 @@ import { onErrorResumeNext } from '../src/internal/observable/onErrorResumeNext'
 import { pairs } from '../src/internal/observable/pairs';
 import { race } from '../src/internal/observable/race';
 import { range } from '../src/internal/observable/range';
-import { _throw } from '../src/internal/observable/throw';
+import { throwError } from '../src/internal/observable/throwError';
 import { timer } from '../src/internal/observable/timer';
 import { using } from '../src/internal/observable/using';
 import { zip } from '../src/internal/observable/zip';
@@ -106,8 +106,8 @@ describe('exports', () => {
     expect(range).to.equal(Rx.Observable.range);
   });
 
-  it('should have rxjs/observable/throw', () => {
-    expect(_throw).to.equal(Rx.Observable.throw);
+  it('should have rxjs/observable/throwError', () => {
+    expect(throwError).to.equal(Rx.Observable.throw);
   });
 
   it('should have rxjs/observable/timer', () => {

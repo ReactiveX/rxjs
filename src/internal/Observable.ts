@@ -5,7 +5,6 @@ import { Subscription, AnonymousSubscription, TeardownLogic } from './Subscripti
 import { root } from './util/root';
 import { toSubscriber } from './util/toSubscriber';
 import { IfObservable } from './observable/IfObservable';
-import { ErrorObservable } from './observable/ErrorObservable';
 import { observable as Symbol_observable } from '../internal/symbol/observable';
 import { OperatorFunction } from '../internal/types';
 import { pipeFromArray } from './util/pipe';
@@ -256,7 +255,6 @@ export class Observable<T> implements Subscribable<T> {
 
   // `if` and `throw` are special snow flakes, the compiler sees them as reserved words
   static if: typeof IfObservable.create;
-  static throw: typeof ErrorObservable.create;
 
   /**
    * An interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable
