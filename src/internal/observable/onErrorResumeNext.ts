@@ -1,11 +1,7 @@
 import { Observable, ObservableInput } from '../Observable';
 import { from } from './from';
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { isArray } from '..//util/isArray';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '..//util/subscribeToResult';
+import { isArray } from '../util/isArray';
+import { EMPTY } from './empty';
 
 /* tslint:disable:max-line-length */
 export function onErrorResumeNext<R>(v: ObservableInput<R>): Observable<R>;
@@ -73,62 +69,35 @@ export function onErrorResumeNext<R>(array: ObservableInput<any>[]): Observable<
  * @see {@link concat}
  * @see {@link catch}
  *
- * @param {...ObservableInput} observables Observables passed either directly or as an array.
+ * @param {...ObservableInput} sources Observables passed either directly or as an array.
  * @return {Observable} An Observable that emits values from source Observable, but - if it errors - subscribes
  * to the next passed Observable and so on, until it completes or runs out of Observables.
  * @method onErrorResumeNext
  * @owner Observable
  */
-export function onErrorResumeNext<T, R>(...nextSources: Array<ObservableInput<any> |
+export function onErrorResumeNext<T, R>(...sources: Array<ObservableInput<any> |
                                                               Array<ObservableInput<any>> |
                                                               ((...values: Array<any>) => R)>): Observable<R> {
-  let source: ObservableInput<any> = null;
 
-  if (nextSources.length === 1 && isArray(nextSources[0])) {
-    nextSources = <Array<ObservableInput<any>>>nextSources[0];
-  }
-  source = nextSources.shift();
-
-  return from(source, null).lift(new OnErrorResumeNextOperator<T, R>(nextSources));
-}
-
-class OnErrorResumeNextOperator<T, R> implements Operator<T, R> {
-  constructor(private nextSources: Array<ObservableInput<any>>) {
+  if (sources.length === 0) {
+    return EMPTY;
   }
 
-  call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new OnErrorResumeNextSubscriber(subscriber, this.nextSources));
-  }
-}
+  const [ first, ...remainder ] = sources;
 
-class OnErrorResumeNextSubscriber<T, R> extends OuterSubscriber<T, R> {
-  constructor(protected destination: Subscriber<T>,
-              private nextSources: Array<ObservableInput<any>>) {
-    super(destination);
+  if (sources.length === 1 && isArray(first)) {
+    return onErrorResumeNext(...first);
   }
 
-  notifyError(error: any, innerSub: InnerSubscriber<T, any>): void {
-    this.subscribeToNextSource();
-  }
+  return new Observable(subscriber => {
+    const subNext = () => subscriber.add(
+      onErrorResumeNext(...remainder).subscribe(subscriber)
+    );
 
-  notifyComplete(innerSub: InnerSubscriber<T, any>): void {
-    this.subscribeToNextSource();
-  }
-
-  protected _error(err: any): void {
-    this.subscribeToNextSource();
-  }
-
-  protected _complete(): void {
-    this.subscribeToNextSource();
-  }
-
-  private subscribeToNextSource(): void {
-    const next = this.nextSources.shift();
-    if (next) {
-      this.add(subscribeToResult(this, next));
-    } else {
-      this.destination.complete();
-    }
-  }
+    return from(first).subscribe({
+      next(value) { subscriber.next(value); },
+      error: subNext,
+      complete: subNext,
+    });
+  });
 }
