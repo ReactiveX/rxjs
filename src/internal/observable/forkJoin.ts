@@ -188,8 +188,7 @@ class ForkJoinSubscriber<T, R> extends OuterSubscriber<T, T> {
   }
 
   notifyComplete(innerSub: InnerSubscriber<T, T>): void {
-    const destination = this.destination;
-    const { haveValues, resultSelector, values } = this;
+    const { destination, haveValues, resultSelector, values } = this;
     const len = values.length;
 
     if (!(innerSub as any)._hasValue) {
