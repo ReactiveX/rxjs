@@ -63,9 +63,11 @@ export function forkJoin<R>(...sources: Array<ObservableInput<any>>): Observable
  * when output Observable is supposed to emit a result.
  *
  * @example <caption>Use forkJoin with operator emitting immediately</caption>
- * const observable = Rx.Observable.forkJoin(
- *   Rx.Observable.of(1, 2, 3, 4),
- *   Rx.Observable.of(5, 6, 7, 8)
+ * import { forkJoin, of } from 'rxjs/create';
+ *
+ * const observable = forkJoin(
+ *   of(1, 2, 3, 4),
+ *   of(5, 6, 7, 8)
  * );
  * observable.subscribe(
  *   value => console.log(value),
@@ -79,9 +81,12 @@ export function forkJoin<R>(...sources: Array<ObservableInput<any>>): Observable
  *
  *
  * @example <caption>Use forkJoin with operator emitting after some time</caption>
- * const observable = Rx.Observable.forkJoin(
- *   Rx.Observable.interval(1000).take(3), // emit 0, 1, 2 every second and complete
- *   Rx.Observable.interval(500).take(4) // emit 0, 1, 2, 3 every half a second and complete
+ * import { forkJoin, interval } from 'rxjs/create';
+ * import { take } from 'rxjs/operators';
+ *
+ * const observable = forkJoin(
+ *   interval(1000).pipe(take(3)), // emit 0, 1, 2 every second and complete
+ *   interval(500).pipe(take(4)) // emit 0, 1, 2, 3 every half a second and complete
  * );
  * observable.subscribe(
  *   value => console.log(value),
@@ -95,9 +100,12 @@ export function forkJoin<R>(...sources: Array<ObservableInput<any>>): Observable
  *
  *
  * @example <caption>Use forkJoin with project function</caption>
- * const observable = Rx.Observable.forkJoin(
- *   Rx.Observable.interval(1000).take(3), // emit 0, 1, 2 every second and complete
- *   Rx.Observable.interval(500).take(4), // emit 0, 1, 2, 3 every half a second and complete
+ * import { jorkJoin, interval } from 'rxjs/create';
+ * import { take } from 'rxjs/operators';
+ *
+ * const observable = forkJoin(
+ *   interval(1000).pipe(take(3)), // emit 0, 1, 2 every second and complete
+ *   interval(500).pipe(take(4)), // emit 0, 1, 2, 3 every half a second and complete
  *   (n, m) => n + m
  * );
  * observable.subscribe(
