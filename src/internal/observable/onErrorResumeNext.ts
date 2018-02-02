@@ -22,40 +22,37 @@ export function onErrorResumeNext<R>(array: ObservableInput<any>[]): Observable<
  *
  * <img src="./img/onErrorResumeNext.png" width="100%">
  *
- * `onErrorResumeNext` is an operator that accepts a series of Observables, provided either directly as
- * arguments or as an array. If no single Observable is provided, returned Observable will simply behave the same
- * as the source.
+ * `onErrorResumeNext` Will subscribe to each observable source it is provided, in order.
+ * If the source it's subscribed to emits an error or completes, it will move to the next source
+ * without error.
  *
- * `onErrorResumeNext` returns an Observable that starts by subscribing and re-emitting values from the source Observable.
- * When its stream of values ends - no matter if Observable completed or emitted an error - `onErrorResumeNext`
- * will subscribe to the first Observable that was passed as an argument to the method. It will start re-emitting
- * its values as well and - again - when that stream ends, `onErrorResumeNext` will proceed to subscribing yet another
- * Observable in provided series, no matter if previous Observable completed or ended with an error. This will
- * be happening until there is no more Observables left in the series, at which point returned Observable will
- * complete - even if the last subscribed stream ended with an error.
+ * If `onErrorResumeNext` is provided no arguments, or a single, empty array, it will return {@link EMPTY}.
  *
- * `onErrorResumeNext` can be therefore thought of as version of {@link concat} operator, which is more permissive
- * when it comes to the errors emitted by its input Observables. While `concat` subscribes to the next Observable
- * in series only if previous one successfully completed, `onErrorResumeNext` subscribes even if it ended with
- * an error.
+ * `onErrorResumeNext` is basically {@link concat}, only it will continue, even if one of its
+ * sources emits an error.
  *
- * Note that you do not get any access to errors emitted by the Observables. In particular do not
- * expect these errors to appear in error callback passed to {@link subscribe}. If you want to take
- * specific actions based on what error was emitted by an Observable, you should try out {@link catch} instead.
- *
+ * Note that there is no way to handle any errors thrown by sources via the resuult of
+ * `onErrorResumeNext`. If you want to handle errors thrown in any given source, you can
+ * always use the {@link catchError} operator on them before passing them into `onErrorResumeNext`.
  *
  * @example <caption>Subscribe to the next Observable after map fails</caption>
- * Rx.Observable.of(1, 2, 3, 0)
- *   .map(x => {
- *       if (x === 0) { throw Error(); }
-         return 10 / x;
- *   })
- *   .onErrorResumeNext(Rx.Observable.of(1, 2, 3))
- *   .subscribe(
- *     val => console.log(val),
- *     err => console.log(err),          // Will never be called.
- *     () => console.log('that\'s it!')
- *   );
+ * import { onErrorResumeNext, of } from 'rxjs/create';
+ * import { map } from 'rxjs/operators';
+ *
+ * onErrorResumeNext(
+ *  of(1, 2, 3, 0).pipe(
+ *    map(x => {
+ *      if (x === 0) throw Error();
+ *      return 10 / x;
+ *    })
+ *  ),
+ *  of(1, 2, 3),
+ * )
+ * .subscribe(
+ *   val => console.log(val),
+ *   err => console.log(err),          // Will never be called.
+ *   () => console.log('done')
+ * );
  *
  * // Logs:
  * // 10
@@ -64,16 +61,14 @@ export function onErrorResumeNext<R>(array: ObservableInput<any>[]): Observable<
  * // 1
  * // 2
  * // 3
- * // "that's it!"
+ * // "done"
  *
  * @see {@link concat}
  * @see {@link catch}
  *
- * @param {...ObservableInput} sources Observables passed either directly or as an array.
- * @return {Observable} An Observable that emits values from source Observable, but - if it errors - subscribes
- * to the next passed Observable and so on, until it completes or runs out of Observables.
- * @method onErrorResumeNext
- * @owner Observable
+ * @param {...ObservableInput} sources Observables (or anything that *is* observable) passed either directly or as an array.
+ * @return {Observable} An Observable that concatenates all sources, one after the other,
+ * ignoring all errors, such that any error causes it to move on to the next source.
  */
 export function onErrorResumeNext<T, R>(...sources: Array<ObservableInput<any> |
                                                               Array<ObservableInput<any>> |
