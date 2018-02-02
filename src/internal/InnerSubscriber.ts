@@ -3,13 +3,14 @@ import { OuterSubscriber } from './OuterSubscriber';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
+ * @internal
  * @ignore
  * @extends {Ignored}
  */
 export class InnerSubscriber<T, R> extends Subscriber<R> {
-  private index: number = 0;
+  private index = 0;
 
-  constructor(private parent: OuterSubscriber<T, R>, private outerValue: T, private outerIndex: number) {
+  constructor(private parent: OuterSubscriber<T, R>, public outerValue: T, public outerIndex: number) {
     super();
   }
 
