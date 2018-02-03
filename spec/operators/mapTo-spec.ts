@@ -1,5 +1,5 @@
-import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
+
+import * as Rx from '../../src/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram };
@@ -9,9 +9,6 @@ declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
 
 const Observable = Rx.Observable;
-
-// function shortcuts
-const throwError = function () { throw new Error(); };
 
 /** @test {mapTo} */
 describe('Observable.prototype.mapTo', () => {
@@ -59,16 +56,6 @@ describe('Observable.prototype.mapTo', () => {
 
     expectObservable(a.mapTo('x')).toBe(expected, undefined, 'too bad');
     expectSubscriptions(a.subscriptions).toBe(asubs);
-  });
-
-  it('should propagate errors from subscribe', () => {
-    const r = () => {
-      Observable.of(1)
-        .mapTo(-1)
-        .subscribe(throwError);
-    };
-
-    expect(r).to.throw();
   });
 
   it('should not map an empty observable', () => {

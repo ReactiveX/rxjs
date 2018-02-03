@@ -1,5 +1,5 @@
-import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
+import { expect } from 'chai';
+import * as Rx from '../../src/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram };
@@ -125,8 +125,9 @@ describe('Observable.fromEvent', () => {
       }
     };
 
-    const subscribe = () => Observable.fromEvent(<any>obj, 'click').subscribe();
-    expect(subscribe).to.throw(TypeError, 'Invalid event target');
+    Observable.fromEvent(obj as any, 'click').subscribe({
+      error(err) { expect(err).to.deep.equal(new TypeError('Invalid event target')); }
+    });
   });
 
   it('should pass through options to addEventListener', () => {

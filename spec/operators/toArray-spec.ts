@@ -1,4 +1,4 @@
-import * as Rx from '../../dist/cjs/Rx';
+import * as Rx from '../../src/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram, type };
@@ -65,6 +65,17 @@ describe('Observable.prototype.toArray', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should allow multiple subscriptions', () => {
+    const e1 = hot('-x-^--y--|');
+    const e1subs =    '^     !';
+    const expected =  '------(w|)';
+
+    const result = e1.toArray();
+    expectObservable(result).toBe(expected, { w: ['y'] });
+    expectObservable(result).toBe(expected, { w: ['y'] });
+    expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+  });
+
   it('should allow unsubscribing explicitly and early', () => {
     const e1 =   hot('--a--b----c-----d----e---|');
     const unsub =    '        !                 ';
@@ -108,7 +119,7 @@ describe('Observable.prototype.toArray', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  type(() => {
+  type('should infer the element type', () => {
     const typeValue = {
       val: 3
     };

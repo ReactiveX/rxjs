@@ -1,5 +1,5 @@
-import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
+import { expect } from 'chai';
+import * as Rx from '../../src/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram };
@@ -39,6 +39,20 @@ describe('Observable.prototype.partition', () => {
 
     function predicate(x) {
       return x === 'a';
+    }
+
+    expectObservableArray(e1.partition(predicate), expected);
+    expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+  });
+
+  it('should partition an observable into two using a predicate that takes an index', () => {
+    const e1 =    hot('--a-b---a------d--e---c--|');
+    const e1subs =    '^                        !';
+    const expected = ['--a-----a---------e------|',
+                      '----b----------d------c--|'];
+
+    function predicate(value, index: number) {
+      return index % 2 === 0;
     }
 
     expectObservableArray(e1.partition(predicate), expected);
@@ -239,11 +253,6 @@ describe('Observable.prototype.partition', () => {
     expectObservable(result[0], unsub).toBe(expected[0]);
     expectObservable(result[1], unsub).toBe(expected[1]);
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
-  });
-
-  it('should throw without predicate', () => {
-    const e1 = hot('--a-b---a------d----');
-    expect(e1.partition).to.throw();
   });
 
   it('should accept thisArg', () => {

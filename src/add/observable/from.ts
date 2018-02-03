@@ -1,9 +1,9 @@
-import { Observable } from '../../Observable';
-import { from as staticFrom } from '../../observable/from';
+import { Observable } from '../../internal/Observable';
+import { from as staticFrom } from '../../internal/observable/from';
 
 Observable.from = staticFrom;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   namespace Observable {
     export let from: typeof staticFrom;
   }

@@ -1,9 +1,8 @@
-///<reference path='../../typings/index.d.ts'/>
-import {Observable} from '../../dist/cjs/Observable';
-import {SubscriptionLog} from '../../dist/cjs/testing/SubscriptionLog';
-import {ColdObservable} from '../../dist/cjs/testing/ColdObservable';
-import {HotObservable} from '../../dist/cjs/testing/HotObservable';
-import {TestScheduler, observableToBeFn, subscriptionLogsToBeFn} from '../../dist/cjs/testing/TestScheduler';
+import { Observable } from '../../src/internal/Observable';
+import { SubscriptionLog } from '../../src/internal/testing/SubscriptionLog';
+import { ColdObservable } from '../../src/internal/testing/ColdObservable';
+import { HotObservable } from '../../src/internal/testing/HotObservable';
+import { TestScheduler, observableToBeFn, subscriptionLogsToBeFn } from '../../src/internal/testing/TestScheduler';
 
 declare const global: any;
 

@@ -1,8 +1,9 @@
-import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
+import { expect } from 'chai';
+import * as Rx from '../../src/Rx';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram, time, rxTestScheduler };
+declare const type;
 declare const hot: typeof marbleTestingSignature.hot;
 declare const cold: typeof marbleTestingSignature.cold;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
@@ -553,7 +554,7 @@ describe('Observable.prototype.multicast', () => {
     connectable.connect();
 
     expect(results1).to.deep.equal([1, 2, 3, 4]);
-    expect(results1).to.deep.equal([1, 2, 3, 4]);
+    expect(results2).to.deep.equal([1, 2, 3, 4]);
     expect(subscriptions).to.equal(1);
     done();
   });
@@ -636,6 +637,51 @@ describe('Observable.prototype.multicast', () => {
           expect(expected.length).to.equal(0);
           done();
         });
+    });
+  });
+
+  describe('typings', () => {
+    type('should infer the type', () => {
+      /* tslint:disable:no-unused-variable */
+      const source = Rx.Observable.of<number>(1, 2, 3);
+      const result: Rx.ConnectableObservable<number> = source.multicast(() => new Subject<number>());
+      /* tslint:enable:no-unused-variable */
+    });
+
+    type('should infer the type with a selector', () => {
+      /* tslint:disable:no-unused-variable */
+      const source = Rx.Observable.of<number>(1, 2, 3);
+      const result: Rx.Observable<number> = source.multicast(() => new Subject<number>(), s => s.map(x => x));
+      /* tslint:enable:no-unused-variable */
+    });
+
+    type('should infer the type with a type-changing selector', () => {
+      /* tslint:disable:no-unused-variable */
+      const source = Rx.Observable.of<number>(1, 2, 3);
+      const result: Rx.Observable<string> = source.multicast(() => new Subject<number>(), s => s.map(x => x + '!'));
+      /* tslint:enable:no-unused-variable */
+    });
+
+    type('should infer the type for the pipeable operator', () => {
+      /* tslint:disable:no-unused-variable */
+      const source = Rx.Observable.of<number>(1, 2, 3);
+      // TODO: https://github.com/ReactiveX/rxjs/issues/2972
+      const result: Rx.ConnectableObservable<number> = Rx.operators.multicast(() => new Subject<number>())(source);
+      /* tslint:enable:no-unused-variable */
+    });
+
+    type('should infer the type for the pipeable operator with a selector', () => {
+      /* tslint:disable:no-unused-variable */
+      const source = Rx.Observable.of<number>(1, 2, 3);
+      const result: Rx.Observable<number> = source.pipe(Rx.operators.multicast(() => new Subject<number>(), s => s.map(x => x)));
+      /* tslint:enable:no-unused-variable */
+    });
+
+    type('should infer the type for the pipeable operator with a type-changing selector', () => {
+      /* tslint:disable:no-unused-variable */
+      const source = Rx.Observable.of<number>(1, 2, 3);
+      const result: Rx.Observable<string> = source.pipe(Rx.operators.multicast(() => new Subject<number>(), s => s.map(x => x + '!')));
+      /* tslint:enable:no-unused-variable */
     });
   });
 });

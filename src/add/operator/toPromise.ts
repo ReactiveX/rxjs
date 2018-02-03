@@ -1,11 +1,2 @@
-
-import { Observable } from '../../Observable';
-import { toPromise } from '../../operator/toPromise';
-
-Observable.prototype.toPromise = toPromise;
-
-declare module '../../Observable' {
-  interface Observable<T> {
-    toPromise: typeof toPromise;
-  }
-}
+// HACK: does nothing, because `toPromise` now lives on the `Observable` itself.
+// leaving this module here to prevent breakage.

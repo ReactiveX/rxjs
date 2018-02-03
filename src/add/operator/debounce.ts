@@ -1,10 +1,10 @@
 
-import { Observable } from '../../Observable';
-import { debounce } from '../../operator/debounce';
+import { Observable } from '../../internal/Observable';
+import { debounce } from '../../internal/patching/operator/debounce';
 
 Observable.prototype.debounce = debounce;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   interface Observable<T> {
     debounce: typeof debounce;
   }

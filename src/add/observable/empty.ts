@@ -1,9 +1,9 @@
-import { Observable } from '../../Observable';
-import { empty as staticEmpty } from '../../observable/empty';
+import { Observable } from '../../internal/Observable';
+import { empty as staticEmpty } from '../../internal/observable/empty';
 
 Observable.empty = staticEmpty;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   namespace Observable {
     export let empty: typeof staticEmpty;
   }

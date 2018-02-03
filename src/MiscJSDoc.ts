@@ -5,10 +5,10 @@
  * we need these bogus classes, which are not stripped away. This file on the
  * other hand, is not included in the release bundle.
  */
-import { TeardownLogic } from './Subscription';
-import { Observable } from './Observable';
-import './observable/dom/MiscJSDoc';
-import { Observer } from './Observer';
+import { TeardownLogic } from './internal/Subscription';
+import { Observable } from './internal/Observable';
+import './internal/observable/dom/MiscJSDoc';
+import { Observer } from './internal/Observer';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

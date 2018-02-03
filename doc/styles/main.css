@@ -74,7 +74,7 @@ body.light-theme.layout-container > header {
 .layout-container > header a:hover, .layout-container > header a:active {
   color: #FFF;
 }
-body.light-theme .layout-container > header a:hover, .layout-container > header a:active {
+.light-theme.layout-container > header a:hover, .layout-container > header a:active {
   color: #EC0C8E;
 }
 
@@ -110,6 +110,11 @@ body.light-theme .search-input {
 body.light-theme .search-result li.selected {
   background: transparent !important;
   color: #EC0C8E;
+}
+
+body.light-theme .search-result li a:hover {
+ background: #ddd;
+  
 }
 
 .search-box img {

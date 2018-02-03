@@ -1,11 +1,8 @@
-import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
-import {ArrayObservable} from '../../dist/cjs/observable/ArrayObservable';
-import {ScalarObservable} from '../../dist/cjs/observable/ScalarObservable';
-import {EmptyObservable} from '../../dist/cjs/observable/EmptyObservable';
+import { expect } from 'chai';
+import * as Rx from '../../src/Rx';
+import { empty } from '../../src/internal/observable/empty';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
-
-declare const { asDiagram };
+declare const asDiagram: any;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
@@ -35,29 +32,9 @@ describe('Observable.of', () => {
       });
   });
 
-  it('should return a scalar observable if only passed one value', () => {
-    const obs = Observable.of('one');
-    expect(obs instanceof ScalarObservable).to.be.true;
-  });
-
-  it('should return a scalar observable if only passed one value and a scheduler', () => {
-    const obs = Observable.of<string>('one', Rx.Scheduler.queue);
-    expect(obs instanceof ScalarObservable).to.be.true;
-  });
-
-  it('should return an array observable if passed many values', () => {
-    const obs = Observable.of('one', 'two', 'three');
-    expect(obs instanceof ArrayObservable).to.be.true;
-  });
-
   it('should return an empty observable if passed no values', () => {
     const obs = Observable.of();
-    expect(obs instanceof EmptyObservable).to.be.true;
-  });
-
-  it('should return an empty observable if passed only a scheduler', () => {
-    const obs = Observable.of(Rx.Scheduler.queue);
-    expect(obs instanceof EmptyObservable).to.be.true;
+    expect(obs).to.equal(empty());
   });
 
   it('should emit one value', (done: MochaDone) => {
@@ -78,7 +55,6 @@ describe('Observable.of', () => {
       Observable.of<string>('a', 'b', 'c', rxTestScheduler),
       rxTestScheduler
     );
-    expect(source instanceof ScalarObservable).to.be.true;
     const result = source.concatAll();
     expectObservable(result).toBe('(abc|)');
   });
@@ -89,7 +65,6 @@ describe('Observable.of', () => {
       Observable.of<string>('d', 'e', 'f', rxTestScheduler),
       rxTestScheduler
     );
-    expect(source instanceof ArrayObservable).to.be.true;
 
     const result = source.concatAll();
     expectObservable(result).toBe('(abcdef|)');

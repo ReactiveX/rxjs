@@ -1,10 +1,10 @@
 
-import { Observable } from '../../Observable';
-import { ignoreElements } from '../../operator/ignoreElements';
+import { Observable } from '../../internal/Observable';
+import { ignoreElements } from '../../internal/patching/operator/ignoreElements';
 
 Observable.prototype.ignoreElements = ignoreElements;
 
-declare module '../../Observable' {
+declare module '../../internal/Observable' {
   interface Observable<T> {
     ignoreElements: typeof ignoreElements;
   }

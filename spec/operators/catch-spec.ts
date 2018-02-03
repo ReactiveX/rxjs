@@ -1,7 +1,7 @@
-import {expect} from 'chai';
-import * as Rx from '../../dist/cjs/Rx';
+import { expect } from 'chai';
+import * as Rx from '../../src/Rx';
 import * as sinon from 'sinon';
-import {createObservableInputs} from '../helpers/test-helper';
+import { createObservableInputs } from '../helpers/test-helper';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
 declare const { asDiagram };
@@ -295,44 +295,6 @@ describe('Observable.prototype.catch', () => {
 
     afterEach(() => {
       sandbox.restore();
-    });
-
-    it('should chain a throw from a promise using throw', (done: MochaDone) => {
-      const subscribeSpy = sinon.spy();
-      const testError = new Error('BROKEN PROMISE');
-      Observable.fromPromise(Promise.reject(testError)).catch(err => {
-        throw new Error('BROKEN THROW');
-      }).subscribe(subscribeSpy);
-
-      trueSetTimeout(() => {
-        try {
-          timers.tick(1);
-        } catch (e) {
-          expect(subscribeSpy).not.to.be.called;
-          expect(e.message).to.equal('BROKEN THROW');
-          return done();
-        }
-        done(new Error('This should have thrown an error'));
-      }, 0);
-    });
-
-    it('should chain a throw from a promise using Observable.throw', (done: MochaDone) => {
-      const subscribeSpy = sinon.spy();
-      const testError = new Error('BROKEN PROMISE');
-      Observable.fromPromise(Promise.reject(testError)).catch(err =>
-        Observable.throw(new Error('BROKEN THROW'))
-      ).subscribe(subscribeSpy);
-
-      trueSetTimeout(() => {
-        try {
-          timers.tick(1);
-        } catch (e) {
-          expect(subscribeSpy).not.to.be.called;
-          expect(e.message).to.equal('BROKEN THROW');
-          return done();
-        }
-        done(new Error('This should have thrown an error'));
-      }, 0);
     });
 
     it('should chain a throw from a promise using Observable.throw', (done: MochaDone) => {
