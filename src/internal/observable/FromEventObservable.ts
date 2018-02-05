@@ -200,7 +200,7 @@ export class FromEventObservable<T> extends Observable<T> {
                                       options?: EventListenerOptions) {
     let unsubscribe: () => void;
     if (isNodeList(sourceObj) || isHTMLCollection(sourceObj)) {
-      for (let source in sourceObj) {
+      for (let source of sourceObj) {
         FromEventObservable.setupSubscription(source, eventName, handler, subscriber, options);
       }
     } else if (isEventTarget(sourceObj)) {
