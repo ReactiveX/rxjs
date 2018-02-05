@@ -117,6 +117,10 @@ Run `npm run perf_micro [operator]` to run micro performance test benchmarking o
 ## Adding documentation
 RxNext uses [ESDoc](https://esdoc.org/) to generate API documentation. Refer to ESDoc's documentation for syntax. Run `npm run build_docs` to generate.
 
+At the moment we are trying to improve the documentation. For this purpose the Documentation is in a seperate [GitHub Repostory](https://github.com/ReactiveX/rxjs-docs).
+For a quick instruction take a look at the [documentation guidelines](https://github.com/ReactiveX/rxjs-docs/blob/master/DOCUMENTATION_GUIDELINES.md).
+We are really happy about any type of contributions! 
+
 ## Generating PNG marble diagrams
 
 The script `npm run tests2png` requires some native packages installed locally: `imagemagick`, `graphicsmagick`, and `ghostscript`.
