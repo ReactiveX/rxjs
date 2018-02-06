@@ -1,5 +1,5 @@
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
-import { empty } from '../../src/create';
+import { empty } from '../../src/';
 import { EMPTY } from '../../src';
 import { expect } from 'chai';
 
