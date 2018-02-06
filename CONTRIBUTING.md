@@ -12,6 +12,7 @@ Contents
 - [Submitting a Pull Request (PR)](#submitting-a-pull-request-pr)
   - [After your pull request is merged](#after-your-pull-request-is-merged)
 - [Coding Style Guidelines](#coding-style-guidelines)
+- [Documentation](#documentation)
 - [Unit Tests](#unit-tests)
   - [CI Tests](#ci-tests)
 - [Performance Tests](#performance-tests)
@@ -119,6 +120,11 @@ from the main (upstream) repository:
 
 (TBD): For now try to follow the style that exists elsewhere in the source, and use your best judgment.
 
+## Documentation
+
+- Documentation of RxJs will be shortly inline and more detailed in [rxjs-docs](https://github.com/ReactiveX/rxjs-docs)
+- The [Documentation Guidelines](https://github.com/ReactiveX/rxjs-docs/blob/master/DOCUMENTATION_GUIDELINES.md) will support you
+- Please keep both documents up to date
 
 ## Unit Tests
 

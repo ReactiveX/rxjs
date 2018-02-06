@@ -9,6 +9,7 @@ If your PR is the addition of a new operator, please make sure all these boxes a
 - [ ] The spec file should have a type definition test at the end of the spec to verify type definition for various use cases
 - [ ] The operator must be documented in JSDoc style in the implementation file, including also the PNG marble diagram image
 - [ ] The operator should be listed in `doc/operators.md` in a category of operators
+- [ ] The operator should also be documented. See [Documentation Guidelines](../CONTRIBUTING.md).
 - [ ] It should also be inserted in the operator decision tree file `doc/decision-tree-widget/tree.yml`
 - [ ] You may need to update `MIGRATION.md` if the operator differs from the corresponding one in RxJS v4
 -->
