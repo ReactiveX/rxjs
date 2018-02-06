@@ -1,6 +1,7 @@
-import { Observable, SubscribableOrPromise } from '../Observable';
+import { Observable } from '../Observable';
 import { defer } from './defer';
 import { EMPTY } from './empty';
+import { SubscribableOrPromise } from '../types';
 
 /**
  * Decides at subscription time which Observable will actually be subscribed.
