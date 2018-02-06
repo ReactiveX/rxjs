@@ -1,5 +1,5 @@
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
-import { timer, never, merge } from '../../src/create';
+import { timer, never, merge } from '../../src/';
 import { TestScheduler } from '../../src/testing';
 import { mergeMap } from '../../src/operators';
 

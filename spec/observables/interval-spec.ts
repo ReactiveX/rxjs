@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 import { asapScheduler, Observable, animationFrameScheduler, queueScheduler } from '../../src';
 import { TestScheduler } from '../../src/testing';
-import { interval } from '../../src/create';
+import { interval } from '../../src/';
 
 declare const asDiagram: any;
 declare const expectObservable: typeof marbleTestingSignature.expectObservable;

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
-import { defer } from '../../src/create';
+import { defer } from '../../src/';
 import { Observable } from '../../src';
 
 declare const asDiagram: any;

@@ -1,4 +1,4 @@
-import { never } from '../../src/create';
+import { never } from '../../src/';
 import { expect } from 'chai';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
