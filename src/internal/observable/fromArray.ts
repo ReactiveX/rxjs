@@ -3,7 +3,7 @@ import { IScheduler } from '../Scheduler';
 import { Subscription } from '../Subscription';
 import { subscribeToArray } from '../util/subscribeToArray';
 
-export function fromArray<T>(input: ArrayLike<T>, scheduler: IScheduler) {
+export function fromArray<T>(input: ArrayLike<T>, scheduler?: IScheduler) {
   if (!scheduler) {
     return new Observable<T>(subscribeToArray(input));
   } else {
