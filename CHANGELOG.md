@@ -1,3 +1,44 @@
+<a name="6.0.0-alpha.3"></a>
+# [6.0.0-alpha.3](https://github.com/ReactiveX/RxJS/compare/6.0.0-alpha.2...v6.0.0-alpha.3) (2018-02-06)
+
+
+### Bug Fixes
+
+* **animationFrame.spec:** spec description fix ([#3140](https://github.com/ReactiveX/RxJS/issues/3140)) ([ab6c325](https://github.com/ReactiveX/RxJS/commit/ab6c325))
+* **debounce:** support scalar selectors ([#3236](https://github.com/ReactiveX/RxJS/issues/3236)) ([1548393](https://github.com/ReactiveX/RxJS/commit/1548393)), closes [#3232](https://github.com/ReactiveX/RxJS/issues/3232)
+* **forkJoin:** catch and forward selector errors ([#3261](https://github.com/ReactiveX/RxJS/issues/3261)) ([e57bbb7](https://github.com/ReactiveX/RxJS/commit/e57bbb7)), closes [#3216](https://github.com/ReactiveX/RxJS/issues/3216)
+* **Observable:** expose pipe rest parameter overload ([#3292](https://github.com/ReactiveX/RxJS/issues/3292)) ([7ff5bc3](https://github.com/ReactiveX/RxJS/commit/7ff5bc3))
+* **onErrorResumeNext:** no longer holds onto subscriptions too long ([abbbdad](https://github.com/ReactiveX/RxJS/commit/abbbdad)), closes [#3178](https://github.com/ReactiveX/RxJS/issues/3178)
+* **scheduler:** prevent unwanted clearInterval ([#3226](https://github.com/ReactiveX/RxJS/issues/3226)) ([d7cfb42](https://github.com/ReactiveX/RxJS/commit/d7cfb42)), closes [#3042](https://github.com/ReactiveX/RxJS/issues/3042)
+* **timer:** multiple subscriptions to timer(Date) behaves correctly ([aafa7ff](https://github.com/ReactiveX/RxJS/commit/aafa7ff)), closes [#3252](https://github.com/ReactiveX/RxJS/issues/3252)
+* **typings:** correct compilation warnings from missing types in tests ([3aad6bc](https://github.com/ReactiveX/RxJS/commit/3aad6bc))
+* **typings:** relax debounce selector type ([c419ab4](https://github.com/ReactiveX/RxJS/commit/c419ab4)), closes [#3164](https://github.com/ReactiveX/RxJS/issues/3164)
+* **typings:** relax throttle selector type ([#3205](https://github.com/ReactiveX/RxJS/issues/3205)) ([e83fda7](https://github.com/ReactiveX/RxJS/commit/e83fda7)), closes [#3204](https://github.com/ReactiveX/RxJS/issues/3204)
+* **typings:** the return type of factory of defer should be ObservableInput<T> ([#3211](https://github.com/ReactiveX/RxJS/issues/3211)) ([dc41a5e](https://github.com/ReactiveX/RxJS/commit/dc41a5e))
+
+
+### Features
+
+* **empty:** empty() returns the same instance ([5c7c749](https://github.com/ReactiveX/RxJS/commit/5c7c749))
+* **EMPTY:** observable constant EMPTY now exported ([08fb074](https://github.com/ReactiveX/RxJS/commit/08fb074))
+* **never:** always return the same instance ([#3249](https://github.com/ReactiveX/RxJS/issues/3249)) ([d57fa52](https://github.com/ReactiveX/RxJS/commit/d57fa52))
+* **rxjs:** move rxjs/create into rxjs ([#3299](https://github.com/ReactiveX/RxJS/issues/3299)) ([6711fe2](https://github.com/ReactiveX/RxJS/commit/6711fe2))
+* **throwError:** functional version of throwError ([639236e](https://github.com/ReactiveX/RxJS/commit/639236e))
+
+
+### BREAKING CHANGES
+
+* **rxjs:** `rxjs/create` items are now exported from `rxjs`
+* **throwError:** Observable.throw no longer available in TypeScript without a cast
+* **empty:** `empty()` without a scheduler will return the same
+instance every time.
+* **empty:** In TypeScript, `empty()` no longer accepts a generic
+argument, as it returns `Observable<never>`
+* **never:** `never()` always returns the same instance
+* **never:** TypeScript typing for `never()` is now `Observable<never>` and the function no longer requires a generic type.
+
+
+
 <a name="6.0.0-alpha.2"></a>
 # [6.0.0-alpha.2](https://github.com/ReactiveX/RxJS/compare/6.0.0-alpha.1...6.0.0-alpha.2) (2018-01-14)
 
