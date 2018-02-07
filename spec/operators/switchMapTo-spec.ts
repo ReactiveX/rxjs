@@ -222,46 +222,4 @@ describe('Observable.prototype.switchMapTo', () => {
     expectObservable(e1.switchMapTo(Observable.of('foo'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
-
-  it('should switch with resultSelector goodness', () => {
-    const x =   cold(         '--1--2--3--4--5--|          ');
-    const xsubs =   ['         ^         !                 ',
-    //                                 --1--2--3--4--5--|
-                   '                   ^                !'];
-    const e1 =   hot('---------x---------y---------|       ');
-    const e1subs =   '^                                   !';
-    const expected = '-----------a--b--c---d--e--f--g--h--|';
-    const expectedValues = {
-      a: ['x', '1', 0, 0],
-      b: ['x', '2', 0, 1],
-      c: ['x', '3', 0, 2],
-      d: ['y', '1', 1, 0],
-      e: ['y', '2', 1, 1],
-      f: ['y', '3', 1, 2],
-      g: ['y', '4', 1, 3],
-      h: ['y', '5', 1, 4]
-    };
-
-    const result = e1.switchMapTo(x, (a, b, ai, bi) => [a, b, ai, bi]);
-
-    expectObservable(result).toBe(expected, expectedValues);
-    expectSubscriptions(x.subscriptions).toBe(xsubs);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should raise error when resultSelector throws', () => {
-    const x =   cold(         '--1--2--3--4--5--|   ');
-    const xsubs =    '         ^ !                  ';
-    const e1 =   hot('---------x---------y---------|');
-    const e1subs =   '^          !';
-    const expected = '-----------#';
-
-    const result = e1.switchMapTo(x, () => {
-      throw 'error';
-    });
-
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(x.subscriptions).toBe(xsubs);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
 });

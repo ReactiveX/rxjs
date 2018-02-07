@@ -34,14 +34,6 @@ export function switchMapTo<T, I, R>(this: Observable<T>, observable: Observable
  *
  * @param {ObservableInput} innerObservable An Observable to replace each value from
  * the source Observable.
- * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]
- * A function to produce the value on the output Observable based on the values
- * and the indices of the source (outer) emission and the inner Observable
- * emission. The arguments passed to this function are:
- * - `outerValue`: the value that came from the source
- * - `innerValue`: the value that came from the projected Observable
- * - `outerIndex`: the "index" of the value that came from the source
- * - `innerIndex`: the "index" of the value from the projected Observable
  * @return {Observable} An Observable that emits items from the given
  * `innerObservable` (and optionally transformed through `resultSelector`) every
  * time a value is emitted on the source Observable, and taking only the values
@@ -49,10 +41,6 @@ export function switchMapTo<T, I, R>(this: Observable<T>, observable: Observable
  * @method switchMapTo
  * @owner Observable
  */
-export function switchMapTo<T, I, R>(this: Observable<T>, innerObservable: ObservableInput<I>,
-                                     resultSelector?: (outerValue: T,
-                                                       innerValue: I,
-                                                       outerIndex: number,
-                                                       innerIndex: number) => R): Observable<I | R> {
-  return higherOrder(innerObservable, resultSelector)(this);
+export function switchMapTo<T, R>(this: Observable<T>, innerObservable: ObservableInput<R>): Observable<R> {
+  return higherOrder(innerObservable)(this);
 }
