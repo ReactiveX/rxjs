@@ -42,22 +42,6 @@ describe('forkJoin', () => {
     expectObservable(e2).toBe(expected2, {x: [null, 'b', '3', undefined]});
   });
 
-  it('should join the last values of the provided observables with selector', () => {
-    function selector(x: string, y: string, z: string) {
-      return x + y + z;
-    }
-
-    const e1 = forkJoin(
-                hot('--a--b--c--d--|'),
-                hot('(b|)'),
-                hot('--1--2--3--|'),
-                selector
-            );
-    const expected = '--------------(x|)';
-
-    expectObservable(e1).toBe(expected, {x: 'db3'});
-  });
-
   it('should accept single observable', () => {
     const e1 = forkJoin(
                hot('--a--b--c--d--|')
@@ -74,34 +58,6 @@ describe('forkJoin', () => {
     const expected = '--------------(x|)';
 
     expectObservable(e1).toBe(expected, {x: ['d']});
-  });
-
-  it('should accept single observable with selector', () => {
-    function selector(x: string) {
-      return x + x;
-    }
-
-    const e1 = forkJoin(
-               hot('--a--b--c--d--|'),
-               selector
-            );
-    const expected = '--------------(x|)';
-
-    expectObservable(e1).toBe(expected, {x: 'dd'});
-  });
-
-  it('should accept array of observable contains single with selector', () => {
-    function selector(x: string) {
-      return x + x;
-    }
-
-    const e1 = forkJoin(
-               [hot('--a--b--c--d--|')],
-               selector
-            );
-    const expected = '--------------(x|)';
-
-    expectObservable(e1).toBe(expected, {x: 'dd'});
   });
 
   it('should accept lowercase-o observables', () => {
@@ -151,22 +107,6 @@ describe('forkJoin', () => {
     const expected = '--------------(x|)';
 
     expectObservable(e1).toBe(expected, {x: ['d', 'b', '3']});
-  });
-
-  it('should accept array of observables with selector', () => {
-    function selector(x: string, y: string, z: string) {
-      return x + y + z;
-    }
-
-    const e1 = forkJoin(
-               [hot('--a--b--c--d--|'),
-                hot('(b|)'),
-                hot('--1--2--3--|')],
-                selector
-             );
-    const expected = '--------------(x|)';
-
-    expectObservable(e1).toBe(expected, {x: 'db3'});
   });
 
   it('should not emit if any of source observable is empty', () => {
@@ -244,34 +184,6 @@ describe('forkJoin', () => {
     expectObservable(e1).toBe(expected);
   });
 
-  it('should complete when any of source is empty with selector', () => {
-    function selector(x: string, y: string) {
-      return x + y;
-    }
-
-    const e1 = forkJoin(
-               hot('--a--b--c--d--|'),
-               hot('---------|'),
-               selector);
-    const expected = '---------|';
-
-    expectObservable(e1).toBe(expected);
-  });
-
-  it('should emit results by resultselector', () => {
-    function selector(x: string, y: string) {
-      return x + y;
-    }
-
-    const e1 = forkJoin(
-               hot('--a--b--c--d--|'),
-               hot('---2-----|'),
-               selector);
-    const expected = '--------------(x|)';
-
-    expectObservable(e1).toBe(expected, {x: 'd2'});
-  });
-
   it('should raise error when any of source raises error with empty observable', () => {
     const e1 = forkJoin(
                hot('------#'),
@@ -290,53 +202,11 @@ describe('forkJoin', () => {
     expectObservable(e1).toBe(expected);
   });
 
-  it('should raise error when any of source raises error with selector with empty observable', () => {
-    function selector(x: string, y: string) {
-      return x + y;
-    }
-
-    const e1 = forkJoin(
-               hot('------#'),
-               hot('---------|'),
-               selector);
-    const expected = '------#';
-
-    expectObservable(e1).toBe(expected);
-  });
-
   it('should raise error when source raises error', () => {
     const e1 = forkJoin(
                hot('------#'),
                hot('---a-----|'));
     const expected = '------#';
-
-    expectObservable(e1).toBe(expected);
-  });
-
-  it('should raise error when source raises error with selector', () => {
-    function selector(x: string, y: string) {
-      return x + y;
-    }
-
-    const e1 = forkJoin(
-               hot('------#'),
-               hot('-------b-|'),
-               selector);
-    const expected = '------#';
-
-    expectObservable(e1).toBe(expected);
-  });
-
-  it('should raise error when the selector throws', () => {
-    function selector(x: string, y: string) {
-      throw 'error';
-    }
-
-    const e1 = forkJoin(
-               hot('--a-|'),
-               hot('---b-|'),
-               selector);
-    const expected = '-----#';
 
     expectObservable(e1).toBe(expected);
   });
@@ -397,7 +267,6 @@ describe('forkJoin', () => {
     let c: Promise<boolean>;
     let d: Observable<string[]>;
     let o1: Observable<[number, string, boolean, string[]]> = forkJoin(a, b, c, d);
-    let o2: Observable<boolean> = forkJoin(a, b, c, d, (aa, bb, cc, dd) => !!aa && !!bb && cc && !!dd.length);
     /* tslint:enable:no-unused-variable */
   });
 
@@ -406,7 +275,6 @@ describe('forkJoin', () => {
     let a: Promise<number>[];
     let o1: Observable<number[]> = forkJoin(a);
     let o2: Observable<number[]> = forkJoin(...a);
-    let o3: Observable<number> = forkJoin(a, (...x) => x.length);
     /* tslint:enable:no-unused-variable */
   });
 
@@ -415,7 +283,6 @@ describe('forkJoin', () => {
     let a: Observable<number>[];
     let o1: Observable<number[]> = forkJoin(a);
     let o2: Observable<number[]> = forkJoin(...a);
-    let o3: Observable<number> = forkJoin(a, (...x) => x.length);
     /* tslint:enable:no-unused-variable */
   });
 

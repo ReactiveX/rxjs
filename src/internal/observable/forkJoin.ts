@@ -13,18 +13,9 @@ export function forkJoin<T, T2, T3>(v1: ObservableInput<T>, v2: ObservableInput<
 export function forkJoin<T, T2, T3, T4>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): Observable<[T, T2, T3, T4]>;
 export function forkJoin<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Observable<[T, T2, T3, T4, T5]>;
 export function forkJoin<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Observable<[T, T2, T3, T4, T5, T6]>;
-export function forkJoin<T, R>(v1: ObservableInput<T>, project: (v1: T) => R): Observable<R>;
-export function forkJoin<T, T2, R>(v1: ObservableInput<T>, v2: ObservableInput<T2>, project: (v1: T, v2: T2) => R): Observable<R>;
-export function forkJoin<T, T2, T3, R>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, project: (v1: T, v2: T2, v3: T3) => R): Observable<R>;
-export function forkJoin<T, T2, T3, T4, R>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, project: (v1: T, v2: T2, v3: T3, v4: T4) => R): Observable<R>;
-export function forkJoin<T, T2, T3, T4, T5, R>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => R): Observable<R>;
-export function forkJoin<T, T2, T3, T4, T5, T6, R>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => R): Observable<R>;
+export function forkJoin<T>(v1: ObservableInput<T>): Observable<T[]>;
 export function forkJoin<T>(sources: Array<ObservableInput<T>>): Observable<T[]>;
-export function forkJoin<R>(sources: Array<ObservableInput<any>>): Observable<R>;
-export function forkJoin<T, R>(sources: Array<ObservableInput<T>>, project: (...values: T[]) => R): Observable<R>;
-export function forkJoin<R>(sources: Array<ObservableInput<any>>, project: (...values: any[]) => R): Observable<R>;
 export function forkJoin<T>(...sources: Array<ObservableInput<T>>): Observable<T[]>;
-export function forkJoin<R>(...sources: Array<ObservableInput<any>>): Observable<R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -132,20 +123,10 @@ export function forkJoin<R>(...sources: Array<ObservableInput<any>>): Observable
  * @name forkJoin
  * @owner Observable
  */
-export function forkJoin<T, R>(...sources: Array<ObservableInput<T> |
-                                Array<ObservableInput<T>> |
-                                ((...values: T[]) => R)>): Observable<R> {
-  if (sources === null || arguments.length === 0) {
-    return EMPTY;
-  }
-
-  let resultSelector: (...values: T[]) => R = null;
-  if (typeof sources[sources.length - 1] === 'function') {
-    resultSelector = sources.pop() as ((...values: T[]) => R);
-  }
-
-  // if the first and only other argument besides the resultSelector is an array
-  // assume it's been called with `forkJoin([obs1, obs2, obs3], resultSelector)`
+export function forkJoin<T>(...sources: Array<ObservableInput<T> |
+                                Array<ObservableInput<T>>>): Observable<T[]> {
+  // if the first and only other argument is an array
+  // assume it's been called with `forkJoin([obs1, obs2, obs3])`
   if (sources.length === 1 && isArray(sources[0])) {
     sources = sources[0] as Array<ObservableInput<T>>;
   }
@@ -155,7 +136,7 @@ export function forkJoin<T, R>(...sources: Array<ObservableInput<T> |
   }
 
   return new Observable(subscriber => {
-    return new ForkJoinSubscriber(subscriber, sources as Array<ObservableInput<T>>, resultSelector);
+    return new ForkJoinSubscriber(subscriber, sources as Array<ObservableInput<T>>);
   });
 }
 /**
@@ -169,8 +150,7 @@ class ForkJoinSubscriber<T, R> extends OuterSubscriber<T, T> {
   private haveValues = 0;
 
   constructor(destination: Subscriber<R>,
-              private sources: Array<ObservableInput<T>>,
-              private resultSelector?: (...values: T[]) => R) {
+              private sources: Array<ObservableInput<T>>) {
     super(destination);
 
     const len = sources.length;
@@ -197,7 +177,7 @@ class ForkJoinSubscriber<T, R> extends OuterSubscriber<T, T> {
   }
 
   notifyComplete(innerSub: InnerSubscriber<T, T>): void {
-    const { destination, haveValues, resultSelector, values } = this;
+    const { destination, haveValues, values } = this;
     const len = values.length;
 
     if (!(innerSub as any)._hasValue) {
@@ -212,14 +192,7 @@ class ForkJoinSubscriber<T, R> extends OuterSubscriber<T, T> {
     }
 
     if (haveValues === len) {
-      let result: R | T[];
-      try {
-        result = resultSelector ? resultSelector(...values) : values;
-      } catch (err) {
-        destination.error(err);
-        return;
-      }
-      destination.next(result);
+      destination.next(values);
     }
 
     destination.complete();
