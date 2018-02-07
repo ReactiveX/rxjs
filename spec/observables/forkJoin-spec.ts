@@ -1,6 +1,5 @@
 import { expect } from 'chai';
-import { Observable } from '../../src';
-import { forkJoin, of } from '../../src/create';
+import { Observable, forkJoin, of } from '../../src';
 import { lowerCaseO } from '../helpers/test-helper';
 import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
 
