@@ -1,22 +1,8 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { EmptyError } from '../util/EmptyError';
-import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
-/* tslint:disable:max-line-length */
-export function first<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S): OperatorFunction<T, S>;
-export function first<T, S extends T, R>(predicate: (value: T | S, index: number, source: Observable<T>) => value is S,
-                                         resultSelector: (value: S, index: number) => R, defaultValue?: R): OperatorFunction<T, R>;
-export function first<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S,
-                                      resultSelector: void,
-                                      defaultValue?: S): OperatorFunction<T, S>;
-export function first<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T>;
-export function first<T, R>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                            resultSelector?: (value: T, index: number) => R,
-                            defaultValue?: R): OperatorFunction<T, R>;
-export function first<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                         resultSelector: void,
-                         defaultValue?: T): MonoTypeOperatorFunction<T>;
+import { EmptyError } from '..//util/EmptyError';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**
  * Emits only the first value (or the first value that meets some condition)
@@ -54,12 +40,6 @@ export function first<T>(predicate: (value: T, index: number, source: Observable
  *
  * @param {function(value: T, index: number, source: Observable<T>): boolean} [predicate]
  * An optional function called with each item to test for condition matching.
- * @param {function(value: T, index: number): R} [resultSelector] A function to
- * produce the value on the output Observable based on the values
- * and the indices of the source Observable. The arguments passed to this
- * function are:
- * - `value`: the value that was emitted on the source.
- * - `index`: the "index" of the value from the source.
  * @param {R} [defaultValue] The default value emitted in case no valid value
  * was found on the source.
  * @return {Observable<T|R>} An Observable of the first item that matches the
@@ -67,21 +47,19 @@ export function first<T>(predicate: (value: T, index: number, source: Observable
  * @method first
  * @owner Observable
  */
-export function first<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                            resultSelector?: ((value: T, index: number) => R) | void,
-                            defaultValue?: R): OperatorFunction<T, T | R> {
-  return (source: Observable<T>) => source.lift(new FirstOperator(predicate, resultSelector, defaultValue, source));
-}
+export function first<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+                         defaultValue?: T): MonoTypeOperatorFunction<T> {
+    return (source: Observable<T>) => source.lift(new FirstOperator(predicate, defaultValue, source));
+  }
 
-class FirstOperator<T, R> implements Operator<T, R> {
+class FirstOperator<T> implements Operator<T, T> {
   constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: ((value: T, index: number) => R) | void,
               private defaultValue?: any,
               private source?: Observable<T>) {
   }
 
-  call(observer: Subscriber<R>, source: any): any {
-    return source.subscribe(new FirstSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
+  call(observer: Subscriber<T>, source: any): any {
+    return source.subscribe(new FirstSubscriber(observer, this.predicate, this.defaultValue, this.source));
   }
 }
 
@@ -90,14 +68,13 @@ class FirstOperator<T, R> implements Operator<T, R> {
  * @ignore
  * @extends {Ignored}
  */
-class FirstSubscriber<T, R> extends Subscriber<T> {
-  private index: number = 0;
-  private hasCompleted: boolean = false;
-  private _emitted: boolean = false;
+class FirstSubscriber<T> extends Subscriber<T> {
+  private index = 0;
+  private hasCompleted = false;
+  private _emitted = false;
 
-  constructor(destination: Subscriber<R>,
+  constructor(destination: Subscriber<T>,
               private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: ((value: T, index: number) => R) | void,
               private defaultValue?: any,
               private source?: Observable<T>) {
     super(destination);
@@ -108,7 +85,7 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
     if (this.predicate) {
       this._tryPredicate(value, index);
     } else {
-      this._emit(value, index);
+      this._emit(value);
     }
   }
 
@@ -121,30 +98,11 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
       return;
     }
     if (result) {
-      this._emit(value, index);
+      this._emit(value);
     }
   }
 
-  private _emit(value: any, index: number) {
-    if (this.resultSelector) {
-      this._tryResultSelector(value, index);
-      return;
-    }
-    this._emitFinal(value);
-  }
-
-  private _tryResultSelector(value: T, index: number) {
-    let result: any;
-    try {
-      result = (<any>this).resultSelector(value, index);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    this._emitFinal(result);
-  }
-
-  private _emitFinal(value: any) {
+  private _emit(value: T) {
     const destination = this.destination;
     if (!this._emitted) {
       this._emitted = true;
@@ -160,7 +118,7 @@ class FirstSubscriber<T, R> extends Subscriber<T> {
       destination.next(this.defaultValue);
       destination.complete();
     } else if (!this.hasCompleted) {
-      destination.error(new EmptyError);
+      destination.error(new EmptyError());
     }
   }
 }

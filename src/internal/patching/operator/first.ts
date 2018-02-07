@@ -1,27 +1,6 @@
 import { Observable } from '../../Observable';
 import { first as higherOrder } from '../../operators/first';
 
-/* tslint:disable:max-line-length */
-export function first<T, S extends T>(this: Observable<T>,
-                                      predicate: (value: T, index: number, source: Observable<T>) => value is S): Observable<S>;
-export function first<T, S extends T, R>(this: Observable<T>,
-                                         predicate: (value: T | S, index: number, source: Observable<T>) => value is S,
-                                         resultSelector: (value: S, index: number) => R, defaultValue?: R): Observable<R>;
-export function first<T, S extends T>(this: Observable<T>,
-                                      predicate: (value: T, index: number, source: Observable<T>) => value is S,
-                                      resultSelector: void,
-                                      defaultValue?: S): Observable<S>;
-export function first<T>(this: Observable<T>,
-                         predicate?: (value: T, index: number, source: Observable<T>) => boolean): Observable<T>;
-export function first<T, R>(this: Observable<T>,
-                            predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                            resultSelector?: (value: T, index: number) => R,
-                            defaultValue?: R): Observable<R>;
-export function first<T>(this: Observable<T>,
-                         predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                         resultSelector: void,
-                         defaultValue?: T): Observable<T>;
-
 /**
  * Emits only the first value (or the first value that meets some condition)
  * emitted by the source Observable.
@@ -58,21 +37,14 @@ export function first<T>(this: Observable<T>,
  *
  * @param {function(value: T, index: number, source: Observable<T>): boolean} [predicate]
  * An optional function called with each item to test for condition matching.
- * @param {function(value: T, index: number): R} [resultSelector] A function to
- * produce the value on the output Observable based on the values
- * and the indices of the source Observable. The arguments passed to this
- * function are:
- * - `value`: the value that was emitted on the source.
- * - `index`: the "index" of the value from the source.
- * @param {R} [defaultValue] The default value emitted in case no valid value
+ * @param {T} [defaultValue] The default value emitted in case no valid value
  * was found on the source.
- * @return {Observable<T|R>} An Observable of the first item that matches the
+ * @return {Observable<T>} An Observable of the first item that matches the
  * condition.
  * @method first
  * @owner Observable
  */
-export function first<T, R>(this: Observable<T>, predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                            resultSelector?: ((value: T, index: number) => R) | void,
-                            defaultValue?: R): Observable<T | R> {
-  return higherOrder(predicate, resultSelector as any, defaultValue)(this);
-}
+export function first<T>(this: Observable<T>, predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+                         defaultValue?: T): Observable<T> {
+    return higherOrder(predicate, defaultValue)(this);
+  }
