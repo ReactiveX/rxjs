@@ -124,9 +124,9 @@ There are operators for different purposes, and they may be categorized as: crea
 - [`interval`](../class/es6/Observable.js~Observable.html#static-method-interval)
 - [`never`](../class/es6/Observable.js~Observable.html#static-method-never)
 - [`of`](../class/es6/Observable.js~Observable.html#static-method-of)
+- [`range`](../class/es6/Observable.js~Observable.html#static-method-range)
 - [`repeat`](../class/es6/Observable.js~Observable.html#instance-method-repeat)
 - [`repeatWhen`](../class/es6/Observable.js~Observable.html#instance-method-repeatWhen)
-- [`range`](../class/es6/Observable.js~Observable.html#static-method-range)
 - [`throw`](../class/es6/Observable.js~Observable.html#static-method-throw)
 - [`timer`](../class/es6/Observable.js~Observable.html#static-method-timer)
 
@@ -161,6 +161,8 @@ There are operators for different purposes, and they may be categorized as: crea
 
 ### Filtering Operators
 
+- [`audit`](../class/es6/Observable.js~Observable.html#instance-method-audit)
+- [`auditTime`](../class/es6/Observable.js~Observable.html#instance-method-auditTime)
 - [`debounce`](../class/es6/Observable.js~Observable.html#instance-method-debounce)
 - [`debounceTime`](../class/es6/Observable.js~Observable.html#instance-method-debounceTime)
 - [`distinct`](../class/es6/Observable.js~Observable.html#instance-method-distinct)
@@ -171,8 +173,6 @@ There are operators for different purposes, and they may be categorized as: crea
 - [`filter`](../class/es6/Observable.js~Observable.html#instance-method-filter)
 - [`first`](../class/es6/Observable.js~Observable.html#instance-method-first)
 - [`ignoreElements`](../class/es6/Observable.js~Observable.html#instance-method-ignoreElements)
-- [`audit`](../class/es6/Observable.js~Observable.html#instance-method-audit)
-- [`auditTime`](../class/es6/Observable.js~Observable.html#instance-method-auditTime)
 - [`last`](../class/es6/Observable.js~Observable.html#instance-method-last)
 - [`sample`](../class/es6/Observable.js~Observable.html#instance-method-sample)
 - [`sampleTime`](../class/es6/Observable.js~Observable.html#instance-method-sampleTime)
