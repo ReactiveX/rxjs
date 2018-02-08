@@ -51,7 +51,9 @@ export function pairs<T>(obj: Object, scheduler?: IScheduler): Observable<[strin
     return new Observable<[string, T]>(subscriber => {
       const keys = Object.keys(obj);
       const subscription = new Subscription();
-      subscription.add(scheduler.schedule(dispatch, 0, { keys, index: 0, subscriber, subscription, obj }));
+      subscription.add(
+        scheduler.schedule<{ keys: string[], index: number, subscriber: Subscriber<[string, T]>, subscription: Subscription, obj: Object }>
+          (dispatch, 0, { keys, index: 0, subscriber, subscription, obj }));
       return subscription;
     });
   }

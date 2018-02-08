@@ -48,7 +48,7 @@ export function switchMapTo<T, I, R>(this: Observable<T>, observable: Observable
  * @method switchMapTo
  * @owner Observable
  */
-export function switchMapTo<T, I, R>(this: Observable<T>, innerObservable: Observable<I>,
+export function switchMapTo<T, I, R>(this: Observable<T>, innerObservable: ObservableInput<I>,
                                      resultSelector?: (outerValue: T,
                                                        innerValue: I,
                                                        outerIndex: number,

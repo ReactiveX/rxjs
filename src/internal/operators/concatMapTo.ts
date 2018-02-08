@@ -64,7 +64,7 @@ export function concatMapTo<T, I, R>(observable: ObservableInput<I>, resultSelec
  * @owner Observable
  */
 export function concatMapTo<T, I, R>(
-  innerObservable: Observable<I>,
+  innerObservable: ObservableInput<I>,
   resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R
 ): OperatorFunction<T, R> {
   return concatMap(() => innerObservable, resultSelector);

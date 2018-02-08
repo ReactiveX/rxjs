@@ -28,7 +28,7 @@ class SubscribeOnOperator<T> implements Operator<T, T> {
               private delay: number) {
   }
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return new SubscribeOnObservable(
+    return new SubscribeOnObservable<T>(
       source, this.delay, this.scheduler
     ).subscribe(subscriber);
   }

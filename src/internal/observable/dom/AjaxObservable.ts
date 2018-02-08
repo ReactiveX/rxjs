@@ -350,7 +350,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       (<any>xhrError).progressSubscriber = progressSubscriber;
     }
 
-    function xhrReadyStateChange(this: XMLHttpRequest, e: ProgressEvent) {
+    function xhrReadyStateChange(this: XMLHttpRequest, e: Event) {
       const { subscriber, progressSubscriber, request } = (<any>xhrReadyStateChange);
       if (this.readyState === 4) {
         // normalize IE9 bug (http://bugs.jquery.com/ticket/1450)

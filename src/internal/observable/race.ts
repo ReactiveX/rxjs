@@ -66,7 +66,7 @@ export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
     } else {
       for (let i = 0; i < len && !this.hasFirst; i++) {
         let observable = observables[i];
-        let subscription = subscribeToResult(this, observable, observable, i);
+        let subscription = subscribeToResult(this, observable, observable as any, i);
 
         if (this.subscriptions) {
           this.subscriptions.push(subscription);

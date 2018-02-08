@@ -54,7 +54,7 @@ export function switchMapTo<T, I, R>(observable: ObservableInput<I>, resultSelec
  * @method switchMapTo
  * @owner Observable
  */
-export function switchMapTo<T, I, R>(innerObservable: Observable<I>,
+export function switchMapTo<T, I, R>(innerObservable: ObservableInput<I>,
                                      resultSelector?: (outerValue: T,
                                                        innerValue: I,
                                                        outerIndex: number,
@@ -63,7 +63,7 @@ export function switchMapTo<T, I, R>(innerObservable: Observable<I>,
 }
 
 class SwitchMapToOperator<T, I, R> implements Operator<T, I> {
-  constructor(private observable: Observable<I>,
+  constructor(private observable: ObservableInput<I>,
               private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {
   }
 
@@ -82,7 +82,7 @@ class SwitchMapToSubscriber<T, I, R> extends OuterSubscriber<T, I> {
   private innerSubscription: Subscription;
 
   constructor(destination: Subscriber<I>,
-              private inner: Observable<I>,
+              private inner: ObservableInput<I>,
               private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {
     super(destination);
   }

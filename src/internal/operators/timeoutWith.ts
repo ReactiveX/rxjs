@@ -120,7 +120,7 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
       // to ensure that's the one we clone from next time.
       this.action = (<Action<TimeoutWithSubscriber<T, R>>> action.schedule(this, this.waitFor));
     } else {
-      this.add(this.action = (<Action<TimeoutWithSubscriber<T, R>>> this.scheduler.schedule(
+      this.add(this.action = (<Action<TimeoutWithSubscriber<T, R>>> this.scheduler.schedule<TimeoutWithSubscriber<T, R>>(
         TimeoutWithSubscriber.dispatchTimeout, this.waitFor, this
       )));
     }

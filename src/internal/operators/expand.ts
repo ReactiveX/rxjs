@@ -130,7 +130,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
         this.subscribeToProjection(result, value, index);
       } else {
         const state: DispatchArg<T, R> = { subscriber: this, result, value, index };
-        this.add(this.scheduler.schedule(ExpandSubscriber.dispatch, 0, state));
+        this.add(this.scheduler.schedule<DispatchArg<T, R>>(ExpandSubscriber.dispatch, 0, state));
       }
     } else {
       this.buffer.push(value);

@@ -29,6 +29,6 @@ export function pipeFromArray<T, R>(fns: Array<UnaryFunction<T, R>>): UnaryFunct
   }
 
   return function piped(input: T): R {
-    return fns.reduce((prev: any, fn: UnaryFunction<T, R>) => fn(prev), input);
+    return fns.reduce((prev: any, fn: UnaryFunction<T, R>) => fn(prev), input as any);
   };
 }
