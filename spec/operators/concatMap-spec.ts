@@ -538,44 +538,6 @@ describe('Observable.prototype.concatMap', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-<<<<<<< HEAD
-  it('should concatMap many outer to inner arrays, using resultSelector', () => {
-    const e1 =   hot('2-----4--------3--------2-------|');
-    const e1subs =   '^                               !';
-    const expected = '(44)--(8888)---(666)----(44)----|';
-
-    const result = e1.concatMap((value) => arrayRepeat(value, +value),
-      (x, y) => String(parseInt(x) + parseInt(y)));
-
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should concatMap many outer to inner arrays, and outer throws', () => {
-    const e1 =   hot('2-----4--------3--------2-------#');
-    const e1subs =   '^                               !';
-    const expected = '(22)--(4444)---(333)----(22)----#';
-
-    const result = e1.concatMap((value) => arrayRepeat(value, +value));
-
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should concatMap many outer to inner arrays, resultSelector, outer throws', () => {
-    const e1 =   hot('2-----4--------3--------2-------#');
-    const e1subs =   '^                               !';
-    const expected = '(44)--(8888)---(666)----(44)----#';
-
-    const result = e1.concatMap((value) => arrayRepeat(value, +value),
-      (x, y) => String(parseInt(x) + parseInt(y)));
-
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-=======
->>>>>>> feat(mergeMap|concatMap|concatMapTo): simplified the signatures
   it('should mergeMap many outer to inner arrays, outer unsubscribed early', () => {
     const e1 =   hot('2-----4--------3--------2-------|');
     const e1subs =   '^            !                   ';

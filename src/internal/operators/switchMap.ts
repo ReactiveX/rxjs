@@ -49,7 +49,7 @@ import { ObservableInput, OperatorFunction } from '../types';
 export function switchMap<T, R>(
   project: (value: T, index: number) => ObservableInput<R>
 ): OperatorFunction<T, R> {
-  return function switchMapOperatorFunction(source: Observable<T>): Observable<R | R> {
+  return function switchMapOperatorFunction(source: Observable<T>): Observable<R> {
     return source.lift(new SwitchMapOperator(project));
   };
 }

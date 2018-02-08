@@ -21,6 +21,6 @@ import { last as higherOrder } from '../../operators/last';
  * @owner Observable
  */
 export function last<T>(this: Observable<T>, predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                        defaultValue?: T): Observable<T | T> {
+                        defaultValue?: T): Observable<T> {
   return higherOrder(predicate, defaultValue)(this);
 }

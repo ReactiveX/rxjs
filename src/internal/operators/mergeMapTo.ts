@@ -1,6 +1,7 @@
-import { Observable, ObservableInput } from '../Observable';
+import { Observable } from '../Observable';
 import { OperatorFunction } from '../../internal/types';
 import { mergeMap } from './mergeMap';
+import { ObservableInput } from '../types';
 
 /**
  * Projects each source value to the same Observable which is merged multiple
