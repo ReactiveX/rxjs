@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+
 import * as Rx from '../../src/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
@@ -87,7 +87,7 @@ describe('Observable.prototype.last', () => {
     const e1subs =   '(^!)';
     const expected = '(a|)';
 
-    expectObservable(e1.last(null, null, 'a')).toBe(expected);
+    expectObservable(e1.last(null, 'a')).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -96,23 +96,7 @@ describe('Observable.prototype.last', () => {
     const e1subs =       '^               !';
     const expected =     '----------------(d|)';
 
-    expectObservable(e1.last(null, null, 'x')).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should support a result selector argument', () => {
-    const e1 = hot('--a--^---b---c---d---e--|');
-    const e1subs =      '^                  !';
-    const expected =    '-------------------(x|)';
-
-    const predicate = function (x) { return x === 'c'; };
-    const resultSelector = function (x, i) {
-      expect(i).to.equal(1);
-      expect(x).to.equal('c');
-      return 'x';
-    };
-
-    expectObservable(e1.last(predicate, resultSelector)).toBe(expected);
+    expectObservable(e1.last(null, 'x')).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -130,20 +114,6 @@ describe('Observable.prototype.last', () => {
     };
 
     expectObservable(e1.last(predicate)).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should raise error when result selector throws', () => {
-    const e1 = hot('--a--^---b---c---d---e--|');
-    const e1subs =      '^       !           ';
-    const expected =    '--------#           ';
-
-    const predicate = function (x) { return x === 'c'; };
-    const resultSelector = function (x, i) {
-      throw 'error';
-    };
-
-    expectObservable(e1.last(predicate, resultSelector)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -203,16 +173,6 @@ describe('Observable.prototype.last', () => {
       // boolean predicates preserve the type
       xs.last(x => typeof x === 'string')
         .subscribe(x => x); // x is still string | number
-      xs.last(x => !!x, x => x)
-        .subscribe(x => x); // x is still string | number
-      xs.last(x => typeof x === 'string', x => x, '') // default is string; x remains string | number
-        .subscribe(x => x); // x is still string | number
-
-      // `last` still uses the `resultSelector` return type, if it exists.
-      xs.last(x => typeof x === 'string', x => ({ str: `${x}` })) // x remains string | number
-        .subscribe(o => o.str); // o is { str: string }
-      xs.last(x => typeof x === 'string', x => ({ str: `${x}` }), { str: '' })
-        .subscribe(o => o.str); // o is { str: string }
     }
 
     // tslint:disable enable
