@@ -49,8 +49,7 @@ Rx.Observable.of(1,2,3)
 To import only what you need by patching (this is useful for size-sensitive bundling):
 
 ```js
-import { Observable, Subject, ReplaySubject } from 'rxjs';
-import { from, of, range } from 'rxjs/create';
+import { Observable, Subject, ReplaySubject, from, of, range } from 'rxjs';
 import { map, filter, switchMap } from 'rxjs/operators';
 
 range(1, 200)
@@ -69,8 +68,7 @@ npm install rxjs@alpha
 (Note: destructuring available in Node 8+)
 
 ```js
-const { Observable, Subject, ReplaySubject } = require('rxjs');
-const { from, of, range } = require('rxjs/create');
+const { Observable, Subject, ReplaySubject, from, of, range } = require('rxjs');
 const { map, filter, switchMap } = require('rxjs/operators');
 
 range(1, 200)
