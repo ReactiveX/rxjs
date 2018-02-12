@@ -11,10 +11,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old catch with immediate scheduler', function () {
-        oldCatchWithImmediateScheduler.subscribe(_next, _error, _complete);
-      })
-      .add('new catch with immediate scheduler', function () {
-        newCatchWithImmediateScheduler.subscribe(_next, _error, _complete);
-      });
+    .add('old catch with immediate scheduler', function () {
+      oldCatchWithImmediateScheduler.subscribe(_next, _error, _complete);
+    })
+    .add('new catch with immediate scheduler', function () {
+      newCatchWithImmediateScheduler.subscribe(_next, _error, _complete);
+    });
 };

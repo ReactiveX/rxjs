@@ -18,4 +18,4 @@ export function timestamp<T>(scheduler: IScheduler = async): OperatorFunction<T,
 export class Timestamp<T> {
   constructor(public value: T, public timestamp: number) {
   }
-};
+}

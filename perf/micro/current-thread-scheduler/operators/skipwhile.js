@@ -12,10 +12,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old skipWhile with current thread scheduler', function () {
-        oldSkipWhileWithCurrentThreadScheduler.subscribe(_next, _error, _complete);
-      })
-      .add('new skipWhile with current thread scheduler', function () {
-        newSkipWhileWithCurrentThreadScheduler.subscribe(_next, _error, _complete);
-      });
+    .add('old skipWhile with current thread scheduler', function () {
+      oldSkipWhileWithCurrentThreadScheduler.subscribe(_next, _error, _complete);
+    })
+    .add('new skipWhile with current thread scheduler', function () {
+      newSkipWhileWithCurrentThreadScheduler.subscribe(_next, _error, _complete);
+    });
 };

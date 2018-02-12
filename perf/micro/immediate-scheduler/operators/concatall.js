@@ -20,10 +20,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old concatAll with immediate scheduler', function () {
-        oldConcatAllWithImmediateScheduler.subscribe(_next, _error, _complete);
-      })
-      .add('new concatAll with immediate scheduler', function () {
-        newConcatAllWithImmediateScheduler.subscribe(_next, _error, _complete);
-      });
+    .add('old concatAll with immediate scheduler', function () {
+      oldConcatAllWithImmediateScheduler.subscribe(_next, _error, _complete);
+    })
+    .add('new concatAll with immediate scheduler', function () {
+      newConcatAllWithImmediateScheduler.subscribe(_next, _error, _complete);
+    });
 };

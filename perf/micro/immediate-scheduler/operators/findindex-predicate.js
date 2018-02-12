@@ -13,10 +13,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old findIndex(predicate) with immediate scheduler', function () {
-        oldFindIndexPredicate.subscribe(_next, _error, _complete);
-      })
-      .add('new findIndex(predicate) with immediate scheduler', function () {
-        newFindIndexPredicate.subscribe(_next, _error, _complete);
-      });
+    .add('old findIndex(predicate) with immediate scheduler', function () {
+      oldFindIndexPredicate.subscribe(_next, _error, _complete);
+    })
+    .add('new findIndex(predicate) with immediate scheduler', function () {
+      newFindIndexPredicate.subscribe(_next, _error, _complete);
+    });
 };

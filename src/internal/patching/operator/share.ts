@@ -19,4 +19,4 @@ import { share as higherOrder } from '../../operators/share';
  */
 export function share<T>(this: Observable<T>): Observable<T> {
   return higherOrder()(this) as Observable<T>;
-};
+}

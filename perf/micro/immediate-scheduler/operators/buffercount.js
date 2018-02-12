@@ -9,10 +9,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old bufferCount with immediate scheduler', function () {
-        oldBufferCountWithImmediateScheduler.subscribe(_next, _error, _complete);
-      })
-      .add('new bufferCount with immediate scheduler', function () {
-        newBufferCountWithImmediateScheduler.subscribe(_next, _error, _complete);
-      });
+    .add('old bufferCount with immediate scheduler', function () {
+      oldBufferCountWithImmediateScheduler.subscribe(_next, _error, _complete);
+    })
+    .add('new bufferCount with immediate scheduler', function () {
+      newBufferCountWithImmediateScheduler.subscribe(_next, _error, _complete);
+    });
 };

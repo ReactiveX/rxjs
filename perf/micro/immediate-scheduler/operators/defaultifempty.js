@@ -9,10 +9,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old defaultIfEmpty with immediate scheduler', function () {
-        oldDefaultIfEmptyWithImmediateScheduler.subscribe(_next, _error, _complete);
-      })
-      .add('new defaultIfEmpty with immediate scheduler', function () {
-        newDefaultIfEmptyWithImmediateScheduler.subscribe(_next, _error, _complete);
-      });
+    .add('old defaultIfEmpty with immediate scheduler', function () {
+      oldDefaultIfEmptyWithImmediateScheduler.subscribe(_next, _error, _complete);
+    })
+    .add('new defaultIfEmpty with immediate scheduler', function () {
+      newDefaultIfEmptyWithImmediateScheduler.subscribe(_next, _error, _complete);
+    });
 };

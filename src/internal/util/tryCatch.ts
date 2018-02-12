@@ -14,4 +14,4 @@ function tryCatcher(this: any): any {
 export function tryCatch<T extends Function>(fn: T): T {
   tryCatchTarget = fn;
   return <any>tryCatcher;
-};
+}

@@ -15,10 +15,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old find(predicate, thisArg) with immediate scheduler', function () {
-        oldFindPredicateThisArg.subscribe(_next, _error, _complete);
-      })
-      .add('new find(predicate, thisArg) with immediate scheduler', function () {
-        newFindPredicateThisArg.subscribe(_next, _error, _complete);
-      });
+    .add('old find(predicate, thisArg) with immediate scheduler', function () {
+      oldFindPredicateThisArg.subscribe(_next, _error, _complete);
+    })
+    .add('new find(predicate, thisArg) with immediate scheduler', function () {
+      newFindPredicateThisArg.subscribe(_next, _error, _complete);
+    });
 };

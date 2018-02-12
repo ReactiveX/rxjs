@@ -9,10 +9,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old windowCount with immediate scheduler', function () {
-        oldWindowCountWithImmediateScheduler.subscribe(_next, _error, _complete);
-      })
-      .add('new windowCount with immediate scheduler', function () {
-        newWindowCountWithImmediateScheduler.subscribe(_next, _error, _complete);
-      });
+    .add('old windowCount with immediate scheduler', function () {
+      oldWindowCountWithImmediateScheduler.subscribe(_next, _error, _complete);
+    })
+    .add('new windowCount with immediate scheduler', function () {
+      newWindowCountWithImmediateScheduler.subscribe(_next, _error, _complete);
+    });
 };
