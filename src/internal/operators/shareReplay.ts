@@ -48,4 +48,4 @@ function shareReplayOperator<T>(bufferSize?: number, windowTime?: number, schedu
       }
     };
   };
-};
+}

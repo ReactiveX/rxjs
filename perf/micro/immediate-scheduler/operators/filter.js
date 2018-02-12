@@ -16,10 +16,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old filter with immediate scheduler', function () {
-        oldFilterWithImmediateScheduler.subscribe(_next, _error, _complete);
-      })
-      .add('new filter with immediate scheduler', function () {
-        newFilterWithImmediateScheduler.subscribe(_next, _error, _complete);
-      });
+    .add('old filter with immediate scheduler', function () {
+      oldFilterWithImmediateScheduler.subscribe(_next, _error, _complete);
+    })
+    .add('new filter with immediate scheduler', function () {
+      newFilterWithImmediateScheduler.subscribe(_next, _error, _complete);
+    });
 };

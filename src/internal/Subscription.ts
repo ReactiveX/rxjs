@@ -29,7 +29,7 @@ export interface ISubscription extends AnonymousSubscription {
  * @class Subscription
  */
 export class Subscription implements ISubscription {
-  public static EMPTY: Subscription = (function(empty: any){
+  public static EMPTY: Subscription = (function(empty: any) {
     empty.closed = true;
     return empty;
   }(new Subscription()));

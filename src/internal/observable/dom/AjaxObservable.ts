@@ -69,23 +69,23 @@ export interface AjaxCreationMethod {
 
 export function ajaxGet(url: string, headers: Object = null) {
   return new AjaxObservable<AjaxResponse>({ method: 'GET', url, headers });
-};
+}
 
 export function ajaxPost(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
   return new AjaxObservable<AjaxResponse>({ method: 'POST', url, body, headers });
-};
+}
 
 export function ajaxDelete(url: string, headers?: Object): Observable<AjaxResponse> {
   return new AjaxObservable<AjaxResponse>({ method: 'DELETE', url, headers });
-};
+}
 
 export function ajaxPut(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
   return new AjaxObservable<AjaxResponse>({ method: 'PUT', url, body, headers });
-};
+}
 
 export function ajaxPatch(url: string, body?: any, headers?: Object): Observable<AjaxResponse> {
   return new AjaxObservable<AjaxResponse>({ method: 'PATCH', url, body, headers });
-};
+}
 
 const mapResponse = map((x: AjaxResponse, index: number) => x.response);
 
@@ -98,7 +98,7 @@ export function ajaxGetJSON<T>(url: string, headers?: Object): Observable<T> {
       headers
     })
   );
-};
+}
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -317,7 +317,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
         progressSubscriber.error(e);
       }
       subscriber.error(new AjaxTimeoutError(this, request)); //TODO: Make betterer.
-    };
+    }
     xhr.ontimeout = xhrTimeout;
     (<any>xhrTimeout).request = request;
     (<any>xhrTimeout).subscriber = this;
@@ -378,7 +378,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
           subscriber.error(new AjaxError('ajax error ' + status, this, request));
         }
       }
-    };
+    }
     xhr.onreadystatechange = xhrReadyStateChange;
     (<any>xhrReadyStateChange).subscriber = this;
     (<any>xhrReadyStateChange).progressSubscriber = progressSubscriber;

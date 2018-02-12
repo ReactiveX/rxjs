@@ -15,10 +15,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old concatMap with immediate scheduler', function () {
-        oldConcatMapWithImmediateScheduler.subscribe(_next, _error, _complete);
-      })
-      .add('new concatMap with immediate scheduler', function () {
-        newConcatMapWithImmediateScheduler.subscribe(_next, _error, _complete);
-      });
+    .add('old concatMap with immediate scheduler', function () {
+      oldConcatMapWithImmediateScheduler.subscribe(_next, _error, _complete);
+    })
+    .add('new concatMap with immediate scheduler', function () {
+      newConcatMapWithImmediateScheduler.subscribe(_next, _error, _complete);
+    });
 };

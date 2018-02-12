@@ -13,10 +13,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old single(predicate) with immediate scheduler', function () {
-        oldSinglePredicate.subscribe(_next, _error, _complete);
-      })
-      .add('new single(predicate) with immediate scheduler', function () {
-        newSinglePredicate.subscribe(_next, _error, _complete);
-      });
+    .add('old single(predicate) with immediate scheduler', function () {
+      oldSinglePredicate.subscribe(_next, _error, _complete);
+    })
+    .add('new single(predicate) with immediate scheduler', function () {
+      newSinglePredicate.subscribe(_next, _error, _complete);
+    });
 };

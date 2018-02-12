@@ -90,7 +90,7 @@ describe('Observable.prototype.filter', () => {
         throw 'error';
       }
       return isPrime(x);
-    };
+    }
 
     expectObservable((<any>source).filter(predicate)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -166,7 +166,7 @@ describe('Observable.prototype.filter', () => {
         throw 'error';
       }
       return isPrime((+x) + i * 10);
-    };
+    }
 
     expectObservable((<any>source).filter(predicate)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);

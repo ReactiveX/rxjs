@@ -16,10 +16,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old map over scalar with immediate scheduler', function () {
-        oldSelectWithImmediateScheduler.subscribe(_next, _error, _complete);
-      })
-      .add('new map over scalar with immediate scheduler', function () {
-        newSelectWithImmediateScheduler.subscribe(_next, _error, _complete);
-      });
+    .add('old map over scalar with immediate scheduler', function () {
+      oldSelectWithImmediateScheduler.subscribe(_next, _error, _complete);
+    })
+    .add('new map over scalar with immediate scheduler', function () {
+      newSelectWithImmediateScheduler.subscribe(_next, _error, _complete);
+    });
 };

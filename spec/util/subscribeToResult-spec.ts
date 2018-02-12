@@ -14,7 +14,7 @@ describe('subscribeToResult', () => {
     const subscription = subscribeToResult(subscriber, result);
 
     expect(expected).to.be.equal(42);
-    expect(subscription).to.be.empty;
+    expect(subscription).to.not.exist;
   });
 
   it('should subscribe to observables that are an instanceof Rx.Observable', (done: MochaDone) => {

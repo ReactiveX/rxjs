@@ -9,10 +9,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old count over scalar with immediate scheduler', function () {
-        oldConcatWithImmediateScheduler.subscribe(_next, _error, _complete);
-      })
-      .add('new count over scalar with immediate scheduler', function () {
-        newConcatWithImmediateScheduler.subscribe(_next, _error, _complete);
-      });
+    .add('old count over scalar with immediate scheduler', function () {
+      oldConcatWithImmediateScheduler.subscribe(_next, _error, _complete);
+    })
+    .add('new count over scalar with immediate scheduler', function () {
+      newConcatWithImmediateScheduler.subscribe(_next, _error, _complete);
+    });
 };

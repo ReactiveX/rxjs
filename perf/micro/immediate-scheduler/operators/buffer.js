@@ -11,10 +11,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old buffer() with immediate scheduler', function () {
-        oldBufferWithImmediateScheduler.subscribe(_next, _error, _complete);
-      })
-      .add('new buffer() with immediate scheduler', function () {
-        newBufferWithImmediateScheduler.subscribe(_next, _error, _complete);
-      });
+    .add('old buffer() with immediate scheduler', function () {
+      oldBufferWithImmediateScheduler.subscribe(_next, _error, _complete);
+    })
+    .add('new buffer() with immediate scheduler', function () {
+      newBufferWithImmediateScheduler.subscribe(_next, _error, _complete);
+    });
 };

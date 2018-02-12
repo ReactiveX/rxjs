@@ -11,10 +11,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old select(object) with immediate scheduler', function () {
-        oldMapToWithImmediateScheduler.subscribe(_next, _error, _complete);
-      })
-      .add('new mapTo() with immediate scheduler', function () {
-        newMapToWithImmediateScheduler.subscribe(_next, _error, _complete);
-      });
+    .add('old select(object) with immediate scheduler', function () {
+      oldMapToWithImmediateScheduler.subscribe(_next, _error, _complete);
+    })
+    .add('new mapTo() with immediate scheduler', function () {
+      newMapToWithImmediateScheduler.subscribe(_next, _error, _complete);
+    });
 };

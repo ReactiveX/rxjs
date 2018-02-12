@@ -78,7 +78,7 @@ describe('Observable.fromPromise', () => {
       }
       then(onFulfilled?, onRejected?): PromiseLike<T> {
         return new CustomPromise(this.promise.then(onFulfilled, onRejected));
-      };
+      }
     }
     const promise = new CustomPromise(Promise.resolve(42));
     Observable.fromPromise(promise)

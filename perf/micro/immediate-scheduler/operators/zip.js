@@ -18,10 +18,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old zip() with immediate scheduler', function () {
-        oldZipWithImmediateScheduler.subscribe(_next, _error, _complete);
-      })
-      .add('new zip() with immediate scheduler', function () {
-        newZipWithImmediateScheduler.subscribe(_next, _error, _complete);
-      });
+    .add('old zip() with immediate scheduler', function () {
+      oldZipWithImmediateScheduler.subscribe(_next, _error, _complete);
+    })
+    .add('new zip() with immediate scheduler', function () {
+      newZipWithImmediateScheduler.subscribe(_next, _error, _complete);
+    });
 };

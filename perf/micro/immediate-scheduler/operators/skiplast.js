@@ -9,10 +9,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old skipLast with immediate scheduler', function () {
-        oldSkipLastWithImmediateScheduler.subscribe(_next, _error, _complete);
-      })
-      .add('new skipLast with immediate scheduler', function () {
-        newSkipLastWithImmediateScheduler.subscribe(_next, _error, _complete);
-      });
+    .add('old skipLast with immediate scheduler', function () {
+      oldSkipLastWithImmediateScheduler.subscribe(_next, _error, _complete);
+    })
+    .add('new skipLast with immediate scheduler', function () {
+      newSkipLastWithImmediateScheduler.subscribe(_next, _error, _complete);
+    });
 };

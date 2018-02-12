@@ -105,7 +105,7 @@ interface DispatchCreateArg<T> {
   bufferCreationInterval: number;
   subscriber: BufferTimeSubscriber<T>;
   scheduler: IScheduler;
-};
+}
 
 interface DispatchCloseArg<T> {
   subscriber: BufferTimeSubscriber<T>;

@@ -15,10 +15,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old mergeMap (scalar) with immediate scheduler', function () {
-        oldMergeMapWithImmediateScheduler.subscribe(_next, _error, _complete);
-      })
-      .add('new mergeMap (scalar) with immediate scheduler', function () {
-        newMergeMapWithImmediateScheduler.subscribe(_next, _error, _complete);
-      });
+    .add('old mergeMap (scalar) with immediate scheduler', function () {
+      oldMergeMapWithImmediateScheduler.subscribe(_next, _error, _complete);
+    })
+    .add('new mergeMap (scalar) with immediate scheduler', function () {
+      newMergeMapWithImmediateScheduler.subscribe(_next, _error, _complete);
+    });
 };

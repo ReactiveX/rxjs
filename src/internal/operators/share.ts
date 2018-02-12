@@ -23,4 +23,4 @@ function shareSubjectFactory() {
  */
 export function share<T>(): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => refCount()(multicast(shareSubjectFactory)(source)) as Observable<T>;
-};
+}
