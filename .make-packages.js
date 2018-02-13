@@ -39,8 +39,8 @@ fs.removeSync(PKG_ROOT);
 
 let rootPackageJson = Object.assign({}, pkg, {
   name: 'rxjs',
-  main: './Rx.js',
-  typings: './Rx.d.ts'
+  main: './index.js',
+  typings: './index.d.ts'
 });
 
 // Get a list of the file names. Sort in reverse order so re-export files
