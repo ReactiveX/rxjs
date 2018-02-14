@@ -1,11 +1,10 @@
 import { expect } from 'chai';
-import * as Rx from '../../src/Rx';
-import { throwError } from '../../src/internal/observable/throwError';
+import { TestScheduler } from '../../src/internal/testing/TestScheduler';
+import { throwError } from '../../src/';
 import { expectObservable } from '../helpers/marble-testing';
 
 declare function asDiagram(arg: string): Function;
-
-declare const rxTestScheduler: Rx.TestScheduler;
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {throw} */
 describe('throwError', () => {
@@ -15,11 +14,11 @@ describe('throwError', () => {
     expectObservable(e1).toBe(expected);
   });
 
-  it('should emit one value', (done: MochaDone) => {
+  it('should emit one value', (done) => {
     let calls = 0;
     throwError('bad').subscribe(() => {
       done(new Error('should not be called'));
-    }, (err: any) => {
+    }, (err) => {
       expect(++calls).to.equal(1);
       expect(err).to.equal('bad');
       done();

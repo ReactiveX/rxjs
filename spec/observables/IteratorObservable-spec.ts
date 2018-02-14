@@ -16,11 +16,11 @@ describe('fromIterable', () => {
     }).to.throw(Error, 'Iterable cannot be null');
   });
 
-  it('should emit members of an array iterator', (done: MochaDone) => {
+  it('should emit members of an array iterator', (done) => {
     const expected = [10, 20, 30, 40];
     fromIterable([10, 20, 30, 40], undefined)
       .subscribe(
-        (x: number) => { expect(x).to.equal(expected.shift()); },
+        (x) => { expect(x).to.equal(expected.shift()); },
         (x) => {
           done(new Error('should not be called'));
         }, () => {
@@ -122,7 +122,7 @@ describe('fromIterable', () => {
   });
 
   it('should emit members of an array iterator on a particular scheduler, ' +
-  'but is unsubscribed early', (done: MochaDone) => {
+  'but is unsubscribed early', (done) => {
     const expected = [10, 20, 30, 40];
 
     const source = fromIterable(
@@ -131,7 +131,7 @@ describe('fromIterable', () => {
     );
 
     const subscriber = Rx.Subscriber.create(
-      (x: number) => {
+      (x) => {
         expect(x).to.equal(expected.shift());
         if (x === 30) {
           subscriber.unsubscribe();
@@ -146,11 +146,11 @@ describe('fromIterable', () => {
     source.subscribe(subscriber);
   });
 
-  it('should emit characters of a string iterator', (done: MochaDone) => {
+  it('should emit characters of a string iterator', (done) => {
     const expected = ['f', 'o', 'o'];
     fromIterable('foo', undefined)
       .subscribe(
-        (x: string) => { expect(x).to.equal(expected.shift()); },
+        (x) => { expect(x).to.equal(expected.shift()); },
         (x) => {
           done(new Error('should not be called'));
         }, () => {
@@ -160,11 +160,11 @@ describe('fromIterable', () => {
       );
   });
 
-  it('should be possible to unsubscribe in the middle of the iteration', (done: MochaDone) => {
+  it('should be possible to unsubscribe in the middle of the iteration', (done) => {
     const expected = [10, 20, 30];
 
     const subscriber = Rx.Subscriber.create(
-      (x: number) => {
+      (x) => {
         expect(x).to.equal(expected.shift());
         if (x === 30) {
           subscriber.unsubscribe();

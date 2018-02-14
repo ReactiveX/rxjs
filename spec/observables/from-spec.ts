@@ -6,7 +6,6 @@ import { of, from } from '../../src/';
 // tslint:disable:no-any
 declare const asDiagram: any;
 declare const expectObservable: any;
-declare const Symbol: any;
 declare const type: any;
 declare const rxTestScheduler: TestScheduler;
 // tslint:enable:no-any
@@ -38,7 +37,7 @@ describe('from', () => {
   type('should return T for ObservableLike objects', () => {
     /* tslint:disable:no-unused-variable */
     const o1: Observable<number> = from([] as number[], asapScheduler);
-    const o2: Observable<{ a: string }> = from(Observable.empty<{ a: string }>());
+    const o2: Observable<{ a: string }> = from(Observable.empty());
     const o3: Observable<{ b: number }> = from(new Promise<{b: number}>(resolve => resolve()));
     /* tslint:enable:no-unused-variable */
   });
@@ -50,7 +49,7 @@ describe('from', () => {
   });
 
   const fakervable = <T>(...values: T[]) => ({
-    [Symbol.observable as symbol]: () => ({
+    [Symbol.observable]: () => ({
       subscribe: (observer: Observer<T>) => {
         for (const value of values) {
           observer.next(value);
@@ -85,11 +84,11 @@ describe('from', () => {
   ];
 
   for (const source of sources) {
-    it(`should accept ${source.name}`, (done: MochaDone) => {
+    it(`should accept ${source.name}`, (done) => {
       let nextInvoked = false;
       from(source.value)
         .subscribe(
-          (x: string) => {
+          (x) => {
             nextInvoked = true;
             expect(x).to.equal('x');
           },
@@ -102,11 +101,11 @@ describe('from', () => {
           }
         );
     });
-    it(`should accept ${source.name} and scheduler`, (done: MochaDone) => {
+    it(`should accept ${source.name} and scheduler`, (done) => {
       let nextInvoked = false;
       from(source.value, asyncScheduler)
         .subscribe(
-          (x: string) => {
+          (x) => {
             nextInvoked = true;
             expect(x).to.equal('x');
           },

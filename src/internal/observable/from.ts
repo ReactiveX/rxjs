@@ -1,15 +1,19 @@
-import { Observable, ObservableInput} from '../Observable';
+import { Observable } from '../Observable';
 import { IScheduler } from '../Scheduler';
 import { isPromise } from '../util/isPromise';
 import { isArrayLike } from '../util/isArrayLike';
 import { isObservable } from '../util/isObservable';
+import { isIterable } from '../util/isIterable';
 import { iterator as Symbol_iterator } from '../symbol/iterator';
 import { fromArray } from './fromArray';
 import { fromPromise } from './fromPromise';
 import { fromIterable } from './fromIterable';
 import { fromObservable } from './fromObservable';
 import { subscribeTo } from '../util/subscribeTo';
+import { ObservableInput } from '../types';
 
+export function from<T>(input: ObservableInput<T>, scheduler?: IScheduler): Observable<T>;
+export function from<T>(input: ObservableInput<ObservableInput<T>>, scheduler?: IScheduler): Observable<Observable<T>>;
 export function from<T>(input: ObservableInput<T>, scheduler?: IScheduler): Observable<T> {
   if (!scheduler) {
     if (input instanceof Observable) {
@@ -22,11 +26,11 @@ export function from<T>(input: ObservableInput<T>, scheduler?: IScheduler): Obse
     if (isObservable(input)) {
       return fromObservable(input, scheduler);
     } else if (isPromise(input)) {
-      return fromPromise<T>(input as any, scheduler);
+      return fromPromise(input, scheduler);
     } else if (isArrayLike(input)) {
       return fromArray(input, scheduler);
-    }  else if (typeof input[Symbol_iterator] === 'function' || typeof input === 'string') {
-      return fromIterable(input as any, scheduler);
+    }  else if (isIterable(input) || typeof input === 'string') {
+      return fromIterable(input, scheduler);
     }
   }
 

@@ -6,17 +6,11 @@ import { root } from './util/root';
 import { toSubscriber } from './util/toSubscriber';
 import { IfObservable } from './observable/IfObservable';
 import { observable as Symbol_observable } from '../internal/symbol/observable';
-import { OperatorFunction } from '../internal/types';
+import { OperatorFunction, Subscribable } from '../internal/types';
 import { pipeFromArray } from './util/pipe';
 
-export interface Subscribable<T> {
-  subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
-            error?: (error: any) => void,
-            complete?: () => void): AnonymousSubscription;
-}
-
-export type SubscribableOrPromise<T> = Subscribable<T> | PromiseLike<T>;
-export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T>;
+//TODO(davidd): refactor all references to these to use types instead
+export { Subscribable, ObservableLike, SubscribableOrPromise, ObservableInput } from '../internal/types';
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block

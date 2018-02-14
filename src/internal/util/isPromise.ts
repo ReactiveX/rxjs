@@ -1,3 +1,3 @@
-export function isPromise<T>(value: any | Promise<T>): value is Promise<T> {
+export function isPromise(value: any): value is PromiseLike<any> {
   return value && typeof (<any>value).subscribe !== 'function' && typeof (value as any).then === 'function';
 }

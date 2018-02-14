@@ -9,7 +9,7 @@ describe('subscribeToResult', () => {
   it('should synchronously complete when subscribe to scalarObservable', () => {
     const result = Rx.Observable.of(42);
     let expected: number;
-    const subscriber = new OuterSubscriber((x: number) => expected = x);
+    const subscriber = new OuterSubscriber<number, number>((x) => expected = x);
 
     const subscription = subscribeToResult(subscriber, result);
 
@@ -17,11 +17,11 @@ describe('subscribeToResult', () => {
     expect(subscription).to.not.exist;
   });
 
-  it('should subscribe to observables that are an instanceof Rx.Observable', (done: MochaDone) => {
+  it('should subscribe to observables that are an instanceof Rx.Observable', (done) => {
     const expected = [1, 2, 3];
     const result = Rx.Observable.range(1, 3);
 
-    const subscriber = new OuterSubscriber(x => {
+    const subscriber = new OuterSubscriber<number, number>(x => {
       expect(expected.shift()).to.be.equal(x);
     }, () => {
       done(new Error('should not be called'));
@@ -33,8 +33,8 @@ describe('subscribeToResult', () => {
     subscribeToResult(subscriber, result);
   });
 
-  it('should emit error when observable emits error', (done: MochaDone) => {
-    const result = Rx.Observable.throw(new Error('error'));
+  it('should emit error when observable emits error', (done) => {
+    const result = Rx.Observable.throwError(new Error('error'));
     const subscriber = new OuterSubscriber(x => {
       done(new Error('should not be called'));
     }, (err) => {
@@ -49,9 +49,9 @@ describe('subscribeToResult', () => {
 
   it('should subscribe to an array and emit synchronously', () => {
     const result = [1, 2, 3];
-    const expected = [];
+    const expected: number[] = [];
 
-    const subscriber = new OuterSubscriber(x => expected.push(x));
+    const subscriber = new OuterSubscriber<number, number>(x => expected.push(x));
 
     subscribeToResult(subscriber, result);
 
@@ -60,19 +60,19 @@ describe('subscribeToResult', () => {
 
   it('should subscribe to an array-like and emit synchronously', () => {
     const result = { 0: 0, 1: 1, 2: 2, length: 3 };
-    const expected = [];
+    const expected: number[] = [];
 
-    const subscriber = new OuterSubscriber(x => expected.push(x));
+    const subscriber = new OuterSubscriber<number, number>(x => expected.push(x));
 
     subscribeToResult(subscriber, result);
 
     expect(expected).to.be.deep.equal([0, 1, 2]);
   });
 
-  it('should subscribe to a promise', (done: MochaDone) => {
+  it('should subscribe to a promise', (done) => {
     const result = Promise.resolve(42);
 
-    const subscriber = new OuterSubscriber(x => {
+    const subscriber = new OuterSubscriber<number, number>(x => {
       expect(x).to.be.equal(42);
     }, () => {
       done(new Error('should not be called'));
@@ -81,10 +81,10 @@ describe('subscribeToResult', () => {
     subscribeToResult(subscriber, result);
   });
 
-  it('should emits error when the promise rejects', (done: MochaDone) => {
+  it('should emits error when the promise rejects', (done) => {
     const result = Promise.reject(42);
 
-    const subscriber = new OuterSubscriber(x => {
+    const subscriber = new OuterSubscriber<number, number>(x => {
       done(new Error('should not be called'));
     }, (x) => {
       expect(x).to.be.equal(42);
@@ -119,7 +119,7 @@ describe('subscribeToResult', () => {
     expect(expected).to.be.equal(42);
   });
 
-  it('should subscribe to to an object that implements Symbol.observable', (done: MochaDone) => {
+  it('should subscribe to to an object that implements Symbol.observable', (done) => {
     const observableSymbolObject = { [$$symbolObservable]: () => Rx.Observable.of(42) };
 
     const subscriber = new OuterSubscriber(x => {
