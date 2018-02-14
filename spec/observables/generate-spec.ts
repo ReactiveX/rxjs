@@ -2,7 +2,8 @@ import * as Rx from '../../src/Rx';
 import '../../src/add/observable/generate';
 import { TestScheduler } from '../../src/internal/testing/TestScheduler';
 import { expect } from 'chai';
-declare const {asDiagram, expectObservable};
+import { expectObservable } from '../helpers/marble-testing';
+declare function asDiagram(arg: string): Function;
 declare const rxTestScheduler: TestScheduler;
 
 const Observable = Rx.Observable;

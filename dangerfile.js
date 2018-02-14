@@ -7,10 +7,10 @@ var validateMessage = require('validate-commit-msg');
 
 //simple regex matcher to detect usage of helper function and its type signature
 var hotMatch = /\bhot\(/gi;
-var hotSignatureMatch = /\bdeclare const hot: typeof/gi;
+var hotSignatureMatch = /\bimport \{.*?hot.*?\} from '.*?\/helpers\/marble-testing'/gi;
 
 var coldMatch = /\bcold\(/gi;
-var coldSignatureMatch = /\bdeclare const cold: typeof/gi;
+var coldSignatureMatch = /\bimport \{.*?cold.*?\} from '.*?\/helpers\/marble-testing'/gi;
 
 var errorCount = 0;
 

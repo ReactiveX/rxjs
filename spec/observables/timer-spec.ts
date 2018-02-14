@@ -1,12 +1,9 @@
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { cold, expectObservable } from '../helpers/marble-testing';
 import { timer, never, merge } from '../../src/';
 import { TestScheduler } from '../../src/testing';
 import { mergeMap } from '../../src/operators';
 
 declare const asDiagram: any;
-declare const time: typeof marbleTestingSignature.time;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const cold: typeof marbleTestingSignature.cold;
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {timer} */

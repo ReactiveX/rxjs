@@ -1,12 +1,8 @@
 import { expect } from 'chai';
 import * as Rx from '../../src/Rx';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare const { type };
-declare const hot: typeof marbleTestingSignature.hot;
-declare const cold: typeof marbleTestingSignature.cold;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
+declare const type: Function;
 
 const Observable = Rx.Observable;
 const queueScheduler = Rx.Scheduler.queue;
@@ -516,7 +512,7 @@ describe('Observable.combineLatest', () => {
     let a: Promise<number>[];
     let o1: Rx.Observable<number[]> = Observable.combineLatest(a);
     let o2: Rx.Observable<number[]> = Observable.combineLatest(...a);
-    let o3: Rx.Observable<number> = Observable.combineLatest(a, (...x) => x.length);
+    let o3: Rx.Observable<number> = Observable.combineLatest(a, (...x: any[]) => x.length);
     /* tslint:enable:no-unused-variable */
   });
 
@@ -525,7 +521,7 @@ describe('Observable.combineLatest', () => {
     let a: Rx.Observable<number>[];
     let o1: Rx.Observable<number[]> = Observable.combineLatest(a);
     let o2: Rx.Observable<number[]> = Observable.combineLatest(...a);
-    let o3: Rx.Observable<number> = Observable.combineLatest(a, (...x) => x.length);
+    let o3: Rx.Observable<number> = Observable.combineLatest(a, (...x: any[]) => x.length);
     /* tslint:enable:no-unused-variable */
   });
 

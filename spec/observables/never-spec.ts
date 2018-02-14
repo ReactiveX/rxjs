@@ -1,9 +1,8 @@
 import { never } from '../../src/';
 import { expect } from 'chai';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { expectObservable } from '../helpers/marble-testing';
 
 declare const asDiagram: any;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
 
 /** @test {never} */
 describe('never', () => {

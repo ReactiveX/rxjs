@@ -1,10 +1,6 @@
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare const { asDiagram };
-declare const hot: typeof marbleTestingSignature.hot;
-declare const cold: typeof marbleTestingSignature.cold;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
+declare function asDiagram(arg: string): Function;
 
 /** @test {pairwise} */
 describe('Observable.prototype.pairwise', () => {

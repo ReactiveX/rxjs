@@ -1,13 +1,10 @@
 import { expect } from 'chai';
 import { Observable, forkJoin, of } from '../../src';
 import { lowerCaseO } from '../helpers/test-helper';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { hot, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare const type: any;
-declare const asDiagram: any;
-declare const hot: typeof marbleTestingSignature.hot;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
+declare const type: Function;
+declare const asDiagram: Function;
 
 /** @test {forkJoin} */
 describe('forkJoin', () => {

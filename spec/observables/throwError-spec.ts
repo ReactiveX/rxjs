@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import * as Rx from '../../src/Rx';
-import { throwError } from '../../src/';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { throwError } from '../../src/internal/observable/throwError';
+import { expectObservable } from '../helpers/marble-testing';
 
-declare const asDiagram: any;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
+declare function asDiagram(arg: string): Function;
+
 declare const rxTestScheduler: Rx.TestScheduler;
 
 /** @test {throw} */
