@@ -6,8 +6,8 @@ import { OperatorFunction, MonoTypeOperatorFunction } from '../../../internal/ty
 
 /* tslint:disable:max-line-length */
 export function publishReplay<T>(this: Observable<T>, bufferSize?: number, windowTime?: number, scheduler?: IScheduler): ConnectableObservable<T>;
-export function publishReplay<T>(this: Observable<T>, bufferSize?: number, windowTime?: number, selector?: MonoTypeOperatorFunction<T>, scheduler?: IScheduler): Observable<T>;
 export function publishReplay<T, R>(this: Observable<T>, bufferSize?: number, windowTime?: number, selector?: OperatorFunction<T, R>): Observable<R>;
+export function publishReplay<T>(this: Observable<T>, bufferSize?: number, windowTime?: number, selector?: MonoTypeOperatorFunction<T>, scheduler?: IScheduler): Observable<T>;
 /* tslint:enable:max-line-length */
 
 /**

@@ -3,7 +3,7 @@ import * as Rx from '../../src/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare function asDiagram(arg: string): Function;
-declare const type;
+declare const type: Function;
 
 const Observable = Rx.Observable;
 
@@ -31,7 +31,7 @@ describe('Observable.prototype.publishBehavior', () => {
 
   it('should only emit default value if connect is not called, despite subscriptions', () => {
     const source = cold('--1-2---3-4--5-|');
-    const sourceSubs = [];
+    const sourceSubs: string[] = [];
     const published = source.publishBehavior('0');
     const expected =    '0';
 
@@ -96,7 +96,7 @@ describe('Observable.prototype.publishBehavior', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
 
     // Set up unsubscription action
-    let connection;
+    let connection: Rx.Subscription;
     expectObservable(hot(unsub).do(() => {
       connection.unsubscribe();
     })).toBe(unsub);
@@ -108,7 +108,7 @@ describe('Observable.prototype.publishBehavior', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^        !   ';
     const published = source
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .publishBehavior('0');
     const subscriber1 = hot('a|           ').mergeMapTo(published);
     const expected1   =     '01-2-3----   ';
@@ -124,7 +124,7 @@ describe('Observable.prototype.publishBehavior', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
 
     // Set up unsubscription action
-    let connection;
+    let connection: Rx.Subscription;
     expectObservable(hot(unsub).do(() => {
       connection.unsubscribe();
     })).toBe(unsub);
@@ -201,12 +201,12 @@ describe('Observable.prototype.publishBehavior', () => {
     });
   });
 
-  it('should emit completed when subscribed after completed', (done: MochaDone) => {
-    const results1 = [];
-    const results2 = [];
+  it('should emit completed when subscribed after completed', (done) => {
+    const results1: number[] = [];
+    const results2: number[] = [];
     let subscriptions = 0;
 
-    const source = new Observable((observer: Rx.Observer<number>) => {
+    const source = new Observable<number>((observer) => {
       subscriptions++;
       observer.next(1);
       observer.next(2);
@@ -276,12 +276,12 @@ describe('Observable.prototype.publishBehavior', () => {
     published.connect();
   });
 
-  it('should multicast one observable to multiple observers', (done: MochaDone) => {
-    const results1 = [];
-    const results2 = [];
+  it('should multicast one observable to multiple observers', (done) => {
+    const results1: number[] = [];
+    const results2: number[] = [];
     let subscriptions = 0;
 
-    const source = new Observable((observer: Rx.Observer<number>) => {
+    const source = new Observable<number>((observer) => {
       subscriptions++;
       observer.next(1);
       observer.next(2);
@@ -291,7 +291,7 @@ describe('Observable.prototype.publishBehavior', () => {
 
     const connectable = source.publishBehavior(0);
 
-    connectable.subscribe((x: any) => {
+    connectable.subscribe((x) => {
       results1.push(x);
     });
 
@@ -301,7 +301,7 @@ describe('Observable.prototype.publishBehavior', () => {
 
     expect(results2).to.deep.equal([]);
 
-    connectable.subscribe((x: any) => {
+    connectable.subscribe((x) => {
       results2.push(x);
     });
 
@@ -311,10 +311,10 @@ describe('Observable.prototype.publishBehavior', () => {
     done();
   });
 
-  it('should follow the RxJS 4 behavior and emit nothing to observer after completed', (done: MochaDone) => {
-    const results = [];
+  it('should follow the RxJS 4 behavior and emit nothing to observer after completed', (done) => {
+    const results: number[] = [];
 
-    const source = new Observable((observer: Rx.Observer<number>) => {
+    const source = new Observable<number>((observer) => {
       observer.next(1);
       observer.next(2);
       observer.next(3);
@@ -326,7 +326,7 @@ describe('Observable.prototype.publishBehavior', () => {
 
     connectable.connect();
 
-    connectable.subscribe((x: any) => {
+    connectable.subscribe((x) => {
       results.push(x);
     });
 

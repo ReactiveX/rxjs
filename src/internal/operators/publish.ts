@@ -6,8 +6,8 @@ import { MonoTypeOperatorFunction, OperatorFunction, UnaryFunction } from '../..
 
 /* tslint:disable:max-line-length */
 export function publish<T>(): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
-export function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOperatorFunction<T>;
 export function publish<T, R>(selector: OperatorFunction<T, R>): OperatorFunction<T, R>;
+export function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
 
 /**
