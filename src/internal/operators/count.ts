@@ -1,6 +1,6 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
-import { Observer } from '../Observer';
+import { Observer } from '../types';
 import { Subscriber } from '../Subscriber';
 import { OperatorFunction } from '../../internal/types';
 

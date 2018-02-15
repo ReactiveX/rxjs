@@ -1,7 +1,7 @@
 
 import { mergeAll } from './mergeAll';
-import { OperatorFunction } from '../../internal/types';
-import { ObservableInput, Observable } from '../Observable';
+import { OperatorFunction, ObservableInput } from '../../internal/types';
+import { Observable } from '../Observable';
 
 export function concatAll<T>(): OperatorFunction<ObservableInput<T>, T>;
 export function concatAll<R>(): OperatorFunction<any, R>;

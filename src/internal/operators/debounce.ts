@@ -1,7 +1,9 @@
 import { Operator } from '../Operator';
-import { Observable, SubscribableOrPromise } from '../Observable';
+import { Observable } from '../Observable';
+import { SubscribableOrPromise } from '../types';
 import { Subscriber } from '../Subscriber';
-import { Subscription, TeardownLogic } from '../Subscription';
+import { Subscription } from '../Subscription';
+import { TeardownLogic } from '../types';
 
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';

@@ -1,8 +1,9 @@
-import { Observable, ObservableInput } from '../Observable';
+import { Observable } from '../Observable';
+import { ObservableInput } from '../types';
 import { fromArray } from './fromArray';
 import { isArray } from '..//util/isArray';
 import { Operator } from '../Operator';
-import { PartialObserver } from '../Observer';
+import { PartialObserver } from '../types';
 import { Subscriber } from '../Subscriber';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';

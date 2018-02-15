@@ -1,7 +1,7 @@
 declare const global: any;
 
 import * as Rx from '../../src/Rx';
-import { ObservableInput } from '../../src/internal/Observable';
+import { ObservableInput } from '../../src/internal/types';
 import { root } from '../../src/internal/util/root';
 import { $$iterator } from '../../src/internal/symbol/iterator';
 import $$symbolObservable from 'symbol-observable';

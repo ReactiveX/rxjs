@@ -2,7 +2,8 @@ import { Subject, SubjectSubscriber } from '../Subject';
 import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { Subscription, TeardownLogic } from '../Subscription';
+import { Subscription } from '../Subscription';
+import { TeardownLogic } from '../types';
 import { refCount as higherOrderRefCount } from '../../internal/operators/refCount';
 
 /**

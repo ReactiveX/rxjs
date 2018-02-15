@@ -1,4 +1,5 @@
-import { Observable, ObservableInput } from '../../Observable';
+import { Observable } from '../../Observable';
+import { ObservableInput } from '../../types';
 import { mergeMap as higherOrderMergeMap } from '../../operators/mergeMap';
 
 /* tslint:disable:max-line-length */

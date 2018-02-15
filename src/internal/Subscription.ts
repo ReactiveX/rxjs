@@ -4,17 +4,7 @@ import { isFunction } from './util/isFunction';
 import { tryCatch } from './util/tryCatch';
 import { errorObject } from './util/errorObject';
 import { UnsubscriptionError } from './util/UnsubscriptionError';
-
-export interface AnonymousSubscription {
-  unsubscribe(): void;
-}
-
-export type TeardownLogic = AnonymousSubscription | Function | void;
-
-export interface ISubscription extends AnonymousSubscription {
-  unsubscribe(): void;
-  readonly closed: boolean;
-}
+import { ISubscription, TeardownLogic } from './types';
 
 /**
  * Represents a disposable resource, such as the execution of an Observable. A

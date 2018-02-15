@@ -1,5 +1,6 @@
 
-import { Observable, SubscribableOrPromise } from '../../Observable';
+import { Observable } from '../../Observable';
+import { SubscribableOrPromise } from '../../types';
 import { bufferToggle as higherOrder } from '../../operators/bufferToggle';
 
 /**

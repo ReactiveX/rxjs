@@ -5,7 +5,7 @@ import { Subscription } from '../../Subscription';
 import { Operator } from '../../Operator';
 import { root } from '../..//util/root';
 import { ReplaySubject } from '../../ReplaySubject';
-import { Observer, NextObserver } from '../../Observer';
+import { Observer, NextObserver } from '../../types';
 import { tryCatch } from '../..//util/tryCatch';
 import { errorObject } from '../..//util/errorObject';
 import { assign } from '../..//util/assign';

@@ -1,6 +1,7 @@
-import { Observable, SubscribableOrPromise } from '../Observable';
+import { Observable } from '../Observable';
+import { SubscribableOrPromise } from '../types';
 import { Subscriber } from '../Subscriber';
-import { AnonymousSubscription, TeardownLogic } from '../Subscription';
+import { AnonymousSubscription, TeardownLogic } from '../types';
 
 import { subscribeToResult } from '..//util/subscribeToResult';
 import { OuterSubscriber } from '../OuterSubscriber';

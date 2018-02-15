@@ -1,7 +1,8 @@
 import { Operator } from '../Operator';
-import { Observable, ObservableInput } from '../Observable';
+import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { Subscription, TeardownLogic } from '../Subscription';
+import { Subscription } from '../Subscription';
+import { ObservableInput, TeardownLogic } from '../types';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '..//util/subscribeToResult';
 import { OperatorFunction } from '../../internal/types';

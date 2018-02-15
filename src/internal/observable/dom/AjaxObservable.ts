@@ -3,7 +3,7 @@ import { tryCatch } from '../..//util/tryCatch';
 import { errorObject } from '../..//util/errorObject';
 import { Observable } from '../../Observable';
 import { Subscriber } from '../../Subscriber';
-import { TeardownLogic } from '../../Subscription';
+import { TeardownLogic } from '../../types';
 import { map } from '../../../internal/operators/map';
 
 export interface AjaxRequest {

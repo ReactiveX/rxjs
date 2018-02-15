@@ -1,5 +1,6 @@
 import { isFunction } from './util/isFunction';
-import { Observer, PartialObserver, empty as emptyObserver } from './Observer';
+import { empty as emptyObserver } from './Observer';
+import { Observer, PartialObserver } from './types';
 import { Subscription } from './Subscription';
 import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscriber';
 

@@ -1,4 +1,4 @@
-import { PartialObserver } from './Observer';
+import { PartialObserver } from './types';
 import { Observable } from './Observable';
 import { empty } from './observable/empty';
 import { of } from './observable/of';

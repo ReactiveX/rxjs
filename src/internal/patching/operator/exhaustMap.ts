@@ -1,5 +1,6 @@
 
-import { Observable, ObservableInput } from '../../Observable';
+import { Observable } from '../../Observable';
+import { ObservableInput } from '../../types';
 import { exhaustMap as higherOrder } from '../../operators/exhaustMap';
 
 /* tslint:disable:max-line-length */

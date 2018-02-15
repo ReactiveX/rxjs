@@ -1,4 +1,5 @@
-import { Observable, SubscribableOrPromise } from '../../Observable';
+import { Observable } from '../../Observable';
+import { SubscribableOrPromise } from '../../types';
 import { throttle as higherOrder, ThrottleConfig, defaultThrottleConfig } from '../../operators/throttle';
 
 /**

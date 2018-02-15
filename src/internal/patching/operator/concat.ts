@@ -1,4 +1,5 @@
-import { Observable, ObservableInput } from '../../Observable';
+import { Observable } from '../../Observable';
+import { ObservableInput } from '../../types';
 import { IScheduler } from '../../Scheduler';
 import { concat as concatStatic } from '../../observable/concat';
 

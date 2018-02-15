@@ -3,7 +3,7 @@ import { Subscriber } from '../Subscriber';
 import { ArgumentOutOfRangeError } from '..//util/ArgumentOutOfRangeError';
 import { empty } from '../observable/empty';
 import { Observable } from '../Observable';
-import { TeardownLogic } from '../Subscription';
+import { TeardownLogic } from '../types';
 import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**

@@ -1,7 +1,8 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { IScheduler } from '../Scheduler';
-import { Subscription, TeardownLogic } from '../Subscription';
+import { Subscription } from '../Subscription';
+import { TeardownLogic } from '../types';
 import { async } from '../scheduler/async';
 import { Observable } from '../Observable';
 import { ThrottleConfig, defaultThrottleConfig } from './throttle';

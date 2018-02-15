@@ -1,5 +1,5 @@
 import { Operator } from '../Operator';
-import { Observer } from '../Observer';
+import { Observer } from '../types';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { tryCatch } from '..//util/tryCatch';

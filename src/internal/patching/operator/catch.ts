@@ -1,5 +1,6 @@
 
-import { Observable, ObservableInput } from '../../Observable';
+import { Observable } from '../../Observable';
+import { ObservableInput } from '../../types';
 import { catchError as higherOrder } from '../../operators/catchError';
 
 /**

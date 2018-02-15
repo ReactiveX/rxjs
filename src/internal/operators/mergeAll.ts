@@ -1,8 +1,8 @@
 
-import { ObservableInput, Observable } from '../Observable';
+import { Observable } from '../Observable';
 import { mergeMap } from './mergeMap';
 import { identity } from '..//util/identity';
-import { OperatorFunction } from '../../internal/types';
+import { OperatorFunction, ObservableInput } from '../../internal/types';
 
 export function mergeAll<T>(concurrent?: number): OperatorFunction<ObservableInput<T>, T>;
 export function mergeAll<R>(concurrent?: number): OperatorFunction<any, R>;

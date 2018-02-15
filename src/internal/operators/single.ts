@@ -1,9 +1,9 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { Observer } from '../Observer';
+import { Observer } from '../types';
 import { EmptyError } from '..//util/EmptyError';
-import { TeardownLogic } from '../Subscription';
+import { TeardownLogic } from '../types';
 
 import { MonoTypeOperatorFunction } from '../../internal/types';
 

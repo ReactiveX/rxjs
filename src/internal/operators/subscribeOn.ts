@@ -2,7 +2,7 @@ import { Operator } from '../Operator';
 import { IScheduler } from '../Scheduler';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { TeardownLogic } from '../Subscription';
+import { TeardownLogic } from '../types';
 import { SubscribeOnObservable } from '../observable/SubscribeOnObservable';
 import { MonoTypeOperatorFunction } from '../../internal/types';
 

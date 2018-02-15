@@ -1,5 +1,4 @@
-import { OperatorFunction } from '../../internal/types';
-import { ObservableInput } from '../Observable';
+import { OperatorFunction, ObservableInput } from '../../internal/types';
 import { switchMap } from './switchMap';
 import { identity } from '..//util/identity';
 

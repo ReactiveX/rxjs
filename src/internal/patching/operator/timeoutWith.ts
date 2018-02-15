@@ -1,6 +1,7 @@
 import { IScheduler } from '../../Scheduler';
 import { async } from '../../scheduler/async';
-import { Observable, ObservableInput } from '../../Observable';
+import { Observable } from '../../Observable';
+import { ObservableInput } from '../../types';
 import { timeoutWith as higherOrder } from '../../operators/timeoutWith';
 
 /* tslint:disable:max-line-length */

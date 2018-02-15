@@ -3,7 +3,7 @@ import { Subscriber } from '../Subscriber';
 import { tryCatch } from '..//util/tryCatch';
 import { errorObject } from '..//util/errorObject';
 import { Observable } from '../Observable';
-import { TeardownLogic } from '../Subscription';
+import { TeardownLogic } from '../types';
 import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /* tslint:disable:max-line-length */

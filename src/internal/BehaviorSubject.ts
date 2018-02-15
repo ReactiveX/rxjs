@@ -1,6 +1,7 @@
 import { Subject } from './Subject';
 import { Subscriber } from './Subscriber';
-import { Subscription, ISubscription } from './Subscription';
+import { Subscription } from './Subscription';
+import { ISubscription } from './types';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 
 /**

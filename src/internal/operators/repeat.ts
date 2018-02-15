@@ -2,7 +2,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { empty } from '../observable/empty';
-import { TeardownLogic } from '../Subscription';
+import { TeardownLogic } from '../types';
 import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**

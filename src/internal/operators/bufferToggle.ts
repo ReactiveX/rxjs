@@ -1,6 +1,7 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { Observable, SubscribableOrPromise } from '../Observable';
+import { Observable } from '../Observable';
+import { SubscribableOrPromise } from '../types';
 import { Subscription } from '../Subscription';
 import { subscribeToResult } from '..//util/subscribeToResult';
 import { OuterSubscriber } from '../OuterSubscriber';

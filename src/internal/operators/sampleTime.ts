@@ -4,7 +4,7 @@ import { Subscriber } from '../Subscriber';
 import { IScheduler } from '../Scheduler';
 import { Action } from '../scheduler/Action';
 import { async } from '../scheduler/async';
-import { TeardownLogic } from '../Subscription';
+import { TeardownLogic } from '../types';
 
 import { MonoTypeOperatorFunction } from '../../internal/types';
 

@@ -5,7 +5,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
-import { TeardownLogic } from '../Subscription';
+import { TeardownLogic } from '../types';
 import { TimeoutError } from '..//util/TimeoutError';
 import { MonoTypeOperatorFunction } from '../../internal/types';
 

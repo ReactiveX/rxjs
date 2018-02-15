@@ -1,8 +1,9 @@
 import { Operator } from './Operator';
-import { Observer } from './Observer';
+import { Observer } from './types';
 import { Observable } from './Observable';
 import { Subscriber } from './Subscriber';
-import { ISubscription, Subscription, TeardownLogic } from './Subscription';
+import { Subscription } from './Subscription';
+import { ISubscription, TeardownLogic } from './types';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 import { SubjectSubscription } from './SubjectSubscription';
 import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscriber';
