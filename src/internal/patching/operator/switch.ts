@@ -1,5 +1,8 @@
-import { Observable } from '../../Observable';
+import { Observable, ObservableInput } from '../../Observable';
 import { switchAll as higherOrder } from '../../operators/switchAll';
+
+export function _switch<T>(this: Observable<ObservableInput<T>>): Observable<T>;
+export function _switch<T, R>(this: Observable<T>): Observable<R>;
 
 /**
  * Converts a higher-order Observable into a first-order Observable by
@@ -43,6 +46,6 @@ import { switchAll as higherOrder } from '../../operators/switchAll';
  * @name switch
  * @owner Observable
  */
-export function _switch<T>(this: Observable<Observable<T>>): Observable<T> {
+export function _switch<T>(this: Observable<ObservableInput<T>>): Observable<T> {
   return higherOrder()(this) as Observable<T>;
 }

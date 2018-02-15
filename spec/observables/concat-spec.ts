@@ -58,10 +58,10 @@ describe('Observable.concat', () => {
     const expected =    '--i-j-k-l---i-j-';
     const unsub =       '               !';
 
-    const innerWrapped = inner.mergeMap((x: string) => Observable.of(x));
+    const innerWrapped = inner.mergeMap((x) => Observable.of(x));
     const result = Observable
       .concat(innerWrapped, innerWrapped, innerWrapped, innerWrapped)
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(inner.subscriptions).toBe(innersubs);
@@ -334,17 +334,17 @@ describe('Observable.concat', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should concat an immediately-scheduled source with an immediately-scheduled second', (done: MochaDone) => {
+  it('should concat an immediately-scheduled source with an immediately-scheduled second', (done) => {
     const a = Observable.of<number>(1, 2, 3, queueScheduler);
     const b = Observable.of<number>(4, 5, 6, 7, 8, queueScheduler);
     const r = [1, 2, 3, 4, 5, 6, 7, 8];
 
-    Observable.concat(a, b, queueScheduler).subscribe((vals: number) => {
+    Observable.concat(a, b, queueScheduler).subscribe((vals) => {
       expect(vals).to.equal(r.shift());
     }, null, done);
   });
 
-  it('should use the scheduler even when one Observable is concat\'d', (done: MochaDone) => {
+  it('should use the scheduler even when one Observable is concat\'d', (done) => {
     let e1Subscribed = false;
     const e1 = Observable.defer(() => {
       e1Subscribed = true;

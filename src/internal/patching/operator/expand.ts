@@ -1,10 +1,10 @@
-import { Observable } from '../../Observable';
+import { Observable, ObservableInput } from '../../Observable';
 import { IScheduler } from '../../Scheduler';
 import { expand as higherOrder } from '../../operators/expand';
 
 /* tslint:disable:max-line-length */
-export function expand<T>(this: Observable<T>, project: (value: T, index: number) => Observable<T>, concurrent?: number, scheduler?: IScheduler): Observable<T>;
-export function expand<T, R>(this: Observable<T>, project: (value: T, index: number) => Observable<R>, concurrent?: number, scheduler?: IScheduler): Observable<R>;
+export function expand<T, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<R>, concurrent?: number, scheduler?: IScheduler): Observable<R>;
+export function expand<T>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<T>, concurrent?: number, scheduler?: IScheduler): Observable<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -52,7 +52,7 @@ export function expand<T, R>(this: Observable<T>, project: (value: T, index: num
  * @method expand
  * @owner Observable
  */
-export function expand<T, R>(this: Observable<T>, project: (value: T, index: number) => Observable<R>,
+export function expand<T, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<R>,
                              concurrent: number = Number.POSITIVE_INFINITY,
                              scheduler: IScheduler = undefined): Observable<R> {
   concurrent = (concurrent || 0) < 1 ? Number.POSITIVE_INFINITY : concurrent;

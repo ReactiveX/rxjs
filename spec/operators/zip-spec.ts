@@ -2,9 +2,8 @@ import { expect } from 'chai';
 import * as Rx from '../../src/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare const type;
+declare const type: Function;
 
-declare const Symbol: any;
 const Observable = Rx.Observable;
 const queueScheduler = Rx.Scheduler.queue;
 
@@ -23,13 +22,13 @@ describe('Observable.prototype.zip', () => {
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
 
-  it('should zip the provided observables', (done: MochaDone) => {
+  it('should zip the provided observables', (done) => {
     const expected = ['a1', 'b2', 'c3'];
     let i = 0;
 
     Observable.from(['a', 'b', 'c']).zip(
       Observable.from([1, 2, 3]),
-      (a: string, b: number): string => a + b
+      (a, b): string => a + b
     )
     .subscribe(function (x) {
       expect(x).to.equal(expected[i++]);
@@ -124,7 +123,7 @@ describe('Observable.prototype.zip', () => {
     it('should work with never observable and empty iterable', () => {
       const a = cold(  '-');
       const asubs =    '^';
-      const b = [];
+      const b: string[] = [];
       const expected = '-';
 
       expectObservable(a.zip(b)).toBe(expected);
@@ -134,7 +133,7 @@ describe('Observable.prototype.zip', () => {
     it('should work with empty observable and empty iterable', () => {
       const a = cold('|');
       const asubs = '(^!)';
-      const b = [];
+      const b: string[] = [];
       const expected = '|';
 
       expectObservable(a.zip(b)).toBe(expected);
@@ -154,7 +153,7 @@ describe('Observable.prototype.zip', () => {
     it('should work with non-empty observable and empty iterable', () => {
       const a = hot('---^----a--|');
       const asubs =    '^       !';
-      const b = [];
+      const b: string[] = [];
       const expected = '--------|';
 
       expectObservable(a.zip(b)).toBe(expected);
@@ -184,7 +183,7 @@ describe('Observable.prototype.zip', () => {
     it('should work with non-empty observable and empty iterable', () => {
       const a = hot('---^----#');
       const asubs =    '^    !';
-      const b = [];
+      const b: string[] = [];
       const expected = '-----#';
 
       expectObservable(a.zip(b)).toBe(expected);
@@ -218,7 +217,7 @@ describe('Observable.prototype.zip', () => {
       const b = [4, 5, 6];
       const expected = '---x--#';
 
-      const selector = function (x, y) {
+      const selector = function (x: string, y: number) {
         if (y === 5) {
           throw new Error('too bad');
         } else {
@@ -335,7 +334,7 @@ describe('Observable.prototype.zip', () => {
     const bsubs =      '^       !     ';
     const expected =   '---x----#     ';
 
-    const selector = function (x, y) {
+    const selector = function (x: string, y: string) {
       if (y === '5') {
         throw new Error('too bad');
       } else {
@@ -564,7 +563,7 @@ describe('Observable.prototype.zip', () => {
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
 
-  it('should combine an immediately-scheduled source with an immediately-scheduled second', (done: MochaDone) => {
+  it('should combine an immediately-scheduled source with an immediately-scheduled second', (done) => {
     const a = Observable.of<number>(1, 2, 3, queueScheduler);
     const b = Observable.of<number>(4, 5, 6, 7, 8, queueScheduler);
     const r = [[1, 4], [2, 5], [3, 6]];
@@ -584,9 +583,9 @@ describe('Observable.prototype.zip', () => {
     const expected = '---x---y--';
 
     const r = a
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .zip(b)
-      .mergeMap((x: Array<any>) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(r, unsub).toBe(expected, { x: ['1', '4'], y: ['2', '5']});
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -613,7 +612,7 @@ describe('Observable.prototype.zip', () => {
     /* tslint:disable:no-unused-variable */
     let o: Rx.Observable<number>;
     let z: Rx.Observable<number>[];
-    let a: Rx.Observable<string[]> = o.zip(z, (...r) => r.map(v => v.toString()));
+    let a: Rx.Observable<string[]> = o.zip(z, (...r: any[]) => r.map(v => v.toString()));
     /* tslint:enable:no-unused-variable */
   });
 });

@@ -1,11 +1,8 @@
-import { Observable } from '../../Observable';
-import { Subscribable } from '../../Observable';
+import { Observable, ObservableInput } from '../../Observable';
 import { concatAll as higherOrder } from '../../operators/concatAll';
 
-/* tslint:disable:max-line-length */
-export function concatAll<T>(this: Observable<T>): T;
-export function concatAll<T, R>(this: Observable<T>): Subscribable<R>;
-/* tslint:enable:max-line-length */
+export function concatAll<T>(this: Observable<ObservableInput<T>>): Observable<T>;
+export function concatAll<T, R>(this: Observable<T>): Observable<R>;
 
 /**
  * Converts a higher-order Observable into a first-order Observable by
@@ -55,6 +52,6 @@ export function concatAll<T, R>(this: Observable<T>): Subscribable<R>;
  * @method concatAll
  * @owner Observable
  */
-export function concatAll<T>(this: Observable<T>): T {
-  return <any>higherOrder()(this);
+export function concatAll<T>(this: Observable<ObservableInput<T>>): Observable<T> {
+  return <any>higherOrder<T>()(this);
 }

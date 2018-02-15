@@ -1,6 +1,12 @@
 
-import { Observable } from '../../Observable';
+import { Observable, ObservableInput } from '../../Observable';
 import { combineAll as higherOrder } from '../../operators/combineAll';
+
+export function combineAll<T>(this: Observable<ObservableInput<T>>): Observable<T[]>;
+export function combineAll<T, R>(this: Observable<T>): Observable<R[]>;
+export function combineAll<T, R>(this: Observable<ObservableInput<T>>, project: (...values: T[]) => R): Observable<R>;
+export function combineAll<T, R>(this: Observable<T>, project: (...values: T[]) => R): Observable<R>;
+export function combineAll<R>(this: Observable<any>, project: (...values: any[]) => R): Observable<R>;
 
 /**
  * Converts a higher-order Observable into a first-order Observable by waiting
@@ -42,6 +48,6 @@ import { combineAll as higherOrder } from '../../operators/combineAll';
  * @method combineAll
  * @owner Observable
  */
-export function combineAll<T, R>(this: Observable<T>, project?: (...values: Array<any>) => R): Observable<R> {
+export function combineAll<T, R>(this: Observable<ObservableInput<T>>, project?: (...values: Array<T>) => R): Observable<R> {
   return higherOrder(project)(this);
 }

@@ -1,9 +1,8 @@
-import { Observable } from '../../Observable';
-import { Subscribable } from '../../Observable';
+import { Observable, ObservableInput } from '../../Observable';
 import { mergeAll as higherOrder } from '../../operators/mergeAll';
 
-export function mergeAll<T>(this: Observable<T>, concurrent?: number): T;
-export function mergeAll<T, R>(this: Observable<T>, concurrent?: number): Subscribable<R>;
+export function mergeAll<T>(this: Observable<ObservableInput<T>>, concurrent?: number): Observable<T>;
+export function mergeAll<T, R>(this: Observable<T>, concurrent?: number): Observable<R>;
 
 /**
  * Converts a higher-order Observable into a first-order Observable which
@@ -49,6 +48,6 @@ export function mergeAll<T, R>(this: Observable<T>, concurrent?: number): Subscr
  * @method mergeAll
  * @owner Observable
  */
-export function mergeAll<T>(this: Observable<T>, concurrent: number = Number.POSITIVE_INFINITY): Observable<T> {
-  return higherOrder(concurrent)(this) as Observable<T>;
+export function mergeAll<T>(this: Observable<ObservableInput<T>>, concurrent: number = Number.POSITIVE_INFINITY): Observable<T> {
+  return higherOrder<T>(concurrent)(this);
 }

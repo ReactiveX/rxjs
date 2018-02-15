@@ -15,7 +15,7 @@ describe('Observable.prototype.exhaustMap', () => {
     const expected =  '--x-x-x-y-y-y------|';
     const values = {x: 10, y: 30, z: 50};
 
-    const result = e1.exhaustMap(x => e2.map(i => i * x));
+    const result = e1.exhaustMap(x => e2.map(i => i * +x));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -23,12 +23,12 @@ describe('Observable.prototype.exhaustMap', () => {
 
   it('should handle outer throw', () => {
     const x =   cold('--a--b--c--|');
-    const xsubs = [];
+    const xsubs: string[] = [];
     const e1 =  cold('#');
     const e1subs =   '(^!)';
     const expected = '#';
 
-    const result = (<any>e1).exhaustMap(() => x);
+    const result = e1.exhaustMap(() => x);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -37,12 +37,12 @@ describe('Observable.prototype.exhaustMap', () => {
 
   it('should handle outer empty', () => {
     const x =   cold('--a--b--c--|');
-    const xsubs = [];
+    const xsubs: string[] = [];
     const e1 =  cold('|');
     const e1subs =   '(^!)';
     const expected = '|';
 
-    const result = (<any>e1).exhaustMap(() => x);
+    const result = e1.exhaustMap(() => x);
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -50,12 +50,12 @@ describe('Observable.prototype.exhaustMap', () => {
 
   it('should handle outer never', () => {
     const x =   cold('--a--b--c--|');
-    const xsubs = [];
+    const xsubs: string[] = [];
     const e1 =  cold('-');
     const e1subs =   '^';
     const expected = '-';
 
-    const result = (<any>e1).exhaustMap(() => x);
+    const result = e1.exhaustMap(() => x);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -67,7 +67,7 @@ describe('Observable.prototype.exhaustMap', () => {
     const e1subs =   '^  !';
     const expected = '---#';
 
-    const result = (<any>e1).exhaustMap((value: any) => {
+    const result = e1.exhaustMap((value) => {
       throw 'error';
     });
 
@@ -82,7 +82,7 @@ describe('Observable.prototype.exhaustMap', () => {
     const e1subs =   '^    !                  ';
     const expected = '-----#                  ';
 
-    const result = (<any>e1).exhaustMap((value: any) => x,
+    const result = e1.exhaustMap((value) => x,
       () => {
         throw 'error';
       });
@@ -96,7 +96,7 @@ describe('Observable.prototype.exhaustMap', () => {
     const x = cold(     '--a--b--c--|                              ');
     const xsubs =    '   ^          !                              ';
     const y = cold(               '--d--e--f--|                    ');
-    const ysubs = [];
+    const ysubs: string[] = [];
     const z = cold(                                 '--g--h--i--|  ');
     const zsubs =    '                               ^          !  ';
     const e1 =   hot('---x---------y-----------------z-------------|');
@@ -105,7 +105,7 @@ describe('Observable.prototype.exhaustMap', () => {
 
     const observableLookup = { x: x, y: y, z: z };
 
-    const result = (<any>e1).exhaustMap((value: any) => observableLookup[value]);
+    const result = e1.exhaustMap((value) => observableLookup[value]);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -118,7 +118,7 @@ describe('Observable.prototype.exhaustMap', () => {
     const x = cold(     '--a--b--c--|                               ');
     const xsubs =    '   ^          !                               ';
     const y = cold(               '--d--e--f--|                     ');
-    const ysubs = [];
+    const ysubs: string[] = [];
     const z = cold(                                 '--g--h--i--|   ');
     const zsubs =    '                               ^  !           ';
     const e1 =   hot('---x---------y-----------------z-------------|');
@@ -128,7 +128,7 @@ describe('Observable.prototype.exhaustMap', () => {
 
     const observableLookup = { x: x, y: y, z: z };
 
-    const result = (<any>e1).exhaustMap((value: any) => observableLookup[value]);
+    const result = e1.exhaustMap((value) => observableLookup[value]);
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -141,7 +141,7 @@ describe('Observable.prototype.exhaustMap', () => {
     const x = cold(     '--a--b--c--|                               ');
     const xsubs =    '   ^          !                               ';
     const y = cold(               '--d--e--f--|                     ');
-    const ysubs = [];
+    const ysubs: string[] = [];
     const z = cold(                                 '--g--h--i--|   ');
     const zsubs =    '                               ^  !           ';
     const e1 =   hot('---x---------y-----------------z-------------|');
@@ -151,10 +151,10 @@ describe('Observable.prototype.exhaustMap', () => {
 
     const observableLookup = { x: x, y: y, z: z };
 
-    const result = (<any>e1)
-      .mergeMap((x: any) => Observable.of(x))
-      .exhaustMap((value: any) => observableLookup[value])
-      .mergeMap((x: any) => Observable.of(x));
+    const result = e1
+      .mergeMap((x) => Observable.of(x))
+      .exhaustMap((value) => observableLookup[value])
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -167,7 +167,7 @@ describe('Observable.prototype.exhaustMap', () => {
     const x = cold(     '--a--b--c--|                              ');
     const xsubs =    '   ^          !                              ';
     const y = cold(               '--d--e--f--|                    ');
-    const ysubs = [];
+    const ysubs: string[] = [];
     const z = cold(                                 '--g--h--i-----');
     const zsubs =    '                               ^             ';
     const e1 =   hot('---x---------y-----------------z---------|   ');
@@ -176,7 +176,7 @@ describe('Observable.prototype.exhaustMap', () => {
 
     const observableLookup = { x: x, y: y, z: z };
 
-    const result = (<any>e1).exhaustMap((value: any) => observableLookup[value]);
+    const result = e1.exhaustMap((value) => observableLookup[value]);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -189,14 +189,14 @@ describe('Observable.prototype.exhaustMap', () => {
     const x =   cold(         '--a--b--c--d--e--|   ');
     const xsubs =    '         ^                !   ';
     const y =   cold(         '---f---g---h---i--|  ');
-    const ysubs = [];
+    const ysubs: string[] = [];
     const e1 =   hot('---------(xy)----------------|');
     const e1subs =   '^                            !';
     const expected = '-----------a--b--c--d--e-----|';
 
     const observableLookup = { x: x, y: y };
 
-    const result = (<any>e1).exhaustMap((value: any) => observableLookup[value]);
+    const result = e1.exhaustMap((value) => observableLookup[value]);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -208,14 +208,14 @@ describe('Observable.prototype.exhaustMap', () => {
     const x =   cold(         '--a--b--c--d--#             ');
     const xsubs =    '         ^             !             ';
     const y =   cold(                   '---f---g---h---i--');
-    const ysubs = [];
+    const ysubs: string[] = [];
     const e1 =   hot('---------x---------y---------|       ');
     const e1subs =   '^                      !             ';
     const expected = '-----------a--b--c--d--#             ';
 
     const observableLookup = { x: x, y: y };
 
-    const result = (<any>e1).exhaustMap((value: any) => observableLookup[value]);
+    const result = e1.exhaustMap((value) => observableLookup[value]);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -227,7 +227,7 @@ describe('Observable.prototype.exhaustMap', () => {
     const x =    hot('-----a--b--c--d--e--|                  ');
     const xsubs =    '         ^          !                  ';
     const y =    hot('--p-o-o-p-------f---g---h---i--|       ');
-    const ysubs =  [];
+    const ysubs: string[] = [];
     const z =    hot('---z-o-o-m-------------j---k---l---m--|');
     const zsubs =    '                    ^                 !';
     const e1 =   hot('---------x----y-----z--------|         ');
@@ -236,7 +236,7 @@ describe('Observable.prototype.exhaustMap', () => {
 
     const observableLookup = { x: x, y: y, z: z };
 
-    const result = (<any>e1).exhaustMap((value: any) => observableLookup[value]);
+    const result = e1.exhaustMap((value) => observableLookup[value]);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -256,7 +256,7 @@ describe('Observable.prototype.exhaustMap', () => {
 
     const observableLookup = { x: x, y: y };
 
-    const result = (<any>e1).exhaustMap((value: any) => observableLookup[value]);
+    const result = e1.exhaustMap((value) => observableLookup[value]);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -275,7 +275,7 @@ describe('Observable.prototype.exhaustMap', () => {
 
     const observableLookup = { x: x, y: y };
 
-    const result = (<any>e1).exhaustMap((value: any) => observableLookup[value]);
+    const result = e1.exhaustMap((value) => observableLookup[value]);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -287,14 +287,14 @@ describe('Observable.prototype.exhaustMap', () => {
     const x = cold('-');
     const y = cold('#');
     const xsubs =    '         ^                     ';
-    const ysubs = [];
+    const ysubs: string[] = [];
     const e1 =   hot('---------x---------y----------|');
     const e1subs =   '^                              ';
     const expected = '-------------------------------';
 
     const observableLookup = { x: x, y: y };
 
-    const result = (<any>e1).exhaustMap((value: any) => observableLookup[value]);
+    const result = e1.exhaustMap((value) => observableLookup[value]);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -313,7 +313,7 @@ describe('Observable.prototype.exhaustMap', () => {
 
     const observableLookup = { x: x, y: y };
 
-    const result = (<any>e1).exhaustMap((value: any) => observableLookup[value]);
+    const result = e1.exhaustMap((value) => observableLookup[value]);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -330,7 +330,7 @@ describe('Observable.prototype.exhaustMap', () => {
 
     const observableLookup = { x: x };
 
-    const result = (<any>e1).exhaustMap((value: any) => observableLookup[value]);
+    const result = e1.exhaustMap((value) => observableLookup[value]);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -341,7 +341,7 @@ describe('Observable.prototype.exhaustMap', () => {
     const x =   cold(  '--a--b--c--d--e-|                   ');
     const xsubs =    '  ^               !                   ';
     const y =   cold(            '---f---g---h---i--|       ');
-    const ysubs = [];
+    const ysubs: string[] = [];
     const z =   cold(                   '---k---l---m---n--|');
     const zsubs =    '                   ^                 !';
     const e1 =   hot('--x---------y------z-|                ');
@@ -362,7 +362,7 @@ describe('Observable.prototype.exhaustMap', () => {
       n: ['z', 'n', 1, 3],
     };
 
-    const result = (<any>e1).exhaustMap((value: any) => observableLookup[value],
+    const result = e1.exhaustMap((value) => observableLookup[value],
     (innerValue, outerValue, innerIndex, outerIndex) => [innerValue, outerValue, innerIndex, outerIndex]);
 
     expectObservable(result).toBe(expected, expectedValues);
