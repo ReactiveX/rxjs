@@ -3,7 +3,7 @@ import { Subscription } from '../Subscription';
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subject } from '../Subject';
-import { OperatorFunction } from '../../internal/types';
+import { OperatorFunction } from '../types';
 
 /** Assert that map is present for this operator */
 if (!Map) {

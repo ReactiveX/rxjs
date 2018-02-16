@@ -4,7 +4,6 @@ import { isPromise } from '../util/isPromise';
 import { isArrayLike } from '../util/isArrayLike';
 import { isObservable } from '../util/isObservable';
 import { isIterable } from '../util/isIterable';
-import { iterator as Symbol_iterator } from '../symbol/iterator';
 import { fromArray } from './fromArray';
 import { fromPromise } from './fromPromise';
 import { fromIterable } from './fromIterable';

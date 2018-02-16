@@ -1,7 +1,7 @@
 import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { OperatorFunction } from '../../internal/types';
+import { OperatorFunction } from '../types';
 
 /**
  * Groups pairs of consecutive emissions together and emits them as an array of

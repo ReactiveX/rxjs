@@ -3,15 +3,14 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
-import { TeardownLogic } from '../types';
-import { tryCatch } from '..//util/tryCatch';
-import { errorObject } from '..//util/errorObject';
+import { tryCatch } from '../util/tryCatch';
+import { errorObject } from '../util/errorObject';
 
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '..//util/subscribeToResult';
+import { subscribeToResult } from '../util/subscribeToResult';
 
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
 /**
  * Returns an Observable that mirrors the source Observable with the exception of a `complete`. If the source

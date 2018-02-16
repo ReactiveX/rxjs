@@ -3,8 +3,8 @@ import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { IScheduler } from '../Scheduler';
 import { Action } from '../scheduler/Action';
-import { tryCatch } from '..//util/tryCatch';
-import { errorObject } from '..//util/errorObject';
+import { tryCatch } from '../util/tryCatch';
+import { errorObject } from '../util/errorObject';
 import { AsyncSubject } from '../../internal/AsyncSubject';
 
 /**

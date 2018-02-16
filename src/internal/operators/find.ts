@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { OperatorFunction, MonoTypeOperatorFunction } from '../../internal/types';
+import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
 
 export function find<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S,
                                      thisArg?: any): OperatorFunction<T, S>;

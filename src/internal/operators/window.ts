@@ -1,10 +1,10 @@
 import { Observable } from '../Observable';
-import { OperatorFunction } from '../../internal/types';
+import { OperatorFunction } from '../types';
 import { Subject } from '../Subject';
 import { Subscriber } from '../Subscriber';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '..//util/subscribeToResult';
+import { subscribeToResult } from '../util/subscribeToResult';
 import { Operator } from '../Operator';
 
 /**

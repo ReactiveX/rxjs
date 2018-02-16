@@ -5,7 +5,7 @@ import { Scheduler } from '../Scheduler';
 import { TestMessage } from './TestMessage';
 import { SubscriptionLog } from './SubscriptionLog';
 import { SubscriptionLoggable } from './SubscriptionLoggable';
-import { applyMixins } from '..//util/applyMixins';
+import { applyMixins } from '../util/applyMixins';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

@@ -1,13 +1,12 @@
-import { PartialObserver } from './types';
 import { Operator } from './Operator';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
-import { AnonymousSubscription, TeardownLogic } from './types';
+import { TeardownLogic } from './types';
 import { root } from './util/root';
 import { toSubscriber } from './util/toSubscriber';
 import { IfObservable } from './observable/IfObservable';
 import { observable as Symbol_observable } from '../internal/symbol/observable';
-import { OperatorFunction, Subscribable } from '../internal/types';
+import { OperatorFunction, PartialObserver, Subscribable } from '../internal/types';
 import { pipeFromArray } from './util/pipe';
 
 /**

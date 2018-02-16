@@ -3,9 +3,8 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { IScheduler } from '../Scheduler';
 import { Subscription } from '../Subscription';
-import { TeardownLogic } from '../types';
 import { async } from '../scheduler/async';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
 /**
  * Emits a value from the source Observable only after a particular time span

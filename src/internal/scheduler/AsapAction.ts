@@ -1,4 +1,4 @@
-import { Immediate } from '..//util/Immediate';
+import { Immediate } from '../util/Immediate';
 import { AsyncAction } from './AsyncAction';
 import { AsapScheduler } from './AsapScheduler';
 import { Action } from './Action';

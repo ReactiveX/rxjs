@@ -2,7 +2,7 @@ import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Notification } from '../Notification';
-import { OperatorFunction } from '../../internal/types';
+import { OperatorFunction } from '../types';
 
 /**
  * Represents all of the notifications from the source Observable as `next`

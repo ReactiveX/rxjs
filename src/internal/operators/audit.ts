@@ -1,15 +1,13 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { SubscribableOrPromise } from '../types';
 import { Subscription } from '../Subscription';
-import { TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, SubscribableOrPromise, TeardownLogic } from '../types';
 
-import { tryCatch } from '..//util/tryCatch';
-import { errorObject } from '..//util/errorObject';
+import { tryCatch } from '../util/tryCatch';
+import { errorObject } from '../util/errorObject';
 import { OuterSubscriber } from '../OuterSubscriber';
-import { subscribeToResult } from '..//util/subscribeToResult';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { subscribeToResult } from '../util/subscribeToResult';
 
 /**
  * Ignores source values for a duration determined by another Observable, then

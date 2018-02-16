@@ -1,5 +1,5 @@
 import { mergeMap } from './mergeMap';
-import { ObservableInput, OperatorFunction } from '../../internal/types';
+import { ObservableInput, OperatorFunction } from '../types';
 
 /* tslint:disable:max-line-length */
 export function concatMap<T, R>(project: (value: T, index: number) =>  ObservableInput<R>): OperatorFunction<T, R>;

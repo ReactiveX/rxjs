@@ -3,7 +3,7 @@ import { multicast } from './multicast';
 import { refCount } from './refCount';
 import { Subject } from '../Subject';
 
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { MonoTypeOperatorFunction } from '../types';
 
 function shareSubjectFactory() {
   return new Subject();

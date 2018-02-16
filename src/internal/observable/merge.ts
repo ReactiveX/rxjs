@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { ObservableInput } from '../types';
 import { IScheduler } from '../Scheduler';
-import { isScheduler } from '..//util/isScheduler';
+import { isScheduler } from '../util/isScheduler';
 import { mergeAll } from '../../internal/operators/mergeAll';
 import { fromArray } from './fromArray';
 

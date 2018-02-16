@@ -1,4 +1,4 @@
-import { isFunction } from '..//util/isFunction';
+import { isFunction } from '../util/isFunction';
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { Subscriber } from '../Subscriber';

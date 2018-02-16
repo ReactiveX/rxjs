@@ -1,8 +1,8 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { EmptyError } from '..//util/EmptyError';
-import { OperatorFunction, MonoTypeOperatorFunction } from '../../internal/types';
+import { EmptyError } from '../util/EmptyError';
+import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
 
 /* tslint:disable:max-line-length */
 export function last<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S): OperatorFunction<T, S>;

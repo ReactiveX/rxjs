@@ -1,12 +1,11 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { SubscribableOrPromise } from '../types';
 import { Subscription } from '../Subscription';
-import { subscribeToResult } from '..//util/subscribeToResult';
+import { subscribeToResult } from '../util/subscribeToResult';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
-import { OperatorFunction } from '../../internal/types';
+import { OperatorFunction, SubscribableOrPromise } from '../types';
 
 /**
  * Buffers the source Observable values starting from an emission from

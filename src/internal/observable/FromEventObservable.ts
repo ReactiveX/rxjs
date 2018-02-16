@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
-import { tryCatch } from '..//util/tryCatch';
-import { isFunction } from '..//util/isFunction';
-import { errorObject } from '..//util/errorObject';
+import { tryCatch } from '../util/tryCatch';
+import { isFunction } from '../util/isFunction';
+import { errorObject } from '../util/errorObject';
 import { Subscription } from '../Subscription';
 import { Subscriber } from '../Subscriber';
 

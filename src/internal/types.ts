@@ -13,13 +13,13 @@ export interface MonoTypeOperatorFunction<T> extends OperatorFunction<T, T> {}
 
 /** SUBSCRIPTION INTERFACES */
 
-export interface AnonymousSubscription {
+export interface Unsubscribable {
   unsubscribe(): void;
 }
 
-export type TeardownLogic = AnonymousSubscription | Function | void;
+export type TeardownLogic = Unsubscribable | Function | void;
 
-export interface ISubscription extends AnonymousSubscription {
+export interface SubscriptionLike extends Unsubscribable {
   unsubscribe(): void;
   readonly closed: boolean;
 }
@@ -27,7 +27,7 @@ export interface ISubscription extends AnonymousSubscription {
 export interface Subscribable<T> {
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
             error?: (error: any) => void,
-            complete?: () => void): AnonymousSubscription;
+            complete?: () => void): Unsubscribable;
 }
 
 export type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<never> | PromiseLike<T> | ObservableLike<T>;
@@ -37,7 +37,7 @@ export type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<never> | P
 export interface Subscribable<T> {
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
             error?: (error: any) => void,
-            complete?: () => void): AnonymousSubscription;
+            complete?: () => void): Unsubscribable;
 }
 
 export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T> | Iterable<T>;

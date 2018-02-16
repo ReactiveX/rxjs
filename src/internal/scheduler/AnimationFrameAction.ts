@@ -1,5 +1,5 @@
 import { AsyncAction } from './AsyncAction';
-import { AnimationFrame } from '..//util/AnimationFrame';
+import { AnimationFrame } from '../util/AnimationFrame';
 import { AnimationFrameScheduler } from './AnimationFrameScheduler';
 import { Action } from './Action';
 

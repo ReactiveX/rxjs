@@ -2,10 +2,9 @@ import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { ObservableInput, TeardownLogic } from '../types';
 import { OuterSubscriber } from '../OuterSubscriber';
-import { subscribeToResult } from '..//util/subscribeToResult';
-import { OperatorFunction } from '../../internal/types';
+import { subscribeToResult } from '../util/subscribeToResult';
+import { ObservableInput, OperatorFunction, TeardownLogic } from '../types';
 
 export function exhaust<T>(): OperatorFunction<ObservableInput<T>, T>;
 export function exhaust<R>(): OperatorFunction<any, R>;

@@ -1,6 +1,5 @@
-import { Observable } from '../Observable';
 import { concatMap } from './concatMap';
-import { ObservableInput, OperatorFunction } from '../../internal/types';
+import { ObservableInput, OperatorFunction } from '../types';
 
 /* tslint:disable:max-line-length */
 export function concatMapTo<T, R>(observable: ObservableInput<R>): OperatorFunction<T, R>;

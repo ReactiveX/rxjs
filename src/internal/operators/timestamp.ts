@@ -1,7 +1,7 @@
 
 import { IScheduler } from '../Scheduler';
 import { async } from '../scheduler/async';
-import { OperatorFunction } from '../../internal/types';
+import { OperatorFunction } from '../types';
 import { map } from './map';
 
 /**

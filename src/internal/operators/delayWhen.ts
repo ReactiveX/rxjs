@@ -2,11 +2,10 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
-import { TeardownLogic } from '../types';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '..//util/subscribeToResult';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { subscribeToResult } from '../util/subscribeToResult';
+import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
 /**
  * Delays the emission of items from the source Observable by a given time span

@@ -3,7 +3,7 @@ import { ReplaySubject } from '../ReplaySubject';
 import { IScheduler } from '../Scheduler';
 import { multicast } from './multicast';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
-import { UnaryFunction, MonoTypeOperatorFunction, OperatorFunction } from '../../internal/types';
+import { UnaryFunction, MonoTypeOperatorFunction, OperatorFunction } from '../types';
 
 /* tslint:disable:max-line-length */
 export function publishReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: IScheduler): UnaryFunction<Observable<T>, ConnectableObservable<T>>;

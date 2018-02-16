@@ -1,11 +1,9 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { Observer } from '../types';
-import { EmptyError } from '..//util/EmptyError';
-import { TeardownLogic } from '../types';
+import { EmptyError } from '../util/EmptyError';
 
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { Observer, MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
 /**
  * Returns an Observable that emits the single item emitted by the source Observable that matches a specified

@@ -1,12 +1,10 @@
 import { Observable } from '../Observable';
 import { IScheduler } from '../Scheduler';
 import { Operator } from '../Operator';
-import { PartialObserver } from '../types';
 import { Subscriber } from '../Subscriber';
 import { Notification } from '../Notification';
-import { TeardownLogic } from '../types';
 import { Action } from '../scheduler/Action';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { MonoTypeOperatorFunction, PartialObserver, TeardownLogic } from '../types';
 
 /**
  *

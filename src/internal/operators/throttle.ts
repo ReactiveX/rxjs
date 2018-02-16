@@ -1,15 +1,13 @@
 import { Operator } from '../Operator';
 import { Observable } from '../Observable';
-import { SubscribableOrPromise } from '../types';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { TeardownLogic } from '../types';
 
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '..//util/subscribeToResult';
+import { subscribeToResult } from '../util/subscribeToResult';
 
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { MonoTypeOperatorFunction, SubscribableOrPromise, TeardownLogic } from '../types';
 
 export interface ThrottleConfig {
   leading?: boolean;

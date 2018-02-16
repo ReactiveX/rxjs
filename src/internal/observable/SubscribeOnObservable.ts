@@ -4,7 +4,7 @@ import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { Observable } from '../Observable';
 import { asap } from '../scheduler/asap';
-import { isNumeric } from '..//util/isNumeric';
+import { isNumeric } from '../util/isNumeric';
 
 export interface DispatchArg<T> {
   source: Observable<T>;

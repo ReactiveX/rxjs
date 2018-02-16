@@ -3,8 +3,8 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '..//util/subscribeToResult';
-import { ObservableInput, OperatorFunction } from '../../internal/types';
+import { subscribeToResult } from '../util/subscribeToResult';
+import { ObservableInput, OperatorFunction } from '../types';
 
 /* tslint:disable:max-line-length */
 export function withLatestFrom<T, R>(project: (v1: T) => R): OperatorFunction<T, R>;

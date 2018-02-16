@@ -2,8 +2,8 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { IScheduler } from '../Scheduler';
-import { tryCatch } from '..//util/tryCatch';
-import { errorObject } from '..//util/errorObject';
+import { tryCatch } from '../util/tryCatch';
+import { errorObject } from '../util/errorObject';
 import { AsyncSubject } from '../../internal/AsyncSubject';
 
 /**

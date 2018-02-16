@@ -2,8 +2,8 @@ import { Observable } from '../Observable';
 import { scan } from './scan';
 import { takeLast } from './takeLast';
 import { defaultIfEmpty } from './defaultIfEmpty';
-import { OperatorFunction, MonoTypeOperatorFunction } from '../../internal/types';
-import { pipe } from '..//util/pipe';
+import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
+import { pipe } from '../util/pipe';
 
 /* tslint:disable:max-line-length */
 export function reduce<T>(accumulator: (acc: T, value: T, index: number) => T, seed?: T): MonoTypeOperatorFunction<T>;
