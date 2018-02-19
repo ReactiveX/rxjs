@@ -64,7 +64,7 @@ enabling "composite" subscription behavior.
 |`concatMapObserver`|No longer implemented|
 |`controlled`|No longer implemented|
 |`delaySubscription`|No longer implemented|
-|`do`|`do`|
+|`do`|Use `tap`|
 |`doAction`|`do`|
 |`doOnCompleted`|`do(null, null, fn)`|
 |`doOnError`|`do(null, fn)`|
@@ -122,7 +122,7 @@ enabling "composite" subscription behavior.
 |`tapOnCompleted(fn)`|`do(null, null, fn)`|
 |`tapOnError(fn)`|`do(null, fn)`|
 |`tapOnNext(fn)`|`do(fn)`|
-|`tap`|`do`|
+|`tap`|`tap`|
 |`timestamp`|`map(v => ({ value: v, timestamp: Date.now() }))`|
 |`toMap(keySelector)`|`reduce((map, v, i) => map.set(keySelector(v, i), v), new Map())`|
 |`toMap(keySelector, elmentSelector)`|`reduce((map, v, i) => map.set(keySelector(v, i), elementSelector(v)), new Map())`|
