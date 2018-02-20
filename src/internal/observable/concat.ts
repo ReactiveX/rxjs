@@ -112,5 +112,5 @@ export function concat<T, R>(...observables: Array<ObservableInput<any> | ISched
   if (observables.length === 1 || (observables.length === 2 && isScheduler(observables[1]))) {
     return from(<any>observables[0]);
   }
-  return concatAll()(of(...observables)) as Observable<R>;
+  return concatAll<R>()(of(...observables));
 }

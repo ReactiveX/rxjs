@@ -1,6 +1,10 @@
 
 import { mergeAll } from './mergeAll';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { OperatorFunction } from '../../internal/types';
+import { ObservableInput, Observable } from '../Observable';
+
+export function concatAll<T>(): OperatorFunction<ObservableInput<T>, T>;
+export function concatAll<R>(): OperatorFunction<any, R>;
 
 /**
  * Converts a higher-order Observable into a first-order Observable by
@@ -50,6 +54,6 @@ import { MonoTypeOperatorFunction } from '../../internal/types';
  * @method concatAll
  * @owner Observable
  */
-export function concatAll<T>(): MonoTypeOperatorFunction<T> {
-  return mergeAll(1);
+export function concatAll<T>(): OperatorFunction<ObservableInput<T>, T> {
+  return mergeAll<T>(1);
 }

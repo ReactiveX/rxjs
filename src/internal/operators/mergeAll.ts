@@ -1,8 +1,11 @@
 
-import { ObservableInput } from '../Observable';
+import { ObservableInput, Observable } from '../Observable';
 import { mergeMap } from './mergeMap';
 import { identity } from '..//util/identity';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { OperatorFunction } from '../../internal/types';
+
+export function mergeAll<T>(concurrent?: number): OperatorFunction<ObservableInput<T>, T>;
+export function mergeAll<R>(concurrent?: number): OperatorFunction<any, R>;
 
 /**
  * Converts a higher-order Observable into a first-order Observable which
@@ -48,6 +51,6 @@ import { MonoTypeOperatorFunction } from '../../internal/types';
  * @method mergeAll
  * @owner Observable
  */
-export function mergeAll<T>(concurrent: number = Number.POSITIVE_INFINITY): MonoTypeOperatorFunction<T> {
+export function mergeAll<T>(concurrent: number = Number.POSITIVE_INFINITY): OperatorFunction<any, T> {
   return mergeMap(identity as (value: T, index: number) => ObservableInput<{}>, null, concurrent);
 }

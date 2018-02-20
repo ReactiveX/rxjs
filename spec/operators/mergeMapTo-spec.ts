@@ -42,15 +42,15 @@ describe('Observable.prototype.mergeMapTo', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should map values to constant resolved promises and merge', (done: MochaDone) => {
+  it('should map values to constant resolved promises and merge', (done) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
 
-    const results = [];
+    const results: number[] = [];
     source.mergeMapTo(Observable.from(Promise.resolve(42))).subscribe(
-      (x: any) => {
+      (x) => {
         results.push(x);
       },
-      (err: any) => {
+      (err) => {
         done(new Error('Subscriber error handler not supposed to be called.'));
       },
       () => {
@@ -59,14 +59,14 @@ describe('Observable.prototype.mergeMapTo', () => {
       });
   });
 
-  it('should map values to constant rejected promises and merge', (done: MochaDone) => {
+  it('should map values to constant rejected promises and merge', (done) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
 
     source.mergeMapTo(Observable.from(Promise.reject(42))).subscribe(
-      (x: any) => {
+      (x) => {
         done(new Error('Subscriber next handler not supposed to be called.'));
       },
-      (err: any) => {
+      (err) => {
         expect(err).to.equal(42);
         done();
       },
@@ -75,16 +75,16 @@ describe('Observable.prototype.mergeMapTo', () => {
       });
   });
 
-  it('should mergeMapTo values to resolved promises with resultSelector', (done: MochaDone) => {
+  it('should mergeMapTo values to resolved promises with resultSelector', (done) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
-    const resultSelectorCalledWith = [];
+    const resultSelectorCalledWith: number[][] = [];
     const inner = Observable.from(Promise.resolve(42));
-    const resultSelector = function (outerVal, innerVal, outerIndex, innerIndex) {
+    const resultSelector = function (outerVal: number, innerVal: number, outerIndex: number, innerIndex: number) {
       resultSelectorCalledWith.push([].slice.call(arguments));
       return 8;
     };
 
-    const results = [];
+    const results: number[] = [];
     const expectedCalls = [
       [4, 42, 0, 0],
       [3, 42, 1, 0],
@@ -92,10 +92,10 @@ describe('Observable.prototype.mergeMapTo', () => {
       [1, 42, 3, 0],
     ];
     source.mergeMapTo(inner, resultSelector).subscribe(
-      (x: any) => {
+      (x) => {
         results.push(x);
       },
-      (err: any) => {
+      (err) => {
         done(new Error('Subscriber error handler not supposed to be called.'));
       },
       () => {
@@ -105,7 +105,7 @@ describe('Observable.prototype.mergeMapTo', () => {
       });
   });
 
-  it('should mergeMapTo values to rejected promises with resultSelector', (done: MochaDone) => {
+  it('should mergeMapTo values to rejected promises with resultSelector', (done) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
     const inner = Observable.from(Promise.reject(42));
     const resultSelector = () => {
@@ -113,10 +113,10 @@ describe('Observable.prototype.mergeMapTo', () => {
     };
 
     source.mergeMapTo(inner, resultSelector).subscribe(
-      (x: any) => {
+      (x) => {
         done(new Error('Subscriber next handler not supposed to be called.'));
       },
-      (err: any) => {
+      (err) => {
         expect(err).to.equal(42);
         done();
       },
@@ -274,7 +274,7 @@ describe('Observable.prototype.mergeMapTo', () => {
                      '                                         ^                   !'];
     const expected =   '-----i---j---k---l-------i---j---k---l-------i---j---k---l---|';
 
-    function resultSelector(oV, iV, oI, iI) { return iV; }
+    function resultSelector(oV: string, iV: string, oI: number, iI: number) { return iV; }
     const result = e1.mergeMapTo(inner, resultSelector, 1);
 
     expectObservable(result).toBe(expected, values);
@@ -292,7 +292,7 @@ describe('Observable.prototype.mergeMapTo', () => {
                      '                     ^                   !'];
     const expected =   '-----i---j---(ki)(lj)k---(li)j---k---l---|';
 
-    function resultSelector(oV, iV, oI, iI) { return iV; }
+    function resultSelector(oV: string, iV: string, oI: number, iI: number) { return iV; }
     const result = e1.mergeMapTo(inner, resultSelector, 2);
 
     expectObservable(result).toBe(expected, values);
@@ -339,7 +339,7 @@ describe('Observable.prototype.mergeMapTo', () => {
     const e1subs =   '^                               !';
     const expected = '(0123)(0123)---(0123)---(0123)--|';
 
-    const source = e1.mergeMapTo(<any>['0', '1', '2', '3']);
+    const source = e1.mergeMapTo(['0', '1', '2', '3']);
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -350,8 +350,8 @@ describe('Observable.prototype.mergeMapTo', () => {
     const e1subs =   '^                               !';
     const expected = '(2345)(4567)---(3456)---(2345)--|';
 
-    const source = e1.mergeMapTo(<any>['0', '1', '2', '3'],
-      (x: string, y: string) => String(parseInt(x) + parseInt(y)));
+    const source = e1.mergeMapTo(['0', '1', '2', '3'],
+      (x, y) => String(parseInt(x) + parseInt(y)));
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -362,7 +362,7 @@ describe('Observable.prototype.mergeMapTo', () => {
     const e1subs =   '^                               !';
     const expected = '(0123)(0123)---(0123)---(0123)--#';
 
-    const source = e1.mergeMapTo(<any>['0', '1', '2', '3']);
+    const source = e1.mergeMapTo(['0', '1', '2', '3']);
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -373,8 +373,8 @@ describe('Observable.prototype.mergeMapTo', () => {
     const e1subs =   '^                               !';
     const expected = '(2345)(4567)---(3456)---(2345)--#';
 
-    const source = e1.mergeMapTo(<any>['0', '1', '2', '3'],
-    (x: string, y: string) => String(parseInt(x) + parseInt(y)));
+    const source = e1.mergeMapTo(['0', '1', '2', '3'],
+    (x, y) => String(parseInt(x) + parseInt(y)));
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -386,7 +386,7 @@ describe('Observable.prototype.mergeMapTo', () => {
     const unsub =    '             !';
     const expected = '(0123)(0123)--';
 
-    const source = e1.mergeMapTo(<any>['0', '1', '2', '3']);
+    const source = e1.mergeMapTo(['0', '1', '2', '3']);
 
     expectObservable(source, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -398,8 +398,8 @@ describe('Observable.prototype.mergeMapTo', () => {
     const unsub =    '             !';
     const expected = '(2345)(4567)--';
 
-    const source = e1.mergeMapTo(<any>['0', '1', '2', '3'],
-      (x: string, y: string) => String(parseInt(x) + parseInt(y)));
+    const source = e1.mergeMapTo(['0', '1', '2', '3'],
+      (x, y) => String(parseInt(x) + parseInt(y)));
 
     expectObservable(source, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -410,7 +410,7 @@ describe('Observable.prototype.mergeMapTo', () => {
     const e1subs =   '^              !';
     const expected = '(2345)(4567)---#';
 
-    const source = e1.mergeMapTo(<any>['0', '1', '2', '3'], (outer: string, inner: string) => {
+    const source = e1.mergeMapTo(['0', '1', '2', '3'], (outer, inner) => {
       if (outer === '3') {
         throw 'error';
       }
@@ -427,7 +427,7 @@ describe('Observable.prototype.mergeMapTo', () => {
     const expected = ['!', '!', '!', '!'];
     let completed = false;
 
-    source.subscribe((x: string) => {
+    source.subscribe((x) => {
       expect(x).to.equal(expected.shift());
     }, null, () => {
       expect(expected.length).to.equal(0);
@@ -438,12 +438,12 @@ describe('Observable.prototype.mergeMapTo', () => {
   });
 
   it('should map and flatten an Array', () => {
-    const source = Observable.of(1, 2, 3, 4).mergeMapTo(<any>['!']);
+    const source = Observable.of(1, 2, 3, 4).mergeMapTo(['!']);
 
     const expected = ['!', '!', '!', '!'];
     let completed = false;
 
-    source.subscribe((x: string) => {
+    source.subscribe((x) => {
       expect(x).to.equal(expected.shift());
     }, null, () => {
       expect(expected.length).to.equal(0);

@@ -97,5 +97,5 @@ export function merge<T, R>(...observables: Array<ObservableInput<any> | ISchedu
     return <Observable<R>>observables[0];
   }
 
-  return mergeAll(concurrent)(fromArray(observables, scheduler)) as Observable<R>;
+  return mergeAll<R>(concurrent)(fromArray<any>(observables, scheduler));
 }

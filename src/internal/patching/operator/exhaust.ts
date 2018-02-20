@@ -1,6 +1,9 @@
 
-import { Observable } from '../../Observable';
+import { Observable, ObservableInput } from '../../Observable';
 import { exhaust as higherOrder } from '../../operators/exhaust';
+
+export function exhaust<T>(this: Observable<ObservableInput<T>>): Observable<T>;
+export function exhaust<T, R>(this: Observable<T>): Observable<R>;
 
 /**
  * Converts a higher-order Observable into a first-order Observable by dropping
@@ -37,6 +40,6 @@ import { exhaust as higherOrder } from '../../operators/exhaust';
  * @method exhaust
  * @owner Observable
  */
-export function exhaust<T>(this: Observable<T>): Observable<T> {
-  return higherOrder()(this) as Observable<T>;
+export function exhaust<T>(this: Observable<ObservableInput<T>>): Observable<T> {
+  return higherOrder<T>()(this);
 }

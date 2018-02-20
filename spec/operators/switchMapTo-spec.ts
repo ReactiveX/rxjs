@@ -22,10 +22,10 @@ describe('Observable.prototype.switchMapTo', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should switch a synchronous many outer to a synchronous many inner', (done: MochaDone) => {
+  it('should switch a synchronous many outer to a synchronous many inner', (done) => {
     const a = Observable.of(1, 2, 3);
     const expected = ['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c'];
-    a.switchMapTo(Observable.of('a', 'b', 'c')).subscribe((x: string) => {
+    a.switchMapTo(Observable.of('a', 'b', 'c')).subscribe((x) => {
       expect(x).to.equal(expected.shift());
     }, null, done);
   });
@@ -34,7 +34,7 @@ describe('Observable.prototype.switchMapTo', () => {
     let unsubbed = 0;
 
     Observable.of('a', 'b').switchMapTo(
-      Observable.create((subscriber: Rx.Subscriber<string>) => {
+      new Observable<string>((subscriber) => {
         subscriber.complete();
         return () => {
           unsubbed++;
@@ -97,9 +97,9 @@ describe('Observable.prototype.switchMapTo', () => {
     const unsub =    '                      !       ';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .switchMapTo(x)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);

@@ -44,7 +44,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const e1 = cold( '|');
     const e1subs =   '(^!)';
     const inner = cold('-1-2-3|');
-    const innersubs = [];
+    const innersubs: string[] = [];
     const expected = '|';
 
     const result = e1.concatMapTo(inner);
@@ -58,7 +58,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const e1 = cold( '-');
     const e1subs =   '^';
     const inner = cold('-1-2-3|');
-    const innersubs = [];
+    const innersubs: string[] = [];
     const expected = '-';
 
     const result = e1.concatMapTo(inner);
@@ -72,7 +72,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const e1 = cold( '#');
     const e1subs =   '(^!)';
     const inner = cold('-1-2-3|');
-    const innersubs = [];
+    const innersubs: string[] = [];
     const expected = '#';
 
     const result = e1.concatMapTo(inner);
@@ -173,9 +173,9 @@ describe('Observable.prototype.concatMapTo', () => {
     const unsub =      '                  !';
 
     const result = e1
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .concatMapTo(inner)
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -257,7 +257,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const expected = '(2345)(4567)---(3456)---(2345)--|';
 
     const result = e1.concatMapTo(['0', '1', '2', '3'],
-      (x: string, y: string) => String(parseInt(x) + parseInt(y)));
+      (x, y) => String(parseInt(x) + parseInt(y)));
 
     expectObservable(result).toBe(expected);
   });
@@ -276,7 +276,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const expected = '(2345)(4567)---(3456)---(2345)--#';
 
     const result = e1.concatMapTo(['0', '1', '2', '3'],
-      (x: string, y: string) => String(parseInt(x) + parseInt(y)));
+      (x, y) => String(parseInt(x) + parseInt(y)));
 
     expectObservable(result).toBe(expected);
   });
@@ -297,7 +297,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const expected = '(2345)(4567)--';
 
     const result = e1.concatMapTo(['0', '1', '2', '3'],
-      (x: string, y: string) => String(parseInt(x) + parseInt(y)));
+      (x, y) => String(parseInt(x) + parseInt(y)));
 
     expectObservable(result, unsub).toBe(expected);
   });
@@ -306,7 +306,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const e1 =   hot('2-----4--------3--------2-------|');
     const expected = '(2345)(4567)---#';
 
-    const result = e1.concatMapTo(['0', '1', '2', '3'], (x: string, y: string) => {
+    const result = e1.concatMapTo(['0', '1', '2', '3'], (x, y) => {
       if (x === '3') {
         throw 'error';
       }
@@ -316,15 +316,15 @@ describe('Observable.prototype.concatMapTo', () => {
     expectObservable(result).toBe(expected);
   });
 
-  it('should map values to constant resolved promises and concatenate', (done: MochaDone) => {
+  it('should map values to constant resolved promises and concatenate', (done) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
 
-    const results = [];
+    const results: number[] = [];
     source.concatMapTo(Observable.from(Promise.resolve(42))).subscribe(
-      (x: any) => {
+      (x) => {
         results.push(x);
       },
-      (err: any) => {
+      (err) => {
         done(new Error('Subscriber error handler not supposed to be called.'));
       },
       () => {
@@ -333,14 +333,14 @@ describe('Observable.prototype.concatMapTo', () => {
       });
   });
 
-  it('should map values to constant rejected promises and concatenate', (done: MochaDone) => {
+  it('should map values to constant rejected promises and concatenate', (done) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
 
     source.concatMapTo(Observable.from(Promise.reject(42))).subscribe(
-      (x: any) => {
+      (x) => {
         done(new Error('Subscriber next handler not supposed to be called.'));
       },
-      (err: any) => {
+      (err) => {
         expect(err).to.equal(42);
         done();
       },
@@ -349,16 +349,16 @@ describe('Observable.prototype.concatMapTo', () => {
       });
   });
 
-  it('should concatMapTo values to resolved promises with resultSelector', (done: MochaDone) => {
+  it('should concatMapTo values to resolved promises with resultSelector', (done) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
-    const resultSelectorCalledWith = [];
+    const resultSelectorCalledWith: number[][] = [];
     const inner = Observable.from(Promise.resolve(42));
-    const resultSelector = function (outerVal, innerVal, outerIndex, innerIndex) {
+    const resultSelector = function (outerVal: number, innerVal: number, outerIndex: number, innerIndex: number) {
       resultSelectorCalledWith.push([].slice.call(arguments));
       return 8;
     };
 
-    const results = [];
+    const results: number[] = [];
     const expectedCalls = [
       [4, 42, 0, 0],
       [3, 42, 1, 0],
@@ -366,10 +366,10 @@ describe('Observable.prototype.concatMapTo', () => {
       [1, 42, 3, 0]
     ];
     source.concatMapTo(inner, resultSelector).subscribe(
-      (x: any) => {
+      (x) => {
         results.push(x);
       },
-      (err: any) => {
+      (err) => {
         done(new Error('Subscriber error handler not supposed to be called.'));
       },
       () => {
@@ -379,7 +379,7 @@ describe('Observable.prototype.concatMapTo', () => {
       });
   });
 
-  it('should concatMapTo values to rejected promises with resultSelector', (done: MochaDone) => {
+  it('should concatMapTo values to rejected promises with resultSelector', (done) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
     const inner = Observable.from(Promise.reject(42));
     const resultSelector = () => {
@@ -387,10 +387,10 @@ describe('Observable.prototype.concatMapTo', () => {
     };
 
     source.concatMapTo(inner, resultSelector).subscribe(
-      (x: any) => {
+      (x) => {
         done(new Error('Subscriber next handler not supposed to be called.'));
       },
-      (err: any) => {
+      (err) => {
         expect(err).to.equal(42);
         done();
       },

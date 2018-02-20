@@ -263,7 +263,7 @@ describe('Observable.merge(...observables, Scheduler, number)', () => {
     expectObservable(Observable.merge(e1, e2, e3, 2, rxTestScheduler)).toBe(expected);
   });
 
-  it('should use the scheduler even when one Observable is merged', (done: MochaDone) => {
+  it('should use the scheduler even when one Observable is merged', (done) => {
     let e1Subscribed = false;
     const e1 = Observable.defer(() => {
       e1Subscribed = true;

@@ -3,7 +3,7 @@ import * as Rx from '../../src/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare function asDiagram(arg: string): Function;
-
+declare const type: Function;
 const Observable = Rx.Observable;
 const queueScheduler = Rx.Scheduler.queue;
 
@@ -18,23 +18,23 @@ describe('Observable.prototype.switch', () => {
     expectObservable(e1.switch()).toBe(expected);
   });
 
-  it('should switch to each immediately-scheduled inner Observable', (done: MochaDone) => {
+  it('should switch to each immediately-scheduled inner Observable', (done) => {
     const a = Observable.of<number>(1, 2, 3, queueScheduler);
     const b = Observable.of<number>(4, 5, 6, queueScheduler);
     const r = [1, 4, 5, 6];
     let i = 0;
-    Observable.of<Rx.Observable<number>>(a, b, queueScheduler)
+    Observable.of(a, b, queueScheduler)
       .switch()
-      .subscribe((x: number) => {
+      .subscribe((x) => {
         expect(x).to.equal(r[i++]);
       }, null, done);
   });
 
   it('should unsub inner observables', () => {
-    const unsubbed = [];
+    const unsubbed: string[] = [];
 
-    Observable.of('a', 'b').map((x: string) =>
-      Observable.create((subscriber: Rx.Subscriber<string>) => {
+    Observable.of('a', 'b').map((x) =>
+      new Observable<string>((subscriber) => {
         subscriber.complete();
         return () => {
           unsubbed.push(x);
@@ -46,12 +46,12 @@ describe('Observable.prototype.switch', () => {
     expect(unsubbed).to.deep.equal(['a', 'b']);
   });
 
-  it('should switch to each inner Observable', (done: MochaDone) => {
+  it('should switch to each inner Observable', (done) => {
     const a = Observable.of(1, 2, 3);
     const b = Observable.of(4, 5, 6);
     const r = [1, 2, 3, 4, 5, 6];
     let i = 0;
-    Observable.of(a, b).switch().subscribe((x: number) => {
+    Observable.of(a, b).switch().subscribe((x) => {
       expect(x).to.equal(r[i++]);
     }, null, done);
   });
@@ -90,10 +90,10 @@ describe('Observable.prototype.switch', () => {
     const expected = '--------a---b----            ';
     const unsub =    '                !            ';
 
-    const result = (<any>e1)
-      .mergeMap((x: string) => Observable.of(x))
+    const result = e1
+      .mergeMap((x) => Observable.of(x))
       .switch()
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -128,7 +128,7 @@ describe('Observable.prototype.switch', () => {
     const x = cold(        '--a---#                ');
     const xsubs =    '      ^     !                ';
     const y = cold(                '---d--e---f---|');
-    const ysubs = [];
+    const ysubs: string[] = [];
     const e1 = hot(  '------x-------y------|       ', { x: x, y: y });
     const expected = '--------a---#                ';
     expectObservable(e1.switch()).toBe(expected);
@@ -178,12 +178,12 @@ describe('Observable.prototype.switch', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should handle an observable of promises', (done: MochaDone) => {
+  it('should handle an observable of promises', (done) => {
     const expected = [3];
 
-    (<any>Observable.of(Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)))
+    Observable.of(Promise.resolve(1), Promise.resolve(2), Promise.resolve(3))
       .switch()
-      .subscribe((x: number) => {
+      .subscribe((x) => {
         expect(x).to.equal(expected.shift());
       }, null, () => {
         expect(expected.length).to.equal(0);
@@ -191,12 +191,12 @@ describe('Observable.prototype.switch', () => {
       });
   });
 
-  it('should handle an observable of promises, where last rejects', (done: MochaDone) => {
-    Observable.of<any>(Promise.resolve(1), Promise.resolve(2), Promise.reject(3))
+  it('should handle an observable of promises, where last rejects', (done) => {
+    Observable.of(Promise.resolve(1), Promise.resolve(2), Promise.reject(3))
       .switch()
       .subscribe(() => {
         done(new Error('should not be called'));
-      }, (err: any) => {
+      }, (err) => {
         expect(err).to.equal(3);
         done();
       }, () => {
@@ -208,9 +208,9 @@ describe('Observable.prototype.switch', () => {
     const expected = [1, 2, 3, 4];
     let completed = false;
 
-    Observable.of<any>(Observable.never(), Observable.never(), [1, 2, 3, 4])
+    Observable.of(Observable.never(), Observable.never(), [1, 2, 3, 4])
       .switch()
-      .subscribe((x: number) => {
+      .subscribe((x) => {
         expect(x).to.equal(expected.shift());
       }, null, () => {
         completed = true;
@@ -224,11 +224,11 @@ describe('Observable.prototype.switch', () => {
     let iStream: Rx.Subject<number>;
     const oStreamControl = new Rx.Subject<number>();
     const oStream = oStreamControl.map(() => {
-      return (iStream = new Rx.Subject());
+      return (iStream = new Rx.Subject<number>());
     });
     const switcher = oStream.switch();
-    const result = [];
-    let sub = switcher.subscribe((x: number) => result.push(x));
+    const result: number[] = [];
+    let sub = switcher.subscribe((x) => result.push(x));
 
     [0, 1, 2, 3, 4].forEach((n) => {
       oStreamControl.next(n); // creates inner
@@ -244,11 +244,11 @@ describe('Observable.prototype.switch', () => {
   it('should not leak if we switch before child completes (prevent memory leaks #2355)', () => {
     const oStreamControl = new Rx.Subject<number>();
     const oStream = oStreamControl.map(() => {
-      return (new Rx.Subject());
+      return (new Rx.Subject<number>());
     });
     const switcher = oStream.switch();
-    const result = [];
-    let sub = switcher.subscribe((x: number) => result.push(x));
+    const result: number[] = [];
+    let sub = switcher.subscribe((x) => result.push(x));
 
     [0, 1, 2, 3, 4].forEach((n) => {
       oStreamControl.next(n); // creates inner
@@ -258,5 +258,55 @@ describe('Observable.prototype.switch', () => {
       (<any>sub)._subscriptions[0]._subscriptions.length
     ).to.equal(2);
     sub.unsubscribe();
+  });
+
+  type(() => {
+    /* tslint:disable:no-unused-variable */
+    const source1 = Rx.Observable.of(1, 2, 3);
+    const source2 = [1, 2, 3];
+    const source3 = new Promise<number>(d => d(1));
+
+    let result: Rx.Observable<number> = Rx.Observable
+      .of(source1, source2, source3)
+      .pipe(Rx.operators.switchAll());
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type(() => {
+    /* tslint:disable:no-unused-variable */
+    const source1 = Rx.Observable.of(1, 2, 3);
+    const source2 = [1, 2, 3];
+    const source3 = new Promise<number>(d => d(1));
+
+    let result: Rx.Observable<number> = Rx.Observable
+      .of(source1, source2, source3)
+      .switch();
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type(() => {
+    // coerce type to a specific type
+    /* tslint:disable:no-unused-variable */
+    const source1 = Rx.Observable.of(1, 2, 3);
+    const source2 = [1, 2, 3];
+    const source3 = new Promise<number>(d => d(1));
+
+    let result: Rx.Observable<string> = Rx.Observable
+      .of(<any>source1, <any>source2, <any>source3)
+      .pipe(Rx.operators.switchAll<string>());
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type(() => {
+    // coerce type to a specific type
+    /* tslint:disable:no-unused-variable */
+    const source1 = Rx.Observable.of(1, 2, 3);
+    const source2 = [1, 2, 3];
+    const source3 = new Promise<number>(d => d(1));
+
+    let result: Rx.Observable<string> = Rx.Observable
+      .of(<any>source1, <any>source2, <any>source3)
+      .switch<string>();
+    /* tslint:enable:no-unused-variable */
   });
 });
