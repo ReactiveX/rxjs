@@ -86,7 +86,7 @@ export class GenerateObservable<T, S> extends Observable<T> {
    * @param {Scheduler} [scheduler] A {@link IScheduler} on which to run the generator loop. If not provided, defaults to emit immediately.
    * @returns {Observable<T>} The generated sequence.
    */
-  static create<T, S>(initialState: S,
+  static create<S, T>(initialState: S,
                       condition: ConditionFunc<S>,
                       iterate: IterateFunc<S>,
                       resultSelector: ResultFunc<S, T>,
@@ -167,9 +167,9 @@ export class GenerateObservable<T, S> extends Observable<T> {
    * @param {GenerateOptions<T, S>} options Object that must contain initialState, iterate, resultSelector and might contain condition and scheduler.
    * @returns {Observable<T>} The generated sequence.
    */
-  static create<T, S>(options: GenerateOptions<T, S>): Observable<T>;
+  static create<S, T>(options: GenerateOptions<T, S>): Observable<T>;
 
-  static create<T, S>(initialStateOrOptions: S | GenerateOptions<T, S>,
+  static create<S, T>(initialStateOrOptions: S | GenerateOptions<T, S>,
                       condition?: ConditionFunc<S>,
                       iterate?: IterateFunc<S>,
                       resultSelectorOrObservable?: (ResultFunc<S, T>) | IScheduler,
