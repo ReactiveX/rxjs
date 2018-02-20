@@ -21,6 +21,7 @@ export { Notification } from './internal/Notification';
 /* Utils */
 export { pipe } from './internal/util/pipe';
 export { noop } from './internal/util/noop';
+export { over } from './internal/helpers/over';
 export { identity } from './internal/util/identity';
 
 /* Static observable creation exports */

@@ -163,6 +163,7 @@ export {TestScheduler} from './internal/testing/TestScheduler';
 export {VirtualTimeScheduler} from './internal/scheduler/VirtualTimeScheduler';
 export {AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError} from './internal/observable/dom/AjaxObservable';
 export { pipe } from './internal/util/pipe';
+export { over } from './internal/helpers/over';
 
 import { asap } from './internal/scheduler/asap';
 import { async } from './internal/scheduler/async';
