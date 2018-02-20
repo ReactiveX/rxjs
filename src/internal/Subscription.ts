@@ -30,7 +30,9 @@ export class Subscription implements SubscriptionLike {
    */
   public closed: boolean = false;
 
+  /** @internal */
   protected _parent: Subscription = null;
+  /** @internal */
   protected _parents: Subscription[] = null;
   /** @internal */
   private _subscriptions: SubscriptionLike[] = null;
@@ -192,6 +194,7 @@ export class Subscription implements SubscriptionLike {
     }
   }
 
+  /** @internal */
   private _addParent(parent: Subscription) {
     let { _parent, _parents } = this;
     if (!_parent || _parent === parent) {

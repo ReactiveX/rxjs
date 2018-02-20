@@ -17,9 +17,12 @@ import { pipeFromArray } from './util/pipe';
  */
 export class Observable<T> implements Subscribable<T> {
 
+  /** @internal */
   public _isScalar: boolean = false;
 
+  /** @internal */
   protected source: Observable<any>;
+  /** @internal */
   protected operator: Operator<any, T>;
 
   /**
@@ -240,6 +243,7 @@ export class Observable<T> implements Subscribable<T> {
     });
   }
 
+  /** @internal */
   protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
     return this.source.subscribe(subscriber);
   }

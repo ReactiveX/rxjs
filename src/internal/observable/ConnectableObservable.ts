@@ -14,6 +14,7 @@ export class ConnectableObservable<T> extends Observable<T> {
   protected _subject: Subject<T>;
   protected _refCount: number = 0;
   protected _connection: Subscription;
+  /** @internal */
   _isComplete = false;
 
   constructor(protected source: Observable<T>,
