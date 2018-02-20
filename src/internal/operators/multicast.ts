@@ -7,7 +7,9 @@ import { FactoryOrValue, MonoTypeOperatorFunction, OperatorFunction, UnaryFuncti
 
 /* tslint:disable:max-line-length */
 export function multicast<T>(subjectOrSubjectFactory: FactoryOrValue<Subject<T>>): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
+export function multicast<T>(SubjectFactory: (this: Observable<T>) => Subject<T>): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
 export function multicast<T>(SubjectFactory: (this: Observable<T>) => Subject<T>, selector?: MonoTypeOperatorFunction<T>): MonoTypeOperatorFunction<T>;
+export function multicast<T, R>(SubjectFactory: (this: Observable<T>) => Subject<T>): UnaryFunction<Observable<T>, ConnectableObservable<R>>;
 export function multicast<T, R>(SubjectFactory: (this: Observable<T>) => Subject<T>, selector?: OperatorFunction<T, R>): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 

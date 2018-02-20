@@ -6,8 +6,10 @@ import { FactoryOrValue, MonoTypeOperatorFunction, OperatorFunction } from '../.
 
 /* tslint:disable:max-line-length */
 export function multicast<T>(this: Observable<T>, subjectOrSubjectFactory: FactoryOrValue<Subject<T>>): ConnectableObservable<T>;
-export function multicast<T>(SubjectFactory: (this: Observable<T>) => Subject<T>, selector?: MonoTypeOperatorFunction<T>): Observable<T>;
-export function multicast<T, R>(SubjectFactory: (this: Observable<T>) => Subject<T>, selector?: OperatorFunction<T, R>): Observable<R>;
+export function multicast<T>(SubjectFactory: (this: Observable<T>) => Subject<T>): ConnectableObservable<T>;
+export function multicast<T>(SubjectFactory: (this: Observable<T>) => Subject<T>, selector: MonoTypeOperatorFunction<T>): Observable<T>;
+export function multicast<T, R>(SubjectFactory: (this: Observable<T>) => Subject<T>): ConnectableObservable<R>;
+export function multicast<T, R>(SubjectFactory: (this: Observable<T>) => Subject<T>, selector: OperatorFunction<T, R>): Observable<R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -105,6 +107,6 @@ export function multicast<T, R>(SubjectFactory: (this: Observable<T>) => Subject
  * @owner Observable
  */
 export function multicast<T, R>(this: Observable<T>, subjectOrSubjectFactory: Subject<T> | (() => Subject<T>),
-                                selector?: (source: Observable<T>) => Observable<R>): Observable<R> | ConnectableObservable<R> {
+                                selector?: (source: Observable<T>) => Observable<R>): ConnectableObservable<R> | Observable<R> {
   return higherOrder(<any>subjectOrSubjectFactory, selector)(this);
 }

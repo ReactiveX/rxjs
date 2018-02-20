@@ -7,14 +7,14 @@ import { UnaryFunction, MonoTypeOperatorFunction, OperatorFunction } from '../..
 
 /* tslint:disable:max-line-length */
 export function publishReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: IScheduler): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
-export function publishReplay<T>(bufferSize?: number, windowTime?: number, selector?: MonoTypeOperatorFunction<T>, scheduler?: IScheduler): MonoTypeOperatorFunction<T>;
 export function publishReplay<T, R>(bufferSize?: number, windowTime?: number, selector?: OperatorFunction<T, R>, scheduler?: IScheduler): OperatorFunction<T, R>;
+export function publishReplay<T>(bufferSize?: number, windowTime?: number, selector?: MonoTypeOperatorFunction<T>, scheduler?: IScheduler): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
 
 export function publishReplay<T, R>(bufferSize?: number,
                                     windowTime?: number,
                                     selectorOrScheduler?: IScheduler | OperatorFunction<T, R>,
-                                    scheduler?: IScheduler): UnaryFunction<Observable<T>, ConnectableObservable<R> | Observable<R>> {
+                                    scheduler?: IScheduler): UnaryFunction<Observable<T>, ConnectableObservable<R>> {
 
   if (selectorOrScheduler && typeof selectorOrScheduler !== 'function') {
     scheduler = selectorOrScheduler;
@@ -23,5 +23,5 @@ export function publishReplay<T, R>(bufferSize?: number,
   const selector = typeof selectorOrScheduler === 'function' ? selectorOrScheduler : undefined;
   const subject = new ReplaySubject<T>(bufferSize, windowTime, scheduler);
 
-  return (source: Observable<T>) => multicast(() => subject, selector)(source) as Observable<R> | ConnectableObservable<R>;
+  return (source: Observable<T>) => multicast(() => subject, selector)(source) as ConnectableObservable<R>;
 }
