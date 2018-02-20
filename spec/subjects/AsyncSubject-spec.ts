@@ -4,7 +4,7 @@ import * as Rx from '../../src/Rx';
 const AsyncSubject = Rx.AsyncSubject;
 
 class TestObserver implements Rx.Observer<number> {
-  results = [];
+  results: Array<string | number> = [];
 
   next(value: number): void {
     this.results.push(value);
@@ -22,7 +22,7 @@ class TestObserver implements Rx.Observer<number> {
 /** @test {AsyncSubject} */
 describe('AsyncSubject', () => {
   it('should emit the last value when complete', () => {
-    const subject = new AsyncSubject();
+    const subject = new AsyncSubject<number>();
     const observer = new TestObserver();
     subject.subscribe(observer);
 
@@ -35,7 +35,7 @@ describe('AsyncSubject', () => {
   });
 
   it('should emit the last value when subscribing after complete', () => {
-    const subject = new AsyncSubject();
+    const subject = new AsyncSubject<number>();
     const observer = new TestObserver();
 
     subject.next(1);
@@ -47,7 +47,7 @@ describe('AsyncSubject', () => {
   });
 
   it('should keep emitting the last value to subsequent subscriptions', () => {
-    const subject = new AsyncSubject();
+    const subject = new AsyncSubject<number>();
     const observer = new TestObserver();
     const subscription = subject.subscribe(observer);
 
@@ -66,7 +66,7 @@ describe('AsyncSubject', () => {
   });
 
   it('should not emit values after complete', () => {
-    const subject = new AsyncSubject();
+    const subject = new AsyncSubject<number>();
     const observer = new TestObserver();
 
     subject.subscribe(observer);
@@ -80,7 +80,7 @@ describe('AsyncSubject', () => {
   });
 
   it('should not allow change value after complete', () => {
-    const subject = new AsyncSubject();
+    const subject = new AsyncSubject<number>();
     const observer = new TestObserver();
     const otherObserver = new TestObserver();
     subject.subscribe(observer);
@@ -95,7 +95,7 @@ describe('AsyncSubject', () => {
   });
 
   it('should not emit values if unsubscribed before complete', () => {
-    const subject = new AsyncSubject();
+    const subject = new AsyncSubject<number>();
     const observer = new TestObserver();
     const subscription = subject.subscribe(observer);
 
@@ -113,7 +113,7 @@ describe('AsyncSubject', () => {
   });
 
   it('should just complete if no value has been nexted into it', () => {
-    const subject = new AsyncSubject();
+    const subject = new AsyncSubject<number>();
     const observer = new TestObserver();
     subject.subscribe(observer);
 
@@ -123,7 +123,7 @@ describe('AsyncSubject', () => {
   });
 
   it('should keep emitting complete to subsequent subscriptions', () => {
-    const subject = new AsyncSubject();
+    const subject = new AsyncSubject<number>();
     const observer = new TestObserver();
     const subscription = subject.subscribe(observer);
 
@@ -142,7 +142,7 @@ describe('AsyncSubject', () => {
 
   it('should only error if an error is passed into it', () => {
     const expected = new Error('bad');
-    const subject = new AsyncSubject();
+    const subject = new AsyncSubject<number>();
     const observer = new TestObserver();
     subject.subscribe(observer);
 
@@ -155,7 +155,7 @@ describe('AsyncSubject', () => {
 
   it('should keep emitting error to subsequent subscriptions', () => {
     const expected = new Error('bad');
-    const subject = new AsyncSubject();
+    const subject = new AsyncSubject<number>();
     const observer = new TestObserver();
     const subscription = subject.subscribe(observer);
 
@@ -174,7 +174,7 @@ describe('AsyncSubject', () => {
 
   it('should not allow send complete after error', () => {
     const expected = new Error('bad');
-    const subject = new AsyncSubject();
+    const subject = new AsyncSubject<number>();
     const observer = new TestObserver();
     const subscription = subject.subscribe(observer);
 

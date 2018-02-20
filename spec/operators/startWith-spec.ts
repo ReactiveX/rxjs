@@ -121,9 +121,9 @@ describe('Observable.prototype.startWith', () => {
     const values = { s: 's', a: 'a', b: 'b' };
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .startWith('s', rxTestScheduler)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

@@ -38,9 +38,9 @@ describe('ConnectableObservable.prototype.refCount', () => {
     sub3.unsubscribe();
   });
 
-  it('should unsub from the source when all other subscriptions are unsubbed', (done: MochaDone) => {
+  it('should unsub from the source when all other subscriptions are unsubbed', (done) => {
     let unsubscribeCalled = false;
-    const connectable = new Observable((observer: Rx.Observer<boolean>) => {
+    const connectable = new Observable<boolean>((observer: Rx.Observer<boolean>) => {
       observer.next(true);
       return () => {
         unsubscribeCalled = true;
@@ -54,7 +54,7 @@ describe('ConnectableObservable.prototype.refCount', () => {
     const sub2 = refCounted.subscribe(() => {
       //noop
     });
-    const sub3 = refCounted.subscribe((x: any) => {
+    const sub3 = refCounted.subscribe((x) => {
       expect((<any>connectable)._refCount).to.equal(1);
     });
 
@@ -70,7 +70,7 @@ describe('ConnectableObservable.prototype.refCount', () => {
   it('should not unsubscribe when a subscriber synchronously unsubscribes if ' +
   'other subscribers are present', () => {
     let unsubscribeCalled = false;
-    const connectable = new Observable((observer: Rx.Observer<boolean>) => {
+    const connectable = new Observable<boolean>((observer: Rx.Observer<boolean>) => {
       observer.next(true);
       return () => {
         unsubscribeCalled = true;
@@ -89,8 +89,8 @@ describe('ConnectableObservable.prototype.refCount', () => {
   it('should not unsubscribe when a subscriber synchronously unsubscribes if ' +
   'other subscribers are present and the source is a Subject', () => {
 
-    const arr = [];
-    const subject = new Rx.Subject();
+    const arr: string[] = [];
+    const subject = new Rx.Subject<string>();
     const connectable = subject.publishReplay(1);
     const refCounted = connectable.refCount();
 

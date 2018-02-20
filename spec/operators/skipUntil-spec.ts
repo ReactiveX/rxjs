@@ -77,9 +77,9 @@ describe('Observable.prototype.skipUntil', () => {
     const unsub =      '         !          ';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .skipUntil(skip)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -222,10 +222,10 @@ describe('Observable.prototype.skipUntil', () => {
     const e1 =   hot( '--a--b--c--d--e--|');
     const e1subs =   ['^                !',
                     '^                !']; // for the explicit subscribe some lines below
-    const skip = new Rx.Subject();
+    const skip = new Rx.Subject<string>();
     const expected =  '-';
 
-    e1.subscribe((x: string) => {
+    e1.subscribe((x) => {
       if (x === 'd' && !skip.closed) {
         skip.next('x');
       }

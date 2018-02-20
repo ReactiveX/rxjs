@@ -17,7 +17,7 @@ describe('Observable.prototype.bufferTime', () => {
       w: ['a', 'b'],
       x: ['c', 'd', 'e'],
       y: ['f', 'g'],
-      z: []
+      z: <string[]>[]
     };
 
     const result = e1.bufferTime(t, null, Number.POSITIVE_INFINITY, rxTestScheduler);
@@ -33,7 +33,7 @@ describe('Observable.prototype.bufferTime', () => {
     const values = {
       x: ['a', 'b', 'c'],
       y: ['d', 'e', 'g'],
-      z: []
+      z: <string[]>[]
     };
 
     const result = e1.bufferTime(t, null, Number.POSITIVE_INFINITY, rxTestScheduler);
@@ -68,7 +68,7 @@ describe('Observable.prototype.bufferTime', () => {
       w: ['a', 'b'],
       x: ['c', 'd', 'e'],
       y: ['f', 'g'],
-      z: []
+      z: <string[]>[]
     };
 
     const result = e1.bufferTime(t, null, 3, rxTestScheduler);
@@ -136,8 +136,8 @@ describe('Observable.prototype.bufferTime', () => {
       b: ['4', '5', '6'],
       c: ['6', '7', '8'],
       d: ['8', '9'],
-      e: [],
-      f: []
+      e: <string[]>[],
+      f: <string[]>[]
     };
 
     const result = e1.bufferTime(t, interval, Number.POSITIVE_INFINITY, rxTestScheduler);
@@ -163,7 +163,7 @@ describe('Observable.prototype.bufferTime', () => {
       b: ['4', '5', '6'],
       c: ['6', '7', '8'],
       d: ['8', '9'],
-      e: []
+      e: <string[]>[]
     };
 
     const result = e1.bufferTime(t, interval, Number.POSITIVE_INFINITY, rxTestScheduler);
@@ -208,9 +208,9 @@ describe('Observable.prototype.bufferTime', () => {
     };
 
     const result = e1
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .bufferTime(t, interval, Number.POSITIVE_INFINITY, rxTestScheduler)
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -220,7 +220,7 @@ describe('Observable.prototype.bufferTime', () => {
     const e1 = cold( '|');
     const e1subs =   '(^!)';
     const expected = '(b|)';
-    const values = { b: [] };
+    const values = { b: <string[]>[] };
     const t = time('----------|');
 
     const result = e1.bufferTime(t, null, Number.POSITIVE_INFINITY, rxTestScheduler);
@@ -241,7 +241,7 @@ describe('Observable.prototype.bufferTime', () => {
   });
 
   it('should handle throw', () => {
-    const e1 = Observable.throw(new Error('haha'));
+    const e1 = Observable.throwError(new Error('haha'));
     const expected = '#';
     const t = time('----------|');
 

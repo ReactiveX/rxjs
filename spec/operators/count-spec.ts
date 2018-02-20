@@ -71,9 +71,9 @@ describe('Observable.prototype.count', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should count a range() source observable', (done: MochaDone) => {
+  it('should count a range() source observable', (done) => {
     Rx.Observable.range(1, 10).count().subscribe(
-      (value: number) => {
+      (value) => {
         expect(value).to.equal(10);
       }, (x) => {
         done(new Error('should not be called'));
@@ -82,9 +82,9 @@ describe('Observable.prototype.count', () => {
       });
   });
 
-  it('should count a range().skip(1) source observable', (done: MochaDone) => {
+  it('should count a range().skip(1) source observable', (done) => {
     Rx.Observable.range(1, 10).skip(1).count().subscribe(
-      (value: number) => {
+      (value) => {
         expect(value).to.equal(9);
       }, (x) => {
         done(new Error('should not be called'));
@@ -93,9 +93,9 @@ describe('Observable.prototype.count', () => {
       });
   });
 
-  it('should count a range().take(1) source observable', (done: MochaDone) => {
+  it('should count a range().take(1) source observable', (done) => {
     Rx.Observable.range(1, 10).take(1).count().subscribe(
-      (value: number) => {
+      (value) => {
         expect(value).to.equal(1);
       }, (x) => {
         done(new Error('should not be called'));
@@ -176,7 +176,7 @@ describe('Observable.prototype.count', () => {
     const expected =  '-------    ';
     const unsub =     '      !    ';
 
-    const result = e1.count((value: string) => parseInt(value) < 10);
+    const result = e1.count((value) => parseInt(value) < 10);
 
     expectObservable(result, unsub).toBe(expected, { w: 3 });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -189,9 +189,9 @@ describe('Observable.prototype.count', () => {
     const unsub =     '      !    ';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
-      .count((value: string) => parseInt(value) < 10)
-      .mergeMap((x: number) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x))
+      .count((value) => parseInt(value) < 10)
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected, { w: 3 });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

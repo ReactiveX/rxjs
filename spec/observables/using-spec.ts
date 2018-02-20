@@ -22,13 +22,13 @@ describe('Observable.using', () => {
     }
   });
 
-  it('should accept factory returns promise resolves', (done: MochaDone) => {
+  it('should accept factory returns promise resolves', (done) => {
     const expected = 42;
 
     let disposed = false;
     const e1 = Observable.using(
       () => new Subscription(() => disposed = true),
-      (resource) => new Promise((resolve: any) => { resolve(expected); }));
+      (resource) => new Promise<number>((resolve) => { resolve(expected); }));
 
     e1.subscribe(x => {
       expect(x).to.equal(expected);
@@ -39,13 +39,13 @@ describe('Observable.using', () => {
     });
   });
 
-  it('should accept factory returns promise rejects', (done: MochaDone) => {
+  it('should accept factory returns promise rejects', (done) => {
     const expected = 42;
 
     let disposed = false;
     const e1 = Observable.using(
       () => new Subscription(() => disposed = true),
-      (resource) => new Promise((resolve: any, reject: any) => { reject(expected); }));
+      (resource) => new Promise<number>((resolve, reject) => { reject(expected); }));
 
     e1.subscribe(x => {
       done(new Error('should not be called'));
@@ -57,7 +57,7 @@ describe('Observable.using', () => {
     });
   });
 
-  it('should raise error when resource factory throws', (done: MochaDone) => {
+  it('should raise error when resource factory throws', (done) => {
     const expectedError = 'expected';
     const error = 'error';
 
@@ -80,7 +80,7 @@ describe('Observable.using', () => {
     });
   });
 
-  it('should raise error when observable factory throws', (done: MochaDone) => {
+  it('should raise error when observable factory throws', (done) => {
     const error = 'error';
     let disposed = false;
 

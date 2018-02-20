@@ -85,7 +85,7 @@ describe('Observable.prototype.materialize', () => {
     };
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .materialize()
       .mergeMap((x: Rx.Notification<any>) => Observable.of(x));
 

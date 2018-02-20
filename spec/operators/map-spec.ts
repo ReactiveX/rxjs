@@ -7,8 +7,8 @@ declare function asDiagram(arg: string): Function;
 const Observable = Rx.Observable;
 
 // function shortcuts
-const addDrama = function (x) { return x + '!'; };
-const identity = function (x) { return x; };
+const addDrama = function (x: number | string) { return +x + '!'; };
+const identity = function <T>(x: T) { return x; };
 
 /** @test {map} */
 describe('Observable.prototype.map', () => {
@@ -17,7 +17,7 @@ describe('Observable.prototype.map', () => {
     const asubs =    '^          !';
     const expected = '--x--y--z--|';
 
-    const r = a.map(function (x) { return 10 * x; });
+    const r = a.map(function (x) { return 10 * +x; });
 
     expectObservable(r).toBe(expected, {x: 10, y: 20, z: 30});
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -56,7 +56,7 @@ describe('Observable.prototype.map', () => {
     const asubs =    '^ !   ';
     const expected = '--#   ';
 
-    const r = a.map((x: any) => {
+    const r = a.map((x) => {
       throw 'too bad';
     });
 
@@ -91,7 +91,7 @@ describe('Observable.prototype.map', () => {
 
     let invoked = 0;
     const r = a
-      .map((x: any) => { invoked++; return x; })
+      .map((x) => { invoked++; return x; })
       .do(null, null, () => {
         expect(invoked).to.equal(0);
       });
@@ -119,7 +119,7 @@ describe('Observable.prototype.map', () => {
     const values = {a: 5, b: 14, c: 23, d: 32};
 
     let invoked = 0;
-    const r = a.map((x: string, index: number) => {
+    const r = a.map((x, index) => {
       invoked++;
       return (parseInt(x) + 1) + (index * 10);
     }).do(null, null, () => {
@@ -137,7 +137,7 @@ describe('Observable.prototype.map', () => {
     const values = {a: 5, b: 14, c: 23, d: 32};
 
     let invoked = 0;
-    const r = a.map((x: string, index: number) => {
+    const r = a.map((x, index) => {
       invoked++;
       return (parseInt(x) + 1) + (index * 10);
     }).do(null, null, () => {
@@ -155,7 +155,7 @@ describe('Observable.prototype.map', () => {
     const values = {a: 5, b: 14, c: 23, d: 32};
 
     let invoked = 0;
-    const r = a.map((x: string, index: number) => {
+    const r = a.map((x, index) => {
       invoked++;
       return (parseInt(x) + 1) + (index * 10);
     }).do(null, null, () => {
@@ -176,7 +176,7 @@ describe('Observable.prototype.map', () => {
       value: 42
     };
     const r = a
-      .map(function (x: string, index: number) {
+      .map(function (this: typeof foo, x, index) {
         expect(this).to.equal(foo);
         return (parseInt(x) + 1) + (index * 10);
       }, foo);
@@ -194,8 +194,8 @@ describe('Observable.prototype.map', () => {
     let invoked1 = 0;
     let invoked2 = 0;
     const r = a
-      .map((x: string) => { invoked1++; return parseInt(x) * 2; })
-      .map((x: number) => { invoked2++; return x / 2; })
+      .map((x) => { invoked1++; return parseInt(x) * 2; })
+      .map((x) => { invoked2++; return x / 2; })
       .do(null, null, () => {
         expect(invoked1).to.equal(7);
         expect(invoked2).to.equal(7);
@@ -211,16 +211,16 @@ describe('Observable.prototype.map', () => {
     const expected = '--a--b--c--d--|';
     const values = {a: 11, b: 14, c: 17, d: 20};
 
-    function Filterer() {
-      this.selector1 = (x: string) => parseInt(x) + 2;
-      this.selector2 = (x: string) => parseInt(x) * 3;
+    class Filterer {
+      selector1 = (x: number | string) => (+x) + 2;
+      selector2 = (x: number | string) => (+x) * 3;
     }
     const filterer = new Filterer();
 
     const r = a
-      .map(function (x) { return this.selector1(x); }, filterer)
-      .map(function (x) { return this.selector2(x); }, filterer)
-      .map(function (x) { return this.selector1(x); }, filterer);
+      .map(function (this: Filterer, x) { return this.selector1(x); }, filterer)
+      .map(function (this: Filterer, x) { return this.selector2(x); }, filterer)
+      .map(function (this: Filterer, x) { return this.selector1(x); }, filterer);
 
     expectObservable(r).toBe(expected, values);
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -233,9 +233,9 @@ describe('Observable.prototype.map', () => {
     const expected = '--x--y-     ';
 
     const r = a
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .map(addDrama)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(r, unsub).toBe(expected, {x: '1!', y: '2!'});
     expectSubscriptions(a.subscriptions).toBe(asubs);

@@ -34,7 +34,7 @@ describe('Observable.prototype.repeat', () => {
 
   it('should complete without emit when count is zero', () => {
     const e1 =  cold('--a--b--|');
-    const subs = [];
+    const subs: string[] = [];
     const expected = '|';
 
     expectObservable(e1.repeat(0)).toBe(expected);
@@ -88,9 +88,9 @@ describe('Observable.prototype.repeat', () => {
     const expected = '--a--b----a--b----a--b----a--b----a--b----a--';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .repeat()
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -132,7 +132,7 @@ describe('Observable.prototype.repeat', () => {
 
   it('should complete immediately when source does not complete without emit but count is zero', () => {
     const e1 =  cold('-');
-    const subs = [];
+    const subs: string[] = [];
     const expected = '|';
 
     expectObservable(e1.repeat(0)).toBe(expected);
@@ -141,7 +141,7 @@ describe('Observable.prototype.repeat', () => {
 
   it('should complete immediately when source does not complete but count is zero', () => {
     const e1 =   cold('--a--b--');
-    const subs = [];
+    const subs: string[] = [];
     const expected = '|';
 
     expectObservable(e1.repeat(0)).toBe(expected);
@@ -179,7 +179,7 @@ describe('Observable.prototype.repeat', () => {
 
   it('should complete immediately when source does not emit but count is zero', () => {
     const e1 =  cold('----|');
-    const subs = [];
+    const subs: string[] = [];
     const expected = '|';
 
     expectObservable(e1.repeat(0)).toBe(expected);
@@ -216,7 +216,7 @@ describe('Observable.prototype.repeat', () => {
   it('should raise error after first emit succeed', () => {
     let repeated = false;
 
-    const e1 = cold('--a--|').map((x: string) => {
+    const e1 = cold('--a--|').map((x) => {
       if (repeated) {
         throw 'error';
       } else {
@@ -229,7 +229,7 @@ describe('Observable.prototype.repeat', () => {
     expectObservable(e1.repeat(2)).toBe(expected);
   });
 
-  it('should repeat a synchronous source (multicasted and refCounted) multiple times', (done: MochaDone) => {
+  it('should repeat a synchronous source (multicasted and refCounted) multiple times', (done) => {
     const expected = [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3];
 
     Observable.of(1, 2, 3)
@@ -237,7 +237,7 @@ describe('Observable.prototype.repeat', () => {
       .refCount()
       .repeat(5)
       .subscribe(
-        (x: number) => { expect(x).to.equal(expected.shift()); },
+        (x) => { expect(x).to.equal(expected.shift()); },
         (x) => {
           done(new Error('should not be called'));
         }, () => {

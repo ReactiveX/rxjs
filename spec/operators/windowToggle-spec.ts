@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as Rx from '../../src/Rx';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
 
 declare const type: Function;
 declare const asDiagram: Function;
@@ -54,7 +54,7 @@ describe('Observable.prototype.windowToggle', () => {
     const z = cold(                                '---|');
     const values = { x: x, y: y, z: z };
 
-    const source = e1.windowToggle(e2, (value: string) => {
+    const source = e1.windowToggle(e2, (value) => {
       expect(value).to.equal('x');
       return e3;
     });
@@ -190,7 +190,7 @@ describe('Observable.prototype.windowToggle', () => {
 
     let i = 0;
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .windowToggle(e2, () => close[i++])
       .mergeMap((x: Rx.Observable<string>) => Observable.of(x));
 
@@ -211,10 +211,10 @@ describe('Observable.prototype.windowToggle', () => {
     const late =  time('---------------|           ');
     const values = { x: x };
 
-    let window;
+    let window: Rx.Observable<string>;
     const result = source
       .windowToggle(open, () => Observable.never())
-      .do((w: any) => { window = w; });
+      .do((w) => { window = w; });
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);

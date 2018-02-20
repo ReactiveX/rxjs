@@ -105,14 +105,14 @@ describe('Observable.prototype.onErrorResumeNext', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should work with promise', (done: MochaDone) => {
+  it('should work with promise', (done) => {
     const expected = [1, 2];
-    const source = Observable.concat(Observable.of(1), Observable.throw('meh'));
+    const source = Observable.concat(Observable.of(1), Observable.throwError('meh'));
 
     source.onErrorResumeNext(Promise.resolve(2))
       .subscribe(x => {
         expect(expected.shift()).to.equal(x);
-      }, (err: any) => {
+      }, (err) => {
         done(new Error('should not be called'));
       }, () => {
         expect(expected).to.be.empty;

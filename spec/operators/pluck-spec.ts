@@ -18,7 +18,7 @@ describe('Observable.prototype.pluck', () => {
     const e1 =  cold('--a--b--c--|', values);
     const expected = '--x--y--z--|';
 
-    const result = e1.map((x: string) => ({v: x.charAt(3)})).pluck('v');
+    const result = e1.map((x) => ({v: x.charAt(3)})).pluck('v');
 
     expectObservable(result).toBe(expected, {x: '1', y: '2', z: '3'});
   });
@@ -78,7 +78,7 @@ describe('Observable.prototype.pluck', () => {
     const a =   cold('--a-b--c-d---e-|', inputs);
     const asubs =    '^              !';
     const expected = '--r-x--y-z---w-|';
-    const values = {r: 1, x: undefined, y: undefined, z: undefined, w: 5};
+    const values = {r: 1, x: <number | undefined>undefined, y: <number | undefined>undefined, z: <number | undefined>undefined, w: 5};
 
     const r = a.pluck('a', 'b', 'c');
     expectObservable(r).toBe(expected, values);
@@ -162,9 +162,9 @@ describe('Observable.prototype.pluck', () => {
     const expected = '--1--2-     ';
 
     const r = a
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .pluck('prop')
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(r, unsub).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);

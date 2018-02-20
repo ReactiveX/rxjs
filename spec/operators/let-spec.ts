@@ -3,11 +3,11 @@ import * as Rx from '../../src/Rx';
 
 /** @test {let} */
 describe('Observable.prototype.let', () => {
-  it('should be able to compose with let', (done: MochaDone) => {
+  it('should be able to compose with let', (done) => {
     const expected = ['aa', 'bb'];
     let i = 0;
 
-    const foo = (observable: Rx.Observable<string>) => observable.map((x: string) => x + x);
+    const foo = (observable: Rx.Observable<string>) => observable.map((x) => x + x);
 
     Rx.Observable
       .from(['a', 'b'])

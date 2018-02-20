@@ -41,7 +41,7 @@ describe('range', () => {
     expect(results).to.deep.equal([12, 13, 14, 15]);
   });
 
-  it('should accept a scheduler', (done: MochaDone) => {
+  it('should accept a scheduler', (done) => {
     const expected = [12, 13, 14, 15];
     sinon.spy(asap, 'schedule');
 

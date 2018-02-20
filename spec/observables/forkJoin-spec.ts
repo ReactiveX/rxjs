@@ -126,7 +126,7 @@ describe('forkJoin', () => {
     expectObservable(e1).toBe(expected);
   });
 
-  it('should accept promise', (done: MochaDone) => {
+  it('should accept promise', (done) => {
     const e1 = forkJoin(
                of(1),
                Promise.resolve(2)
@@ -135,7 +135,7 @@ describe('forkJoin', () => {
     e1.subscribe((x: number[]) => {
       expect(x).to.deep.equal([1, 2]);
     },
-    (err: any) => {
+    (err) => {
       done(new Error('should not be called'));
     }, () => {
       done();
@@ -406,7 +406,7 @@ describe('forkJoin', () => {
     let a: Promise<number>[];
     let o1: Observable<number[]> = forkJoin(a);
     let o2: Observable<number[]> = forkJoin(...a);
-    let o3: Observable<number> = forkJoin(a, (...x) => x.length);
+    let o3: Observable<number> = forkJoin(a, (...x: any[]) => x.length);
     /* tslint:enable:no-unused-variable */
   });
 
@@ -415,7 +415,7 @@ describe('forkJoin', () => {
     let a: Observable<number>[];
     let o1: Observable<number[]> = forkJoin(a);
     let o2: Observable<number[]> = forkJoin(...a);
-    let o3: Observable<number> = forkJoin(a, (...x) => x.length);
+    let o3: Observable<number> = forkJoin(a, (...x: any[]) => x.length);
     /* tslint:enable:no-unused-variable */
   });
 

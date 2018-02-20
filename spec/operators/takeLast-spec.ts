@@ -71,7 +71,7 @@ describe('Observable.prototype.takeLast', () => {
 
   it('should be empty on takeLast(0)', () => {
     const e1 = hot('--a--^--b----c---d--|');
-    const e1subs = []; // Don't subscribe at all
+    const e1subs: string[] = []; // Don't subscribe at all
     const expected =    '|';
 
     expectObservable(e1.takeLast(0)).toBe(expected);
@@ -154,9 +154,9 @@ describe('Observable.prototype.takeLast', () => {
     const expected =  '----------            ';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .takeLast(42)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

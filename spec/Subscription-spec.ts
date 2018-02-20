@@ -6,23 +6,23 @@ const Subscription = Rx.Subscription;
 
 /** @test {Subscription} */
 describe('Subscription', () => {
-  it('should not leak', (done: MochaDone) => {
+  it('should not leak', (done) => {
     const tearDowns: number[] = [];
 
-    const source1 = Observable.create((observer: Rx.Observer<any>) => {
+    const source1 = new Observable<any>((observer) => {
       return () => {
         tearDowns.push(1);
       };
     });
 
-    const source2 = Observable.create((observer: Rx.Observer<any>) => {
+    const source2 = new Observable<any>((observer) => {
       return () => {
         tearDowns.push(2);
         throw new Error('oops, I am a bad unsubscribe!');
       };
     });
 
-    const source3 = Observable.create((observer: Rx.Observer<any>) => {
+    const source3 = new Observable<any>((observer) => {
       return () => {
         tearDowns.push(3);
       };
@@ -39,30 +39,30 @@ describe('Subscription', () => {
     });
   });
 
-  it('should not leak when adding a bad custom subscription to a subscription', (done: MochaDone) => {
+  it('should not leak when adding a bad custom subscription to a subscription', (done) => {
     const tearDowns: number[] = [];
 
     const sub = new Subscription();
 
-    const source1 = Observable.create((observer: Rx.Observer<any>) => {
+    const source1 = new Observable<any>((observer) => {
       return () => {
         tearDowns.push(1);
       };
     });
 
-    const source2 = Observable.create((observer: Rx.Observer<any>) => {
+    const source2 = new Observable<any>((observer) => {
       return () => {
         tearDowns.push(2);
-        sub.add(<any>({
+        sub.add({
           unsubscribe: () => {
             expect(sub.closed).to.be.true;
             throw new Error('Who is your daddy, and what does he do?');
           }
-        }));
+        });
       };
     });
 
-    const source3 = Observable.create((observer: Rx.Observer<any>) => {
+    const source3 = new Observable<any>((observer) => {
       return () => {
         tearDowns.push(3);
       };

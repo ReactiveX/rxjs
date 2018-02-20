@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as Rx from '../../src/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare const type;
+declare const type: Function;
 declare function asDiagram(arg: string): Function;
 
 declare const rxTestScheduler: Rx.TestScheduler;
@@ -10,7 +10,7 @@ const Observable = Rx.Observable;
 
 /** @test {debounce} */
 describe('Observable.prototype.debounce', () => {
-  function getTimerSelector(x) {
+  function getTimerSelector(x: number) {
     return () => Observable.timer(x, rxTestScheduler);
   }
 
@@ -110,9 +110,9 @@ describe('Observable.prototype.debounce', () => {
     const unsub =    '       !       ';
 
     const result = e1
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .debounce(getTimerSelector(20))
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -285,7 +285,7 @@ describe('Observable.prototype.debounce', () => {
                   ['        ^!                            ',
                    '                 ^ !                  '];
 
-    function selectorFunction(x) {
+    function selectorFunction(x: string) {
       if (x !== 'c') {
         return selector.shift();
       } else {
@@ -305,7 +305,7 @@ describe('Observable.prototype.debounce', () => {
     const e1subs =   '^                                   !';
     const expected = '--------a-x-yz---bxy---z--c--x--y--z|';
 
-    function selectorFunction(x) { return Observable.empty<number>(); }
+    function selectorFunction(x: string) { return Observable.empty(); }
 
     expectObservable(e1.debounce(selectorFunction)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -316,7 +316,7 @@ describe('Observable.prototype.debounce', () => {
     const e1subs =   '^                                   !';
     const expected = '------------------------------------(z|)';
 
-    function selectorFunction(x) { return Observable.never<number>(); }
+    function selectorFunction(x: string) { return Observable.never(); }
 
     expectObservable(e1.debounce(selectorFunction)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -364,7 +364,7 @@ describe('Observable.prototype.debounce', () => {
     }
   });
 
-  it('should delay by promise resolves', (done: MochaDone) => {
+  it('should delay by promise resolves', (done) => {
     const e1 = Observable.concat(Observable.of(1),
       Observable.timer(10).mapTo(2),
       Observable.timer(10).mapTo(3),
@@ -373,8 +373,8 @@ describe('Observable.prototype.debounce', () => {
     const expected = [1, 2, 3, 4];
 
     e1.debounce(() => {
-      return new Promise((resolve: any) => { resolve(42); });
-    }).subscribe((x: number) => {
+      return new Promise<number>((resolve) => { resolve(42); });
+    }).subscribe((x) => {
       expect(x).to.equal(expected.shift()); },
       (x) => {
         done(new Error('should not be called'));
@@ -385,7 +385,7 @@ describe('Observable.prototype.debounce', () => {
       });
   });
 
-  it('should raises error when promise rejects', (done: MochaDone) => {
+  it('should raises error when promise rejects', (done) => {
     const e1 = Observable.concat(Observable.of(1),
       Observable.timer(10).mapTo(2),
       Observable.timer(10).mapTo(3),
@@ -394,15 +394,15 @@ describe('Observable.prototype.debounce', () => {
     const expected = [1, 2];
     const error = new Error('error');
 
-    e1.debounce((x: number) => {
+    e1.debounce((x) => {
       if (x === 3) {
-        return new Promise((resolve: any, reject: any) => { reject(error); });
+        return new Promise<number>((resolve: any, reject) => { reject(error); });
       } else {
-        return new Promise((resolve: any) => { resolve(42); });
+        return new Promise<number>((resolve) => { resolve(42); });
       }
-    }).subscribe((x: number) => {
+    }).subscribe((x) => {
       expect(x).to.equal(expected.shift()); },
-      (err: any) => {
+      (err) => {
         expect(err).to.be.an('error', 'error');
         expect(expected.length).to.equal(0);
         done();
@@ -412,10 +412,10 @@ describe('Observable.prototype.debounce', () => {
   });
 
   it('should debounce correctly when synchronously reentered', () => {
-    const results = [];
-    const source = new Rx.Subject();
+    const results: number[] = [];
+    const source = new Rx.Subject<number>();
 
-    source.debounce(() => Observable.of(null)).subscribe(value => {
+    source.debounce(() => Observable.of<number | null>(null)).subscribe(value => {
       results.push(value);
 
       if (value === 1) {

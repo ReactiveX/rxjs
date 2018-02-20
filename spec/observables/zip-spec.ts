@@ -4,8 +4,6 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 
 declare const type: Function;
 
-declare const Symbol: any;
-
 const Observable = Rx.Observable;
 const queueScheduler = Rx.Scheduler.queue;
 
@@ -24,14 +22,14 @@ describe('Observable.zip', () => {
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
 
-  it('should zip the provided observables', (done: MochaDone) => {
+  it('should zip the provided observables', (done) => {
     const expected = ['a1', 'b2', 'c3'];
     let i = 0;
 
     Observable.zip(
       Observable.from(['a', 'b', 'c']),
-      Observable.from([1, 2, 3]), (a: string, b: number) => a + b)
-        .subscribe((x: string) => {
+      Observable.from([1, 2, 3]), (a, b) => a + b)
+        .subscribe((x) => {
           expect(x).to.equal(expected[i++]);
         }, null, done);
   });
@@ -105,15 +103,15 @@ describe('Observable.zip', () => {
 
     it('should only call `next` as needed', () => {
       let nextCalled = 0;
-      const myIterator = <any>{
+      const myIterator = {
         count: 0,
-        next: () => {
+        next() {
           nextCalled++;
           return { value: this.count++, done: false };
+        },
+        [Symbol.iterator]() {
+          return this;
         }
-      };
-      myIterator[Symbol.iterator] = function() {
-        return this;
       };
 
       Observable.zip(Observable.of(1, 2, 3), myIterator)
@@ -127,7 +125,7 @@ describe('Observable.zip', () => {
     it('should work with never observable and empty iterable', () => {
       const a = cold(  '-');
       const asubs =    '^';
-      const b = [];
+      const b: string[] = [];
       const expected = '-';
 
       expectObservable(Observable.zip(a, b)).toBe(expected);
@@ -137,7 +135,7 @@ describe('Observable.zip', () => {
     it('should work with empty observable and empty iterable', () => {
       const a = cold('|');
       const asubs = '(^!)';
-      const b = [];
+      const b: string[] = [];
       const expected = '|';
 
       expectObservable(Observable.zip(a, b)).toBe(expected);
@@ -147,7 +145,7 @@ describe('Observable.zip', () => {
     it('should work with empty observable and non-empty iterable', () => {
       const a = cold('|');
       const asubs = '(^!)';
-      const b = [1];
+      const b: number[] = [1];
       const expected = '|';
 
       expectObservable(Observable.zip(a, b)).toBe(expected);
@@ -157,7 +155,7 @@ describe('Observable.zip', () => {
     it('should work with non-empty observable and empty iterable', () => {
       const a = hot('---^----a--|');
       const asubs =    '^       !';
-      const b = [];
+      const b: string[] = [];
       const expected = '--------|';
 
       expectObservable(Observable.zip(a, b)).toBe(expected);
@@ -187,7 +185,7 @@ describe('Observable.zip', () => {
     it('should work with non-empty observable and empty iterable', () => {
       const a = hot('---^----#');
       const asubs =    '^    !';
-      const b = [];
+      const b: string[] = [];
       const expected = '-----#';
 
       expectObservable(Observable.zip(a, b)).toBe(expected);
@@ -240,7 +238,7 @@ describe('Observable.zip', () => {
     const bsubs =    '^';
     const expected = '---x---y---z';
 
-    expectObservable(Observable.zip(a, b, (e1: string, e2: string) => e1 + e2))
+    expectObservable(Observable.zip(a, b, (e1, e2) => e1 + e2))
       .toBe(expected, { x: '14', y: '25', z: '36' });
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
@@ -269,7 +267,7 @@ describe('Observable.zip', () => {
     const expected =   '----x---y-|  ';
 
     const observable = Observable.zip(a, b, c,
-      (r0: string, r1: string, r2: string) => [r0, r1, r2]);
+      (r0, r1, r2) => [r0, r1, r2]);
     expectObservable(observable).toBe(expected,
       { x: ['1', '2', '3'], y: ['4', '5', '6'] });
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -285,7 +283,7 @@ describe('Observable.zip', () => {
     const expected =   '----x---y-|  ';
 
     const observable = Observable.zip(a, b, c,
-      (r0: string, r1: string, r2: string) => [r0, r1, r2]);
+      (r0, r1, r2) => [r0, r1, r2]);
     expectObservable(observable).toBe(expected,
       { x: ['1', '2', '3'], y: ['4', '5', '6'] });
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -299,7 +297,7 @@ describe('Observable.zip', () => {
     const bsubs =      '^                 !    ';
     const expected =   '---a--b--c--d--e--|    ';
 
-    expectObservable(Observable.zip(a, b, (r1: string, r2: string) => r1 + r2))
+    expectObservable(Observable.zip(a, b, (r1, r2) => r1 + r2))
       .toBe(expected, { a: '12', b: '34', c: '56', d: '78', e: '90' });
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
@@ -312,7 +310,7 @@ describe('Observable.zip', () => {
     const bsubs =      '^                 !    ';
     const expected =   '---a--b--c--d--e--|    ';
 
-    expectObservable(Observable.zip(a, b, (r1: string, r2: string) => r1 + r2))
+    expectObservable(Observable.zip(a, b, (r1, r2) => r1 + r2))
       .toBe(expected, { a: '21', b: '43', c: '65', d: '87', e: '09' });
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
@@ -325,7 +323,7 @@ describe('Observable.zip', () => {
     const bsubs =      '^                ! ';
     const expected =   '---a--b--c--d--e-| ';
 
-    expectObservable(Observable.zip(a, b, (r1: string, r2: string) => r1 + r2))
+    expectObservable(Observable.zip(a, b, (r1, r2) => r1 + r2))
       .toBe(expected, { a: '12', b: '34', c: '56', d: '78', e: '90' });
     expectSubscriptions(a.subscriptions).toBe(asubs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
@@ -567,7 +565,7 @@ describe('Observable.zip', () => {
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
 
-  it('should combine an immediately-scheduled source with an immediately-scheduled second', (done: MochaDone) => {
+  it('should combine an immediately-scheduled source with an immediately-scheduled second', (done) => {
     const a = Observable.of<number>(1, 2, 3, queueScheduler);
     const b = Observable.of<number>(4, 5, 6, 7, 8, queueScheduler);
     const r = [[1, 4], [2, 5], [3, 6]];

@@ -3,7 +3,7 @@ import { defer } from '../../src/';
 import { Observable } from '../../src';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare function asDiagram(arg: string): Function;
+declare function asDiagram(arg: any): Function;
 
 /** @test {defer} */
 describe('defer', () => {
@@ -36,13 +36,13 @@ describe('defer', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
-  it('should accept factory returns promise resolves', (done: MochaDone) => {
+  it('should accept factory returns promise resolves', (done) => {
     const expected = 42;
     const e1 = defer(() => {
-      return new Promise((resolve: any) => { resolve(expected); });
+      return new Promise<number>((resolve) => { resolve(expected); });
     });
 
-    e1.subscribe((x: number) => {
+    e1.subscribe((x) => {
       expect(x).to.equal(expected);
       done();
     }, x => {
@@ -50,13 +50,13 @@ describe('defer', () => {
     });
   });
 
-  it('should accept factory returns promise rejects', (done: MochaDone) => {
+  it('should accept factory returns promise rejects', (done) => {
     const expected = 42;
     const e1 = defer(() => {
-      return new Promise((resolve: any, reject: any) => { reject(expected); });
+      return new Promise<number>((resolve, reject) => { reject(expected); });
     });
 
-    e1.subscribe((x: number) => {
+    e1.subscribe((x) => {
       done(new Error('should not be called'));
     }, x => {
       expect(x).to.equal(expected);
@@ -104,8 +104,8 @@ describe('defer', () => {
     const expected =   '--a--b-     ';
     const unsub =      '      !     ';
 
-    const e1 = defer(() => source.mergeMap((x: string) => Observable.of(x)))
-      .mergeMap((x: string) => Observable.of(x));
+    const e1 = defer(() => source.mergeMap((x) => Observable.of(x)))
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(e1, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);

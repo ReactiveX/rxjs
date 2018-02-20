@@ -1,9 +1,10 @@
 import * as Rx from '../../src/Rx';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
 
 declare const type: Function;
 declare const asDiagram: Function;
 const Observable = Rx.Observable;
+declare const rxTestScheduler: Rx.TestScheduler;
 
 /** @test {windowTime} */
 describe('Observable.prototype.windowTime', () => {
@@ -225,7 +226,7 @@ describe('Observable.prototype.windowTime', () => {
     const values = { x, y };
 
     const result = source
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .windowTime(timeSpan, interval, rxTestScheduler)
       .mergeMap((x: Rx.Observable<string>) => Observable.of(x));
 

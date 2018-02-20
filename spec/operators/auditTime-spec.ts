@@ -20,10 +20,10 @@ describe('Observable.prototype.auditTime', () => {
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
-  it('should auditTime events by 50 time units', (done: MochaDone) => {
+  it('should auditTime events by 50 time units', (done) => {
     Observable.of(1, 2, 3)
       .auditTime(50)
-      .subscribe((x: number) => {
+      .subscribe((x) => {
         done(new Error('should not be called'));
       }, null, () => {
         done();
@@ -33,11 +33,11 @@ describe('Observable.prototype.auditTime', () => {
   it('should auditTime events multiple times', () => {
     const expected = ['1-2', '2-2'];
     Observable.concat(
-      Observable.timer(0, 10, rxTestScheduler).take(3).map((x: number) => '1-' + x),
-      Observable.timer(80, 10, rxTestScheduler).take(5).map((x: number) => '2-' + x)
+      Observable.timer(0, 10, rxTestScheduler).take(3).map((x) => '1-' + x),
+      Observable.timer(80, 10, rxTestScheduler).take(5).map((x) => '2-' + x)
       )
       .auditTime(50, rxTestScheduler)
-      .subscribe((x: string) => {
+      .subscribe((x) => {
         expect(x).to.equal(expected.shift());
       });
 
@@ -124,9 +124,9 @@ describe('Observable.prototype.auditTime', () => {
     const unsub =    '                               !';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .auditTime(50, rxTestScheduler)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);

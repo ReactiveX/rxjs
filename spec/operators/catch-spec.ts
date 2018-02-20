@@ -16,7 +16,7 @@ describe('Observable.prototype.catch', () => {
     const e2 =  cold(        '-1-2-3-|');
     const expected = '--a--b---1-2-3-|';
 
-    const result = e1.catch((err: any) => e2);
+    const result = e1.catch((err) => e2);
 
     expectObservable(result).toBe(expected);
   });
@@ -27,13 +27,13 @@ describe('Observable.prototype.catch', () => {
     const expected = '--a--b--(XYZ|)';
 
     const result = e1
-      .map((n: string) => {
+      .map((n) => {
         if (n === 'c') {
           throw 'bad';
         }
         return n;
       })
-      .catch((err: any) => {
+      .catch((err) => {
         return Observable.of('X', 'Y', 'Z');
       });
 
@@ -48,7 +48,7 @@ describe('Observable.prototype.catch', () => {
     const e2subs =   '        ^         !';
     const expected = '--a--b--1-2-3-4-5-|';
 
-    const result = e1.catch((err: any) => e2);
+    const result = e1.catch((err) => e2);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -76,11 +76,11 @@ describe('Observable.prototype.catch', () => {
     const unsub =    '       !         ';
 
     const result = e1
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .catch(() => {
         return Observable.of('X', 'Y', 'Z');
       })
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -123,7 +123,7 @@ describe('Observable.prototype.catch', () => {
     const e2subs =   '        ^         !';
     const expected = '--a--b--5-6-7-8-9-|';
 
-    const result = e1.catch((err: any) => e2);
+    const result = e1.catch((err) => e2);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -140,13 +140,13 @@ describe('Observable.prototype.catch', () => {
 
     let retries = 0;
     const result = e1
-      .map((n: any) => {
+      .map((n) => {
         if (n === 'c') {
           throw 'bad';
         }
         return n;
       })
-      .catch((err: any, caught: any) => {
+      .catch((err, caught) => {
         if (retries++ === 2) {
           throw 'done';
         }
@@ -166,13 +166,13 @@ describe('Observable.prototype.catch', () => {
 
     let retries = 0;
     const result = e1
-      .map((n: any) => {
+      .map((n) => {
         if (n === 'c') {
           throw 'bad';
         }
         return n;
       })
-      .catch((err: any, caught: any) => {
+      .catch((err, caught) => {
         if (retries++ === 2) {
           throw 'done';
         }
@@ -188,7 +188,7 @@ describe('Observable.prototype.catch', () => {
     const subs =     '(^!)';
     const expected = '(abc|)';
 
-    const result = e1.catch((err: any) => Observable.of('a', 'b', 'c'));
+    const result = e1.catch((err) => Observable.of('a', 'b', 'c'));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -199,7 +199,7 @@ describe('Observable.prototype.catch', () => {
     const subs =     '^          !';
     const expected = '--a--b--c--|';
 
-    const result = e1.catch((err: any) => Observable.of('x', 'y', 'z'));
+    const result = e1.catch((err) => Observable.of('x', 'y', 'z'));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -247,29 +247,29 @@ describe('Observable.prototype.catch', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should pass the error as the first argument', (done: MochaDone) => {
-    Observable.throw('bad')
-      .catch((err: any) => {
+  it('should pass the error as the first argument', (done) => {
+    Observable.throwError('bad')
+      .catch((err) => {
         expect(err).to.equal('bad');
         return Observable.empty();
       })
       .subscribe(() => {
         //noop
-       }, (err: any) => {
+       }, (err) => {
           done(new Error('should not be called'));
         }, () => {
           done();
         });
   });
 
-  it('should accept selector returns any ObservableInput', (done: MochaDone) => {
+  it('should accept selector returns any ObservableInput', (done) => {
     const input$ = createObservableInputs(42);
 
     input$.mergeMap(input =>
-      Observable.throw('bad').catch(err => input)
+      Observable.throwError('bad').catch(err => input)
     ).subscribe(x => {
       expect(x).to.be.equal(42);
-    }, (err: any) => {
+    }, (err) => {
       done(new Error('should not be called'));
     }, () => {
       done();
@@ -293,13 +293,13 @@ describe('Observable.prototype.catch', () => {
       sandbox.restore();
     });
 
-    it('should chain a throw from a promise using Observable.throw', (done: MochaDone) => {
+    it('should chain a throw from a promise using Observable.throw', (done) => {
       const subscribeSpy = sinon.spy();
       const errorSpy = sinon.spy();
       const thrownError = new Error('BROKEN THROW');
       const testError = new Error('BROKEN PROMISE');
       Observable.fromPromise(Promise.reject(testError)).catch(err =>
-        Observable.throw(thrownError)
+        Observable.throwError(thrownError)
       ).subscribe(subscribeSpy, errorSpy);
 
       trueSetTimeout(() => {

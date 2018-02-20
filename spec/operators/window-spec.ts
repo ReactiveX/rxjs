@@ -208,7 +208,7 @@ describe('Observable.prototype.window', () => {
     const expectedValues = { a: a, b: b };
 
     const result = source
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .window(closings)
       .mergeMap((x: Rx.Observable<string>) => Observable.of(x));
 

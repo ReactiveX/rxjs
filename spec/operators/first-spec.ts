@@ -46,7 +46,7 @@ describe('Observable.prototype.first', () => {
 
   it('should only emit one value in recursive cases', () => {
     const subject = new Rx.Subject<number>();
-    const results = [];
+    const results: number[] = [];
 
     subject.first().subscribe(x => {
       results.push(x);
@@ -93,9 +93,9 @@ describe('Observable.prototype.first', () => {
     const unsub =       '   !               ';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .first()
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -105,7 +105,7 @@ describe('Observable.prototype.first', () => {
     const e1 = hot('--a-^--b--c--a--c--|');
     const expected =   '------(c|)';
     const sub =        '^     !';
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       return value === 'c';
     };
 
@@ -117,7 +117,7 @@ describe('Observable.prototype.first', () => {
     const e1 = hot('--a-^--b--c--d--e--|', {a: 1, b: 2, c: 3, d: 4, e: 5});
     const expected =   '------(c|)';
     const sub =        '^     !';
-    const predicate = function (value) {
+    const predicate = function (value: number) {
       return value % 2 === 1;
     };
 
@@ -129,7 +129,7 @@ describe('Observable.prototype.first', () => {
     const e1 = hot('--a-^--b--c--a--c--|');
     const expected =   '---------------#';
     const sub =        '^              !';
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       return value === 's';
     };
 
@@ -141,7 +141,7 @@ describe('Observable.prototype.first', () => {
     const e1 = hot('--a-^--b--c--a--c--|');
     const expected =   '---------------(d|)';
     const sub =        '^              !';
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       return value === 's';
     };
 
@@ -153,7 +153,7 @@ describe('Observable.prototype.first', () => {
     const e1 = hot('--a-^--b--c--a--#');
     const expected =   '------------#';
     const sub =        '^           !';
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       return value === 's';
     };
 
@@ -165,7 +165,7 @@ describe('Observable.prototype.first', () => {
     const e1 = hot('--a-^--b--c--a--c--|');
     const expected =   '---------(a|)';
     const sub =        '^        !';
-    const predicate = function (value, index) {
+    const predicate = function (value: string, index: number) {
       return index === 2;
     };
 
@@ -177,7 +177,7 @@ describe('Observable.prototype.first', () => {
     const e1 = hot('--a-^--b--c--d--e--|', {a: 1, b: 2, c: 3, d: 4, e: 5});
     const expected =   '---------#';
     const sub =        '^        !';
-    const predicate = function (value) {
+    const predicate = function (value: number) {
       if (value < 4) {
         return false;
       } else {
@@ -193,8 +193,8 @@ describe('Observable.prototype.first', () => {
     const e1 = hot('--a--^---b---c---d---e--|');
     const expected =    '--------(x|)';
     const sub =         '^       !';
-    const predicate = function (x) { return x === 'c'; };
-    const resultSelector = function (x, i) {
+    const predicate = function (x: string) { return x === 'c'; };
+    const resultSelector = function (x: string, i: number) {
       expect(i).to.equal(1);
       expect(x).to.equal('c');
       return 'x';
@@ -208,8 +208,8 @@ describe('Observable.prototype.first', () => {
     const e1 = hot('--a--^---b---c---d---e--|');
     const expected =    '--------#';
     const sub =         '^       !';
-    const predicate = function (x) { return x === 'c'; };
-    const resultSelector = function (x, i) {
+    const predicate = function (x: string) { return x === 'c'; };
+    const resultSelector = function (x: string, i: number) {
       throw 'error';
     };
 
@@ -242,7 +242,7 @@ describe('Observable.prototype.first', () => {
         .subscribe(x => x.bar); // x is Bar
       Observable.of(foobar).first(foobar => foobar.bar === 'name')
         .subscribe(x => x.bar); // x is still Bar
-      Observable.of(foobar).first(isBaz)
+      Observable.of(<Bar | Baz>foobar).first(isBaz)
         .subscribe(x => x.baz); // x is Baz!
 
       const barish = { bar: 'quack', baz: 42 }; // type can quack like a Bar

@@ -124,9 +124,9 @@ describe('Observable.race', () => {
     const unsub =         '         !    ';
 
     const result = Observable.race(
-        e1.mergeMap((x: string) => Observable.of(x)),
-        e2.mergeMap((x: string) => Observable.of(x))
-    ).mergeMap((x: any) => Observable.of(x));
+        e1.mergeMap((x) => Observable.of(x)),
+        e2.mergeMap((x) => Observable.of(x))
+    ).mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

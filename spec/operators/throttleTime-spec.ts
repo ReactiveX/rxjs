@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as Rx from '../../src/Rx';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
 
 declare function asDiagram(arg: string): Function;
 
@@ -20,9 +20,9 @@ describe('Observable.prototype.throttleTime', () => {
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
-  it('should throttle events by 50 time units', (done: MochaDone) => {
+  it('should throttle events by 50 time units', (done) => {
     Observable.of(1, 2, 3).throttleTime(50)
-      .subscribe((x: number) => {
+      .subscribe((x) => {
         expect(x).to.equal(1);
       }, null, done);
   });
@@ -30,11 +30,11 @@ describe('Observable.prototype.throttleTime', () => {
   it('should throttle events multiple times', () => {
     const expected = ['1-0', '2-0'];
     Observable.concat(
-      Observable.timer(0, 10, rxTestScheduler).take(3).map((x: number) => '1-' + x),
-      Observable.timer(80, 10, rxTestScheduler).take(5).map((x: number) => '2-' + x)
+      Observable.timer(0, 10, rxTestScheduler).take(3).map((x) => '1-' + x),
+      Observable.timer(80, 10, rxTestScheduler).take(5).map((x) => '2-' + x)
       )
       .throttleTime(50, rxTestScheduler)
-      .subscribe((x: string) => {
+      .subscribe((x) => {
         expect(x).to.equal(expected.shift());
       });
 
@@ -121,9 +121,9 @@ describe('Observable.prototype.throttleTime', () => {
     const unsub =    '                               !';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .throttleTime(50, rxTestScheduler)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);

@@ -13,7 +13,7 @@ describe('Observable.prototype.elementAt', () => {
     const subs =       '^       !      ';
     const expected =   '--------(c|)   ';
 
-    expectObservable((<any>source).elementAt(2)).toBe(expected);
+    expectObservable(source.elementAt(2)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -22,7 +22,7 @@ describe('Observable.prototype.elementAt', () => {
     const subs =       '^ !';
     const expected =   '--(a|)';
 
-    expectObservable((<any>source).elementAt(0)).toBe(expected);
+    expectObservable(source.elementAt(0)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -31,7 +31,7 @@ describe('Observable.prototype.elementAt', () => {
     const subs =       '^          !';
     const expected =   '-----------(d|)';
 
-    expectObservable((<any>source).elementAt(3)).toBe(expected);
+    expectObservable(source.elementAt(3)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -40,7 +40,7 @@ describe('Observable.prototype.elementAt', () => {
     const subs =       '^       !';
     const expected =   '--------(c|)';
 
-    expectObservable((<any>source).elementAt(2)).toBe(expected);
+    expectObservable(source.elementAt(2)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -49,7 +49,7 @@ describe('Observable.prototype.elementAt', () => {
     const subs =        '(^!)';
     const expected =    '#';
 
-    expectObservable((<any>source).elementAt(0)).toBe(expected, undefined, new Rx.ArgumentOutOfRangeError());
+    expectObservable(source.elementAt(0)).toBe(expected, undefined, new Rx.ArgumentOutOfRangeError());
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -58,7 +58,7 @@ describe('Observable.prototype.elementAt', () => {
     const subs =        '(^!)';
     const expected =    '#';
 
-    expectObservable((<any>source).elementAt(0)).toBe(expected);
+    expectObservable(source.elementAt(0)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -67,7 +67,7 @@ describe('Observable.prototype.elementAt', () => {
     const subs =        '^';
     const expected =    '-';
 
-    expectObservable((<any>source).elementAt(0)).toBe(expected);
+    expectObservable(source.elementAt(0)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -77,7 +77,7 @@ describe('Observable.prototype.elementAt', () => {
     const expected =   '-------     ';
     const unsub =      '      !     ';
 
-    const result = (<any>source).elementAt(2);
+    const result = source.elementAt(2);
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -89,17 +89,17 @@ describe('Observable.prototype.elementAt', () => {
     const expected =   '-------     ';
     const unsub =      '      !     ';
 
-    const result = (<any>source)
-      .mergeMap((x: any) => Observable.of(x))
+    const result = source
+      .mergeMap((x) => Observable.of(x))
       .elementAt(2)
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should throw if index is smaller than zero', () => {
-    expect(() => { (<any>Observable.range(0, 10)).elementAt(-1); })
+    expect(() => { Observable.range(0, 10).elementAt(-1); })
       .to.throw(Rx.ArgumentOutOfRangeError);
   });
 
@@ -108,7 +108,7 @@ describe('Observable.prototype.elementAt', () => {
     const subs =       '^    !';
     const expected =   '-----#';
 
-    expectObservable((<any>source).elementAt(3))
+    expectObservable(source.elementAt(3))
       .toBe(expected, null, new Rx.ArgumentOutOfRangeError());
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
@@ -119,7 +119,7 @@ describe('Observable.prototype.elementAt', () => {
     const expected =   '-----(x|)';
     const defaultValue = '42';
 
-    expectObservable((<any>source).elementAt(3, defaultValue)).toBe(expected, { x: defaultValue });
+    expectObservable(source.elementAt(3, defaultValue)).toBe(expected, { x: defaultValue });
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 });
