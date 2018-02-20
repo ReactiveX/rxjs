@@ -23,7 +23,7 @@ describe('symbolIteratorPonyfill', () => {
         const SYMBOL_RETURN = {};
         let passedDescription: string;
         const root = {
-          Symbol: function (description) {
+          Symbol: function (description: string) {
             passedDescription = description;
             return SYMBOL_RETURN;
           }

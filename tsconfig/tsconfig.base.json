@@ -1,5 +1,8 @@
 {
   "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false
+  },
   "files": [
     "../dist/src/Rx.ts",
     "../dist/src/add/observable/of.ts",

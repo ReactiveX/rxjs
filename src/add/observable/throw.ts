@@ -1,4 +1,11 @@
 import { Observable } from '../../internal/Observable';
-import { throwError } from '../../internal/observable/throwError';
+import { throwError as staticThrowError } from '../../internal/observable/throwError';
 
-(Observable as any).throw = throwError;
+(Observable as any).throw = staticThrowError;
+(Observable as any).throwError = staticThrowError;
+
+declare module '../../internal/Observable' {
+  namespace Observable {
+    export let throwError: typeof staticThrowError;
+  }
+}

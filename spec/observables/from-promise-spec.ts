@@ -7,11 +7,11 @@ const Observable = Rx.Observable;
 
 /** @test {fromPromise} */
 describe('Observable.fromPromise', () => {
-  it('should emit one value from a resolved promise', (done: MochaDone) => {
+  it('should emit one value from a resolved promise', (done) => {
     const promise = Promise.resolve(42);
     Observable.fromPromise(promise)
       .subscribe(
-        (x: number) => { expect(x).to.equal(42); },
+        (x) => { expect(x).to.equal(42); },
         (x) => {
           done(new Error('should not be called'));
         }, () => {
@@ -19,13 +19,13 @@ describe('Observable.fromPromise', () => {
         });
   });
 
-  it('should raise error from a rejected promise', (done: MochaDone) => {
+  it('should raise error from a rejected promise', (done) => {
     const promise = Promise.reject('bad');
     Observable.fromPromise(promise)
-      .subscribe((x: any) => {
+      .subscribe((x) => {
           done(new Error('should not be called'));
         },
-        (e: any) => {
+        (e) => {
           expect(e).to.equal('bad');
           done();
         }, () => {
@@ -33,20 +33,20 @@ describe('Observable.fromPromise', () => {
        });
   });
 
-  it('should share the underlying promise with multiple subscribers', (done: MochaDone) => {
+  it('should share the underlying promise with multiple subscribers', (done) => {
     const promise = Promise.resolve(42);
     const observable = Observable.fromPromise(promise);
 
     observable
       .subscribe(
-        (x: number) => { expect(x).to.equal(42); },
+        (x) => { expect(x).to.equal(42); },
         (x) => {
           done(new Error('should not be called'));
         }, null);
     setTimeout(() => {
       observable
         .subscribe(
-          (x: number) => { expect(x).to.equal(42); },
+          (x) => { expect(x).to.equal(42); },
           (x) => {
             done(new Error('should not be called'));
           }, () => {
@@ -55,13 +55,13 @@ describe('Observable.fromPromise', () => {
     });
   });
 
-  it('should accept already-resolved Promise', (done: MochaDone) => {
+  it('should accept already-resolved Promise', (done) => {
     const promise = Promise.resolve(42);
-    promise.then((x: number) => {
+    promise.then((x) => {
       expect(x).to.equal(42);
       Observable.fromPromise(promise)
         .subscribe(
-          (y: number) => { expect(y).to.equal(42); },
+          (y) => { expect(y).to.equal(42); },
           (x) => {
             done(new Error('should not be called'));
           }, () => {
@@ -72,18 +72,20 @@ describe('Observable.fromPromise', () => {
     });
   });
 
-  it('should accept PromiseLike object for interoperability', (done: MochaDone) => {
+  it('should accept PromiseLike object for interoperability', (done) => {
     class CustomPromise<T> implements PromiseLike<T> {
       constructor(private promise: PromiseLike<T>) {
       }
-      then(onFulfilled?, onRejected?): PromiseLike<T> {
+      then<TResult1 = T, TResult2 = T>(
+        onFulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null,
+        onRejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): PromiseLike<TResult1 | TResult2> {
         return new CustomPromise(this.promise.then(onFulfilled, onRejected));
       }
     }
     const promise = new CustomPromise(Promise.resolve(42));
     Observable.fromPromise(promise)
       .subscribe(
-        (x: number) => { expect(x).to.equal(42); },
+        (x) => { expect(x).to.equal(42); },
         () => {
           done(new Error('should not be called'));
         }, () => {
@@ -91,11 +93,11 @@ describe('Observable.fromPromise', () => {
         });
   });
 
-  it('should emit a value from a resolved promise on a separate scheduler', (done: MochaDone) => {
+  it('should emit a value from a resolved promise on a separate scheduler', (done) => {
     const promise = Promise.resolve(42);
     Observable.fromPromise(promise, Rx.Scheduler.asap)
       .subscribe(
-        (x: number) => { expect(x).to.equal(42); },
+        (x) => { expect(x).to.equal(42); },
         (x) => {
           done(new Error('should not be called'));
         }, () => {
@@ -103,12 +105,12 @@ describe('Observable.fromPromise', () => {
         });
   });
 
-  it('should raise error from a rejected promise on a separate scheduler', (done: MochaDone) => {
+  it('should raise error from a rejected promise on a separate scheduler', (done) => {
     const promise = Promise.reject('bad');
     Observable.fromPromise(promise, Rx.Scheduler.asap)
       .subscribe(
-        (x: any) => { done(new Error('should not be called')); },
-        (e: any) => {
+        (x) => { done(new Error('should not be called')); },
+        (e) => {
           expect(e).to.equal('bad');
           done();
         }, () => {
@@ -116,13 +118,13 @@ describe('Observable.fromPromise', () => {
         });
   });
 
-  it('should share the underlying promise with multiple subscribers on a separate scheduler', (done: MochaDone) => {
+  it('should share the underlying promise with multiple subscribers on a separate scheduler', (done) => {
     const promise = Promise.resolve(42);
     const observable = Observable.fromPromise(promise, Rx.Scheduler.asap);
 
     observable
       .subscribe(
-        (x: number) => { expect(x).to.equal(42); },
+        (x) => { expect(x).to.equal(42); },
         (x) => {
           done(new Error('should not be called'));
         },
@@ -130,7 +132,7 @@ describe('Observable.fromPromise', () => {
     setTimeout(() => {
       observable
         .subscribe(
-          (x: number) => { expect(x).to.equal(42); },
+          (x) => { expect(x).to.equal(42); },
           (x) => {
             done(new Error('should not be called'));
           }, () => {
@@ -139,7 +141,7 @@ describe('Observable.fromPromise', () => {
     });
   });
 
-  it('should not emit, throw or complete if immediately unsubscribed', (done: MochaDone) => {
+  it('should not emit, throw or complete if immediately unsubscribed', (done) => {
     const nextSpy = sinon.spy();
     const throwSpy = sinon.spy();
     const completeSpy = sinon.spy();

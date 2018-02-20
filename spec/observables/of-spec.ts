@@ -2,9 +2,7 @@ import { expect } from 'chai';
 import * as Rx from '../../src/Rx';
 import { empty } from '../../src/internal/observable/empty';
 import { expectObservable } from '../helpers/marble-testing';
-
-declare function asDiagram(arg: string): Function;
-
+declare const asDiagram: any;
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
