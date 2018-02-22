@@ -2,9 +2,8 @@ import { Operator } from '../Operator';
 import { IScheduler } from '../Scheduler';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { TeardownLogic } from '../Subscription';
 import { SubscribeOnObservable } from '../observable/SubscribeOnObservable';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
 /**
  * Asynchronously subscribes Observers to this Observable on the specified IScheduler.

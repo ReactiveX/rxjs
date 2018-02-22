@@ -1,4 +1,5 @@
-import { Observable, ObservableInput } from '../../Observable';
+import { Observable } from '../../Observable';
+import { ObservableInput } from '../../types';
 import { onErrorResumeNext as higherOrder } from '../../operators/onErrorResumeNext';
 
 /* tslint:disable:max-line-length */

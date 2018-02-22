@@ -1,16 +1,13 @@
-import { PartialObserver } from './Observer';
 import { Operator } from './Operator';
 import { Subscriber } from './Subscriber';
-import { Subscription, AnonymousSubscription, TeardownLogic } from './Subscription';
+import { Subscription } from './Subscription';
+import { TeardownLogic } from './types';
 import { root } from './util/root';
 import { toSubscriber } from './util/toSubscriber';
 import { IfObservable } from './observable/IfObservable';
 import { observable as Symbol_observable } from '../internal/symbol/observable';
-import { OperatorFunction, Subscribable } from '../internal/types';
+import { OperatorFunction, PartialObserver, Subscribable } from '../internal/types';
 import { pipeFromArray } from './util/pipe';
-
-//TODO(davidd): refactor all references to these to use types instead
-export { Subscribable, ObservableLike, SubscribableOrPromise, ObservableInput } from '../internal/types';
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
@@ -20,9 +17,12 @@ export { Subscribable, ObservableLike, SubscribableOrPromise, ObservableInput } 
  */
 export class Observable<T> implements Subscribable<T> {
 
+  /** @internal */
   public _isScalar: boolean = false;
 
+  /** @internal */
   protected source: Observable<any>;
+  /** @internal */
   protected operator: Operator<any, T>;
 
   /**
@@ -243,6 +243,7 @@ export class Observable<T> implements Subscribable<T> {
     });
   }
 
+  /** @internal */
   protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
     return this.source.subscribe(subscriber);
   }

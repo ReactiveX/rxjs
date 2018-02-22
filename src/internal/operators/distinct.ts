@@ -1,11 +1,10 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { TeardownLogic } from '../Subscription';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '..//util/subscribeToResult';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { subscribeToResult } from '../util/subscribeToResult';
+import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
 if (!Set) {
   throw new Error('Set is not present, please polyfill');

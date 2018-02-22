@@ -1,4 +1,5 @@
-import { Observable, ObservableInput } from '../../Observable';
+import { Observable } from '../../Observable';
+import { ObservableInput } from '../../types';
 import { concatMapTo as higherOrder } from '../../operators/concatMapTo';
 
 /* tslint:disable:max-line-length */

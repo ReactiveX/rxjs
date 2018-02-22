@@ -1,8 +1,7 @@
 import { Operator } from '../Operator';
-import { Observer } from '../Observer';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { OperatorFunction } from '../../internal/types';
+import { Observer, OperatorFunction } from '../types';
 
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.

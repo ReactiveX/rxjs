@@ -1,12 +1,12 @@
-import { Observable, ObservableInput } from '../Observable';
+import { Observable } from '../Observable';
 import { from } from '../observable/from';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { isArray } from '..//util/isArray';
+import { isArray } from '../util/isArray';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '..//util/subscribeToResult';
-import { OperatorFunction } from '../../internal/types';
+import { subscribeToResult } from '../util/subscribeToResult';
+import { ObservableInput, OperatorFunction } from '../types';
 
 /* tslint:disable:max-line-length */
 export function onErrorResumeNext<T, R>(v: ObservableInput<R>): OperatorFunction<T, R>;

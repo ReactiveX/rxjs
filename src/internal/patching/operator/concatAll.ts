@@ -1,4 +1,5 @@
-import { Observable, ObservableInput } from '../../Observable';
+import { Observable } from '../../Observable';
+import { ObservableInput } from '../../types';
 import { concatAll as higherOrder } from '../../operators/concatAll';
 
 export function concatAll<T>(this: Observable<ObservableInput<T>>): Observable<T>;

@@ -1,10 +1,9 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { tryCatch } from '..//util/tryCatch';
-import { errorObject } from '..//util/errorObject';
+import { tryCatch } from '../util/tryCatch';
+import { errorObject } from '../util/errorObject';
 import { Observable } from '../Observable';
-import { TeardownLogic } from '../Subscription';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
 /* tslint:disable:max-line-length */
 export function distinctUntilChanged<T>(compare?: (x: T, y: T) => boolean): MonoTypeOperatorFunction<T>;

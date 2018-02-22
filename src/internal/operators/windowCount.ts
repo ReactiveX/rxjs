@@ -2,7 +2,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
-import { OperatorFunction } from '../../internal/types';
+import { OperatorFunction } from '../types';
 
 /**
  * Branch out the source Observable values as a nested Observable with each

@@ -1,12 +1,12 @@
 import { Operator } from '../Operator';
-import { Observable, SubscribableOrPromise } from '../Observable';
+import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { Subscription, TeardownLogic } from '../Subscription';
+import { Subscription } from '../Subscription';
+import { MonoTypeOperatorFunction, SubscribableOrPromise, TeardownLogic } from '../types';
 
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '..//util/subscribeToResult';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { subscribeToResult } from '../util/subscribeToResult';
 
 /**
  * Emits a value from the source Observable only after a particular time span

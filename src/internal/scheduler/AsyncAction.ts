@@ -1,4 +1,4 @@
-import { root } from '..//util/root';
+import { root } from '../util/root';
 import { Action } from './Action';
 import { Subscription } from '../Subscription';
 import { AsyncScheduler } from './AsyncScheduler';

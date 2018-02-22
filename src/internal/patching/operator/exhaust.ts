@@ -1,6 +1,7 @@
 
-import { Observable, ObservableInput } from '../../Observable';
+import { Observable } from '../../Observable';
 import { exhaust as higherOrder } from '../../operators/exhaust';
+import { ObservableInput } from '../../types';
 
 export function exhaust<T>(this: Observable<ObservableInput<T>>): Observable<T>;
 export function exhaust<T, R>(this: Observable<T>): Observable<R>;

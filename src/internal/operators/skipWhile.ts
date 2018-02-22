@@ -1,8 +1,7 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { TeardownLogic } from '../Subscription';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
 /**
  * Returns an Observable that skips all items emitted by the source Observable as long as a specified condition holds

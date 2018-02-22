@@ -1,4 +1,5 @@
-import { Observable, ObservableInput } from '../../Observable';
+import { Observable } from '../../Observable';
+import { ObservableInput } from '../../types';
 import { zip as zipStatic } from '../../observable/zip';
 
 /* tslint:disable:max-line-length */

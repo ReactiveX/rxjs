@@ -1,10 +1,10 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { Observable, ObservableInput } from '../Observable';
+import { Observable } from '../Observable';
 
 import { OuterSubscriber } from '../OuterSubscriber';
-import { subscribeToResult } from '..//util/subscribeToResult';
-import { OperatorFunction } from '../../internal/types';
+import { subscribeToResult } from '../util/subscribeToResult';
+import { ObservableInput, OperatorFunction } from '../types';
 
 /**
  * Catches errors on the observable to be handled by returning a new observable or throwing an error.

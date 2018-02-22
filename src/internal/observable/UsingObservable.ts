@@ -1,8 +1,8 @@
-import { Observable, SubscribableOrPromise } from '../Observable';
+import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { AnonymousSubscription, TeardownLogic } from '../Subscription';
+import { SubscribableOrPromise, Unsubscribable, TeardownLogic } from '../types';
 
-import { subscribeToResult } from '..//util/subscribeToResult';
+import { subscribeToResult } from '../util/subscribeToResult';
 import { OuterSubscriber } from '../OuterSubscriber';
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -41,23 +41,23 @@ export class UsingObservable<T> extends Observable<T> {
    * @name using
    * @owner Observable
    */
-  static create<T>(resourceFactory: () => AnonymousSubscription | void,
-                   observableFactory: (resource: AnonymousSubscription) => SubscribableOrPromise<T> | void): Observable<T> {
+  static create<T>(resourceFactory: () => Unsubscribable | void,
+                   observableFactory: (resource: Unsubscribable) => SubscribableOrPromise<T> | void): Observable<T> {
     return new UsingObservable<T>(resourceFactory, observableFactory);
   }
 
-  constructor(private resourceFactory: () => AnonymousSubscription | void,
-              private observableFactory: (resource: AnonymousSubscription) => SubscribableOrPromise<T> | void) {
+  constructor(private resourceFactory: () => Unsubscribable | void,
+              private observableFactory: (resource: Unsubscribable) => SubscribableOrPromise<T> | void) {
     super();
   }
 
   protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
     const { resourceFactory, observableFactory } = this;
 
-    let resource: AnonymousSubscription;
+    let resource: Unsubscribable;
 
     try {
-      resource = <AnonymousSubscription>resourceFactory();
+      resource = <Unsubscribable>resourceFactory();
       return new UsingSubscriber(subscriber, resource, observableFactory);
     } catch (err) {
       subscriber.error(err);
@@ -67,8 +67,8 @@ export class UsingObservable<T> extends Observable<T> {
 
 class UsingSubscriber<T> extends OuterSubscriber<T, T> {
   constructor(destination: Subscriber<T>,
-              private resource: AnonymousSubscription,
-              private observableFactory: (resource: AnonymousSubscription) => SubscribableOrPromise<T> | void) {
+              private resource: Unsubscribable,
+              private observableFactory: (resource: Unsubscribable) => SubscribableOrPromise<T> | void) {
     super(destination);
     destination.add(resource);
     this.tryUse();

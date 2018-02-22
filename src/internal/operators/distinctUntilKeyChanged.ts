@@ -1,5 +1,5 @@
 import { distinctUntilChanged } from './distinctUntilChanged';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { MonoTypeOperatorFunction } from '../types';
 
 /* tslint:disable:max-line-length */
 export function distinctUntilKeyChanged<T>(key: string): MonoTypeOperatorFunction<T>;

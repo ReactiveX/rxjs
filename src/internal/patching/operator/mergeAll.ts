@@ -1,4 +1,5 @@
-import { Observable, ObservableInput } from '../../Observable';
+import { Observable } from '../../Observable';
+import { ObservableInput } from '../../types';
 import { mergeAll as higherOrder } from '../../operators/mergeAll';
 
 export function mergeAll<T>(this: Observable<ObservableInput<T>>, concurrent?: number): Observable<T>;

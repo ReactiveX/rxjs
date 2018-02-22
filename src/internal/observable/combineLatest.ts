@@ -1,12 +1,13 @@
-import { Observable, ObservableInput  } from '../Observable';
+import { Observable } from '../Observable';
+import { ObservableInput  } from '../types';
 import { IScheduler  } from '../Scheduler';
-import { isScheduler  } from '..//util/isScheduler';
-import { isArray  } from '..//util/isArray';
+import { isScheduler  } from '../util/isScheduler';
+import { isArray  } from '../util/isArray';
 import { Subscriber } from '../Subscriber';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { Operator } from '../Operator';
 import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '..//util/subscribeToResult';
+import { subscribeToResult } from '../util/subscribeToResult';
 import { fromArray } from './fromArray';
 
 const NONE = {};

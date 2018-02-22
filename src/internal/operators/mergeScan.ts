@@ -1,13 +1,13 @@
 import { Operator } from '../Operator';
-import { Observable, ObservableInput } from '../Observable';
+import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { tryCatch } from '..//util/tryCatch';
-import { errorObject } from '..//util/errorObject';
-import { subscribeToResult } from '..//util/subscribeToResult';
+import { tryCatch } from '../util/tryCatch';
+import { errorObject } from '../util/errorObject';
+import { subscribeToResult } from '../util/subscribeToResult';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
-import { OperatorFunction } from '../../internal/types';
+import { ObservableInput, OperatorFunction } from '../types';
 
 /**
  * Applies an accumulator function over the source Observable where the

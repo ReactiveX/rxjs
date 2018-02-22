@@ -1,8 +1,8 @@
 import { Operator } from './Operator';
-import { Observer } from './Observer';
 import { Observable } from './Observable';
 import { Subscriber } from './Subscriber';
-import { ISubscription, Subscription, TeardownLogic } from './Subscription';
+import { Subscription } from './Subscription';
+import { Observer, SubscriptionLike, TeardownLogic } from './types';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 import { SubjectSubscription } from './SubjectSubscription';
 import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscriber';
@@ -19,7 +19,7 @@ export class SubjectSubscriber<T> extends Subscriber<T> {
 /**
  * @class Subject<T>
  */
-export class Subject<T> extends Observable<T> implements ISubscription {
+export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   [rxSubscriberSymbol]() {
     return new SubjectSubscriber(this);

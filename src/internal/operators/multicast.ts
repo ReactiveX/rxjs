@@ -3,7 +3,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { ConnectableObservable, connectableObservableDescriptor } from '../observable/ConnectableObservable';
-import { FactoryOrValue, MonoTypeOperatorFunction, OperatorFunction, UnaryFunction } from '../../internal/types';
+import { FactoryOrValue, MonoTypeOperatorFunction, OperatorFunction, UnaryFunction } from '../types';
 
 /* tslint:disable:max-line-length */
 export function multicast<T>(subjectOrSubjectFactory: FactoryOrValue<Subject<T>>): UnaryFunction<Observable<T>, ConnectableObservable<T>>;

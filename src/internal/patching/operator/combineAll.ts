@@ -1,6 +1,7 @@
 
-import { Observable, ObservableInput } from '../../Observable';
+import { Observable } from '../../Observable';
 import { combineAll as higherOrder } from '../../operators/combineAll';
+import { ObservableInput } from '../../types';
 
 export function combineAll<T>(this: Observable<ObservableInput<T>>): Observable<T[]>;
 export function combineAll<T, R>(this: Observable<T>): Observable<R[]>;

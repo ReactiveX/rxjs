@@ -1,5 +1,5 @@
 import { reduce } from './reduce';
-import { OperatorFunction } from '../../internal/types';
+import { OperatorFunction } from '../types';
 
 function toArrayReducer<T>(arr: T[], item: T, index: number) {
   if (index === 0) {

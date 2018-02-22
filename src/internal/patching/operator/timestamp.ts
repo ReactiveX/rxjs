@@ -1,8 +1,7 @@
 import { Observable } from '../../Observable';
 import { IScheduler } from '../../Scheduler';
 import { async } from '../../scheduler/async';
-import { timestamp as higherOrder } from '../../operators/timestamp';
-import { Timestamp } from '../../operators/timestamp';
+import { timestamp as higherOrder, Timestamp } from '../../operators/timestamp';
 /**
  * @param scheduler
  * @return {Observable<Timestamp<any>>|WebSocketSubject<T>|Observable<T>}

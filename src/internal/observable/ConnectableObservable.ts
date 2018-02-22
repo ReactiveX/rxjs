@@ -2,7 +2,8 @@ import { Subject, SubjectSubscriber } from '../Subject';
 import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { Subscription, TeardownLogic } from '../Subscription';
+import { Subscription } from '../Subscription';
+import { TeardownLogic } from '../types';
 import { refCount as higherOrderRefCount } from '../../internal/operators/refCount';
 
 /**
@@ -13,6 +14,7 @@ export class ConnectableObservable<T> extends Observable<T> {
   protected _subject: Subject<T>;
   protected _refCount: number = 0;
   protected _connection: Subscription;
+  /** @internal */
   _isComplete = false;
 
   constructor(protected source: Observable<T>,

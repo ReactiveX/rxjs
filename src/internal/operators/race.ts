@@ -1,6 +1,6 @@
 import { Observable } from '../Observable';
-import { isArray } from '..//util/isArray';
-import { MonoTypeOperatorFunction, OperatorFunction } from '../../internal/types';
+import { isArray } from '../util/isArray';
+import { MonoTypeOperatorFunction, OperatorFunction } from '../types';
 import { race as raceStatic } from '../observable/race';
 
 /* tslint:disable:max-line-length */

@@ -1,7 +1,7 @@
 import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { OperatorFunction, MonoTypeOperatorFunction } from '../../internal/types';
+import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
 
 /* tslint:disable:max-line-length */
 export function defaultIfEmpty<T>(defaultValue?: T): MonoTypeOperatorFunction<T>;

@@ -1,4 +1,4 @@
-import { ObservableLike, Subscribable } from '../types';
+import { ObservableLike } from '../types';
 import { observable as Symbol_observable } from '../symbol/observable';
 
 /** Identifies an input as being Observable (but not necessary an Rx Observable) */

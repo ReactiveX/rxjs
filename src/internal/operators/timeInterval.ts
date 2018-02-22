@@ -3,7 +3,7 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { IScheduler } from '../Scheduler';
 import { async } from '../scheduler/async';
-import { OperatorFunction } from '../../internal/types';
+import { OperatorFunction } from '../types';
 
 export function timeInterval<T>(scheduler: IScheduler = async): OperatorFunction<T, TimeInterval<T>> {
   return (source: Observable<T>) => source.lift(new TimeIntervalOperator(scheduler));

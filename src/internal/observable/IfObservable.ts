@@ -1,8 +1,8 @@
-import { Observable, SubscribableOrPromise } from '../Observable';
+import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { TeardownLogic } from '../Subscription';
+import { SubscribableOrPromise, TeardownLogic } from '../types';
 
-import { subscribeToResult } from '..//util/subscribeToResult';
+import { subscribeToResult } from '../util/subscribeToResult';
 import { OuterSubscriber } from '../OuterSubscriber';
 /**
  * We need this JSDoc comment for affecting ESDoc.

@@ -1,12 +1,12 @@
-import { Observable, ObservableInput } from '../Observable';
+import { Observable } from '../Observable';
 import { fromArray } from './fromArray';
-import { isArray } from '..//util/isArray';
+import { isArray } from '../util/isArray';
 import { Operator } from '../Operator';
-import { PartialObserver } from '../Observer';
+import { ObservableInput, PartialObserver } from '../types';
 import { Subscriber } from '../Subscriber';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '..//util/subscribeToResult';
+import { subscribeToResult } from '../util/subscribeToResult';
 import { iterator as Symbol_iterator } from '../../internal/symbol/iterator';
 
 /* tslint:disable:max-line-length */

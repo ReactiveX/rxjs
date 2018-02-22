@@ -5,8 +5,8 @@ import { async } from '../scheduler/async';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { isScheduler } from '..//util/isScheduler';
-import { OperatorFunction } from '../../internal/types';
+import { isScheduler } from '../util/isScheduler';
+import { OperatorFunction } from '../types';
 
 /* tslint:disable:max-line-length */
 export function bufferTime<T>(bufferTimeSpan: number, scheduler?: IScheduler): OperatorFunction<T, T[]>;

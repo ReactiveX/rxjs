@@ -1,14 +1,12 @@
 import { async } from '../scheduler/async';
-import { isDate } from '..//util/isDate';
+import { isDate } from '../util/isDate';
 import { Operator } from '../Operator';
 import { IScheduler } from '../Scheduler';
 import { Subscriber } from '../Subscriber';
 import { Action } from '../scheduler/Action';
 import { Notification } from '../Notification';
 import { Observable } from '../Observable';
-import { PartialObserver } from '../Observer';
-import { TeardownLogic } from '../Subscription';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { MonoTypeOperatorFunction, PartialObserver, TeardownLogic } from '../types';
 
 /**
  * Delays the emission of items from the source Observable by a given timeout or

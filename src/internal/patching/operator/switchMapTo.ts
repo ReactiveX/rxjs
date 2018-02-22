@@ -1,4 +1,5 @@
-import { Observable, ObservableInput } from '../../Observable';
+import { Observable } from '../../Observable';
+import { ObservableInput } from '../../types';
 import { switchMapTo as higherOrder } from '../../operators/switchMapTo';
 
 /* tslint:disable:max-line-length */

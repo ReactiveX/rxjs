@@ -1,5 +1,6 @@
-import { Observable, ObservableInput } from '../../Observable';
+import { Observable } from '../../Observable';
 import { switchAll as higherOrder } from '../../operators/switchAll';
+import { ObservableInput } from '../../types';
 
 export function _switch<T>(this: Observable<ObservableInput<T>>): Observable<T>;
 export function _switch<T, R>(this: Observable<T>): Observable<R>;

@@ -2,7 +2,7 @@ import { async } from '../scheduler/async';
 import { IScheduler } from '../Scheduler';
 import { audit } from './audit';
 import { timer } from '../observable/timer';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { MonoTypeOperatorFunction } from '../types';
 
 /**
  * Ignores source values for `duration` milliseconds, then emits the most recent

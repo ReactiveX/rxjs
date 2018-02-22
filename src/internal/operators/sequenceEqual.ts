@@ -1,11 +1,10 @@
 import { Operator } from '../Operator';
-import { Observer } from '../Observer';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { tryCatch } from '..//util/tryCatch';
-import { errorObject } from '..//util/errorObject';
+import { tryCatch } from '../util/tryCatch';
+import { errorObject } from '../util/errorObject';
 
-import { OperatorFunction } from '../../internal/types';
+import { Observer, OperatorFunction } from '../types';
 
 /**
  * Compares all values of two observables in sequence using an optional comparor function

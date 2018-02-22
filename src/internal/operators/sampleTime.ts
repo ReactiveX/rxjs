@@ -4,9 +4,7 @@ import { Subscriber } from '../Subscriber';
 import { IScheduler } from '../Scheduler';
 import { Action } from '../scheduler/Action';
 import { async } from '../scheduler/async';
-import { TeardownLogic } from '../Subscription';
-
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
 /**
  * Emits the most recently emitted value from the source Observable within

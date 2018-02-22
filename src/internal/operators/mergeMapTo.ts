@@ -1,12 +1,11 @@
-import { Observable, ObservableInput } from '../Observable';
+import { Observable } from '../Observable';
 import { Operator } from '../Operator';
-import { PartialObserver } from '../Observer';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '..//util/subscribeToResult';
-import { OperatorFunction } from '../../internal/types';
+import { subscribeToResult } from '../util/subscribeToResult';
+import { ObservableInput, OperatorFunction, PartialObserver } from '../types';
 
 /* tslint:disable:max-line-length */
 export function mergeMapTo<T, R>(observable: ObservableInput<R>, concurrent?: number): OperatorFunction<T, R>;

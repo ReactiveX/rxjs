@@ -1,5 +1,5 @@
 import { Subject } from './Subject';
-import { Observer } from './Observer';
+import { Observer } from './types';
 import { Subscription } from './Subscription';
 
 /**

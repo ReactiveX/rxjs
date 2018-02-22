@@ -4,17 +4,7 @@ import { isFunction } from './util/isFunction';
 import { tryCatch } from './util/tryCatch';
 import { errorObject } from './util/errorObject';
 import { UnsubscriptionError } from './util/UnsubscriptionError';
-
-export interface AnonymousSubscription {
-  unsubscribe(): void;
-}
-
-export type TeardownLogic = AnonymousSubscription | Function | void;
-
-export interface ISubscription extends AnonymousSubscription {
-  unsubscribe(): void;
-  readonly closed: boolean;
-}
+import { SubscriptionLike, TeardownLogic } from './types';
 
 /**
  * Represents a disposable resource, such as the execution of an Observable. A
@@ -28,7 +18,7 @@ export interface ISubscription extends AnonymousSubscription {
  *
  * @class Subscription
  */
-export class Subscription implements ISubscription {
+export class Subscription implements SubscriptionLike {
   public static EMPTY: Subscription = (function(empty: any) {
     empty.closed = true;
     return empty;
@@ -40,9 +30,12 @@ export class Subscription implements ISubscription {
    */
   public closed: boolean = false;
 
+  /** @internal */
   protected _parent: Subscription = null;
+  /** @internal */
   protected _parents: Subscription[] = null;
-  private _subscriptions: ISubscription[] = null;
+  /** @internal */
+  private _subscriptions: SubscriptionLike[] = null;
 
   /**
    * @param {function(): void} [unsubscribe] A function describing how to
@@ -51,6 +44,7 @@ export class Subscription implements ISubscription {
   constructor(unsubscribe?: () => void) {
     if (unsubscribe) {
       (<any> this)._unsubscribe = unsubscribe;
+
     }
   }
 
@@ -200,6 +194,7 @@ export class Subscription implements ISubscription {
     }
   }
 
+  /** @internal */
   private _addParent(parent: Subscription) {
     let { _parent, _parents } = this;
     if (!_parent || _parent === parent) {

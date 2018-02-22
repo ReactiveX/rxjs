@@ -1,6 +1,6 @@
 import { CombineLatestOperator } from '../observable/combineLatest';
-import { Observable, ObservableInput } from '../Observable';
-import { OperatorFunction } from '../../internal/types';
+import { Observable } from '../Observable';
+import { OperatorFunction, ObservableInput } from '../types';
 
 export function combineAll<T>(): OperatorFunction<ObservableInput<T>, T[]>;
 export function combineAll<T>(): OperatorFunction<any, T[]>;

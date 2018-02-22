@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { multicast } from './multicast';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
-import { MonoTypeOperatorFunction, OperatorFunction, UnaryFunction } from '../../internal/types';
+import { MonoTypeOperatorFunction, OperatorFunction, UnaryFunction } from '../types';
 
 /* tslint:disable:max-line-length */
 export function publish<T>(): UnaryFunction<Observable<T>, ConnectableObservable<T>>;

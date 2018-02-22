@@ -1,5 +1,6 @@
-import { Observable, ObservableInput } from '../../Observable';
+import { Observable } from '../../Observable';
 import { zipAll as higherOrder } from '../../operators/zipAll';
+import { ObservableInput } from '../../types';
 
 export function zipAll<T>(this: Observable<ObservableInput<T>>): Observable<T[]>;
 export function zipAll<T, R>(this: Observable<T>): Observable<R[]>;

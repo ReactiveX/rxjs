@@ -1,10 +1,9 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { ArgumentOutOfRangeError } from '..//util/ArgumentOutOfRangeError';
+import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
 import { empty } from '../observable/empty';
 import { Observable } from '../Observable';
-import { TeardownLogic } from '../Subscription';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
 /**
  * Emits only the last `count` values emitted by the source Observable.

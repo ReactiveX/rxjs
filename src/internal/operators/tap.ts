@@ -1,11 +1,9 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { PartialObserver } from '../Observer';
-import { TeardownLogic } from '../Subscription';
-import { MonoTypeOperatorFunction } from '../../internal/types';
-import { noop } from '..//util/noop';
-import { isFunction } from '..//util/isFunction';
+import { MonoTypeOperatorFunction, PartialObserver, TeardownLogic } from '../types';
+import { noop } from '../util/noop';
+import { isFunction } from '../util/isFunction';
 
 /* tslint:disable:max-line-length */
 export function tap<T>(next?: (x: T) => void, error?: (e: any) => void, complete?: () => void): MonoTypeOperatorFunction<T>;

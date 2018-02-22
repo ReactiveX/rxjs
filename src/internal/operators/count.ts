@@ -1,8 +1,7 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
-import { Observer } from '../Observer';
+import { Observer, OperatorFunction } from '../types';
 import { Subscriber } from '../Subscriber';
-import { OperatorFunction } from '../../internal/types';
 
 /**
  * Counts the number of emissions on the source and emits that number when the

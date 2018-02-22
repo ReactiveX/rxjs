@@ -1,4 +1,5 @@
-import { Observable, ObservableInput } from '../Observable';
+import { Observable } from '../Observable';
+import { ObservableInput } from '../types';
 import { from } from './from';
 import { isArray } from '../util/isArray';
 import { EMPTY } from './empty';

@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { MonoTypeOperatorFunction } from '../types';
 
 /**
  * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.

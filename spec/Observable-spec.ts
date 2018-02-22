@@ -1,8 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as Rx from '../src/Rx';
-import { Observer } from './../src/internal/Observer';
-import { TeardownLogic } from '../src/internal/Subscription';
+import { Observer, TeardownLogic } from '../src/internal/types';
 import { cold, expectObservable, expectSubscriptions } from './helpers/marble-testing';
 import { map } from '../src/internal/operators/map';
 //tslint:disable-next-line

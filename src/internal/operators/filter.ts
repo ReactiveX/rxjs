@@ -1,8 +1,7 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { TeardownLogic } from '../Subscription';
-import { OperatorFunction, MonoTypeOperatorFunction } from '../../internal/types';
+import { OperatorFunction, MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
 /* tslint:disable:max-line-length */
 export function filter<T, S extends T>(predicate: (value: T, index: number) => value is S,

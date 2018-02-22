@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { PartialObserver } from '../../Observer';
+import { PartialObserver } from '../../types';
 import { tap as higherOrder } from '../../operators/tap';
 
 /* tslint:disable:max-line-length */

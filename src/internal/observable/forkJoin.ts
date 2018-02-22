@@ -1,4 +1,5 @@
-import { Observable, ObservableInput } from '../Observable';
+import { Observable } from '../Observable';
+import { ObservableInput } from '../types';
 import { isArray } from '../util/isArray';
 import { EMPTY } from './empty';
 import { subscribeToResult } from '../util/subscribeToResult';

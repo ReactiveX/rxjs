@@ -1,13 +1,12 @@
 import { Action } from '../scheduler/Action';
 import { async } from '../scheduler/async';
-import { isDate } from '..//util/isDate';
+import { isDate } from '../util/isDate';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
-import { TeardownLogic } from '../Subscription';
-import { TimeoutError } from '..//util/TimeoutError';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { TimeoutError } from '../util/TimeoutError';
+import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
 /**
  *
