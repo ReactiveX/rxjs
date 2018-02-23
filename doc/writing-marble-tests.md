@@ -42,7 +42,7 @@ Likewise, unspecified errors will just default to the string `"error"`, so:
 
 ## Marble Syntax
 
-Marble syntax is a string represents events happening over "time". The first character of any marble string
+Marble syntax is a string which represents events happening over "time". The first character of any marble string
 always represents the "zero frame". A "frame" is somewhat analogous to a virtual millisecond.
 
 - `"-"` time: 10 "frames" of time passage.
