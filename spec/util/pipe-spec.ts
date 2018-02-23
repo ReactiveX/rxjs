@@ -16,6 +16,16 @@ describe('pipe', () => {
     expect(c(10)).to.equal(19);
   });
 
+  it('should pipe allow more than 10 functions together', () => {
+    const a = (x: number) => x + x;
+    const b = (x: number) => x - 1;
+
+    const c = pipe(a, b, b, b, b, b, b, b, b, b, b);
+    expect(c).to.be.a('function');
+    expect(c(1)).to.equal(-8);
+    expect(c(10)).to.equal(10);
+  });
+
   it('should return the same function if only one is passed', () => {
     const a = <T>(x: T) => x;
     const c = pipe(a);
