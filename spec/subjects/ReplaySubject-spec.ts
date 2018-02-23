@@ -11,14 +11,14 @@ const Observable = Rx.Observable;
 /** @test {ReplaySubject} */
 describe('ReplaySubject', () => {
   it('should extend Subject', () => {
-    const subject = new ReplaySubject();
+    const subject = new ReplaySubject<string>();
     expect(subject).to.be.instanceof(Rx.Subject);
   });
 
   it('should add the observer before running subscription code', () => {
     const subject = new ReplaySubject<number>();
     subject.next(1);
-    const results = [];
+    const results: number[] = [];
 
     subject.subscribe((value) => {
       results.push(value);
@@ -30,67 +30,67 @@ describe('ReplaySubject', () => {
     expect(results).to.deep.equal([1, 2, 3]);
   });
 
-  it('should replay values upon subscription', (done: MochaDone) => {
-    const subject = new ReplaySubject();
+  it('should replay values upon subscription', (done) => {
+    const subject = new ReplaySubject<number>();
     const expects = [1, 2, 3];
     let i = 0;
     subject.next(1);
     subject.next(2);
     subject.next(3);
-    subject.subscribe((x: number) => {
+    subject.subscribe((x) => {
       expect(x).to.equal(expects[i++]);
       if (i === 3) {
         subject.complete();
       }
-    }, (err: any) => {
+    }, (err) => {
       done(new Error('should not be called'));
     }, () => {
       done();
     });
   });
 
-  it('should replay values and complete', (done: MochaDone) => {
-    const subject = new ReplaySubject();
+  it('should replay values and complete', (done) => {
+    const subject = new ReplaySubject<number>();
     const expects = [1, 2, 3];
     let i = 0;
     subject.next(1);
     subject.next(2);
     subject.next(3);
     subject.complete();
-    subject.subscribe((x: number) => {
+    subject.subscribe((x) => {
       expect(x).to.equal(expects[i++]);
     }, null, done);
   });
 
-  it('should replay values and error', (done: MochaDone) => {
-    const subject = new ReplaySubject();
+  it('should replay values and error', (done) => {
+    const subject = new ReplaySubject<number>();
     const expects = [1, 2, 3];
     let i = 0;
     subject.next(1);
     subject.next(2);
     subject.next(3);
     subject.error('fooey');
-    subject.subscribe((x: number) => {
+    subject.subscribe((x) => {
       expect(x).to.equal(expects[i++]);
-    }, (err: any) => {
+    }, (err) => {
       expect(err).to.equal('fooey');
       done();
     });
   });
 
-  it('should only replay values within its buffer size', (done: MochaDone) => {
-    const subject = new ReplaySubject(2);
+  it('should only replay values within its buffer size', (done) => {
+    const subject = new ReplaySubject<number>(2);
     const expects = [2, 3];
     let i = 0;
     subject.next(1);
     subject.next(2);
     subject.next(3);
-    subject.subscribe((x: number) => {
+    subject.subscribe((x) => {
       expect(x).to.equal(expects[i++]);
       if (i === 2) {
         subject.complete();
       }
-    }, (err: any) => {
+    }, (err) => {
       done(new Error('should not be called'));
     }, () => {
       done();
@@ -99,9 +99,9 @@ describe('ReplaySubject', () => {
 
   describe('with bufferSize=2', () => {
     it('should replay 2 previous values when subscribed', () => {
-      const replaySubject = new ReplaySubject(2);
-      function feedNextIntoSubject(x) { replaySubject.next(x); }
-      function feedErrorIntoSubject(err) { replaySubject.error(err); }
+      const replaySubject = new ReplaySubject<number>(2);
+      function feedNextIntoSubject(x: any) { replaySubject.next(x); }
+      function feedErrorIntoSubject(err: any) { replaySubject.error(err); }
       function feedCompleteIntoSubject() { replaySubject.complete(); }
 
       const sourceTemplate =  '-1-2-3----4------5-6---7--8----9--|';
@@ -123,9 +123,9 @@ describe('ReplaySubject', () => {
     });
 
     it('should replay 2 last values for when subscribed after completed', () => {
-      const replaySubject = new ReplaySubject(2);
-      function feedNextIntoSubject(x) { replaySubject.next(x); }
-      function feedErrorIntoSubject(err) { replaySubject.error(err); }
+      const replaySubject = new ReplaySubject<number>(2);
+      function feedNextIntoSubject(x: any) { replaySubject.next(x); }
+      function feedErrorIntoSubject(err: any) { replaySubject.error(err); }
       function feedCompleteIntoSubject() { replaySubject.complete(); }
 
       const sourceTemplate =  '-1-2-3--4--|';
@@ -140,10 +140,10 @@ describe('ReplaySubject', () => {
 
     it('should handle subscribers that arrive and leave at different times, ' +
     'subject does not complete', () => {
-      const subject = new ReplaySubject(2);
-      const results1 = [];
-      const results2 = [];
-      const results3 = [];
+      const subject = new ReplaySubject<number>(2);
+      const results1: Array<string | number> = [];
+      const results2: Array<string | number> = [];
+      const results3: Array<string | number> = [];
 
       subject.next(1);
       subject.next(2);
@@ -151,16 +151,16 @@ describe('ReplaySubject', () => {
       subject.next(4);
 
       const subscription1 = subject.subscribe(
-        (x: number) => { results1.push(x); },
-        (err: any) => { results1.push('E'); },
+        (x) => { results1.push(x); },
+        (err) => { results1.push('E'); },
         () => { results1.push('C'); }
       );
 
       subject.next(5);
 
       const subscription2 = subject.subscribe(
-        (x: number) => { results2.push(x); },
-        (err: any) => { results2.push('E'); },
+        (x) => { results2.push(x); },
+        (err) => { results2.push('E'); },
         () => { results2.push('C'); }
       );
 
@@ -177,8 +177,8 @@ describe('ReplaySubject', () => {
       subject.next(10);
 
       const subscription3 = subject.subscribe(
-        (x: number) => { results3.push(x); },
-        (err: any) => { results3.push('E'); },
+        (x) => { results3.push(x); },
+        (err) => { results3.push('E'); },
         () => { results3.push('C'); }
       );
 
@@ -196,9 +196,9 @@ describe('ReplaySubject', () => {
 
   describe('with windowTime=40', () => {
     it('should replay previous values since 40 time units ago when subscribed', () => {
-      const replaySubject = new ReplaySubject(Number.POSITIVE_INFINITY, 40, rxTestScheduler);
-      function feedNextIntoSubject(x) { replaySubject.next(x); }
-      function feedErrorIntoSubject(err) { replaySubject.error(err); }
+      const replaySubject = new ReplaySubject<number>(Number.POSITIVE_INFINITY, 40, rxTestScheduler);
+      function feedNextIntoSubject(x: any) { replaySubject.next(x); }
+      function feedErrorIntoSubject(err: any) { replaySubject.error(err); }
       function feedCompleteIntoSubject() { replaySubject.complete(); }
 
       const sourceTemplate =  '-1-2-3----4------5-6----7-8----9--|';
@@ -220,9 +220,9 @@ describe('ReplaySubject', () => {
     });
 
     it('should replay last values since 40 time units ago when subscribed', () => {
-      const replaySubject = new ReplaySubject(Number.POSITIVE_INFINITY, 40, rxTestScheduler);
-      function feedNextIntoSubject(x) { replaySubject.next(x); }
-      function feedErrorIntoSubject(err) { replaySubject.error(err); }
+      const replaySubject = new ReplaySubject<number>(Number.POSITIVE_INFINITY, 40, rxTestScheduler);
+      function feedNextIntoSubject(x: any) { replaySubject.next(x); }
+      function feedErrorIntoSubject(err: any) { replaySubject.error(err); }
       function feedCompleteIntoSubject() { replaySubject.complete(); }
 
       const sourceTemplate =  '-1-2-3----4|';
@@ -238,8 +238,8 @@ describe('ReplaySubject', () => {
 
   it('should be an Observer which can be given to Observable.subscribe', () => {
     const source = Observable.of(1, 2, 3, 4, 5);
-    const subject = new ReplaySubject(3);
-    let results = [];
+    const subject = new ReplaySubject<number>(3);
+    let results: Array<string | number> = [];
 
     subject.subscribe(x => results.push(x), null, () => results.push('done'));
 

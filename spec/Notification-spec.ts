@@ -102,9 +102,9 @@ describe('Notification', () => {
     it('should invoke on next', () => {
       const n = Notification.createNext('a');
       let invoked = false;
-      n.do((x: string) => {
+      n.do((x) => {
         invoked = true;
-      }, (err: any) => {
+      }, (err) => {
         throw 'should not be called';
       }, () => {
         throw 'should not be called';
@@ -116,9 +116,9 @@ describe('Notification', () => {
     it('should invoke on error', () => {
       const n = Notification.createError();
       let invoked = false;
-      n.do((x: any) => {
+      n.do((x) => {
         throw 'should not be called';
-      }, (err: any) => {
+      }, (err) => {
         invoked = true;
       }, () => {
         throw 'should not be called';
@@ -130,9 +130,9 @@ describe('Notification', () => {
     it('should invoke on complete', () => {
       const n = Notification.createComplete();
       let invoked = false;
-      n.do((x: any) => {
+      n.do((x) => {
         throw 'should not be called';
-      }, (err: any) => {
+      }, (err) => {
         throw 'should not be called';
       }, () => {
         invoked = true;
@@ -147,10 +147,10 @@ describe('Notification', () => {
       const value = 'a';
       let observed = false;
       const n = Notification.createNext(value);
-      const observer = Rx.Subscriber.create((x: string) => {
+      const observer = Rx.Subscriber.create((x) => {
         expect(x).to.equal(value);
         observed = true;
-      }, (err: any) => {
+      }, (err) => {
         throw 'should not be called';
       }, () => {
         throw 'should not be called';
@@ -162,10 +162,10 @@ describe('Notification', () => {
 
     it('should accept observer for error Notification', () => {
       let observed = false;
-      const n = Notification.createError();
-      const observer = Rx.Subscriber.create((x: string) => {
+      const n = Notification.createError<string>();
+      const observer = Rx.Subscriber.create((x) => {
         throw 'should not be called';
-      }, (err: any) => {
+      }, (err) => {
         observed = true;
       }, () => {
         throw 'should not be called';
@@ -178,9 +178,9 @@ describe('Notification', () => {
     it('should accept observer for complete Notification', () => {
       let observed = false;
       const n = Notification.createComplete();
-      const observer = Rx.Subscriber.create((x: string) => {
+      const observer = Rx.Subscriber.create((x) => {
         throw 'should not be called';
-      }, (err: any) => {
+      }, (err) => {
         throw 'should not be called';
       }, () => {
         observed = true;
@@ -195,10 +195,10 @@ describe('Notification', () => {
       let observed = false;
       const n = Notification.createNext(value);
 
-      n.accept((x: string) => {
+      n.accept((x) => {
         expect(x).to.equal(value);
         observed = true;
-      }, (err: any) => {
+      }, (err) => {
         throw 'should not be called';
       }, () => {
         throw 'should not be called';
@@ -211,9 +211,9 @@ describe('Notification', () => {
       const error = 'error';
       const n = Notification.createError(error);
 
-      n.accept((x: any) => {
+      n.accept((x) => {
         throw 'should not be called';
-      }, (err: any) => {
+      }, (err) => {
         expect(err).to.equal(error);
         observed = true;
       }, () => {
@@ -226,9 +226,9 @@ describe('Notification', () => {
       let observed = false;
       const n = Notification.createComplete();
 
-      n.accept((x: any) => {
+      n.accept((x) => {
         throw 'should not be called';
-      }, (err: any) => {
+      }, (err) => {
         throw 'should not be called';
       }, () => {
         observed = true;
@@ -242,10 +242,10 @@ describe('Notification', () => {
       const value = 'a';
       let observed = false;
       const n = Notification.createNext(value);
-      const observer = Rx.Subscriber.create((x: string) => {
+      const observer = Rx.Subscriber.create((x) => {
         expect(x).to.equal(value);
         observed = true;
-      }, (err: any) => {
+      }, (err) => {
         throw 'should not be called';
       }, () => {
         throw 'should not be called';
@@ -258,9 +258,9 @@ describe('Notification', () => {
     it('should observe for error Notification', () => {
       let observed = false;
       const n = Notification.createError();
-      const observer = Rx.Subscriber.create((x: any) => {
+      const observer = Rx.Subscriber.create((x) => {
         throw 'should not be called';
-      }, (err: any) => {
+      }, (err) => {
         observed = true;
       }, () => {
         throw 'should not be called';
@@ -273,9 +273,9 @@ describe('Notification', () => {
     it('should observe for complete Notification', () => {
       let observed = false;
       const n = Notification.createComplete();
-      const observer = Rx.Subscriber.create((x: any) => {
+      const observer = Rx.Subscriber.create((x) => {
         throw 'should not be called';
-      }, (err: any) => {
+      }, (err) => {
         throw 'should not be called';
       }, () => {
         observed = true;

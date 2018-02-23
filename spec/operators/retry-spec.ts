@@ -21,14 +21,14 @@ describe('Observable.prototype.retry', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should retry a number of times, without error, then complete', (done: MochaDone) => {
+  it('should retry a number of times, without error, then complete', (done) => {
     let errors = 0;
     const retries = 2;
-    Observable.create((observer: Rx.Observer<number>) => {
+    new Observable<number>((observer) => {
       observer.next(42);
       observer.complete();
     })
-      .map((x: any) => {
+      .map((x) => {
         if (++errors < retries) {
           throw 'bad';
         }
@@ -37,31 +37,31 @@ describe('Observable.prototype.retry', () => {
       })
       .retry(retries)
       .subscribe(
-        (x: number) => {
+        (x) => {
           expect(x).to.equal(42);
         },
-        (err: any) => {
+        (err) => {
           expect('this was called').to.be.true;
         }, done);
   });
 
-  it('should retry a number of times, then call error handler', (done: MochaDone) => {
+  it('should retry a number of times, then call error handler', (done) => {
     let errors = 0;
     const retries = 2;
-    Observable.create((observer: Rx.Observer<number>) => {
+    new Observable<number>((observer) => {
       observer.next(42);
       observer.complete();
     })
-      .map((x: any) => {
+      .map((x) => {
         errors += 1;
         throw 'bad';
       })
       .retry(retries - 1)
       .subscribe(
-        (x: number) => {
+        (x) => {
           expect(x).to.equal(42);
         },
-        (err: any) => {
+        (err) => {
           expect(errors).to.equal(2);
           done();
         }, () => {
@@ -69,14 +69,14 @@ describe('Observable.prototype.retry', () => {
         });
   });
 
-  it('should retry until successful completion', (done: MochaDone) => {
+  it('should retry until successful completion', (done) => {
     let errors = 0;
     const retries = 10;
-    Observable.create((observer: Rx.Observer<number>) => {
+    new Observable<number>((observer) => {
       observer.next(42);
       observer.complete();
     })
-      .map((x: any) => {
+      .map((x) => {
         if (++errors < retries) {
           throw 'bad';
         }
@@ -86,10 +86,10 @@ describe('Observable.prototype.retry', () => {
       .retry()
       .take(retries)
       .subscribe(
-        (x: number) => {
+        (x) => {
           expect(x).to.equal(42);
         },
-        (err: any) => {
+        (err) => {
           expect('this was called').to.be.true;
         }, done);
   });
@@ -186,24 +186,24 @@ describe('Observable.prototype.retry', () => {
     const unsub =       '             !           ';
 
     const result = source
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .retry(100)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should retry a synchronous source (multicasted and refCounted) multiple times', (done: MochaDone) => {
+  it('should retry a synchronous source (multicasted and refCounted) multiple times', (done) => {
     const expected = [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3];
 
-    Observable.of(1, 2, 3).concat(Observable.throw('bad!'))
-      .multicast(() => new Rx.Subject())
+    Observable.of(1, 2, 3).concat(Observable.throwError('bad!'))
+      .multicast(() => new Rx.Subject<string>())
       .refCount()
       .retry(4)
       .subscribe(
-        (x: number) => { expect(x).to.equal(expected.shift()); },
-        (err: any) => {
+        (x) => { expect(x).to.equal(expected.shift()); },
+        (err) => {
           expect(err).to.equal('bad!');
           expect(expected.length).to.equal(0);
           done();

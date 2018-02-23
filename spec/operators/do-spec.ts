@@ -34,7 +34,7 @@ describe('Observable.prototype.do', () => {
 
   it('should error with a callback', () => {
     let err = null;
-    Observable.throw('bad').do(null, function (x) {
+    Observable.throwError('bad').do(null, function (x) {
       err = x;
     })
     .subscribe(null, function (ex) {
@@ -44,16 +44,16 @@ describe('Observable.prototype.do', () => {
     expect(err).to.equal('bad');
   });
 
-  it('should handle everything with an observer', (done: MochaDone) => {
+  it('should handle everything with an observer', (done) => {
     const expected = [1, 2, 3];
-    const results = [];
+    const results: number[] = [];
 
     Observable.of(1, 2, 3)
-      .do(<Rx.Observer<number>>{
-        next: (x: number) => {
+      .do({
+        next: (x) => {
           results.push(x);
         },
-        error: (err: any) => {
+        error: (err) => {
           done(new Error('should not be called'));
         },
         complete: () => {
@@ -63,16 +63,16 @@ describe('Observable.prototype.do', () => {
       }).subscribe();
   });
 
-  it('should handle everything with a Subject', (done: MochaDone) => {
+  it('should handle everything with a Subject', (done) => {
     const expected = [1, 2, 3];
     const results: number[] = [];
     const subject = new Subject<number>();
 
     subject.subscribe({
-      next: (x: any) => {
+      next: (x) => {
         results.push(x);
       },
-      error: (err: any) => {
+      error: (err) => {
         done(new Error('should not be called'));
       },
       complete: () => {
@@ -88,10 +88,10 @@ describe('Observable.prototype.do', () => {
 
   it('should handle an error with a callback', () => {
     let errored = false;
-    Observable.throw('bad').do(null, (err: any) => {
+    Observable.throwError('bad').do(null, (err) => {
       expect(err).to.equal('bad');
     })
-    .subscribe(null, (err: any) => {
+    .subscribe(null, (err) => {
       errored = true;
       expect(err).to.equal('bad');
     });
@@ -101,7 +101,7 @@ describe('Observable.prototype.do', () => {
 
   it('should handle an error with observer', () => {
     let errored = false;
-    Observable.throw('bad').do(<any>{ error: function (err) {
+    Observable.throwError('bad').do({ error: function (err) {
       expect(err).to.equal('bad');
     } })
     .subscribe(null, function (err) {
@@ -115,7 +115,7 @@ describe('Observable.prototype.do', () => {
   it('should handle complete with observer', () => {
     let completed = false;
 
-    Observable.empty().do(<any>{
+    Observable.empty().do({
       complete: () => {
         completed = true;
       }
@@ -127,8 +127,8 @@ describe('Observable.prototype.do', () => {
   it('should handle next with observer', () => {
     let value = null;
 
-    Observable.of('hi').do(<any>{
-      next: (x: string) => {
+    Observable.of('hi').do({
+      next: (x) => {
         value = x;
       }
     }).subscribe();
@@ -137,31 +137,31 @@ describe('Observable.prototype.do', () => {
   });
 
   it('should raise error if next handler raises error', () => {
-    Observable.of('hi').do(<any>{
-      next: (x: string) => {
+    Observable.of('hi').do({
+      next: (x) => {
         throw new Error('bad');
       }
-    }).subscribe(null, (err: any) => {
+    }).subscribe(null, (err) => {
       expect(err.message).to.equal('bad');
     });
   });
 
   it('should raise error if error handler raises error', () => {
-    Observable.throw('ops').do(<any>{
-      error: (x: any) => {
+    Observable.throwError('ops').do({
+      error: (x) => {
         throw new Error('bad');
       }
-    }).subscribe(null, (err: any) => {
+    }).subscribe(null, (err) => {
       expect(err.message).to.equal('bad');
     });
   });
 
   it('should raise error if complete handler raises error', () => {
-    Observable.empty().do(<any>{
+    Observable.empty().do({
       complete: () => {
         throw new Error('bad');
       }
-    }).subscribe(null, (err: any) => {
+    }).subscribe(null, (err) => {
       expect(err.message).to.equal('bad');
     });
   });
@@ -186,11 +186,11 @@ describe('Observable.prototype.do', () => {
     const unsub =    '       !    ';
 
     const result = e1
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .do(() => {
         //noop
       })
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

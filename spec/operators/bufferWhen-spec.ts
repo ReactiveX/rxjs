@@ -16,7 +16,7 @@ describe('Observable.prototype.bufferWhen', () => {
     const values = {
       x: ['b', 'c', 'd'],
       y: ['e', 'f', 'g'],
-      z: []
+      z: <string[]>[]
     };
 
     expectObservable(e1.bufferWhen(() => e2)).toBe(expected, values);
@@ -139,9 +139,9 @@ describe('Observable.prototype.bufferWhen', () => {
 
     let i = 0;
     const result = e1
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .bufferWhen(() => closings[i++])
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -237,7 +237,7 @@ describe('Observable.prototype.bufferWhen', () => {
     const e1subs =   '(^!)';
     const expected = '(x|)';
     const values = {
-      x: []
+      x: <string[]>[]
     };
 
     const result = e1.bufferWhen(() => e2);
@@ -252,7 +252,7 @@ describe('Observable.prototype.bufferWhen', () => {
     const e1subs =   '(^!)';
     const expected = '#';
     const values = {
-      x: []
+      x: <string[]>[]
     };
 
     const result = e1.bufferWhen(() => e2);
@@ -274,7 +274,7 @@ describe('Observable.prototype.bufferWhen', () => {
                    '                                        ^   !'];
     const expected = '--------x-------x-------x-------x-------x----';
     const values = {
-      x: []
+      x: <string[]>[]
     };
 
     const source = e1.bufferWhen(() => e2);
@@ -299,18 +299,18 @@ describe('Observable.prototype.bufferWhen', () => {
   // closing Observables, because doing such would constantly recreate a new
   // buffer in a synchronous infinite loop until the stack overflows. This also
   // happens with buffer in RxJS 4.
-  it('should NOT handle hot inner empty', (done: MochaDone) => {
+  it('should NOT handle hot inner empty', (done) => {
     const source = Observable.of(1, 2, 3, 4, 5, 6, 7, 8, 9);
     const closing = Observable.empty();
     const TOO_MANY_INVOCATIONS = 30;
 
     source
       .bufferWhen(() => closing)
-      .takeWhile((val: any, index: number) => index < TOO_MANY_INVOCATIONS)
-      .subscribe((val: any) => {
+      .takeWhile((val, index) => index < TOO_MANY_INVOCATIONS)
+      .subscribe((val) => {
         expect(Array.isArray(val)).to.be.true;
         expect(val.length).to.equal(0);
-      }, (err: any) => {
+      }, (err) => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -344,7 +344,7 @@ describe('Observable.prototype.bufferWhen', () => {
     const values = {
       x: ['b', 'c', 'd'],
       y: ['e', 'f', 'g', 'h'],
-      z: []
+      z: <string[]>[]
     };
 
     const source = e1.bufferWhen(() => e2);

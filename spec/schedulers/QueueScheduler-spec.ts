@@ -51,7 +51,7 @@ describe('Scheduler.queue', () => {
   });
 
   it('should unsubscribe the rest of the scheduled actions if an action throws an error', () => {
-    const actions = [];
+    const actions: Rx.Subscription[] = [];
     let action2Exec = false;
     let action3Exec = false;
     let errorValue = undefined;

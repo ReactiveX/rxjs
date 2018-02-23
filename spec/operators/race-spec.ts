@@ -115,9 +115,9 @@ describe('Observable.prototype.race', () => {
     const unsub =         '         !    ';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .race(e2)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -164,7 +164,7 @@ describe('Observable.prototype.race', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should allow observable emits immediately', (done: MochaDone) => {
+  it('should allow observable emits immediately', (done) => {
     const e1 = Observable.of(true);
     const e2 = Observable.timer(200).map(_ => false);
 
@@ -187,7 +187,7 @@ describe('Observable.prototype.race', () => {
   it('should unsubscribe former observables if a latter one emits immediately', () => {
     const onNext = sinon.spy();
     const onUnsubscribe = sinon.spy();
-    const e1 = Observable.never<string>().finally(onUnsubscribe); // Should be unsubscribed
+    const e1 = Observable.never().finally(onUnsubscribe); // Should be unsubscribed
     const e2 = Observable.of('b'); // Wins the race
 
     e1.race(e2).subscribe(onNext);
@@ -198,8 +198,8 @@ describe('Observable.prototype.race', () => {
   it('should unsubscribe from immediately emitting observable on unsubscription', () => {
     const onNext = sinon.spy();
     const onUnsubscribe = sinon.spy();
-    const e1 = Observable.never<string>().startWith('a').finally(onUnsubscribe); // Wins the race
-    const e2 = Observable.never<string>(); // Loses the race
+    const e1 = Observable.never().startWith('a').finally(onUnsubscribe); // Wins the race
+    const e2 = Observable.never(); // Loses the race
 
     const subscription = e1.race(e2).subscribe(onNext);
     expect(onNext.calledWithExactly('a')).to.be.true;

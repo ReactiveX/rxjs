@@ -14,7 +14,7 @@ describe('Observable.prototype.withLatestFrom', () => {
     const e2 =  cold('--1--2-3-4---|   ');
     const expected = '----B-----C-D-E-|';
 
-    const result = e1.withLatestFrom(e2, (a: string, b: string) => String(a) + String(b));
+    const result = e1.withLatestFrom(e2, (a, b) => String(a) + String(b));
 
     expectObservable(result).toBe(expected, { B: 'b1', C: 'c4', D: 'd4', E: 'e4' });
   });
@@ -55,7 +55,7 @@ describe('Observable.prototype.withLatestFrom', () => {
       y: 'cgk',
       z: 'dhl'
     };
-    const project = function (a, b, c) { return a + b + c; };
+    const project = function (a: string, b: string, c: string) { return a + b + c; };
 
     const result = e1.withLatestFrom(e2, e3, project);
 
@@ -79,7 +79,7 @@ describe('Observable.prototype.withLatestFrom', () => {
       y: 'cgk',
       z: 'dhl'
     };
-    const project = function (a, b, c) { return a + b + c; };
+    const project = function (a: string, b: string, c: string) { return a + b + c; };
 
     const result = e1.withLatestFrom(e2, e3, project);
 
@@ -103,12 +103,12 @@ describe('Observable.prototype.withLatestFrom', () => {
       y: 'cgk',
       z: 'dhl'
     };
-    const project = function (a, b, c) { return a + b + c; };
+    const project = function (a: string, b: string, c: string) { return a + b + c; };
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .withLatestFrom(e2, e3, project)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -198,7 +198,7 @@ describe('Observable.prototype.withLatestFrom', () => {
     const values = {
       x: 'bfj'
     };
-    const project = function (a, b, c) { return a + b + c; };
+    const project = function (a: string, b: string, c: string) { return a + b + c; };
 
     const result = e1.withLatestFrom(e2, e3, project);
 
@@ -242,23 +242,23 @@ describe('Observable.prototype.withLatestFrom', () => {
     expectSubscriptions(e3.subscriptions).toBe(e3subs);
   });
 
-  it('should handle promises', (done: MochaDone) => {
+  it('should handle promises', (done) => {
     Observable.of(1).delay(1).withLatestFrom(Promise.resolve(2), Promise.resolve(3))
-      .subscribe((x: any) => {
+      .subscribe((x) => {
         expect(x).to.deep.equal([1, 2, 3]);
       }, null, done);
   });
 
   it('should handle arrays', () => {
     Observable.of(1).delay(1).withLatestFrom([2, 3, 4], [4, 5, 6])
-      .subscribe((x: any) => {
+      .subscribe((x) => {
         expect(x).to.deep.equal([1, 4, 6]);
       });
   });
 
   it('should handle lowercase-o observables', () => {
     Observable.of(1).delay(1).withLatestFrom(lowerCaseO(2, 3, 4), lowerCaseO(4, 5, 6))
-      .subscribe((x: any) => {
+      .subscribe((x) => {
         expect(x).to.deep.equal([1, 4, 6]);
       });
   });

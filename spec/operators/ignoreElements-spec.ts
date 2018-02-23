@@ -35,9 +35,9 @@ describe('Observable.prototype.ignoreElements', () => {
     const unsub =      '       !       ';
 
     const result = source
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .ignoreElements()
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);

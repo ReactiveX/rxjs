@@ -49,7 +49,7 @@ describe('Observable.prototype.last', () => {
     const e1subs =    '^             !';
     const expected =  '--------------(b|)';
 
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       return value === 'b';
     };
 
@@ -74,9 +74,9 @@ describe('Observable.prototype.last', () => {
     const unsub =     '       !       ';
 
     const result = e1
-      .mergeMap((x: string) => Rx.Observable.of(x))
+      .mergeMap((x) => Rx.Observable.of(x))
       .last()
-      .mergeMap((x: string) => Rx.Observable.of(x));
+      .mergeMap((x) => Rx.Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -105,8 +105,8 @@ describe('Observable.prototype.last', () => {
     const e1subs =      '^                  !';
     const expected =    '-------------------(x|)';
 
-    const predicate = function (x) { return x === 'c'; };
-    const resultSelector = function (x, i) {
+    const predicate = function (x: string) { return x === 'c'; };
+    const resultSelector = function (x: string, i: number) {
       expect(i).to.equal(1);
       expect(x).to.equal('c');
       return 'x';
@@ -121,7 +121,7 @@ describe('Observable.prototype.last', () => {
     const e1subs =      '^       !           ';
     const expected =    '--------#           ';
 
-    const predicate = function (x) {
+    const predicate = function (x: string) {
       if (x === 'c') {
         throw 'error';
       } else {
@@ -138,8 +138,8 @@ describe('Observable.prototype.last', () => {
     const e1subs =      '^       !           ';
     const expected =    '--------#           ';
 
-    const predicate = function (x) { return x === 'c'; };
-    const resultSelector = function (x, i) {
+    const predicate = function (x: string) { return x === 'c'; };
+    const resultSelector = function (x: string, i: number) {
       throw 'error';
     };
 
@@ -172,7 +172,7 @@ describe('Observable.prototype.last', () => {
         .subscribe(x => x.bar); // x is Bar
       Observable.of(foobar).last(foobar => foobar.bar === 'name')
         .subscribe(x => x.bar); // x is still Bar
-      Observable.of(foobar).last(isBaz)
+      Observable.of(<Bar | Baz>foobar).last(isBaz)
         .subscribe(x => x.baz); // x is Baz!
 
       const barish = { bar: 'quack', baz: 42 }; // type can quack like a Bar

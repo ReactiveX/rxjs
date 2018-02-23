@@ -18,7 +18,7 @@ describe('Observable.prototype.scan', () => {
     const e1subs =     '^          !';
     const expected =   '--x--y--z--|';
 
-    const scanFunction = function (o, x) {
+    const scanFunction = function (o: number, x: number) {
       return o + x;
     };
 
@@ -40,7 +40,7 @@ describe('Observable.prototype.scan', () => {
       z: ['b', 'c', 'd', 'e', 'f', 'g']
     };
 
-    const source = e1.scan((acc: any, x: string) => [].concat(acc, x), []);
+    const source = e1.scan((acc, x) => [].concat(acc, x), []);
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -60,7 +60,7 @@ describe('Observable.prototype.scan', () => {
       z: 'undefined b c d e f g'
     };
 
-    const source = e1.scan((acc: any, x: string) => acc + ' ' + x, undefined);
+    const source = e1.scan((acc, x) => acc + ' ' + x, undefined);
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -77,7 +77,7 @@ describe('Observable.prototype.scan', () => {
       z: 'bcd'
     };
 
-    const source = e1.scan((acc: any, x: string) => acc + x);
+    const source = e1.scan((acc, x) => acc + x);
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -94,7 +94,7 @@ describe('Observable.prototype.scan', () => {
       w: ['b', 'c', 'd']
     };
 
-    const source = e1.scan((acc: any, x: string) => [].concat(acc, x), []);
+    const source = e1.scan((acc, x) => [].concat(acc, x), []);
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -114,7 +114,7 @@ describe('Observable.prototype.scan', () => {
       z: ['b', 'c', 'd', 'e', 'f', 'g']
     };
 
-    const source = e1.scan((acc: any, x: string) => {
+    const source = e1.scan((acc, x) => {
       if (x === 'd') {
         throw 'bad!';
       }
@@ -130,7 +130,7 @@ describe('Observable.prototype.scan', () => {
     const e1subs =   '(^!)';
     const expected = '|';
 
-    const source = e1.scan((acc: any, x: string) => [].concat(acc, x), []);
+    const source = e1.scan((acc, x) => [].concat(acc, x), []);
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -141,7 +141,7 @@ describe('Observable.prototype.scan', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    const source = e1.scan((acc: any, x: string) => [].concat(acc, x), []);
+    const source = e1.scan((acc, x) => [].concat(acc, x), []);
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -152,7 +152,7 @@ describe('Observable.prototype.scan', () => {
     const e1subs =   '(^!)';
     const expected = '#';
 
-    const source = e1.scan((acc: any, x: string) => [].concat(acc, x), []);
+    const source = e1.scan((acc, x) => [].concat(acc, x), []);
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -172,7 +172,7 @@ describe('Observable.prototype.scan', () => {
       z: ['b', 'c', 'd', 'e', 'f', 'g']
     };
 
-    const source = e1.scan((acc: any, x: string) => [].concat(acc, x), []);
+    const source = e1.scan((acc, x) => [].concat(acc, x), []);
 
     expectObservable(source, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -193,9 +193,9 @@ describe('Observable.prototype.scan', () => {
     };
 
     const source = e1
-      .mergeMap((x: string) => Observable.of(x))
-      .scan((acc: any, x: string) => [].concat(acc, x), [])
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x))
+      .scan((acc, x) => [].concat(acc, x), [])
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(source, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -236,7 +236,7 @@ describe('Observable.prototype.scan', () => {
       value.a = acc.a;
       value.b = acc.b;
       return acc;
-    }, {});
+    }, <{ a: number; b: string }>{});
   });
 
   type('should accept R typed reducers', () => {
@@ -245,6 +245,6 @@ describe('Observable.prototype.scan', () => {
       value.a = acc.a;
       value.b = acc.b;
       return acc;
-    }, {});
+    }, <{ a: number; b: string }>{});
   });
 });

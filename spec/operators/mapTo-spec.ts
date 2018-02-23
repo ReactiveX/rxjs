@@ -81,9 +81,9 @@ describe('Observable.prototype.mapTo', () => {
     const expected = '--x--x-     ';
 
     const r = a
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .mapTo('x')
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(r, unsub).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);

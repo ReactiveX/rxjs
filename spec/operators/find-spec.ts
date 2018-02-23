@@ -8,7 +8,7 @@ const Observable = Rx.Observable;
 
 /** @test {find} */
 describe('Observable.prototype.find', () => {
-  function truePredicate(x) {
+  function truePredicate(x: any) {
     return true;
   }
 
@@ -18,15 +18,15 @@ describe('Observable.prototype.find', () => {
     const subs =       '^        !       ';
     const expected =   '---------(c|)    ';
 
-    const predicate = function (x) { return x % 5 === 0; };
+    const predicate = function (x: number) { return x % 5 === 0; };
 
-    expectObservable((<any>source).find(predicate)).toBe(expected, values);
+    expectObservable(source.find(predicate)).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should throw if not provided a function', () => {
     expect(() => {
-      (<any>Observable.of('yut', 'yee', 'sam')).find('yee');
+      Observable.of('yut', 'yee', 'sam').find(<any>'yee');
     }).to.throw(TypeError, 'predicate is not a function');
   });
 
@@ -35,7 +35,7 @@ describe('Observable.prototype.find', () => {
     const subs =       '^';
     const expected =   '-';
 
-    expectObservable((<any>source).find(truePredicate)).toBe(expected);
+    expectObservable(source.find(truePredicate)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -44,7 +44,7 @@ describe('Observable.prototype.find', () => {
     const subs =        '(^!)';
     const expected =    '(x|)';
 
-    const result = (<any>source).find(truePredicate);
+    const result = source.find(truePredicate);
 
     expectObservable(result).toBe(expected, {x: undefined});
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -55,11 +55,11 @@ describe('Observable.prototype.find', () => {
     const subs =       '^ !';
     const expected =   '--(a|)';
 
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       return value === 'a';
     };
 
-    expectObservable((<any>source).find(predicate)).toBe(expected);
+    expectObservable(source.find(predicate)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -68,11 +68,11 @@ describe('Observable.prototype.find', () => {
     const subs =       '^    !';
     const expected =   '-----(b|)';
 
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       return value === 'b';
     };
 
-    expectObservable((<any>source).find(predicate)).toBe(expected);
+    expectObservable(source.find(predicate)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -84,11 +84,11 @@ describe('Observable.prototype.find', () => {
     const finder = {
       target: 'b'
     };
-    const predicate = function (value) {
+    const predicate = function (this: typeof finder, value: string) {
       return value === this.target;
     };
 
-    expectObservable((<any>source).find(predicate, finder)).toBe(expected);
+    expectObservable(source.find(predicate, finder)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -97,11 +97,11 @@ describe('Observable.prototype.find', () => {
     const subs =       '^          !';
     const expected =   '-----------(x|)';
 
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       return value === 'z';
     };
 
-    expectObservable((<any>source).find(predicate)).toBe(expected, { x: undefined });
+    expectObservable(source.find(predicate)).toBe(expected, { x: undefined });
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -111,7 +111,7 @@ describe('Observable.prototype.find', () => {
     const expected =   '-------     ';
     const unsub =      '      !     ';
 
-    const result = (<any>source).find((value: string) => value === 'z');
+    const result = source.find((value) => value === 'z');
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -123,10 +123,10 @@ describe('Observable.prototype.find', () => {
     const expected =   '-------     ';
     const unsub =      '      !     ';
 
-    const result = (<any>source)
-      .mergeMap((x: string) => Observable.of(x))
-      .find((value: string) => value === 'z')
-      .mergeMap((x: string) => Observable.of(x));
+    const result = source
+      .mergeMap((x) => Observable.of(x))
+      .find((value) => value === 'z')
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -137,11 +137,11 @@ describe('Observable.prototype.find', () => {
     const subs =       '^       !';
     const expected =   '--------#';
 
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       return value === 'z';
     };
 
-    expectObservable((<any>source).find(predicate)).toBe(expected);
+    expectObservable(source.find(predicate)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -150,11 +150,11 @@ describe('Observable.prototype.find', () => {
     const subs =       '^ !';
     const expected =   '--#';
 
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       throw 'error';
     };
 
-    expectObservable((<any>source).find(predicate)).toBe(expected);
+    expectObservable(source.find(predicate)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 

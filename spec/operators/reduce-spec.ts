@@ -17,7 +17,7 @@ describe('Observable.prototype.reduce', () => {
     const e1subs =     '^          !';
     const expected =   '-----------(x|)';
 
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: number, x: number) {
       return o + x;
     };
 
@@ -31,7 +31,7 @@ describe('Observable.prototype.reduce', () => {
     const expected =   '--------(x|)';
 
     const seed = 'n';
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -48,7 +48,7 @@ describe('Observable.prototype.reduce', () => {
       x: 'undefined b c d e f g'
     };
 
-    const source = e1.reduce((acc: any, x: string) => acc + ' ' + x, undefined);
+    const source = e1.reduce((acc, x) => acc + ' ' + x, undefined);
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -63,13 +63,13 @@ describe('Observable.prototype.reduce', () => {
       x: 'b c d e f g'
     };
 
-    const source = e1.reduce((acc: any, x: string) => acc + ' ' + x);
+    const source = e1.reduce((acc, x) => acc + ' ' + x);
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should reduce with index without seed', (done: MochaDone) => {
+  it('should reduce with index without seed', (done) => {
     const idx = [1, 2, 3, 4, 5];
 
     Observable.range(0, 6).reduce((acc, value, index) => {
@@ -81,7 +81,7 @@ describe('Observable.prototype.reduce', () => {
     });
   });
 
-  it('should reduce with index with seed', (done: MochaDone) => {
+  it('should reduce with index with seed', (done) => {
     const idx = [0, 1, 2, 3, 4, 5];
 
     Observable.range(0, 6).reduce((acc, value, index) => {
@@ -99,7 +99,7 @@ describe('Observable.prototype.reduce', () => {
     const expected =    '--------(x|)';
 
     const expectedValue = '42';
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -112,7 +112,7 @@ describe('Observable.prototype.reduce', () => {
     const e1subs =     '^    !   ';
     const expected =   '-----#   ';
 
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       throw 'error';
     };
 
@@ -126,7 +126,7 @@ describe('Observable.prototype.reduce', () => {
     const e1subs =     '^     !  ';
     const expected =   '-------  ';
 
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -142,14 +142,14 @@ describe('Observable.prototype.reduce', () => {
     const expected =   '-------  ';
     const unsub =      '      !  ';
 
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .reduce(reduceFunction)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -161,7 +161,7 @@ describe('Observable.prototype.reduce', () => {
     const expected = '--------#';
 
     const expectedValue = '42';
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -175,7 +175,7 @@ describe('Observable.prototype.reduce', () => {
     const expected = '----#';
 
     const expectedValue = '42';
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -189,7 +189,7 @@ describe('Observable.prototype.reduce', () => {
     const expected =   '--#     ';
 
     const seed = 'n';
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       throw 'error';
     };
 
@@ -203,7 +203,7 @@ describe('Observable.prototype.reduce', () => {
     const expected =   '-----';
 
     const seed = 'n';
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -217,7 +217,7 @@ describe('Observable.prototype.reduce', () => {
     const expected = '-';
 
     const seed = 'n';
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -230,7 +230,7 @@ describe('Observable.prototype.reduce', () => {
     const e1subs =   '^       ';
     const expected = '--------';
 
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -243,7 +243,7 @@ describe('Observable.prototype.reduce', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -256,7 +256,7 @@ describe('Observable.prototype.reduce', () => {
     const e1subs =      '^       !';
     const expected =    '--------|';
 
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -269,7 +269,7 @@ describe('Observable.prototype.reduce', () => {
     const e1subs =   '^       !';
     const expected = '--------#';
 
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -282,7 +282,7 @@ describe('Observable.prototype.reduce', () => {
     const e1subs =   '^   !';
     const expected = '----#';
 
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -338,7 +338,7 @@ describe('Observable.prototype.reduce', () => {
       value.a = acc.a;
       value.b = acc.b;
       return acc;
-    }, {});
+    }, <{ a?: number; b?: string }>{});
 
     reduced.subscribe(r => {
       r.a.toExponential();

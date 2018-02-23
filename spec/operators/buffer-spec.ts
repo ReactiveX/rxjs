@@ -63,13 +63,13 @@ describe('Observable.prototype.buffer', () => {
 
   it('should work with non-empty and throw selector', () => {
     const a = hot('---^--a--');
-    const b = Observable.throw(new Error('too bad'));
+    const b = Observable.throwError(new Error('too bad'));
     const expected = '#';
     expectObservable(a.buffer(b)).toBe(expected, null, new Error('too bad'));
   });
 
   it('should work with throw and non-empty selector', () => {
-    const a = Observable.throw(new Error('too bad'));
+    const a = Observable.throwError(new Error('too bad'));
     const b = hot('---^--a--');
     const expected = '#';
     expectObservable(a.buffer(b)).toBe(expected, null, new Error('too bad'));
@@ -98,7 +98,7 @@ describe('Observable.prototype.buffer', () => {
       a: ['3'],
       b: ['4', '5'],
       c: ['6'],
-      d: [],
+      d: <string[]>[],
       e: ['7', '8', '9'],
       f: ['0']
     };
@@ -115,7 +115,7 @@ describe('Observable.prototype.buffer', () => {
       a: ['3'],
       b: ['4', '5'],
       c: ['6'],
-      d: []
+      d: <string[]>[]
     };
     expectObservable(a.buffer(b)).toBe(expected, expectedValues);
     expectSubscriptions(a.subscriptions).toBe(subs);
@@ -147,9 +147,9 @@ describe('Observable.prototype.buffer', () => {
     };
 
     const result = a
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .buffer(b)
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected, expectedValues);
     expectSubscriptions(a.subscriptions).toBe(subs);
@@ -163,7 +163,7 @@ describe('Observable.prototype.buffer', () => {
     const expected =      '---a--b--#';
     const expectedValues = {
       a: [3],
-      b: []
+      b: <string[]>[]
     };
     expectObservable(a.buffer(b)).toBe(expected, expectedValues, new Error('too bad'));
     expectSubscriptions(a.subscriptions).toBe(subs);

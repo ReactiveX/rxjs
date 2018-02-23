@@ -145,7 +145,7 @@ describe('Observable.prototype.windowCount', () => {
     const values = { w: w, x: x, y: y, z: z };
 
     const result = source
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .windowCount(2, 1)
       .mergeMap((x: Rx.Observable<string>) => Observable.of(x));
 

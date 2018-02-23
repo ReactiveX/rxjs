@@ -146,7 +146,7 @@ describe('Observable.prototype.windowWhen', () => {
 
     let i = 0;
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .windowWhen(() => closings[i++])
       .mergeMap((x: Rx.Observable<string>) => Observable.of(x));
 

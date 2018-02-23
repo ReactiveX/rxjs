@@ -3,6 +3,7 @@ import * as Rx from '../../src/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare function asDiagram(arg: string): Function;
+declare const rxTestScheduler: Rx.TestScheduler;
 
 const Observable = Rx.Observable;
 
@@ -20,7 +21,7 @@ describe('Observable.prototype.shareReplay', () => {
 
   it('should do nothing if result is not subscribed', () => {
     let subscribed = false;
-    const source = new Observable(() => {
+    const source = new Observable<number>(() => {
       subscribed = true;
     });
     source.shareReplay();
@@ -162,7 +163,7 @@ describe('Observable.prototype.shareReplay', () => {
   });
 
   it('should not restart if refCount hits 0 due to unsubscriptions', () => {
-    const results = [];
+    const results: number[] = [];
     const source = Rx.Observable.interval(10, rxTestScheduler)
       .take(10)
       .shareReplay(1);
@@ -174,7 +175,7 @@ describe('Observable.prototype.shareReplay', () => {
     expect(results).to.deep.equal([0, 1, 2, 4, 5, 6, 7, 8, 9]);
   });
 
-  it('should not break lift() composability', (done: MochaDone) => {
+  it('should not break lift() composability', (done) => {
     class MyCustomObservable<T> extends Rx.Observable<T> {
       lift<R>(operator: Rx.Operator<T, R>): Rx.Observable<R> {
         const observable = new MyCustomObservable<R>();
@@ -184,7 +185,7 @@ describe('Observable.prototype.shareReplay', () => {
       }
     }
 
-    const result = new MyCustomObservable((observer: Rx.Observer<number>) => {
+    const result = new MyCustomObservable((observer) => {
       observer.next(1);
       observer.next(2);
       observer.next(3);
@@ -196,7 +197,7 @@ describe('Observable.prototype.shareReplay', () => {
     const expected = [1, 2, 3];
 
     result
-      .subscribe((n: any) => {
+      .subscribe((n) => {
         expect(expected.length).to.be.greaterThan(0);
         expect(n).to.equal(expected.shift());
       }, (x) => {

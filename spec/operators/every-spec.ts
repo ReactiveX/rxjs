@@ -8,12 +8,12 @@ const Observable = Rx.Observable;
 
 /** @test {every} */
 describe('Observable.prototype.every', () => {
-  function truePredicate(x) {
+  function truePredicate(x: any) {
     return true;
   }
 
-  function predicate(x) {
-    return x % 5 === 0;
+  function predicate(x: number | string) {
+    return (typeof x === 'number' ? x : parseInt(x)) % 5 === 0;
   }
 
   asDiagram('every(x => x % 5 === 0)')('should return false if only some of element matches with predicate', () => {
@@ -28,7 +28,7 @@ describe('Observable.prototype.every', () => {
   it('should accept thisArg with scalar observables', () => {
     const thisArg = {};
 
-    Observable.of(1).every(function (value: number, index: number) {
+    Observable.of(1).every(function (this: any, value: number, index: number) {
       expect(this).to.deep.equal(thisArg);
       return true;
     }, thisArg).subscribe();
@@ -38,7 +38,7 @@ describe('Observable.prototype.every', () => {
   it('should accept thisArg with array observables', () => {
     const thisArg = {};
 
-    Observable.of(1, 2, 3, 4).every(function (value: number, index: number) {
+    Observable.of(1, 2, 3, 4).every(function (this: any, value: number, index: number) {
       expect(this).to.deep.equal(thisArg);
       return true;
     }, thisArg).subscribe();
@@ -47,12 +47,13 @@ describe('Observable.prototype.every', () => {
   it('should accept thisArg with ordinary observables', () => {
     const thisArg = {};
 
-    Observable.create((observer: Rx.Observer<number>) => {
+    new Observable<number>((observer) => {
       observer.next(1);
       observer.complete();
     })
-    .every(function (value: number, index: number) {
+    .every(function (this: any, value: number, index: number) {
       expect(this).to.deep.equal(thisArg);
+      return true;
     }, thisArg).subscribe();
   });
 
@@ -111,9 +112,9 @@ describe('Observable.prototype.every', () => {
     const unsub =      '       !          ';
 
     const result = source
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .every(predicate)
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -124,7 +125,7 @@ describe('Observable.prototype.every', () => {
     const sourceSubs = '^       !';
     const expected =   '--------#';
 
-    function faultyPredicate(x) {
+    function faultyPredicate(x: string) {
       if (x === 'c') {
         throw 'error';
       } else {
@@ -163,11 +164,11 @@ describe('Observable.prototype.every', () => {
     const source = Observable.of(3);
     const expected = '#';
 
-    function faultyPredicate(x) {
+    function faultyPredicate(x: any): boolean {
       throw 'error';
     }
 
-    expectObservable(source.every(<any>faultyPredicate)).toBe(expected);
+    expectObservable(source.every(faultyPredicate)).toBe(expected);
   });
 
   it('should emit true if Array source matches with predicate', () => {
@@ -188,7 +189,7 @@ describe('Observable.prototype.every', () => {
     const source = Observable.of(5, 10, 15, 20);
     const expected = '#';
 
-    function faultyPredicate(x) {
+    function faultyPredicate(x: number) {
       if (x === 15) {
         throw 'error';
       }

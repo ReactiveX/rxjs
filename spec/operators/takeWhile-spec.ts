@@ -12,7 +12,7 @@ describe('Observable.prototype.takeWhile', () => {
     const sourceSubs =    '^      !         ';
     const expected =      '-2--3--|         ';
 
-    const result = source.takeWhile((v: any) => +v < 4);
+    const result = source.takeWhile((v) => +v < 4);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -32,7 +32,7 @@ describe('Observable.prototype.takeWhile', () => {
     const e1subs =     '^             !';
     const expected =   '--b--c--d--e--|';
 
-    expectObservable(e1.takeWhile(<any>(() => { return {}; }))).toBe(expected);
+    expectObservable(e1.takeWhile(() => { return !!{}; })).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -59,7 +59,7 @@ describe('Observable.prototype.takeWhile', () => {
     const e1subs =     '^       !      ';
     const expected =   '--b--c--|      ';
 
-    function predicate(value) {
+    function predicate(value: string) {
       return value !== 'd';
     }
 
@@ -112,7 +112,7 @@ describe('Observable.prototype.takeWhile', () => {
     const e1subs =     '^       !      ';
     const expected =   '--b--c--|      ';
 
-    function predicate(value, index) {
+    function predicate(value: string, index: number) {
       return index < 2;
     }
 
@@ -144,7 +144,7 @@ describe('Observable.prototype.takeWhile', () => {
     const expected =   '--b--c--|      ';
 
     let invoked = 0;
-    function predicate(value) {
+    function predicate(value: string) {
       invoked++;
       return value !== 'd';
     }
@@ -161,11 +161,11 @@ describe('Observable.prototype.takeWhile', () => {
     const e1subs =     '^ !            ';
     const expected =   '--#            ';
 
-    function predicate(value) {
+    function predicate(value: string): boolean {
       throw 'error';
     }
 
-    expectObservable(e1.takeWhile(<any>predicate)).toBe(expected);
+    expectObservable(e1.takeWhile(predicate)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -175,7 +175,7 @@ describe('Observable.prototype.takeWhile', () => {
     const e1subs =     '^    !         ';
     const expected =   '--b---         ';
 
-    function predicate(value) {
+    function predicate(value: string) {
       return value !== 'd';
     }
 
@@ -189,14 +189,14 @@ describe('Observable.prototype.takeWhile', () => {
     const e1subs =     '^    !         ';
     const expected =   '--b---         ';
 
-    function predicate(value) {
+    function predicate(value: string) {
       return value !== 'd';
     }
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .takeWhile(predicate)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

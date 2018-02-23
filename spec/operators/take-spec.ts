@@ -38,7 +38,7 @@ describe('Observable.prototype.take', () => {
 
   it('should be empty on take(0)', () => {
     const e1 = hot('--a--^--b----c---d--|');
-    const e1subs = []; // Don't subscribe at all
+    const e1subs: string[] = []; // Don't subscribe at all
     const expected =    '|';
 
     expectObservable(e1.take(0)).toBe(expected);
@@ -121,16 +121,16 @@ describe('Observable.prototype.take', () => {
     const expected =  '---a--b---            ';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .take(42)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should unsubscribe from the source when it reaches the limit', () => {
-    const source = Observable.create(observer => {
+    const source = new Observable<number>(observer => {
       expect(observer.closed).to.be.false;
       observer.next(42);
       expect(observer.closed).to.be.true;
@@ -141,7 +141,7 @@ describe('Observable.prototype.take', () => {
 
   it('should complete when the source is reentrant', () => {
     let completed = false;
-    const source = new Subject();
+    const source = new Subject<string>();
     source.take(5).subscribe({
       next() {
         source.next();

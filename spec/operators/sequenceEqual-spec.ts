@@ -1,8 +1,10 @@
 import * as _ from 'lodash';
 import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
+import { TestScheduler } from '../../src/testing';
 
 declare const type: Function;
 declare const asDiagram: Function;
+declare const rxTestScheduler: TestScheduler;
 const booleans = { T: true, F: false };
 
 /** @test {sequenceEqual} */
@@ -172,14 +174,14 @@ describe('Observable.prototype.sequenceEqual', () => {
   });
 
   it('should error if the comparor errors', () => {
-    const s1 = hot('--a--^--b-----c------d--|');
+    const s1 = hot<{ value: string; }>('--a--^--b-----c------d--|');
     const s1subs =      '^            !';
-    const s2 = hot('-----^--------x---y---z-------|');
+    const s2 = hot<{ value: string; }>('-----^--------x---y---z-------|');
     const s2subs =      '^            !';
     const expected =    '-------------#';
 
     let i = 0;
-    const source = s1.sequenceEqual(s2, (a: any, b: any) => {
+    const source = s1.sequenceEqual(s2, (a, b) => {
       if (++i === 2) {
         throw new Error('shazbot');
       }
@@ -187,7 +189,7 @@ describe('Observable.prototype.sequenceEqual', () => {
     });
 
     const values = {
-      a: null,
+      a: <any>null,
       b: { value: 'bees knees' },
       c: { value: 'carpy dumb' },
       d: { value: 'derp' },
@@ -202,16 +204,16 @@ describe('Observable.prototype.sequenceEqual', () => {
   });
 
   it('should use the provided comparor', () => {
-    const s1 = hot('--a--^--b-----c------d--|');
+    const s1 = hot<{ value: string; }>('--a--^--b-----c------d--|');
     const s1subs =      '^                        !';
-    const s2 = hot('-----^--------x---y---z-------|');
+    const s2 = hot<{ value: string; }>('-----^--------x---y---z-------|');
     const s2subs =      '^                        !';
     const expected =    '-------------------------(T|)';
 
-    const source = s1.sequenceEqual(s2, (a: any, b: any) => a.value === b.value);
+    const source = s1.sequenceEqual(s2, (a, b) => a.value === b.value);
 
     const values = {
-      a: null,
+      a: <any>null,
       b: { value: 'bees knees' },
       c: { value: 'carpy dumb' },
       d: { value: 'derp' },

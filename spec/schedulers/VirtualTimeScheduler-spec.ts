@@ -13,7 +13,7 @@ describe('VirtualTimeScheduler', () => {
 
   it('should schedule things in order when flushed if each this is scheduled synchrously', () => {
     const v = new VirtualTimeScheduler();
-    const invoked = [];
+    const invoked: number[] = [];
     const invoke = (state: number) => {
       invoked.push(state);
     };
@@ -30,7 +30,7 @@ describe('VirtualTimeScheduler', () => {
 
   it('should schedule things in order when flushed if each this is scheduled at random', () => {
     const v = new VirtualTimeScheduler();
-    const invoked = [];
+    const invoked: number[] = [];
     const invoke = (state: number) => {
       invoked.push(state);
     };
@@ -48,7 +48,7 @@ describe('VirtualTimeScheduler', () => {
 
   it('should schedule things in order when there are negative delays', () => {
     const v = new VirtualTimeScheduler();
-    const invoked = [];
+    const invoked: number[] = [];
     const invoke = (state: number) => {
       invoked.push(state);
     };
@@ -69,7 +69,7 @@ describe('VirtualTimeScheduler', () => {
     let count = 0;
     const expected = [100, 200, 300];
 
-    v.schedule<string>(function(this: VirtualAction<string>, state: string) {
+    v.schedule<string>(<any>function (this: VirtualAction<string>, state: string) {
       if (++count === 3) {
         return;
       }
@@ -83,7 +83,7 @@ describe('VirtualTimeScheduler', () => {
 
   it('should not execute virtual actions that have been rescheduled before flush', () => {
     const v = new VirtualTimeScheduler();
-    let messages = [];
+    let messages: string[] = [];
     let action: VirtualAction<string> = <VirtualAction<string>> v.schedule(function(state: string) {
       messages.push(state);
     }, 10, 'first message');

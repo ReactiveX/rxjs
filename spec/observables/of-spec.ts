@@ -16,13 +16,13 @@ describe('Observable.of', () => {
     expectObservable(e1).toBe(expected, {x: 1, y: 2, z: 3});
   });
 
-  it('should create an observable from the provided values', (done: MochaDone) => {
+  it('should create an observable from the provided values', (done) => {
     const x = { foo: 'bar' };
     const expected = [1, 'a', x];
     let i = 0;
 
     Observable.of<any>(1, 'a', x)
-      .subscribe((y: any) => {
+      .subscribe((y) => {
         expect(y).to.equal(expected[i++]);
       }, (x) => {
         done(new Error('should not be called'));
@@ -36,13 +36,13 @@ describe('Observable.of', () => {
     expect(obs).to.equal(empty());
   });
 
-  it('should emit one value', (done: MochaDone) => {
+  it('should emit one value', (done) => {
     let calls = 0;
 
-    Observable.of(42).subscribe((x: number) => {
+    Observable.of(42).subscribe((x) => {
       expect(++calls).to.equal(1);
       expect(x).to.equal(42);
-    }, (err: any) => {
+    }, (err) => {
       done(new Error('should not be called'));
     }, () => {
       done();
@@ -50,7 +50,7 @@ describe('Observable.of', () => {
   });
 
   it('should handle an Observable as the only value', () => {
-    const source = Observable.of<Rx.Observable<string>>(
+    const source = Observable.of(
       Observable.of<string>('a', 'b', 'c', rxTestScheduler),
       rxTestScheduler
     );
@@ -59,7 +59,7 @@ describe('Observable.of', () => {
   });
 
   it('should handle many Observable as the given values', () => {
-    const source = Observable.of<Rx.Observable<string>>(
+    const source = Observable.of(
       Observable.of<string>('a', 'b', 'c', rxTestScheduler),
       Observable.of<string>('d', 'e', 'f', rxTestScheduler),
       rxTestScheduler

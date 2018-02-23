@@ -107,7 +107,8 @@ describe('exports', () => {
   });
 
   it('should have rxjs/observable/throwError', () => {
-    expect(throwError).to.equal(Rx.Observable.throw);
+    expect(throwError).to.equal((<any>Rx.Observable).throw);
+    expect(throwError).to.equal(Rx.Observable.throwError);
   });
 
   it('should have rxjs/observable/timer', () => {

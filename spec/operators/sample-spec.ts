@@ -34,8 +34,8 @@ describe('Observable.prototype.sample', () => {
   });
 
   it('should behave properly when notified by the same observable as the source (issue #2075)', () => {
-    const item$ = new Rx.Subject();
-    const results = [];
+    const item$ = new Rx.Subject<number>();
+    const results: number[] = [];
 
     item$
       .sample(item$)
@@ -118,9 +118,9 @@ describe('Observable.prototype.sample', () => {
     const unsub =          '              !                        ';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .sample(e2)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

@@ -21,7 +21,7 @@ describe('Observable.prototype.share', () => {
 
   it('should share a single subscription', () => {
     let subscriptionCount = 0;
-    const obs = new Observable((observer: Rx.Observer<any>) => {
+    const obs = new Observable<any>((observer: Rx.Observer<any>) => {
       subscriptionCount++;
     });
 
@@ -192,9 +192,9 @@ describe('Observable.prototype.share', () => {
     const source =     cold(   '-1-2-3----4-|');
     const sourceSubs =      '   ^        !   ';
     const shared = source
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .share()
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
     const subscriber1 = hot('   a|           ').mergeMapTo(shared);
     const unsub1 =          '          !     ';
     const expected1   =     '   -1-2-3--     ';

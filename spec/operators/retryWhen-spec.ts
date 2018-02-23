@@ -16,7 +16,7 @@ describe('Observable.prototype.retryWhen', () => {
     const notifier = hot('-------------r------------r-|');
     const expected =     '-1--2---------1--2---------1|';
 
-    const result = source.retryWhen((errors: any) => notifier);
+    const result = source.retryWhen((errors) => notifier);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -30,24 +30,24 @@ describe('Observable.prototype.retryWhen', () => {
     const notifier = hot('-----------r-------r---------#');
     const expected =     '-1--2-------1--2----1--2-----#';
 
-    const result = source.retryWhen((errors: any) => notifier);
+    const result = source.retryWhen((errors) => notifier);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should retry when notified via returned notifier on thrown error', (done: MochaDone) => {
+  it('should retry when notified via returned notifier on thrown error', (done) => {
     let retried = false;
     const expected = [1, 2, 1, 2];
     let i = 0;
     Observable.of(1, 2, 3)
-      .map((n: number) => {
+      .map((n) => {
         if (n === 3) {
           throw 'bad';
         }
         return n;
       })
-      .retryWhen((errors: any) => errors.map((x: any) => {
+      .retryWhen((errors) => errors.map((x) => {
           expect(x).to.equal('bad');
           if (retried) {
             throw new Error('done');
@@ -55,28 +55,28 @@ describe('Observable.prototype.retryWhen', () => {
           retried = true;
           return x;
       }))
-      .subscribe((x: any) => {
+      .subscribe((x) => {
         expect(x).to.equal(expected[i++]);
       },
-      (err: any) => {
+      (err) => {
         expect(err).to.be.an('error', 'done');
         done();
       });
   });
 
-  it('should retry when notified and complete on returned completion', (done: MochaDone) => {
+  it('should retry when notified and complete on returned completion', (done) => {
     const expected = [1, 2, 1, 2];
     Observable.of(1, 2, 3)
-      .map((n: number) => {
+      .map((n) => {
         if (n === 3) {
           throw 'bad';
         }
         return n;
       })
-      .retryWhen((errors: any) => Observable.empty())
-      .subscribe((n: number) => {
+      .retryWhen((errors) => Observable.empty())
+      .subscribe((n) => {
         expect(n).to.equal(expected.shift());
-      }, (err: any) => {
+      }, (err) => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -89,7 +89,7 @@ describe('Observable.prototype.retryWhen', () => {
     const notifier = cold('|');
     const expected =      '|';
 
-    const result = source.retryWhen((errors: any) => notifier);
+    const result = source.retryWhen((errors) => notifier);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -101,7 +101,7 @@ describe('Observable.prototype.retryWhen', () => {
     const notifier = cold('-');
     const expected =      '|';
 
-    const result = source.retryWhen((errors: any) => notifier);
+    const result = source.retryWhen((errors) => notifier);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -114,7 +114,7 @@ describe('Observable.prototype.retryWhen', () => {
     const notifier = cold('|');
     const expected =      '-';
 
-    const result = source.retryWhen((errors: any) => notifier);
+    const result = source.retryWhen((errors) => notifier);
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -127,7 +127,7 @@ describe('Observable.prototype.retryWhen', () => {
     const notifier = cold('-');
     const expected =      '-';
 
-    const result = source.retryWhen((errors: any) => notifier);
+    const result = source.retryWhen((errors) => notifier);
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -138,7 +138,7 @@ describe('Observable.prototype.retryWhen', () => {
     const notifier = cold('|');
     const expected =      '|';
 
-    const result = source.retryWhen((errors: any) => notifier);
+    const result = source.retryWhen((errors) => notifier);
 
     expectObservable(result).toBe(expected);
   });
@@ -148,7 +148,7 @@ describe('Observable.prototype.retryWhen', () => {
     const notifier = cold('-');
     const expected =      '-';
 
-    const result = source.retryWhen((errors: any) => notifier);
+    const result = source.retryWhen((errors) => notifier);
 
     expectObservable(result).toBe(expected);
   });
@@ -159,7 +159,7 @@ describe('Observable.prototype.retryWhen', () => {
     const notifier = cold(           '-');
     const expected =      '--a--b--c---------------------------------';
 
-    const result = source.retryWhen((errors: any) => notifier);
+    const result = source.retryWhen((errors) => notifier);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -170,7 +170,7 @@ describe('Observable.prototype.retryWhen', () => {
     const subs =        '^          !';
     const expected =    '--a--b--c--#';
 
-    const result = source.retryWhen(<any>(() => { throw 'bad!'; }));
+    const result = source.retryWhen(() => { throw 'bad!'; });
 
     expectObservable(result).toBe(expected, undefined, 'bad!');
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -183,7 +183,7 @@ describe('Observable.prototype.retryWhen', () => {
     const notifier = cold(           '|');
     const expected =      '--a--b--c--|';
 
-    const result = source.retryWhen((errors: any) => notifier);
+    const result = source.retryWhen((errors) => notifier);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -195,7 +195,7 @@ describe('Observable.prototype.retryWhen', () => {
     const notifier = cold(           '|');
     const expected =      '--a--b--c--|';
 
-    const result = source.retryWhen((errors: any) => notifier);
+    const result = source.retryWhen((errors) => notifier);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -207,7 +207,7 @@ describe('Observable.prototype.retryWhen', () => {
     const notifier = cold(           '|');
     const expected =      '--a--b--c---';
 
-    const result = source.retryWhen((errors: any) => notifier);
+    const result = source.retryWhen((errors) => notifier);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -219,7 +219,7 @@ describe('Observable.prototype.retryWhen', () => {
     const notifier = cold(         '|');
     const expected =      '---b--c--|';
 
-    const result = source.retryWhen((errors: any) => notifier);
+    const result = source.retryWhen((errors) => notifier);
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -234,7 +234,7 @@ describe('Observable.prototype.retryWhen', () => {
     const expected =     '-1--2---      -5---|';
 
     const result = source
-      .map((x: string) => {
+      .map((x) => {
         if (x === '3') {
           throw 'error';
         }
@@ -256,7 +256,7 @@ describe('Observable.prototype.retryWhen', () => {
     const nsubs =        '       ^            !       ';
     const expected =     '-1--2-----1--2----1--       ';
 
-    const result = source.retryWhen((errors: any) => notifier);
+    const result = source.retryWhen((errors) => notifier);
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -274,9 +274,9 @@ describe('Observable.prototype.retryWhen', () => {
     const unsub =        '                    !       ';
 
     const result = source
-      .mergeMap((x: string) => Observable.of(x))
-      .retryWhen((errors: any) => notifier)
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x))
+      .retryWhen((errors) => notifier)
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -292,8 +292,8 @@ describe('Observable.prototype.retryWhen', () => {
     const expected =    '-1--2---1--2---1--2--#';
 
     let invoked = 0;
-    const result = source.retryWhen((errors: any) =>
-      errors.map((err: any) => {
+    const result = source.retryWhen((errors) =>
+      errors.map((err) => {
         if (++invoked === 3) {
           throw 'error';
         } else {
@@ -314,7 +314,7 @@ describe('Observable.prototype.retryWhen', () => {
     const expected =    '-1--2---1--2---1--2--|';
 
     let invoked = 0;
-    const result = source.retryWhen((errors: any) => errors
+    const result = source.retryWhen((errors) => errors
         .map(() => 'x')
         .takeUntil(
           errors.flatMap(() => {
