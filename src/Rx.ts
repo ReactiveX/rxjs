@@ -225,3 +225,5 @@ export {
     Scheduler,
     Symbol
 };
+
+export as namespace Rx;
