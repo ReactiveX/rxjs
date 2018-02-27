@@ -129,16 +129,17 @@ describe('Observable.fromEvent', () => {
     expect(subscribe).to.throw(TypeError, 'Invalid event target');
   });
 
-  it('should pass through options to addEventListener', () => {
-    let actualOptions;
+  it('should pass through options to addEventListener and removeEventListener', () => {
+    let onOptions;
+    let offOptions;
     const expectedOptions = { capture: true, passive: true };
 
     const obj = {
       addEventListener: (a: string, b: EventListenerOrEventListenerObject, c?: any) => {
-        actualOptions = c;
+        onOptions = c;
       },
       removeEventListener: (a: string, b: EventListenerOrEventListenerObject, c?: any) => {
-        //noop
+        offOptions = c;
       }
     };
 
@@ -149,7 +150,8 @@ describe('Observable.fromEvent', () => {
 
     subscription.unsubscribe();
 
-    expect(actualOptions).to.equal(expectedOptions);
+    expect(onOptions).to.equal(expectedOptions);
+    expect(offOptions).to.equal(expectedOptions);
   });
 
   it('should pass through events that occur', (done: MochaDone) => {
