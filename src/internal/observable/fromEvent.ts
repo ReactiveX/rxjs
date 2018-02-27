@@ -166,7 +166,7 @@ function setupSubscription<T>(sourceObj: EventTargetLike, eventName: string,
   } else if (isEventTarget(sourceObj)) {
     const source = sourceObj;
     sourceObj.addEventListener(eventName, handler as EventListener, options);
-    unsubscribe = () => source.removeEventListener(eventName, handler as EventListener);
+    unsubscribe = () => source.removeEventListener(eventName, handler as EventListener, options);
   } else if (isJQueryStyleEventEmitter(sourceObj)) {
     const source = sourceObj;
     sourceObj.on(eventName, handler);
