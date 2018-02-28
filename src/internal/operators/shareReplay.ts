@@ -10,7 +10,9 @@ import { Subscriber } from '../Subscriber';
  * @owner Observable
  */
 export function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: IScheduler ): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(shareReplayOperator(bufferSize, windowTime, scheduler));
+  return function shareReplayFunction(source: Observable<T>) {
+    return source.lift(shareReplayOperator(bufferSize, windowTime, scheduler));
+  };
 }
 
 function shareReplayOperator<T>(bufferSize?: number, windowTime?: number, scheduler?: IScheduler) {
@@ -38,14 +40,16 @@ function shareReplayOperator<T>(bufferSize?: number, windowTime?: number, schedu
       });
     }
 
-    const innerSub = subject.subscribe(this);
-
-    return () => {
+    const _unsubscribe = this.unsubscribe;
+    this.unsubscribe = function() {
       refCount--;
-      innerSub.unsubscribe();
       if (subscription && refCount === 0 && isComplete) {
         subscription.unsubscribe();
       }
+
+      _unsubscribe.apply(this, arguments);
     };
+
+    subject.subscribe(this);
   };
 }
