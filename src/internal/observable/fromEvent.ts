@@ -144,7 +144,13 @@ export function fromEvent<T>(
 ): Observable<T> {
 
   return new Observable<T>(subscriber => {
-    const handler = (e: T) => subscriber.next(e);
+    function handler(e: T) {
+      if (arguments.length > 1) {
+        subscriber.next(Array.prototype.slice.call(arguments));
+      } else {
+        subscriber.next(e);
+      }
+    }
     setupSubscription(target, eventName, handler, subscriber, options as EventListenerOptions);
   });
 }

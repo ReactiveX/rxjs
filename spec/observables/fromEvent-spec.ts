@@ -178,6 +178,29 @@ describe('fromEvent', () => {
     send('test');
   });
 
+  it('should emit multiple arguments from event as an array', (done: MochaDone) => {
+    let send;
+    const obj = {
+      on: (name: string, handler: Function) => {
+        send = handler;
+      },
+      off: () => {
+        //noop
+      }
+    };
+
+    fromEvent(obj, 'click').take(1)
+      .subscribe((e: any) => {
+        expect(e).to.deep.equal([1, 2, 3]);
+      }, (err: any) => {
+        done(new Error('should not be called'));
+      }, () => {
+        done();
+      });
+
+    send(1, 2, 3);
+  });
+
   it('should not throw an exception calling toString on obj with a null prototype', (done: MochaDone) => {
     // NOTE: Can not test with Object.create(null) or `class Foo extends null`
     // due to TypeScript bug. https://github.com/Microsoft/TypeScript/issues/1108
