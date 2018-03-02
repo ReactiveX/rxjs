@@ -40,7 +40,9 @@ fs.removeSync(PKG_ROOT);
 let rootPackageJson = Object.assign({}, pkg, {
   name: 'rxjs',
   main: './index.js',
-  typings: './index.d.ts'
+  typings: './index.d.ts',
+  module: './_esm5/index.js',
+  es2015: './_esm2015/index.js'
 });
 
 // Get a list of the file names. Sort in reverse order so re-export files
@@ -102,6 +104,10 @@ copySources(ESM2015_ROOT, ESM2015_PKG, true);
 fs.copySync('./tsconfig.json', PKG_ROOT + 'src/tsconfig.json');
 
 fs.writeJsonSync(PKG_ROOT + 'package.json', rootPackageJson);
+fs.copySync('src/operators/package.json', PKG_ROOT + '/operators/package.json');
+fs.copySync('src/ajax/package.json', PKG_ROOT + '/ajax/package.json');
+fs.copySync('src/websocket/package.json', PKG_ROOT + '/websocket/package.json');
+fs.copySync('src/testing/package.json', PKG_ROOT + '/testing/package.json');
 
 if (fs.existsSync(UMD_ROOT)) {
   fs.copySync(UMD_ROOT, UMD_PKG);
