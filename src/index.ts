@@ -35,7 +35,7 @@ export { from } from './internal/observable/from';
 export { fromEvent } from './internal/observable/fromEvent';
 export { fromEventPattern } from './internal/observable/fromEventPattern';
 export { generate } from './internal/observable/generate';
-export { _if as iif } from './internal/observable/if';
+export { iif } from './internal/observable/iif';
 export { interval } from './internal/observable/interval';
 export { merge } from './internal/observable/merge';
 export { never } from './internal/observable/never';
