@@ -252,31 +252,11 @@ describe('Observable.prototype.concatMapTo', () => {
     expectObservable(result).toBe(expected);
   });
 
-  it('should concatMapTo many outer to inner arrays, using resultSelector', () => {
-    const e1 =   hot('2-----4--------3--------2-------|');
-    const expected = '(2345)(4567)---(3456)---(2345)--|';
-
-    const result = e1.concatMapTo(['0', '1', '2', '3'],
-      (x, y) => String(parseInt(x) + parseInt(y)));
-
-    expectObservable(result).toBe(expected);
-  });
-
   it('should concatMapTo many outer to inner arrays, and outer throws', () => {
     const e1 =   hot('2-----4--------3--------2-------#');
     const expected = '(0123)(0123)---(0123)---(0123)--#';
 
     const result = e1.concatMapTo(['0', '1', '2', '3']);
-
-    expectObservable(result).toBe(expected);
-  });
-
-  it('should concatMapTo many outer to inner arrays, resultSelector, outer throws', () => {
-    const e1 =   hot('2-----4--------3--------2-------#');
-    const expected = '(2345)(4567)---(3456)---(2345)--#';
-
-    const result = e1.concatMapTo(['0', '1', '2', '3'],
-      (x, y) => String(parseInt(x) + parseInt(y)));
 
     expectObservable(result).toBe(expected);
   });
@@ -291,32 +271,7 @@ describe('Observable.prototype.concatMapTo', () => {
     expectObservable(result, unsub).toBe(expected);
   });
 
-  it('should concatMapTo many outer to inner arrays, resultSelector, outer unsubscribed', () => {
-    const e1 =   hot('2-----4--------3--------2-------|');
-    const unsub =    '             !';
-    const expected = '(2345)(4567)--';
-
-    const result = e1.concatMapTo(['0', '1', '2', '3'],
-      (x, y) => String(parseInt(x) + parseInt(y)));
-
-    expectObservable(result, unsub).toBe(expected);
-  });
-
-  it('should concatMapTo many outer to inner arrays, resultSelector throws', () => {
-    const e1 =   hot('2-----4--------3--------2-------|');
-    const expected = '(2345)(4567)---#';
-
-    const result = e1.concatMapTo(['0', '1', '2', '3'], (x, y) => {
-      if (x === '3') {
-        throw 'error';
-      }
-      return String(parseInt(x) + parseInt(y));
-    });
-
-    expectObservable(result).toBe(expected);
-  });
-
-  it('should map values to constant resolved promises and concatenate', (done) => {
+  it('should map values to constant resolved promises and concatenate', (done: MochaDone) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
 
     const results: number[] = [];
@@ -337,56 +292,6 @@ describe('Observable.prototype.concatMapTo', () => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
 
     source.concatMapTo(Observable.from(Promise.reject(42))).subscribe(
-      (x) => {
-        done(new Error('Subscriber next handler not supposed to be called.'));
-      },
-      (err) => {
-        expect(err).to.equal(42);
-        done();
-      },
-      () => {
-        done(new Error('Subscriber complete handler not supposed to be called.'));
-      });
-  });
-
-  it('should concatMapTo values to resolved promises with resultSelector', (done) => {
-    const source = Rx.Observable.from([4, 3, 2, 1]);
-    const resultSelectorCalledWith: number[][] = [];
-    const inner = Observable.from(Promise.resolve(42));
-    const resultSelector = function (outerVal: number, innerVal: number, outerIndex: number, innerIndex: number) {
-      resultSelectorCalledWith.push([].slice.call(arguments));
-      return 8;
-    };
-
-    const results: number[] = [];
-    const expectedCalls = [
-      [4, 42, 0, 0],
-      [3, 42, 1, 0],
-      [2, 42, 2, 0],
-      [1, 42, 3, 0]
-    ];
-    source.concatMapTo(inner, resultSelector).subscribe(
-      (x) => {
-        results.push(x);
-      },
-      (err) => {
-        done(new Error('Subscriber error handler not supposed to be called.'));
-      },
-      () => {
-        expect(results).to.deep.equal([8, 8, 8, 8]);
-        expect(resultSelectorCalledWith).to.deep.equal(expectedCalls);
-        done();
-      });
-  });
-
-  it('should concatMapTo values to rejected promises with resultSelector', (done) => {
-    const source = Rx.Observable.from([4, 3, 2, 1]);
-    const inner = Observable.from(Promise.reject(42));
-    const resultSelector = () => {
-      throw 'this should not be called';
-    };
-
-    source.concatMapTo(inner, resultSelector).subscribe(
       (x) => {
         done(new Error('Subscriber next handler not supposed to be called.'));
       },

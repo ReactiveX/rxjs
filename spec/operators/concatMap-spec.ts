@@ -538,41 +538,6 @@ describe('Observable.prototype.concatMap', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should concatMap many outer to inner arrays, using resultSelector', () => {
-    const e1 =   hot('2-----4--------3--------2-------|');
-    const e1subs =   '^                               !';
-    const expected = '(44)--(8888)---(666)----(44)----|';
-
-    const result = e1.concatMap((value) => arrayRepeat(value, +value),
-      (x, y) => String(parseInt(x) + parseInt(y)));
-
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should concatMap many outer to inner arrays, and outer throws', () => {
-    const e1 =   hot('2-----4--------3--------2-------#');
-    const e1subs =   '^                               !';
-    const expected = '(22)--(4444)---(333)----(22)----#';
-
-    const result = e1.concatMap((value) => arrayRepeat(value, +value));
-
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should concatMap many outer to inner arrays, resultSelector, outer throws', () => {
-    const e1 =   hot('2-----4--------3--------2-------#');
-    const e1subs =   '^                               !';
-    const expected = '(44)--(8888)---(666)----(44)----#';
-
-    const result = e1.concatMap((value) => arrayRepeat(value, +value),
-      (x, y) => String(parseInt(x) + parseInt(y)));
-
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
   it('should mergeMap many outer to inner arrays, outer unsubscribed early', () => {
     const e1 =   hot('2-----4--------3--------2-------|');
     const e1subs =   '^            !                   ';
@@ -580,19 +545,6 @@ describe('Observable.prototype.concatMap', () => {
     const expected = '(22)--(4444)--                   ';
 
     const result = e1.concatMap((value) => arrayRepeat(value, +value));
-
-    expectObservable(result, unsub).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should concatMap many outer to inner arrays, resultSelector, outer unsubscribed', () => {
-    const e1 =   hot('2-----4--------3--------2-------|');
-    const e1subs =   '^            !                   ';
-    const unsub =    '             !                   ';
-    const expected = '(44)--(8888)--                   ';
-
-    const result = e1.concatMap((value) => arrayRepeat(value, +value),
-      (x, y) => String(parseInt(x) + parseInt(y)));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -615,45 +567,7 @@ describe('Observable.prototype.concatMap', () => {
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
-
-  it('should concatMap many outer to inner arrays, resultSelector throws', () => {
-    const e1 =   hot('2-----4--------3--------2-------|');
-    const e1subs =   '^              !                 ';
-    const expected = '(44)--(8888)---#                 ';
-
-    const result = e1.concatMap((value) => arrayRepeat(value, +value),
-      (inner, outer) => {
-        if (outer === '3') {
-          throw 'error';
-        }
-        return String(parseInt(outer) + parseInt(inner));
-      });
-
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should concatMap many outer to inner arrays, resultSelector, project throws', () => {
-    const e1 =   hot('2-----4--------3--------2-------|');
-    const e1subs =   '^              !                 ';
-    const expected = '(44)--(8888)---#                 ';
-
-    let invoked = 0;
-    const result = e1.concatMap((value) => {
-      invoked++;
-      if (invoked === 3) {
-        throw 'error';
-      }
-      return arrayRepeat(value, +value);
-    }, (inner, outer) => {
-      return String(parseInt(outer) + parseInt(inner));
-    });
-
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should map values to constant resolved promises and concatenate', (done) => {
+  it('should map values to constant resolved promises and concatenate', (done: MochaDone) => {
     const source = Rx.Observable.from([4, 3, 2, 1]);
     const project = (value: number) => Observable.from(Promise.resolve(42));
 
@@ -705,54 +619,6 @@ describe('Observable.prototype.concatMap', () => {
     const project = (value: number, index: number) => Observable.from(Promise.reject('' + value + '-' + index));
 
     source.concatMap(project).subscribe(
-      (x) => {
-        done(new Error('Subscriber next handler not supposed to be called.'));
-      }, (err) => {
-        expect(err).to.deep.equal('4-0');
-        done();
-      }, () => {
-        done(new Error('Subscriber complete handler not supposed to be called.'));
-      });
-  });
-
-  it('should concatMap values to resolved promises with resultSelector', (done) => {
-    const source = Rx.Observable.from([4, 3, 2, 1]);
-    const resultSelectorCalledWith: number[][] = [];
-    const project = (value: number, index: number) => Observable.from((Promise.resolve([value, index])));
-
-    const resultSelector = function (outerVal: any, innerVal: any, outerIndex: any, innerIndex: any): number {
-      resultSelectorCalledWith.push([].slice.call(arguments));
-      return 8;
-    };
-
-    const results: number[] = [];
-    const expectedCalls = [
-      [4, [4, 0], 0, 0],
-      [3, [3, 1], 1, 0],
-      [2, [2, 2], 2, 0],
-      [1, [1, 3], 3, 0]
-    ];
-    source.concatMap(project, resultSelector).subscribe(
-      (x) => {
-        results.push(x);
-      }, (err) => {
-        done(new Error('Subscriber error handler not supposed to be called.'));
-      }, () => {
-        expect(results).to.deep.equal([8, 8, 8, 8]);
-        expect(resultSelectorCalledWith).to.deep.equal(expectedCalls);
-        done();
-      });
-  });
-
-  it('should concatMap values to rejected promises with resultSelector', (done) => {
-    const source = Rx.Observable.from([4, 3, 2, 1]);
-    const project = (value: number, index: number) => Observable.from(Promise.reject('' + value + '-' + index));
-
-    const resultSelector = () => {
-      throw 'this should not be called';
-    };
-
-    source.concatMap(project, resultSelector).subscribe(
       (x) => {
         done(new Error('Subscriber next handler not supposed to be called.'));
       }, (err) => {

@@ -40,7 +40,7 @@ describe('Observable.prototype.first', () => {
     const expected =    '-----(a|)';
     const sub =         '^    !';
 
-    expectObservable(e1.first(null, null, 'a')).toBe(expected);
+    expectObservable(e1.first(null, 'a')).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -145,7 +145,7 @@ describe('Observable.prototype.first', () => {
       return value === 's';
     };
 
-    expectObservable(e1.first(predicate, null, 'd')).toBe(expected);
+    expectObservable(e1.first(predicate, 'd')).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -186,34 +186,6 @@ describe('Observable.prototype.first', () => {
     };
 
     expectObservable(e1.first(predicate)).toBe(expected, null, 'error');
-    expectSubscriptions(e1.subscriptions).toBe(sub);
-  });
-
-  it('should support a result selector argument', () => {
-    const e1 = hot('--a--^---b---c---d---e--|');
-    const expected =    '--------(x|)';
-    const sub =         '^       !';
-    const predicate = function (x) { return x === 'c'; };
-    const resultSelector = function (x, i) {
-      expect(i).to.equal(1);
-      expect(x).to.equal('c');
-      return 'x';
-    };
-
-    expectObservable(e1.first(predicate, resultSelector)).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(sub);
-  });
-
-  it('should raise error when result selector throws', () => {
-    const e1 = hot('--a--^---b---c---d---e--|');
-    const expected =    '--------#';
-    const sub =         '^       !';
-    const predicate = function (x) { return x === 'c'; };
-    const resultSelector = function (x, i) {
-      throw 'error';
-    };
-
-    expectObservable(e1.first(predicate, resultSelector)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -267,22 +239,10 @@ describe('Observable.prototype.first', () => {
       // After the type guard `first` predicates, the type is narrowed to string
       xs.first(isString)
         .subscribe(s => s.length); // s is string
-      xs.first(isString, s => s.substr(0)) // s is string in predicate
-        .subscribe(s => s.length); // s is string
 
       // boolean predicates preserve the type
       xs.first(x => typeof x === 'string')
         .subscribe(x => x); // x is still string | number
-      xs.first(x => !!x, x => x)
-        .subscribe(x => x); // x is still string | number
-      xs.first(x => typeof x === 'string', x => x, '') // default is string; x remains string | number
-        .subscribe(x => x); // x is still string | number
-
-      // `first` still uses the `resultSelector` return type, if it exists.
-      xs.first(x => typeof x === 'string', x => ({ str: `${x}` })) // x remains string | number
-        .subscribe(o => o.str); // o is { str: string }
-      xs.first(x => typeof x === 'string', x => ({ str: `${x}` }), { str: '' })
-        .subscribe(o => o.str); // o is { str: string }
     }
 
     // tslint:disable enable

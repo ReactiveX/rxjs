@@ -7,11 +7,6 @@ import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction } from '../types';
 
-/* tslint:disable:max-line-length */
-export function exhaustMap<T, R>(project: (value: T, index: number) => ObservableInput<R>): OperatorFunction<T, R>;
-export function exhaustMap<T, I, R>(project: (value: T, index: number) => ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
-/* tslint:enable:max-line-length */
-
 /**
  * Projects each source value to an Observable which is merged in the output
  * Observable only if the previous projected Observable has completed.
@@ -43,34 +38,23 @@ export function exhaustMap<T, I, R>(project: (value: T, index: number) => Observ
  * @param {function(value: T, ?index: number): ObservableInput} project A function
  * that, when applied to an item emitted by the source Observable, returns an
  * Observable.
- * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]
- * A function to produce the value on the output Observable based on the values
- * and the indices of the source (outer) emission and the inner Observable
- * emission. The arguments passed to this function are:
- * - `outerValue`: the value that came from the source
- * - `innerValue`: the value that came from the projected Observable
- * - `outerIndex`: the "index" of the value that came from the source
- * - `innerIndex`: the "index" of the value from the projected Observable
  * @return {Observable} An Observable containing projected Observables
  * of each item of the source, ignoring projected Observables that start before
  * their preceding Observable has completed.
  * @method exhaustMap
  * @owner Observable
  */
-export function exhaustMap<T, I, R>(
-  project: (value: T, index: number) => ObservableInput<I>,
-  resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R
-  ): OperatorFunction<T, R> {
-    return (source: Observable<T>) => source.lift(new SwitchFirstMapOperator(project, resultSelector));
-  }
+export function exhaustMap<T, R>(project: (value: T, index: number) => ObservableInput<R>): OperatorFunction<T, R> {
+  return (source: Observable<T>) =>
+    source.lift(new SwitchFirstMapOperator(project));
+}
 
-class SwitchFirstMapOperator<T, I, R> implements Operator<T, R> {
-  constructor(private project: (value: T, index: number) => ObservableInput<I>,
-              private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {
+class SwitchFirstMapOperator<T, R> implements Operator<T, R> {
+  constructor(private project: (value: T, index: number) => ObservableInput<R>) {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new SwitchFirstMapSubscriber(subscriber, this.project, this.resultSelector));
+    return source.subscribe(new SwitchFirstMapSubscriber(subscriber, this.project));
   }
 }
 
@@ -79,14 +63,13 @@ class SwitchFirstMapOperator<T, I, R> implements Operator<T, R> {
  * @ignore
  * @extends {Ignored}
  */
-class SwitchFirstMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
-  private hasSubscription: boolean = false;
-  private hasCompleted: boolean = false;
-  private index: number = 0;
+class SwitchFirstMapSubscriber<T, R> extends OuterSubscriber<T, R> {
+  private hasSubscription = false;
+  private hasCompleted = false;
+  private index = 0;
 
   constructor(destination: Subscriber<R>,
-              private project: (value: T, index: number) => ObservableInput<I>,
-              private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {
+              private project: (value: T, index: number) => ObservableInput<R>) {
     super(destination);
   }
 
@@ -115,26 +98,10 @@ class SwitchFirstMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: I,
+  notifyNext(outerValue: T, innerValue: R,
              outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, I>): void {
-    const { resultSelector, destination } = this;
-    if (resultSelector) {
-      this.trySelectResult(outerValue, innerValue, outerIndex, innerIndex);
-    } else {
-      destination.next(innerValue);
-    }
-  }
-
-  private trySelectResult(outerValue: T, innerValue: I,
-                          outerIndex: number, innerIndex: number): void {
-    const { resultSelector, destination } = this;
-    try {
-      const result = resultSelector(outerValue, innerValue, outerIndex, innerIndex);
-      destination.next(result);
-    } catch (err) {
-      destination.error(err);
-    }
+             innerSub: InnerSubscriber<T, R>): void {
+    this.destination.next(innerValue);
   }
 
   notifyError(err: any): void {
