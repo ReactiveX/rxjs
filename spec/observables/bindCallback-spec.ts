@@ -60,40 +60,6 @@ describe('bindCallback', () => {
       expect(results).to.deep.equal([5, 'done']);
     });
 
-    it('should emit one value chosen by a selector', () => {
-      function callback(datum: number, cb: Function) {
-        cb(datum);
-      }
-      const boundCallback = bindCallback(callback, (datum: number) => datum);
-      const results: Array<string|number> = [];
-
-      boundCallback(42)
-        .subscribe((x: number) => {
-          results.push(x);
-        }, null, () => {
-          results.push('done');
-        });
-
-      expect(results).to.deep.equal([42, 'done']);
-    });
-
-    it('should emit an error when the selector throws', () => {
-      const expected = new Error('Yikes!');
-      function callback(cb: Function) {
-        cb(42);
-      }
-      const boundCallback = bindCallback(callback, (err: any) => { throw expected; });
-
-      boundCallback()
-        .subscribe(() => {
-          throw new Error('should not next');
-        }, (err: any) => {
-          expect(err).to.equal(expected);
-        }, () => {
-          throw new Error('should not complete');
-        });
-    });
-
     it('should not emit, throw or complete if immediately unsubscribed', (done: MochaDone) => {
       const nextSpy = sinon.spy();
       const throwSpy = sinon.spy();
@@ -125,7 +91,7 @@ describe('bindCallback', () => {
       function callback(cb: Function) {
         cb();
       }
-      const boundCallback = bindCallback(callback, null, rxTestScheduler);
+      const boundCallback = bindCallback(callback, rxTestScheduler);
       const results: Array<string|number> = [];
 
       boundCallback()
@@ -144,7 +110,7 @@ describe('bindCallback', () => {
       function callback(datum: number, cb: Function) {
         cb(datum);
       }
-      const boundCallback = bindCallback<number>(callback, null, rxTestScheduler);
+      const boundCallback = bindCallback<number>(callback, rxTestScheduler);
       const results: Array<string|number> = [];
 
       boundCallback(42)
@@ -164,7 +130,7 @@ describe('bindCallback', () => {
         cb(this.datum);
       }
 
-      const boundCallback = bindCallback(callback, null, rxTestScheduler);
+      const boundCallback = bindCallback(callback, rxTestScheduler);
       const results: Array<string|number> = [];
 
       boundCallback.apply({ datum: 5 })
@@ -184,7 +150,7 @@ describe('bindCallback', () => {
       function callback(datum: number, cb: Function): never {
         throw expected;
       }
-      const boundCallback = bindCallback(callback, null, rxTestScheduler);
+      const boundCallback = bindCallback(callback, rxTestScheduler);
 
       boundCallback(42)
         .subscribe(x => {
@@ -198,56 +164,11 @@ describe('bindCallback', () => {
       rxTestScheduler.flush();
     });
 
-    it('should error if selector throws', () => {
-      const expected = new Error('what? a selector? I don\'t think so');
-      function callback(datum: number, cb: Function) {
-        cb(datum);
-      }
-      function selector() {
-        throw expected;
-      }
-      const boundCallback = bindCallback(callback, selector, rxTestScheduler);
-
-      boundCallback(42)
-        .subscribe((x: any) => {
-          throw new Error('should not next');
-        }, (err: any) => {
-          expect(err).to.equal(expected);
-        }, () => {
-          throw new Error('should not complete');
-        });
-
-      rxTestScheduler.flush();
-    });
-
-    it('should use a selector', () => {
-      function callback(datum: number, cb: Function) {
-        cb(datum);
-      }
-      function selector(x: number) {
-        return x + '!!!';
-      }
-      const boundCallback = bindCallback(callback, selector, rxTestScheduler);
-      const results: Array<string|number> = [];
-
-      boundCallback(42)
-        .subscribe((x: string) => {
-          results.push(x);
-        }, null, () => {
-          results.push('done');
-        });
-
-      rxTestScheduler.flush();
-
-      expect(results).to.deep.equal(['42!!!', 'done']);
-    });
-  });
-
   it('should pass multiple inner arguments as an array', () => {
     function callback(datum: number, cb: Function) {
       cb(datum, 1, 2, 3);
     }
-    const boundCallback = bindCallback<number[]>(callback, null, rxTestScheduler);
+    const boundCallback = bindCallback<number[]>(callback, rxTestScheduler);
     const results: Array<string|number[]> = [];
 
     boundCallback(42)
@@ -262,36 +183,13 @@ describe('bindCallback', () => {
     expect(results).to.deep.equal([[42, 1, 2, 3], 'done']);
   });
 
-  it('should pass multiple inner arguments to the selector if there is one', () => {
-    function callback(datum: number, cb: Function) {
-      cb(datum, 1, 2, 3);
-    }
-    function selector(a: number, b: number, c: number, d: number) {
-      expect([a, b, c, d]).to.deep.equal([42, 1, 2, 3]);
-      return a + b + c + d;
-    }
-    const boundCallback = bindCallback(callback, selector, rxTestScheduler);
-    const results: Array<string|number> = [];
-
-    boundCallback(42)
-      .subscribe((x: number) => {
-        results.push(x);
-      }, null, () => {
-        results.push('done');
-      });
-
-    rxTestScheduler.flush();
-
-    expect(results).to.deep.equal([48, 'done']);
-  });
-
   it('should cache value for next subscription and not call callbackFunc again', () => {
     let calls = 0;
     function callback(datum: number, cb: Function) {
       calls++;
       cb(datum);
     }
-    const boundCallback = bindCallback<number>(callback, null, rxTestScheduler);
+    const boundCallback = bindCallback<number>(callback, rxTestScheduler);
     const results1: Array<number|string> = [];
     const results2: Array<number|string> = [];
 
@@ -322,7 +220,7 @@ describe('bindCallback', () => {
         calls++;
         cb(datum);
       }
-      const boundCallback = bindCallback(callback, null, rxTestScheduler);
+      const boundCallback = bindCallback(callback, rxTestScheduler);
       const results1: Array<number|string> = [];
 
       const source = boundCallback(42);
@@ -339,4 +237,5 @@ describe('bindCallback', () => {
 
       expect(calls).to.equal(0);
     });
+  });
 });

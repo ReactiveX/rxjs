@@ -5,23 +5,15 @@ import { Subscriber } from '../Subscriber';
 import { Action } from '../scheduler/Action';
 
 // tslint:disable:max-line-length
-export function bindCallback(callbackFunc: (callback: () => any) => any, selector?: void, scheduler?: IScheduler): () => Observable<void>;
-export function bindCallback<R>(callbackFunc: (callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): () => Observable<R>;
-export function bindCallback<T, R>(callbackFunc: (v1: T, callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T) => Observable<R>;
-export function bindCallback<T, T2, R>(callbackFunc: (v1: T, v2: T2, callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2) => Observable<R>;
-export function bindCallback<T, T2, T3, R>(callbackFunc: (v1: T, v2: T2, v3: T3, callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3) => Observable<R>;
-export function bindCallback<T, T2, T3, T4, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4) => Observable<R>;
-export function bindCallback<T, T2, T3, T4, T5, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => Observable<R>;
-export function bindCallback<T, T2, T3, T4, T5, T6, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => Observable<R>;
-export function bindCallback<R>(callbackFunc: (callback: (...args: any[]) => any) => any, selector: (...args: any[]) => R, scheduler?: IScheduler): () => Observable<R>;
-export function bindCallback<T, R>(callbackFunc: (v1: T, callback: (...args: any[]) => any) => any, selector: (...args: any[]) => R, scheduler?: IScheduler): (v1: T) => Observable<R>;
-export function bindCallback<T, T2, R>(callbackFunc: (v1: T, v2: T2, callback: (...args: any[]) => any) => any, selector: (...args: any[]) => R, scheduler?: IScheduler): (v1: T, v2: T2) => Observable<R>;
-export function bindCallback<T, T2, T3, R>(callbackFunc: (v1: T, v2: T2, v3: T3, callback: (...args: any[]) => any) => any, selector: (...args: any[]) => R, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3) => Observable<R>;
-export function bindCallback<T, T2, T3, T4, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, callback: (...args: any[]) => any) => any, selector: (...args: any[]) => R, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4) => Observable<R>;
-export function bindCallback<T, T2, T3, T4, T5, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, callback: (...args: any[]) => any) => any, selector: (...args: any[]) => R, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => Observable<R>;
-export function bindCallback<T, T2, T3, T4, T5, T6, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, callback: (...args: any[]) => any) => any, selector: (...args: any[]) => R, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => Observable<R>;
-export function bindCallback<T>(callbackFunc: Function, selector?: void, scheduler?: IScheduler): (...args: any[]) => Observable<T>;
-export function bindCallback<T>(callbackFunc: Function, selector?: (...args: any[]) => T, scheduler?: IScheduler): (...args: any[]) => Observable<T>;
+export function bindCallback(callbackFunc: (callback: () => any) => any, scheduler?: IScheduler): () => Observable<void>;
+export function bindCallback<R>(callbackFunc: (callback: (result: R) => any) => any, scheduler?: IScheduler): () => Observable<R>;
+export function bindCallback<T, R>(callbackFunc: (v1: T, callback: (result: R) => any) => any, scheduler?: IScheduler): (v1: T) => Observable<R>;
+export function bindCallback<T, T2, R>(callbackFunc: (v1: T, v2: T2, callback: (result: R) => any) => any, scheduler?: IScheduler): (v1: T, v2: T2) => Observable<R>;
+export function bindCallback<T, T2, T3, R>(callbackFunc: (v1: T, v2: T2, v3: T3, callback: (result: R) => any) => any, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3) => Observable<R>;
+export function bindCallback<T, T2, T3, T4, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, callback: (result: R) => any) => any, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4) => Observable<R>;
+export function bindCallback<T, T2, T3, T4, T5, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, callback: (result: R) => any) => any, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => Observable<R>;
+export function bindCallback<T, T2, T3, T4, T5, T6, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, callback: (result: R) => any) => any, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => Observable<R>;
+export function bindCallback<T>(callbackFunc: Function, scheduler?: IScheduler): (...args: any[]) => Observable<T>;
 // tslint:enable:max-line-length
 
 /**
@@ -47,14 +39,6 @@ export function bindCallback<T>(callbackFunc: Function, selector?: (...args: any
  * when the output function is, but rather when the Observable returned by the output
  * function is subscribed. This means if `func` makes an AJAX request, that request
  * will be made every time someone subscribes to the resulting Observable, but not before.
- *
- * Optionally, a selector function can be passed to `bindObservable`. The selector function
- * takes the same arguments as the callback and returns the value that will be emitted by the Observable.
- * Even though by default multiple arguments passed to callback appear in the stream as an array
- * the selector function will be called with arguments directly, just as the callback would.
- * This means you can imagine the default selector (when one is not provided explicitly)
- * as a function that aggregates all its arguments into an array, or simply returns first argument
- * if there is only one.
  *
  * The last optional parameter - {@link Scheduler} - can be used to control when the call
  * to `func` happens after someone subscribes to Observable, as well as when results
@@ -107,19 +91,6 @@ export function bindCallback<T>(callbackFunc: Function, selector?: (...args: any
  * });
  *
  *
- * @example <caption>Use bindCallback with a selector function</caption>
- * someFunction((a, b, c) => {
- *   console.log(a); // 'a'
- *   console.log(b); // 'b'
- *   console.log(c); // 'c'
- * });
- *
- * const boundSomeFunction = bindCallback(someFunction, (a, b, c) => a + b + c);
- * boundSomeFunction().subscribe(value => {
- *   console.log(value) // 'abc'
- * });
- *
- *
  * @example <caption>Compare behaviour with and without async Scheduler</caption>
  * function iCallMyCallbackSynchronously(cb) {
  *   cb();
@@ -149,8 +120,6 @@ export function bindCallback<T>(callbackFunc: Function, selector?: (...args: any
  * @see {@link fromPromise}
  *
  * @param {function} func A function with a callback as the last parameter.
- * @param {function} [selector] A function which takes the arguments from the
- * callback and maps them to a value that is emitted on the output Observable.
  * @param {Scheduler} [scheduler] The scheduler on which to schedule the
  * callbacks.
  * @return {function(...params: *): Observable} A function which returns the
@@ -158,7 +127,6 @@ export function bindCallback<T>(callbackFunc: Function, selector?: (...args: any
  * @name bindCallback
  */
 export function bindCallback<T>(callbackFunc: Function,
-                                selector: Function | void = undefined,
                                 scheduler?: IScheduler): (...args: any[]) => Observable<T> {
   return function (this: any, ...args: any[]): Observable<T> {
     const context = this;
@@ -166,7 +134,6 @@ export function bindCallback<T>(callbackFunc: Function,
     const params = {
       context,
       subject,
-      selector,
       callbackFunc,
       scheduler,
     };
@@ -175,20 +142,8 @@ export function bindCallback<T>(callbackFunc: Function,
         if (!subject) {
           subject = new AsyncSubject<T>();
           const handler = (...innerArgs: any[]) => {
-            if (selector) {
-              let result;
-              try {
-                result = selector(...innerArgs);
-              } catch (err) {
-                subject.error(err);
-                return;
-              }
-              subject.next(result);
-              subject.complete();
-            } else {
-              subject.next(innerArgs.length <= 1 ? innerArgs[0] : innerArgs);
-              subject.complete();
-            }
+            subject.next(innerArgs.length <= 1 ? innerArgs[0] : innerArgs);
+            subject.complete();
           };
 
           try {
@@ -219,32 +174,19 @@ interface ParamsContext<T> {
   scheduler: IScheduler;
   context: any;
   subject: AsyncSubject<T>;
-  selector: Function | void;
 }
 
 function dispatch<T>(this: Action<DispatchState<T>>, state: DispatchState<T>) {
   const self = this;
   const { args, subscriber, params } = state;
-  const { callbackFunc, context, selector, scheduler } = params;
+  const { callbackFunc, context, scheduler } = params;
   let { subject } = params;
   if (!subject) {
     subject = params.subject = new AsyncSubject<T>();
 
     const handler = (...innerArgs: any[]) => {
-      if (selector) {
-        let result;
-        try {
-          result = selector(...innerArgs);
-        } catch (err) {
-          this.add(scheduler.schedule<ErrorState<T>>(dispatchError, 0, { err, subject }));
-          return;
-        }
-
-        this.add(scheduler.schedule<NextState<T>>(dispatchNext, 0, { value: result, subject }));
-      } else {
-        const value = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
-        this.add(scheduler.schedule<NextState<T>>(dispatchNext, 0, { value, subject }));
-      }
+      const value = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
+      this.add(scheduler.schedule<NextState<T>>(dispatchNext, 0, { value, subject }));
     };
 
     try {
