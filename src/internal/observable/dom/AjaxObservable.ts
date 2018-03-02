@@ -461,12 +461,12 @@ export class AjaxError extends Error {
 function parseXhrResponse(responseType: string, xhr: XMLHttpRequest) {
   switch (responseType) {
     case 'json':
-        if ('response' in xhr) {
+        // HACK(benlesh): TypeScript shennanigans
+        // tslint:disable-next-line:no-any XMLHttpRequest is defined to always have 'response' inferring xhr as never for the else clause.
+        if ('response' in (xhr as any)) {
           //IE does not support json as responseType, parse it internally
           return xhr.responseType ? xhr.response : JSON.parse(xhr.response || xhr.responseText || 'null');
         } else {
-          // HACK(benlesh): TypeScript shennanigans
-          // tslint:disable-next-line:no-any latest TS seems to think xhr is "never" here.
           return JSON.parse((xhr as any).responseText || 'null');
         }
       case 'xml':
@@ -474,8 +474,8 @@ function parseXhrResponse(responseType: string, xhr: XMLHttpRequest) {
       case 'text':
       default:
           // HACK(benlesh): TypeScript shennanigans
-          // tslint:disable-next-line:no-any latest TS seems to think xhr is "never" here.
-          return  ('response' in xhr) ? xhr.response : (xhr as any).responseText;
+          // tslint:disable-next-line:no-any XMLHttpRequest is defined to always have 'response' inferring xhr as never for the else sub-expression.
+          return  ('response' in (xhr as any)) ? xhr.response : xhr.responseText;
   }
 }
 
