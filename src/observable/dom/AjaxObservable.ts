@@ -462,13 +462,17 @@ function parseXhrResponse(responseType: string, xhr: XMLHttpRequest) {
           //IE does not support json as responseType, parse it internally
           return xhr.responseType ? xhr.response : JSON.parse(xhr.response || xhr.responseText || 'null');
         } else {
-          return JSON.parse(xhr.responseText || 'null');
+          // HACK(benlesh): TypeScript shennanigans
+          // tslint:disable-next-line:no-any latest TS seems to think xhr is "never" here.
+          return JSON.parse((xhr as any).responseText || 'null');
         }
       case 'xml':
         return xhr.responseXML;
       case 'text':
       default:
-        return  ('response' in xhr) ? xhr.response : xhr.responseText;
+          // HACK(benlesh): TypeScript shennanigans
+          // tslint:disable-next-line:no-any latest TS seems to think xhr is "never" here.
+          return  ('response' in xhr) ? xhr.response : (xhr as any).responseText;
   }
 }
 
