@@ -9,11 +9,11 @@ declare const rxTestScheduler: TestScheduler;
 describe('bindCallback', () => {
   describe('when not scheduled', () => {
     it('should emit undefined from a callback without arguments', () => {
-      function callback(cb) {
+      function callback(cb: Function) {
         cb();
       }
       const boundCallback = bindCallback(callback);
-      const results = [];
+      const results: Array<string|number> = [];
 
       boundCallback()
         .subscribe((x: any) => {
@@ -26,14 +26,14 @@ describe('bindCallback', () => {
     });
 
     it('should emit one value from a callback', () => {
-      function callback(datum, cb) {
+      function callback(datum: number, cb: Function) {
         cb(datum);
       }
-      const boundCallback = bindCallback(callback);
-      const results = [];
+      const boundCallback = bindCallback<number>(callback);
+      const results: Array<string|number> = [];
 
       boundCallback(42)
-        .subscribe((x: number) => {
+        .subscribe(x => {
           results.push(x);
         }, null, () => {
           results.push('done');
@@ -43,12 +43,12 @@ describe('bindCallback', () => {
     });
 
     it('should set callback function context to context of returned function', () => {
-      function callback(cb) {
+      function callback(this: any, cb: Function) {
         cb(this.datum);
       }
 
       const boundCallback = bindCallback(callback);
-      const results = [];
+      const results: Array<string|number> = [];
 
       boundCallback.apply({datum: 5})
         .subscribe(
@@ -61,11 +61,11 @@ describe('bindCallback', () => {
     });
 
     it('should emit one value chosen by a selector', () => {
-      function callback(datum, cb) {
+      function callback(datum: number, cb: Function) {
         cb(datum);
       }
-      const boundCallback = bindCallback(callback, (datum: any) => datum);
-      const results = [];
+      const boundCallback = bindCallback(callback, (datum: number) => datum);
+      const results: Array<string|number> = [];
 
       boundCallback(42)
         .subscribe((x: number) => {
@@ -79,18 +79,18 @@ describe('bindCallback', () => {
 
     it('should emit an error when the selector throws', () => {
       const expected = new Error('Yikes!');
-      function callback(cb) {
+      function callback(cb: Function) {
         cb(42);
       }
       const boundCallback = bindCallback(callback, (err: any) => { throw expected; });
 
       boundCallback()
         .subscribe(() => {
-          throw 'should not next';
+          throw new Error('should not next');
         }, (err: any) => {
           expect(err).to.equal(expected);
         }, () => {
-          throw 'should not complete';
+          throw new Error('should not complete');
         });
     });
 
@@ -98,8 +98,8 @@ describe('bindCallback', () => {
       const nextSpy = sinon.spy();
       const throwSpy = sinon.spy();
       const completeSpy = sinon.spy();
-      let timeout;
-      function callback(datum, cb) {
+      let timeout: number;
+      function callback(datum: number, cb: Function) {
         // Need to cb async in order for the unsub to trigger
         timeout = setTimeout(() => {
           cb(datum);
@@ -122,14 +122,14 @@ describe('bindCallback', () => {
 
   describe('when scheduled', () => {
     it('should emit undefined from a callback without arguments', () => {
-      function callback(cb) {
+      function callback(cb: Function) {
         cb();
       }
       const boundCallback = bindCallback(callback, null, rxTestScheduler);
-      const results = [];
+      const results: Array<string|number> = [];
 
       boundCallback()
-        .subscribe((x: any) => {
+        .subscribe(x => {
           results.push(typeof x);
         }, null, () => {
           results.push('done');
@@ -141,14 +141,14 @@ describe('bindCallback', () => {
     });
 
     it('should emit one value from a callback', () => {
-      function callback(datum, cb) {
+      function callback(datum: number, cb: Function) {
         cb(datum);
       }
-      const boundCallback = bindCallback(callback, null, rxTestScheduler);
-      const results = [];
+      const boundCallback = bindCallback<number>(callback, null, rxTestScheduler);
+      const results: Array<string|number> = [];
 
       boundCallback(42)
-        .subscribe((x: number) => {
+        .subscribe(x => {
           results.push(x);
         }, null, () => {
           results.push('done');
@@ -160,14 +160,14 @@ describe('bindCallback', () => {
     });
 
     it('should set callback function context to context of returned function', () => {
-      function callback(cb) {
+      function callback(this: { datum: number }, cb: Function) {
         cb(this.datum);
       }
 
       const boundCallback = bindCallback(callback, null, rxTestScheduler);
-      const results = [];
+      const results: Array<string|number> = [];
 
-      boundCallback.apply({datum: 5})
+      boundCallback.apply({ datum: 5 })
         .subscribe(
           (x: number) => results.push(x),
           null,
@@ -181,18 +181,18 @@ describe('bindCallback', () => {
 
     it('should error if callback throws', () => {
       const expected = new Error('haha no callback for you');
-      function callback(datum, cb) {
+      function callback(datum: number, cb: Function): never {
         throw expected;
       }
       const boundCallback = bindCallback(callback, null, rxTestScheduler);
 
       boundCallback(42)
-        .subscribe((x: number) => {
-          throw 'should not next';
+        .subscribe(x => {
+          throw new Error('should not next');
         }, (err: any) => {
           expect(err).to.equal(expected);
         }, () => {
-          throw 'should not complete';
+          throw new Error('should not complete');
         });
 
       rxTestScheduler.flush();
@@ -200,7 +200,7 @@ describe('bindCallback', () => {
 
     it('should error if selector throws', () => {
       const expected = new Error('what? a selector? I don\'t think so');
-      function callback(datum, cb) {
+      function callback(datum: number, cb: Function) {
         cb(datum);
       }
       function selector() {
@@ -210,25 +210,25 @@ describe('bindCallback', () => {
 
       boundCallback(42)
         .subscribe((x: any) => {
-          throw 'should not next';
+          throw new Error('should not next');
         }, (err: any) => {
           expect(err).to.equal(expected);
         }, () => {
-          throw 'should not complete';
+          throw new Error('should not complete');
         });
 
       rxTestScheduler.flush();
     });
 
     it('should use a selector', () => {
-      function callback(datum, cb) {
+      function callback(datum: number, cb: Function) {
         cb(datum);
       }
-      function selector(x) {
+      function selector(x: number) {
         return x + '!!!';
       }
       const boundCallback = bindCallback(callback, selector, rxTestScheduler);
-      const results = [];
+      const results: Array<string|number> = [];
 
       boundCallback(42)
         .subscribe((x: string) => {
@@ -244,14 +244,14 @@ describe('bindCallback', () => {
   });
 
   it('should pass multiple inner arguments as an array', () => {
-    function callback(datum, cb) {
+    function callback(datum: number, cb: Function) {
       cb(datum, 1, 2, 3);
     }
-    const boundCallback = bindCallback(callback, null, rxTestScheduler);
-    const results = [];
+    const boundCallback = bindCallback<number[]>(callback, null, rxTestScheduler);
+    const results: Array<string|number[]> = [];
 
     boundCallback(42)
-      .subscribe((x: number) => {
+      .subscribe(x => {
         results.push(x);
       }, null, () => {
         results.push('done');
@@ -263,15 +263,15 @@ describe('bindCallback', () => {
   });
 
   it('should pass multiple inner arguments to the selector if there is one', () => {
-    function callback(datum, cb) {
+    function callback(datum: number, cb: Function) {
       cb(datum, 1, 2, 3);
     }
-    function selector(a, b, c, d) {
+    function selector(a: number, b: number, c: number, d: number) {
       expect([a, b, c, d]).to.deep.equal([42, 1, 2, 3]);
       return a + b + c + d;
     }
     const boundCallback = bindCallback(callback, selector, rxTestScheduler);
-    const results = [];
+    const results: Array<string|number> = [];
 
     boundCallback(42)
       .subscribe((x: number) => {
@@ -287,23 +287,23 @@ describe('bindCallback', () => {
 
   it('should cache value for next subscription and not call callbackFunc again', () => {
     let calls = 0;
-    function callback(datum, cb) {
+    function callback(datum: number, cb: Function) {
       calls++;
       cb(datum);
     }
-    const boundCallback = bindCallback(callback, null, rxTestScheduler);
-    const results1 = [];
-    const results2 = [];
+    const boundCallback = bindCallback<number>(callback, null, rxTestScheduler);
+    const results1: Array<number|string> = [];
+    const results2: Array<number|string> = [];
 
     const source = boundCallback(42);
 
-    source.subscribe((x: number) => {
+    source.subscribe(x => {
       results1.push(x);
     }, null, () => {
       results1.push('done');
     });
 
-    source.subscribe((x: number) => {
+    source.subscribe(x => {
       results2.push(x);
     }, null, () => {
       results2.push('done');
@@ -318,12 +318,12 @@ describe('bindCallback', () => {
 
   it('should not even call the callbackFn if immediately unsubscribed', () => {
       let calls = 0;
-      function callback(datum, cb) {
+      function callback(datum: number, cb: Function) {
         calls++;
         cb(datum);
       }
       const boundCallback = bindCallback(callback, null, rxTestScheduler);
-      const results1 = [];
+      const results1: Array<number|string> = [];
 
       const source = boundCallback(42);
 
