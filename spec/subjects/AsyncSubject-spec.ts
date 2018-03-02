@@ -76,6 +76,7 @@ describe('AsyncSubject', () => {
     subject.next(2);
     expect(observer.results).to.deep.equal([]);
     subject.complete();
+    subject.next(3);
     expect(observer.results).to.deep.equal([2, 'done']);
   });
 
