@@ -23,6 +23,12 @@ export { pipe } from './internal/util/pipe';
 export { noop } from './internal/util/noop';
 export { identity } from './internal/util/identity';
 
+/* Error types */
+export { ArgumentOutOfRangeError } from './internal/util/ArgumentOutOfRangeError';
+export { EmptyError } from './internal/util/EmptyError';
+export { ObjectUnsubscribedError } from './internal/util/ObjectUnsubscribedError';
+export { UnsubscriptionError } from './internal/util/UnsubscriptionError';
+
 /* Static observable creation exports */
 export { bindCallback } from './internal/observable/bindCallback';
 export { bindNodeCallback } from './internal/observable/bindNodeCallback';
