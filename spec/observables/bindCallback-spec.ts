@@ -1,18 +1,18 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../../src/internal/Rx';
+import { bindCallback } from '../../src/';
+import { TestScheduler } from '../../src/testing';
 
-declare const rxTestScheduler: Rx.TestScheduler;
-const Observable = Rx.Observable;
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {bindCallback} */
-describe('Observable.bindCallback', () => {
+describe('bindCallback', () => {
   describe('when not scheduled', () => {
     it('should emit undefined from a callback without arguments', () => {
       function callback(cb) {
         cb();
       }
-      const boundCallback = Observable.bindCallback(callback);
+      const boundCallback = bindCallback(callback);
       const results = [];
 
       boundCallback()
@@ -29,7 +29,7 @@ describe('Observable.bindCallback', () => {
       function callback(datum, cb) {
         cb(datum);
       }
-      const boundCallback = Observable.bindCallback(callback);
+      const boundCallback = bindCallback(callback);
       const results = [];
 
       boundCallback(42)
@@ -47,7 +47,7 @@ describe('Observable.bindCallback', () => {
         cb(this.datum);
       }
 
-      const boundCallback = Observable.bindCallback(callback);
+      const boundCallback = bindCallback(callback);
       const results = [];
 
       boundCallback.apply({datum: 5})
@@ -64,7 +64,7 @@ describe('Observable.bindCallback', () => {
       function callback(datum, cb) {
         cb(datum);
       }
-      const boundCallback = Observable.bindCallback(callback, (datum: any) => datum);
+      const boundCallback = bindCallback(callback, (datum: any) => datum);
       const results = [];
 
       boundCallback(42)
@@ -82,7 +82,7 @@ describe('Observable.bindCallback', () => {
       function callback(cb) {
         cb(42);
       }
-      const boundCallback = Observable.bindCallback(callback, (err: any) => { throw expected; });
+      const boundCallback = bindCallback(callback, (err: any) => { throw expected; });
 
       boundCallback()
         .subscribe(() => {
@@ -105,7 +105,7 @@ describe('Observable.bindCallback', () => {
           cb(datum);
         });
       }
-      const subscription = Observable.bindCallback(callback)(42)
+      const subscription = bindCallback(callback)(42)
         .subscribe(nextSpy, throwSpy, completeSpy);
       subscription.unsubscribe();
 
@@ -125,7 +125,7 @@ describe('Observable.bindCallback', () => {
       function callback(cb) {
         cb();
       }
-      const boundCallback = Observable.bindCallback(callback, null, rxTestScheduler);
+      const boundCallback = bindCallback(callback, null, rxTestScheduler);
       const results = [];
 
       boundCallback()
@@ -144,7 +144,7 @@ describe('Observable.bindCallback', () => {
       function callback(datum, cb) {
         cb(datum);
       }
-      const boundCallback = Observable.bindCallback(callback, null, rxTestScheduler);
+      const boundCallback = bindCallback(callback, null, rxTestScheduler);
       const results = [];
 
       boundCallback(42)
@@ -164,7 +164,7 @@ describe('Observable.bindCallback', () => {
         cb(this.datum);
       }
 
-      const boundCallback = Observable.bindCallback(callback, null, rxTestScheduler);
+      const boundCallback = bindCallback(callback, null, rxTestScheduler);
       const results = [];
 
       boundCallback.apply({datum: 5})
@@ -184,7 +184,7 @@ describe('Observable.bindCallback', () => {
       function callback(datum, cb) {
         throw expected;
       }
-      const boundCallback = Observable.bindCallback(callback, null, rxTestScheduler);
+      const boundCallback = bindCallback(callback, null, rxTestScheduler);
 
       boundCallback(42)
         .subscribe((x: number) => {
@@ -206,7 +206,7 @@ describe('Observable.bindCallback', () => {
       function selector() {
         throw expected;
       }
-      const boundCallback = Observable.bindCallback(callback, selector, rxTestScheduler);
+      const boundCallback = bindCallback(callback, selector, rxTestScheduler);
 
       boundCallback(42)
         .subscribe((x: any) => {
@@ -227,7 +227,7 @@ describe('Observable.bindCallback', () => {
       function selector(x) {
         return x + '!!!';
       }
-      const boundCallback = Observable.bindCallback(callback, selector, rxTestScheduler);
+      const boundCallback = bindCallback(callback, selector, rxTestScheduler);
       const results = [];
 
       boundCallback(42)
@@ -247,7 +247,7 @@ describe('Observable.bindCallback', () => {
     function callback(datum, cb) {
       cb(datum, 1, 2, 3);
     }
-    const boundCallback = Observable.bindCallback(callback, null, rxTestScheduler);
+    const boundCallback = bindCallback(callback, null, rxTestScheduler);
     const results = [];
 
     boundCallback(42)
@@ -270,7 +270,7 @@ describe('Observable.bindCallback', () => {
       expect([a, b, c, d]).to.deep.equal([42, 1, 2, 3]);
       return a + b + c + d;
     }
-    const boundCallback = Observable.bindCallback(callback, selector, rxTestScheduler);
+    const boundCallback = bindCallback(callback, selector, rxTestScheduler);
     const results = [];
 
     boundCallback(42)
@@ -291,7 +291,7 @@ describe('Observable.bindCallback', () => {
       calls++;
       cb(datum);
     }
-    const boundCallback = Observable.bindCallback(callback, null, rxTestScheduler);
+    const boundCallback = bindCallback(callback, null, rxTestScheduler);
     const results1 = [];
     const results2 = [];
 
@@ -322,7 +322,7 @@ describe('Observable.bindCallback', () => {
         calls++;
         cb(datum);
       }
-      const boundCallback = Observable.bindCallback(callback, null, rxTestScheduler);
+      const boundCallback = bindCallback(callback, null, rxTestScheduler);
       const results1 = [];
 
       const source = boundCallback(42);
