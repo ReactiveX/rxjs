@@ -156,7 +156,7 @@ Below is an example:
 var source = Rx.Observable.interval(500);
 var subject = new Rx.Subject();
 var refCounted = source.multicast(subject).refCount();
-var subscription1, subscription2, subscriptionConnect;
+var subscription1, subscription2;
 
 // This calls `connect()`, because
 // it is the first subscriber to `refCounted`
