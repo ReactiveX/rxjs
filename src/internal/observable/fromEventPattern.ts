@@ -11,8 +11,7 @@ import { isFunction } from '../util/isFunction';
  * <img src="./img/fromEventPattern.png" width="100%">
  *
  * Creates an Observable by using the `addHandler` and `removeHandler`
- * functions to add and remove the handlers, with an optional selector
- * function to project the event arguments to a result. The `addHandler` is
+ * functions to add and remove the handlers. The `addHandler` is
  * called when the output Observable is subscribed, and `removeHandler` is
  * called when the Subscription is unsubscribed.
  *
@@ -41,29 +40,15 @@ import { isFunction } from '../util/isFunction';
  * takes a `handler` function as argument and removes it in case it was
  * previously attached using `addHandler`. if addHandler returns signal to teardown when remove,
  * removeHandler function will forward it.
- * @param {function(...args: any): T} [selector] An optional function to
- * post-process results. It takes the arguments from the event handler and
- * should return a single value.
  * @return {Observable<T>}
  * @name fromEventPattern
  */
 export function fromEventPattern<T>(addHandler: (handler: Function) => any,
-                                    removeHandler?: (handler: Function, signal?: any) => void,
-                                    selector?: (...args: any[]) => T) {
+                                    removeHandler?: (handler: Function, signal?: any) => void) {
   return new Observable<T>(subscriber => {
-    const handler = selector ? (...args: any[]) => {
-      let result: T;
-      try {
-        result = selector(...args);
-      } catch (err) {
-        subscriber.error(err);
-        return;
-      }
-      subscriber.next(result);
-    } : (e: T) => subscriber.next(e);
+    const handler = (e: T) => subscriber.next(e);
 
     let retValue: any;
-
     try {
       retValue = addHandler(handler);
     } catch (err) {
