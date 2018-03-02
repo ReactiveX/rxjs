@@ -48,7 +48,7 @@ Problems with the patched operators for dot-chaining are:
 
 ## What?
 
-What is a pipeable operator? Simply put, a function that can be used with the current `let` operator. It's the origin of the name, for better or worse. A pipeable operator is basically any function that returns a function with the signature: `<T, R>(source: Observable<T>) => Observable<R>`.
+What is a pipeable operator? Simply put, a function that can be used with the current `let` operator. It used to be the origin of the name ("lettable"), but that was confusing and we call them "pipeable" now because they're intended to be used with the `pipe` utility. A pipeable operator is basically any function that returns a function with the signature: `<T, R>(source: Observable<T>) => Observable<R>`.
 
 There is a `pipe` method built into `Observable` now at `Observable.prototype.pipe` that сan be used to compose the operators in similar manner to what you're used to with dot-chaining (shown below).
 
