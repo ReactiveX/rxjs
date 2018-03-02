@@ -22,9 +22,8 @@ export type EventListenerOptions = {
 
 /* tslint:disable:max-line-length */
 export function fromEvent<T>(target: EventTargetLike, eventName: string): Observable<T>;
-export function fromEvent<T>(target: EventTargetLike, eventName: string, selector: (...args: any[]) => T): Observable<T>;
+export function fromEvent<T>(target: EventTargetLike, eventName: string): Observable<T>;
 export function fromEvent<T>(target: EventTargetLike, eventName: string, options: EventListenerOptions): Observable<T>;
-export function fromEvent<T>(target: EventTargetLike, eventName: string, options: EventListenerOptions, selector: (...args: any[]) => T): Observable<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -135,35 +134,17 @@ export function fromEvent<T>(target: EventTargetLike, eventName: string, options
  * @param {string} eventName The event name of interest, being emitted by the
  * `target`.
  * @param {EventListenerOptions} [options] Options to pass through to addEventListener
- * @param {(...args: any[]) => T} [selector] An optional function to
- * post-process results. It takes the arguments from the event handler and
- * should return a single value.
  * @return {Observable<T>}
- * @static true
  * @name fromEvent
- * @owner Observable
  */
-export function fromEvent<T>(target: EventTargetLike,
-                             eventName: string,
-                             options?: EventListenerOptions | ((...args: any[]) => T),
-                             selector?: (...args: any[]) => T): Observable<T> {
-  if (isFunction(options)) {
-    selector = options as ((...args: any[]) => T);
-    options = undefined;
-  }
+export function fromEvent<T>(
+  target: EventTargetLike,
+  eventName: string,
+  options?: EventListenerOptions
+): Observable<T> {
 
   return new Observable<T>(subscriber => {
-    const handler = selector ? (...args: any[]) => {
-      let result: any;
-      try {
-        result = selector(...args);
-      } catch (err) {
-        subscriber.error(err);
-        return;
-      }
-      subscriber.next(result);
-    } : (e: any) => subscriber.next(e);
-
+    const handler = (e: T) => subscriber.next(e);
     setupSubscription(target, eventName, handler, subscriber, options as EventListenerOptions);
   });
 }
