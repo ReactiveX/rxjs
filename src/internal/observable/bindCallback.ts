@@ -89,7 +89,7 @@ export function bindCallback<T>(callbackFunc: Function, selector?: (...args: any
  *
  * @example <caption>Convert jQuery's getJSON to an Observable API</caption>
  * // Suppose we have jQuery.getJSON('/my/url', callback)
- * var getJSONAsObservable = Rx.Observable.bindCallback(jQuery.getJSON);
+ * var getJSONAsObservable = bindCallback(jQuery.getJSON);
  * var result = getJSONAsObservable('/my/url');
  * result.subscribe(x => console.log(x), e => console.error(e));
  *
@@ -101,7 +101,7 @@ export function bindCallback<T>(callbackFunc: Function, selector?: (...args: any
  *   console.log(c); // {someProperty: 'someValue'}
  * });
  *
- * const boundSomeFunction = Rx.Observable.bindCallback(someFunction);
+ * const boundSomeFunction = bindCallback(someFunction);
  * boundSomeFunction().subscribe(values => {
  *   console.log(values) // [5, 'some string', {someProperty: 'someValue'}]
  * });
@@ -114,7 +114,7 @@ export function bindCallback<T>(callbackFunc: Function, selector?: (...args: any
  *   console.log(c); // 'c'
  * });
  *
- * const boundSomeFunction = Rx.Observable.bindCallback(someFunction, (a, b, c) => a + b + c);
+ * const boundSomeFunction = bindCallback(someFunction, (a, b, c) => a + b + c);
  * boundSomeFunction().subscribe(value => {
  *   console.log(value) // 'abc'
  * });
@@ -125,8 +125,8 @@ export function bindCallback<T>(callbackFunc: Function, selector?: (...args: any
  *   cb();
  * }
  *
- * const boundSyncFn = Rx.Observable.bindCallback(iCallMyCallbackSynchronously);
- * const boundAsyncFn = Rx.Observable.bindCallback(iCallMyCallbackSynchronously, null, Rx.Scheduler.async);
+ * const boundSyncFn = bindCallback(iCallMyCallbackSynchronously);
+ * const boundAsyncFn = bindCallback(iCallMyCallbackSynchronously, null, Rx.Scheduler.async);
  *
  * boundSyncFn().subscribe(() => console.log('I was sync!'));
  * boundAsyncFn().subscribe(() => console.log('I was async!'));
@@ -139,7 +139,7 @@ export function bindCallback<T>(callbackFunc: Function, selector?: (...args: any
  *
  *
  * @example <caption>Use bindCallback on an object method</caption>
- * const boundMethod = Rx.Observable.bindCallback(someObject.methodWithCallback);
+ * const boundMethod = bindCallback(someObject.methodWithCallback);
  * boundMethod.call(someObject) // make sure methodWithCallback has access to someObject
  * .subscribe(subscriber);
  *
