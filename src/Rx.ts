@@ -20,6 +20,7 @@ import './add/observable/fromEvent';
 import './add/observable/fromEventPattern';
 import './add/observable/fromPromise';
 import './add/observable/generate';
+import './add/observable/generateRelativeTime';
 import './add/observable/if';
 import './add/observable/interval';
 import './add/observable/merge';
