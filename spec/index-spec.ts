@@ -33,6 +33,13 @@ describe('index', () => {
     expect(index.identity).to.exist;
   });
 
+  it('should export error types', () => {
+    expect(index.ArgumentOutOfRangeError).to.exist;
+    expect(index.EmptyError).to.exist;
+    expect(index.ObjectUnsubscribedError).to.exist;
+    expect(index.UnsubscriptionError).to.exist;
+  });
+
   it('should export constants', () => {
     expect(index.EMPTY).to.exist;
   });
