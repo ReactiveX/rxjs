@@ -1,8 +1,9 @@
+import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { ReplaySubject } from '../ReplaySubject';
 import { IScheduler } from '../Scheduler';
 import { Subscription } from '../Subscription';
-import { MonoTypeOperatorFunction } from '../types';
+import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 import { Subscriber } from '../Subscriber';
 
 /**
@@ -22,6 +23,13 @@ function shareReplayOperator<T>(bufferSize?: number, windowTime?: number, schedu
   let hasError = false;
   let isComplete = false;
 
+  function removeSubscriber() {
+    refCount--;
+    if (subscription && refCount === 0 && isComplete) {
+      subscription.unsubscribe();
+    }
+  }
+
   return function shareReplayOperation(this: Subscriber<T>, source: Observable<T>) {
     refCount++;
     if (!subject || hasError) {
@@ -40,16 +48,19 @@ function shareReplayOperator<T>(bufferSize?: number, windowTime?: number, schedu
       });
     }
 
-    const _unsubscribe = this.unsubscribe;
-    this.unsubscribe = function() {
-      refCount--;
-      if (subscription && refCount === 0 && isComplete) {
-        subscription.unsubscribe();
-      }
-
-      _unsubscribe.apply(this, arguments);
-    };
-
-    subject.subscribe(this);
+    subject.subscribe(new ShareReplaySubscriber(this, removeSubscriber));
   };
+}
+
+class ShareReplaySubscriber<T> extends Subscriber<T> {
+  constructor(
+    destination: Subscriber<T>,
+    protected onUnsubscribe: () => void,
+  ) {
+    super(destination);
+  }
+
+  protected _unsubscribe() {
+    this.onUnsubscribe();
+  }
 }
