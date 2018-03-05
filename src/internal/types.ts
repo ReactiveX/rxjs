@@ -11,6 +11,16 @@ export type FactoryOrValue<T> = T | (() => T);
 
 export interface MonoTypeOperatorFunction<T> extends OperatorFunction<T, T> {}
 
+export interface Timestamp<T> {
+  value: T;
+  timestamp: number;
+}
+
+export interface TimeInterval<T> {
+  value: T;
+  interval: number;
+}
+
 /** SUBSCRIPTION INTERFACES */
 
 export interface Unsubscribable {

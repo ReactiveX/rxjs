@@ -3,13 +3,13 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { IScheduler } from '../Scheduler';
 import { async } from '../scheduler/async';
-import { OperatorFunction } from '../types';
+import { OperatorFunction, TimeInterval as TimeIntervalInterface } from '../types';
 
 export function timeInterval<T>(scheduler: IScheduler = async): OperatorFunction<T, TimeInterval<T>> {
   return (source: Observable<T>) => source.lift(new TimeIntervalOperator(scheduler));
 }
 
-export class TimeInterval<T> {
+export class TimeInterval<T> implements TimeIntervalInterface<T> {
   constructor(public value: T, public interval: number) {
 
   }
