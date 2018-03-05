@@ -38,6 +38,7 @@ export { defer } from './internal/observable/defer';
 export { empty } from './internal/observable/empty';
 export { forkJoin } from './internal/observable/forkJoin';
 export { from } from './internal/observable/from';
+export { fromArray } from './internal/observable/fromArray';
 export { fromEvent } from './internal/observable/fromEvent';
 export { fromEventPattern } from './internal/observable/fromEventPattern';
 export { fromPromise } from './internal/observable/fromPromise';

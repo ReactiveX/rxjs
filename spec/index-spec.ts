@@ -53,6 +53,7 @@ describe('index', () => {
     expect(index.empty).to.exist;
     expect(index.forkJoin).to.exist;
     expect(index.from).to.exist;
+    expect(index.fromArray).to.exist;
     expect(index.fromEvent).to.exist;
     expect(index.fromEventPattern).to.exist;
     expect(index.fromPromise).to.exist;
