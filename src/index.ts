@@ -40,6 +40,7 @@ export { forkJoin } from './internal/observable/forkJoin';
 export { from } from './internal/observable/from';
 export { fromEvent } from './internal/observable/fromEvent';
 export { fromEventPattern } from './internal/observable/fromEventPattern';
+export { fromPromise } from './internal/observable/fromPromise';
 export { generate } from './internal/observable/generate';
 export { iif } from './internal/observable/iif';
 export { interval } from './internal/observable/interval';
