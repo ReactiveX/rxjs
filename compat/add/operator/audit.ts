@@ -1,9 +1,9 @@
-import { Observable } from '../../internal/Observable';
-import { audit } from '../../internal/patching/operator/audit';
+import { Observable } from 'rxjs';
+import { audit } from 'rxjs/internal/patching/operator/audit';
 
-Observable.prototype.audit = audit;
+(Observable as any).prototype.audit = audit;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     audit: typeof audit;
   }

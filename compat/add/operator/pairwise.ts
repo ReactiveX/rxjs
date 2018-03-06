@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { pairwise } from '../../internal/patching/operator/pairwise';
+import { Observable } from 'rxjs';
+import { pairwise } from 'rxjs/internal/patching/operator/pairwise';
 
-Observable.prototype.pairwise = pairwise;
+(Observable as any).prototype.pairwise = pairwise;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     pairwise: typeof pairwise;
   }

@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { bufferToggle } from '../../internal/patching/operator/bufferToggle';
+import { Observable } from 'rxjs';
+import { bufferToggle } from 'rxjs/internal/patching/operator/bufferToggle';
 
-Observable.prototype.bufferToggle = bufferToggle;
+(Observable as any).prototype.bufferToggle = bufferToggle;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     bufferToggle: typeof bufferToggle;
   }

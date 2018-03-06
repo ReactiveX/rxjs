@@ -1,9 +1,8 @@
-import { Observable } from '../../internal/Observable';
-import { using as staticUsing } from '../../internal/observable/using';
+import { Observable, using as staticUsing } from 'rxjs';
 
 Observable.using = staticUsing;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   namespace Observable {
     export let using: typeof staticUsing;
   }

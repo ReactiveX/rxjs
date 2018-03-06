@@ -1,9 +1,8 @@
-import { Observable } from '../../internal/Observable';
-import { fromEventPattern as staticFromEventPattern } from '../../internal/observable/fromEventPattern';
+import { Observable, fromEventPattern as staticFromEventPattern } from 'rxjs';
 
 Observable.fromEventPattern = staticFromEventPattern;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   namespace Observable {
     export let fromEventPattern: typeof staticFromEventPattern;
   }

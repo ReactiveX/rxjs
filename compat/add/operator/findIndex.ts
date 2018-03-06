@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { findIndex } from '../../internal/patching/operator/findIndex';
+import { Observable } from 'rxjs';
+import { findIndex } from 'rxjs/internal/patching/operator/findIndex';
 
-Observable.prototype.findIndex = findIndex;
+(Observable as any).prototype.findIndex = findIndex;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     findIndex: typeof findIndex;
   }

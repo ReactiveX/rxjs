@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { publishBehavior } from '../../internal/patching/operator/publishBehavior';
+import { Observable } from 'rxjs';
+import { publishBehavior } from 'rxjs/internal/patching/operator/publishBehavior';
 
-Observable.prototype.publishBehavior = publishBehavior;
+(Observable as any).prototype.publishBehavior = publishBehavior;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     publishBehavior: typeof publishBehavior;
   }

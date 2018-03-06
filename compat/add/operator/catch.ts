@@ -1,11 +1,11 @@
 
-import { Observable } from '../../internal/Observable';
-import { _catch } from '../../internal/patching/operator/catch';
+import { Observable } from 'rxjs';
+import { _catch } from 'rxjs/internal/patching/operator/catch';
 
-Observable.prototype.catch = _catch;
-Observable.prototype._catch = _catch;
+(Observable as any).prototype.catch = _catch;
+(Observable as any).prototype._catch = _catch;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     catch: typeof _catch;
     _catch: typeof _catch;

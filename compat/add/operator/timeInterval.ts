@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { timeInterval } from '../../internal/patching/operator/timeInterval';
+import { Observable } from 'rxjs';
+import { timeInterval } from 'rxjs/internal/patching/operator/timeInterval';
 
-Observable.prototype.timeInterval = timeInterval;
+(Observable as any).prototype.timeInterval = timeInterval;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     timeInterval: typeof timeInterval;
   }

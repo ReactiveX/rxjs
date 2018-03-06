@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { mergeAll } from '../../internal/patching/operator/mergeAll';
+import { Observable } from 'rxjs';
+import { mergeAll } from 'rxjs/internal/patching/operator/mergeAll';
 
-Observable.prototype.mergeAll = mergeAll;
+(Observable as any).prototype.mergeAll = mergeAll;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     mergeAll: typeof mergeAll;
   }

@@ -1,9 +1,9 @@
-import { Observable } from '../../internal/Observable';
-import { takeLast } from '../../internal/patching/operator/takeLast';
+import { Observable } from 'rxjs';
+import { takeLast } from 'rxjs/internal/patching/operator/takeLast';
 
-Observable.prototype.takeLast = takeLast;
+(Observable as any).prototype.takeLast = takeLast;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     takeLast: typeof takeLast;
   }

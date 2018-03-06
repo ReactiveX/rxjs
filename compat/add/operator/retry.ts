@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { retry } from '../../internal/patching/operator/retry';
+import { Observable } from 'rxjs';
+import { retry } from 'rxjs/internal/patching/operator/retry';
 
-Observable.prototype.retry = retry;
+(Observable as any).prototype.retry = retry;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     retry: typeof retry;
   }

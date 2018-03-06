@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { multicast } from '../../internal/patching/operator/multicast';
+import { Observable } from 'rxjs';
+import { multicast } from 'rxjs/internal/patching/operator/multicast';
 
-Observable.prototype.multicast = <any>multicast;
+(Observable as any).prototype.multicast = <any>multicast;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     multicast: typeof multicast;
   }

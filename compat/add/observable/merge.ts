@@ -1,9 +1,8 @@
-import { Observable } from '../../internal/Observable';
-import { merge as mergeStatic } from '../../internal/observable/merge';
+import { Observable, merge as mergeStatic } from 'rxjs';
 
 Observable.merge = mergeStatic;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   namespace Observable {
     export let merge: typeof mergeStatic;
   }

@@ -1,9 +1,9 @@
-import { Observable } from '../../internal/Observable';
-import { onErrorResumeNext } from '../../internal/patching/operator/onErrorResumeNext';
+import { Observable } from 'rxjs';
+import { onErrorResumeNext } from 'rxjs/internal/patching/operator/onErrorResumeNext';
 
-Observable.prototype.onErrorResumeNext = onErrorResumeNext;
+(Observable as any).prototype.onErrorResumeNext = onErrorResumeNext;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     onErrorResumeNext: typeof onErrorResumeNext;
   }

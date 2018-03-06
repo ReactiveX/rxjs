@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { sequenceEqual } from '../../internal/patching/operator/sequenceEqual';
+import { Observable } from 'rxjs';
+import { sequenceEqual } from 'rxjs/internal/patching/operator/sequenceEqual';
 
-Observable.prototype.sequenceEqual = sequenceEqual;
+(Observable as any).prototype.sequenceEqual = sequenceEqual;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     sequenceEqual: typeof sequenceEqual;
   }

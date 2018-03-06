@@ -117,7 +117,24 @@
     "test:circular": "dependency-cruise --validate .dependency-cruiser.json -x \"^node_modules\" src",
     "test:systemjs": "node integration/systemjs/systemjs-compatibility-spec.js",
     "tests2png": "mkdirp tmp/docs/img && cross-env TS_NODE_FAST=true mocha --compilers ts:ts-node/register --opts spec/support/tests2png.opts \"spec/**/*-spec.ts\"",
-    "watch": "watch \"echo triggering build && npm run test && echo build completed\" src -d -u -w=15"
+    "watch": "watch \"echo triggering build && npm run test && echo build completed\" src -d -u -w=15",
+
+    "compat_build_all": "npm-run-all compat_clean_dist compat_build_cjs compat_build_esm5 compat_build_esm2015 compat_generate_packages",
+    "compat_build_cjs": "npm-run-all compat_clean_dist_cjs compat_compile_dist_cjs",
+    "compat_build_esm5": "npm-run-all compat_clean_dist_esm5 compat_compile_dist_esm5",
+    "compat_build_esm2015": "npm-run-all compat_clean_dist_esm2015 compat_compile_dist_esm2015",
+
+    "compat_clean_dist": "shx rm -rf ./dist-compat",
+    "compat_clean_dist_cjs": "shx rm -rf ./dist-compat/cjs",
+    "compat_clean_dist_esm5": "shx rm -rf ./dist-compat/esm5",
+    "compat_clean_dist_esm2015": "shx rm -rf ./dist-compat/esm2015",
+
+    "compat_compile_dist_cjs": "tsc -p ./tsconfig/compat/tsconfig.cjs.json",
+    "compat_compile_dist_esm5": "tsc -p ./tsconfig/compat/tsconfig.esm5.json",
+    "compat_compile_dist_esm2015": "tsc -p ./tsconfig/compat/tsconfig.esm2015.json",
+
+    "compat_copy_sources": "mkdirp dist-compat && shx cp -r ./compat/ ./dist-compat/",
+    "compat_generate_packages": "node .make-compat-package.js"
   },
   "repository": {
     "type": "git",

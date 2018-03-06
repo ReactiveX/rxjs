@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { bufferTime } from '../../internal/patching/operator/bufferTime';
+import { Observable } from 'rxjs';
+import { bufferTime } from 'rxjs/internal/patching/operator/bufferTime';
 
-Observable.prototype.bufferTime = bufferTime;
+(Observable as any).prototype.bufferTime = bufferTime;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     bufferTime: typeof bufferTime;
   }

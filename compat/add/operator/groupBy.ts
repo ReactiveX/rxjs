@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { groupBy } from '../../internal/patching/operator/groupBy';
+import { Observable } from 'rxjs';
+import { groupBy } from 'rxjs/internal/patching/operator/groupBy';
 
-Observable.prototype.groupBy = <any>groupBy;
+(Observable as any).prototype.groupBy = <any>groupBy;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     groupBy: typeof groupBy;
   }

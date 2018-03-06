@@ -1,9 +1,9 @@
-import { Observable } from '../../internal/Observable';
-import { distinct } from '../../internal/patching/operator/distinct';
+import { Observable } from 'rxjs';
+import { distinct } from 'rxjs/internal/patching/operator/distinct';
 
-Observable.prototype.distinct = distinct;
+(Observable as any).prototype.distinct = distinct;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     distinct: typeof distinct;
   }

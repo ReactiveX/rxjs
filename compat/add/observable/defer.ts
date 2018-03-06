@@ -1,9 +1,9 @@
-import { Observable } from '../../internal/Observable';
-import { defer as staticDefer } from '../../internal/observable/defer';
+import { Observable } from 'rxjs';
+import { defer as staticDefer } from 'rxjs/observable/defer';
 
 Observable.defer = staticDefer;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   namespace Observable {
     export let defer: typeof staticDefer;
   }

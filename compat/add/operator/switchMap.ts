@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { switchMap } from '../../internal/patching/operator/switchMap';
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/internal/patching/operator/switchMap';
 
-Observable.prototype.switchMap = switchMap;
+(Observable as any).prototype.switchMap = switchMap;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     switchMap: typeof switchMap;
   }

@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { max } from '../../internal/patching/operator/max';
+import { Observable } from 'rxjs';
+import { max } from 'rxjs/internal/patching/operator/max';
 
-Observable.prototype.max = max;
+(Observable as any).prototype.max = max;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     max: typeof max;
   }

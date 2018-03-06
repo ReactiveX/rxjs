@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { window } from '../../internal/patching/operator/window';
+import { Observable } from 'rxjs';
+import { window } from 'rxjs/internal/patching/operator/window';
 
-Observable.prototype.window = window;
+(Observable as any).prototype.window = window;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     window: typeof window;
   }

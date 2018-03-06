@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { windowTime } from '../../internal/patching/operator/windowTime';
+import { Observable } from 'rxjs';
+import { windowTime } from 'rxjs/internal/patching/operator/windowTime';
 
-Observable.prototype.windowTime = windowTime;
+(Observable as any).prototype.windowTime = windowTime;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     windowTime: typeof windowTime;
   }

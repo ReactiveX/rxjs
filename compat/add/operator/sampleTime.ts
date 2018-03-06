@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { sampleTime } from '../../internal/patching/operator/sampleTime';
+import { Observable } from 'rxjs';
+import { sampleTime } from 'rxjs/internal/patching/operator/sampleTime';
 
-Observable.prototype.sampleTime = sampleTime;
+(Observable as any).prototype.sampleTime = sampleTime;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     sampleTime: typeof sampleTime;
   }

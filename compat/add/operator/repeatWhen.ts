@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { repeatWhen } from '../../internal/patching/operator/repeatWhen';
+import { Observable } from 'rxjs';
+import { repeatWhen } from 'rxjs/internal/patching/operator/repeatWhen';
 
-Observable.prototype.repeatWhen = repeatWhen;
+(Observable as any).prototype.repeatWhen = repeatWhen;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     repeatWhen: typeof repeatWhen;
   }

@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { windowCount } from '../../internal/patching/operator/windowCount';
+import { Observable } from 'rxjs';
+import { windowCount } from 'rxjs/internal/patching/operator/windowCount';
 
-Observable.prototype.windowCount = windowCount;
+(Observable as any).prototype.windowCount = windowCount;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     windowCount: typeof windowCount;
   }

@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { race } from '../../internal/patching/operator/race';
+import { Observable } from 'rxjs';
+import { race } from 'rxjs/internal/patching/operator/race';
 
-Observable.prototype.race = race;
+(Observable as any).prototype.race = race;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     race: typeof race;
   }

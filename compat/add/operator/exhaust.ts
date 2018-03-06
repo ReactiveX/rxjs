@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { exhaust } from '../../internal/patching/operator/exhaust';
+import { Observable } from 'rxjs';
+import { exhaust } from 'rxjs/internal/patching/operator/exhaust';
 
-Observable.prototype.exhaust = exhaust;
+(Observable as any).prototype.exhaust = exhaust;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     exhaust: typeof exhaust;
   }

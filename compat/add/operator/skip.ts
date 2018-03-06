@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { skip } from '../../internal/patching/operator/skip';
+import { Observable } from 'rxjs';
+import { skip } from 'rxjs/internal/patching/operator/skip';
 
-Observable.prototype.skip = skip;
+(Observable as any).prototype.skip = skip;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     skip: typeof skip;
   }

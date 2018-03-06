@@ -1,9 +1,8 @@
-import { Observable } from '../../internal/Observable';
-import { race as staticRace } from '../../internal/observable/race';
+import { Observable, race as staticRace } from 'rxjs';
 
 Observable.race = staticRace;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   namespace Observable {
     export let race: typeof staticRace;
   }

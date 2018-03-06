@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { count } from '../../internal/patching/operator/count';
+import { Observable } from 'rxjs';
+import { count } from 'rxjs/internal/patching/operator/count';
 
-Observable.prototype.count = count;
+(Observable as any).prototype.count = count;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     count: typeof count;
   }

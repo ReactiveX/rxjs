@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { share } from '../../internal/patching/operator/share';
+import { Observable } from 'rxjs';
+import { share } from 'rxjs/internal/patching/operator/share';
 
-Observable.prototype.share = share;
+(Observable as any).prototype.share = share;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     share: typeof share;
   }

@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { concatMap } from '../../internal/patching/operator/concatMap';
+import { Observable } from 'rxjs';
+import { concatMap } from 'rxjs/internal/patching/operator/concatMap';
 
-Observable.prototype.concatMap = concatMap;
+(Observable as any).prototype.concatMap = concatMap;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     concatMap: typeof concatMap;
   }

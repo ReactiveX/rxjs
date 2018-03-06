@@ -1,9 +1,8 @@
-import { Observable } from '../../internal/Observable';
-import { zip as zipStatic } from '../../internal/observable/zip';
+import { Observable, zip as zipStatic } from 'rxjs';
 
 Observable.zip = zipStatic;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   namespace Observable {
     export let zip: typeof zipStatic;
   }

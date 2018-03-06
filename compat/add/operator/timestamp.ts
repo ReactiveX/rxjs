@@ -1,9 +1,9 @@
-import { Observable } from '../../internal/Observable';
-import { timestamp } from '../../internal/patching/operator/timestamp';
+import { Observable } from 'rxjs';
+import { timestamp } from 'rxjs/internal/patching/operator/timestamp';
 
-Observable.prototype.timestamp = timestamp;
+(Observable as any).prototype.timestamp = timestamp;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     timestamp: typeof timestamp;
   }

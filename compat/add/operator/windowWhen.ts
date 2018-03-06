@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { windowWhen } from '../../internal/patching/operator/windowWhen';
+import { Observable } from 'rxjs';
+import { windowWhen } from 'rxjs/internal/patching/operator/windowWhen';
 
-Observable.prototype.windowWhen = windowWhen;
+(Observable as any).prototype.windowWhen = windowWhen;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     windowWhen: typeof windowWhen;
   }

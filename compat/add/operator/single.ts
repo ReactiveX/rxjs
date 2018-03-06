@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { single } from '../../internal/patching/operator/single';
+import { Observable } from 'rxjs';
+import { single } from 'rxjs/internal/patching/operator/single';
 
-Observable.prototype.single = single;
+(Observable as any).prototype.single = single;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     single: typeof single;
   }

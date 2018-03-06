@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { filter } from '../../internal/patching/operator/filter';
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/internal/patching/operator/filter';
 
-Observable.prototype.filter = filter;
+(Observable as any).prototype.filter = filter;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     filter: typeof filter;
   }

@@ -1,9 +1,8 @@
-import { Observable } from '../../internal/Observable';
-import { forkJoin as staticForkJoin } from '../../internal/observable/forkJoin';
+import { Observable, forkJoin as staticForkJoin } from 'rxjs';
 
 Observable.forkJoin = staticForkJoin;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   namespace Observable {
     export let forkJoin: typeof staticForkJoin;
   }

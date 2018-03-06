@@ -1,9 +1,9 @@
-import { Observable } from '../../internal/Observable';
-import { skipLast } from '../../internal/patching/operator/skipLast';
+import { Observable } from 'rxjs';
+import { skipLast } from 'rxjs/internal/patching/operator/skipLast';
 
-Observable.prototype.skipLast = skipLast;
+(Observable as any).prototype.skipLast = skipLast;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     skipLast: typeof skipLast;
   }

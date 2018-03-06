@@ -1,11 +1,11 @@
 
-import { Observable } from '../../internal/Observable';
-import { _finally } from '../../internal/patching/operator/finally';
+import { Observable } from 'rxjs';
+import { _finally } from 'rxjs/internal/patching/operator/finally';
 
-Observable.prototype.finally = _finally;
-Observable.prototype._finally = _finally;
+(Observable as any).prototype.finally = _finally;
+(Observable as any).prototype._finally = _finally;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     finally: typeof _finally;
     _finally: typeof _finally;

@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { windowToggle } from '../../internal/patching/operator/windowToggle';
+import { Observable } from 'rxjs';
+import { windowToggle } from 'rxjs/internal/patching/operator/windowToggle';
 
-Observable.prototype.windowToggle = windowToggle;
+(Observable as any).prototype.windowToggle = windowToggle;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     windowToggle: typeof windowToggle;
   }

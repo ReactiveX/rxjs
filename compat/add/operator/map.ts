@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { map } from '../../internal/patching/operator/map';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/internal/patching/operator/map';
 
-Observable.prototype.map = map;
+(Observable as any).prototype.map = map;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     map: typeof map;
   }

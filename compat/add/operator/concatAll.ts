@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { concatAll } from '../../internal/patching/operator/concatAll';
+import { Observable } from 'rxjs';
+import { concatAll } from 'rxjs/internal/patching/operator/concatAll';
 
-Observable.prototype.concatAll = concatAll;
+(Observable as any).prototype.concatAll = concatAll;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     concatAll: typeof concatAll;
   }

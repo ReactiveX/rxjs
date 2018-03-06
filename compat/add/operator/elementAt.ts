@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { elementAt } from '../../internal/patching/operator/elementAt';
+import { Observable } from 'rxjs';
+import { elementAt } from 'rxjs/internal/patching/operator/elementAt';
 
-Observable.prototype.elementAt = elementAt;
+(Observable as any).prototype.elementAt = elementAt;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     elementAt: typeof elementAt;
   }

@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { startWith } from '../../internal/patching/operator/startWith';
+import { Observable } from 'rxjs';
+import { startWith } from 'rxjs/internal/patching/operator/startWith';
 
-Observable.prototype.startWith = startWith;
+(Observable as any).prototype.startWith = startWith;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     startWith: typeof startWith;
   }

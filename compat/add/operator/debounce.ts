@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { debounce } from '../../internal/patching/operator/debounce';
+import { Observable } from 'rxjs';
+import { debounce } from 'rxjs/internal/patching/operator/debounce';
 
-Observable.prototype.debounce = debounce;
+(Observable as any).prototype.debounce = debounce;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     debounce: typeof debounce;
   }

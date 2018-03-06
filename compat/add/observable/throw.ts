@@ -1,10 +1,9 @@
-import { Observable } from '../../internal/Observable';
-import { throwError as staticThrowError } from '../../internal/observable/throwError';
+import { Observable, throwError as staticThrowError } from 'rxjs';
 
 (Observable as any).throw = staticThrowError;
 (Observable as any).throwError = staticThrowError;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   namespace Observable {
     export let throwError: typeof staticThrowError;
   }

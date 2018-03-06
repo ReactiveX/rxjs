@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { timeoutWith } from '../../internal/patching/operator/timeoutWith';
+import { Observable } from 'rxjs';
+import { timeoutWith } from 'rxjs/internal/patching/operator/timeoutWith';
 
-Observable.prototype.timeoutWith = timeoutWith;
+(Observable as any).prototype.timeoutWith = timeoutWith;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     timeoutWith: typeof timeoutWith;
   }

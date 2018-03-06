@@ -1,9 +1,8 @@
-import { Observable } from '../../internal/Observable';
-import { empty as staticEmpty } from '../../internal/observable/empty';
+import { Observable, empty as staticEmpty } from 'rxjs';
 
 Observable.empty = staticEmpty;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   namespace Observable {
     export let empty: typeof staticEmpty;
   }

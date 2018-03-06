@@ -1,9 +1,8 @@
-import { Observable } from '../../internal/Observable';
-import { concat as concatStatic } from '../../internal/observable/concat';
+import { Observable, concat as concatStatic } from 'rxjs';
 
 Observable.concat = concatStatic;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   namespace Observable {
     export let concat: typeof concatStatic;
   }

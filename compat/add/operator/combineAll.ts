@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { combineAll } from '../../internal/patching/operator/combineAll';
+import { Observable } from 'rxjs';
+import { combineAll } from 'rxjs/internal/patching/operator/combineAll';
 
-Observable.prototype.combineAll = combineAll;
+(Observable as any).prototype.combineAll = combineAll;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     combineAll: typeof combineAll;
   }

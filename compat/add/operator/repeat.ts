@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { repeat } from '../../internal/patching/operator/repeat';
+import { Observable } from 'rxjs';
+import { repeat } from 'rxjs/internal/patching/operator/repeat';
 
-Observable.prototype.repeat = repeat;
+(Observable as any).prototype.repeat = repeat;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     repeat: typeof repeat;
   }

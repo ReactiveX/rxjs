@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { take } from '../../internal/patching/operator/take';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/internal/patching/operator/take';
 
-Observable.prototype.take = take;
+(Observable as any).prototype.take = take;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     take: typeof take;
   }

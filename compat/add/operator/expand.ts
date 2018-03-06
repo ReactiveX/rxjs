@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { expand } from '../../internal/patching/operator/expand';
+import { Observable } from 'rxjs';
+import { expand } from 'rxjs/internal/patching/operator/expand';
 
-Observable.prototype.expand = expand;
+(Observable as any).prototype.expand = expand;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     expand: typeof expand;
   }

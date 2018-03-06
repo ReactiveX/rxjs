@@ -1,9 +1,8 @@
-import { Observable } from '../../internal/Observable';
-import { generate as staticGenerate } from '../../internal/observable/generate';
+import { Observable, generate as staticGenerate } from 'rxjs';
 
 Observable.generate = staticGenerate;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   namespace Observable {
     export let generate: typeof staticGenerate;
   }

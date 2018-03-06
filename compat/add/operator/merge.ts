@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { merge } from '../../internal/patching/operator/merge';
+import { Observable } from 'rxjs';
+import { merge } from 'rxjs/internal/patching/operator/merge';
 
-Observable.prototype.merge = merge;
+(Observable as any).prototype.merge = merge;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     merge: typeof merge;
   }

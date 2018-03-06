@@ -1,5 +1,5 @@
-import { Observable } from '../../internal/Observable';
-import { NEVER } from '../../internal/observable/never';
+import { Observable, interval } from 'rxjs';
+import { NEVER } from 'rxjs/internal/observable/never';
 
 export function staticNever() {
   return NEVER;
@@ -7,7 +7,7 @@ export function staticNever() {
 
 Observable.never = staticNever;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   namespace Observable {
     export let never: typeof staticNever;
   }

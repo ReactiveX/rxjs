@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { first } from '../../internal/patching/operator/first';
+import { Observable } from 'rxjs';
+import { first } from 'rxjs/internal/patching/operator/first';
 
-Observable.prototype.first = <any>first;
+(Observable as any).prototype.first = <any>first;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     first: typeof first;
   }

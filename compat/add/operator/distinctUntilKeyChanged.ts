@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { distinctUntilKeyChanged } from '../../internal/patching/operator/distinctUntilKeyChanged';
+import { Observable } from 'rxjs';
+import { distinctUntilKeyChanged } from 'rxjs/internal/patching/operator/distinctUntilKeyChanged';
 
-Observable.prototype.distinctUntilKeyChanged = distinctUntilKeyChanged;
+(Observable as any).prototype.distinctUntilKeyChanged = distinctUntilKeyChanged;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     distinctUntilKeyChanged: typeof distinctUntilKeyChanged;
   }

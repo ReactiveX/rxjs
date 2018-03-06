@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { toArray } from '../../internal/patching/operator/toArray';
+import { Observable } from 'rxjs';
+import { toArray } from 'rxjs/internal/patching/operator/toArray';
 
-Observable.prototype.toArray = toArray;
+(Observable as any).prototype.toArray = toArray;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     toArray: typeof toArray;
   }

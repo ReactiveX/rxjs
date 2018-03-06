@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { pluck } from '../../internal/patching/operator/pluck';
+import { Observable } from 'rxjs';
+import { pluck } from 'rxjs/internal/patching/operator/pluck';
 
-Observable.prototype.pluck = pluck;
+(Observable as any).prototype.pluck = pluck;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     pluck: typeof pluck;
   }

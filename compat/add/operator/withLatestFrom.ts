@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { withLatestFrom } from '../../internal/patching/operator/withLatestFrom';
+import { Observable } from 'rxjs';
+import { withLatestFrom } from 'rxjs/internal/patching/operator/withLatestFrom';
 
-Observable.prototype.withLatestFrom = withLatestFrom;
+(Observable as any).prototype.withLatestFrom = withLatestFrom;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     withLatestFrom: typeof withLatestFrom;
   }

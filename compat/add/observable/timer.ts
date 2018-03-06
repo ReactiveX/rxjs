@@ -1,9 +1,8 @@
-import { Observable } from '../../internal/Observable';
-import { timer as staticTimer } from '../../internal/observable/timer';
+import { Observable, timer as staticTimer } from 'rxjs';
 
 Observable.timer = staticTimer;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   namespace Observable {
     export let timer: typeof staticTimer;
   }

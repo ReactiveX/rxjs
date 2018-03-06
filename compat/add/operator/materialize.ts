@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { materialize } from '../../internal/patching/operator/materialize';
+import { Observable } from 'rxjs';
+import { materialize } from 'rxjs/internal/patching/operator/materialize';
 
-Observable.prototype.materialize = materialize;
+(Observable as any).prototype.materialize = materialize;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     materialize: typeof materialize;
   }

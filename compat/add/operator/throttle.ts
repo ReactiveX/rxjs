@@ -1,10 +1,10 @@
 
-import { Observable } from '../../internal/Observable';
-import { throttle } from '../../internal/patching/operator/throttle';
+import { Observable } from 'rxjs';
+import { throttle } from 'rxjs/internal/patching/operator/throttle';
 
-Observable.prototype.throttle = throttle;
+(Observable as any).prototype.throttle = throttle;
 
-declare module '../../internal/Observable' {
+declare module 'rxjs/internal/Observable' {
   interface Observable<T> {
     throttle: typeof throttle;
   }
