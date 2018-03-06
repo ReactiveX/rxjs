@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { expectObservable } from '../helpers/marble-testing';
-import { fromEvent, never, timer } from '../../src';
+import { fromEvent, NEVER, timer } from '../../src';
 import { TestScheduler } from '../../src/testing';
 
 declare function asDiagram(arg: string): Function;
@@ -15,7 +15,7 @@ describe('fromEvent', () => {
         timer(50, 20, rxTestScheduler)
           .mapTo('ev')
           .take(2)
-          .concat(never())
+          .concat(NEVER)
           .subscribe(listener);
       },
       removeEventListener: () => void 0,

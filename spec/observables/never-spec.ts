@@ -1,18 +1,18 @@
-import { never } from '../../src/';
+import { NEVER } from '../../src/';
 import { expect } from 'chai';
 import { expectObservable } from '../helpers/marble-testing';
 
 declare const asDiagram: any;
 
-/** @test {never} */
-describe('never', () => {
-  asDiagram('never')('should create a cold observable that never emits', () => {
+/** @test {NEVER} */
+describe('NEVER', () => {
+  asDiagram('NEVER')('should create a cold observable that never emits', () => {
     const expected = '-';
-    const e1 = never();
+    const e1 = NEVER;
     expectObservable(e1).toBe(expected);
   });
 
   it('should return the same instance every time', () => {
-    expect(never()).to.equal(never());
+    expect(NEVER).to.equal(NEVER);
   });
 });

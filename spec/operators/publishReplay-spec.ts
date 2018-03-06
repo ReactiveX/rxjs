@@ -1,12 +1,12 @@
 import { expect } from 'chai';
-import * as Rx from '../../src/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { throwError } from '../../src/internal/observable/throwError';
+import { EMPTY, NEVER, of, Observable, Subscription } from '../../src';
+import { publishReplay } from '../../src/operators';
+import { ConnectableObservable } from '../../src/internal/observable/ConnectableObservable';
 
 declare function asDiagram(arg: string): Function;
 declare const type: Function;
-
-const Observable = Rx.Observable;
 
 /** @test {publishReplay} */
 describe('Observable.prototype.publishReplay', () => {
@@ -23,7 +23,7 @@ describe('Observable.prototype.publishReplay', () => {
   });
 
   it('should return a ConnectableObservable-ish', () => {
-    const source = Observable.of(1).publishReplay();
+    const source = of(1).publishReplay();
     expect(typeof (<any> source)._subscribe === 'function').to.be.true;
     expect(typeof (<any> source).getSubject === 'function').to.be.true;
     expect(typeof source.connect === 'function').to.be.true;
@@ -116,7 +116,7 @@ describe('Observable.prototype.publishReplay', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
 
     // Set up unsubscription action
-    let connection: Rx.Subscription;
+    let connection: Subscription;
     expectObservable(hot(unsub).do(() => {
       connection.unsubscribe();
     })).toBe(unsub);
@@ -128,7 +128,7 @@ describe('Observable.prototype.publishReplay', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^        !   ';
     const published = source
-      .mergeMap((x) => Observable.of(x))
+      .mergeMap((x) => of(x))
       .publishReplay(1);
     const subscriber1 = hot('a|           ').mergeMapTo(published);
     const expected1   =     '-1-2-3----   ';
@@ -144,7 +144,7 @@ describe('Observable.prototype.publishReplay', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
 
     // Set up unsubscription action
-    let connection: Rx.Subscription;
+    let connection: Subscription;
     expectObservable(hot(unsub).do(() => {
       connection.unsubscribe();
     })).toBe(unsub);
@@ -410,7 +410,7 @@ describe('Observable.prototype.publishReplay', () => {
 
   it('should mirror a simple source Observable with selector', () => {
     const values = {a: 2, b: 4, c: 6, d: 8};
-    const selector = (observable: Rx.Observable<string>) => observable.map(v => 2 * +v);
+    const selector = (observable: Observable<string>) => observable.map(v => 2 * +v);
     const source = cold('--1-2---3-4---|');
     const sourceSubs =  '^             !';
     const published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
@@ -435,7 +435,7 @@ describe('Observable.prototype.publishReplay', () => {
   it('should emit an error when the selector returns an Observable that emits an error', () => {
     const error = "It's broken";
     const innerObservable = cold('--5-6----#', undefined, error);
-    const selector = (observable: Rx.Observable<string>) => observable.mergeMapTo(innerObservable);
+    const selector = (observable: Observable<string>) => observable.mergeMapTo(innerObservable);
     const source = cold('--1--2---3---|');
     const sourceSubs =  '^          !';
     const published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
@@ -457,7 +457,7 @@ describe('Observable.prototype.publishReplay', () => {
   });
 
   it('should not emit and should not complete/error when the selector returns never', () => {
-    const selector = () => Observable.never();
+    const selector = () => NEVER;
     const source = cold('-');
     const sourceSubs =  '^';
     const published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
@@ -481,44 +481,44 @@ describe('Observable.prototype.publishReplay', () => {
 
   type('should infer the type', () => {
     /* tslint:disable:no-unused-variable */
-    const source = Rx.Observable.of<number>(1, 2, 3);
-    const result: Rx.ConnectableObservable<number> = source.publishReplay(1);
+    const source = of<number>(1, 2, 3);
+    const result: ConnectableObservable<number> = source.publishReplay(1);
     /* tslint:enable:no-unused-variable */
   });
 
   type('should infer the type with a selector', () => {
     /* tslint:disable:no-unused-variable */
-    const source = Rx.Observable.of<number>(1, 2, 3);
-    const result: Rx.Observable<number> = source.publishReplay(1, undefined, s => s.map(x => x));
+    const source = of<number>(1, 2, 3);
+    const result: Observable<number> = source.publishReplay(1, undefined, s => s.map(x => x));
     /* tslint:enable:no-unused-variable */
   });
 
   type('should infer the type with a type-changing selector', () => {
     /* tslint:disable:no-unused-variable */
-    const source = Rx.Observable.of<number>(1, 2, 3);
-    const result: Rx.Observable<string> = source.publishReplay(1, undefined, s => s.map(x => x + '!'));
+    const source = of<number>(1, 2, 3);
+    const result: Observable<string> = source.publishReplay(1, undefined, s => s.map(x => x + '!'));
     /* tslint:enable:no-unused-variable */
   });
 
   type('should infer the type for the pipeable operator', () => {
     /* tslint:disable:no-unused-variable */
-    const source = Rx.Observable.of<number>(1, 2, 3);
+    const source = of<number>(1, 2, 3);
     // TODO: https://github.com/ReactiveX/rxjs/issues/2972
-    const result: Rx.ConnectableObservable<number> = Rx.operators.publishReplay<number>(1)(source);
+    const result: ConnectableObservable<number> = publishReplay<number>(1)(source);
     /* tslint:enable:no-unused-variable */
   });
 
   type('should infer the type for the pipeable operator with a selector', () => {
     /* tslint:disable:no-unused-variable */
-    const source = Rx.Observable.of<number>(1, 2, 3);
-    const result: Rx.Observable<number> = source.pipe(Rx.operators.publishReplay(1, undefined, s => s.map(x => x)));
+    const source = of<number>(1, 2, 3);
+    const result: Observable<number> = source.pipe(publishReplay(1, undefined, s => s.map(x => x)));
     /* tslint:enable:no-unused-variable */
   });
 
   type('should infer the type for the pipeable operator with a type-changing selector', () => {
     /* tslint:disable:no-unused-variable */
-    const source = Rx.Observable.of<number>(1, 2, 3);
-    const result: Rx.Observable<string> = source.pipe(Rx.operators.publishReplay(1, undefined, s => s.map(x => x + '!')));
+    const source = of<number>(1, 2, 3);
+    const result: Observable<string> = source.pipe(publishReplay(1, undefined, s => s.map(x => x + '!')));
     /* tslint:enable:no-unused-variable */
   });
 });

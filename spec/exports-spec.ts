@@ -82,10 +82,6 @@ describe('exports', () => {
     expect(merge).to.equal(Rx.Observable.merge);
   });
 
-  it('should have rxjs/observable/never', () => {
-    expect(never).to.equal(Rx.Observable.never);
-  });
-
   it('should have rxjs/observable/of', () => {
     expect(of).to.equal(Rx.Observable.of);
   });
