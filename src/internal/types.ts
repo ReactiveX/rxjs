@@ -1,5 +1,4 @@
 import { Observable } from './Observable';
-import { PartialObserver } from './types';
 
 /** OPERATOR INTERFACES */
 
