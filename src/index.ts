@@ -42,6 +42,7 @@ export { fromArray } from './internal/observable/fromArray';
 export { fromEvent } from './internal/observable/fromEvent';
 export { fromEventPattern } from './internal/observable/fromEventPattern';
 export { fromIterable } from './internal/observable/fromIterable';
+export { fromObservable } from './internal/observable/fromObservable';
 export { fromPromise } from './internal/observable/fromPromise';
 export { generate } from './internal/observable/generate';
 export { iif } from './internal/observable/iif';

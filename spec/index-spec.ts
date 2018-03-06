@@ -57,6 +57,7 @@ describe('index', () => {
     expect(index.fromEvent).to.exist;
     expect(index.fromEventPattern).to.exist;
     expect(index.fromIterable).to.exist;
+    expect(index.fromObservable).to.exist;
     expect(index.fromPromise).to.exist;
     expect(index.generate).to.exist;
     expect(index.iif).to.exist;
