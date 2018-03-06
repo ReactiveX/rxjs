@@ -20,7 +20,15 @@
       "es2015.symbol",
       "es2015.symbol.wellknown",
       "dom"
-    ]
+    ],
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "rxjs": ["./src"],
+      "rxjs/*": ["./src/*"],
+      "rxjs-compat": ["./compat"],
+      "rxjs-compat/*": ["./compat/*"]
+    }
   },
   "formatCodeOptions": {
     "indentSize": 2,

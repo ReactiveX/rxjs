@@ -2,9 +2,8 @@
 // Subject imported before Observable to bypass circular dependency issue since
 // Subject extends Observable and Observable references Subject in it's
 // definition
-export {Subject, AnonymousSubject} from './internal/Subject';
+export {Observable, Subject} from 'rxjs';
 /* tslint:enable:no-unused-variable */
-export {Observable} from './internal/Observable';
 
 // statics
 /* tslint:disable:no-use-before-declare */
@@ -143,40 +142,44 @@ import './add/operator/zip';
 import './add/operator/zipAll';
 
 /* tslint:disable:no-unused-variable */
-export {Operator} from './internal/Operator';
-export {Observer} from './internal/types';
-export {Subscription} from './internal/Subscription';
-export {Subscriber} from './internal/Subscriber';
-export {AsyncSubject} from './internal/AsyncSubject';
-export {ReplaySubject} from './internal/ReplaySubject';
-export {BehaviorSubject} from './internal/BehaviorSubject';
-export {ConnectableObservable} from './internal/observable/ConnectableObservable';
-export {Notification} from './internal/Notification';
-export {EmptyError} from './internal/util/EmptyError';
-export {ArgumentOutOfRangeError} from './internal/util/ArgumentOutOfRangeError';
-export {ObjectUnsubscribedError} from './internal/util/ObjectUnsubscribedError';
-export {TimeoutError} from './internal/util/TimeoutError';
-export {UnsubscriptionError} from './internal/util/UnsubscriptionError';
-export {TimeInterval} from './internal/patching/operator/timeInterval';
-export {Timestamp} from './internal/operators/timestamp';
-export {TestScheduler} from './internal/testing/TestScheduler';
-export {VirtualTimeScheduler} from './internal/scheduler/VirtualTimeScheduler';
-export {AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError} from './internal/observable/dom/AjaxObservable';
-export { pipe } from './internal/util/pipe';
+export {
+  Observer,
+  Subscription,
+  ReplaySubject,
+  BehaviorSubject,
+  Notification,
+  EmptyError,
+  ArgumentOutOfRangeError,
+  ObjectUnsubscribedError,
+  UnsubscriptionError,
+  pipe
+} from 'rxjs';
 
-import { asap } from './internal/scheduler/asap';
-import { async } from './internal/scheduler/async';
-import { queue } from './internal/scheduler/queue';
-import { animationFrame } from './internal/scheduler/animationFrame';
-import { AsapScheduler } from './internal/scheduler/AsapScheduler';
-import { AsyncScheduler } from './internal/scheduler/AsyncScheduler';
-import { QueueScheduler } from './internal/scheduler/QueueScheduler';
-import { AnimationFrameScheduler } from './internal/scheduler/AnimationFrameScheduler';
-import { rxSubscriber } from './internal/symbol/rxSubscriber';
-import { iterator } from './internal/symbol/iterator';
-import { observable } from './internal/symbol/observable';
+export {TestScheduler} from 'rxjs/testing';
 
-import * as _operators from './internal/operators';
+export {Operator} from 'rxjs/internal/Operator';
+export {Subscriber} from 'rxjs/internal/Subscriber';
+export {AsyncSubject} from 'rxjs/internal/AsyncSubject';
+export {ConnectableObservable} from 'rxjs/internal/observable/ConnectableObservable';
+export {TimeoutError} from 'rxjs/internal/util/TimeoutError';
+export {TimeInterval} from 'rxjs/internal/patching/operator/timeInterval';
+export {Timestamp} from 'rxjs/internal/operators/timestamp';
+export {VirtualTimeScheduler} from 'rxjs/internal/scheduler/VirtualTimeScheduler';
+export {AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError} from 'rxjs/internal/observable/dom/AjaxObservable';
+
+import {
+  asapScheduler as asap,
+  asyncScheduler as async,
+  queueScheduler as queue,
+  animationFrameScheduler as animationFrame,
+
+} from 'rxjs';
+
+import { rxSubscriber } from 'rxjs/internal/symbol/rxSubscriber';
+import { iterator } from 'rxjs/internal/symbol/iterator';
+import { observable } from 'rxjs/internal/symbol/observable';
+
+import * as _operators from 'rxjs/operators';
 
 export const operators = _operators;
 
