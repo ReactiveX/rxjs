@@ -1,8 +1,7 @@
 import { expect } from 'chai';
-import * as Rx from '../../src/Rx';
+import { Observable } from '../../src/internal/Observable';
 
 declare const __root__: any;
-const Observable = Rx.Observable;
 
 /** @test {toPromise} */
 describe('Observable.prototype.toPromise', () => {
