@@ -1,7 +1,7 @@
 
 import { IScheduler } from '../Scheduler';
 import { async } from '../scheduler/async';
-import { OperatorFunction } from '../types';
+import { OperatorFunction, Timestamp as TimestampInterface } from '../types';
 import { map } from './map';
 
 /**
@@ -15,7 +15,7 @@ export function timestamp<T>(scheduler: IScheduler = async): OperatorFunction<T,
   // return (source: Observable<T>) => source.lift(new TimestampOperator(scheduler));
 }
 
-export class Timestamp<T> {
+export class Timestamp<T> implements TimestampInterface<T> {
   constructor(public value: T, public timestamp: number) {
   }
 }
