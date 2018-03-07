@@ -22,6 +22,7 @@ const CJS_ROOT = ROOT + 'cjs/';
 const ESM5_ROOT = ROOT + 'esm5/';
 const ESM2015_ROOT = ROOT + 'esm2015/';
 const UMD_ROOT = ROOT + 'global/';
+const LEGACY_REEXPORT_ROOT = ROOT + "legacy-reexport/legacy-reexport/"
 const TYPE_ROOT = ROOT + 'typings/';
 const PKG_ROOT = ROOT + 'package/';
 const CJS_PKG = PKG_ROOT + '';
@@ -96,6 +97,7 @@ mkdirp.sync(PKG_ROOT);
 copySources('src/', PKG_ROOT + 'src/');
 copySources(CJS_ROOT, CJS_PKG);
 fs.copySync(TYPE_ROOT, TYPE_PKG);
+fs.copySync(LEGACY_REEXPORT_ROOT, CJS_PKG, {overwrite: false, errorOnExist: true});
 
 copySources(ESM5_ROOT, ESM5_PKG, true);
 copySources(ESM2015_ROOT, ESM2015_PKG, true);
@@ -103,11 +105,12 @@ copySources(ESM2015_ROOT, ESM2015_PKG, true);
 // Copy over tsconfig.json for bazel build support
 fs.copySync('./tsconfig.json', PKG_ROOT + 'src/tsconfig.json');
 
-fs.writeJsonSync(PKG_ROOT + 'package.json', rootPackageJson);
+fs.writeJsonSync(PKG_ROOT + 'package.json', rootPackageJson, {spaces: 2});
 fs.copySync('src/operators/package.json', PKG_ROOT + '/operators/package.json');
 fs.copySync('src/ajax/package.json', PKG_ROOT + '/ajax/package.json');
 fs.copySync('src/websocket/package.json', PKG_ROOT + '/websocket/package.json');
 fs.copySync('src/testing/package.json', PKG_ROOT + '/testing/package.json');
+
 
 if (fs.existsSync(UMD_ROOT)) {
   fs.copySync(UMD_ROOT, UMD_PKG);
