@@ -6,6 +6,8 @@ export {Subject, AnonymousSubject} from './Subject';
 /* tslint:enable:no-unused-variable */
 export {Observable} from './Observable';
 
+export { config } from './config';
+
 // statics
 /* tslint:disable:no-use-before-declare */
 import '../add/observable/bindCallback';

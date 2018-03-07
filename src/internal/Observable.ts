@@ -2,12 +2,12 @@ import { Operator } from './Operator';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
 import { TeardownLogic } from './types';
-import { root } from './util/root';
 import { toSubscriber } from './util/toSubscriber';
 import { iif } from './observable/iif';
 import { observable as Symbol_observable } from '../internal/symbol/observable';
 import { OperatorFunction, PartialObserver, Subscribable } from '../internal/types';
 import { pipeFromArray } from './util/pipe';
+import { config } from './config';
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
@@ -209,24 +209,14 @@ export class Observable<T> implements Subscribable<T> {
   /**
    * @method forEach
    * @param {Function} next a handler for each value emitted by the observable
-   * @param {PromiseConstructor} [PromiseCtor] a constructor function used to instantiate the Promise
+   * @param {PromiseConstructor} [promiseCtor] a constructor function used to instantiate the Promise
    * @return {Promise} a promise that either resolves on observable completion or
    *  rejects with the handled error
    */
-  forEach(next: (value: T) => void, PromiseCtor?: typeof Promise): Promise<void> {
-    if (!PromiseCtor) {
-      if (root.Rx && root.Rx.config && root.Rx.config.Promise) {
-        PromiseCtor = root.Rx.config.Promise;
-      } else if (root.Promise) {
-        PromiseCtor = root.Promise;
-      }
-    }
+  forEach(next: (value: T) => void, promiseCtor?: PromiseConstructorLike): PromiseLike<void> {
+    promiseCtor = getPromiseCtor(promiseCtor);
 
-    if (!PromiseCtor) {
-      throw new Error('no Promise impl found');
-    }
-
-    return new PromiseCtor<void>((resolve, reject) => {
+    return new promiseCtor<void>((resolve, reject) => {
       // Must be declared in a separate statement to avoid a RefernceError when
       // accessing subscription below in the closure due to Temporal Dead Zone.
       let subscription: Subscription;
@@ -307,22 +297,31 @@ export class Observable<T> implements Subscribable<T> {
   toPromise<T>(this: Observable<T>, PromiseCtor: PromiseConstructorLike): Promise<T>;
   /* tslint:enable:max-line-length */
 
-  toPromise(PromiseCtor?: PromiseConstructorLike) {
-    if (!PromiseCtor) {
-      if (root.Rx && root.Rx.config && root.Rx.config.Promise) {
-        PromiseCtor = root.Rx.config.Promise;
-      } else if (root.Promise) {
-        PromiseCtor = root.Promise;
-      }
-    }
+  toPromise(promiseCtor?: PromiseConstructorLike): PromiseLike<T> {
+    promiseCtor = getPromiseCtor(promiseCtor);
 
-    if (!PromiseCtor) {
-      throw new Error('no Promise impl found');
-    }
-
-    return new PromiseCtor((resolve, reject) => {
+    return new promiseCtor((resolve, reject) => {
       let value: any;
       this.subscribe((x: T) => value = x, (err: any) => reject(err), () => resolve(value));
-    }) as Promise<T>;
+    });
   }
+}
+
+/**
+ * Decides between a passed promise constructor from consuming code,
+ * A default configured promise constructor, and the native promise
+ * constructor and returns it. If nothing can be found, it will throw
+ * an error.
+ * @param promiseCtor The optional promise constructor to passed by consuming code
+ */
+function getPromiseCtor(promiseCtor: PromiseConstructorLike | undefined) {
+  if (!promiseCtor) {
+    promiseCtor = config.Promise || Promise;
+  }
+
+  if (!promiseCtor) {
+    throw new Error('no Promise impl found');
+  }
+
+  return promiseCtor;
 }
