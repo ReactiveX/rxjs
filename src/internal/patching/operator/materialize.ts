@@ -1,4 +1,3 @@
-
 import { Observable } from '../../Observable';
 import { Notification } from '../../Notification';
 import { materialize as higherOrder } from '../../operators/materialize';

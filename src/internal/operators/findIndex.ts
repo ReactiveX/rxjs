@@ -35,7 +35,6 @@ import { OperatorFunction } from '../types';
  * @method find
  * @owner Observable
  */
-export function findIndex<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                             thisArg?: any): OperatorFunction<T, number> {
+export function findIndex<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): OperatorFunction<T, number> {
   return (source: Observable<T>) => source.lift(new FindValueOperator(predicate, source, true, thisArg)) as Observable<any>;
 }

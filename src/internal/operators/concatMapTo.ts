@@ -49,8 +49,6 @@ import { ObservableInput, OperatorFunction } from '../types';
  * @method concatMapTo
  * @owner Observable
  */
-export function concatMapTo<T, R>(
-  innerObservable: ObservableInput<R>
-): OperatorFunction<T, R> {
+export function concatMapTo<T, R>(innerObservable: ObservableInput<R>): OperatorFunction<T, R> {
   return concatMap(() => innerObservable);
 }

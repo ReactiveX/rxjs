@@ -1,4 +1,3 @@
-
 import { Observable } from '../../Observable';
 import { bufferCount as higherOrder } from '../../operators/bufferCount';
 

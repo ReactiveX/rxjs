@@ -8,7 +8,6 @@ import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
  * @class BehaviorSubject<T>
  */
 export class BehaviorSubject<T> extends Subject<T> {
-
   constructor(private _value: T) {
     super();
   }
@@ -36,6 +35,6 @@ export class BehaviorSubject<T> extends Subject<T> {
   }
 
   next(value: T): void {
-    super.next(this._value = value);
+    super.next((this._value = value));
   }
 }

@@ -4,7 +4,5 @@ import { fromPromise as staticFromPromise } from '../../internal/observable/from
 Observable.fromPromise = staticFromPromise;
 
 declare module '../../internal/Observable' {
-  namespace Observable {
-    export let fromPromise: typeof staticFromPromise;
-  }
+  namespace Observable { export let fromPromise: typeof staticFromPromise; }
 }

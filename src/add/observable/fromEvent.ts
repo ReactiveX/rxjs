@@ -4,7 +4,5 @@ import { fromEvent as staticFromEvent } from '../../internal/observable/fromEven
 Observable.fromEvent = staticFromEvent;
 
 declare module '../../internal/Observable' {
-  namespace Observable {
-    export let fromEvent: typeof staticFromEvent;
-  }
+  namespace Observable { export let fromEvent: typeof staticFromEvent; }
 }

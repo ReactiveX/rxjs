@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { windowWhen } from '../../internal/patching/operator/windowWhen';
 

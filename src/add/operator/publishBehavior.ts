@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { publishBehavior } from '../../internal/patching/operator/publishBehavior';
 

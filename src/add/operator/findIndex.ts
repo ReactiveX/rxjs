@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { findIndex } from '../../internal/patching/operator/findIndex';
 

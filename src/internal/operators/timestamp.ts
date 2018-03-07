@@ -1,4 +1,3 @@
-
 import { IScheduler } from '../Scheduler';
 import { async } from '../scheduler/async';
 import { OperatorFunction, Timestamp as TimestampInterface } from '../types';
@@ -16,6 +15,5 @@ export function timestamp<T>(scheduler: IScheduler = async): OperatorFunction<T,
 }
 
 export class Timestamp<T> implements TimestampInterface<T> {
-  constructor(public value: T, public timestamp: number) {
-  }
+  constructor(public value: T, public timestamp: number) {}
 }

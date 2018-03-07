@@ -7,7 +7,13 @@ import { bufferTime as higherOrder } from '../../operators/bufferTime';
 /* tslint:disable:max-line-length */
 export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, scheduler?: IScheduler): Observable<T[]>;
 export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number, scheduler?: IScheduler): Observable<T[]>;
-export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number, maxBufferSize: number, scheduler?: IScheduler): Observable<T[]>;
+export function bufferTime<T>(
+  this: Observable<T>,
+  bufferTimeSpan: number,
+  bufferCreationInterval: number,
+  maxBufferSize: number,
+  scheduler?: IScheduler,
+): Observable<T[]>;
 /* tslint:enable:max-line-length */
 
 /**

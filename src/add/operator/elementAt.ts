@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { elementAt } from '../../internal/patching/operator/elementAt';
 

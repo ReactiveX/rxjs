@@ -4,7 +4,5 @@ import { combineLatest as combineLatestStatic } from '../../internal/observable/
 Observable.combineLatest = combineLatestStatic;
 
 declare module '../../internal/Observable' {
-  namespace Observable {
-    export let combineLatest: typeof combineLatestStatic;
-  }
+  namespace Observable { export let combineLatest: typeof combineLatestStatic; }
 }

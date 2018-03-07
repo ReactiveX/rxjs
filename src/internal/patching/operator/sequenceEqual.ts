@@ -53,7 +53,6 @@ import { sequenceEqual as higherOrder } from '../../operators/sequenceEqual';
  * @method sequenceEqual
  * @owner Observable
  */
-export function sequenceEqual<T>(this: Observable<T>, compareTo: Observable<T>,
-                                 comparor?: (a: T, b: T) => boolean): Observable<boolean> {
+export function sequenceEqual<T>(this: Observable<T>, compareTo: Observable<T>, comparor?: (a: T, b: T) => boolean): Observable<boolean> {
   return higherOrder(compareTo, comparor)(this);
 }

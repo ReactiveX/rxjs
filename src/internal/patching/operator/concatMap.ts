@@ -53,6 +53,6 @@ import { ObservableInput } from '../../types';
  * @method concatMap
  * @owner Observable
  */
-export function concatMap<T, R>(this: Observable<T>, project: (value: T, index: number) =>  ObservableInput<R>) {
+export function concatMap<T, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<R>) {
   return higherOrderConcatMap(project)(this);
 }

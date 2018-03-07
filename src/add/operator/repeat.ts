@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { repeat } from '../../internal/patching/operator/repeat';
 

@@ -52,16 +52,22 @@ export function pairs<T>(obj: Object, scheduler?: IScheduler): Observable<[strin
       const keys = Object.keys(obj);
       const subscription = new Subscription();
       subscription.add(
-        scheduler.schedule<{ keys: string[], index: number, subscriber: Subscriber<[string, T]>, subscription: Subscription, obj: Object }>
-          (dispatch, 0, { keys, index: 0, subscriber, subscription, obj }));
+        scheduler.schedule<{ keys: string[]; index: number; subscriber: Subscriber<[string, T]>; subscription: Subscription; obj: Object }>(
+          dispatch,
+          0,
+          { keys, index: 0, subscriber, subscription, obj },
+        ),
+      );
       return subscription;
     });
   }
 }
 
 /** @internal */
-export function dispatch<T>(this: Action<any>,
-                            state: { keys: string[], index: number, subscriber: Subscriber<[string, T]>, subscription: Subscription, obj: Object }) {
+export function dispatch<T>(
+  this: Action<any>,
+  state: { keys: string[]; index: number; subscriber: Subscriber<[string, T]>; subscription: Subscription; obj: Object },
+) {
   const { keys, index, subscriber, subscription, obj } = state;
   if (!subscriber.closed) {
     if (index < keys.length) {

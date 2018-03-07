@@ -45,9 +45,7 @@ export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T,
 }
 
 class BufferOperator<T> implements Operator<T, T[]> {
-
-  constructor(private closingNotifier: Observable<any>) {
-  }
+  constructor(private closingNotifier: Observable<any>) {}
 
   call(subscriber: Subscriber<T[]>, source: any): any {
     return source.subscribe(new BufferSubscriber(subscriber, this.closingNotifier));
@@ -71,9 +69,7 @@ class BufferSubscriber<T> extends OuterSubscriber<T, any> {
     this.buffer.push(value);
   }
 
-  notifyNext(outerValue: T, innerValue: any,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, any>): void {
+  notifyNext(outerValue: T, innerValue: any, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, any>): void {
     const buffer = this.buffer;
     this.buffer = [];
     this.destination.next(buffer);

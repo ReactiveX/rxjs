@@ -46,23 +46,19 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @method throttleTime
  * @owner Observable
  */
-export function throttleTime<T>(duration: number,
-                                scheduler: IScheduler = async,
-                                config: ThrottleConfig = defaultThrottleConfig): MonoTypeOperatorFunction<T> {
+export function throttleTime<T>(
+  duration: number,
+  scheduler: IScheduler = async,
+  config: ThrottleConfig = defaultThrottleConfig,
+): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new ThrottleTimeOperator(duration, scheduler, config.leading, config.trailing));
 }
 
 class ThrottleTimeOperator<T> implements Operator<T, T> {
-  constructor(private duration: number,
-              private scheduler: IScheduler,
-              private leading: boolean,
-              private trailing: boolean) {
-  }
+  constructor(private duration: number, private scheduler: IScheduler, private leading: boolean, private trailing: boolean) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(
-      new ThrottleTimeSubscriber(subscriber, this.duration, this.scheduler, this.leading, this.trailing)
-    );
+    return source.subscribe(new ThrottleTimeSubscriber(subscriber, this.duration, this.scheduler, this.leading, this.trailing));
   }
 }
 
@@ -76,11 +72,13 @@ class ThrottleTimeSubscriber<T> extends Subscriber<T> {
   private _hasTrailingValue: boolean = false;
   private _trailingValue: T = null;
 
-  constructor(destination: Subscriber<T>,
-              private duration: number,
-              private scheduler: IScheduler,
-              private leading: boolean,
-              private trailing: boolean) {
+  constructor(
+    destination: Subscriber<T>,
+    private duration: number,
+    private scheduler: IScheduler,
+    private leading: boolean,
+    private trailing: boolean,
+  ) {
     super(destination);
   }
 
@@ -91,7 +89,7 @@ class ThrottleTimeSubscriber<T> extends Subscriber<T> {
         this._hasTrailingValue = true;
       }
     } else {
-      this.add(this.throttled = this.scheduler.schedule<DispatchArg<T>>(dispatchNext, this.duration, { subscriber: this }));
+      this.add((this.throttled = this.scheduler.schedule<DispatchArg<T>>(dispatchNext, this.duration, { subscriber: this })));
       if (this.leading) {
         this.destination.next(value);
       }

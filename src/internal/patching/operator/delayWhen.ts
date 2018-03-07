@@ -1,4 +1,3 @@
-
 import { Observable } from '../../Observable';
 import { delayWhen as higherOrder } from '../../operators/delayWhen';
 
@@ -47,7 +46,10 @@ import { delayWhen as higherOrder } from '../../operators/delayWhen';
  * @method delayWhen
  * @owner Observable
  */
-export function delayWhen<T>(this: Observable<T>, delayDurationSelector: (value: T) => Observable<any>,
-                             subscriptionDelay?: Observable<any>): Observable<T> {
+export function delayWhen<T>(
+  this: Observable<T>,
+  delayDurationSelector: (value: T) => Observable<any>,
+  subscriptionDelay?: Observable<any>,
+): Observable<T> {
   return higherOrder(delayDurationSelector, subscriptionDelay)(this);
 }

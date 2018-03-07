@@ -61,27 +61,24 @@ export function timeoutWith<T, R>(due: number | Date, withObservable: Observable
  * @method timeoutWith
  * @owner Observable
  */
-export function timeoutWith<T, R>(due: number | Date,
-                                  withObservable: ObservableInput<R>,
-                                  scheduler: IScheduler = async): OperatorFunction<T, T | R> {
+export function timeoutWith<T, R>(due: number | Date, withObservable: ObservableInput<R>, scheduler: IScheduler = async): OperatorFunction<T, T | R> {
   return (source: Observable<T>) => {
     let absoluteTimeout = isDate(due);
-    let waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
+    let waitFor = absoluteTimeout ? +due - scheduler.now() : Math.abs(<number>due);
     return source.lift(new TimeoutWithOperator(waitFor, absoluteTimeout, withObservable, scheduler));
   };
 }
 
 class TimeoutWithOperator<T> implements Operator<T, T> {
-  constructor(private waitFor: number,
-              private absoluteTimeout: boolean,
-              private withObservable: ObservableInput<any>,
-              private scheduler: IScheduler) {
-  }
+  constructor(
+    private waitFor: number,
+    private absoluteTimeout: boolean,
+    private withObservable: ObservableInput<any>,
+    private scheduler: IScheduler,
+  ) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new TimeoutWithSubscriber(
-      subscriber, this.absoluteTimeout, this.waitFor, this.withObservable, this.scheduler
-    ));
+    return source.subscribe(new TimeoutWithSubscriber(subscriber, this.absoluteTimeout, this.waitFor, this.withObservable, this.scheduler));
   }
 }
 
@@ -91,21 +88,22 @@ class TimeoutWithOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
-
   private action: Action<TimeoutWithSubscriber<T, R>> = null;
 
-  constructor(destination: Subscriber<T>,
-              private absoluteTimeout: boolean,
-              private waitFor: number,
-              private withObservable: ObservableInput<any>,
-              private scheduler: IScheduler) {
+  constructor(
+    destination: Subscriber<T>,
+    private absoluteTimeout: boolean,
+    private waitFor: number,
+    private withObservable: ObservableInput<any>,
+    private scheduler: IScheduler,
+  ) {
     super(destination);
     this.scheduleTimeout();
   }
 
   private static dispatchTimeout<T, R>(subscriber: TimeoutWithSubscriber<T, R>): void {
     const { withObservable } = subscriber;
-    (<any> subscriber)._unsubscribeAndRecycle();
+    (<any>subscriber)._unsubscribeAndRecycle();
     subscriber.add(subscribeToResult(subscriber, withObservable));
   }
 
@@ -117,11 +115,15 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
       // VirtualActions are immutable, so they create and return a clone. In this
       // case, we need to set the action reference to the most recent VirtualAction,
       // to ensure that's the one we clone from next time.
-      this.action = (<Action<TimeoutWithSubscriber<T, R>>> action.schedule(this, this.waitFor));
+      this.action = <Action<TimeoutWithSubscriber<T, R>>>action.schedule(this, this.waitFor);
     } else {
-      this.add(this.action = (<Action<TimeoutWithSubscriber<T, R>>> this.scheduler.schedule<TimeoutWithSubscriber<T, R>>(
-        TimeoutWithSubscriber.dispatchTimeout, this.waitFor, this
-      )));
+      this.add(
+        (this.action = <Action<TimeoutWithSubscriber<T, R>>>this.scheduler.schedule<TimeoutWithSubscriber<T, R>>(
+          TimeoutWithSubscriber.dispatchTimeout,
+          this.waitFor,
+          this,
+        )),
+      );
     }
   }
 

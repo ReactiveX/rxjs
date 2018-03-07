@@ -10,14 +10,70 @@ export function merge<T>(v1: ObservableInput<T>, scheduler?: IScheduler): Observ
 export function merge<T>(v1: ObservableInput<T>, concurrent?: number, scheduler?: IScheduler): Observable<T>;
 export function merge<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>, scheduler?: IScheduler): Observable<T | T2>;
 export function merge<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>, concurrent?: number, scheduler?: IScheduler): Observable<T | T2>;
-export function merge<T, T2, T3>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, scheduler?: IScheduler): Observable<T | T2 | T3>;
-export function merge<T, T2, T3>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, concurrent?: number, scheduler?: IScheduler): Observable<T | T2 | T3>;
-export function merge<T, T2, T3, T4>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, scheduler?: IScheduler): Observable<T | T2 | T3 | T4>;
-export function merge<T, T2, T3, T4>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, concurrent?: number, scheduler?: IScheduler): Observable<T | T2 | T3 | T4>;
-export function merge<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, scheduler?: IScheduler): Observable<T | T2 | T3 | T4 | T5>;
-export function merge<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, concurrent?: number, scheduler?: IScheduler): Observable<T | T2 | T3 | T4 | T5>;
-export function merge<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, scheduler?: IScheduler): Observable<T | T2 | T3 | T4 | T5 | T6>;
-export function merge<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, concurrent?: number, scheduler?: IScheduler): Observable<T | T2 | T3 | T4 | T5 | T6>;
+export function merge<T, T2, T3>(
+  v1: ObservableInput<T>,
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  scheduler?: IScheduler,
+): Observable<T | T2 | T3>;
+export function merge<T, T2, T3>(
+  v1: ObservableInput<T>,
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  concurrent?: number,
+  scheduler?: IScheduler,
+): Observable<T | T2 | T3>;
+export function merge<T, T2, T3, T4>(
+  v1: ObservableInput<T>,
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+  scheduler?: IScheduler,
+): Observable<T | T2 | T3 | T4>;
+export function merge<T, T2, T3, T4>(
+  v1: ObservableInput<T>,
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+  concurrent?: number,
+  scheduler?: IScheduler,
+): Observable<T | T2 | T3 | T4>;
+export function merge<T, T2, T3, T4, T5>(
+  v1: ObservableInput<T>,
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+  v5: ObservableInput<T5>,
+  scheduler?: IScheduler,
+): Observable<T | T2 | T3 | T4 | T5>;
+export function merge<T, T2, T3, T4, T5>(
+  v1: ObservableInput<T>,
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+  v5: ObservableInput<T5>,
+  concurrent?: number,
+  scheduler?: IScheduler,
+): Observable<T | T2 | T3 | T4 | T5>;
+export function merge<T, T2, T3, T4, T5, T6>(
+  v1: ObservableInput<T>,
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+  v5: ObservableInput<T5>,
+  v6: ObservableInput<T6>,
+  scheduler?: IScheduler,
+): Observable<T | T2 | T3 | T4 | T5 | T6>;
+export function merge<T, T2, T3, T4, T5, T6>(
+  v1: ObservableInput<T>,
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+  v5: ObservableInput<T5>,
+  v6: ObservableInput<T6>,
+  concurrent?: number,
+  scheduler?: IScheduler,
+): Observable<T | T2 | T3 | T4 | T5 | T6>;
 export function merge<T>(...observables: (ObservableInput<T> | IScheduler | number)[]): Observable<T>;
 export function merge<T, R>(...observables: (ObservableInput<any> | IScheduler | number)[]): Observable<R>;
 /* tslint:enable:max-line-length */
@@ -82,8 +138,8 @@ export function merge<T, R>(...observables: (ObservableInput<any> | IScheduler |
  * @owner Observable
  */
 export function merge<T, R>(...observables: Array<ObservableInput<any> | IScheduler | number>): Observable<R> {
- let concurrent = Number.POSITIVE_INFINITY;
- let scheduler: IScheduler = null;
+  let concurrent = Number.POSITIVE_INFINITY;
+  let scheduler: IScheduler = null;
   let last: any = observables[observables.length - 1];
   if (isScheduler(last)) {
     scheduler = <IScheduler>observables.pop();

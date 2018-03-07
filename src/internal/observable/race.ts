@@ -78,9 +78,7 @@ export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: T,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, T>): void {
+  notifyNext(outerValue: T, innerValue: T, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, T>): void {
     if (!this.hasFirst) {
       this.hasFirst = true;
 

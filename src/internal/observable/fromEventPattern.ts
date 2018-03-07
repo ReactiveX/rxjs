@@ -43,8 +43,7 @@ import { isFunction } from '../util/isFunction';
  * @return {Observable<T>}
  * @name fromEventPattern
  */
-export function fromEventPattern<T>(addHandler: (handler: Function) => any,
-                                    removeHandler?: (handler: Function, signal?: any) => void) {
+export function fromEventPattern<T>(addHandler: (handler: Function) => any, removeHandler?: (handler: Function, signal?: any) => void) {
   return new Observable<T>(subscriber => {
     const handler = (e: T) => subscriber.next(e);
 
@@ -60,6 +59,6 @@ export function fromEventPattern<T>(addHandler: (handler: Function) => any,
       return undefined;
     }
 
-    return () => removeHandler(handler, retValue) ;
+    return () => removeHandler(handler, retValue);
   });
 }

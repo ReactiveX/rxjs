@@ -5,7 +5,5 @@ import { AjaxCreationMethod } from '../../../internal/observable/dom/AjaxObserva
 Observable.ajax = staticAjax;
 
 declare module '../../../internal/Observable' {
-  namespace Observable {
-    export let ajax: AjaxCreationMethod;
-  }
+  namespace Observable { export let ajax: AjaxCreationMethod; }
 }

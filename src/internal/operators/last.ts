@@ -21,16 +21,16 @@ import { MonoTypeOperatorFunction } from '../../internal/types';
  * from the source, or an NoSuchElementException if no such items are emitted.
  * @throws - Throws if no items that match the predicate are emitted by the source Observable.
  */
-export function last<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                        defaultValue?: T): MonoTypeOperatorFunction<T> {
+export function last<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean, defaultValue?: T): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new LastOperator(predicate, defaultValue, source));
 }
 
 class LastOperator<T> implements Operator<T, T> {
-  constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean,
-              private defaultValue: any,
-              private source: Observable<T>) {
-  }
+  constructor(
+    private predicate: (value: T, index: number, source: Observable<T>) => boolean,
+    private defaultValue: any,
+    private source: Observable<T>,
+  ) {}
 
   call(observer: Subscriber<T>, source: any): any {
     return source.subscribe(new LastSubscriber(observer, this.predicate, this.defaultValue, this.source));
@@ -47,10 +47,12 @@ class LastSubscriber<T> extends Subscriber<T> {
   private hasValue = false;
   private index = 0;
 
-  constructor(destination: Subscriber<T>,
-              private predicate: (value: T, index: number, source: Observable<T>) => boolean,
-              private defaultValue: T,
-              private source: Observable<T>) {
+  constructor(
+    destination: Subscriber<T>,
+    private predicate: (value: T, index: number, source: Observable<T>) => boolean,
+    private defaultValue: T,
+    private source: Observable<T>,
+  ) {
     super(destination);
     if (typeof defaultValue !== 'undefined') {
       this.lastValue = defaultValue;
@@ -88,7 +90,7 @@ class LastSubscriber<T> extends Subscriber<T> {
       destination.next(this.lastValue);
       destination.complete();
     } else {
-      destination.error(new EmptyError);
+      destination.error(new EmptyError());
     }
   }
 }

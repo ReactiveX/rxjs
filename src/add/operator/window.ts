@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { window } from '../../internal/patching/operator/window';
 

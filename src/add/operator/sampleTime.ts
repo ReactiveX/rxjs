@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { sampleTime } from '../../internal/patching/operator/sampleTime';
 

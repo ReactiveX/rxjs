@@ -1,4 +1,3 @@
-
 import { Observable } from '../../Observable';
 import { PartialObserver } from '../../types';
 import { tap as higherOrder } from '../../operators/tap';
@@ -51,8 +50,11 @@ export function _do<T>(this: Observable<T>, observer: PartialObserver<T>): Obser
  * @name do
  * @owner Observable
  */
-export function _do<T>(this: Observable<T>, nextOrObserver?: PartialObserver<T> | ((x: T) => void),
-                       error?: (e: any) => void,
-                       complete?: () => void): Observable<T> {
+export function _do<T>(
+  this: Observable<T>,
+  nextOrObserver?: PartialObserver<T> | ((x: T) => void),
+  error?: (e: any) => void,
+  complete?: () => void,
+): Observable<T> {
   return higherOrder(<any>nextOrObserver, error, complete)(this) as Observable<T>;
 }

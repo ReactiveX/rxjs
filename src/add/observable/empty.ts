@@ -4,7 +4,5 @@ import { empty as staticEmpty } from '../../internal/observable/empty';
 Observable.empty = staticEmpty;
 
 declare module '../../internal/Observable' {
-  namespace Observable {
-    export let empty: typeof staticEmpty;
-  }
+  namespace Observable { export let empty: typeof staticEmpty; }
 }

@@ -1,4 +1,3 @@
-
 import { IScheduler } from '../../Scheduler';
 import { Observable } from '../../Observable';
 import { subscribeOn as higherOrder } from '../../operators/subscribeOn';

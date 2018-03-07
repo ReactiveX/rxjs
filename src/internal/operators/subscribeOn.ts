@@ -23,12 +23,8 @@ export function subscribeOn<T>(scheduler: IScheduler, delay: number = 0): MonoTy
 }
 
 class SubscribeOnOperator<T> implements Operator<T, T> {
-  constructor(private scheduler: IScheduler,
-              private delay: number) {
-  }
+  constructor(private scheduler: IScheduler, private delay: number) {}
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return new SubscribeOnObservable<T>(
-      source, this.delay, this.scheduler
-    ).subscribe(subscriber);
+    return new SubscribeOnObservable<T>(source, this.delay, this.scheduler).subscribe(subscriber);
   }
 }

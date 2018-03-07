@@ -11,8 +11,16 @@ import { subscribeToResult } from '../util/subscribeToResult';
 import { MonoTypeOperatorFunction, OperatorFunction, ObservableInput } from '../types';
 
 /* tslint:disable:max-line-length */
-export function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>, concurrent?: number, scheduler?: IScheduler): OperatorFunction<T, R>;
-export function expand<T>(project: (value: T, index: number) => ObservableInput<T>, concurrent?: number, scheduler?: IScheduler): MonoTypeOperatorFunction<T>;
+export function expand<T, R>(
+  project: (value: T, index: number) => ObservableInput<R>,
+  concurrent?: number,
+  scheduler?: IScheduler,
+): OperatorFunction<T, R>;
+export function expand<T>(
+  project: (value: T, index: number) => ObservableInput<T>,
+  concurrent?: number,
+  scheduler?: IScheduler,
+): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -60,19 +68,18 @@ export function expand<T>(project: (value: T, index: number) => ObservableInput<
  * @method expand
  * @owner Observable
  */
-export function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>,
-                             concurrent: number = Number.POSITIVE_INFINITY,
-                             scheduler: IScheduler = undefined): OperatorFunction<T, R> {
+export function expand<T, R>(
+  project: (value: T, index: number) => ObservableInput<R>,
+  concurrent: number = Number.POSITIVE_INFINITY,
+  scheduler: IScheduler = undefined,
+): OperatorFunction<T, R> {
   concurrent = (concurrent || 0) < 1 ? Number.POSITIVE_INFINITY : concurrent;
 
   return (source: Observable<T>) => source.lift(new ExpandOperator(project, concurrent, scheduler));
 }
 
 export class ExpandOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (value: T, index: number) => ObservableInput<R>,
-              private concurrent: number,
-              private scheduler: IScheduler) {
-  }
+  constructor(private project: (value: T, index: number) => ObservableInput<R>, private concurrent: number, private scheduler: IScheduler) {}
 
   call(subscriber: Subscriber<R>, source: any): any {
     return source.subscribe(new ExpandSubscriber(subscriber, this.project, this.concurrent, this.scheduler));
@@ -97,10 +104,12 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
   private hasCompleted: boolean = false;
   private buffer: any[];
 
-  constructor(destination: Subscriber<R>,
-              private project: (value: T, index: number) => ObservableInput<R>,
-              private concurrent: number,
-              private scheduler: IScheduler) {
+  constructor(
+    destination: Subscriber<R>,
+    private project: (value: T, index: number) => ObservableInput<R>,
+    private concurrent: number,
+    private scheduler: IScheduler,
+  ) {
     super(destination);
     if (concurrent < Number.POSITIVE_INFINITY) {
       this.buffer = [];
@@ -108,7 +117,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   private static dispatch<T, R>(arg: DispatchArg<T, R>): void {
-    const {subscriber, result, value, index} = arg;
+    const { subscriber, result, value, index } = arg;
     subscriber.subscribeToProjection(result, value, index);
   }
 
@@ -149,9 +158,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, R>): void {
     this._next(innerValue);
   }
 

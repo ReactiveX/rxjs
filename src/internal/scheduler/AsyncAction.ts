@@ -9,22 +9,19 @@ import { AsyncScheduler } from './AsyncScheduler';
  * @extends {Ignored}
  */
 export class AsyncAction<T> extends Action<T> {
-
   public id: any;
   public state: T;
   public delay: number;
   protected pending: boolean = false;
 
-  constructor(protected scheduler: AsyncScheduler,
-              protected work: (this: Action<T>, state?: T) => void) {
+  constructor(protected scheduler: AsyncScheduler, protected work: (this: Action<T>, state?: T) => void) {
     super(scheduler, work);
   }
 
   public schedule(state?: T, delay: number = 0): Subscription {
-
     if (this.closed) {
       return this;
-     }
+    }
 
     // Always replace the current state with the new state.
     this.state = state;
@@ -79,7 +76,7 @@ export class AsyncAction<T> extends Action<T> {
     }
     // Otherwise, if the action's delay time is different from the current delay,
     // or the action has been rescheduled before it's executed, clear the interval id
-    return root.clearInterval(id) && undefined || undefined;
+    return (root.clearInterval(id) && undefined) || undefined;
   }
 
   /**
@@ -87,7 +84,6 @@ export class AsyncAction<T> extends Action<T> {
    * @return {any}
    */
   public execute(state: T, delay: number): any {
-
     if (this.closed) {
       return new Error('executing a cancelled action');
     }
@@ -121,7 +117,7 @@ export class AsyncAction<T> extends Action<T> {
       this.work(state);
     } catch (e) {
       errored = true;
-      errorValue = !!e && e || new Error(e);
+      errorValue = (!!e && e) || new Error(e);
     }
     if (errored) {
       this.unsubscribe();
@@ -130,13 +126,12 @@ export class AsyncAction<T> extends Action<T> {
   }
 
   protected _unsubscribe() {
-
     const id = this.id;
     const scheduler = this.scheduler;
     const actions = scheduler.actions;
     const index = actions.indexOf(this);
 
-    this.work  = null;
+    this.work = null;
     this.state = null;
     this.pending = false;
     this.scheduler = null;

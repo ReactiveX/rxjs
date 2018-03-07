@@ -54,7 +54,7 @@ export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
 class TakeLastOperator<T> implements Operator<T, T> {
   constructor(private total: number) {
     if (this.total < 0) {
-      throw new ArgumentOutOfRangeError;
+      throw new ArgumentOutOfRangeError();
     }
   }
 
@@ -95,10 +95,10 @@ class TakeLastSubscriber<T> extends Subscriber<T> {
 
     if (count > 0) {
       const total = this.count >= this.total ? this.total : this.count;
-      const ring  = this.ring;
+      const ring = this.ring;
 
       for (let i = 0; i < total; i++) {
-        const idx = (count++) % total;
+        const idx = count++ % total;
         destination.next(ring[idx]);
       }
     }

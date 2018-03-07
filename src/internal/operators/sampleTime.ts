@@ -47,9 +47,7 @@ export function sampleTime<T>(period: number, scheduler: IScheduler = async): Mo
 }
 
 class SampleTimeOperator<T> implements Operator<T, T> {
-  constructor(private period: number,
-              private scheduler: IScheduler) {
-  }
+  constructor(private period: number, private scheduler: IScheduler) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new SampleTimeSubscriber(subscriber, this.period, this.scheduler));
@@ -65,9 +63,7 @@ class SampleTimeSubscriber<T> extends Subscriber<T> {
   lastValue: T;
   hasValue: boolean = false;
 
-  constructor(destination: Subscriber<T>,
-              private period: number,
-              private scheduler: IScheduler) {
+  constructor(destination: Subscriber<T>, private period: number, private scheduler: IScheduler) {
     super(destination);
     this.add(scheduler.schedule(dispatchNotification, period, { subscriber: this, period }));
   }

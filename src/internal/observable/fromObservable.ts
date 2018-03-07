@@ -11,14 +11,24 @@ export function fromObservable<T>(input: ObservableLike<T>, scheduler: ISchedule
   } else {
     return new Observable<T>(subscriber => {
       const sub = new Subscription();
-      sub.add(scheduler.schedule(() => {
-        const observable: Subscribable<T> = input[Symbol_observable]();
-        sub.add(observable.subscribe({
-          next(value) { sub.add(scheduler.schedule(() => subscriber.next(value))); },
-          error(err) { sub.add(scheduler.schedule(() => subscriber.error(err))); },
-          complete() { sub.add(scheduler.schedule(() => subscriber.complete())); },
-        }));
-      }));
+      sub.add(
+        scheduler.schedule(() => {
+          const observable: Subscribable<T> = input[Symbol_observable]();
+          sub.add(
+            observable.subscribe({
+              next(value) {
+                sub.add(scheduler.schedule(() => subscriber.next(value)));
+              },
+              error(err) {
+                sub.add(scheduler.schedule(() => subscriber.error(err)));
+              },
+              complete() {
+                sub.add(scheduler.schedule(() => subscriber.complete()));
+              },
+            }),
+          );
+        }),
+      );
       return sub;
     });
   }

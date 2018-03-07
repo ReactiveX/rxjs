@@ -33,8 +33,6 @@ import { MonoTypeOperatorFunction } from '../types';
  * @owner Observable
  */
 export function min<T>(comparer?: (x: T, y: T) => number): MonoTypeOperatorFunction<T> {
-  const min: (x: T, y: T) => T = (typeof comparer === 'function')
-    ? (x, y) => comparer(x, y) < 0 ? x : y
-    : (x, y) => x < y ? x : y;
+  const min: (x: T, y: T) => T = typeof comparer === 'function' ? (x, y) => (comparer(x, y) < 0 ? x : y) : (x, y) => (x < y ? x : y);
   return reduce(min);
 }

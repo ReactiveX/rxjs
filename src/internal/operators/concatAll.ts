@@ -1,4 +1,3 @@
-
 import { mergeAll } from './mergeAll';
 import { OperatorFunction, ObservableInput } from '../types';
 

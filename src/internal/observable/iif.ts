@@ -87,7 +87,7 @@ import { SubscribableOrPromise } from '../types';
 export function iif<T, F>(
   condition: () => boolean,
   trueResult: SubscribableOrPromise<T> = EMPTY,
-  falseResult: SubscribableOrPromise<F> = EMPTY
-): Observable<T|F> {
-  return defer<T|F>(() => condition() ? trueResult : falseResult);
+  falseResult: SubscribableOrPromise<F> = EMPTY,
+): Observable<T | F> {
+  return defer<T | F>(() => (condition() ? trueResult : falseResult));
 }

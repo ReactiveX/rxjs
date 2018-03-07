@@ -52,7 +52,10 @@ import { mergeMap as higherOrderMergeMap } from '../../operators/mergeMap';
  * @method mergeMap
  * @owner Observable
  */
-export function mergeMap<T, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<R>,
-                               concurrent: number = Number.POSITIVE_INFINITY): Observable<R> {
+export function mergeMap<T, R>(
+  this: Observable<T>,
+  project: (value: T, index: number) => ObservableInput<R>,
+  concurrent: number = Number.POSITIVE_INFINITY,
+): Observable<R> {
   return higherOrderMergeMap(project, concurrent)(this) as Observable<R>;
 }

@@ -47,16 +47,16 @@ import { MonoTypeOperatorFunction } from '../../internal/types';
  * @method first
  * @owner Observable
  */
-export function first<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                         defaultValue?: T): MonoTypeOperatorFunction<T> {
-    return (source: Observable<T>) => source.lift(new FirstOperator(predicate, defaultValue, source));
-  }
+export function first<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean, defaultValue?: T): MonoTypeOperatorFunction<T> {
+  return (source: Observable<T>) => source.lift(new FirstOperator(predicate, defaultValue, source));
+}
 
 class FirstOperator<T> implements Operator<T, T> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private defaultValue?: any,
-              private source?: Observable<T>) {
-  }
+  constructor(
+    private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+    private defaultValue?: any,
+    private source?: Observable<T>,
+  ) {}
 
   call(observer: Subscriber<T>, source: any): any {
     return source.subscribe(new FirstSubscriber(observer, this.predicate, this.defaultValue, this.source));
@@ -73,10 +73,12 @@ class FirstSubscriber<T> extends Subscriber<T> {
   private hasCompleted = false;
   private _emitted = false;
 
-  constructor(destination: Subscriber<T>,
-              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private defaultValue?: any,
-              private source?: Observable<T>) {
+  constructor(
+    destination: Subscriber<T>,
+    private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+    private defaultValue?: any,
+    private source?: Observable<T>,
+  ) {
     super(destination);
   }
 

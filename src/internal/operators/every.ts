@@ -17,16 +17,16 @@ import { Observer, OperatorFunction } from '../types';
  * @method every
  * @owner Observable
  */
-export function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                         thisArg?: any): OperatorFunction<T, boolean> {
+export function every<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): OperatorFunction<T, boolean> {
   return (source: Observable<T>) => source.lift(new EveryOperator(predicate, thisArg, source));
 }
 
 class EveryOperator<T> implements Operator<T, boolean> {
-  constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean,
-              private thisArg?: any,
-              private source?: Observable<T>) {
-  }
+  constructor(
+    private predicate: (value: T, index: number, source: Observable<T>) => boolean,
+    private thisArg?: any,
+    private source?: Observable<T>,
+  ) {}
 
   call(observer: Subscriber<boolean>, source: any): any {
     return source.subscribe(new EverySubscriber(observer, this.predicate, this.thisArg, this.source));
@@ -41,10 +41,12 @@ class EveryOperator<T> implements Operator<T, boolean> {
 class EverySubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 
-  constructor(destination: Observer<boolean>,
-              private predicate: (value: T, index: number, source: Observable<T>) => boolean,
-              private thisArg: any,
-              private source?: Observable<T>) {
+  constructor(
+    destination: Observer<boolean>,
+    private predicate: (value: T, index: number, source: Observable<T>) => boolean,
+    private thisArg: any,
+    private source?: Observable<T>,
+  ) {
     super(destination);
     this.thisArg = thisArg || this;
   }

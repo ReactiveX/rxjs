@@ -4,7 +4,5 @@ import { webSocket as staticWebSocket } from '../../../internal/observable/dom/w
 Observable.webSocket = staticWebSocket;
 
 declare module '../../../internal/Observable' {
-  namespace Observable {
-    export let webSocket: typeof staticWebSocket;
-  }
+  namespace Observable { export let webSocket: typeof staticWebSocket; }
 }

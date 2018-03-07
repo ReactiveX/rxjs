@@ -55,8 +55,7 @@ export function windowWhen<T>(closingSelector: () => Observable<any>): OperatorF
 }
 
 class WindowOperator<T> implements Operator<T, Observable<T>> {
-  constructor(private closingSelector: () => Observable<any>) {
-  }
+  constructor(private closingSelector: () => Observable<any>) {}
 
   call(subscriber: Subscriber<Observable<T>>, source: any): any {
     return source.subscribe(new WindowSubscriber(subscriber, this.closingSelector));
@@ -72,15 +71,12 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
   private window: Subject<T>;
   private closingNotification: Subscription;
 
-  constructor(protected destination: Subscriber<Observable<T>>,
-              private closingSelector: () => Observable<any>) {
+  constructor(protected destination: Subscriber<Observable<T>>, private closingSelector: () => Observable<any>) {
     super(destination);
     this.openWindow();
   }
 
-  notifyNext(outerValue: T, innerValue: any,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, any>): void {
+  notifyNext(outerValue: T, innerValue: any, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, any>): void {
     this.openWindow(innerSub);
   }
 
@@ -125,7 +121,7 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
       prevWindow.complete();
     }
 
-    const window = this.window = new Subject<T>();
+    const window = (this.window = new Subject<T>());
     this.destination.next(window);
 
     const closingNotifier = tryCatch(this.closingSelector)();
@@ -134,7 +130,7 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
       this.destination.error(err);
       this.window.error(err);
     } else {
-      this.add(this.closingNotification = subscribeToResult(this, closingNotifier));
+      this.add((this.closingNotification = subscribeToResult(this, closingNotifier)));
     }
   }
 }

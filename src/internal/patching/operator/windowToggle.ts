@@ -1,4 +1,3 @@
-
 import { Observable } from '../../Observable';
 import { windowToggle as higherOrder } from '../../operators/windowToggle';
 
@@ -43,7 +42,10 @@ import { windowToggle as higherOrder } from '../../operators/windowToggle';
  * @method windowToggle
  * @owner Observable
  */
-export function windowToggle<T, O>(this: Observable<T>, openings: Observable<O>,
-                                   closingSelector: (openValue: O) => Observable<any>): Observable<Observable<T>> {
+export function windowToggle<T, O>(
+  this: Observable<T>,
+  openings: Observable<O>,
+  closingSelector: (openValue: O) => Observable<any>,
+): Observable<Observable<T>> {
   return higherOrder(openings, closingSelector)(this) as Observable<Observable<T>>;
 }

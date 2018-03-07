@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { concatMapTo } from '../../internal/patching/operator/concatMapTo';
 

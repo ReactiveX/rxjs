@@ -46,8 +46,6 @@ import { distinct as higherOrder } from '../../operators/distinct';
  * @method distinct
  * @owner Observable
  */
-export function distinct<T, K>(this: Observable<T>,
-                               keySelector?: (value: T) => K,
-                               flushes?: Observable<any>): Observable<T> {
+export function distinct<T, K>(this: Observable<T>, keySelector?: (value: T) => K, flushes?: Observable<any>): Observable<T> {
   return higherOrder(keySelector, flushes)(this);
 }

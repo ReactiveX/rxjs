@@ -9,9 +9,7 @@ import { Action } from './Action';
  * @extends {Ignored}
  */
 export class AsapAction<T> extends AsyncAction<T> {
-
-  constructor(protected scheduler: AsapScheduler,
-              protected work: (this: Action<T>, state?: T) => void) {
+  constructor(protected scheduler: AsapScheduler, protected work: (this: Action<T>, state?: T) => void) {
     super(scheduler, work);
   }
 
@@ -25,9 +23,7 @@ export class AsapAction<T> extends AsyncAction<T> {
     // If a microtask has already been scheduled, don't schedule another
     // one. If a microtask hasn't been scheduled yet, schedule one now. Return
     // the current scheduled microtask id.
-    return scheduler.scheduled || (scheduler.scheduled = Immediate.setImmediate(
-      scheduler.flush.bind(scheduler, null)
-    ));
+    return scheduler.scheduled || (scheduler.scheduled = Immediate.setImmediate(scheduler.flush.bind(scheduler, null)));
   }
   protected recycleAsyncId(scheduler: AsapScheduler, id?: any, delay: number = 0): any {
     // If delay exists and is greater than 0, or if the delay is null (the

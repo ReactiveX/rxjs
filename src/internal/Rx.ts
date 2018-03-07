@@ -2,9 +2,9 @@
 // Subject imported before Observable to bypass circular dependency issue since
 // Subject extends Observable and Observable references Subject in it's
 // definition
-export {Subject, AnonymousSubject} from './Subject';
+export { Subject, AnonymousSubject } from './Subject';
 /* tslint:enable:no-unused-variable */
-export {Observable} from './Observable';
+export { Observable } from './Observable';
 
 // statics
 /* tslint:disable:no-use-before-declare */
@@ -143,25 +143,25 @@ import '../add/operator/zip';
 import '../add/operator/zipAll';
 
 /* tslint:disable:no-unused-variable */
-export {Operator} from './Operator';
-export {Observer} from './types';
-export {Subscription} from './Subscription';
-export {Subscriber} from './Subscriber';
-export {AsyncSubject} from './AsyncSubject';
-export {ReplaySubject} from './ReplaySubject';
-export {BehaviorSubject} from './BehaviorSubject';
-export {ConnectableObservable} from './observable/ConnectableObservable';
-export {Notification} from './Notification';
-export {EmptyError} from './util/EmptyError';
-export {ArgumentOutOfRangeError} from './util/ArgumentOutOfRangeError';
-export {ObjectUnsubscribedError} from './util/ObjectUnsubscribedError';
-export {TimeoutError} from './util/TimeoutError';
-export {UnsubscriptionError} from './util/UnsubscriptionError';
-export {TimeInterval} from './patching/operator/timeInterval';
-export {Timestamp} from './operators/timestamp';
-export {TestScheduler} from './testing/TestScheduler';
-export {VirtualTimeScheduler} from './scheduler/VirtualTimeScheduler';
-export {AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError} from './observable/dom/AjaxObservable';
+export { Operator } from './Operator';
+export { Observer } from './types';
+export { Subscription } from './Subscription';
+export { Subscriber } from './Subscriber';
+export { AsyncSubject } from './AsyncSubject';
+export { ReplaySubject } from './ReplaySubject';
+export { BehaviorSubject } from './BehaviorSubject';
+export { ConnectableObservable } from './observable/ConnectableObservable';
+export { Notification } from './Notification';
+export { EmptyError } from './util/EmptyError';
+export { ArgumentOutOfRangeError } from './util/ArgumentOutOfRangeError';
+export { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
+export { TimeoutError } from './util/TimeoutError';
+export { UnsubscriptionError } from './util/UnsubscriptionError';
+export { TimeInterval } from './patching/operator/timeInterval';
+export { Timestamp } from './operators/timestamp';
+export { TestScheduler } from './testing/TestScheduler';
+export { VirtualTimeScheduler } from './scheduler/VirtualTimeScheduler';
+export { AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError } from './observable/dom/AjaxObservable';
 export { pipe } from './util/pipe';
 
 import { asap } from './scheduler/asap';
@@ -199,7 +199,7 @@ let Scheduler = {
   asap,
   queue,
   animationFrame,
-  async
+  async,
 };
 
 /**
@@ -218,10 +218,7 @@ let Scheduler = {
 let Symbol = {
   rxSubscriber,
   observable,
-  iterator
+  iterator,
 };
 
-export {
-    Scheduler,
-    Symbol
-};
+export { Scheduler, Symbol };

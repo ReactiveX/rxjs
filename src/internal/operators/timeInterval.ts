@@ -10,15 +10,11 @@ export function timeInterval<T>(scheduler: IScheduler = async): OperatorFunction
 }
 
 export class TimeInterval<T> implements TimeIntervalInterface<T> {
-  constructor(public value: T, public interval: number) {
-
-  }
+  constructor(public value: T, public interval: number) {}
 }
 
 class TimeIntervalOperator<T> implements Operator<T, TimeInterval<T>> {
-  constructor(private scheduler: IScheduler) {
-
-  }
+  constructor(private scheduler: IScheduler) {}
 
   call(observer: Subscriber<TimeInterval<T>>, source: any): any {
     return source.subscribe(new TimeIntervalSubscriber(observer, this.scheduler));

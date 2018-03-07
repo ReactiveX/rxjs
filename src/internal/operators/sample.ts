@@ -46,8 +46,7 @@ export function sample<T>(notifier: Observable<any>): MonoTypeOperatorFunction<T
 }
 
 class SampleOperator<T> implements Operator<T, T> {
-  constructor(private notifier: Observable<any>) {
-  }
+  constructor(private notifier: Observable<any>) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     const sampleSubscriber = new SampleSubscriber(subscriber);
@@ -71,9 +70,7 @@ class SampleSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.hasValue = true;
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, R>): void {
     this.emitValue();
   }
 

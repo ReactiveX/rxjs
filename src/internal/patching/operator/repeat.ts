@@ -1,4 +1,3 @@
-
 import { Observable } from '../../Observable';
 import { repeat as higherOrder } from '../../operators/repeat';
 

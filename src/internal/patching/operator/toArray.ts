@@ -1,4 +1,3 @@
-
 import { Observable } from '../../Observable';
 import { toArray as higherOrder } from '../../operators/toArray';
 

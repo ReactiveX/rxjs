@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { buffer } from '../../internal/patching/operator/buffer';
 

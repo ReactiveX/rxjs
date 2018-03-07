@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { max } from '../../internal/patching/operator/max';
 

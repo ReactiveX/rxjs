@@ -14,7 +14,7 @@ import { Subscriber } from '../Subscriber';
 export const subscribeTo = <T>(result: ObservableInput<T>) => {
   if (result instanceof Observable) {
     return (subscriber: Subscriber<T>) => {
-        if (result._isScalar) {
+      if (result._isScalar) {
         subscriber.next((result as any).value);
         subscriber.complete();
         return undefined;
@@ -32,8 +32,7 @@ export const subscribeTo = <T>(result: ObservableInput<T>) => {
     return subscribeToObservable(result as any);
   } else {
     const value = isObject(result) ? 'an invalid object' : `'${result}'`;
-    const msg = `You provided ${value} where a stream was expected.`
-      + ' You can provide an Observable, Promise, Array, or Iterable.';
+    const msg = `You provided ${value} where a stream was expected.` + ' You can provide an Observable, Promise, Array, or Iterable.';
     throw new TypeError(msg);
   }
 };

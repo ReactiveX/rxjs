@@ -1,4 +1,3 @@
-
 import { Observable } from '../../Observable';
 import { elementAt as higherOrder } from '../../operators/elementAt';
 

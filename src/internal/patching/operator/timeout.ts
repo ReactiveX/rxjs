@@ -68,8 +68,6 @@ import { timeout as higherOrder } from '../../operators/timeout';
  * @method timeout
  * @owner Observable
  */
-export function timeout<T>(this: Observable<T>,
-                           due: number | Date,
-                           scheduler: IScheduler = async): Observable<T> {
+export function timeout<T>(this: Observable<T>, due: number | Date, scheduler: IScheduler = async): Observable<T> {
   return higherOrder(due, scheduler)(this) as Observable<T>;
 }

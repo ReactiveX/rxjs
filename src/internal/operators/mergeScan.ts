@@ -40,22 +40,19 @@ import { ObservableInput, OperatorFunction } from '../types';
  * @method mergeScan
  * @owner Observable
  */
-export function mergeScan<T, R>(accumulator: (acc: R, value: T) => ObservableInput<R>,
-                                seed: R,
-                                concurrent: number = Number.POSITIVE_INFINITY): OperatorFunction<T, R> {
+export function mergeScan<T, R>(
+  accumulator: (acc: R, value: T) => ObservableInput<R>,
+  seed: R,
+  concurrent: number = Number.POSITIVE_INFINITY,
+): OperatorFunction<T, R> {
   return (source: Observable<T>) => source.lift(new MergeScanOperator(accumulator, seed, concurrent));
 }
 
 export class MergeScanOperator<T, R> implements Operator<T, R> {
-  constructor(private accumulator: (acc: R, value: T) => ObservableInput<R>,
-              private seed: R,
-              private concurrent: number) {
-  }
+  constructor(private accumulator: (acc: R, value: T) => ObservableInput<R>, private seed: R, private concurrent: number) {}
 
   call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new MergeScanSubscriber(
-      subscriber, this.accumulator, this.seed, this.concurrent
-    ));
+    return source.subscribe(new MergeScanSubscriber(subscriber, this.accumulator, this.seed, this.concurrent));
   }
 }
 
@@ -71,10 +68,7 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
   private active: number = 0;
   protected index: number = 0;
 
-  constructor(destination: Subscriber<R>,
-              private accumulator: (acc: R, value: T) => ObservableInput<R>,
-              private acc: R,
-              private concurrent: number) {
+  constructor(destination: Subscriber<R>, private accumulator: (acc: R, value: T) => ObservableInput<R>, private acc: R, private concurrent: number) {
     super(destination);
   }
 
@@ -108,9 +102,7 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, R>): void {
     const { destination } = this;
     this.acc = innerValue;
     this.hasValue = true;

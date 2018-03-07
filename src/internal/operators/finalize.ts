@@ -17,8 +17,7 @@ export function finalize<T>(callback: () => void): MonoTypeOperatorFunction<T> {
 }
 
 class FinallyOperator<T> implements Operator<T, T> {
-  constructor(private callback: () => void) {
-  }
+  constructor(private callback: () => void) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new FinallySubscriber(subscriber, this.callback));

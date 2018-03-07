@@ -41,13 +41,17 @@ export class UsingObservable<T> extends Observable<T> {
    * @name using
    * @owner Observable
    */
-  static create<T>(resourceFactory: () => Unsubscribable | void,
-                   observableFactory: (resource: Unsubscribable) => SubscribableOrPromise<T> | void): Observable<T> {
+  static create<T>(
+    resourceFactory: () => Unsubscribable | void,
+    observableFactory: (resource: Unsubscribable) => SubscribableOrPromise<T> | void,
+  ): Observable<T> {
     return new UsingObservable<T>(resourceFactory, observableFactory);
   }
 
-  constructor(private resourceFactory: () => Unsubscribable | void,
-              private observableFactory: (resource: Unsubscribable) => SubscribableOrPromise<T> | void) {
+  constructor(
+    private resourceFactory: () => Unsubscribable | void,
+    private observableFactory: (resource: Unsubscribable) => SubscribableOrPromise<T> | void,
+  ) {
     super();
   }
 
@@ -66,9 +70,11 @@ export class UsingObservable<T> extends Observable<T> {
 }
 
 class UsingSubscriber<T> extends OuterSubscriber<T, T> {
-  constructor(destination: Subscriber<T>,
-              private resource: Unsubscribable,
-              private observableFactory: (resource: Unsubscribable) => SubscribableOrPromise<T> | void) {
+  constructor(
+    destination: Subscriber<T>,
+    private resource: Unsubscribable,
+    private observableFactory: (resource: Unsubscribable) => SubscribableOrPromise<T> | void,
+  ) {
     super(destination);
     destination.add(resource);
     this.tryUse();

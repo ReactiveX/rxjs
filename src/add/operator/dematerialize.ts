@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { dematerialize } from '../../internal/patching/operator/dematerialize';
 

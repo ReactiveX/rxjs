@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { _switch } from '../../internal/patching/operator/switch';
 

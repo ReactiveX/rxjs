@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { share } from '../../internal/patching/operator/share';
 

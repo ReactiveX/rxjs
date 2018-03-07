@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { pairwise } from '../../internal/patching/operator/pairwise';
 

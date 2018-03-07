@@ -18,8 +18,7 @@ export class HotObservable<T> extends Subject<T> implements SubscriptionLoggable
   logSubscribedFrame: () => number;
   logUnsubscribedFrame: (index: number) => void;
 
-  constructor(public messages: TestMessage[],
-              scheduler: Scheduler) {
+  constructor(public messages: TestMessage[], scheduler: Scheduler) {
     super();
     this.scheduler = scheduler;
   }
@@ -27,9 +26,11 @@ export class HotObservable<T> extends Subject<T> implements SubscriptionLoggable
   protected _subscribe(subscriber: Subscriber<any>): Subscription {
     const subject: HotObservable<T> = this;
     const index = subject.logSubscribedFrame();
-    subscriber.add(new Subscription(() => {
-      subject.logUnsubscribedFrame(index);
-    }));
+    subscriber.add(
+      new Subscription(() => {
+        subject.logUnsubscribedFrame(index);
+      }),
+    );
     return super._subscribe(subscriber);
   }
 
@@ -40,11 +41,10 @@ export class HotObservable<T> extends Subject<T> implements SubscriptionLoggable
     for (var i = 0; i < messagesLength; i++) {
       (() => {
         var message = subject.messages[i];
-   /* tslint:enable */
-        subject.scheduler.schedule(
-          () => { message.notification.observe(subject); },
-          message.frame
-        );
+        /* tslint:enable */
+        subject.scheduler.schedule(() => {
+          message.notification.observe(subject);
+        }, message.frame);
       })();
     }
   }

@@ -29,9 +29,7 @@ export function repeat<T>(count: number = -1): MonoTypeOperatorFunction<T> {
 }
 
 class RepeatOperator<T> implements Operator<T, T> {
-  constructor(private count: number,
-              private source: Observable<T>) {
-  }
+  constructor(private count: number, private source: Observable<T>) {}
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new RepeatSubscriber(subscriber, this.count, this.source));
   }
@@ -43,9 +41,7 @@ class RepeatOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class RepeatSubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<any>,
-              private count: number,
-              private source: Observable<T>) {
+  constructor(destination: Subscriber<any>, private count: number, private source: Observable<T>) {
     super(destination);
   }
   complete() {

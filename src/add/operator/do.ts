@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { _do } from '../../internal/patching/operator/do';
 

@@ -45,13 +45,11 @@ import { ObservableInput, OperatorFunction } from '../types';
  * @owner Observable
  */
 export function exhaustMap<T, R>(project: (value: T, index: number) => ObservableInput<R>): OperatorFunction<T, R> {
-  return (source: Observable<T>) =>
-    source.lift(new SwitchFirstMapOperator(project));
+  return (source: Observable<T>) => source.lift(new SwitchFirstMapOperator(project));
 }
 
 class SwitchFirstMapOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (value: T, index: number) => ObservableInput<R>) {
-  }
+  constructor(private project: (value: T, index: number) => ObservableInput<R>) {}
 
   call(subscriber: Subscriber<R>, source: any): any {
     return source.subscribe(new SwitchFirstMapSubscriber(subscriber, this.project));
@@ -68,8 +66,7 @@ class SwitchFirstMapSubscriber<T, R> extends OuterSubscriber<T, R> {
   private hasCompleted = false;
   private index = 0;
 
-  constructor(destination: Subscriber<R>,
-              private project: (value: T, index: number) => ObservableInput<R>) {
+  constructor(destination: Subscriber<R>, private project: (value: T, index: number) => ObservableInput<R>) {
     super(destination);
   }
 
@@ -98,9 +95,7 @@ class SwitchFirstMapSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, R>): void {
     this.destination.next(innerValue);
   }
 

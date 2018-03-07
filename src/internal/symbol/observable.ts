@@ -1,6 +1,6 @@
 import { root } from '../util/root';
 
-export function getSymbolObservable(context: { Symbol: SymbolConstructor; }): symbol {
+export function getSymbolObservable(context: { Symbol: SymbolConstructor }): symbol {
   let $$observable: symbol;
   let Symbol = context.Symbol;
 

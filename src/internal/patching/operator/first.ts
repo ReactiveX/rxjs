@@ -44,7 +44,10 @@ import { first as higherOrder } from '../../operators/first';
  * @method first
  * @owner Observable
  */
-export function first<T>(this: Observable<T>, predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                         defaultValue?: T): Observable<T> {
-    return higherOrder(predicate, defaultValue)(this);
-  }
+export function first<T>(
+  this: Observable<T>,
+  predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+  defaultValue?: T,
+): Observable<T> {
+  return higherOrder(predicate, defaultValue)(this);
+}

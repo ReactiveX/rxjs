@@ -43,9 +43,11 @@ import { throttleTime as higherOrder } from '../../operators/throttleTime';
  * @method throttleTime
  * @owner Observable
  */
-export function throttleTime<T>(this: Observable<T>,
-                                duration: number,
-                                scheduler: IScheduler = async,
-                                config: ThrottleConfig = defaultThrottleConfig): Observable<T> {
+export function throttleTime<T>(
+  this: Observable<T>,
+  duration: number,
+  scheduler: IScheduler = async,
+  config: ThrottleConfig = defaultThrottleConfig,
+): Observable<T> {
   return higherOrder(duration, scheduler, config)(this) as Observable<T>;
 }

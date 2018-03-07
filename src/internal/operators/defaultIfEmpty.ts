@@ -43,9 +43,7 @@ export function defaultIfEmpty<T, R>(defaultValue: R = null): OperatorFunction<T
 }
 
 class DefaultIfEmptyOperator<T, R> implements Operator<T, T | R> {
-
-  constructor(private defaultValue: R) {
-  }
+  constructor(private defaultValue: R) {}
 
   call(subscriber: Subscriber<T | R>, source: any): any {
     return source.subscribe(new DefaultIfEmptySubscriber(subscriber, this.defaultValue));

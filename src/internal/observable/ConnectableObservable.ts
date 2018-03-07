@@ -10,15 +10,13 @@ import { refCount as higherOrderRefCount } from '../../internal/operators/refCou
  * @class ConnectableObservable<T>
  */
 export class ConnectableObservable<T> extends Observable<T> {
-
   protected _subject: Subject<T>;
   protected _refCount: number = 0;
   protected _connection: Subscription;
   /** @internal */
   _isComplete = false;
 
-  constructor(protected source: Observable<T>,
-              protected subjectFactory: () => Subject<T>) {
+  constructor(protected source: Observable<T>, protected subjectFactory: () => Subject<T>) {
     super();
   }
 
@@ -39,8 +37,7 @@ export class ConnectableObservable<T> extends Observable<T> {
     if (!connection) {
       this._isComplete = false;
       connection = this._connection = new Subscription();
-      connection.add(this.source
-        .subscribe(new ConnectableSubscriber(this.getSubject(), this)));
+      connection.add(this.source.subscribe(new ConnectableSubscriber(this.getSubject(), this)));
       if (connection.closed) {
         this._connection = null;
         connection = Subscription.EMPTY;
@@ -67,12 +64,11 @@ export const connectableObservableDescriptor: PropertyDescriptorMap = {
   _isComplete: { value: connectableProto._isComplete, writable: true },
   getSubject: { value: connectableProto.getSubject },
   connect: { value: connectableProto.connect },
-  refCount: { value: connectableProto.refCount }
+  refCount: { value: connectableProto.refCount },
 };
 
 class ConnectableSubscriber<T> extends SubjectSubscriber<T> {
-  constructor(destination: Subject<T>,
-              private connectable: ConnectableObservable<T>) {
+  constructor(destination: Subject<T>, private connectable: ConnectableObservable<T>) {
     super(destination);
   }
   protected _error(err: any): void {
@@ -100,18 +96,16 @@ class ConnectableSubscriber<T> extends SubjectSubscriber<T> {
 }
 
 class RefCountOperator<T> implements Operator<T, T> {
-  constructor(private connectable: ConnectableObservable<T>) {
-  }
+  constructor(private connectable: ConnectableObservable<T>) {}
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-
     const { connectable } = this;
-    (<any> connectable)._refCount++;
+    (<any>connectable)._refCount++;
 
     const refCounter = new RefCountSubscriber(subscriber, connectable);
     const subscription = source.subscribe(refCounter);
 
     if (!refCounter.closed) {
-      (<any> refCounter).connection = connectable.connect();
+      (<any>refCounter).connection = connectable.connect();
     }
 
     return subscription;
@@ -119,16 +113,13 @@ class RefCountOperator<T> implements Operator<T, T> {
 }
 
 class RefCountSubscriber<T> extends Subscriber<T> {
-
   private connection: Subscription;
 
-  constructor(destination: Subscriber<T>,
-              private connectable: ConnectableObservable<T>) {
+  constructor(destination: Subscriber<T>, private connectable: ConnectableObservable<T>) {
     super(destination);
   }
 
   protected _unsubscribe() {
-
     const { connectable } = this;
     if (!connectable) {
       this.connection = null;
@@ -136,13 +127,13 @@ class RefCountSubscriber<T> extends Subscriber<T> {
     }
 
     this.connectable = null;
-    const refCount = (<any> connectable)._refCount;
+    const refCount = (<any>connectable)._refCount;
     if (refCount <= 0) {
       this.connection = null;
       return;
     }
 
-    (<any> connectable)._refCount = refCount - 1;
+    (<any>connectable)._refCount = refCount - 1;
     if (refCount > 1) {
       this.connection = null;
       return;
@@ -172,7 +163,7 @@ class RefCountSubscriber<T> extends Subscriber<T> {
     //      to the shared connection Subscription
     ///
     const { connection } = this;
-    const sharedConnection = (<any> connectable)._connection;
+    const sharedConnection = (<any>connectable)._connection;
     this.connection = null;
 
     if (sharedConnection && (!connection || sharedConnection === connection)) {

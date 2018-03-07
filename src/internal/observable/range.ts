@@ -32,15 +32,16 @@ import { Action } from '../scheduler/Action';
  * @name range
  * @owner Observable
  */
-export function range(start: number = 0,
-                      count: number = 0,
-                      scheduler?: IScheduler): Observable<number> {
+export function range(start: number = 0, count: number = 0, scheduler?: IScheduler): Observable<number> {
   return new Observable<number>(subscriber => {
     let index = 0;
 
     if (scheduler) {
       return scheduler.schedule(dispatch, 0, {
-        index, count, start, subscriber
+        index,
+        count,
+        start,
+        subscriber,
       });
     } else {
       do {

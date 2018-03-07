@@ -31,8 +31,7 @@ export function repeatWhen<T>(notifier: (notifications: Observable<any>) => Obse
 }
 
 class RepeatWhenOperator<T> implements Operator<T, T> {
-  constructor(protected notifier: (notifications: Observable<any>) => Observable<any>) {
-  }
+  constructor(protected notifier: (notifications: Observable<any>) => Observable<any>) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new RepeatWhenSubscriber(subscriber, this.notifier, source));
@@ -45,21 +44,16 @@ class RepeatWhenOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
-
   private notifications: Subject<any>;
   private retries: Observable<any>;
   private retriesSubscription: Subscription;
   private sourceIsBeingSubscribedTo: boolean = true;
 
-  constructor(destination: Subscriber<R>,
-              private notifier: (notifications: Observable<any>) => Observable<any>,
-              private source: Observable<T>) {
+  constructor(destination: Subscriber<R>, private notifier: (notifications: Observable<any>) => Observable<any>, private source: Observable<T>) {
     super(destination);
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, R>): void {
     this.sourceIsBeingSubscribedTo = true;
     this.source.subscribe(this);
   }

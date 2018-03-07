@@ -2,12 +2,8 @@ import { Observable } from '../../Observable';
 import { find as higherOrder } from '../../operators/find';
 
 /* tslint:disable:max-line-length */
-export function find<T, S extends T>(this: Observable<T>,
-                                     predicate: (value: T, index: number) => value is S,
-                                     thisArg?: any): Observable<S>;
-export function find<T>(this: Observable<T>,
-                        predicate: (value: T, index: number) => boolean,
-                        thisArg?: any): Observable<T>;
+export function find<T, S extends T>(this: Observable<T>, predicate: (value: T, index: number) => value is S, thisArg?: any): Observable<S>;
+export function find<T>(this: Observable<T>, predicate: (value: T, index: number) => boolean, thisArg?: any): Observable<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -43,7 +39,6 @@ export function find<T>(this: Observable<T>,
  * @method find
  * @owner Observable
  */
-export function find<T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                        thisArg?: any): Observable<T> {
+export function find<T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): Observable<T> {
   return higherOrder(predicate, thisArg)(this);
 }

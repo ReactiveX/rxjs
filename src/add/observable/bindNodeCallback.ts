@@ -4,7 +4,5 @@ import { bindNodeCallback as staticBindNodeCallback } from '../../internal/obser
 Observable.bindNodeCallback = staticBindNodeCallback;
 
 declare module '../../internal/Observable' {
-  namespace Observable {
-    export let bindNodeCallback: typeof staticBindNodeCallback;
-  }
+  namespace Observable { export let bindNodeCallback: typeof staticBindNodeCallback; }
 }

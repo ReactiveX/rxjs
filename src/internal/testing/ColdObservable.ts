@@ -18,14 +18,15 @@ export class ColdObservable<T> extends Observable<T> implements SubscriptionLogg
   logSubscribedFrame: () => number;
   logUnsubscribedFrame: (index: number) => void;
 
-  constructor(public messages: TestMessage[],
-              scheduler: Scheduler) {
-    super(function (this: Observable<T>, subscriber: Subscriber<any>) {
+  constructor(public messages: TestMessage[], scheduler: Scheduler) {
+    super(function(this: Observable<T>, subscriber: Subscriber<any>) {
       const observable: ColdObservable<T> = this as any;
       const index = observable.logSubscribedFrame();
-      subscriber.add(new Subscription(() => {
-        observable.logUnsubscribedFrame(index);
-      }));
+      subscriber.add(
+        new Subscription(() => {
+          observable.logUnsubscribedFrame(index);
+        }),
+      );
       observable.scheduleMessages(subscriber);
       return subscriber;
     });
@@ -37,9 +38,13 @@ export class ColdObservable<T> extends Observable<T> implements SubscriptionLogg
     for (let i = 0; i < messagesLength; i++) {
       const message = this.messages[i];
       subscriber.add(
-        this.scheduler.schedule(({ message, subscriber }) => { message.notification.observe(subscriber); },
+        this.scheduler.schedule(
+          ({ message, subscriber }) => {
+            message.notification.observe(subscriber);
+          },
           message.frame,
-          { message, subscriber })
+          { message, subscriber },
+        ),
       );
     }
   }

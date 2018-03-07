@@ -18,18 +18,66 @@ export class BoundCallbackObservable<T> extends Observable<T> {
   static create(callbackFunc: (callback: () => any) => any, selector?: void, scheduler?: IScheduler): () => Observable<void>;
   static create<R>(callbackFunc: (callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): () => Observable<R>;
   static create<T, R>(callbackFunc: (v1: T, callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T) => Observable<R>;
-  static create<T, T2, R>(callbackFunc: (v1: T, v2: T2, callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2) => Observable<R>;
-  static create<T, T2, T3, R>(callbackFunc: (v1: T, v2: T2, v3: T3, callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3) => Observable<R>;
-  static create<T, T2, T3, T4, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4) => Observable<R>;
-  static create<T, T2, T3, T4, T5, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => Observable<R>;
-  static create<T, T2, T3, T4, T5, T6, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, callback: (result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => Observable<R>;
-  static create<R>(callbackFunc: (callback: (...args: any[]) => any) => any, selector: (...args: any[]) => R, scheduler?: IScheduler): () => Observable<R>;
-  static create<T, R>(callbackFunc: (v1: T, callback: (...args: any[]) => any) => any, selector: (...args: any[]) => R, scheduler?: IScheduler): (v1: T) => Observable<R>;
-  static create<T, T2, R>(callbackFunc: (v1: T, v2: T2, callback: (...args: any[]) => any) => any, selector: (...args: any[]) => R, scheduler?: IScheduler): (v1: T, v2: T2) => Observable<R>;
-  static create<T, T2, T3, R>(callbackFunc: (v1: T, v2: T2, v3: T3, callback: (...args: any[]) => any) => any, selector: (...args: any[]) => R, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3) => Observable<R>;
-  static create<T, T2, T3, T4, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, callback: (...args: any[]) => any) => any, selector: (...args: any[]) => R, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4) => Observable<R>;
-  static create<T, T2, T3, T4, T5, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, callback: (...args: any[]) => any) => any, selector: (...args: any[]) => R, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => Observable<R>;
-  static create<T, T2, T3, T4, T5, T6, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, callback: (...args: any[]) => any) => any, selector: (...args: any[]) => R, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => Observable<R>;
+  static create<T, T2, R>(
+    callbackFunc: (v1: T, v2: T2, callback: (result: R) => any) => any,
+    selector?: void,
+    scheduler?: IScheduler,
+  ): (v1: T, v2: T2) => Observable<R>;
+  static create<T, T2, T3, R>(
+    callbackFunc: (v1: T, v2: T2, v3: T3, callback: (result: R) => any) => any,
+    selector?: void,
+    scheduler?: IScheduler,
+  ): (v1: T, v2: T2, v3: T3) => Observable<R>;
+  static create<T, T2, T3, T4, R>(
+    callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, callback: (result: R) => any) => any,
+    selector?: void,
+    scheduler?: IScheduler,
+  ): (v1: T, v2: T2, v3: T3, v4: T4) => Observable<R>;
+  static create<T, T2, T3, T4, T5, R>(
+    callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, callback: (result: R) => any) => any,
+    selector?: void,
+    scheduler?: IScheduler,
+  ): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => Observable<R>;
+  static create<T, T2, T3, T4, T5, T6, R>(
+    callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, callback: (result: R) => any) => any,
+    selector?: void,
+    scheduler?: IScheduler,
+  ): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => Observable<R>;
+  static create<R>(
+    callbackFunc: (callback: (...args: any[]) => any) => any,
+    selector: (...args: any[]) => R,
+    scheduler?: IScheduler,
+  ): () => Observable<R>;
+  static create<T, R>(
+    callbackFunc: (v1: T, callback: (...args: any[]) => any) => any,
+    selector: (...args: any[]) => R,
+    scheduler?: IScheduler,
+  ): (v1: T) => Observable<R>;
+  static create<T, T2, R>(
+    callbackFunc: (v1: T, v2: T2, callback: (...args: any[]) => any) => any,
+    selector: (...args: any[]) => R,
+    scheduler?: IScheduler,
+  ): (v1: T, v2: T2) => Observable<R>;
+  static create<T, T2, T3, R>(
+    callbackFunc: (v1: T, v2: T2, v3: T3, callback: (...args: any[]) => any) => any,
+    selector: (...args: any[]) => R,
+    scheduler?: IScheduler,
+  ): (v1: T, v2: T2, v3: T3) => Observable<R>;
+  static create<T, T2, T3, T4, R>(
+    callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, callback: (...args: any[]) => any) => any,
+    selector: (...args: any[]) => R,
+    scheduler?: IScheduler,
+  ): (v1: T, v2: T2, v3: T3, v4: T4) => Observable<R>;
+  static create<T, T2, T3, T4, T5, R>(
+    callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, callback: (...args: any[]) => any) => any,
+    selector: (...args: any[]) => R,
+    scheduler?: IScheduler,
+  ): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => Observable<R>;
+  static create<T, T2, T3, T4, T5, T6, R>(
+    callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, callback: (...args: any[]) => any) => any,
+    selector: (...args: any[]) => R,
+    scheduler?: IScheduler,
+  ): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => Observable<R>;
   static create<T>(callbackFunc: Function, selector?: void, scheduler?: IScheduler): (...args: any[]) => Observable<T>;
   static create<T>(callbackFunc: Function, selector?: (...args: any[]) => T, scheduler?: IScheduler): (...args: any[]) => Observable<T>;
   /* tslint:enable:max-line-length */
@@ -169,19 +217,13 @@ export class BoundCallbackObservable<T> extends Observable<T> {
    * @name bindCallback
    * @owner Observable
    */
-  static create<T>(func: Function,
-                   selector: Function | void = undefined,
-                   scheduler?: IScheduler): (...args: any[]) => Observable<T> {
-    return function (this: any, ...args: any[]): Observable<T> {
+  static create<T>(func: Function, selector: Function | void = undefined, scheduler?: IScheduler): (...args: any[]) => Observable<T> {
+    return function(this: any, ...args: any[]): Observable<T> {
       return new BoundCallbackObservable<T>(func, <any>selector, args, this, scheduler);
     };
   }
 
-  constructor(private callbackFunc: Function,
-              private selector: Function,
-              private args: any[],
-              private context: any,
-              private scheduler: IScheduler) {
+  constructor(private callbackFunc: Function, private selector: Function, private args: any[], private context: any, private scheduler: IScheduler) {
     super();
   }
 
@@ -220,13 +262,16 @@ export class BoundCallbackObservable<T> extends Observable<T> {
       }
       return subject.subscribe(subscriber);
     } else {
-      return scheduler.schedule<{ source: BoundCallbackObservable<T>, subscriber: Subscriber<T>, context: any }>
-        (BoundCallbackObservable.dispatch, 0, { source: this, subscriber, context: this.context });
+      return scheduler.schedule<{ source: BoundCallbackObservable<T>; subscriber: Subscriber<T>; context: any }>(
+        BoundCallbackObservable.dispatch,
+        0,
+        { source: this, subscriber, context: this.context },
+      );
     }
   }
 
-  static dispatch<T>(state: { source: BoundCallbackObservable<T>, subscriber: Subscriber<T>, context: any }) {
-    const self = (<Subscription><any>this);
+  static dispatch<T>(state: { source: BoundCallbackObservable<T>; subscriber: Subscriber<T>; context: any }) {
+    const self = <Subscription>(<any>this);
     const { source, subscriber, context } = state;
     const { callbackFunc, args, scheduler } = source;
     let subject = source.subject;

@@ -3,14 +3,13 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
 
-export function find<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S,
-                                     thisArg?: any): OperatorFunction<T, S>;
-export function find<T, S extends T>(predicate: (value: T, index: number) => value is S,
-                                     thisArg?: any): OperatorFunction<T, S>;
-export function find<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                        thisArg?: any): MonoTypeOperatorFunction<T>;
-export function find<T>(predicate: (value: T, index: number) => boolean,
-                        thisArg?: any): MonoTypeOperatorFunction<T>;
+export function find<T, S extends T>(
+  predicate: (value: T, index: number, source: Observable<T>) => value is S,
+  thisArg?: any,
+): OperatorFunction<T, S>;
+export function find<T, S extends T>(predicate: (value: T, index: number) => value is S, thisArg?: any): OperatorFunction<T, S>;
+export function find<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): MonoTypeOperatorFunction<T>;
+export function find<T>(predicate: (value: T, index: number) => boolean, thisArg?: any): MonoTypeOperatorFunction<T>;
 /**
  * Emits only the first value emitted by the source Observable that meets some
  * condition.
@@ -44,8 +43,7 @@ export function find<T>(predicate: (value: T, index: number) => boolean,
  * @method find
  * @owner Observable
  */
-export function find<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                        thisArg?: any): MonoTypeOperatorFunction<T> {
+export function find<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, thisArg?: any): MonoTypeOperatorFunction<T> {
   if (typeof predicate !== 'function') {
     throw new TypeError('predicate is not a function');
   }
@@ -53,11 +51,12 @@ export function find<T>(predicate: (value: T, index: number, source: Observable<
 }
 
 export class FindValueOperator<T> implements Operator<T, T> {
-  constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean,
-              private source: Observable<T>,
-              private yieldIndex: boolean,
-              private thisArg?: any) {
-  }
+  constructor(
+    private predicate: (value: T, index: number, source: Observable<T>) => boolean,
+    private source: Observable<T>,
+    private yieldIndex: boolean,
+    private thisArg?: any,
+  ) {}
 
   call(observer: Subscriber<T>, source: any): any {
     return source.subscribe(new FindValueSubscriber(observer, this.predicate, this.source, this.yieldIndex, this.thisArg));
@@ -72,11 +71,13 @@ export class FindValueOperator<T> implements Operator<T, T> {
 export class FindValueSubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 
-  constructor(destination: Subscriber<T>,
-              private predicate: (value: T, index: number, source: Observable<T>) => boolean,
-              private source: Observable<T>,
-              private yieldIndex: boolean,
-              private thisArg?: any) {
+  constructor(
+    destination: Subscriber<T>,
+    private predicate: (value: T, index: number, source: Observable<T>) => boolean,
+    private source: Observable<T>,
+    private yieldIndex: boolean,
+    private thisArg?: any,
+  ) {
     super(destination);
   }
 

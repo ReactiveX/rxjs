@@ -56,8 +56,7 @@ export function audit<T>(durationSelector: (value: T) => SubscribableOrPromise<a
 }
 
 class AuditOperator<T> implements Operator<T, T> {
-  constructor(private durationSelector: (value: T) => SubscribableOrPromise<any>) {
-  }
+  constructor(private durationSelector: (value: T) => SubscribableOrPromise<any>) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new AuditSubscriber<T, T>(subscriber, this.durationSelector));
@@ -70,13 +69,11 @@ class AuditOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class AuditSubscriber<T, R> extends OuterSubscriber<T, R> {
-
   private value: T;
   private hasValue: boolean = false;
   private throttled: Subscription;
 
-  constructor(destination: Subscriber<T>,
-              private durationSelector: (value: T) => SubscribableOrPromise<any>) {
+  constructor(destination: Subscriber<T>, private durationSelector: (value: T) => SubscribableOrPromise<any>) {
     super(destination);
   }
 
@@ -92,7 +89,7 @@ class AuditSubscriber<T, R> extends OuterSubscriber<T, R> {
         if (innerSubscription.closed) {
           this.clearThrottle();
         } else {
-          this.add(this.throttled = innerSubscription);
+          this.add((this.throttled = innerSubscription));
         }
       }
     }

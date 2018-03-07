@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { zipAll } from '../../internal/patching/operator/zipAll';
 

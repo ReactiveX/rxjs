@@ -14,11 +14,13 @@ export type JQueryStyleEventEmitter = {
 
 export type EventTargetLike = EventTarget | NodeStyleEventEmitter | JQueryStyleEventEmitter | NodeList | HTMLCollection;
 
-export type EventListenerOptions = {
-  capture?: boolean;
-  passive?: boolean;
-  once?: boolean;
-} | boolean;
+export type EventListenerOptions =
+  | {
+      capture?: boolean;
+      passive?: boolean;
+      once?: boolean;
+    }
+  | boolean;
 
 /* tslint:disable:max-line-length */
 export function fromEvent<T>(target: EventTargetLike, eventName: string): Observable<T>;
@@ -137,12 +139,7 @@ export function fromEvent<T>(target: EventTargetLike, eventName: string, options
  * @return {Observable<T>}
  * @name fromEvent
  */
-export function fromEvent<T>(
-  target: EventTargetLike,
-  eventName: string,
-  options?: EventListenerOptions
-): Observable<T> {
-
+export function fromEvent<T>(target: EventTargetLike, eventName: string, options?: EventListenerOptions): Observable<T> {
   return new Observable<T>(subscriber => {
     function handler(e: T) {
       if (arguments.length > 1) {
@@ -155,9 +152,13 @@ export function fromEvent<T>(
   });
 }
 
-function setupSubscription<T>(sourceObj: EventTargetLike, eventName: string,
-                              handler: Function, subscriber: Subscriber<T>,
-                              options?: EventListenerOptions) {
+function setupSubscription<T>(
+  sourceObj: EventTargetLike,
+  eventName: string,
+  handler: Function,
+  subscriber: Subscriber<T>,
+  options?: EventListenerOptions,
+) {
   let unsubscribe: () => void;
   if (isNodeList(sourceObj) || isHTMLCollection(sourceObj)) {
     for (let i = 0, len = sourceObj.length; i < len; i++) {

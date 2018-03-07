@@ -4,7 +4,5 @@ import { zip as zipStatic } from '../../internal/observable/zip';
 Observable.zip = zipStatic;
 
 declare module '../../internal/Observable' {
-  namespace Observable {
-    export let zip: typeof zipStatic;
-  }
+  namespace Observable { export let zip: typeof zipStatic; }
 }
