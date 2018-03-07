@@ -42,7 +42,6 @@ import { delay as higherOrder } from '../../operators/delay';
  * @method delay
  * @owner Observable
  */
-export function delay<T>(this: Observable<T>, delay: number|Date,
-                         scheduler: IScheduler = async): Observable<T> {
+export function delay<T>(this: Observable<T>, delay: number | Date, scheduler: IScheduler = async): Observable<T> {
   return higherOrder<T>(delay, scheduler)(this);
 }

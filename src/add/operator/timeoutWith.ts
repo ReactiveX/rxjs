@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { timeoutWith } from '../../internal/patching/operator/timeoutWith';
 

@@ -52,18 +52,14 @@ import { OperatorFunction } from '../types';
  * @method windowCount
  * @owner Observable
  */
-export function windowCount<T>(windowSize: number,
-                               startWindowEvery: number = 0): OperatorFunction<T, Observable<T>> {
+export function windowCount<T>(windowSize: number, startWindowEvery: number = 0): OperatorFunction<T, Observable<T>> {
   return function windowCountOperatorFunction(source: Observable<T>) {
     return source.lift(new WindowCountOperator<T>(windowSize, startWindowEvery));
   };
 }
 
 class WindowCountOperator<T> implements Operator<T, Observable<T>> {
-
-  constructor(private windowSize: number,
-              private startWindowEvery: number) {
-  }
+  constructor(private windowSize: number, private startWindowEvery: number) {}
 
   call(subscriber: Subscriber<Observable<T>>, source: any): any {
     return source.subscribe(new WindowCountSubscriber(subscriber, this.windowSize, this.startWindowEvery));
@@ -76,18 +72,16 @@ class WindowCountOperator<T> implements Operator<T, Observable<T>> {
  * @extends {Ignored}
  */
 class WindowCountSubscriber<T> extends Subscriber<T> {
-  private windows: Subject<T>[] = [ new Subject<T>() ];
+  private windows: Subject<T>[] = [new Subject<T>()];
   private count: number = 0;
 
-  constructor(protected destination: Subscriber<Observable<T>>,
-              private windowSize: number,
-              private startWindowEvery: number) {
+  constructor(protected destination: Subscriber<Observable<T>>, private windowSize: number, private startWindowEvery: number) {
     super(destination);
     destination.next(this.windows[0]);
   }
 
   protected _next(value: T) {
-    const startWindowEvery = (this.startWindowEvery > 0) ? this.startWindowEvery : this.windowSize;
+    const startWindowEvery = this.startWindowEvery > 0 ? this.startWindowEvery : this.windowSize;
     const destination = this.destination;
     const windowSize = this.windowSize;
     const windows = this.windows;

@@ -44,8 +44,7 @@ export function takeWhile<T>(predicate: (value: T, index: number) => boolean): M
 }
 
 class TakeWhileOperator<T> implements Operator<T, T> {
-  constructor(private predicate: (value: T, index: number) => boolean) {
-  }
+  constructor(private predicate: (value: T, index: number) => boolean) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new TakeWhileSubscriber(subscriber, this.predicate));
@@ -60,8 +59,7 @@ class TakeWhileOperator<T> implements Operator<T, T> {
 class TakeWhileSubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 
-  constructor(destination: Subscriber<T>,
-              private predicate: (value: T, index: number) => boolean) {
+  constructor(destination: Subscriber<T>, private predicate: (value: T, index: number) => boolean) {
     super(destination);
   }
 

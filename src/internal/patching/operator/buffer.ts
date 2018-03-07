@@ -1,4 +1,3 @@
-
 import { Observable } from '../../Observable';
 import { buffer as higherOrder } from '../../operators/buffer';
 

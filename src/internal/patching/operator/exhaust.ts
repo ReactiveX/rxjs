@@ -1,4 +1,3 @@
-
 import { Observable } from '../../Observable';
 import { exhaust as higherOrder } from '../../operators/exhaust';
 import { ObservableInput } from '../../types';

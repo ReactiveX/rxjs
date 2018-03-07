@@ -26,9 +26,7 @@ export function single<T>(predicate?: (value: T, index: number, source: Observab
 }
 
 class SingleOperator<T> implements Operator<T, T> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private source?: Observable<T>) {
-  }
+  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean, private source?: Observable<T>) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new SingleSubscriber(subscriber, this.predicate, this.source));
@@ -45,9 +43,11 @@ class SingleSubscriber<T> extends Subscriber<T> {
   private singleValue: T;
   private index: number = 0;
 
-  constructor(destination: Observer<T>,
-              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private source?: Observable<T>) {
+  constructor(
+    destination: Observer<T>,
+    private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+    private source?: Observable<T>,
+  ) {
     super(destination);
   }
 
@@ -87,7 +87,7 @@ class SingleSubscriber<T> extends Subscriber<T> {
       destination.next(this.seenValue ? this.singleValue : undefined);
       destination.complete();
     } else {
-      destination.error(new EmptyError);
+      destination.error(new EmptyError());
     }
   }
 }

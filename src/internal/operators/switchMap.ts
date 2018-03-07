@@ -46,17 +46,14 @@ import { ObservableInput, OperatorFunction } from '../types';
  * @method switchMap
  * @owner Observable
  */
-export function switchMap<T, R>(
-  project: (value: T, index: number) => ObservableInput<R>
-): OperatorFunction<T, R> {
+export function switchMap<T, R>(project: (value: T, index: number) => ObservableInput<R>): OperatorFunction<T, R> {
   return function switchMapOperatorFunction(source: Observable<T>): Observable<R> {
     return source.lift(new SwitchMapOperator(project));
   };
 }
 
 class SwitchMapOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (value: T, index: number) => ObservableInput<R>) {
-  }
+  constructor(private project: (value: T, index: number) => ObservableInput<R>) {}
 
   call(subscriber: Subscriber<R>, source: any): any {
     return source.subscribe(new SwitchMapSubscriber(subscriber, this.project));
@@ -72,8 +69,7 @@ class SwitchMapSubscriber<T, R> extends OuterSubscriber<T, R> {
   private index: number = 0;
   private innerSubscription: Subscription;
 
-  constructor(destination: Subscriber<R>,
-              private project: (value: T, index: number) => ObservableInput<R>) {
+  constructor(destination: Subscriber<R>, private project: (value: T, index: number) => ObservableInput<R>) {
     super(destination);
   }
 
@@ -94,11 +90,11 @@ class SwitchMapSubscriber<T, R> extends OuterSubscriber<T, R> {
     if (innerSubscription) {
       innerSubscription.unsubscribe();
     }
-    this.add(this.innerSubscription = subscribeToResult(this, result, value, index));
+    this.add((this.innerSubscription = subscribeToResult(this, result, value, index)));
   }
 
   protected _complete(): void {
-    const {innerSubscription} = this;
+    const { innerSubscription } = this;
     if (!innerSubscription || innerSubscription.closed) {
       super._complete();
     }
@@ -116,9 +112,7 @@ class SwitchMapSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
-      this.destination.next(innerValue);
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, R>): void {
+    this.destination.next(innerValue);
   }
 }

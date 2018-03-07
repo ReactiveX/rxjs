@@ -4,7 +4,5 @@ import { fromEventPattern as staticFromEventPattern } from '../../internal/obser
 Observable.fromEventPattern = staticFromEventPattern;
 
 declare module '../../internal/Observable' {
-  namespace Observable {
-    export let fromEventPattern: typeof staticFromEventPattern;
-  }
+  namespace Observable { export let fromEventPattern: typeof staticFromEventPattern; }
 }

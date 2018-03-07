@@ -59,8 +59,7 @@ export function observeOn<T>(scheduler: IScheduler, delay: number = 0): MonoType
 }
 
 export class ObserveOnOperator<T> implements Operator<T, T> {
-  constructor(private scheduler: IScheduler, private delay: number = 0) {
-  }
+  constructor(private scheduler: IScheduler, private delay: number = 0) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new ObserveOnSubscriber(subscriber, this.scheduler, this.delay));
@@ -79,18 +78,12 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
     this.unsubscribe();
   }
 
-  constructor(destination: Subscriber<T>,
-              private scheduler: IScheduler,
-              private delay: number = 0) {
+  constructor(destination: Subscriber<T>, private scheduler: IScheduler, private delay: number = 0) {
     super(destination);
   }
 
   private scheduleMessage(notification: Notification<any>): void {
-    this.add(this.scheduler.schedule(
-      ObserveOnSubscriber.dispatch,
-      this.delay,
-      new ObserveOnMessage(notification, this.destination)
-    ));
+    this.add(this.scheduler.schedule(ObserveOnSubscriber.dispatch, this.delay, new ObserveOnMessage(notification, this.destination)));
   }
 
   protected _next(value: T): void {
@@ -107,7 +100,5 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
 }
 
 export class ObserveOnMessage {
-  constructor(public notification: Notification<any>,
-              public destination: PartialObserver<any>) {
-  }
+  constructor(public notification: Notification<any>, public destination: PartialObserver<any>) {}
 }

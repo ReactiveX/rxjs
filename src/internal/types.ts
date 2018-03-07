@@ -2,7 +2,9 @@ import { Observable } from './Observable';
 
 /** OPERATOR INTERFACES */
 
-export interface UnaryFunction<T, R> { (source: T): R; }
+export interface UnaryFunction<T, R> {
+  (source: T): R;
+}
 
 export interface OperatorFunction<T, R> extends UnaryFunction<Observable<T>, Observable<R>> {}
 
@@ -34,9 +36,7 @@ export interface SubscriptionLike extends Unsubscribable {
 }
 
 export interface Subscribable<T> {
-  subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
-            error?: (error: any) => void,
-            complete?: () => void): Unsubscribable;
+  subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void), error?: (error: any) => void, complete?: () => void): Unsubscribable;
 }
 
 export type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<never> | PromiseLike<T> | ObservableLike<T>;
@@ -44,13 +44,11 @@ export type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<never> | P
 /** OBSERVABLE INTERFACES */
 
 export interface Subscribable<T> {
-  subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
-            error?: (error: any) => void,
-            complete?: () => void): Unsubscribable;
+  subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void), error?: (error: any) => void, complete?: () => void): Unsubscribable;
 }
 
 export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T> | Iterable<T>;
-export type ObservableLike<T> = { [Symbol.observable]: () => Subscribable<T>; };
+export type ObservableLike<T> = { [Symbol.observable]: () => Subscribable<T> };
 
 /** OBSERVER INTERFACES */
 

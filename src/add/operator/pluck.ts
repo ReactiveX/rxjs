@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { pluck } from '../../internal/patching/operator/pluck';
 

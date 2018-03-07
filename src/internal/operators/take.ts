@@ -51,7 +51,7 @@ export function take<T>(count: number): MonoTypeOperatorFunction<T> {
 class TakeOperator<T> implements Operator<T, T> {
   constructor(private total: number) {
     if (this.total < 0) {
-      throw new ArgumentOutOfRangeError;
+      throw new ArgumentOutOfRangeError();
     }
   }
 

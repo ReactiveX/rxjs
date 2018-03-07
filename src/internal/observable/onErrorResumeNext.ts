@@ -8,8 +8,19 @@ import { EMPTY } from './empty';
 export function onErrorResumeNext<R>(v: ObservableInput<R>): Observable<R>;
 export function onErrorResumeNext<T2, T3, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>): Observable<R>;
 export function onErrorResumeNext<T2, T3, T4, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): Observable<R>;
-export function onErrorResumeNext<T2, T3, T4, T5, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Observable<R>;
-export function onErrorResumeNext<T2, T3, T4, T5, T6, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Observable<R>;
+export function onErrorResumeNext<T2, T3, T4, T5, R>(
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+  v5: ObservableInput<T5>,
+): Observable<R>;
+export function onErrorResumeNext<T2, T3, T4, T5, T6, R>(
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+  v5: ObservableInput<T5>,
+  v6: ObservableInput<T6>,
+): Observable<R>;
 
 export function onErrorResumeNext<R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R>;
 export function onErrorResumeNext<R>(array: ObservableInput<any>[]): Observable<R>;
@@ -71,27 +82,26 @@ export function onErrorResumeNext<R>(array: ObservableInput<any>[]): Observable<
  * @return {Observable} An Observable that concatenates all sources, one after the other,
  * ignoring all errors, such that any error causes it to move on to the next source.
  */
-export function onErrorResumeNext<T, R>(...sources: Array<ObservableInput<any> |
-                                                              Array<ObservableInput<any>> |
-                                                              ((...values: Array<any>) => R)>): Observable<R> {
-
+export function onErrorResumeNext<T, R>(
+  ...sources: Array<ObservableInput<any> | Array<ObservableInput<any>> | ((...values: Array<any>) => R)>
+): Observable<R> {
   if (sources.length === 0) {
     return EMPTY;
   }
 
-  const [ first, ...remainder ] = sources;
+  const [first, ...remainder] = sources;
 
   if (sources.length === 1 && isArray(first)) {
     return onErrorResumeNext(...first);
   }
 
   return new Observable(subscriber => {
-    const subNext = () => subscriber.add(
-      onErrorResumeNext(...remainder).subscribe(subscriber)
-    );
+    const subNext = () => subscriber.add(onErrorResumeNext(...remainder).subscribe(subscriber));
 
     return from(first).subscribe({
-      next(value) { subscriber.next(value); },
+      next(value) {
+        subscriber.next(value);
+      },
       error: subNext,
       complete: subNext,
     });

@@ -64,5 +64,5 @@ export function distinctUntilKeyChanged<T, K>(key: string, compare: (x: K, y: K)
  * @owner Observable
  */
 export function distinctUntilKeyChanged<T>(key: string, compare?: (x: T, y: T) => boolean): MonoTypeOperatorFunction<T> {
-  return distinctUntilChanged((x: T, y: T) => compare ? compare(x[key], y[key]) : x[key] === y[key]);
+  return distinctUntilChanged((x: T, y: T) => (compare ? compare(x[key], y[key]) : x[key] === y[key]));
 }

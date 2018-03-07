@@ -20,7 +20,6 @@ export class SubjectSubscriber<T> extends Subscriber<T> {
  * @class Subject<T>
  */
 export class Subject<T> extends Observable<T> implements SubscriptionLike {
-
   [rxSubscriberSymbol]() {
     return new SubjectSubscriber(this);
   }

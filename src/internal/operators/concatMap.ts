@@ -52,6 +52,6 @@ import { ObservableInput, OperatorFunction } from '../types';
  * @method concatMap
  * @owner Observable
  */
-export function concatMap<T, R>(project: (value: T, index: number) =>  ObservableInput<R>): OperatorFunction<T, R> {
+export function concatMap<T, R>(project: (value: T, index: number) => ObservableInput<R>): OperatorFunction<T, R> {
   return mergeMap(project, 1);
 }

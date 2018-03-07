@@ -11,9 +11,24 @@ import { ObservableInput, OperatorFunction } from '../types';
 /* tslint:disable:max-line-length */
 export function onErrorResumeNext<T, R>(v: ObservableInput<R>): OperatorFunction<T, R>;
 export function onErrorResumeNext<T, T2, T3, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>): OperatorFunction<T, R>;
-export function onErrorResumeNext<T, T2, T3, T4, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): OperatorFunction<T, R>;
-export function onErrorResumeNext<T, T2, T3, T4, T5, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): OperatorFunction<T, R>;
-export function onErrorResumeNext<T, T2, T3, T4, T5, T6, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): OperatorFunction<T, R> ;
+export function onErrorResumeNext<T, T2, T3, T4, R>(
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+): OperatorFunction<T, R>;
+export function onErrorResumeNext<T, T2, T3, T4, T5, R>(
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+  v5: ObservableInput<T5>,
+): OperatorFunction<T, R>;
+export function onErrorResumeNext<T, T2, T3, T4, T5, T6, R>(
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+  v5: ObservableInput<T5>,
+  v6: ObservableInput<T6>,
+): OperatorFunction<T, R>;
 export function onErrorResumeNext<T, R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): OperatorFunction<T, R>;
 export function onErrorResumeNext<T, R>(array: ObservableInput<any>[]): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
@@ -80,9 +95,9 @@ export function onErrorResumeNext<T, R>(array: ObservableInput<any>[]): Operator
  * @owner Observable
  */
 
-export function onErrorResumeNext<T, R>(...nextSources: Array<ObservableInput<any> |
-                                                       Array<ObservableInput<any>> |
-                                                       ((...values: Array<any>) => R)>): OperatorFunction<T, R> {
+export function onErrorResumeNext<T, R>(
+  ...nextSources: Array<ObservableInput<any> | Array<ObservableInput<any>> | ((...values: Array<any>) => R)>
+): OperatorFunction<T, R> {
   if (nextSources.length === 1 && isArray(nextSources[0])) {
     nextSources = <Array<Observable<any>>>nextSources[0];
   }
@@ -94,16 +109,27 @@ export function onErrorResumeNext<T, R>(...nextSources: Array<ObservableInput<an
 export function onErrorResumeNextStatic<R>(v: ObservableInput<R>): Observable<R>;
 export function onErrorResumeNextStatic<T2, T3, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>): Observable<R>;
 export function onErrorResumeNextStatic<T2, T3, T4, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): Observable<R>;
-export function onErrorResumeNextStatic<T2, T3, T4, T5, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Observable<R>;
-export function onErrorResumeNextStatic<T2, T3, T4, T5, T6, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Observable<R>;
+export function onErrorResumeNextStatic<T2, T3, T4, T5, R>(
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+  v5: ObservableInput<T5>,
+): Observable<R>;
+export function onErrorResumeNextStatic<T2, T3, T4, T5, T6, R>(
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+  v5: ObservableInput<T5>,
+  v6: ObservableInput<T6>,
+): Observable<R>;
 
 export function onErrorResumeNextStatic<R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R>;
 export function onErrorResumeNextStatic<R>(array: ObservableInput<any>[]): Observable<R>;
 /* tslint:enable:max-line-length */
 
-export function onErrorResumeNextStatic<T, R>(...nextSources: Array<ObservableInput<any> |
-                                                              Array<ObservableInput<any>> |
-                                                              ((...values: Array<any>) => R)>): Observable<R> {
+export function onErrorResumeNextStatic<T, R>(
+  ...nextSources: Array<ObservableInput<any> | Array<ObservableInput<any>> | ((...values: Array<any>) => R)>
+): Observable<R> {
   let source: ObservableInput<any> = null;
 
   if (nextSources.length === 1 && isArray(nextSources[0])) {
@@ -115,8 +141,7 @@ export function onErrorResumeNextStatic<T, R>(...nextSources: Array<ObservableIn
 }
 
 class OnErrorResumeNextOperator<T, R> implements Operator<T, R> {
-  constructor(private nextSources: Array<ObservableInput<any>>) {
-  }
+  constructor(private nextSources: Array<ObservableInput<any>>) {}
 
   call(subscriber: Subscriber<R>, source: any): any {
     return source.subscribe(new OnErrorResumeNextSubscriber(subscriber, this.nextSources));
@@ -124,8 +149,7 @@ class OnErrorResumeNextOperator<T, R> implements Operator<T, R> {
 }
 
 class OnErrorResumeNextSubscriber<T, R> extends OuterSubscriber<T, R> {
-  constructor(protected destination: Subscriber<T>,
-              private nextSources: Array<ObservableInput<any>>) {
+  constructor(protected destination: Subscriber<T>, private nextSources: Array<ObservableInput<any>>) {
     super(destination);
   }
 

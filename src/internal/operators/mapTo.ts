@@ -34,7 +34,6 @@ export function mapTo<T, R>(value: R): OperatorFunction<T, R> {
 }
 
 class MapToOperator<T, R> implements Operator<T, R> {
-
   value: R;
 
   constructor(value: R) {
@@ -52,7 +51,6 @@ class MapToOperator<T, R> implements Operator<T, R> {
  * @extends {Ignored}
  */
 class MapToSubscriber<T, R> extends Subscriber<T> {
-
   value: R;
 
   constructor(destination: Subscriber<R>, value: R) {

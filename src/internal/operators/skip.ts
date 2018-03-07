@@ -19,8 +19,7 @@ export function skip<T>(count: number): MonoTypeOperatorFunction<T> {
 }
 
 class SkipOperator<T> implements Operator<T, T> {
-  constructor(private total: number) {
-  }
+  constructor(private total: number) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new SkipSubscriber(subscriber, this.total));

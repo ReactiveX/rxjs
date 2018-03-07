@@ -16,7 +16,7 @@ export interface ThrottleConfig {
 
 export const defaultThrottleConfig: ThrottleConfig = {
   leading: true,
-  trailing: false
+  trailing: false,
 };
 
 /**
@@ -59,21 +59,18 @@ export const defaultThrottleConfig: ThrottleConfig = {
  * @method throttle
  * @owner Observable
  */
-export function throttle<T>(durationSelector: (value: T) => SubscribableOrPromise<any>,
-                            config: ThrottleConfig = defaultThrottleConfig): MonoTypeOperatorFunction<T> {
+export function throttle<T>(
+  durationSelector: (value: T) => SubscribableOrPromise<any>,
+  config: ThrottleConfig = defaultThrottleConfig,
+): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new ThrottleOperator(durationSelector, config.leading, config.trailing));
 }
 
 class ThrottleOperator<T> implements Operator<T, T> {
-  constructor(private durationSelector: (value: T) => SubscribableOrPromise<any>,
-              private leading: boolean,
-              private trailing: boolean) {
-  }
+  constructor(private durationSelector: (value: T) => SubscribableOrPromise<any>, private leading: boolean, private trailing: boolean) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(
-      new ThrottleSubscriber(subscriber, this.durationSelector, this.leading, this.trailing)
-    );
+    return source.subscribe(new ThrottleSubscriber(subscriber, this.durationSelector, this.leading, this.trailing));
   }
 }
 
@@ -87,10 +84,12 @@ class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
   private _trailingValue: T;
   private _hasTrailingValue = false;
 
-  constructor(protected destination: Subscriber<T>,
-              private durationSelector: (value: T) => SubscribableOrPromise<any>,
-              private _leading: boolean,
-              private _trailing: boolean) {
+  constructor(
+    protected destination: Subscriber<T>,
+    private durationSelector: (value: T) => SubscribableOrPromise<any>,
+    private _leading: boolean,
+    private _trailing: boolean,
+  ) {
     super(destination);
   }
 
@@ -103,7 +102,7 @@ class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
     } else {
       const duration = this.tryDurationSelector(value);
       if (duration) {
-        this.add(this.throttled = subscribeToResult(this, duration));
+        this.add((this.throttled = subscribeToResult(this, duration)));
       }
       if (this._leading) {
         this.destination.next(value);
@@ -146,9 +145,7 @@ class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, R>): void {
     this._sendTrailing();
     this._unsubscribe();
   }

@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { skipUntil } from '../../internal/patching/operator/skipUntil';
 

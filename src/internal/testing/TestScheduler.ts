@@ -58,40 +58,45 @@ export class TestScheduler extends VirtualTimeScheduler {
     return subject;
   }
 
-  private materializeInnerObservable(observable: Observable<any>,
-                                     outerFrame: number): TestMessage[] {
+  private materializeInnerObservable(observable: Observable<any>, outerFrame: number): TestMessage[] {
     const messages: TestMessage[] = [];
-    observable.subscribe((value) => {
-      messages.push({ frame: this.frame - outerFrame, notification: Notification.createNext(value) });
-    }, (err) => {
-      messages.push({ frame: this.frame - outerFrame, notification: Notification.createError(err) });
-    }, () => {
-      messages.push({ frame: this.frame - outerFrame, notification: Notification.createComplete() });
-    });
+    observable.subscribe(
+      value => {
+        messages.push({ frame: this.frame - outerFrame, notification: Notification.createNext(value) });
+      },
+      err => {
+        messages.push({ frame: this.frame - outerFrame, notification: Notification.createError(err) });
+      },
+      () => {
+        messages.push({ frame: this.frame - outerFrame, notification: Notification.createComplete() });
+      },
+    );
     return messages;
   }
 
-  expectObservable(observable: Observable<any>,
-                   unsubscriptionMarbles: string = null): ({ toBe: observableToBeFn }) {
+  expectObservable(observable: Observable<any>, unsubscriptionMarbles: string = null): { toBe: observableToBeFn } {
     const actual: TestMessage[] = [];
     const flushTest: FlushableTest = { actual, ready: false };
-    const unsubscriptionFrame = TestScheduler
-      .parseMarblesAsSubscriptions(unsubscriptionMarbles).unsubscribedFrame;
+    const unsubscriptionFrame = TestScheduler.parseMarblesAsSubscriptions(unsubscriptionMarbles).unsubscribedFrame;
     let subscription: Subscription;
 
     this.schedule(() => {
-      subscription = observable.subscribe(x => {
-        let value = x;
-        // Support Observable-of-Observables
-        if (x instanceof Observable) {
-          value = this.materializeInnerObservable(value, this.frame);
-        }
-        actual.push({ frame: this.frame, notification: Notification.createNext(value) });
-      }, (err) => {
-        actual.push({ frame: this.frame, notification: Notification.createError(err) });
-      }, () => {
-        actual.push({ frame: this.frame, notification: Notification.createComplete() });
-      });
+      subscription = observable.subscribe(
+        x => {
+          let value = x;
+          // Support Observable-of-Observables
+          if (x instanceof Observable) {
+            value = this.materializeInnerObservable(value, this.frame);
+          }
+          actual.push({ frame: this.frame, notification: Notification.createNext(value) });
+        },
+        err => {
+          actual.push({ frame: this.frame, notification: Notification.createError(err) });
+        },
+        () => {
+          actual.push({ frame: this.frame, notification: Notification.createComplete() });
+        },
+      );
     }, 0);
 
     if (unsubscriptionFrame !== Number.POSITIVE_INFINITY) {
@@ -104,21 +109,19 @@ export class TestScheduler extends VirtualTimeScheduler {
       toBe(marbles: string, values?: any, errorValue?: any) {
         flushTest.ready = true;
         flushTest.expected = TestScheduler.parseMarbles(marbles, values, errorValue, true);
-      }
+      },
     };
   }
 
-  expectSubscriptions(actualSubscriptionLogs: SubscriptionLog[]): ({ toBe: subscriptionLogsToBeFn }) {
+  expectSubscriptions(actualSubscriptionLogs: SubscriptionLog[]): { toBe: subscriptionLogsToBeFn } {
     const flushTest: FlushableTest = { actual: actualSubscriptionLogs, ready: false };
     this.flushTests.push(flushTest);
     return {
       toBe(marbles: string | string[]) {
-        const marblesArray: string[] = (typeof marbles === 'string') ? [marbles] : marbles;
+        const marblesArray: string[] = typeof marbles === 'string' ? [marbles] : marbles;
         flushTest.ready = true;
-        flushTest.expected = marblesArray.map(marbles =>
-          TestScheduler.parseMarblesAsSubscriptions(marbles)
-        );
-      }
+        flushTest.expected = marblesArray.map(marbles => TestScheduler.parseMarblesAsSubscriptions(marbles));
+      },
     };
   }
 
@@ -160,21 +163,18 @@ export class TestScheduler extends VirtualTimeScheduler {
           break;
         case '^':
           if (subscriptionFrame !== Number.POSITIVE_INFINITY) {
-            throw new Error('found a second subscription point \'^\' in a ' +
-              'subscription marble diagram. There can only be one.');
+            throw new Error("found a second subscription point '^' in a " + 'subscription marble diagram. There can only be one.');
           }
           subscriptionFrame = groupStart > -1 ? groupStart : frame;
           break;
         case '!':
           if (unsubscriptionFrame !== Number.POSITIVE_INFINITY) {
-            throw new Error('found a second subscription point \'^\' in a ' +
-              'subscription marble diagram. There can only be one.');
+            throw new Error("found a second subscription point '^' in a " + 'subscription marble diagram. There can only be one.');
           }
           unsubscriptionFrame = groupStart > -1 ? groupStart : frame;
           break;
         default:
-          throw new Error('there can only be \'^\' and \'!\' markers in a ' +
-            'subscription marble diagram. Found instead \'' + c + '\'.');
+          throw new Error("there can only be '^' and '!' markers in a " + "subscription marble diagram. Found instead '" + c + "'.");
       }
     }
 
@@ -185,27 +185,24 @@ export class TestScheduler extends VirtualTimeScheduler {
     }
   }
 
-  static parseMarbles(marbles: string,
-                      values?: any,
-                      errorValue?: any,
-                      materializeInnerObservables: boolean = false): TestMessage[] {
+  static parseMarbles(marbles: string, values?: any, errorValue?: any, materializeInnerObservables: boolean = false): TestMessage[] {
     if (marbles.indexOf('!') !== -1) {
-      throw new Error('conventional marble diagrams cannot have the ' +
-        'unsubscription marker "!"');
+      throw new Error('conventional marble diagrams cannot have the ' + 'unsubscription marker "!"');
     }
     const len = marbles.length;
     const testMessages: TestMessage[] = [];
     const subIndex = marbles.indexOf('^');
-    const frameOffset = subIndex === -1 ? 0 : (subIndex * -this.frameTimeFactor);
-    const getValue = typeof values !== 'object' ?
-      (x: any) => x :
-      (x: any) => {
-        // Support Observable-of-Observables
-        if (materializeInnerObservables && values[x] instanceof ColdObservable) {
-          return values[x].messages;
-        }
-        return values[x];
-      };
+    const frameOffset = subIndex === -1 ? 0 : subIndex * -this.frameTimeFactor;
+    const getValue =
+      typeof values !== 'object'
+        ? (x: any) => x
+        : (x: any) => {
+            // Support Observable-of-Observables
+            if (materializeInnerObservables && values[x] instanceof ColdObservable) {
+              return values[x].messages;
+            }
+            return values[x];
+          };
     let groupStart = -1;
 
     for (let i = 0; i < len; i++) {

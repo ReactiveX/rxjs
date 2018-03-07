@@ -140,5 +140,4 @@ class BufferSkipCountSubscriber<T> extends Subscriber<T> {
     }
     super._complete();
   }
-
 }

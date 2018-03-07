@@ -1,4 +1,3 @@
-
 import { Observable } from '../../Observable';
 import { combineAll as higherOrder } from '../../operators/combineAll';
 import { ObservableInput } from '../../types';

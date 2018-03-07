@@ -18,8 +18,7 @@ export class AsyncScheduler extends Scheduler {
   public scheduled: any = undefined;
 
   public flush(action: AsyncAction<any>): void {
-
-    const {actions} = this;
+    const { actions } = this;
 
     if (this.active) {
       actions.push(action);
@@ -30,15 +29,15 @@ export class AsyncScheduler extends Scheduler {
     this.active = true;
 
     do {
-      if (error = action.execute(action.state, action.delay)) {
+      if ((error = action.execute(action.state, action.delay))) {
         break;
       }
-    } while (action = actions.shift()); // exhaust the scheduler queue
+    } while ((action = actions.shift())); // exhaust the scheduler queue
 
     this.active = false;
 
     if (error) {
-      while (action = actions.shift()) {
+      while ((action = actions.shift())) {
         action.unsubscribe();
       }
       throw error;

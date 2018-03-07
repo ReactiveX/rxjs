@@ -1,4 +1,3 @@
-
 import { Observable } from '../../Observable';
 import { every as higherOrder } from '../../operators/every';
 
@@ -16,7 +15,10 @@ import { every as higherOrder } from '../../operators/every';
  * @method every
  * @owner Observable
  */
-export function every<T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                         thisArg?: any): Observable<boolean> {
+export function every<T>(
+  this: Observable<T>,
+  predicate: (value: T, index: number, source: Observable<T>) => boolean,
+  thisArg?: any,
+): Observable<boolean> {
   return higherOrder(predicate, thisArg)(this);
 }

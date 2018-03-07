@@ -58,15 +58,12 @@ import { Observer, OperatorFunction } from '../types';
  * @method sequenceEqual
  * @owner Observable
  */
-export function sequenceEqual<T>(compareTo: Observable<T>,
-                                 comparor?: (a: T, b: T) => boolean): OperatorFunction<T, boolean> {
+export function sequenceEqual<T>(compareTo: Observable<T>, comparor?: (a: T, b: T) => boolean): OperatorFunction<T, boolean> {
   return (source: Observable<T>) => source.lift(new SequenceEqualOperator(compareTo, comparor));
 }
 
 export class SequenceEqualOperator<T> implements Operator<T, boolean> {
-  constructor(private compareTo: Observable<T>,
-              private comparor: (a: T, b: T) => boolean) {
-  }
+  constructor(private compareTo: Observable<T>, private comparor: (a: T, b: T) => boolean) {}
 
   call(subscriber: Subscriber<boolean>, source: any): any {
     return source.subscribe(new SequenceEqualSubscriber(subscriber, this.compareTo, this.comparor));
@@ -83,9 +80,7 @@ export class SequenceEqualSubscriber<T, R> extends Subscriber<T> {
   private _b: T[] = [];
   private _oneComplete = false;
 
-  constructor(destination: Observer<R>,
-              private compareTo: Observable<T>,
-              private comparor: (a: T, b: T) => boolean) {
+  constructor(destination: Observer<R>, private compareTo: Observable<T>, private comparor: (a: T, b: T) => boolean) {
     super(destination);
     this.add(compareTo.subscribe(new SequenceEqualCompareToSubscriber(destination, this)));
   }

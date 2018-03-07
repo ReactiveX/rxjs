@@ -47,8 +47,7 @@ export function takeUntil<T>(notifier: Observable<any>): MonoTypeOperatorFunctio
 }
 
 class TakeUntilOperator<T> implements Operator<T, T> {
-  constructor(private notifier: Observable<any>) {
-  }
+  constructor(private notifier: Observable<any>) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new TakeUntilSubscriber(subscriber, this.notifier));
@@ -61,16 +60,12 @@ class TakeUntilOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class TakeUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
-
-  constructor(destination: Subscriber<any>,
-              private notifier: Observable<any>) {
+  constructor(destination: Subscriber<any>, private notifier: Observable<any>) {
     super(destination);
     this.add(subscribeToResult(this, notifier));
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, R>): void {
     this.complete();
   }
 

@@ -22,11 +22,9 @@ export interface IScheduler {
  * @class Scheduler
  */
 export class Scheduler implements IScheduler {
-
   public static now: () => number = Date.now ? Date.now : () => +new Date();
 
-  constructor(private SchedulerAction: typeof Action,
-              now: () => number = Scheduler.now) {
+  constructor(private SchedulerAction: typeof Action, now: () => number = Scheduler.now) {
     this.now = now;
   }
 

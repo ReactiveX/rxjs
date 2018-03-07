@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { mergeScan } from '../../internal/patching/operator/mergeScan';
 

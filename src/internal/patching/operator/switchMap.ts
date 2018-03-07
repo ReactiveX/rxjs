@@ -1,4 +1,3 @@
-
 import { Observable } from '../../Observable';
 import { ObservableInput } from '../../types';
 import { switchMap as higherOrderSwitchMap } from '../../operators/switchMap';

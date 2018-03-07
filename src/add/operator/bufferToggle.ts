@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { bufferToggle } from '../../internal/patching/operator/bufferToggle';
 

@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { count } from '../../internal/patching/operator/count';
 

@@ -23,8 +23,7 @@ export function skipUntil<T>(notifier: Observable<any>): MonoTypeOperatorFunctio
 }
 
 class SkipUntilOperator<T> implements Operator<T, T> {
-  constructor(private notifier: Observable<any>) {
-  }
+  constructor(private notifier: Observable<any>) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new SkipUntilSubscriber(subscriber, this.notifier));
@@ -37,12 +36,10 @@ class SkipUntilOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class SkipUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
-
   private hasValue: boolean = false;
   private isInnerStopped: boolean = false;
 
-  constructor(destination: Subscriber<any>,
-              notifier: Observable<any>) {
+  constructor(destination: Subscriber<any>, notifier: Observable<any>) {
     super(destination);
     this.add(subscribeToResult(this, notifier));
   }
@@ -61,9 +58,7 @@ class SkipUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, R>): void {
     this.hasValue = true;
   }
 

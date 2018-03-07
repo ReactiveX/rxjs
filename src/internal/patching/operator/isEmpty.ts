@@ -1,4 +1,3 @@
-
 import { Observable } from '../../Observable';
 import { isEmpty as higherOrder } from '../../operators/isEmpty';
 

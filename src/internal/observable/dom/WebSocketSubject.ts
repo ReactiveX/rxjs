@@ -17,7 +17,7 @@ export interface WebSocketSubjectConfig {
   openObserver?: NextObserver<Event>;
   closeObserver?: NextObserver<CloseEvent>;
   closingObserver?: NextObserver<void>;
-  WebSocketCtor?: { new(url: string, protocol?: string|Array<string>): WebSocket };
+  WebSocketCtor?: { new (url: string, protocol?: string | Array<string>): WebSocket };
   binaryType?: 'blob' | 'arraybuffer';
 }
 
@@ -27,14 +27,13 @@ export interface WebSocketSubjectConfig {
  * @hide true
  */
 export class WebSocketSubject<T> extends AnonymousSubject<T> {
-
   url: string;
-  protocol: string|Array<string>;
+  protocol: string | Array<string>;
   socket: WebSocket;
   openObserver: NextObserver<Event>;
   closeObserver: NextObserver<CloseEvent>;
   closingObserver: NextObserver<void>;
-  WebSocketCtor: { new(url: string, protocol?: string|Array<string>): WebSocket };
+  WebSocketCtor: { new (url: string, protocol?: string | Array<string>): WebSocket };
   binaryType?: 'blob' | 'arraybuffer';
 
   private _output: Subject<T>;
@@ -87,7 +86,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
 
   constructor(urlConfigOrSource: string | WebSocketSubjectConfig | Observable<T>, destination?: Observer<T>) {
     if (urlConfigOrSource instanceof Observable) {
-      super(destination, <Observable<T>> urlConfigOrSource);
+      super(destination, <Observable<T>>urlConfigOrSource);
     } else {
       super();
       this.WebSocketCtor = root.WebSocket;
@@ -106,7 +105,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   }
 
   lift<R>(operator: Operator<T, R>): WebSocketSubject<R> {
-    const sock = new WebSocketSubject<R>(this, <any> this.destination);
+    const sock = new WebSocketSubject<R>(this, <any>this.destination);
     sock.operator = operator;
     return sock;
   }
@@ -130,16 +129,18 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
         self.next(result);
       }
 
-      let subscription = self.subscribe(x => {
-        const result = tryCatch(messageFilter)(x);
-        if (result === errorObject) {
-          observer.error(errorObject.e);
-        } else if (result) {
-          observer.next(x);
-        }
-      },
+      let subscription = self.subscribe(
+        x => {
+          const result = tryCatch(messageFilter)(x);
+          if (result === errorObject) {
+            observer.error(errorObject.e);
+          } else if (result) {
+            observer.next(x);
+          }
+        },
         err => observer.error(err),
-        () => observer.complete());
+        () => observer.complete(),
+      );
 
       return () => {
         const result = tryCatch(unsubMsg)();
@@ -159,9 +160,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
 
     let socket: WebSocket = null;
     try {
-      socket = this.protocol ?
-        new WebSocketCtor(this.url, this.protocol) :
-        new WebSocketCtor(this.url);
+      socket = this.protocol ? new WebSocketCtor(this.url, this.protocol) : new WebSocketCtor(this.url);
       this.socket = socket;
       if (this.binaryType) {
         this.socket.binaryType = this.binaryType;
@@ -187,8 +186,8 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
       const queue = this.destination;
 
       this.destination = Subscriber.create(
-        (x) => socket.readyState === 1 && socket.send(x),
-        (e) => {
+        x => socket.readyState === 1 && socket.send(x),
+        e => {
           const closingObserver = this.closingObserver;
           if (closingObserver) {
             closingObserver.next(undefined);
@@ -196,19 +195,23 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
           if (e && e.code) {
             socket.close(e.code, e.reason);
           } else {
-            observer.error(new TypeError('WebSocketSubject.error must be called with an object with an error code, ' +
-              'and an optional reason: { code: number, reason: string }'));
+            observer.error(
+              new TypeError(
+                'WebSocketSubject.error must be called with an object with an error code, ' +
+                  'and an optional reason: { code: number, reason: string }',
+              ),
+            );
           }
           this._resetState();
         },
-        ( ) => {
+        () => {
           const closingObserver = this.closingObserver;
           if (closingObserver) {
             closingObserver.next(undefined);
           }
           socket.close();
           this._resetState();
-        }
+        },
       );
 
       if (queue && queue instanceof ReplaySubject) {

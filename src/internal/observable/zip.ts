@@ -12,16 +12,60 @@ import { iterator as Symbol_iterator } from '../../internal/symbol/iterator';
 /* tslint:disable:max-line-length */
 export function zip<T, R>(v1: ObservableInput<T>, project: (v1: T) => R): Observable<R>;
 export function zip<T, T2, R>(v1: ObservableInput<T>, v2: ObservableInput<T2>, project: (v1: T, v2: T2) => R): Observable<R>;
-export function zip<T, T2, T3, R>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, project: (v1: T, v2: T2, v3: T3) => R): Observable<R>;
-export function zip<T, T2, T3, T4, R>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, project: (v1: T, v2: T2, v3: T3, v4: T4) => R): Observable<R>;
-export function zip<T, T2, T3, T4, T5, R>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => R): Observable<R>;
-export function zip<T, T2, T3, T4, T5, T6, R>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => R): Observable<R>;
+export function zip<T, T2, T3, R>(
+  v1: ObservableInput<T>,
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  project: (v1: T, v2: T2, v3: T3) => R,
+): Observable<R>;
+export function zip<T, T2, T3, T4, R>(
+  v1: ObservableInput<T>,
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+  project: (v1: T, v2: T2, v3: T3, v4: T4) => R,
+): Observable<R>;
+export function zip<T, T2, T3, T4, T5, R>(
+  v1: ObservableInput<T>,
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+  v5: ObservableInput<T5>,
+  project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => R,
+): Observable<R>;
+export function zip<T, T2, T3, T4, T5, T6, R>(
+  v1: ObservableInput<T>,
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+  v5: ObservableInput<T5>,
+  v6: ObservableInput<T6>,
+  project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => R,
+): Observable<R>;
 
 export function zip<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>): Observable<[T, T2]>;
 export function zip<T, T2, T3>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>): Observable<[T, T2, T3]>;
-export function zip<T, T2, T3, T4>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): Observable<[T, T2, T3, T4]>;
-export function zip<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Observable<[T, T2, T3, T4, T5]>;
-export function zip<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Observable<[T, T2, T3, T4, T5, T6]>;
+export function zip<T, T2, T3, T4>(
+  v1: ObservableInput<T>,
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+): Observable<[T, T2, T3, T4]>;
+export function zip<T, T2, T3, T4, T5>(
+  v1: ObservableInput<T>,
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+  v5: ObservableInput<T5>,
+): Observable<[T, T2, T3, T4, T5]>;
+export function zip<T, T2, T3, T4, T5, T6>(
+  v1: ObservableInput<T>,
+  v2: ObservableInput<T2>,
+  v3: ObservableInput<T3>,
+  v4: ObservableInput<T4>,
+  v5: ObservableInput<T5>,
+  v6: ObservableInput<T6>,
+): Observable<[T, T2, T3, T4, T5, T6]>;
 
 export function zip<T>(array: ObservableInput<T>[]): Observable<T[]>;
 export function zip<R>(array: ObservableInput<any>[]): Observable<R>;
@@ -65,7 +109,7 @@ export function zip<R>(...observables: Array<ObservableInput<any> | ((...values:
  * @owner Observable
  */
 export function zip<T, R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R> {
-  const project = <((...ys: Array<any>) => R)> observables[observables.length - 1];
+  const project = <((...ys: Array<any>) => R)>observables[observables.length - 1];
   if (typeof project === 'function') {
     observables.pop();
   }
@@ -73,7 +117,6 @@ export function zip<T, R>(...observables: Array<ObservableInput<any> | ((...valu
 }
 
 export class ZipOperator<T, R> implements Operator<T, R> {
-
   project: (...values: Array<any>) => R;
 
   constructor(project?: (...values: Array<any>) => R) {
@@ -96,11 +139,9 @@ export class ZipSubscriber<T, R> extends Subscriber<T> {
   private iterators: LookAheadIterator<any>[] = [];
   private active = 0;
 
-  constructor(destination: Subscriber<R>,
-              project?: (...values: Array<any>) => R,
-              values: any = Object.create(null)) {
+  constructor(destination: Subscriber<R>, project?: (...values: Array<any>) => R, values: any = Object.create(null)) {
     super(destination);
-    this.project = (typeof project === 'function') ? project : null;
+    this.project = typeof project === 'function' ? project : null;
     this.values = values;
   }
 
@@ -263,9 +304,7 @@ class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAhead
   buffer: T[] = [];
   isComplete = false;
 
-  constructor(destination: PartialObserver<T>,
-              private parent: ZipSubscriber<T, R>,
-              private observable: Observable<T>) {
+  constructor(destination: PartialObserver<T>, private parent: ZipSubscriber<T, R>, private observable: Observable<T>) {
     super(destination);
   }
 
@@ -301,9 +340,7 @@ class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAhead
     }
   }
 
-  notifyNext(outerValue: T, innerValue: any,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(outerValue: T, innerValue: any, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, R>): void {
     this.buffer.push(innerValue);
     this.parent.checkIterators();
   }

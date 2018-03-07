@@ -70,15 +70,14 @@ import { OperatorFunction } from '../types';
  * @method windowTime
  * @owner Observable
  */
-export function windowTime<T>(windowTimeSpan: number,
-                              scheduler?: IScheduler): OperatorFunction<T, Observable<T>>;
-export function windowTime<T>(windowTimeSpan: number,
-                              windowCreationInterval: number,
-                              scheduler?: IScheduler): OperatorFunction<T, Observable<T>>;
-export function windowTime<T>(windowTimeSpan: number,
-                              windowCreationInterval: number,
-                              maxWindowSize: number,
-                              scheduler?: IScheduler): OperatorFunction<T, Observable<T>>;
+export function windowTime<T>(windowTimeSpan: number, scheduler?: IScheduler): OperatorFunction<T, Observable<T>>;
+export function windowTime<T>(windowTimeSpan: number, windowCreationInterval: number, scheduler?: IScheduler): OperatorFunction<T, Observable<T>>;
+export function windowTime<T>(
+  windowTimeSpan: number,
+  windowCreationInterval: number,
+  maxWindowSize: number,
+  scheduler?: IScheduler,
+): OperatorFunction<T, Observable<T>>;
 
 export function windowTime<T>(windowTimeSpan: number): OperatorFunction<T, Observable<T>> {
   let scheduler: IScheduler = async;
@@ -107,17 +106,17 @@ export function windowTime<T>(windowTimeSpan: number): OperatorFunction<T, Obser
 }
 
 class WindowTimeOperator<T> implements Operator<T, Observable<T>> {
-
-  constructor(private windowTimeSpan: number,
-              private windowCreationInterval: number | null,
-              private maxWindowSize: number,
-              private scheduler: IScheduler) {
-  }
+  constructor(
+    private windowTimeSpan: number,
+    private windowCreationInterval: number | null,
+    private maxWindowSize: number,
+    private scheduler: IScheduler,
+  ) {}
 
   call(subscriber: Subscriber<Observable<T>>, source: any): any {
-    return source.subscribe(new WindowTimeSubscriber(
-      subscriber, this.windowTimeSpan, this.windowCreationInterval, this.maxWindowSize, this.scheduler
-    ));
+    return source.subscribe(
+      new WindowTimeSubscriber(subscriber, this.windowTimeSpan, this.windowCreationInterval, this.maxWindowSize, this.scheduler),
+    );
   }
 }
 
@@ -129,10 +128,10 @@ interface CreationState<T> {
 }
 
 interface TimeSpanOnlyState<T> {
-    window: CountedSubject<T>;
-    windowTimeSpan: number;
-    subscriber: WindowTimeSubscriber<T>;
-  }
+  window: CountedSubject<T>;
+  windowTimeSpan: number;
+  subscriber: WindowTimeSubscriber<T>;
+}
 
 interface CloseWindowContext<T> {
   action: Action<CreationState<T>>;
@@ -166,11 +165,13 @@ class CountedSubject<T> extends Subject<T> {
 class WindowTimeSubscriber<T> extends Subscriber<T> {
   private windows: CountedSubject<T>[] = [];
 
-  constructor(protected destination: Subscriber<Observable<T>>,
-              private windowTimeSpan: number,
-              private windowCreationInterval: number | null,
-              private maxWindowSize: number,
-              private scheduler: IScheduler) {
+  constructor(
+    protected destination: Subscriber<Observable<T>>,
+    private windowTimeSpan: number,
+    private windowCreationInterval: number | null,
+    private maxWindowSize: number,
+    private scheduler: IScheduler,
+  ) {
     super(destination);
 
     const window = this.openWindow();

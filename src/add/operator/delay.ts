@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { delay } from '../../internal/patching/operator/delay';
 

@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { min } from '../../internal/patching/operator/min';
 

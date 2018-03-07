@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { ignoreElements } from '../../internal/patching/operator/ignoreElements';
 

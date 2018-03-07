@@ -25,9 +25,7 @@ export function retry<T>(count: number = -1): MonoTypeOperatorFunction<T> {
 }
 
 class RetryOperator<T> implements Operator<T, T> {
-  constructor(private count: number,
-              private source: Observable<T>) {
-  }
+  constructor(private count: number, private source: Observable<T>) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new RetrySubscriber(subscriber, this.count, this.source));
@@ -40,9 +38,7 @@ class RetryOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class RetrySubscriber<T> extends Subscriber<T> {
-  constructor(destination: Subscriber<any>,
-              private count: number,
-              private source: Observable<T>) {
+  constructor(destination: Subscriber<any>, private count: number, private source: Observable<T>) {
     super(destination);
   }
   error(err: any) {

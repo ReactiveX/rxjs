@@ -28,10 +28,10 @@ export function from<T>(input: ObservableInput<T>, scheduler?: IScheduler): Obse
       return fromPromise(input, scheduler);
     } else if (isArrayLike(input)) {
       return fromArray(input, scheduler);
-    }  else if (isIterable(input) || typeof input === 'string') {
+    } else if (isIterable(input) || typeof input === 'string') {
       return fromIterable(input, scheduler);
     }
   }
 
-  throw new TypeError((input !== null && typeof input || input) + ' is not observable');
+  throw new TypeError(((input !== null && typeof input) || input) + ' is not observable');
 }

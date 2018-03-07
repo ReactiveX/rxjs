@@ -95,8 +95,8 @@ export function ajaxGetJSON<T>(url: string, headers?: Object): Observable<T> {
       method: 'GET',
       url,
       responseType: 'json',
-      headers
-    })
+      headers,
+    }),
   );
 }
 
@@ -131,7 +131,7 @@ export class AjaxObservable<T> extends Observable<T> {
    * @static true
    * @name ajax
    * @owner Observable
-  */
+   */
   static create: AjaxCreationMethod = (() => {
     const create: any = (urlOrRequest: string | AjaxRequest) => {
       return new AjaxObservable(urlOrRequest);
@@ -162,7 +162,7 @@ export class AjaxObservable<T> extends Observable<T> {
       headers: {},
       method: 'GET',
       responseType: 'json',
-      timeout: 0
+      timeout: 0,
     };
 
     if (typeof urlOrRequest === 'string') {
@@ -195,7 +195,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   constructor(destination: Subscriber<T>, public request: AjaxRequest) {
     super(destination);
 
-    const headers = request.headers = request.headers || {};
+    const headers = (request.headers = request.headers || {});
 
     // force CORS if requested
     if (!request.crossDomain && !headers['X-Requested-With']) {
@@ -222,10 +222,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   }
 
   private send(): XMLHttpRequest {
-    const {
-      request,
-      request: { user, method, url, async, password, headers, body }
-    } = this;
+    const { request, request: { user, method, url, async, password, headers, body } } = this;
     const createXHR = request.createXHR;
     const xhr: XMLHttpRequest = tryCatch(createXHR).call(request);
 
@@ -292,7 +289,9 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
 
     switch (contentType) {
       case 'application/x-www-form-urlencoded':
-        return Object.keys(body).map(key => `${encodeURI(key)}=${encodeURI(body[key])}`).join('&');
+        return Object.keys(body)
+          .map(key => `${encodeURI(key)}=${encodeURI(body[key])}`)
+          .join('&');
       case 'application/json':
         return JSON.stringify(body);
       default:
@@ -312,7 +311,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
     const progressSubscriber = request.progressSubscriber;
 
     function xhrTimeout(this: XMLHttpRequest, e: ProgressEvent) {
-      const {subscriber, progressSubscriber, request } = (<any>xhrTimeout);
+      const { subscriber, progressSubscriber, request } = <any>xhrTimeout;
       if (progressSubscriber) {
         progressSubscriber.error(e);
       }
@@ -326,7 +325,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       if (progressSubscriber) {
         let xhrProgress: (e: ProgressEvent) => void;
         xhrProgress = function(e: ProgressEvent) {
-          const { progressSubscriber } = (<any>xhrProgress);
+          const { progressSubscriber } = <any>xhrProgress;
           progressSubscriber.next(e);
         };
         if (root.XDomainRequest) {
@@ -338,7 +337,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       }
       let xhrError: (e: ErrorEvent) => void;
       xhrError = function(this: XMLHttpRequest, e: ErrorEvent) {
-        const { progressSubscriber, subscriber, request } = (<any>xhrError);
+        const { progressSubscriber, subscriber, request } = <any>xhrError;
         if (progressSubscriber) {
           progressSubscriber.error(e);
         }
@@ -351,12 +350,11 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
     }
 
     function xhrReadyStateChange(this: XMLHttpRequest, e: Event) {
-      const { subscriber, progressSubscriber, request } = (<any>xhrReadyStateChange);
+      const { subscriber, progressSubscriber, request } = <any>xhrReadyStateChange;
       if (this.readyState === 4) {
         // normalize IE9 bug (http://bugs.jquery.com/ticket/1450)
         let status: number = this.status === 1223 ? 204 : this.status;
-        let response: any = (this.responseType === 'text' ?  (
-          this.response || this.responseText) : this.response);
+        let response: any = this.responseType === 'text' ? this.response || this.responseText : this.response;
 
         // fix status code when it is 0 (0 status is undocumented).
         // Occurs when accessing file resources or on Android 4.1 stock browser
@@ -461,21 +459,21 @@ export class AjaxError extends Error {
 function parseXhrResponse(responseType: string, xhr: XMLHttpRequest) {
   switch (responseType) {
     case 'json':
-        // HACK(benlesh): TypeScript shennanigans
-        // tslint:disable-next-line:no-any XMLHttpRequest is defined to always have 'response' inferring xhr as never for the else clause.
-        if ('response' in (xhr as any)) {
-          //IE does not support json as responseType, parse it internally
-          return xhr.responseType ? xhr.response : JSON.parse(xhr.response || xhr.responseText || 'null');
-        } else {
-          return JSON.parse((xhr as any).responseText || 'null');
-        }
-      case 'xml':
-        return xhr.responseXML;
-      case 'text':
-      default:
-          // HACK(benlesh): TypeScript shennanigans
-          // tslint:disable-next-line:no-any XMLHttpRequest is defined to always have 'response' inferring xhr as never for the else sub-expression.
-          return  ('response' in (xhr as any)) ? xhr.response : xhr.responseText;
+      // HACK(benlesh): TypeScript shennanigans
+      // tslint:disable-next-line:no-any XMLHttpRequest is defined to always have 'response' inferring xhr as never for the else clause.
+      if ('response' in (xhr as any)) {
+        //IE does not support json as responseType, parse it internally
+        return xhr.responseType ? xhr.response : JSON.parse(xhr.response || xhr.responseText || 'null');
+      } else {
+        return JSON.parse((xhr as any).responseText || 'null');
+      }
+    case 'xml':
+      return xhr.responseXML;
+    case 'text':
+    default:
+      // HACK(benlesh): TypeScript shennanigans
+      // tslint:disable-next-line:no-any XMLHttpRequest is defined to always have 'response' inferring xhr as never for the else sub-expression.
+      return 'response' in (xhr as any) ? xhr.response : xhr.responseText;
   }
 }
 

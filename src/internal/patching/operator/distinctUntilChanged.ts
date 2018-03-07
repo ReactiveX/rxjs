@@ -1,4 +1,3 @@
-
 import { Observable } from '../../Observable';
 import { distinctUntilChanged as higherOrder } from '../../operators/distinctUntilChanged';
 

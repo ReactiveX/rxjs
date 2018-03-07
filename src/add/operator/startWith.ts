@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { startWith } from '../../internal/patching/operator/startWith';
 

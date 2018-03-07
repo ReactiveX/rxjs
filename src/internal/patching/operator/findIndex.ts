@@ -34,7 +34,10 @@ import { findIndex as higherOrder } from '../../operators/findIndex';
  * @method find
  * @owner Observable
  */
-export function findIndex<T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                             thisArg?: any): Observable<number> {
+export function findIndex<T>(
+  this: Observable<T>,
+  predicate: (value: T, index: number, source: Observable<T>) => boolean,
+  thisArg?: any,
+): Observable<number> {
   return higherOrder(predicate, thisArg)(this);
 }

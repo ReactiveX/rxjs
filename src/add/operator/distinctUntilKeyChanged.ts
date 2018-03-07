@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { distinctUntilKeyChanged } from '../../internal/patching/operator/distinctUntilKeyChanged';
 

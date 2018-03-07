@@ -1,4 +1,3 @@
-
 import { Observable } from '../../Observable';
 import { ObservableInput } from '../../types';
 import { exhaustMap as higherOrder } from '../../operators/exhaustMap';
@@ -39,9 +38,6 @@ import { exhaustMap as higherOrder } from '../../operators/exhaustMap';
  * @method exhaustMap
  * @owner Observable
  */
-export function exhaustMap<T, R>(
-  this: Observable<T>,
-  project: (value: T, index: number) => ObservableInput<R>
-): Observable<R> {
+export function exhaustMap<T, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<R>): Observable<R> {
   return higherOrder(project)(this);
 }

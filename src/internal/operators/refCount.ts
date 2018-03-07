@@ -12,18 +12,16 @@ export function refCount<T>(): MonoTypeOperatorFunction<T> {
 }
 
 class RefCountOperator<T> implements Operator<T, T> {
-  constructor(private connectable: ConnectableObservable<T>) {
-  }
+  constructor(private connectable: ConnectableObservable<T>) {}
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-
     const { connectable } = this;
-    (<any> connectable)._refCount++;
+    (<any>connectable)._refCount++;
 
     const refCounter = new RefCountSubscriber(subscriber, connectable);
     const subscription = source.subscribe(refCounter);
 
     if (!refCounter.closed) {
-      (<any> refCounter).connection = connectable.connect();
+      (<any>refCounter).connection = connectable.connect();
     }
 
     return subscription;
@@ -31,16 +29,13 @@ class RefCountOperator<T> implements Operator<T, T> {
 }
 
 class RefCountSubscriber<T> extends Subscriber<T> {
-
   private connection: Subscription;
 
-  constructor(destination: Subscriber<T>,
-              private connectable: ConnectableObservable<T>) {
+  constructor(destination: Subscriber<T>, private connectable: ConnectableObservable<T>) {
     super(destination);
   }
 
   protected _unsubscribe() {
-
     const { connectable } = this;
     if (!connectable) {
       this.connection = null;
@@ -48,13 +43,13 @@ class RefCountSubscriber<T> extends Subscriber<T> {
     }
 
     this.connectable = null;
-    const refCount = (<any> connectable)._refCount;
+    const refCount = (<any>connectable)._refCount;
     if (refCount <= 0) {
       this.connection = null;
       return;
     }
 
-    (<any> connectable)._refCount = refCount - 1;
+    (<any>connectable)._refCount = refCount - 1;
     if (refCount > 1) {
       this.connection = null;
       return;
@@ -84,7 +79,7 @@ class RefCountSubscriber<T> extends Subscriber<T> {
     //      to the shared connection Subscription
     ///
     const { connection } = this;
-    const sharedConnection = (<any> connectable)._connection;
+    const sharedConnection = (<any>connectable)._connection;
     this.connection = null;
 
     if (sharedConnection && (!connection || sharedConnection === connection)) {

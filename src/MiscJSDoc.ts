@@ -286,9 +286,7 @@ export class ObserverDoc<T> {
  * @name SubscribableOrPromise
  * @noimport true
  */
-export class SubscribableOrPromiseDoc<T> {
-
-}
+export class SubscribableOrPromiseDoc<T> {}
 
 /**
  * `ObservableInput` interface describes all values that are either an
@@ -414,9 +412,7 @@ export class SubscribableOrPromiseDoc<T> {
  * @name ObservableInput
  * @noimport true
  */
-export class ObservableInputDoc<T> {
-
-}
+export class ObservableInputDoc<T> {}
 
 /**
  *
@@ -445,6 +441,4 @@ export class ObservableInputDoc<T> {
  * @name TeardownLogic
  * @noimport true
  */
-export class TeardownLogicDoc {
-
-}
+export class TeardownLogicDoc {}

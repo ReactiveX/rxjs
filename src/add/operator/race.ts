@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { race } from '../../internal/patching/operator/race';
 

@@ -46,8 +46,7 @@ export function switchMapTo<T, R>(innerObservable: ObservableInput<R>): Operator
 }
 
 class SwitchMapToOperator<T, R> implements Operator<T, R> {
-  constructor(private observable: ObservableInput<R>) {
-  }
+  constructor(private observable: ObservableInput<R>) {}
 
   call(subscriber: Subscriber<R>, source: any): any {
     return source.subscribe(new SwitchMapToSubscriber(subscriber, this.observable));
@@ -72,11 +71,11 @@ class SwitchMapToSubscriber<T, R> extends OuterSubscriber<T, R> {
     if (innerSubscription) {
       innerSubscription.unsubscribe();
     }
-    this.add(this.innerSubscription = subscribeToResult(this, this.inner, value, this.index++));
+    this.add((this.innerSubscription = subscribeToResult(this, this.inner, value, this.index++)));
   }
 
   protected _complete() {
-    const {innerSubscription} = this;
+    const { innerSubscription } = this;
     if (!innerSubscription || innerSubscription.closed) {
       super._complete();
     }
@@ -94,9 +93,7 @@ class SwitchMapToSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, R>): void {
     this.destination.next(innerValue);
   }
 }

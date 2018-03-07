@@ -1,4 +1,3 @@
-
 import { Observable } from '../../Observable';
 import { windowWhen as higherOrder } from '../../operators/windowWhen';
 

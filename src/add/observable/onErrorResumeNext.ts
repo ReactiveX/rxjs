@@ -4,7 +4,5 @@ import { onErrorResumeNext as staticOnErrorResumeNext } from '../../internal/obs
 Observable.onErrorResumeNext = staticOnErrorResumeNext;
 
 declare module '../../internal/Observable' {
-  namespace Observable {
-    export let onErrorResumeNext: typeof staticOnErrorResumeNext;
-  }
+  namespace Observable { export let onErrorResumeNext: typeof staticOnErrorResumeNext; }
 }

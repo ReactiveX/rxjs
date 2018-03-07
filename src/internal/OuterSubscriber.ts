@@ -7,9 +7,7 @@ import { InnerSubscriber } from './InnerSubscriber';
  * @extends {Ignored}
  */
 export class OuterSubscriber<T, R> extends Subscriber<T> {
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, R>): void {
     this.destination.next(innerValue);
   }
 

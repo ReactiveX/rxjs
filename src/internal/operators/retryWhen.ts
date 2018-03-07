@@ -31,9 +31,7 @@ export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<a
 }
 
 class RetryWhenOperator<T> implements Operator<T, T> {
-  constructor(protected notifier: (errors: Observable<any>) => Observable<any>,
-              protected source: Observable<T>) {
-  }
+  constructor(protected notifier: (errors: Observable<any>) => Observable<any>, protected source: Observable<T>) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new RetryWhenSubscriber(subscriber, this.notifier, this.source));
@@ -46,20 +44,16 @@ class RetryWhenOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
-
   private errors: Subject<any>;
   private retries: Observable<any>;
   private retriesSubscription: Subscription;
 
-  constructor(destination: Subscriber<R>,
-              private notifier: (errors: Observable<any>) => Observable<any>,
-              private source: Observable<T>) {
+  constructor(destination: Subscriber<R>, private notifier: (errors: Observable<any>) => Observable<any>, private source: Observable<T>) {
     super(destination);
   }
 
   error(err: any) {
     if (!this.isStopped) {
-
       let errors = this.errors;
       let retries: any = this.retries;
       let retriesSubscription = this.retriesSubscription;
@@ -99,9 +93,7 @@ class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.retries = null;
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, R>): void {
     const { errors, retries, retriesSubscription } = this;
     this.errors = null;
     this.retries = null;

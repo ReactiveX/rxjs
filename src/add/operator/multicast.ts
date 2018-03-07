@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { multicast } from '../../internal/patching/operator/multicast';
 

@@ -6,7 +6,12 @@ import { timeoutWith as higherOrder } from '../../operators/timeoutWith';
 
 /* tslint:disable:max-line-length */
 export function timeoutWith<T>(this: Observable<T>, due: number | Date, withObservable: ObservableInput<T>, scheduler?: IScheduler): Observable<T>;
-export function timeoutWith<T, R>(this: Observable<T>, due: number | Date, withObservable: ObservableInput<R>, scheduler?: IScheduler): Observable<T | R>;
+export function timeoutWith<T, R>(
+  this: Observable<T>,
+  due: number | Date,
+  withObservable: ObservableInput<R>,
+  scheduler?: IScheduler,
+): Observable<T | R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -56,8 +61,11 @@ export function timeoutWith<T, R>(this: Observable<T>, due: number | Date, withO
  * @method timeoutWith
  * @owner Observable
  */
-export function timeoutWith<T, R>(this: Observable<T>, due: number | Date,
-                                  withObservable: ObservableInput<R>,
-                                  scheduler: IScheduler = async): Observable<T | R> {
+export function timeoutWith<T, R>(
+  this: Observable<T>,
+  due: number | Date,
+  withObservable: ObservableInput<R>,
+  scheduler: IScheduler = async,
+): Observable<T | R> {
   return higherOrder(due, withObservable, scheduler)(this as any);
 }

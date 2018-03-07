@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { map } from '../../internal/patching/operator/map';
 

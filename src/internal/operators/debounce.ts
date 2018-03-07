@@ -55,8 +55,7 @@ export function debounce<T>(durationSelector: (value: T) => SubscribableOrPromis
 }
 
 class DebounceOperator<T> implements Operator<T, T> {
-  constructor(private durationSelector: (value: T) => SubscribableOrPromise<any>) {
-  }
+  constructor(private durationSelector: (value: T) => SubscribableOrPromise<any>) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new DebounceSubscriber(subscriber, this.durationSelector));
@@ -73,8 +72,7 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
   private hasValue: boolean = false;
   private durationSubscription: Subscription = null;
 
-  constructor(destination: Subscriber<R>,
-              private durationSelector: (value: T) => SubscribableOrPromise<any>) {
+  constructor(destination: Subscriber<R>, private durationSelector: (value: T) => SubscribableOrPromise<any>) {
     super(destination);
   }
 
@@ -106,13 +104,11 @@ class DebounceSubscriber<T, R> extends OuterSubscriber<T, R> {
 
     subscription = subscribeToResult(this, duration);
     if (subscription && !subscription.closed) {
-      this.add(this.durationSubscription = subscription);
+      this.add((this.durationSubscription = subscription));
     }
   }
 
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(outerValue: T, innerValue: R, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, R>): void {
     this.emitValue();
   }
 

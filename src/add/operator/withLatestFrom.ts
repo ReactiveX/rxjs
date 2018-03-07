@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { withLatestFrom } from '../../internal/patching/operator/withLatestFrom';
 

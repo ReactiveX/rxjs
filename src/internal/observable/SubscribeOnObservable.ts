@@ -26,9 +26,7 @@ export class SubscribeOnObservable<T> extends Observable<T> {
     return this.add(source.subscribe(subscriber));
   }
 
-  constructor(public source: Observable<T>,
-              private delayTime: number = 0,
-              private scheduler: IScheduler = asap) {
+  constructor(public source: Observable<T>, private delayTime: number = 0, private scheduler: IScheduler = asap) {
     super();
     if (!isNumeric(delayTime) || delayTime < 0) {
       this.delayTime = 0;
@@ -44,7 +42,8 @@ export class SubscribeOnObservable<T> extends Observable<T> {
     const scheduler = this.scheduler;
 
     return scheduler.schedule<DispatchArg<any>>(SubscribeOnObservable.dispatch, delay, {
-      source, subscriber
+      source,
+      subscriber,
     });
   }
 }

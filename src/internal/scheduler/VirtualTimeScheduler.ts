@@ -4,14 +4,12 @@ import { AsyncScheduler } from './AsyncScheduler';
 import { Action } from './Action';
 
 export class VirtualTimeScheduler extends AsyncScheduler {
-
   protected static frameTimeFactor: number = 10;
 
   public frame: number = 0;
   public index: number = -1;
 
-  constructor(SchedulerAction: typeof AsyncAction = VirtualAction as any,
-              public maxFrames: number = Number.POSITIVE_INFINITY) {
+  constructor(SchedulerAction: typeof AsyncAction = VirtualAction as any, public maxFrames: number = Number.POSITIVE_INFINITY) {
     super(SchedulerAction, () => this.frame);
   }
 
@@ -21,18 +19,17 @@ export class VirtualTimeScheduler extends AsyncScheduler {
    * @return {void}
    */
   public flush(): void {
-
-    const {actions, maxFrames} = this;
+    const { actions, maxFrames } = this;
     let error: any, action: AsyncAction<any>;
 
     while ((action = actions.shift()) && (this.frame = action.delay) <= maxFrames) {
-      if (error = action.execute(action.state, action.delay)) {
+      if ((error = action.execute(action.state, action.delay))) {
         break;
       }
     }
 
     if (error) {
-      while (action = actions.shift()) {
+      while ((action = actions.shift())) {
         action.unsubscribe();
       }
       throw error;
@@ -46,12 +43,13 @@ export class VirtualTimeScheduler extends AsyncScheduler {
  * @extends {Ignored}
  */
 export class VirtualAction<T> extends AsyncAction<T> {
-
   protected active: boolean = true;
 
-  constructor(protected scheduler: VirtualTimeScheduler,
-              protected work: (this: Action<T>, state?: T) => void,
-              protected index: number = scheduler.index += 1) {
+  constructor(
+    protected scheduler: VirtualTimeScheduler,
+    protected work: (this: Action<T>, state?: T) => void,
+    protected index: number = (scheduler.index += 1),
+  ) {
     super(scheduler, work);
     this.index = scheduler.index = index;
   }
@@ -72,7 +70,7 @@ export class VirtualAction<T> extends AsyncAction<T> {
 
   protected requestAsyncId(scheduler: VirtualTimeScheduler, id?: any, delay: number = 0): any {
     this.delay = scheduler.frame + delay;
-    const {actions} = scheduler;
+    const { actions } = scheduler;
     actions.push(this);
     (actions as Array<VirtualAction<T>>).sort(VirtualAction.sortActions);
     return true;

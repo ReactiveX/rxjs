@@ -14,9 +14,7 @@ export class ReplaySubject<T> extends Subject<T> {
   private _bufferSize: number;
   private _windowTime: number;
 
-  constructor(bufferSize: number = Number.POSITIVE_INFINITY,
-              windowTime: number = Number.POSITIVE_INFINITY,
-              private scheduler?: IScheduler) {
+  constructor(bufferSize: number = Number.POSITIVE_INFINITY, windowTime: number = Number.POSITIVE_INFINITY, private scheduler?: IScheduler) {
     super();
     this._bufferSize = bufferSize < 1 ? 1 : bufferSize;
     this._windowTime = windowTime < 1 ? 1 : windowTime;
@@ -46,7 +44,7 @@ export class ReplaySubject<T> extends Subject<T> {
     }
 
     if (scheduler) {
-      subscriber.add(subscriber = new ObserveOnSubscriber<T>(subscriber, scheduler));
+      subscriber.add((subscriber = new ObserveOnSubscriber<T>(subscriber, scheduler)));
     }
 
     const len = _events.length;
@@ -80,7 +78,7 @@ export class ReplaySubject<T> extends Subject<T> {
     // Start at the front of the list. Break early once
     // we encounter an event that falls within the window.
     while (spliceCount < eventsCount) {
-      if ((now - _events[spliceCount].time) < _windowTime) {
+      if (now - _events[spliceCount].time < _windowTime) {
         break;
       }
       spliceCount++;
@@ -99,6 +97,5 @@ export class ReplaySubject<T> extends Subject<T> {
 }
 
 class ReplayEvent<T> {
-  constructor(public time: number, public value: T) {
-  }
+  constructor(public time: number, public value: T) {}
 }

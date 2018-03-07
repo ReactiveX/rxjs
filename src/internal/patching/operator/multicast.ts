@@ -106,7 +106,10 @@ export function multicast<T, R>(SubjectFactory: (this: Observable<T>) => Subject
  * @method multicast
  * @owner Observable
  */
-export function multicast<T, R>(this: Observable<T>, subjectOrSubjectFactory: Subject<T> | (() => Subject<T>),
-                                selector?: (source: Observable<T>) => Observable<R>): ConnectableObservable<R> | Observable<R> {
+export function multicast<T, R>(
+  this: Observable<T>,
+  subjectOrSubjectFactory: Subject<T> | (() => Subject<T>),
+  selector?: (source: Observable<T>) => Observable<R>,
+): ConnectableObservable<R> | Observable<R> {
   return higherOrder(<any>subjectOrSubjectFactory, selector)(this);
 }

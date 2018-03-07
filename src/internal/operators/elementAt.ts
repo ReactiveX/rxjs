@@ -51,10 +51,9 @@ export function elementAt<T>(index: number, defaultValue?: T): MonoTypeOperatorF
 }
 
 class ElementAtOperator<T> implements Operator<T, T> {
-
   constructor(private index: number, private defaultValue?: T) {
     if (index < 0) {
-      throw new ArgumentOutOfRangeError;
+      throw new ArgumentOutOfRangeError();
     }
   }
 
@@ -69,7 +68,6 @@ class ElementAtOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class ElementAtSubscriber<T> extends Subscriber<T> {
-
   constructor(destination: Subscriber<T>, private index: number, private defaultValue?: T) {
     super(destination);
   }
@@ -87,7 +85,7 @@ class ElementAtSubscriber<T> extends Subscriber<T> {
       if (typeof this.defaultValue !== 'undefined') {
         destination.next(this.defaultValue);
       } else {
-        destination.error(new ArgumentOutOfRangeError);
+        destination.error(new ArgumentOutOfRangeError());
       }
     }
     destination.complete();

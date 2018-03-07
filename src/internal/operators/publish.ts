@@ -24,7 +24,5 @@ export function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOpera
  * @owner Observable
  */
 export function publish<T, R>(selector?: OperatorFunction<T, R>): MonoTypeOperatorFunction<T> | OperatorFunction<T, R> {
-  return selector ?
-    multicast(() => new Subject<T>(), selector) :
-    multicast(new Subject<T>());
+  return selector ? multicast(() => new Subject<T>(), selector) : multicast(new Subject<T>());
 }

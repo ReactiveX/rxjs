@@ -1,4 +1,4 @@
-import {  root  } from './root';
+import { root } from './root';
 
 export class RequestAnimationFrameDefinition {
   cancelAnimationFrame: (handle: number) => void;
@@ -21,7 +21,9 @@ export class RequestAnimationFrameDefinition {
       this.requestAnimationFrame = root.oRequestAnimationFrame.bind(root);
     } else {
       this.cancelAnimationFrame = root.clearTimeout.bind(root);
-      this.requestAnimationFrame = function(cb) { return root.setTimeout(cb, 1000 / 60); };
+      this.requestAnimationFrame = function(cb) {
+        return root.setTimeout(cb, 1000 / 60);
+      };
     }
   }
 }

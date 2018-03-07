@@ -1,4 +1,3 @@
-
 import { Observable } from '../../Observable';
 import { takeLast as higherOrderTakeLast } from '../../operators/takeLast';
 

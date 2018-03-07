@@ -43,15 +43,13 @@ import { OperatorFunction } from '../types';
  * @owner Observable
  */
 export function bufferWhen<T>(closingSelector: () => Observable<any>): OperatorFunction<T, T[]> {
-  return function (source: Observable<T>) {
+  return function(source: Observable<T>) {
     return source.lift(new BufferWhenOperator(closingSelector));
   };
 }
 
 class BufferWhenOperator<T> implements Operator<T, T[]> {
-
-  constructor(private closingSelector: () => Observable<any>) {
-  }
+  constructor(private closingSelector: () => Observable<any>) {}
 
   call(subscriber: Subscriber<T[]>, source: any): any {
     return source.subscribe(new BufferWhenSubscriber(subscriber, this.closingSelector));
@@ -90,9 +88,7 @@ class BufferWhenSubscriber<T> extends OuterSubscriber<T, any> {
     this.subscribing = false;
   }
 
-  notifyNext(outerValue: T, innerValue: any,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, any>): void {
+  notifyNext(outerValue: T, innerValue: any, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, any>): void {
     this.openBuffer();
   }
 
@@ -105,7 +101,6 @@ class BufferWhenSubscriber<T> extends OuterSubscriber<T, any> {
   }
 
   openBuffer() {
-
     let { closingSubscription } = this;
 
     if (closingSubscription) {

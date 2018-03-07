@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { throttleTime } from '../../internal/patching/operator/throttleTime';
 

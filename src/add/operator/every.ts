@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { every } from '../../internal/patching/operator/every';
 

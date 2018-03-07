@@ -9,7 +9,7 @@ import { Subscriber } from '../Subscriber';
  * @method shareReplay
  * @owner Observable
  */
-export function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: IScheduler ): MonoTypeOperatorFunction<T> {
+export function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: IScheduler): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(shareReplayOperator(bufferSize, windowTime, scheduler));
 }
 
@@ -26,7 +26,9 @@ function shareReplayOperator<T>(bufferSize?: number, windowTime?: number, schedu
       hasError = false;
       subject = new ReplaySubject<T>(bufferSize, windowTime, scheduler);
       subscription = source.subscribe({
-        next(value) { subject.next(value); },
+        next(value) {
+          subject.next(value);
+        },
         error(err) {
           hasError = true;
           subject.error(err);

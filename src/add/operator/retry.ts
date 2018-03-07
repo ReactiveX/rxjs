@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { retry } from '../../internal/patching/operator/retry';
 

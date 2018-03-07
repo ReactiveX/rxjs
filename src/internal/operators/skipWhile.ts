@@ -20,8 +20,7 @@ export function skipWhile<T>(predicate: (value: T, index: number) => boolean): M
 }
 
 class SkipWhileOperator<T> implements Operator<T, T> {
-  constructor(private predicate: (value: T, index: number) => boolean) {
-  }
+  constructor(private predicate: (value: T, index: number) => boolean) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new SkipWhileSubscriber(subscriber, this.predicate));
@@ -37,8 +36,7 @@ class SkipWhileSubscriber<T> extends Subscriber<T> {
   private skipping: boolean = true;
   private index: number = 0;
 
-  constructor(destination: Subscriber<T>,
-              private predicate: (value: T, index: number) => boolean) {
+  constructor(destination: Subscriber<T>, private predicate: (value: T, index: number) => boolean) {
     super(destination);
   }
 

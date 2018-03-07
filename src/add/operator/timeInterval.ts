@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { timeInterval } from '../../internal/patching/operator/timeInterval';
 

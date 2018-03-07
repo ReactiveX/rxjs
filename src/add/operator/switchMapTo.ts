@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { switchMapTo } from '../../internal/patching/operator/switchMapTo';
 

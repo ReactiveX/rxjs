@@ -10,6 +10,6 @@ import { UnaryFunction } from '../types';
  * @method publishBehavior
  * @owner Observable
  */
-export function publishBehavior<T>(value: T):  UnaryFunction<Observable<T>, ConnectableObservable<T>> {
+export function publishBehavior<T>(value: T): UnaryFunction<Observable<T>, ConnectableObservable<T>> {
   return (source: Observable<T>) => multicast(new BehaviorSubject<T>(value))(source) as ConnectableObservable<T>;
 }

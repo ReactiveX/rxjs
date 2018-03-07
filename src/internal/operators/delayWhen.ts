@@ -52,19 +52,15 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @method delayWhen
  * @owner Observable
  */
-export function delayWhen<T>(delayDurationSelector: (value: T) => Observable<any>,
-                             subscriptionDelay?: Observable<any>): MonoTypeOperatorFunction<T> {
+export function delayWhen<T>(delayDurationSelector: (value: T) => Observable<any>, subscriptionDelay?: Observable<any>): MonoTypeOperatorFunction<T> {
   if (subscriptionDelay) {
-    return (source: Observable<T>) =>
-      new SubscriptionDelayObservable(source, subscriptionDelay)
-        .lift(new DelayWhenOperator(delayDurationSelector));
+    return (source: Observable<T>) => new SubscriptionDelayObservable(source, subscriptionDelay).lift(new DelayWhenOperator(delayDurationSelector));
   }
   return (source: Observable<T>) => source.lift(new DelayWhenOperator(delayDurationSelector));
 }
 
 class DelayWhenOperator<T> implements Operator<T, T> {
-  constructor(private delayDurationSelector: (value: T) => Observable<any>) {
-  }
+  constructor(private delayDurationSelector: (value: T) => Observable<any>) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new DelayWhenSubscriber(subscriber, this.delayDurationSelector));
@@ -81,14 +77,11 @@ class DelayWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
   private delayNotifierSubscriptions: Array<Subscription> = [];
   private values: Array<T> = [];
 
-  constructor(destination: Subscriber<T>,
-              private delayDurationSelector: (value: T) => Observable<any>) {
+  constructor(destination: Subscriber<T>, private delayDurationSelector: (value: T) => Observable<any>) {
     super(destination);
   }
 
-  notifyNext(outerValue: T, innerValue: any,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
+  notifyNext(outerValue: T, innerValue: any, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, R>): void {
     this.destination.next(outerValue);
     this.removeSubscription(innerSub);
     this.tryComplete();

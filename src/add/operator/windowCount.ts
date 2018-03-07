@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { windowCount } from '../../internal/patching/operator/windowCount';
 

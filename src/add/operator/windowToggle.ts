@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { windowToggle } from '../../internal/patching/operator/windowToggle';
 

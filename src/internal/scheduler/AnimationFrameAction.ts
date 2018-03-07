@@ -9,9 +9,7 @@ import { Action } from './Action';
  * @extends {Ignored}
  */
 export class AnimationFrameAction<T> extends AsyncAction<T> {
-
-  constructor(protected scheduler: AnimationFrameScheduler,
-              protected work: (this: Action<T>, state?: T) => void) {
+  constructor(protected scheduler: AnimationFrameScheduler, protected work: (this: Action<T>, state?: T) => void) {
     super(scheduler, work);
   }
 
@@ -25,8 +23,7 @@ export class AnimationFrameAction<T> extends AsyncAction<T> {
     // If an animation frame has already been requested, don't request another
     // one. If an animation frame hasn't been requested yet, request one. Return
     // the current animation frame request id.
-    return scheduler.scheduled || (scheduler.scheduled = AnimationFrame.requestAnimationFrame(
-      () => scheduler.flush(null)));
+    return scheduler.scheduled || (scheduler.scheduled = AnimationFrame.requestAnimationFrame(() => scheduler.flush(null)));
   }
   protected recycleAsyncId(scheduler: AnimationFrameScheduler, id?: any, delay: number = 0): any {
     // If delay exists and is greater than 0, or if the delay is null (the

@@ -1,4 +1,3 @@
-
 import { Observable } from '../../Observable';
 import { defaultIfEmpty as higherOrder } from '../../operators/defaultIfEmpty';
 

@@ -4,10 +4,8 @@ import { Observable } from '../Observable';
 import { OperatorFunction, MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
 /* tslint:disable:max-line-length */
-export function filter<T, S extends T>(predicate: (value: T, index: number) => value is S,
-                                       thisArg?: any): OperatorFunction<T, S>;
-export function filter<T>(predicate: (value: T, index: number) => boolean,
-                          thisArg?: any): MonoTypeOperatorFunction<T>;
+export function filter<T, S extends T>(predicate: (value: T, index: number) => value is S, thisArg?: any): OperatorFunction<T, S>;
+export function filter<T>(predicate: (value: T, index: number) => boolean, thisArg?: any): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -49,17 +47,14 @@ export function filter<T>(predicate: (value: T, index: number) => boolean,
  * @method filter
  * @owner Observable
  */
-export function filter<T>(predicate: (value: T, index: number) => boolean,
-                          thisArg?: any): MonoTypeOperatorFunction<T> {
+export function filter<T>(predicate: (value: T, index: number) => boolean, thisArg?: any): MonoTypeOperatorFunction<T> {
   return function filterOperatorFunction(source: Observable<T>): Observable<T> {
     return source.lift(new FilterOperator(predicate, thisArg));
   };
 }
 
 class FilterOperator<T> implements Operator<T, T> {
-  constructor(private predicate: (value: T, index: number) => boolean,
-              private thisArg?: any) {
-  }
+  constructor(private predicate: (value: T, index: number) => boolean, private thisArg?: any) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new FilterSubscriber(subscriber, this.predicate, this.thisArg));
@@ -72,12 +67,9 @@ class FilterOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class FilterSubscriber<T> extends Subscriber<T> {
-
   count: number = 0;
 
-  constructor(destination: Subscriber<T>,
-              private predicate: (value: T, index: number) => boolean,
-              private thisArg: any) {
+  constructor(destination: Subscriber<T>, private predicate: (value: T, index: number) => boolean, private thisArg: any) {
     super(destination);
   }
 

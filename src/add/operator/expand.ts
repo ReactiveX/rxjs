@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { expand } from '../../internal/patching/operator/expand';
 

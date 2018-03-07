@@ -8,7 +8,7 @@ export function isEmpty<T>(): OperatorFunction<T, boolean> {
 }
 
 class IsEmptyOperator implements Operator<any, boolean> {
-  call (observer: Subscriber<boolean>, source: any): any {
+  call(observer: Subscriber<boolean>, source: any): any {
     return source.subscribe(new IsEmptySubscriber(observer));
   }
 }

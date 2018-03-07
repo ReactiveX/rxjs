@@ -51,21 +51,15 @@ import { OperatorFunction } from '../types';
  * @method windowToggle
  * @owner Observable
  */
-export function windowToggle<T, O>(openings: Observable<O>,
-                                   closingSelector: (openValue: O) => Observable<any>): OperatorFunction<T, Observable<T>> {
+export function windowToggle<T, O>(openings: Observable<O>, closingSelector: (openValue: O) => Observable<any>): OperatorFunction<T, Observable<T>> {
   return (source: Observable<T>) => source.lift(new WindowToggleOperator<T, O>(openings, closingSelector));
 }
 
 class WindowToggleOperator<T, O> implements Operator<T, Observable<T>> {
-
-  constructor(private openings: Observable<O>,
-              private closingSelector: (openValue: O) => Observable<any>) {
-  }
+  constructor(private openings: Observable<O>, private closingSelector: (openValue: O) => Observable<any>) {}
 
   call(subscriber: Subscriber<Observable<T>>, source: any): any {
-    return source.subscribe(new WindowToggleSubscriber(
-      subscriber, this.openings, this.closingSelector
-    ));
+    return source.subscribe(new WindowToggleSubscriber(subscriber, this.openings, this.closingSelector));
   }
 }
 
@@ -83,11 +77,9 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
   private contexts: WindowContext<T>[] = [];
   private openSubscription: Subscription;
 
-  constructor(destination: Subscriber<Observable<T>>,
-              private openings: Observable<O>,
-              private closingSelector: (openValue: O) => Observable<any>) {
+  constructor(destination: Subscriber<Observable<T>>, private openings: Observable<O>, private closingSelector: (openValue: O) => Observable<any>) {
     super(destination);
-    this.add(this.openSubscription = subscribeToResult(this, openings, openings as any));
+    this.add((this.openSubscription = subscribeToResult(this, openings, openings as any)));
   }
 
   protected _next(value: T) {
@@ -101,7 +93,6 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
   }
 
   protected _error(err: any) {
-
     const { contexts } = this;
     this.contexts = null;
 
@@ -148,12 +139,8 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
     }
   }
 
-  notifyNext(outerValue: any, innerValue: any,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, any>): void {
-
+  notifyNext(outerValue: any, innerValue: any, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, any>): void {
     if (outerValue === this.openings) {
-
       const { closingSelector } = this;
       const closingNotifier = tryCatch(closingSelector)(innerValue);
 
@@ -169,12 +156,11 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
         if (innerSubscription.closed) {
           this.closeWindow(this.contexts.length - 1);
         } else {
-          (<any> innerSubscription).context = context;
+          (<any>innerSubscription).context = context;
           subscription.add(innerSubscription);
         }
 
         this.destination.next(window);
-
       }
     } else {
       this.closeWindow(this.contexts.indexOf(outerValue));
@@ -187,7 +173,7 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
 
   notifyComplete(inner: Subscription): void {
     if (inner !== this.openSubscription) {
-      this.closeWindow(this.contexts.indexOf((<any> inner).context));
+      this.closeWindow(this.contexts.indexOf((<any>inner).context));
     }
   }
 

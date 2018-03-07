@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 
 import { scan } from '../../internal/patching/operator/scan';

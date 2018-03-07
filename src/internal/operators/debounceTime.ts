@@ -57,8 +57,7 @@ export function debounceTime<T>(dueTime: number, scheduler: IScheduler = async):
 }
 
 class DebounceTimeOperator<T> implements Operator<T, T> {
-  constructor(private dueTime: number, private scheduler: IScheduler) {
-  }
+  constructor(private dueTime: number, private scheduler: IScheduler) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new DebounceTimeSubscriber(subscriber, this.dueTime, this.scheduler));
@@ -75,9 +74,7 @@ class DebounceTimeSubscriber<T> extends Subscriber<T> {
   private lastValue: T = null;
   private hasValue: boolean = false;
 
-  constructor(destination: Subscriber<T>,
-              private dueTime: number,
-              private scheduler: IScheduler) {
+  constructor(destination: Subscriber<T>, private dueTime: number, private scheduler: IScheduler) {
     super(destination);
   }
 
@@ -85,7 +82,7 @@ class DebounceTimeSubscriber<T> extends Subscriber<T> {
     this.clearDebounce();
     this.lastValue = value;
     this.hasValue = true;
-    this.add(this.debouncedSubscription = this.scheduler.schedule(dispatchNext, this.dueTime, this));
+    this.add((this.debouncedSubscription = this.scheduler.schedule(dispatchNext, this.dueTime, this)));
   }
 
   protected _complete() {

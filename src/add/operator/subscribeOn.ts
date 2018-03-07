@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { subscribeOn } from '../../internal/patching/operator/subscribeOn';
 

@@ -55,14 +55,12 @@ if (!Set) {
  * @method distinct
  * @owner Observable
  */
-export function distinct<T, K>(keySelector?: (value: T) => K,
-                               flushes?: Observable<any>): MonoTypeOperatorFunction<T> {
+export function distinct<T, K>(keySelector?: (value: T) => K, flushes?: Observable<any>): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new DistinctOperator(keySelector, flushes));
 }
 
 class DistinctOperator<T, K> implements Operator<T, T> {
-  constructor(private keySelector: (value: T) => K, private flushes: Observable<any>) {
-  }
+  constructor(private keySelector: (value: T) => K, private flushes: Observable<any>) {}
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(new DistinctSubscriber(subscriber, this.keySelector, this.flushes));
@@ -85,9 +83,7 @@ export class DistinctSubscriber<T, K> extends OuterSubscriber<T, T> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: T,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, T>): void {
+  notifyNext(outerValue: T, innerValue: T, outerIndex: number, innerIndex: number, innerSub: InnerSubscriber<T, T>): void {
     this.values.clear();
   }
 
@@ -115,12 +111,11 @@ export class DistinctSubscriber<T, K> extends OuterSubscriber<T, T> {
     this._finalizeNext(key, value);
   }
 
-  private _finalizeNext(key: K|T, value: T) {
+  private _finalizeNext(key: K | T, value: T) {
     const { values } = this;
     if (!values.has(<K>key)) {
       values.add(<K>key);
       this.destination.next(value);
     }
   }
-
 }

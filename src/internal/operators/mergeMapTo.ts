@@ -37,7 +37,6 @@ import { ObservableInput } from '../types';
  * @method mergeMapTo
  * @owner Observable
  */
-export function mergeMapTo<T, R>(innerObservable: ObservableInput<R>,
-                                 concurrent: number = Number.POSITIVE_INFINITY): OperatorFunction<T, R> {
+export function mergeMapTo<T, R>(innerObservable: ObservableInput<R>, concurrent: number = Number.POSITIVE_INFINITY): OperatorFunction<T, R> {
   return mergeMap(() => innerObservable, concurrent);
 }

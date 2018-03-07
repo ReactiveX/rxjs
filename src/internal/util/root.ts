@@ -14,15 +14,14 @@ declare var WorkerGlobalScope: any;
 // the global "global" var for now.
 
 const __window = typeof window !== 'undefined' && window;
-const __self = typeof self !== 'undefined' && typeof WorkerGlobalScope !== 'undefined' &&
-    self instanceof WorkerGlobalScope && self;
+const __self = typeof self !== 'undefined' && typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope && self;
 const __global = typeof global !== 'undefined' && global;
 const _root: any = __window || __global || __self;
 
 // Workaround Closure Compiler restriction: The body of a goog.module cannot use throw.
 // This is needed when used with angular/tsickle which inserts a goog.module statement.
 // Wrap in IIFE
-(function () {
+(function() {
   if (!_root) {
     throw new Error('RxJS could not find any global context (window, self, global)');
   }

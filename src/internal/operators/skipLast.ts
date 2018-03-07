@@ -43,7 +43,7 @@ export function skipLast<T>(count: number): MonoTypeOperatorFunction<T> {
 class SkipLastOperator<T> implements Operator<T, T> {
   constructor(private _skipCount: number) {
     if (this._skipCount < 0) {
-      throw new ArgumentOutOfRangeError;
+      throw new ArgumentOutOfRangeError();
     }
   }
 

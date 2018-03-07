@@ -65,19 +65,22 @@ import { windowTime as higherOrder } from '../../operators/windowTime';
  * @method windowTime
  * @owner Observable
  */
-export function windowTime<T>(this: Observable<T>, windowTimeSpan: number,
-                              scheduler?: IScheduler): Observable<Observable<T>>;
-export function windowTime<T>(this: Observable<T>, windowTimeSpan: number,
-                              windowCreationInterval: number,
-                              scheduler?: IScheduler): Observable<Observable<T>>;
-export function windowTime<T>(this: Observable<T>, windowTimeSpan: number,
-                              windowCreationInterval: number,
-                              maxWindowSize: number,
-                              scheduler?: IScheduler): Observable<Observable<T>>;
+export function windowTime<T>(this: Observable<T>, windowTimeSpan: number, scheduler?: IScheduler): Observable<Observable<T>>;
+export function windowTime<T>(
+  this: Observable<T>,
+  windowTimeSpan: number,
+  windowCreationInterval: number,
+  scheduler?: IScheduler,
+): Observable<Observable<T>>;
+export function windowTime<T>(
+  this: Observable<T>,
+  windowTimeSpan: number,
+  windowCreationInterval: number,
+  maxWindowSize: number,
+  scheduler?: IScheduler,
+): Observable<Observable<T>>;
 
-export function windowTime<T>(this: Observable<T>,
-                              windowTimeSpan: number): Observable<Observable<T>> {
-
+export function windowTime<T>(this: Observable<T>, windowTimeSpan: number): Observable<Observable<T>> {
   let scheduler: IScheduler = async;
   let windowCreationInterval: number = null;
   let maxWindowSize: number = Number.POSITIVE_INFINITY;

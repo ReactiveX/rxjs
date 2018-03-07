@@ -46,8 +46,7 @@ export function map<T, R>(project: (value: T, index: number) => R, thisArg?: any
 }
 
 export class MapOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (value: T, index: number) => R, private thisArg: any) {
-  }
+  constructor(private project: (value: T, index: number) => R, private thisArg: any) {}
 
   call(subscriber: Subscriber<R>, source: any): any {
     return source.subscribe(new MapSubscriber(subscriber, this.project, this.thisArg));
@@ -63,9 +62,7 @@ class MapSubscriber<T, R> extends Subscriber<T> {
   count: number = 0;
   private thisArg: any;
 
-  constructor(destination: Subscriber<R>,
-              private project: (value: T, index: number) => R,
-              thisArg: any) {
+  constructor(destination: Subscriber<R>, private project: (value: T, index: number) => R, thisArg: any) {
     super(destination);
     this.thisArg = thisArg || this;
   }

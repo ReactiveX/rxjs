@@ -1,4 +1,3 @@
-
 /* Operator exports */
 export { audit } from '../internal/operators/audit';
 export { auditTime } from '../internal/operators/auditTime';

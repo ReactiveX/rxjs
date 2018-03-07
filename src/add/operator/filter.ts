@@ -1,4 +1,3 @@
-
 import { Observable } from '../../internal/Observable';
 import { filter } from '../../internal/patching/operator/filter';
 

@@ -56,9 +56,7 @@ export function count<T>(predicate?: (value: T, index: number, source: Observabl
 }
 
 class CountOperator<T> implements Operator<T, number> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private source?: Observable<T>) {
-  }
+  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean, private source?: Observable<T>) {}
 
   call(subscriber: Subscriber<number>, source: any): any {
     return source.subscribe(new CountSubscriber(subscriber, this.predicate, this.source));
@@ -74,9 +72,11 @@ class CountSubscriber<T> extends Subscriber<T> {
   private count: number = 0;
   private index: number = 0;
 
-  constructor(destination: Observer<number>,
-              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private source?: Observable<T>) {
+  constructor(
+    destination: Observer<number>,
+    private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+    private source?: Observable<T>,
+  ) {
     super(destination);
   }
 
