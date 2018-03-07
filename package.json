@@ -75,7 +75,7 @@
     "precommit": "lint-staged",
     "commitmsg": "validate-commit-msg",
     "info": "npm-scripts-info",
-    "build_all": "npm-run-all clean_dist copy_sources build_cjs build_esm5 build_esm2015 build_esm5_for_rollup build_umd build_legacy_reexport generate_packages",
+    "build_all": "npm-run-all clean_dist copy_sources build_cjs build_esm5 build_esm2015 build_esm5_for_rollup build_legacy_reexport generate_packages",
     "build_cjs": "npm-run-all clean_dist_cjs compile_dist_cjs",
     "build_esm5": "npm-run-all clean_dist_esm5 compile_dist_esm5",
     "build_esm5_for_rollup": "npm-run-all clean_dist_esm5_for_rollup compile_dist_esm5_for_rollup",
