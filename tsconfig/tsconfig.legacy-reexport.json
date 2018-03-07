@@ -1,0 +1,29 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "declaration": true,
+    "outDir": "../dist/legacy-reexport"
+  },
+  "files": [
+    "../legacy-reexport/AsyncSubject.ts",
+    "../legacy-reexport/BehaviorSubject.ts",
+    "../legacy-reexport/InnerSubscriber.ts",
+    "../legacy-reexport/Notification.ts",
+    "../legacy-reexport/Observable.ts",
+    "../legacy-reexport/Observer.ts",
+    "../legacy-reexport/Operator.ts",
+    "../legacy-reexport/OuterSubscriber.ts",
+    "../legacy-reexport/ReplaySubject.ts",
+    "../legacy-reexport/Scheduler.ts",
+    "../legacy-reexport/Subject.ts",
+    "../legacy-reexport/SubjectSubscription.ts",
+    "../legacy-reexport/Subscriber.ts",
+    "../legacy-reexport/Subscription.ts"
+  ],
+  "exclude": [
+    "../src",
+    "../compat"
+  ]
+}
