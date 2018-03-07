@@ -116,7 +116,7 @@ interval(1000).pipe(
   toArray()
 )
 .subscribe(x => console.log(x));
-// [0, 12, 24]
+// [0, 2304, 9216]
 ```
 
 ## Known Issues
