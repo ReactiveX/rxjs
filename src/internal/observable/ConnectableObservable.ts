@@ -6,10 +6,15 @@ import { Subscription } from '../Subscription';
 import { TeardownLogic } from '../types';
 import { refCount as higherOrderRefCount } from '../../internal/operators/refCount';
 
+export interface ConnectableObservable<T> extends Observable<T> {
+  connect(): Subscription;
+  refCount(): Observable<T>;
+}
+
 /**
  * @class ConnectableObservable<T>
  */
-export class ConnectableObservable<T> extends Observable<T> {
+export class ConnectableObservableImpl<T> extends Observable<T> implements ConnectableObservable<T> {
 
   protected _subject: Subject<T>;
   protected _refCount: number = 0;
@@ -56,7 +61,7 @@ export class ConnectableObservable<T> extends Observable<T> {
   }
 }
 
-const connectableProto = <any>ConnectableObservable.prototype;
+const connectableProto = (ConnectableObservableImpl as any).prototype;
 
 export const connectableObservableDescriptor: PropertyDescriptorMap = {
   operator: { value: null },
@@ -72,7 +77,7 @@ export const connectableObservableDescriptor: PropertyDescriptorMap = {
 
 class ConnectableSubscriber<T> extends SubjectSubscriber<T> {
   constructor(destination: Subject<T>,
-              private connectable: ConnectableObservable<T>) {
+              private connectable: ConnectableObservableImpl<T>) {
     super(destination);
   }
   protected _error(err: any): void {
