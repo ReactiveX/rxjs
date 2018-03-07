@@ -1,4 +1,3 @@
-import { root } from '../util/root';
 import { Action } from './Action';
 import { Subscription } from '../Subscription';
 import { AsyncScheduler } from './AsyncScheduler';
@@ -69,7 +68,7 @@ export class AsyncAction<T> extends Action<T> {
   }
 
   protected requestAsyncId(scheduler: AsyncScheduler, id?: any, delay: number = 0): any {
-    return root.setInterval(scheduler.flush.bind(scheduler, this), delay);
+    return setInterval(scheduler.flush.bind(scheduler, this), delay);
   }
 
   protected recycleAsyncId(scheduler: AsyncScheduler, id: any, delay: number = 0): any {
@@ -79,7 +78,7 @@ export class AsyncAction<T> extends Action<T> {
     }
     // Otherwise, if the action's delay time is different from the current delay,
     // or the action has been rescheduled before it's executed, clear the interval id
-    return root.clearInterval(id) && undefined || undefined;
+    return clearInterval(id) && undefined || undefined;
   }
 
   /**
