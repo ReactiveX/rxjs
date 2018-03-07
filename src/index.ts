@@ -61,3 +61,4 @@ export { EMPTY } from './internal/observable/empty';
 
 /* Types */
 export * from './internal/types';
+export { ConnectableObservable } from './internal/observable/ConnectableObservable';
