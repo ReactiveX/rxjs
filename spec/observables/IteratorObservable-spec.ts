@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as Rx from '../../src/Rx';
+import * as Rx from '../../src/internal/Rx';
 import { queue } from '../../src/internal/scheduler/queue';
 import { fromIterable } from '../../src/internal/observable/fromIterable';
 
