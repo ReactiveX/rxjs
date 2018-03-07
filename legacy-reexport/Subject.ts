@@ -1,1 +1,1 @@
-export {Subject} from 'rxjs-compat/Subject';
+export * from 'rxjs-compat/Subject';

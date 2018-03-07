@@ -1,1 +1,1 @@
-export {Operator} from 'rxjs-compat/Operator';
+export * from 'rxjs-compat/Operator';

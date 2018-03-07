@@ -1,1 +1,1 @@
-export {AsyncSubject} from 'rxjs-compat/AsyncSubject';
+export * from 'rxjs-compat/AsyncSubject';

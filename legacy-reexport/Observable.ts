@@ -1,1 +1,1 @@
-export {Observable} from 'rxjs-compat/Observable';
+export * from 'rxjs-compat/Observable';

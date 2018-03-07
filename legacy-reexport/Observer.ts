@@ -1,1 +1,1 @@
-export {Observer} from 'rxjs-compat/Observer';
+export * from 'rxjs-compat/Observer';

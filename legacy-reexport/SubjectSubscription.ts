@@ -1,1 +1,1 @@
-export {SubjectSubscription} from 'rxjs-compat/SubjectSubscription';
+export * from 'rxjs-compat/SubjectSubscription';

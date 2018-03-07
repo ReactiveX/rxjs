@@ -1,1 +1,1 @@
-export {BehaviorSubject} from 'rxjs-compat/BehaviorSubject';
+export * from 'rxjs-compat/BehaviorSubject';

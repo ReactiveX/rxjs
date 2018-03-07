@@ -1,1 +1,1 @@
-export {Notification} from 'rxjs-compat/Notification';
+export * from 'rxjs-compat/Notification';

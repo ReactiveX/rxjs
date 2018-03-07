@@ -1,1 +1,1 @@
-export {Scheduler} from 'rxjs-compat/Scheduler';
+export * from 'rxjs-compat/Scheduler';

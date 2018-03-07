@@ -1,1 +1,1 @@
-export {InnerSubscriber} from 'rxjs-compat/InnerSubscriber';
+export * from 'rxjs-compat/InnerSubscriber';
