@@ -3,7 +3,6 @@ import { Subscriber } from '../../Subscriber';
 import { Observable } from '../../Observable';
 import { Subscription } from '../../Subscription';
 import { Operator } from '../../Operator';
-import { root } from '../..//util/root';
 import { ReplaySubject } from '../../ReplaySubject';
 import { Observer, NextObserver } from '../../types';
 import { tryCatch } from '../..//util/tryCatch';
@@ -90,7 +89,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
       super(destination, <Observable<T>> urlConfigOrSource);
     } else {
       super();
-      this.WebSocketCtor = root.WebSocket;
+      this.WebSocketCtor = WebSocket;
       this._output = new Subject<T>();
       if (typeof urlConfigOrSource === 'string') {
         this.url = urlConfigOrSource;
