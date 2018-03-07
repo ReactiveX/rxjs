@@ -8,7 +8,6 @@ import { ReplaySubject } from '../../ReplaySubject';
 import { Observer, NextObserver } from '../../types';
 import { tryCatch } from '../..//util/tryCatch';
 import { errorObject } from '../..//util/errorObject';
-import { assign } from '../..//util/assign';
 
 export interface WebSocketSubjectConfig {
   url: string;
@@ -96,7 +95,11 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
         this.url = urlConfigOrSource;
       } else {
         // WARNING: config object could override important members here.
-        assign(this, urlConfigOrSource);
+        for (let key in urlConfigOrSource) {
+          if (urlConfigOrSource.hasOwnProperty(key)) {
+            this[key] = urlConfigOrSource[key];
+          }
+        }
       }
       if (!this.WebSocketCtor) {
         throw new Error('no WebSocket constructor can be found');
