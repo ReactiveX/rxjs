@@ -1,0 +1,10 @@
+{% extends 'base.template.html' -%}
+
+{% block body %}
+  <p class="short-description">{$ doc.shortDescription | marked $}</p>
+  {% include "includes/security-notes.html" %}
+  {% include "includes/deprecation.html" %}
+  {% block overview %}{% endblock %}
+  {% include "includes/usageNotes.html" %}
+  {% block details %}{% endblock %}
+{% endblock %}
