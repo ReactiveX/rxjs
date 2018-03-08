@@ -3,7 +3,7 @@ var path = require('path');
 var glob = require('glob');
 var webpack = require('webpack');
 
-var globPattern = 'spec-js/**/!(mocha.sauce.gruntfile|mocha.sauce.runner|webpack.mocha.config|painter|diagram-test-runner|testScheduler-ui).js';
+var globPattern = 'spec-js/**/!(mocha.sauce.gruntfile|mocha.sauce.runner|webpack.mocha.config|painter|diagram-test-runner|polyfills|testScheduler-ui).js';
 var files = _.map(glob.sync(globPattern), function (x) {
   return path.resolve('./', x);
 });
@@ -18,6 +18,7 @@ module.exports = {
   },
 
   entry: {
+    'browser.polyfills': './spec-js/helpers/polyfills.js',
     'browser.testscheduler': './spec-js/helpers/testScheduler-ui.js',
     'browser.spec': files
   },
