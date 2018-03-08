@@ -90,6 +90,7 @@ export { takeWhile } from '../internal/operators/takeWhile';
 export { tap } from '../internal/operators/tap';
 export { throttle } from '../internal/operators/throttle';
 export { throttleTime } from '../internal/operators/throttleTime';
+export { throwIfEmpty } from '../internal/operators/throwIfEmpty';
 export { timeInterval } from '../internal/operators/timeInterval';
 export { timeout } from '../internal/operators/timeout';
 export { timeoutWith } from '../internal/operators/timeoutWith';
