@@ -1,24 +1,8 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { EmptyError } from '../util/EmptyError';
-import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
-
-/* tslint:disable:max-line-length */
-export function last<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S): OperatorFunction<T, S>;
-export function last<T, S extends T, R>(predicate: (value: T | S, index: number, source: Observable<T>) => value is S,
-                                        resultSelector: (value: S, index: number) => R, defaultValue?: R): OperatorFunction<T, R>;
-export function last<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S,
-                                     resultSelector: void,
-                                     defaultValue?: S): OperatorFunction<T, S>;
-export function last<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T>;
-export function last<T, R>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                           resultSelector?: (value: T, index: number) => R,
-                           defaultValue?: R): OperatorFunction<T, R>;
-export function last<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                        resultSelector: void,
-                        defaultValue?: T): MonoTypeOperatorFunction<T>;
-/* tslint:enable:max-line-length */
+import { EmptyError } from '..//util/EmptyError';
+import { MonoTypeOperatorFunction } from '../../internal/types';
 
 /**
  * Returns an Observable that emits only the last item emitted by the source Observable.
@@ -30,28 +14,26 @@ export function last<T>(predicate: (value: T, index: number, source: Observable<
  *
  * @throws {EmptyError} Delivers an EmptyError to the Observer's `error`
  * callback if the Observable completes before any `next` notification was sent.
- * @param {function} predicate - The condition any source emitted item has to satisfy.
+ * @param {function} [predicate] - The condition any source emitted item has to satisfy.
+ * @param {any} [defaultValue] - An optional default value to provide if last
+ * predicate isn't met or no values were emitted.
  * @return {Observable} An Observable that emits only the last item satisfying the given condition
  * from the source, or an NoSuchElementException if no such items are emitted.
  * @throws - Throws if no items that match the predicate are emitted by the source Observable.
- * @method last
- * @owner Observable
  */
-export function last<T, R>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                           resultSelector?: ((value: T, index: number) => R) | void,
-                           defaultValue?: R): OperatorFunction<T, T | R> {
-  return (source: Observable<T>) => source.lift(new LastOperator(predicate, resultSelector, defaultValue, source));
+export function last<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+                        defaultValue?: T): MonoTypeOperatorFunction<T> {
+  return (source: Observable<T>) => source.lift(new LastOperator(predicate, defaultValue, source));
 }
 
-class LastOperator<T, R> implements Operator<T, R> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: ((value: T, index: number) => R) | void,
-              private defaultValue?: any,
-              private source?: Observable<T>) {
+class LastOperator<T> implements Operator<T, T> {
+  constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean,
+              private defaultValue: any,
+              private source: Observable<T>) {
   }
 
-  call(observer: Subscriber<R>, source: any): any {
-    return source.subscribe(new LastSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
+  call(observer: Subscriber<T>, source: any): any {
+    return source.subscribe(new LastSubscriber(observer, this.predicate, this.defaultValue, this.source));
   }
 }
 
@@ -60,16 +42,15 @@ class LastOperator<T, R> implements Operator<T, R> {
  * @ignore
  * @extends {Ignored}
  */
-class LastSubscriber<T, R> extends Subscriber<T> {
-  private lastValue: T | R;
-  private hasValue: boolean = false;
-  private index: number = 0;
+class LastSubscriber<T> extends Subscriber<T> {
+  private lastValue: T;
+  private hasValue = false;
+  private index = 0;
 
-  constructor(destination: Subscriber<R>,
-              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private resultSelector?: ((value: T, index: number) => R) | void,
-              private defaultValue?: any,
-              private source?: Observable<T>) {
+  constructor(destination: Subscriber<T>,
+              private predicate: (value: T, index: number, source: Observable<T>) => boolean,
+              private defaultValue: T,
+              private source: Observable<T>) {
     super(destination);
     if (typeof defaultValue !== 'undefined') {
       this.lastValue = defaultValue;
@@ -82,10 +63,6 @@ class LastSubscriber<T, R> extends Subscriber<T> {
     if (this.predicate) {
       this._tryPredicate(value, index);
     } else {
-      if (this.resultSelector) {
-        this._tryResultSelector(value, index);
-        return;
-      }
       this.lastValue = value;
       this.hasValue = true;
     }
@@ -100,25 +77,9 @@ class LastSubscriber<T, R> extends Subscriber<T> {
       return;
     }
     if (result) {
-      if (this.resultSelector) {
-        this._tryResultSelector(value, index);
-        return;
-      }
       this.lastValue = value;
       this.hasValue = true;
     }
-  }
-
-  private _tryResultSelector(value: T, index: number) {
-    let result: any;
-    try {
-      result = (<any>this).resultSelector(value, index);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    this.lastValue = result;
-    this.hasValue = true;
   }
 
   protected _complete(): void {

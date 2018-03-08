@@ -1,4 +1,4 @@
-import * as Rx from '../../src/Rx';
+import * as Rx from '../../src/internal/Rx';
 import '../../src/add/observable/generate';
 import { TestScheduler } from '../../src/internal/testing/TestScheduler';
 import { expect } from 'chai';

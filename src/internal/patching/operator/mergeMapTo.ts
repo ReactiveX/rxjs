@@ -2,11 +2,6 @@ import { Observable } from '../../Observable';
 import { ObservableInput } from '../../types';
 import { mergeMapTo as higherOrder } from '../../operators/mergeMapTo';
 
-/* tslint:disable:max-line-length */
-export function mergeMapTo<T, R>(this: Observable<T>, observable: ObservableInput<R>, concurrent?: number): Observable<R>;
-export function mergeMapTo<T, I, R>(this: Observable<T>, observable: ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R, concurrent?: number): Observable<R>;
-/* tslint:enable:max-line-length */
-
 /**
  * Projects each source value to the same Observable which is merged multiple
  * times in the output Observable.
@@ -34,24 +29,14 @@ export function mergeMapTo<T, I, R>(this: Observable<T>, observable: ObservableI
  *
  * @param {ObservableInput} innerObservable An Observable to replace each value from
  * the source Observable.
- * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]
- * A function to produce the value on the output Observable based on the values
- * and the indices of the source (outer) emission and the inner Observable
- * emission. The arguments passed to this function are:
- * - `outerValue`: the value that came from the source
- * - `innerValue`: the value that came from the projected Observable
- * - `outerIndex`: the "index" of the value that came from the source
- * - `innerIndex`: the "index" of the value from the projected Observable
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
  * Observables being subscribed to concurrently.
  * @return {Observable} An Observable that emits items from the given
- * `innerObservable` (and optionally transformed through `resultSelector`) every
- * time a value is emitted on the source Observable.
+ * `innerObservable`.
  * @method mergeMapTo
  * @owner Observable
  */
-export function mergeMapTo<T, I, R>(this: Observable<T>, innerObservable: ObservableInput<I>,
-                                    resultSelector?: ((outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) | number,
-                                    concurrent: number = Number.POSITIVE_INFINITY): Observable<R> {
-  return higherOrder(innerObservable, resultSelector as any, concurrent)(this) as Observable<R>;
+export function mergeMapTo<T, R>(this: Observable<T>, innerObservable: ObservableInput<R>,
+                                 concurrent: number = Number.POSITIVE_INFINITY): Observable<R> {
+  return higherOrder(innerObservable, concurrent)(this) as Observable<R>;
 }

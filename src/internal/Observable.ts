@@ -4,7 +4,7 @@ import { Subscription } from './Subscription';
 import { TeardownLogic } from './types';
 import { root } from './util/root';
 import { toSubscriber } from './util/toSubscriber';
-import { IfObservable } from './observable/IfObservable';
+import { iif } from './observable/iif';
 import { observable as Symbol_observable } from '../internal/symbol/observable';
 import { OperatorFunction, PartialObserver, Subscribable } from '../internal/types';
 import { pipeFromArray } from './util/pipe';
@@ -248,8 +248,9 @@ export class Observable<T> implements Subscribable<T> {
     return this.source.subscribe(subscriber);
   }
 
+  // TODO(benlesh): determine if this is still necessary
   // `if` and `throw` are special snow flakes, the compiler sees them as reserved words
-  static if: typeof IfObservable.create;
+  static if: typeof iif;
 
   /**
    * An interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable

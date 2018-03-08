@@ -1,4 +1,5 @@
 import { Observable } from '../../internal/Observable';
-import { _if } from '../../internal/observable/if';
+import { iif } from '../../internal/observable/iif';
 
-Observable.if = _if;
+//tslint:disable-next-line:no-any TypeScript doesn't like `if`
+(Observable as any).if = iif;

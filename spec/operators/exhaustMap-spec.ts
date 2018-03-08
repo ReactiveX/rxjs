@@ -1,4 +1,4 @@
-import * as Rx from '../../src/Rx';
+import * as Rx from '../../src/internal/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare function asDiagram(arg: string): Function;
@@ -72,23 +72,6 @@ describe('Observable.prototype.exhaustMap', () => {
     });
 
     expectObservable(result).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should raise error if selector throws', () => {
-    const x = cold(     '--a--b--c--|         ');
-    const xsubs =    '   ^ !                  ';
-    const e1 =   hot('---x---------y----z----|');
-    const e1subs =   '^    !                  ';
-    const expected = '-----#                  ';
-
-    const result = e1.exhaustMap((value) => x,
-      () => {
-        throw 'error';
-      });
-
-    expectObservable(result).toBe(expected);
-    expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -334,41 +317,6 @@ describe('Observable.prototype.exhaustMap', () => {
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  it('should switch with resultSelector goodness', () => {
-    const x =   cold(  '--a--b--c--d--e-|                   ');
-    const xsubs =    '  ^               !                   ';
-    const y =   cold(            '---f---g---h---i--|       ');
-    const ysubs: string[] = [];
-    const z =   cold(                   '---k---l---m---n--|');
-    const zsubs =    '                   ^                 !';
-    const e1 =   hot('--x---------y------z-|                ');
-    const e1subs =   '^                                    !';
-    const expected = '----a--b--c--d--e-----k---l---m---n--|';
-
-    const observableLookup = { x: x, y: y, z: z };
-
-    const expectedValues = {
-      a: ['x', 'a', 0, 0],
-      b: ['x', 'b', 0, 1],
-      c: ['x', 'c', 0, 2],
-      d: ['x', 'd', 0, 3],
-      e: ['x', 'e', 0, 4],
-      k: ['z', 'k', 1, 0],
-      l: ['z', 'l', 1, 1],
-      m: ['z', 'm', 1, 2],
-      n: ['z', 'n', 1, 3],
-    };
-
-    const result = e1.exhaustMap((value) => observableLookup[value],
-    (innerValue, outerValue, innerIndex, outerIndex) => [innerValue, outerValue, innerIndex, outerIndex]);
-
-    expectObservable(result).toBe(expected, expectedValues);
-    expectSubscriptions(x.subscriptions).toBe(xsubs);
-    expectSubscriptions(y.subscriptions).toBe(ysubs);
-    expectSubscriptions(z.subscriptions).toBe(zsubs);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
