@@ -1,4 +1,3 @@
-import { root } from './root';
 import { Subscriber } from '../Subscriber';
 
 export const subscribeToPromise = <T>(promise: PromiseLike<T>) => (subscriber: Subscriber<T>) => {
@@ -13,7 +12,7 @@ export const subscribeToPromise = <T>(promise: PromiseLike<T>) => (subscriber: S
   )
   .then(null, (err: any) => {
     // Escaping the Promise trap: globally throw unhandled errors
-    root.setTimeout(() => { throw err; });
+    setTimeout(() => { throw err; });
   });
   return subscriber;
 };
