@@ -1,7 +1,8 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { MonoTypeOperatorFunction } from '../types';
+import { OperatorFunction } from '../types';
+import { NEVER } from '../observable/never';
 
 /**
  * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.
@@ -13,7 +14,7 @@ import { MonoTypeOperatorFunction } from '../types';
  * @method ignoreElements
  * @owner Observable
  */
-export function ignoreElements<T>(): MonoTypeOperatorFunction<T> {
+export function ignoreElements<T>(): OperatorFunction<T, Observable<never> > {
   return function ignoreElementsOperatorFunction(source: Observable<T>) {
     return source.lift(new IgnoreElementsOperator());
   };
@@ -28,10 +29,9 @@ class IgnoreElementsOperator<T, R> implements Operator<T, R> {
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
- * @extends {Ignored}
  */
 class IgnoreElementsSubscriber<T> extends Subscriber<T> {
-  protected _next(unused: T): void {
-    // Do nothing
+  protected _next(unused: T): Observable<never> {
+    return NEVER;
   }
 }
