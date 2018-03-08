@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { expectObservable } from '../helpers/marble-testing';
-import { asapScheduler, Observable, animationFrameScheduler, queueScheduler } from '../../src';
+import { NEVER, asapScheduler, Observable, animationFrameScheduler, queueScheduler } from '../../src';
 import { TestScheduler } from '../../src/testing';
 import { interval } from '../../src/';
 
@@ -13,7 +13,7 @@ describe('interval', () => {
   asDiagram('interval(1000)')('should create an observable emitting periodically', () => {
     const e1 = interval(20, rxTestScheduler)
       .take(6) // make it actually finite, so it can be rendered
-      .concat(Observable.never()); // but pretend it's infinite by not completing
+      .concat(NEVER); // but pretend it's infinite by not completing
     const expected = '--a-b-c-d-e-f-';
     const values = {
       a: 0,

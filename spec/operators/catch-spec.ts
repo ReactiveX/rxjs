@@ -233,7 +233,7 @@ describe('Observable.prototype.catch', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should never terminate if you return Observable.never()', () => {
+  it('should never terminate if you return NEVER', () => {
     const e1 =   hot('--a--b--#');
     const e1subs =   '^       !';
     const e2 = cold(         '-');

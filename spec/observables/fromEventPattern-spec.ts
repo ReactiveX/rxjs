@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { expectObservable } from '../helpers/marble-testing';
 
-import { fromEventPattern, noop, never, timer } from '../../src';
+import { fromEventPattern, noop, NEVER, timer } from '../../src';
 import { TestScheduler } from '../../src/testing';
 
 declare function asDiagram(arg: string): Function;
@@ -16,7 +16,7 @@ describe('fromEventPattern', () => {
       timer(50, 20, rxTestScheduler)
         .mapTo('ev')
         .take(2)
-        .concat(never())
+        .concat(NEVER)
         .subscribe(h);
     }
     const e1 = fromEventPattern(addHandler);

@@ -1,5 +1,9 @@
 import { Observable } from '../../internal/Observable';
-import { never as staticNever } from '../../internal/observable/never';
+import { NEVER } from '../../internal/observable/never';
+
+export function staticNever() {
+  return NEVER;
+}
 
 Observable.never = staticNever;
 

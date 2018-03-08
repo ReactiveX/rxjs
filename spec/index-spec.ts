@@ -50,6 +50,7 @@ describe('index', () => {
 
   it('should export constants', () => {
     expect(index.EMPTY).to.exist;
+    expect(index.NEVER).to.exist;
   });
 
   it('should export static observable creator functions', () => {
@@ -67,7 +68,6 @@ describe('index', () => {
     expect(index.iif).to.exist;
     expect(index.interval).to.exist;
     expect(index.merge).to.exist;
-    expect(index.never).to.exist;
     expect(index.of).to.exist;
     expect(index.onErrorResumeNext).to.exist;
     expect(index.pairs).to.exist;
