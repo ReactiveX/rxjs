@@ -10,7 +10,7 @@ import { from } from '../src/internal/observable/from';
 import { fromEvent } from '../src/internal/observable/fromEvent';
 import { fromEventPattern } from '../src/internal/observable/fromEventPattern';
 import { fromPromise } from '../src/internal/observable/fromPromise';
-import { _if } from '../src/internal/observable/if';
+import { iif } from '../src/internal/observable/iif';
 import { interval } from '../src/internal/observable/interval';
 import { merge } from '../src/internal/observable/merge';
 import { never } from '../src/internal/observable/never';
@@ -23,7 +23,7 @@ import { throwError } from '../src/internal/observable/throwError';
 import { timer } from '../src/internal/observable/timer';
 import { using } from '../src/internal/observable/using';
 import { zip } from '../src/internal/observable/zip';
-import * as Rx from '../src/Rx';
+import * as Rx from '../src/internal/Rx';
 
 describe('exports', () => {
   it('should have rxjs/observable/bindCallback', () => {
@@ -70,8 +70,8 @@ describe('exports', () => {
     expect(fromPromise).to.equal(Rx.Observable.fromPromise);
   });
 
-  it('should have rxjs/observable/if', () => {
-    expect(_if).to.equal(Rx.Observable.if);
+  it('should have rxjs/observable/iif', () => {
+    expect(iif).to.equal(Rx.Observable.if);
   });
 
   it('should have rxjs/observable/interval', () => {

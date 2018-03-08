@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as Rx from '../../src/Rx';
+import * as Rx from '../../src/internal/Rx';
 import { GroupedObservable } from '../../src/internal/operators/groupBy';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 

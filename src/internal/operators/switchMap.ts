@@ -7,11 +7,6 @@ import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction } from '../types';
 
-/* tslint:disable:max-line-length */
-export function switchMap<T, R>(project: (value: T, index: number) => ObservableInput<R>): OperatorFunction<T, R>;
-export function switchMap<T, I, R>(project: (value: T, index: number) => ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
-/* tslint:enable:max-line-length */
-
 /**
  * Projects each source value to an Observable which is merged in the output
  * Observable, emitting values only from the most recently projected Observable.
@@ -44,14 +39,6 @@ export function switchMap<T, I, R>(project: (value: T, index: number) => Observa
  * @param {function(value: T, ?index: number): ObservableInput} project A function
  * that, when applied to an item emitted by the source Observable, returns an
  * Observable.
- * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]
- * A function to produce the value on the output Observable based on the values
- * and the indices of the source (outer) emission and the inner Observable
- * emission. The arguments passed to this function are:
- * - `outerValue`: the value that came from the source
- * - `innerValue`: the value that came from the projected Observable
- * - `outerIndex`: the "index" of the value that came from the source
- * - `innerIndex`: the "index" of the value from the projected Observable
  * @return {Observable} An Observable that emits the result of applying the
  * projection function (and the optional `resultSelector`) to each item emitted
  * by the source Observable and taking only the values from the most recently
@@ -59,22 +46,20 @@ export function switchMap<T, I, R>(project: (value: T, index: number) => Observa
  * @method switchMap
  * @owner Observable
  */
-export function switchMap<T, I, R>(
-  project: (value: T, index: number) => ObservableInput<I>,
-  resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R
-): OperatorFunction<T, I | R> {
-  return function switchMapOperatorFunction(source: Observable<T>): Observable<I | R> {
-    return source.lift(new SwitchMapOperator(project, resultSelector));
+export function switchMap<T, R>(
+  project: (value: T, index: number) => ObservableInput<R>
+): OperatorFunction<T, R> {
+  return function switchMapOperatorFunction(source: Observable<T>): Observable<R> {
+    return source.lift(new SwitchMapOperator(project));
   };
 }
 
-class SwitchMapOperator<T, I, R> implements Operator<T, I> {
-  constructor(private project: (value: T, index: number) => ObservableInput<I>,
-              private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {
+class SwitchMapOperator<T, R> implements Operator<T, R> {
+  constructor(private project: (value: T, index: number) => ObservableInput<R>) {
   }
 
-  call(subscriber: Subscriber<I>, source: any): any {
-    return source.subscribe(new SwitchMapSubscriber(subscriber, this.project, this.resultSelector));
+  call(subscriber: Subscriber<R>, source: any): any {
+    return source.subscribe(new SwitchMapSubscriber(subscriber, this.project));
   }
 }
 
@@ -83,18 +68,17 @@ class SwitchMapOperator<T, I, R> implements Operator<T, I> {
  * @ignore
  * @extends {Ignored}
  */
-class SwitchMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
+class SwitchMapSubscriber<T, R> extends OuterSubscriber<T, R> {
   private index: number = 0;
   private innerSubscription: Subscription;
 
-  constructor(destination: Subscriber<I>,
-              private project: (value: T, index: number) => ObservableInput<I>,
-              private resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {
+  constructor(destination: Subscriber<R>,
+              private project: (value: T, index: number) => ObservableInput<R>) {
     super(destination);
   }
 
   protected _next(value: T) {
-    let result: ObservableInput<I>;
+    let result: ObservableInput<R>;
     const index = this.index++;
     try {
       result = this.project(value, index);
@@ -105,7 +89,7 @@ class SwitchMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     this._innerSub(result, value, index);
   }
 
-  private _innerSub(result: ObservableInput<I>, value: T, index: number) {
+  private _innerSub(result: ObservableInput<R>, value: T, index: number) {
     const innerSubscription = this.innerSubscription;
     if (innerSubscription) {
       innerSubscription.unsubscribe();
@@ -132,24 +116,9 @@ class SwitchMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     }
   }
 
-  notifyNext(outerValue: T, innerValue: I,
+  notifyNext(outerValue: T, innerValue: R,
              outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, I>): void {
-    if (this.resultSelector) {
-      this._tryNotifyNext(outerValue, innerValue, outerIndex, innerIndex);
-    } else {
+             innerSub: InnerSubscriber<T, R>): void {
       this.destination.next(innerValue);
-    }
-  }
-
-  private _tryNotifyNext(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): void {
-    let result: R;
-    try {
-      result = this.resultSelector(outerValue, innerValue, outerIndex, innerIndex);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    this.destination.next(result);
   }
 }

@@ -1,11 +1,6 @@
 import { concatMap } from './concatMap';
 import { ObservableInput, OperatorFunction } from '../types';
 
-/* tslint:disable:max-line-length */
-export function concatMapTo<T, R>(observable: ObservableInput<R>): OperatorFunction<T, R>;
-export function concatMapTo<T, I, R>(observable: ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
-/* tslint:enable:max-line-length */
-
 /**
  * Projects each source value to the same Observable which is merged multiple
  * times in a serialized fashion on the output Observable.
@@ -48,23 +43,14 @@ export function concatMapTo<T, I, R>(observable: ObservableInput<I>, resultSelec
  *
  * @param {ObservableInput} innerObservable An Observable to replace each value from
  * the source Observable.
- * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]
- * A function to produce the value on the output Observable based on the values
- * and the indices of the source (outer) emission and the inner Observable
- * emission. The arguments passed to this function are:
- * - `outerValue`: the value that came from the source
- * - `innerValue`: the value that came from the projected Observable
- * - `outerIndex`: the "index" of the value that came from the source
- * - `innerIndex`: the "index" of the value from the projected Observable
  * @return {Observable} An observable of values merged together by joining the
  * passed observable with itself, one after the other, for each value emitted
  * from the source.
  * @method concatMapTo
  * @owner Observable
  */
-export function concatMapTo<T, I, R>(
-  innerObservable: ObservableInput<I>,
-  resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R
+export function concatMapTo<T, R>(
+  innerObservable: ObservableInput<R>
 ): OperatorFunction<T, R> {
-  return concatMap(() => innerObservable, resultSelector);
+  return concatMap(() => innerObservable);
 }

@@ -5,15 +5,14 @@ import { Subscriber } from '../Subscriber';
 import { Action } from '../scheduler/Action';
 
 /* tslint:disable:max-line-length */
-export function bindNodeCallback<R>(callbackFunc: (callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: IScheduler): () => Observable<R>;
-export function bindNodeCallback<T, R>(callbackFunc: (v1: T, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T) => Observable<R>;
-export function bindNodeCallback<T, T2, R>(callbackFunc: (v1: T, v2: T2, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2) => Observable<R>;
-export function bindNodeCallback<T, T2, T3, R>(callbackFunc: (v1: T, v2: T2, v3: T3, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3) => Observable<R>;
-export function bindNodeCallback<T, T2, T3, T4, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4) => Observable<R>;
-export function bindNodeCallback<T, T2, T3, T4, T5, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => Observable<R>;
-export function bindNodeCallback<T, T2, T3, T4, T5, T6, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, callback: (err: any, result: R) => any) => any, selector?: void, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => Observable<R>;
-export function bindNodeCallback<T>(callbackFunc: Function, selector?: void, scheduler?: IScheduler): (...args: any[]) => Observable<T>;
-export function bindNodeCallback<T>(callbackFunc: Function, selector?: (...args: any[]) => T, scheduler?: IScheduler): (...args: any[]) => Observable<T>;
+export function bindNodeCallback<R>(callbackFunc: (callback: (err: any, result: R) => any) => any, scheduler?: IScheduler): () => Observable<R>;
+export function bindNodeCallback<T, R>(callbackFunc: (v1: T, callback: (err: any, result: R) => any) => any, scheduler?: IScheduler): (v1: T) => Observable<R>;
+export function bindNodeCallback<T, T2, R>(callbackFunc: (v1: T, v2: T2, callback: (err: any, result: R) => any) => any, scheduler?: IScheduler): (v1: T, v2: T2) => Observable<R>;
+export function bindNodeCallback<T, T2, T3, R>(callbackFunc: (v1: T, v2: T2, v3: T3, callback: (err: any, result: R) => any) => any, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3) => Observable<R>;
+export function bindNodeCallback<T, T2, T3, T4, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, callback: (err: any, result: R) => any) => any, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4) => Observable<R>;
+export function bindNodeCallback<T, T2, T3, T4, T5, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, callback: (err: any, result: R) => any) => any, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => Observable<R>;
+export function bindNodeCallback<T, T2, T3, T4, T5, T6, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, callback: (err: any, result: R) => any) => any, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => Observable<R>;
+export function bindNodeCallback<T>(callbackFunc: Function, scheduler?: IScheduler): (...args: any[]) => Observable<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -38,11 +37,6 @@ export function bindNodeCallback<T>(callbackFunc: Function, selector?: (...args:
  * error with that value as well. If error parameter is not passed, Observable will emit
  * second parameter. If there are more parameters (third and so on),
  * Observable will emit an array with all arguments, except first error argument.
- *
- * Optionally `bindNodeCallback` accepts selector function, which allows you to
- * make resulting Observable emit value computed by selector, instead of regular
- * callback arguments. It works similarly to {@link bindCallback} selector, but
- * Node.js-style error argument will never be passed to that function.
  *
  * Note that `func` will not be called at the same time output function is,
  * but rather whenever resulting Observable is subscribed. By default call to
@@ -77,7 +71,7 @@ export function bindNodeCallback<T>(callbackFunc: Function, selector?: (...args:
  * switch to {@link bindCallback} instead.
  *
  * Note that even if error parameter is technically present in callback, but its value
- * is falsy, it still won't appear in array emitted by Observable or in selector function.
+ * is falsy, it still won't appear in array emitted by Observable.
  *
  *
  * @example <caption>Read a file from the filesystem and get the data as an Observable</caption>
@@ -99,20 +93,6 @@ export function bindNodeCallback<T>(callbackFunc: Function, selector?: (...args:
  *   console.log(value); // [5, "some string"]
  * });
  *
- *
- * @example <caption>Use with selector function</caption>
- * someFunction((err, a, b) => {
- *   console.log(err); // undefined
- *   console.log(a); // "abc"
- *   console.log(b); // "DEF"
- * });
- * var boundSomeFunction = bindNodeCallback(someFunction, (a, b) => a + b);
- * boundSomeFunction()
- * .subscribe(value => {
- *   console.log(value); // "abcDEF"
- * });
- *
- *
  * @example <caption>Use on function calling callback in regular style</caption>
  * someFunction(a => {
  *   console.log(a); // 5
@@ -130,8 +110,6 @@ export function bindNodeCallback<T>(callbackFunc: Function, selector?: (...args:
  * @see {@link fromPromise}
  *
  * @param {function} func Function with a Node.js-style callback as the last parameter.
- * @param {function} [selector] A function which takes the arguments from the
- * callback and maps those to a value to emit on the output Observable.
  * @param {Scheduler} [scheduler] The scheduler on which to schedule the
  * callbacks.
  * @return {function(...params: *): Observable} A function which returns the
@@ -140,7 +118,6 @@ export function bindNodeCallback<T>(callbackFunc: Function, selector?: (...args:
  * @name bindNodeCallback
  */
 export function bindNodeCallback<T>(callbackFunc: Function,
-                                    selector: Function | void = undefined,
                                     scheduler?: IScheduler): (...args: any[]) => Observable<T> {
   return function(this: any, ...args: any[]): Observable<T> {
     const params: ParamsState<T> = {
@@ -148,7 +125,6 @@ export function bindNodeCallback<T>(callbackFunc: Function,
       args,
       callbackFunc,
       scheduler,
-      selector,
       context: this,
     };
     return new Observable<T>(subscriber => {
@@ -165,19 +141,7 @@ export function bindNodeCallback<T>(callbackFunc: Function,
               return;
             }
 
-            let result: T;
-            if (selector) {
-              try {
-                result = selector(...innerArgs);
-              } catch (err) {
-                subject.error(err);
-                return;
-              }
-            } else {
-              result = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
-            }
-
-            subject.next(result);
+            subject.next(innerArgs.length <= 1 ? innerArgs[0] : innerArgs);
             subject.complete();
           };
 
@@ -206,13 +170,12 @@ interface ParamsState<T> {
   args: any[];
   scheduler: IScheduler;
   subject: AsyncSubject<T>;
-  selector: Function | void;
   context: any;
 }
 
 function dispatch<T>(this: Action<DispatchState<T>>, state: DispatchState<T>) {
   const { params, subscriber, context } = state;
-  const { callbackFunc, args, scheduler, selector } = params;
+  const { callbackFunc, args, scheduler } = params;
   let subject = params.subject;
 
   if (!subject) {
@@ -222,15 +185,6 @@ function dispatch<T>(this: Action<DispatchState<T>>, state: DispatchState<T>) {
       const err = innerArgs.shift();
       if (err) {
         this.add(scheduler.schedule<DispatchErrorArg<T>>(dispatchError, 0, { err, subject }));
-      } else if (selector) {
-        let result: T;
-        try {
-          result = selector(...innerArgs);
-        } catch (err) {
-          this.add(scheduler.schedule<DispatchErrorArg<T>>(dispatchError, 0, { err, subject }));
-          return;
-        }
-        this.add(scheduler.schedule<DispatchNextArg<T>>(dispatchNext, 0, { value: result, subject }));
       } else {
         const value = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
         this.add(scheduler.schedule<DispatchNextArg<T>>(dispatchNext, 0, { value, subject }));

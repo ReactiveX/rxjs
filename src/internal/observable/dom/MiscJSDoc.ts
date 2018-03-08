@@ -1,4 +1,4 @@
-import { Subscriber } from '../Subscriber';
+import { Subscriber } from '../../Subscriber';
 import { AjaxResponse } from './AjaxObservable';
 
 /**

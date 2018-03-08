@@ -2,11 +2,6 @@ import { concatMap as higherOrderConcatMap } from '../../operators/concatMap';
 import { Observable } from '../../Observable';
 import { ObservableInput } from '../../types';
 
-/* tslint:disable:max-line-length */
-export function concatMap<T, R>(this: Observable<T>, project: (value: T, index: number) =>  ObservableInput<R>): Observable<R>;
-export function concatMap<T, I, R>(this: Observable<T>, project: (value: T, index: number) =>  ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): Observable<R>;
-/* tslint:enable:max-line-length */
-
 /**
  * Projects each source value to an Observable which is merged in the output
  * Observable, in a serialized fashion waiting for each one to complete before
@@ -51,14 +46,6 @@ export function concatMap<T, I, R>(this: Observable<T>, project: (value: T, inde
  * @param {function(value: T, ?index: number): ObservableInput} project A function
  * that, when applied to an item emitted by the source Observable, returns an
  * Observable.
- * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]
- * A function to produce the value on the output Observable based on the values
- * and the indices of the source (outer) emission and the inner Observable
- * emission. The arguments passed to this function are:
- * - `outerValue`: the value that came from the source
- * - `innerValue`: the value that came from the projected Observable
- * - `outerIndex`: the "index" of the value that came from the source
- * - `innerIndex`: the "index" of the value from the projected Observable
  * @return {Observable} An Observable that emits the result of applying the
  * projection function (and the optional `resultSelector`) to each item emitted
  * by the source Observable and taking values from each projected inner
@@ -66,7 +53,6 @@ export function concatMap<T, I, R>(this: Observable<T>, project: (value: T, inde
  * @method concatMap
  * @owner Observable
  */
-export function concatMap<T, I, R>(this: Observable<T>, project: (value: T, index: number) =>  ObservableInput<I>,
-                                   resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) {
-  return higherOrderConcatMap(project, resultSelector)(this);
+export function concatMap<T, R>(this: Observable<T>, project: (value: T, index: number) =>  ObservableInput<R>) {
+  return higherOrderConcatMap(project)(this);
 }
