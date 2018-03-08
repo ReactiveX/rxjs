@@ -115,6 +115,7 @@
     "test": "cross-env TS_NODE_FAST=true mocha --compilers ts:ts-node/register --opts spec/support/coverage.opts \"spec/**/*-spec.ts\"",
     "test:cover": "cross-env TS_NODE_FAST=true nyc npm test",
     "test:circular": "dependency-cruise --validate .dependency-cruiser.json -x \"^node_modules\" src",
+    "test:systemjs": "node integration/systemjs/systemjs-compatibility-spec.js",
     "tests2png": "mkdirp tmp/docs/img && cross-env TS_NODE_FAST=true mocha --compilers ts:ts-node/register --opts spec/support/tests2png.opts \"spec/**/*-spec.ts\"",
     "watch": "watch \"echo triggering build && npm run test && echo build completed\" src -d -u -w=15"
   },
@@ -223,6 +224,7 @@
     "sinon-chai": "2.14.0",
     "source-map-support": "0.5.3",
     "symbol-observable": "1.0.1",
+    "systemjs": "^0.21.0",
     "ts-node": "4.1.0",
     "tslib": "1.5.0",
     "tslint": "5.9.1",
