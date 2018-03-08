@@ -5,18 +5,18 @@
 /* rxjs */
 export * from '../';
 
-/* rxjs/operators */
+/* rxjs.operators */
 import * as _operators from '../operators';
 export const operators = _operators;
 
-/* rxjs/testing */
+/* rxjs.testing */
 import * as _testing from '../testing';
 export const testing = _testing;
 
-/* rxjs/ajax */
+/* rxjs.ajax */
 import * as _ajax from '../ajax';
 export const ajax = _ajax;
 
-/* rxjs/websocket */
+/* rxjs.websocket */
 import * as _websocket from '../websocket';
 export const websocket = _websocket;
