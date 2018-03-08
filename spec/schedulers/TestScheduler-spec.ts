@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
-
 import { TestScheduler } from '../../src/testing';
 import { Notification } from '../../src/internal/Notification';
 import { Observable, NEVER, EMPTY, Subject, of } from '../../src';

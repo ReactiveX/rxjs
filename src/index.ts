@@ -1,19 +1,24 @@
 /* Observable */
 export { Observable } from './internal/Observable';
+export { ConnectableObservable } from './internal/observable/ConnectableObservable';
+export { Operator } from './internal/Operator';
 
 /* Subjects */
 export { Subject } from './internal/Subject';
 export { BehaviorSubject } from './internal/BehaviorSubject';
 export { ReplaySubject } from './internal/ReplaySubject';
+export { AsyncSubject } from './internal/AsyncSubject';
 
 /* Schedulers */
 export { asap as asapScheduler } from './internal/scheduler/asap';
 export { async as asyncScheduler } from './internal/scheduler/async';
 export { queue as queueScheduler } from './internal/scheduler/queue';
 export { animationFrame as animationFrameScheduler } from './internal/scheduler/animationFrame';
+export { VirtualTimeScheduler, VirtualAction } from './internal/scheduler/VirtualTimeScheduler';
 
 /* Subscription */
 export { Subscription } from './internal/Subscription';
+export { Subscriber } from './internal/Subscriber';
 
 /* Notification */
 export { Notification } from './internal/Notification';
@@ -28,6 +33,7 @@ export { ArgumentOutOfRangeError } from './internal/util/ArgumentOutOfRangeError
 export { EmptyError } from './internal/util/EmptyError';
 export { ObjectUnsubscribedError } from './internal/util/ObjectUnsubscribedError';
 export { UnsubscriptionError } from './internal/util/UnsubscriptionError';
+export { TimeoutError } from './internal/util/TimeoutError';
 
 /* Static observable creation exports */
 export { bindCallback } from './internal/observable/bindCallback';
@@ -40,7 +46,6 @@ export { forkJoin } from './internal/observable/forkJoin';
 export { from } from './internal/observable/from';
 export { fromEvent } from './internal/observable/fromEvent';
 export { fromEventPattern } from './internal/observable/fromEventPattern';
-export { fromPromise } from './internal/observable/fromPromise';
 export { generate } from './internal/observable/generate';
 export { iif } from './internal/observable/iif';
 export { interval } from './internal/observable/interval';
