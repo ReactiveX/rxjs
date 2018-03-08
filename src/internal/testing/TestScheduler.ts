@@ -19,8 +19,8 @@ export type observableToBeFn = (marbles: string, values?: any, errorValue?: any)
 export type subscriptionLogsToBeFn = (marbles: string | string[]) => void;
 
 export class TestScheduler extends VirtualTimeScheduler {
-  private hotObservables: HotObservable<any>[] = [];
-  private coldObservables: ColdObservable<any>[] = [];
+  public readonly hotObservables: HotObservable<any>[] = [];
+  public readonly coldObservables: ColdObservable<any>[] = [];
   private flushTests: FlushableTest[] = [];
 
   constructor(public assertDeepEqual: (actual: any, expected: any) => boolean | void) {
