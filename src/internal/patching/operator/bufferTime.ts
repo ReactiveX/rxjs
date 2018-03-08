@@ -1,7 +1,7 @@
 import { SchedulerLike } from '../../types';
 import { async } from '../../scheduler/async';
 import { Observable } from '../../Observable';
-import { isScheduler } from '../..//util/isScheduler';
+import { isScheduler } from '../../util/isScheduler';
 import { bufferTime as higherOrder } from '../../operators/bufferTime';
 
 /* tslint:disable:max-line-length */

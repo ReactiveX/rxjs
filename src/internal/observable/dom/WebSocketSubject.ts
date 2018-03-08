@@ -5,8 +5,8 @@ import { Subscription } from '../../Subscription';
 import { Operator } from '../../Operator';
 import { ReplaySubject } from '../../ReplaySubject';
 import { Observer, NextObserver } from '../../types';
-import { tryCatch } from '../..//util/tryCatch';
-import { errorObject } from '../..//util/errorObject';
+import { tryCatch } from '../../util/tryCatch';
+import { errorObject } from '../../util/errorObject';
 
 export interface WebSocketSubjectConfig {
   url: string;

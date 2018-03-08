@@ -2,7 +2,7 @@ import { Observable } from '../../Observable';
 import { ObservableInput } from '../../types';
 import { CombineLatestOperator } from '../../observable/combineLatest';
 import { of } from '../../observable/of';
-import { isArray } from '../..//util/isArray';
+import { isArray } from '../../util/isArray';
 
 /* tslint:disable:max-line-length */
 export function combineLatest<T, R>(this: Observable<T>, project: (v1: T) => R): Observable<R>;
