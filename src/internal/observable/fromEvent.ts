@@ -2,6 +2,8 @@ import { Observable } from '../Observable';
 import { isFunction } from '../util/isFunction';
 import { Subscriber } from '../Subscriber';
 
+const toString: Function = Object.prototype.toString;
+
 export type NodeStyleEventEmitter = {
   addListener: (eventName: string, handler: Function) => void;
   removeListener: (eventName: string, handler: Function) => void;
