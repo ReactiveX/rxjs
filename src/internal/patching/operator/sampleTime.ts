@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { IScheduler } from '../../Scheduler';
+import { SchedulerLike } from '../../types';
 import { async } from '../../scheduler/async';
 import { sampleTime as higherOrder } from '../../operators/sampleTime';
 
@@ -39,6 +39,6 @@ import { sampleTime as higherOrder } from '../../operators/sampleTime';
  * @method sampleTime
  * @owner Observable
  */
-export function sampleTime<T>(this: Observable<T>, period: number, scheduler: IScheduler = async): Observable<T> {
+export function sampleTime<T>(this: Observable<T>, period: number, scheduler: SchedulerLike = async): Observable<T> {
   return higherOrder(period, scheduler)(this) as Observable<T>;
 }

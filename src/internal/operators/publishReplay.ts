@@ -1,20 +1,19 @@
 import { Observable } from '../Observable';
 import { ReplaySubject } from '../ReplaySubject';
-import { IScheduler } from '../Scheduler';
 import { multicast } from './multicast';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
-import { UnaryFunction, MonoTypeOperatorFunction, OperatorFunction } from '../types';
+import { UnaryFunction, MonoTypeOperatorFunction, OperatorFunction, SchedulerLike } from '../types';
 
 /* tslint:disable:max-line-length */
-export function publishReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: IScheduler): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
-export function publishReplay<T, R>(bufferSize?: number, windowTime?: number, selector?: OperatorFunction<T, R>, scheduler?: IScheduler): OperatorFunction<T, R>;
-export function publishReplay<T>(bufferSize?: number, windowTime?: number, selector?: MonoTypeOperatorFunction<T>, scheduler?: IScheduler): MonoTypeOperatorFunction<T>;
+export function publishReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
+export function publishReplay<T, R>(bufferSize?: number, windowTime?: number, selector?: OperatorFunction<T, R>, scheduler?: SchedulerLike): OperatorFunction<T, R>;
+export function publishReplay<T>(bufferSize?: number, windowTime?: number, selector?: MonoTypeOperatorFunction<T>, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
 
 export function publishReplay<T, R>(bufferSize?: number,
                                     windowTime?: number,
-                                    selectorOrScheduler?: IScheduler | OperatorFunction<T, R>,
-                                    scheduler?: IScheduler): UnaryFunction<Observable<T>, ConnectableObservable<R>> {
+                                    selectorOrScheduler?: SchedulerLike | OperatorFunction<T, R>,
+                                    scheduler?: SchedulerLike): UnaryFunction<Observable<T>, ConnectableObservable<R>> {
 
   if (selectorOrScheduler && typeof selectorOrScheduler !== 'function') {
     scheduler = selectorOrScheduler;

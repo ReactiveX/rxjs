@@ -1,9 +1,8 @@
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { identity } from '../util/identity';
-import { IScheduler } from '../Scheduler';
+import { SchedulerAction, SchedulerLike } from '../types';
 import { isScheduler } from '../util/isScheduler';
-import { Action } from '../scheduler/Action';
 
 export type ConditionFunc<S> = (state: S) => boolean;
 export type IterateFunc<S> = (state: S) => S;
@@ -34,10 +33,10 @@ export interface GenerateBaseOptions<S> {
    */
   iterate: IterateFunc<S>;
   /**
-   * IScheduler to use for generation process.
+   * SchedulerLike to use for generation process.
    * By default, a generator starts immediately.
    */
-  scheduler?: IScheduler;
+  scheduler?: SchedulerLike;
 }
 
 export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
@@ -67,14 +66,14 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  * @param {function (state: S): boolean} condition Condition to terminate generation (upon returning false).
  * @param {function (state: S): S} iterate Iteration step function.
  * @param {function (state: S): T} resultSelector Selector function for results produced in the sequence.
- * @param {Scheduler} [scheduler] A {@link IScheduler} on which to run the generator loop. If not provided, defaults to emit immediately.
+ * @param {Scheduler} [scheduler] A {@link SchedulerLike} on which to run the generator loop. If not provided, defaults to emit immediately.
  * @returns {Observable<T>} The generated sequence.
  */
   export function generate<T, S>(initialState: S,
                                  condition: ConditionFunc<S>,
                                  iterate: IterateFunc<S>,
                                  resultSelector: ResultFunc<S, T>,
-                                 scheduler?: IScheduler): Observable<T>;
+                                 scheduler?: SchedulerLike): Observable<T>;
 
 /**
  * Generates an observable sequence by running a state-driven loop
@@ -96,13 +95,13 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  * @param {S} initialState Initial state.
  * @param {function (state: S): boolean} condition Condition to terminate generation (upon returning false).
  * @param {function (state: S): S} iterate Iteration step function.
- * @param {Scheduler} [scheduler] A {@link IScheduler} on which to run the generator loop. If not provided, defaults to emit immediately.
+ * @param {Scheduler} [scheduler] A {@link SchedulerLike} on which to run the generator loop. If not provided, defaults to emit immediately.
  * @returns {Observable<S>} The generated sequence.
  */
 export function generate<S>(initialState: S,
                             condition: ConditionFunc<S>,
                             iterate: IterateFunc<S>,
-                            scheduler?: IScheduler): Observable<S>;
+                            scheduler?: SchedulerLike): Observable<S>;
 
 /**
  * Generates an observable sequence by running a state-driven loop
@@ -156,8 +155,8 @@ export function generate<T, S>(options: GenerateOptions<T, S>): Observable<T>;
 export function generate<T, S>(initialStateOrOptions: S | GenerateOptions<T, S>,
                                condition?: ConditionFunc<S>,
                                iterate?: IterateFunc<S>,
-                               resultSelectorOrObservable?: (ResultFunc<S, T>) | IScheduler,
-                               scheduler?: IScheduler): Observable<T> {
+                               resultSelectorOrObservable?: (ResultFunc<S, T>) | SchedulerLike,
+                               scheduler?: SchedulerLike): Observable<T> {
 
   let resultSelector: ResultFunc<S, T>;
   let initialState: S;
@@ -172,7 +171,7 @@ export function generate<T, S>(initialStateOrOptions: S | GenerateOptions<T, S>,
   } else if (resultSelectorOrObservable === undefined || isScheduler(resultSelectorOrObservable)) {
     initialState = initialStateOrOptions as S;
     resultSelector = identity as ResultFunc<S, T>;
-    scheduler = resultSelectorOrObservable as IScheduler;
+    scheduler = resultSelectorOrObservable as SchedulerLike;
   } else {
     initialState = initialStateOrOptions as S;
     resultSelector = resultSelectorOrObservable as ResultFunc<S, T>;
@@ -227,7 +226,7 @@ export function generate<T, S>(initialStateOrOptions: S | GenerateOptions<T, S>,
   });
 }
 
-function dispatch<T, S>(this: Action<SchedulerState<T, S>>, state: SchedulerState<T, S>) {
+function dispatch<T, S>(this: SchedulerAction<SchedulerState<T, S>>, state: SchedulerState<T, S>) {
   const { subscriber, condition } = state;
   if (subscriber.closed) {
     return undefined;

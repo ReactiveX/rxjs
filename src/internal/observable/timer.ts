@@ -1,9 +1,8 @@
 import { Observable } from '../Observable';
-import { IScheduler } from '../Scheduler';
+import { SchedulerAction, SchedulerLike } from '../types';
 import { async } from '../scheduler/async';
 import { isNumeric } from '../util/isNumeric';
 import { isScheduler } from '../util/isScheduler';
-import { Action } from '../scheduler/Action';
 import { Subscriber } from '../Subscriber';
 
 /**
@@ -37,9 +36,9 @@ import { Subscriber } from '../Subscriber';
  *
  * @param {number|Date} [dueTime] The initial delay time to wait before
  * emitting the first value of `0`.
- * @param {number|IScheduler} [periodOrScheduler] The period of time between emissions of the
+ * @param {number|SchedulerLike} [periodOrScheduler] The period of time between emissions of the
  * subsequent numbers.
- * @param {IScheduler} [scheduler=async] The IScheduler to use for scheduling
+ * @param {SchedulerLike} [scheduler=async] The IScheduler to use for scheduling
  * the emission of values, and providing a notion of "time".
  * @return {Observable} An Observable that emits a `0` after the
  * `initialDelay` and ever increasing numbers after each `period` of time
@@ -49,8 +48,8 @@ import { Subscriber } from '../Subscriber';
  * @owner Observable
  */
 export function timer(dueTime: number | Date = 0,
-                      periodOrScheduler?: number | IScheduler,
-                      scheduler?: IScheduler): Observable<number> {
+                      periodOrScheduler?: number | SchedulerLike,
+                      scheduler?: SchedulerLike): Observable<number> {
   let period = -1;
   if (isNumeric(periodOrScheduler)) {
     period = Number(periodOrScheduler) < 1 && 1 || Number(periodOrScheduler);
@@ -79,7 +78,7 @@ interface TimerState {
   subscriber: Subscriber<number>;
 }
 
-function dispatch(this: Action<TimerState>, state: TimerState) {
+function dispatch(this: SchedulerAction<TimerState>, state: TimerState) {
   const { index, period, subscriber } = state;
   subscriber.next(index);
 

@@ -1,17 +1,15 @@
-import { Action } from '../scheduler/Action';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { IScheduler } from '../Scheduler';
 import { async } from '../scheduler/async';
 import { Observable } from '../Observable';
 import { isDate } from '../util/isDate';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
-import { ObservableInput, OperatorFunction, MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { ObservableInput, OperatorFunction, MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
 
 /* tslint:disable:max-line-length */
-export function timeoutWith<T>(due: number | Date, withObservable: ObservableInput<T>, scheduler?: IScheduler): MonoTypeOperatorFunction<T>;
-export function timeoutWith<T, R>(due: number | Date, withObservable: ObservableInput<R>, scheduler?: IScheduler): OperatorFunction<T, T | R>;
+export function timeoutWith<T>(due: number | Date, withObservable: ObservableInput<T>, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+export function timeoutWith<T, R>(due: number | Date, withObservable: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -63,7 +61,7 @@ export function timeoutWith<T, R>(due: number | Date, withObservable: Observable
  */
 export function timeoutWith<T, R>(due: number | Date,
                                   withObservable: ObservableInput<R>,
-                                  scheduler: IScheduler = async): OperatorFunction<T, T | R> {
+                                  scheduler: SchedulerLike = async): OperatorFunction<T, T | R> {
   return (source: Observable<T>) => {
     let absoluteTimeout = isDate(due);
     let waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
@@ -75,7 +73,7 @@ class TimeoutWithOperator<T> implements Operator<T, T> {
   constructor(private waitFor: number,
               private absoluteTimeout: boolean,
               private withObservable: ObservableInput<any>,
-              private scheduler: IScheduler) {
+              private scheduler: SchedulerLike) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -92,13 +90,13 @@ class TimeoutWithOperator<T> implements Operator<T, T> {
  */
 class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
 
-  private action: Action<TimeoutWithSubscriber<T, R>> = null;
+  private action: SchedulerAction<TimeoutWithSubscriber<T, R>> = null;
 
   constructor(destination: Subscriber<T>,
               private absoluteTimeout: boolean,
               private waitFor: number,
               private withObservable: ObservableInput<any>,
-              private scheduler: IScheduler) {
+              private scheduler: SchedulerLike) {
     super(destination);
     this.scheduleTimeout();
   }
@@ -117,9 +115,9 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
       // VirtualActions are immutable, so they create and return a clone. In this
       // case, we need to set the action reference to the most recent VirtualAction,
       // to ensure that's the one we clone from next time.
-      this.action = (<Action<TimeoutWithSubscriber<T, R>>> action.schedule(this, this.waitFor));
+      this.action = (<SchedulerAction<TimeoutWithSubscriber<T, R>>> action.schedule(this, this.waitFor));
     } else {
-      this.add(this.action = (<Action<TimeoutWithSubscriber<T, R>>> this.scheduler.schedule<TimeoutWithSubscriber<T, R>>(
+      this.add(this.action = (<SchedulerAction<TimeoutWithSubscriber<T, R>>> this.scheduler.schedule<TimeoutWithSubscriber<T, R>>(
         TimeoutWithSubscriber.dispatchTimeout, this.waitFor, this
       )));
     }

@@ -1,6 +1,5 @@
-import { IScheduler } from '../Scheduler';
+import { SchedulerAction, SchedulerLike } from '../types';
 import { Observable } from '../Observable';
-import { Action } from '../scheduler/Action';
 
 /**
  * Creates an Observable that emits a sequence of numbers within a specified
@@ -34,7 +33,7 @@ import { Action } from '../scheduler/Action';
  */
 export function range(start: number = 0,
                       count: number = 0,
-                      scheduler?: IScheduler): Observable<number> {
+                      scheduler?: SchedulerLike): Observable<number> {
   return new Observable<number>(subscriber => {
     let index = 0;
 
@@ -60,7 +59,7 @@ export function range(start: number = 0,
 }
 
 /** @internal */
-export function dispatch(this: Action<any>, state: any) {
+export function dispatch(this: SchedulerAction<any>, state: any) {
   const { start, index, count, subscriber } = state;
 
   if (index >= count) {

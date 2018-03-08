@@ -1,12 +1,10 @@
-import { Action } from '../scheduler/Action';
 import { async } from '../scheduler/async';
 import { isDate } from '../util/isDate';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
 import { TimeoutError } from '../util/TimeoutError';
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
 
 /**
  *
@@ -74,7 +72,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @owner Observable
  */
 export function timeout<T>(due: number | Date,
-                           scheduler: IScheduler = async): MonoTypeOperatorFunction<T> {
+                           scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
   const absoluteTimeout = isDate(due);
   const waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
   return (source: Observable<T>) => source.lift(new TimeoutOperator(waitFor, absoluteTimeout, scheduler, new TimeoutError()));
@@ -83,7 +81,7 @@ export function timeout<T>(due: number | Date,
 class TimeoutOperator<T> implements Operator<T, T> {
   constructor(private waitFor: number,
               private absoluteTimeout: boolean,
-              private scheduler: IScheduler,
+              private scheduler: SchedulerLike,
               private errorInstance: TimeoutError) {
   }
 
@@ -101,12 +99,12 @@ class TimeoutOperator<T> implements Operator<T, T> {
  */
 class TimeoutSubscriber<T> extends Subscriber<T> {
 
-  private action: Action<TimeoutSubscriber<T>> = null;
+  private action: SchedulerAction<TimeoutSubscriber<T>> = null;
 
   constructor(destination: Subscriber<T>,
               private absoluteTimeout: boolean,
               private waitFor: number,
-              private scheduler: IScheduler,
+              private scheduler: SchedulerLike,
               private errorInstance: TimeoutError) {
     super(destination);
     this.scheduleTimeout();
@@ -124,9 +122,9 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
       // VirtualActions are immutable, so they create and return a clone. In this
       // case, we need to set the action reference to the most recent VirtualAction,
       // to ensure that's the one we clone from next time.
-      this.action = (<Action<TimeoutSubscriber<T>>> action.schedule(this, this.waitFor));
+      this.action = (<SchedulerAction<TimeoutSubscriber<T>>> action.schedule(this, this.waitFor));
     } else {
-      this.add(this.action = (<Action<TimeoutSubscriber<T>>> this.scheduler.schedule<TimeoutSubscriber<T>>(
+      this.add(this.action = (<SchedulerAction<TimeoutSubscriber<T>>> this.scheduler.schedule<TimeoutSubscriber<T>>(
         TimeoutSubscriber.dispatchTimeout, this.waitFor, this
       )));
     }

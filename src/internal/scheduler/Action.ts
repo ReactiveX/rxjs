@@ -1,5 +1,6 @@
 import { Scheduler } from '../Scheduler';
 import { Subscription } from '../Subscription';
+import { SchedulerAction } from '../types';
 
 /**
  * A unit of work to be executed in a {@link Scheduler}. An action is typically
@@ -16,7 +17,7 @@ import { Subscription } from '../Subscription';
  * @class Action<T>
  */
 export class Action<T> extends Subscription {
-  constructor(scheduler: Scheduler, work: (this: Action<T>, state?: T) => void) {
+  constructor(scheduler: Scheduler, work: (this: SchedulerAction<T>, state?: T) => void) {
     super();
   }
   /**

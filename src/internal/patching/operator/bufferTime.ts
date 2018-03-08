@@ -1,13 +1,13 @@
-import { IScheduler } from '../../Scheduler';
+import { SchedulerLike } from '../../types';
 import { async } from '../../scheduler/async';
 import { Observable } from '../../Observable';
 import { isScheduler } from '../..//util/isScheduler';
 import { bufferTime as higherOrder } from '../../operators/bufferTime';
 
 /* tslint:disable:max-line-length */
-export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, scheduler?: IScheduler): Observable<T[]>;
-export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number, scheduler?: IScheduler): Observable<T[]>;
-export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number, maxBufferSize: number, scheduler?: IScheduler): Observable<T[]>;
+export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, scheduler?: SchedulerLike): Observable<T[]>;
+export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number, scheduler?: SchedulerLike): Observable<T[]>;
+export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number, maxBufferSize: number, scheduler?: SchedulerLike): Observable<T[]>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -56,7 +56,7 @@ export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, buffe
 export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number): Observable<T[]> {
   let length: number = arguments.length;
 
-  let scheduler: IScheduler = async;
+  let scheduler: SchedulerLike = async;
   if (isScheduler(arguments[arguments.length - 1])) {
     scheduler = arguments[arguments.length - 1];
     length--;

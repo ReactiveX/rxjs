@@ -1,4 +1,6 @@
 import { Observable } from './Observable';
+import { Action as _Action } from './scheduler/Action';
+import { Subscription } from './Subscription';
 
 /** OPERATOR INTERFACES */
 
@@ -82,4 +84,15 @@ export interface Observer<T> {
   next: (value: T) => void;
   error: (err: any) => void;
   complete: () => void;
+}
+
+/** SCHEDULER INTERFACES */
+
+export interface SchedulerLike {
+  now(): number;
+  schedule<T>(work: (this: SchedulerAction<T>, state?: T) => void, delay?: number, state?: T): Subscription;
+}
+
+export interface SchedulerAction<T> extends Subscription {
+  schedule(state?: T, delay?: number): Subscription;
 }

@@ -1,4 +1,4 @@
-import { IScheduler } from '../../Scheduler';
+import { SchedulerLike } from '../../types';
 import { async } from '../../scheduler/async';
 import { Observable } from '../../Observable';
 import { isNumeric } from '../..//util/isNumeric';
@@ -66,19 +66,19 @@ import { windowTime as higherOrder } from '../../operators/windowTime';
  * @owner Observable
  */
 export function windowTime<T>(this: Observable<T>, windowTimeSpan: number,
-                              scheduler?: IScheduler): Observable<Observable<T>>;
+                              scheduler?: SchedulerLike): Observable<Observable<T>>;
 export function windowTime<T>(this: Observable<T>, windowTimeSpan: number,
                               windowCreationInterval: number,
-                              scheduler?: IScheduler): Observable<Observable<T>>;
+                              scheduler?: SchedulerLike): Observable<Observable<T>>;
 export function windowTime<T>(this: Observable<T>, windowTimeSpan: number,
                               windowCreationInterval: number,
                               maxWindowSize: number,
-                              scheduler?: IScheduler): Observable<Observable<T>>;
+                              scheduler?: SchedulerLike): Observable<Observable<T>>;
 
 export function windowTime<T>(this: Observable<T>,
                               windowTimeSpan: number): Observable<Observable<T>> {
 
-  let scheduler: IScheduler = async;
+  let scheduler: SchedulerLike = async;
   let windowCreationInterval: number = null;
   let maxWindowSize: number = Number.POSITIVE_INFINITY;
 

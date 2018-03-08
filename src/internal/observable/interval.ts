@@ -1,9 +1,8 @@
 import { Observable } from '../Observable';
 import { async } from '../scheduler/async';
-import { IScheduler } from '../Scheduler';
+import { SchedulerAction, SchedulerLike } from '../types';
 import { isNumeric } from '../util/isNumeric';
 import { Subscriber } from '../Subscriber';
-import { Action } from '../scheduler/Action';
 
 /**
  * Creates an Observable that emits sequential numbers every specified
@@ -39,7 +38,7 @@ import { Action } from '../scheduler/Action';
  * @owner Observable
  */
 export function interval(period = 0,
-                         scheduler: IScheduler = async): Observable<number> {
+                         scheduler: SchedulerLike = async): Observable<number> {
   if (!isNumeric(period) || period < 0) {
     period = 0;
   }
@@ -56,7 +55,7 @@ export function interval(period = 0,
   });
 }
 
-function dispatch(this: Action<IntervalState>, state: IntervalState) {
+function dispatch(this: SchedulerAction<IntervalState>, state: IntervalState) {
   const { subscriber, counter, period } = state;
   subscriber.next(counter);
   this.schedule({ subscriber, counter: counter + 1, period }, period);

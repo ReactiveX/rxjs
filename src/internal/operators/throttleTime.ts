@@ -1,11 +1,10 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { IScheduler } from '../Scheduler';
 import { Subscription } from '../Subscription';
 import { async } from '../scheduler/async';
 import { Observable } from '../Observable';
 import { ThrottleConfig, defaultThrottleConfig } from './throttle';
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types';
 
 /**
  * Emits a value from the source Observable, then ignores subsequent source
@@ -47,14 +46,14 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @owner Observable
  */
 export function throttleTime<T>(duration: number,
-                                scheduler: IScheduler = async,
+                                scheduler: SchedulerLike = async,
                                 config: ThrottleConfig = defaultThrottleConfig): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new ThrottleTimeOperator(duration, scheduler, config.leading, config.trailing));
 }
 
 class ThrottleTimeOperator<T> implements Operator<T, T> {
   constructor(private duration: number,
-              private scheduler: IScheduler,
+              private scheduler: SchedulerLike,
               private leading: boolean,
               private trailing: boolean) {
   }
@@ -78,7 +77,7 @@ class ThrottleTimeSubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<T>,
               private duration: number,
-              private scheduler: IScheduler,
+              private scheduler: SchedulerLike,
               private leading: boolean,
               private trailing: boolean) {
     super(destination);

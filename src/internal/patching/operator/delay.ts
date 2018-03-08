@@ -1,5 +1,5 @@
 import { async } from '../../scheduler/async';
-import { IScheduler } from '../../Scheduler';
+import { SchedulerLike } from '../../types';
 import { Observable } from '../../Observable';
 import { delay as higherOrder } from '../../operators/delay';
 
@@ -43,6 +43,6 @@ import { delay as higherOrder } from '../../operators/delay';
  * @owner Observable
  */
 export function delay<T>(this: Observable<T>, delay: number|Date,
-                         scheduler: IScheduler = async): Observable<T> {
+                         scheduler: SchedulerLike = async): Observable<T> {
   return higherOrder<T>(delay, scheduler)(this);
 }

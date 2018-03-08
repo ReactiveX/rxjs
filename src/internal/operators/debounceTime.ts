@@ -1,10 +1,9 @@
 import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { IScheduler } from '../Scheduler';
 import { Subscription } from '../Subscription';
 import { async } from '../scheduler/async';
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types';
 
 /**
  * Emits a value from the source Observable only after a particular time span
@@ -52,12 +51,12 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @method debounceTime
  * @owner Observable
  */
-export function debounceTime<T>(dueTime: number, scheduler: IScheduler = async): MonoTypeOperatorFunction<T> {
+export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new DebounceTimeOperator(dueTime, scheduler));
 }
 
 class DebounceTimeOperator<T> implements Operator<T, T> {
-  constructor(private dueTime: number, private scheduler: IScheduler) {
+  constructor(private dueTime: number, private scheduler: SchedulerLike) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -77,7 +76,7 @@ class DebounceTimeSubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<T>,
               private dueTime: number,
-              private scheduler: IScheduler) {
+              private scheduler: SchedulerLike) {
     super(destination);
   }
 
