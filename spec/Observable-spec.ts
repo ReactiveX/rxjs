@@ -74,9 +74,7 @@ describe('Observable', () => {
     it('should allow Promise to be globally configured', (done) => {
       let wasCalled = false;
 
-      __root__.Rx = {};
-      __root__.Rx.config = {};
-      __root__.Rx.config.Promise = function MyPromise(callback: any) {
+      Rx.config.Promise = function MyPromise(callback: any) {
         wasCalled = true;
         return new Promise<number>(callback);
       };
@@ -85,7 +83,6 @@ describe('Observable', () => {
         expect(x).to.equal(42);
       }).then(() => {
         expect(wasCalled).to.be.true;
-        delete __root__.Rx;
         done();
       });
     });
