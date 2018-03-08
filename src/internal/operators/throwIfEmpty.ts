@@ -9,7 +9,7 @@ import { MonoTypeOperatorFunction } from '../types';
  *
  * @example
  *
- * const click$ = fromEvent(button, 'clicks');
+ * const click$ = fromEvent(button, 'click');
  *
  * clicks$.pipe(
  *   takeUntil(timer(1000)),
