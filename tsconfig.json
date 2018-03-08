@@ -8,7 +8,7 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "suppressImplicitAnyIndexErrors": true,
-    "moduleResolution": "node",
+    "moduleResolution": "classic", // we intentionally use "classic" module resolution to be SystemJS-compatible after transpilation
     "stripInternal": true,
     "target": "es5",
     "outDir": "./.out",

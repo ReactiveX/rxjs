@@ -176,7 +176,7 @@ import { rxSubscriber } from './symbol/rxSubscriber';
 import { iterator } from './symbol/iterator';
 import { observable } from './symbol/observable';
 
-import * as _operators from './operators';
+import * as _operators from './operators/index';
 
 export const operators = _operators;
 
