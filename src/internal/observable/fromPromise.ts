@@ -1,9 +1,9 @@
 import { Observable } from '../Observable';
-import { IScheduler } from '../Scheduler';
+import { SchedulerLike } from '../types';
 import { Subscription } from '../Subscription';
 import { subscribeToPromise } from '../util/subscribeToPromise';
 
-export function fromPromise<T>(input: PromiseLike<T>, scheduler?: IScheduler) {
+export function fromPromise<T>(input: PromiseLike<T>, scheduler?: SchedulerLike) {
   if (!scheduler) {
     return new Observable<T>(subscribeToPromise(input));
   } else {

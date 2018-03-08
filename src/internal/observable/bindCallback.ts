@@ -1,19 +1,18 @@
-import { IScheduler } from '../Scheduler';
+import { SchedulerLike, SchedulerAction } from '../types';
 import { Observable } from '../Observable';
 import { AsyncSubject } from '../AsyncSubject';
 import { Subscriber } from '../Subscriber';
-import { Action } from '../scheduler/Action';
 
 // tslint:disable:max-line-length
-export function bindCallback(callbackFunc: (callback: () => any) => any, scheduler?: IScheduler): () => Observable<void>;
-export function bindCallback<R>(callbackFunc: (callback: (result: R) => any) => any, scheduler?: IScheduler): () => Observable<R>;
-export function bindCallback<T, R>(callbackFunc: (v1: T, callback: (result: R) => any) => any, scheduler?: IScheduler): (v1: T) => Observable<R>;
-export function bindCallback<T, T2, R>(callbackFunc: (v1: T, v2: T2, callback: (result: R) => any) => any, scheduler?: IScheduler): (v1: T, v2: T2) => Observable<R>;
-export function bindCallback<T, T2, T3, R>(callbackFunc: (v1: T, v2: T2, v3: T3, callback: (result: R) => any) => any, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3) => Observable<R>;
-export function bindCallback<T, T2, T3, T4, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, callback: (result: R) => any) => any, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4) => Observable<R>;
-export function bindCallback<T, T2, T3, T4, T5, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, callback: (result: R) => any) => any, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => Observable<R>;
-export function bindCallback<T, T2, T3, T4, T5, T6, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, callback: (result: R) => any) => any, scheduler?: IScheduler): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => Observable<R>;
-export function bindCallback<T>(callbackFunc: Function, scheduler?: IScheduler): (...args: any[]) => Observable<T>;
+export function bindCallback(callbackFunc: (callback: () => any) => any, scheduler?: SchedulerLike): () => Observable<void>;
+export function bindCallback<R>(callbackFunc: (callback: (result: R) => any) => any, scheduler?: SchedulerLike): () => Observable<R>;
+export function bindCallback<T, R>(callbackFunc: (v1: T, callback: (result: R) => any) => any, scheduler?: SchedulerLike): (v1: T) => Observable<R>;
+export function bindCallback<T, T2, R>(callbackFunc: (v1: T, v2: T2, callback: (result: R) => any) => any, scheduler?: SchedulerLike): (v1: T, v2: T2) => Observable<R>;
+export function bindCallback<T, T2, T3, R>(callbackFunc: (v1: T, v2: T2, v3: T3, callback: (result: R) => any) => any, scheduler?: SchedulerLike): (v1: T, v2: T2, v3: T3) => Observable<R>;
+export function bindCallback<T, T2, T3, T4, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, callback: (result: R) => any) => any, scheduler?: SchedulerLike): (v1: T, v2: T2, v3: T3, v4: T4) => Observable<R>;
+export function bindCallback<T, T2, T3, T4, T5, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, callback: (result: R) => any) => any, scheduler?: SchedulerLike): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => Observable<R>;
+export function bindCallback<T, T2, T3, T4, T5, T6, R>(callbackFunc: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6, callback: (result: R) => any) => any, scheduler?: SchedulerLike): (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => Observable<R>;
+export function bindCallback<T>(callbackFunc: Function, scheduler?: SchedulerLike): (...args: any[]) => Observable<T>;
 // tslint:enable:max-line-length
 
 /**
@@ -127,7 +126,7 @@ export function bindCallback<T>(callbackFunc: Function, scheduler?: IScheduler):
  * @name bindCallback
  */
 export function bindCallback<T>(callbackFunc: Function,
-                                scheduler?: IScheduler): (...args: any[]) => Observable<T> {
+                                scheduler?: SchedulerLike): (...args: any[]) => Observable<T> {
   return function (this: any, ...args: any[]): Observable<T> {
     const context = this;
     let subject: AsyncSubject<T>;
@@ -171,12 +170,12 @@ interface DispatchState<T> {
 
 interface ParamsContext<T> {
   callbackFunc: Function;
-  scheduler: IScheduler;
+  scheduler: SchedulerLike;
   context: any;
   subject: AsyncSubject<T>;
 }
 
-function dispatch<T>(this: Action<DispatchState<T>>, state: DispatchState<T>) {
+function dispatch<T>(this: SchedulerAction<DispatchState<T>>, state: DispatchState<T>) {
   const self = this;
   const { args, subscriber, params } = state;
   const { callbackFunc, context, scheduler } = params;
@@ -204,7 +203,7 @@ interface NextState<T> {
   value: T;
 }
 
-function dispatchNext<T>(this: Action<NextState<T>>, state: NextState<T>) {
+function dispatchNext<T>(this: SchedulerAction<NextState<T>>, state: NextState<T>) {
   const { value, subject } = state;
   subject.next(value);
   subject.complete();
@@ -215,7 +214,7 @@ interface ErrorState<T> {
   err: any;
 }
 
-function dispatchError<T>(this: Action<ErrorState<T>>, state: ErrorState<T>) {
+function dispatchError<T>(this: SchedulerAction<ErrorState<T>>, state: ErrorState<T>) {
   const { err, subject } = state;
   subject.error(err);
 }

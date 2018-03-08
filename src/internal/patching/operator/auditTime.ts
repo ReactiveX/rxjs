@@ -1,5 +1,5 @@
 import { async } from '../../scheduler/async';
-import { IScheduler } from '../../Scheduler';
+import { SchedulerLike } from '../../types';
 import { Observable } from '../../Observable';
 import { auditTime as higherOrder } from '../../operators/auditTime';
 
@@ -45,6 +45,6 @@ import { auditTime as higherOrder } from '../../operators/auditTime';
  * @method auditTime
  * @owner Observable
  */
-export function auditTime<T>(this: Observable<T>, duration: number, scheduler: IScheduler = async): Observable<T> {
+export function auditTime<T>(this: Observable<T>, duration: number, scheduler: SchedulerLike = async): Observable<T> {
   return higherOrder(duration, scheduler)(this) as Observable<T>;
 }

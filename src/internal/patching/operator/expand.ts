@@ -1,11 +1,10 @@
 import { Observable } from '../../Observable';
-import { IScheduler } from '../../Scheduler';
 import { expand as higherOrder } from '../../operators/expand';
-import { ObservableInput } from '../../types';
+import { ObservableInput, SchedulerLike } from '../../types';
 
 /* tslint:disable:max-line-length */
-export function expand<T, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<R>, concurrent?: number, scheduler?: IScheduler): Observable<R>;
-export function expand<T>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<T>, concurrent?: number, scheduler?: IScheduler): Observable<T>;
+export function expand<T, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<R>, concurrent?: number, scheduler?: SchedulerLike): Observable<R>;
+export function expand<T>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<T>, concurrent?: number, scheduler?: SchedulerLike): Observable<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -55,7 +54,7 @@ export function expand<T>(this: Observable<T>, project: (value: T, index: number
  */
 export function expand<T, R>(this: Observable<T>, project: (value: T, index: number) => ObservableInput<R>,
                              concurrent: number = Number.POSITIVE_INFINITY,
-                             scheduler: IScheduler = undefined): Observable<R> {
+                             scheduler: SchedulerLike = undefined): Observable<R> {
   concurrent = (concurrent || 0) < 1 ? Number.POSITIVE_INFINITY : concurrent;
 
   return higherOrder(project, concurrent, scheduler)(this);

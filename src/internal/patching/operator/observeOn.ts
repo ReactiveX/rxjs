@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { IScheduler } from '../../Scheduler';
+import { SchedulerLike } from '../../types';
 import { observeOn as higherOrder } from '../../operators/observeOn';
 
 /**
@@ -40,7 +40,7 @@ import { observeOn as higherOrder } from '../../operators/observeOn';
  *
  * @see {@link delay}
  *
- * @param {IScheduler} scheduler Scheduler that will be used to reschedule notifications from source Observable.
+ * @param {SchedulerLike} scheduler Scheduler that will be used to reschedule notifications from source Observable.
  * @param {number} [delay] Number of milliseconds that states with what delay every notification should be rescheduled.
  * @return {Observable<T>} Observable that emits the same notifications as the source Observable,
  * but with provided scheduler.
@@ -48,6 +48,6 @@ import { observeOn as higherOrder } from '../../operators/observeOn';
  * @method observeOn
  * @owner Observable
  */
-export function observeOn<T>(this: Observable<T>, scheduler: IScheduler, delay: number = 0): Observable<T> {
+export function observeOn<T>(this: Observable<T>, scheduler: SchedulerLike, delay: number = 0): Observable<T> {
   return higherOrder(scheduler, delay)(this) as Observable<T>;
 }

@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { IScheduler } from '../../Scheduler';
+import { SchedulerLike } from '../../types';
 import { async } from '../../scheduler/async';
 import { ThrottleConfig, defaultThrottleConfig } from '../../operators/throttle';
 import { throttleTime as higherOrder } from '../../operators/throttleTime';
@@ -45,7 +45,7 @@ import { throttleTime as higherOrder } from '../../operators/throttleTime';
  */
 export function throttleTime<T>(this: Observable<T>,
                                 duration: number,
-                                scheduler: IScheduler = async,
+                                scheduler: SchedulerLike = async,
                                 config: ThrottleConfig = defaultThrottleConfig): Observable<T> {
   return higherOrder(duration, scheduler, config)(this) as Observable<T>;
 }

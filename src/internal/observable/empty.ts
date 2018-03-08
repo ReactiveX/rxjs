@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { IScheduler } from '../Scheduler';
+import { SchedulerLike } from '../types';
 
 /**
  * The same Observable instance returned by any call to {@link empty} without a
@@ -50,10 +50,10 @@ export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
  * @name empty
  * @owner Observable
  */
-export function empty(scheduler?: IScheduler) {
+export function empty(scheduler?: SchedulerLike) {
   return scheduler ? emptyScheduled(scheduler) : EMPTY;
 }
 
-export function emptyScheduled(scheduler: IScheduler) {
+export function emptyScheduled(scheduler: SchedulerLike) {
   return new Observable<never>(subscriber => scheduler.schedule(() => subscriber.complete()));
 }

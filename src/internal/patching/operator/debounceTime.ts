@@ -1,6 +1,6 @@
 
 import { Observable } from '../../Observable';
-import { IScheduler } from '../../Scheduler';
+import { SchedulerLike } from '../../types';
 import { async } from '../../scheduler/async';
 import { debounceTime as higherOrder } from '../../operators/debounceTime';
 
@@ -50,6 +50,6 @@ import { debounceTime as higherOrder } from '../../operators/debounceTime';
  * @method debounceTime
  * @owner Observable
  */
-export function debounceTime<T>(this: Observable<T>, dueTime: number, scheduler: IScheduler = async): Observable<T> {
+export function debounceTime<T>(this: Observable<T>, dueTime: number, scheduler: SchedulerLike = async): Observable<T> {
   return higherOrder(dueTime, scheduler)(this) as Observable<T>;
 }

@@ -1,15 +1,15 @@
-import { IScheduler } from '../../Scheduler';
+import { SchedulerLike } from '../../types';
 import { Observable } from '../../Observable';
 import { startWith as higherOrder } from '../../operators/startWith';
 
 /* tslint:disable:max-line-length */
-export function startWith<T>(this: Observable<T>, v1: T, scheduler?: IScheduler): Observable<T>;
-export function startWith<T>(this: Observable<T>, v1: T, v2: T, scheduler?: IScheduler): Observable<T>;
-export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, scheduler?: IScheduler): Observable<T>;
-export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, v4: T, scheduler?: IScheduler): Observable<T>;
-export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, v4: T, v5: T, scheduler?: IScheduler): Observable<T>;
-export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, v4: T, v5: T, v6: T, scheduler?: IScheduler): Observable<T>;
-export function startWith<T>(this: Observable<T>, ...array: Array<T | IScheduler>): Observable<T>;
+export function startWith<T>(this: Observable<T>, v1: T, scheduler?: SchedulerLike): Observable<T>;
+export function startWith<T>(this: Observable<T>, v1: T, v2: T, scheduler?: SchedulerLike): Observable<T>;
+export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, scheduler?: SchedulerLike): Observable<T>;
+export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, v4: T, scheduler?: SchedulerLike): Observable<T>;
+export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, v4: T, v5: T, scheduler?: SchedulerLike): Observable<T>;
+export function startWith<T>(this: Observable<T>, v1: T, v2: T, v3: T, v4: T, v5: T, v6: T, scheduler?: SchedulerLike): Observable<T>;
+export function startWith<T>(this: Observable<T>, ...array: Array<T | SchedulerLike>): Observable<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -26,6 +26,6 @@ export function startWith<T>(this: Observable<T>, ...array: Array<T | IScheduler
  * @method startWith
  * @owner Observable
  */
-export function startWith<T>(this: Observable<T>, ...array: Array<T | IScheduler>): Observable<T> {
+export function startWith<T>(this: Observable<T>, ...array: Array<T | SchedulerLike>): Observable<T> {
   return higherOrder(...array)(this);
 }

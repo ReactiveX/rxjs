@@ -1,12 +1,10 @@
 import { async } from '../scheduler/async';
 import { isDate } from '../util/isDate';
 import { Operator } from '../Operator';
-import { IScheduler } from '../Scheduler';
 import { Subscriber } from '../Subscriber';
-import { Action } from '../scheduler/Action';
 import { Notification } from '../Notification';
 import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, PartialObserver, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, PartialObserver, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
 
 /**
  * Delays the emission of items from the source Observable by a given timeout or
@@ -48,7 +46,7 @@ import { MonoTypeOperatorFunction, PartialObserver, TeardownLogic } from '../typ
  * @owner Observable
  */
 export function delay<T>(delay: number|Date,
-                         scheduler: IScheduler = async): MonoTypeOperatorFunction<T> {
+                         scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
   const absoluteDelay = isDate(delay);
   const delayFor = absoluteDelay ? (+delay - scheduler.now()) : Math.abs(<number>delay);
   return (source: Observable<T>) => source.lift(new DelayOperator(delayFor, scheduler));
@@ -56,7 +54,7 @@ export function delay<T>(delay: number|Date,
 
 class DelayOperator<T> implements Operator<T, T> {
   constructor(private delay: number,
-              private scheduler: IScheduler) {
+              private scheduler: SchedulerLike) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -67,7 +65,7 @@ class DelayOperator<T> implements Operator<T, T> {
 interface DelayState<T> {
   source: DelaySubscriber<T>;
   destination: PartialObserver<T>;
-  scheduler: IScheduler;
+  scheduler: SchedulerLike;
 }
 
 /**
@@ -80,7 +78,7 @@ class DelaySubscriber<T> extends Subscriber<T> {
   private active: boolean = false;
   private errored: boolean = false;
 
-  private static dispatch<T>(this: Action<DelayState<T>>, state: DelayState<T>): void {
+  private static dispatch<T>(this: SchedulerAction<DelayState<T>>, state: DelayState<T>): void {
     const source = state.source;
     const queue = source.queue;
     const scheduler = state.scheduler;
@@ -100,11 +98,11 @@ class DelaySubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<T>,
               private delay: number,
-              private scheduler: IScheduler) {
+              private scheduler: SchedulerLike) {
     super(destination);
   }
 
-  private _schedule(scheduler: IScheduler): void {
+  private _schedule(scheduler: SchedulerLike): void {
     this.active = true;
     this.add(scheduler.schedule<DelayState<T>>(DelaySubscriber.dispatch, this.delay, {
       source: this, destination: this.destination, scheduler: scheduler

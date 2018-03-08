@@ -1,5 +1,5 @@
 import { async } from '../../scheduler/async';
-import { IScheduler } from '../../Scheduler';
+import { SchedulerLike } from '../../types';
 import { Observable } from '../../Observable';
 import { timeout as higherOrder } from '../../operators/timeout';
 
@@ -70,6 +70,6 @@ import { timeout as higherOrder } from '../../operators/timeout';
  */
 export function timeout<T>(this: Observable<T>,
                            due: number | Date,
-                           scheduler: IScheduler = async): Observable<T> {
+                           scheduler: SchedulerLike = async): Observable<T> {
   return higherOrder(due, scheduler)(this) as Observable<T>;
 }

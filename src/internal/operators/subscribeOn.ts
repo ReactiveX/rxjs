@@ -1,9 +1,8 @@
 import { Operator } from '../Operator';
-import { IScheduler } from '../Scheduler';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { SubscribeOnObservable } from '../observable/SubscribeOnObservable';
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types';
 
 /**
  * Asynchronously subscribes Observers to this Observable on the specified IScheduler.
@@ -16,14 +15,14 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @method subscribeOn
  * @owner Observable
  */
-export function subscribeOn<T>(scheduler: IScheduler, delay: number = 0): MonoTypeOperatorFunction<T> {
+export function subscribeOn<T>(scheduler: SchedulerLike, delay: number = 0): MonoTypeOperatorFunction<T> {
   return function subscribeOnOperatorFunction(source: Observable<T>): Observable<T> {
     return source.lift(new SubscribeOnOperator<T>(scheduler, delay));
   };
 }
 
 class SubscribeOnOperator<T> implements Operator<T, T> {
-  constructor(private scheduler: IScheduler,
+  constructor(private scheduler: SchedulerLike,
               private delay: number) {
   }
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {

@@ -1,10 +1,8 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { IScheduler } from '../Scheduler';
-import { Action } from '../scheduler/Action';
 import { async } from '../scheduler/async';
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
 
 /**
  * Emits the most recently emitted value from the source Observable within
@@ -42,13 +40,13 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @method sampleTime
  * @owner Observable
  */
-export function sampleTime<T>(period: number, scheduler: IScheduler = async): MonoTypeOperatorFunction<T> {
+export function sampleTime<T>(period: number, scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new SampleTimeOperator(period, scheduler));
 }
 
 class SampleTimeOperator<T> implements Operator<T, T> {
   constructor(private period: number,
-              private scheduler: IScheduler) {
+              private scheduler: SchedulerLike) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -67,7 +65,7 @@ class SampleTimeSubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<T>,
               private period: number,
-              private scheduler: IScheduler) {
+              private scheduler: SchedulerLike) {
     super(destination);
     this.add(scheduler.schedule(dispatchNotification, period, { subscriber: this, period }));
   }
@@ -85,7 +83,7 @@ class SampleTimeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function dispatchNotification<T>(this: Action<any>, state: any) {
+function dispatchNotification<T>(this: SchedulerAction<any>, state: any) {
   let { subscriber, period } = state;
   subscriber.notifyNext();
   this.schedule(state, period);
