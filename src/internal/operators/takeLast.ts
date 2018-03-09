@@ -23,7 +23,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  *
  * @example <caption>Take the last 3 values of an Observable with many values</caption>
  * var many = Rx.Observable.range(1, 100);
- * var lastThree = many.takeLast(3);
+ * var lastThree = many.pipe(takeLast(3));
  * lastThree.subscribe(x => console.log(x));
  *
  * @see {@link take}

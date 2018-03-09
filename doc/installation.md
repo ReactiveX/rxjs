@@ -16,10 +16,10 @@ To import only what you need by patching (this is useful for size-sensitive bund
 
 ```js
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/map';
+import { of } from 'rxjs/observable/of';
+import { map } from 'rxjs/operators/map';
 
-Observable.of(1, 2, 3).map(x => x + '!!!'); // etc
+Observable.of(1, 2, 3).pipe(map(x => x + '!!!')); // etc
 ```
 
 To import what you need and use it with proposed [bind operator](https://github.com/tc39/proposal-bind-operator):
@@ -29,9 +29,9 @@ To import what you need and use it with proposed [bind operator](https://github.
 ```js
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { map } from 'rxjs/operator/map';
+import { map } from 'rxjs/operators/map';
 
-Observable::of(1, 2, 3)::map(x => x + '!!!'); // etc
+Observable::of(1, 2, 3)::pipe(map(x => x + '!!!')); // etc
 ```
 
 ## CommonJS via npm
@@ -53,17 +53,17 @@ Import only what you need and patch Observable (this is useful in size-sensitive
 ```js
 var Observable = require('rxjs/Observable').Observable;
 // Patch Observable with appropriate methods.
-require('rxjs/add/observable/of');
-require('rxjs/add/operator/map');
+require('rxjs/observable/of');
+require('rxjs/operators/map');
 
-Observable.of(1, 2, 3).map(function (x) { return x + '!!!'; }); // etc
+Observable.of(1, 2, 3).pipe(map(function (x) { return x + '!!!'; })); // etc
 ```
 
 Import operators and use them _manually_ (this is also useful for bundling):
 
 ```js
 var of = require('rxjs/observable/of').of;
-var map = require('rxjs/operator/map').map;
+var map = require('rxjs/operators/map').map;
 
 map.call(of(1, 2, 3), function (x) { return x + '!!!'; });
 ```
