@@ -18,12 +18,12 @@ try {
 
 
 const ROOT = 'dist/';
-const CJS_ROOT = ROOT + 'cjs/';
-const ESM5_ROOT = ROOT + 'esm5/';
-const ESM2015_ROOT = ROOT + 'esm2015/';
-const UMD_ROOT = ROOT + 'global/';
+const CJS_ROOT = ROOT + 'cjs/dist/src/';
+const ESM5_ROOT = ROOT + 'esm5/dist/src/';
+const ESM2015_ROOT = ROOT + 'esm2015/dist/src/';
+const UMD_ROOT = ROOT + 'global/dist/src/';
 const LEGACY_REEXPORT_ROOT = ROOT + "legacy-reexport/legacy-reexport/"
-const TYPE_ROOT = ROOT + 'typings/';
+const TYPE_ROOT = ROOT + 'typings/dist/src/';
 const PKG_ROOT = ROOT + 'package/';
 const CJS_PKG = PKG_ROOT + '';
 const ESM5_PKG = PKG_ROOT + '_esm5/';
