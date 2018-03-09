@@ -1,5 +1,4 @@
-import { Observable } from 'rxjs';
-import { defer as staticDefer } from 'rxjs/observable/defer';
+import { Observable, defer as staticDefer } from 'rxjs';
 
 Observable.defer = staticDefer;
 

@@ -1,6 +1,6 @@
 
-import { isArray } from 'rxjs/util/isArray';
-import { subscribeToResult } from 'rxjs/util/subscribeToResult';
+import { isArray } from 'rxjs/internal/util/isArray';
+import { subscribeToResult } from 'rxjs/internal/util/subscribeToResult';
 import { Observable, ObservableInput, Operator, OperatorFunction, from } from 'rxjs';
 import { CombineLatestOperator } from 'rxjs/internal/observable/combineLatest';
 

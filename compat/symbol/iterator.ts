@@ -1,1 +1,1 @@
-export * from 'rxjs/symbol/iterator';
+export * from 'rxjs/internal/symbol/iterator';

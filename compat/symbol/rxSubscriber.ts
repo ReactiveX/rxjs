@@ -1,1 +1,1 @@
-export * from 'rxjs/symbol/rxSubscriber';
+export * from 'rxjs/internal/symbol/rxSubscriber';

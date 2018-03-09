@@ -1,1 +1,1 @@
-export * from 'rxjs/symbol/observable';
+export * from 'rxjs/internal/symbol/observable';

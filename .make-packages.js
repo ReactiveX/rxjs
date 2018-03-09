@@ -53,14 +53,14 @@ let rootPackageJson = Object.assign({}, pkg, {
 // functionality requires that the most broad mapping (rxjs/operators) be at
 // the end of the alias mapping object. Created Webpack issue:
 // https://github.com/webpack/webpack/issues/5870
-const fileNames = klawSync(CJS_ROOT, {
+const fileNames = klawSync(LEGACY_REEXPORT_ROOT, {
   nodir: true,
   filter: function(item) {
     return item.path.endsWith('.js');
   }
 })
 .map(item => item.path)
-.map(path => path.slice((`${__dirname}/${CJS_ROOT}`).length))
+.map(path => path.slice((`${__dirname}/${LEGACY_REEXPORT_ROOT}`).length))
 .sort().reverse();
 
 // Execute build optimizer transforms on ESM5 files
@@ -149,7 +149,7 @@ function copySources(rootDir, packageDir, ignoreMissing) {
 function createImportTargets(importTargets, targetName, targetDirectory) {
   const importMap = {};
   for (const x in importTargets) {
-    importMap['rxjs/' + x] = 'rxjs/' + targetName + importTargets[x];
+    importMap['rxjs/' + x] = ('rxjs-compat/' + targetName + importTargets[x]).replace(/\.js$/, '');
   }
 
   const outputData =
@@ -160,7 +160,7 @@ var path = require('path');
 var dir = path.resolve(__dirname);
 
 module.exports = function() {
-  return ${JSON.stringify(importMap, null, 4).replace(/(: )"rxjs\/_esm(5|2015)\/(.+")(,?)/g, "$1path.join(dir, \"$3)$4")};
+  return ${JSON.stringify(importMap, null, 4)};
 }
 `
 
