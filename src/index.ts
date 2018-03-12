@@ -2,6 +2,7 @@
 export { Observable } from './internal/Observable';
 export { ConnectableObservable } from './internal/observable/ConnectableObservable';
 export { Operator } from './internal/Operator';
+export { observable } from './internal/symbol/observable';
 
 /* Subjects */
 export { Subject } from './internal/Subject';
