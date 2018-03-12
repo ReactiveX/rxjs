@@ -4,12 +4,15 @@
     "noEmit": false
   },
   "files": [
-    "../dist/src/internal/Rx.ts",
-    "../dist/src/add/observable/of.ts",
+    // entry-points
     "../dist/src/index.ts",
-    "../dist/src/operators.ts",
-    "../dist/src/ajax.ts",
-    "../dist/src/websocket.ts",
-    "../dist/src/testing.ts"
+    "../dist/src/ajax/index.ts",
+    "../dist/src/operators/index.ts",
+    "../dist/src/testing/index.ts",
+    "../dist/src/websocket/index.ts",
+
+    // legacy entry-points
+    "../dist/src/internal/Rx.ts",
+    "../dist/src/add/observable/of.ts"
   ]
 }
