@@ -69,72 +69,75 @@ if (!messageConventionValid) {
   markdown('> (' + errorCount + ') : RxJS uses conventional change log to generate changelog automatically. It seems some of commit messages are not following those, please check [contributing guideline](https://github.com/ReactiveX/rxjs/blob/master/CONTRIBUTING.md#commit-message-format) and update commit messages.');
 }
 
-function getKB(size) {
-  return (size / 1024).toFixed(1);
-}
+// TODO(benlesh): update script to run against proper global files
+// The name has changed to `rxjs.umd.js` from `Rx.js`
 
-function getFormattedKB(size) {
-  if (size < 0) {
-    return '-' + size.toString();
-  } else if (size > 0) {
-    return '+' + size.toString();
-  }
-  return size.toString();
-}
+// function getKB(size) {
+//   return (size / 1024).toFixed(1);
+// }
 
-var globalFile = 'Rx.js';
-var minFile = 'Rx.min.js';
+// function getFormattedKB(size) {
+//   if (size < 0) {
+//     return '-' + size.toString();
+//   } else if (size > 0) {
+//     return '+' + size.toString();
+//   }
+//   return size.toString();
+// }
 
-function sizeDiffBadge(name, value) {
-  var color = 'lightgrey';
-  if (value > 0) {
-    color = 'red';
-  } else if (value < 0) {
-    color = 'green';
-  }
-  return 'https://img.shields.io/badge/' + name + '-' + getFormattedKB(getKB(value)) + 'KB-' + color + '.svg?style=flat-square';
-}
+// var globalFile = 'Rx.js';
+// var minFile = 'Rx.min.js';
 
-//post size of build
-schedule(new Promise(function (res) {
-  getSize('./dist/cjs', function (e, result) {
-    var localGlobalFile = path.resolve('./dist/global', globalFile);
-    var localMinFile = path.resolve('./dist/global', minFile);
+// function sizeDiffBadge(name, value) {
+//   var color = 'lightgrey';
+//   if (value > 0) {
+//     color = 'red';
+//   } else if (value < 0) {
+//     color = 'green';
+//   }
+//   return 'https://img.shields.io/badge/' + name + '-' + getFormattedKB(getKB(value)) + 'KB-' + color + '.svg?style=flat-square';
+// }
 
-    //get sizes of PR build
-    var global = fs.statSync(localGlobalFile);
-    var global_gzip = gzipSize.sync(fs.readFileSync(localGlobalFile, 'utf8'));
-    var min = fs.statSync(localMinFile);
-    var min_gzip = gzipSize.sync(fs.readFileSync(localMinFile, 'utf8'));
+// //post size of build
+// schedule(new Promise(function (res) {
+//   getSize('./dist/cjs', function (e, result) {
+//     var localGlobalFile = path.resolve('./dist/global', globalFile);
+//     var localMinFile = path.resolve('./dist/global', minFile);
 
-    //resolve path to release build
-    var releasePath = path.dirname(require.resolve(require.resolve('rxjs')));
-    var bundlePath = path.resolve(releasePath, 'bundles');
-    var bundleGlobalFile = path.resolve(bundlePath, globalFile);
-    var bundleMinFile = path.resolve(bundlePath, minFile);
+//     //get sizes of PR build
+//     var global = fs.statSync(localGlobalFile);
+//     var global_gzip = gzipSize.sync(fs.readFileSync(localGlobalFile, 'utf8'));
+//     var min = fs.statSync(localMinFile);
+//     var min_gzip = gzipSize.sync(fs.readFileSync(localMinFile, 'utf8'));
 
-    var packagePath = path.resolve(releasePath, 'package.json');
-    var releaseVersion = require(packagePath).version;
+//     //resolve path to release build
+//     var releasePath = path.dirname(require.resolve(require.resolve('rxjs')));
+//     var bundlePath = path.resolve(releasePath, 'bundles');
+//     var bundleGlobalFile = path.resolve(bundlePath, globalFile);
+//     var bundleMinFile = path.resolve(bundlePath, minFile);
 
-    //get sizes of release build
-    var bundleGlobal = fs.statSync(bundleGlobalFile);
-    var bundle_global_gzip = gzipSize.sync(fs.readFileSync(bundleGlobalFile, 'utf8'));
-    var bundleMin = fs.statSync(bundleMinFile);
-    var bundle_min_gzip = gzipSize.sync(fs.readFileSync(bundleMinFile, 'utf8'));
+//     var packagePath = path.resolve(releasePath, 'package.json');
+//     var releaseVersion = require(packagePath).version;
 
-    var sizeMessage = '<img src="https://img.shields.io/badge/Size%20Diff%20%28' + releaseVersion + '%29--lightgrey.svg?style=flat-square"/>  ';
-    sizeMessage += '<img src="' + sizeDiffBadge('Global', global.size - bundleGlobal.size) + '"/> ';
-    sizeMessage += '<img src="' + sizeDiffBadge('Global(gzip)', global_gzip - bundle_global_gzip) + '"/> ';
-    sizeMessage += '<img src="' + sizeDiffBadge('Min', min.size - bundleMin.size) + '"/> ';
-    sizeMessage += '<img src="' + sizeDiffBadge('Min (gzip)', min_gzip - bundle_min_gzip) + '"/> ';
-    message(sizeMessage);
+//     //get sizes of release build
+//     var bundleGlobal = fs.statSync(bundleGlobalFile);
+//     var bundle_global_gzip = gzipSize.sync(fs.readFileSync(bundleGlobalFile, 'utf8'));
+//     var bundleMin = fs.statSync(bundleMinFile);
+//     var bundle_min_gzip = gzipSize.sync(fs.readFileSync(bundleMinFile, 'utf8'));
 
-    markdown('> CJS: **' + getKB(result) +
-      '**KB, global: **' + getKB(global.size) +
-      '**KB (gzipped: **' + getKB(global_gzip) +
-      '**KB), min: **' + getKB(min.size) +
-      '**KB (gzipped: **' + getKB(min_gzip) + '**KB)');
+//     var sizeMessage = '<img src="https://img.shields.io/badge/Size%20Diff%20%28' + releaseVersion + '%29--lightgrey.svg?style=flat-square"/>  ';
+//     sizeMessage += '<img src="' + sizeDiffBadge('Global', global.size - bundleGlobal.size) + '"/> ';
+//     sizeMessage += '<img src="' + sizeDiffBadge('Global(gzip)', global_gzip - bundle_global_gzip) + '"/> ';
+//     sizeMessage += '<img src="' + sizeDiffBadge('Min', min.size - bundleMin.size) + '"/> ';
+//     sizeMessage += '<img src="' + sizeDiffBadge('Min (gzip)', min_gzip - bundle_min_gzip) + '"/> ';
+//     message(sizeMessage);
 
-    res();
-  });
-}));
+//     markdown('> CJS: **' + getKB(result) +
+//       '**KB, global: **' + getKB(global.size) +
+//       '**KB (gzipped: **' + getKB(global_gzip) +
+//       '**KB), min: **' + getKB(min.size) +
+//       '**KB (gzipped: **' + getKB(min_gzip) + '**KB)');
+
+//     res();
+//   });
+// }));

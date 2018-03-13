@@ -10,7 +10,7 @@ var path = require('path');
 var tslib = require('tslib');
 
 rollup.rollup({
-  entry: 'dist/esm5_for_rollup/internal/Rx.js',
+  entry: 'dist/esm5_for_rollup/internal/umd.js',
   plugins: [
     rollupNodeResolve({
       jsnext: true,
@@ -25,10 +25,10 @@ rollup.rollup({
 }).then(function (bundle) {
   var result = bundle.generate({
     format: 'umd',
-    moduleName: 'Rx',
+    moduleName: 'rxjs',
     sourceMap: true
   });
 
-  fs.writeFileSync('dist/global/Rx.js', result.code);
-  fs.writeFileSync('dist/global/Rx.js.map', result.map);
+  fs.writeFileSync('dist/global/rxjs.umd.js', result.code);
+  fs.writeFileSync('dist/global/rxjs.umd.js.map', result.map);
 });

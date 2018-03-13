@@ -112,10 +112,10 @@ fs.copySync('src/testing/package.json', PKG_ROOT + '/testing/package.json');
 if (fs.existsSync(UMD_ROOT)) {
   fs.copySync(UMD_ROOT, UMD_PKG);
   // Add licenses to tops of bundles
-  addLicenseToFile('LICENSE.txt', UMD_PKG + 'Rx.js');
-  addLicenseTextToFile(license, UMD_PKG + 'Rx.min.js');
-  addLicenseToFile('LICENSE.txt', UMD_PKG + 'Rx.js');
-  addLicenseTextToFile(license, UMD_PKG + 'Rx.min.js');
+  addLicenseToFile('LICENSE.txt', UMD_PKG + 'rxjs.umd.js');
+  addLicenseTextToFile(license, UMD_PKG + 'rxjs.umd.min.js');
+  addLicenseToFile('LICENSE.txt', UMD_PKG + 'rxjs.umd.js');
+  addLicenseTextToFile(license, UMD_PKG + 'rxjs.umd.min.js');
 }
 
 function copySources(rootDir, packageDir, ignoreMissing) {
