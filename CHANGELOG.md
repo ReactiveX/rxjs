@@ -1,3 +1,14 @@
+<a name="5.5.7"></a>
+## [5.5.7](https://github.com/ReactiveX/RxJS/compare/5.5.6...5.5.7) (2018-03-13)
+
+
+### Bug Fixes
+
+* **fromEvent:** pass options in unsubscribe ([#3413](https://github.com/ReactiveX/RxJS/issues/3413)) ([d287218](https://github.com/ReactiveX/RxJS/commit/d287218))
+* **toArray:** do not mutate array per subscription ([#3335](https://github.com/ReactiveX/RxJS/issues/3335)) ([e2cd3a2](https://github.com/ReactiveX/RxJS/commit/e2cd3a2))
+
+
+
 <a name="5.5.6"></a>
 ## [5.5.6](https://github.com/ReactiveX/RxJS/compare/5.5.5...v5.5.6) (2017-12-21)
 
