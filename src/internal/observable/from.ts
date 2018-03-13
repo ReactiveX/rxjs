@@ -1,14 +1,14 @@
 import { Observable } from '../Observable';
 import { isPromise } from '../util/isPromise';
 import { isArrayLike } from '../util/isArrayLike';
-import { isObservable } from '../util/isObservable';
+import { isObservableLike } from '../util/isObservableLike';
 import { isIterable } from '../util/isIterable';
 import { fromArray } from './fromArray';
 import { fromPromise } from './fromPromise';
 import { fromIterable } from './fromIterable';
-import { fromObservable } from './fromObservable';
+import { fromObservableLike } from './fromObservable';
 import { subscribeTo } from '../util/subscribeTo';
-import { ObservableInput, SchedulerLike } from '../types';
+import { ObservableInput, SchedulerLike, ObservableLike } from '../types';
 
 export function from<T>(input: ObservableInput<T>, scheduler?: SchedulerLike): Observable<T>;
 export function from<T>(input: ObservableInput<ObservableInput<T>>, scheduler?: SchedulerLike): Observable<Observable<T>>;
@@ -21,8 +21,11 @@ export function from<T>(input: ObservableInput<T>, scheduler?: SchedulerLike): O
   }
 
   if (input != null) {
-    if (isObservable(input)) {
-      return fromObservable(input, scheduler);
+    // We need to check both instanceof and isObservableLike because
+    // Symbol.observable might not be polyfilled.
+    if (input instanceof Observable || isObservableLike(input)) {
+      // HACK(benlesh): Typings around Symbol.observable get tricky here.
+      return fromObservableLike(input as ObservableLike<T>, scheduler);
     } else if (isPromise(input)) {
       return fromPromise(input, scheduler);
     } else if (isArrayLike(input)) {

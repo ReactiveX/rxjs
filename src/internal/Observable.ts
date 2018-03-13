@@ -1,7 +1,7 @@
 import { Operator } from './Operator';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
-import { TeardownLogic } from './types';
+import { TeardownLogic, ObservableLike } from './types';
 import { toSubscriber } from './util/toSubscriber';
 import { iif } from './observable/iif';
 import { observable as Symbol_observable } from '../internal/symbol/observable';
