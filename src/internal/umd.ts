@@ -3,20 +3,20 @@
  */
 
 /* rxjs */
-export * from '../';
+export * from '../index';
 
 /* rxjs.operators */
-import * as _operators from '../operators';
+import * as _operators from '../operators/index';
 export const operators = _operators;
 
 /* rxjs.testing */
-import * as _testing from '../testing';
+import * as _testing from '../testing/index';
 export const testing = _testing;
 
 /* rxjs.ajax */
-import * as _ajax from '../ajax';
+import * as _ajax from '../ajax/index';
 export const ajax = _ajax;
 
 /* rxjs.websocket */
-import * as _websocket from '../websocket';
+import * as _websocket from '../websocket/index';
 export const websocket = _websocket;
