@@ -157,21 +157,10 @@ export {
 
 export {TestScheduler} from 'rxjs/testing';
 
-export { Operator } from 'rxjs/internal/Operator';
-export { Subscriber } from 'rxjs/internal/Subscriber';
-export { AsyncSubject } from 'rxjs/internal/AsyncSubject';
-export { ConnectableObservable } from 'rxjs/internal/observable/ConnectableObservable';
-export { TimeoutError } from 'rxjs/internal/util/TimeoutError';
-export { TimeInterval } from 'rxjs/internal/patching/operator/timeInterval';
-export { Timestamp } from 'rxjs/internal/operators/timestamp';
-export { VirtualTimeScheduler } from 'rxjs/internal/scheduler/VirtualTimeScheduler';
-export { AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError } from 'rxjs/internal/observable/dom/AjaxObservable';
-import { AsapScheduler } from 'rxjs/internal/scheduler/AsapScheduler';
-import { AsyncScheduler } from 'rxjs/internal/scheduler/AsyncScheduler';
-import { QueueScheduler } from 'rxjs/internal/scheduler/QueueScheduler';
-import { AnimationFrameScheduler } from 'rxjs/internal/scheduler/AnimationFrameScheduler';
+export { Operator, Subscriber, AsyncSubject, ConnectableObservable, TimeoutError, TimeInterval, Timestamp, VirtualTimeScheduler } from 'rxjs';
+export { AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError } from 'rxjs/ajax';
 
-import { asapScheduler, asyncScheduler, queueScheduler, animationFrameScheduler } from 'rxjs';
+import { asapScheduler, asyncScheduler, queueScheduler, animationFrameScheduler, SchedulerLike } from 'rxjs';
 
 import { rxSubscriber } from 'rxjs/internal/symbol/rxSubscriber';
 import { iterator } from 'rxjs/internal/symbol/iterator';
@@ -197,10 +186,10 @@ export const operators = _operators;
  * Use this for synchronizing with the platform's painting
  */
 let Scheduler = {
-  asap: asapScheduler,
-  queue: queueScheduler,
-  animationFrame: animationFrameScheduler,
-  async: asyncScheduler
+  asap: asapScheduler as SchedulerLike,
+  queue: queueScheduler as SchedulerLike,
+  animationFrame: animationFrameScheduler as SchedulerLike,
+  async: asyncScheduler as SchedulerLike
 };
 
 /**

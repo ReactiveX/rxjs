@@ -18,12 +18,12 @@ try {
 
 
 const ROOT = 'dist/';
-const CJS_ROOT = ROOT + 'cjs/dist/src/';
-const ESM5_ROOT = ROOT + 'esm5/dist/src/';
-const ESM2015_ROOT = ROOT + 'esm2015/dist/src/';
-const UMD_ROOT = ROOT + 'global/dist/src/';
+const CJS_ROOT = ROOT + 'cjs/';
+const ESM5_ROOT = ROOT + 'esm5/';
+const ESM2015_ROOT = ROOT + 'esm2015/';
+const UMD_ROOT = ROOT + 'global/';
 const LEGACY_REEXPORT_ROOT = ROOT + "legacy-reexport/legacy-reexport/"
-const TYPE_ROOT = ROOT + 'typings/dist/src/';
+const TYPE_ROOT = ROOT + 'typings/';
 const PKG_ROOT = ROOT + 'package/';
 const CJS_PKG = PKG_ROOT + '';
 const ESM5_PKG = PKG_ROOT + '_esm5/';
@@ -103,7 +103,7 @@ copySources(ESM5_ROOT, ESM5_PKG, true);
 copySources(ESM2015_ROOT, ESM2015_PKG, true);
 
 // Copy over tsconfig.json for bazel build support
-fs.copySync('./tsconfig.json', PKG_ROOT + 'src/tsconfig.json');
+fs.copySync('./tsconfig.base.json', PKG_ROOT + 'src/tsconfig.json');
 
 fs.writeJsonSync(PKG_ROOT + 'package.json', rootPackageJson, {spaces: 2});
 fs.copySync('src/operators/package.json', PKG_ROOT + '/operators/package.json');

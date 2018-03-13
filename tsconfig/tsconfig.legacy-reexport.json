@@ -1,16 +1,21 @@
 {
-  "extends": "./tsconfig.base.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
     "declaration": true,
-    "outDir": "../dist/legacy-reexport"
+    "noEmit": false,
+    "outDir": "../dist/legacy-reexport",
+    "rootDir": "../legacy-reexport",
+    "baseUrl": "../legacy-reexport",
+    "paths": {
+      "rxjs": ["../dist/typings/index"],
+      "rxjs/*": ["../dist/typings/*"],
+      "rxjs-compat": ["../dist-compat/typings/compat/Rx"],
+      "rxjs-compat/*": ["../dist-compat/typings/compat/*"]
+    }
   },
   "include": [
     "../legacy-reexport"
-  ],
-  "exclude": [
-    "../src",
-    "../compat"
   ]
 }

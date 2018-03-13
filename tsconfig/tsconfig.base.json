@@ -1,7 +1,8 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "noEmit": false
+    "noEmit": false,
+    "baseUrl": "../src"
   },
   "files": [
     // entry-points
