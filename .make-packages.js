@@ -118,6 +118,15 @@ if (fs.existsSync(UMD_ROOT)) {
   addLicenseTextToFile(license, UMD_PKG + 'rxjs.umd.min.js');
 }
 
+// remove umd.js/umd.d.ts files that are only needed for creation of the umd bundle
+fs.removeSync(CJS_PKG + '/internal/umd.js');
+fs.removeSync(CJS_PKG + '/internal/umd.js.map');
+fs.removeSync(ESM5_PKG + '/internal/umd.js');
+fs.removeSync(ESM5_PKG + '/internal/umd.js.map');
+fs.removeSync(ESM2015_PKG + '/internal/umd.js');
+fs.removeSync(ESM2015_PKG + '/internal/umd.js.map');
+fs.removeSync(TYPE_PKG + '/internal/umd.d.ts');
+
 function copySources(rootDir, packageDir, ignoreMissing) {
   // If we are ignoring missing directories, early return when source doesn't exist
   if (!fs.existsSync(rootDir)) {
