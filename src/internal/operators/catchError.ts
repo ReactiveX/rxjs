@@ -4,19 +4,7 @@ import { Observable } from '../Observable';
 
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
-import { ObservableInput, OperatorFunction, MonoTypeOperatorFunction } from '../types';
-
-export function catchError<T>(
-  selector: (err: any, caught: Observable<T>) => never
-): MonoTypeOperatorFunction<T>;
-
-export function catchError<T>(
-  selector: (err: any, caught: Observable<T>) => ObservableInput<T>
-): MonoTypeOperatorFunction<T>;
-
-export function catchError<T, R>(
-  selector: (err: any, caught: Observable<T>) => ObservableInput<R>
-): OperatorFunction<T, R>;
+import { ObservableInput, OperatorFunction } from '../types';
 
 /**
  * Catches errors on the observable to be handled by returning a new observable or throwing an error.
@@ -75,7 +63,7 @@ export function catchError<T, R>(
  *  catch `selector` function.
  * @name catchError
  */
-export function catchError<T, R>(selector: (err: any, caught: Observable<T>) => ObservableInput<R>|never): OperatorFunction<T, T | R> {
+export function catchError<T, R>(selector: (err: any, caught: Observable<T>) => ObservableInput<R>): OperatorFunction<T, T | R> {
   return function catchErrorOperatorFunction(source: Observable<T>): Observable<T | R> {
     const operator = new CatchOperator(selector);
     const caught = source.lift(operator);
