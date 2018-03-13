@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as Rx from '../../src/Rx';
+import * as Rx from '../../src/internal/Rx';
 import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
 
 declare const type: Function;

@@ -4,12 +4,18 @@
     "noEmit": false
   },
   "files": [
-    "../dist/src/Rx.ts",
-    "../dist/src/add/observable/of.ts",
+    // entry-points
     "../dist/src/index.ts",
-    "../dist/src/operators/index.ts",
     "../dist/src/ajax/index.ts",
+    "../dist/src/operators/index.ts",
+    "../dist/src/testing/index.ts",
     "../dist/src/websocket/index.ts",
-    "../dist/src/testing/index.ts"
+
+    // legacy entry-points
+    "../dist/src/internal/Rx.ts",
+    "../dist/src/add/observable/of.ts",
+
+    // umd entry-point
+    "../dist/src/internal/umd.ts",
   ]
 }

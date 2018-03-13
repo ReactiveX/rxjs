@@ -1,5 +1,4 @@
 import { Observable } from '../Observable';
-import { IScheduler } from '../Scheduler';
 import { isPromise } from '../util/isPromise';
 import { isArrayLike } from '../util/isArrayLike';
 import { isObservable } from '../util/isObservable';
@@ -9,11 +8,11 @@ import { fromPromise } from './fromPromise';
 import { fromIterable } from './fromIterable';
 import { fromObservable } from './fromObservable';
 import { subscribeTo } from '../util/subscribeTo';
-import { ObservableInput } from '../types';
+import { ObservableInput, SchedulerLike } from '../types';
 
-export function from<T>(input: ObservableInput<T>, scheduler?: IScheduler): Observable<T>;
-export function from<T>(input: ObservableInput<ObservableInput<T>>, scheduler?: IScheduler): Observable<Observable<T>>;
-export function from<T>(input: ObservableInput<T>, scheduler?: IScheduler): Observable<T> {
+export function from<T>(input: ObservableInput<T>, scheduler?: SchedulerLike): Observable<T>;
+export function from<T>(input: ObservableInput<ObservableInput<T>>, scheduler?: SchedulerLike): Observable<Observable<T>>;
+export function from<T>(input: ObservableInput<T>, scheduler?: SchedulerLike): Observable<T> {
   if (!scheduler) {
     if (input instanceof Observable) {
       return input;

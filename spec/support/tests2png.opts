@@ -1,7 +1,8 @@
+--require spec-js/helpers/polyfills.ts
 --require source-map-support/register
---require spec-js/helpers/tests2png/diagram-test-runner.js
---require spec-js/helpers/testScheduler-ui.js
---ui spec-js/helpers/testScheduler-ui.js
+--require spec/helpers/tests2png/diagram-test-runner.ts
+--require spec/helpers/testScheduler-ui.ts
+--ui spec/helpers/testScheduler-ui.ts
 
 --reporter dot
 

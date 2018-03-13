@@ -1,5 +1,5 @@
 import { Observable } from '../../Observable';
-import { IScheduler } from '../../Scheduler';
+import { SchedulerLike } from '../../types';
 import { async } from '../../scheduler/async';
 import { timestamp as higherOrder, Timestamp } from '../../operators/timestamp';
 /**
@@ -8,6 +8,6 @@ import { timestamp as higherOrder, Timestamp } from '../../operators/timestamp';
  * @method timestamp
  * @owner Observable
  */
-export function timestamp<T>(this: Observable<T>, scheduler: IScheduler = async): Observable<Timestamp<T>> {
+export function timestamp<T>(this: Observable<T>, scheduler: SchedulerLike = async): Observable<Timestamp<T>> {
   return higherOrder(scheduler)(this) as Observable<Timestamp<T>>;
 }

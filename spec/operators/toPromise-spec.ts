@@ -1,7 +1,6 @@
 import { expect } from 'chai';
-import * as Rx from '../../src/Rx';
+import * as Rx from '../../src/internal/Rx';
 
-declare const __root__: any;
 const Observable = Rx.Observable;
 
 /** @test {toPromise} */
@@ -24,18 +23,14 @@ describe('Observable.prototype.toPromise', () => {
 
   it('should allow for global config via Rx.config.Promise', (done: MochaDone) => {
     let wasCalled = false;
-    __root__.Rx = {};
-    __root__.Rx.config = {};
-    __root__.Rx.config.Promise = function MyPromise(callback) {
+    Rx.config.Promise = function MyPromise(callback: Function) {
       wasCalled = true;
-      return new Promise(callback);
-    };
+      return new Promise(callback as any);
+    } as any;
 
     Observable.of(42).toPromise().then((x: number) => {
       expect(wasCalled).to.be.true;
       expect(x).to.equal(42);
-
-      delete __root__.Rx;
       done();
     });
   });

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as Rx from '../src/Rx';
+import * as Rx from '../src/internal/Rx';
 
 const Observable = Rx.Observable;
 const Subscription = Rx.Subscription;

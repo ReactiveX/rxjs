@@ -1,7 +1,8 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../../src/Rx';
+import * as Rx from '../../src/internal/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { NEVER } from '../../src/internal/observable/never';
 
 const Observable = Rx.Observable;
 
@@ -187,7 +188,7 @@ describe('Observable.prototype.race', () => {
   it('should unsubscribe former observables if a latter one emits immediately', () => {
     const onNext = sinon.spy();
     const onUnsubscribe = sinon.spy();
-    const e1 = Observable.never<string>().finally(onUnsubscribe); // Should be unsubscribed
+    const e1 = NEVER.finally(onUnsubscribe); // Should be unsubscribed
     const e2 = Observable.of('b'); // Wins the race
 
     e1.race(e2).subscribe(onNext);
@@ -198,8 +199,8 @@ describe('Observable.prototype.race', () => {
   it('should unsubscribe from immediately emitting observable on unsubscription', () => {
     const onNext = sinon.spy();
     const onUnsubscribe = sinon.spy();
-    const e1 = Observable.never<string>().startWith('a').finally(onUnsubscribe); // Wins the race
-    const e2 = Observable.never<string>(); // Loses the race
+    const e1 = NEVER.startWith('a').finally(onUnsubscribe); // Wins the race
+    const e2 = NEVER; // Loses the race
 
     const subscription = e1.race(e2).subscribe(onNext);
     expect(onNext.calledWithExactly('a')).to.be.true;

@@ -1,8 +1,7 @@
 import { Observable } from '../Observable';
-import { IScheduler } from '../Scheduler';
+import { SchedulerAction, SchedulerLike } from '../types';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { Action } from '../scheduler/Action';
 
 /**
  * Convert an object into an observable sequence of [key, value] pairs
@@ -35,7 +34,7 @@ import { Action } from '../scheduler/Action';
  * @returns {(Observable<[string, T]>)} An observable sequence of
  * [key, value] pairs from the object.
  */
-export function pairs<T>(obj: Object, scheduler?: IScheduler): Observable<[string, T]> {
+export function pairs<T>(obj: Object, scheduler?: SchedulerLike): Observable<[string, T]> {
   if (!scheduler) {
     return new Observable<[string, T]>(subscriber => {
       const keys = Object.keys(obj);
@@ -60,7 +59,7 @@ export function pairs<T>(obj: Object, scheduler?: IScheduler): Observable<[strin
 }
 
 /** @internal */
-export function dispatch<T>(this: Action<any>,
+export function dispatch<T>(this: SchedulerAction<any>,
                             state: { keys: string[], index: number, subscriber: Subscriber<[string, T]>, subscription: Subscription, obj: Object }) {
   const { keys, index, subscriber, subscription, obj } = state;
   if (!subscriber.closed) {

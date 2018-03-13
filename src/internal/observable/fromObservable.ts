@@ -1,11 +1,10 @@
 import { Observable } from '../Observable';
-import { IScheduler } from '../Scheduler';
 import { Subscription } from '../Subscription';
 import { observable as Symbol_observable } from '../symbol/observable';
 import { subscribeToObservable } from '../util/subscribeToObservable';
-import { ObservableLike, Subscribable } from '../types';
+import { ObservableLike, SchedulerLike, Subscribable } from '../types';
 
-export function fromObservable<T>(input: ObservableLike<T>, scheduler: IScheduler) {
+export function fromObservable<T>(input: ObservableLike<T>, scheduler: SchedulerLike) {
   if (!scheduler) {
     return new Observable<T>(subscribeToObservable(input));
   } else {

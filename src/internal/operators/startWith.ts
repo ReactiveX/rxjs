@@ -1,20 +1,19 @@
-import { IScheduler } from '../Scheduler';
 import { Observable } from '../Observable';
 import { fromArray } from '../observable/fromArray';
 import { scalar } from '../observable/scalar';
 import { empty } from '../observable/empty';
 import { concat as concatStatic } from '../observable/concat';
 import { isScheduler } from '../util/isScheduler';
-import { MonoTypeOperatorFunction } from '../types';
+import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 
 /* tslint:disable:max-line-length */
-export function startWith<T>(v1: T, scheduler?: IScheduler): MonoTypeOperatorFunction<T>;
-export function startWith<T>(v1: T, v2: T, scheduler?: IScheduler): MonoTypeOperatorFunction<T>;
-export function startWith<T>(v1: T, v2: T, v3: T, scheduler?: IScheduler): MonoTypeOperatorFunction<T>;
-export function startWith<T>(v1: T, v2: T, v3: T, v4: T, scheduler?: IScheduler): MonoTypeOperatorFunction<T>;
-export function startWith<T>(v1: T, v2: T, v3: T, v4: T, v5: T, scheduler?: IScheduler): MonoTypeOperatorFunction<T>;
-export function startWith<T>(v1: T, v2: T, v3: T, v4: T, v5: T, v6: T, scheduler?: IScheduler): MonoTypeOperatorFunction<T>;
-export function startWith<T>(...array: Array<T | IScheduler>): MonoTypeOperatorFunction<T>;
+export function startWith<T>(v1: T, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+export function startWith<T>(v1: T, v2: T, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+export function startWith<T>(v1: T, v2: T, v3: T, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+export function startWith<T>(v1: T, v2: T, v3: T, v4: T, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+export function startWith<T>(v1: T, v2: T, v3: T, v4: T, v5: T, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+export function startWith<T>(v1: T, v2: T, v3: T, v4: T, v5: T, v6: T, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+export function startWith<T>(...array: Array<T | SchedulerLike>): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -31,9 +30,9 @@ export function startWith<T>(...array: Array<T | IScheduler>): MonoTypeOperatorF
  * @method startWith
  * @owner Observable
  */
-export function startWith<T>(...array: Array<T | IScheduler>): MonoTypeOperatorFunction<T> {
+export function startWith<T>(...array: Array<T | SchedulerLike>): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => {
-    let scheduler = <IScheduler>array[array.length - 1];
+    let scheduler = <SchedulerLike>array[array.length - 1];
     if (isScheduler(scheduler)) {
       array.pop();
     } else {

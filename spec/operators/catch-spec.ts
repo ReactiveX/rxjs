@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as Rx from '../../src/Rx';
+import * as Rx from '../../src/internal/Rx';
 import * as sinon from 'sinon';
 import { createObservableInputs } from '../helpers/test-helper';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
@@ -233,7 +233,7 @@ describe('Observable.prototype.catch', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
-  it('should never terminate if you return Observable.never()', () => {
+  it('should never terminate if you return NEVER', () => {
     const e1 =   hot('--a--b--#');
     const e1subs =   '^       !';
     const e2 = cold(         '-');

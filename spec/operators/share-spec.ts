@@ -1,10 +1,9 @@
 import { expect } from 'chai';
-import * as Rx from '../../src/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { share } from '../../src/operators';
+import { Observable, EMPTY, NEVER } from '../../src';
 
 declare function asDiagram(arg: string): Function;
-
-const Observable = Rx.Observable;
 
 /** @test {share} */
 describe('Observable.prototype.share', () => {
@@ -21,7 +20,7 @@ describe('Observable.prototype.share', () => {
 
   it('should share a single subscription', () => {
     let subscriptionCount = 0;
-    const obs = new Observable((observer: Rx.Observer<any>) => {
+    const obs = new Observable<never>(observer => {
       subscriptionCount++;
     });
 
@@ -298,7 +297,7 @@ describe('Observable.prototype.share', () => {
   });
 
   it('should not change the output of the observable when never', () => {
-    const e1 = Observable.never();
+    const e1 = NEVER;
     const expected = '-';
 
     expectObservable(e1.share()).toBe(expected);

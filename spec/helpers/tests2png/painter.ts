@@ -1,38 +1,42 @@
 /*eslint-disable no-param-reassign, no-use-before-define*/
-var gm = require('gm');
-var _ = require('lodash');
-var Color = require('color');
+import * as gm from 'gm';
+import * as Color from 'color';
+import { cloneDeep, isEqual} from 'lodash';
+import { TestMessage } from '../../../src/internal/testing/TestMessage';
+import { Observable } from '../../../src/internal/Observable';
+import { GMObject, MarbleContent, TestStream } from './types';
 
-var CANVAS_WIDTH = 1280;
-var canvasHeight;
-var CANVAS_PADDING = 20;
-var OBSERVABLE_HEIGHT = 200;
-var OPERATOR_HEIGHT = 140;
-var ARROW_HEAD_SIZE = 18;
-var DEFAULT_MAX_FRAME = 10;
-var OBSERVABLE_END_PADDING = 5 * ARROW_HEAD_SIZE;
-var MARBLE_RADIUS = 32;
-var COMPLETE_HEIGHT = MARBLE_RADIUS;
-var TALLER_COMPLETE_HEIGHT = 1.8 * MARBLE_RADIUS;
-var SIN_45 = 0.707106;
-var NESTED_STREAM_ANGLE = 18; // degrees
-var TO_RAD = (Math.PI / 180);
-var MESSAGES_WIDTH = (CANVAS_WIDTH - 2 * CANVAS_PADDING - OBSERVABLE_END_PADDING);
-var BLACK_COLOR = '#101010';
-var COLORS = ['#3EA1CB', '#FFCB46', '#FF6946', '#82D736'];
-var SPECIAL_COLOR = '#1010F0';
-var MESSAGE_OVERLAP_HEIGHT = TALLER_COMPLETE_HEIGHT;
+let canvasHeight: number | undefined;
+const CANVAS_WIDTH: number = 1280;
+const CANVAS_PADDING: number = 20;
+const OBSERVABLE_HEIGHT: number = 200;
+const OPERATOR_HEIGHT: number = 140;
+const ARROW_HEAD_SIZE: number = 18;
+const DEFAULT_MAX_FRAME: number = 10;
+const OBSERVABLE_END_PADDING: number = 5 * ARROW_HEAD_SIZE;
+const MARBLE_RADIUS: number = 32;
+const COMPLETE_HEIGHT: number = MARBLE_RADIUS;
+const TALLER_COMPLETE_HEIGHT: number = 1.8 * MARBLE_RADIUS;
+const SIN_45: number = 0.707106;
+const NESTED_STREAM_ANGLE: number = 18; // degrees
+const TO_RAD: number = (Math.PI / 180);
+const MESSAGES_WIDTH: number = (CANVAS_WIDTH - 2 * CANVAS_PADDING - OBSERVABLE_END_PADDING);
+const BLACK_COLOR: string = '#101010';
+const COLORS: string[] = ['#3EA1CB', '#FFCB46', '#FF6946', '#82D736'];
+const SPECIAL_COLOR: string = '#1010F0';
+const MESSAGE_OVERLAP_HEIGHT: number = TALLER_COMPLETE_HEIGHT;
 
-function colorToGhostColor(hex) {
-  return Color(hex).mix(Color('white')).hexString();
+function colorToGhostColor(hex: string) {
+  const c = Color(hex).mix(Color('white'));
+  return c.toString(16);
 }
 
-function getMaxFrame(allStreams) {
-  var allStreamsLen = allStreams.length;
-  var max = 0;
-  for (var i = 0; i < allStreamsLen; i++) {
-    var messagesLen = allStreams[i].messages.length;
-    for (var j = 0; j < messagesLen; j++) {
+function getMaxFrame(allStreams: TestStream[]): number {
+  let allStreamsLen = allStreams.length;
+  let max = 0;
+  for (let i = 0; i < allStreamsLen; i++) {
+    let messagesLen = allStreams[i].messages.length;
+    for (let j = 0; j < messagesLen; j++) {
       if (allStreams[i].messages[j].frame > max) {
         max = allStreams[i].messages[j].frame;
       }
@@ -41,28 +45,28 @@ function getMaxFrame(allStreams) {
   return max;
 }
 
-function stringToColor(str) {
-  var smallPrime1 = 59;
-  var smallPrime2 = 97;
-  var hash = str.split('')
+function stringToColor(str: string) {
+  let smallPrime1 = 59;
+  let smallPrime2 = 97;
+  let hash = str.split('')
     .map(function (x) { return x.charCodeAt(0); })
     .reduce(function (x, y) { return (x * smallPrime1) + (y * smallPrime2); }, 1);
   return COLORS[hash % COLORS.length];
 }
 
-function isNestedStreamData(message) {
+function isNestedStreamData(message: TestMessage): boolean {
   return message.notification.kind === 'N' &&
     message.notification.value &&
     message.notification.value.messages;
 }
 
-function areEqualStreamData(leftStreamData, rightStreamData) {
+function areEqualStreamData(leftStreamData: TestStream, rightStreamData: TestStream): boolean {
   if (leftStreamData.messages.length !== rightStreamData.messages.length) {
     return false;
   }
-  for (var i = 0; i < leftStreamData.messages.length; i++) {
-    var left = leftStreamData.messages[i];
-    var right = rightStreamData.messages[i];
+  for (let i = 0; i < leftStreamData.messages.length; i++) {
+    let left = leftStreamData.messages[i];
+    let right = rightStreamData.messages[i];
     if (left.frame !== right.frame) {
       return false;
     }
@@ -76,43 +80,43 @@ function areEqualStreamData(leftStreamData, rightStreamData) {
   return true;
 }
 
-function measureObservableArrow(maxFrame, streamData) {
-  var startX = CANVAS_PADDING +
+function measureObservableArrow(maxFrame: number, streamData: TestStream): { startX: number, endX: number } {
+  let startX = CANVAS_PADDING +
     MESSAGES_WIDTH * (streamData.subscription.start / maxFrame);
-  var MAX_MESSAGES_WIDTH = CANVAS_WIDTH - CANVAS_PADDING;
-  var lastMessageFrame = streamData.messages
+  let MAX_MESSAGES_WIDTH = CANVAS_WIDTH - CANVAS_PADDING;
+  let lastMessageFrame = streamData.messages
     .reduce(function (acc, msg) {
-      var frame = msg.frame;
+      let frame = msg.frame;
       return frame > acc ? frame : acc;
     }, 0);
-  var subscriptionEndX = CANVAS_PADDING +
-    MESSAGES_WIDTH * (streamData.subscription.end / maxFrame) +
-    OBSERVABLE_END_PADDING;
-  var streamEndX = startX +
+  let subscriptionEndX = typeof streamData.subscription.end === 'number' ? CANVAS_PADDING +
+      MESSAGES_WIDTH * (streamData.subscription.end / maxFrame) +
+      OBSERVABLE_END_PADDING : undefined;
+  let streamEndX = startX +
     MESSAGES_WIDTH * (lastMessageFrame / maxFrame) +
     OBSERVABLE_END_PADDING;
-  var endX = (streamData.subscription.end === '100%') ?
+  let endX = (streamData.subscription.end === '100%') ?
     MAX_MESSAGES_WIDTH :
     Math.max(streamEndX, subscriptionEndX);
 
   return {startX: startX, endX: endX};
 }
 
-function measureInclination(startX, endX, angle) {
-  var length = endX - startX;
-  var cotAngle = Math.cos(angle * TO_RAD) / Math.sin(angle * TO_RAD);
+function measureInclination(startX: number, endX: number, angle: number): number {
+  let length = endX - startX;
+  let cotAngle = Math.cos(angle * TO_RAD) / Math.sin(angle * TO_RAD);
   return (length / cotAngle);
 }
 
-function measureNestedStreamHeight(maxFrame, streamData) {
-  var measurements = measureObservableArrow(maxFrame, streamData);
-  var startX = measurements.startX;
-  var endX = measurements.endX;
+function measureNestedStreamHeight(maxFrame: number, streamData: TestStream): number {
+  let measurements = measureObservableArrow(maxFrame, streamData);
+  let startX = measurements.startX;
+  let endX = measurements.endX;
   return measureInclination(startX, endX, NESTED_STREAM_ANGLE);
 }
 
-function amountPriorOverlaps(message, messageIndex, otherMessages) {
-  return otherMessages.reduce(function (acc, otherMessage, otherIndex) {
+function amountPriorOverlaps(message: TestMessage, messageIndex: number, otherMessages: TestMessage[]): number {
+  return otherMessages.reduce(function (acc: number, otherMessage: TestMessage, otherIndex) {
     if (otherIndex < messageIndex
     && otherMessage.frame === message.frame
     && message.notification.kind === 'N'
@@ -123,15 +127,15 @@ function amountPriorOverlaps(message, messageIndex, otherMessages) {
   }, 0);
 }
 
-function measureStreamHeight(maxFrame) {
-  return function measureStreamHeightWithMaxFrame(streamData) {
-    var messages = streamData.messages;
-    var maxMessageHeight = messages
-      .map(function (msg, index) {
-        var height = isNestedStreamData(msg) ?
+function measureStreamHeight(maxFrame: number): (streamData: TestStream) => number {
+  return function measureStreamHeightWithMaxFrame(streamData: TestStream): number {
+    let messages = streamData.messages;
+    let maxMessageHeight = messages
+      .map(function (msg: TestMessage, index) {
+        let height = isNestedStreamData(msg) ?
           measureNestedStreamHeight(maxFrame, msg.notification.value) + OBSERVABLE_HEIGHT * 0.25 :
           OBSERVABLE_HEIGHT * 0.5;
-        var overlapHeightBonus = amountPriorOverlaps(msg, index, messages) * MESSAGE_OVERLAP_HEIGHT;
+        let overlapHeightBonus = amountPriorOverlaps(msg, index, messages) * MESSAGE_OVERLAP_HEIGHT;
         return height + overlapHeightBonus;
       })
       .reduce(function (acc, curr) {
@@ -142,12 +146,12 @@ function measureStreamHeight(maxFrame) {
   };
 }
 
-function drawObservableArrow(out, maxFrame, y, angle, streamData, isSpecial) {
-  var measurements = measureObservableArrow(maxFrame, streamData);
-  var startX = measurements.startX;
-  var endX = measurements.endX;
+function drawObservableArrow(out: GMObject, maxFrame: number, y: number, angle: number, streamData: TestStream, isSpecial: boolean): GMObject {
+  let measurements = measureObservableArrow(maxFrame, streamData);
+  let startX = measurements.startX;
+  let endX = measurements.endX;
 
-  var outlineColor = BLACK_COLOR;
+  let outlineColor = BLACK_COLOR;
   if (isSpecial) {
     outlineColor = SPECIAL_COLOR;
   }
@@ -155,7 +159,7 @@ function drawObservableArrow(out, maxFrame, y, angle, streamData, isSpecial) {
     outlineColor = colorToGhostColor(outlineColor);
   }
   out = out.stroke(outlineColor, 3);
-  var inclination = measureInclination(startX, endX, angle);
+  let inclination = measureInclination(startX, endX, angle);
   out = out.drawLine(startX, y, endX, y + inclination);
   out = out.draw(
     'translate', String(endX) + ',' + String(y + inclination),
@@ -169,23 +173,21 @@ function drawObservableArrow(out, maxFrame, y, angle, streamData, isSpecial) {
   return out;
 }
 
-function stringifyContent(content) {
-  var string = content;
+function stringifyContent(content: MarbleContent): string {
+  let string = content;
   if (Array.isArray(content)) {
     string = '[' + content.join(',') + ']';
-  }
-  else if (typeof content === 'boolean') {
+  } else if (typeof content === 'boolean') {
     return content ? 'true' : 'false';
-  }
-  else if (typeof content === 'object') {
+  } else if (typeof content === 'object') {
     string = JSON.stringify(content).replace(/"/g, '');
   }
   return String('"' + string + '"');
 }
 
-function drawMarble(out, x, y, inclination, content, isSpecial, isGhost) {
-  var fillColor = stringToColor(stringifyContent(content));
-  var outlineColor = BLACK_COLOR;
+function drawMarble(out: GMObject, x: number, y: number, inclination: number, content: MarbleContent, isSpecial: boolean, isGhost: boolean) {
+  let fillColor = stringToColor(stringifyContent(content));
+  let outlineColor = BLACK_COLOR;
   if (isSpecial) {
     outlineColor = SPECIAL_COLOR;
   }
@@ -208,9 +210,9 @@ function drawMarble(out, x, y, inclination, content, isSpecial, isGhost) {
   return out;
 }
 
-function drawError(out, x, y, startX, angle, isSpecial, isGhost) {
-  var inclination = measureInclination(startX, x, angle);
-  var outlineColor = BLACK_COLOR;
+function drawError(out: GMObject, x: number, y: number, startX: number, angle: number, isSpecial: boolean, isGhost: boolean) {
+  let inclination = measureInclination(startX, x, angle);
+  let outlineColor = BLACK_COLOR;
   if (isSpecial) {
     outlineColor = SPECIAL_COLOR;
   }
@@ -230,23 +232,25 @@ function drawError(out, x, y, startX, angle, isSpecial, isGhost) {
   return out;
 }
 
-function drawComplete(out, x, y, maxFrame, angle, streamData, isSpecial, isGhost) {
-  var startX = CANVAS_PADDING +
+function drawComplete(out: GMObject, x: number, y: number,
+                      maxFrame: number, angle: number, streamData: TestStream,
+                      isSpecial: boolean, isGhost: boolean) {
+  let startX = CANVAS_PADDING +
     MESSAGES_WIDTH * (streamData.subscription.start / maxFrame);
-  var isOverlapping = streamData.messages.some(function (msg) {
+  let isOverlapping = streamData.messages.some(function (msg) {
     if (msg.notification.kind !== 'N') { return false; }
-    var msgX = startX + MESSAGES_WIDTH * (msg.frame / maxFrame);
+    let msgX = startX + MESSAGES_WIDTH * (msg.frame / maxFrame);
     return Math.abs(msgX - x) < MARBLE_RADIUS;
   });
-  var outlineColor = BLACK_COLOR;
+  let outlineColor = BLACK_COLOR;
   if (isSpecial) {
     outlineColor = SPECIAL_COLOR;
   }
   if (isGhost) {
     outlineColor = colorToGhostColor(outlineColor);
   }
-  var inclination = measureInclination(startX, x, angle);
-  var radius = isOverlapping ? TALLER_COMPLETE_HEIGHT : COMPLETE_HEIGHT;
+  let inclination = measureInclination(startX, x, angle);
+  let radius = isOverlapping ? TALLER_COMPLETE_HEIGHT : COMPLETE_HEIGHT;
   out = out.stroke(outlineColor, 3);
   out = out.draw(
     'translate', String(x) + ',' + String(y + inclination),
@@ -257,29 +261,29 @@ function drawComplete(out, x, y, maxFrame, angle, streamData, isSpecial, isGhost
   return out;
 }
 
-function drawNestedObservable(out, maxFrame, y, streamData) {
-  var angle = NESTED_STREAM_ANGLE;
+function drawNestedObservable(out: GMObject, maxFrame: number, y: number, streamData: TestStream): GMObject {
+  let angle = NESTED_STREAM_ANGLE;
   out = drawObservableArrow(out, maxFrame, y, angle, streamData, false);
   out = drawObservableMessages(out, maxFrame, y, angle, streamData, false);
   return out;
 }
 
-function drawObservableMessages(out, maxFrame, baseY, angle, streamData, isSpecial) {
-  var startX = CANVAS_PADDING +
+function drawObservableMessages(out: GMObject, maxFrame: number, baseY: number, angle: number, streamData: TestStream, isSpecial: boolean): GMObject {
+  let startX = CANVAS_PADDING +
     MESSAGES_WIDTH * (streamData.subscription.start / maxFrame);
-  var messages = streamData.messages;
+  let messages = streamData.messages;
 
-  messages.slice().reverse().forEach(function (message, reversedIndex) {
+  messages.slice().reverse().forEach(function (message: TestMessage, reversedIndex: number) {
     if (message.frame < 0) { // ignore messages with negative frames
       return;
     }
-    var index = messages.length - reversedIndex - 1;
-    var x = startX + MESSAGES_WIDTH * (message.frame / maxFrame);
+    let index = messages.length - reversedIndex - 1;
+    let x = startX + MESSAGES_WIDTH * (message.frame / maxFrame);
     if (x - MARBLE_RADIUS < 0) { // out of screen, on the left
       x += MARBLE_RADIUS;
     }
-    var y = baseY + amountPriorOverlaps(message, index, messages) * MESSAGE_OVERLAP_HEIGHT;
-    var inclination = measureInclination(startX, x, angle);
+    let y = baseY + amountPriorOverlaps(message, index, messages) * MESSAGE_OVERLAP_HEIGHT;
+    let inclination = measureInclination(startX, x, angle);
     switch (message.notification.kind) {
     case 'N':
       if (isNestedStreamData(message)) {
@@ -296,15 +300,15 @@ function drawObservableMessages(out, maxFrame, baseY, angle, streamData, isSpeci
   return out;
 }
 
-function drawObservable(out, maxFrame, y, streamData, isSpecial) {
-  var offsetY = OBSERVABLE_HEIGHT * 0.5;
-  var angle = 0;
+function drawObservable(out: GMObject, maxFrame: number, y: number, streamData: TestStream, isSpecial: boolean): GMObject {
+  let offsetY = OBSERVABLE_HEIGHT * 0.5;
+  let angle = 0;
   out = drawObservableArrow(out, maxFrame, y + offsetY, angle, streamData, isSpecial);
   out = drawObservableMessages(out, maxFrame, y + offsetY, angle, streamData, isSpecial);
   return out;
 }
 
-function drawOperator(out, label, y) {
+function drawOperator(out: GMObject, label: string, y: number): GMObject {
   out = out.stroke(BLACK_COLOR, 3);
   out = out.fill('#FFFFFF00');
   out = out.drawRectangle(
@@ -322,13 +326,13 @@ function drawOperator(out, label, y) {
 }
 
 // Remove cold inputStreams which are already nested in some higher order stream
-function removeDuplicateInputs(inputStreams, outputStreams) {
+function removeDuplicateInputs(inputStreams: TestStream[], outputStreams: TestStream[]): TestStream[] {
   return inputStreams.filter(function (inputStream) {
-    return !inputStreams.concat(outputStreams).some(function (otherStream) {
+    return !inputStreams.concat(outputStreams).some(function (otherStream: TestStream) {
       return otherStream.messages.some(function (msg) {
-        var passes = isNestedStreamData(msg) &&
+        let passes = isNestedStreamData(msg) &&
           inputStream.cold &&
-          _.isEqual(msg.notification.value.messages, inputStream.cold.messages);
+          isEqual(msg.notification.value.messages, inputStream.cold.messages);
         if (passes) {
           if (inputStream.cold.subscriptions.length) {
             msg.notification.value.subscription = {
@@ -346,13 +350,13 @@ function removeDuplicateInputs(inputStreams, outputStreams) {
 // For every inner stream in a higher order stream, create its ghost version
 // A ghost stream is a reference to an Observable that has not yet executed,
 // and is painted as a semi-transparent stream.
-function addGhostInnerInputs(inputStreams) {
-  for (var i = 0; i < inputStreams.length; i++) {
-    var inputStream = inputStreams[i];
-    for (var j = 0; j < inputStream.messages.length; j++) {
-      var message = inputStream.messages[j];
+function addGhostInnerInputs(inputStreams: TestStream[]): TestStream[] {
+  for (let i = 0; i < inputStreams.length; i++) {
+    let inputStream = inputStreams[i];
+    for (let j = 0; j < inputStream.messages.length; j++) {
+      let message = inputStream.messages[j];
       if (isNestedStreamData(message) && typeof message.isGhost !== 'boolean') {
-        var referenceTime = message.frame;
+        let referenceTime = message.frame;
         if (!message.notification.value.subscription) {
           // There was no subscription at all, so this nested Observable is ghost
           message.isGhost = true;
@@ -361,13 +365,13 @@ function addGhostInnerInputs(inputStreams) {
           message.notification.value.subscription = { start: referenceTime, end: 0 };
           continue;
         }
-        var subscriptionTime = message.notification.value.subscription.start;
+        let subscriptionTime = message.notification.value.subscription.start;
         if (referenceTime !== subscriptionTime) {
           message.isGhost = false;
           message.notification.value.isGhost = false;
           message.frame = subscriptionTime;
 
-          var ghost = _.cloneDeep(message);
+          let ghost = cloneDeep(message);
           ghost.isGhost = true;
           ghost.notification.value.isGhost = true;
           ghost.frame = referenceTime;
@@ -381,23 +385,22 @@ function addGhostInnerInputs(inputStreams) {
   return inputStreams;
 }
 
-function sanitizeHigherOrderInputStreams(inputStreams, outputStreams) {
-  var newInputStreams = removeDuplicateInputs(inputStreams, outputStreams);
+function sanitizeHigherOrderInputStreams(inputStreams: TestStream[], outputStreams: TestStream[]): TestStream[] {
+  let newInputStreams = removeDuplicateInputs(inputStreams, outputStreams);
   newInputStreams = addGhostInnerInputs(newInputStreams);
   return newInputStreams;
 }
 
-module.exports = function painter(inputStreams, operatorLabel, outputStreams, filename) {
+export function painter(inputStreams: TestStream[], operatorLabel: string, outputStreams: TestStream[], filename: string) {
   inputStreams = sanitizeHigherOrderInputStreams(inputStreams, outputStreams);
-  var maxFrame = getMaxFrame(inputStreams.concat(outputStreams)) || DEFAULT_MAX_FRAME;
-  var allStreamsHeight = inputStreams.concat(outputStreams)
+  const maxFrame = getMaxFrame(inputStreams.concat(outputStreams)) || DEFAULT_MAX_FRAME;
+  let allStreamsHeight = inputStreams.concat(outputStreams)
     .map(measureStreamHeight(maxFrame))
     .reduce(function (x, y) { return x + y; }, 0);
   canvasHeight = allStreamsHeight + OPERATOR_HEIGHT;
 
-  var heightSoFar = 0;
-  var out;
-  out = gm(CANVAS_WIDTH, canvasHeight, '#ffffff');
+  let heightSoFar = 0;
+  let out: GMObject =  gm(CANVAS_WIDTH, canvasHeight, '#ffffff');
   inputStreams.forEach(function (streamData) {
     out = drawObservable(out, maxFrame, heightSoFar, streamData, false);
     heightSoFar += measureStreamHeight(maxFrame)(streamData);
@@ -405,14 +408,13 @@ module.exports = function painter(inputStreams, operatorLabel, outputStreams, fi
   out = drawOperator(out, operatorLabel, heightSoFar);
   heightSoFar += OPERATOR_HEIGHT;
   outputStreams.forEach(function (streamData) {
-    var isSpecial = inputStreams.length > 0 && areEqualStreamData(inputStreams[0], streamData);
+    let isSpecial = inputStreams.length > 0 && areEqualStreamData(inputStreams[0], streamData);
     out = drawObservable(out, maxFrame, heightSoFar, streamData, isSpecial);
     heightSoFar += measureStreamHeight(maxFrame)(streamData);
   });
-
-  out.write(filename, function (err) {
+  out.write(filename, function (err: Error) {
     if (err) {
       return console.error(arguments);
     }
   });
-};
+}

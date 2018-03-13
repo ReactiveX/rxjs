@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { IScheduler } from '../Scheduler';
+import { SchedulerLike } from '../types';
 import { Subscriber } from '../Subscriber';
 
 /**
@@ -46,7 +46,7 @@ import { Subscriber } from '../Subscriber';
  * @name throw
  * @owner Observable
  */
-export function throwError(error: any, scheduler?: IScheduler): Observable<never> {
+export function throwError(error: any, scheduler?: SchedulerLike): Observable<never> {
   if (!scheduler) {
     return new Observable(subscriber => subscriber.error(error));
   } else {

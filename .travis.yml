@@ -32,6 +32,7 @@ install:
 script:
   - if [ "$FULL_VALIDATE" == "true" ] && [ -n "DANGER_GITHUB_API_TOKEN" ]; then echo {} > ./.babelrc && npx danger; fi
   - npm test
+  - npm run test:systemjs
 
 after_success:
   - if [ "$FULL_VALIDATE" == "true" ]; then npm run test:cover && npx nyc report --reporter=text-lcov | npx coveralls; fi

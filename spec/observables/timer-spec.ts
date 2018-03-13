@@ -1,5 +1,5 @@
 import { cold, expectObservable, time } from '../helpers/marble-testing';
-import { timer, never, merge } from '../../src/';
+import { timer, NEVER, merge } from '../../src/';
 import { TestScheduler } from '../../src/testing';
 import { mergeMap } from '../../src/operators';
 
@@ -11,7 +11,7 @@ describe('timer', () => {
   asDiagram('timer(3000, 1000)')('should create an observable emitting periodically', () => {
     const e1 = timer(60, 20, rxTestScheduler)
       .take(4) // make it actually finite, so it can be rendered
-      .concat(never()); // but pretend it's infinite by not completing
+      .concat(NEVER); // but pretend it's infinite by not completing
     const expected = '------a-b-c-d-';
     const values = {
       a: 0,

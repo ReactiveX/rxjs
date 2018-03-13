@@ -1,22 +1,21 @@
 import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { ReplaySubject } from '../ReplaySubject';
-import { IScheduler } from '../Scheduler';
 import { Subscription } from '../Subscription';
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, TeardownLogic, SchedulerLike } from '../types';
 import { Subscriber } from '../Subscriber';
 
 /**
  * @method shareReplay
  * @owner Observable
  */
-export function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: IScheduler ): MonoTypeOperatorFunction<T> {
+export function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike ): MonoTypeOperatorFunction<T> {
   return function shareReplayFunction(source: Observable<T>) {
     return source.lift(shareReplayOperator(bufferSize, windowTime, scheduler));
   };
 }
 
-function shareReplayOperator<T>(bufferSize?: number, windowTime?: number, scheduler?: IScheduler) {
+function shareReplayOperator<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike) {
   let subject: ReplaySubject<T>;
   let refCount = 0;
   let subscription: Subscription;

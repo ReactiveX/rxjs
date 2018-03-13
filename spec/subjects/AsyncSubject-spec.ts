@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as Rx from '../../src/Rx';
+import * as Rx from '../../src/internal/Rx';
 
 const AsyncSubject = Rx.AsyncSubject;
 
@@ -76,6 +76,7 @@ describe('AsyncSubject', () => {
     subject.next(2);
     expect(observer.results).to.deep.equal([]);
     subject.complete();
+    subject.next(3);
     expect(observer.results).to.deep.equal([2, 'done']);
   });
 

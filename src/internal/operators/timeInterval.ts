@@ -1,22 +1,21 @@
 import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { IScheduler } from '../Scheduler';
 import { async } from '../scheduler/async';
-import { OperatorFunction } from '../types';
+import { OperatorFunction, SchedulerLike, TimeInterval as TimeIntervalInterface } from '../types';
 
-export function timeInterval<T>(scheduler: IScheduler = async): OperatorFunction<T, TimeInterval<T>> {
+export function timeInterval<T>(scheduler: SchedulerLike = async): OperatorFunction<T, TimeInterval<T>> {
   return (source: Observable<T>) => source.lift(new TimeIntervalOperator(scheduler));
 }
 
-export class TimeInterval<T> {
+export class TimeInterval<T> implements TimeIntervalInterface<T> {
   constructor(public value: T, public interval: number) {
 
   }
 }
 
 class TimeIntervalOperator<T> implements Operator<T, TimeInterval<T>> {
-  constructor(private scheduler: IScheduler) {
+  constructor(private scheduler: SchedulerLike) {
 
   }
 
@@ -33,7 +32,7 @@ class TimeIntervalOperator<T> implements Operator<T, TimeInterval<T>> {
 class TimeIntervalSubscriber<T> extends Subscriber<T> {
   private lastTime: number = 0;
 
-  constructor(destination: Subscriber<TimeInterval<T>>, private scheduler: IScheduler) {
+  constructor(destination: Subscriber<TimeInterval<T>>, private scheduler: SchedulerLike) {
     super(destination);
 
     this.lastTime = scheduler.now();

@@ -1,5 +1,6 @@
 import { Observable } from './Observable';
-import { PartialObserver } from './types';
+import { Action as _Action } from './scheduler/Action';
+import { Subscription } from './Subscription';
 
 /** OPERATOR INTERFACES */
 
@@ -10,6 +11,16 @@ export interface OperatorFunction<T, R> extends UnaryFunction<Observable<T>, Obs
 export type FactoryOrValue<T> = T | (() => T);
 
 export interface MonoTypeOperatorFunction<T> extends OperatorFunction<T, T> {}
+
+export interface Timestamp<T> {
+  value: T;
+  timestamp: number;
+}
+
+export interface TimeInterval<T> {
+  value: T;
+  interval: number;
+}
 
 /** SUBSCRIPTION INTERFACES */
 
@@ -73,4 +84,15 @@ export interface Observer<T> {
   next: (value: T) => void;
   error: (err: any) => void;
   complete: () => void;
+}
+
+/** SCHEDULER INTERFACES */
+
+export interface SchedulerLike {
+  now(): number;
+  schedule<T>(work: (this: SchedulerAction<T>, state?: T) => void, delay?: number, state?: T): Subscription;
+}
+
+export interface SchedulerAction<T> extends Subscription {
+  schedule(state?: T, delay?: number): Subscription;
 }

@@ -3,12 +3,10 @@ import { Subscriber } from '../../Subscriber';
 import { Observable } from '../../Observable';
 import { Subscription } from '../../Subscription';
 import { Operator } from '../../Operator';
-import { root } from '../..//util/root';
 import { ReplaySubject } from '../../ReplaySubject';
 import { Observer, NextObserver } from '../../types';
-import { tryCatch } from '../..//util/tryCatch';
-import { errorObject } from '../..//util/errorObject';
-import { assign } from '../..//util/assign';
+import { tryCatch } from '../../util/tryCatch';
+import { errorObject } from '../../util/errorObject';
 
 export interface WebSocketSubjectConfig {
   url: string;
@@ -90,13 +88,17 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
       super(destination, <Observable<T>> urlConfigOrSource);
     } else {
       super();
-      this.WebSocketCtor = root.WebSocket;
+      this.WebSocketCtor = WebSocket;
       this._output = new Subject<T>();
       if (typeof urlConfigOrSource === 'string') {
         this.url = urlConfigOrSource;
       } else {
         // WARNING: config object could override important members here.
-        assign(this, urlConfigOrSource);
+        for (let key in urlConfigOrSource) {
+          if (urlConfigOrSource.hasOwnProperty(key)) {
+            this[key] = urlConfigOrSource[key];
+          }
+        }
       }
       if (!this.WebSocketCtor) {
         throw new Error('no WebSocket constructor can be found');

@@ -1,9 +1,9 @@
 import { Observable } from '../Observable';
-import { IScheduler } from '../Scheduler';
+import { SchedulerLike } from '../types';
 import { Subscription } from '../Subscription';
 import { subscribeToArray } from '../util/subscribeToArray';
 
-export function fromArray<T>(input: ArrayLike<T>, scheduler?: IScheduler) {
+export function fromArray<T>(input: ArrayLike<T>, scheduler?: SchedulerLike) {
   if (!scheduler) {
     return new Observable<T>(subscribeToArray(input));
   } else {

@@ -1,6 +1,7 @@
 import { expect } from 'chai';
-import * as Rx from '../../src/Rx';
+import * as Rx from '../../src/internal/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { NEVER } from '../../src/internal/observable/never';
 
 declare const type;
 declare function asDiagram(arg: string): Function;
@@ -316,7 +317,7 @@ describe('Observable.prototype.debounce', () => {
     const e1subs =   '^                                   !';
     const expected = '------------------------------------(z|)';
 
-    function selectorFunction(x) { return Observable.never<number>(); }
+    function selectorFunction() { return NEVER; }
 
     expectObservable(e1.debounce(selectorFunction)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

@@ -1,7 +1,7 @@
 import { AsyncAction } from './AsyncAction';
 import { Subscription } from '../Subscription';
 import { AsyncScheduler } from './AsyncScheduler';
-import { Action } from './Action';
+import { SchedulerAction } from '../types';
 
 export class VirtualTimeScheduler extends AsyncScheduler {
 
@@ -50,7 +50,7 @@ export class VirtualAction<T> extends AsyncAction<T> {
   protected active: boolean = true;
 
   constructor(protected scheduler: VirtualTimeScheduler,
-              protected work: (this: Action<T>, state?: T) => void,
+              protected work: (this: SchedulerAction<T>, state?: T) => void,
               protected index: number = scheduler.index += 1) {
     super(scheduler, work);
     this.index = scheduler.index = index;

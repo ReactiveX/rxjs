@@ -1,5 +1,3 @@
-import { IScheduler } from '../Scheduler';
-import { Action } from '../scheduler/Action';
 import { Subject } from '../Subject';
 import { Operator } from '../Operator';
 import { async } from '../scheduler/async';
@@ -8,7 +6,7 @@ import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { isNumeric } from '../util/isNumeric';
 import { isScheduler } from '../util/isScheduler';
-import { OperatorFunction } from '../types';
+import { OperatorFunction, SchedulerLike, SchedulerAction } from '../types';
 
 /**
  * Branch out the source Observable values as a nested Observable periodically
@@ -71,17 +69,17 @@ import { OperatorFunction } from '../types';
  * @owner Observable
  */
 export function windowTime<T>(windowTimeSpan: number,
-                              scheduler?: IScheduler): OperatorFunction<T, Observable<T>>;
+                              scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 export function windowTime<T>(windowTimeSpan: number,
                               windowCreationInterval: number,
-                              scheduler?: IScheduler): OperatorFunction<T, Observable<T>>;
+                              scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 export function windowTime<T>(windowTimeSpan: number,
                               windowCreationInterval: number,
                               maxWindowSize: number,
-                              scheduler?: IScheduler): OperatorFunction<T, Observable<T>>;
+                              scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 
 export function windowTime<T>(windowTimeSpan: number): OperatorFunction<T, Observable<T>> {
-  let scheduler: IScheduler = async;
+  let scheduler: SchedulerLike = async;
   let windowCreationInterval: number = null;
   let maxWindowSize: number = Number.POSITIVE_INFINITY;
 
@@ -111,7 +109,7 @@ class WindowTimeOperator<T> implements Operator<T, Observable<T>> {
   constructor(private windowTimeSpan: number,
               private windowCreationInterval: number | null,
               private maxWindowSize: number,
-              private scheduler: IScheduler) {
+              private scheduler: SchedulerLike) {
   }
 
   call(subscriber: Subscriber<Observable<T>>, source: any): any {
@@ -125,7 +123,7 @@ interface CreationState<T> {
   windowTimeSpan: number;
   windowCreationInterval: number;
   subscriber: WindowTimeSubscriber<T>;
-  scheduler: IScheduler;
+  scheduler: SchedulerLike;
 }
 
 interface TimeSpanOnlyState<T> {
@@ -135,7 +133,7 @@ interface TimeSpanOnlyState<T> {
   }
 
 interface CloseWindowContext<T> {
-  action: Action<CreationState<T>>;
+  action: SchedulerAction<CreationState<T>>;
   subscription: Subscription;
 }
 
@@ -170,7 +168,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
               private windowTimeSpan: number,
               private windowCreationInterval: number | null,
               private maxWindowSize: number,
-              private scheduler: IScheduler) {
+              private scheduler: SchedulerLike) {
     super(destination);
 
     const window = this.openWindow();
@@ -233,7 +231,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function dispatchWindowTimeSpanOnly<T>(this: Action<TimeSpanOnlyState<T>>, state: TimeSpanOnlyState<T>): void {
+function dispatchWindowTimeSpanOnly<T>(this: SchedulerAction<TimeSpanOnlyState<T>>, state: TimeSpanOnlyState<T>): void {
   const { subscriber, windowTimeSpan, window } = state;
   if (window) {
     subscriber.closeWindow(window);
@@ -242,7 +240,7 @@ function dispatchWindowTimeSpanOnly<T>(this: Action<TimeSpanOnlyState<T>>, state
   this.schedule(state, windowTimeSpan);
 }
 
-function dispatchWindowCreation<T>(this: Action<CreationState<T>>, state: CreationState<T>): void {
+function dispatchWindowCreation<T>(this: SchedulerAction<CreationState<T>>, state: CreationState<T>): void {
   const { windowTimeSpan, subscriber, scheduler, windowCreationInterval } = state;
   const window = subscriber.openWindow();
   const action = this;

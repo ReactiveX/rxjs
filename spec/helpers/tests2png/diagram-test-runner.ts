@@ -1,8 +1,16 @@
-var root = require('../../../dist/package/util/root').root;
-var Rx = require('../../../dist/package/Rx');
-var painter = require('./painter');
+import { painter } from './painter';
+import { Observable } from '../../../src/internal/Observable';
+import { TestMessage } from '../../../src/internal/testing/TestMessage';
+import { ColdObservable } from '../../../src/internal/testing/ColdObservable';
+import { HotObservable } from '../../../src/internal/testing/HotObservable';
+import { TestScheduler, observableToBeFn, subscriptionLogsToBeFn } from '../../../src/internal/testing/TestScheduler';
+import { TestStream } from './types';
 
-function getInputStreams(rxTestScheduler) {
+declare const global: any;
+
+export const rxTestScheduler: TestScheduler = global.rxTestScheduler;
+
+function getInputStreams(rxTestScheduler: TestScheduler): TestStream[] {
   return Array.prototype.concat.call([],
     rxTestScheduler.hotObservables
       .map(function (hot) {
@@ -23,7 +31,7 @@ function getInputStreams(rxTestScheduler) {
   );
 }
 
-function updateInputStreamsPostFlush(inputStreams, rxTestScheduler) {
+function updateInputStreamsPostFlush(inputStreams: TestStream[]) {
   return inputStreams.map(function (singleInputStream) {
     if (singleInputStream.cold && singleInputStream.cold.subscriptions.length) {
       singleInputStream.subscription = {
@@ -35,7 +43,7 @@ function updateInputStreamsPostFlush(inputStreams, rxTestScheduler) {
   });
 }
 
-function postProcessOutputMessage(msg) {
+function postProcessOutputMessage(msg: TestMessage) {
   if (Array.isArray(msg.notification.value)
   && msg.notification.value.length
   && typeof msg.notification.value[0] === 'object') {
@@ -43,8 +51,8 @@ function postProcessOutputMessage(msg) {
       messages: msg.notification.value,
       subscription: {start: msg.frame, end: '100%'},
     };
-    var completionFrame = msg.notification.value.messages
-      .reduce(function (prev, x) {
+    let completionFrame = msg.notification.value.messages
+      .reduce(function (prev: number, x: TestMessage) {
         if (x.notification && x.notification.kind === 'C' && x.frame > prev) {
           return x.frame;
         } else {
@@ -58,16 +66,19 @@ function postProcessOutputMessage(msg) {
   return msg;
 }
 
-function makeFilename(operatorLabel) {
+function makeFilename(operatorLabel: string) {
   return /^(\w+)/.exec(operatorLabel)[1] + '.png';
 }
 
-global.asDiagram = function asDiagram(operatorLabel, glit) {
-  return function specFnWithPainter(description, specFn) {
+type glitFn = (description: string, fn: () => void ) => any;
+type specFn = () => any;
+
+global.asDiagram = function asDiagram(operatorLabel: string, glit: glitFn) {
+  return function specFnWithPainter(description: string, specFn: specFn) {
     if (specFn.length === 0) {
       glit(description, function () {
-        var outputStreams = [];
-        global.rxTestScheduler = new Rx.TestScheduler(function (actual) {
+        let outputStreams: TestStream[] = [];
+        global.rxTestScheduler = new TestScheduler(function (actual: TestMessage[]) {
           if (Array.isArray(actual) && actual.length > 0 && typeof actual[0].frame === 'number') {
             outputStreams.push({
               messages: actual.map(postProcessOutputMessage),
@@ -82,10 +93,10 @@ global.asDiagram = function asDiagram(operatorLabel, glit) {
           return true;
         });
         specFn();
-        var inputStreams = getInputStreams(global.rxTestScheduler);
+        let inputStreams = getInputStreams(global.rxTestScheduler);
         global.rxTestScheduler.flush();
-        inputStreams = updateInputStreamsPostFlush(inputStreams, rxTestScheduler);
-        var filename = './tmp/docs/img/' + makeFilename(operatorLabel);
+        inputStreams = updateInputStreamsPostFlush(inputStreams);
+        let filename = './tmp/docs/img/' + makeFilename(operatorLabel);
         painter(inputStreams, operatorLabel, outputStreams, filename);
         console.log('Painted ' + filename);
       });

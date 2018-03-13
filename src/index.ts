@@ -1,19 +1,25 @@
 /* Observable */
 export { Observable } from './internal/Observable';
+export { ConnectableObservable } from './internal/observable/ConnectableObservable';
+export { Operator } from './internal/Operator';
+export { observable } from './internal/symbol/observable';
 
 /* Subjects */
 export { Subject } from './internal/Subject';
 export { BehaviorSubject } from './internal/BehaviorSubject';
 export { ReplaySubject } from './internal/ReplaySubject';
+export { AsyncSubject } from './internal/AsyncSubject';
 
 /* Schedulers */
 export { asap as asapScheduler } from './internal/scheduler/asap';
 export { async as asyncScheduler } from './internal/scheduler/async';
 export { queue as queueScheduler } from './internal/scheduler/queue';
 export { animationFrame as animationFrameScheduler } from './internal/scheduler/animationFrame';
+export { VirtualTimeScheduler, VirtualAction } from './internal/scheduler/VirtualTimeScheduler';
 
 /* Subscription */
 export { Subscription } from './internal/Subscription';
+export { Subscriber } from './internal/Subscriber';
 
 /* Notification */
 export { Notification } from './internal/Notification';
@@ -22,6 +28,13 @@ export { Notification } from './internal/Notification';
 export { pipe } from './internal/util/pipe';
 export { noop } from './internal/util/noop';
 export { identity } from './internal/util/identity';
+
+/* Error types */
+export { ArgumentOutOfRangeError } from './internal/util/ArgumentOutOfRangeError';
+export { EmptyError } from './internal/util/EmptyError';
+export { ObjectUnsubscribedError } from './internal/util/ObjectUnsubscribedError';
+export { UnsubscriptionError } from './internal/util/UnsubscriptionError';
+export { TimeoutError } from './internal/util/TimeoutError';
 
 /* Static observable creation exports */
 export { bindCallback } from './internal/observable/bindCallback';
@@ -35,10 +48,9 @@ export { from } from './internal/observable/from';
 export { fromEvent } from './internal/observable/fromEvent';
 export { fromEventPattern } from './internal/observable/fromEventPattern';
 export { generate } from './internal/observable/generate';
-export { _if as iif } from './internal/observable/if';
+export { iif } from './internal/observable/iif';
 export { interval } from './internal/observable/interval';
 export { merge } from './internal/observable/merge';
-export { never } from './internal/observable/never';
 export { of } from './internal/observable/of';
 export { onErrorResumeNext } from './internal/observable/onErrorResumeNext';
 export { pairs } from './internal/observable/pairs';
@@ -51,6 +63,7 @@ export { zip } from './internal/observable/zip';
 
 /* Constants */
 export { EMPTY } from './internal/observable/empty';
+export { NEVER } from './internal/observable/never';
 
 /* Types */
 export * from './internal/types';
