@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { sequenceEqual } from 'rxjs/internal/patching/operator/sequenceEqual';
+import { sequenceEqual } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.sequenceEqual = sequenceEqual;
 

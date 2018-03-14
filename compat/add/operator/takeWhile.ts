@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { takeWhile } from 'rxjs/internal/patching/operator/takeWhile';
+import { takeWhile } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.takeWhile = takeWhile;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { zipAll } from 'rxjs/internal/patching/operator/zipAll';
+import { zipAll } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.zipAll = zipAll;
 

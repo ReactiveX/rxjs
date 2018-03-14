@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { repeatWhen } from 'rxjs/internal/patching/operator/repeatWhen';
+import { repeatWhen } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.repeatWhen = repeatWhen;
 

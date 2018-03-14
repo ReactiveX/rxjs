@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { _switch } from 'rxjs/internal/patching/operator/switch';
+import { _switch } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.switch = _switch;
 (Observable as any).prototype._switch = _switch;

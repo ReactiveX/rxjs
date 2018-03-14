@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { mergeScan } from 'rxjs/internal/patching/operator/mergeScan';
+import { mergeScan } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.mergeScan = mergeScan;
 

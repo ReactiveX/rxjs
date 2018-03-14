@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { mapTo } from 'rxjs/internal/patching/operator/mapTo';
+import { mapTo } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.mapTo = mapTo;
 

@@ -5,7 +5,12 @@
     "baseUrl": "../../compat",
     "paths": {
       "rxjs": ["../src/index"],
-      "rxjs/*": ["../src/*"]
+      "rxjs/*": ["../src/*"],
+      "rxjs/internal-compatibility": ["../src/internal-compatibility/index"],
+      "rxjs/testing": ["../src/testing/index"],
+      "rxjs/ajax": ["../src/ajax/index"],
+      "rxjs/operators": ["../src/operators/index"],
+      "rxjs/websocket": ["../src/websocket/index"]
     }
   },
   "include": [

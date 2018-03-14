@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { first } from 'rxjs/internal/patching/operator/first';
+import { first } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.first = <any>first;
 

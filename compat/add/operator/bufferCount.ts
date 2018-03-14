@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { bufferCount } from 'rxjs/internal/patching/operator/bufferCount';
+import { bufferCount } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.bufferCount = bufferCount;
 

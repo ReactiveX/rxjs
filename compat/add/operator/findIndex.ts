@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { findIndex } from 'rxjs/internal/patching/operator/findIndex';
+import { findIndex } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.findIndex = findIndex;
 

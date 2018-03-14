@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { distinctUntilKeyChanged } from 'rxjs/internal/patching/operator/distinctUntilKeyChanged';
+import { distinctUntilKeyChanged } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.distinctUntilKeyChanged = distinctUntilKeyChanged;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { startWith } from 'rxjs/internal/patching/operator/startWith';
+import { startWith } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.startWith = startWith;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/internal/patching/operator/map';
+import { map } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.map = map;
 

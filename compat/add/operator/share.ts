@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { share } from 'rxjs/internal/patching/operator/share';
+import { share } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.share = share;
 

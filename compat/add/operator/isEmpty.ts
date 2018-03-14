@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { isEmpty } from 'rxjs/internal/patching/operator/isEmpty';
+import { isEmpty } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.isEmpty = isEmpty;
 

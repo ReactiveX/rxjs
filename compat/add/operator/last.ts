@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { last } from 'rxjs/internal/patching/operator/last';
+import { last } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.last = <any>last;
 

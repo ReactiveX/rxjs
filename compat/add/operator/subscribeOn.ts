@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { subscribeOn } from 'rxjs/internal/patching/operator/subscribeOn';
+import { subscribeOn } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.subscribeOn = subscribeOn;
 

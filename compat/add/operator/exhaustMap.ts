@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { exhaustMap } from 'rxjs/internal/patching/operator/exhaustMap';
+import { exhaustMap } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.exhaustMap = exhaustMap;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { debounceTime } from 'rxjs/internal/patching/operator/debounceTime';
+import { debounceTime } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.debounceTime = debounceTime;
 

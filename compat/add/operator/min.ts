@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { min } from 'rxjs/internal/patching/operator/min';
+import { min } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.min = min;
 

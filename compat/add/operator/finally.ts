@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { _finally } from 'rxjs/internal/patching/operator/finally';
+import { _finally } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.finally = _finally;
 (Observable as any).prototype._finally = _finally;

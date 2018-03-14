@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { publishBehavior } from 'rxjs/internal/patching/operator/publishBehavior';
+import { publishBehavior } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.publishBehavior = publishBehavior;
 

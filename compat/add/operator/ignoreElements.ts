@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { ignoreElements } from 'rxjs/internal/patching/operator/ignoreElements';
+import { ignoreElements } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.ignoreElements = ignoreElements;
 

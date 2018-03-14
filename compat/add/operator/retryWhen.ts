@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { retryWhen } from 'rxjs/internal/patching/operator/retryWhen';
+import { retryWhen } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.retryWhen = retryWhen;
 

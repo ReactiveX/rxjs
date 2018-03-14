@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { race } from 'rxjs/internal/patching/operator/race';
+import { race } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.race = race;
 

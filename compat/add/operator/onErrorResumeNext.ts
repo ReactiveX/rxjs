@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { onErrorResumeNext } from 'rxjs/internal/patching/operator/onErrorResumeNext';
+import { onErrorResumeNext } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.onErrorResumeNext = onErrorResumeNext;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { concatAll } from 'rxjs/internal/patching/operator/concatAll';
+import { concatAll } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.concatAll = concatAll;
 

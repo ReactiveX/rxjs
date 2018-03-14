@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { _catch } from 'rxjs/internal/patching/operator/catch';
+import { _catch } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.catch = _catch;
 (Observable as any).prototype._catch = _catch;

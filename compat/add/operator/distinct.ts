@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { distinct } from 'rxjs/internal/patching/operator/distinct';
+import { distinct } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.distinct = distinct;
 

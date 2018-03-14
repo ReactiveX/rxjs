@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { sample } from 'rxjs/internal/patching/operator/sample';
+import { sample } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.sample = sample;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/internal/patching/operator/switchMap';
+import { switchMap } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.switchMap = switchMap;
 

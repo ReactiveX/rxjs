@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { shareReplay } from 'rxjs/internal/patching/operator/shareReplay';
+import { shareReplay } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.shareReplay = shareReplay;
 

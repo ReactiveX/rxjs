@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { expand } from 'rxjs/internal/patching/operator/expand';
+import { expand } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.expand = expand;
 

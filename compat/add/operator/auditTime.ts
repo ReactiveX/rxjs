@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { auditTime } from 'rxjs/internal/patching/operator/auditTime';
+import { auditTime } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.auditTime = auditTime;
 

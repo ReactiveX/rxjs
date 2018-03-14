@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { timeoutWith } from 'rxjs/internal/patching/operator/timeoutWith';
+import { timeoutWith } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.timeoutWith = timeoutWith;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { publishLast } from 'rxjs/internal/patching/operator/publishLast';
+import { publishLast } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.publishLast = publishLast;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { skipWhile } from 'rxjs/internal/patching/operator/skipWhile';
+import { skipWhile } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.skipWhile = skipWhile;
 

@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { skipLast } from 'rxjs/internal/patching/operator/skipLast';
+import { skipLast } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.skipLast = skipLast;
 

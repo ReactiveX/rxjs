@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { windowCount } from 'rxjs/internal/patching/operator/windowCount';
+import { windowCount } from 'rxjs/internal-compatibility';
 
 (Observable as any).prototype.windowCount = windowCount;
 
