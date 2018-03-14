@@ -1,1 +1,1 @@
-export {AsyncSubject} from 'rxjs/internal/AsyncSubject';
+export {AsyncSubject} from 'rxjs';

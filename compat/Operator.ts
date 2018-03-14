@@ -1,1 +1,1 @@
-export {Operator} from 'rxjs/internal/Operator';
+export {Operator} from 'rxjs';

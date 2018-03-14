@@ -1,1 +1,1 @@
-export {SubjectSubscription} from 'rxjs/internal/SubjectSubscription';
+export {SubjectSubscription} from 'rxjs/internal-compatibility';

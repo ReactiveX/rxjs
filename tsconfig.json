@@ -6,8 +6,13 @@
       "rxjs": ["./src/index"],
       "rxjs/*": ["./src/*"],
       "rxjs/internal-compatibility": ["./src/internal-compatibility/index"],
+      "rxjs/ajax": ["./src/ajax/index"],
+      "rxjs/operators": ["./src/operators/index"],
+      "rxjs/testing": ["./src/testing/index"],
+      "rxjs/websocket": ["./src/websocket/index"],
       "rxjs-compat": ["./compat/index"],
       "rxjs-compat/*": ["./compat/*"]
     }
-  }
+  },
+  "exclude": ["./dist", "./dist-compat"]
 }

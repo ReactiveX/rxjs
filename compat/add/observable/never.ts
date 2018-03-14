@@ -1,5 +1,4 @@
-import { Observable, interval } from 'rxjs';
-import { NEVER } from 'rxjs/internal/observable/never';
+import { Observable, interval, NEVER } from 'rxjs';
 
 export function staticNever() {
   return NEVER;

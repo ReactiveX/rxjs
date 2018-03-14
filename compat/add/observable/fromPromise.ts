@@ -1,7 +1,7 @@
-import { Observable } from 'rxjs';
-import { fromPromise as staticFromPromise } from 'rxjs/internal/observable/fromPromise';
+import { Observable, from } from 'rxjs';
+import { fromPromise as staticFromPromise } from 'rxjs/internal-compatibility';
 
-(Observable as any).fromPromise = staticFromPromise;
+(Observable as any).fromPromise = from;
 
 declare module 'rxjs/internal/Observable' {
   namespace Observable {

@@ -1,1 +1,1 @@
-export {Scheduler} from 'rxjs/internal/Scheduler';
+export {Scheduler} from 'rxjs/internal-compatibility';

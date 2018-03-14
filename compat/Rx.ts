@@ -162,9 +162,7 @@ export { AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError } from 'rxjs/aja
 
 import { asapScheduler, asyncScheduler, queueScheduler, animationFrameScheduler, SchedulerLike } from 'rxjs';
 
-import { rxSubscriber } from 'rxjs/internal/symbol/rxSubscriber';
-import { iterator } from 'rxjs/internal/symbol/iterator';
-import { observable } from 'rxjs/internal/symbol/observable';
+import { iterator, observable, rxSubscriber } from 'rxjs/internal-compatibility';
 
 import * as _operators from 'rxjs/operators';
 
