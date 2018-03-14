@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as Rx from 'rxjs/Rx';
-import { GroupedObservable } from 'rxjs/internal-compatibility';
+import { GroupedObservable } from 'rxjs/operators/groupBy';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare function asDiagram(arg: string): Function;

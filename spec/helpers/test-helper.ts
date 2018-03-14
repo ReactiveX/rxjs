@@ -2,7 +2,8 @@ declare const global: any;
 
 import * as Rx from 'rxjs/Rx';
 import { ObservableInput } from 'rxjs';
-import { iterator, root } from 'rxjs/internal-compatibility';
+import { iterator } from 'rxjs/symbol/iterator';
+import { root } from 'rxjs/util/root';
 import $$symbolObservable from 'symbol-observable';
 
 export function lowerCaseO<T>(...args: Array<any>): Rx.Observable<T> {

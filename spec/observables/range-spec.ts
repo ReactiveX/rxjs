@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import { Observable, Subscriber, asapScheduler as asap, range} from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { expectObservable } from '../helpers/marble-testing';
-import { dispatch } from 'rxjs/internal-compatibility';
+import { dispatch } from 'rxjs/observable/range';
 
 declare const asDiagram: any;
 
