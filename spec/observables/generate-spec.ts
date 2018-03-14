@@ -1,8 +1,7 @@
-import { TestScheduler } from '../../src/testing';
+import { TestScheduler } from 'rxjs/testing';
 import { expect } from 'chai';
 import { expectObservable } from '../helpers/marble-testing';
-import { Subscriber } from '../../src/internal/Subscriber';
-import { generate } from '../../src';
+import { generate, Subscriber } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 declare const rxTestScheduler: TestScheduler;

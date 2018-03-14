@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
-import { Observable, NEVER, of, ObjectUnsubscribedError } from '../../src';
-import { windowToggle, tap } from '../../src/operators';
-import { TestScheduler } from '../../src/testing';
+import { Observable, NEVER, of, ObjectUnsubscribedError } from 'rxjs';
+import { windowToggle, tap } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
 
 declare const rxTestScheduler: TestScheduler;
 declare const type: Function;

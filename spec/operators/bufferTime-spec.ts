@@ -1,4 +1,4 @@
-import * as Rx from '../../src/internal/Rx';
+import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
 
 declare const asDiagram: Function;

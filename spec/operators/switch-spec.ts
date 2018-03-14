@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { Observable, of, NEVER, queueScheduler, Subject } from '../../src';
-import { switchAll } from '../../src/operators';
+import { Observable, of, NEVER, queueScheduler, Subject } from 'rxjs';
+import { switchAll } from 'rxjs/operators';
 
 declare function asDiagram(arg: string): Function;
 declare const type: Function;

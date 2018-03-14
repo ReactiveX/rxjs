@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { TestScheduler } from '../../src/internal/testing/TestScheduler';
-import { throwError } from '../../src/';
+import { throwError } from 'rxjs';
 import { expectObservable } from '../helpers/marble-testing';
 
 declare function asDiagram(arg: string): Function;

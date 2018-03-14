@@ -101,19 +101,32 @@ export { withLatestFrom } from '../internal/patching/operator/withLatestFrom';
 export { zipProto } from '../internal/patching/operator/zip';
 export { zipAll } from '../internal/patching/operator/zipAll';
 
+export { config } from '../internal/config';
 export { InnerSubscriber } from '../internal/InnerSubscriber';
 export { OuterSubscriber } from '../internal/OuterSubscriber';
 export { Scheduler } from '../internal/Scheduler';
+export { AnonymousSubject } from '../internal/Subject';
 export { SubjectSubscription } from '../internal/SubjectSubscription';
 export { Subscriber } from '../internal/Subscriber';
 
 export { fromPromise } from '../internal/observable/fromPromise';
+export { fromIterable } from '../internal/observable/fromIterable';
 export { AjaxCreationMethod } from '../internal/observable/dom/AjaxObservable';
 export { CombineLatestOperator } from '../internal/observable/combineLatest';
+export { dispatch } from '../internal/observable/range';
+export { SubscribeOnObservable } from '../internal/observable/SubscribeOnObservable';
+export { scalar } from '../internal/observable/scalar';
+
+export { Timestamp } from '../internal/operators/timestamp';
+export { TimeInterval } from '../internal/operators/timeInterval';
+export { GroupedObservable } from '../internal/operators/groupBy';
 
 export { rxSubscriber } from '../internal/symbol/rxSubscriber';
 export { iterator } from '../internal/symbol/iterator';
 export { observable } from '../internal/symbol/observable';
 
+export { Immediate } from '../internal/util/Immediate';
 export { isArray } from '../internal/util/isArray';
+export { root } from '../internal/util/root';
 export { subscribeToResult } from '../internal/util/subscribeToResult';
+export { toSubscriber } from '../internal/util/toSubscriber';

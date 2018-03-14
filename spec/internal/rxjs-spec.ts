@@ -1,10 +1,10 @@
 import { expect } from 'chai';
-import * as umd from '../../src/internal/umd';
-import * as rx_index from '../../src';
-import * as rx_operators from '../../src/operators';
-import * as rx_testing from '../../src/testing';
-import * as rx_ajax from '../../src/ajax';
-import * as rx_websocket from '../../src/websocket';
+import * as umd from 'rxjs/internal/umd';
+import * as rx_index from 'rxjs';
+import * as rx_operators from 'rxjs/operators';
+import * as rx_testing from 'rxjs/testing';
+import * as rx_ajax from 'rxjs/ajax';
+import * as rx_websocket from 'rxjs/websocket';
 
 describe('rxjs exports', () => {
   Object.keys(rx_index).forEach(key => {

@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { expectObservable } from '../helpers/marble-testing';
-import { NEVER, asapScheduler, Observable, animationFrameScheduler, queueScheduler } from '../../src';
-import { TestScheduler } from '../../src/testing';
-import { interval } from '../../src/';
+import { NEVER, interval, asapScheduler, Observable, animationFrameScheduler, queueScheduler } from 'rxjs';
+import { TestScheduler } from 'rxjs/testing';
 
 declare const asDiagram: any;
 declare const rxTestScheduler: TestScheduler;

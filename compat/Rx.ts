@@ -3,7 +3,10 @@
 // Subject extends Observable and Observable references Subject in it's
 // definition
 export {Observable, Subject} from 'rxjs';
+export {AnonymousSubject} from 'rxjs/internal-compatibility';
 /* tslint:enable:no-unused-variable */
+
+export { config } from 'rxjs/internal-compatibility';
 
 // statics
 /* tslint:disable:no-use-before-declare */
@@ -157,12 +160,13 @@ export {
 
 export {TestScheduler} from 'rxjs/testing';
 
-export { Operator, Subscriber, AsyncSubject, ConnectableObservable, TimeoutError, TimeInterval, Timestamp, VirtualTimeScheduler } from 'rxjs';
+export { Operator, Subscriber, AsyncSubject, ConnectableObservable, TimeoutError, VirtualTimeScheduler } from 'rxjs';
 export { AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError } from 'rxjs/ajax';
 
 import { asapScheduler, asyncScheduler, queueScheduler, animationFrameScheduler, SchedulerLike } from 'rxjs';
 
 import { iterator, observable, rxSubscriber } from 'rxjs/internal-compatibility';
+export { TimeInterval, Timestamp } from 'rxjs/internal-compatibility';
 
 import * as _operators from 'rxjs/operators';
 

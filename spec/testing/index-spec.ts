@@ -1,4 +1,4 @@
-import * as index from '../../src/testing/index';
+import * as index from 'rxjs/testing';
 import { expect } from 'chai';
 
 describe('index', () => {

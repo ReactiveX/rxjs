@@ -3,7 +3,7 @@ import * as gm from 'gm';
 import * as Color from 'color';
 import { cloneDeep, isEqual} from 'lodash';
 import { TestMessage } from '../../../src/internal/testing/TestMessage';
-import { Observable } from '../../../src/internal/Observable';
+import { Observable } from 'rxjs';
 import { GMObject, MarbleContent, TestStream } from './types';
 
 let canvasHeight: number | undefined;

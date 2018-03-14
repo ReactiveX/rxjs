@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../../../src/internal/Rx';
+import * as Rx from 'rxjs/Rx';
 
 declare const __root__: any;
 
