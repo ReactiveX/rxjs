@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { MonoTypeOperatorFunction } from '../types';
+import { OperatorFunction } from '../types';
 
 /**
  * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.
@@ -13,8 +13,8 @@ import { MonoTypeOperatorFunction } from '../types';
  * @method ignoreElements
  * @owner Observable
  */
-export function ignoreElements<T>(): MonoTypeOperatorFunction<T> {
-  return function ignoreElementsOperatorFunction(source: Observable<T>) {
+export function ignoreElements(): OperatorFunction<any, never> {
+  return function ignoreElementsOperatorFunction(source: Observable<any>) {
     return source.lift(new IgnoreElementsOperator());
   };
 }
