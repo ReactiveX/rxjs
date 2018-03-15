@@ -2,7 +2,11 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "noEmit": false,
-    "baseUrl": "../src"
+    "baseUrl": "../src",
+    "paths": {
+      "rxjs": ["./"],
+      "rxjs/*": ["./*"]
+    }
   },
   "files": [
     // entry-points

@@ -1,1 +1,1 @@
-export { from as fromIterable } from 'rxjs';
+export { fromIterable } from 'rxjs/internal-compatibility';

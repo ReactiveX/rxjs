@@ -3,17 +3,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "rxjs": ["./src/index"],
+      "rxjs": ["./src"],
       "rxjs/*": ["./src/*", "./legacy-reexport/*"],
-      "rxjs/internal-compatibility": ["./src/internal-compatibility/index"],
-      "rxjs/Rx": ["./legacy-reexport/Rx"],
-      "rxjs/operators/*": ["./legacy-reexport/operators/*"],
-      "rxjs/symbol/*": ["./legacy-reexport/symbol/*"],
-      "rxjs/scheduler/*": ["./legacy-reexport/scheduler/*"],
-      "rxjs/ajax": ["./src/ajax/index"],
-      "rxjs/operators": ["./src/operators/index"],
-      "rxjs/testing": ["./src/testing/index"],
-      "rxjs/websocket": ["./src/websocket/index"],
       "rxjs-compat": ["./compat/index"],
       "rxjs-compat/*": ["./compat/*"]
     }

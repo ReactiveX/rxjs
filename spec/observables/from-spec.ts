@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
-import { Observable, asapScheduler, asyncScheduler, Observer } from 'rxjs';
-import { of, from } from 'rxjs';
+import { asyncScheduler, of, from, Observable, asapScheduler, Observer } from 'rxjs';
 
 // tslint:disable:no-any
 declare const asDiagram: any;
