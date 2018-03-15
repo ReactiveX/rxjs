@@ -21,10 +21,8 @@ Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Exten
 
 ## Versions In This Repository
 
-- [master](https://github.com/ReactiveX/rxjs/commits/master) - commits that will be included in the next _major_ release (breaking changes)
-- [next](https://github.com/ReactiveX/rxjs/commits/stable) - commits that will be included in the next _minor_ or _patch_ release
-
-Most PRs should be made to **master**, unless you know it is a breaking change.
+- [master](https://github.com/ReactiveX/rxjs/commits/master) - This all of the current, unreleased work, which is against v6 of RxJS right now
+- [stable](https://github.com/ReactiveX/rxjs/commits/stable) - This is the branch for the latest version you'd get if you do `npm install rxjs`, (currently this is 5.5)
 
 ## Important
 
