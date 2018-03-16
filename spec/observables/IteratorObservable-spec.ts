@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import * as Rx from '../../src/internal/Rx';
-import { queue } from '../../src/internal/scheduler/queue';
-import { fromIterable } from '../../src/internal/observable/fromIterable';
+import * as Rx from 'rxjs/Rx';
+import { queue } from 'rxjs/scheduler/queue';
+import { fromIterable } from 'rxjs/observable/fromIterable';
 
 declare const expectObservable: any;
 declare const rxTestScheduler: Rx.TestScheduler;

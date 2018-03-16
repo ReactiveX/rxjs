@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import * as Rx from '../../src/internal/Rx';
-import { scalar } from '../../src/internal/observable/scalar';
+import * as Rx from 'rxjs/Rx';
+import { scalar } from 'rxjs/observable/scalar';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 

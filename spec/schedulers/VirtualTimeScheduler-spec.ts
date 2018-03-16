@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import * as Rx from '../../src/internal/Rx';
-import { VirtualAction } from '../../src/internal/scheduler/VirtualTimeScheduler';
+import * as Rx from 'rxjs/Rx';
+import { VirtualAction } from 'rxjs';
 
 const VirtualTimeScheduler = Rx.VirtualTimeScheduler;
 

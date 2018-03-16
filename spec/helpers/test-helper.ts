@@ -1,9 +1,9 @@
 declare const global: any;
 
-import * as Rx from '../../src/internal/Rx';
-import { ObservableInput } from '../../src/internal/types';
-import { root } from '../../src/internal/util/root';
-import { $$iterator } from '../../src/internal/symbol/iterator';
+import * as Rx from 'rxjs/Rx';
+import { ObservableInput } from 'rxjs';
+import { iterator } from 'rxjs/symbol/iterator';
+import { root } from 'rxjs/util/root';
 import $$symbolObservable from 'symbol-observable';
 
 export function lowerCaseO<T>(...args: Array<any>): Rx.Observable<T> {
@@ -30,7 +30,7 @@ export const createObservableInputs = <T>(value: T) => Rx.Observable.of<Observab
   [value],
   Promise.resolve(value),
   <any>({
-  [$$iterator]: () => {
+  [iterator]: () => {
     const iteratorResults = [
       { value, done: false },
       { done: true }

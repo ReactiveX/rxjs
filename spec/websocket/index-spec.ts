@@ -1,4 +1,4 @@
-import * as index from '../../src/websocket/index';
+import * as index from 'rxjs/websocket';
 import { expect } from 'chai';
 
 describe('index', () => {

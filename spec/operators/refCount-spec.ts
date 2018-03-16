@@ -1,8 +1,7 @@
 import { expect } from 'chai';
 import { cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { refCount, publish, publishReplay } from '../../src/operators';
-import { ConnectableObservable } from '../../src/internal/observable/ConnectableObservable';
-import { NEVER, noop, Observable, Observer, Subject } from '../../src';
+import { refCount, publish, publishReplay } from 'rxjs/operators';
+import { NEVER, noop, Observable, Observer, Subject, ConnectableObservable } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 

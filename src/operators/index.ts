@@ -48,6 +48,7 @@ export { mergeScan } from '../internal/operators/mergeScan';
 export { min } from '../internal/operators/min';
 export { multicast } from '../internal/operators/multicast';
 export { observeOn } from '../internal/operators/observeOn';
+export { onErrorResumeNext } from '../internal/operators/onErrorResumeNext';
 export { pairwise } from '../internal/operators/pairwise';
 export { partition } from '../internal/operators/partition';
 export { pluck } from '../internal/operators/pluck';
@@ -55,6 +56,7 @@ export { publish } from '../internal/operators/publish';
 export { publishBehavior } from '../internal/operators/publishBehavior';
 export { publishLast } from '../internal/operators/publishLast';
 export { publishReplay } from '../internal/operators/publishReplay';
+export { race } from '../internal/operators/race';
 export { reduce } from '../internal/operators/reduce';
 export { repeat } from '../internal/operators/repeat';
 export { repeatWhen } from '../internal/operators/repeatWhen';
@@ -73,13 +75,7 @@ export { skipLast } from '../internal/operators/skipLast';
 export { skipUntil } from '../internal/operators/skipUntil';
 export { skipWhile } from '../internal/operators/skipWhile';
 export { startWith } from '../internal/operators/startWith';
-/**
- * TODO(https://github.com/ReactiveX/rxjs/issues/2900): Add back subscribeOn once it can be
- * treeshaken. Currently if this export is added back, it
- * forces apps to bring in asap scheduler along with
- * Immediate, root, and other supporting code.
- */
-// export { subscribeOn } from '../internal/operators/subscribeOn';
+export { subscribeOn } from '../internal/operators/subscribeOn';
 export { switchAll } from '../internal/operators/switchAll';
 export { switchMap } from '../internal/operators/switchMap';
 export { switchMapTo } from '../internal/operators/switchMapTo';

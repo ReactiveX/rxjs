@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as Rx from '../src/internal/Rx';
+import * as Rx from 'rxjs/Rx';
 import { expectObservable } from './helpers/marble-testing';
 
 const Notification = Rx.Notification;

@@ -1,29 +1,7 @@
 import { expect } from 'chai';
-import { bindCallback } from '../src/internal/observable/bindCallback';
-import { bindNodeCallback } from '../src/internal/observable/bindNodeCallback';
-import { combineLatest } from '../src/internal/observable/combineLatest';
-import { concat } from '../src/internal/observable/concat';
-import { defer } from '../src/internal/observable/defer';
-import { empty } from '../src/internal/observable/empty';
-import { forkJoin } from '../src/internal/observable/forkJoin';
-import { from } from '../src/internal/observable/from';
-import { fromEvent } from '../src/internal/observable/fromEvent';
-import { fromEventPattern } from '../src/internal/observable/fromEventPattern';
-import { fromPromise } from '../src/internal/observable/fromPromise';
-import { iif } from '../src/internal/observable/iif';
-import { interval } from '../src/internal/observable/interval';
-import { merge } from '../src/internal/observable/merge';
-import { never } from '../src/internal/observable/never';
-import { of } from '../src/internal/observable/of';
-import { onErrorResumeNext } from '../src/internal/observable/onErrorResumeNext';
-import { pairs } from '../src/internal/observable/pairs';
-import { race } from '../src/internal/observable/race';
-import { range } from '../src/internal/observable/range';
-import { throwError } from '../src/internal/observable/throwError';
-import { timer } from '../src/internal/observable/timer';
-import { using } from '../src/internal/observable/using';
-import { zip } from '../src/internal/observable/zip';
-import * as Rx from '../src/internal/Rx';
+import { bindCallback, bindNodeCallback, combineLatest, concat, defer, empty, forkJoin, from, fromEvent, fromEventPattern,
+  iif, interval, merge, NEVER, of, onErrorResumeNext, pairs, race, range, throwError, timer, using, zip } from 'rxjs';
+import * as Rx from 'rxjs/Rx';
 
 describe('exports', () => {
   it('should have rxjs/observable/bindCallback', () => {
@@ -67,7 +45,7 @@ describe('exports', () => {
   });
 
   it('should have rxjs/observable/fromPromise', () => {
-    expect(fromPromise).to.equal(Rx.Observable.fromPromise);
+    expect(from).to.equal(Rx.Observable.fromPromise);
   });
 
   it('should have rxjs/observable/iif', () => {

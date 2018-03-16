@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { using, range, Subscription } from '../../src';
+import { using, range, Subscription } from 'rxjs';
 
 describe('using', () => {
   it('should dispose of the resource when the subscription is disposed', (done) => {

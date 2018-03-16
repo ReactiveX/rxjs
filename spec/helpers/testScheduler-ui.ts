@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import * as chai from 'chai';
 import * as sinonChai from 'sinon-chai';
 
-import * as Rx from '../../src/internal/Rx';
+import * as Rx from 'rxjs/Rx';
 import * as marble from './marble-testing';
 
 //tslint:disable:no-var-requires no-require-imports

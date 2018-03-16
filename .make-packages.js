@@ -22,6 +22,7 @@ const CJS_ROOT = ROOT + 'cjs/';
 const ESM5_ROOT = ROOT + 'esm5/';
 const ESM2015_ROOT = ROOT + 'esm2015/';
 const UMD_ROOT = ROOT + 'global/';
+const LEGACY_REEXPORT_ROOT = ROOT + "legacy-reexport/"
 const TYPE_ROOT = ROOT + 'typings/';
 const PKG_ROOT = ROOT + 'package/';
 const CJS_PKG = PKG_ROOT + '';
@@ -52,14 +53,14 @@ let rootPackageJson = Object.assign({}, pkg, {
 // functionality requires that the most broad mapping (rxjs/operators) be at
 // the end of the alias mapping object. Created Webpack issue:
 // https://github.com/webpack/webpack/issues/5870
-const fileNames = klawSync(CJS_ROOT, {
+const fileNames = klawSync(LEGACY_REEXPORT_ROOT, {
   nodir: true,
   filter: function(item) {
     return item.path.endsWith('.js');
   }
 })
 .map(item => item.path)
-.map(path => path.slice((`${__dirname}/${CJS_ROOT}`).length))
+.map(path => path.slice((`${__dirname}/${LEGACY_REEXPORT_ROOT}`).length))
 .sort().reverse();
 
 // Execute build optimizer transforms on ESM5 files
@@ -96,18 +97,20 @@ mkdirp.sync(PKG_ROOT);
 copySources('src/', PKG_ROOT + 'src/');
 copySources(CJS_ROOT, CJS_PKG);
 fs.copySync(TYPE_ROOT, TYPE_PKG);
+fs.copySync(LEGACY_REEXPORT_ROOT, CJS_PKG, {overwrite: false, errorOnExist: true});
 
 copySources(ESM5_ROOT, ESM5_PKG, true);
 copySources(ESM2015_ROOT, ESM2015_PKG, true);
 
 // Copy over tsconfig.json for bazel build support
-fs.copySync('./tsconfig.json', PKG_ROOT + 'src/tsconfig.json');
+fs.copySync('./tsconfig.base.json', PKG_ROOT + 'src/tsconfig.json');
 
-fs.writeJsonSync(PKG_ROOT + 'package.json', rootPackageJson);
+fs.writeJsonSync(PKG_ROOT + 'package.json', rootPackageJson, {spaces: 2});
 fs.copySync('src/operators/package.json', PKG_ROOT + '/operators/package.json');
 fs.copySync('src/ajax/package.json', PKG_ROOT + '/ajax/package.json');
 fs.copySync('src/websocket/package.json', PKG_ROOT + '/websocket/package.json');
 fs.copySync('src/testing/package.json', PKG_ROOT + '/testing/package.json');
+
 
 if (fs.existsSync(UMD_ROOT)) {
   fs.copySync(UMD_ROOT, UMD_PKG);
@@ -146,7 +149,7 @@ function copySources(rootDir, packageDir, ignoreMissing) {
 function createImportTargets(importTargets, targetName, targetDirectory) {
   const importMap = {};
   for (const x in importTargets) {
-    importMap['rxjs/' + x] = 'rxjs/' + targetName + importTargets[x];
+    importMap['rxjs/' + x] = ('rxjs-compat/' + targetName + importTargets[x]).replace(/\.js$/, '');
   }
 
   const outputData =
@@ -157,7 +160,7 @@ var path = require('path');
 var dir = path.resolve(__dirname);
 
 module.exports = function() {
-  return ${JSON.stringify(importMap, null, 4).replace(/(: )"rxjs\/_esm(5|2015)\/(.+")(,?)/g, "$1path.join(dir, \"$3)$4")};
+  return ${JSON.stringify(importMap, null, 4)};
 }
 `
 

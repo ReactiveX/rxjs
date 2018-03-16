@@ -1,4 +1,4 @@
-import * as index from '../../src/ajax/index';
+import * as index from 'rxjs/ajax';
 import { expect } from 'chai';
 
 describe('index', () => {
