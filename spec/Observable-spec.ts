@@ -4,6 +4,7 @@ import * as Rx from '../src/internal/Rx';
 import { Observer, TeardownLogic } from '../src/internal/types';
 import { cold, expectObservable, expectSubscriptions } from './helpers/marble-testing';
 import { map } from '../src/internal/operators/map';
+import * as HostReportErrorModule from '../src/internal/util/hostReportError';
 //tslint:disable-next-line
 require('./helpers/test-helper');
 
@@ -529,6 +530,33 @@ describe('Observable', () => {
           complete() { completeCalled = true; }
         });
 
+      });
+    });
+
+    describe('if config.useDeprecatedSynchronousThrowing === true', () => {
+      beforeEach(() => {
+        Rx.config.useDeprecatedSynchronousErrorHandling = true;
+      });
+
+      it('should throw synchronously', () => {
+        expect(() => Observable.throwError(new Error()).subscribe())
+          .to.throw();
+      });
+
+      afterEach(() => {
+        Rx.config.useDeprecatedSynchronousErrorHandling = false;
+      });
+    });
+
+    describe('if config.useDeprecatedSynchronousThrowing === false', () => {
+      beforeEach(() => {
+        Rx.config.useDeprecatedSynchronousErrorHandling = false;
+      });
+
+      it('should call hostReportErrors', () => {
+        const spy = sinon.spy(HostReportErrorModule, 'hostReportError');
+        Observable.throwError(new Error()).subscribe();
+        expect(spy).to.have.been.calledOnce;
       });
     });
   });

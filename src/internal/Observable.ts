@@ -195,6 +195,15 @@ export class Observable<T> implements Subscribable<T> {
       sink.add(this.source ? this._subscribe(sink) : this._trySubscribe(sink));
     }
 
+    if (config.useDeprecatedSynchronousErrorHandling) {
+      if (sink.syncErrorThrowable) {
+        sink.syncErrorThrowable = false;
+        if (sink.syncErrorThrown) {
+          throw sink.syncErrorValue;
+        }
+      }
+    }
+
     return sink;
   }
 
@@ -202,6 +211,10 @@ export class Observable<T> implements Subscribable<T> {
     try {
       return this._subscribe(sink);
     } catch (err) {
+      if (config.useDeprecatedSynchronousErrorHandling) {
+        sink.syncErrorThrown = true;
+        sink.syncErrorValue = err;
+      }
       sink.error(err);
     }
   }
