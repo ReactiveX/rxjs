@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { mergeMap, map } from '../../src/operators';
-import { Observable, from, of } from '../../src';
+import { mergeMap, map } from 'rxjs/operators';
+import { Observable, from, of } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare const type: Function;

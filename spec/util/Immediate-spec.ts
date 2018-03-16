@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Immediate } from '../../src/internal/util/Immediate';
+import { Immediate } from 'rxjs/util/Immediate';
 
 describe('Immediate', () => {
   it('should schedule on the next microtask', (done) => {

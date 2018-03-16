@@ -1,4 +1,4 @@
-import * as index from '../../src/operators/index';
+import * as index from 'rxjs/operators';
 import { expect } from 'chai';
 
 describe('operators/index', () => {

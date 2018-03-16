@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../../src/internal/Rx';
-import { SubscribeOnObservable } from '../../src/internal/observable/SubscribeOnObservable';
+import * as Rx from 'rxjs/Rx';
+import { SubscribeOnObservable } from 'rxjs/observable/SubscribeOnObservable';
 import { hot, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare const rxTestScheduler: Rx.TestScheduler;

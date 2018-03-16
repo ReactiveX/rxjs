@@ -1,4 +1,4 @@
-import { NEVER } from '../../src/';
+import { NEVER } from 'rxjs';
 import { expect } from 'chai';
 import { expectObservable } from '../helpers/marble-testing';
 

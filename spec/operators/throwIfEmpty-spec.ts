@@ -1,8 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { EMPTY, of } from '../../src';
-import { EmptyError } from '../../src/internal/util/EmptyError';
-import { throwIfEmpty } from '../../src/operators';
+import { EMPTY, of, EmptyError } from 'rxjs';
+import { throwIfEmpty } from 'rxjs/operators';
 
 /** @test {timeout} */
 describe('throwIfEmpty', () => {

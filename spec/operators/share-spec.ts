@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { share } from '../../src/operators';
-import { Observable, EMPTY, NEVER } from '../../src';
+import { share } from 'rxjs/operators';
+import { Observable, EMPTY, NEVER } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 

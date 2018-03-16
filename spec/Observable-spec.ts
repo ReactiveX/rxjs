@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../src/internal/Rx';
+import * as Rx from 'rxjs/Rx';
 import { Observer, TeardownLogic } from '../src/internal/types';
 import { cold, expectObservable, expectSubscriptions } from './helpers/marble-testing';
 import { map } from '../src/internal/operators/map';
@@ -545,18 +545,6 @@ describe('Observable', () => {
 
       afterEach(() => {
         Rx.config.useDeprecatedSynchronousErrorHandling = false;
-      });
-    });
-
-    describe('if config.useDeprecatedSynchronousThrowing === false', () => {
-      beforeEach(() => {
-        Rx.config.useDeprecatedSynchronousErrorHandling = false;
-      });
-
-      it('should call hostReportErrors', () => {
-        const spy = sinon.spy(HostReportErrorModule, 'hostReportError');
-        Observable.throwError(new Error()).subscribe();
-        expect(spy).to.have.been.calledOnce;
       });
     });
   });

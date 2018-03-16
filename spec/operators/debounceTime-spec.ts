@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as Rx from '../../src/internal/Rx';
+import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { VirtualTimeScheduler } from '../../src/internal/scheduler/VirtualTimeScheduler';
 

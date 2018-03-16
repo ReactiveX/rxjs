@@ -1,32 +1,13 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "removeComments": false,
-    "preserveConstEnums": true,
-    "sourceMap": true,
-    "strictFunctionTypes": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "moduleResolution": "classic", // we intentionally use "classic" module resolution to be SystemJS-compatible after transpilation
-    "stripInternal": false,
-    "target": "es5",
-    "outDir": "./.out",
-    "lib": [
-      "es5",
-      "es2015.iterable",
-      "es2015.collection",
-      "es2015.promise",
-      "es2015.symbol",
-      "es2015.symbol.wellknown",
-      "dom"
-    ]
+    "baseUrl": ".",
+    "paths": {
+      "rxjs": ["./src"],
+      "rxjs/*": ["./src/*", "./legacy-reexport/*"],
+      "rxjs-compat": ["./compat/index"],
+      "rxjs-compat/*": ["./compat/*"]
+    }
   },
-  "formatCodeOptions": {
-    "indentSize": 2,
-    "tabSize": 2
-  },
-  "bazelOptions": {
-    "suppressTsconfigOverrideWarnings": true
-  }
+  "exclude": ["./dist", "./dist-compat"]
 }

@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { expectObservable } from '../helpers/marble-testing';
 
-import { fromEventPattern, noop, NEVER, timer } from '../../src';
-import { TestScheduler } from '../../src/testing';
+import { fromEventPattern, noop, NEVER, timer } from 'rxjs';
+import { TestScheduler } from 'rxjs/testing';
 
 declare function asDiagram(arg: string): Function;
 declare const rxTestScheduler: TestScheduler;

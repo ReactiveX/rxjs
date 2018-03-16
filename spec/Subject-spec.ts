@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as Rx from '../src/internal/Rx';
+import * as Rx from 'rxjs/Rx';
 import { hot, expectObservable } from './helpers/marble-testing';
 
 const Subject = Rx.Subject;

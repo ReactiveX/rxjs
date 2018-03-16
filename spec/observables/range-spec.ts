@@ -1,11 +1,9 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { Observable, asapScheduler as asap} from '../../src';
-import { range } from '../../src/';
-import { TestScheduler } from '../../src/testing';
+import { Observable, Subscriber, asapScheduler as asap, range} from 'rxjs';
+import { TestScheduler } from 'rxjs/testing';
 import { expectObservable } from '../helpers/marble-testing';
-import { dispatch } from '../../src/internal/observable/range';
-import { Subscriber } from '../../src/internal/Subscriber';
+import { dispatch } from 'rxjs/observable/range';
 
 declare const asDiagram: any;
 

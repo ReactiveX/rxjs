@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { bindCallback } from '../../src/';
-import { TestScheduler } from '../../src/testing';
+import { bindCallback } from 'rxjs';
+import { TestScheduler } from 'rxjs/testing';
 
 declare const rxTestScheduler: TestScheduler;
 

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Observable, forkJoin, of } from '../../src';
+import { Observable, forkJoin, of } from 'rxjs';
 import { lowerCaseO } from '../helpers/test-helper';
 import { hot, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 

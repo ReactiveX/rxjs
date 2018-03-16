@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { pipe } from '../../src/internal/util/pipe';
+import { pipe } from 'rxjs';
 
 describe('pipe', () => {
   it('should exist', () => {

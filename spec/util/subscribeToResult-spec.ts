@@ -1,8 +1,6 @@
 import { expect } from 'chai';
-import * as Rx from '../../src/internal/Rx';
-import { subscribeToResult } from '../../src/internal/util/subscribeToResult';
-import { OuterSubscriber } from '../../src/internal/OuterSubscriber';
-import { $$iterator } from '../../src/internal/symbol/iterator';
+import * as Rx from 'rxjs/Rx';
+import { iterator, subscribeToResult, OuterSubscriber } from 'rxjs/internal-compatibility';
 import $$symbolObservable from 'symbol-observable';
 
 describe('subscribeToResult', () => {
@@ -104,7 +102,7 @@ describe('subscribeToResult', () => {
     ];
 
     const iterable = {
-      [$$iterator]: () => {
+      [iterator]: () => {
         return {
           next: () => {
             return iteratorResults.shift();
