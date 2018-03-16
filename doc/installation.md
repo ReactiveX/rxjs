@@ -7,7 +7,7 @@ npm install rxjs
 Import just the parts you need and use them
 
 ```js
-import { of, fromEvent } from 'rxjs';';
+import { of, fromEvent } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 of(1, 2, 3).pipe(
