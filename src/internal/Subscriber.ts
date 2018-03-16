@@ -3,6 +3,8 @@ import { empty as emptyObserver } from './Observer';
 import { Observer, PartialObserver } from './types';
 import { Subscription } from './Subscription';
 import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscriber';
+import { config } from './config';
+import { hostReportError } from './util/hostReportError';
 
 /**
  * Implements the {@link Observer} interface and extends the
@@ -33,8 +35,13 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
                    error?: (e?: any) => void,
                    complete?: () => void): Subscriber<T> {
     const subscriber = new Subscriber(next, error, complete);
+    subscriber.syncErrorThrowable = false;
     return subscriber;
   }
+
+  /** @internal */ syncErrorValue: any = null;
+  /** @internal */ syncErrorThrown: boolean = false;
+  /** @internal */ syncErrorThrowable: boolean = false;
 
   protected isStopped: boolean = false;
   protected destination: PartialObserver<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
@@ -66,12 +73,14 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
             this.destination = (<Subscriber<any>> destinationOrNext);
             (<any> this.destination).add(this);
           } else {
-            this.destination = new SafeSubscriber<T>(<PartialObserver<any>> destinationOrNext);
+            this.syncErrorThrowable = true;
+            this.destination = new SafeSubscriber<T>(this, <PartialObserver<any>> destinationOrNext);
           }
           break;
         }
       default:
-        this.destination = new SafeSubscriber<T>(<((value: T) => void)> destinationOrNext, error, complete);
+        this.syncErrorThrowable = true;
+        this.destination = new SafeSubscriber<T>(this, <((value: T) => void)> destinationOrNext, error, complete);
         break;
     }
   }
@@ -160,7 +169,8 @@ class SafeSubscriber<T> extends Subscriber<T> {
 
   private _context: any;
 
-  constructor(observerOrNext?: PartialObserver<T> | ((value: T) => void),
+  constructor(private _parentSubscriber: Subscriber<T>,
+              observerOrNext?: PartialObserver<T> | ((value: T) => void),
               error?: (e?: any) => void,
               complete?: () => void) {
     super();
@@ -191,10 +201,10 @@ class SafeSubscriber<T> extends Subscriber<T> {
 
   next(value?: T): void {
     if (!this.isStopped && this._next) {
-      try {
-        this._next.call(this._context, value);
-      } catch (err) {
-        this._hostReportError(err);
+      const { _parentSubscriber } = this;
+      if (!config.useDeprecatedSynchronousErrorHandling || !_parentSubscriber.syncErrorThrowable) {
+        this.__tryOrUnsub(this._next, value);
+      } else if (this.__tryOrSetError(_parentSubscriber, this._next, value)) {
         this.unsubscribe();
       }
     }
@@ -202,37 +212,89 @@ class SafeSubscriber<T> extends Subscriber<T> {
 
   error(err?: any): void {
     if (!this.isStopped) {
+      const { _parentSubscriber } = this;
+      const { useDeprecatedSynchronousErrorHandling } = config;
       if (this._error) {
-        try {
-          this._error.call(this._context, err);
-        } catch (err) {
-          this._hostReportError(err);
+        if (!useDeprecatedSynchronousErrorHandling || !_parentSubscriber.syncErrorThrowable) {
+          this.__tryOrUnsub(this._error, err);
+          this.unsubscribe();
+        } else {
+          this.__tryOrSetError(_parentSubscriber, this._error, err);
+          this.unsubscribe();
         }
+      } else if (!_parentSubscriber.syncErrorThrowable) {
+        this.unsubscribe();
+        if (useDeprecatedSynchronousErrorHandling) {
+          throw err;
+        }
+        hostReportError(err);
       } else {
-        this._hostReportError(err);
+        if (useDeprecatedSynchronousErrorHandling) {
+          _parentSubscriber.syncErrorValue = err;
+          _parentSubscriber.syncErrorThrown = true;
+        } else {
+          hostReportError(err);
+        }
+        this.unsubscribe();
       }
-      this.unsubscribe();
     }
   }
 
   complete(): void {
     if (!this.isStopped) {
+      const { _parentSubscriber } = this;
       if (this._complete) {
-        try {
-          this._complete.call(this._context);
-        } catch (err) {
-          this._hostReportError(err);
+        const wrappedComplete = () => this._complete.call(this._context);
+
+        if (!config.useDeprecatedSynchronousErrorHandling || !_parentSubscriber.syncErrorThrowable) {
+          this.__tryOrUnsub(wrappedComplete);
+          this.unsubscribe();
+        } else {
+          this.__tryOrSetError(_parentSubscriber, wrappedComplete);
+          this.unsubscribe();
         }
+      } else {
+        this.unsubscribe();
       }
-      this.unsubscribe();
     }
   }
 
-  protected _unsubscribe(): void {
-    this._context = null;
+  private __tryOrUnsub(fn: Function, value?: any): void {
+    try {
+      fn.call(this._context, value);
+    } catch (err) {
+      this.unsubscribe();
+      if (config.useDeprecatedSynchronousErrorHandling) {
+        throw err;
+      } else {
+        hostReportError(err);
+      }
+    }
   }
 
-  private _hostReportError(err: any) {
-    setTimeout(() => { throw err; });
+  private __tryOrSetError(parent: Subscriber<T>, fn: Function, value?: any): boolean {
+    if (!config.useDeprecatedSynchronousErrorHandling) {
+      throw new Error('bad call');
+    }
+    try {
+      fn.call(this._context, value);
+    } catch (err) {
+      if (config.useDeprecatedSynchronousErrorHandling) {
+        parent.syncErrorValue = err;
+        parent.syncErrorThrown = true;
+        return true;
+      } else {
+        hostReportError(err);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  protected _unsubscribe(): void {
+    const { _parentSubscriber } = this;
+    this._context = null;
+    this._parentSubscriber = null;
+    _parentSubscriber.unsubscribe();
   }
 }

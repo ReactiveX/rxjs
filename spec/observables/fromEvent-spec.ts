@@ -124,7 +124,7 @@ describe('fromEvent', () => {
     };
 
     fromEvent(obj as any, 'click').subscribe({
-      error(err) {
+      error(err: any) {
         expect(err).to.exist
           .and.be.instanceof(Error)
           .and.have.property('message', 'Invalid event target');

@@ -1,4 +1,5 @@
 import { Subscriber } from '../Subscriber';
+import { hostReportError } from './hostReportError';
 
 export const subscribeToPromise = <T>(promise: PromiseLike<T>) => (subscriber: Subscriber<T>) => {
   promise.then(
@@ -10,9 +11,6 @@ export const subscribeToPromise = <T>(promise: PromiseLike<T>) => (subscriber: S
     },
     (err: any) => subscriber.error(err)
   )
-  .then(null, (err: any) => {
-    // Escaping the Promise trap: globally throw unhandled errors
-    setTimeout(() => { throw err; });
-  });
+  .then(null, hostReportError);
   return subscriber;
 };
