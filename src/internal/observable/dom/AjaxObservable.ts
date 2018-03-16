@@ -365,7 +365,8 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
           status = response ? 200 : 0;
         }
 
-        if (200 <= status && status < 300) {
+        // 4xx and 5xx should error (https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
+        if (status < 400) {
           if (progressSubscriber) {
             progressSubscriber.complete();
           }
