@@ -19,14 +19,16 @@ The essential concepts in RxJS which solve async event management are:
 
 Normally you register event listeners.
 ```js
-var button = document.querySelector('button');
+const button = document.querySelector('button');
 button.addEventListener('click', () => console.log('Clicked!'));
 ```
 
 Using RxJS you create an observable instead.
 ```js
-var button = document.querySelector('button');
-Rx.Observable.fromEvent(button, 'click')
+const { fromEvent } = rxjs;
+
+const button = document.querySelector('button');
+fromEvent(button, 'click')
   .subscribe(() => console.log('Clicked!'));
 ```
 
@@ -44,8 +46,11 @@ button.addEventListener('click', () => console.log(`Clicked ${++count} times`));
 
 Using RxJS you isolate the state.
 ```Js
-var button = document.querySelector('button');
-Rx.Observable.fromEvent(button, 'click').pipe(
+const { fromEvent } = rxjs;
+const { scan } = rxjs.operators;
+
+cosnt button = document.querySelector('button');
+fromEvent(button, 'click').pipe(
   scan(count => count + 1, 0)
 )
 .subscribe(count => console.log(`Clicked ${count} times`));
@@ -72,8 +77,11 @@ button.addEventListener('click', () => {
 
 With RxJS:
 ```js
-var button = document.querySelector('button');
-Rx.Observable.fromEvent(button, 'click').pipe(
+const { fromEvent } = rxjs;
+const { throttleTime, scan } = rxjs.operators;
+
+const button = document.querySelector('button');
+fromEvent(button, 'click').pipe(
   throttleTime(1000),
   scan(count => count + 1, 0)
 )
@@ -87,10 +95,10 @@ You can transform the values passed through your observables.
 
 Here's how you can add the current mouse x position for every click, in plain JavaScript:
 ```js
-var count = 0;
-var rate = 1000;
-var lastClick = Date.now() - rate;
-var button = document.querySelector('button');
+let count = 0;
+const rate = 1000;
+let lastClick = Date.now() - rate;
+const button = document.querySelector('button');
 button.addEventListener('click', (event) => {
   if (Date.now() - lastClick >= rate) {
     count += event.clientX;
@@ -102,8 +110,11 @@ button.addEventListener('click', (event) => {
 
 With RxJS:
 ```js
-var button = document.querySelector('button');
-Rx.Observable.fromEvent(button, 'click').pipe(
+const { fromEvent } = rxjs;
+const { throttleTime, map, scan } = rxjs.operators;
+
+const button = document.querySelector('button');
+fromEvent(button, 'click').pipe(
   throttleTime(1000),
   map(event => event.clientX),
   scan((count, clientX) => count + clientX, 0)
