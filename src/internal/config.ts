@@ -7,5 +7,5 @@ export const config = {
    * The promise constructor used by default for methods such as
    * {@link toPromise} and {@link forEach}
    */
-  Promise
+  Promise: undefined as PromiseConstructorLike
 };
