@@ -1,7 +1,7 @@
 ## ES6 via npm
 
 ```shell
-npm install rxjs
+npm install rxjs@beta
 ```
 
 Import just the parts you need and use them
@@ -24,7 +24,7 @@ fromEvent(input, 'input').pipe(
 ## CommonJS via npm
 
 ```shell
-npm install rxjs
+npm install rxjs@beta
 ```
 
 Usage is pretty much the same thing, only with require:
@@ -66,7 +66,7 @@ fromEvent(input, 'input').pipe(
 
 For CDN, you can use [unpkg](https://unpkg.com). 
 
-- https://unpkg.com/rxjs/bundles/rxjs.umd.js
-- https://unpkg.com/rxjs/bundles/rxjs.umd.min.js
+- https://unpkg.com/rxjs@beta/bundles/rxjs.umd.js
+- https://unpkg.com/rxjs@beta/bundles/rxjs.umd.min.js
 
 
