@@ -262,8 +262,9 @@ describe('Observable.ajax', () => {
     expect(error.status).to.equal(404);
   });
 
-  it('should fail on 404', () => {
-    let error;
+  it('should succeed on 300', () => {
+    let result;
+    let complete = false;
     const obj = {
       url: '/flibbertyJibbet',
       normalizeError: (e: any, xhr: any, type: any) => {
@@ -273,13 +274,12 @@ describe('Observable.ajax', () => {
       method: ''
     };
 
-    Rx.Observable.ajax(obj).subscribe(x => {
-      throw 'should not next';
-    }, (err: any) => {
-      error = err;
-    }, () => {
-      throw 'should not complete';
-    });
+    Rx.Observable.ajax(obj)
+      .subscribe((x: any) => {
+        result = x;
+      }, null, () => {
+        complete = true;
+      });
 
     expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
 
@@ -289,9 +289,9 @@ describe('Observable.ajax', () => {
       'responseText': 'Wee! I am text!'
     });
 
-    expect(error instanceof Rx.AjaxError).to.be.true;
-    expect(error.message).to.equal('ajax error 300');
-    expect(error.status).to.equal(300);
+    expect(result.xhr).exist;
+    expect(result.response).to.deep.equal('Wee! I am text!');
+    expect(complete).to.be.true;
   });
 
   it('should succeed no settings', () => {
