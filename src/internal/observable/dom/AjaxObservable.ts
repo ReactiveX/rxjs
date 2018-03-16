@@ -23,7 +23,7 @@ export interface AjaxRequest {
   responseType?: string;
 }
 
-function getCORSRequest(this: AjaxRequest): XMLHttpRequest {
+function getCORSRequest(): XMLHttpRequest {
   if (root.XMLHttpRequest) {
     return new root.XMLHttpRequest();
   } else if (!!root.XDomainRequest) {
@@ -155,9 +155,9 @@ export class AjaxObservable<T> extends Observable<T> {
     const request: AjaxRequest = {
       async: true,
       createXHR: function(this: AjaxRequest) {
-        return this.crossDomain ? getCORSRequest.call(this) : getXMLHttpRequest();
+        return this.crossDomain ? getCORSRequest() : getXMLHttpRequest();
       },
-      crossDomain: false,
+      crossDomain: true,
       withCredentials: false,
       headers: {},
       method: 'GET',
