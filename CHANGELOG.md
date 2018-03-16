@@ -1,3 +1,91 @@
+<a name="6.0.0-beta.0"></a>
+# [6.0.0-beta.0](https://github.com/ReactiveX/RxJS/compare/6.0.0-alpha.3...6.0.0-beta.0) (2018-03-16)
+
+
+### Bug Fixes
+
+* **AjaxObservable:** 1xx,2xx,3xx requests shouldn't error, only 4xx,5xx ([#3438](https://github.com/ReactiveX/RxJS/issues/3438)) ([2128932](https://github.com/ReactiveX/RxJS/commit/2128932))
+* **compat:** adjustments to get rxjs-compat to build correctly ([dea6964](https://github.com/ReactiveX/RxJS/commit/dea6964))
+* **config:** expose configuration via rxjs exports ([#3441](https://github.com/ReactiveX/RxJS/issues/3441)) ([4287424](https://github.com/ReactiveX/RxJS/commit/4287424))
+* **config:** make sure that Promise config is undefined initially ([#3440](https://github.com/ReactiveX/RxJS/issues/3440)) ([469afe8](https://github.com/ReactiveX/RxJS/commit/469afe8))
+* **ESM:** Add [operators|ajax|websocket|testing]/package.json for ESM support, fixes [#3227](https://github.com/ReactiveX/RxJS/issues/3227) ([#3356](https://github.com/ReactiveX/RxJS/issues/3356)) ([725dcb4](https://github.com/ReactiveX/RxJS/commit/725dcb4))
+* **forkJoin:** fix forkJoin typings for forkJoin(Observable<any>[]) ([#3436](https://github.com/ReactiveX/RxJS/issues/3436)) ([17c7f8f](https://github.com/ReactiveX/RxJS/commit/17c7f8f))
+* **fromEvent:** Defines toString to fix Closure compilations ([#3417](https://github.com/ReactiveX/RxJS/issues/3417)) ([1558b43](https://github.com/ReactiveX/RxJS/commit/1558b43))
+* **fromEvent:** pass options in unsubscribe ([f1872b0](https://github.com/ReactiveX/RxJS/commit/f1872b0)), closes [#3349](https://github.com/ReactiveX/RxJS/issues/3349)
+* **publishReplay:** type inference improved ([#3437](https://github.com/ReactiveX/RxJS/issues/3437)) ([dd7c9f1](https://github.com/ReactiveX/RxJS/commit/dd7c9f1)), closes [#3260](https://github.com/ReactiveX/RxJS/issues/3260)
+* **rxjs:** add exports for symbols/interfaces that were missing ([#3380](https://github.com/ReactiveX/RxJS/issues/3380)) ([1622ee0](https://github.com/ReactiveX/RxJS/commit/1622ee0))
+* **rxjs:** make sure esm imports from index.js by default, not Rx.js ([#3316](https://github.com/ReactiveX/RxJS/issues/3316)) ([c2b00f4](https://github.com/ReactiveX/RxJS/commit/c2b00f4)), closes [#3315](https://github.com/ReactiveX/RxJS/issues/3315)
+* **rxjs:** once again exports custom error types ([#3371](https://github.com/ReactiveX/RxJS/issues/3371)) ([4465a9f](https://github.com/ReactiveX/RxJS/commit/4465a9f))
+* **rxjs:** remove types.ts importing from itself. ([#3383](https://github.com/ReactiveX/RxJS/issues/3383)) ([8fd50ad](https://github.com/ReactiveX/RxJS/commit/8fd50ad))
+* **spec:** get tests running using compatibility package ([916e968](https://github.com/ReactiveX/RxJS/commit/916e968))
+* correct internal module paths to be systemjs compatible ([#3412](https://github.com/ReactiveX/RxJS/issues/3412)) ([35abc9d](https://github.com/ReactiveX/RxJS/commit/35abc9d))
+* **Symbol.iterator:** correctly handle case where Symbol constructor itself is not defined ([#3394](https://github.com/ReactiveX/RxJS/issues/3394)) ([6725be1](https://github.com/ReactiveX/RxJS/commit/6725be1))
+* **typings:** fixed some cases where multicast and publish would not return a ConnectableObservable ([#3320](https://github.com/ReactiveX/RxJS/issues/3320)) ([ddffecc](https://github.com/ReactiveX/RxJS/commit/ddffecc))
+* reexport Symbol.observable typings patch ([4c4d7b0](https://github.com/ReactiveX/RxJS/commit/4c4d7b0))
+* remove the root operators.ts because it overshadows operators/package.json ([184b6d4](https://github.com/ReactiveX/RxJS/commit/184b6d4))
+
+
+### Code Refactoring
+
+* **Observable.if:** remove ts hacks from Observable ([f46f261](https://github.com/ReactiveX/RxJS/commit/f46f261))
+* **Rx.ts:** move Rx.ts to internal ([#3400](https://github.com/ReactiveX/RxJS/issues/3400)) ([7ad2119](https://github.com/ReactiveX/RxJS/commit/7ad2119))
+
+
+### Features
+
+* **ajax:** default to opting into CORS ([#3442](https://github.com/ReactiveX/RxJS/issues/3442)) ([aa3bf57](https://github.com/ReactiveX/RxJS/commit/aa3bf57)), closes [#3273](https://github.com/ReactiveX/RxJS/issues/3273)
+* **bindCallback:** remove result selector ([2535641](https://github.com/ReactiveX/RxJS/commit/2535641))
+* **bindNodeCallback:** remove resultSelector ([26e6e5c](https://github.com/ReactiveX/RxJS/commit/26e6e5c))
+* **compat:** add compatability package definition ([40aca82](https://github.com/ReactiveX/RxJS/commit/40aca82))
+* **compat:** add concat operator to compatibility layer ([6e84e78](https://github.com/ReactiveX/RxJS/commit/6e84e78))
+* **compat:** add legacy reexport compat layer for 'rxjs/Observable' and other top-level symbols ([70e562b](https://github.com/ReactiveX/RxJS/commit/70e562b))
+* **compat:** add Rx.ts to rxjs-compat ([df25de1](https://github.com/ReactiveX/RxJS/commit/df25de1))
+* **compat:** combatability mode for combineLatest ([fd86df5](https://github.com/ReactiveX/RxJS/commit/fd86df5))
+* **compat:** compatibility mode for merge operator ([ffce980](https://github.com/ReactiveX/RxJS/commit/ffce980))
+* **compat:** compatibility mode for zip operator ([9f131d0](https://github.com/ReactiveX/RxJS/commit/9f131d0))
+* **compat:** make Rx.ts for compatability layer work as the default for rxjs-compat ([d43a4c2](https://github.com/ReactiveX/RxJS/commit/d43a4c2))
+* **compat:** set up correct imports & get build working for rxjs-comapt ([1a0dc97](https://github.com/ReactiveX/RxJS/commit/1a0dc97))
+* **deprecated-error-handling-warning:** add console warning when code sets the flag to bad mode ([49be56a](https://github.com/ReactiveX/RxJS/commit/49be56a))
+* **error-handling:** add deprecated sync error handling behind a flag ([583cd1d](https://github.com/ReactiveX/RxJS/commit/583cd1d))
+* **exhaustMap:** simplify interface ([42589d0](https://github.com/ReactiveX/RxJS/commit/42589d0))
+* **first:** simplify interface ([a011338](https://github.com/ReactiveX/RxJS/commit/a011338))
+* **forkJoin:** simplify interface ([4d2338b](https://github.com/ReactiveX/RxJS/commit/4d2338b))
+* **fromEvent:** remove resultSelector ([197f449](https://github.com/ReactiveX/RxJS/commit/197f449))
+* **fromEvent:** will now emit an array when event emits multiple arguments ([51b37fd](https://github.com/ReactiveX/RxJS/commit/51b37fd))
+* **fromEventPattern:** removed resultSelector ([6b34f9f](https://github.com/ReactiveX/RxJS/commit/6b34f9f))
+* **last:** simplify interface ([3240419](https://github.com/ReactiveX/RxJS/commit/3240419))
+* **mergeMap|concatMap|concatMapTo:** simplified the signatures ([d293245](https://github.com/ReactiveX/RxJS/commit/d293245))
+* **mergeMapTo:** simplify interface ([582c7be](https://github.com/ReactiveX/RxJS/commit/582c7be))
+* **never:** no longer export `never` function ([#3386](https://github.com/ReactiveX/RxJS/issues/3386)) ([53debc8](https://github.com/ReactiveX/RxJS/commit/53debc8))
+* **switchMap|switchMapTo:** simplify interface ([959fb6a](https://github.com/ReactiveX/RxJS/commit/959fb6a))
+* **Symbol.iterator:** no longer polyfilled ([#3389](https://github.com/ReactiveX/RxJS/issues/3389)) ([6319f3c](https://github.com/ReactiveX/RxJS/commit/6319f3c))
+* **Symbol.observable:** is no longer polyfilled ([#3387](https://github.com/ReactiveX/RxJS/issues/3387)) ([4a5aaaf](https://github.com/ReactiveX/RxJS/commit/4a5aaaf))
+* **throwIfEmpty:** adds throwIfEmpty operator ([#3368](https://github.com/ReactiveX/RxJS/issues/3368)) ([9b21458](https://github.com/ReactiveX/RxJS/commit/9b21458))
+* **typings:** updated typings for combineAll, mergeAll, concatAll, switch, exhaust, zipAll ([#3321](https://github.com/ReactiveX/RxJS/issues/3321)) ([f7e4c02](https://github.com/ReactiveX/RxJS/commit/f7e4c02))
+* **umd:** UMD now mirrors export schema for ESM and CJS ([#3426](https://github.com/ReactiveX/RxJS/issues/3426)) ([556c904](https://github.com/ReactiveX/RxJS/commit/556c904))
+
+
+### BREAKING CHANGES
+
+* **ajax:** will no longer execute a CORS request by default, you must opt-in with the `crossDomain` flag in the config.
+* **mergeMap|concatMap|concatMapTo:** mergeMap, concatMap and concatMapTo no longer support a result selector, if you need to use a result selector, use the following pattern: `source.mergeMap(x => of(x + x).pipe(map(y => y + x))` (the pattern would be the same for `concatMap`).
+* **never:** no longer exported. Use the `NEVER` constant instead.
+* **bindCallback:** removes result selector, use `map` instead: `bindCallback(fn1, fn2)()` becomes `bindCallback(fn1)().pipe(map(fn2))`
+* **Rx.ts:** importing from `rxjs/Rx` is no longer available. Upcoming backwards compat solution will allow that
+* **Symbol.iterator:** We are no longer polyfilling `Symbol.iterator`. That would be done by a proper polyfilling library
+* **Observable.if:** TypeScript users using `Observable.if` will have to cast `Observable` as any to get to `if`. It is a better idae to just use `iif` directly via `import { iif } from 'rxjs';`
+* **bindNodeCallback:** resultSelector removed, use `map` instead: `bindNodeCallback(fn1, fn2)()` becomes `bindNodeCallback(fn1)().pipe(map(fn2))`
+* **Symbol.observable:** RxJS will no longer be polyfilling Symbol.observable. That should be done by an actual polyfill library. This is to prevent duplication of code, and also to prevent having modules with side-effects in rxjs.
+* **fromEvent:** result selector removed, use `map` instead: `fromEvent(target, 'click', fn)` becomes `fromEvent(target, 'click').pipe(map(fn))`
+* **last:** no longer accepts `resultSelector` argument. To get this same functionality, use `map`.
+* **first:** no longer supports `resultSelector` argument. The same functionality can be achieved by simply mapping either before or after `first` depending on your use case.
+* **exhaustMap:** `resultSelector` no longer supported, to get this functionality use: `source.pipe(exhaustMap(x => of(x + x).pipe(map(y => x + y))))`
+* **switchMap|switchMapTo:** `switchMap` and `switchMapTo` no longer take `resultSelector` arguments, to get the same functionality use `switchMap` and `map` in combination: `source.pipe(switchMap(x => of(x + x).pipe(y => x + y)))`.
+* **mergeMapTo:** `mergeMapTo` no longer accepts a resultSelector, to get this functionality, you'll want to use `mergeMap` and `map` together: `source.pipe(mergeMap(() => inner).pipe(map(y => x + y)))`
+* **fromEventPattern:** no longer supports a result selector, use `map` instead: `fromEventPattern(fn1, fn2, fn3)` becomes `fromEventPattern(fn1, fn2).pipe(map(fn3))`
+
+
+
 <a name="6.0.0-alpha.4"></a>
 # [6.0.0-alpha.4](https://github.com/ReactiveX/RxJS/compare/6.0.0-alpha.3...v6.0.0-alpha.4) (2018-03-13)
 
