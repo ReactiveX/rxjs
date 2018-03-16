@@ -213,7 +213,7 @@ export class Observable<T> implements Subscribable<T> {
    * @return {Promise} a promise that either resolves on observable completion or
    *  rejects with the handled error
    */
-  forEach(next: (value: T) => void, promiseCtor?: PromiseConstructorLike): PromiseLike<void> {
+  forEach(next: (value: T) => void, promiseCtor?: PromiseConstructorLike): Promise<void> {
     promiseCtor = getPromiseCtor(promiseCtor);
 
     return new promiseCtor<void>((resolve, reject) => {
@@ -230,7 +230,7 @@ export class Observable<T> implements Subscribable<T> {
           }
         }
       }, reject, resolve);
-    });
+    }) as Promise<void>;
   }
 
   /** @internal */
@@ -297,13 +297,13 @@ export class Observable<T> implements Subscribable<T> {
   toPromise<T>(this: Observable<T>, PromiseCtor: PromiseConstructorLike): Promise<T>;
   /* tslint:enable:max-line-length */
 
-  toPromise(promiseCtor?: PromiseConstructorLike): PromiseLike<T> {
+  toPromise(promiseCtor?: PromiseConstructorLike): Promise<T> {
     promiseCtor = getPromiseCtor(promiseCtor);
 
     return new promiseCtor((resolve, reject) => {
       let value: any;
       this.subscribe((x: T) => value = x, (err: any) => reject(err), () => resolve(value));
-    });
+    }) as Promise<T>;
   }
 }
 

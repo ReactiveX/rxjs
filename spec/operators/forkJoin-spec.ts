@@ -1,7 +1,7 @@
-import * as Rx from '../../src/internal/Rx';
+import * as Rx from 'rxjs/Rx';
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { forkJoin } from '../../src/internal/observable/forkJoin';
+import { forkJoin } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 

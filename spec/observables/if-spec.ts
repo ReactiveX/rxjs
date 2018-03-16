@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { iif, of } from '../../src';
+import { iif, of } from 'rxjs';
 import { expectObservable } from '../helpers/marble-testing';
 
 describe('iif', () => {

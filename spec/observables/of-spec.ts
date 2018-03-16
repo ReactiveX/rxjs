@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import * as Rx from '../../src/internal/Rx';
-import { empty } from '../../src/internal/observable/empty';
+import * as Rx from 'rxjs/Rx';
+import { empty } from 'rxjs';
 import { expectObservable } from '../helpers/marble-testing';
 declare const asDiagram: any;
 declare const rxTestScheduler: Rx.TestScheduler;

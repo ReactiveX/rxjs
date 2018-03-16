@@ -21,10 +21,8 @@ Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Exten
 
 ## Versions In This Repository
 
-- [master](https://github.com/ReactiveX/rxjs/commits/master) - commits that will be included in the next _major_ release (breaking changes)
-- [next](https://github.com/ReactiveX/rxjs/commits/stable) - commits that will be included in the next _minor_ or _patch_ release
-
-Most PRs should be made to **master**, unless you know it is a breaking change.
+- [master](https://github.com/ReactiveX/rxjs/commits/master) - This all of the current, unreleased work, which is against v6 of RxJS right now
+- [stable](https://github.com/ReactiveX/rxjs/commits/stable) - This is the branch for the latest version you'd get if you do `npm install rxjs`, (currently this is 5.5)
 
 ## Important
 
@@ -38,19 +36,10 @@ By contributing or commenting on issues in this repository, whether you've read 
 npm install rxjs@alpha
 ```
 
-To import the entire core set of functionality:
-
-```js
-import Rx from 'rxjs/Rx';
-
-Rx.Observable.of(1,2,3)
-```
-
 To import only what you need by patching (this is useful for size-sensitive bundling):
 
 ```js
-import { Observable, Subject, ReplaySubject } from 'rxjs';
-import { from, of, range } from 'rxjs/create';
+import { Observable, Subject, ReplaySubject, from, of, range } from 'rxjs';
 import { map, filter, switchMap } from 'rxjs/operators';
 
 range(1, 200)
@@ -69,8 +58,7 @@ npm install rxjs@alpha
 (Note: destructuring available in Node 8+)
 
 ```js
-const { Observable, Subject, ReplaySubject } = require('rxjs');
-const { from, of, range } = require('rxjs/create');
+const { Observable, Subject, ReplaySubject, from, of, range } = require('rxjs');
 const { map, filter, switchMap } = require('rxjs/operators');
 
 range(1, 200)
@@ -82,15 +70,17 @@ range(1, 200)
 
 For CDN, you can use [unpkg](https://unpkg.com/):
 
-https://unpkg.com/rxjs/bundles/Rx.min.js
+https://unpkg.com/rxjs/bundles/rxjs.umd.min.js
 
-#### Node.js Usage:
+The global namespace for rxjs is `rxjs`:
 
 ```js
-var Rx = require('@reactivex/rxjs');
+const { Observable, Subject, ReplaySubject, from, of, range } = rxjs;
+const { map, filter, switchMap } = rxjs.operators;
 
-Rx.Observable.of('hello world')
-  .subscribe(function(x) { console.log(x); });
+range(1, 200)
+  .pipe(filter(x => x % 2 === 1), map(x => x + x))
+  .subscribe(x => console.log(x));
 ```
 
 ## Goals

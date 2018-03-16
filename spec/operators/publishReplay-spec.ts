@@ -1,9 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { throwError } from '../../src/internal/observable/throwError';
-import { EMPTY, NEVER, of, Observable, Subscription } from '../../src';
-import { publishReplay } from '../../src/operators';
-import { ConnectableObservable } from '../../src/internal/observable/ConnectableObservable';
+import { throwError, ConnectableObservable, EMPTY, NEVER, of, Observable, Subscription } from 'rxjs';
+import { publishReplay } from 'rxjs/operators';
 
 declare function asDiagram(arg: string): Function;
 declare const type: Function;

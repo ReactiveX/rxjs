@@ -5,7 +5,7 @@ import { ConnectableObservable } from '../observable/ConnectableObservable';
 import { UnaryFunction, MonoTypeOperatorFunction, OperatorFunction, SchedulerLike } from '../types';
 
 /* tslint:disable:max-line-length */
-export function publishReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
+export function publishReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 export function publishReplay<T, R>(bufferSize?: number, windowTime?: number, selector?: OperatorFunction<T, R>, scheduler?: SchedulerLike): OperatorFunction<T, R>;
 export function publishReplay<T>(bufferSize?: number, windowTime?: number, selector?: MonoTypeOperatorFunction<T>, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */

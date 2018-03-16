@@ -1,5 +1,5 @@
 
-import { onErrorResumeNext } from '../../src/';
+import { onErrorResumeNext } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 describe('onErrorResumeNext', () => {

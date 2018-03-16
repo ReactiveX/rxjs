@@ -3,7 +3,6 @@ import { OuterSubscriber } from './OuterSubscriber';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
- * @internal
  * @ignore
  * @extends {Ignored}
  */

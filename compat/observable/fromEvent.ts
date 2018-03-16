@@ -1,0 +1,1 @@
+export { fromEvent } from 'rxjs';

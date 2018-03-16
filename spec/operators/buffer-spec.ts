@@ -1,6 +1,6 @@
 import { hot, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { buffer, mergeMap, take } from '../../src/operators';
-import { EMPTY, NEVER, throwError, of } from '../../src';
+import { buffer, mergeMap, take } from 'rxjs/operators';
+import { EMPTY, NEVER, throwError, of } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 

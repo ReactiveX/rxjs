@@ -1,7 +1,7 @@
 import { cold, expectObservable, time } from '../helpers/marble-testing';
-import { timer, NEVER, merge } from '../../src/';
-import { TestScheduler } from '../../src/testing';
-import { mergeMap } from '../../src/operators';
+import { timer, NEVER, merge } from 'rxjs';
+import { TestScheduler } from 'rxjs/testing';
+import { mergeMap } from 'rxjs/operators';
 
 declare const asDiagram: any;
 declare const rxTestScheduler: TestScheduler;

@@ -1,8 +1,7 @@
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { throwError } from '../../src/internal/observable/throwError';
-import { TestScheduler } from '../../src/testing';
-import { of, EMPTY, NEVER, concat } from '../../src';
-import { mergeScan, delay, mergeMap } from '../../src/operators';
+import { TestScheduler } from 'rxjs/testing';
+import { of, EMPTY, NEVER, concat, throwError } from 'rxjs';
+import { mergeScan, delay, mergeMap } from 'rxjs/operators';
 
 declare const rxTestScheduler: TestScheduler;
 /** @test {mergeScan} */
