@@ -67,3 +67,6 @@ export { NEVER } from './internal/observable/never';
 
 /* Types */
 export * from './internal/types';
+
+/* Config */
+export { config } from './internal/config';

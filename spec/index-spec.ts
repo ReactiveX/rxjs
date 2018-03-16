@@ -78,4 +78,8 @@ describe('index', () => {
     expect(index.using).to.exist;
     expect(index.zip).to.exist;
   });
+
+  it('should expose configuration', () => {
+    expect(index.config).to.exist;
+  });
 });
