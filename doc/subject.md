@@ -78,7 +78,7 @@ Under the hood, this is how the `multicast` operator works: Observers subscribe 
 ```js
 var source = Rx.Observable.from([1, 2, 3]);
 var subject = new Rx.Subject();
-var multicasted = source.multicast(subject);
+var multicasted = source.pipe(multicast(subject));
 
 // These are, under the hood, `subject.subscribe({...})`:
 multicasted.subscribe({
@@ -118,7 +118,7 @@ To achieve that with explicit calls to `connect()`, we write the following code:
 ```js
 var source = Rx.Observable.interval(500);
 var subject = new Rx.Subject();
-var multicasted = source.multicast(subject);
+var multicasted = source.pipe(multicast(subject));
 var subscription1, subscription2, subscriptionConnect;
 
 subscription1 = multicasted.subscribe({
@@ -155,7 +155,7 @@ Below is an example:
 ```js
 var source = Rx.Observable.interval(500);
 var subject = new Rx.Subject();
-var refCounted = source.multicast(subject).refCount();
+var refCounted = source.pipe(multicast(subject), refCount());
 var subscription1, subscription2;
 
 // This calls `connect()`, because
