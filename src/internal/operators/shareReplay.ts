@@ -1,8 +1,6 @@
-import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { ReplaySubject } from '../ReplaySubject';
-import { Subscription } from '../Subscription';
-import { MonoTypeOperatorFunction, TeardownLogic, SchedulerLike } from '../types';
+import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { Subscriber } from '../Subscriber';
 
 /**
@@ -17,49 +15,24 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
 
 function shareReplayOperator<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike) {
   let subject: ReplaySubject<T>;
-  let refCount = 0;
-  let subscription: Subscription;
   let hasError = false;
-  let isComplete = false;
-
-  function removeSubscriber() {
-    refCount--;
-    if (subscription && refCount === 0 && isComplete) {
-      subscription.unsubscribe();
-    }
-  }
 
   return function shareReplayOperation(this: Subscriber<T>, source: Observable<T>) {
-    refCount++;
     if (!subject || hasError) {
       hasError = false;
       subject = new ReplaySubject<T>(bufferSize, windowTime, scheduler);
-      subscription = source.subscribe({
+      source.subscribe({
         next(value) { subject.next(value); },
         error(err) {
           hasError = true;
           subject.error(err);
         },
         complete() {
-          isComplete = true;
           subject.complete();
         },
       });
     }
 
-    subject.subscribe(new ShareReplaySubscriber(this, removeSubscriber));
+    subject.subscribe(this);
   };
-}
-
-class ShareReplaySubscriber<T> extends Subscriber<T> {
-  constructor(
-    destination: Subscriber<T>,
-    protected onUnsubscribe: () => void,
-  ) {
-    super(destination);
-  }
-
-  protected _unsubscribe() {
-    this.onUnsubscribe();
-  }
 }

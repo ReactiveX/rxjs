@@ -1,6 +1,8 @@
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 import * as Rx from '../../src/internal/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { TeardownLogic, Subscriber } from '../../src/index';
 
 declare function asDiagram(arg: string): Function;
 
@@ -172,6 +174,24 @@ describe('Observable.prototype.shareReplay', () => {
 
     rxTestScheduler.flush();
     expect(results).to.deep.equal([0, 1, 2, 4, 5, 6, 7, 8, 9]);
+  });
+
+  it('should not unsubscribe from source when all subscribers have unsubscribed', () => {
+    const unsubscribeSpy = sinon.spy();
+    let completeMock: () => void;
+
+    const source = Rx.Observable.create((subscriber: Subscriber<any>): TeardownLogic => {
+      completeMock = () => subscriber.complete();
+      return unsubscribeSpy;
+    })
+      .shareReplay(1);
+
+    const sub1 = source.subscribe(() => { /*noop*/ });
+    sub1.unsubscribe();
+    expect(unsubscribeSpy).to.not.have.been.called;
+
+    completeMock();
+    expect(unsubscribeSpy).to.have.been.called;
   });
 
   it('should not break lift() composability', (done: MochaDone) => {
