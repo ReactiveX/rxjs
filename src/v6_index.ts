@@ -62,11 +62,11 @@ export { using } from './observable/using';
 export { zip } from './observable/zip';
 
 /* Constants */
-// export { EMPTY } from './observable/empty';
-// export { NEVER } from './observable/never';
+export { EMPTY } from './observable/empty';
+export { NEVER } from './observable/never';
 
 /* Types */
-// export * from './types';
+export * from './types';
 
 /* Config */
 // export { config } from './config';
