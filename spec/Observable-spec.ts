@@ -5,6 +5,8 @@ import { Observer, TeardownLogic } from '../src/internal/types';
 import { cold, expectObservable, expectSubscriptions } from './helpers/marble-testing';
 import { map } from '../src/internal/operators/map';
 import * as HostReportErrorModule from '../src/internal/util/hostReportError';
+import { noop } from '../src/internal/util/noop';
+
 //tslint:disable-next-line
 require('./helpers/test-helper');
 
@@ -533,9 +535,38 @@ describe('Observable', () => {
       });
     });
 
-    describe('if config.useDeprecatedSynchronousThrowing === true', () => {
-      beforeEach(() => {
+    describe('config.useDeprecatedSynchronousErrorHandling', () => {
+
+      it('should log when it is set and unset', () => {
+        const _log = console.log;
+        const logCalledWith: any[][] = [];
+        console.log = (...args: any[]) => {
+          logCalledWith.push(args);
+        };
+
+        const _warn = console.warn;
+        const warnCalledWith: any[][] = [];
+        console.warn = (...args: any[]) => {
+          warnCalledWith.push(args);
+        };
+
         Rx.config.useDeprecatedSynchronousErrorHandling = true;
+        expect(warnCalledWith.length).to.equal(1);
+
+        Rx.config.useDeprecatedSynchronousErrorHandling = false;
+        expect(logCalledWith.length).to.equal(1);
+
+        console.log = _log;
+        console.warn = _warn;
+      });
+    });
+
+    describe('if config.useDeprecatedSynchronousErrorHandling === true', () => {
+      beforeEach(() => {
+        const _warn = console.warn;
+        console.warn = noop;
+        Rx.config.useDeprecatedSynchronousErrorHandling = true;
+        console.warn = _warn;
       });
 
       it('should throw synchronously', () => {
@@ -543,8 +574,25 @@ describe('Observable', () => {
           .to.throw();
       });
 
+      it('should rethrow if sink has syncErrorThrowable = false', () => {
+        const observable = new Observable(observer => {
+          observer.next(1);
+        });
+
+        const sink = Rx.Subscriber.create(() => {
+          throw 'error!';
+        });
+
+        expect(() => {
+          observable.subscribe(sink);
+        }).to.throw('error!');
+      });
+
       afterEach(() => {
+        const _log = console.log;
+        console.log = noop;
         Rx.config.useDeprecatedSynchronousErrorHandling = false;
+        console.log = _log;
       });
     });
   });

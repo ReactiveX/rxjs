@@ -40,6 +40,7 @@ describe('Observable.prototype.repeatWhen', () => {
     let retried = false;
     const expected = [1, 2, 1, 2];
     let i = 0;
+    try {
     Observable.of(1, 2)
       .map((n: number) => {
         return n;
@@ -58,6 +59,9 @@ describe('Observable.prototype.repeatWhen', () => {
         expect(err).to.be.an('error', 'done');
         done();
       });
+    } catch (err) {
+      done(err);
+    }
   });
 
   it('should retry when notified and complete on returned completion', (done: MochaDone) => {
