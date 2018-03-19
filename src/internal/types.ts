@@ -1,5 +1,4 @@
 import { Observable } from './Observable';
-import { Action as _Action } from './scheduler/Action';
 import { Subscription } from './Subscription';
 
 /** OPERATOR INTERFACES */
@@ -33,12 +32,6 @@ export type TeardownLogic = Unsubscribable | Function | void;
 export interface SubscriptionLike extends Unsubscribable {
   unsubscribe(): void;
   readonly closed: boolean;
-}
-
-export interface Subscribable<T> {
-  subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
-            error?: (error: any) => void,
-            complete?: () => void): Unsubscribable;
 }
 
 export type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<never> | PromiseLike<T> | ObservableLike<T>;
