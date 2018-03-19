@@ -1,5 +1,8 @@
 import { PartialObserver } from './Observer';
 import { Observable } from './Observable';
+import { of } from './observable/of';
+import { empty } from './observable/empty';
+import { _throw } from './observable/throw';
 
 /**
  * Represents a push-based event or value that an {@link Observable} can emit.
@@ -84,11 +87,11 @@ export class Notification<T> {
     const kind = this.kind;
     switch (kind) {
       case 'N':
-        return Observable.of(this.value);
+        return of(this.value);
       case 'E':
-        return Observable.throw(this.error);
+        return _throw(this.error);
       case 'C':
-        return Observable.empty<T>();
+        return empty<T>();
     }
     throw new Error('unexpected notification kind value');
   }
