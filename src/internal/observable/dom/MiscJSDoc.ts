@@ -50,6 +50,10 @@ export class AjaxRequestDoc {
    */
   crossDomain: boolean = false;
   /**
+   * @type {boolean}
+   */
+  withCredentials: boolean = false;
+  /**
    * @return {XMLHttpRequest}
    */
   createXHR(): XMLHttpRequest {
