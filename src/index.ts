@@ -11,6 +11,7 @@ export { ReplaySubject } from './internal/ReplaySubject';
 export { AsyncSubject } from './internal/AsyncSubject';
 
 /* Schedulers */
+export { SchedulerLike } from './internal/types';
 export { asap as asapScheduler } from './internal/scheduler/asap';
 export { async as asyncScheduler } from './internal/scheduler/async';
 export { queue as queueScheduler } from './internal/scheduler/queue';
