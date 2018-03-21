@@ -1,3 +1,21 @@
+<a name="6.0.0-beta.1"></a>
+# [6.0.0-beta.1](https://github.com/ReactiveX/RxJS/compare/6.0.0-beta.0...v6.0.0-beta.1) (2018-03-21)
+
+
+### Bug Fixes
+
+* remove duplicate Subscribable<T> interface declaration ([#3450](https://github.com/ReactiveX/RxJS/issues/3450)) ([ac78d89](https://github.com/ReactiveX/RxJS/commit/ac78d89))
+* **compat:** add package.json for internal-compatibility package ([#3455](https://github.com/ReactiveX/RxJS/issues/3455)) ([3b306ed](https://github.com/ReactiveX/RxJS/commit/3b306ed))
+* **config.useDeprecatedSynchronousErrorThrowing:** reentrant error throwing no longer trapped ([#3449](https://github.com/ReactiveX/RxJS/issues/3449)) ([0892a2d](https://github.com/ReactiveX/RxJS/commit/0892a2d)), closes [#3161](https://github.com/ReactiveX/RxJS/issues/3161)
+
+
+### Features
+
+* **compat:** add interfaces export ([d8f8122](https://github.com/ReactiveX/RxJS/commit/d8f8122))
+* **compat:** add rxjs/observable/dom/* APIs to compatibility package ([d9a618f](https://github.com/ReactiveX/RxJS/commit/d9a618f))
+
+
+
 <a name="6.0.0-beta.0"></a>
 # [6.0.0-beta.0](https://github.com/ReactiveX/RxJS/compare/6.0.0-alpha.3...6.0.0-beta.0) (2018-03-16)
 
