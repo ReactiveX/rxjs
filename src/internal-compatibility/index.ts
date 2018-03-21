@@ -111,7 +111,10 @@ export { Subscriber } from '../internal/Subscriber';
 
 export { fromPromise } from '../internal/observable/fromPromise';
 export { fromIterable } from '../internal/observable/fromIterable';
-export { AjaxCreationMethod } from '../internal/observable/dom/AjaxObservable';
+export * from '../internal/observable/dom/ajax';
+export * from '../internal/observable/dom/webSocket';
+export * from '../internal/observable/dom/AjaxObservable';
+export * from '../internal/observable/dom/WebSocketSubject';
 export { CombineLatestOperator } from '../internal/observable/combineLatest';
 export { dispatch } from '../internal/observable/range';
 export { SubscribeOnObservable } from '../internal/observable/SubscribeOnObservable';
