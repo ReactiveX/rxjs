@@ -1,3 +1,4 @@
+
 /* tslint:disable:no-unused-variable */
 // Subject imported before Observable to bypass circular dependency issue since
 // Subject extends Observable and Observable references Subject in it's
@@ -127,6 +128,7 @@ import './add/operator/takeUntil';
 import './add/operator/takeWhile';
 import './add/operator/throttle';
 import './add/operator/throttleTime';
+import './add/operator/throwIfEmpty';
 import './add/operator/timeInterval';
 import './add/operator/timeout';
 import './add/operator/timeoutWith';
@@ -176,9 +178,15 @@ import { rxSubscriber } from './symbol/rxSubscriber';
 import { iterator } from './symbol/iterator';
 import { observable } from './symbol/observable';
 
+import * as _ajax from './ajax';
 import * as _operators from './operators';
+import * as _testing from './testing';
+import * as _websocket from './websocket';
 
+export const ajax = _ajax;
 export const operators = _operators;
+export const testing = _testing;
+export const websocket = _websocket;
 
 /* tslint:enable:no-unused-variable */
 

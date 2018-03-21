@@ -93,6 +93,7 @@ export { takeWhile } from './operators/takeWhile';
 export { tap } from './operators/tap';
 export { throttle } from './operators/throttle';
 export { throttleTime } from './operators/throttleTime';
+export { throwIfEmpty } from './operators/throwIfEmpty';
 export { timeInterval } from './operators/timeInterval';
 export { timeout } from './operators/timeout';
 export { timeoutWith } from './operators/timeoutWith';
