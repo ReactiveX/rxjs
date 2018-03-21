@@ -110,6 +110,7 @@ fs.copySync('src/operators/package.json', PKG_ROOT + '/operators/package.json');
 fs.copySync('src/ajax/package.json', PKG_ROOT + '/ajax/package.json');
 fs.copySync('src/websocket/package.json', PKG_ROOT + '/websocket/package.json');
 fs.copySync('src/testing/package.json', PKG_ROOT + '/testing/package.json');
+fs.copySync('src/internal-compatibility/package.json', PKG_ROOT + '/internal-compatibility/package.json');
 
 
 if (fs.existsSync(UMD_ROOT)) {
