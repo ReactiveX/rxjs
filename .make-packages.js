@@ -53,14 +53,14 @@ let rootPackageJson = Object.assign({}, pkg, {
 // functionality requires that the most broad mapping (rxjs/operators) be at
 // the end of the alias mapping object. Created Webpack issue:
 // https://github.com/webpack/webpack/issues/5870
-const fileNames = klawSync(LEGACY_REEXPORT_ROOT, {
+const fileNames = klawSync(ESM5_ROOT, {
   nodir: true,
   filter: function(item) {
     return item.path.endsWith('.js');
   }
 })
 .map(item => item.path)
-.map(path => path.slice((`${__dirname}/${LEGACY_REEXPORT_ROOT}`).length))
+.map(path => path.slice((`${__dirname}/${ESM5_ROOT}`).length))
 .sort().reverse();
 
 // Execute build optimizer transforms on ESM5 files
