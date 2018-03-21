@@ -73,13 +73,7 @@ export { skipLast } from './skipLast';
 export { skipUntil } from './skipUntil';
 export { skipWhile } from './skipWhile';
 export { startWith } from './startWith';
-/**
- * TODO(https://github.com/ReactiveX/rxjs/issues/2900): Add back subscribeOn once it can be
- * treeshaken. Currently if this export is added back, it
- * forces apps to bring in asap scheduler along with
- * Immediate, root, and other supporting code.
- */
-// export { subscribeOn } from './subscribeOn';
+export { subscribeOn } from './subscribeOn';
 export { switchAll } from './switchAll';
 export { switchMap } from './switchMap';
 export { switchMapTo } from './switchMapTo';
