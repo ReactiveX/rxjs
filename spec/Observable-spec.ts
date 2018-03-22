@@ -50,6 +50,11 @@ describe('Observable', () => {
     });
   });
 
+  it('should allow empty ctor, which is effectively a never-observable', () => {
+    const result = new Observable<any>();
+    expectObservable(result).toBe('-');
+  });
+
   describe('forEach', () => {
     it('should iterate and return a Promise', (done) => {
       const expected = [1, 2, 3];
