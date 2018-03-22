@@ -64,8 +64,9 @@ describe('Observable.prototype.repeatWhen', () => {
     }
   });
 
-  it('should repeat when notified and complete on returned completion', (done: MochaDone) => {
-    const expected = [1, 2, 1, 2];
+  it('should not repeat when applying an empty notifier', (done: MochaDone) => {
+    const expected = [1, 2];
+    const nexted: number[] = [];
     Observable.of(1, 2)
       .map((n: number) => {
         return n;
@@ -73,9 +74,11 @@ describe('Observable.prototype.repeatWhen', () => {
       .repeatWhen((notifications: any) => Observable.empty())
       .subscribe((n: number) => {
         expect(n).to.equal(expected.shift());
+        nexted.push(n);
       }, (err: any) => {
         done(new Error('should not be called'));
       }, () => {
+        expect(nexted).to.deep.equal([1, 2]);
         done();
       });
   });
