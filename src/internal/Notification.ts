@@ -105,6 +105,7 @@ export class Notification<T> {
    * @param {T} value The `next` value.
    * @return {Notification<T>} The "next" Notification representing the
    * argument.
+   * @nocollapse
    */
   static createNext<T>(value: T): Notification<T> {
     if (typeof value !== 'undefined') {
@@ -119,6 +120,7 @@ export class Notification<T> {
    * @param {any} [err] The `error` error.
    * @return {Notification<T>} The "error" Notification representing the
    * argument.
+   * @nocollapse
    */
   static createError<T>(err?: any): Notification<T> {
     return new Notification('E', undefined, err);
@@ -127,6 +129,7 @@ export class Notification<T> {
   /**
    * A shortcut to create a Notification instance of the type `complete`.
    * @return {Notification<any>} The valueless "complete" Notification.
+   * @nocollapse
    */
   static createComplete(): Notification<any> {
     return Notification.completeNotification;

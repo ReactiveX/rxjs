@@ -20,6 +20,7 @@ import { SchedulerLike, SchedulerAction } from './types';
  */
 export class Scheduler implements SchedulerLike {
 
+  /** @nocollapse */
   public static now: () => number = Date.now ? Date.now : () => +new Date();
 
   constructor(private SchedulerAction: typeof Action,

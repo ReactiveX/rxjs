@@ -19,6 +19,7 @@ import { SubscriptionLike, TeardownLogic } from './types';
  * @class Subscription
  */
 export class Subscription implements SubscriptionLike {
+  /** @nocollapse */
   public static EMPTY: Subscription = (function(empty: any) {
     empty.closed = true;
     return empty;
