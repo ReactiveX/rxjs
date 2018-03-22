@@ -5,7 +5,7 @@
 
 [![Selenium Test Status](https://saucelabs.com/browser-matrix/rxjs5.svg)](https://saucelabs.com/u/rxjs5)
 
-# RxJS 6 Alpha
+# RxJS 6 Beta
 
 ## FOR V 5.X PLEASE GO TO [STABLE BRANCH](https://github.com/ReactiveX/rxjs/tree/stable)
 
@@ -33,7 +33,7 @@ By contributing or commenting on issues in this repository, whether you've read 
 ### ES6 via npm
 
 ```sh
-npm install rxjs@alpha
+npm install rxjs@beta
 ```
 
 To import only what you need by patching (this is useful for size-sensitive bundling):
@@ -52,7 +52,7 @@ range(1, 200)
 To install this library for CommonJS (CJS) usage, use the following command:
 
 ```sh
-npm install rxjs@alpha
+npm install rxjs@beta
 ```
 
 (Note: destructuring available in Node 8+)
