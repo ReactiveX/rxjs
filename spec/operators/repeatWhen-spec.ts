@@ -36,7 +36,7 @@ describe('Observable.prototype.repeatWhen', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should retry when notified via returned notifier on complete', (done: MochaDone) => {
+  it('should repeat when notified via returned notifier on complete', (done: MochaDone) => {
     let retried = false;
     const expected = [1, 2, 1, 2];
     let i = 0;
@@ -64,7 +64,7 @@ describe('Observable.prototype.repeatWhen', () => {
     }
   });
 
-  it('should retry when notified and complete on returned completion', (done: MochaDone) => {
+  it('should repeat when notified and complete on returned completion', (done: MochaDone) => {
     const expected = [1, 2, 1, 2];
     Observable.of(1, 2)
       .map((n: number) => {
