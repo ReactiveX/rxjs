@@ -83,6 +83,33 @@ describe('Observable.prototype.repeatWhen', () => {
       });
   });
 
+  it('should not error when applying an empty notifier', () => {
+    const errors: any[] = [];
+    // The current Subscriber.prototype.error implementation does nothing for
+    // stopped subscribers. This test was written to fail and expose a problem
+    // with empty notifiers. However, by the time the error occurs the
+    // subscriber is stopped, so the test logs errors by both patching the
+    // prototype and by using an error callback (for when/if the do-nothing-if-
+    // stopped behaviour is fixed).
+    const originalSubscribe = Observable.prototype.subscribe;
+    Observable.prototype.subscribe = function (...args: any[]): any {
+      let [subscriber] = args;
+      if (!(subscriber instanceof Rx.Subscriber)) {
+        subscriber = new Rx.Subscriber<any>(...args);
+      }
+      subscriber.error = function (err: any): void {
+        errors.push(err);
+        Rx.Subscriber.prototype.error.call(this, err);
+      };
+      return originalSubscribe.call(this, subscriber);
+    };
+    Observable.of(1, 2)
+      .repeatWhen((notifications: any) => Observable.empty())
+      .subscribe(undefined, err => errors.push(err));
+    Observable.prototype.subscribe = originalSubscribe;
+    expect(errors).to.deep.equal([]);
+  });
+
   it('should apply an empty notifier on an empty source', () => {
     const source = cold(  '|');
     const subs =          '(^!)';
