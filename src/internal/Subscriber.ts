@@ -212,9 +212,20 @@ class SafeSubscriber<T> extends Subscriber<T> {
   }
 
   error(err?: any): void {
-    if (!this.isStopped) {
-      const { _parentSubscriber } = this;
-      const { useDeprecatedSynchronousErrorHandling } = config;
+    const { _parentSubscriber } = this;
+    const { useDeprecatedSynchronousErrorHandling } = config;
+    if (this.isStopped) {
+      if (useDeprecatedSynchronousErrorHandling) {
+        if (!_parentSubscriber || !_parentSubscriber.syncErrorThrowable) {
+          throw err;
+        } else {
+          _parentSubscriber.syncErrorValue = err;
+          _parentSubscriber.syncErrorThrown = true;
+        }
+      } else {
+        hostReportError(err);
+      }
+    } else {
       if (this._error) {
         if (!useDeprecatedSynchronousErrorHandling || !_parentSubscriber.syncErrorThrowable) {
           this.__tryOrUnsub(this._error, err);
