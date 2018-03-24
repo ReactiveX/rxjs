@@ -68,7 +68,7 @@ describe('Observable', () => {
     const stubSetTimeout = sinon.stub(global, 'setTimeout');
     Observable.of(1).lift(new OperatorWithBug()).subscribe(
       undefined,
-      err => { throw err; }
+      err => { throw new Error('should not be called'); }
     );
     expect(stubSetTimeout).to.have.property('callCount', 1);
     const [[func]] = stubSetTimeout.args;

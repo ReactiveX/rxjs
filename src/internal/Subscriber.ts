@@ -118,39 +118,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   }
 
   /**
-   * @ignore
-   * @internal
-   * Synchronous errors thrown within `subscribe` and caught by `_trySubscribe`
-   * can only be reported using a subscriber's `error` method if the subscriber
-   * is not stopped. This method traverses the `destination` chain of
-   * subscribers and uses the appropriate unhandled mechanism to report the
-   * error if a stopped subscriber is found.
-   */
-  reportError(err?: any): void {
-    let observer: PartialObserver<T> = this;
-    while (observer) {
-      if (observer instanceof Subscriber) {
-        const { destination } = observer;
-        if (observer.isStopped) {
-          if (config.useDeprecatedSynchronousErrorHandling) {
-            throw err;
-          } else {
-            hostReportError(err);
-            return;
-          }
-        } else if (destination === emptyObserver) {
-          observer.error(err);
-          return;
-        }
-        observer = destination;
-      } else {
-        observer.error(err);
-        return;
-      }
-    }
-  }
-
-  /**
    * The {@link Observer} callback to receive a valueless notification of type
    * `complete` from the Observable. Notifies the Observer that the Observable
    * has finished sending push-based notifications.
@@ -195,6 +162,36 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     this._parent = _parent;
     this._parents = _parents;
     return this;
+  }
+
+  /**
+   * @ignore
+   * @internal
+   * Synchronous errors thrown within `subscribe` and caught by `_trySubscribe`
+   * can only be reported using a subscriber's `error` method if the subscriber
+   * is not stopped. This method traverses the `destination` chain of
+   * subscribers and uses the appropriate unhandled mechanism to report the
+   * error if a stopped subscriber is found.
+   */
+  private _reportError(err?: any): void {
+    let observer: PartialObserver<T> = this;
+    while (observer) {
+      if (observer instanceof Subscriber) {
+        const { destination, isStopped } = observer;
+        if (isStopped) {
+          if (config.useDeprecatedSynchronousErrorHandling) {
+            throw err;
+          } else {
+            hostReportError(err);
+            return;
+          }
+        }
+        observer = destination;
+      } else {
+        this.error(err);
+        return;
+      }
+    }
   }
 }
 

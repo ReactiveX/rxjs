@@ -215,7 +215,7 @@ export class Observable<T> implements Subscribable<T> {
         sink.syncErrorThrown = true;
         sink.syncErrorValue = err;
       }
-      sink.reportError(err);
+      (sink as any)._reportError(err);
     }
   }
 
