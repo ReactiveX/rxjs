@@ -30,6 +30,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * Observer.
    * @return {Subscriber<T>} A Subscriber wrapping the (partially defined)
    * Observer represented by the given arguments.
+   * @nocollapse
    */
   static create<T>(next?: (x?: T) => void,
                    error?: (e?: any) => void,
