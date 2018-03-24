@@ -396,6 +396,28 @@ describe('Observable', () => {
       );
     });
 
+    it('should report internal, post-unsubscribe errors to the host', () => {
+      const stubSetTimeout = sinon.stub(global, 'setTimeout');
+      class OperatorWithError<T> {
+        call(subscriber: Rx.Subscriber<T>, source: any): any {
+          const subscriberWithError: any = new Rx.Subscriber(
+            undefined,
+            undefined,
+              () => {
+                const safeSubscriber = subscriberWithError.destination;
+                safeSubscriber.unsubscribe();
+                safeSubscriber.error(new Error('Kaboom!'));
+              });
+          return source.subscribe(subscriberWithError);
+        }
+      }
+      Observable.of(1).lift(new OperatorWithError()).subscribe();
+      expect(stubSetTimeout).to.have.property('callCount', 1);
+      const [[func]] = stubSetTimeout.args;
+      expect(func).to.throw('Kaboom!');
+      stubSetTimeout.restore();
+    });
+
     describe('when called with an anonymous observer', () => {
       it('should accept an anonymous observer with just a next function and call the next function in the context' +
         ' of the anonymous observer', (done) => {
@@ -586,6 +608,25 @@ describe('Observable', () => {
         expect(() => {
           observable.subscribe(sink);
         }).to.throw('error!');
+      });
+
+      it('should throw internal, post-unsubscribe errors', () => {
+        class OperatorWithError<T> {
+          call(subscriber: Rx.Subscriber<T>, source: any): any {
+            const subscriberWithError: any = new Rx.Subscriber(
+              undefined,
+              undefined,
+              () => {
+                const safeSubscriber = subscriberWithError.destination;
+                safeSubscriber.unsubscribe();
+                safeSubscriber.error(new Error('Kaboom!'));
+              });
+            return source.subscribe(subscriberWithError);
+          }
+        }
+        expect(() => {
+          Observable.of(1).lift(new OperatorWithError()).subscribe();
+        }).to.throw('Kaboom!');
       });
 
       afterEach(() => {
