@@ -50,6 +50,32 @@ describe('Observable', () => {
     });
   });
 
+  it('should report errors thrown in subscribe even if a subscriber is closed', () => {
+    class OperatorWithBug<T> {
+      call(subscriber: Rx.Subscriber<T>, source: any): any {
+        return source.subscribe(new SubscriberWithBug(subscriber));
+      }
+    }
+    class SubscriberWithBug<T> extends Rx.Subscriber<T> {
+      constructor(destination: Rx.Subscriber<T>) {
+        super(destination);
+      }
+      complete(): void {
+        super.complete();
+        throw new Error('Kaboom!');
+      }
+    }
+    const stubSetTimeout = sinon.stub(global, 'setTimeout');
+    Observable.of(1).lift(new OperatorWithBug()).subscribe(
+      undefined,
+      err => { throw err; }
+    );
+    expect(stubSetTimeout).to.have.property('callCount', 1);
+    const [[func]] = stubSetTimeout.args;
+    expect(func).to.throw('Kaboom!');
+    stubSetTimeout.restore();
+  });
+
   it('should allow empty ctor, which is effectively a never-observable', () => {
     const result = new Observable<any>();
     expectObservable(result).toBe('-');
