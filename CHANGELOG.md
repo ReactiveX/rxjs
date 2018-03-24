@@ -1,3 +1,13 @@
+<a name="5.6.0-forward-compat.1"></a>
+# [5.6.0-forward-compat.1](https://github.com/ReactiveX/RxJS/compare/5.6.0-forward-compat.0...5.6.0-forward-compat.1) (2018-03-24)
+
+
+### Bug Fixes
+
+* **build:** include the missing index.ts file in target for TypeScript compilation ([#3459](https://github.com/ReactiveX/RxJS/issues/3459)) ([cb4ca0b](https://github.com/ReactiveX/RxJS/commit/cb4ca0b))
+
+
+
 <a name="5.6.0-forward-compat.0"></a>
 # [5.6.0-forward-compat.0](https://github.com/ReactiveX/RxJS/compare/5.5.7...v5.6.0-forward-compat.0) (2018-03-21)
 
