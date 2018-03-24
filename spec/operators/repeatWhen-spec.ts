@@ -36,7 +36,7 @@ describe('Observable.prototype.repeatWhen', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should retry when notified via returned notifier on complete', (done: MochaDone) => {
+  it('should repeat when notified via returned notifier on complete', (done: MochaDone) => {
     let retried = false;
     const expected = [1, 2, 1, 2];
     let i = 0;
@@ -64,8 +64,9 @@ describe('Observable.prototype.repeatWhen', () => {
     }
   });
 
-  it('should retry when notified and complete on returned completion', (done: MochaDone) => {
-    const expected = [1, 2, 1, 2];
+  it('should not repeat when applying an empty notifier', (done: MochaDone) => {
+    const expected = [1, 2];
+    const nexted: number[] = [];
     Observable.of(1, 2)
       .map((n: number) => {
         return n;
@@ -73,11 +74,67 @@ describe('Observable.prototype.repeatWhen', () => {
       .repeatWhen((notifications: any) => Observable.empty())
       .subscribe((n: number) => {
         expect(n).to.equal(expected.shift());
+        nexted.push(n);
       }, (err: any) => {
         done(new Error('should not be called'));
       }, () => {
+        expect(nexted).to.deep.equal([1, 2]);
         done();
       });
+  });
+
+  it('should not error when applying an empty synchronous notifier', () => {
+    const errors: any[] = [];
+    // The current Subscriber.prototype.error implementation does nothing for
+    // stopped subscribers. This test was written to fail and expose a problem
+    // with synchronous notifiers. However, by the time the error occurs the
+    // subscriber is stopped, so the test logs errors by both patching the
+    // prototype and by using an error callback (for when/if the do-nothing-if-
+    // stopped behaviour is fixed).
+    const originalSubscribe = Observable.prototype.subscribe;
+    Observable.prototype.subscribe = function (...args: any[]): any {
+      let [subscriber] = args;
+      if (!(subscriber instanceof Rx.Subscriber)) {
+        subscriber = new Rx.Subscriber<any>(...args);
+      }
+      subscriber.error = function (err: any): void {
+        errors.push(err);
+        Rx.Subscriber.prototype.error.call(this, err);
+      };
+      return originalSubscribe.call(this, subscriber);
+    };
+    Observable.of(1, 2)
+      .repeatWhen((notifications: any) => Observable.empty())
+      .subscribe(undefined, err => errors.push(err));
+    Observable.prototype.subscribe = originalSubscribe;
+    expect(errors).to.deep.equal([]);
+  });
+
+  it('should not error when applying a non-empty synchronous notifier', () => {
+    const errors: any[] = [];
+    // The current Subscriber.prototype.error implementation does nothing for
+    // stopped subscribers. This test was written to fail and expose a problem
+    // with synchronous notifiers. However, by the time the error occurs the
+    // subscriber is stopped, so the test logs errors by both patching the
+    // prototype and by using an error callback (for when/if the do-nothing-if-
+    // stopped behaviour is fixed).
+    const originalSubscribe = Observable.prototype.subscribe;
+    Observable.prototype.subscribe = function (...args: any[]): any {
+      let [subscriber] = args;
+      if (!(subscriber instanceof Rx.Subscriber)) {
+        subscriber = new Rx.Subscriber<any>(...args);
+      }
+      subscriber.error = function (err: any): void {
+        errors.push(err);
+        Rx.Subscriber.prototype.error.call(this, err);
+      };
+      return originalSubscribe.call(this, subscriber);
+    };
+    Observable.of(1, 2)
+      .repeatWhen((notifications: any) => Observable.of(1))
+      .subscribe(undefined, err => errors.push(err));
+    Observable.prototype.subscribe = originalSubscribe;
+    expect(errors).to.deep.equal([]);
   });
 
   it('should apply an empty notifier on an empty source', () => {
