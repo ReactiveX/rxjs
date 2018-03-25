@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as Rx from 'rxjs/Rx';
+import { Symbol_reportError } from '../src/internal/Subscriber';
 import { noop } from '../src/internal/util/noop';
 
 const Subscriber = Rx.Subscriber;
@@ -89,12 +90,12 @@ describe('Subscriber', () => {
     expect(argument).to.have.lengthOf(0);
   });
 
-  describe('_reportError', () => {
+  describe('reportError', () => {
     it('should call error for an unstopped subscriber', () => {
       const reported = new Error('Kaboom!');
       let received: any;
       const subscriber = new Rx.Subscriber(undefined, err => received = err);
-      (subscriber as any)._reportError(reported);
+      subscriber[Symbol_reportError](reported);
       expect(received).to.equal(reported);
       expect(subscriber).to.have.property('isStopped', true);
     });
@@ -105,7 +106,7 @@ describe('Subscriber', () => {
       const destination = new Rx.Subscriber(undefined, err => received = err);
       const subscriber = new Rx.Subscriber(destination);
       const spy = sinon.spy(subscriber, 'error');
-      (subscriber as any)._reportError(reported);
+      subscriber[Symbol_reportError](reported);
       expect(received).to.equal(reported);
       expect(subscriber).to.have.property('isStopped', true);
       expect(destination).to.have.property('isStopped', true);
@@ -123,7 +124,7 @@ describe('Subscriber', () => {
         const reported = new Error('Kaboom!');
         const subscriber = new Rx.Subscriber(undefined, err => { throw new Error('should not be called'); });
         subscriber.complete();
-        (subscriber as any)._reportError(reported);
+        subscriber[Symbol_reportError](reported);
         expect(stubSetTimeout).to.have.property('callCount', 1);
         const [[func]] = stubSetTimeout.args;
         expect(func).to.throw('Kaboom!');
@@ -135,7 +136,7 @@ describe('Subscriber', () => {
         const destination = new Rx.Subscriber(undefined, err => { throw new Error('should not be called'); });
         const subscriber = new Rx.Subscriber(destination);
         destination.complete();
-        (subscriber as any)._reportError(reported);
+        subscriber[Symbol_reportError](reported);
         expect(stubSetTimeout).to.have.property('callCount', 1);
         const [[func]] = stubSetTimeout.args;
         expect(func).to.throw('Kaboom!');
@@ -160,7 +161,7 @@ describe('Subscriber', () => {
         const reported = new Error('Kaboom!');
         const subscriber = new Rx.Subscriber(undefined, err => { throw new Error('should not be called'); });
         subscriber.complete();
-        expect(() => (subscriber as any)._reportError(reported)).to.throw('Kaboom!');
+        expect(() => subscriber[Symbol_reportError](reported)).to.throw('Kaboom!');
         expect(subscriber).to.have.property('isStopped', true);
       });
 
@@ -169,7 +170,7 @@ describe('Subscriber', () => {
         const destination = new Rx.Subscriber(undefined, err => { throw new Error('should not be called'); });
         const subscriber = new Rx.Subscriber(destination);
         destination.complete();
-        expect(() => (subscriber as any)._reportError(reported)).to.throw('Kaboom!');
+        expect(() => subscriber[Symbol_reportError](reported)).to.throw('Kaboom!');
         expect(subscriber).to.have.property('isStopped', true);
         expect(destination).to.have.property('isStopped', true);
       });

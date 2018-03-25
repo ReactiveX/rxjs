@@ -6,6 +6,11 @@ import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscri
 import { config } from './config';
 import { hostReportError } from './util/hostReportError';
 
+export const Symbol_reportError =
+  (typeof Symbol === 'function' && typeof Symbol.for === 'function')
+    ? Symbol.for('reportError')
+    : '@@reportError';
+
 /**
  * Implements the {@link Observer} interface and extends the
  * {@link Subscription} class. While the {@link Observer} is the public API for
@@ -173,7 +178,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
    * subscribers and uses the appropriate unhandled mechanism to report the
    * error if a stopped subscriber is found.
    */
-  private _reportError(err?: any): void {
+  [Symbol_reportError](err?: any): void {
     let observer: PartialObserver<T> = this;
     while (observer) {
       if (observer instanceof Subscriber) {

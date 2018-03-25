@@ -1,5 +1,5 @@
 import { Operator } from './Operator';
-import { Subscriber } from './Subscriber';
+import { Subscriber, Symbol_reportError } from './Subscriber';
 import { Subscription } from './Subscription';
 import { TeardownLogic } from './types';
 import { toSubscriber } from './util/toSubscriber';
@@ -215,7 +215,7 @@ export class Observable<T> implements Subscribable<T> {
         sink.syncErrorThrown = true;
         sink.syncErrorValue = err;
       }
-      (sink as any)._reportError(err);
+      sink[Symbol_reportError](err);
     }
   }
 
