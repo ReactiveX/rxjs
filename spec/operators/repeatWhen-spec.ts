@@ -95,7 +95,7 @@ describe('Observable.prototype.repeatWhen', () => {
     Observable.prototype.subscribe = function (...args: any[]): any {
       let [subscriber] = args;
       if (!(subscriber instanceof Rx.Subscriber)) {
-        subscriber = new Rx.Subscriber<any>(...args);
+        subscriber = new Rx.Subscriber<any>(args[0], args[1], args[2]);
       }
       subscriber.error = function (err: any): void {
         errors.push(err);
@@ -122,7 +122,7 @@ describe('Observable.prototype.repeatWhen', () => {
     Observable.prototype.subscribe = function (...args: any[]): any {
       let [subscriber] = args;
       if (!(subscriber instanceof Rx.Subscriber)) {
-        subscriber = new Rx.Subscriber<any>(...args);
+        subscriber = new Rx.Subscriber<any>(args[0], args[1], args[2]);
       }
       subscriber.error = function (err: any): void {
         errors.push(err);
