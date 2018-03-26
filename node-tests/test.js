@@ -16,7 +16,7 @@ var id = setTimeout(function () {
 }, 200);
 
 of1(0).pipe(
-  mergeMap1(function () { return of(x); }),
+  mergeMap1(function (x) { return of(x); }),
   mergeMap(function () { return from1(Promise.resolve(1)); })
 ).subscribe({
   next: function (value) { actual.push(value); },
