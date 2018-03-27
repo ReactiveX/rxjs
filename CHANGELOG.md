@@ -1,3 +1,16 @@
+<a name="6.0.0-beta.3"></a>
+# [6.0.0-beta.3](https://github.com/ReactiveX/RxJS/compare/6.0.0-beta.1...6.0.0-beta.3) (2018-03-27)
+
+
+### Bug Fixes
+
+* **build:** update build-optimizer and point to correct sources ([6717a01](https://github.com/ReactiveX/RxJS/commit/6717a01))
+* **node:** Subscriber no longer trampled if from another copy of rxjs ([371b658](https://github.com/ReactiveX/RxJS/commit/371b658))
+* **Observable:** empty ctor returns valid Observable ([#3464](https://github.com/ReactiveX/RxJS/issues/3464)) ([58b8ebc](https://github.com/ReactiveX/RxJS/commit/58b8ebc))
+* **subscribeOn:** add subscribeOn back to the distribution ([d6556f2](https://github.com/ReactiveX/RxJS/commit/d6556f2))
+
+
+
 <a name="6.0.0-beta.2"></a>
 # [6.0.0-beta.2](https://github.com/ReactiveX/RxJS/compare/6.0.0-beta.1...6.0.0-beta.2) (2018-03-24)
 
