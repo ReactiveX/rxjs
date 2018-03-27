@@ -1,3 +1,13 @@
+<a name="5.6.0-forward-compat.2"></a>
+# [5.6.0-forward-compat.2](https://github.com/ReactiveX/RxJS/compare/5.6.0-forward-compat.1...5.6.0-forward-compat.2) (2018-03-27)
+
+
+### Bug Fixes
+
+* **node:** no more silent failure for many copies of rxjs ([#3477](https://github.com/ReactiveX/RxJS/issues/3477)) ([fed5351](https://github.com/ReactiveX/RxJS/commit/fed5351)), closes [#3475](https://github.com/ReactiveX/RxJS/issues/3475)
+
+
+
 <a name="5.6.0-forward-compat.1"></a>
 # [5.6.0-forward-compat.1](https://github.com/ReactiveX/RxJS/compare/5.6.0-forward-compat.0...5.6.0-forward-compat.1) (2018-03-24)
 
