@@ -67,10 +67,13 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
           break;
         }
         if (typeof destinationOrNext === 'object') {
-          if (destinationOrNext instanceof Subscriber) {
-            this.syncErrorThrowable = destinationOrNext.syncErrorThrowable;
-            this.destination = (<Subscriber<any>> destinationOrNext);
-            (<any> this.destination).add(this);
+          // HACK(benlesh): To resolve an issue where Node users may have multiple
+          // copies of rxjs in their node_modules directory.
+          if (isTrustedSubscriber(destinationOrNext)) {
+            const trustedSubscriber = destinationOrNext[rxSubscriberSymbol]() as Subscriber<any>;
+            this.syncErrorThrowable = trustedSubscriber.syncErrorThrowable;
+            this.destination = trustedSubscriber;
+            trustedSubscriber.add(this);
           } else {
             this.syncErrorThrowable = true;
             this.destination = new SafeSubscriber<T>(this, <PartialObserver<any>> destinationOrNext);
@@ -276,4 +279,8 @@ class SafeSubscriber<T> extends Subscriber<T> {
     this._parentSubscriber = null;
     _parentSubscriber.unsubscribe();
   }
+}
+
+function isTrustedSubscriber(obj: any) {
+  return obj instanceof Subscriber || ('syncErrorThrowable' in obj && obj[rxSubscriberSymbol]);
 }
