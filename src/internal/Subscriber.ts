@@ -181,7 +181,10 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   [Symbol_reportError](err?: any): void {
     let observer: PartialObserver<T> = this;
     while (observer) {
-      if (observer instanceof Subscriber) {
+      // `observer` will either be a subscriber or an empty observer, but for
+      // the reasons outlined in the constructor, `instanceof Subscriber`
+      // cannot be used.
+      if (isTrustedSubscriber(observer)) {
         const { destination, isStopped } = observer;
         if (isStopped) {
           if (config.useDeprecatedSynchronousErrorHandling) {
