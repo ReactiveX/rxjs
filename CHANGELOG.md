@@ -1,3 +1,14 @@
+<a name="5.5.8"></a>
+## [5.5.8](https://github.com/ReactiveX/RxJS/compare/5.5.7...5.5.8) (2018-03-27)
+
+
+### Bug Fixes
+
+* **node:** no more silent failure for many copies of rxjs ([#3477](https://github.com/ReactiveX/RxJS/issues/3477)) ([92dcd44](https://github.com/ReactiveX/RxJS/commit/92dcd44)), closes [#3475](https://github.com/ReactiveX/RxJS/issues/3475)
+* **repeatWhen:** support synchronous notifier ([8fe004c](https://github.com/ReactiveX/RxJS/commit/8fe004c))
+
+
+
 <a name="5.5.7"></a>
 ## [5.5.7](https://github.com/ReactiveX/RxJS/compare/5.5.6...5.5.7) (2018-03-13)
 
