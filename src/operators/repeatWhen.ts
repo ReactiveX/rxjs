@@ -76,7 +76,8 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     if (!this.isStopped) {
       if (!this.retries) {
         this.subscribeToRetries();
-      } else if (this.retriesSubscription.closed) {
+      }
+      if (!this.retriesSubscription || this.retriesSubscription.closed) {
         return super.complete();
       }
 
