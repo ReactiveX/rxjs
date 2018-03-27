@@ -339,6 +339,6 @@ class SafeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function isTrustedSubscriber(obj: any) {
+function isTrustedSubscriber(obj: any): obj is Subscriber<any> {
   return obj instanceof Subscriber || ('syncErrorThrowable' in obj && obj[rxSubscriberSymbol]);
 }
