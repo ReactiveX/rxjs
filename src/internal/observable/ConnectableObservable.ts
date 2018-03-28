@@ -4,7 +4,7 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { TeardownLogic } from '../types';
-import { refCount as higherOrderRefCount } from '../../internal/operators/refCount';
+import { refCount as higherOrderRefCount } from '../operators/refCount';
 
 /**
  * @class ConnectableObservable<T>

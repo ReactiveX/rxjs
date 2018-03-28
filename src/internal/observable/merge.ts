@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { ObservableInput, SchedulerLike} from '../types';
 import { isScheduler } from '../util/isScheduler';
-import { mergeAll } from '../../internal/operators/mergeAll';
+import { mergeAll } from '../operators/mergeAll';
 import { fromArray } from './fromArray';
 
 /* tslint:disable:max-line-length */
