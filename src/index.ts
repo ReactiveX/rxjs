@@ -51,6 +51,7 @@ export { generate } from './internal/observable/generate';
 export { iif } from './internal/observable/iif';
 export { interval } from './internal/observable/interval';
 export { merge } from './internal/observable/merge';
+export { never } from './internal/observable/never';
 export { of } from './internal/observable/of';
 export { onErrorResumeNext } from './internal/observable/onErrorResumeNext';
 export { pairs } from './internal/observable/pairs';
