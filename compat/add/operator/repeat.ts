@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { repeat } from 'rxjs/internal-compatibility';
+import { repeat } from '../../operator/repeat';
 
 (Observable as any).prototype.repeat = repeat;
 

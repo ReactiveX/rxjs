@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { retry } from 'rxjs/internal-compatibility';
+import { retry } from '../../operator/retry';
 
 (Observable as any).prototype.retry = retry;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { throttleTime } from 'rxjs/internal-compatibility';
+import { throttleTime } from '../../operator/throttleTime';
 
 (Observable as any).prototype.throttleTime = throttleTime;
 

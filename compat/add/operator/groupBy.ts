@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { groupBy } from 'rxjs/internal-compatibility';
+import { groupBy } from '../../operator/groupBy';
 
 (Observable as any).prototype.groupBy = <any>groupBy;
 

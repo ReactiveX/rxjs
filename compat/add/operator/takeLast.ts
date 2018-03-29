@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { takeLast } from 'rxjs/internal-compatibility';
+import { takeLast } from '../../operator/takeLast';
 
 (Observable as any).prototype.takeLast = takeLast;
 

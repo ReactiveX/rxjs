@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/internal-compatibility';
+import { take } from '../../operator/take';
 
 (Observable as any).prototype.take = take;
 

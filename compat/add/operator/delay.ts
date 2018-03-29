@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { delay } from 'rxjs/internal-compatibility';
+import { delay } from '../../operator/delay';
 
 (Observable as any).prototype.delay = delay;
 

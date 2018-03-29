@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { letProto } from 'rxjs/internal-compatibility';
+import { letProto } from '../../operator/let';
 
 (Observable as any).prototype.let = letProto;
 (Observable as any).prototype.letBind = letProto;

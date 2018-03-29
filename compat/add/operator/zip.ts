@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { zipProto } from 'rxjs/internal-compatibility';
+import { zipProto } from '../../operator/zip';
 
 (Observable as any).prototype.zip = zipProto;
 

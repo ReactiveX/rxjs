@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { windowWhen } from 'rxjs/internal-compatibility';
+import { windowWhen } from '../../operator/windowWhen';
 
 (Observable as any).prototype.windowWhen = windowWhen;
 

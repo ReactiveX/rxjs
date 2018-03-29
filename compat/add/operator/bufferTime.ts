@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { bufferTime } from 'rxjs/internal-compatibility';
+import { bufferTime } from '../../operator/bufferTime';
 
 (Observable as any).prototype.bufferTime = bufferTime;
 

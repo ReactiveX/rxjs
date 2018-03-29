@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { multicast } from 'rxjs/internal-compatibility';
+import { multicast } from '../../operator/multicast';
 
 (Observable as any).prototype.multicast = <any>multicast;
 

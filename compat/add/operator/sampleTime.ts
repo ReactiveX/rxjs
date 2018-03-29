@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { sampleTime } from 'rxjs/internal-compatibility';
+import { sampleTime } from '../../operator/sampleTime';
 
 (Observable as any).prototype.sampleTime = sampleTime;
 

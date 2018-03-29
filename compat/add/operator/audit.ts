@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { audit } from 'rxjs/internal-compatibility';
+import { audit } from '../../operator/audit';
 
 (Observable as any).prototype.audit = audit;
 

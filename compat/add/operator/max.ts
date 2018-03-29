@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { max } from 'rxjs/internal-compatibility';
+import { max } from '../../operator/max';
 
 (Observable as any).prototype.max = max;
 

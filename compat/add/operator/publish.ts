@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { publish } from 'rxjs/internal-compatibility';
+import { publish } from '../../operator/publish';
 
 (Observable as any).prototype.publish = <any>publish;
 

@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { windowToggle } from 'rxjs/internal-compatibility';
+import { windowToggle } from '../../operator/windowToggle';
 
 (Observable as any).prototype.windowToggle = windowToggle;
 
