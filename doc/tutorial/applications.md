@@ -29,7 +29,7 @@ What we do here is mapping a click event to a state changing function. So instea
 ```js
 var increaseButton = document.querySelector('#increase');
 var increase = Rx.Observable.fromEvent(increaseButton, 'click').pipe(
-  .map(() => state => Object.assign({}, state, {count: state.count + 1}))
+  map(() => state => Object.assign({}, state, {count: state.count + 1}))
 );
 
 // We create an object with our initial state. Whenever a new state change function
