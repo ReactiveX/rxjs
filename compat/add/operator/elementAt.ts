@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { elementAt } from 'rxjs/internal-compatibility';
+import { elementAt } from '../../operator/elementAt';
 
 (Observable as any).prototype.elementAt = elementAt;
 

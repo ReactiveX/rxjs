@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/internal-compatibility';
+import { distinctUntilChanged } from '../../operator/distinctUntilChanged';
 
 (Observable as any).prototype.distinctUntilChanged = distinctUntilChanged;
 

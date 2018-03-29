@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { bufferWhen } from 'rxjs/internal-compatibility';
+import { bufferWhen } from '../../operator/bufferWhen';
 
 (Observable as any).prototype.bufferWhen = bufferWhen;
 

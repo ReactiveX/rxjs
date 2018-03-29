@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { combineAll } from 'rxjs/internal-compatibility';
+import { combineAll } from '../../operator/combineAll';
 
 (Observable as any).prototype.combineAll = combineAll;
 

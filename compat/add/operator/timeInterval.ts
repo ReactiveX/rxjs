@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { timeInterval } from 'rxjs/internal-compatibility';
+import { timeInterval } from '../../operator/timeInterval';
 
 (Observable as any).prototype.timeInterval = timeInterval;
 

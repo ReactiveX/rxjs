@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { concatMapTo } from 'rxjs/internal-compatibility';
+import { concatMapTo } from '../../operator/concatMapTo';
 
 (Observable as any).prototype.concatMapTo = concatMapTo;
 

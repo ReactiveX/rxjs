@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { mergeMap } from 'rxjs/internal-compatibility';
+import { mergeMap } from '../../operator/mergeMap';
 
 (Observable as any).prototype.mergeMap = <any>mergeMap;
 (Observable as any).prototype.flatMap = <any>mergeMap;

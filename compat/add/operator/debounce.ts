@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { debounce } from 'rxjs/internal-compatibility';
+import { debounce } from '../../operator/debounce';
 
 (Observable as any).prototype.debounce = debounce;
 

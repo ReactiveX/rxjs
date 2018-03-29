@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { filter } from 'rxjs/internal-compatibility';
+import { filter } from '../../operator/filter';
 
 (Observable as any).prototype.filter = filter;
 

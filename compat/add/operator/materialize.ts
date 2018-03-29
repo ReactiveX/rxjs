@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { materialize } from 'rxjs/internal-compatibility';
+import { materialize } from '../../operator/materialize';
 
 (Observable as any).prototype.materialize = materialize;
 

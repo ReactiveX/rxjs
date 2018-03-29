@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { single } from 'rxjs/internal-compatibility';
+import { single } from '../../operator/single';
 
 (Observable as any).prototype.single = single;
 

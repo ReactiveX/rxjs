@@ -1,7 +1,7 @@
 
 import { Observable } from 'rxjs';
 
-import { scan } from 'rxjs/internal-compatibility';
+import { scan } from '../../operator/scan';
 
 (Observable as any).prototype.scan = scan;
 

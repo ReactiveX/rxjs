@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { combineLatest } from 'rxjs/internal-compatibility';
+import { combineLatest } from '../../operator/combineLatest';
 
 (Observable as any).prototype.combineLatest = combineLatest;
 

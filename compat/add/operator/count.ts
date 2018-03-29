@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { count } from 'rxjs/internal-compatibility';
+import { count } from '../../operator/count';
 
 (Observable as any).prototype.count = count;
 

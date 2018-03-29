@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { buffer } from 'rxjs/internal-compatibility';
+import { buffer } from '../../operator/buffer';
 
 (Observable as any).prototype.buffer = buffer;
 

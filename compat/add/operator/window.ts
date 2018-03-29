@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { window } from 'rxjs/internal-compatibility';
+import { window } from '../../operator/window';
 
 (Observable as any).prototype.window = window;
 

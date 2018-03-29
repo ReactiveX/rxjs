@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { timestamp } from 'rxjs/internal-compatibility';
+import { timestamp } from '../../operator/timestamp';
 
 (Observable as any).prototype.timestamp = timestamp;
 

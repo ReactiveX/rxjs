@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { windowTime } from 'rxjs/internal-compatibility';
+import { windowTime } from '../../operator/windowTime';
 
 (Observable as any).prototype.windowTime = windowTime;
 

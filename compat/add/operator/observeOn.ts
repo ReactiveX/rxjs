@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { observeOn } from 'rxjs/internal-compatibility';
+import { observeOn } from '../../operator/observeOn';
 
 (Observable as any).prototype.observeOn = observeOn;
 

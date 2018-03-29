@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { find } from 'rxjs/internal-compatibility';
+import { find } from '../../operator/find';
 
 (Observable as any).prototype.find = find;
 

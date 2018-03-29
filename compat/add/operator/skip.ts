@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { skip } from 'rxjs/internal-compatibility';
+import { skip } from '../../operator/skip';
 
 (Observable as any).prototype.skip = skip;
 

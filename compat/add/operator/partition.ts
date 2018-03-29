@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { partition } from 'rxjs/internal-compatibility';
+import { partition } from '../../operator/partition';
 
 (Observable as any).prototype.partition = partition;
 

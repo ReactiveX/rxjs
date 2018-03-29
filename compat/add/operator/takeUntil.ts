@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/internal-compatibility';
+import { takeUntil } from '../../operator/takeUntil';
 
 (Observable as any).prototype.takeUntil = takeUntil;
 

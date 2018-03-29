@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { every } from 'rxjs/internal-compatibility';
+import { every } from '../../operator/every';
 
 (Observable as any).prototype.every = every;
 

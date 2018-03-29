@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { exhaust } from 'rxjs/internal-compatibility';
+import { exhaust } from '../../operator/exhaust';
 
 (Observable as any).prototype.exhaust = exhaust;
 

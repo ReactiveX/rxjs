@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { withLatestFrom } from 'rxjs/internal-compatibility';
+import { withLatestFrom } from '../../operator/withLatestFrom';
 
 (Observable as any).prototype.withLatestFrom = withLatestFrom;
 

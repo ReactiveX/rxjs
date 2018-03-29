@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { dematerialize } from 'rxjs/internal-compatibility';
+import { dematerialize } from '../../operator/dematerialize';
 
 (Observable as any).prototype.dematerialize = dematerialize;
 

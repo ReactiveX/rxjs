@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { pairwise } from 'rxjs/internal-compatibility';
+import { pairwise } from '../../operator/pairwise';
 
 (Observable as any).prototype.pairwise = pairwise;
 

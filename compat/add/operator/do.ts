@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { _do } from 'rxjs/internal-compatibility';
+import { _do } from '../../operator/do';
 
 (Observable as any).prototype.do = _do;
 (Observable as any).prototype._do = _do;

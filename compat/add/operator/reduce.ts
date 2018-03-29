@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { reduce } from 'rxjs/internal-compatibility';
+import { reduce } from '../../operator/reduce';
 
 (Observable as any).prototype.reduce = reduce;
 

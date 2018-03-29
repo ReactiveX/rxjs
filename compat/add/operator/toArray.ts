@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { toArray } from 'rxjs/internal-compatibility';
+import { toArray } from '../../operator/toArray';
 
 (Observable as any).prototype.toArray = toArray;
 

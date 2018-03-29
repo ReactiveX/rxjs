@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { defaultIfEmpty } from 'rxjs/internal-compatibility';
+import { defaultIfEmpty } from '../../operator/defaultIfEmpty';
 
 (Observable as any).prototype.defaultIfEmpty = defaultIfEmpty;
 

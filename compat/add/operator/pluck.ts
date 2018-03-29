@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { pluck } from 'rxjs/internal-compatibility';
+import { pluck } from '../../operator/pluck';
 
 (Observable as any).prototype.pluck = pluck;
 

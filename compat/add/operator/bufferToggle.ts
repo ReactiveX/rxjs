@@ -1,6 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { bufferToggle } from 'rxjs/internal-compatibility';
+import { bufferToggle } from '../../operator/bufferToggle';
 
 (Observable as any).prototype.bufferToggle = bufferToggle;
 
