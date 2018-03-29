@@ -46,25 +46,15 @@ let rootPackageJson = Object.assign({}, pkg, {
   es2015: './_esm2015/index.js'
 });
 
-// Get a list of the file names. Sort in reverse order so re-export files
-// such as "operators.js" are AFTER their more specfic exports, such as
-// "operators/map.js". This is due to a Webpack bug for node-resolved imports
-// (rxjs/operators resolves to rxjs/operators.js), Webpack's "alias"
-// functionality requires that the most broad mapping (rxjs/operators) be at
-// the end of the alias mapping object. Created Webpack issue:
-// https://github.com/webpack/webpack/issues/5870
-const fileNames = klawSync(ESM5_ROOT, {
+// Execute build optimizer transforms on ESM5 files
+klawSync(ESM5_ROOT, {
   nodir: true,
   filter: function(item) {
     return item.path.endsWith('.js');
   }
 })
-.map(item => item.path)
-.map(path => path.slice((`${__dirname}/${ESM5_ROOT}`).length))
-.sort().reverse();
-
-// Execute build optimizer transforms on ESM5 files
-fileNames.map(fileName => {
+.map(item => item.path.slice((`${__dirname}/${ESM5_ROOT}`).length))
+.map(fileName => {
   if (!bo) return fileName;
   let fullPath = path.resolve(__dirname, ESM5_ROOT, fileName);
   // The file won't exist when running build_test as we don't create the ESM5 sources
@@ -77,6 +67,28 @@ fileNames.map(fileName => {
   fs.writeFileSync(fullPath, transformed.content);
   return fileName;
 });
+
+/**
+ * Get a list of the file names. Sort in reverse order so re-export files
+ * such as "operators.js" are AFTER their more specfic exports, such as
+ * "operators/map.js". This is due to a Webpack bug for node-resolved imports
+ * (rxjs/operators resolves to rxjs/operators.js), Webpack's "alias"
+ * functionality requires that the most broad mapping (rxjs/operators) be at
+ * the end of the alias mapping object. Created Webpack issue:
+ * https://github.com/webpack/webpack/issues/5870
+ *
+ * This is only needed for items in legacy-reexport as others should be resolved
+ * through their package.json.
+ */
+const fileNames = klawSync(LEGACY_REEXPORT_ROOT, {
+  nodir: true,
+  filter: function(item) {
+    return item.path.endsWith('.js');
+  }
+})
+.map(item => item.path)
+.map(path => path.slice((`${__dirname}/${LEGACY_REEXPORT_ROOT}`).length))
+.sort().reverse();
 
 // Create an object hash mapping imports to file names
 const importTargets = fileNames.reduce((acc, fileName) => {
