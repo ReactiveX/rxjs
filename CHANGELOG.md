@@ -1,3 +1,25 @@
+<a name="6.0.0-beta.4"></a>
+# [6.0.0-beta.4](https://github.com/ReactiveX/RxJS/compare/6.0.0-beta.3...v6.0.0-beta.4) (2018-03-29)
+
+
+### Bug Fixes
+
+* **bindCallback:** add better type overloads ([#3480](https://github.com/ReactiveX/RxJS/issues/3480)) ([037cf34](https://github.com/ReactiveX/RxJS/commit/037cf34))
+* **compat:** add IScheduler to compat/Scheduler ([0a67df6](https://github.com/ReactiveX/RxJS/commit/0a67df6))
+
+
+### Features
+
+* **compat:** add all utilities to internal-compatibility ([a9ecfe7](https://github.com/ReactiveX/RxJS/commit/a9ecfe7))
+* **websocket:** Add serializer/deserializer config settings ([#3489](https://github.com/ReactiveX/RxJS/issues/3489)) ([8d44124](https://github.com/ReactiveX/RxJS/commit/8d44124))
+
+
+### BREAKING CHANGES
+
+* **websocket:** WebSocketSubject will now JSON serialize all messages sent over it by default, to return to the old behavior, pass a config setting of `serializer: x => x` like so: `websocket({ url, serializer: x => x })`
+
+
+
 <a name="6.0.0-beta.3"></a>
 # [6.0.0-beta.3](https://github.com/ReactiveX/RxJS/compare/6.0.0-beta.1...6.0.0-beta.3) (2018-03-27)
 
