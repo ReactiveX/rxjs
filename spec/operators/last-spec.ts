@@ -1,10 +1,9 @@
 
-import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { last, mergeMap } from 'rxjs/operators';
+import { EmptyError, of, from, Observable } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
-
-const Observable = Rx.Observable;
 
 /** @test {last} */
 describe('Observable.prototype.last', () => {
@@ -13,7 +12,7 @@ describe('Observable.prototype.last', () => {
     const e1subs =   '^            !';
     const expected = '-------------(c|)';
 
-    expectObservable(e1.last()).toBe(expected);
+    expectObservable(e1.pipe(last())).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -22,7 +21,7 @@ describe('Observable.prototype.last', () => {
     const e1subs =      '^    !';
     const expected =    '-----#';
 
-    expectObservable(e1.last()).toBe(expected, null, new Rx.EmptyError());
+    expectObservable(e1.pipe(last())).toBe(expected, null, new EmptyError());
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -31,7 +30,7 @@ describe('Observable.prototype.last', () => {
     const e1subs =   '(^!)';
     const expected = '#';
 
-    expectObservable(e1.last()).toBe(expected, null, new Rx.EmptyError());
+    expectObservable(e1.pipe(last())).toBe(expected, null, new EmptyError());
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -40,7 +39,7 @@ describe('Observable.prototype.last', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    expectObservable(e1.last()).toBe(expected);
+    expectObservable(e1.pipe(last())).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -49,11 +48,7 @@ describe('Observable.prototype.last', () => {
     const e1subs =    '^             !';
     const expected =  '--------------(b|)';
 
-    const predicate = function (value) {
-      return value === 'b';
-    };
-
-    expectObservable(e1.last(predicate)).toBe(expected);
+    expectObservable(e1.pipe(last(value => value === 'b'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -63,7 +58,7 @@ describe('Observable.prototype.last', () => {
     const e1subs =    '^      !       ';
     const expected =  '--------       ';
 
-    expectObservable(e1.last(), unsub).toBe(expected);
+    expectObservable(e1.pipe(last()), unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -73,10 +68,11 @@ describe('Observable.prototype.last', () => {
     const expected =  '--------       ';
     const unsub =     '       !       ';
 
-    const result = e1
-      .mergeMap((x: string) => Rx.Observable.of(x))
-      .last()
-      .mergeMap((x: string) => Rx.Observable.of(x));
+    const result = e1.pipe(
+      mergeMap(x => of(x)),
+      last(),
+      mergeMap(x => of(x)),
+    );
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -87,7 +83,7 @@ describe('Observable.prototype.last', () => {
     const e1subs =   '(^!)';
     const expected = '(a|)';
 
-    expectObservable(e1.last(null, 'a')).toBe(expected);
+    expectObservable(e1.pipe(last(null, 'a'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -96,7 +92,7 @@ describe('Observable.prototype.last', () => {
     const e1subs =       '^               !';
     const expected =     '----------------(d|)';
 
-    expectObservable(e1.last(null, 'x')).toBe(expected);
+    expectObservable(e1.pipe(last(null, 'x'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -105,7 +101,7 @@ describe('Observable.prototype.last', () => {
     const e1subs =      '^       !           ';
     const expected =    '--------#           ';
 
-    const predicate = function (x) {
+    const predicate = function (x: string) {
       if (x === 'c') {
         throw 'error';
       } else {
@@ -113,7 +109,7 @@ describe('Observable.prototype.last', () => {
       }
     };
 
-    expectObservable(e1.last(predicate)).toBe(expected);
+    expectObservable(e1.pipe(last(predicate))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -130,48 +126,48 @@ describe('Observable.prototype.last', () => {
       const isBaz = (x: any): x is Baz => x && (<Baz>x).baz !== undefined;
 
       const foo: Foo = new Foo();
-      Observable.of(foo).last()
+      of(foo).pipe(last())
         .subscribe(x => x.baz); // x is Foo
-      Observable.of(foo).last(foo => foo.bar === 'name')
+      of(foo).last(foo => foo.bar === 'name')
         .subscribe(x => x.baz); // x is still Foo
-      Observable.of(foo).last(isBar)
+      of(foo).last(isBar)
         .subscribe(x => x.bar); // x is Bar!
 
       const foobar: Bar = new Foo(); // type is the interface, not the class
-      Observable.of(foobar).last()
+      of(foobar).pipe(last())
         .subscribe(x => x.bar); // x is Bar
-      Observable.of(foobar).last(foobar => foobar.bar === 'name')
+      of(foobar).pipe(last(foobar => foobar.bar === 'name'))
         .subscribe(x => x.bar); // x is still Bar
-      Observable.of(foobar).last(isBaz)
+      of(foobar).pipe(last(isBaz))
         .subscribe(x => x.baz); // x is Baz!
 
       const barish = { bar: 'quack', baz: 42 }; // type can quack like a Bar
-      Observable.of(barish).last()
+      of(barish).pipe(last())
         .subscribe(x => x.baz); // x is still { bar: string; baz: number; }
-      Observable.of(barish).last(x => x.bar === 'quack')
+      of(barish).pipe(last(x => x.bar === 'quack'))
         .subscribe(x => x.bar); // x is still { bar: string; baz: number; }
-      Observable.of(barish).last(isBar)
+      of(barish).pipe(last(isBar))
         .subscribe(x => x.bar); // x is Bar!
     }
 
     // type guards with primitive types
     {
-      const xs: Rx.Observable<string | number> = Observable.from([ 1, 'aaa', 3, 'bb' ]);
+      const xs: Observable<string | number> = from([ 1, 'aaa', 3, 'bb' ]);
 
       // This type guard will narrow a `string | number` to a string in the examples below
       const isString = (x: string | number): x is string => typeof x === 'string';
 
       // missing predicate preserves the type
-      xs.last().subscribe(x => x); // x is still string | number
+      xs.pipe(last()).subscribe(x => x); // x is still string | number
 
       // After the type guard `last` predicates, the type is narrowed to string
-      xs.last(isString)
+      xs.pipe(last(isString))
         .subscribe(s => s.length); // s is string
-      xs.last(isString, s => s.substr(0)) // s is string in predicate
+      xs.pipe(last(isString, s => s.substr(0))) // s is string in predicate)
         .subscribe(s => s.length); // s is string
 
       // boolean predicates preserve the type
-      xs.last(x => typeof x === 'string')
+      xs.pipe(last(x => typeof x === 'string'))
         .subscribe(x => x); // x is still string | number
     }
 
