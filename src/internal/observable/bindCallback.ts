@@ -2,8 +2,14 @@ import { SchedulerLike, SchedulerAction } from '../types';
 import { Observable } from '../Observable';
 import { AsyncSubject } from '../AsyncSubject';
 import { Subscriber } from '../Subscriber';
+import { map } from '../operators/map';
+import { isArray } from '../util/isArray';
+import { isScheduler } from '../util/isScheduler';
 
 // tslint:disable:max-line-length
+/** @deprecated resultSelector is no longer supported, use a mapping function. */
+export function bindCallback(callbackFunc: Function, resultSelector: Function, scheduler?: SchedulerLike): (...args: any[]) => Observable<any>;
+
 export function bindCallback<R1, R2, R3, R4>(callbackFunc: (callback: (res1: R1, res2: R2, res3: R3, res4: R4, ...args: any[]) => any) => any, scheduler?: SchedulerLike): () => Observable<any[]>;
 export function bindCallback<R1, R2, R3>(callbackFunc: (callback: (res1: R1, res2: R2, res3: R3) => any) => any, scheduler?: SchedulerLike): () => Observable<[R1, R2, R3]>;
 export function bindCallback<R1, R2>(callbackFunc: (callback: (res1: R1, res2: R2) => any) => any, scheduler?: SchedulerLike): () => Observable<[R1, R2]>;
@@ -157,8 +163,22 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  * Observable that delivers the same values the callback would deliver.
  * @name bindCallback
  */
-export function bindCallback<T>(callbackFunc: Function,
-                                scheduler?: SchedulerLike): (...args: any[]) => Observable<T> {
+export function bindCallback<T>(
+  callbackFunc: Function,
+  resultSelector?: Function|SchedulerLike,
+  scheduler?: SchedulerLike
+): (...args: any[]) => Observable<T> {
+  if (resultSelector) {
+    if (isScheduler(resultSelector)) {
+      scheduler = resultSelector;
+    } else {
+      // DEPRECATED PATH
+      return (...args: any[]) => bindCallback(callbackFunc, scheduler)(...args).pipe(
+        map((args) => isArray(args) ? resultSelector(...args) : resultSelector(args)),
+      );
+    }
+  }
+
   return function (this: any, ...args: any[]): Observable<T> {
     const context = this;
     let subject: AsyncSubject<T>;
