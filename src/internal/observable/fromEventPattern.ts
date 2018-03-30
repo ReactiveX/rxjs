@@ -1,5 +1,14 @@
 import { Observable } from '../Observable';
+import { isArray } from '../util/isArray';
 import { isFunction } from '../util/isFunction';
+import { fromEvent } from './fromEvent';
+import { map } from '../operators/map';
+
+/* tslint:disable:max-line-length */
+export function fromEventPattern<T>(addHandler: (handler: Function) => any, removeHandler?: (handler: Function, signal?: any) => void): Observable<T>;
+/** @deprecated resultSelector no longer supported, pipe to map instead */
+export function fromEventPattern<T>(addHandler: (handler: Function) => any, removeHandler?: (handler: Function, signal?: any) => void, resultSelector?: (...args: any[]) => T): Observable<T>;
+/* tslint:enable:max-line-length */
 
 /**
  * Creates an Observable from an API based on addHandler/removeHandler
@@ -44,9 +53,18 @@ import { isFunction } from '../util/isFunction';
  * @name fromEventPattern
  */
 export function fromEventPattern<T>(addHandler: (handler: Function) => any,
-                                    removeHandler?: (handler: Function, signal?: any) => void) {
-  return new Observable<T>(subscriber => {
-    const handler = (e: T) => subscriber.next(e);
+                                    removeHandler?: (handler: Function, signal?: any) => void,
+                                    resultSelector?: (...args: any[]) => T): Observable<T | T[]> {
+
+  if (resultSelector) {
+    // DEPRECATED PATH
+    return fromEventPattern<T>(addHandler, removeHandler).pipe(
+      map(args => isArray(args) ? resultSelector(...args) : resultSelector(args))
+    );
+  }
+
+  return new Observable<T | T[]>(subscriber => {
+    const handler = (...e: T[]) => subscriber.next(e.length === 1 ? e[0] : e);
 
     let retValue: any;
     try {

@@ -1,6 +1,8 @@
 import { Observable } from '../Observable';
+import { isArray } from '../util/isArray';
 import { isFunction } from '../util/isFunction';
 import { Subscriber } from '../Subscriber';
+import { map } from '../operators/map';
 
 const toString: Function = Object.prototype.toString;
 
@@ -24,8 +26,11 @@ export type EventListenerOptions = {
 
 /* tslint:disable:max-line-length */
 export function fromEvent<T>(target: EventTargetLike, eventName: string): Observable<T>;
-export function fromEvent<T>(target: EventTargetLike, eventName: string): Observable<T>;
+/** @deprecated resultSelector no longer supported, pipe to map instead */
+export function fromEvent<T>(target: EventTargetLike, eventName: string, resultSelector: (...args: any[]) => T): Observable<T>;
 export function fromEvent<T>(target: EventTargetLike, eventName: string, options: EventListenerOptions): Observable<T>;
+/** @deprecated resultSelector no longer supported, pipe to map instead */
+export function fromEvent<T>(target: EventTargetLike, eventName: string, options: EventListenerOptions, resultSelector: (...args: any[]) => T): Observable<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -142,8 +147,21 @@ export function fromEvent<T>(target: EventTargetLike, eventName: string, options
 export function fromEvent<T>(
   target: EventTargetLike,
   eventName: string,
-  options?: EventListenerOptions
+  options?: EventListenerOptions | ((...args: any[]) => T),
+  resultSelector?: ((...args: any[]) => T)
 ): Observable<T> {
+
+  if (isFunction(options)) {
+    // DEPRECATED PATH
+    resultSelector = options;
+    options = undefined;
+  }
+  if (resultSelector) {
+    // DEPRECATED PATH
+    return fromEvent<T>(target, eventName, <EventListenerOptions | undefined>options).pipe(
+      map(args => isArray(args) ? resultSelector(...args) : resultSelector(args))
+    );
+  }
 
   return new Observable<T>(subscriber => {
     function handler(e: T) {
