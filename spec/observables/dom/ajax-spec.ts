@@ -652,6 +652,39 @@ describe('Observable.ajax', () => {
       expect(complete).to.be.true;
     });
 
+    it('should properly encode full URLs passed', () => {
+      const expected = { test: 'https://google.com/search?q=encodeURI+vs+encodeURIComponent' };
+      let result: Rx.AjaxResponse;
+      let complete = false;
+
+      Rx.Observable
+        .ajax.post('/flibbertyJibbet', expected)
+        .subscribe(x => {
+          result = x;
+        }, null, () => {
+          complete = true;
+        });
+
+      const request = MockXMLHttpRequest.mostRecent;
+
+      expect(request.method).to.equal('POST');
+      expect(request.url).to.equal('/flibbertyJibbet');
+      expect(request.requestHeaders).to.deep.equal({
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      });
+
+      request.respondWith({
+        'status': 200,
+        'contentType': 'application/json',
+        'responseText': JSON.stringify(expected)
+      });
+
+      expect(request.data)
+        .to.equal('test=https%3A%2F%2Fgoogle.com%2Fsearch%3Fq%3DencodeURI%2Bvs%2BencodeURIComponent');
+      expect(result.response).to.deep.equal(expected);
+      expect(complete).to.be.true;
+    });
+
     it('should succeed on 204 No Content', () => {
       const expected = null;
       let result: Rx.AjaxResponse;

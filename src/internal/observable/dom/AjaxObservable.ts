@@ -292,7 +292,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
 
     switch (contentType) {
       case 'application/x-www-form-urlencoded':
-        return Object.keys(body).map(key => `${encodeURI(key)}=${encodeURI(body[key])}`).join('&');
+        return Object.keys(body).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(body[key])}`).join('&');
       case 'application/json':
         return JSON.stringify(body);
       default:
