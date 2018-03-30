@@ -22,6 +22,62 @@ describe('mergeMapTo', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should support the deprecated resultSelector', () => {
+    const results: Array<number[]> = [];
+
+    of(1, 2, 3).pipe(
+      mergeMapTo(
+        of(4, 5, 6),
+        (a, b, i, ii) => [a, b, i, ii]
+      )
+    )
+    .subscribe({
+      next (value) {
+        results.push(value);
+      },
+      error(err) {
+        throw err;
+      },
+      complete() {
+        expect(results).to.deep.equal([
+          [1, 4, 0, 0],
+          [1, 5, 0, 1],
+          [1, 6, 0, 2],
+          [2, 4, 1, 0],
+          [2, 5, 1, 1],
+          [2, 6, 1, 2],
+          [3, 4, 2, 0],
+          [3, 5, 2, 1],
+          [3, 6, 2, 2],
+        ]);
+      }
+    });
+  });
+
+  it('should support a void resultSelector (still deprecated)', () => {
+    const results: number[] = [];
+
+    of(1, 2, 3).pipe(
+      mergeMapTo(
+        of(4, 5, 6),
+        void 0
+      )
+    )
+    .subscribe({
+      next (value) {
+        results.push(value);
+      },
+      error(err) {
+        throw err;
+      },
+      complete() {
+        expect(results).to.deep.equal([
+          4, 5, 6, 4, 5, 6, 4, 5, 6
+        ]);
+      }
+    });
+  });
+
   it('should mergeMapTo many regular interval inners', () => {
     const x =   cold('----1---2---3---(4|)                        ');
     const xsubs =   ['^               !                           ',
