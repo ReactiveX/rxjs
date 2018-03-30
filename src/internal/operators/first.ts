@@ -3,6 +3,11 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { EmptyError } from '../util/EmptyError';
 import { MonoTypeOperatorFunction } from '../../internal/types';
+import { filter } from './filter';
+import { take } from './take';
+import { defaultIfEmpty } from './defaultIfEmpty';
+import { throwIfEmpty } from './throwIfEmpty';
+import { identity } from '../util/identity';
 
 /**
  * Emits only the first value (or the first value that meets some condition)
@@ -47,78 +52,14 @@ import { MonoTypeOperatorFunction } from '../../internal/types';
  * @method first
  * @owner Observable
  */
-export function first<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                         defaultValue?: T): MonoTypeOperatorFunction<T> {
-    return (source: Observable<T>) => source.lift(new FirstOperator(predicate, defaultValue, source));
-  }
-
-class FirstOperator<T> implements Operator<T, T> {
-  constructor(private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private defaultValue?: any,
-              private source?: Observable<T>) {
-  }
-
-  call(observer: Subscriber<T>, source: any): any {
-    return source.subscribe(new FirstSubscriber(observer, this.predicate, this.defaultValue, this.source));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class FirstSubscriber<T> extends Subscriber<T> {
-  private index = 0;
-  private hasCompleted = false;
-  private _emitted = false;
-
-  constructor(destination: Subscriber<T>,
-              private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-              private defaultValue?: any,
-              private source?: Observable<T>) {
-    super(destination);
-  }
-
-  protected _next(value: T): void {
-    const index = this.index++;
-    if (this.predicate) {
-      this._tryPredicate(value, index);
-    } else {
-      this._emit(value);
-    }
-  }
-
-  private _tryPredicate(value: T, index: number) {
-    let result: any;
-    try {
-      result = this.predicate(value, index, this.source);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    if (result) {
-      this._emit(value);
-    }
-  }
-
-  private _emit(value: T) {
-    const destination = this.destination;
-    if (!this._emitted) {
-      this._emitted = true;
-      destination.next(value);
-      destination.complete();
-      this.hasCompleted = true;
-    }
-  }
-
-  protected _complete(): void {
-    const destination = this.destination;
-    if (!this.hasCompleted && typeof this.defaultValue !== 'undefined') {
-      destination.next(this.defaultValue);
-      destination.complete();
-    } else if (!this.hasCompleted) {
-      destination.error(new EmptyError());
-    }
-  }
+export function first<T>(
+  predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+  defaultValue?: T
+): MonoTypeOperatorFunction<T> {
+  const hasDefaultValue = arguments.length >= 2;
+  return (source: Observable<T>) => source.pipe(
+    predicate ? filter((v, i) => predicate(v, i, source)) : identity,
+    take(1),
+    hasDefaultValue ? defaultIfEmpty(defaultValue) : throwIfEmpty(() => new EmptyError()),
+  );
 }

@@ -1,10 +1,9 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
 import { hot, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { first, mergeMap } from 'rxjs/operators';
+import { of, from, Observable, Subject, EmptyError } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
-
-const Observable = Rx.Observable;
 
 /** @test {first} */
 describe('Observable.prototype.first', () => {
@@ -13,7 +12,7 @@ describe('Observable.prototype.first', () => {
     const expected = '-----(a|)           ';
     const sub =      '^    !              ';
 
-    expectObservable(e1.first()).toBe(expected);
+    expectObservable(e1.pipe(first())).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -22,7 +21,7 @@ describe('Observable.prototype.first', () => {
     const expected = '---(a|)';
     const sub =      '^  !';
 
-    expectObservable(e1.first()).toBe(expected);
+    expectObservable(e1.pipe(first())).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -31,7 +30,7 @@ describe('Observable.prototype.first', () => {
     const expected =    '-----#';
     const sub =         '^    !';
 
-    expectObservable(e1.first()).toBe(expected, null, new Rx.EmptyError());
+    expectObservable(e1.pipe(first())).toBe(expected, null, new EmptyError());
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -40,15 +39,15 @@ describe('Observable.prototype.first', () => {
     const expected =    '-----(a|)';
     const sub =         '^    !';
 
-    expectObservable(e1.first(null, 'a')).toBe(expected);
+    expectObservable(e1.pipe(first(null, 'a'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
   it('should only emit one value in recursive cases', () => {
-    const subject = new Rx.Subject<number>();
-    const results = [];
+    const subject = new Subject<number>();
+    const results: number[] = [];
 
-    subject.first().subscribe(x => {
+    subject.pipe(first()).subscribe(x => {
       results.push(x);
       subject.next(x + 1);
     });
@@ -63,7 +62,7 @@ describe('Observable.prototype.first', () => {
     const expected =  '----#';
     const sub =       '^   !';
 
-    expectObservable(e1.first()).toBe(expected);
+    expectObservable(e1.pipe(first())).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -72,7 +71,7 @@ describe('Observable.prototype.first', () => {
     const expected = '--------';
     const sub =      '^       ';
 
-    expectObservable(e1.first()).toBe(expected);
+    expectObservable(e1.pipe(first())).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -82,7 +81,7 @@ describe('Observable.prototype.first', () => {
     const expected =    '----               ';
     const unsub =       '   !               ';
 
-    expectObservable(e1.first(), unsub).toBe(expected);
+    expectObservable(e1.pipe(first()), unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -92,10 +91,11 @@ describe('Observable.prototype.first', () => {
     const expected =    '----               ';
     const unsub =       '   !               ';
 
-    const result = e1
-      .mergeMap((x: string) => Observable.of(x))
-      .first()
-      .mergeMap((x: string) => Observable.of(x));
+    const result = e1.pipe(
+      mergeMap(x => of(x)),
+      first(),
+      mergeMap(x => of(x)),
+    );
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -105,11 +105,8 @@ describe('Observable.prototype.first', () => {
     const e1 = hot('--a-^--b--c--a--c--|');
     const expected =   '------(c|)';
     const sub =        '^     !';
-    const predicate = function (value) {
-      return value === 'c';
-    };
 
-    expectObservable(e1.first(predicate)).toBe(expected);
+    expectObservable(e1.pipe(first(value => value === 'c'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -117,11 +114,8 @@ describe('Observable.prototype.first', () => {
     const e1 = hot('--a-^--b--c--d--e--|', {a: 1, b: 2, c: 3, d: 4, e: 5});
     const expected =   '------(c|)';
     const sub =        '^     !';
-    const predicate = function (value) {
-      return value % 2 === 1;
-    };
 
-    expectObservable(e1.first(predicate)).toBe(expected, {c: 3});
+    expectObservable(e1.pipe(first(x => x % 2 === 1))).toBe(expected, {c: 3});
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -129,11 +123,8 @@ describe('Observable.prototype.first', () => {
     const e1 = hot('--a-^--b--c--a--c--|');
     const expected =   '---------------#';
     const sub =        '^              !';
-    const predicate = function (value) {
-      return value === 's';
-    };
 
-    expectObservable(e1.first(predicate)).toBe(expected, null, new Rx.EmptyError());
+    expectObservable(e1.pipe(first(x => x === 's'))).toBe(expected, null, new EmptyError());
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -141,11 +132,7 @@ describe('Observable.prototype.first', () => {
     const e1 = hot('--a-^--b--c--a--c--|');
     const expected =   '---------------(d|)';
     const sub =        '^              !';
-    const predicate = function (value) {
-      return value === 's';
-    };
-
-    expectObservable(e1.first(predicate, 'd')).toBe(expected);
+    expectObservable(e1.pipe(first(x => x === 's', 'd'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -153,11 +140,8 @@ describe('Observable.prototype.first', () => {
     const e1 = hot('--a-^--b--c--a--#');
     const expected =   '------------#';
     const sub =        '^           !';
-    const predicate = function (value) {
-      return value === 's';
-    };
 
-    expectObservable(e1.first(predicate)).toBe(expected);
+    expectObservable(e1.pipe(first(x => x === 's'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -165,11 +149,8 @@ describe('Observable.prototype.first', () => {
     const e1 = hot('--a-^--b--c--a--c--|');
     const expected =   '---------(a|)';
     const sub =        '^        !';
-    const predicate = function (value, index) {
-      return index === 2;
-    };
 
-    expectObservable(e1.first(predicate)).toBe(expected);
+    expectObservable(e1.pipe(first((_, i) => i === 2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -177,7 +158,7 @@ describe('Observable.prototype.first', () => {
     const e1 = hot('--a-^--b--c--d--e--|', {a: 1, b: 2, c: 3, d: 4, e: 5});
     const expected =   '---------#';
     const sub =        '^        !';
-    const predicate = function (value) {
+    const predicate = function (value: number) {
       if (value < 4) {
         return false;
       } else {
@@ -185,7 +166,7 @@ describe('Observable.prototype.first', () => {
       }
     };
 
-    expectObservable(e1.first(predicate)).toBe(expected, null, 'error');
+    expectObservable(e1.pipe(first(predicate))).toBe(expected, null, 'error');
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -202,46 +183,46 @@ describe('Observable.prototype.first', () => {
       const isBaz = (x: any): x is Baz => x && (<Baz>x).baz !== undefined;
 
       const foo: Foo = new Foo();
-      Observable.of(foo).first()
+      Observable.of(foo).pipe(first())
         .subscribe(x => x.baz); // x is Foo
-      Observable.of(foo).first(foo => foo.bar === 'name')
+      Observable.of(foo).pipe(first(foo => foo.bar === 'name'))
         .subscribe(x => x.baz); // x is still Foo
-      Observable.of(foo).first(isBar)
+      Observable.of(foo).pipe(first(isBar))
         .subscribe(x => x.bar); // x is Bar!
 
       const foobar: Bar = new Foo(); // type is the interface, not the class
-      Observable.of(foobar).first()
+      Observable.of(foobar).pipe(first())
         .subscribe(x => x.bar); // x is Bar
-      Observable.of(foobar).first(foobar => foobar.bar === 'name')
+      Observable.of(foobar).pipe(first(foobar => foobar.bar === 'name'))
         .subscribe(x => x.bar); // x is still Bar
-      Observable.of(foobar).first(isBaz)
+      Observable.of(foobar).pipe(first(isBaz))
         .subscribe(x => x.baz); // x is Baz!
 
       const barish = { bar: 'quack', baz: 42 }; // type can quack like a Bar
-      Observable.of(barish).first()
+      Observable.of(barish).pipe(first())
         .subscribe(x => x.baz); // x is still { bar: string; baz: number; }
-      Observable.of(barish).first(x => x.bar === 'quack')
+      Observable.of(barish).pipe(first(x => x.bar === 'quack'))
         .subscribe(x => x.bar); // x is still { bar: string; baz: number; }
-      Observable.of(barish).first(isBar)
+      Observable.of(barish).pipe(first(isBar))
         .subscribe(x => x.bar); // x is Bar!
     }
 
     // type guards with primitive types
     {
-      const xs: Rx.Observable<string | number> = Observable.from([ 1, 'aaa', 3, 'bb' ]);
+      const xs: Observable<string | number> = from([ 1, 'aaa', 3, 'bb' ]);
 
       // This type guard will narrow a `string | number` to a string in the examples below
       const isString = (x: string | number): x is string => typeof x === 'string';
 
       // missing predicate preserves the type
-      xs.first().subscribe(x => x); // x is still string | number
+      xs.pipe(first()).subscribe(x => x); // x is still string | number
 
       // After the type guard `first` predicates, the type is narrowed to string
-      xs.first(isString)
+      xs.pipe(first(isString))
         .subscribe(s => s.length); // s is string
 
       // boolean predicates preserve the type
-      xs.first(x => typeof x === 'string')
+      xs.pipe(first(x => typeof x === 'string'))
         .subscribe(x => x); // x is still string | number
     }
 
