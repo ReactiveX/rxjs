@@ -3,6 +3,11 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { EmptyError } from '../util/EmptyError';
 import { MonoTypeOperatorFunction } from '../../internal/types';
+import { filter } from './filter';
+import { takeLast } from './takeLast';
+import { throwIfEmpty } from './throwIfEmpty';
+import { defaultIfEmpty } from './defaultIfEmpty';
+import { identity } from '../util/identity';
 
 /**
  * Returns an Observable that emits only the last item emitted by the source Observable.
@@ -21,74 +26,14 @@ import { MonoTypeOperatorFunction } from '../../internal/types';
  * from the source, or an NoSuchElementException if no such items are emitted.
  * @throws - Throws if no items that match the predicate are emitted by the source Observable.
  */
-export function last<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                        defaultValue?: T): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new LastOperator(predicate, defaultValue, source));
-}
-
-class LastOperator<T> implements Operator<T, T> {
-  constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean,
-              private defaultValue: any,
-              private source: Observable<T>) {
-  }
-
-  call(observer: Subscriber<T>, source: any): any {
-    return source.subscribe(new LastSubscriber(observer, this.predicate, this.defaultValue, this.source));
-  }
-}
-
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class LastSubscriber<T> extends Subscriber<T> {
-  private lastValue: T;
-  private hasValue = false;
-  private index = 0;
-
-  constructor(destination: Subscriber<T>,
-              private predicate: (value: T, index: number, source: Observable<T>) => boolean,
-              private defaultValue: T,
-              private source: Observable<T>) {
-    super(destination);
-    if (typeof defaultValue !== 'undefined') {
-      this.lastValue = defaultValue;
-      this.hasValue = true;
-    }
-  }
-
-  protected _next(value: T): void {
-    const index = this.index++;
-    if (this.predicate) {
-      this._tryPredicate(value, index);
-    } else {
-      this.lastValue = value;
-      this.hasValue = true;
-    }
-  }
-
-  private _tryPredicate(value: T, index: number) {
-    let result: any;
-    try {
-      result = this.predicate(value, index, this.source);
-    } catch (err) {
-      this.destination.error(err);
-      return;
-    }
-    if (result) {
-      this.lastValue = value;
-      this.hasValue = true;
-    }
-  }
-
-  protected _complete(): void {
-    const destination = this.destination;
-    if (this.hasValue) {
-      destination.next(this.lastValue);
-      destination.complete();
-    } else {
-      destination.error(new EmptyError);
-    }
-  }
+export function last<T>(
+  predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+  defaultValue?: T
+): MonoTypeOperatorFunction<T> {
+  const hasDefaultValue = arguments.length >= 2;
+  return (source: Observable<T>) => source.pipe(
+    predicate ? filter((v, i) => predicate(v, i, source)) : identity,
+    takeLast(1),
+    hasDefaultValue ? defaultIfEmpty(defaultValue) : throwIfEmpty(() => new EmptyError()),
+  );
 }
