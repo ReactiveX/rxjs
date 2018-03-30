@@ -1,4 +1,4 @@
-<img src="doc/asset/Rx_Logo_S.png" alt="Miss Electric Eel 2017" width="86" height="86"> RxJs: ReactiveX for JavaScript
+<img src="doc/asset/Rx_Logo_S.png" alt="RxJS Logo" width="86" height="86"> RxJS: Reactive Extensions For JavaScript
 ======================================
 
 
