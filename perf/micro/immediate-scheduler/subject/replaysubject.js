@@ -6,12 +6,12 @@ module.exports = function (suite) {
   var newRangeWithImmediateScheduler = RxNew.Observable.range(0, 25);
 
   return suite
-        .add('old ReplaySubject with immediate scheduler', function () {
-          var subject = new RxOld.ReplaySubject(5, Number.POSITIVE_INFINITY, RxOld.Scheduler.immediate);
-          oldRangeWithImmediateScheduler.subscribe(subject);
-        })
-        .add('new ReplaySubject with immediate scheduler', function () {
-          var subject = new RxNew.ReplaySubject(5, Number.POSITIVE_INFINITY);
-          newRangeWithImmediateScheduler.subscribe(subject);
-        });
+    .add('old ReplaySubject with immediate scheduler', function () {
+      var subject = new RxOld.ReplaySubject(5, Number.POSITIVE_INFINITY, RxOld.Scheduler.immediate);
+      oldRangeWithImmediateScheduler.subscribe(subject);
+    })
+    .add('new ReplaySubject with immediate scheduler', function () {
+      var subject = new RxNew.ReplaySubject(5, Number.POSITIVE_INFINITY);
+      newRangeWithImmediateScheduler.subscribe(subject);
+    });
 };
