@@ -6,9 +6,15 @@ import { subscribeToResult } from '../util/subscribeToResult';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { ObservableInput, OperatorFunction } from '../types';
+import { map } from './map';
+import { from } from '../observable/from';
 
 /* tslint:disable:max-line-length */
 export function mergeMap<T, R>(project: (value: T, index: number) => ObservableInput<R>, concurrent?: number): OperatorFunction<T, R>;
+/** @deprecated resultSelector no longer supported, use inner map instead */
+export function mergeMap<T, R>(project: (value: T, index: number) => ObservableInput<R>, resultSelector: undefined, concurrent?: number): OperatorFunction<T, R>;
+/** @deprecated resultSelector no longer supported, use inner map instead */
+export function mergeMap<T, I, R>(project: (value: T, index: number) => ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R, concurrent?: number): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -61,11 +67,22 @@ export function mergeMap<T, R>(project: (value: T, index: number) => ObservableI
  * @method mergeMap
  * @owner Observable
  */
-export function mergeMap<T, R>(project: (value: T, index: number) => ObservableInput<R>,
-                               concurrent: number = Number.POSITIVE_INFINITY): OperatorFunction<T, R> {
-  return function mergeMapOperatorFunction(source: Observable<T>) {
-    return source.lift(new MergeMapOperator(project, concurrent));
-  };
+export function mergeMap<T, I, R>(
+  project: (value: T, index: number) => ObservableInput<I>,
+  resultSelector?: ((outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) | number,
+  concurrent: number = Number.POSITIVE_INFINITY
+): OperatorFunction<T, I|R> {
+  if (typeof resultSelector === 'function') {
+    // DEPRECATED PATH
+    return (source: Observable<T>) => source.pipe(
+      mergeMap((a, i) => from(project(a, i)).pipe(
+        map((b, ii) => resultSelector(a, b, i, ii)),
+      ), concurrent)
+    );
+  } else if (typeof resultSelector === 'number') {
+    concurrent = resultSelector;
+  }
+  return (source: Observable<T>) => source.lift(new MergeMapOperator(project, concurrent));
 }
 
 export class MergeMapOperator<T, R> implements Operator<T, R> {

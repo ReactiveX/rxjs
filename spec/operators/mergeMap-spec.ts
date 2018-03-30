@@ -22,6 +22,87 @@ describe('mergeMap', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should support the deprecated resultSelector', () => {
+    const results: Array<number[]> = [];
+
+    of(1, 2, 3).pipe(
+      mergeMap(
+        x => of(x, x + 1, x + 2),
+        (a, b, i, ii) => [a, b, i, ii]
+      )
+    )
+    .subscribe({
+      next (value) {
+        results.push(value);
+      },
+      error(err) {
+        throw err;
+      },
+      complete() {
+        expect(results).to.deep.equal([
+          [1, 1, 0, 0],
+          [1, 2, 0, 1],
+          [1, 3, 0, 2],
+          [2, 2, 1, 0],
+          [2, 3, 1, 1],
+          [2, 4, 1, 2],
+          [3, 3, 2, 0],
+          [3, 4, 2, 1],
+          [3, 5, 2, 2],
+        ]);
+      }
+    });
+  });
+
+  it('should support a void resultSelector (still deprecated)', () => {
+    const results: number[] = [];
+
+    of(1, 2, 3).pipe(
+      mergeMap(
+        x => of(x, x + 1, x + 2),
+        void 0
+      )
+    )
+    .subscribe({
+      next (value) {
+        results.push(value);
+      },
+      error(err) {
+        throw err;
+      },
+      complete() {
+        expect(results).to.deep.equal([
+          1, 2, 3, 2, 3, 4, 3, 4, 5
+        ]);
+      }
+    });
+  });
+
+  it('should support a void resultSelector (still deprecated) and concurrency limit', () => {
+    const results: number[] = [];
+
+    of(1, 2, 3).pipe(
+      mergeMap(
+        x => of(x, x + 1, x + 2),
+        void 0,
+        1,
+      )
+    )
+    .subscribe({
+      next (value) {
+        results.push(value);
+      },
+      error(err) {
+        throw err;
+      },
+      complete() {
+        expect(results).to.deep.equal([
+          1, 2, 3, 2, 3, 4, 3, 4, 5
+        ]);
+      }
+    });
+  });
+
   it('should mergeMap many regular interval inners', () => {
     const a =   cold('----a---a---a---(a|)                    ');
     const b =   cold(    '----b---b---(b|)                    ');

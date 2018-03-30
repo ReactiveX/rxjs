@@ -1,6 +1,14 @@
 import { concatMap } from './concatMap';
 import { ObservableInput, OperatorFunction } from '../types';
 
+/* tslint:disable:max-line-length */
+export function concatMapTo<T>(observable: ObservableInput<T>): OperatorFunction<any, T>;
+/** @deprecated */
+export function concatMapTo<T>(observable: ObservableInput<T>, resultSelector: undefined): OperatorFunction<any, T>;
+/** @deprecated */
+export function concatMapTo<T, I, R>(observable: ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
+/* tslint:enable:max-line-length */
+
 /**
  * Projects each source value to the same Observable which is merged multiple
  * times in a serialized fashion on the output Observable.
@@ -49,8 +57,9 @@ import { ObservableInput, OperatorFunction } from '../types';
  * @method concatMapTo
  * @owner Observable
  */
-export function concatMapTo<T, R>(
-  innerObservable: ObservableInput<R>
+export function concatMapTo<T, I, R>(
+  innerObservable: ObservableInput<I>,
+  resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R
 ): OperatorFunction<T, R> {
-  return concatMap(() => innerObservable);
+  return concatMap(() => innerObservable, resultSelector);
 }
