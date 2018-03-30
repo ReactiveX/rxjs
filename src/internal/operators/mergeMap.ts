@@ -11,7 +11,9 @@ import { from } from '../observable/from';
 
 /* tslint:disable:max-line-length */
 export function mergeMap<T, R>(project: (value: T, index: number) => ObservableInput<R>, concurrent?: number): OperatorFunction<T, R>;
-/** @deprecated use inner map instead. */
+/** @deprecated resultSelector no longer supported, use inner map instead */
+export function mergeMap<T, R>(project: (value: T, index: number) => ObservableInput<R>, resultSelector: undefined, concurrent?: number): OperatorFunction<T, R>;
+/** @deprecated resultSelector no longer supported, use inner map instead */
 export function mergeMap<T, I, R>(project: (value: T, index: number) => ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R, concurrent?: number): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 

@@ -78,6 +78,31 @@ describe('mergeMap', () => {
     });
   });
 
+  it('should support a void resultSelector (still deprecated) and concurrency limit', () => {
+    const results: number[] = [];
+
+    of(1, 2, 3).pipe(
+      mergeMap(
+        x => of(x, x + 1, x + 2),
+        void 0,
+        1,
+      )
+    )
+    .subscribe({
+      next (value) {
+        results.push(value);
+      },
+      error(err) {
+        throw err;
+      },
+      complete() {
+        expect(results).to.deep.equal([
+          1, 2, 3, 2, 3, 4, 3, 4, 5
+        ]);
+      }
+    });
+  });
+
   it('should mergeMap many regular interval inners', () => {
     const a =   cold('----a---a---a---(a|)                    ');
     const b =   cold(    '----b---b---(b|)                    ');
