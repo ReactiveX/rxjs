@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { expectObservable } from '../helpers/marble-testing';
-import { fromEvent, NEVER, timer } from 'rxjs';
+import { fromEvent, NEVER, timer, pipe } from 'rxjs';
+import { mapTo, take, concat } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 
 declare function asDiagram(arg: string): Function;
@@ -11,17 +12,19 @@ describe('fromEvent', () => {
   asDiagram('fromEvent(element, \'click\')')
   ('should create an observable of click on the element', () => {
     const target = {
-      addEventListener: (eventType, listener) => {
+      addEventListener: (eventType: any, listener: any) => {
         timer(50, 20, rxTestScheduler)
-          .mapTo('ev')
-          .take(2)
-          .concat(NEVER)
+          .pipe(
+            mapTo('ev'),
+            take(2),
+            concat(NEVER)
+          )
           .subscribe(listener);
       },
-      removeEventListener: () => void 0,
-      dispatchEvent: () => void 0,
+      removeEventListener: (): void => void 0,
+      dispatchEvent: (): void => void 0,
     };
-    const e1 = fromEvent(target, 'click');
+    const e1 = fromEvent(target as any, 'click');
     const expected = '-----x-x---';
     expectObservable(e1).toBe(expected, {x: 'ev'});
   });
@@ -158,7 +161,7 @@ describe('fromEvent', () => {
   });
 
   it('should pass through events that occur', (done: MochaDone) => {
-    let send;
+    let send: any;
     const obj = {
       on: (name: string, handler: Function) => {
         send = handler;
@@ -168,7 +171,7 @@ describe('fromEvent', () => {
       }
     };
 
-    fromEvent(obj, 'click').take(1)
+    fromEvent(obj, 'click').pipe(take(1))
       .subscribe((e: any) => {
         expect(e).to.equal('test');
       }, (err: any) => {
@@ -180,8 +183,8 @@ describe('fromEvent', () => {
     send('test');
   });
 
-  it('should emit multiple arguments from event as an array', (done: MochaDone) => {
-    let send;
+  it('should pass through events that occur and use the selector if provided', (done: MochaDone) => {
+    let send: any;
     const obj = {
       on: (name: string, handler: Function) => {
         send = handler;
@@ -191,7 +194,115 @@ describe('fromEvent', () => {
       }
     };
 
-    fromEvent(obj, 'click').take(1)
+    function selector(x: string) {
+      return x + '!';
+    }
+
+    fromEvent(obj, 'click', selector).pipe(take(1))
+      .subscribe((e: any) => {
+        expect(e).to.equal('test!');
+      }, (err: any) => {
+        done(new Error('should not be called'));
+      }, () => {
+        done();
+      });
+
+    send('test');
+  });
+
+  it('should not fail if no event arguments are passed and the selector does not return', (done: MochaDone) => {
+    let send: any;
+    const obj = {
+      on: (name: string, handler: Function) => {
+        send = handler;
+      },
+      off: () => {
+        //noop
+      }
+    };
+
+    function selector() {
+      //noop
+    }
+
+    fromEvent(obj, 'click', selector).pipe(take(1))
+      .subscribe((e: any) => {
+        expect(e).not.exist;
+      }, (err: any) => {
+        done(new Error('should not be called'));
+      }, () => {
+        done();
+      });
+
+    send();
+  });
+
+  it('should return a value from the selector if no event arguments are passed', (done: MochaDone) => {
+    let send: any;
+    const obj = {
+      on: (name: string, handler: Function) => {
+        send = handler;
+      },
+      off: () => {
+        //noop
+      }
+    };
+
+    function selector() {
+      return 'no arguments';
+    }
+
+    fromEvent(obj, 'click', selector).pipe(take(1))
+      .subscribe((e: any) => {
+        expect(e).to.equal('no arguments');
+      }, (err: any) => {
+        done(new Error('should not be called'));
+      }, () => {
+        done();
+      });
+
+    send();
+  });
+
+  it('should pass multiple arguments to selector from event emitter', (done: MochaDone) => {
+    let send: any;
+    const obj = {
+      on: (name: string, handler: Function) => {
+        send = handler;
+      },
+      off: () => {
+        //noop
+      }
+    };
+
+    function selector(x: number, y: number, z: number) {
+      return [].slice.call(arguments);
+    }
+
+    fromEvent(obj, 'click', selector).pipe(take(1))
+      .subscribe((e: any) => {
+        expect(e).to.deep.equal([1, 2, 3]);
+      }, (err: any) => {
+        done(new Error('should not be called'));
+      }, () => {
+        done();
+      });
+
+    send(1, 2, 3);
+  });
+
+  it('should emit multiple arguments from event as an array', (done: MochaDone) => {
+    let send: any;
+    const obj = {
+      on: (name: string, handler: Function) => {
+        send = handler;
+      },
+      off: () => {
+        //noop
+      }
+    };
+
+    fromEvent(obj, 'click').pipe(take(1))
       .subscribe((e: any) => {
         expect(e).to.deep.equal([1, 2, 3]);
       }, (err: any) => {
