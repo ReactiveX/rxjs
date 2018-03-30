@@ -100,14 +100,12 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   protected _unsubscribeAndRecycle(): Subscriber<T> {
-    const { notifications, retries, retriesSubscription } = this;
-    this.notifications = null;
-    this.retries = null;
-    this.retriesSubscription = null;
+    const { _unsubscribe } = this;
+
+    this._unsubscribe = null;
     super._unsubscribeAndRecycle();
-    this.notifications = notifications;
-    this.retries = retries;
-    this.retriesSubscription = retriesSubscription;
+    this._unsubscribe = _unsubscribe;
+
     return this;
   }
 
