@@ -6,6 +6,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { Subscriber } from '../Subscriber';
+import { map } from '../operators/map';
 
 /* tslint:disable:max-line-length */
 // forkJoin([a$, b$, c$]);
@@ -24,7 +25,10 @@ export function forkJoin<T, T2, T3>(v1: ObservableInput<T>, v2: ObservableInput<
 export function forkJoin<T, T2, T3, T4>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): Observable<[T, T2, T3, T4]>;
 export function forkJoin<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Observable<[T, T2, T3, T4, T5]>;
 export function forkJoin<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Observable<[T, T2, T3, T4, T5, T6]>;
-export function forkJoin<T>(...sources: Array<ObservableInput<T>>): Observable<T[]>;
+
+/** @deprecated resultSelector is deprecated, pipe to map instead */
+export function forkJoin(...args: Array<ObservableInput<any>|Function>): Observable<any>;
+export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -64,7 +68,7 @@ export function forkJoin<T>(...sources: Array<ObservableInput<T>>): Observable<T
  * when output Observable is supposed to emit a result.
  *
  * @example <caption>Use forkJoin with operator emitting immediately</caption>
- * import { forkJoin, of } from 'rxjs/create';
+ * import { forkJoin, of } from 'rxjs';
  *
  * const observable = forkJoin(
  *   of(1, 2, 3, 4),
@@ -82,7 +86,7 @@ export function forkJoin<T>(...sources: Array<ObservableInput<T>>): Observable<T
  *
  *
  * @example <caption>Use forkJoin with operator emitting after some time</caption>
- * import { forkJoin, interval } from 'rxjs/create';
+ * import { forkJoin, interval } from 'rxjs';
  * import { take } from 'rxjs/operators';
  *
  * const observable = forkJoin(
@@ -101,7 +105,7 @@ export function forkJoin<T>(...sources: Array<ObservableInput<T>>): Observable<T
  *
  *
  * @example <caption>Use forkJoin with project function</caption>
- * import { jorkJoin, interval } from 'rxjs/create';
+ * import { jorkJoin, interval } from 'rxjs';
  * import { take } from 'rxjs/operators';
  *
  * const observable = forkJoin(
@@ -128,12 +132,17 @@ export function forkJoin<T>(...sources: Array<ObservableInput<T>>): Observable<T
  * that will appear in resulting Observable instead of default array.
  * @return {Observable} Observable emitting either an array of last values emitted by passed Observables
  * or value from project function.
- * @static true
- * @name forkJoin
- * @owner Observable
  */
-export function forkJoin<T>(...sources: Array<ObservableInput<T> |
-                                Array<ObservableInput<T>>>): Observable<T[]> {
+export function forkJoin<T>(
+  ...sources: Array<ObservableInput<T> | ObservableInput<T>[] | Function>
+): Observable<T[]> {
+
+  let resultSelector: Function;
+  if (typeof sources[sources.length - 1] === 'function') {
+    // DEPRECATED PATH
+    resultSelector = sources.pop() as Function;
+  }
+
   // if the first and only other argument is an array
   // assume it's been called with `forkJoin([obs1, obs2, obs3])`
   if (sources.length === 1 && isArray(sources[0])) {
@@ -142,6 +151,13 @@ export function forkJoin<T>(...sources: Array<ObservableInput<T> |
 
   if (sources.length === 0) {
     return EMPTY;
+  }
+
+  if (resultSelector) {
+    // DEPRECATED PATH
+    return forkJoin(sources).pipe(
+      map(args => resultSelector(...args))
+    );
   }
 
   return new Observable(subscriber => {

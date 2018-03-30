@@ -19,6 +19,54 @@ describe('forkJoin', () => {
       expectObservable(e1).toBe(expected, {x: ['d', '3']});
     });
 
+  it('should support the deprecated resultSelector with an Array of ObservableInputs', () => {
+    const results: Array<number|string> = [];
+    forkJoin(
+      [
+        of(1, 2, 3),
+        of(4, 5, 6),
+        of(7, 8, 9),
+      ],
+      (a: number, b: number, c: number) => a + b + c,
+    )
+    .subscribe({
+      next(value) {
+        results.push(value);
+      },
+      error(err) {
+        throw err;
+      },
+      complete() {
+        results.push('done');
+      }
+    });
+
+    expect(results).to.deep.equal([18, 'done']);
+  });
+
+  it('should support the deprecated resultSelector with a spread of ObservableInputs', () => {
+    const results: Array<number|string> = [];
+    forkJoin(
+      of(1, 2, 3),
+      of(4, 5, 6),
+      of(7, 8, 9),
+      (a: number, b: number, c: number) => a + b + c,
+    )
+    .subscribe({
+      next(value) {
+        results.push(value);
+      },
+      error(err) {
+        throw err;
+      },
+      complete() {
+        results.push('done');
+      }
+    });
+
+    expect(results).to.deep.equal([18, 'done']);
+  });
+
   it('should join the last values of the provided observables into an array', () => {
     const e1 = forkJoin(
                hot('--a--b--c--d--|'),
