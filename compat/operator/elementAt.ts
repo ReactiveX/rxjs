@@ -45,5 +45,5 @@ import { elementAt as higherOrder } from 'rxjs/operators';
  * @owner Observable
  */
 export function elementAt<T>(this: Observable<T>, index: number, defaultValue?: T): Observable<T> {
-  return higherOrder(index, defaultValue)(this);
+  return higherOrder.apply(undefined, arguments)(this);
 }
