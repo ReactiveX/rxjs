@@ -83,35 +83,44 @@ class ThrottleOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
-  private throttled: Subscription;
-  private _trailingValue: T;
-  private _hasTrailingValue = false;
+  private _throttled: Subscription;
+  private _sendValue: T;
+  private _hasValue = false;
 
   constructor(protected destination: Subscriber<T>,
-              private durationSelector: (value: T) => SubscribableOrPromise<any>,
+              private durationSelector: (value: T) => SubscribableOrPromise<number>,
               private _leading: boolean,
               private _trailing: boolean) {
     super(destination);
   }
 
   protected _next(value: T): void {
-    if (this.throttled) {
-      if (this._trailing) {
-        this._hasTrailingValue = true;
-        this._trailingValue = value;
-      }
-    } else {
-      const duration = this.tryDurationSelector(value);
-      if (duration) {
-        this.add(this.throttled = subscribeToResult(this, duration));
-      }
+    this._hasValue = true;
+    this._sendValue = value;
+
+    if (!this._throttled) {
       if (this._leading) {
-        this.destination.next(value);
-        if (this._trailing) {
-          this._hasTrailingValue = true;
-          this._trailingValue = value;
-        }
+        this.send();
+      } else {
+        this.throttle(value);
       }
+    }
+  }
+
+  private send() {
+    const { _hasValue, _sendValue } = this;
+    if (_hasValue) {
+      this.destination.next(_sendValue);
+      this.throttle(_sendValue);
+    }
+    this._hasValue = false;
+    this._sendValue = null;
+  }
+
+  private throttle(value: T): void {
+    const duration = this.tryDurationSelector(value);
+    if (duration) {
+      this.add(this._throttled = subscribeToResult(this, duration));
     }
   }
 
@@ -124,37 +133,25 @@ class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  protected _unsubscribe() {
-    const { throttled, _trailingValue, _hasTrailingValue, _trailing } = this;
-
-    this._trailingValue = null;
-    this._hasTrailingValue = false;
-
-    if (throttled) {
-      this.remove(throttled);
-      this.throttled = null;
-      throttled.unsubscribe();
+  private throttlingDone() {
+    const { _throttled, _trailing } = this;
+    if (_throttled) {
+      _throttled.unsubscribe();
     }
-  }
+    this._throttled = null;
 
-  private _sendTrailing() {
-    const { destination, throttled, _trailing, _trailingValue, _hasTrailingValue } = this;
-    if (throttled && _trailing && _hasTrailingValue) {
-      destination.next(_trailingValue);
-      this._trailingValue = null;
-      this._hasTrailingValue = false;
+    if (_trailing) {
+      this.send();
     }
   }
 
   notifyNext(outerValue: T, innerValue: R,
              outerIndex: number, innerIndex: number,
              innerSub: InnerSubscriber<T, R>): void {
-    this._sendTrailing();
-    this._unsubscribe();
+    this.throttlingDone();
   }
 
   notifyComplete(): void {
-    this._sendTrailing();
-    this._unsubscribe();
+    this.throttlingDone();
   }
 }
