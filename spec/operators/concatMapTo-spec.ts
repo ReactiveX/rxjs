@@ -1,10 +1,9 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { of, from, Observable } from 'rxjs';
+import { concatMapTo, mergeMap } from 'rxjs/operators';
 
 declare function asDiagram(arg: string): Function;
-
-const Observable = Rx.Observable;
 
 /** @test {concatMapTo} */
 describe('Observable.prototype.concatMapTo', () => {
@@ -16,10 +15,66 @@ describe('Observable.prototype.concatMapTo', () => {
     const expected =  '--x-x-x-x-x-xx-x-x-|';
     const values = {x: 10};
 
-    const result = e1.concatMapTo(e2);
+    const result = e1.pipe(concatMapTo(e2));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should support the deprecated resultSelector', () => {
+    const results: Array<number[]> = [];
+
+    of(1, 2, 3).pipe(
+      concatMapTo(
+        of(4, 5, 6),
+        (a, b, i, ii) => [a, b, i, ii]
+      )
+    )
+    .subscribe({
+      next (value) {
+        results.push(value);
+      },
+      error(err) {
+        throw err;
+      },
+      complete() {
+        expect(results).to.deep.equal([
+          [1, 4, 0, 0],
+          [1, 5, 0, 1],
+          [1, 6, 0, 2],
+          [2, 4, 1, 0],
+          [2, 5, 1, 1],
+          [2, 6, 1, 2],
+          [3, 4, 2, 0],
+          [3, 5, 2, 1],
+          [3, 6, 2, 2],
+        ]);
+      }
+    });
+  });
+
+  it('should support a void resultSelector (still deprecated)', () => {
+    const results: number[] = [];
+
+    of(1, 2, 3).pipe(
+      concatMapTo(
+        of(4, 5, 6),
+        void 0
+      )
+    )
+    .subscribe({
+      next (value) {
+        results.push(value);
+      },
+      error(err) {
+        throw err;
+      },
+      complete() {
+        expect(results).to.deep.equal([
+          4, 5, 6, 4, 5, 6, 4, 5, 6
+        ]);
+      }
+    });
   });
 
   it('should concatMapTo many outer values to many inner values', () => {
@@ -33,7 +88,7 @@ describe('Observable.prototype.concatMapTo', () => {
                      '                               ^         !'];
     const expected =   '---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l-|';
 
-    const result = e1.concatMapTo(inner);
+    const result = e1.pipe(concatMapTo(inner));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -47,7 +102,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const innersubs: string[] = [];
     const expected = '|';
 
-    const result = e1.concatMapTo(inner);
+    const result = e1.pipe(concatMapTo(inner));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -61,7 +116,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const innersubs: string[] = [];
     const expected = '-';
 
-    const result = e1.concatMapTo(inner);
+    const result = e1.pipe(concatMapTo(inner));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -75,7 +130,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const innersubs: string[] = [];
     const expected = '#';
 
-    const result = e1.concatMapTo(inner);
+    const result = e1.pipe(concatMapTo(inner));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -91,7 +146,7 @@ describe('Observable.prototype.concatMapTo', () => {
                      '       (^!)'];
     const expected =   '---------|';
 
-    const result = e1.concatMapTo(inner);
+    const result = e1.pipe(concatMapTo(inner));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -105,7 +160,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const innersubs =  '  ^       ';
     const expected =   '----------';
 
-    const result = e1.concatMapTo(inner);
+    const result = e1.pipe(concatMapTo(inner));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -119,7 +174,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const innersubs =  '  (^!)    ';
     const expected =   '--#';
 
-    const result = e1.concatMapTo(inner);
+    const result = e1.pipe(concatMapTo(inner));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -137,7 +192,7 @@ describe('Observable.prototype.concatMapTo', () => {
                      '                               ^         !       '];
     const expected =   '---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l--------|';
 
-    const result = e1.concatMapTo(inner);
+    const result = e1.pipe(concatMapTo(inner));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -155,7 +210,7 @@ describe('Observable.prototype.concatMapTo', () => {
                      '                               ^         !       '];
     const expected =   '---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l---------';
 
-    const result = e1.concatMapTo(inner);
+    const result = e1.pipe(concatMapTo(inner));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -172,10 +227,11 @@ describe('Observable.prototype.concatMapTo', () => {
     const expected =   '---i-j-k-l---i-j-k-';
     const unsub =      '                  !';
 
-    const result = e1
-      .mergeMap((x) => Observable.of(x))
-      .concatMapTo(inner)
-      .mergeMap((x) => Observable.of(x));
+    const result = e1.pipe(
+      mergeMap(x => of(x)),
+      concatMapTo(inner),
+      mergeMap(x => of(x)),
+    );
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -190,7 +246,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const innersubs =  ' ^                ';
     const expected =   '---i-j-k-l--------';
 
-    const result = e1.concatMapTo(inner);
+    const result = e1.pipe(concatMapTo(inner));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -205,7 +261,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const innersubs =  ' ^         !      ';
     const expected =   '---i-j-k-l-#      ';
 
-    const result = e1.concatMapTo(inner);
+    const result = e1.pipe(concatMapTo(inner));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -221,7 +277,7 @@ describe('Observable.prototype.concatMapTo', () => {
                      '           ^     !'];
     const expected =   '---i-j-k-l---i-j-#';
 
-    const result = e1.concatMapTo(inner);
+    const result = e1.pipe(concatMapTo(inner));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -236,7 +292,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const innersubs =  ' ^         !      ';
     const expected =   '---i-j-k-l-#      ';
 
-    const result = e1.concatMapTo(inner);
+    const result = e1.pipe(concatMapTo(inner));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -247,7 +303,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const e1 =   hot('2-----4--------3--------2-------|');
     const expected = '(0123)(0123)---(0123)---(0123)--|';
 
-    const result = e1.concatMapTo(['0', '1', '2', '3']);
+    const result = e1.pipe(concatMapTo(['0', '1', '2', '3']));
 
     expectObservable(result).toBe(expected);
   });
@@ -256,7 +312,7 @@ describe('Observable.prototype.concatMapTo', () => {
     const e1 =   hot('2-----4--------3--------2-------#');
     const expected = '(0123)(0123)---(0123)---(0123)--#';
 
-    const result = e1.concatMapTo(['0', '1', '2', '3']);
+    const result = e1.pipe(concatMapTo(['0', '1', '2', '3']));
 
     expectObservable(result).toBe(expected);
   });
@@ -266,16 +322,16 @@ describe('Observable.prototype.concatMapTo', () => {
     const unsub =    '             !';
     const expected = '(0123)(0123)--';
 
-    const result = e1.concatMapTo(['0', '1', '2', '3']);
+    const result = e1.pipe(concatMapTo(['0', '1', '2', '3']));
 
     expectObservable(result, unsub).toBe(expected);
   });
 
   it('should map values to constant resolved promises and concatenate', (done: MochaDone) => {
-    const source = Rx.Observable.from([4, 3, 2, 1]);
+    const source = from([4, 3, 2, 1]);
 
     const results: number[] = [];
-    source.concatMapTo(Observable.from(Promise.resolve(42))).subscribe(
+    source.pipe(concatMapTo(from(Promise.resolve(42)))).subscribe(
       (x) => {
         results.push(x);
       },
@@ -289,9 +345,9 @@ describe('Observable.prototype.concatMapTo', () => {
   });
 
   it('should map values to constant rejected promises and concatenate', (done) => {
-    const source = Rx.Observable.from([4, 3, 2, 1]);
+    const source = from([4, 3, 2, 1]);
 
-    source.concatMapTo(Observable.from(Promise.reject(42))).subscribe(
+    source.pipe(concatMapTo(from(Promise.reject(42)))).subscribe(
       (x) => {
         done(new Error('Subscriber next handler not supposed to be called.'));
       },
