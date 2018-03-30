@@ -26,11 +26,29 @@ describe('bindNodeCallback', () => {
       expect(results).to.deep.equal(['undefined', 'done']);
     });
 
+    it('should support the deprecated resultSelector', () => {
+      function callback(cb: (err: any, n: number) => any) {
+        cb(null, 42);
+      }
+
+      const boundCallback = bindNodeCallback(callback, (x: number) => x + 1);
+      const results: Array<number | string> = [];
+
+      boundCallback()
+        .subscribe(x => {
+          results.push(x);
+        }, null, () => {
+          results.push('done');
+        });
+
+      expect(results).to.deep.equal([43, 'done']);
+    });
+
     it('should emit one value from a callback', () => {
-      function callback(datum: number, cb: Function) {
+      function callback(datum: number, cb: (err: any, n: number) => void) {
         cb(null, datum);
       }
-      const boundCallback = bindNodeCallback<number>(callback);
+      const boundCallback = bindNodeCallback(callback);
       const results: Array<number | string> = [];
 
       boundCallback(42)
@@ -44,7 +62,7 @@ describe('bindNodeCallback', () => {
     });
 
     it('should set context of callback to context of boundCallback', () => {
-      function callback(this: { datum: number }, cb: Function) {
+      function callback(this: { datum: number }, cb: (err: any, n: number) => void) {
         cb(null, this.datum);
       }
       const boundCallback = bindNodeCallback(callback);
@@ -87,7 +105,7 @@ describe('bindNodeCallback', () => {
       const throwSpy = sinon.spy();
       const completeSpy = sinon.spy();
       let timeout: number;
-      function callback(datum: number, cb: Function) {
+      function callback(datum: number, cb: (err: any, n: number) => void) {
         // Need to cb async in order for the unsub to trigger
         timeout = setTimeout(() => {
           cb(null, datum);
@@ -130,10 +148,10 @@ describe('bindNodeCallback', () => {
     });
 
     it('should emit one value from a callback', () => {
-      function callback(datum: number, cb: Function) {
+      function callback(datum: number, cb: (err: any, n: number) => void) {
         cb(null, datum);
       }
-      const boundCallback = bindNodeCallback<number>(callback, rxTestScheduler);
+      const boundCallback = bindNodeCallback(callback, rxTestScheduler);
       const results: Array<number | string> = [];
 
       boundCallback(42)
@@ -149,7 +167,7 @@ describe('bindNodeCallback', () => {
     });
 
     it('should set context of callback to context of boundCallback', () => {
-      function callback(this: { datum: number }, cb: Function) {
+      function callback(this: { datum: number }, cb: (err: any, n: number) => void) {
         cb(null, this.datum);
       }
       const boundCallback = bindNodeCallback(callback, rxTestScheduler);
@@ -169,7 +187,7 @@ describe('bindNodeCallback', () => {
 
     it('should error if callback throws', () => {
       const expected = new Error('haha no callback for you');
-      function callback(datum: number, cb: Function) {
+      function callback(datum: number, cb: (err: any, n: number) => void) {
         throw expected;
       }
       const boundCallback = bindNodeCallback(callback, rxTestScheduler);
@@ -212,10 +230,10 @@ describe('bindNodeCallback', () => {
   });
 
   it('should pass multiple inner arguments as an array', () => {
-    function callback(datum: number, cb: Function) {
+    function callback(datum: number, cb: (err: any, a: number, b: number, c: number, d: number) => void) {
       cb(null, datum, 1, 2, 3);
     }
-    const boundCallback = bindNodeCallback<number[]>(callback, rxTestScheduler);
+    const boundCallback = bindNodeCallback(callback, rxTestScheduler);
     const results: Array<number[] | string> = [];
 
     boundCallback(42)
@@ -232,11 +250,11 @@ describe('bindNodeCallback', () => {
 
   it('should cache value for next subscription and not call callbackFunc again', () => {
     let calls = 0;
-    function callback(datum: number, cb: Function) {
+    function callback(datum: number, cb: (err: any, n: number) => void) {
       calls++;
       cb(null, datum);
     }
-    const boundCallback = bindNodeCallback<number>(callback, rxTestScheduler);
+    const boundCallback = bindNodeCallback(callback, rxTestScheduler);
     const results1: Array<number | string> = [];
     const results2: Array<number | string> = [];
 
