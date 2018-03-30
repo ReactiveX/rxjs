@@ -151,12 +151,13 @@ export function fromEvent<T>(
   resultSelector?: ((...args: any[]) => T)
 ): Observable<T> {
 
-  // DEPRECATED PATH
   if (isFunction(options)) {
+    // DEPRECATED PATH
     resultSelector = options;
     options = undefined;
   }
   if (resultSelector) {
+    // DEPRECATED PATH
     return fromEvent<T>(target, eventName, <EventListenerOptions | undefined>options).pipe(
       map(args => isArray(args) ? resultSelector(...args) : resultSelector(args))
     );
