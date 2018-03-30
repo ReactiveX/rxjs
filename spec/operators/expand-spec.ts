@@ -1,14 +1,11 @@
 import { expect } from 'chai';
-import * as Rx from '../../dist/package/Rx';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import * as Rx from 'rxjs/Rx';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { Subscribable } from 'rxjs/Observable';
 
-declare const { asDiagram };
-declare const hot: typeof marbleTestingSignature.hot;
-declare const cold: typeof marbleTestingSignature.cold;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
+declare function asDiagram(arg: string): Function;
+declare const type: Function;
 
-declare const Symbol: any;
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
@@ -68,7 +65,7 @@ describe('Observable.prototype.expand', () => {
       a--b--c--d--(e|)
     */
 
-    const result = e1.expand((x: any, index: number): Rx.Observable<any> => {
+    const result = e1.expand((x, index): Rx.Observable<any> => {
       if (x === 16) {
         return Observable.empty();
       } else {
@@ -93,9 +90,9 @@ describe('Observable.prototype.expand', () => {
     const e2shape =  '---(z|)      ';
     const expected = 'a--b--c--(d#)';
 
-    const result = e1.expand((x: number) => {
+    const result = e1.expand((x) => {
       if (x === 8) {
-        return cold('#');
+        return cold<number>('#');
       }
       return cold(e2shape, { z: x + x });
     });
@@ -117,7 +114,7 @@ describe('Observable.prototype.expand', () => {
     const e2shape =  '---(z|)      ';
     const expected = 'a--b--c--(d#)';
 
-    const result = e1.expand((x: number) => {
+    const result = e1.expand((x) => {
       if (x === 8) {
         throw 'error';
       }
@@ -142,7 +139,7 @@ describe('Observable.prototype.expand', () => {
     const e2shape =  '---(z|)   ';
     const expected = 'a--b--c-  ';
 
-    const result = e1.expand((x: number): Rx.Observable<any> => {
+    const result = e1.expand((x): Rx.Observable<any> => {
       if (x === 16) {
         return Observable.empty();
       }
@@ -167,15 +164,15 @@ describe('Observable.prototype.expand', () => {
     const expected = 'a--b--c-  ';
     const unsub =    '       !  ';
 
-    const result = (<any>e1)
-      .mergeMap((x: any) => Observable.of(x))
-      .expand((x: number): Rx.Observable<any> => {
+    const result = e1
+      .mergeMap((x) => Observable.of(x))
+      .expand((x): Rx.Observable<any> => {
         if (x === 16) {
           return Observable.empty();
         }
         return cold(e2shape, { z: x + x });
       })
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -194,7 +191,7 @@ describe('Observable.prototype.expand', () => {
     const e2shape =  '---(z|)           ';
     const expected = 'a-ab-bc-cd-de-(e|)';
 
-    const result = e1.expand((x: number): Rx.Observable<any> => {
+    const result = e1.expand((x): Rx.Observable<any> => {
       if (x === 16) {
         return Observable.empty();
       }
@@ -232,7 +229,7 @@ describe('Observable.prototype.expand', () => {
     const expected = 'a--u--b--v--c--x--d--y--(ez|)';
     const concurrencyLimit = 1;
 
-    const result = e1.expand((x: number): Rx.Observable<any> => {
+    const result = e1.expand((x): Rx.Observable<any> => {
       if (x === 16 || x === 160) {
         return Observable.empty();
       }
@@ -265,7 +262,7 @@ describe('Observable.prototype.expand', () => {
     const expected = 'a---a-u---b-b---v-(cc)(x|)';
     const concurrencyLimit = 2;
 
-    const result = e1.expand((x: number): Rx.Observable<any> => {
+    const result = e1.expand((x): Rx.Observable<any> => {
       if (x === 4 || x === 40) {
         return Observable.empty();
       }
@@ -295,7 +292,7 @@ describe('Observable.prototype.expand', () => {
     const expected = 'a-ub-vc-xd-ye-(z|)';
     const concurrencyLimit = 100;
 
-    const result = e1.expand((x: number): Rx.Observable<any> => {
+    const result = e1.expand((x): Rx.Observable<any> => {
       if (x === 16 || x === 160) {
         return Observable.empty();
       }
@@ -318,7 +315,7 @@ describe('Observable.prototype.expand', () => {
     const e1subs =   '(^!)';
     const expected = '(abcde|)';
 
-    const result = e1.expand((x: number) => {
+    const result = e1.expand((x) => {
       if (x === 16) {
         return Observable.empty();
       }
@@ -329,16 +326,16 @@ describe('Observable.prototype.expand', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should recursively flatten promises', (done: MochaDone) => {
+  it('should recursively flatten promises', (done) => {
     const expected = [1, 2, 4, 8, 16];
     Observable.of(1)
-      .expand((x: number): any => {
+      .expand((x): any => {
         if (x === 16) {
           return Observable.empty();
         }
         return Promise.resolve(x + x);
       })
-      .subscribe((x: number) => {
+      .subscribe((x) => {
         expect(x).to.equal(expected.shift());
       }, null, () => {
         expect(expected.length).to.equal(0);
@@ -346,16 +343,16 @@ describe('Observable.prototype.expand', () => {
       });
   });
 
-  it('should recursively flatten Arrays', (done: MochaDone) => {
+  it('should recursively flatten Arrays', (done) => {
     const expected = [1, 2, 4, 8, 16];
     Observable.of(1)
-      .expand((x: number): any => {
+      .expand((x): any => {
         if (x === 16) {
           return Observable.empty();
         }
         return [x + x];
       })
-      .subscribe((x: number) => {
+      .subscribe((x) => {
         expect(x).to.equal(expected.shift());
       }, null, () => {
         expect(expected.length).to.equal(0);
@@ -363,11 +360,11 @@ describe('Observable.prototype.expand', () => {
       });
   });
 
-  it('should recursively flatten lowercase-o observables', (done: MochaDone) => {
+  it('should recursively flatten lowercase-o observables', (done) => {
     const expected = [1, 2, 4, 8, 16];
-    const project = (x: any, index: number) => {
+    const project = (x: number, index: number): Subscribable<number> => {
       if (x === 16) {
-        return Observable.empty();
+        return <any>Observable.empty();
       }
 
       const ish = {
@@ -380,12 +377,12 @@ describe('Observable.prototype.expand', () => {
       ish[Symbol.observable] = function () {
         return this;
       };
-      return ish;
+      return <Subscribable<number>> ish;
     };
 
-    (<any>Observable.of(1))
+    Observable.of(1)
       .expand(project)
-      .subscribe((x: number) => {
+      .subscribe((x) => {
         expect(x).to.equal(expected.shift());
       }, null, () => {
         expect(expected.length).to.equal(0);

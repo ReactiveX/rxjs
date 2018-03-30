@@ -1,12 +1,8 @@
 import { expect } from 'chai';
-import * as Rx from '../../dist/package/Rx';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import * as Rx from 'rxjs/Rx';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare const { asDiagram };
-declare const hot: typeof marbleTestingSignature.hot;
-declare const cold: typeof marbleTestingSignature.cold;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
+declare function asDiagram(arg: string): Function;
 
 const Observable = Rx.Observable;
 
@@ -90,7 +86,7 @@ describe('Observable.prototype.filter', () => {
         throw 'error';
       }
       return isPrime(x);
-    };
+    }
 
     expectObservable((<any>source).filter(predicate)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -166,7 +162,7 @@ describe('Observable.prototype.filter', () => {
         throw 'error';
       }
       return isPrime((+x) + i * 10);
-    };
+    }
 
     expectObservable((<any>source).filter(predicate)).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);

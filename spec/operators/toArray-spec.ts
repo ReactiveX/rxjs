@@ -1,11 +1,8 @@
-import * as Rx from '../../dist/package/Rx';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import * as Rx from 'rxjs/Rx';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare const { asDiagram, type };
-declare const hot: typeof marbleTestingSignature.hot;
-declare const cold: typeof marbleTestingSignature.cold;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
+declare const type: Function;
+declare const asDiagram: Function;
 
 const Observable = Rx.Observable;
 
@@ -65,6 +62,17 @@ describe('Observable.prototype.toArray', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should allow multiple subscriptions', () => {
+    const e1 = hot('-x-^--y--|');
+    const e1subs =    '^     !';
+    const expected =  '------(w|)';
+
+    const result = e1.toArray();
+    expectObservable(result).toBe(expected, { w: ['y'] });
+    expectObservable(result).toBe(expected, { w: ['y'] });
+    expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
+  });
+
   it('should allow unsubscribing explicitly and early', () => {
     const e1 =   hot('--a--b----c-----d----e---|');
     const unsub =    '        !                 ';
@@ -108,7 +116,7 @@ describe('Observable.prototype.toArray', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  type(() => {
+  type('should infer the element type', () => {
     const typeValue = {
       val: 3
     };

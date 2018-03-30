@@ -1,16 +1,9 @@
 import { expect } from 'chai';
-import * as Rx from '../../dist/package/Rx';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
+import { TestScheduler } from 'rxjs/testing';
+import { Observable, NEVER, EMPTY, Subject, of, Notification } from 'rxjs';
 
-declare const { time };
-declare const hot: typeof marbleTestingSignature.hot;
-declare const cold: typeof marbleTestingSignature.cold;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
-
-declare const rxTestScheduler: Rx.TestScheduler;
-const Notification = Rx.Notification;
-const TestScheduler = Rx.TestScheduler;
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {TestScheduler} */
 describe('TestScheduler', () => {
@@ -114,9 +107,9 @@ describe('TestScheduler', () => {
     it('should create a cold observable', () => {
       const expected = ['A', 'B'];
       const scheduler = new TestScheduler(null);
-      const source = scheduler.createColdObservable('--a---b--|', { a: 'A', b: 'B' });
-      expect(source instanceof Rx.Observable).to.be.true;
-      source.subscribe((x: string) => {
+      const source = scheduler.createColdObservable<string>('--a---b--|', { a: 'A', b: 'B' });
+      expect(source).to.be.an.instanceOf(Observable);
+      source.subscribe(x => {
         expect(x).to.equal(expected.shift());
       });
       scheduler.flush();
@@ -128,9 +121,9 @@ describe('TestScheduler', () => {
     it('should create a cold observable', () => {
       const expected = ['A', 'B'];
       const scheduler = new TestScheduler(null);
-      const source = scheduler.createHotObservable('--a---b--|', { a: 'A', b: 'B' });
-      expect(source).to.be.an.instanceof(Rx.Subject);
-      source.subscribe((x: string) => {
+      const source = scheduler.createHotObservable<string>('--a---b--|', { a: 'A', b: 'B' });
+      expect(source).to.be.an.instanceof(Subject);
+      source.subscribe(x => {
         expect(x).to.equal(expected.shift());
       });
       scheduler.flush();
@@ -171,7 +164,7 @@ describe('TestScheduler', () => {
 
       it('should create a hot observable', () => {
         const source = hot('---^-a-b-|', { a: 1, b: 2 });
-        expect(source instanceof Rx.Subject).to.be.true;
+        expect(source).to.be.an.instanceOf(Subject);
         expectObservable(source).toBe('--a-b-|', { a: 1, b: 2 });
       });
     });
@@ -194,21 +187,21 @@ describe('TestScheduler', () => {
       });
 
       it('should return an object with a toBe function', () => {
-        expect(expectObservable(Rx.Observable.of(1)).toBe).to.be.a('function');
+        expect(expectObservable(of(1)).toBe).to.be.a('function');
       });
 
       it('should append to flushTests array', () => {
-        expectObservable(Rx.Observable.empty());
+        expectObservable(EMPTY);
         expect((<any>rxTestScheduler).flushTests.length).to.equal(1);
       });
 
       it('should handle empty', () => {
-        expectObservable(Rx.Observable.empty()).toBe('|', {});
+        expectObservable(EMPTY).toBe('|', {});
       });
 
       it('should handle never', () => {
-        expectObservable(Rx.Observable.never()).toBe('-', {});
-        expectObservable(Rx.Observable.never()).toBe('---', {});
+        expectObservable(NEVER).toBe('-', {});
+        expectObservable(NEVER).toBe('---', {});
       });
 
       it('should accept an unsubscription marble diagram', () => {

@@ -1,21 +1,15 @@
 import { expect } from 'chai';
-import * as Rx from '../../dist/package/Rx';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { defer, Observable } from 'rxjs';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare const { asDiagram };
-declare const hot: typeof marbleTestingSignature.hot;
-declare const cold: typeof marbleTestingSignature.cold;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
-
-const Observable = Rx.Observable;
+declare function asDiagram(arg: string): Function;
 
 /** @test {defer} */
-describe('Observable.defer', () => {
+describe('defer', () => {
   asDiagram('defer(() => Observable.of(a, b, c))')
   ('should defer the creation of a simple Observable', () => {
     const expected =    '-a--b--c--|';
-    const e1 = Observable.defer(() => cold('-a--b--c--|'));
+    const e1 = defer(() => cold('-a--b--c--|'));
     expectObservable(e1).toBe(expected);
   });
 
@@ -24,7 +18,7 @@ describe('Observable.defer', () => {
     const sourceSubs = '^          !';
     const expected =   '--a--b--c--|';
 
-    const e1 = Observable.defer(() => source);
+    const e1 = defer(() => source);
 
     expectObservable(e1).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -35,7 +29,7 @@ describe('Observable.defer', () => {
     const sourceSubs = '(^!)';
     const expected =   '|';
 
-    const e1 = Observable.defer(() => source);
+    const e1 = defer(() => source);
 
     expectObservable(e1).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -43,7 +37,7 @@ describe('Observable.defer', () => {
 
   it('should accept factory returns promise resolves', (done: MochaDone) => {
     const expected = 42;
-    const e1 = Observable.defer(() => {
+    const e1 = defer(() => {
       return new Promise((resolve: any) => { resolve(expected); });
     });
 
@@ -57,7 +51,7 @@ describe('Observable.defer', () => {
 
   it('should accept factory returns promise rejects', (done: MochaDone) => {
     const expected = 42;
-    const e1 = Observable.defer(() => {
+    const e1 = defer(() => {
       return new Promise((resolve: any, reject: any) => { reject(expected); });
     });
 
@@ -76,14 +70,14 @@ describe('Observable.defer', () => {
     const sourceSubs = '(^!)';
     const expected =   '#';
 
-    const e1 = Observable.defer(() => source);
+    const e1 = defer(() => source);
 
     expectObservable(e1).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
   it('should create an observable when factory throws', () => {
-    const e1 = Observable.defer(() => {
+    const e1 = defer(() => {
       throw 'error';
     });
     const expected = '#';
@@ -97,7 +91,7 @@ describe('Observable.defer', () => {
     const expected =   '--a--b-     ';
     const unsub =      '      !     ';
 
-    const e1 = Observable.defer(() => source);
+    const e1 = defer(() => source);
 
     expectObservable(e1, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -109,7 +103,7 @@ describe('Observable.defer', () => {
     const expected =   '--a--b-     ';
     const unsub =      '      !     ';
 
-    const e1 = Observable.defer(() => source.mergeMap((x: string) => Observable.of(x)))
+    const e1 = defer(() => source.mergeMap((x: string) => Observable.of(x)))
       .mergeMap((x: string) => Observable.of(x));
 
     expectObservable(e1, unsub).toBe(expected);

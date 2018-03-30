@@ -1,29 +1,30 @@
 import { expect } from 'chai';
-import * as Rx from '../../dist/package/Rx';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { expectObservable } from '../helpers/marble-testing';
+import { fromEvent, NEVER, timer, pipe } from 'rxjs';
+import { mapTo, take, concat } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
 
-declare const { asDiagram };
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const rxTestScheduler: Rx.TestScheduler;
-
-const Observable = Rx.Observable;
+declare function asDiagram(arg: string): Function;
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {fromEvent} */
-describe('Observable.fromEvent', () => {
+describe('fromEvent', () => {
   asDiagram('fromEvent(element, \'click\')')
   ('should create an observable of click on the element', () => {
     const target = {
-      addEventListener: (eventType, listener) => {
-        Observable.timer(50, 20, rxTestScheduler)
-          .mapTo('ev')
-          .take(2)
-          .concat(Observable.never())
+      addEventListener: (eventType: any, listener: any) => {
+        timer(50, 20, rxTestScheduler)
+          .pipe(
+            mapTo('ev'),
+            take(2),
+            concat(NEVER)
+          )
           .subscribe(listener);
       },
-      removeEventListener: () => void 0,
-      dispatchEvent: () => void 0,
+      removeEventListener: (): void => void 0,
+      dispatchEvent: (): void => void 0,
     };
-    const e1 = Observable.fromEvent(target, 'click');
+    const e1 = fromEvent(target as any, 'click');
     const expected = '-----x-x---';
     expectObservable(e1).toBe(expected, {x: 'ev'});
   });
@@ -45,7 +46,7 @@ describe('Observable.fromEvent', () => {
       }
     };
 
-    const subscription = Observable.fromEvent(obj, 'click')
+    const subscription = fromEvent(obj, 'click')
       .subscribe(() => {
         //noop
        });
@@ -75,7 +76,7 @@ describe('Observable.fromEvent', () => {
       }
     };
 
-    const subscription = Observable.fromEvent(<any>obj, 'click')
+    const subscription = fromEvent(<any>obj, 'click')
       .subscribe(() => {
         //noop
        });
@@ -105,7 +106,7 @@ describe('Observable.fromEvent', () => {
       }
     };
 
-    const subscription = Observable.fromEvent(obj, 'click')
+    const subscription = fromEvent(obj, 'click')
       .subscribe(() => {
         //noop
        });
@@ -125,35 +126,42 @@ describe('Observable.fromEvent', () => {
       }
     };
 
-    const subscribe = () => Observable.fromEvent(<any>obj, 'click').subscribe();
-    expect(subscribe).to.throw(TypeError, 'Invalid event target');
+    fromEvent(obj as any, 'click').subscribe({
+      error(err: any) {
+        expect(err).to.exist
+          .and.be.instanceof(Error)
+          .and.have.property('message', 'Invalid event target');
+      }
+    });
   });
 
-  it('should pass through options to addEventListener', () => {
-    let actualOptions;
+  it('should pass through options to addEventListener and removeEventListener', () => {
+    let onOptions;
+    let offOptions;
     const expectedOptions = { capture: true, passive: true };
 
     const obj = {
       addEventListener: (a: string, b: EventListenerOrEventListenerObject, c?: any) => {
-        actualOptions = c;
+        onOptions = c;
       },
       removeEventListener: (a: string, b: EventListenerOrEventListenerObject, c?: any) => {
-        //noop
+        offOptions = c;
       }
     };
 
-    const subscription = Observable.fromEvent(<any>obj, 'click', expectedOptions)
+    const subscription = fromEvent(<any>obj, 'click', expectedOptions)
       .subscribe(() => {
         //noop
        });
 
     subscription.unsubscribe();
 
-    expect(actualOptions).to.equal(expectedOptions);
+    expect(onOptions).to.equal(expectedOptions);
+    expect(offOptions).to.equal(expectedOptions);
   });
 
   it('should pass through events that occur', (done: MochaDone) => {
-    let send;
+    let send: any;
     const obj = {
       on: (name: string, handler: Function) => {
         send = handler;
@@ -163,7 +171,7 @@ describe('Observable.fromEvent', () => {
       }
     };
 
-    Observable.fromEvent(obj, 'click').take(1)
+    fromEvent(obj, 'click').pipe(take(1))
       .subscribe((e: any) => {
         expect(e).to.equal('test');
       }, (err: any) => {
@@ -176,7 +184,7 @@ describe('Observable.fromEvent', () => {
   });
 
   it('should pass through events that occur and use the selector if provided', (done: MochaDone) => {
-    let send;
+    let send: any;
     const obj = {
       on: (name: string, handler: Function) => {
         send = handler;
@@ -186,11 +194,11 @@ describe('Observable.fromEvent', () => {
       }
     };
 
-    function selector(x) {
+    function selector(x: string) {
       return x + '!';
     }
 
-    Observable.fromEvent(obj, 'click', selector).take(1)
+    fromEvent(obj, 'click', selector).pipe(take(1))
       .subscribe((e: any) => {
         expect(e).to.equal('test!');
       }, (err: any) => {
@@ -203,7 +211,7 @@ describe('Observable.fromEvent', () => {
   });
 
   it('should not fail if no event arguments are passed and the selector does not return', (done: MochaDone) => {
-    let send;
+    let send: any;
     const obj = {
       on: (name: string, handler: Function) => {
         send = handler;
@@ -217,7 +225,7 @@ describe('Observable.fromEvent', () => {
       //noop
     }
 
-    Observable.fromEvent(obj, 'click', selector).take(1)
+    fromEvent(obj, 'click', selector).pipe(take(1))
       .subscribe((e: any) => {
         expect(e).not.exist;
       }, (err: any) => {
@@ -230,7 +238,7 @@ describe('Observable.fromEvent', () => {
   });
 
   it('should return a value from the selector if no event arguments are passed', (done: MochaDone) => {
-    let send;
+    let send: any;
     const obj = {
       on: (name: string, handler: Function) => {
         send = handler;
@@ -244,7 +252,7 @@ describe('Observable.fromEvent', () => {
       return 'no arguments';
     }
 
-    Observable.fromEvent(obj, 'click', selector).take(1)
+    fromEvent(obj, 'click', selector).pipe(take(1))
       .subscribe((e: any) => {
         expect(e).to.equal('no arguments');
       }, (err: any) => {
@@ -257,7 +265,7 @@ describe('Observable.fromEvent', () => {
   });
 
   it('should pass multiple arguments to selector from event emitter', (done: MochaDone) => {
-    let send;
+    let send: any;
     const obj = {
       on: (name: string, handler: Function) => {
         send = handler;
@@ -267,11 +275,34 @@ describe('Observable.fromEvent', () => {
       }
     };
 
-    function selector(x, y, z) {
+    function selector(x: number, y: number, z: number) {
       return [].slice.call(arguments);
     }
 
-    Observable.fromEvent(obj, 'click', selector).take(1)
+    fromEvent(obj, 'click', selector).pipe(take(1))
+      .subscribe((e: any) => {
+        expect(e).to.deep.equal([1, 2, 3]);
+      }, (err: any) => {
+        done(new Error('should not be called'));
+      }, () => {
+        done();
+      });
+
+    send(1, 2, 3);
+  });
+
+  it('should emit multiple arguments from event as an array', (done: MochaDone) => {
+    let send: any;
+    const obj = {
+      on: (name: string, handler: Function) => {
+        send = handler;
+      },
+      off: () => {
+        //noop
+      }
+    };
+
+    fromEvent(obj, 'click').pipe(take(1))
       .subscribe((e: any) => {
         expect(e).to.deep.equal([1, 2, 3]);
       }, (err: any) => {
@@ -294,7 +325,7 @@ describe('Observable.fromEvent', () => {
     const obj: NullProtoEventTarget = new NullProtoEventTarget();
 
     expect(() => {
-      Observable.fromEvent(obj, 'foo').subscribe();
+      fromEvent(obj, 'foo').subscribe();
       done();
     }).to.not.throw(TypeError);
   });

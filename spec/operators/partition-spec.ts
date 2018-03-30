@@ -1,12 +1,8 @@
 import { expect } from 'chai';
-import * as Rx from '../../dist/package/Rx';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import * as Rx from 'rxjs/Rx';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare const { asDiagram };
-declare const hot: typeof marbleTestingSignature.hot;
-declare const cold: typeof marbleTestingSignature.cold;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
+declare function asDiagram(arg: string): Function;
 
 const Observable = Rx.Observable;
 
@@ -253,11 +249,6 @@ describe('Observable.prototype.partition', () => {
     expectObservable(result[0], unsub).toBe(expected[0]);
     expectObservable(result[1], unsub).toBe(expected[1]);
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
-  });
-
-  it('should throw without predicate', () => {
-    const e1 = hot('--a-b---a------d----');
-    expect(e1.partition).to.throw();
   });
 
   it('should accept thisArg', () => {

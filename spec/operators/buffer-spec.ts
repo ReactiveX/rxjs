@@ -1,12 +1,8 @@
-import * as Rx from '../../dist/package/Rx';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { hot, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { buffer, mergeMap, take } from 'rxjs/operators';
+import { EMPTY, NEVER, throwError, of } from 'rxjs';
 
-declare const { asDiagram };
-declare const hot: typeof marbleTestingSignature.hot;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
-
-const Observable = Rx.Observable;
+declare function asDiagram(arg: string): Function;
 
 /** @test {buffer} */
 describe('Observable.prototype.buffer', () => {
@@ -19,77 +15,77 @@ describe('Observable.prototype.buffer', () => {
       y: ['d', 'e', 'f'],
       z: ['g', 'h', 'i']
     };
-    expectObservable(a.buffer(b)).toBe(expected, expectedValues);
+    expectObservable(a.pipe(buffer(b))).toBe(expected, expectedValues);
   });
 
   it('should work with empty and empty selector', () => {
-    const a = Observable.empty();
-    const b = Observable.empty();
+    const a = EMPTY;
+    const b = EMPTY;
     const expected = '|';
-    expectObservable(a.buffer(b)).toBe(expected);
+    expectObservable(a.pipe(buffer(b))).toBe(expected);
   });
 
   it('should work with empty and non-empty selector', () => {
-    const a = Observable.empty();
+    const a = EMPTY;
     const b = hot('-----a-----');
     const expected = '|';
-    expectObservable(a.buffer(b)).toBe(expected);
+    expectObservable(a.pipe(buffer(b))).toBe(expected);
   });
 
   it('should work with non-empty and empty selector', () => {
     const a = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
-    const b = Observable.empty();
+    const b = EMPTY;
     const expected = '|';
-    expectObservable(a.buffer(b)).toBe(expected);
+    expectObservable(a.pipe(buffer(b))).toBe(expected);
   });
 
   it('should work with never and never selector', () => {
-    const a = Observable.never();
-    const b = Observable.never();
+    const a = NEVER;
+    const b = NEVER;
     const expected = '-';
-    expectObservable(a.buffer(b)).toBe(expected);
+    expectObservable(a.pipe(buffer(b))).toBe(expected);
   });
 
   it('should work with never and empty selector', () => {
-    const a = Observable.never();
-    const b = Observable.empty();
+    const a = NEVER;
+    const b = EMPTY;
     const expected = '|';
-    expectObservable(a.buffer(b)).toBe(expected);
+    expectObservable(a.pipe(buffer(b))).toBe(expected);
   });
 
   it('should work with empty and never selector', () => {
-    const a = Observable.empty();
-    const b = Observable.never();
+    const a = EMPTY;
+    const b = NEVER;
     const expected = '|';
-    expectObservable(a.buffer(b)).toBe(expected);
+    expectObservable(a.pipe(buffer(b))).toBe(expected);
   });
 
   it('should work with non-empty and throw selector', () => {
     const a = hot('---^--a--');
-    const b = Observable.throw(new Error('too bad'));
+    const b = throwError(new Error('too bad'));
     const expected = '#';
-    expectObservable(a.buffer(b)).toBe(expected, null, new Error('too bad'));
+    expectObservable(a.pipe(buffer(b))).toBe(expected, null, new Error('too bad'));
   });
 
   it('should work with throw and non-empty selector', () => {
-    const a = Observable.throw(new Error('too bad'));
+    const a = throwError(new Error('too bad'));
     const b = hot('---^--a--');
     const expected = '#';
-    expectObservable(a.buffer(b)).toBe(expected, null, new Error('too bad'));
+    expectObservable(a.pipe(buffer(b))).toBe(expected, null, new Error('too bad'));
   });
 
   it('should work with error', () => {
     const a = hot('---^-------#', null, new Error('too bad'));
     const b = hot('---^--------');
     const expected = '--------#';
-    expectObservable(a.buffer(b)).toBe(expected, null, new Error('too bad'));
+    expectObservable(a.pipe(buffer(b))).toBe(expected, null, new Error('too bad'));
   });
 
   it('should work with error and non-empty selector', () => {
     const a = hot('---^-------#', null, new Error('too bad'));
     const b = hot('---^---a----');
     const expected = '----a---#';
-    expectObservable(a.buffer(b)).toBe(expected, { a: [] }, new Error('too bad'));
+    expectObservable(a.pipe(buffer(b))).toBe(expected, { a: [] }, new Error('too bad'));
   });
 
   it('should work with selector', () => {
@@ -101,11 +97,11 @@ describe('Observable.prototype.buffer', () => {
       a: ['3'],
       b: ['4', '5'],
       c: ['6'],
-      d: [],
+      d: [] as string[],
       e: ['7', '8', '9'],
       f: ['0']
     };
-    expectObservable(a.buffer(b)).toBe(expected, expectedValues);
+    expectObservable(a.pipe(buffer(b))).toBe(expected, expectedValues);
   });
 
   it('should work with selector completed', () => {
@@ -118,9 +114,9 @@ describe('Observable.prototype.buffer', () => {
       a: ['3'],
       b: ['4', '5'],
       c: ['6'],
-      d: []
+      d: [] as string[]
     };
-    expectObservable(a.buffer(b)).toBe(expected, expectedValues);
+    expectObservable(a.pipe(buffer(b))).toBe(expected, expectedValues);
     expectSubscriptions(a.subscriptions).toBe(subs);
   });
 
@@ -134,7 +130,7 @@ describe('Observable.prototype.buffer', () => {
       a: ['3'],
       b: ['4', '5']
     };
-    expectObservable(a.buffer(b), unsub).toBe(expected, expectedValues);
+    expectObservable(a.pipe(buffer(b)), unsub).toBe(expected, expectedValues);
     expectSubscriptions(a.subscriptions).toBe(subs);
   });
 
@@ -149,10 +145,11 @@ describe('Observable.prototype.buffer', () => {
       b: ['4', '5']
     };
 
-    const result = a
-      .mergeMap((x: any) => Observable.of(x))
-      .buffer(b)
-      .mergeMap((x: any) => Observable.of(x));
+    const result = a.pipe(
+      mergeMap((x: any) => of(x)),
+      buffer(b),
+      mergeMap((x: any) => of(x)),
+    );
 
     expectObservable(result, unsub).toBe(expected, expectedValues);
     expectSubscriptions(a.subscriptions).toBe(subs);
@@ -166,9 +163,9 @@ describe('Observable.prototype.buffer', () => {
     const expected =      '---a--b--#';
     const expectedValues = {
       a: [3],
-      b: []
+      b: [] as string[]
     };
-    expectObservable(a.buffer(b)).toBe(expected, expectedValues, new Error('too bad'));
+    expectObservable(a.pipe(buffer(b))).toBe(expected, expectedValues, new Error('too bad'));
     expectSubscriptions(a.subscriptions).toBe(subs);
   });
 
@@ -176,7 +173,7 @@ describe('Observable.prototype.buffer', () => {
     const a = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
     const b = hot('--------^----------------#', null, new Error('too bad'));
     const expected =      '-----------------#';
-    expectObservable(a.buffer(b)).toBe(expected, null, new Error('too bad'));
+    expectObservable(a.pipe(buffer(b))).toBe(expected, null, new Error('too bad'));
   });
 
   it('should work with non-empty and selector error', () => {
@@ -191,7 +188,7 @@ describe('Observable.prototype.buffer', () => {
       b: ['4', '5'],
       c: ['6']
     };
-    expectObservable(a.buffer(b)).toBe(expected, expectedValues, new Error('too bad'));
+    expectObservable(a.pipe(buffer(b))).toBe(expected, expectedValues, new Error('too bad'));
     expectSubscriptions(a.subscriptions).toBe(subs);
   });
 
@@ -207,7 +204,7 @@ describe('Observable.prototype.buffer', () => {
       b: ['4', '5']
     };
 
-    expectObservable(a.buffer(b), unsub).toBe(expected, expectedValues);
+    expectObservable(a.pipe(buffer(b)), unsub).toBe(expected, expectedValues);
     expectSubscriptions(a.subscriptions).toBe(subs);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
@@ -221,7 +218,7 @@ describe('Observable.prototype.buffer', () => {
       x: ['a', 'b', 'c'],
     };
 
-    expectObservable(a.buffer(b).take(1)).toBe(expected, expectedValues);
+    expectObservable(a.pipe(buffer(b), take(1))).toBe(expected, expectedValues);
     expectSubscriptions(b.subscriptions).toBe(bsubs);
   });
 });

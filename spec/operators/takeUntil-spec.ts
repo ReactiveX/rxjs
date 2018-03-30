@@ -1,11 +1,7 @@
-import * as Rx from '../../dist/package/Rx';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import * as Rx from 'rxjs/Rx';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare const { asDiagram };
-declare const hot: typeof marbleTestingSignature.hot;
-declare const cold: typeof marbleTestingSignature.cold;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
+declare function asDiagram(arg: string): Function;
 
 const Observable = Rx.Observable;
 
@@ -57,6 +53,15 @@ describe('Observable.prototype.takeUntil', () => {
     expectObservable(e1.takeUntil(e2)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
+  it('should complete without subscribing to the source when notifier synchronously emits', () => {
+    const e1 =   hot('----a--|');
+    const e2 =  Observable.of(0);
+    const expected = '(|)     ';
+
+    expectObservable(e1.takeUntil(e2)).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe([]);
   });
 
   it('should allow unsubscribing explicitly and early', () => {

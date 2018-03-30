@@ -20,10 +20,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old combineLatest with immediate scheduler', function () {
-        oldCombineLatestWithImmediateScheduler.subscribe(_next, _error, _complete);
-      })
-      .add('new combineLatest with immediate scheduler', function () {
-        newCombineLatestWithImmediateScheduler.subscribe(_next, _error, _complete);
-      });
+    .add('old combineLatest with immediate scheduler', function () {
+      oldCombineLatestWithImmediateScheduler.subscribe(_next, _error, _complete);
+    })
+    .add('new combineLatest with immediate scheduler', function () {
+      newCombineLatestWithImmediateScheduler.subscribe(_next, _error, _complete);
+    });
 };

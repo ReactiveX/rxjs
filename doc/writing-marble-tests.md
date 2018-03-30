@@ -42,7 +42,8 @@ Likewise, unspecified errors will just default to the string `"error"`, so:
 
 ## Marble Syntax
 
-Marble syntax is a string representing events happening over "time". The first character of any marble string
+Marble syntax is a string which represents events happening over "time". The first character of any marble string
+
 always represents the "zero frame". A "frame" is somewhat analogous to a virtual millisecond.
 
 - `"-"` time: 10 "frames" of time passage.
@@ -65,11 +66,11 @@ always represents the "zero frame". A "frame" is somewhat analogous to a virtual
 
 `'--a--'`: An observable that waits 20 "frames", emits value `a` and then never completes.
 
-`'--a--b--|`: On frame 20 emit `a`, on frame 40 emit `b`, and on frame 60, `complete`
+`'--a--b--|'`: On frame 20 emit `a`, on frame 50 emit `b`, and on frame 80, `complete`
 
-`'--a--b--#`: On frame 20 emit `a`, on frame 40 emit `b`, and on frame 60, `error`
+`'--a--b--#'`: On frame 20 emit `a`, on frame 50 emit `b`, and on frame 80, `error`
 
-`'-a-^-b--|`: In a hot observable, on frame -10 emit `a`, then on frame 10 emit `b`, and on frame 30, `complete`.
+`'-a-^-b--|'`: In a hot observable, on frame -20 emit `a`, then on frame 20 emit `b`, and on frame 50, `complete`.
 
 `'--(abc)-|'`: on frame 20, emit `a`, `b`, and `c`, then on frame 30 `complete`
 
@@ -91,7 +92,7 @@ There should be **at most one** `^` point in a subscription marble diagram, and 
 
 `'--^--'`: a subscription happened after 20 "frames" of time passed, and the subscription was not unsubscribed.
 
-`'--^--!-`: on frame 20 a subscription happened, and on frame 40 was unsubscribed.
+`'--^--!-'`: on frame 20 a subscription happened, and on frame 50 was unsubscribed.
 
 ## Anatomy of a Test
 

@@ -1,29 +1,7 @@
 import { expect } from 'chai';
-import { bindCallback } from '../dist/package/observable/bindCallback';
-import { bindNodeCallback } from '../dist/package/observable/bindNodeCallback';
-import { combineLatest } from '../dist/package/observable/combineLatest';
-import { concat } from '../dist/package/observable/concat';
-import { defer } from '../dist/package/observable/defer';
-import { empty } from '../dist/package/observable/empty';
-import { forkJoin } from '../dist/package/observable/forkJoin';
-import { from } from '../dist/package/observable/from';
-import { fromEvent } from '../dist/package/observable/fromEvent';
-import { fromEventPattern } from '../dist/package/observable/fromEventPattern';
-import { fromPromise } from '../dist/package/observable/fromPromise';
-import { _if } from '../dist/package/observable/if';
-import { interval } from '../dist/package/observable/interval';
-import { merge } from '../dist/package/observable/merge';
-import { never } from '../dist/package/observable/never';
-import { of } from '../dist/package/observable/of';
-import { onErrorResumeNext } from '../dist/package/observable/onErrorResumeNext';
-import { pairs } from '../dist/package/observable/pairs';
-import { race } from '../dist/package/observable/race';
-import { range } from '../dist/package/observable/range';
-import { _throw } from '../dist/package/observable/throw';
-import { timer } from '../dist/package/observable/timer';
-import { using } from '../dist/package/observable/using';
-import { zip } from '../dist/package/observable/zip';
-import * as Rx from '../dist/package/Rx';
+import { bindCallback, bindNodeCallback, combineLatest, concat, defer, empty, forkJoin, from, fromEvent, fromEventPattern,
+  iif, interval, merge, NEVER, of, onErrorResumeNext, pairs, race, range, throwError, timer, using, zip } from 'rxjs';
+import * as Rx from 'rxjs/Rx';
 
 describe('exports', () => {
   it('should have rxjs/observable/bindCallback', () => {
@@ -67,11 +45,11 @@ describe('exports', () => {
   });
 
   it('should have rxjs/observable/fromPromise', () => {
-    expect(fromPromise).to.equal(Rx.Observable.fromPromise);
+    expect(from).to.equal(Rx.Observable.fromPromise);
   });
 
-  it('should have rxjs/observable/if', () => {
-    expect(_if).to.equal(Rx.Observable.if);
+  it('should have rxjs/observable/iif', () => {
+    expect(iif).to.equal(Rx.Observable.if);
   });
 
   it('should have rxjs/observable/interval', () => {
@@ -80,10 +58,6 @@ describe('exports', () => {
 
   it('should have rxjs/observable/merge', () => {
     expect(merge).to.equal(Rx.Observable.merge);
-  });
-
-  it('should have rxjs/observable/never', () => {
-    expect(never).to.equal(Rx.Observable.never);
   });
 
   it('should have rxjs/observable/of', () => {
@@ -106,8 +80,8 @@ describe('exports', () => {
     expect(range).to.equal(Rx.Observable.range);
   });
 
-  it('should have rxjs/observable/throw', () => {
-    expect(_throw).to.equal(Rx.Observable.throw);
+  it('should have rxjs/observable/throwError', () => {
+    expect(throwError).to.equal(Rx.Observable.throw);
   });
 
   it('should have rxjs/observable/timer', () => {

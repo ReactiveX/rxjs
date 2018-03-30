@@ -1,11 +1,9 @@
-import * as Rx from '../../dist/package/Rx';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { expect } from 'chai';
+import * as Rx from 'rxjs/Rx';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { VirtualTimeScheduler } from '../../src/internal/scheduler/VirtualTimeScheduler';
 
-declare const { asDiagram };
-declare const hot: typeof marbleTestingSignature.hot;
-declare const cold: typeof marbleTestingSignature.cold;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
+declare function asDiagram(arg: string): Function;
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
@@ -152,5 +150,23 @@ describe('Observable.prototype.debounceTime', () => {
 
     expectObservable(e1.debounceTime(40, rxTestScheduler)).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should debounce correctly when synchronously reentered', () => {
+    const results = [];
+    const source = new Rx.Subject();
+    const scheduler = new VirtualTimeScheduler();
+
+    source.debounceTime(0, scheduler).subscribe(value => {
+      results.push(value);
+
+      if (value === 1) {
+        source.next(2);
+      }
+    });
+    source.next(1);
+    scheduler.flush();
+
+    expect(results).to.deep.equal([1, 2]);
   });
 });

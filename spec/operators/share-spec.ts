@@ -1,14 +1,9 @@
 import { expect } from 'chai';
-import * as Rx from '../../dist/package/Rx';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { share } from 'rxjs/operators';
+import { Observable, EMPTY, NEVER } from 'rxjs';
 
-declare const { asDiagram };
-declare const hot: typeof marbleTestingSignature.hot;
-declare const cold: typeof marbleTestingSignature.cold;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
-
-const Observable = Rx.Observable;
+declare function asDiagram(arg: string): Function;
 
 /** @test {share} */
 describe('Observable.prototype.share', () => {
@@ -25,7 +20,7 @@ describe('Observable.prototype.share', () => {
 
   it('should share a single subscription', () => {
     let subscriptionCount = 0;
-    const obs = new Observable((observer: Rx.Observer<any>) => {
+    const obs = new Observable<never>(observer => {
       subscriptionCount++;
     });
 
@@ -302,7 +297,7 @@ describe('Observable.prototype.share', () => {
   });
 
   it('should not change the output of the observable when never', () => {
-    const e1 = Observable.never();
+    const e1 = NEVER;
     const expected = '-';
 
     expectObservable(e1.share()).toBe(expected);

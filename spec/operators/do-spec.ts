@@ -1,19 +1,16 @@
 import { expect } from 'chai';
-import * as Rx from '../../dist/package/Rx';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import * as Rx from 'rxjs/Rx';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare const { asDiagram };
-declare const hot: typeof marbleTestingSignature.hot;
-declare const cold: typeof marbleTestingSignature.cold;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
+declare function asDiagram(arg: string): Function;
 
 const Observable = Rx.Observable;
 const Subject = Rx.Subject;
 
 /** @test {do} */
 describe('Observable.prototype.do', () => {
-  asDiagram('do(x => console.log(x))')('should mirror multiple values and complete', () => {
+  asDiagram('do(x => console.log(x))')
+  ('should mirror multiple values and complete', () => {
     const e1 =  cold('--1--2--3--|');
     const e1subs =   '^          !';
     const expected = '--1--2--3--|';
@@ -68,8 +65,8 @@ describe('Observable.prototype.do', () => {
 
   it('should handle everything with a Subject', (done: MochaDone) => {
     const expected = [1, 2, 3];
-    const results = [];
-    const subject = new Subject();
+    const results: number[] = [];
+    const subject = new Subject<number>();
 
     subject.subscribe({
       next: (x: any) => {
@@ -85,7 +82,7 @@ describe('Observable.prototype.do', () => {
     });
 
     Observable.of(1, 2, 3)
-      .do(<Rx.Observer<number>>subject)
+      .do(subject)
       .subscribe();
   });
 

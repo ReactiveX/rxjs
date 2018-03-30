@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../../../dist/package/Rx';
-import { root } from '../../../dist/package/util/root';
+import * as Rx from 'rxjs/Rx';
+import { root } from 'rxjs/util/root';
 
 declare const global: any;
 
@@ -50,14 +50,15 @@ describe('Observable.ajax', () => {
 
     const obj: Rx.AjaxRequest = {
       url: '/',
-      method: ''
+      method: '',
+      crossDomain: false,
     };
 
     Rx.Observable.ajax(obj).subscribe();
     expect(axObjectStub).to.have.been.called;
   });
 
-  it('should throw if not able to create XMLHttpRequest', () => {
+  it('should raise an error if not able to create XMLHttpRequest', () => {
     root.XMLHttpRequest = null;
     root.ActiveXObject = null;
 
@@ -66,9 +67,7 @@ describe('Observable.ajax', () => {
       method: ''
     };
 
-    expect(() => {
-      Rx.Observable.ajax(obj).subscribe();
-    }).to.throw();
+    Rx.Observable.ajax(obj).subscribe(null, err => expect(err).to.exist);
   });
 
   it('should create XMLHttpRequest for CORS', () => {
@@ -100,7 +99,7 @@ describe('Observable.ajax', () => {
     expect(xDomainStub).to.have.been.called;
   });
 
-  it('should throw if not able to create CORS request', () => {
+  it('should raise an error if not able to create CORS request', () => {
     root.XMLHttpRequest = null;
     root.XDomainRequest = null;
 
@@ -111,9 +110,7 @@ describe('Observable.ajax', () => {
       withCredentials: true
     };
 
-    expect(() => {
-      Rx.Observable.ajax(obj).subscribe();
-    }).to.throw();
+    Rx.Observable.ajax(obj).subscribe(null, err => expect(err).to.exist);
   });
 
   it('should set headers', () => {
@@ -136,7 +133,21 @@ describe('Observable.ajax', () => {
       'Content-Type': 'kenny/loggins',
       'Fly-Into-The': 'Dangah Zone!',
       'Take-A-Ride-Into-The': 'Danger ZoooOoone!',
-      'X-Requested-With': 'XMLHttpRequest'
+    });
+  });
+
+  it('should set the X-Requested-With if crossDomain is false', () => {
+    Rx.Observable.ajax({
+      url: '/test/monkey',
+      method: 'GET',
+      crossDomain: false,
+    })
+    .subscribe();
+
+    const request = MockXMLHttpRequest.mostRecent;
+
+    expect(request.requestHeaders).to.deep.equal({
+      'X-Requested-With': 'XMLHttpRequest',
     });
   });
 
@@ -234,7 +245,7 @@ describe('Observable.ajax', () => {
   });
 
   it('should fail on 404', () => {
-    let error;
+    let error: any;
     const obj = {
       url: '/flibbertyJibbet',
       normalizeError: (e: any, xhr: any, type: any) => {
@@ -266,8 +277,9 @@ describe('Observable.ajax', () => {
     expect(error.status).to.equal(404);
   });
 
-  it('should fail on 404', () => {
-    let error;
+  it('should succeed on 300', () => {
+    let result;
+    let complete = false;
     const obj = {
       url: '/flibbertyJibbet',
       normalizeError: (e: any, xhr: any, type: any) => {
@@ -277,13 +289,12 @@ describe('Observable.ajax', () => {
       method: ''
     };
 
-    Rx.Observable.ajax(obj).subscribe(x => {
-      throw 'should not next';
-    }, (err: any) => {
-      error = err;
-    }, () => {
-      throw 'should not complete';
-    });
+    Rx.Observable.ajax(obj)
+      .subscribe((x: any) => {
+        result = x;
+      }, null, () => {
+        complete = true;
+      });
 
     expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
 
@@ -293,9 +304,9 @@ describe('Observable.ajax', () => {
       'responseText': 'Wee! I am text!'
     });
 
-    expect(error instanceof Rx.AjaxError).to.be.true;
-    expect(error.message).to.equal('ajax error 300');
-    expect(error.status).to.equal(300);
+    expect(result.xhr).exist;
+    expect(result.response).to.deep.equal('Wee! I am text!');
+    expect(complete).to.be.true;
   });
 
   it('should succeed no settings', () => {
@@ -437,7 +448,6 @@ describe('Observable.ajax', () => {
       expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
       expect(MockXMLHttpRequest.mostRecent.data).to.deep.equal(body);
       expect(MockXMLHttpRequest.mostRecent.requestHeaders).to.deep.equal({
-        'X-Requested-With': 'XMLHttpRequest',
       });
     });
 
@@ -628,7 +638,6 @@ describe('Observable.ajax', () => {
       expect(request.method).to.equal('POST');
       expect(request.url).to.equal('/flibbertyJibbet');
       expect(request.requestHeaders).to.deep.equal({
-        'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       });
 
@@ -639,6 +648,39 @@ describe('Observable.ajax', () => {
       });
 
       expect(request.data).to.equal('foo=bar&hi=there%20you');
+      expect(result.response).to.deep.equal(expected);
+      expect(complete).to.be.true;
+    });
+
+    it('should properly encode full URLs passed', () => {
+      const expected = { test: 'https://google.com/search?q=encodeURI+vs+encodeURIComponent' };
+      let result: Rx.AjaxResponse;
+      let complete = false;
+
+      Rx.Observable
+        .ajax.post('/flibbertyJibbet', expected)
+        .subscribe(x => {
+          result = x;
+        }, null, () => {
+          complete = true;
+        });
+
+      const request = MockXMLHttpRequest.mostRecent;
+
+      expect(request.method).to.equal('POST');
+      expect(request.url).to.equal('/flibbertyJibbet');
+      expect(request.requestHeaders).to.deep.equal({
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      });
+
+      request.respondWith({
+        'status': 200,
+        'contentType': 'application/json',
+        'responseText': JSON.stringify(expected)
+      });
+
+      expect(request.data)
+        .to.equal('test=https%3A%2F%2Fgoogle.com%2Fsearch%3Fq%3DencodeURI%2Bvs%2BencodeURIComponent');
       expect(result.response).to.deep.equal(expected);
       expect(complete).to.be.true;
     });
@@ -661,7 +703,6 @@ describe('Observable.ajax', () => {
       expect(request.method).to.equal('POST');
       expect(request.url).to.equal('/flibbertyJibbet');
       expect(request.requestHeaders).to.deep.equal({
-        'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       });
 
@@ -696,7 +737,6 @@ describe('Observable.ajax', () => {
       expect(request.method).to.equal('POST');
       expect(request.url).to.equal('/flibbertyJibbet');
       expect(request.requestHeaders).to.deep.equal({
-        'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       });
 
@@ -805,7 +845,7 @@ describe('Observable.ajax', () => {
 
   it('should work fine when XMLHttpRequest ontimeout property is monkey patched', function() {
     Object.defineProperty(root.XMLHttpRequest.prototype, 'ontimeout', {
-      set: function (fn: (e: ProgressEvent) => any) {
+      set(fn: (e: ProgressEvent) => any) {
         const wrapFn = (ev: ProgressEvent) => {
           const result = fn.call(this, ev);
           if (result === false) {
@@ -825,7 +865,11 @@ describe('Observable.ajax', () => {
     };
 
     Rx.Observable.ajax(ajaxRequest)
-      .subscribe();
+      .subscribe({
+        error(err) {
+          /* expected, ignore */
+        }
+      });
 
     const request = MockXMLHttpRequest.mostRecent;
     try {
@@ -881,7 +925,7 @@ describe('Observable.ajax', () => {
 
   it('should work fine when XMLHttpRequest onerror property is monkey patched', function() {
     Object.defineProperty(root.XMLHttpRequest.prototype, 'onerror', {
-      set: function (fn: (e: ProgressEvent) => any) {
+      set(fn: (e: ProgressEvent) => any) {
         const wrapFn = (ev: ProgressEvent) => {
           const result = fn.call(this, ev);
           if (result === false) {
@@ -899,7 +943,11 @@ describe('Observable.ajax', () => {
     Rx.Observable.ajax({
       url: '/flibbertyJibbet'
     })
-      .subscribe();
+      .subscribe({
+        error(err) {
+          /* expected */
+        }
+      });
 
     const request = MockXMLHttpRequest.mostRecent;
 

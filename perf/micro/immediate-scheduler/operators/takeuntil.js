@@ -11,10 +11,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-  .add('old takeUntil with immediate scheduler', function () {
-    oldTakeUntilWithImmediateScheduler.subscribe(_next, _error, _complete);
-  })
-  .add('new takeUntil with immediate scheduler', function () {
-    newTakeUntilWithImmediateScheduler.subscribe(_next, _error, _complete);
-  });
+    .add('old takeUntil with immediate scheduler', function () {
+      oldTakeUntilWithImmediateScheduler.subscribe(_next, _error, _complete);
+    })
+    .add('new takeUntil with immediate scheduler', function () {
+      newTakeUntilWithImmediateScheduler.subscribe(_next, _error, _complete);
+    });
 };

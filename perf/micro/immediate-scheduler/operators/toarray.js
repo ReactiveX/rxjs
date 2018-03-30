@@ -9,10 +9,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old toArray with immediate scheduler', function () {
-        oldToArrayWithImmediateScheduler.subscribe(_next, _error, _complete);
-      })
-      .add('new toArray with immediate scheduler', function () {
-        newToArrayWithImmediateScheduler.subscribe(_next, _error, _complete);
-      });
+    .add('old toArray with immediate scheduler', function () {
+      oldToArrayWithImmediateScheduler.subscribe(_next, _error, _complete);
+    })
+    .add('new toArray with immediate scheduler', function () {
+      newToArrayWithImmediateScheduler.subscribe(_next, _error, _complete);
+    });
 };

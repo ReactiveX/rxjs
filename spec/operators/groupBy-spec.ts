@@ -1,13 +1,9 @@
 import { expect } from 'chai';
-import * as Rx from '../../dist/package/Rx';
-import { GroupedObservable } from '../../dist/package/operators/groupBy';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import * as Rx from 'rxjs/Rx';
+import { GroupedObservable } from 'rxjs/operators/groupBy';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare const { asDiagram };
-declare const hot: typeof marbleTestingSignature.hot;
-declare const cold: typeof marbleTestingSignature.cold;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
+declare function asDiagram(arg: string): Function;
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;

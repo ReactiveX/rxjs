@@ -2,7 +2,7 @@ var RxOld = require('rx');
 var RxNew = require('../../../../index');
 
 module.exports = function range(suite) {
-    // add tests
+  // add tests
 
   var oldRangeWithImmediateScheduler = RxOld.Observable.range(0, 25, RxOld.Scheduler.immediate);
   var newRangeWithImmediateScheduler = RxNew.Observable.range(0, 25);

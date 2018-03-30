@@ -1,12 +1,9 @@
 import { expect } from 'chai';
-import * as Rx from '../../dist/package/Rx';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import * as Rx from 'rxjs/Rx';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare const { asDiagram };
-declare const hot: typeof marbleTestingSignature.hot;
-declare const cold: typeof marbleTestingSignature.cold;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
+declare function asDiagram(arg: string): Function;
+declare const type: Function;
 
 const Observable = Rx.Observable;
 
@@ -34,7 +31,7 @@ describe('Observable.prototype.publishLast', () => {
 
   it('should do nothing if connect is not called, despite subscriptions', () => {
     const source = cold('--1-2---3-4--5-|');
-    const sourceSubs = [];
+    const sourceSubs: string[] = [];
     const published = source.publishLast();
     const expected =    '-';
 
@@ -99,7 +96,7 @@ describe('Observable.prototype.publishLast', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
 
     // Set up unsubscription action
-    let connection;
+    let connection: Rx.Subscription;
     expectObservable(hot(unsub).do(() => {
       connection.unsubscribe();
     })).toBe(unsub);
@@ -111,7 +108,7 @@ describe('Observable.prototype.publishLast', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^        !   ';
     const published = source
-      .mergeMap((x: string) => Observable.of(x))
+      .mergeMap((x) => Observable.of(x))
       .publishLast();
     const subscriber1 = hot('a|           ').mergeMapTo(published);
     const expected1   =     '----------   ';
@@ -127,7 +124,7 @@ describe('Observable.prototype.publishLast', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
 
     // Set up unsubscription action
-    let connection;
+    let connection: Rx.Subscription;
     expectObservable(hot(unsub).do(() => {
       connection.unsubscribe();
     })).toBe(unsub);
@@ -223,12 +220,12 @@ describe('Observable.prototype.publishLast', () => {
     published.connect();
   });
 
-  it('should multicast one observable to multiple observers', (done: MochaDone) => {
-    const results1 = [];
-    const results2 = [];
+  it('should multicast one observable to multiple observers', (done) => {
+    const results1: number[] = [];
+    const results2: number[] = [];
     let subscriptions = 0;
 
-    const source = new Observable((observer: Rx.Observer<number>) => {
+    const source = new Observable<number>((observer) => {
       subscriptions++;
       observer.next(1);
       observer.next(2);
@@ -239,11 +236,11 @@ describe('Observable.prototype.publishLast', () => {
 
     const connectable = source.publishLast();
 
-    connectable.subscribe((x: any) => {
+    connectable.subscribe((x) => {
       results1.push(x);
     });
 
-    connectable.subscribe((x: any) => {
+    connectable.subscribe((x) => {
       results2.push(x);
     });
 
@@ -256,5 +253,20 @@ describe('Observable.prototype.publishLast', () => {
     expect(results2).to.deep.equal([4]);
     expect(subscriptions).to.equal(1);
     done();
+  });
+
+  type('should infer the type', () => {
+    /* tslint:disable:no-unused-variable */
+    const source = Rx.Observable.of<number>(1, 2, 3);
+    const result: Rx.ConnectableObservable<number> = source.publishLast();
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type('should infer the type for the pipeable operator', () => {
+    /* tslint:disable:no-unused-variable */
+    const source = Rx.Observable.of<number>(1, 2, 3);
+    // TODO: https://github.com/ReactiveX/rxjs/issues/2972
+    const result: Rx.ConnectableObservable<{}> = Rx.operators.publishLast()(source);
+    /* tslint:enable:no-unused-variable */
   });
 });

@@ -5,11 +5,11 @@ RxJS is a great tool to keep your code less error prone. It does that by using p
 Let us create a simple state store of the value `0`. On each click we want to increase that count in our state store.
 ```js
 var button = document.querySelector('button');
-Rx.Observable.fromEvent(button, 'click')
+Rx.Observable.fromEvent(button, 'click').pipe(
   // scan (reduce) to a stream of counts
-  .scan(count => count + 1, 0)
+  scan(count => count + 1, 0)
   // Set the count on an element each time it changes
-  .subscribe(count => document.querySelector('#count').innerHTML = count);
+).subscribe(count => document.querySelector('#count').innerHTML = count);
 ```
 So producing state is within the world of RxJS, but changing the DOM is a side effect which happens at "the end of the line".
 
@@ -18,51 +18,60 @@ Applications use state stores to hold state. These are called different things i
 
 ```js
 var increaseButton = document.querySelector('#increase');
-var increase = Rx.Observable.fromEvent(increaseButton, 'click')
+var increase = Rx.Observable.fromEvent(increaseButton, 'click').pipe(
   // We map to a function that will change our state
-  .map(() => state => Object.assign({}, state, {count: state.count + 1}));
+  map(() => state => Object.assign({}, state, {count: state.count + 1}))
+);
 ```
 
 What we do here is mapping a click event to a state changing function. So instead of mapping to a value, we map to a function. A function will change the state of our state store. So now let us see how we actually make the change.
 
 ```js
 var increaseButton = document.querySelector('#increase');
-var increase = Rx.Observable.fromEvent(increaseButton, 'click')
-  .map(() => state => Object.assign({}, state, {count: state.count + 1}));
+var increase = Rx.Observable.fromEvent(increaseButton, 'click').pipe(
+  map(() => state => Object.assign({}, state, {count: state.count + 1}))
+);
 
 // We create an object with our initial state. Whenever a new state change function
 // is received we call it and pass the state. The new state is returned and
 // ready to be changed again on the next click
-var state = increase.scan((state, changeFn) => changeFn(state), {count: 0});
+var state = increase.pipe(
+  scan((state, changeFn) => changeFn(state), {count: 0})
+);
 ```
 
 We can now add a couple of more observables which will also change the same state store.
 
 ```js
 var increaseButton = document.querySelector('#increase');
-var increase = Rx.Observable.fromEvent(increaseButton, 'click')
+var increase = Rx.Observable.fromEvent(increaseButton, 'click').pipe(
   // Again we map to a function the will increase the count
-  .map(() => state => Object.assign({}, state, {count: state.count + 1}));
+  map(() => state => Object.assign({}, state, {count: state.count + 1}))
+);
 
 var decreaseButton = document.querySelector('#decrease');
-var decrease = Rx.Observable.fromEvent(decreaseButton, 'click')
+var decrease = Rx.Observable.fromEvent(decreaseButton, 'click').pipe(
   // We also map to a function that will decrease the count
-  .map(() => state => Object.assign({}, state, {count: state.count - 1}));
+  map(() => state => Object.assign({}, state, {count: state.count - 1}))
+);
 
 var inputElement = document.querySelector('#input');
-var input = Rx.Observable.fromEvent(inputElement, 'keypress')
+var input = Rx.Observable.fromEvent(inputElement, 'keypress').pipe(
   // Let us also map the keypress events to produce an inputValue state
-  .map(event => state => Object.assign({}, state, {inputValue: event.target.value}));
+  map(event => state => Object.assign({}, state, {inputValue: event.target.value}))
+);
 
 // We merge the three state change producing observables
 var state = Rx.Observable.merge(
   increase,
   decrease,
   input
-).scan((state, changeFn) => changeFn(state), {
-  count: 0,
-  inputValue: ''
-});
+).pipe(
+  scan((state, changeFn) => changeFn(state), {
+    count: 0,
+    inputValue: ''
+  })
+);
 
 // We subscribe to state changes and update the DOM
 state.subscribe((state) => {
@@ -102,7 +111,9 @@ var initialState = {
 var state = Observable.merge(
   someObservable,
   someOtherObservable
-).scan((state, changeFn) => changeFn(state), Immutable.fromJS(initialState));
+).pipe(
+  scan((state, changeFn) => changeFn(state), Immutable.fromJS(initialState))
+);
 
 export default state;
 ```
@@ -131,11 +142,12 @@ class MyComponent extends ObservableComponent {
     this.state = {messages: []};
   }
   componentDidMount() {
-    this.messages = messages
+    this.messages = messages.pipe(
       // Accumulate our messages in an array
-      .scan((messages, message) => [message].concat(messages), [])
-      // And render whenever we get a new message
-      .subscribe(messages => this.setState({messages: messages}));
+      scan((messages, message) => [message].concat(messages), [])
+    )
+    // And render whenever we get a new message
+    .subscribe(messages => this.setState({messages: messages}));
   }
   componentWillUnmount() {
     this.messages.unsubscribe();
@@ -144,7 +156,7 @@ class MyComponent extends ObservableComponent {
     return (
       <div>
         <ul>
-          {this.state.messages.map(message => <li>{message.text}</li>)}
+          {this.state.messages.pipe(map(message => <li>{message.text}</li>))}
         </ul>
       </div>
     );

@@ -1,12 +1,7 @@
 import { expect } from 'chai';
-import * as Rx from '../../dist/package/Rx';
+import * as Rx from 'rxjs/Rx';
 import { lowerCaseO } from '../helpers/test-helper';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
-
-declare const hot: typeof marbleTestingSignature.hot;
-declare const cold: typeof marbleTestingSignature.cold;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
@@ -268,7 +263,7 @@ describe('Observable.merge(...observables, Scheduler, number)', () => {
     expectObservable(Observable.merge(e1, e2, e3, 2, rxTestScheduler)).toBe(expected);
   });
 
-  it('should use the scheduler even when one Observable is merged', (done: MochaDone) => {
+  it('should use the scheduler even when one Observable is merged', (done) => {
     let e1Subscribed = false;
     const e1 = Observable.defer(() => {
       e1Subscribed = true;

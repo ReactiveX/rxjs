@@ -1,43 +1,26 @@
 import { expect } from 'chai';
-import * as Rx from '../../dist/package/Rx';
-import { queue } from '../../dist/package/scheduler/queue';
-import { IteratorObservable } from '../../dist/package/observable/IteratorObservable';
+import * as Rx from 'rxjs/Rx';
+import { queue } from 'rxjs/scheduler/queue';
+import { fromIterable } from 'rxjs/observable/fromIterable';
 
-declare const expectObservable;
+declare const expectObservable: any;
 declare const rxTestScheduler: Rx.TestScheduler;
 
-describe('IteratorObservable', () => {
-  it('should create an Observable via constructor', () => {
-    const source = new IteratorObservable([]);
-    expect(source instanceof IteratorObservable).to.be.true;
-  });
-
-  it('should create IteratorObservable via static create function', () => {
-    const s = new IteratorObservable([]);
-    const r = IteratorObservable.create([]);
-    expect(s).to.deep.equal(r);
-  });
-
+describe('fromIterable', () => {
   it('should not accept null (or truthy-equivalent to null) iterator', () => {
     expect(() => {
-      IteratorObservable.create(null);
-    }).to.throw(Error, 'iterator cannot be null.');
+      fromIterable(null, undefined);
+    }).to.throw(Error, 'Iterable cannot be null');
     expect(() => {
-      IteratorObservable.create(void 0);
-    }).to.throw(Error, 'iterator cannot be null.');
+      fromIterable(void 0, undefined);
+    }).to.throw(Error, 'Iterable cannot be null');
   });
 
-  it('should not accept boolean as iterator', () => {
-    expect(() => {
-      IteratorObservable.create(false);
-    }).to.throw(Error, 'object is not iterable');
-  });
-
-  it('should emit members of an array iterator', (done: MochaDone) => {
+  it('should emit members of an array iterator', (done) => {
     const expected = [10, 20, 30, 40];
-    IteratorObservable.create([10, 20, 30, 40])
+    fromIterable([10, 20, 30, 40], undefined)
       .subscribe(
-        (x: number) => { expect(x).to.equal(expected.shift()); },
+        (x) => { expect(x).to.equal(expected.shift()); },
         (x) => {
           done(new Error('should not be called'));
         }, () => {
@@ -45,6 +28,24 @@ describe('IteratorObservable', () => {
           done();
         }
       );
+  });
+
+  it('should get new iterator for each subscription', () => {
+    const expected = [
+      Rx.Notification.createNext(10),
+      Rx.Notification.createNext(20),
+      Rx.Notification.createComplete()
+    ];
+
+    const e1 = fromIterable<number>(new Int32Array([10, 20]), undefined).observeOn(rxTestScheduler);
+
+    let v1, v2: Array<Rx.Notification<any>>;
+    e1.materialize().toArray().subscribe((x) => v1 = x);
+    e1.materialize().toArray().subscribe((x) => v2 = x);
+
+    rxTestScheduler.flush();
+    expect(v1).to.deep.equal(expected);
+    expect(v2).to.deep.equal(expected);
   });
 
   it('should finalize generators if the subscription ends', () => {
@@ -64,9 +65,9 @@ describe('IteratorObservable', () => {
       }
     };
 
-    const results = [];
+    const results: any[] = [];
 
-    IteratorObservable.create(iterable)
+    fromIterable(iterable as any, undefined)
       .take(3)
       .subscribe(
         x => results.push(x),
@@ -95,9 +96,9 @@ describe('IteratorObservable', () => {
       }
     };
 
-    const results = [];
+    const results: any[] = [];
 
-    IteratorObservable.create(iterable, queue)
+    fromIterable(iterable as any, queue)
       .take(3)
       .subscribe(
         x => results.push(x),
@@ -110,7 +111,7 @@ describe('IteratorObservable', () => {
   });
 
   it('should emit members of an array iterator on a particular scheduler', () => {
-    const source = IteratorObservable.create(
+    const source = fromIterable(
       [10, 20, 30, 40],
       rxTestScheduler
     );
@@ -121,16 +122,16 @@ describe('IteratorObservable', () => {
   });
 
   it('should emit members of an array iterator on a particular scheduler, ' +
-  'but is unsubscribed early', (done: MochaDone) => {
+  'but is unsubscribed early', (done) => {
     const expected = [10, 20, 30, 40];
 
-    const source = IteratorObservable.create(
+    const source = fromIterable(
       [10, 20, 30, 40],
       Rx.Scheduler.queue
     );
 
     const subscriber = Rx.Subscriber.create(
-      (x: number) => {
+      (x) => {
         expect(x).to.equal(expected.shift());
         if (x === 30) {
           subscriber.unsubscribe();
@@ -145,11 +146,11 @@ describe('IteratorObservable', () => {
     source.subscribe(subscriber);
   });
 
-  it('should emit characters of a string iterator', (done: MochaDone) => {
+  it('should emit characters of a string iterator', (done) => {
     const expected = ['f', 'o', 'o'];
-    IteratorObservable.create('foo')
+    fromIterable('foo', undefined)
       .subscribe(
-        (x: number) => { expect(x).to.equal(expected.shift()); },
+        (x) => { expect(x).to.equal(expected.shift()); },
         (x) => {
           done(new Error('should not be called'));
         }, () => {
@@ -159,11 +160,11 @@ describe('IteratorObservable', () => {
       );
   });
 
-  it('should be possible to unsubscribe in the middle of the iteration', (done: MochaDone) => {
+  it('should be possible to unsubscribe in the middle of the iteration', (done) => {
     const expected = [10, 20, 30];
 
     const subscriber = Rx.Subscriber.create(
-      (x: number) => {
+      (x) => {
         expect(x).to.equal(expected.shift());
         if (x === 30) {
           subscriber.unsubscribe();
@@ -176,6 +177,6 @@ describe('IteratorObservable', () => {
       }
     );
 
-    IteratorObservable.create([10, 20, 30, 40, 50, 60]).subscribe(subscriber);
+    fromIterable([10, 20, 30, 40, 50, 60], undefined).subscribe(subscriber);
   });
 });

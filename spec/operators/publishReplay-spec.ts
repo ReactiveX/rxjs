@@ -1,14 +1,10 @@
 import { expect } from 'chai';
-import * as Rx from '../../dist/package/Rx';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { throwError, ConnectableObservable, EMPTY, NEVER, of, Observable, Subscription } from 'rxjs';
+import { publishReplay } from 'rxjs/operators';
 
-declare const { asDiagram };
-declare const hot: typeof marbleTestingSignature.hot;
-declare const cold: typeof marbleTestingSignature.cold;
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
-declare const expectSubscriptions: typeof marbleTestingSignature.expectSubscriptions;
-
-const Observable = Rx.Observable;
+declare function asDiagram(arg: string): Function;
+declare const type: Function;
 
 /** @test {publishReplay} */
 describe('Observable.prototype.publishReplay', () => {
@@ -25,7 +21,7 @@ describe('Observable.prototype.publishReplay', () => {
   });
 
   it('should return a ConnectableObservable-ish', () => {
-    const source = Observable.of(1).publishReplay();
+    const source = of(1).publishReplay();
     expect(typeof (<any> source)._subscribe === 'function').to.be.true;
     expect(typeof (<any> source).getSubject === 'function').to.be.true;
     expect(typeof source.connect === 'function').to.be.true;
@@ -34,7 +30,7 @@ describe('Observable.prototype.publishReplay', () => {
 
   it('should do nothing if connect is not called, despite subscriptions', () => {
     const source = cold('--1-2---3-4--5-|');
-    const sourceSubs = [];
+    const sourceSubs: string[] = [];
     const published = source.publishReplay(1);
     const expected =    '-';
 
@@ -118,7 +114,7 @@ describe('Observable.prototype.publishReplay', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
 
     // Set up unsubscription action
-    let connection;
+    let connection: Subscription;
     expectObservable(hot(unsub).do(() => {
       connection.unsubscribe();
     })).toBe(unsub);
@@ -130,7 +126,7 @@ describe('Observable.prototype.publishReplay', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^        !   ';
     const published = source
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x) => of(x))
       .publishReplay(1);
     const subscriber1 = hot('a|           ').mergeMapTo(published);
     const expected1   =     '-1-2-3----   ';
@@ -146,7 +142,7 @@ describe('Observable.prototype.publishReplay', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
 
     // Set up unsubscription action
-    let connection;
+    let connection: Subscription;
     expectObservable(hot(unsub).do(() => {
       connection.unsubscribe();
     })).toBe(unsub);
@@ -223,12 +219,12 @@ describe('Observable.prototype.publishReplay', () => {
     });
   });
 
-  it('should multicast one observable to multiple observers', (done: MochaDone) => {
-    const results1 = [];
-    const results2 = [];
+  it('should multicast one observable to multiple observers', (done) => {
+    const results1: number[] = [];
+    const results2: number[] = [];
     let subscriptions = 0;
 
-    const source = new Observable((observer: Rx.Observer<number>) => {
+    const source = new Observable<number>((observer) => {
       subscriptions++;
       observer.next(1);
       observer.next(2);
@@ -239,10 +235,10 @@ describe('Observable.prototype.publishReplay', () => {
 
     const connectable = source.publishReplay();
 
-    connectable.subscribe((x: number) => {
+    connectable.subscribe((x) => {
       results1.push(x);
     });
-    connectable.subscribe((x: number) => {
+    connectable.subscribe((x) => {
       results2.push(x);
     });
 
@@ -257,12 +253,12 @@ describe('Observable.prototype.publishReplay', () => {
     done();
   });
 
-  it('should replay as many events as specified by the bufferSize', (done: MochaDone) => {
-    const results1 = [];
-    const results2 = [];
+  it('should replay as many events as specified by the bufferSize', (done) => {
+    const results1: number[] = [];
+    const results2: number[] = [];
     let subscriptions = 0;
 
-    const source = new Observable((observer: Rx.Observer<number>) => {
+    const source = new Observable<number>((observer) => {
       subscriptions++;
       observer.next(1);
       observer.next(2);
@@ -273,7 +269,7 @@ describe('Observable.prototype.publishReplay', () => {
 
     const connectable = source.publishReplay(2);
 
-    connectable.subscribe((x: number) => {
+    connectable.subscribe((x) => {
       results1.push(x);
     });
 
@@ -282,7 +278,7 @@ describe('Observable.prototype.publishReplay', () => {
 
     connectable.connect();
 
-    connectable.subscribe((x: number) => {
+    connectable.subscribe((x) => {
       results2.push(x);
     });
 
@@ -294,11 +290,11 @@ describe('Observable.prototype.publishReplay', () => {
 
   it('should emit replayed values and resubscribe to the source when ' +
     'reconnected without source completion', () => {
-    const results1 = [];
-    const results2 = [];
+    const results1: number[] = [];
+    const results2: number[] = [];
     let subscriptions = 0;
 
-    const source = new Observable((observer: Rx.Observer<number>) => {
+    const source = new Observable<number>((observer) => {
       subscriptions++;
       observer.next(1);
       observer.next(2);
@@ -308,7 +304,7 @@ describe('Observable.prototype.publishReplay', () => {
     });
 
     const connectable = source.publishReplay(2);
-    const subscription1 = connectable.subscribe((x: number) => {
+    const subscription1 = connectable.subscribe((x) => {
       results1.push(x);
     });
 
@@ -322,7 +318,7 @@ describe('Observable.prototype.publishReplay', () => {
     expect(results2).to.deep.equal([]);
     expect(subscriptions).to.equal(1);
 
-    const subscription2 = connectable.subscribe((x: number) => {
+    const subscription2 = connectable.subscribe((x) => {
       results2.push(x);
     });
 
@@ -334,12 +330,12 @@ describe('Observable.prototype.publishReplay', () => {
     expect(subscriptions).to.equal(2);
   });
 
-  it('should emit replayed values plus completed when subscribed after completed', (done: MochaDone) => {
-    const results1 = [];
-    const results2 = [];
+  it('should emit replayed values plus completed when subscribed after completed', (done) => {
+    const results1: number[] = [];
+    const results2: number[] = [];
     let subscriptions = 0;
 
-    const source = new Observable((observer: Rx.Observer<number>) => {
+    const source = new Observable<number>((observer) => {
       subscriptions++;
       observer.next(1);
       observer.next(2);
@@ -350,7 +346,7 @@ describe('Observable.prototype.publishReplay', () => {
 
     const connectable = source.publishReplay(2);
 
-    connectable.subscribe((x: number) => {
+    connectable.subscribe((x) => {
       results1.push(x);
     });
 
@@ -363,7 +359,7 @@ describe('Observable.prototype.publishReplay', () => {
     expect(results2).to.deep.equal([]);
     expect(subscriptions).to.equal(1);
 
-    connectable.subscribe((x: number) => {
+    connectable.subscribe((x) => {
       results2.push(x);
     }, (x) => {
       done(new Error('should not be called'));
@@ -408,5 +404,119 @@ describe('Observable.prototype.publishReplay', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
 
     published.connect();
+  });
+
+  it('should mirror a simple source Observable with selector', () => {
+    const values = {a: 2, b: 4, c: 6, d: 8};
+    const selector = (observable: Observable<string>) => observable.map(v => 2 * +v);
+    const source = cold('--1-2---3-4---|');
+    const sourceSubs =  '^             !';
+    const published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
+    const expected =    '--a-b---c-d---|';
+
+    expectObservable(published).toBe(expected, values);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
+  it('should emit an error when the selector throws an exception', () => {
+    const error = "It's broken";
+    const selector = () => {
+      throw error;
+    };
+    const source = cold('--1-2---3-4---|');
+    const published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
+
+    // The exception is thrown outside Rx chain (not as an error notification).
+    expect(() => published.subscribe()).to.throw(error);
+  });
+
+  it('should emit an error when the selector returns an Observable that emits an error', () => {
+    const error = "It's broken";
+    const innerObservable = cold('--5-6----#', undefined, error);
+    const selector = (observable: Observable<string>) => observable.mergeMapTo(innerObservable);
+    const source = cold('--1--2---3---|');
+    const sourceSubs =  '^          !';
+    const published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
+    const expected =    '----5-65-6-#';
+
+    expectObservable(published).toBe(expected, undefined, error);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
+  it('should terminate immediately when the selector returns an empty Observable', () => {
+    const selector = () => Observable.empty();
+    const source = cold('--1--2---3---|');
+    const sourceSubs =  '(^!)';
+    const published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
+    const expected =    '|';
+
+    expectObservable(published).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
+  it('should not emit and should not complete/error when the selector returns never', () => {
+    const selector = () => NEVER;
+    const source = cold('-');
+    const sourceSubs =  '^';
+    const published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
+    const expected =    '-';
+
+    expectObservable(published).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
+  it('should emit error when the selector returns Observable.throw', () => {
+    const error = "It's broken";
+    const selector = () => throwError(error);
+    const source = cold('--1--2---3---|');
+    const sourceSubs =  '(^!)';
+    const published = source.publishReplay(1, Number.POSITIVE_INFINITY, selector);
+    const expected =    '#';
+
+    expectObservable(published).toBe(expected, undefined, error);
+    expectSubscriptions(source.subscriptions).toBe(sourceSubs);
+  });
+
+  type('should infer the type', () => {
+    /* tslint:disable:no-unused-variable */
+    const source = of<number>(1, 2, 3);
+    const result: ConnectableObservable<number> = source.publishReplay(1);
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type('should infer the type with a selector', () => {
+    /* tslint:disable:no-unused-variable */
+    const source = of<number>(1, 2, 3);
+    const result: Observable<number> = source.publishReplay(1, undefined, s => s.map(x => x));
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type('should infer the type with a type-changing selector', () => {
+    /* tslint:disable:no-unused-variable */
+    const source = of<number>(1, 2, 3);
+    const result: Observable<string> = source.publishReplay(1, undefined, s => s.map(x => x + '!'));
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type('should infer the type for the pipeable operator', () => {
+    /* tslint:disable:no-unused-variable */
+    const source = of<number>(1, 2, 3);
+    // TODO: https://github.com/ReactiveX/rxjs/issues/2972
+    const result: ConnectableObservable<number> = publishReplay<number>(1)(source);
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type('should infer the type for the pipeable operator with a selector', () => {
+    /* tslint:disable:no-unused-variable */
+    const source = of<number>(1, 2, 3);
+    const result: Observable<number> = source.pipe(publishReplay(1, undefined, s => s.map(x => x)));
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type('should infer the type for the pipeable operator with a type-changing selector', () => {
+    /* tslint:disable:no-unused-variable */
+    const source = of<number>(1, 2, 3);
+    const result: Observable<string> = source.pipe(publishReplay(1, undefined, s => s.map(x => x + '!')));
+    /* tslint:enable:no-unused-variable */
   });
 });

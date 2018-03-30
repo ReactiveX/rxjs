@@ -10,10 +10,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old takeWhile with immediate scheduler', function () {
-        oldTakeWhileWithImmediateScheduler.subscribe(_next, _error, _complete);
-      })
-      .add('new takeWhile with immediate scheduler', function () {
-        newTakeWhileWithImmediateScheduler.subscribe(_next, _error, _complete);
-      });
+    .add('old takeWhile with immediate scheduler', function () {
+      oldTakeWhileWithImmediateScheduler.subscribe(_next, _error, _complete);
+    })
+    .add('new takeWhile with immediate scheduler', function () {
+      newTakeWhileWithImmediateScheduler.subscribe(_next, _error, _complete);
+    });
 };

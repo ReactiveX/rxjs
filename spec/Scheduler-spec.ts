@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as Rx from '../dist/package/Rx';
+import * as Rx from 'rxjs/Rx';
 
 const Scheduler = Rx.Scheduler;
 

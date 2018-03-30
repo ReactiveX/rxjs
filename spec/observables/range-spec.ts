@@ -1,20 +1,18 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../../dist/package/Rx';
-import { RangeObservable } from '../../dist/package/observable/RangeObservable';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { Observable, Subscriber, asapScheduler as asap, range} from 'rxjs';
+import { TestScheduler } from 'rxjs/testing';
+import { expectObservable } from '../helpers/marble-testing';
+import { dispatch } from 'rxjs/observable/range';
 
-declare const { asDiagram };
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
+declare const asDiagram: any;
 
-declare const rxTestScheduler: Rx.TestScheduler;
-const Observable = Rx.Observable;
-const asap = Rx.Scheduler.asap;
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {range} */
-describe('Observable.range', () => {
+describe('range', () => {
   asDiagram('range(1, 10)')('should create an observable with numbers 1 to 10', () => {
-    const e1 = Observable.range(1, 10)
+    const e1 = range(1, 10)
       // for the purpose of making a nice diagram, spread out the synchronous emissions
       .concatMap((x, i) => Observable.of(x).delay(i === 0 ? 0 : 20, rxTestScheduler));
     const expected = 'a-b-c-d-e-f-g-h-i-(j|)';
@@ -34,8 +32,8 @@ describe('Observable.range', () => {
   });
 
   it('should synchronously create a range of values by default', () => {
-    const results = [];
-    Observable.range(12, 4).subscribe(function (x) {
+    const results = [] as any[];
+    range(12, 4).subscribe(function (x) {
       results.push(x);
     });
     expect(results).to.deep.equal([12, 13, 14, 15]);
@@ -45,9 +43,7 @@ describe('Observable.range', () => {
     const expected = [12, 13, 14, 15];
     sinon.spy(asap, 'schedule');
 
-    const source = Observable.range(12, 4, asap);
-
-    expect((<any>source).scheduler).to.deep.equal(asap);
+    const source = range(12, 4, asap);
 
     source.subscribe(function (x) {
       expect(asap.schedule).have.been.called;
@@ -64,22 +60,10 @@ describe('Observable.range', () => {
 });
 
 describe('RangeObservable', () => {
-  describe('create', () => {
-    it('should create a RangeObservable', () => {
-      const observable = RangeObservable.create(12, 4);
-      expect(observable instanceof RangeObservable).to.be.true;
-    });
-
-    it('should accept a scheduler', () => {
-      const observable = RangeObservable.create(12, 4, asap);
-      expect((<any>observable).scheduler).to.deep.equal(asap);
-    });
-  });
-
   describe('dispatch', () => {
     it('should complete if index >= count', () => {
-      const o = new Rx.Subscriber();
-      const obj: Rx.Subscriber<any> = <any>sinon.stub(o);
+      const o = new Subscriber();
+      const obj: Subscriber<any> = <any>sinon.stub(o);
 
       const state = {
         subscriber: obj,
@@ -88,15 +72,15 @@ describe('RangeObservable', () => {
         count: 9
       };
 
-      RangeObservable.dispatch(state);
+      dispatch.call({}, state);
 
       expect(state.subscriber.complete).have.been.called;
       expect(state.subscriber.next).not.have.been.called;
     });
 
     it('should next out another value and increment the index and start', () => {
-      const o = new Rx.Subscriber();
-      const obj: Rx.Subscriber<any> = <any>sinon.stub(o);
+      const o = new Subscriber();
+      const obj: Subscriber<any> = <any>sinon.stub(o);
 
       const state = {
         subscriber: obj,
@@ -109,7 +93,7 @@ describe('RangeObservable', () => {
         schedule: sinon.spy()
       };
 
-      RangeObservable.dispatch.call(thisArg, state);
+      dispatch.call(thisArg, state);
 
       expect(state.subscriber.complete).not.have.been.called;
       expect(state.subscriber.next).have.been.calledWith(5);

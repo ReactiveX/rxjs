@@ -29,6 +29,7 @@ module.exports = {
         }
       }
     },
+    emptySubs: marbleTesting.emptySubs,
     hot: marbleTesting.hot,
     cold: marbleTesting.cold,
     expectObservable: marbleTesting.expectObservable,

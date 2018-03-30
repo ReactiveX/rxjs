@@ -1,34 +1,33 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from '../../dist/package/Rx';
-import { noop } from '../../dist/package/util/noop';
-import marbleTestingSignature = require('../helpers/marble-testing'); // tslint:disable-line:no-require-imports
+import { expectObservable } from '../helpers/marble-testing';
 
-declare const { asDiagram };
-declare const expectObservable: typeof marbleTestingSignature.expectObservable;
+import { fromEventPattern, noop, NEVER, timer } from 'rxjs';
+import { mapTo, take, concat } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
 
-declare const rxTestScheduler: Rx.TestScheduler;
-const Observable = Rx.Observable;
+declare function asDiagram(arg: string): Function;
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {fromEventPattern} */
-describe('Observable.fromEventPattern', () => {
+describe('fromEventPattern', () => {
   asDiagram('fromEventPattern(addHandler, removeHandler)')
   ('should create an observable from the handler API', () => {
-    function addHandler(h) {
-      Observable.timer(50, 20, rxTestScheduler)
-        .mapTo('ev')
-        .take(2)
-        .concat(Observable.never())
-        .subscribe(h);
+    function addHandler(h: any) {
+      timer(50, 20, rxTestScheduler).pipe(
+        mapTo('ev'),
+        take(2),
+        concat(NEVER)
+      ).subscribe(h);
     }
-    const e1 = Observable.fromEventPattern(addHandler);
+    const e1 = fromEventPattern(addHandler);
     const expected = '-----x-x---';
     expectObservable(e1).toBe(expected, {x: 'ev'});
   });
 
   it('should call addHandler on subscription', () => {
     const addHandler = sinon.spy();
-    Observable.fromEventPattern(addHandler, noop).subscribe(noop);
+    fromEventPattern(addHandler, noop).subscribe(noop);
 
     const call = addHandler.getCall(0);
     expect(addHandler).calledOnce;
@@ -38,7 +37,7 @@ describe('Observable.fromEventPattern', () => {
   it('should call removeHandler on unsubscription', () => {
     const removeHandler = sinon.spy();
 
-    Observable.fromEventPattern(noop, removeHandler).subscribe(noop).unsubscribe();
+    fromEventPattern(noop, removeHandler).subscribe(noop).unsubscribe();
 
     const call = removeHandler.getCall(0);
     expect(removeHandler).calledOnce;
@@ -47,7 +46,7 @@ describe('Observable.fromEventPattern', () => {
 
   it('should work without optional removeHandler', () => {
     const addHandler: (h: Function) => any = sinon.spy();
-    Observable.fromEventPattern(addHandler).subscribe(noop);
+    fromEventPattern(addHandler).subscribe(noop);
 
     expect(addHandler).calledOnce;
   });
@@ -56,14 +55,14 @@ describe('Observable.fromEventPattern', () => {
     const expected = { signal: true};
     const addHandler = () => expected;
     const removeHandler = sinon.spy();
-    Observable.fromEventPattern(addHandler, removeHandler).subscribe(noop).unsubscribe();
+    fromEventPattern(addHandler, removeHandler).subscribe(noop).unsubscribe();
 
     const call = removeHandler.getCall(0);
     expect(call).calledWith(sinon.match.any, expected);
   });
 
   it('should send errors in addHandler down the error path', (done: MochaDone) => {
-    Observable.fromEventPattern((h: any) => {
+    fromEventPattern((h: any) => {
       throw 'bad';
     }, noop).subscribe(
       () => done(new Error('should not be called')),
@@ -74,8 +73,8 @@ describe('Observable.fromEventPattern', () => {
   });
 
   it('should accept a selector that maps outgoing values', (done: MochaDone) => {
-    let target;
-    const trigger = function (...args) {
+    let target: any;
+    const trigger = function (...args: any[]) {
       if (target) {
         target.apply(null, arguments);
       }
@@ -91,7 +90,7 @@ describe('Observable.fromEventPattern', () => {
       return a + b + '!';
     };
 
-    Observable.fromEventPattern(addHandler, removeHandler, selector).take(1)
+    fromEventPattern(addHandler, removeHandler, selector).pipe(take(1))
       .subscribe((x: any) => {
         expect(x).to.equal('testme!');
       }, (err: any) => {
@@ -104,7 +103,7 @@ describe('Observable.fromEventPattern', () => {
   });
 
   it('should send errors in the selector down the error path', (done: MochaDone) => {
-    let target;
+    let target: any;
     const trigger = (value: any) => {
       if (target) {
         target(value);
@@ -121,7 +120,7 @@ describe('Observable.fromEventPattern', () => {
       throw 'bad';
     };
 
-    Observable.fromEventPattern(addHandler, removeHandler, selector)
+    fromEventPattern(addHandler, removeHandler, selector)
       .subscribe((x: any) => {
         done(new Error('should not be called'));
       }, (err: any) => {

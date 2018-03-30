@@ -9,10 +9,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old isEmpty with immediate scheduler', function () {
-        oldIsEmptyNoArgs.subscribe(_next, _error, _complete);
-      })
-      .add('new isEmpty with immediate scheduler', function () {
-        newIsEmptyNoArgs.subscribe(_next, _error, _complete);
-      });
+    .add('old isEmpty with immediate scheduler', function () {
+      oldIsEmptyNoArgs.subscribe(_next, _error, _complete);
+    })
+    .add('new isEmpty with immediate scheduler', function () {
+      newIsEmptyNoArgs.subscribe(_next, _error, _complete);
+    });
 };

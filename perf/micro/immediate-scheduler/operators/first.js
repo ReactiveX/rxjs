@@ -9,10 +9,10 @@ module.exports = function (suite) {
   function _error(e) { }
   function _complete() { }
   return suite
-      .add('old first() with immediate scheduler', function () {
-        oldFirstNoArgs.subscribe(_next, _error, _complete);
-      })
-      .add('new first() with immediate scheduler', function () {
-        newFirstNoArgs.subscribe(_next, _error, _complete);
-      });
+    .add('old first() with immediate scheduler', function () {
+      oldFirstNoArgs.subscribe(_next, _error, _complete);
+    })
+    .add('new first() with immediate scheduler', function () {
+      newFirstNoArgs.subscribe(_next, _error, _complete);
+    });
 };

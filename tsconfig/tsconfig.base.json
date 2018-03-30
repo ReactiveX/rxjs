@@ -1,0 +1,26 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "baseUrl": "../src",
+    "paths": {
+      "rxjs": ["./"],
+      "rxjs/*": ["./*"]
+    }
+  },
+  "files": [
+    // entry-points
+    "../src/index.ts",
+    "../src/ajax/index.ts",
+    "../src/operators/index.ts",
+    "../src/testing/index.ts",
+    "../src/websocket/index.ts",
+    "../src/internal-compatibility/index.ts",
+
+    // legacy entry-points
+    "../src/internal/Rx.ts",
+
+    // umd entry-point
+    "../src/internal/umd.ts"
+  ]
+}
