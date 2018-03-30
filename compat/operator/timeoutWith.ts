@@ -56,5 +56,5 @@ export function timeoutWith<T, R>(this: Observable<T>, due: number | Date, withO
 export function timeoutWith<T, R>(this: Observable<T>, due: number | Date,
                                   withObservable: ObservableInput<R>,
                                   scheduler: SchedulerLike = asyncScheduler): Observable<T | R> {
-  return higherOrder(due, withObservable, scheduler)(this as any);
+  return higherOrder<T, R>(due, withObservable, scheduler)(this as any);
 }
