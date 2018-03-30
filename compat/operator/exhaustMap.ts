@@ -20,8 +20,8 @@ import { exhaustMap as higherOrder } from 'rxjs/operators';
  * and repeat this process.
  *
  * @example <caption>Run a finite timer for each click, only if there is no currently active timer</caption>
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = clicks.exhaustMap((ev) => Rx.Observable.interval(1000).take(5));
+ * var clicks = fromEvent(document, 'click');
+ * var result = clicks.pipe(exhaustMap((ev) => Rx.Observable.interval(1000).take(5)));
  * result.subscribe(x => console.log(x));
  *
  * @see {@link concatMap}
@@ -35,8 +35,6 @@ import { exhaustMap as higherOrder } from 'rxjs/operators';
  * @return {Observable} An Observable containing projected Observables
  * of each item of the source, ignoring projected Observables that start before
  * their preceding Observable has completed.
- * @method exhaustMap
- * @owner Observable
  */
 export function exhaustMap<T, R>(
   this: Observable<T>,

@@ -3,6 +3,12 @@ import { OperatorFunction } from '../../internal/types';
 import { mergeMap } from './mergeMap';
 import { ObservableInput } from '../types';
 
+/* tslint:disable:max-line-length */
+export function mergeMapTo<T>(innerObservable: ObservableInput<T>, concurrent?: number): OperatorFunction<any, T>;
+/** @deprecated */
+export function mergeMapTo<T, I, R>(innerObservable: ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R, concurrent?: number): OperatorFunction<T, R>;
+/* tslint:enable:max-line-length */
+
 /**
  * Projects each source value to the same Observable which is merged multiple
  * times in the output Observable.
@@ -37,7 +43,16 @@ import { ObservableInput } from '../types';
  * @method mergeMapTo
  * @owner Observable
  */
-export function mergeMapTo<T, R>(innerObservable: ObservableInput<R>,
-                                 concurrent: number = Number.POSITIVE_INFINITY): OperatorFunction<T, R> {
+export function mergeMapTo<T, I, R>(
+  innerObservable: ObservableInput<I>,
+  resultSelector?: ((outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) | number,
+  concurrent: number = Number.POSITIVE_INFINITY
+): OperatorFunction<T, I|R> {
+  if (typeof resultSelector === 'function') {
+    return mergeMap(() => innerObservable, resultSelector, concurrent);
+  }
+  if (typeof resultSelector === 'number') {
+    concurrent = resultSelector;
+  }
   return mergeMap(() => innerObservable, concurrent);
 }

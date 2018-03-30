@@ -6,6 +6,16 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction } from '../types';
+import { map } from './map';
+import { from } from '../observable/from';
+
+/* tslint:disable:max-line-length */
+export function exhaustMap<T, R>(project: (value: T, index: number) => ObservableInput<R>): OperatorFunction<T, R>;
+/** @deprecated resultSelector is no longer supported. Use inner map instead. */
+export function exhaustMap<T, R>(project: (value: T, index: number) => ObservableInput<R>, resultSelector: undefined): OperatorFunction<T, R>;
+/** @deprecated resultSelector is no longer supported. Use inner map instead. */
+export function exhaustMap<T, I, R>(project: (value: T, index: number) => ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
+/* tslint:enable:max-line-length */
 
 /**
  * Projects each source value to an Observable which is merged in the output
@@ -44,17 +54,28 @@ import { ObservableInput, OperatorFunction } from '../types';
  * @method exhaustMap
  * @owner Observable
  */
-export function exhaustMap<T, R>(project: (value: T, index: number) => ObservableInput<R>): OperatorFunction<T, R> {
+export function exhaustMap<T, I, R>(
+  project: (value: T, index: number) => ObservableInput<I>,
+  resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R,
+): OperatorFunction<T, I|R> {
+  if (resultSelector) {
+    // DEPRECATED PATH
+    return (source: Observable<T>) => source.pipe(
+      exhaustMap((a, i) => from(project(a, i)).pipe(
+        map((b, ii) => resultSelector(a, b, i, ii)),
+      )),
+    );
+  }
   return (source: Observable<T>) =>
-    source.lift(new SwitchFirstMapOperator(project));
+    source.lift(new ExhauseMapOperator(project));
 }
 
-class SwitchFirstMapOperator<T, R> implements Operator<T, R> {
+class ExhauseMapOperator<T, R> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => ObservableInput<R>) {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new SwitchFirstMapSubscriber(subscriber, this.project));
+    return source.subscribe(new ExhaustMapSubscriber(subscriber, this.project));
   }
 }
 
@@ -63,7 +84,7 @@ class SwitchFirstMapOperator<T, R> implements Operator<T, R> {
  * @ignore
  * @extends {Ignored}
  */
-class SwitchFirstMapSubscriber<T, R> extends OuterSubscriber<T, R> {
+class ExhaustMapSubscriber<T, R> extends OuterSubscriber<T, R> {
   private hasSubscription = false;
   private hasCompleted = false;
   private index = 0;

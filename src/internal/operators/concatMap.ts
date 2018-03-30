@@ -1,6 +1,14 @@
 import { mergeMap } from './mergeMap';
 import { ObservableInput, OperatorFunction } from '../types';
 
+/* tslint:disable:max-line-length */
+export function concatMap<T, R>(project: (value: T, index: number) =>  ObservableInput<R>): OperatorFunction<T, R>;
+/** @deprecated resultSelector no longer supported, use inner map instead */
+export function concatMap<T, R>(project: (value: T, index: number) => ObservableInput<R>, resultSelector: undefined): OperatorFunction<T, R>;
+/** @deprecated resultSelector no longer supported, use inner map instead */
+export function concatMap<T, I, R>(project: (value: T, index: number) =>  ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
+/* tslint:enable:max-line-length */
+
 /**
  * Projects each source value to an Observable which is merged in the output
  * Observable, in a serialized fashion waiting for each one to complete before
@@ -52,6 +60,9 @@ import { ObservableInput, OperatorFunction } from '../types';
  * @method concatMap
  * @owner Observable
  */
-export function concatMap<T, R>(project: (value: T, index: number) =>  ObservableInput<R>): OperatorFunction<T, R> {
-  return mergeMap(project, 1);
+export function concatMap<T, I, R>(
+  project: (value: T, index: number) =>  ObservableInput<I>,
+  resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R
+): OperatorFunction<T, I|R> {
+  return mergeMap(project, resultSelector, 1);
 }

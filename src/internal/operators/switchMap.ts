@@ -6,6 +6,16 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction } from '../types';
+import { map } from './map';
+import { from } from '../observable/from';
+
+/* tslint:disable:max-line-length */
+export function switchMap<T, R>(project: (value: T, index: number) => ObservableInput<R>): OperatorFunction<T, R>;
+/** @deprecated resultSelector is no longer supported, use inner map instead */
+export function switchMap<T, R>(project: (value: T, index: number) => ObservableInput<R>, resultSelector: undefined): OperatorFunction<T, R>;
+/** @deprecated resultSelector is no longer supported, use inner map instead */
+export function switchMap<T, I, R>(project: (value: T, index: number) => ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
+/* tslint:enable:max-line-length */
 
 /**
  * Projects each source value to an Observable which is merged in the output
@@ -46,12 +56,18 @@ import { ObservableInput, OperatorFunction } from '../types';
  * @method switchMap
  * @owner Observable
  */
-export function switchMap<T, R>(
-  project: (value: T, index: number) => ObservableInput<R>
-): OperatorFunction<T, R> {
-  return function switchMapOperatorFunction(source: Observable<T>): Observable<R> {
-    return source.lift(new SwitchMapOperator(project));
-  };
+export function switchMap<T, I, R>(
+  project: (value: T, index: number) => ObservableInput<I>,
+  resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R,
+): OperatorFunction<T, I|R> {
+  if (typeof resultSelector === 'function') {
+    return (source: Observable<T>) => source.pipe(
+      switchMap((a, i) => from(project(a, i)).pipe(
+        map((b, ii) => resultSelector(a, b, i, ii))
+      ))
+    );
+  }
+  return (source: Observable<T>) => source.lift(new SwitchMapOperator(project));
 }
 
 class SwitchMapOperator<T, R> implements Operator<T, R> {
