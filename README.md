@@ -51,6 +51,8 @@ range(1, 200)
   .subscribe(x => console.log(x));
 ```
 
+Alternatively, you can use the built-in `pipe` method on Observables. See [pipeable operators](https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md) for more information.
+
 ### CommonJS via npm
 
 To install this library for CommonJS (CJS) usage, use the following command:
