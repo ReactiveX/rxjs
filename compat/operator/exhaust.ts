@@ -37,8 +37,6 @@ export function exhaust<T, R>(this: Observable<T>): Observable<R>;
  *
  * @return {Observable} An Observable that takes a source of Observables and propagates the first observable
  * exclusively until it completes before subscribing to the next.
- * @method exhaust
- * @owner Observable
  */
 export function exhaust<T>(this: Observable<ObservableInput<T>>): Observable<T> {
   return higherOrder<T>()(this);
