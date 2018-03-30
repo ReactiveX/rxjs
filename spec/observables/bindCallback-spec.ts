@@ -25,11 +25,53 @@ describe('bindCallback', () => {
       expect(results).to.deep.equal(['undefined', 'done']);
     });
 
-    it('should emit one value from a callback', () => {
+    it('should still support deprecated resultSelector', () => {
       function callback(datum: number, cb: Function) {
         cb(datum);
       }
-      const boundCallback = bindCallback<number>(callback);
+
+      const boundCallback = bindCallback(
+        callback,
+        (datum: any) => datum + 1,
+      );
+
+      const results: Array<string|number> = [];
+
+      boundCallback(42)
+        .subscribe({
+          next(value) { results.push(value); },
+          complete() { results.push('done'); },
+        });
+
+      expect(results).to.deep.equal([43, 'done']);
+    });
+
+    it('should still support deprecated resultSelector if its void', () => {
+      function callback(datum: number, cb: Function) {
+        cb(datum);
+      }
+
+      const boundCallback = bindCallback(
+        callback,
+        void 0,
+      );
+
+      const results: Array<string|number> = [];
+
+      boundCallback(42)
+        .subscribe({
+          next(value) { results.push(value); },
+          complete() { results.push('done'); },
+        });
+
+      expect(results).to.deep.equal([42, 'done']);
+    });
+
+    it('should emit one value from a callback', () => {
+      function callback(datum: number, cb: (result: number) => void) {
+        cb(datum);
+      }
+      const boundCallback = bindCallback(callback);
       const results: Array<string|number> = [];
 
       boundCallback(42)
@@ -107,10 +149,10 @@ describe('bindCallback', () => {
     });
 
     it('should emit one value from a callback', () => {
-      function callback(datum: number, cb: Function) {
+      function callback(datum: number, cb: (result: number) => void) {
         cb(datum);
       }
-      const boundCallback = bindCallback<number>(callback, rxTestScheduler);
+      const boundCallback = bindCallback(callback, rxTestScheduler);
       const results: Array<string|number> = [];
 
       boundCallback(42)
@@ -165,10 +207,10 @@ describe('bindCallback', () => {
     });
 
   it('should pass multiple inner arguments as an array', () => {
-    function callback(datum: number, cb: Function) {
+    function callback(datum: number, cb: (a: number, b: number, c: number, d: number) => void) {
       cb(datum, 1, 2, 3);
     }
-    const boundCallback = bindCallback<number[]>(callback, rxTestScheduler);
+    const boundCallback = bindCallback(callback, rxTestScheduler);
     const results: Array<string|number[]> = [];
 
     boundCallback(42)
@@ -185,11 +227,11 @@ describe('bindCallback', () => {
 
   it('should cache value for next subscription and not call callbackFunc again', () => {
     let calls = 0;
-    function callback(datum: number, cb: Function) {
+    function callback(datum: number, cb: (x: number) => void) {
       calls++;
       cb(datum);
     }
-    const boundCallback = bindCallback<number>(callback, rxTestScheduler);
+    const boundCallback = bindCallback(callback, rxTestScheduler);
     const results1: Array<number|string> = [];
     const results2: Array<number|string> = [];
 
