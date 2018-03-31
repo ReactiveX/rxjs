@@ -1,7 +1,7 @@
 import { cold, expectObservable, time } from '../helpers/marble-testing';
-import { timer, NEVER, merge } from 'rxjs';
+import { timer, NEVER, smoosh } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { mergeMap } from 'rxjs/operators';
+import { smooshMap } from 'rxjs/operators';
 
 declare const asDiagram: any;
 declare const rxTestScheduler: TestScheduler;
@@ -99,8 +99,8 @@ describe('timer', () => {
       const dueTime = new Date(rxTestScheduler.now() + offset);
       const source = timer(dueTime, null, rxTestScheduler);
 
-      const testSource = merge(t1, t2).pipe(
-        mergeMap(() => source)
+      const testSource = smoosh(t1, t2).pipe(
+        smooshMap(() => source)
       );
 
       expectObservable(testSource).toBe(expected, {a: 0});

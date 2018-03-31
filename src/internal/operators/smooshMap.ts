@@ -10,30 +10,30 @@ import { map } from './map';
 import { from } from '../observable/from';
 
 /* tslint:disable:max-line-length */
-export function mergeMap<T, R>(project: (value: T, index: number) => ObservableInput<R>, concurrent?: number): OperatorFunction<T, R>;
+export function smooshMap<T, R>(project: (value: T, index: number) => ObservableInput<R>, concurrent?: number): OperatorFunction<T, R>;
 /** @deprecated resultSelector no longer supported, use inner map instead */
-export function mergeMap<T, R>(project: (value: T, index: number) => ObservableInput<R>, resultSelector: undefined, concurrent?: number): OperatorFunction<T, R>;
+export function smooshMap<T, R>(project: (value: T, index: number) => ObservableInput<R>, resultSelector: undefined, concurrent?: number): OperatorFunction<T, R>;
 /** @deprecated resultSelector no longer supported, use inner map instead */
-export function mergeMap<T, I, R>(project: (value: T, index: number) => ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R, concurrent?: number): OperatorFunction<T, R>;
+export function smooshMap<T, I, R>(project: (value: T, index: number) => ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R, concurrent?: number): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
 /**
- * Projects each source value to an Observable which is merged in the output
+ * Projects each source value to an Observable which is smooshed in the output
  * Observable.
  *
  * <span class="informal">Maps each value to an Observable, then flattens all of
- * these inner Observables using {@link mergeAll}.</span>
+ * these inner Observables using {@link smooshAll}.</span>
  *
- * <img src="./img/mergeMap.png" width="100%">
+ * <img src="./img/smooshMap.png" width="100%">
  *
  * Returns an Observable that emits items based on applying a function that you
  * supply to each item emitted by the source Observable, where that function
  * returns an Observable, and then merging those resulting Observables and
- * emitting the results of this merger.
+ * emitting the results of this smooshr.
  *
  * @example <caption>Map and flatten each letter to an Observable ticking every 1 second</caption>
  * var letters = Rx.Observable.of('a', 'b', 'c');
- * var result = letters.mergeMap(x =>
+ * var result = letters.smooshMap(x =>
  *   Rx.Observable.interval(1000).map(i => x+i)
  * );
  * result.subscribe(x => console.log(x));
@@ -49,10 +49,10 @@ export function mergeMap<T, I, R>(project: (value: T, index: number) => Observab
  *
  * @see {@link concatMap}
  * @see {@link exhaustMap}
- * @see {@link merge}
- * @see {@link mergeAll}
- * @see {@link mergeMapTo}
- * @see {@link mergeScan}
+ * @see {@link smoosh}
+ * @see {@link smooshAll}
+ * @see {@link smooshMapTo}
+ * @see {@link smooshScan}
  * @see {@link switchMap}
  *
  * @param {function(value: T, ?index: number): ObservableInput} project A function
@@ -64,10 +64,10 @@ export function mergeMap<T, I, R>(project: (value: T, index: number) => Observab
  * projection function (and the optional `resultSelector`) to each item emitted
  * by the source Observable and merging the results of the Observables obtained
  * from this transformation.
- * @method mergeMap
+ * @method smooshMap
  * @owner Observable
  */
-export function mergeMap<T, I, R>(
+export function smooshMap<T, I, R>(
   project: (value: T, index: number) => ObservableInput<I>,
   resultSelector?: ((outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R) | number,
   concurrent: number = Number.POSITIVE_INFINITY
@@ -75,23 +75,23 @@ export function mergeMap<T, I, R>(
   if (typeof resultSelector === 'function') {
     // DEPRECATED PATH
     return (source: Observable<T>) => source.pipe(
-      mergeMap((a, i) => from(project(a, i)).pipe(
+      smooshMap((a, i) => from(project(a, i)).pipe(
         map((b, ii) => resultSelector(a, b, i, ii)),
       ), concurrent)
     );
   } else if (typeof resultSelector === 'number') {
     concurrent = resultSelector;
   }
-  return (source: Observable<T>) => source.lift(new MergeMapOperator(project, concurrent));
+  return (source: Observable<T>) => source.lift(new SmooshMapOperator(project, concurrent));
 }
 
-export class MergeMapOperator<T, R> implements Operator<T, R> {
+export class SmooshMapOperator<T, R> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => ObservableInput<R>,
               private concurrent: number = Number.POSITIVE_INFINITY) {
   }
 
   call(observer: Subscriber<R>, source: any): any {
-    return source.subscribe(new MergeMapSubscriber(
+    return source.subscribe(new SmooshMapSubscriber(
       observer, this.project, this.concurrent
     ));
   }
@@ -102,7 +102,7 @@ export class MergeMapOperator<T, R> implements Operator<T, R> {
  * @ignore
  * @extends {Ignored}
  */
-export class MergeMapSubscriber<T, R> extends OuterSubscriber<T, R> {
+export class SmooshMapSubscriber<T, R> extends OuterSubscriber<T, R> {
   private hasCompleted: boolean = false;
   private buffer: T[] = [];
   private active: number = 0;

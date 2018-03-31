@@ -18,7 +18,7 @@ export function expand<T>(project: (value: T, index: number) => ObservableInput<
  * Recursively projects each source value to an Observable which is merged in
  * the output Observable.
  *
- * <span class="informal">It's similar to {@link mergeMap}, but applies the
+ * <span class="informal">It's similar to {@link smooshMap}, but applies the
  * projection function to every source value as well as every output value.
  * It's recursive.</span>
  *
@@ -42,8 +42,8 @@ export function expand<T>(project: (value: T, index: number) => ObservableInput<
  *   .take(10);
  * powersOfTwo.subscribe(x => console.log(x));
  *
- * @see {@link mergeMap}
- * @see {@link mergeScan}
+ * @see {@link smooshMap}
+ * @see {@link smooshScan}
  *
  * @param {function(value: T, index: number) => Observable} project A function
  * that, when applied to an item emitted by the source or the output Observable,

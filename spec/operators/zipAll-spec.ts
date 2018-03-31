@@ -714,9 +714,9 @@ describe('Observable.prototype.zipAll', () => {
     const values = { x: ['1', '4'], y: ['2', '5']};
 
     const r = Observable.of(a, b)
-      .mergeMap((x) => Observable.of(x))
+      .smooshMap((x) => Observable.of(x))
       .zipAll()
-      .mergeMap((x) => Observable.of(x));
+      .smooshMap((x) => Observable.of(x));
 
     expectObservable(r, unsub).toBe(expected, values);
     expectSubscriptions(a.subscriptions).toBe(asubs);

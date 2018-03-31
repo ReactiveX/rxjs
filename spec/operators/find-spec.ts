@@ -124,9 +124,9 @@ describe('Observable.prototype.find', () => {
     const unsub =      '      !     ';
 
     const result = (<any>source)
-      .mergeMap((x: string) => Observable.of(x))
+      .smooshMap((x: string) => Observable.of(x))
       .find((value: string) => value === 'z')
-      .mergeMap((x: string) => Observable.of(x));
+      .smooshMap((x: string) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);

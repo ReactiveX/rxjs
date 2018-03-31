@@ -42,7 +42,7 @@ export function exhaustMap<T, I, R>(project: (value: T, index: number) => Observ
  *
  * @see {@link concatMap}
  * @see {@link exhaust}
- * @see {@link mergeMap}
+ * @see {@link smooshMap}
  * @see {@link switchMap}
  *
  * @param {function(value: T, ?index: number): ObservableInput} project A function

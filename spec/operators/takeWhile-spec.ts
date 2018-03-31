@@ -194,9 +194,9 @@ describe('Observable.prototype.takeWhile', () => {
     }
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .smooshMap((x: string) => Observable.of(x))
       .takeWhile(predicate)
-      .mergeMap((x: string) => Observable.of(x));
+      .smooshMap((x: string) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

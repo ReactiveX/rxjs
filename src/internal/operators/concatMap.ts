@@ -1,4 +1,4 @@
-import { mergeMap } from './mergeMap';
+import { smooshMap } from './smooshMap';
 import { ObservableInput, OperatorFunction } from '../types';
 
 /* tslint:disable:max-line-length */
@@ -29,7 +29,7 @@ export function concatMap<T, I, R>(project: (value: T, index: number) =>  Observ
  * as inner Observables amass in an unbounded buffer waiting for their turn to
  * be subscribed to.
  *
- * Note: `concatMap` is equivalent to `mergeMap` with concurrency parameter set
+ * Note: `concatMap` is equivalent to `smooshMap` with concurrency parameter set
  * to `1`.
  *
  * @example <caption>For each click event, tick every second from 0 to 3, with no concurrency</caption>
@@ -47,7 +47,7 @@ export function concatMap<T, I, R>(project: (value: T, index: number) =>  Observ
  * @see {@link concatAll}
  * @see {@link concatMapTo}
  * @see {@link exhaustMap}
- * @see {@link mergeMap}
+ * @see {@link smooshMap}
  * @see {@link switchMap}
  *
  * @param {function(value: T, ?index: number): ObservableInput} project A function
@@ -64,5 +64,5 @@ export function concatMap<T, I, R>(
   project: (value: T, index: number) =>  ObservableInput<I>,
   resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R
 ): OperatorFunction<T, I|R> {
-  return mergeMap(project, resultSelector, 1);
+  return smooshMap(project, resultSelector, 1);
 }

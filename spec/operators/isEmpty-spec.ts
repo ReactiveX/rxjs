@@ -67,9 +67,9 @@ describe('Observable.prototype.isEmpty', () => {
     const unsub =       '      !           ';
 
     const result = (<any>source)
-      .mergeMap((x: string) => Rx.Observable.of(x))
+      .smooshMap((x: string) => Rx.Observable.of(x))
       .isEmpty()
-      .mergeMap((x: string) => Rx.Observable.of(x));
+      .smooshMap((x: string) => Rx.Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);

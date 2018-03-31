@@ -2,7 +2,7 @@ import { concatMap as higherOrderConcatMap } from 'rxjs/operators';
 import { Observable, ObservableInput } from 'rxjs';
 
 /**
- * Projects each source value to an Observable which is merged in the output
+ * Projects each source value to an Observable which is smooshed in the output
  * Observable, in a serialized fashion waiting for each one to complete before
  * merging the next.
  *
@@ -21,7 +21,7 @@ import { Observable, ObservableInput } from 'rxjs';
  * as inner Observables amass in an unbounded buffer waiting for their turn to
  * be subscribed to.
  *
- * Note: `concatMap` is equivalent to `mergeMap` with concurrency parameter set
+ * Note: `concatMap` is equivalent to `smooshMap` with concurrency parameter set
  * to `1`.
  *
  * @example <caption>For each click event, tick every second from 0 to 3, with no concurrency</caption>
@@ -39,7 +39,7 @@ import { Observable, ObservableInput } from 'rxjs';
  * @see {@link concatAll}
  * @see {@link concatMapTo}
  * @see {@link exhaustMap}
- * @see {@link mergeMap}
+ * @see {@link smooshMap}
  * @see {@link switchMap}
  *
  * @param {function(value: T, ?index: number): ObservableInput} project A function

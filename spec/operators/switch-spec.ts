@@ -90,9 +90,9 @@ describe('switchAll', () => {
     const unsub =    '                !            ';
 
     const result = e1
-      .mergeMap((x) => of(x))
+      .smooshMap((x) => of(x))
       .pipe(switchAll())
-      .mergeMap((x) => of(x));
+      .smooshMap((x) => of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);

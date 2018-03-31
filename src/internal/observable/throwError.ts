@@ -13,7 +13,7 @@ import { Subscriber } from '../Subscriber';
  *
  * This static operator is useful for creating a simple Observable that only
  * emits the error notification. It can be used for composing with other
- * Observables, such as in a {@link mergeMap}.
+ * Observables, such as in a {@link smooshMap}.
  *
  * @example <caption>Emit the number 7, then emit an error.</caption>
  * import { throwError, concat, of } from 'rxjs/create';
@@ -23,10 +23,10 @@ import { Subscriber } from '../Subscriber';
  *
  * @example <caption>Map and flatten numbers to the sequence 'a', 'b', 'c', but throw an error for 13</caption>
  * import { throwError, interval, of } from 'rxjs/create';
- * import { mergeMap } from 'rxjs/operators';
+ * import { smooshMap } from 'rxjs/operators';
  *
  * interval(1000).pipe(
- *   mergeMap(x => x === 13 ?
+ *   smooshMap(x => x === 13 ?
  *     throwError('Thirteens are bad') :
  *     of('a', 'b', 'c')
  *   )

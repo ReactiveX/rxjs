@@ -1,6 +1,6 @@
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { Observable, of, from } from 'rxjs';
-import { exhaustMap, mergeMap } from 'rxjs/operators';
+import { exhaustMap, smooshMap } from 'rxjs/operators';
 import { expect } from 'chai';
 
 declare function asDiagram(arg: string): Function;
@@ -190,9 +190,9 @@ describe('exhaustMap', () => {
     const observableLookup = { x: x, y: y, z: z };
 
     const result = e1.pipe(
-      mergeMap(x => of(x)),
+      smooshMap(x => of(x)),
       exhaustMap(value => observableLookup[value]),
-      mergeMap(x => of(x))
+      smooshMap(x => of(x))
     );
 
     expectObservable(result, unsub).toBe(expected);

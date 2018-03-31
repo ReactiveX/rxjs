@@ -241,10 +241,10 @@ describe('Observable.prototype.partition', () => {
     const unsub =     '       !          ';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .smooshMap((x: string) => Observable.of(x))
       .partition((x: string) => x === 'a')
       .map((observable: Rx.Observable<string>) =>
-        observable.mergeMap((x: string) => Observable.of(x)));
+        observable.smooshMap((x: string) => Observable.of(x)));
 
     expectObservable(result[0], unsub).toBe(expected[0]);
     expectObservable(result[1], unsub).toBe(expected[1]);

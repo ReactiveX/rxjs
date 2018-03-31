@@ -12,16 +12,16 @@ import { ObservableInput, OperatorFunction } from '../types';
 /**
  * Applies an accumulator function over the source Observable where the
  * accumulator function itself returns an Observable, then each intermediate
- * Observable returned is merged into the output Observable.
+ * Observable returned is smooshed into the output Observable.
  *
  * <span class="informal">It's like {@link scan}, but the Observables returned
- * by the accumulator are merged into the outer Observable.</span>
+ * by the accumulator are smooshed into the outer Observable.</span>
  *
  * @example <caption>Count the number of click events</caption>
  * const click$ = Rx.Observable.fromEvent(document, 'click');
  * const one$ = click$.mapTo(1);
  * const seed = 0;
- * const count$ = one$.mergeScan((acc, one) => Rx.Observable.of(acc + one), seed);
+ * const count$ = one$.smooshScan((acc, one) => Rx.Observable.of(acc + one), seed);
  * count$.subscribe(x => console.log(x));
  *
  * // Results:
@@ -37,23 +37,23 @@ import { ObservableInput, OperatorFunction } from '../types';
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of
  * input Observables being subscribed to concurrently.
  * @return {Observable<R>} An observable of the accumulated values.
- * @method mergeScan
+ * @method smooshScan
  * @owner Observable
  */
-export function mergeScan<T, R>(accumulator: (acc: R, value: T) => ObservableInput<R>,
-                                seed: R,
-                                concurrent: number = Number.POSITIVE_INFINITY): OperatorFunction<T, R> {
-  return (source: Observable<T>) => source.lift(new MergeScanOperator(accumulator, seed, concurrent));
+export function smooshScan<T, R>(accumulator: (acc: R, value: T) => ObservableInput<R>,
+                                 seed: R,
+                                 concurrent: number = Number.POSITIVE_INFINITY): OperatorFunction<T, R> {
+  return (source: Observable<T>) => source.lift(new SmooshScanOperator(accumulator, seed, concurrent));
 }
 
-export class MergeScanOperator<T, R> implements Operator<T, R> {
+export class SmooshScanOperator<T, R> implements Operator<T, R> {
   constructor(private accumulator: (acc: R, value: T) => ObservableInput<R>,
               private seed: R,
               private concurrent: number) {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {
-    return source.subscribe(new MergeScanSubscriber(
+    return source.subscribe(new SmooshScanSubscriber(
       subscriber, this.accumulator, this.seed, this.concurrent
     ));
   }
@@ -64,7 +64,7 @@ export class MergeScanOperator<T, R> implements Operator<T, R> {
  * @ignore
  * @extends {Ignored}
  */
-export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
+export class SmooshScanSubscriber<T, R> extends OuterSubscriber<T, R> {
   private hasValue: boolean = false;
   private hasCompleted: boolean = false;
   private buffer: Observable<any>[] = [];

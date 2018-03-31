@@ -103,8 +103,8 @@ describe('defer', () => {
     const expected =   '--a--b-     ';
     const unsub =      '      !     ';
 
-    const e1 = defer(() => source.mergeMap((x: string) => Observable.of(x)))
-      .mergeMap((x: string) => Observable.of(x));
+    const e1 = defer(() => source.smooshMap((x: string) => Observable.of(x)))
+      .smooshMap((x: string) => Observable.of(x));
 
     expectObservable(e1, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);

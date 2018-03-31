@@ -124,9 +124,9 @@ describe('Observable.prototype.auditTime', () => {
     const unsub =    '                               !';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .smooshMap((x: string) => Observable.of(x))
       .auditTime(50, rxTestScheduler)
-      .mergeMap((x: string) => Observable.of(x));
+      .smooshMap((x: string) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);

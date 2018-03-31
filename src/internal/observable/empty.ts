@@ -18,7 +18,7 @@ export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
  *
  * This static operator is useful for creating a simple Observable that only
  * emits the complete notification. It can be used for composing with other
- * Observables, such as in a {@link mergeMap}.
+ * Observables, such as in a {@link smooshMap}.
  *
  * @example <caption>Emit the number 7, then complete.</caption>
  * var result = Rx.Observable.empty().startWith(7);
@@ -26,7 +26,7 @@ export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
  *
  * @example <caption>Map and flatten only odd numbers to the sequence 'a', 'b', 'c'</caption>
  * var interval = Rx.Observable.interval(1000);
- * var result = interval.mergeMap(x =>
+ * var result = interval.smooshMap(x =>
  *   x % 2 === 1 ? Rx.Observable.of('a', 'b', 'c') : Rx.Observable.empty()
  * );
  * result.subscribe(x => console.log(x));

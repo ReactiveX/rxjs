@@ -55,7 +55,7 @@ export function concat<T, R>(this: Observable<T>, ...observables: Array<Observab
  * Observable. More than one input Observables may be given as argument.
  * @param {Scheduler} [scheduler=null] An optional IScheduler to schedule each
  * Observable subscription on.
- * @return {Observable} All values of each passed Observable merged into a
+ * @return {Observable} All values of each passed Observable smooshed into a
  * single Observable, in order, in serial fashion.
  * @method concat
  * @owner Observable

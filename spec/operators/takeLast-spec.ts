@@ -154,9 +154,9 @@ describe('Observable.prototype.takeLast', () => {
     const expected =  '----------            ';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .smooshMap((x: string) => Observable.of(x))
       .takeLast(42)
-      .mergeMap((x: string) => Observable.of(x));
+      .smooshMap((x: string) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

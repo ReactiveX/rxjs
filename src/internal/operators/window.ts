@@ -27,7 +27,7 @@ import { Operator } from '../Operator';
  * var interval = Rx.Observable.interval(1000);
  * var result = clicks.window(interval)
  *   .map(win => win.take(2)) // each window has at most 2 emissions
- *   .mergeAll(); // flatten the Observable-of-Observables
+ *   .smooshAll(); // flatten the Observable-of-Observables
  * result.subscribe(x => console.log(x));
  *
  * @see {@link windowCount}

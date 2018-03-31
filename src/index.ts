@@ -50,7 +50,7 @@ export { fromEventPattern } from './internal/observable/fromEventPattern';
 export { generate } from './internal/observable/generate';
 export { iif } from './internal/observable/iif';
 export { interval } from './internal/observable/interval';
-export { merge } from './internal/observable/merge';
+export { smoosh } from './internal/observable/smoosh';
 export { never } from './internal/observable/never';
 export { of } from './internal/observable/of';
 export { onErrorResumeNext } from './internal/observable/onErrorResumeNext';

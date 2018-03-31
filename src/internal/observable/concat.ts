@@ -35,8 +35,8 @@ export function concat<T, R>(...observables: (ObservableInput<any> | SchedulerLi
  * repeated, until the operator runs out of Observables. When last input Observable completes,
  * `concat` will complete as well. At any given moment only one Observable passed to operator
  * emits values. If you would like to emit values from passed Observables concurrently, check out
- * {@link merge} instead, especially with optional `concurrent` parameter. As a matter of fact,
- * `concat` is an equivalent of `merge` operator with `concurrent` parameter set to `1`.
+ * {@link smoosh} instead, especially with optional `concurrent` parameter. As a matter of fact,
+ * `concat` is an equivalent of `smoosh` operator with `concurrent` parameter set to `1`.
  *
  * Note that if some input Observable never completes, `concat` will also never complete
  * and Observables following the one that did not complete will never be subscribed. On the other

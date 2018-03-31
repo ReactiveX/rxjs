@@ -455,9 +455,9 @@ describe('Observable.prototype.combineLatest', () => {
     const values = { x: 'bf', y: 'cf', z: 'cg' };
 
     const result = e1
-      .mergeMap((x) => Observable.of(x))
+      .smooshMap((x) => Observable.of(x))
       .combineLatest(e2, (x, y) => x + y)
-      .mergeMap((x) => Observable.of(x));
+      .smooshMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

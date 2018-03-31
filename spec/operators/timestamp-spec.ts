@@ -98,9 +98,9 @@ describe('Observable.prototype.timestamp', () => {
     };
 
     const result = e1
-      .mergeMap(x => Observable.of(x))
+      .smooshMap(x => Observable.of(x))
       .timestamp(rxTestScheduler)
-      .mergeMap(x => Observable.of(x));
+      .smooshMap(x => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected, expectedValue);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

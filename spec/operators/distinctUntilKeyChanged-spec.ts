@@ -159,9 +159,9 @@ describe('Observable.prototype.distinctUntilKeyChanged', () => {
     const unsub =    '          !          ';
 
     const result = (<any>e1)
-      .mergeMap((x: any) => Rx.Observable.of(x))
+      .smooshMap((x: any) => Rx.Observable.of(x))
       .distinctUntilKeyChanged('val')
-      .mergeMap((x: any) => Rx.Observable.of(x));
+      .smooshMap((x: any) => Rx.Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

@@ -17,7 +17,7 @@ export function exhaust<T, R>(this: Observable<T>): Observable<R>;
  * `exhaust` subscribes to an Observable that emits Observables, also known as a
  * higher-order Observable. Each time it observes one of these emitted inner
  * Observables, the output Observable begins emitting the items emitted by that
- * inner Observable. So far, it behaves like {@link mergeAll}. However,
+ * inner Observable. So far, it behaves like {@link smooshAll}. However,
  * `exhaust` ignores every new inner Observable if the previous Observable has
  * not yet completed. Once that one completes, it will accept and flatten the
  * next inner Observable and repeat this process.
@@ -31,7 +31,7 @@ export function exhaust<T, R>(this: Observable<T>): Observable<R>;
  * @see {@link combineAll}
  * @see {@link concatAll}
  * @see {@link switch}
- * @see {@link mergeAll}
+ * @see {@link smooshAll}
  * @see {@link exhaustMap}
  * @see {@link zipAll}
  *

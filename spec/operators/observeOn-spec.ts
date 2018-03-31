@@ -73,9 +73,9 @@ describe('Observable.prototype.observeOn', () => {
     const unsub =     '    !    ';
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .smooshMap((x: string) => Observable.of(x))
       .observeOn(rxTestScheduler)
-      .mergeMap((x: string) => Observable.of(x));
+      .smooshMap((x: string) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);

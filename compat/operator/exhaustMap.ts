@@ -2,7 +2,7 @@
 import { Observable, ObservableInput } from 'rxjs';
 import { exhaustMap as higherOrder } from 'rxjs/operators';
 /**
- * Projects each source value to an Observable which is merged in the output
+ * Projects each source value to an Observable which is smooshed in the output
  * Observable only if the previous projected Observable has completed.
  *
  * <span class="informal">Maps each value to an Observable, then flattens all of
@@ -26,7 +26,7 @@ import { exhaustMap as higherOrder } from 'rxjs/operators';
  *
  * @see {@link concatMap}
  * @see {@link exhaust}
- * @see {@link mergeMap}
+ * @see {@link smooshMap}
  * @see {@link switchMap}
  *
  * @param {function(value: T, ?index: number): ObservableInput} project A function

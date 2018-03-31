@@ -90,9 +90,9 @@ describe('Observable.prototype.elementAt', () => {
     const unsub =      '      !     ';
 
     const result = (<any>source)
-      .mergeMap((x: any) => Observable.of(x))
+      .smooshMap((x: any) => Observable.of(x))
       .elementAt(2)
-      .mergeMap((x: any) => Observable.of(x));
+      .smooshMap((x: any) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);

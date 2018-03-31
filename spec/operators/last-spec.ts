@@ -1,6 +1,6 @@
 
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { last, mergeMap } from 'rxjs/operators';
+import { last, smooshMap } from 'rxjs/operators';
 import { EmptyError, of, from, Observable } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
@@ -69,9 +69,9 @@ describe('Observable.prototype.last', () => {
     const unsub =     '       !       ';
 
     const result = e1.pipe(
-      mergeMap(x => of(x)),
+      smooshMap(x => of(x)),
       last(),
-      mergeMap(x => of(x)),
+      smooshMap(x => of(x)),
     );
 
     expectObservable(result, unsub).toBe(expected);

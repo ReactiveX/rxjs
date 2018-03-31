@@ -28,7 +28,7 @@ describe('Subscription', () => {
       };
     });
 
-    const subscription = Observable.merge(source1, source2, source3).subscribe();
+    const subscription = Observable.smoosh(source1, source2, source3).subscribe();
 
     setTimeout(() => {
       expect(() => {
@@ -68,7 +68,7 @@ describe('Subscription', () => {
       };
     });
 
-    sub.add(Observable.merge(source1, source2, source3).subscribe());
+    sub.add(Observable.smoosh(source1, source2, source3).subscribe());
 
     setTimeout(() => {
       expect(() => {

@@ -76,11 +76,11 @@ describe('Observable.prototype.catch', () => {
     const unsub =    '       !         ';
 
     const result = e1
-      .mergeMap((x: any) => Observable.of(x))
+      .smooshMap((x: any) => Observable.of(x))
       .catch(() => {
         return Observable.of('X', 'Y', 'Z');
       })
-      .mergeMap((x: any) => Observable.of(x));
+      .smooshMap((x: any) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -265,7 +265,7 @@ describe('Observable.prototype.catch', () => {
   it('should accept selector returns any ObservableInput', (done: MochaDone) => {
     const input$ = createObservableInputs(42);
 
-    input$.mergeMap(input =>
+    input$.smooshMap(input =>
       Observable.throw('bad').catch(err => input)
     ).subscribe(x => {
       expect(x).to.be.equal(42);

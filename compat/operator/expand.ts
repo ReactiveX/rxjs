@@ -7,10 +7,10 @@ export function expand<T>(this: Observable<T>, project: (value: T, index: number
 /* tslint:enable:max-line-length */
 
 /**
- * Recursively projects each source value to an Observable which is merged in
+ * Recursively projects each source value to an Observable which is smooshed in
  * the output Observable.
  *
- * <span class="informal">It's similar to {@link mergeMap}, but applies the
+ * <span class="informal">It's similar to {@link smooshMap}, but applies the
  * projection function to every source value as well as every output value.
  * It's recursive.</span>
  *
@@ -19,9 +19,9 @@ export function expand<T>(this: Observable<T>, project: (value: T, index: number
  * Returns an Observable that emits items based on applying a function that you
  * supply to each item emitted by the source Observable, where that function
  * returns an Observable, and then merging those resulting Observables and
- * emitting the results of this merger. *Expand* will re-emit on the output
+ * emitting the results of this smooshr. *Expand* will re-emit on the output
  * Observable every source value. Then, each output value is given to the
- * `project` function which returns an inner Observable to be merged on the
+ * `project` function which returns an inner Observable to be smooshed on the
  * output Observable. Those output values resulting from the projection are also
  * given to the `project` function to produce new output values. This is how
  * *expand* behaves recursively.
@@ -34,8 +34,8 @@ export function expand<T>(this: Observable<T>, project: (value: T, index: number
  *   .take(10);
  * powersOfTwo.subscribe(x => console.log(x));
  *
- * @see {@link mergeMap}
- * @see {@link mergeScan}
+ * @see {@link smooshMap}
+ * @see {@link smooshScan}
  *
  * @param {function(value: T, index: number) => Observable} project A function
  * that, when applied to an item emitted by the source or the output Observable,

@@ -98,9 +98,9 @@ describe('Observable.prototype.timeInterval', () => {
     };
 
     const result = (<any>e1)
-      .mergeMap((x: string) => Observable.of(x))
+      .smooshMap((x: string) => Observable.of(x))
       .timeInterval(rxTestScheduler)
-      .mergeMap((x: string) => Observable.of(x));
+      .smooshMap((x: string) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected, expectedValue);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

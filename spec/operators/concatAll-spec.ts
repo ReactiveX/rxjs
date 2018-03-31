@@ -313,9 +313,9 @@ describe('Observable.prototype.concatAll', () => {
     const unsub =     '                 !    ';
 
     const result = Observable.of(e1, e2)
-      .mergeMap((x) => Observable.of(x))
+      .smooshMap((x) => Observable.of(x))
       .concatAll()
-      .mergeMap((x) => Observable.of(x));
+      .smooshMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

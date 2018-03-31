@@ -48,7 +48,7 @@ export function combineLatest<T, TOther, R>(this: Observable<T>, array: Observab
  * // BMI is 23.671253629592222
  *
  * @see {@link combineAll}
- * @see {@link merge}
+ * @see {@link smoosh}
  * @see {@link withLatestFrom}
  *
  * @param {ObservableInput} other An input Observable to combine with the source

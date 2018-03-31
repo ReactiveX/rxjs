@@ -38,7 +38,7 @@ export function combineAll<R>(this: Observable<any>, project: (...values: any[])
  * result.subscribe(x => console.log(x));
  *
  * @see {@link combineLatest}
- * @see {@link mergeAll}
+ * @see {@link smooshAll}
  *
  * @param {function} [project] An optional function to map the most recent
  * values from each inner Observable into a new result. Takes each of the most

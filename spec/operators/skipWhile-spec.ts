@@ -108,9 +108,9 @@ describe('Observable.prototype.skipWhile', () => {
     };
 
     const result = source
-      .mergeMap(function (x) { return Observable.of(x); })
+      .smooshMap(function (x) { return Observable.of(x); })
       .skipWhile(predicate)
-      .mergeMap(function (x) { return Observable.of(x); });
+      .smooshMap(function (x) { return Observable.of(x); });
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);

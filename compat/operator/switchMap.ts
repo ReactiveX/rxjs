@@ -3,7 +3,7 @@ import { Observable, ObservableInput } from 'rxjs';
 import { switchMap as higherOrderSwitchMap } from 'rxjs/operators';
 
 /**
- * Projects each source value to an Observable which is merged in the output
+ * Projects each source value to an Observable which is smooshed in the output
  * Observable, emitting values only from the most recently projected Observable.
  *
  * <span class="informal">Maps each value to an Observable, then flattens all of
@@ -27,7 +27,7 @@ import { switchMap as higherOrderSwitchMap } from 'rxjs/operators';
  *
  * @see {@link concatMap}
  * @see {@link exhaustMap}
- * @see {@link mergeMap}
+ * @see {@link smooshMap}
  * @see {@link switch}
  * @see {@link switchMapTo}
  *

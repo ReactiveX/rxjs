@@ -88,11 +88,11 @@ describe('Observable.prototype.multicast', () => {
                             '        ^   !'];
     const multicasted = source.multicast(() => new Subject<string>(),
       x => x.zip(x, (a, b) => (parseInt(a) + parseInt(b)).toString()));
-    const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
+    const subscriber1 = hot('a|           ').smooshMapTo(multicasted);
     const expected1   =     '-2-4-6----8-|';
-    const subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
+    const subscriber2 = hot('    b|       ').smooshMapTo(multicasted);
     const expected2   =     '    -6----8-|';
-    const subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+    const subscriber3 = hot('        c|   ').smooshMapTo(multicasted);
     const expected3   =     '        --8-|';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -111,9 +111,9 @@ describe('Observable.prototype.multicast', () => {
     const expected1   =     '-2-4-6----8-|';
     const expected2   =     '    -2-4-6----8-|';
     const expected3   =     '        -2-4-6----8-|';
-    const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
-    const subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
-    const subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+    const subscriber1 = hot('a|           ').smooshMapTo(multicasted);
+    const subscriber2 = hot('    b|       ').smooshMapTo(multicasted);
+    const subscriber3 = hot('        c|   ').smooshMapTo(multicasted);
 
     expectObservable(subscriber1).toBe(expected1);
     expectObservable(subscriber2).toBe(expected2);
@@ -131,9 +131,9 @@ describe('Observable.prototype.multicast', () => {
     const expected1   =     '-1-2-3----4-(4|)';
     const expected2   =     '    -1-2-3----4-(4|)';
     const expected3   =     '        -1-2-3----4-(4|)';
-    const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
-    const subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
-    const subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+    const subscriber1 = hot('a|           ').smooshMapTo(multicasted);
+    const subscriber2 = hot('    b|       ').smooshMapTo(multicasted);
+    const subscriber3 = hot('        c|   ').smooshMapTo(multicasted);
 
     expectObservable(subscriber1).toBe(expected1);
     expectObservable(subscriber2).toBe(expected2);
@@ -155,11 +155,11 @@ describe('Observable.prototype.multicast', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^           !';
     const multicasted = source.multicast(() => new Subject<string>());
-    const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
+    const subscriber1 = hot('a|           ').smooshMapTo(multicasted);
     const expected1   =     '-1-2-3----4-|';
-    const subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
+    const subscriber2 = hot('    b|       ').smooshMapTo(multicasted);
     const expected2   =     '    -3----4-|';
-    const subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+    const subscriber3 = hot('        c|   ').smooshMapTo(multicasted);
     const expected3   =     '        --4-|';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -174,11 +174,11 @@ describe('Observable.prototype.multicast', () => {
     const source =     cold('-1-2-3----4-#');
     const sourceSubs =      '^           !';
     const multicasted = source.multicast(() => new Subject<string>());
-    const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
+    const subscriber1 = hot('a|           ').smooshMapTo(multicasted);
     const expected1   =     '-1-2-3----4-#';
-    const subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
+    const subscriber2 = hot('    b|       ').smooshMapTo(multicasted);
     const expected2   =     '    -3----4-#';
-    const subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+    const subscriber3 = hot('        c|   ').smooshMapTo(multicasted);
     const expected3   =     '        --4-#';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -195,11 +195,11 @@ describe('Observable.prototype.multicast', () => {
     const sourceSubs =      '^        !   ';
     const multicasted = source.multicast(() => new Subject<string>());
     const unsub =           '         u   ';
-    const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
+    const subscriber1 = hot('a|           ').smooshMapTo(multicasted);
     const expected1   =     '-1-2-3----   ';
-    const subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
+    const subscriber2 = hot('    b|       ').smooshMapTo(multicasted);
     const expected2   =     '    -3----   ';
-    const subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+    const subscriber3 = hot('        c|   ').smooshMapTo(multicasted);
     const expected3   =     '        --   ';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -220,13 +220,13 @@ describe('Observable.prototype.multicast', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^        !   ';
     const multicasted = source
-      .mergeMap((x) => Observable.of(x))
+      .smooshMap((x) => Observable.of(x))
       .multicast(() => new Subject<string>());
-    const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
+    const subscriber1 = hot('a|           ').smooshMapTo(multicasted);
     const expected1   =     '-1-2-3----   ';
-    const subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
+    const subscriber2 = hot('    b|       ').smooshMapTo(multicasted);
     const expected2   =     '    -3----   ';
-    const subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+    const subscriber3 = hot('        c|   ').smooshMapTo(multicasted);
     const expected3   =     '        --   ';
     const unsub =           '         u   ';
 
@@ -285,11 +285,11 @@ describe('Observable.prototype.multicast', () => {
       const source = cold(       '-1-2-3----4-|');
       const sourceSubs =      '   ^           !';
       const multicasted = source.multicast(() => new Subject<string>()).refCount();
-      const subscriber1 = hot('   a|           ').mergeMapTo(multicasted);
+      const subscriber1 = hot('   a|           ').smooshMapTo(multicasted);
       const expected1 =       '   -1-2-3----4-|';
-      const subscriber2 = hot('       b|       ').mergeMapTo(multicasted);
+      const subscriber2 = hot('       b|       ').smooshMapTo(multicasted);
       const expected2 =       '       -3----4-|';
-      const subscriber3 = hot('           c|   ').mergeMapTo(multicasted);
+      const subscriber3 = hot('           c|   ').smooshMapTo(multicasted);
       const expected3 =       '           --4-|';
 
       expectObservable(subscriber1).toBe(expected1);
@@ -302,10 +302,10 @@ describe('Observable.prototype.multicast', () => {
       const source =     cold(   '-1-2-3----4-|');
       const sourceSubs =      '   ^        !   ';
       const multicasted = source.multicast(() => new Subject<string>()).refCount();
-      const subscriber1 = hot('   a|           ').mergeMapTo(multicasted);
+      const subscriber1 = hot('   a|           ').smooshMapTo(multicasted);
       const unsub1 =          '          !     ';
       const expected1   =     '   -1-2-3--     ';
-      const subscriber2 = hot('       b|       ').mergeMapTo(multicasted);
+      const subscriber2 = hot('       b|       ').smooshMapTo(multicasted);
       const unsub2 =          '            !   ';
       const expected2   =     '       -3----   ';
 

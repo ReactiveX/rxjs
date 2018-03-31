@@ -30,11 +30,11 @@ describe('Observable.prototype.shareReplay', () => {
   it('should multicast the same values to multiple observers, bufferSize=1', () => {
     const source =     cold('-1-2-3----4-|'); const shared = source.shareReplay(1);
     const sourceSubs =      '^           !';
-    const subscriber1 = hot('a|           ').mergeMapTo(shared);
+    const subscriber1 = hot('a|           ').smooshMapTo(shared);
     const expected1   =     '-1-2-3----4-|';
-    const subscriber2 = hot('    b|       ').mergeMapTo(shared);
+    const subscriber2 = hot('    b|       ').smooshMapTo(shared);
     const expected2   =     '    23----4-|';
-    const subscriber3 = hot('        c|   ').mergeMapTo(shared);
+    const subscriber3 = hot('        c|   ').smooshMapTo(shared);
     const expected3   =     '        3-4-|';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -46,11 +46,11 @@ describe('Observable.prototype.shareReplay', () => {
   it('should multicast the same values to multiple observers, bufferSize=2', () => {
     const source =     cold('-1-2-----3------4-|'); const shared = source.shareReplay(2);
     const sourceSubs =      '^                 !';
-    const subscriber1 = hot('a|                 ').mergeMapTo(shared);
+    const subscriber1 = hot('a|                 ').smooshMapTo(shared);
     const expected1   =     '-1-2-----3------4-|';
-    const subscriber2 = hot('    b|             ').mergeMapTo(shared);
+    const subscriber2 = hot('    b|             ').smooshMapTo(shared);
     const expected2   =     '    (12)-3------4-|';
-    const subscriber3 = hot('           c|       ').mergeMapTo(shared);
+    const subscriber3 = hot('           c|       ').smooshMapTo(shared);
     const expected3   =     '           (23)-4-|';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -62,11 +62,11 @@ describe('Observable.prototype.shareReplay', () => {
   it('should multicast an error from the source to multiple observers', () => {
     const source =     cold('-1-2-3----4-#'); const shared = source.shareReplay(1);
     const sourceSubs =      '^           !';
-    const subscriber1 = hot('a|           ').mergeMapTo(shared);
+    const subscriber1 = hot('a|           ').smooshMapTo(shared);
     const expected1   =     '-1-2-3----4-#';
-    const subscriber2 = hot('    b|       ').mergeMapTo(shared);
+    const subscriber2 = hot('    b|       ').smooshMapTo(shared);
     const expected2   =     '    23----4-#';
-    const subscriber3 = hot('        c|   ').mergeMapTo(shared);
+    const subscriber3 = hot('        c|   ').smooshMapTo(shared);
     const expected3   =     '        3-4-#';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -110,11 +110,11 @@ describe('Observable.prototype.shareReplay', () => {
     const source =     cold('-1-2-----3-|        ');
     const shared = source.shareReplay(2);
     const sourceSubs =      '^          !        ';
-    const subscriber1 = hot('a|                  ').mergeMapTo(shared);
+    const subscriber1 = hot('a|                  ').smooshMapTo(shared);
     const expected1   =     '-1-2-----3-|        ';
-    const subscriber2 = hot('    b|              ').mergeMapTo(shared);
+    const subscriber2 = hot('    b|              ').smooshMapTo(shared);
     const expected2   =     '    (12)-3-|        ';
-    const subscriber3 = hot('               (c|) ').mergeMapTo(shared);
+    const subscriber3 = hot('               (c|) ').smooshMapTo(shared);
     const expected3   =     '               (23|)';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -127,11 +127,11 @@ describe('Observable.prototype.shareReplay', () => {
     const source =     cold('-1-2-----3-#               ');
     const shared = source.shareReplay(2);
     const sourceSubs1 =     '^          !               ';
-    const subscriber1 = hot('a|                         ').mergeMapTo(shared);
+    const subscriber1 = hot('a|                         ').smooshMapTo(shared);
     const expected1   =     '-1-2-----3-#               ';
-    const subscriber2 = hot('    b|                     ').mergeMapTo(shared);
+    const subscriber2 = hot('    b|                     ').smooshMapTo(shared);
     const expected2   =     '    (12)-3-#               ';
-    const subscriber3 = hot('               (c|)        ').mergeMapTo(shared);
+    const subscriber3 = hot('               (c|)        ').smooshMapTo(shared);
     const expected3   =     '               -1-2-----3-#';
     const sourceSubs2 =     '               ^          !';
 
@@ -148,11 +148,11 @@ describe('Observable.prototype.shareReplay', () => {
     subs.push(              '^          !                      ');
     subs.push(              '           ^          !           ');
     subs.push(              '                      ^          !');
-    const subscriber1 = hot('a|                                ').mergeMapTo(shared);
+    const subscriber1 = hot('a|                                ').smooshMapTo(shared);
     const expected1   =     '-1-2-----3--1-2-----3-#           ';
-    const subscriber2 = hot('    b|                            ').mergeMapTo(shared);
+    const subscriber2 = hot('    b|                            ').smooshMapTo(shared);
     const expected2   =     '    (12)-3--1-2-----3-#           ';
-    const subscriber3 = hot('               (c|)               ').mergeMapTo(shared);
+    const subscriber3 = hot('               (c|)               ').smooshMapTo(shared);
     const expected3   =     '               (12)-3--1-2-----3-#';
 
     expectObservable(subscriber1).toBe(expected1);

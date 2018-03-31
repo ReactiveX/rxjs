@@ -11,7 +11,7 @@ describe('UnsubscriptionError', () => {
     const source1 = Observable.create(() => () => { throw err1; });
     const source2 = Observable.timer(1000);
     const source3 = Observable.create(() => () => { throw err2; });
-    const source = source1.merge(source2, source3);
+    const source = source1.smoosh(source2, source3);
 
     const subscription = source.subscribe();
 

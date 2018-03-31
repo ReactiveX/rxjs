@@ -1,1 +1,1 @@
-export * from 'rxjs-compat/operator/mergeMap';
+export * from 'rxjs-compat/operator/smooshMap';

@@ -132,7 +132,7 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  *
  *
  * @see {@link combineAll}
- * @see {@link merge}
+ * @see {@link smoosh}
  * @see {@link withLatestFrom}
  *
  * @param {ObservableInput} observable1 An input Observable to combine with other Observables.

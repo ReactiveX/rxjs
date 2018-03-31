@@ -1,5 +1,5 @@
 import { hot, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { buffer, mergeMap, take } from 'rxjs/operators';
+import { buffer, smooshMap, take } from 'rxjs/operators';
 import { EMPTY, NEVER, throwError, of } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
@@ -146,9 +146,9 @@ describe('Observable.prototype.buffer', () => {
     };
 
     const result = a.pipe(
-      mergeMap((x: any) => of(x)),
+      smooshMap((x: any) => of(x)),
       buffer(b),
-      mergeMap((x: any) => of(x)),
+      smooshMap((x: any) => of(x)),
     );
 
     expectObservable(result, unsub).toBe(expected, expectedValues);

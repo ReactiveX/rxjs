@@ -328,9 +328,9 @@ describe('Observable.prototype.repeatWhen', () => {
     const unsub =        '                    !       ';
 
     const result = source
-      .mergeMap((x: string) => Observable.of(x))
+      .smooshMap((x: string) => Observable.of(x))
       .repeatWhen((notifications: any) => notifier)
-      .mergeMap((x: string) => Observable.of(x));
+      .smooshMap((x: string) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);

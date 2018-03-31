@@ -19,7 +19,7 @@ describe('Observable.prototype.withLatestFrom', () => {
     expectObservable(result).toBe(expected, { B: 'b1', C: 'c4', D: 'd4', E: 'e4' });
   });
 
-  it('should merge the value with the latest values from the other observables into arrays', () => {
+  it('should smoosh the value with the latest values from the other observables into arrays', () => {
     const e1 =   hot('--a--^---b---c---d-|');
     const e1subs =        '^             !';
     const e2 =   hot('--e--^-f---g---h------|');
@@ -41,7 +41,7 @@ describe('Observable.prototype.withLatestFrom', () => {
     expectSubscriptions(e3.subscriptions).toBe(e3subs);
   });
 
-  it('should merge the value with the latest values from the other observables into ' +
+  it('should smoosh the value with the latest values from the other observables into ' +
   'arrays and a project argument', () => {
     const e1 =   hot('--a--^---b---c---d-|');
     const e1subs =        '^             !';
@@ -106,9 +106,9 @@ describe('Observable.prototype.withLatestFrom', () => {
     const project = function (a, b, c) { return a + b + c; };
 
     const result = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .smooshMap((x: string) => Observable.of(x))
       .withLatestFrom(e2, e3, project)
-      .mergeMap((x: string) => Observable.of(x));
+      .smooshMap((x: string) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

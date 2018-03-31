@@ -111,9 +111,9 @@ describe('Observable.prototype.every', () => {
     const unsub =      '       !          ';
 
     const result = source
-      .mergeMap((x: any) => Observable.of(x))
+      .smooshMap((x: any) => Observable.of(x))
       .every(predicate)
-      .mergeMap((x: any) => Observable.of(x));
+      .smooshMap((x: any) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);

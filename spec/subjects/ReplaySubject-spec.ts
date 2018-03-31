@@ -105,13 +105,13 @@ describe('ReplaySubject', () => {
       function feedCompleteIntoSubject() { replaySubject.complete(); }
 
       const sourceTemplate =  '-1-2-3----4------5-6---7--8----9--|';
-      const subscriber1 = hot('      (a|)                         ').mergeMapTo(replaySubject);
+      const subscriber1 = hot('      (a|)                         ').smooshMapTo(replaySubject);
       const unsub1 =          '                     !             ';
       const expected1   =     '      (23)4------5-6--             ';
-      const subscriber2 = hot('            (b|)                   ').mergeMapTo(replaySubject);
+      const subscriber2 = hot('            (b|)                   ').smooshMapTo(replaySubject);
       const unsub2 =          '                         !         ';
       const expected2   =     '            (34)-5-6---7--         ';
-      const subscriber3 = hot('                           (c|)    ').mergeMapTo(replaySubject);
+      const subscriber3 = hot('                           (c|)    ').smooshMapTo(replaySubject);
       const expected3   =     '                           (78)9--|';
 
       expectObservable(hot(sourceTemplate).do(
@@ -129,7 +129,7 @@ describe('ReplaySubject', () => {
       function feedCompleteIntoSubject() { replaySubject.complete(); }
 
       const sourceTemplate =  '-1-2-3--4--|';
-      const subscriber1 = hot('               (a|) ').mergeMapTo(replaySubject);
+      const subscriber1 = hot('               (a|) ').smooshMapTo(replaySubject);
       const expected1   =     '               (34|)';
 
       expectObservable(hot(sourceTemplate).do(
@@ -202,13 +202,13 @@ describe('ReplaySubject', () => {
       function feedCompleteIntoSubject() { replaySubject.complete(); }
 
       const sourceTemplate =  '-1-2-3----4------5-6----7-8----9--|';
-      const subscriber1 = hot('      (a|)                         ').mergeMapTo(replaySubject);
+      const subscriber1 = hot('      (a|)                         ').smooshMapTo(replaySubject);
       const unsub1 =          '                     !             ';
       const expected1   =     '      (23)4------5-6--             ';
-      const subscriber2 = hot('            (b|)                   ').mergeMapTo(replaySubject);
+      const subscriber2 = hot('            (b|)                   ').smooshMapTo(replaySubject);
       const unsub2 =          '                         !         ';
       const expected2   =     '            4----5-6----7-         ';
-      const subscriber3 = hot('                           (c|)    ').mergeMapTo(replaySubject);
+      const subscriber3 = hot('                           (c|)    ').smooshMapTo(replaySubject);
       const expected3   =     '                           (78)9--|';
 
       expectObservable(hot(sourceTemplate).do(
@@ -226,7 +226,7 @@ describe('ReplaySubject', () => {
       function feedCompleteIntoSubject() { replaySubject.complete(); }
 
       const sourceTemplate =  '-1-2-3----4|';
-      const subscriber1 = hot('             (a|)').mergeMapTo(replaySubject);
+      const subscriber1 = hot('             (a|)').smooshMapTo(replaySubject);
       const expected1   =     '             (4|)';
 
       expectObservable(hot(sourceTemplate).do(

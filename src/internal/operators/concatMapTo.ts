@@ -29,7 +29,7 @@ export function concatMapTo<T, I, R>(observable: ObservableInput<I>, resultSelec
  * as inner Observables amass in an unbounded buffer waiting for their turn to
  * be subscribed to.
  *
- * Note: `concatMapTo` is equivalent to `mergeMapTo` with concurrency parameter
+ * Note: `concatMapTo` is equivalent to `smooshMapTo` with concurrency parameter
  * set to `1`.
  *
  * @example <caption>For each click event, tick every second from 0 to 3, with no concurrency</caption>
@@ -46,7 +46,7 @@ export function concatMapTo<T, I, R>(observable: ObservableInput<I>, resultSelec
  * @see {@link concat}
  * @see {@link concatAll}
  * @see {@link concatMap}
- * @see {@link mergeMapTo}
+ * @see {@link smooshMapTo}
  * @see {@link switchMapTo}
  *
  * @param {ObservableInput} innerObservable An Observable to replace each value from

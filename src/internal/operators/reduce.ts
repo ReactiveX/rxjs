@@ -44,7 +44,7 @@ export function reduce<T, R>(accumulator: (acc: R, value: T, index: number) => R
  *
  * @see {@link count}
  * @see {@link expand}
- * @see {@link mergeScan}
+ * @see {@link smooshScan}
  * @see {@link scan}
  *
  * @param {function(acc: R, value: T, index: number): R} accumulator The accumulator function
