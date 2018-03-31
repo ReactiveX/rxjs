@@ -1,3 +1,38 @@
+<a name="6.0.0-rc.0"></a>
+# [6.0.0-rc.0](https://github.com/ReactiveX/RxJS/compare/6.0.0-beta.4...6.0.0-rc.0) (2018-03-31)
+
+
+### Bug Fixes
+
+* **ajax:** properly encode body with form data that includes URLs ([#3502](https://github.com/ReactiveX/RxJS/issues/3502)) ([4455d21](https://github.com/ReactiveX/RxJS/commit/4455d21)), closes [#2399](https://github.com/ReactiveX/RxJS/issues/2399)
+* **bindNodeCallback:** better type inference ([932bb7a](https://github.com/ReactiveX/RxJS/commit/932bb7a))
+* **elementAt:** now allows falsy defaultValues ([13706e7](https://github.com/ReactiveX/RxJS/commit/13706e7))
+* **lint_perf:** fix lint issues with newer perf tests ([1013754](https://github.com/ReactiveX/RxJS/commit/1013754))
+* **throttle:** now properly trailing throttles for individual values ([#3505](https://github.com/ReactiveX/RxJS/issues/3505)) ([3db18d1](https://github.com/ReactiveX/RxJS/commit/3db18d1)), closes [#2864](https://github.com/ReactiveX/RxJS/issues/2864)
+
+
+### Features
+
+* **takeUntil:** no longer subscribes to sourec if notifier synchronously emits ([#3504](https://github.com/ReactiveX/RxJS/issues/3504)) ([7b8a3e3](https://github.com/ReactiveX/RxJS/commit/7b8a3e3)), closes [#2189](https://github.com/ReactiveX/RxJS/issues/2189)
+
+
+### Performance Improvements
+
+* **pluck,bufferTime,asObservable:** add performance tests for pluck(), bufferTime() and asObservable() operators ([#2491](https://github.com/ReactiveX/RxJS/issues/2491)) ([24506b3](https://github.com/ReactiveX/RxJS/commit/24506b3))
+* **ReplaySubject:** slightly improved performance ([#2677](https://github.com/ReactiveX/RxJS/issues/2677)) ([9fea36d](https://github.com/ReactiveX/RxJS/commit/9fea36d))
+
+
+### BREAKING CHANGES
+
+* **throttle:** This changes the behavior of throttle, in particular
+throttling with both leading and trailing behaviors set to true, to more
+closely match the throttling behavior of lodash and other libraries.
+Throttling now starts immediately after any emission from the
+observable, and values will not be double emitted for both leading and
+trailing values
+
+
+
 <a name="6.0.0-beta.4"></a>
 # [6.0.0-beta.4](https://github.com/ReactiveX/RxJS/compare/6.0.0-beta.3...v6.0.0-beta.4) (2018-03-29)
 
