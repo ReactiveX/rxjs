@@ -1,5 +1,5 @@
-<a name="6.0.0-smoosh.0"></a>
-# [6.0.0-smoosh.0](https://github.com/ReactiveX/RxJS/compare/6.0.0-rc.0...6.0.0-smoosh.0) (2018-04-01)
+<a name="6.0.0-smoosh.1"></a>
+# [6.0.0-smoosh.1](https://github.com/ReactiveX/RxJS/compare/6.0.0-rc.0...6.0.0-smoosh.1) (2018-04-01)
 
 
 ### Bug Fixes
