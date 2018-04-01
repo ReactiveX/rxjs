@@ -1,3 +1,18 @@
+<a name="6.0.0-smoosh.0"></a>
+# [6.0.0-smoosh.0](https://github.com/ReactiveX/RxJS/compare/6.0.0-rc.0...6.0.0-smoosh.0) (2018-04-01)
+
+
+### Bug Fixes
+
+* **smoosh:** merge et al are now smoosh (smooshMap, smooshAll, etc) ([5779216](https://github.com/ReactiveX/RxJS/commit/5779216))
+
+
+### BREAKING CHANGES
+
+* **smoosh:** We now smoosh all the things.
+
+
+
 <a name="6.0.0-rc.0"></a>
 # [6.0.0-rc.0](https://github.com/ReactiveX/RxJS/compare/6.0.0-beta.4...6.0.0-rc.0) (2018-03-31)
 
