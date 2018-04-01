@@ -40,7 +40,7 @@ export function reduce<T, R>(this: Observable<T>, accumulator: (acc: R, value: T
  *
  * @see {@link count}
  * @see {@link expand}
- * @see {@link mergeScan}
+ * @see {@link smooshScan}
  * @see {@link scan}
  *
  * @param {function(acc: R, value: T, index: number): R} accumulator The accumulator function

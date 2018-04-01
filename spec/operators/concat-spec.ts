@@ -207,9 +207,9 @@ describe('Observable.prototype.concat', () => {
     const unsub =     '                 !    ';
 
     const result = e1
-      .mergeMap((x) => Observable.of(x))
+      .smooshMap((x) => Observable.of(x))
       .concat(e2)
-      .mergeMap((x) => Observable.of(x));
+      .smooshMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

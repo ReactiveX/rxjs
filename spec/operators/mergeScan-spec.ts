@@ -1,12 +1,12 @@
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { TestScheduler } from 'rxjs/testing';
 import { of, EMPTY, NEVER, concat, throwError } from 'rxjs';
-import { mergeScan, delay, mergeMap } from 'rxjs/operators';
+import { smooshScan, delay, smooshMap } from 'rxjs/operators';
 
 declare const rxTestScheduler: TestScheduler;
-/** @test {mergeScan} */
-describe('mergeScan', () => {
-  it('should mergeScan things', () => {
+/** @test {smooshScan} */
+describe('smooshScan', () => {
+  it('should smooshScan things', () => {
     const e1 = hot('--a--^--b--c--d--e--f--g--|');
     const e1subs =      '^                    !';
     const expected =    '---u--v--w--x--y--z--|';
@@ -20,7 +20,7 @@ describe('mergeScan', () => {
       z: ['b', 'c', 'd', 'e', 'f', 'g']
     };
 
-    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), []));
+    const source = e1.pipe(smooshScan((acc, x) => of(acc.concat(x)), []));
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -37,13 +37,13 @@ describe('mergeScan', () => {
       w: ['b', 'c', 'd']
     };
 
-    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), []));
+    const source = e1.pipe(smooshScan((acc, x) => of(acc.concat(x)), []));
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should mergeScan values and be able to asynchronously project them', () => {
+  it('should smooshScan values and be able to asynchronously project them', () => {
     const e1 = hot('--a--^--b--c--d--e--f--g--|');
     const e1subs =      '^                    !';
     const expected =    '-----u--v--w--x--y--z|';
@@ -57,7 +57,7 @@ describe('mergeScan', () => {
       z: ['b', 'c', 'd', 'e', 'f', 'g']
     };
 
-    const source = e1.pipe(mergeScan((acc, x) =>
+    const source = e1.pipe(smooshScan((acc, x) =>
       of(acc.concat(x)).delay(20, rxTestScheduler), []));
 
     expectObservable(source).toBe(expected, values);
@@ -78,7 +78,7 @@ describe('mergeScan', () => {
       z: ['c', 'e', 'g'],
     };
 
-    const source = e1.pipe(mergeScan((acc, x) =>
+    const source = e1.pipe(smooshScan((acc, x) =>
       of(acc.concat(x)).delay(50, rxTestScheduler), []));
 
     expectObservable(source).toBe(expected, values);
@@ -99,7 +99,7 @@ describe('mergeScan', () => {
       z: ['c', 'e', 'g'],
     };
 
-    const source = e1.pipe(mergeScan((acc, x) =>
+    const source = e1.pipe(smooshScan((acc, x) =>
       of(acc.concat(x)).delay(50, rxTestScheduler), []));
 
     expectObservable(source, e1subs).toBe(expected, values);
@@ -123,13 +123,13 @@ describe('mergeScan', () => {
 
     const source = e1
       .pipe(
-        mergeMap((x) => of(x)),
-        mergeScan((acc, x) =>
+        smooshMap((x) => of(x)),
+        smooshScan((acc, x) =>
           of([...acc, x]).pipe(
             delay(50, rxTestScheduler)
           )
         , []),
-        mergeMap(function (x) { return of(x); })
+        smooshMap(function (x) { return of(x); })
       );
 
     expectObservable(source, unsub).toBe(expected, values);
@@ -146,7 +146,7 @@ describe('mergeScan', () => {
       v: ['b', 'c']
     };
 
-    const source = e1.pipe(mergeScan((acc, x) => {
+    const source = e1.pipe(smooshScan((acc, x) => {
       if (x === 'd') {
         throw new Error('bad!');
       }
@@ -162,7 +162,7 @@ describe('mergeScan', () => {
     const e1subs =      '^  !';
     const expected =    '---#';
 
-    const source = e1.pipe(mergeScan((acc, x) => throwError(new Error('bad!')), []));
+    const source = e1.pipe(smooshScan((acc, x) => throwError(new Error('bad!')), []));
 
     expectObservable(source).toBe(expected, undefined, new Error('bad!'));
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -175,7 +175,7 @@ describe('mergeScan', () => {
 
     const values = { x: <string[]>[] };
 
-    const source = e1.pipe(mergeScan((acc, x) => EMPTY, []));
+    const source = e1.pipe(smooshScan((acc, x) => EMPTY, []));
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -188,7 +188,7 @@ describe('mergeScan', () => {
 
     const values = { x: <string[]>[] };
 
-    const source = e1.pipe(mergeScan((acc, x) => NEVER, []));
+    const source = e1.pipe(smooshScan((acc, x) => NEVER, []));
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -203,7 +203,7 @@ describe('mergeScan', () => {
       u: <string[]>[]
     };
 
-    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), []));
+    const source = e1.pipe(smooshScan((acc, x) => of(acc.concat(x)), []));
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -214,7 +214,7 @@ describe('mergeScan', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), []));
+    const source = e1.pipe(smooshScan((acc, x) => of(acc.concat(x)), []));
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -225,13 +225,13 @@ describe('mergeScan', () => {
     const e1subs =   '(^!)';
     const expected = '#';
 
-    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), []));
+    const source = e1.pipe(smooshScan((acc, x) => of(acc.concat(x)), []));
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should mergeScan unsubscription', () => {
+  it('should smooshScan unsubscription', () => {
     const e1 = hot('--a--^--b--c--d--e--f--g--|');
     const expected =    '---u--v--w--x--';
     const sub =         '^             !';
@@ -244,13 +244,13 @@ describe('mergeScan', () => {
       z: ['b', 'c', 'd', 'e', 'f', 'g']
     };
 
-    const source = e1.pipe(mergeScan((acc, x) => of(acc.concat(x)), []));
+    const source = e1.pipe(smooshScan((acc, x) => of(acc.concat(x)), []));
 
     expectObservable(source, sub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
-  it('should mergescan projects cold Observable with single concurrency', () => {
+  it('should smooshscan projects cold Observable with single concurrency', () => {
     const e1 =   hot('--a--b--c--|');
     const e1subs =   '^                                  !';
 
@@ -267,7 +267,7 @@ describe('mergeScan', () => {
     const expected = '--x-d--e--f--f-g--h--i--i-j--k--l--|';
 
     let index = 0;
-    const source = e1.pipe(mergeScan((acc, x) => {
+    const source = e1.pipe(smooshScan((acc, x) => {
       const value = inner[index++];
       return value.startWith(acc);
     }, 'x', 1));
@@ -285,7 +285,7 @@ describe('mergeScan', () => {
     const e1subs =      '^                    !';
     const expected =    '---------------------(x|)';
 
-    const source = e1.pipe(mergeScan((acc, x) => EMPTY, ['1']));
+    const source = e1.pipe(smooshScan((acc, x) => EMPTY, ['1']));
 
     expectObservable(source).toBe(expected, {x: ['1']});
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -297,14 +297,14 @@ describe('mergeScan', () => {
     const expected =    '-----------------------(x|)';
 
     const source = e1.pipe(
-      mergeScan((acc, x) => EMPTY.delay(50, rxTestScheduler), ['1'])
+      smooshScan((acc, x) => EMPTY.delay(50, rxTestScheduler), ['1'])
     );
 
     expectObservable(source).toBe(expected, {x: ['1']});
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should mergescan projects hot Observable with single concurrency', () => {
+  it('should smooshscan projects hot Observable with single concurrency', () => {
     const e1 =   hot('---a---b---c---|');
     const e1subs =   '^                           !';
 
@@ -321,7 +321,7 @@ describe('mergeScan', () => {
     const expected = '---x-e--f--f--i----i-l------|';
 
     let index = 0;
-    const source = e1.pipe(mergeScan((acc, x) => {
+    const source = e1.pipe(smooshScan((acc, x) => {
       const value = inner[index++];
       return value.startWith(acc);
     }, 'x', 1));
@@ -334,7 +334,7 @@ describe('mergeScan', () => {
     expectSubscriptions(inner[2].subscriptions).toBe(zsubs);
   });
 
-  it('should mergescan projects cold Observable with dual concurrency', () => {
+  it('should smooshscan projects cold Observable with dual concurrency', () => {
     const e1 =   hot('----a----b----c----|');
     const e1subs =   '^                                 !';
 
@@ -351,7 +351,7 @@ describe('mergeScan', () => {
     const expected = '----x--d-d-eg--fh--hi-j---k---l---|';
 
     let index = 0;
-    const source = e1.pipe(mergeScan((acc, x) => {
+    const source = e1.pipe(smooshScan((acc, x) => {
       const value = inner[index++];
       return value.startWith(acc);
     }, 'x', 2));
@@ -364,7 +364,7 @@ describe('mergeScan', () => {
     expectSubscriptions(inner[2].subscriptions).toBe(zsubs);
   });
 
-  it('should mergescan projects hot Observable with dual concurrency', () => {
+  it('should smooshscan projects hot Observable with dual concurrency', () => {
     const e1 =   hot('---a---b---c---|');
     const e1subs =   '^                           !';
 
@@ -381,7 +381,7 @@ describe('mergeScan', () => {
     const expected = '---x-e-efh-h-ki------l------|';
 
     let index = 0;
-    const source = e1.pipe(mergeScan((acc, x) => {
+    const source = e1.pipe(smooshScan((acc, x) => {
       const value = inner[index++];
       return value.startWith(acc);
     }, 'x', 2));

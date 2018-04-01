@@ -364,7 +364,7 @@ describe('Observable.prototype.groupBy', () => {
     const source = e1
       .groupBy((val: string) => val.toLowerCase().trim())
       .take(1)
-      .mergeMap((group: any) => group.take(1));
+      .smooshMap((group: any) => group.take(1));
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -392,9 +392,9 @@ describe('Observable.prototype.groupBy', () => {
     const expectedValues = { w: 'foo', x: 'bar', y: 'baz' };
 
     const source = e1
-      .mergeMap((x: string) => Observable.of(x))
+      .smooshMap((x: string) => Observable.of(x))
       .groupBy((x: string) => x.toLowerCase().trim())
-      .mergeMap((group: any) => Observable.of(group.key));
+      .smooshMap((group: any) => Observable.of(group.key));
 
     expectObservable(source, unsub).toBe(expected, expectedValues);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

@@ -75,11 +75,11 @@ describe('Observable.prototype.share', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^           !';
     const shared = source.share();
-    const subscriber1 = hot('a|           ').mergeMapTo(shared);
+    const subscriber1 = hot('a|           ').smooshMapTo(shared);
     const expected1   =     '-1-2-3----4-|';
-    const subscriber2 = hot('    b|       ').mergeMapTo(shared);
+    const subscriber2 = hot('    b|       ').smooshMapTo(shared);
     const expected2   =     '    -3----4-|';
-    const subscriber3 = hot('        c|   ').mergeMapTo(shared);
+    const subscriber3 = hot('        c|   ').smooshMapTo(shared);
     const expected3   =     '        --4-|';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -92,11 +92,11 @@ describe('Observable.prototype.share', () => {
     const source =     cold('-1-2-3----4-#');
     const sourceSubs =      '^           !';
     const shared = source.share();
-    const subscriber1 = hot('a|           ').mergeMapTo(shared);
+    const subscriber1 = hot('a|           ').smooshMapTo(shared);
     const expected1   =     '-1-2-3----4-#';
-    const subscriber2 = hot('    b|       ').mergeMapTo(shared);
+    const subscriber2 = hot('    b|       ').smooshMapTo(shared);
     const expected2   =     '    -3----4-#';
-    const subscriber3 = hot('        c|   ').mergeMapTo(shared);
+    const subscriber3 = hot('        c|   ').smooshMapTo(shared);
     const expected3   =     '        --4-#';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -111,11 +111,11 @@ describe('Observable.prototype.share', () => {
     const sourceSubs =      '^        !   ';
     const shared = source.share();
     const unsub =           '         !   ';
-    const subscriber1 = hot('a|           ').mergeMapTo(shared);
+    const subscriber1 = hot('a|           ').smooshMapTo(shared);
     const expected1   =     '-1-2-3----   ';
-    const subscriber2 = hot('    b|       ').mergeMapTo(shared);
+    const subscriber2 = hot('    b|       ').smooshMapTo(shared);
     const expected2   =     '    -3----   ';
-    const subscriber3 = hot('        c|   ').mergeMapTo(shared);
+    const subscriber3 = hot('        c|   ').smooshMapTo(shared);
     const expected3   =     '        --   ';
 
     expectObservable(subscriber1, unsub).toBe(expected1);
@@ -158,11 +158,11 @@ describe('Observable.prototype.share', () => {
     const source = cold(       '-1-2-3----4-|');
     const sourceSubs =      '   ^           !';
     const shared = source.share();
-    const subscriber1 = hot('   a|           ').mergeMapTo(shared);
+    const subscriber1 = hot('   a|           ').smooshMapTo(shared);
     const expected1 =       '   -1-2-3----4-|';
-    const subscriber2 = hot('       b|       ').mergeMapTo(shared);
+    const subscriber2 = hot('       b|       ').smooshMapTo(shared);
     const expected2 =       '       -3----4-|';
-    const subscriber3 = hot('           c|   ').mergeMapTo(shared);
+    const subscriber3 = hot('           c|   ').smooshMapTo(shared);
     const expected3 =       '           --4-|';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -175,10 +175,10 @@ describe('Observable.prototype.share', () => {
     const source =     cold(   '-1-2-3----4-|');
     const sourceSubs =      '   ^        !   ';
     const shared = source.share();
-    const subscriber1 = hot('   a|           ').mergeMapTo(shared);
+    const subscriber1 = hot('   a|           ').smooshMapTo(shared);
     const unsub1 =          '          !     ';
     const expected1   =     '   -1-2-3--     ';
-    const subscriber2 = hot('       b|       ').mergeMapTo(shared);
+    const subscriber2 = hot('       b|       ').smooshMapTo(shared);
     const unsub2 =          '            !   ';
     const expected2   =     '       -3----   ';
 
@@ -191,13 +191,13 @@ describe('Observable.prototype.share', () => {
     const source =     cold(   '-1-2-3----4-|');
     const sourceSubs =      '   ^        !   ';
     const shared = source
-      .mergeMap((x: string) => Observable.of(x))
+      .smooshMap((x: string) => Observable.of(x))
       .share()
-      .mergeMap((x: string) => Observable.of(x));
-    const subscriber1 = hot('   a|           ').mergeMapTo(shared);
+      .smooshMap((x: string) => Observable.of(x));
+    const subscriber1 = hot('   a|           ').smooshMapTo(shared);
     const unsub1 =          '          !     ';
     const expected1   =     '   -1-2-3--     ';
-    const subscriber2 = hot('       b|       ').mergeMapTo(shared);
+    const subscriber2 = hot('       b|       ').smooshMapTo(shared);
     const unsub2 =          '            !   ';
     const expected2   =     '       -3----   ';
 

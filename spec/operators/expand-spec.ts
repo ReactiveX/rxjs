@@ -165,14 +165,14 @@ describe('Observable.prototype.expand', () => {
     const unsub =    '       !  ';
 
     const result = e1
-      .mergeMap((x) => Observable.of(x))
+      .smooshMap((x) => Observable.of(x))
       .expand((x): Rx.Observable<any> => {
         if (x === 16) {
           return Observable.empty();
         }
         return cold(e2shape, { z: x + x });
       })
-      .mergeMap((x) => Observable.of(x));
+      .smooshMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

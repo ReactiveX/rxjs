@@ -165,9 +165,9 @@ describe('Observable.prototype.bufferToggle', () => {
 
     let i = 0;
     const result = e1
-      .mergeMap((x: any) => Observable.of(x))
+      .smooshMap((x: any) => Observable.of(x))
       .bufferToggle(e2, () => closings[i++])
-      .mergeMap((x: any) => Observable.of(x));
+      .smooshMap((x: any) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(subs);

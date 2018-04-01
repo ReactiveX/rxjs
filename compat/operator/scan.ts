@@ -35,7 +35,7 @@ export function scan<T, R>(this: Observable<T>, accumulator: (acc: R, value: T, 
  * count.subscribe(x => console.log(x));
  *
  * @see {@link expand}
- * @see {@link mergeScan}
+ * @see {@link smooshScan}
  * @see {@link reduce}
  *
  * @param {function(acc: R, value: T, index: number): R} accumulator

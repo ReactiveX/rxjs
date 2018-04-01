@@ -1,1 +1,1 @@
-export { mergeMapTo } from 'rxjs/operators';
+export { smooshMapTo as smooshMapTo } from 'rxjs/operators';

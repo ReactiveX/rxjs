@@ -111,9 +111,9 @@ describe('Observable.prototype.debounce', () => {
     const unsub =    '       !       ';
 
     const result = e1
-      .mergeMap((x: any) => Observable.of(x))
+      .smooshMap((x: any) => Observable.of(x))
       .debounce(getTimerSelector(20))
-      .mergeMap((x: any) => Observable.of(x));
+      .smooshMap((x: any) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

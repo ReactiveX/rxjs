@@ -43,11 +43,11 @@ describe('operators/index', () => {
     expect(index.mapTo).to.exist;
     expect(index.materialize).to.exist;
     expect(index.max).to.exist;
-    expect(index.mergeAll).to.exist;
-    expect(index.mergeMap).to.exist;
-    expect(index.mergeMap).to.exist;
-    expect(index.mergeMapTo).to.exist;
-    expect(index.mergeScan).to.exist;
+    expect(index.smooshAll).to.exist;
+    expect(index.smooshMap).to.exist;
+    expect(index.smooshMap).to.exist;
+    expect(index.smooshMapTo).to.exist;
+    expect(index.smooshScan).to.exist;
     expect(index.min).to.exist;
     expect(index.multicast).to.exist;
     expect(index.observeOn).to.exist;

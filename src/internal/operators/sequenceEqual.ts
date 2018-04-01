@@ -40,7 +40,7 @@ import { Observer, OperatorFunction } from '../types';
  * var keys = Rx.Observable.fromEvent(document, 'keyup')
  *  .map(e => e.code);
  * var matches = keys.bufferCount(11, 1)
- *  .mergeMap(
+ *  .smooshMap(
  *    last11 =>
  *      Rx.Observable.from(last11)
  *        .sequenceEqual(code)

@@ -43,11 +43,11 @@ describe('Observable.prototype.publish', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^           !';
     const published = source.publish();
-    const subscriber1 = hot('a|           ').mergeMapTo(published);
+    const subscriber1 = hot('a|           ').smooshMapTo(published);
     const expected1   =     '-1-2-3----4-|';
-    const subscriber2 = hot('    b|       ').mergeMapTo(published);
+    const subscriber2 = hot('    b|       ').smooshMapTo(published);
     const expected2   =     '    -3----4-|';
-    const subscriber3 = hot('        c|   ').mergeMapTo(published);
+    const subscriber3 = hot('        c|   ').smooshMapTo(published);
     const expected3   =     '        --4-|';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -64,11 +64,11 @@ describe('Observable.prototype.publish', () => {
                             '    ^       !',
                             '        ^   !'];
     const published = source.publish(x => x.zip(x, (a, b) => (parseInt(a) + parseInt(b)).toString()));
-    const subscriber1 = hot('a|           ').mergeMapTo(published);
+    const subscriber1 = hot('a|           ').smooshMapTo(published);
     const expected1   =     '-2-4-6----8-|';
-    const subscriber2 = hot('    b|       ').mergeMapTo(published);
+    const subscriber2 = hot('    b|       ').smooshMapTo(published);
     const expected2   =     '    -6----8-|';
-    const subscriber3 = hot('        c|   ').mergeMapTo(published);
+    const subscriber3 = hot('        c|   ').smooshMapTo(published);
     const expected3   =     '        --8-|';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -81,11 +81,11 @@ describe('Observable.prototype.publish', () => {
     const source =     cold('-1-2-3----4-#');
     const sourceSubs =      '^           !';
     const published = source.publish();
-    const subscriber1 = hot('a|           ').mergeMapTo(published);
+    const subscriber1 = hot('a|           ').smooshMapTo(published);
     const expected1   =     '-1-2-3----4-#';
-    const subscriber2 = hot('    b|       ').mergeMapTo(published);
+    const subscriber2 = hot('    b|       ').smooshMapTo(published);
     const expected2   =     '    -3----4-#';
-    const subscriber3 = hot('        c|   ').mergeMapTo(published);
+    const subscriber3 = hot('        c|   ').smooshMapTo(published);
     const expected3   =     '        --4-#';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -102,11 +102,11 @@ describe('Observable.prototype.publish', () => {
     const sourceSubs =      '^        !   ';
     const published = source.publish();
     const unsub =           '         u   ';
-    const subscriber1 = hot('a|           ').mergeMapTo(published);
+    const subscriber1 = hot('a|           ').smooshMapTo(published);
     const expected1   =     '-1-2-3----   ';
-    const subscriber2 = hot('    b|       ').mergeMapTo(published);
+    const subscriber2 = hot('    b|       ').smooshMapTo(published);
     const expected2   =     '    -3----   ';
-    const subscriber3 = hot('        c|   ').mergeMapTo(published);
+    const subscriber3 = hot('        c|   ').smooshMapTo(published);
     const expected3   =     '        --   ';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -127,13 +127,13 @@ describe('Observable.prototype.publish', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^        !   ';
     const published = source
-      .mergeMap((x) => Observable.of(x))
+      .smooshMap((x) => Observable.of(x))
       .publish();
-    const subscriber1 = hot('a|           ').mergeMapTo(published);
+    const subscriber1 = hot('a|           ').smooshMapTo(published);
     const expected1   =     '-1-2-3----   ';
-    const subscriber2 = hot('    b|       ').mergeMapTo(published);
+    const subscriber2 = hot('    b|       ').smooshMapTo(published);
     const expected2   =     '    -3----   ';
-    const subscriber3 = hot('        c|   ').mergeMapTo(published);
+    const subscriber3 = hot('        c|   ').smooshMapTo(published);
     const expected3   =     '        --   ';
     const unsub =           '         u   ';
 
@@ -156,11 +156,11 @@ describe('Observable.prototype.publish', () => {
       const source =     cold(   '-1-2-3----4-|');
       const sourceSubs =      '   ^           !';
       const replayed = source.publish().refCount();
-      const subscriber1 = hot('   a|           ').mergeMapTo(replayed);
+      const subscriber1 = hot('   a|           ').smooshMapTo(replayed);
       const expected1   =     '   -1-2-3----4-|';
-      const subscriber2 = hot('       b|       ').mergeMapTo(replayed);
+      const subscriber2 = hot('       b|       ').smooshMapTo(replayed);
       const expected2   =     '       -3----4-|';
-      const subscriber3 = hot('           c|   ').mergeMapTo(replayed);
+      const subscriber3 = hot('           c|   ').smooshMapTo(replayed);
       const expected3   =     '           --4-|';
 
       expectObservable(subscriber1).toBe(expected1);
@@ -173,10 +173,10 @@ describe('Observable.prototype.publish', () => {
       const source =     cold(   '-1-2-3----4-|');
       const sourceSubs =      '   ^        !   ';
       const replayed = source.publish().refCount();
-      const subscriber1 = hot('   a|           ').mergeMapTo(replayed);
+      const subscriber1 = hot('   a|           ').smooshMapTo(replayed);
       const unsub1 =          '          !     ';
       const expected1   =     '   -1-2-3--     ';
-      const subscriber2 = hot('       b|       ').mergeMapTo(replayed);
+      const subscriber2 = hot('       b|       ').smooshMapTo(replayed);
       const unsub2 =          '            !   ';
       const expected2   =     '       -3----   ';
 
@@ -189,11 +189,11 @@ describe('Observable.prototype.publish', () => {
       const source =     cold('-1-2-3----4-#');
       const sourceSubs =      '^           !';
       const published = source.publish().refCount().retry(3);
-      const subscriber1 = hot('a|           ').mergeMapTo(published);
+      const subscriber1 = hot('a|           ').smooshMapTo(published);
       const expected1   =     '-1-2-3----4-#';
-      const subscriber2 = hot('    b|       ').mergeMapTo(published);
+      const subscriber2 = hot('    b|       ').smooshMapTo(published);
       const expected2   =     '    -3----4-#';
-      const subscriber3 = hot('        c|   ').mergeMapTo(published);
+      const subscriber3 = hot('        c|   ').smooshMapTo(published);
       const expected3   =     '        --4-#';
 
       expectObservable(subscriber1).toBe(expected1);
@@ -206,11 +206,11 @@ describe('Observable.prototype.publish', () => {
       const source =     cold('-1-2-3----4-|');
       const sourceSubs =      '^           !';
       const published = source.publish().refCount().repeat(3);
-      const subscriber1 = hot('a|           ').mergeMapTo(published);
+      const subscriber1 = hot('a|           ').smooshMapTo(published);
       const expected1   =     '-1-2-3----4-|';
-      const subscriber2 = hot('    b|       ').mergeMapTo(published);
+      const subscriber2 = hot('    b|       ').smooshMapTo(published);
       const expected2   =     '    -3----4-|';
-      const subscriber3 = hot('        c|   ').mergeMapTo(published);
+      const subscriber3 = hot('        c|   ').smooshMapTo(published);
       const expected3   =     '        --4-|';
 
       expectObservable(subscriber1).toBe(expected1);

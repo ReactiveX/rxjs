@@ -162,9 +162,9 @@ describe('Observable.prototype.pluck', () => {
     const expected = '--1--2-     ';
 
     const r = a
-      .mergeMap((x: string) => Observable.of(x))
+      .smooshMap((x: string) => Observable.of(x))
       .pluck('prop')
-      .mergeMap((x: string) => Observable.of(x));
+      .smooshMap((x: string) => Observable.of(x));
 
     expectObservable(r, unsub).toBe(expected);
     expectSubscriptions(a.subscriptions).toBe(asubs);

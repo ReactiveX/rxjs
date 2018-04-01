@@ -42,7 +42,7 @@ export function switchMap<T, I, R>(project: (value: T, index: number) => Observa
  *
  * @see {@link concatMap}
  * @see {@link exhaustMap}
- * @see {@link mergeMap}
+ * @see {@link smooshMap}
  * @see {@link switch}
  * @see {@link switchMapTo}
  *

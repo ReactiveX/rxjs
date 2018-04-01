@@ -28,20 +28,20 @@ import { windowTime as higherOrder } from 'rxjs/operators';
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var result = clicks.windowTime(1000)
  *   .map(win => win.take(2)) // each window has at most 2 emissions
- *   .mergeAll(); // flatten the Observable-of-Observables
+ *   .smooshAll(); // flatten the Observable-of-Observables
  * result.subscribe(x => console.log(x));
  *
  * @example <caption>Every 5 seconds start a window 1 second long, and emit at most 2 click events per window</caption>
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var result = clicks.windowTime(1000, 5000)
  *   .map(win => win.take(2)) // each window has at most 2 emissions
- *   .mergeAll(); // flatten the Observable-of-Observables
+ *   .smooshAll(); // flatten the Observable-of-Observables
  * result.subscribe(x => console.log(x));
  *
  * @example <caption>Same as example above but with maxWindowCount instead of take</caption>
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var result = clicks.windowTime(1000, 5000, 2) // each window has still at most 2 emissions
- *   .mergeAll(); // flatten the Observable-of-Observables
+ *   .smooshAll(); // flatten the Observable-of-Observables
  * result.subscribe(x => console.log(x));
 
  * @see {@link window}

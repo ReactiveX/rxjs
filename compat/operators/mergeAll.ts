@@ -1,1 +1,1 @@
-export { mergeAll } from 'rxjs/operators';
+export { smooshAll as smooshAll } from 'rxjs/operators';

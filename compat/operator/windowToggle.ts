@@ -23,7 +23,7 @@ import { windowToggle as higherOrder } from 'rxjs/operators';
  * var openings = Rx.Observable.interval(1000);
  * var result = clicks.windowToggle(openings, i =>
  *   i % 2 ? Rx.Observable.interval(500) : Rx.Observable.empty()
- * ).mergeAll();
+ * ).smooshAll();
  * result.subscribe(x => console.log(x));
  *
  * @see {@link window}

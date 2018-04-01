@@ -67,7 +67,7 @@ describe('index', () => {
     expect(index.generate).to.exist;
     expect(index.iif).to.exist;
     expect(index.interval).to.exist;
-    expect(index.merge).to.exist;
+    expect(index.smoosh).to.exist;
     expect(index.of).to.exist;
     expect(index.onErrorResumeNext).to.exist;
     expect(index.pairs).to.exist;

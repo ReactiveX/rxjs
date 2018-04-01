@@ -173,9 +173,9 @@ describe('Observable.prototype.combineAll', () => {
     const values = { x: 'bf', y: 'cf', z: 'cg' };
 
     const result = Observable.of(e1, e2)
-      .mergeMap((x) => Observable.of(x))
+      .smooshMap((x) => Observable.of(x))
       .combineAll((x, y) => x + y)
-      .mergeMap((x) => Observable.of(x));
+      .smooshMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

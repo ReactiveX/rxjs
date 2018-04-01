@@ -138,13 +138,13 @@ describe('BehaviorSubject', () => {
     function feedCompleteIntoSubject() { behaviorSubject.complete(); }
 
     const sourceTemplate =  '-1-2-3----4------5-6---7--8----9--|';
-    const subscriber1 = hot('      (a|)                         ').mergeMapTo(behaviorSubject);
+    const subscriber1 = hot('      (a|)                         ').smooshMapTo(behaviorSubject);
     const unsub1 =          '                     !             ';
     const expected1   =     '      3---4------5-6--             ';
-    const subscriber2 = hot('            (b|)                   ').mergeMapTo(behaviorSubject);
+    const subscriber2 = hot('            (b|)                   ').smooshMapTo(behaviorSubject);
     const unsub2 =          '                         !         ';
     const expected2   =     '            4----5-6---7--         ';
-    const subscriber3 = hot('                           (c|)    ').mergeMapTo(behaviorSubject);
+    const subscriber3 = hot('                           (c|)    ').smooshMapTo(behaviorSubject);
     const expected3   =     '                           8---9--|';
 
     expectObservable(hot(sourceTemplate).do(
@@ -162,7 +162,7 @@ describe('BehaviorSubject', () => {
     function feedCompleteIntoSubject() { behaviorSubject.complete(); }
 
     const sourceTemplate =  '-1-2-3--4--|';
-    const subscriber1 = hot('               (a|)').mergeMapTo(behaviorSubject);
+    const subscriber1 = hot('               (a|)').smooshMapTo(behaviorSubject);
     const expected1   =     '               |   ';
 
     expectObservable(hot(sourceTemplate).do(

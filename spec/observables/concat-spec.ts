@@ -58,10 +58,10 @@ describe('Observable.concat', () => {
     const expected =    '--i-j-k-l---i-j-';
     const unsub =       '               !';
 
-    const innerWrapped = inner.mergeMap((x) => Observable.of(x));
+    const innerWrapped = inner.smooshMap((x) => Observable.of(x));
     const result = Observable
       .concat(innerWrapped, innerWrapped, innerWrapped, innerWrapped)
-      .mergeMap((x) => Observable.of(x));
+      .smooshMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(inner.subscriptions).toBe(innersubs);

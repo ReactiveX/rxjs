@@ -1,1 +1,1 @@
-export { merge } from 'rxjs';
+export { smoosh as smoosh } from 'rxjs';

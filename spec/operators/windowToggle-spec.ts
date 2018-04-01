@@ -190,9 +190,9 @@ describe('windowToggle', () => {
 
     let i = 0;
     const result = e1
-      .mergeMap((x: string) => of(x))
+      .smooshMap((x: string) => of(x))
       .pipe(windowToggle(e2, () => close[i++]))
-      .mergeMap(x => of(x));
+      .smooshMap(x => of(x));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

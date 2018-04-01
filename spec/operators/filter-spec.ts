@@ -267,9 +267,9 @@ describe('Observable.prototype.filter', () => {
     const expected =          '--3---5----7-       ';
 
     const r = source
-      .mergeMap((x: any) => Observable.of(x))
+      .smooshMap((x: any) => Observable.of(x))
       .filter(isPrime)
-      .mergeMap((x: any) => Observable.of(x));
+      .smooshMap((x: any) => Observable.of(x));
 
     expectObservable(r, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);

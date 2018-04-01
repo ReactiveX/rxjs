@@ -98,9 +98,9 @@ describe('Observable.prototype.exhaust', () => {
     const expected = '--------a---b----            ';
 
     const result = e1
-      .mergeMap((x) => Observable.of(x))
+      .smooshMap((x) => Observable.of(x))
       .exhaust()
-      .mergeMap((x) => Observable.of(x));
+      .smooshMap((x) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);

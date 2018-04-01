@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { bindCallback, bindNodeCallback, combineLatest, concat, defer, empty, forkJoin, from, fromEvent, fromEventPattern,
-  iif, interval, merge, NEVER, of, onErrorResumeNext, pairs, race, range, throwError, timer, using, zip } from 'rxjs';
+  iif, interval, smoosh, NEVER, of, onErrorResumeNext, pairs, race, range, throwError, timer, using, zip } from 'rxjs';
 import * as Rx from 'rxjs/Rx';
 
 describe('exports', () => {
@@ -56,8 +56,8 @@ describe('exports', () => {
     expect(interval).to.equal(Rx.Observable.interval);
   });
 
-  it('should have rxjs/observable/merge', () => {
-    expect(merge).to.equal(Rx.Observable.merge);
+  it('should have rxjs/observable/smoosh', () => {
+    expect(smoosh).to.equal(Rx.Observable.smoosh);
   });
 
   it('should have rxjs/observable/of', () => {

@@ -1,1 +1,1 @@
-export * from 'rxjs-compat/operator/mergeAll';
+export * from 'rxjs-compat/operator/smooshAll';

@@ -39,7 +39,7 @@ export function switchMapTo<T, I, R>(observable: ObservableInput<I>, resultSelec
  * @see {@link concatMapTo}
  * @see {@link switch}
  * @see {@link switchMap}
- * @see {@link mergeMapTo}
+ * @see {@link smooshMapTo}
  *
  * @param {ObservableInput} innerObservable An Observable to replace each value from
  * the source Observable.

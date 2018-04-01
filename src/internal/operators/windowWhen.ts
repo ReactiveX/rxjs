@@ -31,7 +31,7 @@ import { OperatorFunction } from '../types';
  * var result = clicks
  *   .windowWhen(() => Rx.Observable.interval(1000 + Math.random() * 4000))
  *   .map(win => win.take(2)) // each window has at most 2 emissions
- *   .mergeAll(); // flatten the Observable-of-Observables
+ *   .smooshAll(); // flatten the Observable-of-Observables
  * result.subscribe(x => console.log(x));
  *
  * @see {@link window}

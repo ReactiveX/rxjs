@@ -2,7 +2,7 @@ import { Observable, ObservableInput } from 'rxjs';
 import { concatMapTo as higherOrder } from 'rxjs/operators';
 
 /**
- * Projects each source value to the same Observable which is merged multiple
+ * Projects each source value to the same Observable which is smooshed multiple
  * times in a serialized fashion on the output Observable.
  *
  * <span class="informal">It's like {@link concatMap}, but maps each value
@@ -21,7 +21,7 @@ import { concatMapTo as higherOrder } from 'rxjs/operators';
  * as inner Observables amass in an unbounded buffer waiting for their turn to
  * be subscribed to.
  *
- * Note: `concatMapTo` is equivalent to `mergeMapTo` with concurrency parameter
+ * Note: `concatMapTo` is equivalent to `smooshMapTo` with concurrency parameter
  * set to `1`.
  *
  * @example <caption>For each click event, tick every second from 0 to 3, with no concurrency</caption>
@@ -38,12 +38,12 @@ import { concatMapTo as higherOrder } from 'rxjs/operators';
  * @see {@link concat}
  * @see {@link concatAll}
  * @see {@link concatMap}
- * @see {@link mergeMapTo}
+ * @see {@link smooshMapTo}
  * @see {@link switchMapTo}
  *
  * @param {ObservableInput} innerObservable An Observable to replace each value from
  * the source Observable.
- * @return {Observable} An observable of values merged together by joining the
+ * @return {Observable} An observable of values smooshed together by joining the
  * passed observable with itself, one after the other, for each value emitted
  * from the source.
  * @method concatMapTo

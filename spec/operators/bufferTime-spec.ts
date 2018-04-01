@@ -208,9 +208,9 @@ describe('Observable.prototype.bufferTime', () => {
     };
 
     const result = e1
-      .mergeMap((x: any) => Observable.of(x))
+      .smooshMap((x: any) => Observable.of(x))
       .bufferTime(t, interval, Number.POSITIVE_INFINITY, rxTestScheduler)
-      .mergeMap((x: any) => Observable.of(x));
+      .smooshMap((x: any) => Observable.of(x));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(subs);

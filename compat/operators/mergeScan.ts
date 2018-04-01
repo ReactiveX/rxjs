@@ -1,1 +1,1 @@
-export { mergeScan } from 'rxjs/operators';
+export { smooshScan as smooshScan } from 'rxjs/operators';

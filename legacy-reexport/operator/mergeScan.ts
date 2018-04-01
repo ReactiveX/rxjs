@@ -1,1 +1,1 @@
-export * from 'rxjs-compat/operator/mergeScan';
+export * from 'rxjs-compat/operator/smooshScan';

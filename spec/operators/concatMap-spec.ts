@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { Observable, of, from } from 'rxjs';
-import { concatMap, mergeMap } from 'rxjs/operators';
+import { concatMap, smooshMap } from 'rxjs/operators';
 
 declare function asDiagram(arg: string): Function;
 
@@ -523,9 +523,9 @@ describe('Observable.prototype.concatMap', () => {
     const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
     const result = e1.pipe(
-      mergeMap(x => of(x)),
+      smooshMap(x => of(x)),
       concatMap(value => observableLookup[value]),
-      mergeMap(x => of(x))
+      smooshMap(x => of(x))
     );
 
     expectObservable(result, unsub).toBe(expected);
@@ -594,7 +594,7 @@ describe('Observable.prototype.concatMap', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should mergeMap many outer to inner arrays, outer unsubscribed early', () => {
+  it('should smooshMap many outer to inner arrays, outer unsubscribed early', () => {
     const e1 =   hot('2-----4--------3--------2-------|');
     const e1subs =   '^            !                   ';
     const unsub =    '             !                   ';

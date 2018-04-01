@@ -1,5 +1,5 @@
 
-import { mergeAll } from './mergeAll';
+import { smooshAll } from './smooshAll';
 import { OperatorFunction, ObservableInput } from '../types';
 
 export function concatAll<T>(): OperatorFunction<ObservableInput<T>, T>;
@@ -24,7 +24,7 @@ export function concatAll<R>(): OperatorFunction<any, R>;
  * the source emits, you can run into memory issues as the incoming Observables
  * collect in an unbounded buffer.
  *
- * Note: `concatAll` is equivalent to `mergeAll` with concurrency parameter set
+ * Note: `concatAll` is equivalent to `smooshAll` with concurrency parameter set
  * to `1`.
  *
  * @example <caption>For each click event, tick every second from 0 to 3, with no concurrency</caption>
@@ -44,7 +44,7 @@ export function concatAll<R>(): OperatorFunction<any, R>;
  * @see {@link concatMap}
  * @see {@link concatMapTo}
  * @see {@link exhaust}
- * @see {@link mergeAll}
+ * @see {@link smooshAll}
  * @see {@link switch}
  * @see {@link zipAll}
  *
@@ -54,5 +54,5 @@ export function concatAll<R>(): OperatorFunction<any, R>;
  * @owner Observable
  */
 export function concatAll<T>(): OperatorFunction<ObservableInput<T>, T> {
-  return mergeAll<T>(1);
+  return smooshAll<T>(1);
 }

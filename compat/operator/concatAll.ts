@@ -15,7 +15,7 @@ export function concatAll<T, R>(this: Observable<T>): Observable<R>;
  *
  * Joins every Observable emitted by the source (a higher-order Observable), in
  * a serial fashion. It subscribes to each inner Observable only after the
- * previous inner Observable has completed, and merges all of their values into
+ * previous inner Observable has completed, and smooshs all of their values into
  * the returned observable.
  *
  * __Warning:__ If the source Observable emits Observables quickly and
@@ -23,7 +23,7 @@ export function concatAll<T, R>(this: Observable<T>): Observable<R>;
  * the source emits, you can run into memory issues as the incoming Observables
  * collect in an unbounded buffer.
  *
- * Note: `concatAll` is equivalent to `mergeAll` with concurrency parameter set
+ * Note: `concatAll` is equivalent to `smooshAll` with concurrency parameter set
  * to `1`.
  *
  * @example <caption>For each click event, tick every second from 0 to 3, with no concurrency</caption>
@@ -43,7 +43,7 @@ export function concatAll<T, R>(this: Observable<T>): Observable<R>;
  * @see {@link concatMap}
  * @see {@link concatMapTo}
  * @see {@link exhaust}
- * @see {@link mergeAll}
+ * @see {@link smooshAll}
  * @see {@link switch}
  * @see {@link zipAll}
  *

@@ -790,12 +790,12 @@ describe('Observable.lift', () => {
     expectObservable(result).toBe(expected);
   });
 
-  it('should compose through merge', () => {
+  it('should compose through smoosh', () => {
     const e1 =   cold('-a--b-| ');
     const e2 =   cold('--x--y-|');
     const expected =  '-ax-by-|';
 
-    const result = MyCustomObservable.from(e1).merge(e2, rxTestScheduler);
+    const result = MyCustomObservable.from(e1).smoosh(e2, rxTestScheduler);
 
     expect(result instanceof MyCustomObservable).to.be.true;
 
