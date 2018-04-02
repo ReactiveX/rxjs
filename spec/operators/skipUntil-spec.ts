@@ -1,56 +1,55 @@
-import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { Observable, of, Subject } from 'rxjs';
+import { skipUntil, mergeMap } from 'rxjs/operators';
 
 declare function asDiagram(arg: string): Function;
 
-const Observable = Rx.Observable;
-
 /** @test {skipUntil} */
-describe('Observable.prototype.skipUntil', () => {
+describe('skipUntil', () => {
   asDiagram('skipUntil')('should skip values until another observable notifies', () => {
     const e1 =     hot('--a--b--c--d--e----|');
     const e1subs =     '^                  !';
     const skip =   hot('---------x------|   ');
-    const skipSubs =   '^               !   ';
+    const skipSubs =   '^        !          ';
     const expected =  ('-----------d--e----|');
 
-    expectObservable(e1.skipUntil(skip)).toBe(expected);
+    expectObservable(e1.pipe(skipUntil(skip))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(skip.subscriptions).toBe(skipSubs);
   });
 
-  it('should emit element only after another observable emits', () => {
+  it('should emit elements after notifer emits', () => {
     const e1 =     hot('--a--b--c--d--e--|');
     const e1subs =     '^                !';
-    const skip =   hot('-----------x----| ');
-    const skipSubs =   '^               ! ';
-    const expected =  ('--------------e--|');
+    const skip =   hot('---------x----|   ');
+    const skipSubs =   '^        !        ';
+    const expected =  ('-----------d--e--|');
 
-    expectObservable(e1.skipUntil(skip)).toBe(expected);
+    expectObservable(e1.pipe(skipUntil(skip))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(skip.subscriptions).toBe(skipSubs);
   });
 
-  it('should skip value and raises error until another observable raises error', () => {
+  it('should raise an error if notifier throws and source is hot', () => {
     const e1 =   hot('--a--b--c--d--e--|');
     const e1subs =   '^            !    ';
     const skip = hot('-------------#    ');
     const skipSubs = '^            !    ';
     const expected = '-------------#    ';
 
-    expectObservable(e1.skipUntil(skip)).toBe(expected);
+    expectObservable(e1.pipe(skipUntil(skip))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(skip.subscriptions).toBe(skipSubs);
   });
 
-  it('should skip all element when another observable does not emit and completes early', () => {
+  it('should skip all elements when notifier does not emit and completes early', () => {
     const e1 =   hot('--a--b--c--d--e--|');
     const e1subs =   '^                !';
-    const skip = hot('------------|     ');
-    const skipSubs = '^           !     ';
+    const skip = hot('------------|');
+    const skipSubs = '^           !';
     const expected = '-----------------|';
 
-    expectObservable(e1.skipUntil(skip)).toBe(expected);
+    expectObservable(e1.pipe(skipUntil(skip))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(skip.subscriptions).toBe(skipSubs);
   });
@@ -63,7 +62,7 @@ describe('Observable.prototype.skipUntil', () => {
     const skipSubs =   '^        !          ';
     const expected =  ('----------          ');
 
-    expectObservable(e1.skipUntil(skip), unsub).toBe(expected);
+    expectObservable(e1.pipe(skipUntil(skip)), unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(skip.subscriptions).toBe(skipSubs);
   });
@@ -76,154 +75,143 @@ describe('Observable.prototype.skipUntil', () => {
     const expected =  ('----------          ');
     const unsub =      '         !          ';
 
-    const result = e1
-      .mergeMap((x: string) => Observable.of(x))
-      .skipUntil(skip)
-      .mergeMap((x: string) => Observable.of(x));
+    const result = e1.pipe(
+      mergeMap(x => of(x)),
+      skipUntil(skip),
+      mergeMap(x => of(x)),
+    );
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(skip.subscriptions).toBe(skipSubs);
   });
 
-  it('should skip all element when another observable is empty', () => {
+  it('should skip all elements when notifier is empty', () => {
     const e1 =   hot('--a--b--c--d--e--|');
     const e1subs =   '^                !';
     const skip = cold('|');
     const skipSubs = '(^!)';
     const expected = '-----------------|';
 
-    expectObservable(e1.skipUntil(skip)).toBe(expected);
+    expectObservable(e1.pipe(skipUntil(skip))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(skip.subscriptions).toBe(skipSubs);
   });
 
-  it('should keep subscription to source, to wait for its eventual complete', () => {
+  it('should keep subscription to source, to wait for its eventual completion', () => {
     const e1 =   hot('------------------------------|');
     const e1subs =   '^                             !';
     const skip = hot('-------|                       ');
     const skipSubs = '^      !                       ';
     const expected = '------------------------------|';
 
-    expectObservable(e1.skipUntil(skip)).toBe(expected);
+    expectObservable(e1.pipe(skipUntil(skip))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(skip.subscriptions).toBe(skipSubs);
   });
 
-  it('should not complete if source observable does not complete', () => {
+  it('should not complete if hot source observable does not complete', () => {
     const e1 =   hot('-');
     const e1subs =   '^';
     const skip = hot('-------------x--|');
-    const skipSubs = '^               !';
+    const skipSubs = '^            !   ';
     const expected = '-';
 
-    expectObservable(e1.skipUntil(skip)).toBe(expected);
+    expectObservable(e1.pipe(skipUntil(skip))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(skip.subscriptions).toBe(skipSubs);
   });
 
-  it('should not complete if source observable never completes', () => {
+  it('should not complete if cold source observable never completes', () => {
     const e1 = cold( '-');
     const e1subs =   '^';
     const skip = hot('-------------x--|');
-    const skipSubs = '^               !';
+    const skipSubs = '^            !   ';
     const expected = '-';
 
-    expectObservable(e1.skipUntil(skip)).toBe(expected);
+    expectObservable(e1.pipe(skipUntil(skip))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(skip.subscriptions).toBe(skipSubs);
   });
 
-  it('should raise error if source does not completes when another observable raises error', () => {
-    const e1 =   hot('-');
-    const e1subs =   '^            !';
-    const skip = hot('-------------#');
-    const skipSubs = '^            !';
-    const expected = '-------------#';
-
-    expectObservable(e1.skipUntil(skip)).toBe(expected);
-    expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    expectSubscriptions(skip.subscriptions).toBe(skipSubs);
-  });
-
-  it('should raise error if source never completes when another observable raises error', () => {
+  it('should raise error if cold source is never and notifier errors', () => {
     const e1 = cold( '-');
     const e1subs =   '^            !';
     const skip = hot('-------------#');
     const skipSubs = '^            !';
     const expected = '-------------#';
 
-    expectObservable(e1.skipUntil(skip)).toBe(expected);
+    expectObservable(e1.pipe(skipUntil(skip))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(skip.subscriptions).toBe(skipSubs);
   });
 
-  it('should skip all element and does not complete when another observable never completes', () => {
+  it('should skip all elements and complete if notifier is cold never', () => {
     const e1 =   hot( '--a--b--c--d--e--|');
     const e1subs =    '^                !';
     const skip = cold('-');
     const skipSubs =  '^                !';
-    const expected =  '-';
+    const expected =  '-----------------|';
 
-    expectObservable(e1.skipUntil(skip)).toBe(expected);
+    expectObservable(e1.pipe(skipUntil(skip))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(skip.subscriptions).toBe(skipSubs);
   });
 
-  it('should skip all element and does not complete when another observable does not completes', () => {
+  it('should skip all elements and complete if notifier is a hot never', () => {
     const e1 =   hot('--a--b--c--d--e--|');
     const e1subs =   '^                !';
     const skip = hot('-');
     const skipSubs = '^                !';
-    const expected = '-';
+    const expected = '-----------------|';
 
-    expectObservable(e1.skipUntil(skip)).toBe(expected);
+    expectObservable(e1.pipe(skipUntil(skip))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(skip.subscriptions).toBe(skipSubs);
   });
 
-  it('should skip all element and does not complete when another observable completes after source', () => {
-    const e1 =   hot('--a--b--c--d--e--|');
+  it('should skip all elements and complete, even if notifier would not complete until later', () => {
+    const e1 =   hot('^-a--b--c--d--e--|');
     const e1subs =   '^                !';
-    const skip = hot('------------------------|');
+    const skip = hot('^-----------------------|');
     const skipSubs = '^                !';
-    const expected = '------------------';
+    const expected = '-----------------|';
 
-    expectObservable(e1.skipUntil(skip)).toBe(expected);
+    expectObservable(e1.pipe(skipUntil(skip))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(skip.subscriptions).toBe(skipSubs);
   });
 
-  it('should not completes if source does not completes when another observable does not emit', () => {
+  it('should not complete if source does not complete if notifier completes without emission', () => {
     const e1 =   hot('-');
     const e1subs =   '^';
     const skip = hot('--------------|');
     const skipSubs = '^             !';
     const expected = '-';
 
-    expectObservable(e1.skipUntil(skip)).toBe(expected);
+    expectObservable(e1.pipe(skipUntil(skip))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(skip.subscriptions).toBe(skipSubs);
   });
 
-  it('should not completes if source and another observable both does not complete', () => {
+  it('should not complete if source and notifier are both hot never', () => {
     const e1 =   hot('-');
     const e1subs =   '^';
     const skip = hot('-');
     const skipSubs = '^';
     const expected = '-';
 
-    expectObservable(e1.skipUntil(skip)).toBe(expected);
+    expectObservable(e1.pipe(skipUntil(skip))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(skip.subscriptions).toBe(skipSubs);
   });
 
-  it('should skip all element when another observable unsubscribed early before emit', () => {
+  it('should skip skip all elements if notifier is unsubscribed explicitly before the notifier emits', () => {
     const e1 =   hot( '--a--b--c--d--e--|');
     const e1subs =   ['^                !',
-                    '^                !']; // for the explicit subscribe some lines below
-    const skip = new Rx.Subject();
-    const expected =  '-';
+                      '^                !']; // for the explicit subscribe some lines below
+    const skip = new Subject();
+    const expected =  '-----------------|';
 
     e1.subscribe((x: string) => {
       if (x === 'd' && !skip.closed) {
@@ -233,7 +221,18 @@ describe('Observable.prototype.skipUntil', () => {
       skip.unsubscribe();
     });
 
-    expectObservable(e1.skipUntil(skip)).toBe(expected);
+    expectObservable(e1.pipe(skipUntil(skip))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should unsubscribe the notifier after its first nexted value', () => {
+    const source =   hot('-^-o---o---o---o---o---o---|');
+    const notifier = hot('-^--------n--n--n--n--n--n-|');
+    const nSubs =         '^        !';
+    const expected =     '-^---------o---o---o---o---|';
+    const result = source.pipe(skipUntil(notifier));
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(notifier.subscriptions).toBe(nSubs);
   });
 });

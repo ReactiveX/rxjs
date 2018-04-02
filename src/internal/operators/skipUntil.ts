@@ -4,7 +4,8 @@ import { Observable } from '../Observable';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, TeardownLogic, ObservableInput } from '../types';
+import { Subscription } from '../Subscription';
 
 /**
  * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.
@@ -26,8 +27,8 @@ class SkipUntilOperator<T> implements Operator<T, T> {
   constructor(private notifier: Observable<any>) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new SkipUntilSubscriber(subscriber, this.notifier));
+  call(destination: Subscriber<T>, source: any): TeardownLogic {
+    return source.subscribe(new SkipUntilSubscriber(destination, this.notifier));
   }
 }
 
@@ -39,12 +40,11 @@ class SkipUntilOperator<T> implements Operator<T, T> {
 class SkipUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private hasValue: boolean = false;
-  private isInnerStopped: boolean = false;
+  private innerSubscription: Subscription;
 
-  constructor(destination: Subscriber<any>,
-              notifier: Observable<any>) {
+  constructor(destination: Subscriber<R>, notifier: ObservableInput<any>) {
     super(destination);
-    this.add(subscribeToResult(this, notifier));
+    this.add(this.innerSubscription = subscribeToResult(this, notifier));
   }
 
   protected _next(value: T) {
@@ -53,24 +53,14 @@ class SkipUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  protected _complete() {
-    if (this.isInnerStopped) {
-      super._complete();
-    } else {
-      this.unsubscribe();
-    }
-  }
-
   notifyNext(outerValue: T, innerValue: R,
              outerIndex: number, innerIndex: number,
              innerSub: InnerSubscriber<T, R>): void {
     this.hasValue = true;
+    this.innerSubscription.unsubscribe();
   }
 
-  notifyComplete(): void {
-    this.isInnerStopped = true;
-    if (this.isStopped) {
-      super._complete();
-    }
+  notifyComplete() {
+    /* do nothing */
   }
 }
