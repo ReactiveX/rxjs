@@ -17,6 +17,9 @@ import { SchedulerLike, SchedulerAction } from './types';
  * ```
  *
  * @class Scheduler
+ * @deprecated Scheduler is an internal implementation detail of RxJS, and
+ * should not be used directly. Rather, create your own class and implement
+ * {@link SchedulerLike}
  */
 export class Scheduler implements SchedulerLike {
 

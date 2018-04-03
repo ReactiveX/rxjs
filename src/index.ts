@@ -16,6 +16,7 @@ export { async as asyncScheduler } from './internal/scheduler/async';
 export { queue as queueScheduler } from './internal/scheduler/queue';
 export { animationFrame as animationFrameScheduler } from './internal/scheduler/animationFrame';
 export { VirtualTimeScheduler, VirtualAction } from './internal/scheduler/VirtualTimeScheduler';
+export { Scheduler } from './internal/Scheduler';
 
 /* Subscription */
 export { Subscription } from './internal/Subscription';
