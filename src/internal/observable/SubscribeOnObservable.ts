@@ -16,10 +16,12 @@ export interface DispatchArg<T> {
  * @hide true
  */
 export class SubscribeOnObservable<T> extends Observable<T> {
+  /** @nocollapse */
   static create<T>(source: Observable<T>, delay: number = 0, scheduler: SchedulerLike = asap): Observable<T> {
     return new SubscribeOnObservable(source, delay, scheduler);
   }
 
+  /** @nocollapse */
   static dispatch<T>(this: SchedulerAction<T>, arg: DispatchArg<T>): Subscription {
     const { source, subscriber } = arg;
     return this.add(source.subscribe(subscriber));

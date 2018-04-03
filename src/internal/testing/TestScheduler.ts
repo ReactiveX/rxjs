@@ -136,6 +136,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     }
   }
 
+  /** @nocollapse */
   static parseMarblesAsSubscriptions(marbles: string): SubscriptionLog {
     if (typeof marbles !== 'string') {
       return new SubscriptionLog(Number.POSITIVE_INFINITY);
@@ -185,6 +186,7 @@ export class TestScheduler extends VirtualTimeScheduler {
     }
   }
 
+  /** @nocollapse */
   static parseMarbles(marbles: string,
                       values?: any,
                       errorValue?: any,
