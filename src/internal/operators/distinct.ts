@@ -6,10 +6,6 @@ import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
-if (!Set) {
-  throw new Error('Set is not present, please polyfill');
-}
-
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from previous items.
  *

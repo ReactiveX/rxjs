@@ -5,11 +5,6 @@ import { Operator } from '../Operator';
 import { Subject } from '../Subject';
 import { OperatorFunction } from '../types';
 
-/** Assert that map is present for this operator */
-if (!Map) {
-  throw new Error('Map not found, please polyfill');
-}
-
 /* tslint:disable:max-line-length */
 export function groupBy<T, K>(keySelector: (value: T) => K): OperatorFunction<T, GroupedObservable<K, T>>;
 export function groupBy<T, K>(keySelector: (value: T) => K, elementSelector: void, durationSelector: (grouped: GroupedObservable<K, T>) => Observable<any>): OperatorFunction<T, GroupedObservable<K, T>>;
