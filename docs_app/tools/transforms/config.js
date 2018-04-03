@@ -2,7 +2,7 @@ const { resolve } = require('path');
 const { readdirSync } = require('fs');
 
 const PROJECT_ROOT = resolve(__dirname, '../../..');
-const AIO_PATH = resolve(PROJECT_ROOT, 'aio');
+const AIO_PATH = resolve(PROJECT_ROOT, 'docs_app');
 const TEMPLATES_PATH = resolve(AIO_PATH, 'tools/transforms/templates');
 const API_TEMPLATES_PATH = resolve(TEMPLATES_PATH, 'api');
 const CONTENTS_PATH = resolve(AIO_PATH, 'content');
@@ -10,7 +10,7 @@ const GUIDE_EXAMPLES_PATH = resolve(CONTENTS_PATH, 'examples');
 const SRC_PATH = resolve(AIO_PATH, 'src');
 const OUTPUT_PATH = resolve(SRC_PATH, 'generated');
 const DOCS_OUTPUT_PATH = resolve(OUTPUT_PATH, 'docs');
-const API_SOURCE_PATH = resolve(PROJECT_ROOT, 'packages');
+const API_SOURCE_PATH = resolve(PROJECT_ROOT, 'src');
 
 function requireFolder(dirname, folderPath) {
   const absolutePath = resolve(dirname, folderPath);

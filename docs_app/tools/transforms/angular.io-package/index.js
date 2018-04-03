@@ -30,9 +30,9 @@ module.exports = new Package('angular.io', [gitPackage, apiPackage, contentPacka
   .config(function(checkAnchorLinksProcessor, linkInlineTagDef, renderExamples) {
 
     // Fail the processing if there is an invalid link
-    linkInlineTagDef.failOnBadLink = true;
+    linkInlineTagDef.failOnBadLink = false;
 
-    checkAnchorLinksProcessor.$enabled = true;
+    checkAnchorLinksProcessor.$enabled = false;
     // since we encode the HTML to JSON we need to ensure that this processor runs before that encoding happens.
     checkAnchorLinksProcessor.$runBefore = ['convertToJsonProcessor'];
     checkAnchorLinksProcessor.$runAfter = ['fixInternalDocumentLinks'];
@@ -49,7 +49,7 @@ module.exports = new Package('angular.io', [gitPackage, apiPackage, contentPacka
       }
     });
     checkAnchorLinksProcessor.pathVariants = ['', '/', '.html', '/index.html', '#top-of-page'];
-    checkAnchorLinksProcessor.errorOnUnmatchedLinks = true;
+    checkAnchorLinksProcessor.errorOnUnmatchedLinks = false;
 
     // Make sure we fail if the examples are not right
     renderExamples.ignoreBrokenExamples = false;

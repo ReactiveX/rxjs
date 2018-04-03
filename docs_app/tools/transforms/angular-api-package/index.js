@@ -21,7 +21,6 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
   .processor(require('./processors/addNotYetDocumentedProperty'))
   .processor(require('./processors/mergeDecoratorDocs'))
   .processor(require('./processors/extractDecoratedClasses'))
-  .processor(require('./processors/extractPipeParams'))
   .processor(require('./processors/matchUpDirectiveDecorators'))
   .processor(require('./processors/addMetadataAliases'))
   .processor(require('./processors/computeApiBreadCrumbs'))
@@ -64,34 +63,8 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
 
     // NOTE: This list shold be in sync with tools/public_api_guard/BUILD.bazel
     readTypeScriptModules.sourceFiles = [
-      'animations/index.ts',
-      'animations/browser/index.ts',
-      'animations/browser/testing/index.ts',
-      'common/http/index.ts',
-      'common/http/testing/index.ts',
-      'common/index.ts',
-      'common/testing/index.ts',
-      'core/index.ts',
-      'core/testing/index.ts',
-      'elements/index.ts',
-      'forms/index.ts',
-      'http/index.ts',
-      'http/testing/index.ts',
-      'platform-browser/index.ts',
-      'platform-browser/animations/index.ts',
-      'platform-browser/testing/index.ts',
-      'platform-browser-dynamic/index.ts',
-      'platform-browser-dynamic/testing/index.ts',
-      'platform-server/index.ts',
-      'platform-server/testing/index.ts',
-      'platform-webworker/index.ts',
-      'platform-webworker-dynamic/index.ts',
-      'router/index.ts',
-      'router/testing/index.ts',
-      'router/upgrade/index.ts',
-      'service-worker/index.ts',
-      'upgrade/index.ts',
-      'upgrade/static/index.ts',
+      'index.ts',
+      'operators/index.ts'
     ];
 
     // API Examples
@@ -112,11 +85,62 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
         parseTagsProcessor.tagDefinitions.concat(getInjectables(requireFolder(__dirname, './tag-defs')));
   })
 
-  .config(function(computeStability, splitDescription, addNotYetDocumentedProperty, EXPORT_DOC_TYPES, API_DOC_TYPES) {
+  // Additional jsdoc config (for RxJS source)
+  .config(function(parseTagsProcessor) {
+    parseTagsProcessor.tagDefinitions.push({ name: 'internal' });
+    parseTagsProcessor.tagDefinitions.push({ name: 'example', aliases: ['examples'], multi: true, docProperty: 'examples' });
+    parseTagsProcessor.tagDefinitions.push({ name: 'owner' });
+    parseTagsProcessor.tagDefinitions.push({ name: 'static' });
+    // Replace the Catharsis type parsing, as it doesn't understand TypeScript type annotations (i.e. `foo(x: SomeType)`), with a simpler dummy transform
+    const typeTags = parseTagsProcessor.tagDefinitions.filter(tagDef => ['param', 'returns', 'type', 'private', 'property', 'protected', 'public'].indexOf(tagDef.name) !== -1);
+    typeTags.forEach(typeTag => typeTag.transforms[0] = function dummyTypeTransform(doc, tag, value) {
+      var TYPE_EXPRESSION_START = /^\s*\{[^@]/;
+      var start, position, count, length, expression;
+
+      var match = TYPE_EXPRESSION_START.exec(value);
+      if (match) {
+        length = value.length;
+        // the start is the beginning of the `{`
+        start = match[0].length - 2;
+        // advance to the first character in the type expression
+        position = match[0].length - 1;
+        count = 1;
+
+        while (position < length) {
+          switch (value[position]) {
+          case '\\':
+            // backslash is an escape character, so skip the next character
+            position++;
+            break;
+          case '{':
+            count++;
+            break;
+          case '}':
+            count--;
+            break;
+          default:
+              // do nothing
+          }
+
+          if (count === 0) {
+            break;
+          }
+          position++;
+        }
+
+        tag.typeExpression = value.slice(start + 1, position).trim().replace('\\}', '}').replace('\\{', '{');
+        tag.description = (value.substring(0, start) + value.substring(position + 1)).trim();
+        return tag.description;
+      } else {
+        return value;
+      }
+    })
+  })
+
+  .config(function(computeStability, splitDescription, EXPORT_DOC_TYPES, API_DOC_TYPES) {
     computeStability.docTypes = EXPORT_DOC_TYPES;
     // Only split the description on the API docs
     splitDescription.docTypes = API_DOC_TYPES;
-    addNotYetDocumentedProperty.docTypes = API_DOC_TYPES;
   })
 
   .config(function(computePathsProcessor, EXPORT_DOC_TYPES, generateApiListDoc) {

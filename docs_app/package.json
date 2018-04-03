@@ -24,7 +24,7 @@
     "e2e-prod": "yarn e2e --environment=dev --target=production",
     "presetup": "yarn install --frozen-lockfile && yarn ~~check-env && yarn boilerplate:remove",
     "setup": "yarn aio-use-npm && yarn example-use-npm",
-    "postsetup": "yarn boilerplate:add && yarn build-ie-polyfills && yarn docs",
+    "postsetup": "yarn build-ie-polyfills && yarn docs",
     "presetup-local": "yarn presetup",
     "setup-local": "yarn aio-use-local && yarn example-use-local",
     "postsetup-local": "yarn postsetup",
