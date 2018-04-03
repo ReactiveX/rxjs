@@ -32,11 +32,11 @@
     "all": true
   },
   "lint-staged": {
-    "*.@(js)": [
+    "*.@(js),!docs_app": [
       "eslint --fix",
       "git add"
     ],
-    "*.@(ts)": [
+    "*.@(ts),!docs_app": [
       "tslint --fix",
       "git add"
     ]
