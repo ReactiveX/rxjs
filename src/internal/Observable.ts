@@ -17,7 +17,7 @@ import { config } from './config';
  */
 export class Observable<T> implements Subscribable<T> {
 
-  /** @internal */
+  /** Internal implementation detail, do not use directly. */
   public _isScalar: boolean = false;
 
   protected source: Observable<any>;
