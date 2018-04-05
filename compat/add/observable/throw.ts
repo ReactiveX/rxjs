@@ -1,6 +1,6 @@
 import { Observable, throwError as staticThrowError } from 'rxjs';
 
-(Observable as any).throw = staticThrowError;
+Observable.throw = staticThrowError;
 Observable.throwError = staticThrowError;
 
 declare module 'rxjs/internal/Observable' {
