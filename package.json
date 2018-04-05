@@ -119,7 +119,7 @@
     "test_browser": "npm-run-all build_spec_browser && opn spec/support/mocha-browser-runner.html",
     "test": "mocha --require ts-node/register --opts spec-build/support/coverage.opts \"spec-build/**/*-spec.ts\"",
     "test:cover": "cross-env TS_NODE_FAST=true nyc npm test",
-    "test:circular": "dependency-cruise --validate .dependency-cruiser.json -x \"^node_modules\" src",
+    "test:circular": "dependency-cruise --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm5",
     "test:systemjs": "node integration/systemjs/systemjs-compatibility-spec.js",
     "tests2png": "mkdirp tmp/docs/img && cross-env TS_NODE_FAST=true mocha --compilers ts:ts-node/register --opts spec/support/tests2png.opts \"spec/**/*-spec.ts\"",
     "watch": "watch \"echo triggering build && npm run build_spec && npm run test && echo build completed\" src -d -u -w=15",
