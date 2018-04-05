@@ -71,6 +71,7 @@ export class ObserveOnOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 export class ObserveOnSubscriber<T> extends Subscriber<T> {
+  /** @nocollapse */
   static dispatch(this: SchedulerAction<ObserveOnMessage>, arg: ObserveOnMessage) {
     const { notification, destination } = arg;
     notification.observe(destination);

@@ -131,6 +131,7 @@ export class AjaxObservable<T> extends Observable<T> {
    * @static true
    * @name ajax
    * @owner Observable
+   * @nocollapse
   */
   static create: AjaxCreationMethod = (() => {
     const create: any = (urlOrRequest: string | AjaxRequest) => {
