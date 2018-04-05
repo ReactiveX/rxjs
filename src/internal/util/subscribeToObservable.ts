@@ -5,7 +5,6 @@ import { observable as Symbol_observable } from '../symbol/observable';
  * Subscribes to an object that implements Symbol.observable with the given
  * Subscriber.
  * @param obj An object that implements Symbol.observable
- * @param subscriber The Subscriber to use to subscribe to the observable
  */
 export const subscribeToObservable = <T>(obj: any) => (subscriber: Subscriber<T>) => {
   const obs = obj[Symbol_observable]();
