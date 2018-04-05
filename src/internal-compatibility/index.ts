@@ -17,7 +17,6 @@ export { WebSocketSubjectConfig, WebSocketSubject } from '../internal/observable
 export { CombineLatestOperator } from '../internal/observable/combineLatest';
 export { dispatch } from '../internal/observable/range';
 export { SubscribeOnObservable } from '../internal/observable/SubscribeOnObservable';
-export { scalar } from '../internal/observable/scalar';
 
 export { Timestamp } from '../internal/operators/timestamp';
 export { TimeInterval } from '../internal/operators/timeInterval';
