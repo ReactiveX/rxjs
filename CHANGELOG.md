@@ -13,7 +13,7 @@
 
 ### Features
 
-* **takeUntil:** no longer subscribes to sourec if notifier synchronously emits ([#3504](https://github.com/ReactiveX/RxJS/issues/3504)) ([7b8a3e3](https://github.com/ReactiveX/RxJS/commit/7b8a3e3)), closes [#2189](https://github.com/ReactiveX/RxJS/issues/2189)
+* **takeUntil:** no longer subscribes to source if notifier synchronously emits ([#3504](https://github.com/ReactiveX/RxJS/issues/3504)) ([7b8a3e3](https://github.com/ReactiveX/RxJS/commit/7b8a3e3)), closes [#2189](https://github.com/ReactiveX/RxJS/issues/2189)
 
 
 ### Performance Improvements
