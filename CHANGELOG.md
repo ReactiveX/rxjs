@@ -1,6 +1,7 @@
-<a name="6.0.0-rc.1"></a>
-# [6.0.0-rc.1](https://github.com/ReactiveX/RxJS/compare/6.0.0-rc.0...6.0.0-rc.1) (2018-04-07)
+<a name="6.0.0-tactical-rc.1"></a>
+# [6.0.0-tactical-rc.1](https://github.com/ReactiveX/RxJS/compare/6.0.0-rc.0...6.0.0-tactical-rc.1) (2018-04-07)
 
+Why "tactical"? Because I *TOTALLY MEANT* to ruin the release names by publishing an amazingly funny April Fool's joke about smooshMap. So this was "tactical". Super tactical. So very tactical.
 
 ### Bug Fixes
 
