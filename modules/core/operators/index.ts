@@ -1,0 +1,10 @@
+export { catchError } from '../internal/operators/catchError';
+export { concatMap } from '../internal/operators/concatMap';
+export { expand } from '../internal/operators/expand';
+export { filter } from '../internal/operators/filter';
+export { map } from '../internal/operators/map';
+export { mergeMap } from '../internal/operators/mergeMap';
+export { repeat } from '../internal/operators/repeat';
+export { retry } from '../internal/operators/retry';
+export { scan } from '../internal/operators/scan';
+export { take } from '../internal/operators/take';

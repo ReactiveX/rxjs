@@ -1,4 +1,4 @@
-import { FSub, FSubType } from './types';
+import { FSub, FSubType } from '../types';
 
 export function createSubscription() {
   let handlers: Array<() => void>;

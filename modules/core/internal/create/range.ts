@@ -1,5 +1,5 @@
 import { FObs, FOType, FOArg, FSub, FSubType } from '../types';
-import { FObservable } from '../Observable';
+import { FObservable } from '../observable/Observable';
 
 export function fRange(start: number, end: number): FObs<number> {
   return (type: FOType, sink: FOArg<number>, subs: FSub) => {
@@ -9,7 +9,7 @@ export function fRange(start: number, end: number): FObs<number> {
       sink(FOType.COMPLETE, undefined, subs);
     }
     const mod = start < end ? 1 : -1;
-    const check = start < end ? ((a, b) => a < b) : ((a, b) => b < a);
+    const check = start < end ? ((a: number, b: number) => a < b) : ((a: number, b: number) => b < a);
     for (let i = start; check(i, end) && !subs(FSubType.CHECK); i += mod) {
       sink(FOType.NEXT, i, subs);
     }

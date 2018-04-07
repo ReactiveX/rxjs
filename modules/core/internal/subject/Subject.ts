@@ -1,8 +1,8 @@
-import { FObs, FOType, FOArg, FSub, FSubType, Observer, SubscriptionLike } from './types';
-import { createSubscription } from './createSubscription';
-import { Observable } from './Observable';
-import { rxFObs, rxFSub } from './symbols';
-import { noop } from './util/noop';
+import { FObs, FOType, FOArg, FSub, FSubType, Observer, SubscriptionLike } from '../types';
+import { createSubscription } from '../util/createSubscription';
+import { Observable } from '../observable/Observable';
+import { rxFObs, rxFSub } from '../util/symbols';
+import { noop } from '../util/noop';
 
 export function fSub<T>() {
   let _state: Array<any> = [];

@@ -1,3 +1,5 @@
+import { Observable } from './observable/Observable';
+
 export const enum FOType {
   SUBSCRIBE = 0,
   NEXT = 1,
@@ -83,7 +85,7 @@ export interface CompleteObserver<T> {
 export type PartialObserver<T> = NextObserver<T> | ErrorObserver<T> | CompleteObserver<T>;
 
 export interface Observer<T> {
-  next(value: T, subscription?: SubscriptionLike);
+  next(value: T, subscription?: SubscriptionLike): void;
   error(err: any): void;
   complete(): void;
 }
@@ -93,3 +95,16 @@ export interface SubscriptionLike {
 }
 
 export type Teardown = SubscriptionLike | (() => void) | void;
+
+export interface ObservableLike<T> {
+  subscribe(observer: Observer<T>): SubscriptionLike;
+}
+
+export interface ConnectableObservable<T> extends Observable<T> {
+  connect(): SubscriptionLike;
+}
+
+export interface SubjectLike<T> extends Observer<T>, ObservableLike<T> {
+}
+
+export type ObservableInput<T> = Observable<T> | ObservableLike<T> | Promise<T> | PromiseLike<T> | Array<T> | Iterable<T>;

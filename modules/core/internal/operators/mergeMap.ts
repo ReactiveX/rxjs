@@ -1,13 +1,14 @@
 import { FObs, FOType, FOArg, FSub, FSubType } from '../types';
-import { createSubscription } from '../createSubscription';
+import { createSubscription } from '../util/createSubscription';
 
+// TODO: handle ObservableInputs
 export function mergeMap<T, R>(project: (value: T) => FObs<R>, concurrency = Number.POSITIVE_INFINITY) {
   return (source: FObs<T>) =>
     (type: FOType, sink: FOArg<R>, subs: FSub) => {
       if (type === FOType.SUBSCRIBE) {
         let active = 0;
         let outerComplete = false;
-        const buffer = [];
+        const buffer: T[] = [];
 
         const complete = () => {
           sink(FOType.COMPLETE, undefined, subs);
@@ -19,7 +20,15 @@ export function mergeMap<T, R>(project: (value: T) => FObs<R>, concurrency = Num
             active++;
             const innerSubs = createSubscription();
             subs(FSubType.ADD, innerSubs);
-            let inner = buffer.shift();
+            const outerValue = buffer.shift();
+            let inner: FObs<R>;
+            try {
+              inner = project(outerValue);
+            } catch (err) {
+              sink(FOType.ERROR, err, subs);
+              subs();
+              return;
+            }
             inner(FOType.SUBSCRIBE, (ti: FOType, vi: FOArg<R>, _: FSub) => {
               switch (ti) {
                 case FOType.NEXT:
@@ -47,15 +56,7 @@ export function mergeMap<T, R>(project: (value: T) => FObs<R>, concurrency = Num
         source(FOType.SUBSCRIBE, (t: FOType, v: FOArg<T>, subs: FSub) => {
           switch (t) {
             case FOType.NEXT:
-              let result: FObs<R>;
-              try {
-                result = project(v);
-              } catch (err) {
-                sink(FOType.ERROR, err, subs);
-                subs();
-                return;
-              }
-              buffer.push(result);
+              buffer.push(v as T);
               innerSubscribeLoop();
               return;
             case FOType.ERROR:

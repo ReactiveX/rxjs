@@ -1,5 +1,5 @@
-import { Observable } from './Observable';
-import { FObs, FOType, FOArg, FSub, FSubType, SubscriptionLike } from './types';
+import { Observable } from '../observable/Observable';
+import { FObs, FOType, FOArg, FSub, FSubType, SubscriptionLike } from '../types';
 import { createSubscription } from './createSubscription';
 
 export function toFObs<T>(observable: Observable<T>) {
@@ -30,7 +30,7 @@ export function toFObs<T>(observable: Observable<T>) {
 export function toObservable<T>(fobs: FObs<T>): Observable<T> {
   return new Observable<T>(subscriber => {
     const subscription = createSubscription();
-    fobs(FOType.SUBSCRIBE, (t: FOType, v: FOArg<T>, subscription) => {
+    fobs(FOType.SUBSCRIBE, (t: FOType, v: FOArg<T>, subscription: FSub) => {
       switch (t) {
         case FOType.NEXT:
           subscriber.next(v);
