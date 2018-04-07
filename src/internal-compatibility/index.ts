@@ -15,9 +15,10 @@ export { AjaxRequest, AjaxCreationMethod, ajaxGet, ajaxPost, ajaxDelete, ajaxPut
   AjaxObservable, AjaxSubscriber, AjaxResponse, AjaxError, AjaxTimeoutError } from '../internal/observable/dom/AjaxObservable';
 export { WebSocketSubjectConfig, WebSocketSubject } from '../internal/observable/dom/WebSocketSubject';
 export { CombineLatestOperator } from '../internal/observable/combineLatest';
+export { EventTargetLike } from '../internal/observable/fromEvent';
+export { ConditionFunc, IterateFunc, ResultFunc, GenerateBaseOptions, GenerateOptions } from '../internal/observable/generate';
 export { dispatch } from '../internal/observable/range';
 export { SubscribeOnObservable } from '../internal/observable/SubscribeOnObservable';
-export { scalar } from '../internal/observable/scalar';
 
 export { Timestamp } from '../internal/operators/timestamp';
 export { TimeInterval } from '../internal/operators/timeInterval';
