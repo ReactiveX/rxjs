@@ -6,6 +6,11 @@ let mkdirp = require('mkdirp');
 let path = require('path');
 let klawSync = require('klaw-sync');
 let licenseTool = require('./tools/add-license-to-file');
+let makePackages = require('./.make-helpers');
+let copySources = makePackages.copySources;
+let createImportTargets = makePackages.createImportTargets;
+let cleanSourceMapRoot = makePackages.cleanSourceMapRoot;
+
 let addLicenseToFile = licenseTool.addLicenseToFile;
 let addLicenseTextToFile = licenseTool.addLicenseTextToFile;
 
@@ -19,6 +24,7 @@ const CJS_PKG = PKG_ROOT + '';
 const ESM5_PKG = PKG_ROOT + '_esm5/';
 const ESM2015_PKG = PKG_ROOT + '_esm2015/';
 const UMD_PKG = PKG_ROOT + 'bundles/';
+const SRC_ROOT_PKG = PKG_ROOT +  'src/';
 const TYPE_PKG = PKG_ROOT;
 
 // License info for minified files
@@ -32,22 +38,10 @@ mkdirp.sync(PKG_ROOT);
 // Copy over the sources
 fs.copySync(TYPE_ROOT, TYPE_PKG);
 copySources(CJS_ROOT, CJS_PKG);
+cleanSourceMapRoot(CJS_PKG, SRC_ROOT_PKG);
 copySources(ESM5_ROOT, ESM5_PKG, true);
+cleanSourceMapRoot(ESM5_PKG, SRC_ROOT_PKG);
 copySources(ESM2015_ROOT, ESM2015_PKG, true);
+cleanSourceMapRoot(ESM2015_PKG, SRC_ROOT_PKG);
 
 fs.copySync('compat/package.json', PKG_ROOT + '/package.json');
-
-function copySources(rootDir, packageDir, ignoreMissing) {
-  // If we are ignoring missing directories, early return when source doesn't exist
-  if (!fs.existsSync(rootDir)) {
-    if (ignoreMissing) {
-      return;
-    } else {
-      throw "Source root dir does not exist!";
-    }
-  }
-  // Copy over the CommonJS files
-  fs.copySync(rootDir, packageDir);
-  fs.copySync('./LICENSE.txt', packageDir + 'LICENSE.txt');
-  fs.copySync('./compat/README.md', packageDir + 'README.md');
-}
