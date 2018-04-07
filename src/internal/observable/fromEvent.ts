@@ -6,10 +6,12 @@ import { map } from '../operators/map';
 
 const toString: Function = Object.prototype.toString;
 
-export type NodeStyleEventEmitter = {
-  addListener: (eventName: string, handler: Function) => void;
-  removeListener: (eventName: string, handler: Function) => void;
-};
+export interface NodeStyleEventEmitter {
+  addListener: (eventName: string | symbol, handler: NodeEventHandler) => this;
+  removeListener: (eventName: string | symbol, handler: NodeEventHandler) => this;
+}
+
+export type NodeEventHandler = (...args: any[]) => void;
 
 export type JQueryStyleEventEmitter = {
   on: (eventName: string, handler: Function) => void;
@@ -193,8 +195,8 @@ function setupSubscription<T>(sourceObj: EventTargetLike, eventName: string,
     unsubscribe = () => source.off(eventName, handler);
   } else if (isNodeStyleEventEmitter(sourceObj)) {
     const source = sourceObj;
-    sourceObj.addListener(eventName, handler);
-    unsubscribe = () => source.removeListener(eventName, handler);
+    sourceObj.addListener(eventName, handler as NodeEventHandler);
+    unsubscribe = () => source.removeListener(eventName, handler as NodeEventHandler);
   } else {
     throw new TypeError('Invalid event target');
   }
