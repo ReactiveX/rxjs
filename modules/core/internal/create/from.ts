@@ -1,6 +1,7 @@
 import { ObservableInput, FOType, FOArg, FSub, FSubType, ObservableLike, SubscriptionLike } from '../types';
 import { of } from './of';
 import { Observable, FObservable } from '../observable/Observable';
+import { rxFObs } from '../util/symbols';
 
 function fFromPromise<T>(promise: PromiseLike<T>) {
   return (type: FOType, sink: FOArg<T>, subs: FSub) => {
@@ -70,18 +71,26 @@ function fFromObservableLike<T>(observableLike: ObservableLike<T>) {
   };
 }
 
-export function from<T>(input: ObservableInput<T>): Observable<T> {
-  if (input instanceof Observable) {
-    return input;
+export function fFrom<T>(input: ObservableInput<T>): FObs<T> {
+  if (input[rxFObs]) {
+    return input[rxFObs];
   } else if (typeof (input as PromiseLike<T>).then === 'function') {
-    return new FObservable(fFromPromise(input as PromiseLike<T>));
+    return fFromPromise(input as PromiseLike<T>);
   } else if (Array.isArray(input)) {
     return of(...input);
   } else if (typeof input[Symbol.iterator] === 'function') {
-    return new FObservable(fFromIterable(input as Iterable<T>));
+    return fFromIterable(input as Iterable<T>);
   } else if (input[Symbol.observable]) {
-    return new FObservable(fFromSymbolObservable(input));
+    return fFromSymbolObservable(input);
   } else {
     throw new Error('unknown observable type'); // TODO: match old error
+  }
+}
+
+export function from<T>(input: ObservableInput<T>): Observable<T> {
+  if (input instanceof Observable) {
+    return input;
+  } else {
+    return new FObservable(fFrom(input));
   }
 }
