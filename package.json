@@ -190,6 +190,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-optimizer": "0.4.6",
+    "@angular-devkit/schematics": "^0.5.4",
     "@types/chai": "4.1.2",
     "@types/lodash": "4.14.102",
     "@types/mocha": "2.2.48",
@@ -258,5 +259,11 @@
   "engines": {
     "npm": ">=2.0.0"
   },
-  "typings": "./dist/package/Rx.d.ts"
+  "typings": "./dist/package/Rx.d.ts",
+  "ng-update": {
+    "requirements": {
+      "rxjs": "^6"
+    },
+    "migrations": "./migrations/migration-collection.json"
+  }
 }
