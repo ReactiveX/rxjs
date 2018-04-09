@@ -117,7 +117,7 @@ describe('using', () => {
     const source = using(
       () => new Subscription(() => disposed = true),
       (resource) => {
-        throw error;
+        throw expected;
       },
       (resource) => resource && resource.unsubscribe()
     );
