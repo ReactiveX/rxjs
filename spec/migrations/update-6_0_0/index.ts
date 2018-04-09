@@ -1,10 +1,9 @@
 import { Rule, SchematicContext, Tree, SchematicsException, chain,  } from '@angular-devkit/schematics';
-import { TsLintTask, NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
+import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 
 export function rxjsV6MigrationSchematic(_options: any): Rule {
   return chain([
-    addDependencies(),
-    runTsLint(),
+    addDependencies()
   ]);
 }
 
@@ -39,32 +38,6 @@ function addDependencies() {
       context.addTask(new NodePackageInstallTask());
 
       return tree;
-  };
-}
-
-function runTsLint() {
-  return (tree: Tree, context: SchematicContext) => {
-    const workspace = getWorkspace(tree);
-    const tsLintRules = {
-      rulesDirectory: ['node_modules/rxjs-tslint'],
-      rules: {
-        'update-rxjs-imports': true,
-        'migrate-to-pipeable-operators': true,
-        'collapse-rxjs-imports': true
-      }
-    };
-    Object.keys(workspace.projects)
-      .filter(prj => workspace.projects[prj].architect.build)
-      .map(prj => workspace.projects[prj].architect.build.options.tsConfig)
-      .forEach(tsConfigPath => {
-        const options = {
-          tsConfigPath: tsConfigPath,
-          tslintConfig: tsLintRules
-        };
-
-        context.addTask(new TslintFixTask(options));
-      });
-
   };
 }
 
