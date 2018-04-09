@@ -4,7 +4,7 @@ import { createSubscription } from '../util/createSubscription';
 import { hostReportError } from '../util/hostReportError';
 import { pipe } from '../util/pipe';
 import { toObservable } from '../util/convert';
-import { rxFSub, rxFObs } from '../util/symbols';
+import { rxFObs } from '../util/symbols';
 import { noop } from '../util/noop';
 
 export class Observable<T> {
@@ -139,10 +139,6 @@ class FSubscriber<T> implements Subscriber<T> {
 
   get closed() {
     return this._closed;
-  }
-
-  [rxFSub]() {
-    return this._subs;
   }
 }
 

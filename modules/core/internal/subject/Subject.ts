@@ -1,7 +1,7 @@
 import { FObs, FOType, FOArg, FSub, FSubType, Observer, SubscriptionLike } from '../types';
 import { createSubscription } from '../util/createSubscription';
 import { Observable } from '../observable/Observable';
-import { rxFObs, rxFSub } from '../util/symbols';
+import { rxFObs } from '../util/symbols';
 import { noop } from '../util/noop';
 
 export function fSub<T>() {
@@ -33,7 +33,6 @@ export class Subject<T> extends Observable<T> implements Observer<T> {
   constructor() {
     super();
     this[rxFObs] = fSub<T>();
-    this[rxFSub] = createSubscription();
   }
 
   next(value: T, subscription: SubscriptionLike) {
