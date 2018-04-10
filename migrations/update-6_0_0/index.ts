@@ -8,7 +8,6 @@ export function rxjsV6MigrationSchematic(_options: any): Rule {
 }
 
 const rxjsCompatVersion = '^6.0.0-rc.0';
-const rxjsTSLintVersion = '0.0.0';
 
 function addDependencies() {
   return (tree: Tree, context: SchematicContext) => {
@@ -32,7 +31,6 @@ function addDependencies() {
       }
 
       pkg.dependencies['rxjs-compat'] = rxjsCompatVersion;
-      pkg.devDependencies['rxjs-tslint'] = rxjsTSLintVersion;
 
       tree.overwrite(pkgPath, JSON.stringify(pkg, null, 2));
       context.addTask(new NodePackageInstallTask());
