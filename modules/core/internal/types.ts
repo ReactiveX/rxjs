@@ -1,110 +1,55 @@
-import { Observable } from './observable/Observable';
+import { Subscription } from './Subscription';
 
-export const enum FOType {
+export enum FOType {
   SUBSCRIBE = 0,
   NEXT = 1,
-  ERROR = 2,
-  COMPLETE = 3,
+  COMPLETE = 2,
+  ERROR = 10
 }
 
-export const enum FSubType {
-  UNSUB = 0,
-  ADD = 1,
-  REMOVE = 2,
-  CHECK = 3,
+export interface Subs {
+  (type: FOType.COMPLETE, arg: void): void;
 }
 
-export interface FScheduler {
-  (): number;
-  (work: () => void, delay: number, subs: FSub): number;
+export type SinkArg<T> = T | void | any;
+
+export interface Sink<T> {
+  (type: FOType.SUBSCRIBE, subscription: Subs): void;
+  (type: FOType.NEXT, value: T): void;
+  (type: FOType.ERROR, err: any): void;
+  (type: FOType.COMPLETE, arg: void): void;
 }
 
-export type FOArg<T> = FObs<T> | T | any | void;
-
-export interface FSub {
-  (type?: FSubType, handler?: () => void): boolean;
-  /**
-   * Unsubscribes. Always returns true
-   */
-  (): boolean;
-  /**
-   * Registers a handler for teardown on unsubscribe
-   * returns true or false if everything is already unsubscribed.
-   */
-  (type: FSubType.ADD, handler: () => void): boolean;
-  /**
-   * Unegisters a handler from teardown on unsubscribe
-   * returns true or false if everything is already unsubscribed.
-   */
-  (type: FSubType.REMOVE, handler: () => void): boolean;
-  /**
-   * Returns true if unsubscribed, otherwise false.
-   */
-  (type: FSubType.CHECK): boolean;
+export interface Source<T> {
+  (type: FOType.SUBSCRIBE, sink: Sink<T>): void;
 }
 
-export interface FObs<T> {
-  /** Subscribes to a Functional Observable with the given sink */
-  (type: FOType.SUBSCRIBE, sink: FObs<T>, subscription: FSub): void;
-  /** Nexts a value to the sink */
-  (type: FOType.NEXT, value: T, subscription: FSub): void;
-  /** Sends an error to the sink */
-  (type: FOType.ERROR, err: any, subscription: FSub): void;
-  /** Sends a completion to the sink */
-  (type: FOType.COMPLETE, _: void, subscription: FSub): void;
-  (type: FOType, arg: FOArg<T>, subscription: FSub): void;
-}
+export interface FObs<T> extends Source<T>, Sink<T>, Subs {}
 
-export type Operation<T, R> = (source: FObs<T>) => FObs<R>;
-
-export interface Subscriber<T> {
-  next(value: T): void;
-  error(err: any): void;
-  complete(): void;
-  readonly closed: boolean;
-}
+export type Teardown = Subscription | (() => void) | void;
 
 export interface NextObserver<T> {
-  next: (value: T, subscription?: SubscriptionLike) => void;
+  next: (value: T, subscription: Subscription) => void;
   error?: (err: any) => void;
   complete?: () => void;
 }
 
 export interface ErrorObserver<T> {
-  next?: (value: T, subscription?: SubscriptionLike) => void;
+  next?: (value: T, subscription: Subscription) => void;
   error: (err: any) => void;
   complete?: () => void;
 }
 
 export interface CompleteObserver<T> {
-  next?: (value: T, subscription?: SubscriptionLike) => void;
-  error: (err: any) => void;
-  complete?: () => void;
+  next?: (value: T, subscription: Subscription) => void;
+  error?: (err: any) => void;
+  complete: () => void;
 }
 
 export type PartialObserver<T> = NextObserver<T> | ErrorObserver<T> | CompleteObserver<T>;
 
 export interface Observer<T> {
-  next(value: T, subscription?: SubscriptionLike): void;
-  error(err: any): void;
-  complete(): void;
+  next: (value: T, subscription: Subscription) => void;
+  error: (err: any) => void;
+  complete: () => void;
 }
-
-export interface SubscriptionLike {
-  unsubscribe(): void;
-}
-
-export type Teardown = SubscriptionLike | (() => void) | void;
-
-export interface ObservableLike<T> {
-  subscribe(observer: Observer<T>): SubscriptionLike;
-}
-
-export interface ConnectableObservable<T> extends Observable<T> {
-  connect(): SubscriptionLike;
-}
-
-export interface SubjectLike<T> extends Observer<T>, ObservableLike<T> {
-}
-
-export type ObservableInput<T> = Observable<T> | ObservableLike<T> | Promise<T> | PromiseLike<T> | Array<T> | Iterable<T>;
