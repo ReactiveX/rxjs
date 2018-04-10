@@ -1,5 +1,5 @@
-import { ObservableInput, FOType, FOArg, FSub, FSubType, ObservableLike, SubscriptionLike } from '../types';
-import { of } from './of';
+import { ObservableInput, FOType, FObs, FOArg, FSub, FSubType, ObservableLike, SubscriptionLike } from '../types';
+import { fOf } from './of';
 import { Observable, FObservable } from '../observable/Observable';
 import { rxFObs } from '../util/symbols';
 
@@ -77,7 +77,7 @@ export function fFrom<T>(input: ObservableInput<T>): FObs<T> {
   } else if (typeof (input as PromiseLike<T>).then === 'function') {
     return fFromPromise(input as PromiseLike<T>);
   } else if (Array.isArray(input)) {
-    return of(...input);
+    return fOf(...input);
   } else if (typeof input[Symbol.iterator] === 'function') {
     return fFromIterable(input as Iterable<T>);
   } else if (input[Symbol.observable]) {
