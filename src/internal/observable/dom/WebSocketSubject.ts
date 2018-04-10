@@ -68,7 +68,8 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
 
   private _config: WebSocketSubjectConfig<T>;
 
-  protected _output: Subject<T>;
+  /** @deprecated This is an internal implementation detail, do not use. */
+  _output: Subject<T>;
 
   private _socket: WebSocket;
 
@@ -263,7 +264,8 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     };
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  /** @deprecated This is an internal implementation detail, do not use. */
+  _subscribe(subscriber: Subscriber<T>): Subscription {
     const { source } = this;
     if (source) {
       return source.subscribe(subscriber);

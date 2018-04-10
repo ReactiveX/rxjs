@@ -17,12 +17,13 @@ export class ConnectableObservable<T> extends Observable<T> {
   /** @internal */
   _isComplete = false;
 
-  constructor(protected source: Observable<T>,
+  constructor(public source: Observable<T>,
               protected subjectFactory: () => Subject<T>) {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>) {
+  /** @deprecated This is an internal implementation detail, do not use. */
+  _subscribe(subscriber: Subscriber<T>) {
     return this.getSubject().subscribe(subscriber);
   }
 
