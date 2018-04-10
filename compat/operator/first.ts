@@ -1,6 +1,8 @@
 import { Observable } from 'rxjs';
 import { first as higherOrder } from 'rxjs/operators';
 
+export function first<T>(this: Observable<T>, predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+                         defaultValue?: T): Observable<T>;
 /**
  * Emits only the first value (or the first value that meets some condition)
  * emitted by the source Observable.
@@ -44,7 +46,6 @@ import { first as higherOrder } from 'rxjs/operators';
  * @method first
  * @owner Observable
  */
-export function first<T>(this: Observable<T>, predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                         defaultValue?: T): Observable<T> {
-    return higherOrder(predicate, defaultValue)(this);
+export function first<T>(this: Observable<T>, ...args: any[]): Observable<T> {
+    return higherOrder<T>(...args)(this);
   }

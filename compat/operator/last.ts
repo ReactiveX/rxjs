@@ -1,6 +1,8 @@
 import { Observable } from 'rxjs';
 import { last as higherOrder } from 'rxjs/operators';
 
+export function last<T>(this: Observable<T>, predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+                        defaultValue?: T): Observable<T>;
 /**
  * Returns an Observable that emits only the last item emitted by the source Observable.
  * It optionally takes a predicate function as a parameter, in which case, rather than emitting
@@ -20,7 +22,6 @@ import { last as higherOrder } from 'rxjs/operators';
  * @method last
  * @owner Observable
  */
-export function last<T>(this: Observable<T>, predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                        defaultValue?: T): Observable<T> {
-  return higherOrder(predicate, defaultValue)(this);
+export function last<T>(this: Observable<T>, ...args: any[]): Observable<T> {
+  return higherOrder<T>(...args)(this);
 }
