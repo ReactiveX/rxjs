@@ -4,48 +4,67 @@ import { createSubscription } from '../util/createSubscription';
 import { hostReportError } from '../util/hostReportError';
 import { pipe } from '../util/pipe';
 import { toObservable } from '../util/convert';
-import { rxFObs } from '../util/symbols';
-import { noop } from '../util/noop';
+import { fSubToSubscription } from '../util/fSubToSubscription';
+import { subscriptionLogsToBeFn } from 'rxjs/testing/TestScheduler';
 
-export class Observable<T> {
-  constructor(init?: (subscriber: Subscriber<T>) => Teardown) {
-    this[rxFObs] = init ? initToFObs(init) : noop;
-  }
-
+export interface Observable<T> extends FObs<T> {
   subscribe(
     nextOrObserver?: PartialObserver<T> | ((value: T, subscription?: SubscriptionLike) => void),
     errorHandler?: (err: any) => void,
     completeHandler?: () => void,
-  ): SubscriptionLike {
-    let sink: FObs<T>;
-    const subs = createSubscription();
+  ): SubscriptionLike;
 
-    if (nextOrObserver) {
-      if (typeof nextOrObserver === 'function') {
-        sink = handlersToFObs(nextOrObserver, errorHandler, completeHandler);
-      } else if (typeof nextOrObserver === 'object') {
-        sink = partialObserverToFObs(nextOrObserver);
-      }
-    } else {
-      sink = () => {/* empty sink */}; // TODO: this probably isn't right.
-    }
-
-    this[rxFObs](FOType.SUBSCRIBE, sink, subs);
-
-    return fSubToSubscription(subs);
-  }
-
-  pipe(...fns: Array<Operation<any, any>>): Observable<any> {
-    return toObservable(pipe(...fns)(this[rxFObs]));
-  }
+  pipe(...fns: Array<Operation<any, any>>): Observable<any>;
 }
 
-/** @internal */
-export class FObservable<T> extends Observable<T> {
-  constructor(fobs: FObs<T>) {
-    super();
-    this[rxFObs] = fobs;
+export interface ObservableConstructor {
+  new<T>(init?: (subscriber: Subscriber<T>) => Teardown): Observable<T>;
+}
+
+export const Observable: ObservableConstructor = function<T>(init?: (subscriber: Subscriber<T>) => Teardown): Observable<T> {
+  return fObsAsObservable(init ? initToFObs(init) : () => {/* noop */});
+} as any;
+
+const test = new Observable<number>();
+
+export function fObsAsObservable<T>(fobs: FObs<T>): Observable<T> {
+  const result = fobs as Observable<T>;
+  // Make instanceof checks work! PROTATO FOR THE WIN!
+  (result as any).__proto__ = Observable.prototype;
+  result.subscribe = subscribe;
+  result.pipe = observablePipe;
+  return result;
+}
+
+export function subscribe<T>(
+  this: FObs<T>,
+  nextOrObserver?: PartialObserver<T> | ((value: T, subscription?: SubscriptionLike) => void),
+  errorHandler?: (err: any) => void,
+  completeHandler?: () => void,
+): SubscriptionLike {
+  let sink: FObs<T>;
+  const subs = createSubscription();
+
+  if (nextOrObserver) {
+    if (typeof nextOrObserver === 'function') {
+      sink = handlersToFObs(nextOrObserver, errorHandler, completeHandler);
+    } else if (typeof nextOrObserver === 'object') {
+      sink = partialObserverToFObs(nextOrObserver);
+    }
+  } else {
+    sink = () => {/* empty sink */}; // TODO: this probably isn't right.
   }
+
+  this(FOType.SUBSCRIBE, sink, subs);
+
+  return fSubToSubscription(subs);
+}
+
+export function observablePipe<T>(
+  this: FObs<T>,
+  ...fns: Array<Operation<any, any>>
+): Observable<any> {
+  return toObservable(pipe(...fns)(this));
 }
 
 // TODO: handle unhandled errors.
@@ -54,7 +73,11 @@ function partialObserverToFObs<T>(partialObserver: PartialObserver<T>): FObs<T> 
     switch (type) {
       case FOType.NEXT:
         if (partialObserver.next) {
-          partialObserver.next(v, fSubToSubscription(subs));
+          try {
+            partialObserver.next(v, fSubToSubscription(subs));
+          } catch (err) {
+            hostReportError(err);
+          }
         }
         break;
       case FOType.ERROR:
@@ -62,12 +85,20 @@ function partialObserverToFObs<T>(partialObserver: PartialObserver<T>): FObs<T> 
           hostReportError(v);
         }
         if (partialObserver.error) {
-          partialObserver.error(v);
+          try {
+            partialObserver.error(v);
+          } catch (err) {
+            hostReportError(err);
+          }
         }
         break;
       case FOType.COMPLETE:
         if (partialObserver.complete) {
-          partialObserver.complete();
+          try {
+            partialObserver.complete();
+          } catch (err) {
+            hostReportError(err);
+          }
         }
         break;
     }
@@ -142,18 +173,17 @@ class FSubscriber<T> implements Subscriber<T> {
   }
 }
 
-function fSubToSubscription(subs: FSub): SubscriptionLike {
-  return {
-    unsubscribe() {
-      subs();
-    }
-  };
-}
-
 function initToFObs<T>(init: (subscriber: Subscriber<T>) => Teardown): FObs<T> {
   return (type: FOType, sink: FOArg<T>, subs: FSub) => {
     if (type === FOType.SUBSCRIBE) {
-      const teardown = init(fObsToSubscriber(sink));
+      let teardown: Teardown;
+      const subscriber = fObsToSubscriber(sink);
+      try {
+        teardown = init(subscriber);
+      } catch (err) {
+        sink(FOType.ERROR, err, subs);
+        return;
+      }
       subs(FSubType.ADD, () => {
         if (teardown) {
           if (typeof teardown === 'function') {
