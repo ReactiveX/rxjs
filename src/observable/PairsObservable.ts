@@ -76,7 +76,7 @@ export class PairsObservable<T> extends Observable<Array<string | T>> {
     this.keys = Object.keys(obj);
   }
 
-  protected _subscribe(subscriber: Subscriber<Array<string | T>>): TeardownLogic {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<Array<string | T>>): TeardownLogic {
     const {keys, scheduler} = this;
     const length = keys.length;
 

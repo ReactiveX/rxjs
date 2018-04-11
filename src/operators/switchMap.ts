@@ -120,7 +120,7 @@ class SwitchMapSubscriber<T, I, R> extends OuterSubscriber<T, I> {
     }
   }
 
-  protected _unsubscribe() {
+  /** @deprecated internal use only */ _unsubscribe() {
     this.innerSubscription = null;
   }
 

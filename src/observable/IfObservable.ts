@@ -23,7 +23,7 @@ export class IfObservable<T, R> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T|R>): TeardownLogic {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<T|R>): TeardownLogic {
     const { condition, thenSource, elseSource } = this;
 
     return new IfSubscriber(subscriber, condition, thenSource, elseSource);

@@ -129,7 +129,7 @@ export class AsyncAction<T> extends Action<T> {
     }
   }
 
-  protected _unsubscribe() {
+  /** @deprecated internal use only */ _unsubscribe() {
 
     const id = this.id;
     const scheduler = this.scheduler;

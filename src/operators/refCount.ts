@@ -39,7 +39,7 @@ class RefCountSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  protected _unsubscribe() {
+  /** @deprecated internal use only */ _unsubscribe() {
 
     const { connectable } = this;
     if (!connectable) {

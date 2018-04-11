@@ -65,7 +65,7 @@ export class DeferObservable<T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<T>): Subscription {
     return new DeferSubscriber(subscriber, this.observableFactory);
   }
 }

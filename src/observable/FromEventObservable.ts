@@ -222,7 +222,7 @@ export class FromEventObservable<T> extends Observable<T> {
     subscriber.add(new Subscription(unsubscribe));
   }
 
-  protected _subscribe(subscriber: Subscriber<T>) {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<T>) {
     const sourceObj = this.sourceObj;
     const eventName = this.eventName;
     const options = this.options;

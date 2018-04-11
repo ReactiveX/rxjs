@@ -21,7 +21,7 @@ export class UsingObservable<T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<T>): TeardownLogic {
     const { resourceFactory, observableFactory } = this;
 
     let resource: AnonymousSubscription;

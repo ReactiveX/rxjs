@@ -16,7 +16,7 @@ export class BehaviorSubject<T> extends Subject<T> {
     return this.getValue();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<T>): Subscription {
     const subscription = super._subscribe(subscriber);
     if (subscription && !(<ISubscription>subscription).closed) {
       subscriber.next(this._value);

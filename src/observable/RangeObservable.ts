@@ -80,7 +80,7 @@ export class RangeObservable extends Observable<number> {
     this.scheduler = scheduler;
   }
 
-  protected _subscribe(subscriber: Subscriber<number>): TeardownLogic {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<number>): TeardownLogic {
     let index = 0;
     let start = this.start;
     const count = this._count;

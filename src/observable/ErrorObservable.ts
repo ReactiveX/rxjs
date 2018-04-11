@@ -68,7 +68,7 @@ export class ErrorObservable extends Observable<any> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<any>): TeardownLogic {
     const error = this.error;
     const scheduler = this.scheduler;
 

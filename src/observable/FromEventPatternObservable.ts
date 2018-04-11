@@ -70,7 +70,7 @@ export class FromEventPatternObservable<T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>) {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<T>) {
     const removeHandler = this.removeHandler;
 
     const handler = !!this.selector ? (...args: Array<any>) => {

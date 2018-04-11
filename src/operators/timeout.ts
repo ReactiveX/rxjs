@@ -140,7 +140,7 @@ class TimeoutSubscriber<T> extends Subscriber<T> {
     super._next(value);
   }
 
-  protected _unsubscribe() {
+  /** @deprecated internal use only */ _unsubscribe() {
     this.action = null;
     this.scheduler = null;
     this.errorInstance = null;

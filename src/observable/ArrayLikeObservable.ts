@@ -53,7 +53,7 @@ export class ArrayLikeObservable<T> extends Observable<T> {
     }
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<T>): TeardownLogic {
     let index = 0;
     const { arrayLike, scheduler } = this;
     const length = arrayLike.length;
