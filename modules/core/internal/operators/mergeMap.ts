@@ -14,19 +14,29 @@ export function mergeMap<T, R>(
         let counter = 0;
         let active = 0;
         let outerComplete = false;
-        const buffer: Array<{outerValue: T, outerIndex: number, innerSource: Observable<R> }> = [];
+        const buffer: Array<{outerValue: T, outerIndex: number}> = [];
 
         let startNextInner: () => void;
         startNextInner = () => {
           while (buffer.length > 0 && active++ < concurrent) {
-            const { innerSource, outerValue, outerIndex } = buffer.shift();
+            const { outerValue, outerIndex } = buffer.shift();
             let innerCounter = 0;
+            let innerSource: Observable<R>;
+            try {
+              innerSource = from(project(outerValue, outerIndex));
+            } catch (err) {
+              dest(FOType.ERROR, err);
+              subs.unsubscribe();
+              return;
+            }
+
+            let innerSub: Subscription;
             innerSource(FOType.SUBSCRIBE, (type: FOType, v: SinkArg<R>) => {
               switch (type) {
                 case FOType.SUBSCRIBE:
-                  if (subs) {
-                    subs.add(v);
-                  }
+                  innerSub = v;
+                  subs.add(innerSub);
+                  dest(FOType.SUBSCRIBE, subs);
                   break;
                 case FOType.NEXT:
                   dest(FOType.NEXT, v);
@@ -37,12 +47,12 @@ export function mergeMap<T, R>(
                   break;
                 case FOType.COMPLETE:
                   active--;
+                  innerSub.unsubscribe();
                   if (buffer.length > 0) {
                     startNextInner();
                   } else {
                     if (outerComplete && active === 0) {
                       dest(FOType.COMPLETE, undefined);
-                      subs.unsubscribe();
                     }
                   }
                 default:
@@ -57,19 +67,12 @@ export function mergeMap<T, R>(
               subs = v;
               break;
             case FOType.NEXT:
-              let innerSource: Observable<R>;
               let outerIndex = counter++;
-              try {
-                innerSource = from(project(v, outerIndex));
-              } catch (err) {
-                dest(FOType.ERROR, err);
-                subs.unsubscribe();
-                return;
-              }
-              buffer.push({ innerSource, outerValue: v, outerIndex });
+              buffer.push({ outerValue: v, outerIndex });
+              startNextInner();
               break;
             case FOType.ERROR:
-              dest(t, v);
+              dest(FOType.ERROR, v);
               subs.unsubscribe();
               break;
             case FOType.COMPLETE:

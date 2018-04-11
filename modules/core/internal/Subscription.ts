@@ -66,6 +66,9 @@ function unsubscribe(this: Subscription): void {
 
 function add(this: Subscription, teardown: Teardown) {
   if (teardown) {
+    if (teardown instanceof Subscription) {
+      teardown.add(() => this.remove(teardown));
+    }
     this(FOType.ADD, teardown);
   }
 }

@@ -22,7 +22,7 @@ describe('map', () => {
     const source = of(1, 2, 3, 4).pipe(
       map(x => {
         if (x === 3) throw new Error('smooshed');
-        return x + x;
+        return x;
       })
     );
 
@@ -35,7 +35,7 @@ describe('map', () => {
       complete() { results.push('done'); },
     });
 
-    expect(results).to.deep.equal([2, 4]);
+    expect(results).to.deep.equal([1, 2]);
     expect(error).to.be.an.instanceof(Error);
     expect(error.message).to.equal('smooshed');
   });

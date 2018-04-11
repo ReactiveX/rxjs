@@ -24,4 +24,18 @@ describe('Subscription', () => {
     s(FOType.COMPLETE, undefined);
     expect(fired).to.be.true;
   });
+
+  it('should add children, and unsub in order', () => {
+    const results: number[] = [];
+    let i = 0;
+    const s = new Subscription(() => results.push(i++));
+    s.add(() => results.push(i++));
+    s.add(() => results.push(i++));
+    s.add(new Subscription(() => results.push(i++)));
+    s.add(() => results.push(i++));
+
+    expect(results).to.deep.equal([]);
+    s.unsubscribe();
+    expect(results).to.deep.equal([0, 1, 2, 3, 4])
+  });
 });

@@ -3,11 +3,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "rxjs": ["./src"],
-      "rxjs/*": ["./src/*", "./legacy-reexport/*"],
-      "rxjs-compat": ["./compat/index"],
-      "rxjs-compat/*": ["./compat/*"]
+      "rxjs": ["./modules/core/"],
     }
   },
-  "exclude": ["./dist", "./dist-compat"]
+  "exclude": ["./dist"]
 }
