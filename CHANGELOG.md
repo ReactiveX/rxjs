@@ -1,3 +1,13 @@
+<a name="6.0.0-terrific-rc.3"></a>
+# [6.0.0-terrific-rc.3](https://github.com/ReactiveX/RxJS/compare/6.0.0-tenacious-rc.2...v6.0.0-terrific-rc.3) (2018-04-11)
+
+
+### Features
+
+* **schematics:** add migration schematics for schematics users ([20a2f07](https://github.com/ReactiveX/RxJS/commit/20a2f07))
+
+
+
 <a name="6.0.0-tenacious-rc.2"></a>
 # [6.0.0-tenacious-rc.2](https://github.com/ReactiveX/RxJS/compare/6.0.0-tactical-rc.1...v6.0.0-tenacious-rc.2) (2018-04-11)
 
