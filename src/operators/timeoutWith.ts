@@ -133,7 +133,7 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
     super._next(value);
   }
 
-  protected _unsubscribe() {
+  /** @deprecated internal use only */ _unsubscribe() {
     this.action = null;
     this.scheduler = null;
     this.withObservable = null;

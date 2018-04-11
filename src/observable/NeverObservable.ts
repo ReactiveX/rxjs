@@ -47,7 +47,7 @@ export class NeverObservable<T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): void {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<T>): void {
     noop();
   }
 }

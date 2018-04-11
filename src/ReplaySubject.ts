@@ -29,7 +29,7 @@ export class ReplaySubject<T> extends Subject<T> {
     super.next(value);
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<T>): Subscription {
     const _events = this._trimBufferThenGetEvents();
     const scheduler = this.scheduler;
     let subscription: Subscription;

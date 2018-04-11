@@ -200,7 +200,7 @@ export class GenerateObservable<T, S> extends Observable<T> {
       <IScheduler>scheduler);
   }
 
-  protected _subscribe(subscriber: Subscriber<any>): Subscription | Function | void {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<any>): Subscription | Function | void {
     let state = this.initialState;
     if (this.scheduler) {
       return this.scheduler.schedule<SchedulerState<T, S>>(GenerateObservable.dispatch, 0, {

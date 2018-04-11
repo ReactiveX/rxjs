@@ -236,7 +236,7 @@ class GroupDurationSubscriber<K, T> extends Subscriber<T> {
     this.complete();
   }
 
-  protected _unsubscribe() {
+  /** @deprecated internal use only */ _unsubscribe() {
     const { parent, key } = this;
     this.key = this.parent = null;
     if (parent) {
@@ -260,7 +260,7 @@ export class GroupedObservable<K, T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>) {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<T>) {
     const subscription = new Subscription();
     const {refCountSubscription, groupSubject} = this;
     if (refCountSubscription && !refCountSubscription.closed) {

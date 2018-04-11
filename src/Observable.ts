@@ -29,7 +29,7 @@ export class Observable<T> implements Subscribable<T> {
 
   public _isScalar: boolean = false;
 
-  protected source: Observable<any>;
+  /** @deprecated internal use only */ public source: Observable<any>;
   protected operator: Operator<any, T>;
 
   /**
@@ -271,7 +271,7 @@ export class Observable<T> implements Subscribable<T> {
     });
   }
 
-  protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<any>): TeardownLogic {
     return this.source.subscribe(subscriber);
   }
 

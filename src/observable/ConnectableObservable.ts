@@ -10,21 +10,21 @@ import { refCount as higherOrderRefCount } from '../operators/refCount';
  */
 export class ConnectableObservable<T> extends Observable<T> {
 
-  protected _subject: Subject<T>;
-  protected _refCount: number = 0;
-  protected _connection: Subscription;
+  /** @deprecated internal use only */ public _subject: Subject<T>;
+  /** @deprecated internal use only */ public _refCount: number = 0;
+  /** @deprecated internal use only */ public _connection: Subscription;
   _isComplete = false;
 
-  constructor(protected source: Observable<T>,
-              protected subjectFactory: () => Subject<T>) {
+  constructor(/** @deprecated internal use only */ public source: Observable<T>,
+              /** @deprecated internal use only */ public subjectFactory: () => Subject<T>) {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>) {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<T>) {
     return this.getSubject().subscribe(subscriber);
   }
 
-  protected getSubject(): Subject<T> {
+  /** @deprecated internal use only */ public getSubject(): Subject<T> {
     const subject = this._subject;
     if (!subject || subject.isStopped) {
       this._subject = this.subjectFactory();
@@ -82,7 +82,7 @@ class ConnectableSubscriber<T> extends SubjectSubscriber<T> {
     this._unsubscribe();
     super._complete();
   }
-  protected _unsubscribe() {
+  /** @deprecated internal use only */ _unsubscribe() {
     const connectable = <any>this.connectable;
     if (connectable) {
       this.connectable = null;
@@ -125,7 +125,7 @@ class RefCountSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  protected _unsubscribe() {
+  /** @deprecated internal use only */ _unsubscribe() {
 
     const { connectable } = this;
     if (!connectable) {

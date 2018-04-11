@@ -185,7 +185,7 @@ export class BoundCallbackObservable<T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T | T[]>): Subscription {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<T | T[]>): Subscription {
     const callbackFunc = this.callbackFunc;
     const args = this.args;
     const scheduler = this.scheduler;
