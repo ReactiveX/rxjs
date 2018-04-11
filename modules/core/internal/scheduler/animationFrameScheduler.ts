@@ -1,6 +1,6 @@
 import { Subs } from '../types';
 import { asyncScheduler } from './asyncScheduler';
-import { concatSubs } from '../Subscription';
+import { concatSubs } from '../util/concatSubs';
 
 const toAnimate: Array<() => void> = [];
 let animId = 0;

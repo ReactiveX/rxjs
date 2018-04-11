@@ -99,6 +99,27 @@ describe('Observable', () => {
     expect(error.message).to.equal('bad');
   });
 
+  it('should not complete after early unsubscribe', () => {
+    const source = new Observable<number>(subscriber => {
+      subscriber.next(1);
+      subscriber.next(2);
+      subscriber.next(3);
+      subscriber.complete();
+    });
+
+    const results: any[] = [];
+
+    source.subscribe({
+      next(v, subscription) {
+        results.push(v);
+        if (v === 2) subscription.unsubscribe();
+      },
+      complete() { results.push('done'); },
+    });
+
+    expect(results).to.deep.equal([1, 2]);
+  });
+
   describe('subscribe', () => {
     let source: Observable<number>;
     let mockScheduler: Scheduler;

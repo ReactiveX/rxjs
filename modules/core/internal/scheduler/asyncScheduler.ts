@@ -1,5 +1,5 @@
 import { Subs } from '../types';
-import { concatSubs } from '../Subscription';
+import { concatSubs } from '../util/concatSubs';
 
 export function asyncScheduler(work?: () => void, delay?: number, subs?: Subs): number {
   if (work) {

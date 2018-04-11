@@ -1,5 +1,6 @@
 import { FOType, Sink, SinkArg, PartialObserver, Subs } from './types';
-import { Subscription, concatSubs } from './Subscription';
+import { Subscription } from './Subscription';
+import { concatSubs } from './util/concatSubs';
 
 export interface Subscriber<T> extends Sink<T> {
   next(value: T): void;

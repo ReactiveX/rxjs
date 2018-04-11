@@ -55,18 +55,20 @@ function subscribe<T>(
   completeHandler?: () => void,
   scheduler?: Scheduler,
 ) {
-  let subscription: Subscription;
+  let subscription = new Subscription();;
   let sink: Sink<T>;
   if (nextOrObserver) {
     if (typeof nextOrObserver === 'object') {
-      sink = sinkFromObserver(nextOrObserver, subs => subscription = subs);
+      sink = sinkFromObserver(nextOrObserver);
       scheduler = errorHandlerOrScheduler as Scheduler;
     } else {
-      sink = sinkFromHandlers(nextOrObserver, errorHandlerOrScheduler, completeHandler, subs => subscription = subs);
+      sink = sinkFromHandlers(nextOrObserver, errorHandlerOrScheduler, completeHandler);
     }
   } else {
     sink = () => { /* noop */ };
   }
+
+  sink(FOType.SUBSCRIBE, subscription);
   if (!scheduler) {
     scheduler = defaultScheduler;
   }
@@ -76,20 +78,18 @@ function subscribe<T>(
   return subscription;
 }
 
-function observablePipe<T, R>(this: Observable<T>, ...operations: Array<Operation<T, R>>): Observable<R> {
+function observablePipe<T>(this: Observable<T>, ...operations: Array<Operation<T, T>>): Observable<T> {
   return pipe(...operations)(this);
 }
 
 function sinkFromObserver<T>(
-  observer: PartialObserver<T>,
-  subscriptionCallback: (subs: Subscription) => void
+  observer: PartialObserver<T>
 ): Sink<T> {
   let subscription: Subscription;
   return (type: FOType, arg: SinkArg<T>) => {
     switch (type) {
       case FOType.SUBSCRIBE:
         subscription = arg;
-        subscriptionCallback(subscription);
         break;
       case FOType.NEXT:
         if (typeof observer.next === 'function') {
@@ -114,14 +114,12 @@ function sinkFromHandlers<T>(
   nextHandler: (value: T, subscription: Subscription) => void,
   errorHandler: (err: any) => void,
   completeHandler: () => void,
-  subscriptionCallback: (subscription: Subscription) => void,
 ) {
   let subscription: Subscription;
   return (type: FOType, arg: SinkArg<T>) => {
     switch (type) {
       case FOType.SUBSCRIBE:
         subscription = arg;
-        subscriptionCallback(subscription);
         break;
       case FOType.NEXT:
         if (typeof nextHandler === 'function') {

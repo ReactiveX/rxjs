@@ -16,17 +16,8 @@ export function createSubs(teardown?: () => void): Subs {
   };
 }
 
-export function concatSubs(subs: Subs, ...teardowns: Array<() => void>) {
-  return subsAsSubscription(createSubs(() => {
-    subs(FOType.COMPLETE, undefined);
-    for (const teardown of teardowns) {
-      teardown();
-    }
-  }));
-}
-
 export const Subscription: SubscriptionConstructor = function (teardown?: () => void) {
-  return subsAsSubscription(createSubs());
+  return subsAsSubscription(createSubs(teardown));
 } as any;
 
 export function subsAsSubscription(subs: Subs) {

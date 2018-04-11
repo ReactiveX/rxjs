@@ -1,6 +1,6 @@
 import { Subs } from '../types';
 import { asyncScheduler } from './asyncScheduler';
-import { concatSubs } from '../Subscription';
+import { concatSubs } from '../util/concatSubs';
 
 const queue: Array<() => void> = [];
 let flushing = false;

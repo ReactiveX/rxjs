@@ -47,7 +47,7 @@ describe('of', () => {
     results.push('stop');
   });
 
-  it.only('should not complete after early unsubscribe', () => {
+  it('should not complete after early unsubscribe', () => {
     const source = of(1, 2, 3);
     source.subscribe({
       next(value, subscription) {
