@@ -55,7 +55,7 @@ export class IteratorObservable<T> extends Observable<T> {
     this.iterator = getIterator(iterator);
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<T>): TeardownLogic {
 
     let index = 0;
     const { iterator, scheduler } = this;

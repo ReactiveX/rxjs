@@ -244,7 +244,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     };
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<T>): Subscription {
     const { source } = this;
     if (source) {
       return source.subscribe(subscriber);

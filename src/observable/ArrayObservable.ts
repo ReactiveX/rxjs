@@ -109,7 +109,7 @@ export class ArrayObservable<T> extends Observable<T> {
     }
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<T>): TeardownLogic {
     let index = 0;
     const array = this.array;
     const count = array.length;

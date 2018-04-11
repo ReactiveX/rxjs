@@ -107,7 +107,7 @@ export class Subject<T> extends Observable<T> implements ISubscription {
     }
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<T>): Subscription {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
     } else if (this.hasError) {
@@ -159,7 +159,7 @@ export class AnonymousSubject<T> extends Subject<T> {
     }
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<T>): Subscription {
     const { source } = this;
     if (source) {
       return this.source.subscribe(subscriber);

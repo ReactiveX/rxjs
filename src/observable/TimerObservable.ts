@@ -104,7 +104,7 @@ export class TimerObservable extends Observable<number> {
       (<number> dueTime);
   }
 
-  protected _subscribe(subscriber: Subscriber<number>): TeardownLogic {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<number>): TeardownLogic {
     const index = 0;
     const { period, dueTime, scheduler } = this;
 

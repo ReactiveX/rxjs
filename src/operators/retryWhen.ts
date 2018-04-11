@@ -32,7 +32,7 @@ export function retryWhen<T>(notifier: (errors: Observable<any>) => Observable<a
 
 class RetryWhenOperator<T> implements Operator<T, T> {
   constructor(protected notifier: (errors: Observable<any>) => Observable<any>,
-              protected source: Observable<T>) {
+              public source: Observable<T>) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -86,7 +86,7 @@ class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  protected _unsubscribe() {
+  /** @deprecated internal use only */ _unsubscribe() {
     const { errors, retriesSubscription } = this;
     if (errors) {
       errors.unsubscribe();

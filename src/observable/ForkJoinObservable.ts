@@ -161,7 +161,7 @@ export class ForkJoinObservable<T> extends Observable<T> {
     return new ForkJoinObservable(<Array<SubscribableOrPromise<any>>>sources, resultSelector);
   }
 
-  protected _subscribe(subscriber: Subscriber<any>): Subscription {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<any>): Subscription {
     return new ForkJoinSubscriber(subscriber, this.sources, this.resultSelector);
   }
 }

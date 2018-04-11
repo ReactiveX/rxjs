@@ -127,7 +127,7 @@ class WindowCountSubscriber<T> extends Subscriber<T> {
     this.destination.complete();
   }
 
-  protected _unsubscribe() {
+  /** @deprecated internal use only */ _unsubscribe() {
     this.count = 0;
     this.windows = null;
   }

@@ -86,7 +86,7 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  protected _unsubscribe() {
+  /** @deprecated internal use only */ _unsubscribe() {
     const { notifications, retriesSubscription } = this;
     if (notifications) {
       notifications.unsubscribe();
@@ -99,7 +99,7 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.retries = null;
   }
 
-  protected _unsubscribeAndRecycle(): Subscriber<T> {
+  /** @deprecated internal use only */ _unsubscribeAndRecycle(): Subscriber<T> {
     const { notifications, retries, retriesSubscription } = this;
     this.notifications = null;
     this.retries = null;

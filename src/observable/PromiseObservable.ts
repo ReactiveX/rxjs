@@ -47,7 +47,7 @@ export class PromiseObservable<T> extends Observable<T> {
     super();
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): TeardownLogic {
+  /** @deprecated internal use only */ _subscribe(subscriber: Subscriber<T>): TeardownLogic {
     const promise = this.promise;
     const scheduler = this.scheduler;
 
