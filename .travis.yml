@@ -14,15 +14,15 @@ cache:
 
 env:
   matrix:
-  - NODE_VER=4 FULL_VALIDATE=false
-  - NODE_VER=6 FULL_VALIDATE=true alias grunt=./node_modules/grunt-cli/bin/grunt
-  - NODE_VER=7 FULL_VALIDATE=false
+  - NODE_VER=8 FULL_VALIDATE=true alias grunt=./node_modules/grunt-cli/bin/grunt
+  - NODE_VER=9 FULL_VALIDATE=false
+
 matrix:
   fast_finish: true
 
 before_install:
   - nvm install $NODE_VER
-  - npm install -g npm@5.6.0 && npm install -g npx && node -v && npm -v
+  - npm install -g npm@5.8.0 && npm install -g npx && node -v && npm -v
   - if [ "$FULL_VALIDATE" == "true" ]; then npm install grunt@0.4.1 grunt-cli grunt-contrib-connect grunt-run; fi
 
 install:
