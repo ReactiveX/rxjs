@@ -1,3 +1,45 @@
+<a name="5.6.0-forward-compat.3"></a>
+# [5.6.0-forward-compat.3](https://github.com/ReactiveX/RxJS/compare/5.5.9...v5.6.0-forward-compat.3) (2018-04-11)
+
+
+
+<a name="5.6.0-forward-compat.2"></a>
+# [5.6.0-forward-compat.2](https://github.com/ReactiveX/RxJS/compare/5.5.8...5.6.0-forward-compat.2) (2018-03-27)
+
+
+### Bug Fixes
+
+* **node:** no more silent failure for many copies of rxjs ([#3477](https://github.com/ReactiveX/RxJS/issues/3477)) ([fed5351](https://github.com/ReactiveX/RxJS/commit/fed5351)), closes [#3475](https://github.com/ReactiveX/RxJS/issues/3475)
+
+
+
+<a name="5.6.0-forward-compat.1"></a>
+# [5.6.0-forward-compat.1](https://github.com/ReactiveX/RxJS/compare/5.6.0-forward-compat.0...5.6.0-forward-compat.1) (2018-03-24)
+
+
+### Bug Fixes
+
+* **build:** include the missing index.ts file in target for TypeScript compilation ([#3459](https://github.com/ReactiveX/RxJS/issues/3459)) ([cb4ca0b](https://github.com/ReactiveX/RxJS/commit/cb4ca0b))
+
+
+
+<a name="5.6.0-forward-compat.0"></a>
+# [5.6.0-forward-compat.0](https://github.com/ReactiveX/RxJS/compare/5.5.7...5.6.0-forward-compat.0) (2018-03-21)
+
+
+### Bug Fixes
+
+* **compat:** rename src/v6_index.ts -> src/index.ts ([e2d3bdb](https://github.com/ReactiveX/RxJS/commit/e2d3bdb))
+
+
+### Features
+
+* **compat:** add EMPTY/NEVER constants and types.ts to match v6 ([013f570](https://github.com/ReactiveX/RxJS/commit/013f570))
+* **compat:** add next rxjs version's exports for forward compatibility ([de37095](https://github.com/ReactiveX/RxJS/commit/de37095))
+* **compat:** add v6 forward compatibility index file ([0075795](https://github.com/ReactiveX/RxJS/commit/0075795))
+
+
+
 <a name="5.6.0-forward-compat.2"></a>
 # [5.6.0-forward-compat.2](https://github.com/ReactiveX/RxJS/compare/5.6.0-forward-compat.1...5.6.0-forward-compat.2) (2018-03-27)
 
