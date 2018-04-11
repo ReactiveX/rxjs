@@ -1,3 +1,17 @@
+<a name="6.0.0-tenacious-rc.2"></a>
+# [6.0.0-tenacious-rc.2](https://github.com/ReactiveX/RxJS/compare/6.0.0-tactical-rc.1...v6.0.0-tenacious-rc.2) (2018-04-11)
+
+
+### Bug Fixes
+
+* **compat:** fix first & last operators so undefined arguments won't create empty values ([#3542](https://github.com/ReactiveX/RxJS/issues/3542)) ([a327db2](https://github.com/ReactiveX/RxJS/commit/a327db2))
+* **node/TS:** eliminate incompatable types to protected properties ([#3544](https://github.com/ReactiveX/RxJS/issues/3544)) ([21dd3bd](https://github.com/ReactiveX/RxJS/commit/21dd3bd))
+
+
+### BREAKING CHANGES
+
+* **NodeJS** Dropping support for non-LTS versions of Node.
+
 <a name="6.0.0-tactical-rc.1"></a>
 # [6.0.0-tactical-rc.1](https://github.com/ReactiveX/RxJS/compare/6.0.0-rc.0...6.0.0-tactical-rc.1) (2018-04-07)
 
