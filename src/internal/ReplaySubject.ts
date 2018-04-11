@@ -49,7 +49,8 @@ export class ReplaySubject<T> extends Subject<T> {
     super.next(value);
   }
 
-  protected _subscribe(subscriber: Subscriber<T>): Subscription {
+  /** @deprecated This is an internal implementation detail, do not use. */
+  _subscribe(subscriber: Subscriber<T>): Subscription {
     // When `_infiniteTimeWindow === true` then the buffer is already trimmed
     const _infiniteTimeWindow = this._infiniteTimeWindow;
     const _events = _infiniteTimeWindow ? this._events : this._trimBufferThenGetEvents();

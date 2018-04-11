@@ -21,9 +21,11 @@ export class Observable<T> implements Subscribable<T> {
   /** Internal implementation detail, do not use directly. */
   public _isScalar: boolean = false;
 
-  protected source: Observable<any>;
+  /** @deprecated This is an internal implementation detail, do not use. */
+  source: Observable<any>;
 
-  protected operator: Operator<any, T>;
+  /** @deprecated This is an internal implementation detail, do not use. */
+  operator: Operator<any, T>;
 
   /**
    * @constructor
@@ -208,7 +210,8 @@ export class Observable<T> implements Subscribable<T> {
     return sink;
   }
 
-  protected _trySubscribe(sink: Subscriber<T>): TeardownLogic {
+  /** @deprecated This is an internal implementation detail, do not use. */
+  _trySubscribe(sink: Subscriber<T>): TeardownLogic {
     try {
       return this._subscribe(sink);
     } catch (err) {
@@ -247,8 +250,8 @@ export class Observable<T> implements Subscribable<T> {
     }) as Promise<void>;
   }
 
-  /** @internal */
-  protected _subscribe(subscriber: Subscriber<any>): TeardownLogic {
+  /** @deprecated This is an internal implementation detail, do not use. */
+  _subscribe(subscriber: Subscriber<any>): TeardownLogic {
     const { source } = this;
     return source && source.subscribe(subscriber);
   }

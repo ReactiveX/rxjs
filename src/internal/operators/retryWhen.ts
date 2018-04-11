@@ -86,7 +86,8 @@ class RetryWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  protected _unsubscribe() {
+  /** @deprecated This is an internal implementation detail, do not use. */
+  _unsubscribe() {
     const { errors, retriesSubscription } = this;
     if (errors) {
       errors.unsubscribe();

@@ -85,7 +85,8 @@ class BufferWhenSubscriber<T> extends OuterSubscriber<T, any> {
     super._complete();
   }
 
-  protected _unsubscribe() {
+  /** @deprecated This is an internal implementation detail, do not use. */
+  _unsubscribe() {
     this.buffer = null;
     this.subscribing = false;
   }

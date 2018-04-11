@@ -106,7 +106,8 @@ class WindowSubscriber<T> extends OuterSubscriber<T, any> {
     this.destination.complete();
   }
 
-  protected _unsubscribe() {
+  /** @deprecated This is an internal implementation detail, do not use. */
+  _unsubscribe() {
     this.window = null;
   }
 
