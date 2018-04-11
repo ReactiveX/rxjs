@@ -1,6 +1,6 @@
 import { Observable, sourceAsObservable } from '../Observable';
 import { FOType, Sink, Source } from '../types';
-import { createSubs } from '../Subscription';
+import { Subscription } from '../Subscription';
 
 export function of<T>(...values: T[]): Observable<T> {
   return sourceAsObservable(ofSource(values));
@@ -9,12 +9,16 @@ export function of<T>(...values: T[]): Observable<T> {
 export function ofSource<T>(values: T[]): Source<T> {
   return (type: FOType, sink: Sink<T>) => {
     let closed = false;
-    const subs = createSubs(() => closed = true);
+    const subs = new Subscription(() => {
+      console.log('erher');
+      closed = true;
+    });
     sink(FOType.SUBSCRIBE, subs);
     for (let value of values) {
-      if (closed) { break; }
+      if (closed) return;
       sink(FOType.NEXT, value);
     }
+    if (closed) return;
     sink(FOType.COMPLETE, undefined);
   };
 }

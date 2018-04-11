@@ -17,7 +17,7 @@ describe('of', () => {
 
   it('should emit values and complete synchronously if not scheduled', () => {
     const source = of(1, 2, 3);
-    const results = [];
+    const results: any[] = [];
     results.push('start');
     source.subscribe({
       next(value) { results.push(value) },
@@ -29,7 +29,7 @@ describe('of', () => {
 
   it('should emit values asynchronously if scheduled', (done) => {
     const source = of(1, 2, 3);
-    const results = [];
+    const results: any[] = [];
     results.push('start');
     source.subscribe({
       next(value) { results.push(value) },
@@ -45,5 +45,17 @@ describe('of', () => {
       },
     }, asapScheduler);
     results.push('stop');
+  });
+
+  it.only('should not complete after early unsubscribe', () => {
+    const source = of(1, 2, 3);
+    source.subscribe({
+      next(value, subscription) {
+        if (value === 2) subscription.unsubscribe();
+      },
+      complete() {
+        throw new Error('should not be called');
+      }
+    })
   });
 });

@@ -1,4 +1,5 @@
 import { Subscription } from './Subscription';
+import { Observable } from './Observable';
 
 export enum FOType {
   SUBSCRIBE = 0,
@@ -20,6 +21,7 @@ export interface Sink<T> {
   (type: FOType.NEXT, value: T): void;
   (type: FOType.ERROR, err: any): void;
   (type: FOType.COMPLETE, arg: void): void;
+  (type: FOType, arg: FObsArg<T>): void;
 }
 
 export interface Source<T> {
@@ -64,3 +66,5 @@ export interface Scheduler {
   (): number;
   (work: () => void, delay: number, subs: Subs): number;
 }
+
+export type Operation<T, R> = (source: Observable<T>) => Observable<R>;

@@ -1,7 +1,8 @@
-import { FObs, PartialObserver, FOType, Sink, Source, SinkArg, Teardown, Scheduler, Subs, FObsArg } from './types';
+import { FObs, Operation, PartialObserver, FOType, Sink, Source, SinkArg, Teardown, Scheduler, Subs, FObsArg } from './types';
 import { Subscriber, createSubscriber } from './Subscriber';
 import { Subscription, createSubs } from './Subscription';
 import { defaultScheduler } from './scheduler/defaultScheduler';
+import { pipe } from './util/pipe';
 
 export interface ObservableConstructor {
   new<T>(init?: (subscriber: Subscriber<T>) => void): Observable<T>;
@@ -16,6 +17,9 @@ export interface Observable<T> extends FObs<T> {
     scheduler?: Scheduler,
   ): Subscription;
   subscribe(): Subscription;
+
+  // TODO: flush out types
+  pipe(...operations: Array<Operation<any, any>>): Observable<any>;
 }
 
 export const Observable: ObservableConstructor = function <T>(init?: (subscriber: Subscriber<T>) => void) {
@@ -40,6 +44,7 @@ export function sourceAsObservable<T>(source: Source<T>): Observable<T> {
   const result = source as Observable<T>;
   (result as any).__proto__ = Observable.prototype;
   result.subscribe = subscribe;
+  result.pipe = observablePipe;
   return result;
 }
 
@@ -69,6 +74,10 @@ function subscribe<T>(
   const wrappedSink = wrapWithScheduler(sink as FObs<T>, scheduler, subscription);
   scheduler(() => this(FOType.SUBSCRIBE, wrappedSink), 0, subscription);
   return subscription;
+}
+
+function observablePipe<T, R>(this: Observable<T>, ...operations: Array<Operation<T, R>>): Observable<R> {
+  return pipe(...operations)(this);
 }
 
 function sinkFromObserver<T>(
