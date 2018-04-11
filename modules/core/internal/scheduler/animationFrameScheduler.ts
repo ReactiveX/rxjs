@@ -1,10 +1,9 @@
-import { Subs } from '../types';
 import { asyncScheduler } from './asyncScheduler';
-import { concatSubs } from '../util/concatSubs';
+import { Subscription } from '../Subscription';
 
 const toAnimate: Array<() => void> = [];
 let animId = 0;
-export function animationFrameScheduler(work?: () => void, delay?: number, subs?: Subs): number {
+export function animationFrameScheduler(work?: () => void, delay?: number, subs?: Subscription): number {
   if (work) {
     if (delay > 0) {
       asyncScheduler(() => {
@@ -20,7 +19,7 @@ export function animationFrameScheduler(work?: () => void, delay?: number, subs?
         });
       }
       toAnimate.push(work);
-      concatSubs(subs, () => {
+      subs.add(() => {
         const i = toAnimate.indexOf(work);
         if (i !== -1) {
           toAnimate.splice(i, 1);

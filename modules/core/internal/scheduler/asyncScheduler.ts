@@ -1,10 +1,9 @@
-import { Subs } from '../types';
-import { concatSubs } from '../util/concatSubs';
+import { Subscription } from '../Subscription';
 
-export function asyncScheduler(work?: () => void, delay?: number, subs?: Subs): number {
+export function asyncScheduler(work?: () => void, delay?: number, subs?: Subscription): number {
   if (work) {
     const id = setTimeout(work, delay);
-    concatSubs(subs, () => clearTimeout(id));
+    subs.add(() => clearTimeout(id));
   }
   return Date.now();
 }

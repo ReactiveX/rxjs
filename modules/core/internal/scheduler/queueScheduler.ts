@@ -1,15 +1,14 @@
-import { Subs } from '../types';
 import { asyncScheduler } from './asyncScheduler';
-import { concatSubs } from '../util/concatSubs';
+import { Subscription } from '../Subscription';
 
 const queue: Array<() => void> = [];
 let flushing = false;
-export function queueScheduler(work?: () => void, delay?: number, subs?: Subs): number {
+export function queueScheduler(work?: () => void, delay?: number, subs?: Subscription): number {
   if (work) {
     if (delay > 0) {
       asyncScheduler(work, delay, subs);
     } else {
-      concatSubs(subs, () => {
+      subs.add(() => {
         const i = queue.indexOf(work);
         if (i !== -1) {
           queue.splice(i, 1);

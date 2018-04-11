@@ -1,7 +1,7 @@
-import { Subs} from '../types';
 import { asyncScheduler } from './asyncScheduler';
+import { Subscription } from '../Subscription';
 
-export function defaultScheduler(work?: () => void, delay?: number, subs?: Subs): number {
+export function defaultScheduler(work?: () => void, delay?: number, subs?: Subscription): number {
   if (work) {
     if (delay > 0) {
       asyncScheduler(work, delay, subs);

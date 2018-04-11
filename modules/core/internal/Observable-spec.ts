@@ -113,6 +113,9 @@ describe('Observable', () => {
       next(v, subscription) {
         results.push(v);
         if (v === 2) subscription.unsubscribe();
+        if (v === 3) {
+          console.log((new Error()).stack);
+        }
       },
       complete() { results.push('done'); },
     });

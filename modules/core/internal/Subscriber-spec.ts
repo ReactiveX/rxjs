@@ -39,12 +39,10 @@ describe('Subscriber', () => {
     subscriber.complete();
     subscriber.next(3);
 
-    // strip the first one and test it, because it should be a
-    // FOType.SUBSCRIBE called with a wrapped subscription
     const first = mockDestCalls.shift();
     expect(first.type).to.equal(FOType.SUBSCRIBE);
     expect(first.arg).to.be.an.instanceof(Subscription);
-    expect(first.arg).not.to.equal(subs);
+    expect(first.arg).to.equal(subs);
 
     expect(mockDestCalls).to.deep.equal([
       { type: FOType.NEXT, arg: 1 },
@@ -64,12 +62,10 @@ describe('Subscriber', () => {
     subscriber.error(err);
     subscriber.next(3);
 
-    // strip the first one and test it, because it should be a
-    // FOType.SUBSCRIBE called with a wrapped subscription
     const first = mockDestCalls.shift();
     expect(first.type).to.equal(FOType.SUBSCRIBE);
     expect(first.arg).to.be.an.instanceof(Subscription);
-    expect(first.arg).not.to.equal(subs);
+    expect(first.arg).to.equal(subs);
 
     expect(mockDestCalls).to.deep.equal([
       { type: FOType.NEXT, arg: 1 },

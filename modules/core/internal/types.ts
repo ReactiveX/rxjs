@@ -6,12 +6,16 @@ export enum FOType {
   NEXT = 1,
   COMPLETE = 2,
   ERROR = 10,
+  ADD = 11,
+  REMOVE = 12,
 }
 
 export type SubsArg = (() => void) | void;
 
 export interface Subs {
   (type: FOType.COMPLETE, arg: void): void;
+  (type: FOType.ADD, arg: Teardown): void;
+  (type: FOType.REMOVE, arg: Teardown): void;
 }
 
 export type SinkArg<T> = T | void | any;
@@ -34,7 +38,7 @@ export interface FObs<T> extends Source<T>, Sink<T>, Subs {
 
 export type FObsArg<T> = SinkArg<T> | void;
 
-export type Teardown = Subscription | (() => void) | void;
+export type Teardown = SubscriptionLike | (() => void) | void;
 
 export interface NextObserver<T> {
   next: (value: T, subscription: Subscription) => void;
@@ -64,7 +68,17 @@ export interface Observer<T> {
 
 export interface Scheduler {
   (): number;
-  (work: () => void, delay: number, subs: Subs): number;
+  (work: () => void, delay: number, subs: Subscription): number;
 }
 
 export type Operation<T, R> = (source: Observable<T>) => Observable<R>;
+
+export interface ObservableLike<T> {
+  subscribe(observer: Observer<T>): Subscription;
+}
+
+export type ObservableInput<T> = Observable<T> | ObservableLike<T> | PromiseLike<T> | Iterable<T> | Array<T>;
+
+export interface SubscriptionLike {
+  unsubscribe(): void;
+}

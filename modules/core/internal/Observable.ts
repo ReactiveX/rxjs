@@ -1,6 +1,6 @@
-import { FObs, Operation, PartialObserver, FOType, Sink, Source, SinkArg, Teardown, Scheduler, Subs, FObsArg } from './types';
+import { FObs, Operation, PartialObserver, FOType, Sink, Source, SinkArg, Teardown, Scheduler, FObsArg } from './types';
 import { Subscriber, createSubscriber } from './Subscriber';
-import { Subscription, createSubs } from './Subscription';
+import { Subscription } from './Subscription';
 import { defaultScheduler } from './scheduler/defaultScheduler';
 import { pipe } from './util/pipe';
 
@@ -140,7 +140,7 @@ function sinkFromHandlers<T>(
   };
 }
 
-function wrapWithScheduler<T>(fobs: FObs<T>, scheduler: Scheduler, subs: Subs): FObs<T> {
+function wrapWithScheduler<T>(fobs: FObs<T>, scheduler: Scheduler, subs: Subscription): FObs<T> {
   return (type: FOType, arg: FObsArg<T>) => {
     scheduler(() => {
       fobs(type, arg);
