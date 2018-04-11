@@ -77,7 +77,7 @@ export interface ObservableLike<T> {
   subscribe(observer: Observer<T>): Subscription;
 }
 
-export type ObservableInput<T> = Observable<T> | ObservableLike<T> | PromiseLike<T> | Iterable<T> | Array<T>;
+export type ObservableInput<T> = Observable<T> | ObservableLike<T> | PromiseLike<T> | Iterable<T> | Array<T> | ArrayLike<T>;
 
 export interface SubscriptionLike {
   unsubscribe(): void;

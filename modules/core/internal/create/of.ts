@@ -12,9 +12,9 @@ export function ofSource<T>(values: T[]): Source<T> {
       let closed = false;
       const subs = new Subscription(() => closed = true);
       sink(FOType.SUBSCRIBE, subs);
-      for (const value of values) {
+      for (let i = 0; i < values.length; i++) {
         if (closed) return;
-        sink(FOType.NEXT, value);
+        sink(FOType.NEXT, values[i]);
       }
       if (closed) return;
       sink(FOType.COMPLETE, undefined);
