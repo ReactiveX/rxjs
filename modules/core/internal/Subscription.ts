@@ -16,13 +16,13 @@ export function createSubs(teardown?: () => void): Subs {
   };
 }
 
-export function append(subs: Subs, ...teardowns: Array<() => void>) {
-  return createSubs(() => {
+export function concatSubs(subs: Subs, ...teardowns: Array<() => void>) {
+  return subsAsSubscription(createSubs(() => {
     subs(FOType.COMPLETE, undefined);
     for (const teardown of teardowns) {
       teardown();
     }
-  });
+  }));
 }
 
 export const Subscription: SubscriptionConstructor = function (teardown?: () => void) {

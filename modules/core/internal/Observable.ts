@@ -21,7 +21,7 @@ export interface Observable<T> extends FObs<T> {
 export const Observable: ObservableConstructor = function <T>(init?: (subscriber: Subscriber<T>) => void) {
   return sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T>) => {
     let teardown: Teardown;
-    const subs = createSubs(() => {
+    const subs = new Subscription(() => {
       if (teardown) {
         if (typeof (teardown as Subscription).unsubscribe === 'function') {
           (teardown as Subscription).unsubscribe();
@@ -38,6 +38,7 @@ export const Observable: ObservableConstructor = function <T>(init?: (subscriber
 
 export function sourceAsObservable<T>(source: Source<T>): Observable<T> {
   const result = source as Observable<T>;
+  (result as any).__proto__ = Observable.prototype;
   result.subscribe = subscribe;
   return result;
 }
@@ -78,7 +79,8 @@ function sinkFromObserver<T>(
   return (type: FOType, arg: SinkArg<T>) => {
     switch (type) {
       case FOType.SUBSCRIBE:
-        subscriptionCallback(arg);
+        subscription = arg;
+        subscriptionCallback(subscription);
         break;
       case FOType.NEXT:
         if (typeof observer.next === 'function') {
@@ -109,7 +111,8 @@ function sinkFromHandlers<T>(
   return (type: FOType, arg: SinkArg<T>) => {
     switch (type) {
       case FOType.SUBSCRIBE:
-        subscriptionCallback(arg);
+        subscription = arg;
+        subscriptionCallback(subscription);
         break;
       case FOType.NEXT:
         if (typeof nextHandler === 'function') {

@@ -1,5 +1,5 @@
 import { FOType, Sink, SinkArg, PartialObserver, Subs } from './types';
-import { Subscription } from './Subscription';
+import { Subscription, concatSubs } from './Subscription';
 
 export interface Subscriber<T> extends Sink<T> {
   next(value: T): void;
@@ -16,7 +16,10 @@ export function createSubscriber<T>(dest: Sink<T>): Subscriber<T> {
   const result = ((type: FOType, arg: SinkArg<T>) => {
     switch (type) {
       case FOType.SUBSCRIBE:
-        subs = arg;
+        subs = concatSubs(arg, () => {
+          closed = true
+        });
+        dest(FOType.SUBSCRIBE, subs);
         break;
       case FOType.NEXT:
         if (!closed) {

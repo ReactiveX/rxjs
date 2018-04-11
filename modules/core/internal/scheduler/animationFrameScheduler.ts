@@ -1,6 +1,6 @@
 import { Subs } from '../types';
 import { asyncScheduler } from './asyncScheduler';
-import { append } from '../Subscription';
+import { concatSubs } from '../Subscription';
 
 const toAnimate: Array<() => void> = [];
 let animId = 0;
@@ -20,7 +20,7 @@ export function animationFrameScheduler(work?: () => void, delay?: number, subs?
         });
       }
       toAnimate.push(work);
-      append(subs, () => {
+      concatSubs(subs, () => {
         const i = toAnimate.indexOf(work);
         if (i !== -1) {
           toAnimate.splice(i, 1);

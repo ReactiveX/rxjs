@@ -1,6 +1,6 @@
 import { Scheduler, Subs } from '../types';
 import { asyncScheduler } from './asyncScheduler';
-import { append } from '../Subscription';
+import { concatSubs } from '../Subscription';
 
 const p = Promise.resolve();
 export function asapScheduler(work?: () => void, delay?: number, subs?: Subs): number {
@@ -9,7 +9,7 @@ export function asapScheduler(work?: () => void, delay?: number, subs?: Subs): n
       asyncScheduler(work, delay, subs);
     } else {
       let stop = false;
-      append(subs, () => {
+      concatSubs(subs, () => {
         stop = true;
       });
 
