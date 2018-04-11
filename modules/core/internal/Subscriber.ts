@@ -1,9 +1,9 @@
-import { FOType, Sink, SinkArg, PartialObserver } from './types';
+import { FOType, Sink, SinkArg, PartialObserver, Subs } from './types';
 import { Subscription } from './Subscription';
 
 export interface Subscriber<T> extends Sink<T> {
   next(value: T): void;
-  error(err: any);
+  error(err: any): void;
   complete(): void;
   readonly closed: boolean;
 }
@@ -11,21 +11,31 @@ export interface Subscriber<T> extends Sink<T> {
 const CLOSED = 'closed';
 
 export function createSubscriber<T>(dest: Sink<T>): Subscriber<T> {
-  let subscription: Subscription;
+  let subs: Subs;
   let closed = false;
   const result = ((type: FOType, arg: SinkArg<T>) => {
     switch (type) {
       case FOType.SUBSCRIBE:
-        subscription = arg;
+        subs = arg;
         break;
       case FOType.NEXT:
-        dest(FOType.NEXT, arg);
+        if (!closed) {
+          dest(FOType.NEXT, arg);
+        }
         break;
       case FOType.ERROR:
-
+        if (!closed) {
+          closed = true;
+          dest(FOType.ERROR, arg);
+          subs(FOType.COMPLETE, undefined);
+        }
         break;
       case FOType.COMPLETE:
-
+        if (!closed) {
+          closed = true;
+          dest(FOType.COMPLETE, undefined);
+          subs(FOType.COMPLETE, undefined);
+        }
         break;
       default:
     }

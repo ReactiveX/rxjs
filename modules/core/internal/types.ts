@@ -26,7 +26,11 @@ export interface Source<T> {
   (type: FOType.SUBSCRIBE, sink: Sink<T>): void;
 }
 
-export interface FObs<T> extends Source<T>, Sink<T>, Subs {}
+export interface FObs<T> extends Source<T>, Sink<T>, Subs {
+  (type: FOType, arg: FObsArg<T>): void;
+}
+
+export type FObsArg<T> = SinkArg<T> | void;
 
 export type Teardown = Subscription | (() => void) | void;
 

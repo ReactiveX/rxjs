@@ -1,6 +1,7 @@
-import { FObs, PartialObserver, FOType, Sink, Source, SinkArg, Teardown, Scheduler } from './types';
+import { FObs, PartialObserver, FOType, Sink, Source, SinkArg, Teardown, Scheduler, Subs, FObsArg } from './types';
 import { Subscriber, createSubscriber } from './Subscriber';
 import { Subscription, createSubs } from './Subscription';
+import { defaultScheduler } from './scheduler/defaultScheduler';
 
 export interface ObservableConstructor {
   new<T>(init?: (subscriber: Subscriber<T>) => void): Observable<T>;
@@ -12,12 +13,13 @@ export interface Observable<T> extends FObs<T> {
     nextHandler?: (value: T, subscription: Subscription) => void,
     errorHandler?: (err: any) => void,
     completeHandler?: () => void,
-  );
+    scheduler?: Scheduler,
+  ): Subscription;
   subscribe(): Subscription;
 }
 
 export const Observable: ObservableConstructor = function <T>(init?: (subscriber: Subscriber<T>) => void) {
-  const result = ((type: FOType.SUBSCRIBE, dest: Sink<T>) => {
+  return sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T>) => {
     let teardown: Teardown;
     const subs = createSubs(() => {
       if (teardown) {
@@ -31,34 +33,47 @@ export const Observable: ObservableConstructor = function <T>(init?: (subscriber
     const subscriber = createSubscriber(dest);
     subscriber(FOType.SUBSCRIBE, subs);
     teardown = init(subscriber);
-  }) as Observable<T>;
+  });
+} as any;
 
+export function sourceAsObservable<T>(source: Source<T>): Observable<T> {
+  const result = source as Observable<T>;
   result.subscribe = subscribe;
   return result;
-} as any;
+}
 
 function subscribe<T>(
   this: Source<T>,
   nextOrObserver?: PartialObserver<T> | ((value: T, subscription: Subscription) => void),
-  errorHandler?: (err: any) => void,
+  errorHandlerOrScheduler?: Scheduler | ((err: any) => void),
   completeHandler?: () => void,
+  scheduler?: Scheduler,
 ) {
   let subscription: Subscription;
   let sink: Sink<T>;
   if (nextOrObserver) {
     if (typeof nextOrObserver === 'object') {
       sink = sinkFromObserver(nextOrObserver, subs => subscription = subs);
+      scheduler = errorHandlerOrScheduler as Scheduler;
     } else {
-      sink = sinkFromHandlers(nextOrObserver, errorHandler, completeHandler, subs => subscription = subs);
+      sink = sinkFromHandlers(nextOrObserver, errorHandlerOrScheduler, completeHandler, subs => subscription = subs);
     }
   } else {
     sink = () => { /* noop */ };
   }
-  this(FOType.SUBSCRIBE, sink);
+  if (!scheduler) {
+    scheduler = defaultScheduler;
+  }
+
+  const wrappedSink = wrapWithScheduler(sink as FObs<T>, scheduler, subscription);
+  scheduler(() => this(FOType.SUBSCRIBE, wrappedSink), 0, subscription);
   return subscription;
 }
 
-function sinkFromObserver<T>(observer: PartialObserver<T>, subscriptionCallback: (subs: Subscription) => void): Sink<T> {
+function sinkFromObserver<T>(
+  observer: PartialObserver<T>,
+  subscriptionCallback: (subs: Subscription) => void
+): Sink<T> {
   let subscription: Subscription;
   return (type: FOType, arg: SinkArg<T>) => {
     switch (type) {
@@ -92,27 +107,33 @@ function sinkFromHandlers<T>(
 ) {
   let subscription: Subscription;
   return (type: FOType, arg: SinkArg<T>) => {
-    return (type: FOType, arg: SinkArg<T>) => {
-      switch (type) {
-        case FOType.SUBSCRIBE:
-          subscriptionCallback(arg);
-          break;
-        case FOType.NEXT:
-          if (typeof nextHandler === 'function') {
-            nextHandler(arg, subscription);
-          }
-          break;
-        case FOType.ERROR:
-          if (typeof errorHandler === 'function') {
-            errorHandler(arg);
-          }
-          break;
-        case FOType.COMPLETE:
-          if (typeof completeHandler === 'function') {
-            completeHandler();
-          }
-          break;
-      }
-    };
+    switch (type) {
+      case FOType.SUBSCRIBE:
+        subscriptionCallback(arg);
+        break;
+      case FOType.NEXT:
+        if (typeof nextHandler === 'function') {
+          nextHandler(arg, subscription);
+        }
+        break;
+      case FOType.ERROR:
+        if (typeof errorHandler === 'function') {
+          errorHandler(arg);
+        }
+        break;
+      case FOType.COMPLETE:
+        if (typeof completeHandler === 'function') {
+          completeHandler();
+        }
+        break;
+    }
+  };
+}
+
+function wrapWithScheduler<T>(fobs: FObs<T>, scheduler: Scheduler, subs: Subs): FObs<T> {
+  return (type: FOType, arg: FObsArg<T>) => {
+    scheduler(() => {
+      fobs(type, arg);
+    }, 0, subs);
   };
 }

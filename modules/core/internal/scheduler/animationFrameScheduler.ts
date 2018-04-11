@@ -1,11 +1,11 @@
-import { FOType, FObs, FOArg, FSub, FSubType, FScheduler } from '../types';
-import { createSubscription } from '../util/createSubscription';
+import { Subs } from '../types';
 import { asyncScheduler } from './asyncScheduler';
+import { append } from '../Subscription';
 
 const toAnimate: Array<() => void> = [];
 let animId = 0;
-export function animationFrameScheduler(work?: () => void, delay?: number, subs?: FSub): number {
-  if (!subs(FSubType.CHECK) && work) {
+export function animationFrameScheduler(work?: () => void, delay?: number, subs?: Subs): number {
+  if (work) {
     if (delay > 0) {
       asyncScheduler(() => {
         animationFrameScheduler(work, 0, subs);
@@ -20,7 +20,7 @@ export function animationFrameScheduler(work?: () => void, delay?: number, subs?
         });
       }
       toAnimate.push(work);
-      subs(FSubType.ADD, () => {
+      append(subs, () => {
         const i = toAnimate.indexOf(work);
         if (i !== -1) {
           toAnimate.splice(i, 1);

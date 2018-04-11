@@ -1,15 +1,15 @@
-import { FOType, FObs, FOArg, FSub, FSubType, FScheduler } from '../types';
-import { createSubscription } from '../util/createSubscription';
+import { Subs } from '../types';
 import { asyncScheduler } from './asyncScheduler';
+import { append } from '../Subscription';
 
 const queue: Array<() => void> = [];
 let flushing = false;
-export function queueScheduler(work?: () => void, delay?: number, subs?: FSub): number {
-  if (!subs(FSubType.CHECK) && work) {
+export function queueScheduler(work?: () => void, delay?: number, subs?: Subs): number {
+  if (work) {
     if (delay > 0) {
       asyncScheduler(work, delay, subs);
     } else {
-      subs(FSubType.ADD, () => {
+      append(subs, () => {
         const i = queue.indexOf(work);
         if (i !== -1) {
           queue.splice(i, 1);
