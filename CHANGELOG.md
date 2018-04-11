@@ -1,3 +1,13 @@
+<a name="5.5.9"></a>
+## [5.5.9](https://github.com/ReactiveX/RxJS/compare/5.5.8...v5.5.9) (2018-04-11)
+
+
+### Bug Fixes
+
+* **Node:** multiple copies now compatible with each other in Node and TS ([#3546](https://github.com/ReactiveX/RxJS/issues/3546)) ([bcc85ba](https://github.com/ReactiveX/RxJS/commit/bcc85ba))
+
+
+
 <a name="5.5.8"></a>
 ## [5.5.8](https://github.com/ReactiveX/RxJS/compare/5.5.7...5.5.8) (2018-03-27)
 
