@@ -10,6 +10,7 @@ export function map<T, R>(project: (value: T) => R): Operation<T, R> {
         source(type, (t: FOType, v: SinkArg<T>) => {
           if (t === FOType.SUBSCRIBE) {
             subs = v;
+            dest(FOType.SUBSCRIBE, subs);
           } else if (t === FOType.NEXT) {
             let result: R;
             try {
