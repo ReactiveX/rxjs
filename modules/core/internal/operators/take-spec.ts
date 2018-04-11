@@ -1,0 +1,19 @@
+import { of } from '../create/of';
+import { take } from './take';
+import { expect } from 'chai';
+
+describe('take', () => {
+  it('should take a few and complete', () => {
+    const results: any[] = [];
+
+    of(1, 2, 3, 4).pipe(
+      take(3),
+    )
+    .subscribe({
+      next(value) { results.push(value); },
+      complete() { results.push('done'); }
+    });
+
+    expect(results).to.deep.equal([1, 2, 3, 'done']);
+  });
+});
