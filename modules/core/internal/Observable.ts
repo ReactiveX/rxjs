@@ -1,4 +1,4 @@
-import { FObs, PartialObserver, FOType, Sink, Source, SinkArg, Teardown } from './types';
+import { FObs, PartialObserver, FOType, Sink, Source, SinkArg, Teardown, Scheduler } from './types';
 import { Subscriber, createSubscriber } from './Subscriber';
 import { Subscription, createSubs } from './Subscription';
 
@@ -7,7 +7,7 @@ export interface ObservableConstructor {
 }
 
 export interface Observable<T> extends FObs<T> {
-  subscribe(observer: PartialObserver<T>): Subscription;
+  subscribe(observer: PartialObserver<T>, scheduler?: Scheduler): Subscription;
   subscribe(
     nextHandler?: (value: T, subscription: Subscription) => void,
     errorHandler?: (err: any) => void,

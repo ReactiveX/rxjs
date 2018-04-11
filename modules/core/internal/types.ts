@@ -4,8 +4,10 @@ export enum FOType {
   SUBSCRIBE = 0,
   NEXT = 1,
   COMPLETE = 2,
-  ERROR = 10
+  ERROR = 10,
 }
+
+export type SubsArg = (() => void) | void;
 
 export interface Subs {
   (type: FOType.COMPLETE, arg: void): void;
@@ -52,4 +54,9 @@ export interface Observer<T> {
   next: (value: T, subscription: Subscription) => void;
   error: (err: any) => void;
   complete: () => void;
+}
+
+export interface Scheduler {
+  (): number;
+  (work: () => void, delay: number, subs: Subs): number;
 }

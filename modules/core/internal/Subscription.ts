@@ -1,7 +1,7 @@
 import { Subs, FOType, Teardown } from './types';
 
 export interface Subscription extends Subs {
-  unsubscribe();
+  unsubscribe(): void;
 }
 
 export interface SubscriptionConstructor {
@@ -10,10 +10,19 @@ export interface SubscriptionConstructor {
 
 export function createSubs(teardown?: () => void): Subs {
   return (type: FOType.COMPLETE, _: void) => {
-    if (teardown) {
+    if (type === FOType.COMPLETE && teardown) {
       teardown();
     }
   };
+}
+
+export function append(subs: Subs, ...teardowns: Array<() => void>) {
+  return createSubs(() => {
+    subs(FOType.COMPLETE, undefined);
+    for (const teardown of teardowns) {
+      teardown();
+    }
+  });
 }
 
 export const Subscription: SubscriptionConstructor = function (teardown?: () => void) {
@@ -27,6 +36,6 @@ export function subsAsSubscription(subs: Subs) {
   return result;
 }
 
-function unsubscribe(this: Subscription) {
+function unsubscribe(this: Subscription): void {
   this(FOType.COMPLETE, undefined);
 }

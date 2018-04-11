@@ -1,10 +1,10 @@
-import { FOType, FObs, FOArg, FSub, FSubType, FScheduler } from '../types';
-import { createSubscription } from '../util/createSubscription';
+import { Subs } from '../types';
+import { append } from '../Subscription';
 
-export function asyncScheduler(work?: () => void, delay?: number, subs?: FSub): number {
-  if (!subs(FSubType.CHECK) && work) {
+export function asyncScheduler(work?: () => void, delay?: number, subs?: Subs): number {
+  if (work) {
     const id = setTimeout(work, delay);
-    subs(FSubType.ADD, () => clearTimeout(id));
+    append(subs, () => clearTimeout(id));
   }
   return Date.now();
 }
