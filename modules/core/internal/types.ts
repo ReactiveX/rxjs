@@ -50,7 +50,7 @@ export interface CompleteObserver<T> {
 export type PartialObserver<T> = NextObserver<T> | ErrorObserver<T> | CompleteObserver<T>;
 
 export interface Observer<T> {
-  next: (value: T, subscription: Subscription) => void;
+  next: (value: T, subscription?: Subscription) => void;
   error: (err: any) => void;
   complete: () => void;
 }
