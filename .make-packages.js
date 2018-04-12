@@ -138,6 +138,8 @@ fs.copySync('src/websocket/package.json', PKG_ROOT + '/websocket/package.json');
 fs.copySync('src/testing/package.json', PKG_ROOT + '/testing/package.json');
 fs.copySync('src/internal-compatibility/package.json', PKG_ROOT + '/internal-compatibility/package.json');
 
+// Copy over migrations
+fs.copySync('migrations/', PKG_ROOT + 'migrations/');
 
 if (fs.existsSync(UMD_ROOT)) {
   fs.copySync(UMD_ROOT, UMD_PKG);
