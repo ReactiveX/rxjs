@@ -1,3 +1,13 @@
+<a name="5.6.0-forward-compat.4"></a>
+# [5.6.0-forward-compat.4](https://github.com/ReactiveX/RxJS/compare/5.6.0-forward-compat.3...5.6.0-forward-compat.4) (2018-04-12)
+
+
+### Bug Fixes
+
+* **Observable:** expose pipe rest parameter overload ([#3292](https://github.com/ReactiveX/RxJS/issues/3292)) ([#3549](https://github.com/ReactiveX/RxJS/issues/3549)) ([4dc5074](https://github.com/ReactiveX/RxJS/commit/4dc5074))
+
+
+
 <a name="5.6.0-forward-compat.3"></a>
 # [5.6.0-forward-compat.3](https://github.com/ReactiveX/RxJS/compare/5.5.9...v5.6.0-forward-compat.3) (2018-04-11)
 
