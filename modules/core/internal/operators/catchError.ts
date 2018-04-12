@@ -5,33 +5,28 @@ import { from } from "../create/from";
 
 export function catchError<T, R>(handler: (err: any) => ObservableInput<R>): Operation<T, T|R> {
   return (source: Observable<T>) =>
-    sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T|R>) => {
+    sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T|R>, subs: Subscription) => {
       if (type === FOType.SUBSCRIBE) {
-        let subs: Subscription;
-        source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T|R>) => {
+        source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T|R>, subs: Subscription) => {
           switch (t) {
-            case FOType.SUBSCRIBE:
-              subs = v;
-              dest(FOType.SUBSCRIBE, subs);
-              break;
             case FOType.ERROR:
               let result: Observable<R>;
               subs.unsubscribe();
               try {
                 result = from(handler(v));
               } catch (err) {
-                dest(FOType.ERROR, err);
+                dest(FOType.ERROR, err, subs);
                 return;
               }
-              result(FOType.SUBSCRIBE, dest);
+              result(FOType.SUBSCRIBE, dest, subs);
               break;
             case FOType.NEXT:
             case FOType.COMPLETE:
             default:
-              dest(t, v);
+              dest(t, v, subs);
               break;
           }
-        });
+        }, subs);
       }
     });
 }

@@ -10,34 +10,29 @@ export interface Subscriber<T> extends Sink<T> {
 
 const CLOSED = 'closed';
 
-export function createSubscriber<T>(dest: Sink<T>): Subscriber<T> {
-  let subs: Subscription;
+const rxSubs = Symbol('rxjs subscription');
+
+export function createSubscriber<T>(dest: Sink<T>, subs: Subscription): Subscriber<T> {
   let closed = false;
-  const result = ((type: FOType, arg: SinkArg<T>) => {
+  subs.add(() => closed = true);
+  const result = ((type: FOType, arg: SinkArg<T>, subs: Subscription) => {
     switch (type) {
-      case FOType.SUBSCRIBE:
-        subs = arg;
-        subs.add(() => {
-          closed = true
-        });
-        dest(FOType.SUBSCRIBE, subs);
-        break;
       case FOType.NEXT:
         if (!closed) {
-          dest(FOType.NEXT, arg);
+          dest(FOType.NEXT, arg, subs);
         }
         break;
       case FOType.ERROR:
         if (!closed) {
           closed = true;
-          dest(FOType.ERROR, arg);
+          dest(FOType.ERROR, arg, subs);
           subs.unsubscribe();
         }
         break;
       case FOType.COMPLETE:
         if (!closed) {
           closed = true;
-          dest(FOType.COMPLETE, undefined);
+          dest(FOType.COMPLETE, undefined, subs);
           subs.unsubscribe();
         }
         break;
@@ -48,6 +43,7 @@ export function createSubscriber<T>(dest: Sink<T>): Subscriber<T> {
   result.next = next;
   result.error = error;
   result.complete = complete;
+  result[rxSubs] = subs;
   Object.defineProperty(result, CLOSED, {
     get() { return closed; },
   });
@@ -55,13 +51,13 @@ export function createSubscriber<T>(dest: Sink<T>): Subscriber<T> {
 }
 
 function next<T>(this: Subscriber<T>, value: T) {
-  this(FOType.NEXT, value);
+  this(FOType.NEXT, value, this[rxSubs]);
 }
 
 function error<T>(this: Subscriber<T>, err: any) {
-  this(FOType.ERROR, err);
+  this(FOType.ERROR, err, this[rxSubs]);
 }
 
 function complete<T>(this: Subscriber<T>) {
-  this(FOType.COMPLETE, undefined);
+  this(FOType.COMPLETE, undefined, this[rxSubs]);
 }

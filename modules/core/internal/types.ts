@@ -11,19 +11,18 @@ export enum FOType {
 export type SinkArg<T> = T | void | any;
 
 export interface Sink<T> {
-  (type: FOType.SUBSCRIBE, subscription: Subs): void;
-  (type: FOType.NEXT, value: T): void;
-  (type: FOType.ERROR, err: any): void;
-  (type: FOType.COMPLETE, arg: void): void;
-  (type: FOType, arg: FObsArg<T>): void;
+  (type: FOType.NEXT, value: T, subs: Subscription): void;
+  (type: FOType.ERROR, err: any, subs: Subscription): void;
+  (type: FOType.COMPLETE, arg: void, subs: Subscription): void;
+  (type: FOType, arg: FObsArg<T>, subs: Subscription): void;
 }
 
 export interface Source<T> {
-  (type: FOType.SUBSCRIBE, sink: Sink<T>): void;
+  (type: FOType.SUBSCRIBE, sink: Sink<T>, subs: Subscription): void;
 }
 
-export interface FObs<T> extends Source<T>, Sink<T>, Subs {
-  (type: FOType, arg: FObsArg<T>): void;
+export interface FObs<T> extends Source<T>, Sink<T> {
+  (type: FOType, arg: FObsArg<T>, subs: Subscription): void;
 }
 
 export type FObsArg<T> = SinkArg<T> | void;
@@ -67,7 +66,7 @@ export interface ObservableLike<T> {
   subscribe(observer: Observer<T>): Subscription;
 }
 
-export type ObservableInput<T> = Observable<T> | ObservableLike<T> | PromiseLike<T> | Iterable<T> | Array<T> | ArrayLike<T>;
+export type ObservableInput<T> = Observable<T> | ObservableLike<T> | PromiseLike<T> | Array<T> | ArrayLike<T>;
 
 export interface SubscriptionLike {
   unsubscribe(): void;

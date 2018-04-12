@@ -1,6 +1,7 @@
 import { Observable } from './Observable';
 import { expect } from 'chai';
-import { Scheduler, Subs } from './types';
+import { Scheduler } from './types';
+import { Subscription } from './Subscription';
 
 describe('Observable', () => {
   it('should exist', () => {
@@ -126,7 +127,7 @@ describe('Observable', () => {
   describe('subscribe', () => {
     let source: Observable<number>;
     let mockScheduler: Scheduler;
-    let mockSchedulerCalls: Array<{work?: () => void, delay?: number, subs?: Subs}>;
+    let mockSchedulerCalls: Array<{work?: () => void, delay?: number, subs?: Subscription}>;
 
     beforeEach(() => {
       source = new Observable(subscriber => {
@@ -136,7 +137,7 @@ describe('Observable', () => {
         subscriber.complete();
       });
 
-      mockScheduler = (work?: () => void, delay?: number, subs?: Subs) => {
+      mockScheduler = (work?: () => void, delay?: number, subs?: Subscription) => {
         mockSchedulerCalls.push({ work, delay, subs });
         return 12345;
       }
@@ -155,7 +156,7 @@ describe('Observable', () => {
       expect(mockSchedulerCalls.length).to.equal(1); // initial subscribe
       mockSchedulerCalls.shift().work();
       expect(results).to.deep.equal([]);
-      expect(mockSchedulerCalls.length).to.equal(5); // + subscription passing + 4 emissions
+      expect(mockSchedulerCalls.length).to.equal(4); // 4 emissions
       while (mockSchedulerCalls.length > 0) {
         mockSchedulerCalls.shift().work();
       }
@@ -175,7 +176,7 @@ describe('Observable', () => {
       expect(mockSchedulerCalls.length).to.equal(1); // initial subscribe
       mockSchedulerCalls.shift().work();
       expect(results).to.deep.equal([]);
-      expect(mockSchedulerCalls.length).to.equal(5); // + subscription passing + 4 emissions
+      expect(mockSchedulerCalls.length).to.equal(4); // 4 emissions
       while (mockSchedulerCalls.length > 0) {
         mockSchedulerCalls.shift().work();
       }

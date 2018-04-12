@@ -4,35 +4,30 @@ import { sourceAsObservable } from "../Observable";
 
 export function repeat<T>(count: number): Operation<T, T> {
   return (source: Observable<T>) =>
-    sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T>) => {
+    sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T>, subs: Subscription) => {
       if (type === FOType.SUBSCRIBE) {
-        let subs: Subscription;
         let counter = 0;
         let sink: Sink<T>;
         sink = (t: FOType, v: SinkArg<T>) => {
           switch (t) {
-            case FOType.SUBSCRIBE:
-              subs = v;
-              dest(FOType.SUBSCRIBE, subs);
-              break;
             case FOType.COMPLETE:
               counter++;
               if (counter < count) {
-                source(FOType.SUBSCRIBE, sink);
+                source(FOType.SUBSCRIBE, sink, subs);
               } else {
-                dest(FOType.COMPLETE, undefined);
+                dest(FOType.COMPLETE, undefined, subs);
                 subs.unsubscribe();
               }
               break;
             case FOType.NEXT:
             case FOType.ERROR:
             default:
-              dest(t, v);
+              dest(t, v, subs);
               break;
           }
         };
 
-        source(FOType.SUBSCRIBE, sink);
+        source(FOType.SUBSCRIBE, sink, subs);
       }
     });
 }

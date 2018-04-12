@@ -27,7 +27,7 @@ describe('of', () => {
     expect(results).to.deep.equal(['start', 1, 2, 3, 'done', 'stop']);
   });
 
-  it('should emit values asynchronously if scheduled', (done) => {
+  it('should emit values asynchronously if scheduled', (done: MochaDone) => {
     const source = of(1, 2, 3);
     const results: any[] = [];
     results.push('start');

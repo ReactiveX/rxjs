@@ -16,8 +16,7 @@ describe('Subscriber', () => {
 
   it('should flag closed if completed', () => {
     const subs = new Subscription();
-    const subscriber = createSubscriber(mockDest);
-    subscriber(FOType.SUBSCRIBE, subs);
+    const subscriber = createSubscriber(mockDest, subs);
 
     subscriber.next(1);
     expect(subscriber.closed).to.be.false;
@@ -29,20 +28,14 @@ describe('Subscriber', () => {
     expect(subscriber.closed).to.be.true;
   });
 
-  it('should sent appropriate messages to the destination with completions', () => {
+  it('should send appropriate messages to the destination with completions', () => {
     const subs = new Subscription();
-    const subscriber = createSubscriber(mockDest);
-    subscriber(FOType.SUBSCRIBE, subs);
+    const subscriber = createSubscriber(mockDest, subs);
 
     subscriber.next(1);
     subscriber.next(2);
     subscriber.complete();
     subscriber.next(3);
-
-    const first = mockDestCalls.shift();
-    expect(first.type).to.equal(FOType.SUBSCRIBE);
-    expect(first.arg).to.be.an.instanceof(Subscription);
-    expect(first.arg).to.equal(subs);
 
     expect(mockDestCalls).to.deep.equal([
       { type: FOType.NEXT, arg: 1 },
@@ -51,21 +44,15 @@ describe('Subscriber', () => {
     ]);
   });
 
-  it('should sent appropriate messages to the destination with an error', () => {
+  it('should send appropriate messages to the destination with an error', () => {
     const subs = new Subscription();
-    const subscriber = createSubscriber(mockDest);
-    subscriber(FOType.SUBSCRIBE, subs);
+    const subscriber = createSubscriber(mockDest, subs);
     const err = new Error('bad');
 
     subscriber.next(1);
     subscriber.next(2);
     subscriber.error(err);
     subscriber.next(3);
-
-    const first = mockDestCalls.shift();
-    expect(first.type).to.equal(FOType.SUBSCRIBE);
-    expect(first.arg).to.be.an.instanceof(Subscription);
-    expect(first.arg).to.equal(subs);
 
     expect(mockDestCalls).to.deep.equal([
       { type: FOType.NEXT, arg: 1 },
@@ -77,8 +64,7 @@ describe('Subscriber', () => {
   it('should unsubscribe subscriptions sent to it when it completes', () => {
     let unsubbed = false;
     const subs = new Subscription(() => unsubbed = true);
-    const subscriber = createSubscriber(mockDest);
-    subscriber(FOType.SUBSCRIBE, subs);
+    const subscriber = createSubscriber(mockDest, subs);
 
     expect(unsubbed).to.be.false;
     subscriber.next(1);
@@ -90,8 +76,7 @@ describe('Subscriber', () => {
   it('should unsubscribe subscriptions sent to it when it errors', () => {
     let unsubbed = false;
     const subs = new Subscription(() => unsubbed = true);
-    const subscriber = createSubscriber(mockDest);
-    subscriber(FOType.SUBSCRIBE, subs);
+    const subscriber = createSubscriber(mockDest, subs)
 
     expect(unsubbed).to.be.false;
     subscriber.next(1);

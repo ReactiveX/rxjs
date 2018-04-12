@@ -8,9 +8,8 @@ export function mergeMap<T, R>(
   concurrent = Number.POSITIVE_INFINITY,
 ): Operation<T, R> {
   return (source: Observable<T>) =>
-    sourceAsObservable((type: FOType, dest: Sink<R>) => {
+    sourceAsObservable((type: FOType, dest: Sink<R>, subs: Subscription) => {
       if (type === FOType.SUBSCRIBE) {
-        let subs: Subscription;
         let counter = 0;
         let active = 0;
         let outerComplete = false;
@@ -25,39 +24,37 @@ export function mergeMap<T, R>(
             try {
               innerSource = from(project(outerValue, outerIndex));
             } catch (err) {
-              dest(FOType.ERROR, err);
+              dest(FOType.ERROR, err, subs);
               subs.unsubscribe();
               return;
             }
 
-            let innerSub: Subscription;
-            innerSource(FOType.SUBSCRIBE, (type: FOType, v: SinkArg<R>) => {
+            let innerSubs: Subscription;
+            innerSubs = new Subscription(() => subs.remove(innerSubs));
+            subs.add(innerSubs);
+
+            innerSource(FOType.SUBSCRIBE, (type: FOType, v: SinkArg<R>, innerSubs: Subscription) => {
               switch (type) {
-                case FOType.SUBSCRIBE:
-                  innerSub = v;
-                  subs.add(innerSub);
-                  dest(FOType.SUBSCRIBE, subs);
-                  break;
                 case FOType.NEXT:
-                  dest(FOType.NEXT, v);
+                  dest(FOType.NEXT, v, subs);
                   break;
                 case FOType.ERROR:
-                  dest(FOType.ERROR, v);
+                  dest(FOType.ERROR, v, subs);
                   subs.unsubscribe();
                   break;
                 case FOType.COMPLETE:
                   active--;
-                  innerSub.unsubscribe();
+                  innerSubs.unsubscribe();
                   if (buffer.length > 0) {
                     startNextInner();
                   } else {
                     if (outerComplete && active === 0) {
-                      dest(FOType.COMPLETE, undefined);
+                      dest(FOType.COMPLETE, undefined, subs);
                     }
                   }
                 default:
               }
-            });
+            }, innerSubs);
           }
         }
 
@@ -72,7 +69,7 @@ export function mergeMap<T, R>(
               startNextInner();
               break;
             case FOType.ERROR:
-              dest(FOType.ERROR, v);
+              dest(FOType.ERROR, v, subs);
               subs.unsubscribe();
               break;
             case FOType.COMPLETE:
@@ -80,13 +77,13 @@ export function mergeMap<T, R>(
               if (buffer.length > 0) {
                 startNextInner();
               } else if (active === 0) {
-                dest(FOType.COMPLETE, undefined);
+                dest(FOType.COMPLETE, undefined, subs);
                 subs.unsubscribe();
               }
               break;
             default:
           }
-        });
+        }, subs);
       }
     });
 }

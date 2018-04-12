@@ -4,31 +4,26 @@ import { sourceAsObservable } from "../Observable";
 
 export function take<T>(count: number): Operation<T, T> {
   return (source: Observable<T>) =>
-    sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T>) => {
+    sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T>, subs: Subscription) => {
       if (type === FOType.SUBSCRIBE) {
-        let subs: Subscription;
         let counter = 0;
-        source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>) => {
+        source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
           switch (t) {
-            case FOType.SUBSCRIBE:
-              subs = v;
-              dest(FOType.SUBSCRIBE, subs);
-              break;
             case FOType.NEXT:
               counter++;
-              dest(FOType.NEXT, v);
+              dest(FOType.NEXT, v, subs);
               if (counter === count) {
-                dest(FOType.COMPLETE, undefined);
+                dest(FOType.COMPLETE, undefined, subs);
                 subs.unsubscribe();
               }
               break;
             case FOType.ERROR:
             case FOType.COMPLETE:
             default:
-              dest(t, v);
+              dest(t, v, subs);
               break;
           }
-        });
+        }, subs);
       }
     });
 }

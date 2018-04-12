@@ -1,6 +1,6 @@
 import { FObs, Operation, PartialObserver, FOType, Sink, Source, SinkArg, Teardown, Scheduler, FObsArg } from './types';
 import { Subscriber, createSubscriber } from './Subscriber';
-import { Subscription } from './Subscription';
+import { Subscription, teardownToFunction } from './Subscription';
 import { defaultScheduler } from './scheduler/defaultScheduler';
 import { pipe } from './util/pipe';
 
@@ -23,19 +23,10 @@ export interface Observable<T> extends FObs<T> {
 }
 
 export const Observable: ObservableConstructor = function <T>(init?: (subscriber: Subscriber<T>) => void) {
-  return sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T>) => {
+  return sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T>, subs: Subscription) => {
     let teardown: Teardown;
-    const subs = new Subscription(() => {
-      if (teardown) {
-        if (typeof (teardown as Subscription).unsubscribe === 'function') {
-          (teardown as Subscription).unsubscribe();
-        } else if (typeof teardown === 'function') {
-          (teardown as () => void)();
-        }
-      }
-    });
-    const subscriber = createSubscriber(dest);
-    subscriber(FOType.SUBSCRIBE, subs);
+    subs.add(() => teardownToFunction(teardown)());
+    const subscriber = createSubscriber(dest, subs);
     teardown = init(subscriber);
   });
 } as any;
@@ -57,6 +48,7 @@ function subscribe<T>(
 ) {
   let subscription = new Subscription();;
   let sink: Sink<T>;
+
   if (nextOrObserver) {
     if (typeof nextOrObserver === 'object') {
       sink = sinkFromObserver(nextOrObserver);
@@ -68,13 +60,12 @@ function subscribe<T>(
     sink = () => { /* noop */ };
   }
 
-  sink(FOType.SUBSCRIBE, subscription);
   if (!scheduler) {
     scheduler = defaultScheduler;
   }
 
   const wrappedSink = wrapWithScheduler(sink as FObs<T>, scheduler, subscription);
-  scheduler(() => this(FOType.SUBSCRIBE, wrappedSink), 0, subscription);
+  scheduler(() => this(FOType.SUBSCRIBE, wrappedSink, subscription), 0, subscription);
   return subscription;
 }
 
@@ -85,15 +76,11 @@ function observablePipe<T>(this: Observable<T>, ...operations: Array<Operation<T
 function sinkFromObserver<T>(
   observer: PartialObserver<T>
 ): Sink<T> {
-  let subscription: Subscription;
-  return (type: FOType, arg: SinkArg<T>) => {
+  return (type: FOType, arg: SinkArg<T>, subs: Subscription) => {
     switch (type) {
-      case FOType.SUBSCRIBE:
-        subscription = arg;
-        break;
       case FOType.NEXT:
         if (typeof observer.next === 'function') {
-          observer.next(arg, subscription);
+          observer.next(arg, subs);
         }
         break;
       case FOType.ERROR:
@@ -115,15 +102,11 @@ function sinkFromHandlers<T>(
   errorHandler: (err: any) => void,
   completeHandler: () => void,
 ) {
-  let subscription: Subscription;
-  return (type: FOType, arg: SinkArg<T>) => {
+  return (type: FOType, arg: SinkArg<T>, subs: Subscription) => {
     switch (type) {
-      case FOType.SUBSCRIBE:
-        subscription = arg;
-        break;
       case FOType.NEXT:
         if (typeof nextHandler === 'function') {
-          nextHandler(arg, subscription);
+          nextHandler(arg, subs);
         }
         break;
       case FOType.ERROR:
@@ -143,7 +126,7 @@ function sinkFromHandlers<T>(
 function wrapWithScheduler<T>(fobs: FObs<T>, scheduler: Scheduler, subs: Subscription): FObs<T> {
   return (type: FOType, arg: FObsArg<T>) => {
     scheduler(() => {
-      fobs(type, arg);
+      fobs(type, arg, subs);
     }, 0, subs);
   };
 }

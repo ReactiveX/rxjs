@@ -22,6 +22,7 @@ export interface Subscription extends FSubs {
 }
 
 export interface SubscriptionConstructor {
+  new(): Subscription;
   new(...teardowns: Teardown[]): Subscription;
 }
 
@@ -89,7 +90,7 @@ function remove(this: FSubs, ...teardowns: Teardown[]): void {
   this(SubsCmd.REMOVE, teardowns);
 }
 
-function teardownToFunction(teardown: any): () => void {
+export function teardownToFunction(teardown: any): () => void {
   if (teardown) {
     if (typeof teardown.unsubscribe === 'function') {
       return () => teardown.unsubscribe();
