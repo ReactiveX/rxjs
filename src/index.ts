@@ -4,6 +4,7 @@ export { ConnectableObservable } from './internal/observable/ConnectableObservab
 export { GroupedObservable } from './internal/operators/groupBy';
 export { Operator } from './internal/Operator';
 export { observable } from './internal/symbol/observable';
+export { GroupedObservable } from './internal/operators/groupBy';
 
 /* Subjects */
 export { Subject } from './internal/Subject';
