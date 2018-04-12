@@ -97,6 +97,15 @@ class ThrottleTimeSubscriber<T> extends Subscriber<T> {
     }
   }
 
+  protected _complete() {
+    if (this._hasTrailingValue) {
+      this.destination.next(this._trailingValue);
+      this.destination.complete();
+    } else {
+      this.destination.complete();
+    }
+  }
+
   clearThrottle() {
     const throttled = this.throttled;
     if (throttled) {
