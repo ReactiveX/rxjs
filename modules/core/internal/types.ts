@@ -5,17 +5,7 @@ export enum FOType {
   SUBSCRIBE = 0,
   NEXT = 1,
   COMPLETE = 2,
-  ERROR = 10,
-  ADD = 11,
-  REMOVE = 12,
-}
-
-export type SubsArg = (() => void) | void;
-
-export interface Subs {
-  (type: FOType.COMPLETE, arg: void): void;
-  (type: FOType.ADD, arg: Teardown): void;
-  (type: FOType.REMOVE, arg: Teardown): void;
+  ERROR = 3,
 }
 
 export type SinkArg<T> = T | void | any;

@@ -1,6 +1,5 @@
-import { Subscription } from './Subscription';
+import { Subscription, SubsCmd } from './Subscription';
 import { expect } from 'chai';
-import { FOType } from './types';
 
 describe('Subscription', () => {
   it('should be an instanceof Subscription and a function', () => {
@@ -17,11 +16,11 @@ describe('Subscription', () => {
     expect(fired).to.be.true;
   });
 
-  it('should execute as a FObs', () => {
+  it('should executable as a function', () => {
     let fired = false;
     const s = new Subscription(() => fired = true);
     expect(fired).to.be.false;
-    s(FOType.COMPLETE, undefined);
+    s(SubsCmd.UNSUBSCRIBE);
     expect(fired).to.be.true;
   });
 
