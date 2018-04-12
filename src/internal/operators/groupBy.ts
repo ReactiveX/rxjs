@@ -253,6 +253,7 @@ class GroupDurationSubscriber<K, T> extends Subscriber<T> {
  * @class GroupedObservable<K, T>
  */
 export class GroupedObservable<K, T> extends Observable<T> {
+  /** @deprecated Do not construct this type. Internal use only */
   constructor(public key: K,
               private groupSubject: Subject<T>,
               private refCountSubscription?: RefCountSubscription) {
