@@ -1,3 +1,14 @@
+<a name="6.0.0-turbo-rc.4"></a>
+# [6.0.0-turbo-rc.4](https://github.com/ReactiveX/RxJS/compare/6.0.0-terrific-rc.3...6.0.0-turbo-rc.4) (2018-04-12)
+
+
+### Bug Fixes
+
+* **groupBy:** reexporting the GroupedObservable type ([#3556](https://github.com/ReactiveX/RxJS/issues/3556)) ([12d4933](https://github.com/ReactiveX/RxJS/commit/12d4933)), closes [#3551](https://github.com/ReactiveX/RxJS/issues/3551)
+* **migrations:** build now properly copies migration into package ([#3555](https://github.com/ReactiveX/RxJS/issues/3555)) ([329a145](https://github.com/ReactiveX/RxJS/commit/329a145))
+
+
+
 <a name="6.0.0-terrific-rc.3"></a>
 # [6.0.0-terrific-rc.3](https://github.com/ReactiveX/RxJS/compare/6.0.0-tenacious-rc.2...v6.0.0-terrific-rc.3) (2018-04-11)
 
