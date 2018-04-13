@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
-import { asyncScheduler, of, from, Observable, asapScheduler, Observer, observable, Subject, ObservableInput } from 'rxjs';
+import { asyncScheduler, of, from, Observable, asapScheduler, Observer, observable, Subject } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 // tslint:disable:no-any
@@ -17,13 +17,13 @@ function getArguments<T>(...args: T[]) {
 /** @test {from} */
 describe('from', () => {
   asDiagram('from([10, 20, 30])')
-    ('should create an observable from an array', () => {
-      const e1 = from([10, 20, 30])
-        // for the purpose of making a nice diagram, spread out the synchronous emissions
-        .concatMap((x, i) => of(x).delay(i === 0 ? 0 : 20, rxTestScheduler));
-      const expected = 'x-y-(z|)';
-      expectObservable(e1).toBe(expected, { x: 10, y: 20, z: 30 });
-    });
+  ('should create an observable from an array', () => {
+    const e1 = from([10, 20, 30])
+      // for the purpose of making a nice diagram, spread out the synchronous emissions
+      .concatMap((x, i) => of(x).delay(i === 0 ? 0 : 20, rxTestScheduler));
+    const expected = 'x-y-(z|)';
+    expectObservable(e1).toBe(expected, {x: 10, y: 20, z: 30});
+  });
 
   it('should throw for non observable object', () => {
     const r = () => {
@@ -38,7 +38,7 @@ describe('from', () => {
     /* tslint:disable:no-unused-variable */
     const o1: Observable<number> = from([] as number[], asapScheduler);
     const o2: Observable<{ a: string }> = from(Observable.empty());
-    const o3: Observable<{ b: number }> = from(new Promise<{ b: number }>(resolve => resolve()));
+    const o3: Observable<{ b: number }> = from(new Promise<{b: number}>(resolve => resolve()));
     /* tslint:enable:no-unused-variable */
   });
 
@@ -78,8 +78,8 @@ describe('from', () => {
     { name: 'array', value: ['x'] },
     { name: 'promise', value: Promise.resolve('x') },
     { name: 'iterator', value: fakerator('x') },
-    { name: 'array-like', value: { [0]: 'x', length: 1 } },
-    { name: 'string', value: 'x' },
+    { name: 'array-like', value: { [0]: 'x', length: 1 }},
+    { name: 'string', value: 'x'},
     { name: 'arguments', value: getArguments('x') },
   ];
 
