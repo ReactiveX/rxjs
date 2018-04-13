@@ -1,12 +1,12 @@
-import { asyncScheduler } from './asyncScheduler';
 import { Subscription } from '../Subscription';
+import { asyncScheduler } from './asyncScheduler';
 
 const queue: Array<() => void> = [];
 let flushing = false;
 export function queueScheduler(work?: () => void, delay?: number, subs?: Subscription): number {
   if (work) {
     if (delay > 0) {
-      throw new Error('queueScheduler cannot schedule with a delay > 0');
+      asyncScheduler(() => queueScheduler(work, 0, subs), delay, subs);
     }
     subs.add(() => {
       const i = queue.indexOf(work);

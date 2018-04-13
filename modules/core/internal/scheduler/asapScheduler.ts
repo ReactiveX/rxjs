@@ -1,12 +1,12 @@
 import { Scheduler } from '../types';
-import { asyncScheduler } from './asyncScheduler';
 import { Subscription } from '../Subscription';
+import { asyncScheduler } from './asyncScheduler';
 
 const p = Promise.resolve();
-export function asapScheduler(work?: () => void, delay?: number, subs?: Subscription): number {
+export function asapScheduler(work?: () => void, delay?: 0, subs?: Subscription): number {
   if (work) {
     if (delay > 0) {
-      throw new Error('asapScheduler cannot schedule with a delay > 0');
+      asyncScheduler(() => asapScheduler(work, 0, subs), delay, subs);
     }
 
     let stop = false;
