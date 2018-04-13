@@ -1,5 +1,7 @@
 # Version 6 Release Notes And Migration Guide
 
+## (NOTE: We're Still RC right now, just getting ready, this doc still applies)
+
 As this is a major version release, we have a few breaking changes we need to make sure every knows about, and we need to let all of you know how to migrate your apps to v6 as smoothly as possible.
 
 ## Helpful Tips For Migration
