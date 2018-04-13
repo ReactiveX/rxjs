@@ -1,3 +1,23 @@
+<a name="6.0.0-ucandoit-rc.6"></a>
+# [6.0.0-ucandoit-rc.6](https://github.com/ReactiveX/RxJS/compare/6.0.0-uber-rc.5...v6.0.0-ucandoit-rc.6) (2018-04-13)
+
+
+### Bug Fixes
+
+* **migrations:** make sure collection.json is present ([63e10a8](https://github.com/ReactiveX/RxJS/commit/63e10a8))
+
+
+
+<a name="6.0.0-uber-rc.5"></a>
+# [6.0.0-uber-rc.5](https://github.com/ReactiveX/RxJS/compare/6.0.0-turbo-rc.4...6.0.0-uber-rc.5) (2018-04-13)
+
+
+### Bug Fixes
+
+* **migrations:** deploy compiled JS rather than just the TS files. ([9aed72f](https://github.com/ReactiveX/RxJS/commit/9aed72f))
+
+
+
 <a name="6.0.0-turbo-rc.4"></a>
 # [6.0.0-turbo-rc.4](https://github.com/ReactiveX/RxJS/compare/6.0.0-terrific-rc.3...6.0.0-turbo-rc.4) (2018-04-12)
 

@@ -29,6 +29,7 @@ const UMD_ROOT = ROOT + 'global/';
 const ESM5_FOR_ROLLUP_ROOT = ROOT + 'esm5_for_rollup/';
 const LEGACY_REEXPORT_ROOT = ROOT + 'legacy-reexport/';
 const TYPE_ROOT = ROOT + 'typings/';
+const MIGRATION_PKG = ROOT + 'migrations/';
 const PKG_ROOT = ROOT + 'package/';
 const CJS_PKG = PKG_ROOT + '';
 const ESM5_PKG = PKG_ROOT + '_esm5/';
@@ -139,7 +140,8 @@ fs.copySync('src/testing/package.json', PKG_ROOT + '/testing/package.json');
 fs.copySync('src/internal-compatibility/package.json', PKG_ROOT + '/internal-compatibility/package.json');
 
 // Copy over migrations
-fs.copySync('migrations/', PKG_ROOT + 'migrations/');
+fs.copySync(MIGRATION_PKG, PKG_ROOT + 'migrations/');
+fs.copySync('./migrations/collection.json', PKG_ROOT + 'migrations/collection.json');
 
 if (fs.existsSync(UMD_ROOT)) {
   fs.copySync(UMD_ROOT, UMD_PKG);
