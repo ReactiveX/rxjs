@@ -39,20 +39,46 @@ Other export points:
 
 ### Import Migration Table
 
-|                           | v6                                           | v5.5                                                     |
-|---------------------------|----------------------------------------------|----------------------------------------------------------|
-| any operator, such as     | `import { mergeMap } from 'rxjs/operators';` | `import { mergeMap } from 'rxjs/operators/mergeMap';`    |
-| `mergeMap`                |                                              | `import 'rxjs/add/operator/mergeMap';`                   |
-|                           |                                              | `import { mergeMap } from 'rxjs/operator/mergeMap';`     |
-|                           |                                              |                                                          |
-| creation methods like     | `import { fromEvent } from 'rxjs';`          | `import { fromEvent } from 'rxjs/observable/fromEvent';` |
-| `fromEvent` or `interval` |                                              | `import 'rxjs/add/observable/fromEvent';`                |
-|                           |                                              |                                                          |
-| schedulers like `async`   | `import { asyncScheduler } from 'rxjs';`     | `import { async } from 'rxjs/scheduler/async';`          |
-| are now `asyncScheduler`  |                                              |                                                          |
-|                           |                                              |                                                          |
-| utilities like `pipe` and | `import { pipe } from 'rxjs';`               | `import { pipe } from 'rxjs/util/pipe';`                 |
-| `noop`                    |                                              |                                                          |
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>v6</th>
+      <th>v5.5</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        any operator, such as <code>mergeMap</code>
+      </td>
+      <td>
+        <pre>import { mergeMap } from 'rxjs/operators';</pre>
+      </td>
+      <td>
+        <pre>import { mergeMap } from 'rxjs/operators/mergeMap';
+import 'rxjs/add/operator/mergeMap';
+import { mergeMap } from 'rxjs/operator/mergeMap';</pre>
+      </td>
+    </tr>
+    <tr>
+      <td>creation methods like <code>fromEvent</code> or <code>interval</code></td>
+      <td><pre>import { fromEvent } from 'rxjs';</pre></td>
+      <td><pre>import { fromEvent } from 'rxjs/observable/fromEvent';
+import 'rxjs/add/observable/fromEvent';</pre></td>
+    </tr>
+    <tr>
+      <td>schedulers like <code>async</code> are now <code>asyncScheduler</code></td>
+      <td><pre>import { asyncScheduler } from 'rxjs';</pre></td>
+      <td><pre>import { async } from 'rxjs/scheduler/async';</pre></td>
+    </tr>
+    <tr>
+      <td>utilities like <code>pipe</code> and <code>noop</code> </td>
+      <td><pre>import { pipe } from 'rxjs';</pre></td>
+      <td><pre>import { pipe } from 'rxjs/util/pipe';</pre></td>
+    </tr>
+  </tbody>
+</table>
 
 
 
