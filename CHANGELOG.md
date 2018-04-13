@@ -1,3 +1,17 @@
+<a name="6.0.0-uncanny-rc.7"></a>
+# [6.0.0-uncanny-rc.7](https://github.com/ReactiveX/RxJS/compare/6.0.0-ucandoit-rc.6...v6.0.0-uncanny-rc.7) (2018-04-13)
+
+
+### Bug Fixes
+
+* **interop:** functions with `[Symbol.observable]` on them will now be accepted in operators like `mergeMap`, `from`, etc ([#3562](https://github.com/ReactiveX/RxJS/issues/3562)) ([c9570df](https://github.com/ReactiveX/RxJS/commit/c9570df))
+* **migrations:** change the version the migration applies to ([#3564](https://github.com/ReactiveX/RxJS/issues/3564)) ([9217a03](https://github.com/ReactiveX/RxJS/commit/9217a03))
+* **rxjs:** no longer requires `dom` lib ([#3566](https://github.com/ReactiveX/RxJS/issues/3566)) ([8b33ee2](https://github.com/ReactiveX/RxJS/commit/8b33ee2))
+* **throttleTime:** emit throttled values when complete if trailing=true ([#3559](https://github.com/ReactiveX/RxJS/issues/3559)) ([3e846f2](https://github.com/ReactiveX/RxJS/commit/3e846f2)), closes [#3351](https://github.com/ReactiveX/RxJS/issues/3351)
+* **websocket:** export WebSocketSubject, WebSocketSubjectConfig from rxjs/websocket ([#3557](https://github.com/ReactiveX/RxJS/issues/3557)) ([c365405](https://github.com/ReactiveX/RxJS/commit/c365405))
+
+
+
 <a name="6.0.0-ucandoit-rc.6"></a>
 # [6.0.0-ucandoit-rc.6](https://github.com/ReactiveX/RxJS/compare/6.0.0-uber-rc.5...v6.0.0-ucandoit-rc.6) (2018-04-13)
 
