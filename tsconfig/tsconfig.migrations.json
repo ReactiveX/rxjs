@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "../dist/migrations/update-6_0_0"
+  },
+  "files": [
+    // entry-points
+    "../migrations/update-6_0_0/index.ts"
+  ]
+}

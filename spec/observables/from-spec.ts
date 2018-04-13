@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
-import { asyncScheduler, of, from, Observable, asapScheduler, Observer } from 'rxjs';
+import { asyncScheduler, of, from, Observable, asapScheduler, Observer, observable, Subject } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 // tslint:disable:no-any
 declare const asDiagram: any;
@@ -117,6 +118,27 @@ describe('from', () => {
           }
         );
       expect(nextInvoked).to.equal(false);
+    });
+    it(`should accept a function`, (done) => {
+      const subject = new Subject();
+      const handler = (...args: any[]) => subject.next(...args);
+      handler[observable] = () => subject;
+      let nextInvoked = false;
+
+      from((handler as any)).pipe(first()).subscribe(
+        (x) => {
+          nextInvoked = true;
+          expect(x).to.equal('x');
+        },
+        (x) => {
+          done(new Error('should not be called'));
+        },
+        () => {
+          expect(nextInvoked).to.equal(true);
+          done();
+        }
+      );
+      handler('x');
     });
   }
 });
