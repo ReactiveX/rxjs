@@ -1,4 +1,4 @@
-# Version 6 Release Notes
+# Version 6 Release Notes And Migration Guide
 
 As this is a major version release, we have a few breaking changes we need to make sure every knows about, and we need to let all of you know how to migrate your apps to v6 as smoothly as possible.
 
