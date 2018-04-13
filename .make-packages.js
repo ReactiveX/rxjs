@@ -141,6 +141,7 @@ fs.copySync('src/internal-compatibility/package.json', PKG_ROOT + '/internal-com
 
 // Copy over migrations
 fs.copySync(MIGRATION_PKG, PKG_ROOT + 'migrations/');
+fs.copySync('./migrations/collection.json', PKG_ROOT + 'migrations/collection.json');
 
 if (fs.existsSync(UMD_ROOT)) {
   fs.copySync(UMD_ROOT, UMD_PKG);
