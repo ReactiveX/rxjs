@@ -164,5 +164,17 @@ describe('Observable.prototype.throttleTime', () => {
       expectObservable(result).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
+
+    asDiagram('throttleTime(fn, { leading: false, trailing: true })')('should emit the last throttled value when complete', () => {
+      const e1 =   hot('-a-xy-----b--x--cxx|');
+      const e1subs =   '^                  !';
+      const t =   time('----|              ');
+      const expected = '-----y--------x----(x|)';
+
+      const result = e1.throttleTime(t, rxTestScheduler, { leading: false, trailing: true });
+
+      expectObservable(result).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
   });
 });
