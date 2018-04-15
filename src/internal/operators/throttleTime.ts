@@ -40,6 +40,8 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * internally by the optional `scheduler`.
  * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for
  * managing the timers that handle the throttling.
+ * @param {Object} config a configuration object to define `leading` and
+ * `trailing` behavior. Defaults to `{ leading: true, trailing: false }`.
  * @return {Observable<T>} An Observable that performs the throttle operation to
  * limit the rate of emissions from the source.
  * @method throttleTime
