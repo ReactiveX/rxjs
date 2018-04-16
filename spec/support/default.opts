@@ -1,6 +1,8 @@
---require .out/spec/helpers/polyfills.ts
---require .out/spec/helpers/testScheduler-ui.js
---ui .out/spec/helpers/testScheduler-ui.js
+--require ts-node/register
+--require tsconfig-paths/register
+--require spec/helpers/polyfills.ts
+--require spec/helpers/testScheduler-ui.ts
+--ui spec/helpers/testScheduler-ui.ts
 
 --reporter dot
 
