@@ -72,7 +72,7 @@ always represents the "zero frame". A "frame" is somewhat analogous to a virtual
 
 `'-a-^-b--|'`: In a hot observable, on frame -20 emit `a`, then on frame 20 emit `b`, and on frame 50, `complete`.
 
-`'--(abc)-|'`: on frame 20, emit `a`, `b`, and `c`, then on frame 30 `complete`
+`'--(abc)-|'`: on frame 20, emit `a`, `b`, and `c`, then on frame 80 `complete`
 
 `'-----(a|)'`: on frame 50, emit `a` and `complete`.
 
