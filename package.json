@@ -68,7 +68,7 @@
     "test:cover": "Execute test coverage",
     "tests2png": "Generate marble diagram image from test spec",
     "watch": "Watch codebase, trigger compile when source code changes",
-    "watch:fast": "Watch codebase, trigger fast tests when tests or code changes"
+    "watch:test": "Watch codebase and tests, trigger test run when source or test code changes"
   },
   "scripts": {
     "precommit": "lint-staged",
@@ -125,7 +125,7 @@
     "test:systemjs": "node integration/systemjs/systemjs-compatibility-spec.js",
     "tests2png": "mkdirp tmp/docs/img && mocha --opts spec/support/tests2png.opts \"spec/**/*-spec.ts\"",
     "watch": "watch \"echo triggering build && npm run build_spec && npm run test && echo build completed\" src -d -u -w=15",
-    "watch:fast": "watch \"echo triggering test && npm run test:fast\" src spec -d -u -w=15",
+    "watch:test": "watch \"echo triggering test && npm run test\" src spec -d -u -w=15",
     "compat_build_all": "npm-run-all compat_clean_dist compat_build_cjs compat_build_esm5 compat_build_esm2015 compat_generate_packages",
     "compat_build_cjs": "npm-run-all compat_clean_dist_cjs compat_compile_dist_cjs",
     "compat_build_esm5": "npm-run-all compat_clean_dist_esm5 compat_compile_dist_esm5",
