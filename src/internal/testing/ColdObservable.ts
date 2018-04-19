@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { Scheduler } from '../Scheduler';
-import { TestMessage } from './TestMessage';
+import { TestMessage } from './message/TestMessage';
 import { SubscriptionLog } from './SubscriptionLog';
 import { SubscriptionLoggable } from './SubscriptionLoggable';
 import { applyMixins } from '../util/applyMixins';

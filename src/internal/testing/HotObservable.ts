@@ -2,7 +2,7 @@ import { Subject } from '../Subject';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { Scheduler } from '../Scheduler';
-import { TestMessage } from './TestMessage';
+import { TestMessage } from './message/TestMessage';
 import { SubscriptionLog } from './SubscriptionLog';
 import { SubscriptionLoggable } from './SubscriptionLoggable';
 import { applyMixins } from '../util/applyMixins';
@@ -43,7 +43,7 @@ export class HotObservable<T> extends Subject<T> implements SubscriptionLoggable
         var message = subject.messages[i];
    /* tslint:enable */
         subject.scheduler.schedule(
-          () => { message.notification.observe(subject); },
+          () => { message.notification.observe(subject as any); },
           message.frame
         );
       })();
