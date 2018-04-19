@@ -66,8 +66,7 @@
     "test": "Execute mocha test runner",
     "test:fast": "Executes tests without requiring a build step",
     "test:cover": "Execute test coverage",
-    "tests2png": "Generate marble diagram image from test spec",
-    "watch": "Watch codebase, trigger compile when source code changes"
+    "tests2png": "Generate marble diagram image from test spec"
   },
   "scripts": {
     "precommit": "lint-staged",
@@ -123,7 +122,6 @@
     "test:circular": "dependency-cruise --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm5",
     "test:systemjs": "node integration/systemjs/systemjs-compatibility-spec.js",
     "tests2png": "mkdirp tmp/docs/img && mocha --opts spec/support/tests2png.opts \"spec/**/*-spec.ts\"",
-    "watch": "watch \"echo triggering tests && npm run test\" src spec -d -u -w=15",
     "compat_build_all": "npm-run-all compat_clean_dist compat_build_cjs compat_build_esm5 compat_build_esm2015 compat_generate_packages",
     "compat_build_cjs": "npm-run-all compat_clean_dist_cjs compat_compile_dist_cjs",
     "compat_build_esm5": "npm-run-all compat_clean_dist_esm5 compat_compile_dist_esm5",
@@ -255,7 +253,6 @@
     "tslint-no-unused-expression-chai": "0.0.3",
     "typescript": "~2.8.1",
     "validate-commit-msg": "2.14.0",
-    "watch": "1.0.2",
     "webpack": "1.13.1",
     "xmlhttprequest": "1.8.0"
   },
