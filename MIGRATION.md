@@ -1,299 +1,461 @@
-# Migrating from RxJS 4 to 5
+# Version 6 Release Notes And Migration Guide
 
-RxJS 5 is a ground-up rewrite of RxJS that actually began development when RxJS was in 2.0. This new version of RxJS had
-three basic goals:
+## (NOTE: We're Still RC right now, just getting ready, this doc still applies)
 
-1. Better performance
-2. Better debugging
-3. Compliance with the [ES7 Observable Spec](https://github.com/zenparsing/es-observable)
+As this is a major version release, we have a few breaking changes we need to make sure every knows about, and we need to let all of you know how to migrate your apps to v6 as smoothly as possible.
 
-Meeting the above goals meant breaking changes to the RxJS API, and a complete rewrite means that we had opportunity
-to change/fix/correct things we've wanted to correct about RxJS in general.
+## Helpful Tips For Migration
 
-## Key Component Classes Are Recomposed
+To get started using v6 with your existing v5 code, please try the following steps:
 
-They are similar to other language implementations of ReactiveX (e.g. RxJava).
+1. Update to the latest `5.5.X` version of RxJS. This will uncover any errors that might be a result of bugs in your code
+  exposed by bug fixes. In particular a bug was fixed in `5.5.6` that stopped *some* errors thrown synchronously in operators like `mergeMap`
+  from being properly propagated. (They were swallowed). So get pasted `5.5.6` right away to make sure those issues are covered.
+2. Install rxjs 6 via npm or yarn (e.g. `npm i -S rxjs@rc`) (TODO: Update this after rc is over)
+3. Install `rxjs-compat` via npm or yarn (e.g. `npm i -S rxjs-compat@rc`) (TODO: Update this after rc is over) - This library will enable imports from locations that are removed in
+  v6, as well as provide the ability to use the `rxjs/add/operator/`-style imports. At this point, the app should be working for most of you.
+4. TypeScript Users: Try installing and running `rxjs-lint` with `tslint --fix`. This will automagically going through and update your code to be v6 compliant. You
+  may need to run it more than once. More information can be found here: https://github.com/reactivex/rxjs-ts-lint
+5. LAST DITCH: If steps 2-3 DO NOT work... you can try `rxjs@forward-compat`, (a.k.a `5.6.0-forward-compat`). This package is almost exactly the same as
+  v5.5, only it exports from `rxjs` just like v6 does, so importing the kitchen sink like some people did in v5 is the only thing that will break.
+6. If you are STILL having problems. Please file an issue with any error messages or reproduction you can provide.
 
-|RxJS 4|RxJS 5| remarks |
-|---|---|---|
-|`Observer`|`Subscriber` implements `Observer`| `Observer` is an interface now |
-|`IDisposable`|`Subscription`|`Subscription` is a class, not an interface.|
+Major Changes are as follows:
+
+## Consolidated Exports
+
+There are now fewer entry points to the library. Instead of importing your RxJS types from all over
+the library, you'll import from (generally) two locations: `rxjs` and `rxjs/operators`, there are a few more, but those are the main two.
+
+Main export points:
+
+- `rxjs`: All classes (`Observable`, `Subject`, etc), creation methods (`from`, `interval`, `concat`, `merge` etc), schedulers, utilities and helpers can be found here.
+- `rxjs/operators`: All operators can be found here (`map`, `filter`, `mergeMap`, etc).
+
+Other export points:
+
+- `rxjs/testing`: The `TestScheduler` and friends can be found here
+- `rxjs/ajax`: This is the new home for the rxjs AJAX implementation
+- `rxjs/websocket`: This is the home for the rxjs web socket implementation.
 
 
-## Observer Interface Changes (also Subjects)
+### Import Migration Table
 
-Due to wanting to comply with the ES7 Observable Spec (goal 3 above), the Observer interface (as implemented by
-Observers and Subjects alike) has changed.
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>v6</th>
+      <th>v5.5</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        any operator, such as <code>mergeMap</code>
+      </td>
+      <td>
+        <pre>import { mergeMap } from 'rxjs/operators';</pre>
+      </td>
+      <td>
+        <pre>import { mergeMap } from 'rxjs/operators/mergeMap';
+import 'rxjs/add/operator/mergeMap';
+import { mergeMap } from 'rxjs/operator/mergeMap';</pre>
+      </td>
+    </tr>
+    <tr>
+      <td>creation methods like <code>fromEvent</code> or <code>interval</code></td>
+      <td><pre>import { fromEvent } from 'rxjs';</pre></td>
+      <td><pre>import { fromEvent } from 'rxjs/observable/fromEvent';
+import 'rxjs/add/observable/fromEvent';</pre></td>
+    </tr>
+    <tr>
+      <td>schedulers like <code>async</code> are now <code>asyncScheduler</code></td>
+      <td><pre>import { asyncScheduler } from 'rxjs';</pre></td>
+      <td><pre>import { async } from 'rxjs/scheduler/async';</pre></td>
+    </tr>
+    <tr>
+      <td>utilities like <code>pipe</code> and <code>noop</code> </td>
+      <td><pre>import { pipe } from 'rxjs';</pre></td>
+      <td><pre>import { pipe } from 'rxjs/util/pipe';</pre></td>
+    </tr>
+  </tbody>
+</table>
 
-- `observer.onNext(value)` -> `observer.next(value)`
-- `observer.onError(err)` -> `observer.error(err)`
-- `observer.onCompleted()` -> `observer.complete()`
 
-So what was once `subject.onNext("hi")` is now `subject.next("hi")`.
 
-## Subscription `dispose` is now `unsubscribe`
+### Moved Or Restricted Internal Implementation Details
 
-To meet the Observable spec (goal 3) `dispose` had to be renamed to `unsubscribe`.
+There were many types exposed before that were really internal implementation details that people were using freely. Most notable
+of these were the exposed `Observable` classes, such as `ErrorObservable` or `ArrayObservable` that many people were using. Unfortunately,
+we never intended for these classes to be used directly. Instead, their creation function counterparts should be used, as that was the
+original intention.
 
-<!-- skip-example -->
-```js
-var subscription = myObservable.subscribe(doSomething);
-// RxJS 4: subscription.dispose();
-subscription.unsubscribe();
+#### Moved Observable Types
+
+| v6                            | v5                            |
+|-------------------------------|-------------------------------|
+| `from`                        | `ArrayLikeObservable`         |
+| `of`                          | `ArrayObservable`             |
+| `bindCallback`                | `BoundCallbackObservable`     |
+| `bindNodeCallback`            | `BoundNodeCallbackObservable` |
+| `defer`                       | `DeferObservable`             |
+| `empty` or `EMPTY` (constant) | `EmptyObservable`             |
+| `throwError`                  | `ErrorObservable`             |
+| `forkJoin`                    | `ForkJoinObservable`          |
+| `fromEvent`                   | `FromEventObservable`         |
+| `fromEventPattern`            | `FromEventPatternObservable`  |
+| `from`                        | `FromObservable`              |
+| `generate`                    | `GenerateObservable`          |
+| `iif`                         | `IfObservable`                |
+| `interval`                    | `IntervalObservable`          |
+| `from`                        | `IteratorObservable`          |
+| `NEVER` (constant)            | `NeverObservable`             |
+| `pairs`                       | `PairsObservable`             |
+| `from`                        | `PromiseObservable`           |
+| `range`                       | `RangeObservable`             |
+| `of`                          | `ScalarObservable`            |
+| `timer`                       | `TimerObservable`             |
+| `using`                       | `UsingObservable`             |
+
+#### Removed `fromPromise`
+
+Just use `from`. The reason is that any use of an operator/method that accepts an observable or something that can be observed (like a `Promise` or `Array`, etc), already
+imports most of the `from` implementation anyhow. `fromPromise` just increased the API surface area.
+
+
+## Unhandled Errors Are No Longer Thrown Synchronously
+
+All uncaught errors are no being thrown a new callstack via "host report errors". This basically means unhandled errors are thrown in a `setTimeout`. The main
+reason for doing this is to prevent a really nasty set of bugs calls "producer interfence", in which unhandled, synchronous errors thrown after a multicast would
+break the mulicast for all listeners.
+
+This means that some code that relied on synchronous error handling will now be broken. This includes, things like:
+
+```ts
+try {
+    source$.subscribe(() => {
+       throw new Error('bad');
+    });
+} catch (err) {
+  // this will no longer ne hit.
+}
 ```
 
-## Subscription: All Subscriptions Are "Composite"
+or
 
-In RxJS 4, there was the idea of a `CompositeSubscription`. Now all Subscriptions are "composite".
-Subscription objects have an `add` and `remove` method on them useful for adding and removing subscriptions
-enabling "composite" subscription behavior.
+```ts
+expect(source$.pipe(x => { throw new Error('bad'); }))
+  .toThrow(new Error(bad));
 
-## Operators Renamed or Removed
+// Will throw, but it will no longer pass.
+```
 
-|RxJS 4|RxJS 5|
-|---|---|
-|`amb`|`race`|
-|`and`|No longer implemented|
-|`asObservable`|Exists on `Subject` only|
-|`average`|No longer implemented|
-|`bufferWithCount`|`bufferCount`|
-|`bufferWithTime`|`bufferTime`|
-|`concat`|`concat`|
-|`concatAll`|`concatAll`|
-|`concatMap`|`concatMap`|
-|`concatMapObserver`|No longer implemented|
-|`controlled`|No longer implemented|
-|`delaySubscription`|No longer implemented|
-|`do`|`do`|
-|`doAction`|`do`|
-|`doOnCompleted`|`do(null, null, fn)`|
-|`doOnError`|`do(null, fn)`|
-|`doOnNext`|`do(fn)`|
-|`doWhile`|No longer implemented|
-|`extend`|No longer implemented|
-|`flatMapFirst`|`exhaustMap`|
-|`flatMapLatest`|`switchMap`|
-|`flatMapWithMaxConcurrent`|`mergeMap` or `flatMap`(alias)|
-|`flatMap`|`mergeMap` or `flatMap`(alias)|
-|`fromCallback`|`bindCallback`|
-|`fromNodeCallback`|`bindNodeCallback`|
-|`groupByUntil`|`groupBy(keySelector, elementSelector, durationSelector)`|
-|`groupJoin`|No longer implemented|
-|`includes(v)`|`.first(x => x === v, () => true, false)`|
-|`indexOf(v)`|`.map((x, i) => [x === v, i]).filter(([x]) => x).map(([_, i]) => i).first()`|
-|`join`|No longer implemented|
-|`jortSortUntil`|No longer implemented|
-|`jortSort`|No longer implemented|
-|`just(v)` or `just(a, b, c)`|`of(v)`, `of(a, b, c)`|
-|`lastIndexOf`|`.map((x, i) => [x === v, i]).filter(([x]) => x).map(([_, i]) => i).last()`|
-|`manySelect`|No longer implemented|
-|`map(fn)`|`map(fn)`|
-|`map(value)`|`mapTo(value)`|
-|`maxBy(fn)`|`scan((s, v, i) => { let max = Math.max(s.max, fn(v, i)); return { max, value: max === s.max ? s.value : v }; }, { max: null, value: undefined }).last(x => x.max !== null, x => x.value)`|
-|`minBy(fn)`|`scan((s, v, i) => { let min = Math.min(s.min, fn(v, i)); return { min, value: min === s.min ? s.value : v }; }, { min: null, value: undefined }).last(x => x.min !== null, x => x.value)`|
-|`of`|`of`|
-|`ofObjectChanges`|No longer implemented|
-|`pausableBuffered`|No longer implemented|
-|`pausable`|No longer implemented|
-|`pluck`|`pluck`|
-|`publishLast`|`publishLast`|
-|`publishValue`|`publishBehavior`|
-|`replay`|`publishReplay`|
-|`return`|`of`|
-|`selectConcatObserver`|No longer implemented|
-|`selectConcat`|`concatMap`|
-|`selectMany(fn)`|`mergeMap(fn)` or `flatMap(fn)` (alias)|
-|`selectMany(observable)`|`mergeMapTo(observable)`|
-|`selectManyObserver` or `flatMapObserver`|No longer implemented|
-|`select`|`map`|
-|`shareValue`|No longer implemented|
-|`singleInstance`|`share`|
-|`skipLastWithTime`|No longer implemented|
-|`skipUntilWithTime`|No longer implemented|
-|`slice(start, end)`|`skip(start).take(end - start)`|
-|`some`|`first(fn, () => true, false)`|
-|`sum`|`reduce((s, v) => s + v, 0)`|
-|`switchFirst`|`exhaust`|
-|`takeLast`|`takeLast`|
-|`takeLastBufferWithTime`|No longer implemented|
-|`takeLastBuffer`|No longer implemented|
-|`takeLastWithTime`|No longer implemented|
-|`takeUntilWithTime`|No longer implemented|
-|`tapOnCompleted(fn)`|`do(null, null, fn)`|
-|`tapOnError(fn)`|`do(null, fn)`|
-|`tapOnNext(fn)`|`do(fn)`|
-|`tap`|`do`|
-|`timestamp`|`map(v => ({ value: v, timestamp: Date.now() }))`|
-|`toMap(keySelector)`|`reduce((map, v, i) => map.set(keySelector(v, i), v), new Map())`|
-|`toMap(keySelector, elmentSelector)`|`reduce((map, v, i) => map.set(keySelector(v, i), elementSelector(v)), new Map())`|
-|`toSet`|`reduce((set, v) => set.add(v))`|
-|`transduce`|No longer implemented|
-|`where`|`filter`|
-|`windowWithCount`|`windowCount`|
-|`windowWithTimeOrCount`|No longer implemented|
-|`windowWithTime`|`windowTime`|
-|`zip`|`zip`|
+## New Operator
 
-## Operator Splits
+`errorIfEmpty<T>(errorFactory: () => any): Observable<T>` - If the source observable completes without emitting a value, the `errorFactory` will be called and the returned error will be emitted as an error from the resulting `Observable`. This operator was developed to mirror `defaultIfEmpty`, and to enable creating smaller `first` and `last` operators.
 
-To reduce polymorphism and get better performance out of operators, some operators have been split into more than one operator:
+## Deprecations
 
-<table>
-  <thead>
-    <tr>
-      <th></th>
-      <th>RxJS 4</th>
-      <th>RxJS 5</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td rowspan="2"><code>map</code></td>
-      <td><code>map(project: function, thisArg?: any)</code></td>
-      <td><code>map(project: function, thisArg?: any)</code></td>
-    </tr>
-    <tr>
-      <td><code>map(value: any)</code></td>
-      <td><code>mapTo(value: any)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="2"><code>flatMap</code></td>
-      <td><code>flatMap(project: function, resultSelector?: function)</code></td>
-      <td><code>flatMap(project: function, resultSelector?: function)</code></td>
-    </tr>
-    <tr>
-      <td><code>flatMap(value: Observable, resultSelector?: function)</code></td>
-      <td><code>flatMapTo(value: Observable, resultSelector?: function)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="2"><code>switchMap</code> (aka <code>flatMapLatest</code>)</td>
-      <td><code>flatMapLatest(project: function, resultSelector?: function)</code></td>
-      <td><code>switchMap(project: function, resultSelector?: function)</code></td>
-    </tr>
-    <tr>
-      <td><code>flatMapLatest(value: Observable, resultSelector?: function)</code></td>
-      <td><code>switchMapTo(value: Observable, resultSelector?: function)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="2"><code>concatMap</code></td>
-      <td><code>concatMap(project: function, resultSelector?: function)</code></td>
-      <td><code>concatMap(project: function, resultSelector?: function)</code></td>
-    </tr>
-    <tr>
-      <td><code>concatMap(value: Observable, resultSelector?: function)</code></td>
-      <td><code>concatMapTo(value: Observable, resultSelector?: function)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="3"><code>buffer</code></td>
-      <td><code>buffer(closings: Observable)</code></td>
-      <td><code>buffer(closings: Observable)</code></td>
-    </tr>
-    <tr>
-      <td><code>buffer(closingNotifierFactory: function)</code></td>
-      <td><code>bufferWhen(closingNotifierFactory: function)</code></td>
-    </tr>
-    <tr>
-      <td><code>buffer(openings: Observable, closingSelector?: function)</code></td>
-      <td><code>bufferToggle(openings: Observable, closingSelector?: function)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="3"><code>window</code></td>
-      <td><code>window(closings: Observable)</code></td>
-      <td><code>window(closings: Observable)</code></td>
-    </tr>
-    <tr>
-      <td><code>window(closingNotifierFactory: function)</code></td>
-      <td><code>windowWhen(closingNotifierFactory: function)</code></td>
-    </tr>
-    <tr>
-      <td><code>window(openings: Observable, closingSelector?: function)</code></td>
-      <td><code>windowToggle(openings: Observable, closingSelector?: function)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="2"><code>debounce</code></td>
-      <td><code>debounce(durationSelector: Observable)</code></td>
-      <td><code>debounce(durationSelector: Observable)</code></td>
-    </tr>
-    <tr>
-      <td><code>debounce(delay: number, scheduler?: Scheduler)</code></td>
-      <td><code>debounceTime(delay: number, scheduler?: Scheduler)</code></td>
-    </tr>
-    <tr>
-      <td><code>throttle</code></td>
-      <td><code>throttle(delay: number, scheduler?: Scheduler)</code></td>
-      <td><code>throttleTime(delay: number, scheduler?: Scheduler)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="2"><code>delay</code></td>
-      <td><code>delay(dueTime: number|Date, scheduler?: Scheduler)</code></td>
-      <td><code>delay(dueTime: number|Date, scheduler?: Scheduler)</code></td>
-    </tr>
-    <tr>
-      <td><code>delay(subscriptionDelay?: Observable<any>, delayDurationSelector: function)</code></td>
-      <td><code>delayWhen(delayDurationSelector: function, subscriptionDelay?: Observable<any>)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="2"><code>timeout</code></td>
-      <td><code>timeout(dueTime: number | Date, other?: Error, scheduler?: Scheduler)</code></td>
-      <td><code>timeout(due: number | Date, errorToSend?: any, scheduler?: Scheduler)</code></td>
-    </tr>
-    <tr>
-      <td><code>timeout(dueTime: number | Date, other?: Observable | Promise, scheduler?: Scheduler)</code></td>
-      <td><code>timeoutWith(due: number | Date, withObservable: ObservableInput, scheduler: Scheduler)</code></td>
-    </tr>
-    <tr>
-      <td rowspan="2"><code>sample</code></td>
-      <td><code>sample(interval: number, scheduler?: Scheduler)</code></td>
-      <td><code>sampleTime(interval: number, scheduler?: Scheduler)</code></td>
-    </tr>
-    <tr>
-      <td><code>sample(notifier: Observable)</code></td>
-      <td><code>sample(notifier: Observable)</code></td>
-    </tr>
-  </tbody>
-</table>
+### ResultSelectors
+
+Result selectors on operators like `mergeMap`, `switchMap`, etc, are deprecated and will be removed in version 7.
+
+#### mergeMap
+
+with resultSelector (v 5.x). NOTE: The concurrency limit argument is still optional, it is only shown here to be thorough.
+
+```ts
+source.pipe(
+  mergeMap(fn1, fn2, concurrency)
+)
+```
+
+the same functionality without resultSelector, achieved with inner map.
+
+```ts
+source.pipe(
+  mergeMap((a, i) => fn1(a, i).pipe(
+    map((b, ii) => fn2(a, b, i, ii))
+  )),
+  concurrency
+)
+```
+
+#### mergeMapTo
+
+with resultSelector (v 5.x)
+
+```ts
+source.pipe(
+  mergeMapTo(a$, resultSelector)
+)
+```
+
+without resultSelector
+
+```ts
+source.pipe(
+  mergeMap((x, i) => a$.pipe(
+    map((y, ii) => resultSelector(x, y, i, ii))
+  )
+)
+```
+
+####concatMap
+
+with resultSelector (v 5.x)
+
+```ts
+source.pipe(
+  concatMap(fn1, fn2)
+)
+```
+
+the same functionality without resultSelector, achieved with inner map
+
+```ts
+source.pipe(
+  concatMap((a, i) => fn1(a, i).pipe(
+    map((b, ii) => fn2(a, b, i, ii))
+  )
+)
+```
+
+#### concatMapTo
+
+with resultSelector (v 5.x)
+
+```ts
+source.pipe(
+  concatMapTo(a$, resultSelector)
+)
+```
+
+without resultSelector
+
+```ts
+source.pipe(
+  concatMap((x, i) => a$.pipe(
+    map((y, ii) => resultSelector(x, y, i, ii))
+  )
+)
+```
+
+#### switchMap
+
+with resultSelector (v 5.x)
+
+```ts
+source.pipe(
+  switchMap(fn1, fn2)
+)
+```
+
+the same functionality without resultSelector, achieved with inner map
+
+```ts
+source.pipe(
+  switchMap((a, i) => fn1(a, i).pipe(
+    map((b, ii) => fn2(a, b, i, ii))
+  )
+)
+```
+
+#### switchMapTo
+
+with resultSelector (v 5.x)
+
+```ts
+source.pipe(
+  switchMapTo(a$, resultSelector)
+)
+```
+
+without resultSelector
+
+```ts
+source.pipe(
+  switchMap((x, i) => a$.pipe(
+    map((y, ii) => resultSelector(x, y, i, ii))
+  )
+)
+```
+
+#### exhaustMap
+
+with resultSelector (v 5.x)
+
+```ts
+source.pipe(
+  exhaustMap(fn1, fn2)
+)
+```
+
+the same functionality without resultSelector, achieved with inner map
+
+```ts
+source.pipe(
+  exhaustMap((a, i) => fn1(a, i).pipe(
+    map((b, ii) => fn2(a, b, i, ii))
+  )
+)
+```
+
+#### first
+
+with resultSelector (v5)
+
+```ts
+source.pipe(
+  first(predicate, resultSelector, defaultValue)
+)
+```
+
+without resultSelector (if you're not using the index in it):
+
+```ts
+source.pipe(
+  first(predicate, defaultValue),
+  map(resultSelector)
+)
+```
+
+without resultSelector (if you ARE using the index in it)
+
+```ts
+source.pipe(
+  map((v, i) => [v, i]),
+  first(([v, i]) => predicate(v, i)),
+  map(([v, i]) => resultSelector(v, i)),
+)
+```
+
+#### last
+
+with resultSelector (v5)
+
+```ts
+source.pipe(
+  last(predicate, resultSelector, defaultValue)
+)
+```
+
+without resultSelector (if you're not using the index in it):
+
+```ts
+source.pipe(
+  last(predicate, defaultValue),
+  map(resultSelector)
+)
+```
+
+without resultSelector (if you ARE using the index in it)
+
+```ts
+source.pipe(
+  map((v, i) => [v, i]),
+  last(([v, i]) => predicate(v, i)),
+  map(([v, i]) => resultSelector(v, i)),
+)
+```
+
+#### forkJoin
+
+with resultSelector
+
+```ts
+forkJoin(a$, b$, c$, resultSelector)
+
+// or
+
+forkJoin([a$, b$, c$], resultSelector)
+```
+
+without resultSelector
+
+```ts
+forkJoin(a$, b$, c$).pipe(
+  map(x => resultSelector(...x))
+)
+
+// or
+
+forkJoin([a$, b$, c$]).pipe(
+  map(x => resultSelector(...x))
+)
+```
+
+#### zip
+
+with resultSelector
+
+```ts
+zip(a$, b$, c$, resultSelector)
+
+// or
+
+zip([a$, b$, c$], resultSelector)
+```
+
+without resultSelector
+
+```ts
+zip(a$, b$, c$).pipe(
+  map(x => resultSelector(...x))
+)
+
+// or
+
+zip([a$, b$, c$]).pipe(
+  map(x => resultSelector(...x))
+)
+```
+
+#### combineLatest
+
+with resultSelector
+
+```ts
+combineLatest(a$, b$, c$, resultSelector)
+
+// or
+
+combineLatest([a$, b$, c$], resultSelector)
+```
+
+without resultSelector
+
+```ts
+combineLatest(a$, b$, c$).pipe(
+  map(x => resultSelector(...x))
+)
+
+// or
+
+combineLatest([a$, b$, c$]).pipe(
+  map(x => resultSelector(...x))
+)
+```
+
+#### fromEvent
+
+with resultSelector
+
+```ts
+fromEvent(button, 'click', resultSelector)
+```
+
+without resultSelector
+
+```ts
+fromEvent(button, 'click').pipe(
+  map(resultSelector)
+)
+```
 
 
-## Operator Interface Changes
+### never and empty
 
+`never()` is deprecated and you should use `NEVER`, which is a constant. `empty()` without a scheduler is also deprecated in favor of `EMPTY` which is a constant.
 
-<table>
-  <thead>
-    <tr>
-      <th></th>
-      <th>RxJS 4</th>
-      <th>RxJS 5</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>distinctUntilChanged</code></td>
-      <td><code>distinctUntilChanged(keySelector: function, comparer: function)</code></td>
-      <td><code>distinctUntilChanged<T, K>(compare?: (x: K, y: K) => boolean, keySelector?: (x: T) => K): Observable<T></code></td>
-    </tr>
-  </tbody>
-</table>
-
-
-## Default Scheduling Changed
-
-RxJS v4 defaulted to a scheduler called `Rx.Scheduler.asap` which schedules on the micro task queue. RxJS v5 however defaults to having no scheduler at all; v4 called this `Rx.Scheduler.immediate`. This was done to increase performance for the most common use cases.
-
-
-## Schedulers Renamed
-
-The names of the Schedulers in RxJS 4 were based off of the Rx.NET implementation. Consequently, some of the names
-didn't make sense in a JavaScript context (for example: `currentThread` when there's only one thread anyhow).
-
-|RxJS 4|RxJS 5| |
-|------|------|---|
-|`Rx.Scheduler.default`|`Rx.Scheduler.asap`|schedules on the micro task queue|
-|`Rx.Scheduler.currentThread`|`Rx.Scheduler.queue`|schedules on a queue in the current event frame (trampoline scheduler)|
-|`Rx.Scheduler.immediate`|`undefined`|by not passing a scheduler to operators that request it, it defaults to recursive execution|
-
-
-## Unimplemented Operators/Features
-
-If there is a feature that used to exist in RxJS 4, but no longer does in RxJS 5, please be sure to file an issue (and preferably a PR).
-In your issue, please describe the use case you have for the operator so we can better understand your need and prioritize it, and/or find
-and alternative way to compose the desired behavior.
