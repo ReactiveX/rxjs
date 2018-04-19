@@ -23,9 +23,6 @@
     "extension": [
       ".ts"
     ],
-    "require": [
-      "ts-node/register"
-    ],
     "reporter": [
       "html"
     ],
@@ -88,12 +85,12 @@
     "perf:micro": "node ./perf/micro/index.js",
     "prepublish": "shx rm -rf ./typings && npm run build_all",
     "publish_docs": "./publish_docs.sh",
-    "test": "mocha --require ts-node/register --opts spec-build/support/coverage.opts \"spec-build/**/*-spec.ts\"",
+    "test": "cross-env TS_NODE_PROJECT=spec/tsconfig.json mocha --opts spec/support/default.opts \"spec/**/*-spec.ts\"",
     "test:browser": "echo \"Browser test is not working currently\" && exit -1 && npm-run-all build:spec:browser && opn spec/support/mocha-browser-runner.html",
-    "test:cover": "cross-env TS_NODE_FAST=true nyc npm test",
+    "test:cover": "nyc npm test",
     "test:circular": "dependency-cruise --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm5",
     "test:systemjs": "node integration/systemjs/systemjs-compatibility-spec.js",
-    "tests2png": "mkdirp tmp/docs/img && cross-env TS_NODE_FAST=true mocha --compilers ts:ts-node/register --opts spec/support/tests2png.opts \"spec/**/*-spec.ts\"",
+    "tests2png": "mkdirp tmp/docs/img && mocha --opts spec/support/tests2png.opts \"spec/**/*-spec.ts\"",
     "compat_build_all": "npm-run-all compat_clean_dist compat_build_cjs compat_build_esm5 compat_build_esm2015 compat_generate_packages",
     "compat_build_cjs": "npm-run-all compat_clean_dist_cjs compat_compile_dist_cjs",
     "compat_build_esm5": "npm-run-all compat_clean_dist_esm5 compat_compile_dist_esm5",
@@ -218,7 +215,8 @@
     "source-map-support": "0.5.3",
     "symbol-observable": "1.0.1",
     "systemjs": "^0.21.0",
-    "ts-node": "4.1.0",
+    "ts-node": "5.0.1",
+    "tsconfig-paths": "3.2.0",
     "tslint": "5.9.1",
     "tslint-no-unused-expression-chai": "0.0.3",
     "typescript": "~2.8.1",
