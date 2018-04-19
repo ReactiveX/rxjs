@@ -1,6 +1,5 @@
 import { ColdObservable } from '../ColdObservable';
-import { TestMessage } from '../message/TestMessage';
-import { complete, error as e, next } from '../message/TestMessage';
+import { TestMessage, complete, error as e, next } from '../message/TestMessage';
 import { ObservableMarbleToken } from './ObservableMarbleToken';
 import { SubscriptionMarbleToken } from './SubscriptionMarbleToken';
 

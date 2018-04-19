@@ -5,16 +5,17 @@ import { SubscriptionLog } from '../SubscriptionLog';
  * Represents interface for single metadata value emitted by HotObservable<T> or ColdObservable<T>
  *
  */
-interface TestMessage<T = string> {
+export interface TestMessage<T = string> {
   frame: number;
   notification: Notification<T>;
+  isGhost?: boolean;
 }
 
 /**
  * Represents single metadata value emitted by HotObservable<T> or ColdObservable<T>
  *
  */
-class TestMessageValue<T = string> implements TestMessage<T> {
+export class TestMessageValue<T = string> implements TestMessage<T> {
   constructor(public readonly frame: number, public readonly notification: Notification<T>) {}
 }
 
@@ -24,7 +25,7 @@ class TestMessageValue<T = string> implements TestMessage<T> {
  * @param value
  */
 
-const next = <T = string>(frame: number, value: T): TestMessage<T> =>
+export const next = <T = string>(frame: number, value: T): TestMessage<T> =>
   new TestMessageValue(frame, Notification.createNext(value));
 
 /**
@@ -32,19 +33,17 @@ const next = <T = string>(frame: number, value: T): TestMessage<T> =>
  * @param frame virtual frame time when value will be emitted
  * @param value
  */
-const error = (frame: number, error: any = '#'): TestMessage<any> =>
+export const error = (frame: number, error: any = '#'): TestMessage<any> =>
   new TestMessageValue<any>(frame, Notification.createError(error));
 
 /**
  * Utility function to generate TestMessage represents completion for Observer::complete()
  * @param frame virtual frame time when value will be emitted
  */
-const complete = <T = void>(frame: number): TestMessage<T> =>
+export const complete = <T = void>(frame: number): TestMessage<T> =>
   new TestMessageValue<T>(frame, Notification.createComplete());
 
-const subscribe = (
+export const subscribe = (
   subscribedFrame: number = Number.POSITIVE_INFINITY,
   unsubscribedFrame: number = Number.POSITIVE_INFINITY
 ) => new SubscriptionLog(subscribedFrame, unsubscribedFrame);
-
-export { TestMessage, TestMessageValue, next, error, complete, subscribe };
