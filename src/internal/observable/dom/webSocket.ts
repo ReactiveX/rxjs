@@ -5,7 +5,7 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  *
  * @example <caption>Wraps browser WebSocket</caption>
  *
- * import { webSocket } from 'rxjs/websocket';
+ * import { webSocket } from 'rxjs/webSocket';
  *
  * let socket$ = webSocket('ws://localhost:8081');
  *
@@ -17,14 +17,14 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  *
  * socket$.next(JSON.stringify({ op: 'hello' }));
  *
- * @example <caption>Wraps WebSocket from nodejs-websocket (using node.js)</caption>
+ * @example <caption>Wraps WebSocket from nodejs-webSocket (using node.js)</caption>
  *
- * import { webSocket } from 'rxjs/websocket';
- * import { w3cwebsocket } from 'websocket';
+ * import { webSocket } from 'rxjs/webSocket';
+ * import { w3cwebSocket } from 'webSocket';
  *
  * let socket$ = webSocket({
  *   url: 'ws://localhost:8081',
- *   WebSocketCtor: w3cwebsocket
+ *   WebSocketCtor: w3cwebSocket
  * });
  *
  * socket$.subscribe(
@@ -35,7 +35,7 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  *
  * socket$.next(JSON.stringify({ op: 'hello' }));
  *
- * @param {string | WebSocketSubjectConfig} urlConfigOrSource the source of the websocket as an url or a structure defining the websocket object
+ * @param {string | WebSocketSubjectConfig} urlConfigOrSource the source of the webSocket as an url or a structure defining the webSocket object
  * @return {WebSocketSubject}
  */
 export function webSocket<T>(urlConfigOrSource: string | WebSocketSubjectConfig<T>): WebSocketSubject<T> {

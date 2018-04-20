@@ -1,12 +1,12 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { websocket } from 'rxjs/websocket';
+import { webSocket } from 'rxjs/webSocket';
 import { map, retry, take, repeat, takeWhile } from 'rxjs/operators';
 
 declare const __root__: any;
 
 /** @test {webSocket} */
-describe('websocket', () => {
+describe('webSocket', () => {
   let __ws: any;
 
   function setupMockWebSocket() {
@@ -30,7 +30,7 @@ describe('websocket', () => {
 
     it('should send and receive messages', () => {
       let messageReceived = false;
-      const subject = websocket<string>('ws://mysocket');
+      const subject = webSocket<string>('ws://mysocket');
 
       subject.next('ping');
 
@@ -52,7 +52,7 @@ describe('websocket', () => {
     });
 
     it('should allow use of operators and subscribe', () => {
-      const subject = websocket<string>('ws://mysocket');
+      const subject = webSocket<string>('ws://mysocket');
       const results: any[] = [];
 
       subject.pipe(
@@ -68,7 +68,7 @@ describe('websocket', () => {
     it('receive multiple messages', () => {
       const expected = ['what', 'do', 'you', 'do', 'with', 'a', 'drunken', 'sailor?'];
       const results: string[] = [];
-      const subject = websocket<string>('ws://mysocket');
+      const subject = webSocket<string>('ws://mysocket');
 
       subject.subscribe(x => {
         results.push(x);
@@ -89,7 +89,7 @@ describe('websocket', () => {
 
     it('should queue messages prior to subscription', () => {
       const expected = ['make', 'him', 'walk', 'the', 'plank'];
-      const subject = websocket<string>('ws://mysocket');
+      const subject = webSocket<string>('ws://mysocket');
 
       expected.forEach(x => {
         subject.next(x);
@@ -110,7 +110,7 @@ describe('websocket', () => {
     });
 
     it('should send messages immediately if already open', () => {
-      const subject = websocket<string>('ws://mysocket');
+      const subject = webSocket<string>('ws://mysocket');
       subject.subscribe();
       const socket = MockWebSocket.lastSocket;
       socket.open();
@@ -124,7 +124,7 @@ describe('websocket', () => {
     });
 
     it('should close the socket when completed', () => {
-      const subject = websocket<string>('ws://mysocket');
+      const subject = webSocket<string>('ws://mysocket');
       subject.subscribe();
       const socket = MockWebSocket.lastSocket;
       socket.open();
@@ -144,7 +144,7 @@ describe('websocket', () => {
     });
 
     it('should close the socket with a code and a reason when errored', () => {
-      const subject = websocket<string>('ws://mysocket');
+      const subject = webSocket<string>('ws://mysocket');
       subject.subscribe();
       const socket = MockWebSocket.lastSocket;
       socket.open();
@@ -160,7 +160,7 @@ describe('websocket', () => {
     });
 
     it('should allow resubscription after closure via complete', () => {
-      const subject = websocket<string>('ws://mysocket');
+      const subject = webSocket<string>('ws://mysocket');
       subject.subscribe();
       const socket1 = MockWebSocket.lastSocket;
       socket1.open();
@@ -178,7 +178,7 @@ describe('websocket', () => {
     });
 
     it('should allow resubscription after closure via error', () => {
-      const subject = websocket<string>('ws://mysocket');
+      const subject = webSocket<string>('ws://mysocket');
       subject.subscribe();
       const socket1 = MockWebSocket.lastSocket;
       socket1.open();
@@ -198,7 +198,7 @@ describe('websocket', () => {
     it('should have a default resultSelector that parses message data as JSON', () => {
       let result;
       const expected = { mork: 'shazbot!' };
-      const subject = websocket<string>('ws://mysocket');
+      const subject = webSocket<string>('ws://mysocket');
 
       subject.subscribe((x: any) => {
         result = x;
@@ -226,7 +226,7 @@ describe('websocket', () => {
 
     it('should send and receive messages', () => {
       let messageReceived = false;
-      const subject = websocket<string>({ url: 'ws://mysocket' });
+      const subject = webSocket<string>({ url: 'ws://mysocket' });
 
       subject.next('ping');
 
@@ -248,7 +248,7 @@ describe('websocket', () => {
     });
 
     it('should take a protocol and set it properly on the web socket', () => {
-      const subject = websocket<string>({
+      const subject = webSocket<string>({
         url: 'ws://mysocket',
         protocol: 'someprotocol'
       });
@@ -262,7 +262,7 @@ describe('websocket', () => {
     });
 
     it('should take a binaryType and set it properly on the web socket', () => {
-      const subject = websocket<string>({
+      const subject = webSocket<string>({
         url: 'ws://mysocket',
         binaryType: 'blob'
       });
@@ -278,7 +278,7 @@ describe('websocket', () => {
     it('should take a deserializer', () => {
       const results = [] as string[];
 
-      const subject = websocket<string>({
+      const subject = webSocket<string>({
         url: 'ws://mysocket',
         deserializer: (e: any) => {
           return e.data + '!';
@@ -301,7 +301,7 @@ describe('websocket', () => {
     });
 
     it('if the deserializer fails it should go down the error path', () => {
-      const subject = websocket<string>({
+      const subject = webSocket<string>({
         url: 'ws://mysocket',
         deserializer: (e: any) => {
           throw new Error('I am a bad error');
@@ -323,7 +323,7 @@ describe('websocket', () => {
 
     it('should accept a closingObserver', () => {
       let calls = 0;
-      const subject = websocket<string>(<any>{
+      const subject = webSocket<string>(<any>{
         url: 'ws://mysocket',
         closingObserver: {
           next(x: any) {
@@ -355,7 +355,7 @@ describe('websocket', () => {
     it('should accept a closeObserver', () => {
       const expected = [{ wasClean: true }, { wasClean: false }];
       const closes = [] as any[];
-      const subject = websocket<string>(<any>{
+      const subject = webSocket<string>(<any>{
         url: 'ws://mysocket',
         closeObserver: {
           next(e: any) {
@@ -390,7 +390,7 @@ describe('websocket', () => {
     });
 
     it('should handle constructor errors', () => {
-      const subject = websocket<string>(<any>{
+      const subject = webSocket<string>(<any>{
         url: 'bad_url',
         WebSocketCtor: (url: string, protocol?: string | string[]): WebSocket => {
           throw new Error(`connection refused`);
@@ -419,7 +419,7 @@ describe('websocket', () => {
 
     it('should be retryable', () => {
       const results = [] as string[];
-      const subject = websocket<{ name: string, value: string }>('ws://websocket');
+      const subject = webSocket<{ name: string, value: string }>('ws://websocket');
       const source = subject.multiplex(
         () => ({ sub: 'foo' }),
         () => ({ unsub: 'foo' }),
@@ -454,7 +454,7 @@ describe('websocket', () => {
 
     it('should be repeatable', () => {
       const results = [] as string[];
-      const subject = websocket<{ name: string, value: string }>('ws://websocket');
+      const subject = webSocket<{ name: string, value: string }>('ws://websocket');
       const source = subject.multiplex(
         () => ({ sub: 'foo' }),
         () => ({ unsub: 'foo' }),
@@ -490,9 +490,9 @@ describe('websocket', () => {
       expect(results).to.deep.equal(['test', 'this', 'test', 'this'], 'results were not equal');
     });
 
-    it('should multiplex over the websocket', () => {
+    it('should multiplex over the webSocket', () => {
       const results = [] as Array<{ value: number, name: string }>;
-      const subject = websocket<{ value: number, name: string }>('ws://websocket');
+      const subject = webSocket<{ value: number, name: string }>('ws://websocket');
       const source = subject.multiplex(
         () => ({ sub: 'foo'}),
         () => ({ unsub: 'foo' }),
@@ -527,7 +527,7 @@ describe('websocket', () => {
     });
 
     it('should keep the same socket for multiple multiplex subscriptions', () => {
-      const socketSubject = websocket<string>({url: 'ws://mysocket'});
+      const socketSubject = webSocket<string>({url: 'ws://mysocket'});
       const results = [] as string[];
       const socketMessages = [
         {id: 'A'},
@@ -584,7 +584,7 @@ describe('websocket', () => {
     });
 
     it('should not close the socket until all subscriptions complete', () => {
-      const socketSubject = websocket<{ id: string, complete: boolean }>({url: 'ws://mysocket'});
+      const socketSubject = webSocket<{ id: string, complete: boolean }>({url: 'ws://mysocket'});
       const results = [] as string[];
       const socketMessages = [
         {id: 'A'},

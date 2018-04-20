@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { websocket as staticWebSocket } from 'rxjs/websocket';
+import { webSocket as staticWebSocket } from 'rxjs/webSocket';
 
 Observable.webSocket = staticWebSocket;
 

@@ -17,6 +17,6 @@ export const testing = _testing;
 import * as _ajax from '../ajax/index';
 export const ajax = _ajax;
 
-/* rxjs.websocket */
-import * as _websocket from '../websocket/index';
-export const websocket = _websocket;
+/* rxjs.webSocket */
+import * as _webSocket from '../webSocket/index';
+export const webSocket = _webSocket;
