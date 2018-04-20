@@ -7,11 +7,15 @@ This is an EXPERIMENTAL BRANCH OF RXJS... DO NOT USE IN PRODUCTION UNLESS YOU'RE
 
 Remaining to do:
 
+- [ ] Setup CI (Travis, etc)
 - [ ] Develop a build process (nothing builds currently this has been spiked in Stackblitz mostly)
+  - [ ] Build ESM
+  - [ ] Build CJS
+  - [ ] Build UMD
 - [ ] Redevelop the TestScheduler with the new methodology
-- [ ] Any tests at all. The idea is to use the existing tests
+- [X] Add (at least some) tests so we have a testing process
 - [ ] Port all types and operators
-- [ ] Add perf tests vs RxJS 5.5
+- [ ] Add perf tests vs RxJS 5.5/6
 - [ ] Add typings tests
 - [ ] Chart deprecation paths for v6
 
