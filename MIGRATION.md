@@ -36,7 +36,7 @@ Other export points:
 
 - `rxjs/testing`: The `TestScheduler` and friends can be found here
 - `rxjs/ajax`: This is the new home for the rxjs AJAX implementation
-- `rxjs/websocket`: This is the home for the rxjs web socket implementation.
+- `rxjs/webSocket`: This is the home for the rxjs web socket implementation.
 
 
 ### Import Migration Table

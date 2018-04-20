@@ -8,7 +8,7 @@ System.config({
     'rxjs/ajax': {main: 'index.js', defaultExtension: 'js' },
     'rxjs/operators': {main: 'index.js', defaultExtension: 'js' },
     'rxjs/testing': {main: 'index.js', defaultExtension: 'js' },
-    'rxjs/websocket': {main: 'index.js', defaultExtension: 'js' }
+    'rxjs/webSocket': {main: 'index.js', defaultExtension: 'js' }
   }
 });
 
@@ -17,7 +17,7 @@ Promise.all([
   System.import('rxjs/ajax'),
   System.import('rxjs/operators'),
   System.import('rxjs/testing'),
-  System.import('rxjs/websocket'),
+  System.import('rxjs/webSocket'),
 ]).then(
   function () { console.log('Successfully tested all entry-points with SystemJS!'); },
   function (error) {
