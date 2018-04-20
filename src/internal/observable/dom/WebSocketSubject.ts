@@ -30,7 +30,7 @@ export interface WebSocketSubjectConfig<T> {
    */
   openObserver?: NextObserver<Event>;
   /**
-   * An Observer than watches when close events occur on the underlying websocket
+   * An Observer than watches when close events occur on the underlying webSocket
    */
   closeObserver?: NextObserver<CloseEvent>;
   /**
