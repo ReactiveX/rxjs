@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { websocket } from 'rxjs/websocket';
-import { map, retry, take, repeat } from 'rxjs/operators';
+import { map, retry, take, repeat, takeWhile } from 'rxjs/operators';
 
 declare const __root__: any;
 
@@ -49,6 +49,20 @@ describe('websocket', () => {
       expect(messageReceived).to.be.true;
 
       subject.unsubscribe();
+    });
+
+    it('should allow use of operators and subscribe', () => {
+      const subject = websocket<string>('ws://mysocket');
+      const results: any[] = [];
+
+      subject.pipe(
+        map(x => x + '!'),
+      )
+      .subscribe(x => results.push(x));
+
+      MockWebSocket.lastSocket.triggerMessage(JSON.stringify('ngconf 2018 bug'));
+
+      expect(results).to.deep.equal(['ngconf 2018 bug!']);
     });
 
     it('receive multiple messages', () => {
@@ -526,13 +540,15 @@ describe('websocket', () => {
       const sub1 = socketSubject.multiplex(
         () => 'no-op',
         () => results.push('A unsub'),
-        (req: any) => req.id === 'A')
-        .takeWhile((req: any) => !req.complete)
-        .subscribe(
-          () => results.push('A next'),
-          (e) => results.push('A error ' + e),
-          () => results.push('A complete')
-        );
+        (req: any) => req.id === 'A'
+      ).pipe(
+        takeWhile((req: any) => !req.complete)
+      )
+      .subscribe(
+        () => results.push('A next'),
+        (e) => results.push('A error ' + e),
+        () => results.push('A complete')
+      );
 
       socketSubject.multiplex(
         () => 'no-op',
@@ -581,24 +597,26 @@ describe('websocket', () => {
       socketSubject.multiplex(
         () => 'no-op',
         () => results.push('A unsub'),
-        req => req.id === 'A')
-        .takeWhile(req => !req.complete)
-        .subscribe(
-          () => results.push('A next'),
-          (e) => results.push('A error ' + e),
-          () => results.push('A complete')
-        );
+        req => req.id === 'A'
+      ).pipe(
+        takeWhile(req => !req.complete)
+      ).subscribe(
+        () => results.push('A next'),
+        (e) => results.push('A error ' + e),
+        () => results.push('A complete')
+      );
 
       socketSubject.multiplex(
         () => 'no-op',
         () => results.push('B unsub'),
-        req => req.id === 'B')
-        .takeWhile(req => !req.complete)
-        .subscribe(
-          () => results.push('B next'),
-          (e) => results.push('B error ' + e),
-          () => results.push('B complete')
-        );
+        req => req.id === 'B'
+      ).pipe(
+        takeWhile(req => !req.complete)
+      ).subscribe(
+        () => results.push('B next'),
+        (e) => results.push('B error ' + e),
+        () => results.push('B complete')
+      );
 
       // Setup socket and send messages
       let socket = MockWebSocket.lastSocket;

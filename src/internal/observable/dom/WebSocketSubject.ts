@@ -101,6 +101,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   lift<R>(operator: Operator<T, R>): WebSocketSubject<R> {
     const sock = new WebSocketSubject<R>(this._config as WebSocketSubjectConfig<any>, <any> this.destination);
     sock.operator = operator;
+    sock.source = this;
     return sock;
   }
 
