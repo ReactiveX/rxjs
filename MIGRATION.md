@@ -15,7 +15,7 @@ To get started using v6 with your existing v5 code, please try the following ste
 3. Install `rxjs-compat` via npm or yarn (e.g. `npm i -S rxjs-compat@rc`) (TODO: Update this after rc is over) - This library will enable imports from locations that are removed in
   v6, as well as provide the ability to use the `rxjs/add/operator/`-style imports. At this point, the app should be working for most of you.
 4. TypeScript Users: Try installing and running `rxjs-lint` with `tslint --fix`. This will automagically going through and update your code to be v6 compliant. You
-  may need to run it more than once. More information can be found here: https://github.com/reactivex/rxjs-ts-lint
+  may need to run it more than once. More information can be found here: https://github.com/reactivex/rxjs-tslint
 5. LAST DITCH: If steps 2-3 DO NOT work... you can try `rxjs@forward-compat`, (a.k.a `5.6.0-forward-compat`). This package is almost exactly the same as
   v5.5, only it exports from `rxjs` just like v6 does, so importing the kitchen sink like some people did in v5 is the only thing that will break.
 6. If you are STILL having problems. Please file an issue with any error messages or reproduction you can provide.
@@ -202,7 +202,7 @@ source.pipe(
 )
 ```
 
-####concatMap
+#### concatMap
 
 with resultSelector (v 5.x)
 
