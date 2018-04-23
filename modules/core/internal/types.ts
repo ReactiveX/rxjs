@@ -63,11 +63,22 @@ export interface Scheduler {
 export type Operation<T, R> = (source: Observable<T>) => Observable<R>;
 
 export interface ObservableLike<T> {
-  subscribe(observer: Observer<T>): Subscription;
+  subscribe(observer: Observer<T>): SubscriptionLike;
 }
 
-export type ObservableInput<T> = Observable<T> | ObservableLike<T> | PromiseLike<T> | Array<T> | ArrayLike<T>;
+export interface ObservableInteroperable<T> {
+  [Symbol.observable](): ObservableLike<T>;
+}
+
+export type ObservableInput<T> = Observable<T> | ObservableLike<T> | PromiseLike<T> |
+  Array<T> | ArrayLike<T> | ObservableInteroperable<T> | AsyncIterable<T>;
 
 export interface SubscriptionLike {
   unsubscribe(): void;
+}
+
+declare global  {
+  interface SymbolConstructor {
+    observable: symbol;
+  }
 }
