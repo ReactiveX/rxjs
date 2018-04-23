@@ -1,7 +1,7 @@
-import { ObservableInput, Operation, FOType, Sink, SinkArg } from '../types';
+import { ObservableInput, Operation, FOType, Sink, SinkArg, Source } from '../types';
 import { Observable, sourceAsObservable } from '../Observable';
 import { Subscription } from '../Subscription';
-import { from } from '../create/from';
+import { fromSource } from '../create/from';
 
 export function mergeMap<T, R>(
   project: (value: T, index: number) => ObservableInput<R>,
@@ -20,9 +20,9 @@ export function mergeMap<T, R>(
           while (buffer.length > 0 && active++ < concurrent) {
             const { outerValue, outerIndex } = buffer.shift();
             let innerCounter = 0;
-            let innerSource: Observable<R>;
+            let innerSource: Source<R>;
             try {
-              innerSource = from(project(outerValue, outerIndex));
+              innerSource = fromSource(project(outerValue, outerIndex));
             } catch (err) {
               dest(FOType.ERROR, err, subs);
               subs.unsubscribe();
