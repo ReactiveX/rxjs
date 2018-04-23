@@ -1,7 +1,7 @@
 <img src="doc/asset/Rx_Logo_S.png" alt="RxJS Logo" width="86" height="86"> RxJS: Reactive Extensions For JavaScript
 ======================================
 
-This is an EXPERIMENTAL BRANCH OF RXJS... DO NOT USE IN PRODUCTION UNLESS YOU'RE COMPLETELY NUTS. NOTHING IN THIS BRANCH IS EVEN CLOSE TO STABLE OR EVEN ACCURATE. 
+This is an EXPERIMENTAL BRANCH OF RXJS... DO NOT USE IN PRODUCTION UNLESS YOU'RE COMPLETELY NUTS. NOTHING IN THIS BRANCH IS EVEN CLOSE TO STABLE OR EVEN ACCURATE.
 
 ## This is an experiment.
 
@@ -32,4 +32,5 @@ These things are all a must for RxJS.
 
 The overall idea is to implement these changes with as few breaking changes to RxJS as possible.
 
+## [Design Document](https://docs.google.com/document/d/1DBOhMQ89e2xtWNN0EqCHXOFn4QJjKZcXEvUivp4W2r0/edit#heading=h.w834w6djdoqo)
 
