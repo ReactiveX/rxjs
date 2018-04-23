@@ -52,7 +52,7 @@ describe('from', () => {
 
   it('should convert an Iterable to an observable', () => {
     const results: any[] = [];
-    const source = 'I am an iterable!';
+    const source = 'Weee!';
 
     from(source)
       .subscribe({
@@ -62,6 +62,6 @@ describe('from', () => {
         },
       });
 
-    expect(results).to.deep.equal([...'I am an iterable!'.split(''), 'done']);
+    expect(results).to.deep.equal(['W', 'e', 'e', 'e', '!', 'done']);
   });
 });

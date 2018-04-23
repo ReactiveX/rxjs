@@ -21,37 +21,35 @@ export function fromSource<T>(input: any): Source<T> {
 }
 
 function promiseSource<T>(promise: PromiseLike<T>): Source<T> {
-  return (type: FOType.SUBSCRIBE, sink: Sink<T>) => {
+  return (type: FOType.SUBSCRIBE, sink: Sink<T>, subs: Subscription) => {
     if (type === FOType.SUBSCRIBE) {
       let closed = false;
-      const subs = new Subscription(() => closed = true);
-      sink(FOType.SUBSCRIBE, subs);
+      subs.add(() => closed = true);
       promise.then(value => {
         if (!closed) {
-          sink(FOType.NEXT, value);
-          sink(FOType.COMPLETE, undefined);
+          sink(FOType.NEXT, value, subs);
+          sink(FOType.COMPLETE, undefined, subs);
         }
       }, err => {
-        sink(FOType.ERROR, err);
+        sink(FOType.ERROR, err, subs);
       });
     }
   };
 }
 
 function iterableSource<T>(iterable: Iterable<T>): Source<T> {
-  return (type: FOType.SUBSCRIBE, sink: Sink<T>) => {
+  return (type: FOType.SUBSCRIBE, sink: Sink<T>, subs: Subscription) => {
     if (type === FOType.SUBSCRIBE) {
       let closed = false;
-      const subs = new Subscription(() => closed = true);
-      sink(FOType.SUBSCRIBE, subs);
+      subs.add(() => closed = true);
       const iterator = iterable[Symbol.iterator]();
       while (true) {
         if (closed) return;
         const { done, value } = iterator.next();
         if (done) break;
-        sink(FOType.NEXT, value);
+        sink(FOType.NEXT, value, subs);
       }
-      sink(FOType.COMPLETE, undefined);
+      sink(FOType.COMPLETE, undefined, subs);
     }
   };
 }
