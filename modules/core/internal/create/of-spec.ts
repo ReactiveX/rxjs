@@ -27,26 +27,6 @@ describe('of', () => {
     expect(results).to.deep.equal(['start', 1, 2, 3, 'done', 'stop']);
   });
 
-  it('should emit values asynchronously if scheduled', (done: MochaDone) => {
-    const source = of(1, 2, 3);
-    const results: any[] = [];
-    results.push('start');
-    source.subscribe({
-      next(value) { results.push(value) },
-      complete() {
-        results.push('done');
-        try {
-          expect(results).to.deep.equal(['start', 'stop', 1, 2, 3, 'done']);
-        } catch (err) {
-          done(err);
-          return;
-        }
-        done();
-      },
-    }, asapScheduler);
-    results.push('stop');
-  });
-
   it('should not complete after early unsubscribe', () => {
     const source = of(1, 2, 3);
     source.subscribe({
