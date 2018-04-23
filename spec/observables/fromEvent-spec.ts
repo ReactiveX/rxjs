@@ -119,6 +119,37 @@ describe('fromEvent', () => {
     expect(offHandler).to.equal(onHandler);
   });
 
+  it('should setup an event observable on objects with "addListener" and "removeListener" and "length" ', () => {
+    let onEventName;
+    let onHandler;
+    let offEventName;
+    let offHandler;
+
+    const obj = {
+      addListener: (a: string, b: Function) => {
+        onEventName = a;
+        onHandler = b;
+      },
+      removeListener: (a: string, b: Function) => {
+        offEventName = a;
+        offHandler = b;
+      },
+      length: 1
+    };
+
+    const subscription = fromEvent(obj, 'click')
+      .subscribe(() => {
+        //noop
+       });
+
+    subscription.unsubscribe();
+
+    expect(onEventName).to.equal('click');
+    expect(typeof onHandler).to.equal('function');
+    expect(offEventName).to.equal(onEventName);
+    expect(offHandler).to.equal(onHandler);
+  });
+
   it('should error on invalid event targets', () => {
     const obj = {
       addListener: () => {

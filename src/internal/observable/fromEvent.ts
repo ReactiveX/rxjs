@@ -193,11 +193,7 @@ function setupSubscription<T>(sourceObj: FromEventTarget<T>, eventName: string,
                               handler: (...args: any[]) => void, subscriber: Subscriber<T>,
                               options?: EventListenerOptions) {
   let unsubscribe: () => void;
-  if (sourceObj && (sourceObj as any).length) {
-    for (let i = 0, len = (sourceObj as any).length; i < len; i++) {
-      setupSubscription(sourceObj[i], eventName, handler, subscriber, options);
-    }
-  } else if (isEventTarget(sourceObj)) {
+  if (isEventTarget(sourceObj)) {
     const source = sourceObj;
     sourceObj.addEventListener(eventName, handler, options);
     unsubscribe = () => source.removeEventListener(eventName, handler, options);
@@ -209,6 +205,10 @@ function setupSubscription<T>(sourceObj: FromEventTarget<T>, eventName: string,
     const source = sourceObj;
     sourceObj.addListener(eventName, handler as NodeEventHandler);
     unsubscribe = () => source.removeListener(eventName, handler as NodeEventHandler);
+  } else if (sourceObj && (sourceObj as any).length) {
+    for (let i = 0, len = (sourceObj as any).length; i < len; i++) {
+      setupSubscription(sourceObj[i], eventName, handler, subscriber, options);
+    }
   } else {
     throw new TypeError('Invalid event target');
   }
