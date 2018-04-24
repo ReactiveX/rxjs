@@ -38,10 +38,6 @@ export class VirtualTimeScheduler extends AsyncScheduler {
       throw error;
     }
   }
-
-  public schedule<T>(work: (this: SchedulerAction<T>, state?: T) => void, delay: number = 0, state?: T): Subscription {
-    return new VirtualAction<T>(this, work).schedule(state, delay);
-  }
 }
 
 /**
