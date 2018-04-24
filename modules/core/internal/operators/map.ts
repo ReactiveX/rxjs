@@ -8,18 +8,15 @@ export function map<T, R>(project: (value: T) => R): Operation<T, R> {
       if (type === FOType.SUBSCRIBE) {
         source(type, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
           if (t === FOType.NEXT) {
-            let result: R;
             try {
-              result = project(v);
+              v = project(v);
             } catch (err) {
               dest(FOType.ERROR, err, subs);
               subs.unsubscribe();
               return;
             }
-            dest(FOType.NEXT, result, subs);
-          } else {
-            dest(t, v, subs);
           }
+          dest(t, v, subs);
         }, subs);
       }
     });
