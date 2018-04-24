@@ -18,6 +18,21 @@ describe('map', () => {
     expect(results).to.deep.equal([2, 4, 6, 'done']);
   });
 
+  it('should provide the index of the emission to the projection function', () => {
+    const source = of('a', 'b', 'c').pipe(
+      map((x, i) => [x, i])
+    );
+
+    const results: any[] = [];
+
+    source.subscribe({
+      next(value) { results.push(value); },
+      complete() { results.push('done'); },
+    });
+
+    expect(results).to.deep.equal([['a', 0], ['b', 1], ['c', 2], 'done']);
+  });
+
   it('should emit errors thrown in map', () => {
     const source = of(1, 2, 3, 4).pipe(
       map(x => {

@@ -17,6 +17,24 @@ describe('filter', () => {
     expect(results).to.deep.equal([1, 3, 4, 'done']);
   });
 
+  it('should provide the index of the value emitted to the predicate', () => {
+    const provided: Array<[string, number]> = [];
+
+    of('a', 'b', 'c').pipe(
+      filter((x, i) => {
+        provided.push([x, i]);
+        return true;
+      }),
+    )
+    .subscribe();
+
+    expect(provided).to.deep.equal([
+      ['a', 0],
+      ['b', 1],
+      ['c', 2],
+    ]);
+  });
+
   it('should propagate errors thrown in the predicate', () => {
     const results: any[] = [];
     let error: Error;
