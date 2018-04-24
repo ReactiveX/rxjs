@@ -44,7 +44,7 @@ By contributing or commenting on issues in this repository, whether you've read 
 ### ES6 via npm
 
 ```sh
-npm install rxjs@beta
+npm install rxjs
 ```
 
 To import only what you need by patching (this is useful for size-sensitive bundling):
@@ -65,7 +65,7 @@ Alternatively, you can use the built-in `pipe` method on Observables. See [pipea
 To install this library for CommonJS (CJS) usage, use the following command:
 
 ```sh
-npm install rxjs@beta
+npm install rxjs
 ```
 
 (Note: destructuring available in Node 8+)
