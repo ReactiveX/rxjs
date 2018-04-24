@@ -6,8 +6,17 @@ import { TestMessage } from './TestMessage';
 import { SubscriptionLog } from './SubscriptionLog';
 import { Subscription } from '../Subscription';
 import { VirtualTimeScheduler, VirtualAction } from '../scheduler/VirtualTimeScheduler';
+import { AsyncScheduler } from '../scheduler/AsyncScheduler';
 
 const defaultMaxFrame: number = 750;
+
+interface RunHelpers {
+  cold: typeof TestScheduler.prototype.createColdObservable;
+  hot: typeof TestScheduler.prototype.createHotObservable;
+  flush: typeof TestScheduler.prototype.flush;
+  expectObservable: typeof TestScheduler.prototype.expectObservable;
+  expectSubscriptions: typeof TestScheduler.prototype.expectSubscriptions;
+}
 
 interface FlushableTest {
   ready: boolean;
@@ -129,10 +138,16 @@ export class TestScheduler extends VirtualTimeScheduler {
     }
 
     super.flush();
-    const readyFlushTests = this.flushTests.filter(test => test.ready);
-    while (readyFlushTests.length > 0) {
-      const test = readyFlushTests.shift();
-      this.assertDeepEqual(test.actual, test.expected);
+    const { flushTests } = this;
+    const flushTestsCopy = flushTests.slice();
+
+    for (let i = 0, l = flushTests.length; i < l; i++) {
+      const test = flushTestsCopy[i];
+      if (test.ready) {
+        // remove it from the original array, not our copy
+        flushTests.splice(i, 1);
+        this.assertDeepEqual(test.actual, test.expected);
+      }
     }
   }
 
@@ -242,5 +257,21 @@ export class TestScheduler extends VirtualTimeScheduler {
       }
     }
     return testMessages;
+  }
+
+  run<T>(callback: (helpers: RunHelpers) => T): T {
+    AsyncScheduler.delegate = this;
+    const helpers = {
+      cold: this.createColdObservable.bind(this),
+      hot: this.createHotObservable.bind(this),
+      flush: this.flush.bind(this),
+      expectObservable: this.expectObservable.bind(this),
+      expectSubscriptions: this.expectSubscriptions.bind(this),
+    };
+    const ret = callback(helpers);
+    this.flush();
+    AsyncScheduler.delegate = undefined;
+
+    return ret;
   }
 }

@@ -1,7 +1,8 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
 import { TestScheduler } from 'rxjs/testing';
-import { Observable, NEVER, EMPTY, Subject, of, Notification } from 'rxjs';
+import { Observable, NEVER, EMPTY, Subject, of, merge, Notification } from 'rxjs';
+import { delay, debounceTime } from 'rxjs/operators';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -252,6 +253,92 @@ describe('TestScheduler', () => {
         const expectedx = cold('-a-b|');
         const expectedy = cold('-c-d|');
         expectObservable(myObservable).toBe(expected, { x: expectedx, y: expectedy });
+      });
+    });
+  });
+
+  describe('TestScheduler.run()', () => {
+    const assertDeepEquals = (actual: any, expected: any) => {
+      expect(actual).deep.equal(expected);
+    };
+
+    it('should provide the correct helpers', () => {
+      const testScheduler = new TestScheduler(assertDeepEquals);
+
+      testScheduler.run(({ cold, hot, flush, expectObservable, expectSubscriptions }) => {
+        expect(cold).to.be.a('function');
+        expect(hot).to.be.a('function');
+        expect(flush).to.be.a('function');
+        expect(expectObservable).to.be.a('function');
+        expect(expectSubscriptions).to.be.a('function');
+
+        const obs1 = cold('-a-c-e|');
+        const obs2 = hot('-^-b-d-f|');
+        const output = merge(obs1, obs2);
+        const expected =  '-abcdef|';
+
+        expectObservable(output).toBe(expected);
+        expectSubscriptions(obs1.subscriptions).toBe('^-----!');
+        expectSubscriptions(obs2.subscriptions).toBe('^------!');
+      });
+    });
+
+    it('should make operators that use AsyncScheduler automatically use TestScheduler for actual scheduling', () => {
+      const testScheduler = new TestScheduler(assertDeepEquals);
+
+      testScheduler.run(({ cold, expectObservable }) => {
+        const output = cold('-a-b-(c|)').pipe(debounceTime(20), delay(10));
+        const expected =    '------(c|)';
+        expectObservable(output).toBe(expected);
+      });
+    });
+
+    it('should flush automatically', () => {
+      const testScheduler = new TestScheduler((actual, expected) => {
+        expect(actual).deep.equal(expected);
+      });
+      testScheduler.run(({ cold, expectObservable }) => {
+        const output = cold('-a-b-(c|)').pipe(debounceTime(20), delay(10));
+        const expected = '------(c|)';
+        expectObservable(output).toBe(expected);
+
+        expect(testScheduler['flushTests'].length).to.equal(1);
+        expect(testScheduler['actions'].length).to.equal(1);
+      });
+
+      expect(testScheduler['flushTests'].length).to.equal(0);
+      expect(testScheduler['actions'].length).to.equal(0);
+    });
+
+    it('should support explicit flushing', () => {
+      const testScheduler = new TestScheduler(assertDeepEquals);
+
+      testScheduler.run(({ cold, expectObservable, flush }) => {
+        const output = cold('-a-b-(c|)').pipe(debounceTime(20), delay(10));
+        const expected = '------(c|)';
+        expectObservable(output).toBe(expected);
+
+        expect(testScheduler['flushTests'].length).to.equal(1);
+        expect(testScheduler['actions'].length).to.equal(1);
+
+        flush();
+
+        expect(testScheduler['flushTests'].length).to.equal(0);
+        expect(testScheduler['actions'].length).to.equal(0);
+      });
+
+      expect(testScheduler['flushTests'].length).to.equal(0);
+      expect(testScheduler['actions'].length).to.equal(0);
+    });
+
+    it('should pass-through return values, e.g. Promises', (done) => {
+      const testScheduler = new TestScheduler(assertDeepEquals);
+
+      testScheduler.run(() => {
+        return Promise.resolve('foo');
+      }).then(value => {
+        expect(value).to.equal('foo');
+        done();
       });
     });
   });
