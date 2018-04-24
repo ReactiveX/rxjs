@@ -9,9 +9,16 @@
 
 [![Selenium Test Status](https://saucelabs.com/browser-matrix/rxjs5.svg)](https://saucelabs.com/u/rxjs5)
 
-# RxJS 6 Beta
+# RxJS 6 Stable
 
-## FOR V 5.X PLEASE GO TO [STABLE BRANCH](https://github.com/ReactiveX/rxjs/tree/stable)
+### MIGRATION AND RELEASE INFORMATION:
+
+Find out how up update to v6, **automatically update your TypeScript code**, and more!
+
+- [Current home is a Google Doc](https://docs.google.com/document/d/12nlLt71VLKb-z3YaSGzUfx6mJbc34nsMXtByPUN35cg/edit)
+- [Future home is MIGRATION.md](./MIGRATION.md)
+
+### FOR V 5.X PLEASE GO TO [THE 5.0 BRANCH](https://github.com/ReactiveX/rxjs/tree/stable)
 
 Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Extensions/RxJS](https://github.com/Reactive-Extensions/RxJS) and is the latest production-ready version of RxJS. This rewrite is meant to have better performance, better modularity, better debuggable call stacks, while staying mostly backwards compatible, with some breaking changes that reduce the API surface.
 
@@ -26,7 +33,7 @@ Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Exten
 ## Versions In This Repository
 
 - [master](https://github.com/ReactiveX/rxjs/commits/master) - This all of the current, unreleased work, which is against v6 of RxJS right now
-- [stable](https://github.com/ReactiveX/rxjs/commits/stable) - This is the branch for the latest version you'd get if you do `npm install rxjs`, (currently this is 5.5)
+- [stable](https://github.com/ReactiveX/rxjs/commits/stable) - This is the branch for the latest version you'd get if you do `npm install rxjs`
 
 ## Important
 
