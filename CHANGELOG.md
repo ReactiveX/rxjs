@@ -1,3 +1,33 @@
+<a name="6.0.0"></a>
+# [6.0.0](https://github.com/ReactiveX/RxJS/compare/6.0.0-uncanny-rc.7...6.0.0) (2018-04-20)
+
+
+### Bug Fixes
+
+* **build:** Add test:fast script to improve dev/test cycle ([#3563](https://github.com/ReactiveX/RxJS/issues/3563)) ([d19f69d](https://github.com/ReactiveX/RxJS/commit/d19f69d))
+* Only have a single watch task ([e25dd4d](https://github.com/ReactiveX/RxJS/commit/e25dd4d))
+* Remove watch script mentions ([c87f0d6](https://github.com/ReactiveX/RxJS/commit/c87f0d6))
+* Rename the watch:fast to watch:test and have it drive the main test script on change ([bda356d](https://github.com/ReactiveX/RxJS/commit/bda356d))
+* **websocket:** no longer throws errors in operators applied to it ([#3577](https://github.com/ReactiveX/RxJS/issues/3577)) ([cb38ddf](https://github.com/ReactiveX/RxJS/commit/cb38ddf))
+
+
+### Code Refactoring
+
+* **webSocket:** rename back to webSocket ala 5.0 ([#3590](https://github.com/ReactiveX/RxJS/issues/3590)) ([d5658fe](https://github.com/ReactiveX/RxJS/commit/d5658fe))
+
+
+### BREAKING CHANGES
+
+* **webSocket:** UNBREAKING websocket to be named `webSocket` again, just like it was in 5.0. Now you should import from `rxjs/webSocket`
+
+* refactor(webSocket): update tsconfig files
+
+* refactor(webSocket): update ./make-packages.js
+
+* refactor(webSocket): update webSocket for systemjs
+
+
+
 <a name="6.0.0-uncanny-rc.7"></a>
 # [6.0.0-uncanny-rc.7](https://github.com/ReactiveX/RxJS/compare/6.0.0-ucandoit-rc.6...v6.0.0-uncanny-rc.7) (2018-04-13)
 
