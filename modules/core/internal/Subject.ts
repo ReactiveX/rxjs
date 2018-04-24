@@ -1,4 +1,4 @@
-import { Observer, FOType, FObsArg } from './types';
+import { Observer, FOType, FObsArg, FObs } from './types';
 import { Observable, sourceAsObservable } from './Observable';
 import { Subscription } from './Subscription';
 
@@ -11,7 +11,13 @@ export interface SubjectConstructor {
 
 export const Subject: SubjectConstructor = (<T>() => {
   let state: any[];
-  let result = ((type: FOType, arg: FObsArg<T>, subs: Subscription) => {
+  let source = subjectSource<T>();
+  return sourceAsSubject<T>(source);
+}) as any;
+
+export function subjectSource<T>(): FObs<T> {
+  let state: any[];
+  return ((type: FOType, arg: FObsArg<T>, subs: Subscription) => {
     switch (type) {
       case FOType.SUBSCRIBE:
         state = (state || []);
@@ -37,14 +43,16 @@ export const Subject: SubjectConstructor = (<T>() => {
       default:
         break;
     }
-  }) as Subject<T>;
+  });
+}
 
-  result = sourceAsObservable(result) as Subject<T>;
-  result.next = next;
-  result.error = error;
-  result.complete = complete;
-  return result;
-}) as any;
+export function sourceAsSubject<T>(source: any): Subject<T> {
+  source = sourceAsObservable(source) as Subject<T>;
+  source.next = next;
+  source.error = error;
+  source.complete = complete;
+  return source;
+}
 
 function next<T>(this: Subject<T>, value: T, subs: Subscription) {
   this(FOType.NEXT, value, subs);
