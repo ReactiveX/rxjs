@@ -14,6 +14,8 @@ export interface BehaviorSubject<T> extends Subject<T> {
 
 export const BehaviorSubject: BehaviorSubjectConstructor = (<T>(initialValue: T) => {
   let value = initialValue;
+  let hasError = false;
+  let error: any;
   const subject = subjectSource<T>();
 
   let result = ((type: FOType, arg: FObsArg<T>, subs: Subscription) => {
@@ -21,12 +23,18 @@ export const BehaviorSubject: BehaviorSubjectConstructor = (<T>(initialValue: T)
       arg(FOType.NEXT, value, subs);
     } else if (type === FOType.NEXT) {
       value = arg;
+    } else if (type === FOType.ERROR) {
+      hasError = true;
+      error = arg;
     }
     subject(type, arg, subs);
   }) as BehaviorSubject<T>;
 
   result = sourceAsSubject(result) as BehaviorSubject<T>;
-  result.getValue = () => value;
+  result.getValue = () => {
+    if (hasError) throw error;
+    return value;
+  };
   return result;
 }) as any;
 

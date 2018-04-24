@@ -22,11 +22,11 @@ describe('BehaviorSubject', () => {
   });
 
   it('should emit the error if subscribed to after an error', () => {
-    const s = new BehaviorSubject(0);
-    s.error(new Error('bad'));
+    const bs = new BehaviorSubject(0);
+    bs.error(new Error('bad'));
 
     let error: any;
-    s.subscribe({
+    bs.subscribe({
       error(err) {
         error = err;
       }
@@ -34,5 +34,22 @@ describe('BehaviorSubject', () => {
 
     expect(error).to.be.an.instanceof(Error);
     expect(error.message).to.equal('bad');
+  });
+
+  describe('getValue', () => {
+    it('should get the current value', () => {
+      const bs = new BehaviorSubject(0);
+      expect(bs.getValue()).to.equal(0);
+      bs.next(1);
+      expect(bs.getValue()).to.equal(1);
+      bs.next(2);
+      expect(bs.getValue()).to.equal(2);
+    });
+
+    it('should throw if an error has happened', () => {
+      const bs = new BehaviorSubject(0);
+      bs.error(new Error('bad'));
+      expect(() => bs.getValue()).to.throw('bad');
+    });
   });
 });
