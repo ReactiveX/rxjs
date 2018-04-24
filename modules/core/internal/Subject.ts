@@ -17,9 +17,15 @@ export const Subject: SubjectConstructor = (<T>() => {
 
 export function subjectSource<T>(): FObs<T> {
   let state: any[];
+  let hasError = false;
+  let error: any;
   return ((type: FOType, arg: FObsArg<T>, subs: Subscription) => {
     switch (type) {
       case FOType.SUBSCRIBE:
+        if (hasError) {
+          arg(FOType.ERROR, error, subs);
+          return;
+        }
         state = (state || []);
         state.push(arg, subs);
         break;
@@ -31,6 +37,8 @@ export function subjectSource<T>(): FObs<T> {
         }
         break;
       case FOType.ERROR:
+        hasError = true;
+        error = arg;
       case FOType.COMPLETE:
         if (state) {
           while (state.length > 0) {

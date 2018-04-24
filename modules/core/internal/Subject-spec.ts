@@ -31,4 +31,19 @@ describe('Subject', () => {
     expect(results1).to.deep.equal([1, 2, 3, 'done']);
     expect(results2).to.deep.equal([3, 'done']);
   });
+
+  it('should emit the error if subscribed to after an error', () => {
+    const s = new Subject();
+    s.error(new Error('bad'));
+
+    let error: any;
+    s.subscribe({
+      error(err) {
+        error = err;
+      }
+    });
+
+    expect(error).to.be.an.instanceof(Error);
+    expect(error.message).to.equal('bad');
+  });
 });

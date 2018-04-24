@@ -20,4 +20,19 @@ describe('BehaviorSubject', () => {
 
     expect(results).to.deep.equal([0, 1, 2, 'done']);
   });
+
+  it('should emit the error if subscribed to after an error', () => {
+    const s = new BehaviorSubject(0);
+    s.error(new Error('bad'));
+
+    let error: any;
+    s.subscribe({
+      error(err) {
+        error = err;
+      }
+    });
+
+    expect(error).to.be.an.instanceof(Error);
+    expect(error.message).to.equal('bad');
+  });
 });
