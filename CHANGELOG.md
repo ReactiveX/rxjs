@@ -1,3 +1,29 @@
+<a name="6.0.0"></a>
+# [6.0.0](https://github.com/ReactiveX/RxJS/compare/6.0.0-uncanny-rc.7...v6.0.0) (2018-04-24)
+
+
+### Bug Fixes
+
+* **websocket:** no longer throws errors in operators applied to it ([#3577](https://github.com/ReactiveX/RxJS/issues/3577)) ([cb38ddf](https://github.com/ReactiveX/RxJS/commit/cb38ddf))
+
+
+### Code Refactoring
+
+* **webSocket:** rename back to webSocket ala 5.0 ([#3590](https://github.com/ReactiveX/RxJS/issues/3590)) ([d5658fe](https://github.com/ReactiveX/RxJS/commit/d5658fe))
+
+
+### Features
+
+* **testing:** Add testScheduler.run() helper ([2d5b3b2](https://github.com/ReactiveX/RxJS/commit/2d5b3b2))
+* **testing:** testScheduler.run() supports time progression syntax ([9322b7d](https://github.com/ReactiveX/RxJS/commit/9322b7d))
+
+
+### BREAKING CHANGES
+
+* **webSocket:** UNBREAKING websocket to be named `webSocket` again, just like it was in 5.0. Now you should import from `rxjs/webSocket`
+
+
+
 <a name="6.0.0-uncanny-rc.7"></a>
 # [6.0.0-uncanny-rc.7](https://github.com/ReactiveX/RxJS/compare/6.0.0-ucandoit-rc.6...v6.0.0-uncanny-rc.7) (2018-04-13)
 
