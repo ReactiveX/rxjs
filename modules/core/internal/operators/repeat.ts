@@ -8,12 +8,18 @@ export function repeat<T>(count: number): Operation<T, T> {
       if (type === FOType.SUBSCRIBE) {
         let counter = 0;
         let sink: Sink<T>;
-        sink = (t: FOType, v: SinkArg<T>) => {
+        let currentSubs: Subscription;
+
+        sink = (t: FOType, v: SinkArg<T>, subs: Subscription) => {
           switch (t) {
             case FOType.COMPLETE:
               counter++;
               if (counter < count) {
-                source(FOType.SUBSCRIBE, sink, subs);
+                currentSubs.unsubscribe();
+                subs.remove(currentSubs);
+                currentSubs = new Subscription();
+                subs.add(currentSubs);
+                source(FOType.SUBSCRIBE, sink, currentSubs);
               } else {
                 dest(FOType.COMPLETE, undefined, subs);
                 subs.unsubscribe();
@@ -27,7 +33,9 @@ export function repeat<T>(count: number): Operation<T, T> {
           }
         };
 
-        source(FOType.SUBSCRIBE, sink, subs);
+        currentSubs = new Subscription();
+        subs.add(currentSubs);
+        source(FOType.SUBSCRIBE, sink, currentSubs);
       }
     });
 }
