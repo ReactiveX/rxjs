@@ -1,6 +1,6 @@
 # Version 6 Migration Guide
 
-The migration documentation is [temporarily hosted as a Google Doc](https://docs.google.com/document/d/12nlLt71VLKb-z3YaSGzUfx6mJbc34nsMXtByPUN35cg/edit?usp=sharing)
+The migration documentation is [temporarily hosted as a Google Doc](https://docs.google.com/document/d/12nlLt71VLKb-z3YaSGzUfx6mJbc34nsMXtByPUN35cg/preview)
 until we convert it to markdown.
 
 The short version:
@@ -10,4 +10,4 @@ The short version:
 - If you need backwards compat: `npm i -S rxjs-compat`
 
 TypeScript users have options to automatically update their code, to find out more,
-[READ THE DOC](https://docs.google.com/document/d/12nlLt71VLKb-z3YaSGzUfx6mJbc34nsMXtByPUN35cg/edit?usp=sharing)!
+[READ THE DOC](https://docs.google.com/document/d/12nlLt71VLKb-z3YaSGzUfx6mJbc34nsMXtByPUN35cg/preview)!
