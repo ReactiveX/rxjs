@@ -22,9 +22,7 @@ export function share<T>(): Operation<T, T> {
               connection = undefined;
             }
             for (let i = 0; i < copy.length; i += 2) {
-              const sink = copy[i];
-              const subs = copy[i + 1];
-              sink(t, v, subs);
+              copy[i](t, v, copy[i + 1]);
             }
             if (conn){
               conn.unsubscribe();
