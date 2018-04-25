@@ -2,10 +2,9 @@ import { Subscription, SubsCmd } from './Subscription';
 import { expect } from 'chai';
 
 describe('Subscription', () => {
-  it('should be an instanceof Subscription and a function', () => {
+  it('should be an instanceof Subscription', () => {
     const s = new Subscription();
     expect(s).to.be.an.instanceof(Subscription);
-    expect(s).to.be.a('function');
   });
 
   it('should take a teardown function', () => {
@@ -15,15 +14,6 @@ describe('Subscription', () => {
     s.unsubscribe();
     expect(fired).to.be.true;
   });
-
-  it('should executable as a function', () => {
-    let fired = false;
-    const s = new Subscription(() => fired = true);
-    expect(fired).to.be.false;
-    s(SubsCmd.UNSUBSCRIBE);
-    expect(fired).to.be.true;
-  });
-
   it('should add children, and unsub in order', () => {
     const results: number[] = [];
     let i = 0;

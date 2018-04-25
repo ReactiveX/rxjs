@@ -7,15 +7,7 @@ export enum SubsCmd {
   REMOVE = 2,
 }
 
-export interface FSubs {
-  (): void;
-  (type: SubsCmd.UNSUBSCRIBE): void;
-  (type: SubsCmd.ADD, teardowns: Teardown[]): void;
-  (type: SubsCmd.REMOVE, teardowns: Teardown[]): void;
-  (type: SubsCmd, teardowns?: Teardown[]): void;
-}
-
-export interface Subscription extends FSubs {
+export interface Subscription {
   unsubscribe(): void;
   add(...teardowns: Teardown[]): void;
   remove(...teardowns: Teardown[]): void;
@@ -26,69 +18,39 @@ export interface SubscriptionConstructor {
   new(...teardowns: Teardown[]): Subscription;
 }
 
-function executeTeardown(teardown: Teardown) {
-  if (typeof (teardown as SubscriptionLike).unsubscribe === 'function') {
-    (teardown as SubscriptionLike).unsubscribe();
-  } else if (typeof teardown === 'function') {
-    teardown();
-  }
+interface SubscriptionContext {
+  _teardowns: Teardown[];
 }
 
-export const Subscription: SubscriptionConstructor = function (...teardowns: Teardown[]) {
-  let childSubs: (() => void)[];
-  const result = ((cmd: SubsCmd, teardowns?: Teardown[]) => {
-    switch (cmd) {
-      case SubsCmd.ADD:
-        childSubs = (childSubs || []);
-        for (const teardown of teardowns) {
-          if (teardown) {
-            childSubs.push(teardownToFunction(teardown));
-          }
-        }
-        break;
-      case SubsCmd.REMOVE:
-        if (childSubs) {
-          for (const teardown of teardowns) {
-            const i = childSubs.indexOf(teardownToFunction(teardown));
-            if (i > -1) {
-              childSubs.splice(i, 1);
-            }
-          }
-        }
-        break;
-      case SubsCmd.UNSUBSCRIBE:
-      default:
-        if (childSubs) {
-          while (childSubs.length > 0) {
-            childSubs.shift()();
-          }
-        }
-        break;
-    }
-  }) as Subscription;
-
-  if (teardowns.length > 0) {
-    result(SubsCmd.ADD, teardowns);
-  }
-
-  (result as any).__proto__ = Subscription.prototype;
-  result.unsubscribe = unsubscribe;
-  result.add = add;
-  result.remove = remove;
-  return result;
+export const Subscription: SubscriptionConstructor = function Subscription(this: SubscriptionContext, ...teardowns: Teardown[]) {
+  this._teardowns = teardowns;
 } as any;
 
-function unsubscribe(this: FSubs) {
-  this(SubsCmd.UNSUBSCRIBE);
+Subscription.prototype.add = function (...teardowns: Teardown[]) {
+  const { _teardowns } = this;
+  for (let teardown of teardowns) {
+    if (teardown) _teardowns.push(teardown);
+  }
 }
 
-function add(this: FSubs, ...teardowns: Teardown[]): void {
-  this(SubsCmd.ADD, teardowns);
-}
+Subscription.prototype.remove = function (...teardowns: Teardown[]) {
+  const { _teardowns } = this;
+  for (let teardown of teardowns) {
+    if (teardown) {
+      const i = _teardowns.indexOf(teardown);
+      if (i < 0) {
+        _teardowns.splice(i, 1);
+      }
+    }
+  }
+};
 
-function remove(this: FSubs, ...teardowns: Teardown[]): void {
-  this(SubsCmd.REMOVE, teardowns);
-}
+Subscription.prototype.unsubscribe = function () {
+  const { _teardowns } = this;
+  while (_teardowns.length > 0) {
+    teardownToFunction(_teardowns.shift())();
+  }
+};
 
 export function teardownToFunction(teardown: any): () => void {
   if (teardown) {
