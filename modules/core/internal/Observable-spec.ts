@@ -1,6 +1,6 @@
 import { Observable } from './Observable';
 import { expect } from 'chai';
-import { Scheduler } from './types';
+import { Scheduler, FOType } from './types';
 import { Subscription } from './Subscription';
 
 describe('Observable', () => {
@@ -114,13 +114,23 @@ describe('Observable', () => {
       next(v, subscription) {
         results.push(v);
         if (v === 2) subscription.unsubscribe();
-        if (v === 3) {
-          console.log((new Error()).stack);
-        }
       },
       complete() { results.push('done'); },
     });
 
     expect(results).to.deep.equal([1, 2]);
+  });
+
+  it('should call teardown when unsubscribed', () => {
+    let teardowns = 0;
+    const source = new Observable(() => {
+      return () => {
+        teardowns++;
+      };
+    });
+
+    source.subscribe().unsubscribe();
+
+    expect(teardowns).to.equal(1);
   });
 });

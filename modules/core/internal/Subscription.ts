@@ -18,18 +18,26 @@ export interface SubscriptionConstructor {
   new(...teardowns: Teardown[]): Subscription;
 }
 
-interface SubscriptionContext {
+export interface SubscriptionContext {
   _teardowns: Teardown[];
+  _closed: boolean;
 }
 
 export const Subscription: SubscriptionConstructor = function Subscription(this: SubscriptionContext, ...teardowns: Teardown[]) {
   this._teardowns = teardowns;
+  this._closed = false;
 } as any;
 
 Subscription.prototype.add = function (...teardowns: Teardown[]) {
   const { _teardowns } = this;
   for (let teardown of teardowns) {
-    if (teardown) _teardowns.push(teardown);
+    if (teardown) {
+      if (this._closed) {
+        teardownToFunction(teardown)();
+      } else {
+        _teardowns.push(teardown);
+      }
+    }
   }
 }
 
@@ -46,9 +54,12 @@ Subscription.prototype.remove = function (...teardowns: Teardown[]) {
 };
 
 Subscription.prototype.unsubscribe = function () {
-  const { _teardowns } = this;
-  while (_teardowns.length > 0) {
-    teardownToFunction(_teardowns.shift())();
+  if (!this._closed) {
+    this._closed = true;
+    const { _teardowns } = this;
+    while (_teardowns.length > 0) {
+      teardownToFunction(_teardowns.shift())();
+    }
   }
 };
 

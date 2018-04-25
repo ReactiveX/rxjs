@@ -1,41 +1,34 @@
-import { Operation, FOType, Sink, SinkArg } from "../types";
-import { Observable, Subscription } from "../..";
-import { sourceAsObservable } from "../Observable";
+import { Operation, FOType, Sink, SinkArg } from '../types';
+import { sourceAsObservable, Observable } from '../Observable';
+import { RecyclableSubscription } from '../RecyclableSubscription';
+import { Subscription } from '../Subscription';
 
 export function repeat<T>(count: number): Operation<T, T> {
   return (source: Observable<T>) =>
-    sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T>, subs: Subscription) => {
+    sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T>, downstreamSubs: Subscription) => {
       if (type === FOType.SUBSCRIBE) {
         let counter = 0;
-        let sink: Sink<T>;
-        let currentSubs: Subscription;
+        const upstreamSubs = new RecyclableSubscription();
+        downstreamSubs.add(upstreamSubs);
 
-        sink = (t: FOType, v: SinkArg<T>, subs: Subscription) => {
-          switch (t) {
-            case FOType.COMPLETE:
+        let subscribe: () => void;
+        subscribe = () => {
+          source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, _: Subscription) => {
+            if (t === FOType.COMPLETE) {
               counter++;
               if (counter < count) {
-                currentSubs.unsubscribe();
-                subs.remove(currentSubs);
-                currentSubs = new Subscription();
-                subs.add(currentSubs);
-                source(FOType.SUBSCRIBE, sink, currentSubs);
+                upstreamSubs.recycle();
+                subscribe();
               } else {
-                dest(FOType.COMPLETE, undefined, subs);
-                subs.unsubscribe();
+                dest(FOType.COMPLETE, undefined, downstreamSubs);
               }
-              break;
-            case FOType.NEXT:
-            case FOType.ERROR:
-            default:
-              dest(t, v, subs);
-              break;
-          }
+            } else {
+              dest(t, v, downstreamSubs);
+            }
+          }, upstreamSubs);
         };
 
-        currentSubs = new Subscription();
-        subs.add(currentSubs);
-        source(FOType.SUBSCRIBE, sink, currentSubs);
+        subscribe();
       }
     });
 }

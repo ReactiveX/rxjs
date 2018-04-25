@@ -1,32 +1,29 @@
-import { ObservableInput, Operation, FOType, Sink, SinkArg } from "../types";
+import { ObservableInput, Operation, FOType, Sink, SinkArg, Source } from "../types";
 import { Observable, sourceAsObservable } from "../Observable";
 import { Subscription } from "../Subscription";
-import { from } from "../create/from";
+import { fromSource } from "../create/from";
 
 export function catchError<T, R>(handler: (err: any) => ObservableInput<R>): Operation<T, T|R> {
   return (source: Observable<T>) =>
-    sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T|R>, subs: Subscription) => {
+    sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T|R>, downstreamSubs: Subscription) => {
       if (type === FOType.SUBSCRIBE) {
-        source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T|R>, subs: Subscription) => {
-          switch (t) {
-            case FOType.ERROR:
-              let result: Observable<R>;
-              subs.unsubscribe();
-              try {
-                result = from(handler(v));
-              } catch (err) {
-                dest(FOType.ERROR, err, subs);
-                return;
-              }
-              result(FOType.SUBSCRIBE, dest, subs);
-              break;
-            case FOType.NEXT:
-            case FOType.COMPLETE:
-            default:
-              dest(t, v, subs);
-              break;
+        const upstreamSubs = new Subscription();
+        downstreamSubs.add(upstreamSubs);
+        source(type, (t: FOType, v: SinkArg<T>, upstreamSubs: Subscription) => {
+          if (t === FOType.ERROR) {
+            upstreamSubs.unsubscribe();
+            let result: Source<T>;
+            try {
+              result = fromSource(handler(v));
+            } catch (err) {
+              dest(FOType.ERROR, err, downstreamSubs);
+              return;
+            }
+            result(FOType.SUBSCRIBE, dest, downstreamSubs);
+          } else {
+            dest(t, v, downstreamSubs);
           }
-        }, subs);
+        }, upstreamSubs);
       }
     });
 }

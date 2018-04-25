@@ -1,6 +1,7 @@
 import { of } from '../create/of';
 import { repeat } from './repeat';
 import { expect } from 'chai';
+import { Observable } from '../Observable';
 
 describe('repeat', () => {
   it('should repeat and complete', () => {
@@ -15,5 +16,21 @@ describe('repeat', () => {
     });
 
     expect(results).to.deep.equal([1, 2, 1, 2, 1, 2, 'done']);
+  });
+
+  it('should teardown the source between repetitions', () => {
+    let teardowns = 0;
+    const source = new Observable(subscriber => {
+      subscriber.complete();
+      return () => {
+        teardowns++;
+      };
+    });
+
+    source.pipe(
+      repeat(3),
+    ).subscribe();
+
+    return Promise.resolve().then(() => expect(teardowns).to.equal(3))
   });
 });
