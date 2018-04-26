@@ -1,4 +1,4 @@
-let nextHandle = 0;
+let nextHandle = 1;
 
 const tasksByHandle: { [handle: string]: () => void } = {};
 
