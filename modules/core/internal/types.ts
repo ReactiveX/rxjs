@@ -77,6 +77,10 @@ export interface SubscriptionLike {
   unsubscribe(): void;
 }
 
+export interface GroupedObservable<K, T> extends Observable<T> {
+  readonly key: K;
+}
+
 declare global  {
   interface SymbolConstructor {
     observable: symbol;
