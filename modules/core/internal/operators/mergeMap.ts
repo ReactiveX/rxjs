@@ -19,7 +19,6 @@ export function mergeMap<T, R>(
         startNextInner = () => {
           while (buffer.length > 0 && active++ < concurrent) {
             const { outerValue, outerIndex } = buffer.shift();
-            let innerCounter = 0;
             let innerSource: Source<R>;
             try {
               innerSource = fromSource(project(outerValue, outerIndex));
