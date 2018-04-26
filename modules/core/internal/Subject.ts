@@ -28,6 +28,10 @@ export function subjectSource<T>(): FObs<T> {
         }
         state = (state || []);
         state.push(arg, subs);
+        subs.add(() => {
+          const i = state.indexOf(arg);
+          state.splice(i, 2);
+        });
         break;
       case FOType.NEXT:
         if (state) {
