@@ -163,6 +163,18 @@ describe('Observable.prototype.audit', () => {
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
+  it('should mirror source if durations are synchronous observables', () => {
+    const e1 =   hot('abcdefabcdefabcdefabcdefa|');
+    const e1subs =   '^                        !';
+    const e2 =  Rx.Observable.of('one single value');
+    const expected = 'abcdefabcdefabcdefabcdefa|';
+
+    const result = e1.audit(() => e2);
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should raise error as soon as just-throw duration is used', () => {
     const e1 =   hot('----abcdefabcdefabcdefabcdefa|');
     const e1subs =   '^   !                         ';
