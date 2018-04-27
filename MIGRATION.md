@@ -40,7 +40,7 @@ This size increase is exacerbated if you are using a version of Webpack before 4
 
 For a full explanation of what you will have to update in order to remove `rxjs-compat`, see [Dropping the compatibility layer]<a id="drop-compat"></a>. Note also that fully updating your application to v6 may expose existing type errors that were not previously shown. 
 
-{@a breaking-changes}
+<a id="breaking-changes"></a>
 
 ## Breaking changes not covered by rxjs-compat
 
