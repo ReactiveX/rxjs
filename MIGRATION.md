@@ -11,7 +11,7 @@ The overall process can be carried out in stages:
 
 1. Update to the latest version of RxJS 5.5 and ensure that you've fixed any issues caused by bug fixes.
 
-2. Install RxJS v6 along with the [backward-compatibility](#back-compat) package, `rxjs-compat`.
+2. Install RxJS v6 along with the [backward-compatibility](#backwards-compatibility) package, `rxjs-compat`.
 
 3. If your app is affected by the few [breaking changes](#breaking-changes) not covered by `rxjs-compat`, update the affected code according to the instructions provided below.
 
@@ -26,8 +26,6 @@ rxjs-5-to-6-migrate -p [path/to/tsconfig.json]
 
 5. Before RxJS release v7, you will need to remove and replace all use of [deprecated functionality](#deprecated).
 
-{@a back-compat}
-
 ## Backwards compatibility
 
 In order to minimize the impact of the upgrade, RxJS v6 releases with a sibling package,  `rxjs-compat`, which provides a compatibility layer between the v6 and v5 APIs.
@@ -40,7 +38,7 @@ For details about this package, see https://www.npmjs.com/package/rxjs-compat.
 The compatibility package increases the bundle size of your application, which is why we recommend removing it as soon as your application and dependencies have been updated. 
 This size increase is exacerbated if you are using a version of Webpack before 4.0.0. 
 
-For a full explanation of what you will have to update in order to remove `rxjs-compat`, see [Dropping the compatibility layer](@drop-compat). Note also that fully updating your application to v6 may expose existing type errors that were not previously shown. 
+For a full explanation of what you will have to update in order to remove `rxjs-compat`, see [Dropping the compatibility layer]<a id="drop-compat"></a>. Note also that fully updating your application to v6 may expose existing type errors that were not previously shown. 
 
 {@a breaking-changes}
 
