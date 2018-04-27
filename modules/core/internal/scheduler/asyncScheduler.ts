@@ -1,9 +1,12 @@
 import { Subscription } from '../Subscription';
+import { Scheduler } from '../types';
 
-export function asyncScheduler(work?: () => void, delay?: number, subs?: Subscription): number {
-  if (work) {
-    const id = setTimeout(work, delay);
+export const asyncScheduler: Scheduler = {
+  now() {
+    return Date.now();
+  },
+  schedule<T>(work: (state: T) => void, delay: number, state: T, subs: Subscription) {
+    let id = setTimeout(() => work(state), delay);
     subs.add(() => clearTimeout(id));
   }
-  return Date.now();
 }

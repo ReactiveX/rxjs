@@ -1,5 +1,6 @@
 import { Subscription } from './Subscription';
 import { Observable } from './Observable';
+import { Scheduler } from 'dist-compat/typings/compat';
 
 export enum FOType {
   SUBSCRIBE = 0,
@@ -56,8 +57,8 @@ export interface Observer<T> {
 }
 
 export interface Scheduler {
-  (): number;
-  (work: () => void, delay: number, subs: Subscription): number;
+  now(): number;
+  schedule<T>(work: (state: T) => void, delay: number, state: T, subs: Subscription): void;
 }
 
 export type Operation<T, R> = (source: Observable<T>) => Observable<R>;

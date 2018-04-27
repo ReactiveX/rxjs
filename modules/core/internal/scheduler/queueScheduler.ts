@@ -1,27 +1,29 @@
 import { Subscription } from '../Subscription';
 import { asyncScheduler } from './asyncScheduler';
+import { Scheduler } from '../types';
 
-const queue: Array<() => void> = [];
 let flushing = false;
-export function queueScheduler(work?: () => void, delay?: number, subs?: Subscription): number {
-  if (work) {
+const queue: any[] = [];
+export const queueScheduler: Scheduler = {
+  now() { 
+    return Date.now();
+  },
+  schedule<T>(work: (state: T) => void, delay: number, state: T, subs: Subscription) {
     if (delay > 0) {
-      asyncScheduler(() => queueScheduler(work, 0, subs), delay, subs);
+      return asyncScheduler.schedule(work, delay, state, subs);
     }
+    let stop = false;
     subs.add(() => {
       const i = queue.indexOf(work);
-      if (i !== -1) {
-        queue.splice(i, 1);
-      }
+      queue.splice(i, 2);
     });
-    queue.push(work);
+    queue.push(work, state);
     if (!flushing) {
       flushing = true;
       while (queue.length > 0) {
-        queue.shift();
+        queue.shift()(queue.shift());
       }
       flushing = false;
     }
   }
-  return Date.now();
 }

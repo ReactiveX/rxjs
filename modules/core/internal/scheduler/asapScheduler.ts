@@ -3,22 +3,21 @@ import { Subscription } from '../Subscription';
 import { asyncScheduler } from './asyncScheduler';
 
 const p = Promise.resolve();
-export function asapScheduler(work?: () => void, delay?: number, subs?: Subscription): number {
-  if (work) {
+
+export const asapScheduler: Scheduler = {
+  now() {
+    return Date.now();
+  },
+  schedule<T>(work: (state: T) => void, delay: number, state: T, subs: Subscription) {
     if (delay > 0) {
-      asyncScheduler(() => asapScheduler(work, 0, subs), delay, subs);
+      return asyncScheduler.schedule(work, delay, state, subs);
     }
-
     let stop = false;
-    subs.add(() => {
-      stop = true;
-    });
-
+    subs.add(() => stop = true);
     p.then(() => {
       if (!stop) {
-        work();
+        work(state);
       }
     });
   }
-  return Date.now();
 }
