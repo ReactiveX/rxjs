@@ -54,7 +54,7 @@ Synchronous error handling (placing a call to the `Observable.subscribe()` metho
 
 If you are defining your own prototype operators in TypeScript and modifying the `Observable` namespace, you will need to change your operator code in order to get TypeScript to compile. See [examples](#ex-2). This is a relatively rare case, likely to affect only advanced TypeScript developers. 
 
-{@a ex-1}
+<a id="ex-1"></a>
 __Replacing synchronous error handling__
 The following example shows code that subscribes to an observable within a `try/catch` block, in order to handle errors synchronously:
 
@@ -92,7 +92,7 @@ it('should emit an error on subscription', (done) => {
 });
 ```
 
-{@a ex-2}
+<a id="ex-2"></a>
 __TypeScript user-defined prototype operators__
 
 The following example shows the kind of changes you will need to make in user-defined prototype operators, in order for the TypeScript to compile correctly.
@@ -131,7 +131,7 @@ source$.pipe(
 .subscribe();
 ```
 
-{@a drop-compat}
+<a id="drop-compat"></a>
 
 ## Dropping the compatibility layer
 
@@ -294,7 +294,7 @@ Result selectors are a feature not many people use (in many cases they weren�t
 
 See [Result Selector Migration](#result-selectors) for details of which operators are affected and how to move the result-selection functions out of the operator call.
 
-{@a deprecations}
+<a id="deprecations"></a>
 
 ## Deprecations
 
@@ -320,7 +320,7 @@ Before RxJS releases v7, you will need to remove and replace all use of deprecat
 
 See [Result Selector Migration](#result-selectors) for details of which operators are affected and how to move the result-selection functions out of the operator call.
 
-{@a pipe-syntax}
+<a id="pipe-syntax"></a>
 
 ### HowTo: Convert to pipe syntax
 
@@ -365,7 +365,7 @@ source.pipe(
 ).subscribe(printResult); 
 ```
 
-{@a dep-methods}
+<a id="dep-methods"></a>
 
 ### HowTo: Convert deprecated methods
 
@@ -448,7 +448,7 @@ import { zip } from 'rxjs';
 zip(a$, b$, c$); 
 ```
 
-{@a result-selectors}
+<a id="result-selectors"></a>
 
 ### HowTo: Result selector migration
 
