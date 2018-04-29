@@ -105,6 +105,7 @@ export class MergeMapOperator<T, R> implements Operator<T, R> {
 export class MergeMapSubscriber<T, R> extends OuterSubscriber<T, R> {
   private hasCompleted: boolean = false;
   private buffer: T[] = [];
+  private queue: T[] = [];
   private active: number = 0;
   protected index: number = 0;
 
@@ -154,10 +155,17 @@ export class MergeMapSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   notifyComplete(innerSub: Subscription): void {
     const buffer = this.buffer;
+    const queue = this.queue;
     this.remove(innerSub);
     this.active--;
     if (buffer.length > 0) {
-      this._next(buffer.shift());
+      queue.push(buffer.shift());
+      if (queue.length === 1) {
+        while (queue.length > 0) {
+          this._next(queue[0]);
+          queue.shift();
+        }
+      }
     } else if (this.active === 0 && this.hasCompleted) {
       this.destination.complete();
     }
