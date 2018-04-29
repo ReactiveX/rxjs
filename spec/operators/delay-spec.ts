@@ -1,5 +1,5 @@
-import { Observable, timer } from 'rxjs';
-import { delay, repeatWhen, skip, take, tap, finalize } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { delay, repeatWhen, skip, take, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
@@ -147,12 +147,12 @@ describe('Observable.prototype.delay', () => {
     expectObservable(result).toBe(expected);
   });
 
-  it('should unsubscribe scheduled action when result is unsubscribed explicitly', () => {
+  it('should unsubscribe scheduled actions after execution', () => {
     let subscribeSpy: any = null;
     const counts: number[] = [];
 
     const e1 =       cold('a|');
-    const expected =     '--a-(a|)';
+    const expected =      '--a-(a|)';
     const duration = time('-|');
     const result = e1.pipe(
       repeatWhen(notifications => {
