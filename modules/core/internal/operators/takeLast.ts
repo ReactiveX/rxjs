@@ -3,7 +3,8 @@ import { Observable, sourceAsObservable } from "../Observable";
 import { Subscription } from "../Subscription";
 
 export function takeLast<T>(count: number = 1): Operation<T, T> {
-  return (source: Observable<T>) =>
+  count = Math.max(count, 0);
+  return(source: Observable<T>) =>
     sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T>, subs: Subscription) => {
       if (type === FOType.SUBSCRIBE) {
         const buffer: T[] = [];

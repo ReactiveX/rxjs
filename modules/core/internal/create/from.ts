@@ -1,26 +1,31 @@
-import { ObservableInput, Source, FOType, Sink, ObservableInteroperable, ObservableLike } from "../types";
+import { ObservableInput, Source, FOType, Sink, InteropObservable, ObservableLike } from "../types";
 import { Observable, sourceAsObservable } from "../Observable";
 import { Subscription } from "../Subscription";
 import { ofSource } from "./of";
 import { symbolObservable } from "../util/symbolObservable";
 import { symbolAsyncIterator } from '../util/symbolAsyncIterator';
+import { isArrayLike } from "../util/isArrayLike";
+import { isPromiseLike } from "../util/isPromiseLike";
+import { isIterable } from "../util/isIterable";
+import { isInteropObservable } from "../util/isInteropObservable";
+import { isAsyncIterable } from "../util/isAsyncIterable";
 
 export function from<T>(input: ObservableInput<T>): Observable<T> {
   return sourceAsObservable(fromSource(input));
 }
 
-export function fromSource<T>(input: any): Source<T> {
+export function fromSource<T>(input: ObservableInput<T>): Source<T> {
   if (input instanceof Observable) {
     return input;
-  } else if (typeof input.then === 'function') {
+  } else if (isPromiseLike(input)) {
     return promiseSource(input);
   } else if (isArrayLike(input)) {
     return ofSource(input);
-  } else if (typeof input[Symbol.iterator] === 'function') {
+  } else if (isIterable(input)) {
     return iterableSource(input);
-  } else if (typeof input[symbolObservable] === 'function') {
+  } else if (isInteropObservable(input)) {
     return symbolObservableSource(input);
-  } else if (typeof input[symbolAsyncIterator] === 'function') {
+  } else if (isAsyncIterable(input)) {
     return asyncIterableSource(input);
   }
   throw new Error('Unable to convert from input to Observable source');
@@ -60,7 +65,7 @@ function iterableSource<T>(iterable: Iterable<T>): Source<T> {
   };
 }
 
-function symbolObservableSource<T>(input: ObservableInteroperable<T>) {
+function symbolObservableSource<T>(input: InteropObservable<T>) {
   return (type: FOType.SUBSCRIBE, sink: Sink<T>, subs: Subscription) => {
     if (type === FOType.SUBSCRIBE) {
       const obs: ObservableLike<T> = input[symbolObservable]();
@@ -105,8 +110,4 @@ function asyncIterableSource<T>(input: AsyncIterable<T>) {
       getNextValue();
     }
   };
-}
-
-function isArrayLike(obj: any) {
-  return obj && typeof obj.length === 'number';
 }

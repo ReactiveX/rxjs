@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { take } from '../operators/take';
 import { Subscription } from '../Subscription';
 import { symbolObservable } from '../util/symbolObservable';
-import { Observer, ObservableInteroperable } from '../types';
+import { Observer, InteropObservable } from '../types';
 import { symbolAsyncIterator } from '../util/symbolAsyncIterator';
 
 describe('from', () => {
@@ -211,7 +211,7 @@ describe('from', () => {
             }
           }
         }
-      } as ObservableInteroperable<number>;
+      } as InteropObservable<number>;
 
       from<number>(obj).subscribe({
         next(value) { results.push(value); },

@@ -6,7 +6,7 @@ export function of<T>(...values: T[]): Observable<T> {
   return sourceAsObservable(ofSource(values));
 }
 
-export function ofSource<T>(values: T[]): Source<T> {
+export function ofSource<T>(values: ArrayLike<T>): Source<T> {
   return (type: FOType, sink: Sink<T>, subs: Subscription) => {
     if (type === FOType.SUBSCRIBE) {
       let closed = false;

@@ -67,12 +67,12 @@ export interface ObservableLike<T> {
   subscribe(observer: Observer<T>): SubscriptionLike;
 }
 
-export interface ObservableInteroperable<T> {
+export interface InteropObservable<T> {
   [Symbol.observable](): ObservableLike<T>;
 }
 
 export type ObservableInput<T> = Observable<T> | ObservableLike<T> | PromiseLike<T> |
-  Array<T> | ArrayLike<T> | ObservableInteroperable<T> | AsyncIterable<T>;
+  Array<T> | ArrayLike<T> | InteropObservable<T> | AsyncIterable<T>;
 
 export interface SubscriptionLike {
   unsubscribe(): void;
