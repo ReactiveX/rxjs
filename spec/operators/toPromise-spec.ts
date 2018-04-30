@@ -12,6 +12,13 @@ describe('Observable.prototype.toPromise', () => {
     });
   });
 
+  it('should convert an empty Observable to a promise of undefined', (done: MochaDone) => {
+    Observable.empty().toPromise(Promise).then((x) => {
+      expect(x).to.be.undefined;
+      done();
+    });
+  });
+
   it('should handle errors properly', (done: MochaDone) => {
     Observable.throw('bad').toPromise(Promise).then(() => {
       done(new Error('should not be called'));
