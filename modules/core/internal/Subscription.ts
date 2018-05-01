@@ -1,5 +1,6 @@
 import { Teardown, SubscriptionLike } from './types';
 import { noop } from './util/noop';
+import { isSubscription } from './util/isSubscription';
 
 export enum SubsCmd {
   UNSUBSCRIBE = 0,
@@ -35,6 +36,9 @@ Subscription.prototype.add = function (...teardowns: Teardown[]) {
       if (this._closed) {
         teardownToFunction(teardown)();
       } else {
+        if (isSubscription(teardown)) {
+          teardown.add(() => this.remove(teardown));
+        }
         _teardowns.push(teardown);
       }
     }
@@ -46,7 +50,7 @@ Subscription.prototype.remove = function (...teardowns: Teardown[]) {
   for (let teardown of teardowns) {
     if (teardown) {
       const i = _teardowns.indexOf(teardown);
-      if (i < 0) {
+      if (i >= 0) {
         _teardowns.splice(i, 1);
       }
     }
