@@ -46,7 +46,7 @@ export { isFunction } from '../internal/util/isFunction';
 export { isIterable } from '../internal/util/isIterable';
 export { isNumeric } from '../internal/util/isNumeric';
 export { isObject } from '../internal/util/isObject';
-export { isObservable } from '../internal/util/isObservable';
+export { isInteropObservable as isObservable } from '../internal/util/isInteropObservable';
 export { isPromise } from '../internal/util/isPromise';
 export { isScheduler } from '../internal/util/isScheduler';
 export { noop } from '../internal/util/noop';
