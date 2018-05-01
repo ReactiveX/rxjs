@@ -29,8 +29,7 @@ describe('takeLast', () => {
     expect(results).to.deep.equal([7, 'done']);
   });
 
-  // TODO: This really needs a marbles test
-  it.only('should wait and complete for counts less than one', () => {
+  it('should wait and complete for counts less than one', () => {
     const results: any[] = [];
     of(1, 2, 3, 4, 5, 6, 7).pipe(
       takeLast(-1),
