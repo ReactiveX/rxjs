@@ -1,3 +1,3 @@
 export function isArrayLike<T>(obj: any): obj is ArrayLike<T> {
-  return obj && typeof obj.length === 'number';
+  return obj != null && typeof obj !== 'function' && typeof obj.length === 'number';
 }
