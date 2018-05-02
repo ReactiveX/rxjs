@@ -1,7 +1,8 @@
-import { Subject, sourceAsSubject, subjectSource } from "./Subject";
+import { Subject, subjectSource } from "./Subject";
 import { FOType, FObsArg } from "./types";
 import { Subscription } from "./Subscription";
 import { sourceAsObservable } from "./Observable";
+import { sourceAsSubject } from "./util/subjectBase";
 
 
 export interface BehaviorSubjectConstructor {
