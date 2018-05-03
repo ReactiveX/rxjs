@@ -1,9 +1,12 @@
-import * as Rx from 'rxjs/Rx';
+import { Observable } from 'rxjs';
+import { delay, repeatWhen, skip, take, tap } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
+import * as sinon from 'sinon';
+import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
 
 declare const asDiagram: Function;
-declare const rxTestScheduler: Rx.TestScheduler;
-const Observable = Rx.Observable;
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {delay} */
 describe('Observable.prototype.delay', () => {
@@ -140,6 +143,35 @@ describe('Observable.prototype.delay', () => {
     const expected = '-';
 
     const result = e1.delay(t, rxTestScheduler);
+
+    expectObservable(result).toBe(expected);
+  });
+
+  it('should unsubscribe scheduled actions after execution', () => {
+    let subscribeSpy: any = null;
+    const counts: number[] = [];
+
+    const e1 =       cold('a|');
+    const expected =      '--a-(a|)';
+    const duration = time('-|');
+    const result = e1.pipe(
+      repeatWhen(notifications => {
+        const delayed = notifications.pipe(delay(duration, rxTestScheduler));
+        subscribeSpy = sinon.spy(delayed['source'], 'subscribe');
+        return delayed;
+      }),
+      skip(1),
+      take(2),
+      tap({
+        next() {
+          const [[subscriber]] = subscribeSpy.args;
+          counts.push(subscriber._subscriptions.length);
+        },
+        complete() {
+          expect(counts).to.deep.equal([1, 1]);
+        }
+      })
+    );
 
     expectObservable(result).toBe(expected);
   });
