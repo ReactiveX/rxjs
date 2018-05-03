@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { isPromise } from '../util/isPromise';
 import { isArrayLike } from '../util/isArrayLike';
-import { isObservable } from '../util/isObservable';
+import { isInteropObservable } from '../util/isInteropObservable';
 import { isIterable } from '../util/isIterable';
 import { fromArray } from './fromArray';
 import { fromPromise } from './fromPromise';
@@ -21,7 +21,7 @@ export function from<T>(input: ObservableInput<T>, scheduler?: SchedulerLike): O
   }
 
   if (input != null) {
-    if (isObservable(input)) {
+    if (isInteropObservable(input)) {
       return fromObservable(input, scheduler);
     } else if (isPromise(input)) {
       return fromPromise(input, scheduler);

@@ -34,7 +34,7 @@ export interface SubscriptionLike extends Unsubscribable {
   readonly closed: boolean;
 }
 
-export type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<never> | PromiseLike<T> | ObservableLike<T>;
+export type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<never> | PromiseLike<T> | InteropObservable<T>;
 
 /** OBSERVABLE INTERFACES */
 
@@ -45,7 +45,11 @@ export interface Subscribable<T> {
 }
 
 export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T> | Iterable<T>;
-export type ObservableLike<T> = { [Symbol.observable]: () => Subscribable<T>; };
+
+/** @deprecated use {@link InteropObservable } */
+export type ObservableLike<T> = InteropObservable<T>;
+
+export type InteropObservable<T> = { [Symbol.observable]: () => Subscribable<T>; };
 
 /** OBSERVER INTERFACES */
 

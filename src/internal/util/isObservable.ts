@@ -1,7 +1,10 @@
-import { ObservableLike } from '../types';
-import { observable as Symbol_observable } from '../symbol/observable';
+import { Observable } from '../Observable';
+import { ObservableInput } from '../types';
 
-/** Identifies an input as being Observable (but not necessary an Rx Observable) */
-export function isObservable(input: any): input is ObservableLike<any> {
-  return input && typeof input[Symbol_observable] === 'function';
+/**
+ * Tests to see if the object is an RxJS {@link Observable}
+ * @param obj the object to test
+ */
+export function isObservable<T>(obj: any): obj is Observable<T> {
+  return obj && obj instanceof Observable || (typeof obj.lift === 'function' && typeof obj.subscribe === 'function');
 }

@@ -2,9 +2,9 @@ import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { observable as Symbol_observable } from '../symbol/observable';
 import { subscribeToObservable } from '../util/subscribeToObservable';
-import { ObservableLike, SchedulerLike, Subscribable } from '../types';
+import { InteropObservable, SchedulerLike, Subscribable } from '../types';
 
-export function fromObservable<T>(input: ObservableLike<T>, scheduler: SchedulerLike) {
+export function fromObservable<T>(input: InteropObservable<T>, scheduler: SchedulerLike) {
   if (!scheduler) {
     return new Observable<T>(subscribeToObservable(input));
   } else {
