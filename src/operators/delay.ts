@@ -96,6 +96,7 @@ class DelaySubscriber<T> extends Subscriber<T> {
       const delay = Math.max(0, queue[0].time - scheduler.now());
       this.schedule(state, delay);
     } else {
+      this.unsubscribe();
       source.active = false;
     }
   }
