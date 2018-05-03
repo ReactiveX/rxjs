@@ -1,3 +1,19 @@
+<a name="6.1.0"></a>
+# [6.1.0](https://github.com/ReactiveX/RxJS/compare/6.0.0...6.1.0) (2018-05-03)
+
+
+### Bug Fixes
+
+* **audit:** will not crash if duration is synchronous ([#3608](https://github.com/ReactiveX/RxJS/issues/3608)) ([76b7e27](https://github.com/ReactiveX/RxJS/commit/76b7e27)), closes [#2743](https://github.com/ReactiveX/RxJS/issues/2743)
+* **delay:** fix memory leak ([#3605](https://github.com/ReactiveX/RxJS/issues/3605)) ([96f05b0](https://github.com/ReactiveX/RxJS/commit/96f05b0))
+
+
+### Features
+
+* **isObservable:** a new method for checking to see if an object is an RxJS Observable ([edb33e5](https://github.com/ReactiveX/RxJS/commit/edb33e5))
+
+
+
 <a name="6.0.0"></a>
 # [6.0.0](https://github.com/ReactiveX/RxJS/compare/6.0.0-uncanny-rc.7...v6.0.0) (2018-04-24)
 
