@@ -1,5 +1,5 @@
 import { Subject } from "./Subject";
-import { FOType, FObsArg, SinkArg } from "./types";
+import { FOType, FObsArg, SinkArg, Sink } from "./types";
 import { Subscription } from "./Subscription";
 import { sourceAsObservable } from "./Observable";
 import { subjectBaseSource, sourceAsSubject } from "./util/subjectBase";
@@ -23,19 +23,26 @@ export const ReplaySubject: ReplaySubjectConstructor =
   const buffer: ReplayValue<T>[] = [];
   let closed = false;
 
+  const processBuffer = <T>(now: number, sink: Sink<T>, subs: Subscription) => {
+    for (let i = 0; i < buffer.length; i++) {
+      const { type, arg, timeout } = buffer[i];
+      if (timeout < now) {
+        buffer.splice(i);
+        break;
+      }
+      if (sink) {
+        sink(type, arg, subs);
+      }
+    }
+  };
+
   let result = ((type: FOType, arg: FObsArg<T>, subs: Subscription) => {
     base(type, arg, subs);
     const now = Date.now();
     if (type === FOType.SUBSCRIBE) {
-      for (let i = 0; i < buffer.length; i++) {
-        const { type: t, arg: a, timeout } = buffer[i];
-        if (timeout < now) {
-          buffer.splice(i);
-          break;
-        }
-        base(t, a, subs);
-      }
+      processBuffer(now, base, subs);
     } else {
+      processBuffer(now, null, null);
       if (!closed) {
         buffer.push({ type, arg, timeout: now + windowTime });
       }
