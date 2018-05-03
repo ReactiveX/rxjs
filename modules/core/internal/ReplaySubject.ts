@@ -23,26 +23,22 @@ export const ReplaySubject: ReplaySubjectConstructor =
   const buffer: ReplayValue<T>[] = [];
   let closed = false;
 
-  const processBuffer = <T>(now: number, sink: Sink<T>, subs: Subscription) => {
+  let result = ((type: FOType, arg: FObsArg<T>, subs: Subscription) => {
+    base(type, arg, subs);
+    const now = Date.now();
+
     for (let i = 0; i < buffer.length; i++) {
-      const { type, arg, timeout } = buffer[i];
+      const { type: t, arg: a, timeout } = buffer[i];
       if (timeout < now) {
         buffer.splice(i);
         break;
       }
-      if (sink) {
-        sink(type, arg, subs);
+      if (type === FOType.SUBSCRIBE) {
+        base(t, a, subs);
       }
     }
-  };
 
-  let result = ((type: FOType, arg: FObsArg<T>, subs: Subscription) => {
-    base(type, arg, subs);
-    const now = Date.now();
-    if (type === FOType.SUBSCRIBE) {
-      processBuffer(now, base, subs);
-    } else {
-      processBuffer(now, null, null);
+    if (type != FOType.SUBSCRIBE) {
       if (!closed) {
         buffer.push({ type, arg, timeout: now + windowTime });
       }
