@@ -1,10 +1,12 @@
 import { expect } from 'chai';
 import { mergeMap, map } from 'rxjs/operators';
-import { Observable, from, of } from 'rxjs';
+import { Observable, Observer, from, of, range, timer } from 'rxjs';
+import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare const type: Function;
 declare const asDiagram: Function;
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {mergeMap} */
 describe('mergeMap', () => {
@@ -710,6 +712,27 @@ describe('mergeMap', () => {
     });
 
     expect(completed).to.be.true;
+  });
+
+  it('should avoid re-enterancy with buffered observables that complete synchronously', () => {
+
+    let depth = 0;
+    let reentered = false;
+
+    const COMPLETED = Observable.create((observer: Observer<any>) => {
+      if (++depth > 1) {
+        reentered = true;
+      }
+      observer.complete();
+      --depth;
+    });
+
+    range(0, 3).pipe(
+      mergeMap(value => (value === 0) ? timer(0, rxTestScheduler) : COMPLETED, 1)
+    ).subscribe();
+
+    rxTestScheduler.flush();
+    expect(reentered).to.be.false;
   });
 
   type('should support type signatures', () => {
