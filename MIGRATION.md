@@ -1,7 +1,7 @@
 # RxJS v5.x to v6 Update Guide
 
 RxJS v6 has arrived! While this is a major version change (from 5.x to 6.x), 
-we�ve put in a lot of work to keep the hard breaking changes to a minimum. 
+we've put in a lot of work to keep the hard breaking changes to a minimum. 
 In most cases, this allows application and library developers to update incrementally 
 and use RxJS v6 without any modifications to their code.
 
@@ -286,7 +286,7 @@ All observable classes ([https://github.com/ReactiveX/rxjs/tree/5.5.8/src/observ
 
 ### Result selectors removed or deprecated
 
-Result selectors are a feature not many people use (in many cases they weren�t documented), but were adding significant bloat to the codebase. If you use them, you will need to replace the discontinued `resultSelector` parameter with external result-selection code.
+Result selectors are a feature not many people use (in many cases they weren't documented), but were adding significant bloat to the codebase. If you use them, you will need to replace the discontinued `resultSelector` parameter with external result-selection code.
 
 * The `resultSelector` parameter for `first()` and `last()` are *removed* in v6. If these are used, the code must be updated to run without the `rxjs-compat` package.
 
@@ -376,7 +376,7 @@ Observable.if(test, a$, b$);
 
 // becomes
 
-iif(test, a$, b$);</td>
+iif(test, a$, b$);
 ``` 
 
 **Observable.error > throwError()**
