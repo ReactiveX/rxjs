@@ -1,13 +1,12 @@
-import * as Rx from 'rxjs/Rx';
 import { expect } from 'chai';
 import { hot, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { Subject, of } from 'rxjs';
+import { bufferCount, mergeMap } from 'rxjs/operators';
 
 declare function asDiagram(arg: string): Function;
 
-const Observable = Rx.Observable;
-
 /** @test {bufferCount} */
-describe('Observable.prototype.bufferCount', () => {
+describe('bufferCount operator', () => {
   asDiagram('bufferCount(3,2)')('should emit buffers at intervals', () => {
     const values = {
       v: ['a', 'b', 'c'],
@@ -19,7 +18,7 @@ describe('Observable.prototype.bufferCount', () => {
     const e1 =   hot('--a--b--c--d--e--f--g--h--i--|');
     const expected = '--------v-----w-----x-----y--(z|)';
 
-    expectObservable(e1.bufferCount(3, 2)).toBe(expected, values);
+    expectObservable(e1.pipe(bufferCount(3, 2))).toBe(expected, values);
   });
 
   it('should emit buffers at buffersize of intervals if not specified', () => {
@@ -31,15 +30,15 @@ describe('Observable.prototype.bufferCount', () => {
     const e1 =   hot('--a--b--c--d--e--f--|');
     const expected = '-----x-----y-----z--|';
 
-    expectObservable(e1.bufferCount(2)).toBe(expected, values);
+    expectObservable(e1.pipe(bufferCount(2))).toBe(expected, values);
   });
 
   it('should buffer properly (issue #2062)', () => {
-    const item$ = new Rx.Subject();
-    const results = [];
-    item$
-      .bufferCount(3, 1)
-      .subscribe(value => {
+    const item$ = new Subject();
+    const results: any[] = [];
+    item$.pipe(
+      bufferCount(3, 1)
+    ).subscribe(value => {
         results.push(value);
 
         if (value.join() === '1,2,3') {
@@ -58,7 +57,7 @@ describe('Observable.prototype.bufferCount', () => {
     const e1 =   hot('--a--b--c--d--|');
     const expected = '--------------(x|)';
 
-    expectObservable(e1.bufferCount(5)).toBe(expected, {x: ['a', 'b', 'c', 'd']});
+    expectObservable(e1.pipe(bufferCount(5))).toBe(expected, {x: ['a', 'b', 'c', 'd']});
   });
 
   it('should emit full buffer then last partial buffer if source completes', () => {
@@ -66,7 +65,7 @@ describe('Observable.prototype.bufferCount', () => {
     const e1subs =      '^             !';
     const expected =    '--------y-----(z|)';
 
-    expectObservable(e1.bufferCount(3)).toBe(expected, {y: ['b', 'c', 'd'], z: ['e']});
+    expectObservable(e1.pipe(bufferCount(3))).toBe(expected, {y: ['b', 'c', 'd'], z: ['e']});
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -80,7 +79,7 @@ describe('Observable.prototype.bufferCount', () => {
     const subs =     '^                 !           ';
     const expected = '--------v-----w----           ';
 
-    expectObservable(e1.bufferCount(3, 2), unsub).toBe(expected, values);
+    expectObservable(e1.pipe(bufferCount(3, 2)), unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -94,10 +93,11 @@ describe('Observable.prototype.bufferCount', () => {
     const expected = '--------v-----w----           ';
     const unsub =    '                  !           ';
 
-    const result = e1
-      .mergeMap((x: any) => Observable.of(x))
-      .bufferCount(3, 2)
-      .mergeMap((x: any) => Observable.of(x));
+    const result = e1.pipe(
+      mergeMap((x: any) => of(x)),
+      bufferCount(3, 2),
+      mergeMap((x: any) => of(x))
+    );
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -108,7 +108,7 @@ describe('Observable.prototype.bufferCount', () => {
     const e1subs =   '^             !';
     const expected = '--------------#';
 
-    expectObservable(e1.bufferCount(5)).toBe(expected);
+    expectObservable(e1.pipe(bufferCount(5))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -124,7 +124,7 @@ describe('Observable.prototype.bufferCount', () => {
     const e1subs =   '^                !';
     const expected = '--------v--w--x--(yz|)';
 
-    expectObservable(e1.bufferCount(3, 1)).toBe(expected, values);
+    expectObservable(e1.pipe(bufferCount(3, 1))).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -137,7 +137,7 @@ describe('Observable.prototype.bufferCount', () => {
       z: ['d', 'e']
     };
 
-    expectObservable(e1.bufferCount(2, 3)).toBe(expected, values);
+    expectObservable(e1.pipe(bufferCount(2, 3))).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
