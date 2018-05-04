@@ -6,6 +6,11 @@ import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscri
 import { config } from './config';
 import { hostReportError } from './util/hostReportError';
 
+export const Symbol_reportError =
+  (typeof Symbol === 'function' && typeof Symbol.for === 'function')
+    ? Symbol.for('reportError')
+    : '@@reportError';
+
 /**
  * Implements the {@link Observer} interface and extends the
  * {@link Subscription} class. While the {@link Observer} is the public API for
@@ -164,6 +169,39 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     this._parents = _parents;
     return this;
   }
+
+  /**
+   * @ignore
+   * @internal
+   * Synchronous errors thrown within `subscribe` and caught by `_trySubscribe`
+   * can only be reported using a subscriber's `error` method if the subscriber
+   * is not stopped. This method traverses the `destination` chain of
+   * subscribers and uses the appropriate unhandled mechanism to report the
+   * error if a stopped subscriber is found.
+   */
+  [Symbol_reportError](err?: any): void {
+    let observer: PartialObserver<T> = this;
+    while (observer) {
+      // `observer` will either be a subscriber or an empty observer, but for
+      // the reasons outlined in the constructor, `instanceof Subscriber`
+      // cannot be used.
+      if (isTrustedSubscriber(observer)) {
+        const { destination, isStopped } = observer;
+        if (isStopped) {
+          if (config.useDeprecatedSynchronousErrorHandling) {
+            throw err;
+          } else {
+            hostReportError(err);
+            return;
+          }
+        }
+        observer = destination;
+      } else {
+        this.error(err);
+        return;
+      }
+    }
+  }
 }
 
 /**
@@ -306,6 +344,6 @@ class SafeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function isTrustedSubscriber(obj: any) {
+function isTrustedSubscriber(obj: any): obj is Subscriber<any> {
   return obj instanceof Subscriber || ('syncErrorThrowable' in obj && obj[rxSubscriberSymbol]);
 }
