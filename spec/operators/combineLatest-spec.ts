@@ -1,18 +1,17 @@
-import * as Rx from 'rxjs/Rx';
+import { of } from 'rxjs';
+import { combineLatest, mergeMap, distinct, count } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare function asDiagram(arg: string): Function;
 
-const Observable = Rx.Observable;
-
 /** @test {combineLatest} */
-describe('Observable.prototype.combineLatest', () => {
+describe('combineLatest operator', () => {
   asDiagram('combineLatest')('should combine events from two cold observables', () => {
     const e1 =   cold('-a--b-----c-d-e-|');
     const e2 =   cold('--1--2-3-4---|   ');
     const expected = '--A-BC-D-EF-G-H-|';
 
-    const result = e1.combineLatest(e2, (a, b) => String(a) + String(b));
+    const result = e1.pipe(combineLatest(e2, (a, b) => String(a) + String(b)));
 
     expectObservable(result).toBe(expected, {
       A: 'a1', B: 'b1', C: 'b2', D: 'b3', E: 'b4', F: 'c4', G: 'd4', H: 'e4'
@@ -26,7 +25,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =   '^';
     const expected = '-';
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -40,7 +39,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =   '(^!)';
     const expected = '-';
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -54,7 +53,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =   '^';
     const expected = '-';
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -68,7 +67,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =  '(^!)';
     const expected = '|';
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -88,7 +87,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =           '^   !';
     const expected =         '----|';
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -105,7 +104,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =           '^   !';
     const expected =         '----|';
 
-    const result = e2.combineLatest(e1, (x, y) => x + y);
+    const result = e2.pipe(combineLatest(e1, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -122,7 +121,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =           '^  ';
     const expected =         '-'; //never
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -139,7 +138,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =           '^   !';
     const expected =         '-----'; //never
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -153,7 +152,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =        '^         !';
     const expected =      '----x-yz--|';
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, { x: 'bf', y: 'cf', z: 'cg' });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -169,7 +168,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e3subs =        '^         !';
     const expected =      '-----wxyz-|';
 
-    const result = e1.combineLatest([e2, e3], (x: string, y: string, z: string) => x + y + z);
+    const result = e1.pipe(combineLatest([e2, e3], (x: string, y: string, z: string) => x + y + z));
 
     expectObservable(result).toBe(expected, { w: 'bfi', x: 'cfi', y: 'cgi', z: 'cgj' });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -184,7 +183,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =   '^     !';
     const expected = '------#';
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, null, 'shazbot!');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -198,7 +197,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =     '^   !';
     const expected =   '----#';
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, null, 'too bad, honk');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -212,7 +211,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =       '^ !';
     const expected =     '--#';
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, null, 'bazinga');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -226,7 +225,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =       '^ !';
     const expected =     '--#';
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, null, 'bazinga');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -240,7 +239,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =       '^ !';
     const expected =     '--#';
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, null, 'bazinga');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -254,7 +253,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =       '^ !';
     const expected =     '--#';
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, null, 'flurp');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -268,7 +267,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =       '^ !';
     const expected =     '--#';
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, null, 'flurp');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -282,7 +281,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =       '^     !';
     const expected =     '------#';
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, null, 'wokka wokka');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -296,7 +295,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =       '^    !';
     const expected =     '-----#';
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, null, 'wokka wokka');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -310,7 +309,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =       '^  !';
     const expected =     '---#';
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, { a: 1, b: 2}, 'wokka wokka');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -324,7 +323,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =       '^  !';
     const expected =     '---#';
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, { a: 1, b: 2}, 'wokka wokka');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -338,7 +337,7 @@ describe('Observable.prototype.combineLatest', () => {
     const rightSubs =      '^        !';
     const expected =       '---------#';
 
-    const result = left.combineLatest(right, (x, y) => x + y);
+    const result = left.pipe(combineLatest(right, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, null, 'bad things');
     expectSubscriptions(left.subscriptions).toBe(leftSubs);
@@ -352,7 +351,7 @@ describe('Observable.prototype.combineLatest', () => {
     const rightSubs =       '^      !';
     const expected =        '---------#';
 
-    const result = left.combineLatest(right, (x, y) => x + y);
+    const result = left.pipe(combineLatest(right, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, null, 'bad things');
     expectSubscriptions(left.subscriptions).toBe(leftSubs);
@@ -366,7 +365,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =     '^           !';
     const expected =   '-----x-y-z--|';
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, { x: 'be', y: 'ce', z: 'cf' });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -380,7 +379,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =      '^                   !';
     const expected =    '-----------x--y--z--|';
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, { x: 'cd', y: 'ce', z: 'cf' });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -394,7 +393,7 @@ describe('Observable.prototype.combineLatest', () => {
     const rightSubs =      '^        !';
     const expected =       '---------#';
 
-    const result = left.combineLatest(right, (x, y) => x + y);
+    const result = left.pipe(combineLatest(right, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, null, 'jenga');
     expectSubscriptions(left.subscriptions).toBe(leftSubs);
@@ -408,7 +407,7 @@ describe('Observable.prototype.combineLatest', () => {
     const rightSubs =      '^                   !';
     const expected =       '-----------x--y--z--#';
 
-    const result = left.combineLatest(right, (x, y) => x + y);
+    const result = left.pipe(combineLatest(right, (x, y) => x + y));
 
     expectObservable(result).toBe(expected, { x: 'cd', y: 'ce', z: 'cf' }, 'dun dun dun');
     expectSubscriptions(left.subscriptions).toBe(leftSubs);
@@ -422,7 +421,7 @@ describe('Observable.prototype.combineLatest', () => {
     const e2subs =      '^  !';
     const expected =    '---#';
 
-    const result = e1.combineLatest(e2, (x, y) => { throw 'ha ha ' + x + ', ' + y; });
+    const result = e1.pipe(combineLatest(e2, (x, y) => { throw 'ha ha ' + x + ', ' + y; }));
 
     expectObservable(result).toBe(expected, null, 'ha ha 2, 4');
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -438,7 +437,7 @@ describe('Observable.prototype.combineLatest', () => {
     const unsub =         '         !    ';
     const values = { x: 'bf', y: 'cf', z: 'cg' };
 
-    const result = e1.combineLatest(e2, (x, y) => x + y);
+    const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -454,10 +453,11 @@ describe('Observable.prototype.combineLatest', () => {
     const unsub =         '         !    ';
     const values = { x: 'bf', y: 'cf', z: 'cg' };
 
-    const result = e1
-      .mergeMap((x) => Observable.of(x))
-      .combineLatest(e2, (x, y) => x + y)
-      .mergeMap((x) => Observable.of(x));
+    const result = e1.pipe(
+      mergeMap((x) => of(x)),
+      combineLatest(e2, (x, y) => x + y),
+      mergeMap((x) => of(x))
+    );
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -469,7 +469,11 @@ describe('Observable.prototype.combineLatest', () => {
     const e2 =   hot('--1--2-|');
     const expected = '-------(c|)';
 
-    const result = e1.combineLatest(e2).distinct().count();
+    const result = e1.pipe(
+      combineLatest(e2),
+      distinct(),
+      count()
+    );
 
     expectObservable(result).toBe(expected, { c: 3 });
   });
