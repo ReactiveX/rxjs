@@ -273,6 +273,7 @@ describe('Observable.ajax', () => {
     });
 
     expect(error instanceof Rx.AjaxError).to.be.true;
+    expect(error.name).to.equal('AjaxError');
     expect(error.message).to.equal('ajax error 404');
     expect(error.status).to.equal(404);
   });
@@ -843,7 +844,7 @@ describe('Observable.ajax', () => {
     delete root.XMLHttpRequest.prototype.onreadystatechange;
   });
 
-  it('should work fine when XMLHttpRequest ontimeout property is monkey patched', function() {
+  it('should work fine when XMLHttpRequest ontimeout property is monkey patched', function(done) {
     Object.defineProperty(root.XMLHttpRequest.prototype, 'ontimeout', {
       set(fn: (e: ProgressEvent) => any) {
         const wrapFn = (ev: ProgressEvent) => {
@@ -867,7 +868,8 @@ describe('Observable.ajax', () => {
     Rx.Observable.ajax(ajaxRequest)
       .subscribe({
         error(err) {
-          /* expected, ignore */
+          expect(err.name).to.equal('AjaxTimeoutError');
+          done();
         }
       });
 
