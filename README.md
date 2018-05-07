@@ -15,8 +15,7 @@
 
 Find out how up update to v6, **automatically update your TypeScript code**, and more!
 
-- [Current home is a Google Doc](https://goo.gl/osWFzo)
-- [Future home is MIGRATION.md](./MIGRATION.md)
+- [Current home is MIGRATION.md](./MIGRATION.md)
 
 ### FOR V 5.X PLEASE GO TO [THE 5.0 BRANCH](https://github.com/ReactiveX/rxjs/tree/stable)
 
