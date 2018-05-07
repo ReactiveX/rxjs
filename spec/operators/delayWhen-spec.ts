@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+import { of, EMPTY } from 'rxjs';
 import { delayWhen } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
@@ -106,6 +106,28 @@ describe('delayWhen operator', () => {
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
     expectSubscriptions(selector.subscriptions).toBe(selectorSubs);
+    });
+
+  it('should emit if the selector completes synchronously', () => {
+    const e1 =        hot('a--|');
+    const expected =      'a--|';
+    const subs =          '^  !';
+
+    const result = e1.pipe(delayWhen((x: any) => EMPTY));
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
+  });
+
+  it('should emit if the source completes synchronously and the selector completes synchronously', () => {
+    const e1 =        hot('(a|)');
+    const expected =      '(a|)';
+    const subs =          '(^!)';
+
+    const result = e1.pipe(delayWhen((x: any) => EMPTY));
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
   it('should not emit if selector never emits', () => {
