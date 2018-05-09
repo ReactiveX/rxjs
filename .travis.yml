@@ -22,11 +22,11 @@ matrix:
 
 before_install:
   - nvm install $NODE_VER
-  - npm install -g npm@5.8.0 && npm install -g npx && node -v && npm -v
-  - if [ "$FULL_VALIDATE" == "true" ]; then npm install grunt@0.4.1 grunt-cli grunt-contrib-connect grunt-run; fi
+  - npm install -g npm@6 && npm install -g npx && node -v && npm -v
+  - if [ "$FULL_VALIDATE" == "true" ]; then npm install --no-save grunt@0.4.1 grunt-cli grunt-contrib-connect grunt-run; fi
 
 install:
-  - npm install
+  - npm ci
   - if [ "$FULL_VALIDATE" == "true" ]; then npm run lint && npm run test:circular; fi
 
 script:
