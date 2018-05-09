@@ -490,6 +490,7 @@ function parseXhrResponse(responseType: string, xhr: XMLHttpRequest) {
 export class AjaxTimeoutError extends AjaxError {
   constructor(xhr: XMLHttpRequest, request: AjaxRequest) {
     super('ajax timeout', xhr, request);
+    this.name = 'AjaxTimeoutError';
     (Object as any).setPrototypeOf(this, AjaxTimeoutError.prototype);
   }
 }

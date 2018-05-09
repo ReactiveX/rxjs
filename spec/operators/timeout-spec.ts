@@ -25,14 +25,17 @@ describe('Observable.prototype.timeout', () => {
   it('should emit and error of an instanceof TimeoutError on timeout', () => {
     const e1 =  cold('-------a--b--|');
     const result = e1.timeout(50, rxTestScheduler);
+    let error;
     result.subscribe(() => {
       throw new Error('this should not next');
     }, err => {
-      expect(err).to.be.an.instanceof(Rx.TimeoutError);
+      error = err;
     }, () => {
       throw new Error('this should not complete');
     });
     rxTestScheduler.flush();
+    expect(error).to.be.an.instanceof(Rx.TimeoutError);
+    expect(error.name).to.equal('TimeoutError');
   });
 
   it('should not timeout if source completes within absolute timeout period', () => {
