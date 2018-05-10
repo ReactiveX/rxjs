@@ -1,24 +1,16 @@
 {
-	"compilerOptions": {
-		"noEmit": true
-	},
+  "compilerOptions": {
+    "noEmit": true
+  },
   "extends": "../tsconfig.json",
   "include": [
-  	"./config-spec.ts",
-  	"./exports-spec.ts",
-    "./index-spec.ts",
-    "./Notification-spec.ts",
-    "./root-module-spec.ts",
-    "./Scheduler-spec.ts",
-    "./Subject-spec.ts",
-    "./Subscriber-spec.ts",
-    "./Subscription-spec.ts",
-  	"./ajax/**/*.ts",
-  	"./helpers/**/*.ts",
+    "./*.ts",
+    "./ajax/**/*.ts",
+    "./helpers/**/*.ts",
     "./migration/**/*.ts",
-  	"./symbol/**/*.ts",
-  	"./testing/**/*.ts",
+    "./symbol/**/*.ts",
+    "./testing/**/*.ts",
     "./util/**/*.ts",
-  	"./websocket/**/*.ts"
+    "./websocket/**/*.ts"
   ]
 }
