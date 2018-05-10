@@ -2,8 +2,10 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as Rx from 'rxjs/Rx';
 import { root } from 'rxjs/util/root';
+import { TestScheduler } from 'rxjs/testing';
 
 declare const global: any;
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {ajax} */
 describe('Observable.ajax', () => {
@@ -380,7 +382,7 @@ describe('Observable.ajax', () => {
     });
   });
 
-  it('should error on timeout of asynchronous request', (done) => {
+  it('should error on timeout of asynchronous request', () => {
     const obj: Rx.AjaxRequest = {
       url: '/flibbertyJibbet',
       responseType: 'text',
@@ -402,14 +404,15 @@ describe('Observable.ajax', () => {
 
     expect(request.url).to.equal('/flibbertyJibbet');
 
-    setTimeout(() => {
+    rxTestScheduler.schedule(() => {
       request.respondWith({
         'status': 200,
         'contentType': 'text/plain',
         'responseText': 'Wee! I am text!'
       });
-      done();
     }, 1000);
+
+    rxTestScheduler.flush();
   });
 
   it('should create a synchronous request', () => {
