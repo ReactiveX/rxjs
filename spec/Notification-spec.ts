@@ -162,7 +162,7 @@ describe('Notification', () => {
 
     it('should accept observer for error Notification', () => {
       let observed = false;
-      const n = Notification.createError();
+      const n = Notification.createError<string>();
       const observer = Rx.Subscriber.create((x: string) => {
         throw 'should not be called';
       }, (err: any) => {
