@@ -23,4 +23,13 @@ describe('isObservable', () => {
 
     expect(isObservable(o)).to.be.false;
   });
+
+  it('should return false for null', () => {
+    expect(isObservable(null)).to.be.false;
+  });
+
+  it('should return false for a number', () => {
+    expect(isObservable(1)).to.be.false;
+  });
+
 });
