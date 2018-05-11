@@ -4,6 +4,8 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 
 declare function asDiagram(arg: string): Function;
 
+const NO_VALUES: { [key: string]: Notification<any> } = {};
+
 /** @test {dematerialize} */
 describe('dematerialize operator', () => {
   asDiagram('dematerialize')('should dematerialize an Observable', () => {
@@ -64,7 +66,7 @@ describe('dematerialize operator', () => {
   });
 
   it('should dematerialize stream does not completes', () => {
-    const e1 = hot('------', { a: Notification.createNext('a') });
+    const e1 = hot('------', NO_VALUES);
     const e1subs =   '^';
     const expected = '-';
 
@@ -73,7 +75,7 @@ describe('dematerialize operator', () => {
   });
 
   it('should dematerialize stream never completes', () => {
-    const e1 =  cold('-', { a: Notification.createNext('a') });
+    const e1 =  cold('-', NO_VALUES);
     const e1subs =   '^';
     const expected = '-';
 
@@ -82,7 +84,7 @@ describe('dematerialize operator', () => {
   });
 
   it('should dematerialize stream does not emit', () => {
-    const e1 =   hot('----|', { a: Notification.createNext('a') });
+    const e1 =   hot('----|', NO_VALUES);
     const e1subs =   '^   !';
     const expected = '----|';
 
@@ -91,7 +93,7 @@ describe('dematerialize operator', () => {
   });
 
   it('should dematerialize empty stream', () => {
-    const e1 =  cold('|', { a: Notification.createNext('a') });
+    const e1 =  cold('|', NO_VALUES);
     const e1subs =   '(^!)';
     const expected = '|';
 
