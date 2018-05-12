@@ -1,17 +1,19 @@
-## ES6 via npm
+# Installation
+
+## ECMAScript 2015 via npm
 
 ```shell
-npm install rxjs@beta
+npm install rxjs
 ```
 
-Import just the parts you need and use them
+Import a subset of core functionality and operators. Example:
 
 ```js
 import { of, fromEvent } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 of(1, 2, 3).pipe(
-  map(x => x + '!!!'),
+  map(x => x * x),
 );
 
 fromEvent(input, 'input').pipe(
@@ -20,21 +22,20 @@ fromEvent(input, 'input').pipe(
 );
 ```
 
-
 ## CommonJS via npm
 
 ```shell
-npm install rxjs@beta
+npm install rxjs
 ```
 
-Usage is pretty much the same thing, only with require:
+Reference with `require()`. Example:
 
 ```js
 const { of, fromEvent } = require('rxjs');
 const { map, filter } = require('rxjs/operators');
 
 of(1, 2, 3).pipe(
-  map(x => x + '!!!'),
+  map(x => x * x),
 );
 
 fromEvent(input, 'input').pipe(
@@ -45,15 +46,14 @@ fromEvent(input, 'input').pipe(
 
 ## UMD (global script)
 
-You can use a CDN (shown below), if you like. In this case, everything is in the same location as it would be in the ESM or CJS versions, but they're namespaced like `rxjs` or `rxjs.operators` instead of `rxjs` and `rxjs/operators`.
-
+Using `rxjs` and `rxjs.operators` namespace pattern objects:
 
 ```js
 const { of, fromEvent } = rxjs;
 const { map, filter } = rxjs.operators;
 
 of(1, 2, 3).pipe(
-  map(x => x + '!!!'),
+  map(x => x * x),
 );
 
 fromEvent(input, 'input').pipe(
@@ -62,11 +62,11 @@ fromEvent(input, 'input').pipe(
 );
 ```
 
-## CDN
+### CDN Hosted Scripts
 
-For CDN, you can use [unpkg](https://unpkg.com). 
+For [unpkg](https://unpkg.com) CDN. Replace `version` in the following URLs with the current version:
 
-- https://unpkg.com/rxjs@beta/bundles/rxjs.umd.js
-- https://unpkg.com/rxjs@beta/bundles/rxjs.umd.min.js
+- `https://unpkg.com/rxjs@version/bundles/rxjs.umd.js`
+- `https://unpkg.com/rxjs@version/bundles/rxjs.umd.min.js`
 
-
+List of releases can be found at <https://github.com/ReactiveX/rxjs/releases>.
