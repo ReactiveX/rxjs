@@ -636,6 +636,48 @@ describe('webSocket', () => {
       ]);
     });
   });
+
+  describe('node constructor', () => {
+
+    it('should send and receive messages', () => {
+      let messageReceived = false;
+      const subject = webSocket<string>(<any>{
+        url: 'ws://mysocket',
+        WebSocketCtor: (url: string, protocol: string): MockWebSocket => {
+          return new MockWebSocket(url, protocol);
+        }
+      });
+
+      subject.next('ping');
+
+      subject.subscribe(x => {
+        expect(x).to.equal('pong');
+        messageReceived = true;
+      });
+
+      const socket = MockWebSocket.lastSocket;
+      expect(socket.url).to.equal('ws://mysocket');
+
+      socket.open();
+      expect(socket.lastMessageSent).to.equal(JSON.stringify('ping'));
+
+      socket.triggerMessage(JSON.stringify('pong'));
+      expect(messageReceived).to.be.true;
+
+      subject.unsubscribe();
+    });
+
+    it('should handle constructor errors if no WebSocketCtor', () => {
+
+      expect(() => {
+        const subject = webSocket<string>(<any>{
+          url: 'ws://mysocket'
+        });
+      }).to.throw('no WebSocket constructor can be found');
+
+    });
+  });
+
 });
 
 class MockWebSocket {
