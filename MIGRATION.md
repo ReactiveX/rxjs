@@ -1,5 +1,24 @@
 # RxJS v5.x to v6 Update Guide
 
+## ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) Important changes
+RxJS v6 has removed chainable operators from the Observable prototype in favor of pipeable operators, i.e.
+
+```diff
+- // Old
+- someObservable.map(() => 'something').filter(() => true)
+
++ // New
++ import * as operators from 'rxjs/operators'
++ someObservable.pipe(
++  operators.map(() => 'something'),
++  operators.filter(() => true)
++ )
+```
+
+This change breaks **most existing `rxjs`** code. See [the pipe syntax section below](#operator-pipe-syntax) for migration strategies.
+
+<hr>
+
 RxJS v6 has arrived! While this is a major version change (from 5.x to 6.x), 
 we've put in a lot of work to keep the hard breaking changes to a minimum. 
 In most cases, this allows application and library developers to update incrementally 
