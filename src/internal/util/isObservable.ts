@@ -8,6 +8,5 @@ import { isFunction } from './isFunction';
  * @param obj the object to test
  */
 export function isObservable<T>(obj: any): obj is Observable<T> {
-  return obj && obj instanceof Observable ||
-    (isObject(obj) || isFunction(obj)) ? (isFunction(obj.lift) && isFunction(obj.subscribe)) : false;
+  return !!obj && (obj instanceof Observable || (typeof obj.lift === 'function' && typeof obj.subscribe === 'function'));
 }
