@@ -12,7 +12,6 @@ function createIntervalObservable(interval: number) {
   });
 }
 
-// TODO: write a zone.js test to cover this with a timer
 describe('combineLatest', () => {
   it('should combine the latest values of multiple observables', () => {
     const results: any[] = [];
@@ -48,4 +47,13 @@ describe('combineLatest', () => {
     expect(results).toEqual([[0, 0, 0], [1, 0, 0]]);
     clearAllMacrotasks();
   }));
+
+  it('Date.now should be advanced by fakeAsyncTest', fakeAsyncTest(() => {
+    const start = Date.now();
+    tick(100);
+    const end = Date.now();
+    expect(end - start).toBe(100);
+  }));
+
+  // TODO: Add a marble test with zone-testing.
 });
