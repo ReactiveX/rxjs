@@ -82,6 +82,31 @@ export interface GroupedObservable<K, T> extends Observable<T> {
   readonly key: K;
 }
 
+export interface NextNotification<T> {
+  kind: 'N';
+  value: T;
+}
+
+export interface ErrorNotification {
+  kind: 'E';
+  error: any;
+}
+
+export interface CompleteNotification {
+  kind: 'C';
+}
+
+export interface SubscribeNotification {
+  kind: 'S';
+}
+
+export interface UnsubscribeNotification {
+  kind: 'S';
+}
+
+export type Notification<T> = NextNotification<T> | ErrorNotification | CompleteNotification |
+  SubscribeNotification | UnsubscribeNotification;
+
 declare global  {
   interface SymbolConstructor {
     observable: symbol;

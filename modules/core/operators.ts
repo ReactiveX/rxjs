@@ -2,6 +2,7 @@ export { catchError } from './internal/operators/catchError';
 export { filter } from './internal/operators/filter';
 export { groupBy } from './internal/operators/groupBy';
 export { map } from './internal/operators/map';
+export { materialize } from './internal/operators/materialize';
 export { mergeMap } from './internal/operators/mergeMap';
 export { repeat } from './internal/operators/repeat';
 export { scan } from './internal/operators/scan';
