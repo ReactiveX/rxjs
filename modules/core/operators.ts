@@ -10,3 +10,4 @@ export { share } from './internal/operators/share';
 export { switchMap } from './internal/operators/switchMap';
 export { take } from './internal/operators/take';
 export { takeLast } from './internal/operators/takeLast';
+export { tap } from './internal/operators/tap';
