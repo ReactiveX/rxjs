@@ -11,3 +11,4 @@ export { switchMap } from './internal/operators/switchMap';
 export { take } from './internal/operators/take';
 export { takeLast } from './internal/operators/takeLast';
 export { tap } from './internal/operators/tap';
+export { timestamp } from './internal/operators/timestamp';

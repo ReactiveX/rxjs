@@ -107,6 +107,11 @@ export interface UnsubscribeNotification {
 export type Notification<T> = NextNotification<T> | ErrorNotification | CompleteNotification |
   SubscribeNotification | UnsubscribeNotification;
 
+export interface Timestamped<T> {
+  value: T,
+  timestamp: number;
+}
+
 declare global  {
   interface SymbolConstructor {
     observable: symbol;
