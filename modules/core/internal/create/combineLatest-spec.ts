@@ -14,8 +14,6 @@ function createIntervalObservable(interval: number) {
 
 // TODO: write a zone.js test to cover this with a timer
 describe('combineLatest', () => {
-  console.log('before combine test');
-
   it('should combine the latest values of multiple observables', () => {
     const results: any[] = [];
 
@@ -27,13 +25,14 @@ describe('combineLatest', () => {
       next(value) { results.push(value); },
       complete() { results.push('done'); },
     });
+    expect(results).toEqual([[1, 2, 3]]);
   });
 
   it('should combine the latest values of multiple observables with fakeAsync', fakeAsyncTest(() => {
     const results: any[] = [];
     const s1 = createIntervalObservable(1000);
-    const s2 = createIntervalObservable(2000);
-    const s3 = createIntervalObservable(3000);
+    const s2 = createIntervalObservable(1500);
+    const s3 = createIntervalObservable(1800);
     combineLatest(s1, s2, s3).subscribe({
       next(value) { results.push(value); },
       complete() { results.push('done'); },
@@ -41,10 +40,12 @@ describe('combineLatest', () => {
     expect(results).toEqual([]);
     tick(1000);
     expect(results).toEqual([]);
-    tick(1000);
+    tick(500);
     expect(results).toEqual([]);
-    tick(1000);
-    expect(results).toEqual([3, 2, 1]);
+    tick(300);
+    expect(results).toEqual([[0, 0, 0]]);
+    tick(300);
+    expect(results).toEqual([[0, 0, 0], [1, 0, 0]]);
     clearAllMacrotasks();
   }));
 });
