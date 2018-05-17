@@ -424,6 +424,8 @@ export class AjaxResponse {
   }
 }
 
+type AjaxErrors = 'AjaxError' | 'AjaxTimeoutError';
+
 /**
  * A normalized AJAX error.
  *
@@ -447,7 +449,7 @@ export class AjaxError extends Error {
   /** @type {string|ArrayBuffer|Document|object|any} The response data */
   response: any;
 
-  public readonly name: string = 'AjaxError';
+  public readonly name: AjaxErrors = 'AjaxError';
 
   constructor(message: string, xhr: XMLHttpRequest, request: AjaxRequest) {
     super(message);
@@ -490,7 +492,7 @@ function parseXhrResponse(responseType: string, xhr: XMLHttpRequest) {
  */
 export class AjaxTimeoutError extends AjaxError {
 
-  public readonly name: string = 'AjaxTimeoutError';
+  public readonly name: AjaxErrors = 'AjaxTimeoutError';
 
   constructor(xhr: XMLHttpRequest, request: AjaxRequest) {
     super('ajax timeout', xhr, request);
