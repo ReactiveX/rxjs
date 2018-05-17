@@ -24,8 +24,9 @@
     "watch": "Watch codebase, trigger compile when source code changes"
   },
   "scripts": {
-    "test": "mocha -r ts-node/register modules/**/*-spec.ts",
+    "test": "npm run prepare-zone && mocha -r ts-node/register -r ./node_modules/zone.js/dist/zone-testing-node-bundle modules/**/*-spec.ts",
     "watch": "watch 'npm run test' modules",
+    "prepare-zone": "mkdir -p ./node_modules/@types/zone.js && cp ./node_modules/zone.js/lib/testing/zone-testing.typing.ts ./node_modules/@types/zone.js/index.d.ts",
     "build": "tsc"
   },
   "repository": {
@@ -55,7 +56,6 @@
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
-    "@types/mocha": "^5.0.0",
     "chai": "^4.1.2",
     "commitizen": "^2.9.6",
     "cz-conventional-changelog": "^2.1.0",
@@ -64,6 +64,7 @@
     "ts-node": "^5.0.1",
     "tslint": "^5.9.1",
     "typescript": "^2.8.1",
-    "watch": "^1.0.2"
+    "watch": "^1.0.2",
+    "zone.js": "github:JiaLiPassion/zone.js#rxjs-test-dist"
   }
 }

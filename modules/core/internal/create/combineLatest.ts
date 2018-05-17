@@ -29,8 +29,9 @@ export function combineLatestSource<T>(sources: ObservableInput<T>[]): Source<T>
         src(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
           if(t === FOType.NEXT) {
             values[s] = v;
+            emittedOnce[s] = true;
             if (hasValues || (hasValues = emittedOnce.every(identity))) {
-              sink(FOType.NEXT, values.slice(0), subs);
+              sink(FOType.NEXT, values.slice(), subs);
             }
           }
         }, subs);
