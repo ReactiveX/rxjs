@@ -7,7 +7,7 @@
  */
 export class TimeoutError extends Error {
 
-  public readonly name: 'TimeoutError' = 'TimeoutError';
+  public readonly name = 'TimeoutError';
 
   constructor() {
     super('Timeout has occurred');

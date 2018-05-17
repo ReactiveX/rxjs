@@ -9,7 +9,7 @@
  */
 export class ObjectUnsubscribedError extends Error {
 
-  public readonly name: 'ObjectUnsubscribedError' = 'ObjectUnsubscribedError';
+  public readonly name = 'ObjectUnsubscribedError';
 
   constructor() {
     super('object unsubscribed');

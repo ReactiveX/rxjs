@@ -10,7 +10,7 @@
  */
 export class EmptyError extends Error {
 
-  public readonly name: 'EmptyError' = 'EmptyError';
+  public readonly name = 'EmptyError';
 
   constructor() {
     super('no elements in sequence');

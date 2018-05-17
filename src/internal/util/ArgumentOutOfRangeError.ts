@@ -10,7 +10,7 @@
  */
 export class ArgumentOutOfRangeError extends Error {
 
-  public readonly name: 'ArgumentOutOfRangeError' = 'ArgumentOutOfRangeError';
+  public readonly name = 'ArgumentOutOfRangeError';
 
   constructor() {
     super('argument out of range');

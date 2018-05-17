@@ -4,7 +4,7 @@
  */
 export class UnsubscriptionError extends Error {
 
-  public readonly name: 'UnsubscriptionError' = 'UnsubscriptionError';
+  public readonly name = 'UnsubscriptionError';
 
   constructor(public errors: any[]) {
     super(errors ?
