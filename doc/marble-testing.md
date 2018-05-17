@@ -25,9 +25,9 @@ testScheduler.run(({ cold }) => {
 
 ## API
 
-The callback you provide to `testScheduler.run(callback)` is called with an object that contains the helper functions you'll use to write your tests.
+The callback function you provide to `testScheduler.run(callback)` is called with an object that contains the helper functions you'll use to write your tests.
 
-> When the code inside this callback is being executed, any operator that uses timers/AsyncScheduler (like delay, debounceTime, etc) will **automaticaly** use the TestScheduler instead, so that we have "virtual time". You do not need to pass the TestScheduler to them, like in the past.
+> When the code inside this callback is being executed, any operator that uses timers/AsyncScheduler (like delay, debounceTime, etc) will **automatically** use the TestScheduler instead, so that we have "virtual time". You do not need to pass the TestScheduler to them, like in the past.
 
 ```ts
 testScheduler.run(helpers => {
@@ -38,13 +38,13 @@ testScheduler.run(helpers => {
 
 - `hot(marbleDiagram: string, values?: object, error?: any)` - creates a ["hot" observable](https://medium.com/@benlesh/hot-vs-cold-observables-f8094ed53339) (like a subject) that will behave as though it's already "running" when the test begins. An interesting difference is that `hot` marbles allow a `^` character to signal where the "zero frame" is. That is the point at which the subscription to observables being tested begins.
 - `cold(marbleDiagram: string, values?: object, error?: any)` - creates a ["cold" observable](https://medium.com/@benlesh/hot-vs-cold-observables-f8094ed53339) whose subscription starts when the test begins.
-- `expectObservable(actual: Observable<T>).toBe(marbleDiagram: string, values?: object, error?: any)` - schedules an assertion for when the TestScheduler flushes. The TestScheduler will automatically flush at the end of your jasmine `it` block.
+- `expectObservable(actual: Observable<T>).toBe(marbleDiagram: string, values?: object, error?: any)` - schedules an assertion for when the TestScheduler flushes.
 - `expectSubscriptions(actualSubscriptionLogs: SubscriptionLog[]).toBe(subscriptionMarbles: string)` - like `expectObservable` schedules an assertion for when the testScheduler flushes. Both `cold()` and `hot()` return an observable with a property `subscriptions` of type `SubscriptionLog[]`. Give `subscriptions` as parameter to `expectSubscriptions` to assert whether it matches the `subscriptionsMarbles` marble diagram given in `toBe()`. Subscription marble diagrams are slightly different than Observable marble diagrams. Read more below.
-- `flush()` - immediately starts virtual time. Not used often, since `run()` will automatically flush for you when your callback returns, but in some cases you may wish to flush more than once or otherwise have more control.
+- `flush()` - immediately starts virtual time. Not often used since `run()` will automatically flush for you when your callback returns, but in some cases you may wish to flush more than once or otherwise have more control.
 
 ## Marble Syntax
 
-Marble syntax is a string which represents events happening over virtual time. Time progresses by _frames_. The first character of any marble string always represents the _zero frame_, or the start of time. Inside of `testScheduler.run(callback)` the frameTimeFactor is set to 1, which means one frame is equal to one virtual millisecond.
+In the context of TestScheduler, a marble diagram is a string containing special syntax representing events happening over virtual time. Time progresses by _frames_. The first character of any marble string always represents the _zero frame_, or the start of time. Inside of `testScheduler.run(callback)` the frameTimeFactor is set to 1, which means one frame is equal to one virtual millisecond.
 
 How many virtual milliseconds one frame represents depends on the value of `TestScheduler.frameTimeFactor`. For legacy reasons the value of `frameTimeFactor` is 1 _only_ when your code inside the `testScheduler.run(callback)` callback is running. Outside of it, it's set to 10. This will likely change in a future version of RxJS so that it is always 1.
 
@@ -57,7 +57,7 @@ How many virtual milliseconds one frame represents depends on the value of `Test
 - `'#'` error: An error terminating the observable. This is the observable producer signaling `error()`.
 - `[a-z0-9]` e.g. `'a'` any alphanumeric character: Represents a value being emitted by the producer signaling `next()`.
 - `'()'` sync groupings: When multiple events need to be in the same frame synchronously, parentheses are used to group those events. You can group next'd values, a completion, or an error in this manner. The position of the initial `(` determines the time at which its values are emitted. While it can be unintuitive at first, after all the values have synchronously emitted time will progress a number of frames equal to the number of ASCII characters in the group, including the parentheses. e.g. `'(abc)'` will emit the values of a, b, and c synchronously in the same frame and then advance virtual time by 5 frames, `'(abc)'.length === 5`. This is done because it often helps you vertically align your marble diagrams, but it's a known pain point in real-world testing. [Learn more about known issues](#known-issues).
-- `'^'` subscription point: (hot observables only) shows the point at which the tested observables will be subscribed to the hot observable. This is the "zero frame" for that observable, every frame before the `^` will be negative. Negative time might seem pointless, but there are in fact advanced cases where this is neccesary, usually involving ReplaySubjects.
+- `'^'` subscription point: (hot observables only) shows the point at which the tested observables will be subscribed to the hot observable. This is the "zero frame" for that observable, every frame before the `^` will be negative. Negative time might seem pointless, but there are in fact advanced cases where this is necessary, usually involving ReplaySubjects.
 
 ### Time progression syntax
 
