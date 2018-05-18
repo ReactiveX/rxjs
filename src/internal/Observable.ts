@@ -1,12 +1,11 @@
 import { Operator } from './Operator';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
-import { TeardownLogic } from './types';
+import { TeardownLogic, OperatorFunction, PartialObserver, Subscribable } from './types';
 import { toSubscriber } from './util/toSubscriber';
 import { iif } from './observable/iif';
 import { throwError } from './observable/throwError';
 import { observable as Symbol_observable } from '../internal/symbol/observable';
-import { OperatorFunction, PartialObserver, Subscribable } from '../internal/types';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
 
