@@ -20,6 +20,7 @@ The essential concepts in RxJS which solve async event management are:
 Normally you register event listeners.
 ```js
 const button = document.querySelector('button');
+
 button.addEventListener('click', () => console.log('Clicked!'));
 ```
 
@@ -28,6 +29,7 @@ Using RxJS you create an observable instead.
 import { fromEvent } from 'rxjs';
 
 const button = document.querySelector('button');
+
 fromEvent(button, 'click')
   .subscribe(() => console.log('Clicked!'));
 ```
@@ -39,9 +41,12 @@ What makes RxJS powerful is its ability to produce values using pure functions. 
 Normally you would create an impure function, where other
 pieces of your code can mess up your state.
 ```js
-var count = 0;
-var button = document.querySelector('button');
-button.addEventListener('click', () => console.log(`Clicked ${++count} times`));
+const button = document.querySelector('button');
+let count = 0;
+
+button.addEventListener('click', () => {
+  console.log(`Clicked ${++count} times`);
+});
 ```
 
 Using RxJS you isolate the state.
@@ -49,11 +54,11 @@ Using RxJS you isolate the state.
 import { fromEvent } from 'rxjs';
 import { scan } from 'rxjs/operators';
 
-cosnt button = document.querySelector('button');
-fromEvent(button, 'click').pipe(
-  scan(count => count + 1, 0)
-)
-.subscribe(count => console.log(`Clicked ${count} times`));
+const button = document.querySelector('button');
+
+fromEvent(button, 'click')
+  .pipe(scan(count => count + 1, 0))
+  .subscribe(count => console.log(`Clicked ${count} times`));
 ```
 
 The **scan** operator works just like **reduce** for arrays. It takes a value which is exposed to a callback. The returned value of the callback will then become the next value exposed the next time the callback runs.
@@ -63,10 +68,11 @@ RxJS has a whole range of operators that helps you control how the events flow t
 
 This is how you would allow at most one click per second, with plain JavaScript:
 ```js
-var count = 0;
-var rate = 1000;
-var lastClick = Date.now() - rate;
-var button = document.querySelector('button');
+const button = document.querySelector('button');
+const rate = 1000;
+let count = 0;
+let lastClick = Date.now() - rate;
+
 button.addEventListener('click', () => {
   if (Date.now() - lastClick >= rate) {
     console.log(`Clicked ${++count} times`);
@@ -81,11 +87,13 @@ import { fromEvent } from 'rxjs';
 import { throttleTime, scan } from 'rxjs/operators';
 
 const button = document.querySelector('button');
-fromEvent(button, 'click').pipe(
-  throttleTime(1000),
-  scan(count => count + 1, 0)
-)
-.subscribe(count => console.log(`Clicked ${count} times`));
+
+fromEvent(button, 'click')
+  .pipe(
+    throttleTime(1000),
+    scan(count => count + 1, 0)
+  )
+  .subscribe(count => console.log(`Clicked ${count} times`));
 ```
 
 Other flow control operators are [**filter**](../class/es6/Observable.js~Observable.html#instance-method-filter), [**delay**](../class/es6/Observable.js~Observable.html#instance-method-delay), [**debounceTime**](../class/es6/Observable.js~Observable.html#instance-method-debounceTime), [**take**](../class/es6/Observable.js~Observable.html#instance-method-take), [**takeUntil**](../class/es6/Observable.js~Observable.html#instance-method-takeUntil), [**distinct**](../class/es6/Observable.js~Observable.html#instance-method-distinct), [**distinctUntilChanged**](../class/es6/Observable.js~Observable.html#instance-method-distinctUntilChanged) etc.
@@ -95,10 +103,11 @@ You can transform the values passed through your observables.
 
 Here's how you can add the current mouse x position for every click, in plain JavaScript:
 ```js
-let count = 0;
-const rate = 1000;
-let lastClick = Date.now() - rate;
 const button = document.querySelector('button');
+const rate = 1000;
+let count = 0;
+let lastClick = Date.now() - rate;
+
 button.addEventListener('click', (event) => {
   if (Date.now() - lastClick >= rate) {
     count += event.clientX;
@@ -114,12 +123,14 @@ import { fromEvent } from 'rxjs';
 import { throttleTime, map, scan } from 'rxjs/operators';
 
 const button = document.querySelector('button');
-fromEvent(button, 'click').pipe(
-  throttleTime(1000),
-  map(event => event.clientX),
-  scan((count, clientX) => count + clientX, 0)
-)
-.subscribe(count => console.log(count));
+
+fromEvent(button, 'click')
+  .pipe(
+    throttleTime(1000),
+    map(event => event.clientX),
+    scan((count, clientX) => count + clientX, 0)
+  )
+  .subscribe(count => console.log(count));
 ```
 
 Other value producing operators are [**pluck**](../class/es6/Observable.js~Observable.html#instance-method-pluck), [**pairwise**](../class/es6/Observable.js~Observable.html#instance-method-pairwise),
