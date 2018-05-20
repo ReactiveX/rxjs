@@ -25,7 +25,7 @@ button.addEventListener('click', () => console.log('Clicked!'));
 
 Using RxJS you create an observable instead.
 ```js
-const { fromEvent } = rxjs;
+import { fromEvent } from 'rxjs';
 
 const button = document.querySelector('button');
 fromEvent(button, 'click')
@@ -46,8 +46,8 @@ button.addEventListener('click', () => console.log(`Clicked ${++count} times`));
 
 Using RxJS you isolate the state.
 ```Js
-const { fromEvent } = rxjs;
-const { scan } = rxjs.operators;
+import { fromEvent } from 'rxjs';
+import { scan } from 'rxjs/operators';
 
 cosnt button = document.querySelector('button');
 fromEvent(button, 'click').pipe(
@@ -77,8 +77,8 @@ button.addEventListener('click', () => {
 
 With RxJS:
 ```js
-const { fromEvent } = rxjs;
-const { throttleTime, scan } = rxjs.operators;
+import { fromEvent } from 'rxjs';
+import { throttleTime, scan } from 'rxjs/operators';
 
 const button = document.querySelector('button');
 fromEvent(button, 'click').pipe(
@@ -110,8 +110,8 @@ button.addEventListener('click', (event) => {
 
 With RxJS:
 ```js
-const { fromEvent } = rxjs;
-const { throttleTime, map, scan } = rxjs.operators;
+import { fromEvent } from 'rxjs';
+import { throttleTime, map, scan } from 'rxjs/operators';
 
 const button = document.querySelector('button');
 fromEvent(button, 'click').pipe(
