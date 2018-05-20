@@ -18,6 +18,7 @@ The essential concepts in RxJS which solve async event management are:
 ## First examples
 
 Normally you register event listeners.
+
 ```js
 const button = document.querySelector('button');
 
@@ -25,6 +26,7 @@ button.addEventListener('click', () => console.log('Clicked!'));
 ```
 
 Using RxJS you create an observable instead.
+
 ```js
 import { fromEvent } from 'rxjs';
 
@@ -34,12 +36,12 @@ fromEvent(button, 'click')
   .subscribe(() => console.log('Clicked!'));
 ```
 
-
 ### Purity
+
 What makes RxJS powerful is its ability to produce values using pure functions. That means your code is less prone to errors.
 
-Normally you would create an impure function, where other
-pieces of your code can mess up your state.
+Normally you would create an impure function, where other pieces of your code can mess up your state.
+
 ```js
 const button = document.querySelector('button');
 let count = 0;
@@ -50,6 +52,7 @@ button.addEventListener('click', () => {
 ```
 
 Using RxJS you isolate the state.
+
 ```Js
 import { fromEvent } from 'rxjs';
 import { scan } from 'rxjs/operators';
@@ -64,9 +67,11 @@ fromEvent(button, 'click')
 The **scan** operator works just like **reduce** for arrays. It takes a value which is exposed to a callback. The returned value of the callback will then become the next value exposed the next time the callback runs.
 
 ### Flow
+
 RxJS has a whole range of operators that helps you control how the events flow through your observables.
 
 This is how you would allow at most one click per second, with plain JavaScript:
+
 ```js
 const button = document.querySelector('button');
 const rate = 1000;
@@ -82,6 +87,7 @@ button.addEventListener('click', () => {
 ```
 
 With RxJS:
+
 ```js
 import { fromEvent } from 'rxjs';
 import { throttleTime, scan } from 'rxjs/operators';
@@ -99,9 +105,11 @@ fromEvent(button, 'click')
 Other flow control operators are [**filter**](../class/es6/Observable.js~Observable.html#instance-method-filter), [**delay**](../class/es6/Observable.js~Observable.html#instance-method-delay), [**debounceTime**](../class/es6/Observable.js~Observable.html#instance-method-debounceTime), [**take**](../class/es6/Observable.js~Observable.html#instance-method-take), [**takeUntil**](../class/es6/Observable.js~Observable.html#instance-method-takeUntil), [**distinct**](../class/es6/Observable.js~Observable.html#instance-method-distinct), [**distinctUntilChanged**](../class/es6/Observable.js~Observable.html#instance-method-distinctUntilChanged) etc.
 
 ### Values
+
 You can transform the values passed through your observables.
 
 Here's how you can add the current mouse x position for every click, in plain JavaScript:
+
 ```js
 const button = document.querySelector('button');
 const rate = 1000;
@@ -118,6 +126,7 @@ button.addEventListener('click', (event) => {
 ```
 
 With RxJS:
+
 ```js
 import { fromEvent } from 'rxjs';
 import { throttleTime, map, scan } from 'rxjs/operators';
@@ -133,5 +142,4 @@ fromEvent(button, 'click')
   .subscribe(count => console.log(count));
 ```
 
-Other value producing operators are [**pluck**](../class/es6/Observable.js~Observable.html#instance-method-pluck), [**pairwise**](../class/es6/Observable.js~Observable.html#instance-method-pairwise),
-[**sample**](../class/es6/Observable.js~Observable.html#instance-method-sample) etc.
+Other value producing operators are [**pluck**](../class/es6/Observable.js~Observable.html#instance-method-pluck), [**pairwise**](../class/es6/Observable.js~Observable.html#instance-method-pairwise), [**sample**](../class/es6/Observable.js~Observable.html#instance-method-sample) etc.
