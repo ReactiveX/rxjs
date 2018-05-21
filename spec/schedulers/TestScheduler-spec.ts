@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
+import { AsyncScheduler } from 'rxjs/internal/scheduler/AsyncScheduler';
 import { TestScheduler } from 'rxjs/testing';
 import { Observable, NEVER, EMPTY, Subject, of, concat, merge, Notification } from 'rxjs';
 import { delay, debounceTime, concatMap } from 'rxjs/operators';
@@ -440,6 +441,26 @@ describe('TestScheduler', () => {
         expect(value).to.equal('foo');
         done();
       });
+    });
+
+    it('should restore changes upon thrown errors', () => {
+      const testScheduler = new TestScheduler(assertDeepEquals);
+
+      const frameTimeFactor = TestScheduler['frameTimeFactor'];
+      const maxFrames = testScheduler.maxFrames;
+      const runMode = testScheduler['runMode'];
+      const delegate = AsyncScheduler.delegate;
+
+      try {
+        testScheduler.run(() => {
+          throw new Error('kaboom!');
+        });
+      } catch { /* empty */ }
+
+      expect(TestScheduler['frameTimeFactor']).to.equal(frameTimeFactor);
+      expect(testScheduler.maxFrames).to.equal(maxFrames);
+      expect(testScheduler['runMode']).to.equal(runMode);
+      expect(AsyncScheduler.delegate).to.equal(delegate);
     });
   });
 });

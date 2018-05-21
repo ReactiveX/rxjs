@@ -378,14 +378,15 @@ export class TestScheduler extends VirtualTimeScheduler {
       expectObservable: this.expectObservable.bind(this),
       expectSubscriptions: this.expectSubscriptions.bind(this),
     };
-    const ret = callback(helpers);
-    this.flush();
-
-    TestScheduler.frameTimeFactor = prevFrameTimeFactor;
-    this.maxFrames = prevMaxFrames;
-    this.runMode = false;
-    AsyncScheduler.delegate = undefined;
-
-    return ret;
+    try {
+      const ret = callback(helpers);
+      this.flush();
+      return ret;
+    } finally {
+      TestScheduler.frameTimeFactor = prevFrameTimeFactor;
+      this.maxFrames = prevMaxFrames;
+      this.runMode = false;
+      AsyncScheduler.delegate = undefined;
+    }
   }
 }
