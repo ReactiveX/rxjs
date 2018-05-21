@@ -36,6 +36,7 @@ export function range(start: number = 0,
                       scheduler?: SchedulerLike): Observable<number> {
   return new Observable<number>(subscriber => {
     let index = 0;
+    let current = start;
 
     if (scheduler) {
       return scheduler.schedule(dispatch, 0, {
@@ -47,7 +48,7 @@ export function range(start: number = 0,
           subscriber.complete();
           break;
         }
-        subscriber.next(start++);
+        subscriber.next(current++);
         if (subscriber.closed) {
           break;
         }

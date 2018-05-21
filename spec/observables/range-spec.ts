@@ -31,6 +31,21 @@ describe('range', () => {
     expectObservable(e1).toBe(expected, values);
   });
 
+  it('should work for two subscribers', () => {
+    const e1 = range(1, 5)
+      .concatMap((x, i) => Observable.of(x).delay(i === 0 ? 0 : 20, rxTestScheduler));
+    const expected = 'a-b-c-d-(e|)';
+    const values = {
+      a: 1,
+      b: 2,
+      c: 3,
+      d: 4,
+      e: 5
+    };
+    expectObservable(e1).toBe(expected, values);
+    expectObservable(e1).toBe(expected, values);
+  });
+
   it('should synchronously create a range of values by default', () => {
     const results = [] as any[];
     range(12, 4).subscribe(function (x) {
