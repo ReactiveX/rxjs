@@ -24,7 +24,7 @@ npm i -g rxjs-tslint
 rxjs-5-to-6-migrate -p [path/to/tsconfig.json]
 ```
 
-5. Before RxJS release v7, you will need to remove and replace all use of [deprecated functionality](#deprecated).
+5. Before RxJS release v7, you will need to remove and replace all use of [deprecated functionality](#deprecations).
 
 ## Backwards compatibility
 
