@@ -46,7 +46,7 @@ describe('Observable.prototype.do', () => {
 
   it('should handle everything with an observer', (done: MochaDone) => {
     const expected = [1, 2, 3];
-    const results = [];
+    const results: number[] = [];
 
     Observable.of(1, 2, 3)
       .do(<Rx.Observer<number>>{
@@ -101,7 +101,7 @@ describe('Observable.prototype.do', () => {
 
   it('should handle an error with observer', () => {
     let errored = false;
-    Observable.throw('bad').do(<any>{ error: function (err) {
+    Observable.throw('bad').do(<any>{ error: function (err: string) {
       expect(err).to.equal('bad');
     } })
     .subscribe(null, function (err) {

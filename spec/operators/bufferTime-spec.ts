@@ -18,7 +18,7 @@ describe('bufferTime operator', () => {
       w: ['a', 'b'],
       x: ['c', 'd', 'e'],
       y: ['f', 'g'],
-      z: []
+      z: [] as string[]
     };
 
     const result = e1.pipe(bufferTime(t, null, Number.POSITIVE_INFINITY, rxTestScheduler));
@@ -34,7 +34,7 @@ describe('bufferTime operator', () => {
     const values = {
       x: ['a', 'b', 'c'],
       y: ['d', 'e', 'g'],
-      z: []
+      z: [] as string[]
     };
 
     const result = e1.pipe(bufferTime(t, null, Number.POSITIVE_INFINITY, rxTestScheduler));
@@ -69,7 +69,7 @@ describe('bufferTime operator', () => {
       w: ['a', 'b'],
       x: ['c', 'd', 'e'],
       y: ['f', 'g'],
-      z: []
+      z: [] as string[]
     };
 
     const result = e1.pipe(bufferTime(t, null, 3, rxTestScheduler));
@@ -137,8 +137,8 @@ describe('bufferTime operator', () => {
       b: ['4', '5', '6'],
       c: ['6', '7', '8'],
       d: ['8', '9'],
-      e: [],
-      f: []
+      e: [] as string[],
+      f: [] as string[]
     };
 
     const result = e1.pipe(bufferTime(t, interval, Number.POSITIVE_INFINITY, rxTestScheduler));
@@ -164,7 +164,7 @@ describe('bufferTime operator', () => {
       b: ['4', '5', '6'],
       c: ['6', '7', '8'],
       d: ['8', '9'],
-      e: []
+      e: [] as string[]
     };
 
     const result = e1.pipe(bufferTime(t, interval, Number.POSITIVE_INFINITY, rxTestScheduler));
@@ -222,7 +222,7 @@ describe('bufferTime operator', () => {
     const e1 = cold( '|');
     const e1subs =   '(^!)';
     const expected = '(b|)';
-    const values = { b: [] };
+    const values = { b: [] as string[] };
     const t = time('----------|');
 
     const result = e1.pipe(bufferTime(t, null, Number.POSITIVE_INFINITY, rxTestScheduler));

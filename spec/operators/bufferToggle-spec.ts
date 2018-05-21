@@ -274,7 +274,7 @@ describe('bufferToggle operator', () => {
     const e2 =  cold('--o-----|');
     const e3 =  cold(  '-----c--|');
     const expected = '|';
-    const values = { x: [] };
+    const values = { x: [] as string[] };
 
     const result = e1.pipe(bufferToggle(e2, () => e3));
 
@@ -286,7 +286,7 @@ describe('bufferToggle operator', () => {
     const e2 =  cold('--o-----|');
     const e3 =  cold(  '-----c--|');
     const expected = '#';
-    const values = { x: [] };
+    const values = { x: [] as string[] };
 
     const result = e1.pipe(bufferToggle(e2, () => e3));
 
@@ -300,7 +300,7 @@ describe('bufferToggle operator', () => {
     const unsub =    '                                            !';
     const subs =     '^                                           !';
     const expected = '----x-----x------x-----x---x-----------------';
-    const values = { x: [] };
+    const values = { x: [] as string[] };
 
     const result = e1.pipe(bufferToggle(e2, () => e3));
 

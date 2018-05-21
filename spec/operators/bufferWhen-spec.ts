@@ -15,7 +15,7 @@ describe('bufferWhen operator', () => {
     const values = {
       x: ['b', 'c', 'd'],
       y: ['e', 'f', 'g'],
-      z: []
+      z: [] as string[]
     };
 
     expectObservable(e1.pipe(bufferWhen(() => e2))).toBe(expected, values);
@@ -239,7 +239,7 @@ describe('bufferWhen operator', () => {
     const e1subs =   '(^!)';
     const expected = '(x|)';
     const values = {
-      x: []
+      x: [] as string[]
     };
 
     const result = e1.pipe(bufferWhen(() => e2));
@@ -254,7 +254,7 @@ describe('bufferWhen operator', () => {
     const e1subs =   '(^!)';
     const expected = '#';
     const values = {
-      x: []
+      x: [] as string[]
     };
 
     const result = e1.pipe(bufferWhen(() => e2));
@@ -276,7 +276,7 @@ describe('bufferWhen operator', () => {
                    '                                        ^   !'];
     const expected = '--------x-------x-------x-------x-------x----';
     const values = {
-      x: []
+      x: [] as string[]
     };
 
     const source = e1.pipe(bufferWhen(() => e2));
@@ -346,7 +346,7 @@ describe('bufferWhen operator', () => {
     const values = {
       x: ['b', 'c', 'd'],
       y: ['e', 'f', 'g', 'h'],
-      z: []
+      z: [] as string[]
     };
 
     const source = e1.pipe(bufferWhen(() => e2));
