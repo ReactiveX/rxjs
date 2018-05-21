@@ -86,6 +86,7 @@
     "prepublish": "shx rm -rf ./typings && npm run build_all",
     "publish_docs": "./publish_docs.sh",
     "test": "cross-env TS_NODE_PROJECT=spec/tsconfig.json mocha --opts spec/support/default.opts \"spec/**/*-spec.ts\"",
+    "test_check": "tsc --project ./spec/tsconfig.check.json",
     "test:browser": "echo \"Browser test is not working currently\" && exit -1 && npm-run-all build:spec:browser && opn spec/support/mocha-browser-runner.html",
     "test:cover": "nyc npm test",
     "test:circular": "dependency-cruise --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm5",

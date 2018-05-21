@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "extends": "../tsconfig.json",
+  "include": [
+    "./*.ts",
+    "./ajax/**/*.ts",
+    "./helpers/**/*.ts",
+    "./migration/**/*.ts",
+    "./symbol/**/*.ts",
+    "./testing/**/*.ts",
+    "./util/**/*.ts",
+    "./websocket/**/*.ts"
+  ]
+}

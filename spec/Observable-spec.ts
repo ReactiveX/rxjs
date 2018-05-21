@@ -85,7 +85,7 @@ describe('Observable', () => {
       Rx.config.Promise = function MyPromise(callback: any) {
         wasCalled = true;
         return new Promise<number>(callback);
-      };
+      } as any;
 
       Observable.of(42).forEach((x) => {
         expect(x).to.equal(42);
