@@ -57,7 +57,9 @@ class SkipUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
              outerIndex: number, innerIndex: number,
              innerSub: InnerSubscriber<T, R>): void {
     this.hasValue = true;
-    this.innerSubscription.unsubscribe();
+    if (this.innerSubscription) {
+      this.innerSubscription.unsubscribe();
+    }
   }
 
   notifyComplete() {

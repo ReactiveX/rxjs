@@ -30,6 +30,16 @@ describe('skipUntil', () => {
     expectSubscriptions(skip.subscriptions).toBe(skipSubs);
   });
 
+  it('should emit elements after a synchronous notifier emits', () => {
+    const values: string[] = [];
+
+    of('a', 'b').pipe(skipUntil(of('x'))).subscribe(
+      value => values.push(value),
+      err => { throw err; },
+      () => expect(values).to.deep.equal(['a', 'b'])
+    );
+  });
+
   it('should raise an error if notifier throws and source is hot', () => {
     const e1 =   hot('--a--b--c--d--e--|');
     const e1subs =   '^            !    ';
