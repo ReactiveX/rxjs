@@ -4,14 +4,14 @@ import { debounce, mergeMap, mapTo } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare const type;
+declare const type: Function;
 declare function asDiagram(arg: string): Function;
 
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {debounce} */
 describe('debounce operator', () => {
-  function getTimerSelector(x) {
+  function getTimerSelector(x: number) {
     return () => timer(x, rxTestScheduler);
   }
 
@@ -287,7 +287,7 @@ describe('debounce operator', () => {
                   ['        ^!                            ',
                    '                 ^ !                  '];
 
-    function selectorFunction(x) {
+    function selectorFunction(x: string) {
       if (x !== 'c') {
         return selector.shift();
       } else {
@@ -307,7 +307,7 @@ describe('debounce operator', () => {
     const e1subs =   '^                                   !';
     const expected = '--------a-x-yz---bxy---z--c--x--y--z|';
 
-    function selectorFunction(x) { return EMPTY; }
+    function selectorFunction(x: string) { return EMPTY; }
 
     expectObservable(e1.pipe(debounce(selectorFunction))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -420,8 +420,8 @@ describe('debounce operator', () => {
   });
 
   it('should debounce correctly when synchronously reentered', () => {
-    const results = [];
-    const source = new Subject();
+    const results: number[] = [];
+    const source = new Subject<number>();
 
     source.pipe(debounce(() => of(null))).subscribe(value => {
       results.push(value);
