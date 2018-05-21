@@ -5,5 +5,11 @@ export function isNumeric(val: any): val is number {
   // ...but misinterprets leading-number strings, particularly hex literals ("0x...")
   // subtraction forces infinities to NaN
   // adding 1 corrects loss of precision from parseFloat (#15100)
+  if (!isString(val)) {
   return !isArray(val) && (val - parseFloat(val) + 1) >= 0;
+  } else { return false; }
+}
+
+function isString (o: any): boolean {
+  return (Object.prototype.toString.call(o) === '[object String]');
 }
