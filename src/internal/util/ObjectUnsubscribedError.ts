@@ -8,9 +8,11 @@
  * @class ObjectUnsubscribedError
  */
 export class ObjectUnsubscribedError extends Error {
+
+  public readonly name = 'ObjectUnsubscribedError';
+
   constructor() {
     super('object unsubscribed');
-    this.name = 'ObjectUnsubscribedError';
     (Object as any).setPrototypeOf(this, ObjectUnsubscribedError.prototype);
   }
 }

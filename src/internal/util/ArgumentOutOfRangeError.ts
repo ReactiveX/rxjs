@@ -9,9 +9,11 @@
  * @class ArgumentOutOfRangeError
  */
 export class ArgumentOutOfRangeError extends Error {
+
+  public readonly name = 'ArgumentOutOfRangeError';
+
   constructor() {
     super('argument out of range');
-    this.name = 'ArgumentOutOfRangeError';
     (Object as any).setPrototypeOf(this, ArgumentOutOfRangeError.prototype);
   }
 }

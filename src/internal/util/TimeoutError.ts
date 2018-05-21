@@ -6,9 +6,11 @@
  * @class TimeoutError
  */
 export class TimeoutError extends Error {
+
+  public readonly name = 'TimeoutError';
+
   constructor() {
     super('Timeout has occurred');
-    this.name = 'TimeoutError';
     (Object as any).setPrototypeOf(this, TimeoutError.prototype);
   }
 }

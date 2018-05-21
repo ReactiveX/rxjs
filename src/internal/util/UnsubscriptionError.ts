@@ -3,11 +3,13 @@
  * `unsubscribe` of a {@link Subscription}.
  */
 export class UnsubscriptionError extends Error {
+
+  public readonly name = 'UnsubscriptionError';
+
   constructor(public errors: any[]) {
     super(errors ?
       `${errors.length} errors occurred during unsubscription:
   ${errors.map((err, i) => `${i + 1}) ${err.toString()}`).join('\n  ')}` : '');
-    this.name = 'UnsubscriptionError';
     (Object as any).setPrototypeOf(this, UnsubscriptionError.prototype);
   }
 }
