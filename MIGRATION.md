@@ -6,7 +6,7 @@ In most cases, this allows application and library developers to update incremen
 and use RxJS v6 without any modifications to their code.
 
 A backward-compatibility layer eases the update process, allowing you to keep your 
-apps working while you address most code changes at your own page. 
+apps working while you address most code changes at your own pace. 
 The overall process can be carried out in stages:
 
 1. Update to the latest version of RxJS 5.5 and ensure that you've fixed any issues caused by bug fixes.
