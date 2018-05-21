@@ -2,8 +2,10 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as Rx from 'rxjs/Rx';
 import { root } from 'rxjs/util/root';
+import { TestScheduler } from 'rxjs/testing';
 
 declare const global: any;
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {ajax} */
 describe('Observable.ajax', () => {
@@ -379,6 +381,39 @@ describe('Observable.ajax', () => {
       'contentType': 'text/plain',
       'responseText': 'Wee! I am text!'
     });
+  });
+
+  it('should error on timeout of asynchronous request', () => {
+    const obj: Rx.AjaxRequest = {
+      url: '/flibbertyJibbet',
+      responseType: 'text',
+      timeout: 10
+    };
+
+    Rx.Observable.ajax(obj)
+      .subscribe((x: any) => {
+        throw 'should not have been called';
+      }, (e) => {
+        expect(e.status).to.equal(0);
+        expect(e.xhr.method).to.equal('GET');
+        expect(e.xhr.async).to.equal(true);
+        expect(e.xhr.timeout).to.equal(10);
+        expect(e.xhr.responseType).to.equal('text');
+      });
+
+    const request = MockXMLHttpRequest.mostRecent;
+
+    expect(request.url).to.equal('/flibbertyJibbet');
+
+    rxTestScheduler.schedule(() => {
+      request.respondWith({
+        'status': 200,
+        'contentType': 'text/plain',
+        'responseText': 'Wee! I am text!'
+      });
+    }, 1000);
+
+    rxTestScheduler.flush();
   });
 
   it('should create a synchronous request', () => {
@@ -1030,8 +1065,20 @@ class MockXMLHttpRequest {
     MockXMLHttpRequest.requests.push(this);
   }
 
+  timeout: number;
+
   send(data: any): void {
     this.data = data;
+    if (this.timeout && this.timeout > 0) {
+      setTimeout(() => {
+        if (this.readyState != 4) {
+          this.readyState = 4;
+          this.status = 0;
+          this.triggerEvent('readystatechange');
+          this.triggerEvent('timeout');
+        }
+      }, this.timeout);
+    }
   }
 
   open(method: any, url: any, async: any, user: any, password: any): void {
@@ -1041,7 +1088,7 @@ class MockXMLHttpRequest {
     this.user = user;
     this.password = password;
     this.readyState = 1;
-    this.triggerEvent('readyStateChange');
+    this.triggerEvent('readystatechange');
     const originalProgressHandler = this.upload.onprogress;
     Object.defineProperty(this.upload, 'progress', {
       get() {
@@ -1052,24 +1099,6 @@ class MockXMLHttpRequest {
 
   setRequestHeader(key: any, value: any): void {
     this.requestHeaders[key] = value;
-  }
-
-  addEventListener(name: string, handler: any): void {
-    this.eventHandlers.push({ name: name, handler: handler });
-  }
-
-  removeEventListener(name: string, handler: any): void {
-    for (let i = this.eventHandlers.length - 1; i--; ) {
-      let eh = this.eventHandlers[i];
-      if (eh.name === name && eh.handler === handler) {
-        this.eventHandlers.splice(i, 1);
-      }
-    }
-  }
-
-  throwError(err: any): void {
-    // TODO: something better with errors
-    this.triggerEvent('error');
   }
 
   protected jsonResponseValue(response: any) {
@@ -1119,17 +1148,11 @@ class MockXMLHttpRequest {
 
   triggerEvent(name: any, eventObj?: any): void {
     // TODO: create a better default event
-    const e: any = eventObj || {};
+    const e: any = eventObj || { type: name };
 
     if (this['on' + name]) {
       this['on' + name](e);
     }
-
-    this.eventHandlers.forEach(function (eh) {
-      if (eh.name === name) {
-        eh.handler.call(this, e);
-      }
-    });
   }
 
   triggerUploadEvent(name: any, eventObj?: any): void {
