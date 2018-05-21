@@ -7,6 +7,12 @@ import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
+/* tslint:disable:max-line-length */
+/** @deprecated In future versions, empty notifiers will no longer re-emit the source value on the output observable. */
+export function delayWhen<T>(delayDurationSelector: (value: T) => Observable<never>, subscriptionDelay?: Observable<any>): MonoTypeOperatorFunction<T>;
+export function delayWhen<T>(delayDurationSelector: (value: T) => Observable<any>, subscriptionDelay?: Observable<any>): MonoTypeOperatorFunction<T>;
+/* tslint:disable:max-line-length */
+
 /**
  * Delays the emission of items from the source Observable by a given time span
  * determined by the emissions of another Observable.
@@ -22,6 +28,8 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * argument, and should return an Observable, called the "duration" Observable.
  * The source value is emitted on the output Observable only when the duration
  * Observable emits a value or completes.
+ * The completion of the notifier triggering the emission of the source value
+ * is deprecated behavior and will be removed in future versions.
  *
  * Optionally, `delayWhen` takes a second argument, `subscriptionDelay`, which
  * is an Observable. When `subscriptionDelay` emits its first value or
