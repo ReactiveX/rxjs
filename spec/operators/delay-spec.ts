@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs';
-import { delay, repeatWhen, skip, take, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { delay, repeatWhen, skip, take, tap, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
@@ -9,14 +9,14 @@ declare const asDiagram: Function;
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {delay} */
-describe('Observable.prototype.delay', () => {
+describe('delay operator', () => {
   asDiagram('delay(20)')('should delay by specified timeframe', () => {
     const e1 =   hot('---a--b--|  ');
     const t =   time(   '--|      ');
     const expected = '-----a--b--|';
     const subs =     '^          !';
 
-    const result = e1.delay(t, rxTestScheduler);
+    const result = e1.pipe(delay(t, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -29,7 +29,7 @@ describe('Observable.prototype.delay', () => {
     const subs =     '^          !';
 
     const absoluteDelay = new Date(rxTestScheduler.now() + t);
-    const result = e1.delay(absoluteDelay, rxTestScheduler);
+    const result = e1.pipe(delay(absoluteDelay, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -42,7 +42,7 @@ describe('Observable.prototype.delay', () => {
     const subs =        '^           !';
 
     const absoluteDelay = new Date(rxTestScheduler.now() + t);
-    const result = e1.delay(absoluteDelay, rxTestScheduler);
+    const result = e1.pipe(delay(absoluteDelay, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -54,7 +54,7 @@ describe('Observable.prototype.delay', () => {
     const expected = '------a---b#';
     const subs =     '^          !';
 
-    const result = e1.delay(t, rxTestScheduler);
+    const result = e1.pipe(delay(t, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -67,7 +67,7 @@ describe('Observable.prototype.delay', () => {
     const subs =     '^       !';
 
     const absoluteDelay = new Date(rxTestScheduler.now() + t);
-    const result = e1.delay(absoluteDelay, rxTestScheduler);
+    const result = e1.pipe(delay(absoluteDelay, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -80,7 +80,7 @@ describe('Observable.prototype.delay', () => {
     const e1Sub =       '^           !';
 
     const absoluteDelay = new Date(rxTestScheduler.now() + t);
-    const result = e1.delay(absoluteDelay, rxTestScheduler);
+    const result = e1.pipe(delay(absoluteDelay, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1Sub);
@@ -92,7 +92,7 @@ describe('Observable.prototype.delay', () => {
     const expected = '-------|';
     const subs =     '^      !';
 
-    const result = e1.delay(t, rxTestScheduler);
+    const result = e1.pipe(delay(t, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -103,7 +103,7 @@ describe('Observable.prototype.delay', () => {
     const t =   time('---|');
     const expected = '---|';
 
-    const result = e1.delay(t, rxTestScheduler);
+    const result = e1.pipe(delay(t, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
   });
@@ -115,7 +115,7 @@ describe('Observable.prototype.delay', () => {
     const unsub =    '----------------!';
     const subs =     '^               !';
 
-    const result = e1.delay(t, rxTestScheduler);
+    const result = e1.pipe(delay(t, rxTestScheduler));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -128,10 +128,11 @@ describe('Observable.prototype.delay', () => {
     const expected = '------a--   ';
     const unsub =    '        !   ';
 
-    const result = e1
-      .mergeMap((x: any) => Observable.of(x))
-      .delay(t, rxTestScheduler)
-      .mergeMap((x: any) => Observable.of(x));
+    const result = e1.pipe(
+      mergeMap((x: any) => of(x)),
+      delay(t, rxTestScheduler),
+      mergeMap((x: any) => of(x))
+    );
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -142,7 +143,7 @@ describe('Observable.prototype.delay', () => {
     const t =   time('---|');
     const expected = '-';
 
-    const result = e1.delay(t, rxTestScheduler);
+    const result = e1.pipe(delay(t, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
   });
