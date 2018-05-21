@@ -100,7 +100,7 @@ describe('Observable.prototype.max', () => {
     (<any>Rx.Observable.range(1, 10000)).max().subscribe(
       (value: number) => {
         expect(value).to.equal(10000);
-      }, (x) => {
+      }, (x: any) => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -111,7 +111,7 @@ describe('Observable.prototype.max', () => {
     (<any>Rx.Observable.range(1, 10)).skip(1).max().subscribe(
       (value: number) => {
         expect(value).to.equal(10);
-      }, (x) => {
+      }, (x: any) => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -122,7 +122,7 @@ describe('Observable.prototype.max', () => {
     (<any>Rx.Observable.range(1, 10)).take(1).max().subscribe(
       (value: number) => {
         expect(value).to.equal(1);
-      }, (x) => {
+      }, (x: any) => {
         done(new Error('should not be called'));
       }, () => {
         done();
@@ -152,7 +152,7 @@ describe('Observable.prototype.max', () => {
     const e1subs =    '^   !';
     const expected =  '----|';
 
-    const predicate = function (x, y) {
+    const predicate = function <T>(x: T, y: T) {
       return 42;
     };
 
@@ -165,7 +165,7 @@ describe('Observable.prototype.max', () => {
     const e1subs =    '^    ';
     const expected =  '-----';
 
-    const predicate = function (x, y) {
+    const predicate = function <T>(x: T, y: T) {
       return 42;
     };
 
@@ -191,7 +191,7 @@ describe('Observable.prototype.max', () => {
     const e1subs =    '^         !';
     const expected =  '----------(w|)';
 
-    const predicate = function (x, y) {
+    const predicate = function <T>(x: T, y: T) {
       return x > y ? -1 : 1;
     };
 
@@ -204,7 +204,7 @@ describe('Observable.prototype.max', () => {
     const e1subs =    '^         !';
     const expected =  '----------(w|)';
 
-    const predicate = function (x, y) {
+    const predicate = function <T>(x: T, y: T) {
       return x > y ? -1 : 1;
     };
 
@@ -230,7 +230,7 @@ describe('Observable.prototype.max', () => {
     const e1subs =    '^    !   ';
     const expected =  '-----#   ';
 
-    const predicate = function (x, y) {
+    const predicate = function (x: string, y: string) {
       if (y === '3') {
         throw 'error';
       }
