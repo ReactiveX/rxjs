@@ -7,7 +7,7 @@ const Observable = Rx.Observable;
 
 /** @test {findIndex} */
 describe('Observable.prototype.findIndex', () => {
-  function truePredicate(x) {
+  function truePredicate(x: any) {
     return true;
   }
 
@@ -17,7 +17,7 @@ describe('Observable.prototype.findIndex', () => {
     const subs =       '^        !       ';
     const expected =   '---------(x|)    ';
 
-    const predicate = function (x) { return x % 5 === 0; };
+    const predicate = function (x: number) { return x % 5 === 0; };
 
     expectObservable((<any>source).findIndex(predicate)).toBe(expected, { x: 2 });
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -49,7 +49,7 @@ describe('Observable.prototype.findIndex', () => {
     const subs =       '^ !   ';
     const expected =   '--(x|)';
 
-    const predicate = function (value) {
+    const predicate = function (value: number) {
       return value === sourceValue;
     };
 
@@ -62,7 +62,7 @@ describe('Observable.prototype.findIndex', () => {
     const subs =       '^    !';
     const expected =   '-----(x|)';
 
-    const predicate = function (value) {
+    const predicate = function (value: number) {
       return value === 7;
     };
 
@@ -76,7 +76,7 @@ describe('Observable.prototype.findIndex', () => {
     const subs =       '^    !';
     const expected =   '-----(x|)';
 
-    const predicate = function (value) {
+    const predicate = function (this: typeof sourceValues, value: number) {
       return value === this.b;
     };
     const result = (<any>source).findIndex(predicate, sourceValues);
@@ -90,7 +90,7 @@ describe('Observable.prototype.findIndex', () => {
     const subs =       '^          !';
     const expected =   '-----------(x|)';
 
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       return value === 'z';
     };
 
@@ -130,7 +130,7 @@ describe('Observable.prototype.findIndex', () => {
     const subs =       '^       !';
     const expected =   '--------#';
 
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       return value === 'z';
     };
 
@@ -143,7 +143,7 @@ describe('Observable.prototype.findIndex', () => {
     const subs =       '^ !';
     const expected =   '--#';
 
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       throw 'error';
     };
 
