@@ -155,8 +155,8 @@ describe('debounceTime operator', () => {
   });
 
   it('should debounce correctly when synchronously reentered', () => {
-    const results = [];
-    const source = new Subject();
+    const results: number[] = [];
+    const source = new Subject<number>();
     const scheduler = new VirtualTimeScheduler();
 
     source.pipe(debounceTime(0, scheduler)).subscribe(value => {
