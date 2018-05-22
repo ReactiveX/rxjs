@@ -1,3 +1,25 @@
+<a name="6.2.0"></a>
+# [6.2.0](https://github.com/ReactiveX/RxJS/compare/6.1.0...6.2.0) (2018-05-22)
+
+
+### Bug Fixes
+
+* **ajax:** Handle timeouts as errors ([#3653](https://github.com/ReactiveX/RxJS/issues/3653)) ([e4128ea](https://github.com/ReactiveX/RxJS/commit/e4128ea))
+* **ajax:** RxJS v6 TimeoutError is missing name property ([576d943](https://github.com/ReactiveX/RxJS/commit/576d943))
+* **isObservable:** Fix throwing error when testing isObservable(null) ([#3688](https://github.com/ReactiveX/RxJS/issues/3688)) ([c9acc61](https://github.com/ReactiveX/RxJS/commit/c9acc61))
+* **range:** Range should be same for every subscriber ([#3707](https://github.com/ReactiveX/RxJS/issues/3707)) ([9642133](https://github.com/ReactiveX/RxJS/commit/9642133))
+* **skipUntil:** fix skipUntil when innerSubscription is null ([#3686](https://github.com/ReactiveX/RxJS/issues/3686)) ([4226432](https://github.com/ReactiveX/RxJS/commit/4226432))
+* **TestScheduler:** restore run changes upon error ([27cb9b6](https://github.com/ReactiveX/RxJS/commit/27cb9b6))
+* **TimeoutError:** Add name to TimeoutError ([44042d0](https://github.com/ReactiveX/RxJS/commit/44042d0))
+* **WebSocketSubject:** Check to see if WebSocket exists in global scope ([#3694](https://github.com/ReactiveX/RxJS/issues/3694)) ([2db0788](https://github.com/ReactiveX/RxJS/commit/2db0788))
+
+
+### Features
+
+* **endWith:** add new operator endWith ([#3679](https://github.com/ReactiveX/RxJS/issues/3679)) ([537fe7d](https://github.com/ReactiveX/RxJS/commit/537fe7d))
+
+
+
 <a name="6.1.0"></a>
 # [6.1.0](https://github.com/ReactiveX/RxJS/compare/6.0.0...6.1.0) (2018-05-03)
 
