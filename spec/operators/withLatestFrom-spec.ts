@@ -55,7 +55,7 @@ describe('Observable.prototype.withLatestFrom', () => {
       y: 'cgk',
       z: 'dhl'
     };
-    const project = function (a, b, c) { return a + b + c; };
+    const project = function (a: string, b: string, c: string) { return a + b + c; };
 
     const result = e1.withLatestFrom(e2, e3, project);
 
@@ -79,7 +79,7 @@ describe('Observable.prototype.withLatestFrom', () => {
       y: 'cgk',
       z: 'dhl'
     };
-    const project = function (a, b, c) { return a + b + c; };
+    const project = function (a: string, b: string, c: string) { return a + b + c; };
 
     const result = e1.withLatestFrom(e2, e3, project);
 
@@ -103,7 +103,7 @@ describe('Observable.prototype.withLatestFrom', () => {
       y: 'cgk',
       z: 'dhl'
     };
-    const project = function (a, b, c) { return a + b + c; };
+    const project = function (a: string, b: string, c: string) { return a + b + c; };
 
     const result = e1
       .mergeMap((x: string) => Observable.of(x))
@@ -198,7 +198,7 @@ describe('Observable.prototype.withLatestFrom', () => {
     const values = {
       x: 'bfj'
     };
-    const project = function (a, b, c) { return a + b + c; };
+    const project = function (a: string, b: string, c: string) { return a + b + c; };
 
     const result = e1.withLatestFrom(e2, e3, project);
 
