@@ -1,8 +1,10 @@
 import * as _ from 'lodash';
-import { hot, cold, expectObservable, expectSubscriptions, time, rxTestScheduler } from '../helpers/marble-testing';
+import * as Rx from 'rxjs/Rx';
+import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
 
 declare const type: Function;
 declare const asDiagram: Function;
+declare const rxTestScheduler: Rx.TestScheduler;
 const booleans = { T: true, F: false };
 
 /** @test {sequenceEqual} */

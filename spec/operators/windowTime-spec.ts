@@ -1,8 +1,9 @@
 import * as Rx from 'rxjs/Rx';
-import { hot, cold, expectObservable, expectSubscriptions, rxTestScheduler, time } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
 
 declare const type: Function;
 declare const asDiagram: Function;
+declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
 /** @test {windowTime} */

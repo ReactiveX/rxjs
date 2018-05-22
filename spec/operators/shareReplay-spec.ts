@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import * as Rx from 'rxjs/Rx';
-import { hot, cold, expectObservable, expectSubscriptions, rxTestScheduler } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare function asDiagram(arg: string): Function;
-
+declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
 /** @test {shareReplay} */

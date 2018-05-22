@@ -7,8 +7,6 @@ import { observableToBeFn, subscriptionLogsToBeFn } from '../../src/internal/tes
 
 declare const global: any;
 
-export const rxTestScheduler: TestScheduler = global.rxTestScheduler;
-
 export const emptySubs: any[] = [];
 
 export function hot(marbles: string, values?: void, error?: any): HotObservable<string>;
