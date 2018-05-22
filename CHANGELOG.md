@@ -1,3 +1,19 @@
+<a name="5.6.0-forward-compat.5"></a>
+# [5.6.0-forward-compat.5](https://github.com/ReactiveX/RxJS/compare/5.6.0-forward-compat.4...5.6.0-forward-compat.5) (2018-05-22)
+
+
+### Bug Fixes
+
+* fix a typing mismatch in FromEventObservable ([#3536](https://github.com/ReactiveX/RxJS/issues/3536)) ([21a59a7](https://github.com/ReactiveX/RxJS/commit/21a59a7))
+* **delay:** fix memory leak ([#3605](https://github.com/ReactiveX/RxJS/issues/3605)) ([9d1ba14](https://github.com/ReactiveX/RxJS/commit/9d1ba14))
+
+
+
+<a name="5.5.10"></a>
+## [5.5.10](https://github.com/ReactiveX/RxJS/compare/5.6.0-forward-compat.3...5.5.10) (2018-04-12)
+
+
+
 <a name="5.6.0-forward-compat.4"></a>
 # [5.6.0-forward-compat.4](https://github.com/ReactiveX/RxJS/compare/5.6.0-forward-compat.3...5.6.0-forward-compat.4) (2018-04-12)
 
