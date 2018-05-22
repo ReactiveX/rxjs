@@ -11,15 +11,39 @@
     body {
       font-family: Roboto, Arial, Helvetica, sans-serif
     }
+
+    body {
+      text-align: center;
+      padding: 100px 0 0 0;
+      color: #fff;
+      background: #1d1f20;
+    }
+
+    #loading {
+      -webkit-animation: rotation 2s infinite linear;
+    }
+
+    @-webkit-keyframes rotation {
+      from {
+        -webkit-transform: rotate(0deg) scale(0.1);
+      }
+      to {
+        -webkit-transform: rotate(359deg) scale(3);
+      }
+    }
   </style>
 </head>
 
 <body>
-  <h1>Redirecting to newer docs</h1>
-  <p>Sorry for the inconvenience. We're moving our documentation to a new place. Redirecting you to a temporary site for now...</p>
 
-  <p>If you're not redirected,
-    <a href="https://beta-rxjsdocs.firebaseapp.com/">click here</a>
+  <img src="rxjs.svg" id="loading" />
+  <div style="position: absolute; z-index: 100; top: 0; left: 50%; width: 500px; margin-left: -250px;">
+    <h1>Redirecting to newer docs</h1>
+    <p>Sorry for the inconvenience. We're moving our documentation to a new place. Redirecting you to a temporary site for now...</p>
+
+    <p>If you're not redirected,
+      <a href="https://beta-rxjsdocs.firebaseapp.com/" style="font-weight: bold; color: lightcyan">click here</a>
+  </div>
   </p>
 </body>
 
