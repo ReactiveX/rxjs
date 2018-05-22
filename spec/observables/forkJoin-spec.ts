@@ -294,7 +294,7 @@ describe('forkJoin', () => {
     let b: Promise<string>;
     let c: Promise<boolean>;
     let o1: Observable<[number, string, boolean]> = forkJoin(a, b, c);
-    let o2: Observable<boolean> = forkJoin(a, b, c, (aa, bb, cc) => !!aa && !!bb && cc);
+    let o2: Observable<boolean> = forkJoin(a, b, c, (aa: number, bb: string, cc: boolean) => !!aa && !!bb && cc);
     /* tslint:enable:no-unused-variable */
   });
 
@@ -304,7 +304,7 @@ describe('forkJoin', () => {
     let b: Observable<string>;
     let c: Observable<boolean>;
     let o1: Observable<[number, string, boolean]> = forkJoin(a, b, c);
-    let o2: Observable<boolean> = forkJoin(a, b, c, (aa, bb, cc) => !!aa && !!bb && cc);
+    let o2: Observable<boolean> = forkJoin(a, b, c, (aa: number, bb: string, cc: boolean) => !!aa && !!bb && cc);
     /* tslint:enable:no-unused-variable */
   });
 
