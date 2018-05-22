@@ -218,7 +218,7 @@ describe('Observable.ajax', () => {
 
   it('should succeed on 200', () => {
     const expected = { foo: 'bar' };
-    let result;
+    let result: Rx.AjaxResponse;
     let complete = false;
     const obj = {
       url: '/flibbertyJibbet',
@@ -281,7 +281,7 @@ describe('Observable.ajax', () => {
   });
 
   it('should succeed on 300', () => {
-    let result;
+    let result: Rx.AjaxResponse;
     let complete = false;
     const obj = {
       url: '/flibbertyJibbet',
@@ -600,7 +600,7 @@ describe('Observable.ajax', () => {
     });
 
     it('should succeed on 204 No Content', () => {
-      const expected = null;
+      const expected: null = null;
       let result;
       let complete = false;
 
@@ -722,7 +722,7 @@ describe('Observable.ajax', () => {
     });
 
     it('should succeed on 204 No Content', () => {
-      const expected = null;
+      const expected: null = null;
       let result: Rx.AjaxResponse;
       let complete = false;
 
@@ -754,7 +754,7 @@ describe('Observable.ajax', () => {
     });
 
     it('should succeed in IE on 204 No Content', () => {
-      const expected = null;
+      const expected: null = null;
       let result: Rx.AjaxResponse;
       let complete = false;
 
@@ -953,7 +953,7 @@ describe('Observable.ajax', () => {
     const request = MockXMLHttpRequest.mostRecent;
 
     expect(() => {
-      request.upload.onprogress((<any>'onprogress'));
+      (request.upload as any).onprogress((<any>'onprogress'));
     }).not.throw();
 
     delete root.XMLHttpRequest.prototype.onprogress;
