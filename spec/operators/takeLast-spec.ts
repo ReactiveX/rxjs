@@ -71,7 +71,7 @@ describe('Observable.prototype.takeLast', () => {
 
   it('should be empty on takeLast(0)', () => {
     const e1 = hot('--a--^--b----c---d--|');
-    const e1subs = []; // Don't subscribe at all
+    const e1subs: string[] = []; // Don't subscribe at all
     const expected =    '|';
 
     expectObservable(e1.takeLast(0)).toBe(expected);
