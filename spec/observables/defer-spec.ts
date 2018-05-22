@@ -38,13 +38,13 @@ describe('defer', () => {
   it('should accept factory returns promise resolves', (done: MochaDone) => {
     const expected = 42;
     const e1 = defer(() => {
-      return new Promise((resolve: any) => { resolve(expected); });
+      return new Promise<number>((resolve: any) => { resolve(expected); });
     });
 
     e1.subscribe((x: number) => {
       expect(x).to.equal(expected);
       done();
-    }, x => {
+    }, (x: any) => {
       done(new Error('should not be called'));
     });
   });
@@ -52,12 +52,12 @@ describe('defer', () => {
   it('should accept factory returns promise rejects', (done: MochaDone) => {
     const expected = 42;
     const e1 = defer(() => {
-      return new Promise((resolve: any, reject: any) => { reject(expected); });
+      return new Promise<number>((resolve: any, reject: any) => { reject(expected); });
     });
 
     e1.subscribe((x: number) => {
       done(new Error('should not be called'));
-    }, x => {
+    }, (x: any) => {
       expect(x).to.equal(expected);
       done();
     }, () => {
