@@ -59,7 +59,7 @@ describe('Observable.prototype.takeWhile', () => {
     const e1subs =     '^       !      ';
     const expected =   '--b--c--|      ';
 
-    function predicate(value) {
+    function predicate(value: string) {
       return value !== 'd';
     }
 
@@ -112,7 +112,7 @@ describe('Observable.prototype.takeWhile', () => {
     const e1subs =     '^       !      ';
     const expected =   '--b--c--|      ';
 
-    function predicate(value, index) {
+    function predicate(value: string, index: number) {
       return index < 2;
     }
 
@@ -144,7 +144,7 @@ describe('Observable.prototype.takeWhile', () => {
     const expected =   '--b--c--|      ';
 
     let invoked = 0;
-    function predicate(value) {
+    function predicate(value: string) {
       invoked++;
       return value !== 'd';
     }
@@ -161,7 +161,7 @@ describe('Observable.prototype.takeWhile', () => {
     const e1subs =     '^ !            ';
     const expected =   '--#            ';
 
-    function predicate(value) {
+    function predicate(value: string) {
       throw 'error';
     }
 
@@ -175,7 +175,7 @@ describe('Observable.prototype.takeWhile', () => {
     const e1subs =     '^    !         ';
     const expected =   '--b---         ';
 
-    function predicate(value) {
+    function predicate(value: string) {
       return value !== 'd';
     }
 
@@ -189,7 +189,7 @@ describe('Observable.prototype.takeWhile', () => {
     const e1subs =     '^    !         ';
     const expected =   '--b---         ';
 
-    function predicate(value) {
+    function predicate(value: string) {
       return value !== 'd';
     }
 
