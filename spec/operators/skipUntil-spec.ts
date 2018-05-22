@@ -1,3 +1,4 @@
+import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { Observable, of, Subject } from 'rxjs';
 import { skipUntil, mergeMap } from 'rxjs/operators';
