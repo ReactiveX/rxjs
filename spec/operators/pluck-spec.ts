@@ -78,7 +78,7 @@ describe('Observable.prototype.pluck', () => {
     const a =   cold('--a-b--c-d---e-|', inputs);
     const asubs =    '^              !';
     const expected = '--r-x--y-z---w-|';
-    const values = {r: 1, x: undefined, y: undefined, z: undefined, w: 5};
+    const values: { [key: string]: number | undefined } = {r: 1, x: undefined, y: undefined, z: undefined, w: 5};
 
     const r = a.pluck('a', 'b', 'c');
     expectObservable(r).toBe(expected, values);
@@ -162,8 +162,8 @@ describe('Observable.prototype.pluck', () => {
     const expected = '--1--2-     ';
 
     const r = a
-      .mergeMap((x: string) => Observable.of(x))
-      .pluck('prop')
+      .mergeMap((x: { prop: string }) => Observable.of(x))
+      .pluck<{ prop: string }, string>('prop')
       .mergeMap((x: string) => Observable.of(x));
 
     expectObservable(r, unsub).toBe(expected);
