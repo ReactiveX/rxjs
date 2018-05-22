@@ -8,9 +8,12 @@ import { Subscriber } from '../Subscriber';
 const toString: Function = Object.prototype.toString;
 
 export type NodeStyleEventEmitter = {
-  addListener: (eventName: string, handler: Function) => void;
-  removeListener: (eventName: string, handler: Function) => void;
+  addListener: (eventName: string, handler: NodeEventHandler) => void;
+  removeListener: (eventName: string, handler: NodeEventHandler) => void;
 };
+
+export type NodeEventHandler = (...args: any[]) => void;
+
 function isNodeStyleEventEmitter(sourceObj: any): sourceObj is NodeStyleEventEmitter {
   return !!sourceObj && typeof sourceObj.addListener === 'function' && typeof sourceObj.removeListener === 'function';
 }
@@ -213,8 +216,8 @@ export class FromEventObservable<T> extends Observable<T> {
       unsubscribe = () => source.off(eventName, handler);
     } else if (isNodeStyleEventEmitter(sourceObj)) {
       const source = sourceObj;
-      sourceObj.addListener(eventName, handler);
-      unsubscribe = () => source.removeListener(eventName, handler);
+      sourceObj.addListener(eventName, handler as NodeEventHandler);
+      unsubscribe = () => source.removeListener(eventName, handler as NodeEventHandler);
     } else {
       throw new TypeError('Invalid event target');
     }
