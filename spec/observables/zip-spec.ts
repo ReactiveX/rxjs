@@ -107,7 +107,7 @@ describe('Observable.zip', () => {
       let nextCalled = 0;
       const myIterator = <any>{
         count: 0,
-        next: () => {
+        next() {
           nextCalled++;
           return { value: this.count++, done: false };
         }
@@ -127,7 +127,7 @@ describe('Observable.zip', () => {
     it('should work with never observable and empty iterable', () => {
       const a = cold(  '-');
       const asubs =    '^';
-      const b = [];
+      const b: number[] = [];
       const expected = '-';
 
       expectObservable(Observable.zip(a, b)).toBe(expected);
@@ -137,7 +137,7 @@ describe('Observable.zip', () => {
     it('should work with empty observable and empty iterable', () => {
       const a = cold('|');
       const asubs = '(^!)';
-      const b = [];
+      const b: number[] = [];
       const expected = '|';
 
       expectObservable(Observable.zip(a, b)).toBe(expected);
@@ -157,7 +157,7 @@ describe('Observable.zip', () => {
     it('should work with non-empty observable and empty iterable', () => {
       const a = hot('---^----a--|');
       const asubs =    '^       !';
-      const b = [];
+      const b: number[] = [];
       const expected = '--------|';
 
       expectObservable(Observable.zip(a, b)).toBe(expected);
@@ -187,7 +187,7 @@ describe('Observable.zip', () => {
     it('should work with non-empty observable and empty iterable', () => {
       const a = hot('---^----#');
       const asubs =    '^    !';
-      const b = [];
+      const b: number[] = [];
       const expected = '-----#';
 
       expectObservable(Observable.zip(a, b)).toBe(expected);
