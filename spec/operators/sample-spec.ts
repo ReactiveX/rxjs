@@ -34,8 +34,8 @@ describe('Observable.prototype.sample', () => {
   });
 
   it('should behave properly when notified by the same observable as the source (issue #2075)', () => {
-    const item$ = new Rx.Subject();
-    const results = [];
+    const item$ = new Rx.Subject<number>();
+    const results: number[] = [];
 
     item$
       .sample(item$)
