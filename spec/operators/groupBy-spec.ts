@@ -23,11 +23,11 @@ describe('Observable.prototype.groupBy', () => {
     expectObservable(source).toBe(expected, expectedValues);
   });
 
-  function reverseString(str) {
+  function reverseString(str: string) {
     return str.split('').reverse().join('');
   }
 
-  function mapObject(obj, fn) {
+  function mapObject(obj: object, fn: Function) {
     const out = {};
     for (const p in obj) {
       if (obj.hasOwnProperty(p)) {
@@ -81,7 +81,7 @@ describe('Observable.prototype.groupBy', () => {
       { key: 0, values: [6] }
     ];
 
-    const resultingGroups = [];
+    const resultingGroups: { key: number, values: number [] }[] = [];
 
     Observable.of(1, 2, 3, 4, 5, 6)
       .groupBy(
@@ -89,7 +89,7 @@ describe('Observable.prototype.groupBy', () => {
         (x: number) => x,
         (g: any) => g.skip(1))
       .subscribe((g: any) => {
-        let group = { key: g.key, values: [] };
+        let group = { key: g.key, values: [] as number[] };
 
         g.subscribe((x: any) => {
           group.values.push(x);
@@ -544,7 +544,7 @@ describe('Observable.prototype.groupBy', () => {
     const source = e1
       .groupBy((val: string) => val.toLowerCase().trim())
       .map((group: any) => {
-        const arr = [];
+        const arr: any[] = [];
 
         const subscription = group
           .materialize()
@@ -608,7 +608,7 @@ describe('Observable.prototype.groupBy', () => {
     const source = e1
       .groupBy((val: string) => val.toLowerCase().trim())
       .map((group: any) => {
-        const arr = [];
+        const arr: any[] = [];
 
         const subscription = group
           .materialize()
@@ -879,7 +879,7 @@ describe('Observable.prototype.groupBy', () => {
         (group: any) => group.skip(2)
       )
       .map((group: any) => {
-        const arr = [];
+        const arr: any[] = [];
 
         const subscription = group
           .materialize()
@@ -1106,7 +1106,7 @@ describe('Observable.prototype.groupBy', () => {
         (group: any) => group.skip(2)
       )
       .map((group: any, index: number) => {
-        const arr = [];
+        const arr: any[] = [];
 
         const subscription = group
           .materialize()
@@ -1183,7 +1183,7 @@ describe('Observable.prototype.groupBy', () => {
         (group: any) => group.skip(2)
       )
       .map((group: any) => {
-        const arr = [];
+        const arr: any[] = [];
 
         const subscription = group
           .materialize()
@@ -1254,7 +1254,7 @@ describe('Observable.prototype.groupBy', () => {
          (val: string) => val.toLowerCase().trim(),
          (val: string) => val
        ).map((group: any) => {
-         const innerNotifications = [];
+         const innerNotifications: any[] = [];
          const subscriptionFrame = subscriptionFrames[group.key];
 
          rxTestScheduler.schedule(() => {
@@ -1304,7 +1304,7 @@ describe('Observable.prototype.groupBy', () => {
         (group: any) => group.skip(7)
       )
       .map((group: any) => {
-        const arr = [];
+        const arr: any[] = [];
 
         rxTestScheduler.schedule(() => {
           group
@@ -1353,7 +1353,7 @@ describe('Observable.prototype.groupBy', () => {
         (group: any) => group.skip(7)
       )
       .map((group: any) => {
-        const arr = [];
+        const arr: any[] = [];
 
         rxTestScheduler.schedule(() => {
           group
@@ -1404,7 +1404,7 @@ describe('Observable.prototype.groupBy', () => {
         (group: any) => group.skip(7)
       )
       .map((group: any) => {
-        const arr = [];
+        const arr: any[] = [];
 
         rxTestScheduler.schedule(() => {
           group

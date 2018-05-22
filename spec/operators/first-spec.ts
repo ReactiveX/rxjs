@@ -170,6 +170,10 @@ describe('Observable.prototype.first', () => {
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
+  // The current signature for first suggests that this test is not rquired. In
+  // fact, with type checking enabled, it will fail. See:
+  // https://github.com/ReactiveX/rxjs/issues/3717
+  /*
   it('should support type guards without breaking previous behavior', () => {
     // tslint:disable no-unused-variable
 
@@ -228,4 +232,5 @@ describe('Observable.prototype.first', () => {
 
     // tslint:disable enable
   });
+  */
 });

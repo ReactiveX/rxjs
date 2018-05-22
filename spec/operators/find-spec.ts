@@ -8,7 +8,7 @@ const Observable = Rx.Observable;
 
 /** @test {find} */
 describe('Observable.prototype.find', () => {
-  function truePredicate(x) {
+  function truePredicate(x: any) {
     return true;
   }
 
@@ -18,7 +18,7 @@ describe('Observable.prototype.find', () => {
     const subs =       '^        !       ';
     const expected =   '---------(c|)    ';
 
-    const predicate = function (x) { return x % 5 === 0; };
+    const predicate = function (x: number) { return x % 5 === 0; };
 
     expectObservable((<any>source).find(predicate)).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -55,7 +55,7 @@ describe('Observable.prototype.find', () => {
     const subs =       '^ !';
     const expected =   '--(a|)';
 
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       return value === 'a';
     };
 
@@ -68,7 +68,7 @@ describe('Observable.prototype.find', () => {
     const subs =       '^    !';
     const expected =   '-----(b|)';
 
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       return value === 'b';
     };
 
@@ -84,7 +84,7 @@ describe('Observable.prototype.find', () => {
     const finder = {
       target: 'b'
     };
-    const predicate = function (value) {
+    const predicate = function (this: typeof finder, value: string) {
       return value === this.target;
     };
 
@@ -97,7 +97,7 @@ describe('Observable.prototype.find', () => {
     const subs =       '^          !';
     const expected =   '-----------(x|)';
 
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       return value === 'z';
     };
 
@@ -137,7 +137,7 @@ describe('Observable.prototype.find', () => {
     const subs =       '^       !';
     const expected =   '--------#';
 
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       return value === 'z';
     };
 
@@ -150,7 +150,7 @@ describe('Observable.prototype.find', () => {
     const subs =       '^ !';
     const expected =   '--#';
 
-    const predicate = function (value) {
+    const predicate = function (value: string) {
       throw 'error';
     };
 
