@@ -38,7 +38,7 @@ describe('Observable.prototype.take', () => {
 
   it('should be empty on take(0)', () => {
     const e1 = hot('--a--^--b----c---d--|');
-    const e1subs = []; // Don't subscribe at all
+    const e1subs: string[] = []; // Don't subscribe at all
     const expected =    '|';
 
     expectObservable(e1.take(0)).toBe(expected);
@@ -130,7 +130,7 @@ describe('Observable.prototype.take', () => {
   });
 
   it('should unsubscribe from the source when it reaches the limit', () => {
-    const source = Observable.create(observer => {
+    const source = new Observable<number>(observer => {
       expect(observer.closed).to.be.false;
       observer.next(42);
       expect(observer.closed).to.be.true;
