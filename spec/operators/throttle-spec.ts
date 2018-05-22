@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-declare const type;
+declare const type: Function;
 declare function asDiagram(arg: string): Function;
 
 const Observable = Rx.Observable;
