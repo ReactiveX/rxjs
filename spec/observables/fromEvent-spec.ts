@@ -96,13 +96,15 @@ describe('fromEvent', () => {
     let offHandler;
 
     const obj = {
-      addListener: (a: string, b: Function) => {
+      addListener(a: string | symbol, b: (...args: any[]) => void) {
         onEventName = a;
         onHandler = b;
+        return this;
       },
-      removeListener: (a: string, b: Function) => {
+      removeListener(a: string | symbol, b: (...args: any[]) => void) {
         offEventName = a;
         offHandler = b;
+        return this;
       }
     };
 
