@@ -69,15 +69,15 @@ When it's not the first character of the diagram it must be padded a space befor
 
 ```ts
 const input = ' -a-b-c|';
-const output = '-- 9ms a 9ms b 9ms (c|)';
+const expected = '-- 9ms a 9ms b 9ms (c|)';
 /*
 
 // Depending on your personal preferences you could also
 // use frame dashes to keep vertical aligment with the input
 const input = ' -a-b-c|';
-const output = '------- 4ms a 9ms b 9ms (c|)';
+const expected = '------- 4ms a 9ms b 9ms (c|)';
 // or
-const output = '-----------a 9ms b 9ms (c|)';
+const expected = '-----------a 9ms b 9ms (c|)';
 
 */
 
