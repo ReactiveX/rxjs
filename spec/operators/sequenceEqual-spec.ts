@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
+import { hot, cold, expectObservable, expectSubscriptions, time, rxTestScheduler } from '../helpers/marble-testing';
 
 declare const type: Function;
 declare const asDiagram: Function;
@@ -186,7 +186,7 @@ describe('Observable.prototype.sequenceEqual', () => {
       return a.value === b.value;
     });
 
-    const values = {
+    const values: { [key: string]: any } = {
       a: null,
       b: { value: 'bees knees' },
       c: { value: 'carpy dumb' },
@@ -210,7 +210,7 @@ describe('Observable.prototype.sequenceEqual', () => {
 
     const source = s1.sequenceEqual(s2, (a: any, b: any) => a.value === b.value);
 
-    const values = {
+    const values: { [key: string]: any } = {
       a: null,
       b: { value: 'bees knees' },
       c: { value: 'carpy dumb' },
