@@ -3,7 +3,7 @@ import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare function asDiagram(arg: string): Function;
-
+declare const rxTestScheduler: Rx.TestScheduler;
 const Observable = Rx.Observable;
 
 /** @test {shareReplay} */
@@ -162,7 +162,7 @@ describe('Observable.prototype.shareReplay', () => {
   });
 
   it('should not restart if refCount hits 0 due to unsubscriptions', () => {
-    const results = [];
+    const results: number[] = [];
     const source = Rx.Observable.interval(10, rxTestScheduler)
       .take(10)
       .shareReplay(1);

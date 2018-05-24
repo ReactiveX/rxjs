@@ -35,7 +35,7 @@ describe('Observable.prototype.timeout', () => {
     });
     rxTestScheduler.flush();
     expect(error).to.be.an.instanceof(Rx.TimeoutError);
-    expect(error.name).to.equal('TimeoutError');
+    expect(error).to.have.property('name', 'TimeoutError');
   });
 
   it('should not timeout if source completes within absolute timeout period', () => {

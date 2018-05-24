@@ -17,7 +17,7 @@ describe('Observable.prototype.reduce', () => {
     const e1subs =     '^          !';
     const expected =   '-----------(x|)';
 
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: number, x: number) {
       return o + x;
     };
 
@@ -31,7 +31,7 @@ describe('Observable.prototype.reduce', () => {
     const expected =   '--------(x|)';
 
     const seed = 'n';
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -99,7 +99,7 @@ describe('Observable.prototype.reduce', () => {
     const expected =    '--------(x|)';
 
     const expectedValue = '42';
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -112,7 +112,7 @@ describe('Observable.prototype.reduce', () => {
     const e1subs =     '^    !   ';
     const expected =   '-----#   ';
 
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       throw 'error';
     };
 
@@ -126,7 +126,7 @@ describe('Observable.prototype.reduce', () => {
     const e1subs =     '^     !  ';
     const expected =   '-------  ';
 
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -142,7 +142,7 @@ describe('Observable.prototype.reduce', () => {
     const expected =   '-------  ';
     const unsub =      '      !  ';
 
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -161,7 +161,7 @@ describe('Observable.prototype.reduce', () => {
     const expected = '--------#';
 
     const expectedValue = '42';
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -175,7 +175,7 @@ describe('Observable.prototype.reduce', () => {
     const expected = '----#';
 
     const expectedValue = '42';
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -189,7 +189,7 @@ describe('Observable.prototype.reduce', () => {
     const expected =   '--#     ';
 
     const seed = 'n';
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       throw 'error';
     };
 
@@ -203,7 +203,7 @@ describe('Observable.prototype.reduce', () => {
     const expected =   '-----';
 
     const seed = 'n';
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -217,7 +217,7 @@ describe('Observable.prototype.reduce', () => {
     const expected = '-';
 
     const seed = 'n';
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -230,7 +230,7 @@ describe('Observable.prototype.reduce', () => {
     const e1subs =   '^       ';
     const expected = '--------';
 
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -243,7 +243,7 @@ describe('Observable.prototype.reduce', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -256,7 +256,7 @@ describe('Observable.prototype.reduce', () => {
     const e1subs =      '^       !';
     const expected =    '--------|';
 
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -269,7 +269,7 @@ describe('Observable.prototype.reduce', () => {
     const e1subs =   '^       !';
     const expected = '--------#';
 
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -282,7 +282,7 @@ describe('Observable.prototype.reduce', () => {
     const e1subs =   '^   !';
     const expected = '----#';
 
-    const reduceFunction = function (o, x) {
+    const reduceFunction = function (o: string, x: string) {
       return o + x;
     };
 
@@ -338,7 +338,7 @@ describe('Observable.prototype.reduce', () => {
       value.a = acc.a;
       value.b = acc.b;
       return acc;
-    }, {});
+    }, {} as { a?: number; b?: string });
 
     reduced.subscribe(r => {
       r.a.toExponential();

@@ -34,7 +34,7 @@ describe('Observable.prototype.repeat', () => {
 
   it('should complete without emit when count is zero', () => {
     const e1 =  cold('--a--b--|');
-    const subs = [];
+    const subs: string[] = [];
     const expected = '|';
 
     expectObservable(e1.repeat(0)).toBe(expected);
@@ -132,7 +132,7 @@ describe('Observable.prototype.repeat', () => {
 
   it('should complete immediately when source does not complete without emit but count is zero', () => {
     const e1 =  cold('-');
-    const subs = [];
+    const subs: string[] = [];
     const expected = '|';
 
     expectObservable(e1.repeat(0)).toBe(expected);
@@ -141,7 +141,7 @@ describe('Observable.prototype.repeat', () => {
 
   it('should complete immediately when source does not complete but count is zero', () => {
     const e1 =   cold('--a--b--');
-    const subs = [];
+    const subs: string[] = [];
     const expected = '|';
 
     expectObservable(e1.repeat(0)).toBe(expected);
@@ -179,7 +179,7 @@ describe('Observable.prototype.repeat', () => {
 
   it('should complete immediately when source does not emit but count is zero', () => {
     const e1 =  cold('----|');
-    const subs = [];
+    const subs: string[] = [];
     const expected = '|';
 
     expectObservable(e1.repeat(0)).toBe(expected);

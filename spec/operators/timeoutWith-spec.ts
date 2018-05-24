@@ -88,7 +88,7 @@ describe('Observable.prototype.timeoutWith', () => {
     const e1 =  cold('---a------b------');
     const e1subs =   '^    !           ';
     const e2 =  cold(        'i---j---|');
-    const e2subs = [];
+    const e2subs: string[] = [];
     const expected = '---a--           ';
     const unsub =    '     !           ';
 
@@ -166,7 +166,7 @@ describe('Observable.prototype.timeoutWith', () => {
     const e1 =   hot('-----|');
     const e1subs =   '^    !';
     const e2 = cold(           '----x----');
-    const e2subs = [];
+    const e2subs: string[] = [];
     const expected = '-----|';
 
     const result = e1.timeoutWith(100, e2, rxTestScheduler);
@@ -180,7 +180,7 @@ describe('Observable.prototype.timeoutWith', () => {
     const e1 =   hot('-----#');
     const e1subs =   '^    !';
     const e2 = cold(           '----x----|');
-    const e2subs = [];
+    const e2subs: string[] = [];
     const expected = '-----#';
 
     const result = e1.timeoutWith(100, e2, rxTestScheduler);
@@ -194,7 +194,7 @@ describe('Observable.prototype.timeoutWith', () => {
     const e1 =   hot('--a--b--c--d--e--|');
     const e1subs =   '^                !';
     const e2 =  cold('----x----|');
-    const e2subs = [];
+    const e2subs: string[] = [];
     const expected = '--a--b--c--d--e--|';
 
     const result = e1.timeoutWith(50, e2, rxTestScheduler);
@@ -222,7 +222,7 @@ describe('Observable.prototype.timeoutWith', () => {
     const e1 =   hot('--a--b--c--d--e--|');
     const e1subs =   '^                !';
     const e2 =  cold('--x--|');
-    const e2subs = [];
+    const e2subs: string[] = [];
     const expected = '--a--b--c--d--e--|';
 
     const timeoutValue = new Date(Date.now() + (expected.length + 2) * 10);
@@ -238,7 +238,7 @@ describe('Observable.prototype.timeoutWith', () => {
     const e1 =   hot('---a---#');
     const e1subs =   '^      !';
     const e2 =  cold('--x--|');
-    const e2subs = [];
+    const e2subs: string[] = [];
     const expected = '---a---#';
 
     const result = e1.timeoutWith(new Date(Date.now() + 100), e2, rxTestScheduler);

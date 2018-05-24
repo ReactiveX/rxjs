@@ -18,7 +18,7 @@ describe('Observable.prototype.scan', () => {
     const e1subs =     '^          !';
     const expected =   '--x--y--z--|';
 
-    const scanFunction = function (o, x) {
+    const scanFunction = function (o: number, x: number) {
       return o + x;
     };
 
@@ -195,7 +195,7 @@ describe('Observable.prototype.scan', () => {
     const source = e1
       .mergeMap((x: string) => Observable.of(x))
       .scan((acc: any, x: string) => [].concat(acc, x), [])
-      .mergeMap((x: string) => Observable.of(x));
+      .mergeMap((x: string[]) => Observable.of(x));
 
     expectObservable(source, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -236,7 +236,7 @@ describe('Observable.prototype.scan', () => {
       value.a = acc.a;
       value.b = acc.b;
       return acc;
-    }, {});
+    }, {} as { a?: number; b?: string });
   });
 
   type('should accept R typed reducers', () => {

@@ -498,13 +498,13 @@ describe('Observable.prototype.publishReplay', () => {
     /* tslint:enable:no-unused-variable */
   });
 
-  type('should infer the type for the pipeable operator', () => {
-    /* tslint:disable:no-unused-variable */
-    const source = of<number>(1, 2, 3);
-    // TODO: https://github.com/ReactiveX/rxjs/issues/2972
-    const result: ConnectableObservable<number> = publishReplay<number>(1)(source);
-    /* tslint:enable:no-unused-variable */
-  });
+  // TODO: https://github.com/ReactiveX/rxjs/issues/2972
+  // type('should infer the type for the pipeable operator', () => {
+  //   /* tslint:disable:no-unused-variable */
+  //   const source = of<number>(1, 2, 3);
+  //   const result: ConnectableObservable<number> = publishReplay<number>(1)(source);
+  //   /* tslint:enable:no-unused-variable */
+  // });
 
   type('should infer the type for the pipeable operator with a selector', () => {
     /* tslint:disable:no-unused-variable */
