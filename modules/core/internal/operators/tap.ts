@@ -28,9 +28,9 @@ export function tap<T>(
 
   if (nextOrObserver) {
     if (typeof nextOrObserver === 'object') {
-      nextHandler = nextOrObserver.next.bind(nextOrObserver);
-      errorHandler = nextOrObserver.error.bind(nextOrObserver);
-      completeHandler = nextOrObserver.complete.bind(nextOrObserver);
+      nextHandler = nextOrObserver.next && nextOrObserver.next.bind(nextOrObserver);
+      errorHandler = nextOrObserver.error && nextOrObserver.error.bind(nextOrObserver);
+      completeHandler = nextOrObserver.complete && nextOrObserver.complete.bind(nextOrObserver);
     } else {
       nextHandler = nextOrObserver;
     }

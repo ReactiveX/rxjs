@@ -18,6 +18,19 @@ describe('tap', () => {
 
       expect(observer.results).to.deep.equal([1, 2, 3, 'done']);
     });
+
+    it('accepts partial observers', () => {
+      const observer = {
+        results: [] as any[],
+        next(value: any) { this.results.push(value); },
+      };
+
+      of(1, 2, 3).pipe(
+        tap(observer),
+      ).subscribe();
+
+      expect(observer.results).to.deep.equal([1, 2, 3]);
+    });
   });
 
   describe('with handlers', () => {
