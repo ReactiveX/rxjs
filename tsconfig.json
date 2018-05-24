@@ -3,8 +3,15 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "rxjs": ["./modules/core/"],
+      "rxjs": [
+        "./modules/core"
+      ],
+      "rxjs/*": [
+        "./modules/core/*"
+      ]
     }
   },
-  "exclude": ["./dist"]
+  "exclude": [
+    "./dist"
+  ]
 }

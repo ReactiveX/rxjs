@@ -1,0 +1,10 @@
+--require ts-node/register
+--require tsconfig-paths/register
+
+--reporter dot
+
+--check-leaks
+--globals WebSocket,FormData,XDomainRequest,ActiveXObject
+
+--recursive
+--timeout 5000

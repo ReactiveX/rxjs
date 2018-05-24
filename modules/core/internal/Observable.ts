@@ -16,6 +16,8 @@ export interface Observable<T> extends FObs<T> {
   ): Subscription;
   subscribe(): Subscription;
 
+  forEach(nextHandler: (value: T) => void, subscription?: Subscription): Promise<void>;
+
   // TODO: flush out types
   pipe(...operations: Array<Operation<any, any>>): Observable<any>;
 }
@@ -32,6 +34,7 @@ export function sourceAsObservable<T>(source: Source<T>): Observable<T> {
   (result as any).__proto__ = Observable.prototype;
   result.subscribe = subscribe;
   result.pipe = observablePipe;
+  result.forEach = forEach;
   return result;
 }
 
@@ -56,6 +59,43 @@ function subscribe<T>(
 
   this(FOType.SUBSCRIBE, sink, subscription);
   return subscription;
+}
+
+function forEach<T>(this: Observable<T>, nextHandler: (value: T) => void, subscription?: Subscription): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    let completed = false;
+    let errored = false;
+    if (subscription) {
+      subscription.add(() => {
+        if (!completed && !errored) {
+          const error = new Error('forEach aborted');
+          error.name = 'AbortError';
+          reject(error);
+        }
+      });
+    }
+    subscription = subscription || new Subscription();
+    this(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
+      switch (t) {
+        case FOType.NEXT:
+          // make sure the next handler is on a microtask
+          Promise.resolve(v).then(nextHandler);
+          break;
+        case FOType.COMPLETE:
+          completed = true;
+          resolve(undefined);
+          subs.unsubscribe();
+          break;
+        case FOType.ERROR:
+          errored = true;
+          reject(v);
+          subs.unsubscribe();
+          break;
+        default:
+          break;
+      }
+    }, subscription);
+  });
 }
 
 function observablePipe<T>(this: Observable<T>, ...operations: Array<Operation<T, T>>): Observable<T> {
