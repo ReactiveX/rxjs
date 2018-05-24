@@ -4,8 +4,8 @@ import { bufferTime as higherOrder } from 'rxjs/operators';
 
 /* tslint:disable:max-line-length */
 export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, scheduler?: SchedulerLike): Observable<T[]>;
-export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number | null, scheduler?: SchedulerLike): Observable<T[]>;
-export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number | null, maxBufferSize: number, scheduler?: SchedulerLike): Observable<T[]>;
+export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number | null | undefined, scheduler?: SchedulerLike): Observable<T[]>;
+export function bufferTime<T>(this: Observable<T>, bufferTimeSpan: number, bufferCreationInterval: number | null | undefined, maxBufferSize: number, scheduler?: SchedulerLike): Observable<T[]>;
 /* tslint:enable:max-line-length */
 
 /**
