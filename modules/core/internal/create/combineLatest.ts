@@ -9,10 +9,11 @@ export function combineLatest<T>(...sources: ObservableInput<T>[]): Observable<T
 }
 
 export function combineLatestSource<T>(sources: ObservableInput<T>[]): Source<T> {
-  return (type: FOType, sink: Sink<T>, subs: Subscription) => {
+  return (type: FOType, dest: Sink<T>, subs: Subscription) => {
     if (type === FOType.SUBSCRIBE) {
       const values = new Array(sources.length);
       let emittedOnce = sources.map(() => false);
+      let completed = sources.map(() => false);
       let hasValues = false;
 
       for (let s = 0; s < sources.length; s++) {
@@ -21,17 +22,33 @@ export function combineLatestSource<T>(sources: ObservableInput<T>[]): Source<T>
         try {
           src = fromSource(source);
         } catch (err) {
-          sink(FOType.ERROR, err, subs);
+          dest(FOType.ERROR, err, subs);
           subs.unsubscribe();
           return;
         }
 
         src(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
-          if(t === FOType.NEXT) {
-            values[s] = v;
-            if (hasValues || (hasValues = emittedOnce.every(identity))) {
-              sink(FOType.NEXT, values.slice(0), subs);
-            }
+          switch (t) {
+            case FOType.NEXT:
+              values[s] = v;
+              emittedOnce[s] = true;
+              if (hasValues || (hasValues = emittedOnce.every(identity))) {
+                dest(FOType.NEXT, values.slice(0), subs);
+              }
+              break;
+            case FOType.ERROR:
+              dest(t, v, subs);
+              subs.unsubscribe();
+              break;
+            case FOType.COMPLETE:
+              completed[s] = true;
+              if (completed.every(identity)) {
+                dest(FOType.COMPLETE, undefined, subs)
+                subs.unsubscribe();
+              }
+              break;
+            default:
+              break;
           }
         }, subs);
       }

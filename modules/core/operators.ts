@@ -1,12 +1,17 @@
 export { catchError } from './internal/operators/catchError';
+export { concatAll } from './internal/operators/concatAll';
+export { concatWith } from './internal/operators/concatWith';
+export { endWith } from './internal/operators/endWith';
 export { filter } from './internal/operators/filter';
 export { groupBy } from './internal/operators/groupBy';
 export { map } from './internal/operators/map';
 export { materialize } from './internal/operators/materialize';
+export { mergeAll } from './internal/operators/mergeAll';
 export { mergeMap } from './internal/operators/mergeMap';
 export { repeat } from './internal/operators/repeat';
 export { scan } from './internal/operators/scan';
 export { share } from './internal/operators/share';
+export { startWith } from './internal/operators/startWith';
 export { switchMap } from './internal/operators/switchMap';
 export { take } from './internal/operators/take';
 export { takeLast } from './internal/operators/takeLast';
