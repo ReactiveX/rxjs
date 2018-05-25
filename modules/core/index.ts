@@ -9,6 +9,7 @@ export { concat } from './internal/create/concat';
 export { defer } from './internal/create/defer';
 export { from } from './internal/create/from';
 export { merge } from './internal/create/merge';
+export { next } from './internal/create/next';
 export { of } from './internal/create/of';
 export { race } from './internal/create/race';
 export { zip } from './internal/create/zip';
