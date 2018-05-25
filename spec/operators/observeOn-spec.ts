@@ -84,10 +84,10 @@ describe('Observable.prototype.observeOn', () => {
   it('should clean up subscriptions created by async scheduling (prevent memory leaks #2244)', (done) => {
     //HACK: Deep introspection to make sure we're cleaning up notifications in scheduling.
     // as the architecture changes, this test may become brittle.
-    const results = [];
+    const results: number[] = [];
     // This is to build a scheduled observable with a slightly more stable
     // subscription structure, since we're going to hack in to analyze it in this test.
-    const subscription: any = new Observable(observer => {
+    const subscription: any = new Observable<number>(observer => {
       let i = 1;
       return Rx.Scheduler.asap.schedule(function () {
         if (i > 3) {

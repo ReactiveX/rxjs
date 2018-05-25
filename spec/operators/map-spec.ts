@@ -7,8 +7,8 @@ declare function asDiagram(arg: string): Function;
 const Observable = Rx.Observable;
 
 // function shortcuts
-const addDrama = function (x) { return x + '!'; };
-const identity = function (x) { return x; };
+const addDrama = function (x: number | string) { return x + '!'; };
+const identity = function <T>(x: T) { return x; };
 
 /** @test {map} */
 describe('Observable.prototype.map', () => {
@@ -17,7 +17,7 @@ describe('Observable.prototype.map', () => {
     const asubs =    '^          !';
     const expected = '--x--y--z--|';
 
-    const r = a.map(function (x) { return 10 * x; });
+    const r = a.map(function (x) { return 10 * (+x); });
 
     expectObservable(r).toBe(expected, {x: 10, y: 20, z: 30});
     expectSubscriptions(a.subscriptions).toBe(asubs);
@@ -176,7 +176,7 @@ describe('Observable.prototype.map', () => {
       value: 42
     };
     const r = a
-      .map(function (x: string, index: number) {
+      .map(function (this: typeof foo, x: string, index: number) {
         expect(this).to.equal(foo);
         return (parseInt(x) + 1) + (index * 10);
       }, foo);
@@ -211,16 +211,16 @@ describe('Observable.prototype.map', () => {
     const expected = '--a--b--c--d--|';
     const values = {a: 11, b: 14, c: 17, d: 20};
 
-    function Filterer() {
-      this.selector1 = (x: string) => parseInt(x) + 2;
-      this.selector2 = (x: string) => parseInt(x) * 3;
+    class Filterer {
+      selector1 = (x: string) => parseInt(x) + 2;
+      selector2 = (x: string) => parseInt(x) * 3;
     }
     const filterer = new Filterer();
 
     const r = a
-      .map(function (x) { return this.selector1(x); }, filterer)
-      .map(function (x) { return this.selector2(x); }, filterer)
-      .map(function (x) { return this.selector1(x); }, filterer);
+      .map(function (this: any, x) { return this.selector1(x); }, filterer)
+      .map(function (this: any, x) { return this.selector2(x); }, filterer)
+      .map(function (this: any, x) { return this.selector1(x); }, filterer);
 
     expectObservable(r).toBe(expected, values);
     expectSubscriptions(a.subscriptions).toBe(asubs);
