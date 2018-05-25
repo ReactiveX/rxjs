@@ -1,0 +1,64 @@
+<div id="top-of-page"></div>
+
+<div *ngIf="isFetching" class="progress-bar-container">
+  <mat-progress-bar mode="indeterminate" color="warn"></mat-progress-bar>
+</div>
+
+<mat-toolbar color="primary" class="app-toolbar no-print" [class.transitioning]="isTransitioning">
+  <mat-toolbar-row class="notification-container">
+    <aio-notification
+      icon="insert_comment"
+      iconLabel="Survey"
+      buttonText="Go to survey"
+      actionUrl="https://bit.ly/angular-survey-2018"
+      notificationId="survey-january-2018"
+      expirationDate="2018-01-19"
+      (dismissed)="notificationDismissed()">
+      Help Angular by taking a <b>1 minute survey</b>!
+    </aio-notification>
+  </mat-toolbar-row>
+  <mat-toolbar-row>
+    <button mat-button class="hamburger" [class.starting]="isStarting" (click)="sidenav.toggle()" title="Docs menu">
+      <mat-icon svgIcon="menu"></mat-icon>
+    </button>
+    <a class="nav-link home" href="/" [ngSwitch]="isSideBySide">
+      <!--<img *ngSwitchCase="true" src="assets/images/logos/angular/logo-nav@2x.png" width="150" height="40" title="Home" alt="Home">-->
+      <img *ngSwitchCase="true" src="assets/images/logos/logo.png" width="150" height="40" title="Home" alt="Home">
+      <img *ngSwitchDefault src="http://rxjsdocs.com/assets/img/Rx_Trnsprt_Logo-48-48.png" width="37" height="40" title="Home" alt="Home">
+    </a>
+    <aio-top-menu *ngIf="isSideBySide" [nodes]="topMenuNodes"></aio-top-menu>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<aio-search-results #searchResultsView *ngIf="showSearchResults" [searchResults]="searchResults | async" (resultSelected)="hideSearchResults()"></aio-search-results>
+
+<mat-sidenav-container class="sidenav-container" [class.starting]="isStarting" [class.has-floating-toc]="hasFloatingToc" role="main">
+
+  <mat-sidenav [ngClass]="{'collapsed': !isSideBySide}" #sidenav class="sidenav" [opened]="isOpened" [mode]="mode" (open)="updateHostClasses()" (close)="updateHostClasses()">
+    <aio-nav-menu *ngIf="!isSideBySide" [nodes]="topMenuNarrowNodes" [currentNode]="currentNodes?.TopBarNarrow" [isWide]="false"></aio-nav-menu>
+    <aio-nav-menu [nodes]="sideNavNodes" [currentNode]="currentNodes?.SideNav" [isWide]="isSideBySide"></aio-nav-menu>
+
+  </mat-sidenav>
+
+  <section class="sidenav-content" [id]="pageId" role="content">
+    <aio-mode-banner [mode]="deployment.mode" [version]="versionInfo"></aio-mode-banner>
+    <aio-doc-viewer [class.no-animations]="isStarting"
+        [doc]="currentDocument"
+        (docReady)="onDocReady()"
+        (docRemoved)="onDocRemoved()"
+        (docInserted)="onDocInserted()"
+        (docRendered)="onDocRendered()">
+    </aio-doc-viewer>
+    <aio-dt [on]="dtOn" [(doc)]="currentDocument"></aio-dt>
+  </section>
+
+</mat-sidenav-container>
+
+<div *ngIf="hasFloatingToc" class="toc-container no-print" [style.max-height.px]="tocMaxHeight" (mousewheel)="restrainScrolling($event)">
+  <aio-toc></aio-toc>
+</div>
+
+<footer class="no-print">
+  <aio-footer [nodes]="footerNodes" [versionInfo]="versionInfo" ></aio-footer>
+</footer>
+
