@@ -46,7 +46,7 @@ describe('generate', () => {
     const source = generate({
       initialState: 1,
       iterate: x => x + 1,
-      resultSelector: x => x.toString()
+      resultSelector: (x: number) => x.toString()
     }).take(5);
     const expected = '(12345|)';
 
@@ -73,7 +73,7 @@ describe('generate', () => {
       initialState: 1,
       condition: x => x < 4,
       iterate: x => x + 1,
-      resultSelector: x => x,
+      resultSelector: (x: number) => x,
       scheduler: rxTestScheduler
     });
     const expected = '(123|)';
