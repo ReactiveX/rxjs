@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from 'rxjs/Rx';
+import { asapScheduler, Subscription } from 'rxjs';
 
-const asap = Rx.Scheduler.asap;
+const asap = asapScheduler;
 
 /** @test {Scheduler} */
 describe('Scheduler.asap', () => {
@@ -45,10 +45,10 @@ describe('Scheduler.asap', () => {
     const fakeTimer = sandbox.useFakeTimers();
     // callThrough is missing from the declarations installed by the typings tool in stable
     const stubSetInterval = (<any> sinon.stub(global, 'setInterval')).callThrough();
-    function dispatch(state: any): void {
+    function dispatch(this: any, state: any): void {
       state.index += 1;
       if (state.index < 3) {
-        (<any> this).schedule(state, state.period);
+        this.schedule(state, state.period);
       }
     }
     const period = 50;
@@ -71,11 +71,11 @@ describe('Scheduler.asap', () => {
     const fakeTimer = sandbox.useFakeTimers();
     // callThrough is missing from the declarations installed by the typings tool in stable
     const stubSetInterval = (<any> sinon.stub(global, 'setInterval')).callThrough();
-    function dispatch(state: any): void {
+    function dispatch(this: any, state: any): void {
       state.index += 1;
       state.period -= 1;
       if (state.index < 3) {
-        (<any> this).schedule(state, state.period);
+        this.schedule(state, state.period);
       }
     }
     const period = 50;
@@ -146,10 +146,9 @@ describe('Scheduler.asap', () => {
 
   it('should execute the rest of the scheduled actions if the first action is canceled', (done: MochaDone) => {
     let actionHappened = false;
-    let firstSubscription = null;
-    let secondSubscription = null;
+    let secondSubscription: Subscription | null = null;
 
-    firstSubscription = asap.schedule(() => {
+    const firstSubscription = asap.schedule(() => {
       actionHappened = true;
       if (secondSubscription) {
         secondSubscription.unsubscribe();
