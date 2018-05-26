@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from 'rxjs/Rx';
+import { animationFrameScheduler, Subscription } from 'rxjs';
 
-const animationFrame = Rx.Scheduler.animationFrame;
+const animationFrame = animationFrameScheduler;
 
 /** @test {Scheduler} */
 describe('Scheduler.animationFrame', () => {
@@ -93,10 +93,9 @@ describe('Scheduler.animationFrame', () => {
 
   it('should execute the rest of the scheduled actions if the first action is canceled', (done: MochaDone) => {
     let actionHappened = false;
-    let firstSubscription = null;
-    let secondSubscription = null;
+    let secondSubscription: Subscription | null = null;
 
-    firstSubscription = animationFrame.schedule(() => {
+    const firstSubscription = animationFrame.schedule(() => {
       actionHappened = true;
       if (secondSubscription) {
         secondSubscription.unsubscribe();
