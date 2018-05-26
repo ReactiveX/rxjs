@@ -1,27 +1,26 @@
-import * as Rx from 'rxjs/Rx';
+import { materialize, map, mergeMap } from 'rxjs/operators';
+import { Notification, of } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare function asDiagram(arg: string): Function;
 
-const Observable = Rx.Observable;
-const Notification = Rx.Notification;
-
 /** @test {materialize} */
-describe('Observable.prototype.materialize', () => {
+describe('materialize operator', () => {
   asDiagram('materialize')('should materialize an Observable', () => {
     const e1 =   hot('--x--y--z--|');
     const expected = '--a--b--c--(d|)';
     const values = { a: '{x}', b: '{y}', c: '{z}', d: '|' };
 
-    const result = e1
-      .materialize()
-      .map((x: Rx.Notification<any>) => {
+    const result = e1.pipe(
+      materialize(),
+      map((x: Notification<any>) => {
         if (x.kind === 'C') {
           return '|';
         } else {
           return '{' + x.value + '}';
         }
-      });
+      })
+    );
 
     expectObservable(result).toBe(expected, values);
   });
@@ -38,7 +37,7 @@ describe('Observable.prototype.materialize', () => {
       z: Notification.createComplete()
     };
 
-    expectObservable(e1.materialize()).toBe(expected, expectedValue);
+    expectObservable(e1.pipe(materialize())).toBe(expected, expectedValue);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -54,7 +53,7 @@ describe('Observable.prototype.materialize', () => {
       z: Notification.createError('error')
     };
 
-    expectObservable(e1.materialize()).toBe(expected, expectedValue);
+    expectObservable(e1.pipe(materialize())).toBe(expected, expectedValue);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -69,7 +68,7 @@ describe('Observable.prototype.materialize', () => {
       x: Notification.createNext('b')
     };
 
-    expectObservable(e1.materialize(), unsub).toBe(expected, expectedValue);
+    expectObservable(e1.pipe(materialize()), unsub).toBe(expected, expectedValue);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -84,10 +83,11 @@ describe('Observable.prototype.materialize', () => {
       x: Notification.createNext('b')
     };
 
-    const result = e1
-      .mergeMap((x: string) => Observable.of(x))
-      .materialize()
-      .mergeMap((x: Rx.Notification<any>) => Observable.of(x));
+    const result = e1.pipe(
+      mergeMap((x: string) => of(x)),
+      materialize(),
+      mergeMap((x: Notification<any>) => of(x))
+    );
 
     expectObservable(result, unsub).toBe(expected, expectedValue);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -98,7 +98,7 @@ describe('Observable.prototype.materialize', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    expectObservable(e1.materialize()).toBe(expected);
+    expectObservable(e1.pipe(materialize())).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -107,7 +107,7 @@ describe('Observable.prototype.materialize', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    expectObservable(e1.materialize()).toBe(expected);
+    expectObservable(e1.pipe(materialize())).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -116,7 +116,7 @@ describe('Observable.prototype.materialize', () => {
     const e1subs =   '^   !';
     const expected = '----(x|)';
 
-    expectObservable(e1.materialize()).toBe(expected, { x: Notification.createComplete() });
+    expectObservable(e1.pipe(materialize())).toBe(expected, { x: Notification.createComplete() });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -125,7 +125,7 @@ describe('Observable.prototype.materialize', () => {
     const e1subs =   '(^!)';
     const expected = '(x|)';
 
-    expectObservable(e1.materialize()).toBe(expected, { x: Notification.createComplete() });
+    expectObservable(e1.pipe(materialize())).toBe(expected, { x: Notification.createComplete() });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -134,7 +134,7 @@ describe('Observable.prototype.materialize', () => {
     const e1subs =   '(^!)';
     const expected = '(x|)';
 
-    expectObservable(e1.materialize()).toBe(expected, { x: Notification.createError('error') });
+    expectObservable(e1.pipe(materialize())).toBe(expected, { x: Notification.createError('error') });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
