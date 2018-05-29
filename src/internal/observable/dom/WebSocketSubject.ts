@@ -17,12 +17,12 @@ export interface WebSocketSubjectConfig<T> {
   resultSelector?: (e: MessageEvent) => T;
   /**
    * A serializer used for messages arriving on the over the socket from the
-   * server. Defaults to JSON.parse.
+   * server. Defaults to JSON.stringify.
    */
   serializer?: (value: T) => WebSocketMessage;
   /**
    * A deserializer used to create messages from passed values before the
-   * messages are sent to the server. Defaults to JSON.stringify
+   * messages are sent to the server. Defaults to JSON.parse.
    */
   deserializer?: (e: MessageEvent) => T;
   /**
