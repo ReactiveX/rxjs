@@ -38,9 +38,7 @@ script:
   - npm run test_check
   - npm test
   - npm run test:systemjs
-  - cd docs_app
-  - yarn install
-  - yarn run build
+  - if [ "$FULL_VALIDATE" == "true" ] && [ -n "DANGER_GITHUB_API_TOKEN" ]; then cd docs_app && yarn install && yarn run build; fi
 
 after_success:
   - if [ "$FULL_VALIDATE" == "true" ]; then npm run test:cover && npx nyc report --reporter=text-lcov | npx coveralls; fi
