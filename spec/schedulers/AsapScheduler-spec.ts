@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { asapScheduler, Subscription } from 'rxjs';
+import { asapScheduler, Subscription, SchedulerAction } from 'rxjs';
 
 const asap = asapScheduler;
 
@@ -45,14 +45,15 @@ describe('Scheduler.asap', () => {
     const fakeTimer = sandbox.useFakeTimers();
     // callThrough is missing from the declarations installed by the typings tool in stable
     const stubSetInterval = (<any> sinon.stub(global, 'setInterval')).callThrough();
-    function dispatch(this: any, state: any): void {
+    const period = 50;
+    const state = { index: 0, period };
+    type State = typeof state;
+    function dispatch(this: SchedulerAction<State>, state: State): void {
       state.index += 1;
       if (state.index < 3) {
         this.schedule(state, state.period);
       }
     }
-    const period = 50;
-    const state = { index: 0, period };
     asap.schedule(dispatch, period, state);
     expect(state).to.have.property('index', 0);
     expect(stubSetInterval).to.have.property('callCount', 1);
@@ -71,15 +72,16 @@ describe('Scheduler.asap', () => {
     const fakeTimer = sandbox.useFakeTimers();
     // callThrough is missing from the declarations installed by the typings tool in stable
     const stubSetInterval = (<any> sinon.stub(global, 'setInterval')).callThrough();
-    function dispatch(this: any, state: any): void {
+    const period = 50;
+    const state = { index: 0, period };
+    type State = typeof state;
+    function dispatch(this: SchedulerAction<State>, state: State): void {
       state.index += 1;
       state.period -= 1;
       if (state.index < 3) {
         this.schedule(state, state.period);
       }
     }
-    const period = 50;
-    const state = { index: 0, period };
     asap.schedule(dispatch, period, state);
     expect(state).to.have.property('index', 0);
     expect(stubSetInterval).to.have.property('callCount', 1);

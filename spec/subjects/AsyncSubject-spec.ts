@@ -4,7 +4,7 @@ import * as Rx from 'rxjs/Rx';
 const AsyncSubject = Rx.AsyncSubject;
 
 class TestObserver implements Rx.Observer<number> {
-  results: any[] = [];
+  results: (number | string)[] = [];
 
   next(value: number): void {
     this.results.push(value);

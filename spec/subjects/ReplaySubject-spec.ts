@@ -141,9 +141,9 @@ describe('ReplaySubject', () => {
     it('should handle subscribers that arrive and leave at different times, ' +
     'subject does not complete', () => {
       const subject = new ReplaySubject<number>(2);
-      const results1: any[] = [];
-      const results2: any[] = [];
-      const results3: any[] = [];
+      const results1: (number | string)[] = [];
+      const results2: (number | string)[] = [];
+      const results3: (number | string)[] = [];
 
       subject.next(1);
       subject.next(2);
@@ -239,7 +239,7 @@ describe('ReplaySubject', () => {
   it('should be an Observer which can be given to Observable.subscribe', () => {
     const source = Observable.of(1, 2, 3, 4, 5);
     const subject = new ReplaySubject<number>(3);
-    let results: any[] = [];
+    let results: (number | string)[] = [];
 
     subject.subscribe(x => results.push(x), null, () => results.push('done'));
 
