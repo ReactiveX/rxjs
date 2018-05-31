@@ -30,13 +30,13 @@ export function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: nu
  * `bufferTimeSpan` milliseconds or when it contains `maxBufferSize` elements.
  *
  * @example <caption>Every second, emit an array of the recent click events</caption>
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var buffered = clicks.bufferTime(1000);
+ * const clicks = fromEvent(document, 'click');
+ * const buffered = clicks.pipe(bufferTime(1000));
  * buffered.subscribe(x => console.log(x));
  *
  * @example <caption>Every 5 seconds, emit the click events from the next 2 seconds</caption>
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var buffered = clicks.bufferTime(2000, 5000);
+ * const clicks = fromEvent(document, 'click');
+ * const buffered = clicks.pipe(bufferTime(2000, 5000));
  * buffered.subscribe(x => console.log(x));
  *
  * @see {@link buffer}

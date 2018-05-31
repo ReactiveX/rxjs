@@ -19,13 +19,13 @@ import { OperatorFunction, TeardownLogic } from '../types';
  * and when each buffer closes and is emitted.
  *
  * @example <caption>Emit the last two click events as an array</caption>
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var buffered = clicks.bufferCount(2);
+ * const clicks = fromEvent(document, 'click');
+ * const buffered = clicks.pipe(bufferCount(2));
  * buffered.subscribe(x => console.log(x));
  *
  * @example <caption>On every click, emit the last two click events as an array</caption>
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var buffered = clicks.bufferCount(2, 1);
+ * const clicks = fromEvent(document, 'click');
+ * const buffered = clicks.pipe(bufferCount(2, 1));
  * buffered.subscribe(x => console.log(x));
  *
  * @see {@link buffer}
