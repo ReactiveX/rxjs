@@ -16,13 +16,13 @@ export interface WebSocketSubjectConfig<T> {
   /** @deprecated use {@link deserializer} */
   resultSelector?: (e: MessageEvent) => T;
   /**
-   * A serializer used for messages arriving on the over the socket from the
-   * server. Defaults to JSON.parse.
+   * A serializer used to create messages from passed values before the
+   * messages are sent to the server. Defaults to JSON.stringify.
    */
   serializer?: (value: T) => WebSocketMessage;
   /**
-   * A deserializer used to create messages from passed values before the
-   * messages are sent to the server. Defaults to JSON.stringify
+   * A deserializer used for messages arriving on the socket from the
+   * server. Defaults to JSON.parse.
    */
   deserializer?: (e: MessageEvent) => T;
   /**
