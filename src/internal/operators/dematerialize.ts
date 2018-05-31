@@ -22,13 +22,13 @@ import { OperatorFunction } from '../types';
  * Use this operator in conjunction with {@link materialize}.
  *
  * @example <caption>Convert an Observable of Notifications to an actual Observable</caption>
- * var notifA = new Rx.Notification('N', 'A');
- * var notifB = new Rx.Notification('N', 'B');
- * var notifE = new Rx.Notification('E', void 0,
+ * const notifA = new Rx.Notification('N', 'A');
+ * const notifB = new Rx.Notification('N', 'B');
+ * const notifE = new Rx.Notification('E', void 0,
  *   new TypeError('x.toUpperCase is not a function')
  * );
- * var materialized = Rx.Observable.of(notifA, notifB, notifE);
- * var upperCase = materialized.dematerialize();
+ * const materialized = of(notifA, notifB, notifE);
+ * const upperCase = materialized.pipe(dematerialize());
  * upperCase.subscribe(x => console.log(x), e => console.error(e));
  *
  * // Results in:
