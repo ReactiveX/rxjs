@@ -25,8 +25,8 @@ import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
  * Optionally takes a {@link IScheduler} for managing timers.
  *
  * @example <caption>Emit clicks at a rate of at most one click per second</caption>
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = clicks.auditTime(1000);
+ * const clicks = fromEvent(document, 'click');
+ * const result = clicks.pipe(auditTime(1000));
  * result.subscribe(x => console.log(x));
  *
  * @see {@link audit}
