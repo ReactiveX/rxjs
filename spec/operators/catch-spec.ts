@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { of, throwError, EMPTY, from } from 'rxjs';
+import { concat, Observable, of, throwError, EMPTY, from } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import * as sinon from 'sinon';
@@ -283,6 +283,21 @@ describe('catchError operator', () => {
     }, () => {
       done();
     });
+  });
+
+  it('should catch errors throw from within the constructor', () => {
+    // See https://github.com/ReactiveX/rxjs/issues/3740
+    const source = concat(
+      new Observable<string>(o => {
+        o.next('a');
+        throw 'kaboom';
+      }).pipe(
+        catchError(_ => of('b'))
+      ),
+      of('c')
+    );
+    const expected = '(abc|)';
+    expectObservable(source).toBe(expected);
   });
 
   context('fromPromise', () => {
