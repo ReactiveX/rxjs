@@ -22,15 +22,15 @@ import { Subscriber } from '../Subscriber';
  * source values that matched `true` with the `predicate`.
  *
  * @example <caption>Counts how many seconds have passed before the first click happened</caption>
- * var seconds = Rx.Observable.interval(1000);
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var secondsBeforeClick = seconds.takeUntil(clicks);
- * var result = secondsBeforeClick.count();
+ * const seconds = interval(1000);
+ * const clicks = fromEvent(document, 'click');
+ * const secondsBeforeClick = seconds.pipe(takeUntil(clicks));
+ * const result = secondsBeforeClick.pipe(count());
  * result.subscribe(x => console.log(x));
  *
  * @example <caption>Counts how many odd numbers are there between 1 and 7</caption>
- * var numbers = Rx.Observable.range(1, 7);
- * var result = numbers.count(i => i % 2 === 1);
+ * const numbers = range(1, 7);
+ * const result = numbers.pipe(count(i => i % 2 === 1));
  * result.subscribe(x => console.log(x));
  *
  * // Results in:
