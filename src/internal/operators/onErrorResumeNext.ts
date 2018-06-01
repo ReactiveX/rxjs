@@ -51,17 +51,18 @@ export function onErrorResumeNext<T, R>(array: ObservableInput<any>[]): Operator
  * ## Example
  * Subscribe to the next Observable after map fails
  * ```javascript
- * Rx.Observable.of(1, 2, 3, 0)
- *   .map(x => {
+ * of(1, 2, 3, 0).pipe(
+ *   map(x => {
  *       if (x === 0) { throw Error(); }
          return 10 / x;
- *   })
- *   .onErrorResumeNext(Rx.Observable.of(1, 2, 3))
- *   .subscribe(
- *     val => console.log(val),
- *     err => console.log(err),          // Will never be called.
- *     () => console.log('that\'s it!')
- *   );
+ *   }),
+ *   onErrorResumeNext(of(1, 2, 3)),
+ * )
+ * .subscribe(
+ *   val => console.log(val),
+ *   err => console.log(err),          // Will never be called.
+ *   () => console.log('that\'s it!')
+ * );
  *
  * // Logs:
  * // 10
