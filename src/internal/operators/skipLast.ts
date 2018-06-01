@@ -17,8 +17,8 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * ## Example
  * Skip the last 2 values of an Observable with many values
  * ```javascript
- * var many = Rx.Observable.range(1, 5);
- * var skipLastTwo = many.skipLast(2);
+ * const many = range(1, 5);
+ * const skipLastTwo = many.pipe(skipLast(2));
  * skipLastTwo.subscribe(x => console.log(x));
  *
  * // Results in:
