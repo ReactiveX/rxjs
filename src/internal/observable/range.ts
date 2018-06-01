@@ -17,7 +17,7 @@ import { Observable } from '../Observable';
  * ## Example
  * Emits the numbers 1 to 10</caption>
  * ```javascript
- * var numbers = Rx.Observable.range(1, 10);
+ * const numbers = range(1, 10);
  * numbers.subscribe(x => console.log(x));
  * ```
  * @see {@link timer}
