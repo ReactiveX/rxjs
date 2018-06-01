@@ -33,8 +33,10 @@ export function concatMap<T, I, R>(project: (value: T, index: number) =>  Observ
  * to `1`.
  *
  * @example <caption>For each click event, tick every second from 0 to 3, with no concurrency</caption>
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = clicks.concatMap(ev => Rx.Observable.interval(1000).take(4));
+ * const clicks = fromEvent(document, 'click');
+ * const result = clicks.pipe(
+ *   concatMap(ev => interval(1000).pipe(take(4)),
+ * );
  * result.subscribe(x => console.log(x));
  *
  * // Results in the following:

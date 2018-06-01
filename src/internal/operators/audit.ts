@@ -31,8 +31,8 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * repeats for the next source value.
  *
  * @example <caption>Emit clicks at a rate of at most one click per second</caption>
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = clicks.audit(ev => Rx.Observable.interval(1000));
+ * const clicks = fromEvent(document, 'click');
+ * const result = clicks.pipe(audit(ev => Rx.Observable.interval(1000)));
  * result.subscribe(x => console.log(x));
  *
  * @see {@link auditTime}

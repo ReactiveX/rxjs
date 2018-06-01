@@ -39,9 +39,9 @@ export function delayWhen<T>(delayDurationSelector: (value: T) => Observable<any
  * Observable is subscribed.
  *
  * @example <caption>Delay each click by a random amount of time, between 0 and 5 seconds</caption>
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var delayedClicks = clicks.delayWhen(event =>
- *   Rx.Observable.interval(Math.random() * 5000)
+ * const clicks = fromEvent(document, 'click');
+ * const delayedClicks = clicks.pipe(
+ *   delayWhen(event => interval(Math.random() * 5000)),
  * );
  * delayedClicks.subscribe(x => console.log(x));
  *

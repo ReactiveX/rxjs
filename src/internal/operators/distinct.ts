@@ -21,8 +21,9 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * that the internal `Set` can be "flushed", basically clearing it of values.
  *
  * @example <caption>A simple example with numbers</caption>
- * Observable.of(1, 1, 2, 2, 2, 1, 2, 3, 4, 3, 2, 1)
- *   .distinct()
+ * of(1, 1, 2, 2, 2, 1, 2, 3, 4, 3, 2, 1).pipe(
+ *     distinct(),
+ *   )
  *   .subscribe(x => console.log(x)); // 1, 2, 3, 4
  *
  * @example <caption>An example using a keySelector function</caption>
@@ -31,12 +32,14 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  *    name: string
  * }
  *
- * Observable.of<Person>(
+ * of<Person>(
  *     { age: 4, name: 'Foo'},
  *     { age: 7, name: 'Bar'},
- *     { age: 5, name: 'Foo'})
- *     .distinct((p: Person) => p.name)
- *     .subscribe(x => console.log(x));
+ *     { age: 5, name: 'Foo'},
+ *   ).pipe(
+ *     distinct((p: Person) => p.name),
+ *   )
+ *   .subscribe(x => console.log(x));
  *
  * // displays:
  * // { age: 4, name: 'Foo' }

@@ -22,9 +22,9 @@ export function defaultIfEmpty<T, R>(defaultValue?: R): OperatorFunction<T, T | 
  * having emitted any `next` value).
  *
  * @example <caption>If no clicks happen in 5 seconds, then emit "no clicks"</caption>
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var clicksBeforeFive = clicks.takeUntil(Rx.Observable.interval(5000));
- * var result = clicksBeforeFive.defaultIfEmpty('no clicks');
+ * const clicks = fromEvent(document, 'click');
+ * const clicksBeforeFive = clicks.pipe(takeUntil(interval(5000)));
+ * const result = clicksBeforeFive.pipe(defaultIfEmpty('no clicks'));
  * result.subscribe(x => console.log(x));
  *
  * @see {@link empty}

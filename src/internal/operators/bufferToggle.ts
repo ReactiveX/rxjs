@@ -22,11 +22,11 @@ import { OperatorFunction, SubscribableOrPromise } from '../types';
  * a Subscribable or Promise returned by the `closingSelector` function emits.
  *
  * @example <caption>Every other second, emit the click events from the next 500ms</caption>
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var openings = Rx.Observable.interval(1000);
- * var buffered = clicks.bufferToggle(openings, i =>
- *   i % 2 ? Rx.Observable.interval(500) : Rx.Observable.empty()
- * );
+ * const clicks = fromEvent(document, 'click');
+ * const openings = interval(1000);
+ * const buffered = clicks.pipe(bufferToggle(openings, i =>
+ *   i % 2 ? interval(500) : empty()
+ * ));
  * buffered.subscribe(x => console.log(x));
  *
  * @see {@link buffer}
