@@ -125,7 +125,7 @@ export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, opti
  * ## Examples
  * ### Emits clicks happening on the DOM document
  * ```javascript
- * var clicks = fromEvent(document, 'click');
+ * const clicks = fromEvent(document, 'click');
  * clicks.subscribe(x => console.log(x));
  *
  * // Results in:
@@ -135,9 +135,9 @@ export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, opti
  *
  * ### Use addEventListener with capture option
  * ```javascript
- * var clicksInDocument = fromEvent(document, 'click', true); // note optional configuration parameter
- *                                                                          // which will be passed to addEventListener
- * var clicksInDiv = fromEvent(someDivInDocument, 'click');
+ * const clicksInDocument = fromEvent(document, 'click', true); // note optional configuration parameter
+ *                                                              // which will be passed to addEventListener
+ * const clicksInDiv = fromEvent(someDivInDocument, 'click');
  *
  * clicksInDocument.subscribe(() => console.log('document'));
  * clicksInDiv.subscribe(() => console.log('div'));
