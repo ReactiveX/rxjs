@@ -26,7 +26,6 @@ matrix:
 before_install:
   - nvm install $NODE_VER
   - npm install -g npm@6 && npm install -g npx && node -v && npm -v
-  - npm install -g yarn
   - if [ "$FULL_VALIDATE" == "true" ]; then npm install --no-save grunt@0.4.1 grunt-cli grunt-contrib-connect grunt-run; fi
 
 install:
@@ -38,9 +37,9 @@ script:
   - npm run test_check
   - npm test
   - npm run test:systemjs
-  - if [ "$FULL_VALIDATE" == "true" ] && [ -n "DANGER_GITHUB_API_TOKEN" ]; then cd docs_app && yarn install && yarn run build; fi
+  - if [ "$FULL_VALIDATE" == "true" ] && [ -n "DANGER_GITHUB_API_TOKEN" ]; then cd docs_app && npm ci && npm run build && cd ..; fi
 
 after_success:
   - if [ "$FULL_VALIDATE" == "true" ]; then npm run test:cover && npx nyc report --reporter=text-lcov | npx coveralls; fi
   - if [ "$FULL_VALIDATE" == "true" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ -n "$SAUCE_ACCESS_KEY" ]; then npm run build_spec_browser && grunt --gruntfile spec/support/mocha.sauce.gruntfile.js; fi
-  - if [ "$FULL_VALIDATE" == "true" ] && [ "$TRAVIS_BRANCH" == "master" ]; then cd docs_app && chmod 755 scripts/deploy-to-firebase.sh && yarn deploy-production; fi
+  - if [ "$FULL_VALIDATE" == "true" ] && [ "$TRAVIS_BRANCH" == "master" ]; then cd docs_app && chmod 755 scripts/deploy-to-firebase.sh && npm run deploy-production; fi
