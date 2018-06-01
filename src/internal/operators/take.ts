@@ -21,8 +21,8 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * ## Example
  * Take the first 5 seconds of an infinite 1-second interval Observable
  * ```javascript
- * var interval = Rx.Observable.interval(1000);
- * var five = interval.take(5);
+ * const interval = interval(1000);
+ * const five = interval.pipe(take(5));
  * five.subscribe(x => console.log(x));
  * ```
  *
