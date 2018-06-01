@@ -40,32 +40,35 @@ import { throwError } from '../observable/throwError';
  * ## Examples
  * Check if ticks are emitted within certain timespan
  * ```javascript
- * const seconds = Rx.Observable.interval(1000);
+ * const seconds = interval(1000);
  *
- * seconds.timeout(1100) // Let's use bigger timespan to be safe,
- *                       // since `interval` might fire a bit later then scheduled.
+ * seconds.pipe(timeout(1100))      // Let's use bigger timespan to be safe,
+ *                                  // since `interval` might fire a bit later then scheduled.
  * .subscribe(
  *     value => console.log(value), // Will emit numbers just as regular `interval` would.
- *     err => console.log(err) // Will never be called.
+ *     err => console.log(err),     // Will never be called.
  * );
  *
- * seconds.timeout(900).subscribe(
+ * seconds.pipe(timeout(900))
+ * .subscribe(
  *     value => console.log(value), // Will never be called.
- *     err => console.log(err) // Will emit error before even first value is emitted,
- *                             // since it did not arrive within 900ms period.
+ *     err => console.log(err),     // Will emit error before even first value is emitted,
+ *                                  // since it did not arrive within 900ms period.
  * );
  * ```
  *
  * Use Date to check if Observable completed
  * ```javascript
- * const seconds = Rx.Observable.interval(1000);
+ * const seconds = interval(1000);
  *
- * seconds.timeout(new Date("December 17, 2020 03:24:00"))
+ * seconds.pipe(
+ *   timeout(new Date("December 17, 2020 03:24:00")),
+ * )
  * .subscribe(
  *     value => console.log(value), // Will emit values as regular `interval` would
  *                                  // until December 17, 2020 at 03:24:00.
- *     err => console.log(err) // On December 17, 2020 at 03:24:00 it will emit an error,
- *                             // since Observable did not complete by then.
+ *     err => console.log(err)      // On December 17, 2020 at 03:24:00 it will emit an error,
+ *                                  // since Observable did not complete by then.
  * );
  * ```
  * @see {@link timeoutWith}
