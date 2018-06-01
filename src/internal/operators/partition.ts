@@ -23,10 +23,10 @@ import { UnaryFunction } from '../types';
  * ## Example
  * Partition click events into those on DIV elements and those elsewhere
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var parts = clicks.partition(ev => ev.target.tagName === 'DIV');
- * var clicksOnDivs = parts[0];
- * var clicksElsewhere = parts[1];
+ * const clicks = fromEvent(document, 'click');
+ * const parts = clicks.pipe(partition(ev => ev.target.tagName === 'DIV'));
+ * const clicksOnDivs = parts[0];
+ * const clicksElsewhere = parts[1];
  * clicksOnDivs.subscribe(x => console.log('DIV clicked: ', x));
  * clicksElsewhere.subscribe(x => console.log('Other clicked: ', x));
  * ```
