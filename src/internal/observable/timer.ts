@@ -26,13 +26,13 @@ import { Subscriber } from '../Subscriber';
  * ## Examples
  * ### Emits ascending numbers, one every second (1000ms), starting after 3 seconds
  * ```javascript
- * var numbers = Rx.Observable.timer(3000, 1000);
+ * const numbers = timer(3000, 1000);
  * numbers.subscribe(x => console.log(x));
  * ```
  *
  * ### Emits one number after five seconds
  * ```javascript
- * var numbers = Rx.Observable.timer(5000);
+ * const numbers = timer(5000);
  * numbers.subscribe(x => console.log(x));
  * ```
  * @see {@link interval}
