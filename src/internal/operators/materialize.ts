@@ -29,9 +29,9 @@ import { OperatorFunction } from '../types';
  * ## Example
  * Convert a faulty Observable to an Observable of Notifications
  * ```javascript
- * var letters = Rx.Observable.of('a', 'b', 13, 'd');
- * var upperCase = letters.map(x => x.toUpperCase());
- * var materialized = upperCase.materialize();
+ * const letters = of('a', 'b', 13, 'd');
+ * const upperCase = letters.pipe(map(x => x.toUpperCase()));
+ * const materialized = upperCase.pipe(materialize());
  * materialized.subscribe(x => console.log(x));
  *
  * // Results in the following:
