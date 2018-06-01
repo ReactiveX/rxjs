@@ -28,8 +28,8 @@ export function find<T>(predicate: (value: T, index: number) => boolean,
  * ## Example
  * Find and emit the first click that happens on a DIV element
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = clicks.find(ev => ev.target.tagName === 'DIV');
+ * const clicks = fromEvent(document, 'click');
+ * const result = clicks.pipe(find(ev => ev.target.tagName === 'DIV'));
  * result.subscribe(x => console.log(x));
  * ```
  *
