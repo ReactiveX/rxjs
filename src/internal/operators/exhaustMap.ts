@@ -38,8 +38,10 @@ export function exhaustMap<T, I, R>(project: (value: T, index: number) => Observ
  * ## Example
  * Run a finite timer for each click, only if there is no currently active timer
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = clicks.exhaustMap((ev) => Rx.Observable.interval(1000).take(5));
+ * const clicks = fromEvent(document, 'click');
+ * const result = clicks.pipe(
+ *   exhaustMap((ev) => interval(1000).pipe(take(5))),
+ * );
  * result.subscribe(x => console.log(x));
  * ```
  *

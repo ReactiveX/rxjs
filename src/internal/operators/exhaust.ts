@@ -29,9 +29,11 @@ export function exhaust<R>(): OperatorFunction<any, R>;
  * ## Example
  * Run a finite timer for each click, only if there is no currently active timer
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000).take(5));
- * var result = higherOrder.exhaust();
+ * const clicks = fromEvent(document, 'click');
+ * const higherOrder = clicks.pipe(
+ *   map((ev) => interval(1000).pipe(take(5))),
+ * );
+ * const result = higherOrder.pipe(exhaust());
  * result.subscribe(x => console.log(x));
  * ```
  *
