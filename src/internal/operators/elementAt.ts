@@ -25,8 +25,8 @@ import { take } from './take';
  * ## Example
  * Emit only the third click event
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = clicks.elementAt(2);
+ * const clicks = fromEvent(document, 'click');
+ * const result = clicks.pipe(elementAt(2));
  * result.subscribe(x => console.log(x));
  *
  * // Results in:
