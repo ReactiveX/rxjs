@@ -23,8 +23,8 @@ import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic
  * ## Example
  * Every second, emit the most recent click at most once
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = clicks.sampleTime(1000);
+ * const clicks = fromEvent(document, 'click');
+ * const result = clicks.pipe(sampleTime(1000));
  * result.subscribe(x => console.log(x));
  * ```
  *
