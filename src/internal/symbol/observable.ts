@@ -5,7 +5,7 @@ import { root } from '../util/root';
   however, we are no longer polyfilling Symbol.observable */
 declare global {
   interface SymbolConstructor {
-    observable: symbol;
+    readonly observable: symbol;
   }
 }
 
