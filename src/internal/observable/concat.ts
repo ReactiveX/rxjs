@@ -55,9 +55,9 @@ export function concat<T, R>(...observables: (ObservableInput<any> | SchedulerLi
  * ## Examples
  * ### Concatenate a timer counting from 0 to 3 with a synchronous sequence from 1 to 10
  * ```javascript
- * var timer = Rx.Observable.interval(1000).take(4);
- * var sequence = Rx.Observable.range(1, 10);
- * var result = Rx.Observable.concat(timer, sequence);
+ * const timer = interval(1000).pipe(take(4));
+ * const sequence = range(1, 10);
+ * const result = concat(timer, sequence);
  * result.subscribe(x => console.log(x));
  *
  * // results in:
@@ -65,10 +65,10 @@ export function concat<T, R>(...observables: (ObservableInput<any> | SchedulerLi
  * ```
  *
  * ### Concatenate an array of 3 Observables
- * var timer1 = Rx.Observable.interval(1000).take(10);
- * var timer2 = Rx.Observable.interval(2000).take(6);
- * var timer3 = Rx.Observable.interval(500).take(10);
- * var result = Rx.Observable.concat([timer1, timer2, timer3]); // note that array is passed
+ * const timer1 = interval(1000).pipe(take(10));
+ * const timer2 = interval(2000).pipe(take(6));
+ * const timer3 = interval(500).pipe(take(10));
+ * const result = concat([timer1, timer2, timer3]); // note that array is passed
  * result.subscribe(x => console.log(x));
  *
  * // results in the following:
@@ -80,9 +80,9 @@ export function concat<T, R>(...observables: (ObservableInput<any> | SchedulerLi
  *
  * ### Concatenate the same Observable to repeat it
  * ```javascript
- * const timer = Rx.Observable.interval(1000).take(2);
- *
- * Rx.Observable.concat(timer, timer) // concating the same Observable!
+ * const timer = interval(1000).pipe(take(2));
+ * *
+ * concat(timer, timer) // concatenating the same Observable!
  * .subscribe(
  *   value => console.log(value),
  *   err => {},
