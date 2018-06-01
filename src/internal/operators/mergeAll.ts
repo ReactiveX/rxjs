@@ -23,17 +23,19 @@ export function mergeAll<T>(concurrent?: number): OperatorFunction<ObservableInp
  * ## Examples
  * Spawn a new interval Observable for each click event, and blend their outputs as one Observable
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000));
- * var firstOrder = higherOrder.mergeAll();
+ * const clicks = fromEvent(document, 'click');
+ * const higherOrder = clicks.pipe(map((ev) => interval(1000)));
+ * const firstOrder = higherOrder.pipe(mergeAll());
  * firstOrder.subscribe(x => console.log(x));
  * ```
  *
  * Count from 0 to 9 every second for each click, but only allow 2 concurrent timers
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000).take(10));
- * var firstOrder = higherOrder.mergeAll(2);
+ * const clicks = fromEvent(document, 'click');
+ * const higherOrder = clicks.pipe(
+ *   map((ev) => interval(1000).pipe(take(10))),
+ * );
+ * const firstOrder = higherOrder.pipe(mergeAll(2));
  * firstOrder.subscribe(x => console.log(x));
  * ```
  *

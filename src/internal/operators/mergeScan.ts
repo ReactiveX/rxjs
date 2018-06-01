@@ -20,10 +20,12 @@ import { ObservableInput, OperatorFunction } from '../types';
  * ## Example
  * Count the number of click events
  * ```javascript
- * const click$ = Rx.Observable.fromEvent(document, 'click');
- * const one$ = click$.mapTo(1);
+ * const click$ = fromEvent(document, 'click');
+ * const one$ = click$.pipe(mapTo(1));
  * const seed = 0;
- * const count$ = one$.mergeScan((acc, one) => Rx.Observable.of(acc + one), seed);
+ * const count$ = one$.pipe(
+ *   mergeScan((acc, one) => of(acc + one), seed),
+ * );
  * count$.subscribe(x => console.log(x));
  *
  * // Results:

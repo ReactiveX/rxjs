@@ -34,9 +34,9 @@ export function mergeMap<T, I, R>(project: (value: T, index: number) => Observab
  * ## Example
  * Map and flatten each letter to an Observable ticking every 1 second
  * ```javascript
- * var letters = Rx.Observable.of('a', 'b', 'c');
- * var result = letters.mergeMap(x =>
- *   Rx.Observable.interval(1000).map(i => x+i)
+ * const letters = of('a', 'b', 'c');
+ * const result = letters.pipe(
+ *   mergeMap(x => interval(1000).pipe(map(i => x+i))),
  * );
  * result.subscribe(x => console.log(x));
  *
