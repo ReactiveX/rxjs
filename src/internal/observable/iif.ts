@@ -8,7 +8,7 @@ import { SubscribableOrPromise } from '../types';
  *
  * <span class="informal">`If` statement for Observables.</span>
  *
- * `if` accepts a condition function and two Observables. When
+ * `iif` accepts a condition function and two Observables. When
  * an Observable returned by the operator is subscribed, condition function will be called.
  * Based on what boolean it returns at that moment, consumer will subscribe either to
  * the first Observable (if condition was true) or to the second (if condition was false). Condition
@@ -21,7 +21,7 @@ import { SubscribableOrPromise } from '../types';
  * to given Observable or not.
  *
  * If you have more complex logic that requires decision between more than two Observables, {@link defer}
- * will probably be a better choice. Actually `if` can be easily implemented with {@link defer}
+ * will probably be a better choice. Actually `iif` can be easily implemented with {@link defer}
  * and exists only for convenience and readability reasons.
  *
  *
@@ -29,10 +29,10 @@ import { SubscribableOrPromise } from '../types';
  * ### Change at runtime which Observable will be subscribed
  * ```javascript
  * let subscribeToFirst;
- * const firstOrSecond = Rx.Observable.if(
+ * const firstOrSecond = iif(
  *   () => subscribeToFirst,
- *   Rx.Observable.of('first'),
- *   Rx.Observable.of('second')
+ *   of('first'),
+ *   of('second'),
  * );
  *
  * subscribeToFirst = true;
@@ -52,16 +52,16 @@ import { SubscribableOrPromise } from '../types';
  * ### Control an access to an Observable
  * ```javascript
  * let accessGranted;
- * const observableIfYouHaveAccess = Rx.Observable.if(
+ * const observableIfYouHaveAccess = iif(
  *   () => accessGranted,
- *   Rx.Observable.of('It seems you have an access...') // Note that only one Observable is passed to the operator.
+ *   of('It seems you have an access...'), // Note that only one Observable is passed to the operator.
  * );
  *
  * accessGranted = true;
  * observableIfYouHaveAccess.subscribe(
  *   value => console.log(value),
  *   err => {},
- *   () => console.log('The end')
+ *   () => console.log('The end'),
  * );
  *
  * // Logs:
@@ -72,7 +72,7 @@ import { SubscribableOrPromise } from '../types';
  * observableIfYouHaveAccess.subscribe(
  *   value => console.log(value),
  *   err => {},
- *   () => console.log('The end')
+ *   () => console.log('The end'),
  * );
  *
  * // Logs:
