@@ -29,15 +29,15 @@ import { identity } from '../util/identity';
  * ## Examples
  * Emit only the first click that happens on the DOM
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = clicks.first();
+ * const clicks = fromEvent(document, 'click');
+ * const result = clicks.pipe(first());
  * result.subscribe(x => console.log(x));
  * ```
  *
  * Emits the first click that happens on a DIV
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = clicks.first(ev => ev.target.tagName === 'DIV');
+ * const clicks = fromEvent(document, 'click');
+ * const result = clicks.pipe(first(ev => ev.target.tagName === 'DIV'));
  * result.subscribe(x => console.log(x));
  * ```
  *
