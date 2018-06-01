@@ -25,28 +25,27 @@ import { Observer, OperatorFunction } from '../types';
  * ## Example
  * figure out if the Konami code matches
  * ```javascript
- * var code = Rx.Observable.from([
- *  "ArrowUp",
- *  "ArrowUp",
- *  "ArrowDown",
- *  "ArrowDown",
- *  "ArrowLeft",
- *  "ArrowRight",
- *  "ArrowLeft",
- *  "ArrowRight",
- *  "KeyB",
- *  "KeyA",
- *  "Enter" // no start key, clearly.
+ * const codes = from([
+ *   'ArrowUp',
+ *   'ArrowUp',
+ *   'ArrowDown',
+ *   'ArrowDown',
+ *   'ArrowLeft',
+ *   'ArrowRight',
+ *   'ArrowLeft',
+ *   'ArrowRight',
+ *   'KeyB',
+ *   'KeyA',
+ *   'Enter', // no start key, clearly.
  * ]);
  *
- * var keys = Rx.Observable.fromEvent(document, 'keyup')
- *  .map(e => e.code);
- * var matches = keys.bufferCount(11, 1)
- *  .mergeMap(
- *    last11 =>
- *      Rx.Observable.from(last11)
- *        .sequenceEqual(code)
- *   );
+ * const keys = fromEvent(document, 'keyup').pipe(map(e => e.code));
+ * const matches = keys.pipe(
+ *   bufferCount(11, 1),
+ *   mergeMap(
+ *     last11 => from(last11).pipe(sequenceEqual(codes)),
+ *   ),
+ * );
  * matches.subscribe(matched => console.log('Successful cheat at Contra? ', matched));
  * ```
  *
