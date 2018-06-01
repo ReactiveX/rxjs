@@ -31,10 +31,10 @@ export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, 
  * ## Example
  * Count the number of click events
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var ones = clicks.mapTo(1);
- * var seed = 0;
- * var count = ones.scan((acc, one) => acc + one, seed);
+ * const clicks = fromEvent(document, 'click');
+ * const ones = clicks.pipe(mapTo(1));
+ * const seed = 0;
+ * const count = ones.pipe(scan((acc, one) => acc + one, seed));
  * count.subscribe(x => console.log(x));
  * ```
  *
