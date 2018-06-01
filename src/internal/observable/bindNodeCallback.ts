@@ -109,8 +109,8 @@ export function bindNodeCallback(callbackFunc: Function, scheduler?: SchedulerLi
  * ###  Read a file from the filesystem and get the data as an Observable
  * ```javascript
  * import * as fs from 'fs';
- * var readFileAsObservable = bindNodeCallback(fs.readFile);
- * var result = readFileAsObservable('./roadNames.txt', 'utf8');
+ * const readFileAsObservable = bindNodeCallback(fs.readFile);
+ * const result = readFileAsObservable('./roadNames.txt', 'utf8');
  * result.subscribe(x => console.log(x), e => console.error(e));
  * ```
  *
@@ -121,7 +121,7 @@ export function bindNodeCallback(callbackFunc: Function, scheduler?: SchedulerLi
  *   console.log(a); // 5
  *   console.log(b); // "some string"
  * });
- * var boundSomeFunction = bindNodeCallback(someFunction);
+ * const boundSomeFunction = bindNodeCallback(someFunction);
  * boundSomeFunction()
  * .subscribe(value => {
  *   console.log(value); // [5, "some string"]
@@ -133,7 +133,7 @@ export function bindNodeCallback(callbackFunc: Function, scheduler?: SchedulerLi
  * someFunction(a => {
  *   console.log(a); // 5
  * });
- * var boundSomeFunction = bindNodeCallback(someFunction);
+ * const boundSomeFunction = bindNodeCallback(someFunction);
  * boundSomeFunction()
  * .subscribe(
  *   value => {}             // never gets called
