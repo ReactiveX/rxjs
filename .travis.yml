@@ -48,6 +48,7 @@ install:
   - if [ "$FULL_VALIDATE" == "true" ]; then npm run lint && npm run test:circular; fi
 
 script:
+  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
   - if [ "$FULL_VALIDATE" == "true" ] && [ -n "DANGER_GITHUB_API_TOKEN" ]; then echo {} > ./.babelrc && npx danger; fi
   - npm run test_check
   - npm test
@@ -57,4 +58,4 @@ script:
 
 after_success:
   - if [ "$FULL_VALIDATE" == "true" ]; then npm run test:cover && npx nyc report --reporter=text-lcov | npx coveralls; fi
-  - if [ "$FULL_VALIDATE" == "true" ] && [ "$TRAVIS_BRANCH" == "master" ]; then cd docs_app && chmod 755 scripts/deploy-to-firebase.sh && yarn deploy-production; fi
+  - if [ "$FULL_VALIDATE" == "true" ] && [ "$BRANCH" == "master" ]; then cd docs_app && chmod 755 scripts/deploy-to-firebase.sh && yarn deploy-production; fi
