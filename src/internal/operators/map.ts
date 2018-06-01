@@ -20,8 +20,8 @@ import { OperatorFunction } from '../types';
  * ## Example
  * Map every click to the clientX position of that click
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var positions = clicks.map(ev => ev.clientX);
+ * const clicks = fromEvent(document, 'click');
+ * const positions = clicks.pipe(map(ev => ev.clientX));
  * positions.subscribe(x => console.log(x));
  * ```
  *

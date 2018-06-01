@@ -19,8 +19,8 @@ import { OperatorFunction } from '../types';
  * ## Example
  * Map every click to the string 'Hi'
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var greetings = clicks.mapTo('Hi');
+ * const clicks = fromEvent(document, 'click');
+ * const greetings = clicks.pipe(mapTo('Hi'));
  * greetings.subscribe(x => console.log(x));
  * ```
  *
