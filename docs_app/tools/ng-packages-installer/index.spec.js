@@ -1,5 +1,4 @@
-'use strict';
-
+/*eslint-env es6*/
 const fs = require('fs-extra');
 const path = require('canonical-path');
 const shelljs = require('shelljs');
@@ -48,7 +47,11 @@ describe('NgPackagesInstaller', () => {
 
   describe('installLocalDependencies()', () => {
     const copyJsonObj = obj => JSON.parse(JSON.stringify(obj));
-    let dummyNgPackages, dummyPackage, dummyPackageJson, expectedModifiedPackage, expectedModifiedPackageJson;
+    let dummyNgPackages;
+    let dummyPackage;
+    let dummyPackageJson;
+    let expectedModifiedPackage;
+    let expectedModifiedPackageJson;
 
     beforeEach(() => {
       spyOn(installer, '_checkLocalMarker');
@@ -170,7 +173,7 @@ describe('NgPackagesInstaller', () => {
         ]);
 
         expect(lastFiveArgs).toEqual(['core', 'common', 'compiler', 'compiler-cli', 'tsc-wrapped']
-            .map(pkgName => [pkgJsonFor(pkgName), JSON.stringify(pkgConfigFor(pkgName))]));
+          .map(pkgName => [pkgJsonFor(pkgName), JSON.stringify(pkgConfigFor(pkgName))]));
       });
 
       it('should load the package.json', () => {
@@ -188,7 +191,7 @@ describe('NgPackagesInstaller', () => {
       it('should overwrite package.json, then install deps, then restore original package.json', () => {
         expect(log).toEqual([
           `writeFile: ${expectedModifiedPackageJson}`,
-          `installDeps:`,
+          'installDeps:',
           `writeFile: ${dummyPackageJson}`
         ]);
       });
@@ -203,7 +206,7 @@ describe('NgPackagesInstaller', () => {
     it('should run `yarn install` in the specified directory, with the correct options', () => {
       spyOn(installer, '_installDeps');
       installer.restoreNpmDependencies();
-      expect(installer._installDeps).toHaveBeenCalledWith('--frozen-lockfile', '--check-files');
+      expect(installer._installDeps).toHaveBeenCalledWith();
     });
   });
 
@@ -290,18 +293,18 @@ describe('NgPackagesInstaller', () => {
   describe('_installDeps()', () => {
     it('should run yarn install with the given options', () => {
       installer._installDeps('option-1', 'option-2');
-      expect(shelljs.exec).toHaveBeenCalledWith('yarn install option-1 option-2', { cwd: absoluteRootDir });
+      expect(shelljs.exec).toHaveBeenCalledWith('npm install option-1 option-2', { cwd: absoluteRootDir });
     });
   });
 
   describe('local marker helpers', () => {
-    let installer;
+    let _installer;
     beforeEach(() => {
-      installer = new NgPackagesInstaller(rootDir);
+      _installer = new NgPackagesInstaller(rootDir);
     });
 
     describe('_checkLocalMarker', () => {
-      it ('should return true if the local marker file exists', () => {
+      it('should return true if the local marker file exists', () => {
         fs.existsSync.and.returnValue(true);
         expect(installer._checkLocalMarker()).toEqual(true);
         expect(fs.existsSync).toHaveBeenCalledWith(path.resolve(nodeModulesDir, '_local_.json'));
