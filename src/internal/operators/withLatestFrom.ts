@@ -43,9 +43,9 @@ export function withLatestFrom<T, R>(array: ObservableInput<any>[], project: (..
  * ## Example
  * On every click event, emit an array with the latest timer event plus the click event
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var timer = Rx.Observable.interval(1000);
- * var result = clicks.withLatestFrom(timer);
+ * const clicks = fromEvent(document, 'click');
+ * const timer = interval(1000);
+ * const result = clicks.pipe(withLatestFrom(timer));
  * result.subscribe(x => console.log(x));
  * ```
  *
@@ -56,7 +56,7 @@ export function withLatestFrom<T, R>(array: ObservableInput<any>[], project: (..
  * @param {Function} [project] Projection function for combining values
  * together. Receives all values in order of the Observables passed, where the
  * first parameter is a value from the source Observable. (e.g.
- * `a.withLatestFrom(b, c, (a1, b1, c1) => a1 + b1 + c1)`). If this is not
+ * `a.pipe(withLatestFrom(b, c), map(([a1, b1, c1]) => a1 + b1 + c1))`). If this is not
  * passed, arrays will be emitted on the output Observable.
  * @return {Observable} An Observable of projected values from the most recent
  * values from each input Observable, or an array of the most recent values from
