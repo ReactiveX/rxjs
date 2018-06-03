@@ -80,6 +80,8 @@ Before you submit your Pull Request (PR) consider the following guidelines:
     git push -f
     ```
 
+  * When updating your feature branch with the requested changes, please do not overwrite the commit history, but rather contain the changes in new commits. This is for the sake of a clearer and easier review process.
+
 That's it! Thank you for your contribution!
 
 
