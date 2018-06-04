@@ -30,7 +30,9 @@ import { MonoTypeOperatorFunction, PartialObserver, SchedulerAction, SchedulerLi
  * for any kind of delaying of values in the stream, while using `observeOn` to specify which scheduler should be used
  * for notification emissions in general.
  *
- * @example <caption>Ensure values in subscribe are called just before browser repaint.</caption>
+ * ## Example
+ * Ensure values in subscribe are called just before browser repaint.
+ * ```javascript
  * const intervals = Rx.Observable.interval(10); // Intervals are scheduled
  *                                               // with async scheduler by default...
  *
@@ -39,6 +41,7 @@ import { MonoTypeOperatorFunction, PartialObserver, SchedulerAction, SchedulerLi
  * .subscribe(val => {                           // scheduler to ensure smooth animation.
  *   someDiv.style.height = val + 'px';
  * });
+ * ```
  *
  * @see {@link delay}
  *

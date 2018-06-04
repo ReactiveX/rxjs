@@ -18,10 +18,13 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * all of its values are emitted. After that, it completes, regardless if the
  * source completes.
  *
- * @example <caption>Take the first 5 seconds of an infinite 1-second interval Observable</caption>
+ * ## Example
+ * Take the first 5 seconds of an infinite 1-second interval Observable
+ * ```javascript
  * var interval = Rx.Observable.interval(1000);
  * var five = interval.take(5);
  * five.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link takeLast}
  * @see {@link takeUntil}

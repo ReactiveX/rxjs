@@ -17,7 +17,9 @@ import { ObservableInput, OperatorFunction } from '../types';
  * <span class="informal">It's like {@link scan}, but the Observables returned
  * by the accumulator are merged into the outer Observable.</span>
  *
- * @example <caption>Count the number of click events</caption>
+ * ## Example
+ * Count the number of click events
+ * ```javascript
  * const click$ = Rx.Observable.fromEvent(document, 'click');
  * const one$ = click$.mapTo(1);
  * const seed = 0;
@@ -30,6 +32,7 @@ import { ObservableInput, OperatorFunction } from '../types';
  * 3
  * 4
  * // ...and so on for each click
+ * ```
  *
  * @param {function(acc: R, value: T): Observable<R>} accumulator
  * The accumulator function called on each source value.

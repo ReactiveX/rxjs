@@ -15,16 +15,19 @@ import { AsyncScheduler } from './AsyncScheduler';
  * executing synchronous code ends (commonly achieved by `setTimeout(deferredTask, 0)`),
  * better choice will be the {@link asap} scheduler.
  *
- * @example <caption>Use async scheduler to delay task</caption>
+ * ## Examples
+ * Use async scheduler to delay task
+ * ```javascript
  * const task = () => console.log('it works!');
  *
  * Rx.Scheduler.async.schedule(task, 2000);
  *
  * // After 2 seconds logs:
  * // "it works!"
+ * ```
  *
- *
- * @example <caption>Use async scheduler to repeat task in intervals</caption>
+ * Use async scheduler to repeat task in intervals
+ * ```javascript
  * function task(state) {
  *   console.log(state);
  *   this.schedule(state + 1, 1000); // `this` references currently executing Action,
@@ -38,6 +41,7 @@ import { AsyncScheduler } from './AsyncScheduler';
  * // 1 after 4s
  * // 2 after 5s
  * // 3 after 6s
+ * ```
  *
  * @static true
  * @name async

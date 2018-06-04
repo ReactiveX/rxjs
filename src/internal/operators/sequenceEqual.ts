@@ -22,7 +22,9 @@ import { Observer, OperatorFunction } from '../types';
  * observable emits before completing, the returned observable will emit `false` and complete. If one observable never
  * completes or emits after the other complets, the returned observable will never complete.
  *
- * @example <caption>figure out if the Konami code matches</caption>
+ * ## Example
+ * figure out if the Konami code matches
+ * ```javascript
  * var code = Rx.Observable.from([
  *  "ArrowUp",
  *  "ArrowUp",
@@ -46,6 +48,7 @@ import { Observer, OperatorFunction } from '../types';
  *        .sequenceEqual(code)
  *   );
  * matches.subscribe(matched => console.log('Successful cheat at Contra? ', matched));
+ * ```
  *
  * @see {@link combineLatest}
  * @see {@link zip}

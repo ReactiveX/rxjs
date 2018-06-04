@@ -24,10 +24,13 @@ export function filter<T>(predicate: (value: T, index: number) => boolean,
  * takes values from the source Observable, passes them through a `predicate`
  * function and only emits those values that yielded `true`.
  *
- * @example <caption>Emit only click events whose target was a DIV element</caption>
+ * ## Example
+ * Emit only click events whose target was a DIV element
+ * ```javascript
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var clicksOnDivs = clicks.filter(ev => ev.target.tagName === 'DIV');
  * clicksOnDivs.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link distinct}
  * @see {@link distinctUntilChanged}

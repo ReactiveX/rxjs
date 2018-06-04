@@ -14,13 +14,16 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * values are taken from the front of the queue and produced on the result
  * sequence. This causes values to be delayed.
  *
- * @example <caption>Skip the last 2 values of an Observable with many values</caption>
+ * ## Example
+ * Skip the last 2 values of an Observable with many values
+ * ```javascript
  * var many = Rx.Observable.range(1, 5);
  * var skipLastTwo = many.skipLast(2);
  * skipLastTwo.subscribe(x => console.log(x));
  *
  * // Results in:
  * // 1 2 3
+ * ```
  *
  * @see {@link skip}
  * @see {@link skipUntil}

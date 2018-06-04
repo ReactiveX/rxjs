@@ -7,8 +7,8 @@ import { MonoTypeOperatorFunction } from '../types';
  * an error. The error will be created at that time by the optional
  * `errorFactory` argument, otherwise, the error will be {@link ErrorEmpty}.
  *
- * @example
- *
+ * ## Example
+ * ```javascript
  * const click$ = fromEvent(button, 'click');
  *
  * clicks$.pipe(
@@ -21,6 +21,8 @@ import { MonoTypeOperatorFunction } from '../types';
  *   next() { console.log('The button was clicked'); },
  *   error(err) { console.error(err); },
  * });
+ * ```
+ *
  * @param {Function} [errorFactory] A factory function called to produce the
  * error to be thrown when the source observable completes without emitting a
  * value.

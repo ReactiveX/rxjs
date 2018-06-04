@@ -23,12 +23,18 @@ import { OperatorFunction } from '../types';
  * returned by calling `closingSelector` function emits a value. When it closes
  * the buffer, it immediately opens a new buffer and repeats the process.
  *
- * @example <caption>Emit an array of the last clicks every [1-5] random seconds</caption>
+ * ## Example
+ *
+ * Emit an array of the last clicks every [1-5] random seconds
+ *
+ * ```javascript
  * const clicks = fromEvent(document, 'click');
  * const buffered = clicks.pipe(bufferWhen(() =>
  *   interval(1000 + Math.random() * 4000)
  * ));
  * buffered.subscribe(x => console.log(x));
+ * ```
+ *
  *
  * @see {@link buffer}
  * @see {@link bufferCount}

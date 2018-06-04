@@ -19,7 +19,9 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  *
  * <img src="./img/groupBy.png" width="100%">
  *
- * @example <caption>Group objects by id and return as array</caption>
+ * ##Examples
+ * Group objects by id and return as array
+ * ```javascript
  * Observable.of<Obj>({id: 1, name: 'aze1'},
  *                    {id: 2, name: 'sf2'},
  *                    {id: 2, name: 'dg2'},
@@ -44,8 +46,10 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  * //   { id: 2, name: 'qsgqsfg2' } ]
  * //
  * // [ { id: 3, name: 'qfs3' } ]
+ * ```
  *
- * @example <caption>Pivot data on the id field</caption>
+ * Pivot data on the id field
+ * ```javascript
  * Observable.of<Obj>({id: 1, name: 'aze1'},
  *                    {id: 2, name: 'sf2'},
  *                    {id: 2, name: 'dg2'},
@@ -64,6 +68,7 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  * // { id: 1, values: [ 'aze1', 'erg1', 'df1' ] }
  * // { id: 2, values: [ 'sf2', 'dg2', 'sfqfb2', 'qsgqsfg2' ] }
  * // { id: 3, values: [ 'qfs1' ] }
+ * ```
  *
  * @param {function(value: T): K} keySelector A function that extracts the key
  * for each item.

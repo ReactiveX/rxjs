@@ -110,7 +110,9 @@ export class Observable<T> implements Subscribable<T> {
    * by default emits all its values synchronously. Always check documentation for how given Observable
    * will behave when subscribed and if its default behavior can be modified with a {@link Scheduler}.
    *
-   * @example <caption>Subscribe with an Observer</caption>
+   * ## Example
+   * ### Subscribe with an Observer
+   * ```javascript
    * const sumObserver = {
    *   sum: 0,
    *   next(value) {
@@ -132,9 +134,10 @@ export class Observable<T> implements Subscribable<T> {
    * // "Adding: 2"
    * // "Adding: 3"
    * // "Sum equals: 6"
+   * ```
    *
-   *
-   * @example <caption>Subscribe with functions</caption>
+   * ### Subscribe with functions
+   * ```javascript
    * let sum = 0;
    *
    * Rx.Observable.of(1, 2, 3)
@@ -154,9 +157,10 @@ export class Observable<T> implements Subscribable<T> {
    * // "Adding: 2"
    * // "Adding: 3"
    * // "Sum equals: 6"
+   * ```
    *
-   *
-   * @example <caption>Cancel a subscription</caption>
+   * ### Cancel a subscription
+   * ```javascript
    * const subscription = Rx.Observable.interval(1000).subscribe(
    *   num => console.log(num),
    *   undefined,
@@ -173,7 +177,7 @@ export class Observable<T> implements Subscribable<T> {
    * // 0 after 1s
    * // 1 after 2s
    * // "unsubscribed!" after 2.5s
-   *
+   * ```
    *
    * @param {Observer|Function} observerOrNext (optional) Either an observer with methods to be called,
    *  or the first of three possible handlers, which is the handler for each value emitted from the subscribed
@@ -301,8 +305,8 @@ export class Observable<T> implements Subscribable<T> {
    * @return {Observable} the Observable result of all of the operators having
    * been called in the order they were passed in.
    *
-   * @example
-   *
+   * ### Example
+   * ```javascript
    * import { map, filter, scan } from 'rxjs/operators';
    *
    * Rx.Observable.interval(1000)
@@ -312,6 +316,7 @@ export class Observable<T> implements Subscribable<T> {
    *     scan((acc, x) => acc + x)
    *   )
    *   .subscribe(x => console.log(x))
+   * ```
    */
   pipe<R>(...operations: OperatorFunction<T, R>[]): Observable<R> {
     if (operations.length === 0) {

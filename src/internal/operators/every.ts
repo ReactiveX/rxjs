@@ -6,10 +6,13 @@ import { Observer, OperatorFunction } from '../types';
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
  *
- * @example <caption>A simple example emitting true if all elements are less than 5, false otherwise</caption>
+ * ## Example
+ * A simple example emitting true if all elements are less than 5, false otherwise
+ * ```javascript
  *  Observable.of(1, 2, 3, 4, 5, 6)
  *     .every(x => x < 5)
  *     .subscribe(x => console.log(x)); // -> false
+ * ```
  *
  * @param {function} predicate A function for determining if an item meets a specified condition.
  * @param {any} [thisArg] Optional object to use for `this` in the callback.

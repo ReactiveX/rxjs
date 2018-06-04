@@ -28,10 +28,13 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * they did on the source Observable. Optionally takes a {@link IScheduler} for
  * managing timers.
  *
- * @example <caption>Emit the most recent click after a burst of clicks</caption>
+ * ## Example
+ * Emit the most recent click after a burst of clicks
+ * ```javascript
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(debounceTime(1000));
  * result.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link auditTime}
  * @see {@link debounce}

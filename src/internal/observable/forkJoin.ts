@@ -67,7 +67,9 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  * all its arguments and puts them into an array. Note that project function will be called only
  * when output Observable is supposed to emit a result.
  *
- * @example <caption>Use forkJoin with operator emitting immediately</caption>
+ * ## Examples
+ * ### Use forkJoin with operator emitting immediately
+ * ```javascript
  * import { forkJoin, of } from 'rxjs';
  *
  * const observable = forkJoin(
@@ -83,9 +85,10 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  * // Logs:
  * // [4, 8]
  * // "This is how it ends!"
+ * ```
  *
- *
- * @example <caption>Use forkJoin with operator emitting after some time</caption>
+ * ### Use forkJoin with operator emitting after some time
+ * ```javascript
  * import { forkJoin, interval } from 'rxjs';
  * import { take } from 'rxjs/operators';
  *
@@ -102,9 +105,10 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  * // Logs:
  * // [2, 3] after 3 seconds
  * // "This is how it ends!" immediately after
+ * ```
  *
- *
- * @example <caption>Use forkJoin with project function</caption>
+ * ### Use forkJoin with project function
+ * ```javascript
  * import { jorkJoin, interval } from 'rxjs';
  * import { take } from 'rxjs/operators';
  *
@@ -122,6 +126,7 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  * // Logs:
  * // 5 after 3 seconds
  * // "This is how it ends!" immediately after
+ * ```
  *
  * @see {@link combineLatest}
  * @see {@link zip}

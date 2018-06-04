@@ -21,10 +21,13 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * whether or not more values will be emitted on the source. For this reason,
  * all values are emitted synchronously, followed by the complete notification.
  *
- * @example <caption>Take the last 3 values of an Observable with many values</caption>
+ * ## Example
+ * Take the last 3 values of an Observable with many values
+ * ```javascript
  * var many = Rx.Observable.range(1, 100);
  * var lastThree = many.pipe(takeLast(3));
  * lastThree.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link take}
  * @see {@link takeUntil}

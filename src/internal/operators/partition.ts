@@ -20,13 +20,16 @@ import { UnaryFunction } from '../types';
  * predicate returns false. The first behaves like {@link filter} and the second
  * behaves like {@link filter} with the predicate negated.
  *
- * @example <caption>Partition click events into those on DIV elements and those elsewhere</caption>
+ * ## Example
+ * Partition click events into those on DIV elements and those elsewhere
+ * ```javascript
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var parts = clicks.partition(ev => ev.target.tagName === 'DIV');
  * var clicksOnDivs = parts[0];
  * var clicksElsewhere = parts[1];
  * clicksOnDivs.subscribe(x => console.log('DIV clicked: ', x));
  * clicksElsewhere.subscribe(x => console.log('Other clicked: ', x));
+ * ```
  *
  * @see {@link filter}
  *

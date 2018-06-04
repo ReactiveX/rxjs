@@ -37,7 +37,9 @@ import { throwError } from '../observable/throwError';
  * `timeout` accepts also a Scheduler as a second parameter. It is used to schedule moment (or moments)
  * when returned Observable will check if source stream emitted value or completed.
  *
- * @example <caption>Check if ticks are emitted within certain timespan</caption>
+ * ## Examples
+ * Check if ticks are emitted within certain timespan
+ * ```javascript
  * const seconds = Rx.Observable.interval(1000);
  *
  * seconds.timeout(1100) // Let's use bigger timespan to be safe,
@@ -52,8 +54,10 @@ import { throwError } from '../observable/throwError';
  *     err => console.log(err) // Will emit error before even first value is emitted,
  *                             // since it did not arrive within 900ms period.
  * );
+ * ```
  *
- * @example <caption>Use Date to check if Observable completed</caption>
+ * Use Date to check if Observable completed
+ * ```javascript
  * const seconds = Rx.Observable.interval(1000);
  *
  * seconds.timeout(new Date("December 17, 2020 03:24:00"))
@@ -63,7 +67,7 @@ import { throwError } from '../observable/throwError';
  *     err => console.log(err) // On December 17, 2020 at 03:24:00 it will emit an error,
  *                             // since Observable did not complete by then.
  * );
- *
+ * ```
  * @see {@link timeoutWith}
  *
  * @param {number|Date} due Number specifying period within which Observable must emit values

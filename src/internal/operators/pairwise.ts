@@ -18,7 +18,9 @@ import { OperatorFunction } from '../types';
  * emissions from the source Observable, but not on the first emission, because
  * there is no previous value in that case.
  *
- * @example <caption>On every click (starting from the second), emit the relative distance to the previous click</caption>
+ * ## Example
+ * On every click (starting from the second), emit the relative distance to the previous click
+ * ```javascript
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var pairs = clicks.pairwise();
  * var distance = pairs.map(pair => {
@@ -29,6 +31,7 @@ import { OperatorFunction } from '../types';
  *   return Math.sqrt(Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2));
  * });
  * distance.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link buffer}
  * @see {@link bufferCount}

@@ -20,10 +20,12 @@ import { Subscriber } from '../Subscriber';
  * `async` IScheduler to provide a notion of time, but you may pass any
  * IScheduler to it.
  *
- * @example <caption>Emits ascending numbers, one every second (1000ms)</caption>
+ * ## Example
+ * Emits ascending numbers, one every second (1000ms)
+ * ```javascript
  * var numbers = Rx.Observable.interval(1000);
  * numbers.subscribe(x => console.log(x));
- *
+ * ```javascript
  * @see {@link timer}
  * @see {@link delay}
  *

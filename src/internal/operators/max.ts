@@ -7,12 +7,16 @@ import { MonoTypeOperatorFunction } from '../types';
  *
  * <img src="./img/max.png" width="100%">
  *
- * @example <caption>Get the maximal value of a series of numbers</caption>
+ * ## Examples
+ * Get the maximal value of a series of numbers
+ * ```javascript
  * Rx.Observable.of(5, 4, 7, 2, 8)
  *   .max()
  *   .subscribe(x => console.log(x)); // -> 8
+ * ```
  *
- * @example <caption>Use a comparer function to get the maximal item</caption>
+ * Use a comparer function to get the maximal item
+ * ```typescript
  * interface Person {
  *   age: number,
  *   name: string
@@ -23,6 +27,7 @@ import { MonoTypeOperatorFunction } from '../types';
  *           .max<Person>((a: Person, b: Person) => a.age < b.age ? -1 : 1)
  *           .subscribe((x: Person) => console.log(x.name)); // -> 'Beer'
  * }
+ * ```
  *
  * @see {@link min}
  *

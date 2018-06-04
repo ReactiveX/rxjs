@@ -35,7 +35,9 @@ export function merge<T, R>(...observables: (ObservableInput<any> | SchedulerLik
  * once all input Observables have completed. Any error delivered by an input
  * Observable will be immediately emitted on the output Observable.
  *
- * @example <caption>Merge together two Observables: 1s interval and clicks</caption>
+ * ## Examples
+ * ### Merge together two Observables: 1s interval and clicks
+ * ```javascript
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var timer = Rx.Observable.interval(1000);
  * var clicksOrTimer = Rx.Observable.merge(clicks, timer);
@@ -46,8 +48,10 @@ export function merge<T, R>(...observables: (ObservableInput<any> | SchedulerLik
  * // clicks logs MouseEvents to console everytime the "document" is clicked
  * // Since the two streams are merged you see these happening
  * // as they occur.
+ * ```javascript
  *
- * @example <caption>Merge together 3 Observables, but only 2 run concurrently</caption>
+ * ### Merge together 3 Observables, but only 2 run concurrently
+ * ```javascript
  * var timer1 = Rx.Observable.interval(1000).take(10);
  * var timer2 = Rx.Observable.interval(2000).take(6);
  * var timer3 = Rx.Observable.interval(500).take(10);
@@ -63,6 +67,7 @@ export function merge<T, R>(...observables: (ObservableInput<any> | SchedulerLik
  * //   continue, and timer3 will start to run concurrently with timer2
  * // - when timer2 hits it's max iteration it terminates, and
  * //   timer3 will continue to emit a value every 500ms until it is complete
+ * ```
  *
  * @see {@link mergeAll}
  * @see {@link mergeMap}

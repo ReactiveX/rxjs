@@ -1,18 +1,20 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
+import {Operator} from '../Operator';
+import {Subscriber} from '../Subscriber';
+import {Observable} from '../Observable';
 
-import { OuterSubscriber } from '../OuterSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
-import { ObservableInput, OperatorFunction, MonoTypeOperatorFunction } from '../types';
+import {OuterSubscriber} from '../OuterSubscriber';
+import {subscribeToResult} from '../util/subscribeToResult';
+import {ObservableInput, OperatorFunction, MonoTypeOperatorFunction} from '../types';
 
 /**
  * Catches errors on the observable to be handled by returning a new observable or throwing an error.
  *
  * <img src="./img/catch.png" width="100%">
  *
- * @example <caption>Continues with a different Observable when there's an error</caption>
+ * ## Examples
+ * Continues with a different Observable when there's an error
  *
+ * ```javascript
  * of(1, 2, 3, 4, 5).pipe(
  *     map(n => {
  *   	   if (n == 4) {
@@ -24,9 +26,11 @@ import { ObservableInput, OperatorFunction, MonoTypeOperatorFunction } from '../
  *   )
  *   .subscribe(x => console.log(x));
  *   // 1, 2, 3, I, II, III, IV, V
+ * ```
  *
- * @example <caption>Retries the caught source Observable again in case of error, similar to retry() operator</caption>
+ * Retries the caught source Observable again in case of error, similar to retry() operator
  *
+ * ```javascript
  * of(1, 2, 3, 4, 5).pipe(
  *     map(n => {
  *   	   if (n === 4) {
@@ -39,9 +43,11 @@ import { ObservableInput, OperatorFunction, MonoTypeOperatorFunction } from '../
  *   )
  *   .subscribe(x => console.log(x));
  *   // 1, 2, 3, 1, 2, 3, ...
+ * ```
  *
- * @example <caption>Throws a new error when the source Observable throws an error</caption>
+ * Throws a new error when the source Observable throws an error
  *
+ * ```javascript
  * of(1, 2, 3, 4, 5).pipe(
  *     map(n => {
  *       if (n == 4) {
@@ -58,8 +64,9 @@ import { ObservableInput, OperatorFunction, MonoTypeOperatorFunction } from '../
  *     err => console.log(err)
  *   );
  *   // 1, 2, 3, error in source. Details: four!
+ * ```
  *
- * @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which
+ *  @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which
  *  is the source observable, in case you'd like to "retry" that observable by returning it again. Whatever observable
  *  is returned by the `selector` will be used to continue the observable chain.
  * @return {Observable} An observable that originates from either the source or the observable returned by the

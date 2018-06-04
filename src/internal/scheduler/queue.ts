@@ -17,8 +17,9 @@ import { QueueScheduler } from './QueueScheduler';
  * This means that when you execute task with `queue` scheduler, you are sure it will end
  * before any other task scheduled with that scheduler will start.
  *
- * @examples <caption>Schedule recursively first, then do something</caption>
- *
+ * ## Examples
+ * Schedule recursively first, then do something
+ * ```javascript
  * Rx.Scheduler.queue.schedule(() => {
  *   Rx.Scheduler.queue.schedule(() => console.log('second')); // will not happen now, but will be put on a queue
  *
@@ -28,10 +29,10 @@ import { QueueScheduler } from './QueueScheduler';
  * // Logs:
  * // "first"
  * // "second"
+ * ```
  *
- *
- * @example <caption>Reschedule itself recursively</caption>
- *
+ * Reschedule itself recursively
+ * ```javascript
  * Rx.Scheduler.queue.schedule(function(state) {
  *   if (state !== 0) {
  *     console.log('before', state);
@@ -56,7 +57,7 @@ import { QueueScheduler } from './QueueScheduler';
  * // "after", 2
  * // "before", 1
  * // "after", 1
- *
+ * ```
  *
  * @static true
  * @name queue

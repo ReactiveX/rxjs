@@ -20,10 +20,13 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * returns false, at which point `takeWhile` stops mirroring the source
  * Observable and completes the output Observable.
  *
- * @example <caption>Emit click events only while the clientX property is greater than 200</caption>
+ * ## Example
+ * Emit click events only while the clientX property is greater than 200
+ * ```javascript
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var result = clicks.takeWhile(ev => ev.clientX > 200);
  * result.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link take}
  * @see {@link takeLast}

@@ -29,15 +29,23 @@ export function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: nu
  * `maxBufferSize` is specified, the buffer will be closed either after
  * `bufferTimeSpan` milliseconds or when it contains `maxBufferSize` elements.
  *
- * @example <caption>Every second, emit an array of the recent click events</caption>
+ * ## Examples
+ *
+ * Every second, emit an array of the recent click events
+ *
+ * ```javascript
  * const clicks = fromEvent(document, 'click');
  * const buffered = clicks.pipe(bufferTime(1000));
  * buffered.subscribe(x => console.log(x));
+ * ```
  *
- * @example <caption>Every 5 seconds, emit the click events from the next 2 seconds</caption>
+ * Every 5 seconds, emit the click events from the next 2 seconds
+ *
+ * ```javascript
  * const clicks = fromEvent(document, 'click');
  * const buffered = clicks.pipe(bufferTime(2000, 5000));
  * buffered.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link buffer}
  * @see {@link bufferCount}

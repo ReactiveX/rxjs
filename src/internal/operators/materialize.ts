@@ -26,7 +26,9 @@ import { OperatorFunction } from '../types';
  * be consumed as `next` emissions. Use it in conjunction with
  * {@link dematerialize}.
  *
- * @example <caption>Convert a faulty Observable to an Observable of Notifications</caption>
+ * ## Example
+ * Convert a faulty Observable to an Observable of Notifications
+ * ```javascript
  * var letters = Rx.Observable.of('a', 'b', 13, 'd');
  * var upperCase = letters.map(x => x.toUpperCase());
  * var materialized = upperCase.materialize();
@@ -38,6 +40,7 @@ import { OperatorFunction } from '../types';
  * // - Notification {kind: "E", value: undefined, error: TypeError:
  * //   x.toUpperCase is not a function at MapSubscriber.letters.map.x
  * //   [as project] (http://1…, hasValue: false}
+ * ```
  *
  * @see {@link Notification}
  * @see {@link dematerialize}

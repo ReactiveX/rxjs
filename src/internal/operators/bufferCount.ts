@@ -18,15 +18,23 @@ import { OperatorFunction, TeardownLogic } from '../types';
  * `null`, then new buffers are started immediately at the start of the source
  * and when each buffer closes and is emitted.
  *
- * @example <caption>Emit the last two click events as an array</caption>
+ * ## Examples
+ *
+ * Emit the last two click events as an array
+ *
+ * ```javascript
  * const clicks = fromEvent(document, 'click');
  * const buffered = clicks.pipe(bufferCount(2));
  * buffered.subscribe(x => console.log(x));
+ * ```
  *
- * @example <caption>On every click, emit the last two click events as an array</caption>
+ * On every click, emit the last two click events as an array
+ *
+ * ```javascript
  * const clicks = fromEvent(document, 'click');
  * const buffered = clicks.pipe(bufferCount(2, 1));
  * buffered.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link buffer}
  * @see {@link bufferTime}

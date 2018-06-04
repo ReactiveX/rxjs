@@ -31,10 +31,13 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * delay-like operator since output emissions do not necessarily occur at the
  * same time as they did on the source Observable.
  *
- * @example <caption>Emit the most recent click after a burst of clicks</caption>
+ * ## Example
+ * Emit the most recent click after a burst of clicks
+ * ```javascript
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(debounce(() => interval(1000)));
  * result.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link audit}
  * @see {@link debounceTime}

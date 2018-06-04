@@ -17,13 +17,17 @@ export function distinctUntilChanged<T, K>(compare: (x: K, y: K) => boolean, key
  *
  * If a comparator function is not provided, an equality check is used by default.
  *
- * @example <caption>A simple example with numbers</caption>
+ * ## Example
+ * A simple example with numbers
+ * ```javascript
  * of(1, 1, 2, 2, 2, 1, 1, 2, 3, 3, 4).pipe(
  *     distinctUntilChanged(),
  *   )
  *   .subscribe(x => console.log(x)); // 1, 2, 1, 2, 3, 4
+ * ```
  *
- * @example <caption>An example using a compare function</caption>
+ * An example using a compare function
+ * ```typescript
  * interface Person {
  *    age: number,
  *    name: string
@@ -43,6 +47,7 @@ export function distinctUntilChanged<T, K>(compare: (x: K, y: K) => boolean, key
  * // { age: 4, name: 'Foo' }
  * // { age: 7, name: 'Bar' }
  * // { age: 5, name: 'Foo' }
+ * ```
  *
  * @see {@link distinct}
  * @see {@link distinctUntilKeyChanged}

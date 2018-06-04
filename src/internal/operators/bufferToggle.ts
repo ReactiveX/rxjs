@@ -21,13 +21,18 @@ import { OperatorFunction, SubscribableOrPromise } from '../types';
  * Observable provided to `openings`, and closing and sending the buffers when
  * a Subscribable or Promise returned by the `closingSelector` function emits.
  *
- * @example <caption>Every other second, emit the click events from the next 500ms</caption>
+ * ## Example
+ *
+ * Every other second, emit the click events from the next 500ms
+ *
+ * ```javascript
  * const clicks = fromEvent(document, 'click');
  * const openings = interval(1000);
  * const buffered = clicks.pipe(bufferToggle(openings, i =>
  *   i % 2 ? interval(500) : empty()
  * ));
  * buffered.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link buffer}
  * @see {@link bufferCount}

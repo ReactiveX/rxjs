@@ -26,11 +26,14 @@ export function exhaust<R>(): OperatorFunction<any, R>;
  * not yet completed. Once that one completes, it will accept and flatten the
  * next inner Observable and repeat this process.
  *
- * @example <caption>Run a finite timer for each click, only if there is no currently active timer</caption>
+ * ## Example
+ * Run a finite timer for each click, only if there is no currently active timer
+ * ```javascript
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000).take(5));
  * var result = higherOrder.exhaust();
  * result.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link combineAll}
  * @see {@link concatAll}
