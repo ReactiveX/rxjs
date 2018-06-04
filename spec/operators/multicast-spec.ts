@@ -14,7 +14,7 @@ describe('multicast operator', () => {
   asDiagram('multicast(() => new Subject<string>())')('should mirror a simple source Observable', () => {
     const source = cold('--1-2---3-4--5-|');
     const sourceSubs =  '^              !';
-    const multicasted = source.multicast(() => new Subject<string>());
+    const multicasted = source.pipe(multicast(() => new Subject<string>())) as ConnectableObservable<string>;
     const expected =    '--1-2---3-4--5-|';
 
     expectObservable(multicasted).toBe(expected);
