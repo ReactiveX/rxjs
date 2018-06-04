@@ -40,11 +40,14 @@ export function withLatestFrom<T, R>(array: ObservableInput<any>[], project: (..
  * the value to be emitted on the output Observable. All input Observables must
  * emit at least one value before the output Observable will emit a value.
  *
- * @example <caption>On every click event, emit an array with the latest timer event plus the click event</caption>
+ * ## Example
+ * On every click event, emit an array with the latest timer event plus the click event
+ * ```javascript
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var timer = Rx.Observable.interval(1000);
  * var result = clicks.withLatestFrom(timer);
  * result.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link combineLatest}
  *

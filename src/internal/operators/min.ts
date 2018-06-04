@@ -7,12 +7,16 @@ import { MonoTypeOperatorFunction } from '../types';
  *
  * <img src="./img/min.png" width="100%">
  *
- * @example <caption>Get the minimal value of a series of numbers</caption>
+ * ## Examples
+ * Get the minimal value of a series of numbers
+ * ```javascript
  * Rx.Observable.of(5, 4, 7, 2, 8)
  *   .min()
  *   .subscribe(x => console.log(x)); // -> 2
+ * ```
  *
- * @example <caption>Use a comparer function to get the minimal item</caption>
+ * Use a comparer function to get the minimal item
+ * ```typescript
  * interface Person {
  *   age: number,
  *   name: string
@@ -23,6 +27,7 @@ import { MonoTypeOperatorFunction } from '../types';
  *           .min<Person>( (a: Person, b: Person) => a.age < b.age ? -1 : 1)
  *           .subscribe((x: Person) => console.log(x.name)); // -> 'Bar'
  * }
+ * ```
  *
  * @see {@link max}
  *

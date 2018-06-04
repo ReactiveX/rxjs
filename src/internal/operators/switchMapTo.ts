@@ -31,10 +31,13 @@ export function switchMapTo<T, I, R>(observable: ObservableInput<I>, resultSelec
  * emits values only from the most recently emitted instance of
  * `innerObservable`.
  *
- * @example <caption>Rerun an interval Observable on every click event</caption>
+ * ## Example
+ * Rerun an interval Observable on every click event
+ * ```javascript
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var result = clicks.switchMapTo(Rx.Observable.interval(1000));
  * result.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link concatMapTo}
  * @see {@link switch}

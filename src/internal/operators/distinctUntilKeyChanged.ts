@@ -14,8 +14,9 @@ export function distinctUntilKeyChanged<T, K>(key: string, compare: (x: K, y: K)
  *
  * If a comparator function is not provided, an equality check is used by default.
  *
- * @example <caption>An example comparing the name of persons</caption>
- *
+ * ## Examples
+ * An example comparing the name of persons
+ * ```typescript
  *  interface Person {
  *     age: number,
  *     name: string
@@ -35,9 +36,10 @@ export function distinctUntilKeyChanged<T, K>(key: string, compare: (x: K, y: K)
  * // { age: 4, name: 'Foo' }
  * // { age: 7, name: 'Bar' }
  * // { age: 5, name: 'Foo' }
+ * ```
  *
- * @example <caption>An example comparing the first letters of the name</caption>
- *
+ * An example comparing the first letters of the name
+ * ```typescript
  * interface Person {
  *     age: number,
  *     name: string
@@ -57,6 +59,7 @@ export function distinctUntilKeyChanged<T, K>(key: string, compare: (x: K, y: K)
  * // { age: 4, name: 'Foo1' }
  * // { age: 7, name: 'Bar' }
  * // { age: 5, name: 'Foo2' }
+ * ```
  *
  * @see {@link distinct}
  * @see {@link distinctUntilChanged}

@@ -21,11 +21,14 @@ export function defaultIfEmpty<T, R>(defaultValue?: R): OperatorFunction<T, T | 
  * specified default value if the source Observable is empty (completes without
  * having emitted any `next` value).
  *
- * @example <caption>If no clicks happen in 5 seconds, then emit "no clicks"</caption>
+ * ## Example
+ * If no clicks happen in 5 seconds, then emit "no clicks"
+ * ```javascript
  * const clicks = fromEvent(document, 'click');
  * const clicksBeforeFive = clicks.pipe(takeUntil(interval(5000)));
  * const result = clicksBeforeFive.pipe(defaultIfEmpty('no clicks'));
  * result.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link empty}
  * @see {@link last}

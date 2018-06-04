@@ -16,10 +16,13 @@ import { OperatorFunction } from '../types';
  * {@link first}, the `predicate` is required in `findIndex`, and does not emit
  * an error if a valid value is not found.
  *
- * @example <caption>Emit the index of first click that happens on a DIV element</caption>
+ * ## Example
+ * Emit the index of first click that happens on a DIV element
+ * ```javascript
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var result = clicks.findIndex(ev => ev.target.tagName === 'DIV');
  * result.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link filter}
  * @see {@link find}

@@ -20,17 +20,22 @@ export function mergeAll<T>(concurrent?: number): OperatorFunction<ObservableInp
  * completes once all inner Observables have completed. Any error delivered by
  * a inner Observable will be immediately emitted on the output Observable.
  *
- * @example <caption>Spawn a new interval Observable for each click event, and blend their outputs as one Observable</caption>
+ * ## Examples
+ * Spawn a new interval Observable for each click event, and blend their outputs as one Observable
+ * ```javascript
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000));
  * var firstOrder = higherOrder.mergeAll();
  * firstOrder.subscribe(x => console.log(x));
+ * ```
  *
- * @example <caption>Count from 0 to 9 every second for each click, but only allow 2 concurrent timers</caption>
+ * Count from 0 to 9 every second for each click, but only allow 2 concurrent timers
+ * ```javascript
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var higherOrder = clicks.map((ev) => Rx.Observable.interval(1000).take(10));
  * var firstOrder = higherOrder.mergeAll(2);
  * firstOrder.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link combineAll}
  * @see {@link concatAll}

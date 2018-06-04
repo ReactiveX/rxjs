@@ -93,8 +93,9 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * of values, but values themselves. That means default `project` can be imagined
  * as function that takes all its arguments and puts them into an array.
  *
- *
- * @example <caption>Combine two timer Observables</caption>
+ * ## Examples
+ * ### Combine two timer Observables
+ * ```javascript
  * const firstTimer = Rx.Observable.timer(0, 1000); // emit 0, 1, 2... after every second, starting from now
  * const secondTimer = Rx.Observable.timer(500, 1000); // emit 0, 1, 2... after every second, starting 0,5s from now
  * const combinedTimers = Rx.Observable.combineLatest(firstTimer, secondTimer);
@@ -104,9 +105,10 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * // [1, 0] after 1s
  * // [1, 1] after 1.5s
  * // [2, 1] after 2s
+ * ```
  *
- *
- * @example <caption>Combine an array of Observables</caption>
+ * ### Combine an array of Observables
+ * ```javascript
  * const observables = [1, 5, 10].map(
  *   n => Rx.Observable.of(n).delay(n * 1000).startWith(0) // emit 0 and then emit n after n seconds
  * );
@@ -117,9 +119,10 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * // [1, 0, 0] after 1s
  * // [1, 5, 0] after 5s
  * // [1, 5, 10] after 10s
+ * ```
  *
- *
- * @example <caption>Use project function to dynamically calculate the Body-Mass Index</caption>
+ * ### Use project function to dynamically calculate the Body-Mass Index
+ * ```javascript
  * var weight = Rx.Observable.of(70, 72, 76, 79, 75);
  * var height = Rx.Observable.of(1.76, 1.77, 1.78);
  * var bmi = Rx.Observable.combineLatest(weight, height, (w, h) => w / (h * h));
@@ -129,7 +132,7 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * // BMI is 24.212293388429753
  * // BMI is 23.93948099205209
  * // BMI is 23.671253629592222
- *
+ * ```
  *
  * @see {@link combineAll}
  * @see {@link merge}

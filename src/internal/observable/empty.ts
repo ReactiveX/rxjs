@@ -20,11 +20,15 @@ export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
  * emits the complete notification. It can be used for composing with other
  * Observables, such as in a {@link mergeMap}.
  *
- * @example <caption>Emit the number 7, then complete.</caption>
+ * ## Examples
+ * ### Emit the number 7, then complete
+ * ```javascript
  * var result = Rx.Observable.empty().startWith(7);
  * result.subscribe(x => console.log(x));
+ * ```
  *
- * @example <caption>Map and flatten only odd numbers to the sequence 'a', 'b', 'c'</caption>
+ * ### Map and flatten only odd numbers to the sequence 'a', 'b', 'c'
+ * ```javascript
  * var interval = Rx.Observable.interval(1000);
  * var result = interval.mergeMap(x =>
  *   x % 2 === 1 ? Rx.Observable.of('a', 'b', 'c') : Rx.Observable.empty()
@@ -36,6 +40,7 @@ export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
  * // x will occur every 1000ms
  * // if x % 2 is equal to 1 print abc
  * // if x % 2 is not equal to 1 nothing will be output
+ * ```
  *
  * @see {@link create}
  * @see {@link never}

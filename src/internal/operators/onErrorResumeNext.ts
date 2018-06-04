@@ -48,7 +48,9 @@ export function onErrorResumeNext<T, R>(array: ObservableInput<any>[]): Operator
  * specific actions based on what error was emitted by an Observable, you should try out {@link catch} instead.
  *
  *
- * @example <caption>Subscribe to the next Observable after map fails</caption>
+ * ## Example
+ * Subscribe to the next Observable after map fails
+ * ```javascript
  * Rx.Observable.of(1, 2, 3, 0)
  *   .map(x => {
  *       if (x === 0) { throw Error(); }
@@ -69,6 +71,7 @@ export function onErrorResumeNext<T, R>(array: ObservableInput<any>[]): Operator
  * // 2
  * // 3
  * // "that's it!"
+ * ```
  *
  * @see {@link concat}
  * @see {@link catch}

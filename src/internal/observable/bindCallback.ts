@@ -107,15 +107,18 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  * `bindCallback` will treat such functions the same as any other and error parameters
  * (whether passed or not) will always be interpreted as regular callback argument.
  *
+ * ## Examples
  *
- * @example <caption>Convert jQuery's getJSON to an Observable API</caption>
+ * ### Convert jQuery's getJSON to an Observable API
+ * ```javascript
  * // Suppose we have jQuery.getJSON('/my/url', callback)
  * var getJSONAsObservable = bindCallback(jQuery.getJSON);
  * var result = getJSONAsObservable('/my/url');
  * result.subscribe(x => console.log(x), e => console.error(e));
+ * ```
  *
- *
- * @example <caption>Receive an array of arguments passed to a callback</caption>
+ * ### Receive an array of arguments passed to a callback
+ * ```javascript
  * someFunction((a, b, c) => {
  *   console.log(a); // 5
  *   console.log(b); // 'some string'
@@ -126,9 +129,10 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  * boundSomeFunction().subscribe(values => {
  *   console.log(values) // [5, 'some string', {someProperty: 'someValue'}]
  * });
+ * ```
  *
- *
- * @example <caption>Compare behaviour with and without async Scheduler</caption>
+ * ### Compare behaviour with and without async Scheduler
+ * ```javascript
  * function iCallMyCallbackSynchronously(cb) {
  *   cb();
  * }
@@ -144,13 +148,14 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  * // I was sync!
  * // This happened...
  * // I was async!
+ * ```
  *
- *
- * @example <caption>Use bindCallback on an object method</caption>
+ * ### Use bindCallback on an object method
+ * ```javascript
  * const boundMethod = bindCallback(someObject.methodWithCallback);
  * boundMethod.call(someObject) // make sure methodWithCallback has access to someObject
  * .subscribe(subscriber);
- *
+ * ```
  *
  * @see {@link bindNodeCallback}
  * @see {@link from}

@@ -14,7 +14,9 @@ import { AnimationFrameScheduler } from './AnimationFrameScheduler';
  * It makes sure scheduled task will happen just before next browser content repaint,
  * thus performing animations as efficiently as possible.
  *
- * @example <caption>Schedule div height animation</caption>
+ * ## Example
+ * Schedule div height animation
+ * ```javascript
  * const div = document.querySelector('.some-div');
  *
  * Rx.Scheduler.animationFrame.schedule(function(height) {
@@ -25,7 +27,7 @@ import { AnimationFrameScheduler } from './AnimationFrameScheduler';
  * }, 0, 0);
  *
  * // You will see .some-div element growing in height
- *
+ * ```
  *
  * @static true
  * @name animationFrame

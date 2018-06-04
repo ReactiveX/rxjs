@@ -21,7 +21,9 @@ import { empty } from './empty';
  * same Observable, in fact each subscriber gets its own individual
  * Observable.
  *
- * @example <caption>Subscribe to either an Observable of clicks or an Observable of interval, at random</caption>
+ * ## Example
+ * ### Subscribe to either an Observable of clicks or an Observable of interval, at random
+ * ```javascript
  * var clicksOrInterval = Rx.Observable.defer(function () {
  *   if (Math.random() > 0.5) {
  *     return Rx.Observable.fromEvent(document, 'click');
@@ -36,6 +38,7 @@ import { empty } from './empty';
  * // for clicks anywhere on the "document"; when document is clicked it
  * // will log a MouseEvent object to the console. If the result is less
  * // than 0.5 it will emit ascending numbers, one every second(1000ms).
+ * ```
  *
  * @see {@link create}
  *

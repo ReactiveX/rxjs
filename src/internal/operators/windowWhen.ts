@@ -26,13 +26,16 @@ import { OperatorFunction } from '../types';
  * produced by the specified `closingSelector` function emits an item. The first
  * window is opened immediately when subscribing to the output Observable.
  *
- * @example <caption>Emit only the first two clicks events in every window of [1-5] random seconds</caption>
+ * ## Example
+ * Emit only the first two clicks events in every window of [1-5] random seconds
+ * ```javascript
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var result = clicks
  *   .windowWhen(() => Rx.Observable.interval(1000 + Math.random() * 4000))
  *   .map(win => win.take(2)) // each window has at most 2 emissions
  *   .mergeAll(); // flatten the Observable-of-Observables
  * result.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link window}
  * @see {@link windowCount}

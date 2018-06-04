@@ -20,13 +20,17 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * use might result in memory leaks. To help alleviate this in some scenarios, an optional `flushes` parameter is also provided so
  * that the internal `Set` can be "flushed", basically clearing it of values.
  *
- * @example <caption>A simple example with numbers</caption>
+ * ## Examples
+ * A simple example with numbers
+ * ```javascript
  * of(1, 1, 2, 2, 2, 1, 2, 3, 4, 3, 2, 1).pipe(
  *     distinct(),
  *   )
  *   .subscribe(x => console.log(x)); // 1, 2, 3, 4
+ * ```
  *
- * @example <caption>An example using a keySelector function</caption>
+ * An example using a keySelector function
+ * ```typescript
  * interface Person {
  *    age: number,
  *    name: string
@@ -44,7 +48,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * // displays:
  * // { age: 4, name: 'Foo' }
  * // { age: 7, name: 'Bar' }
- *
+ * ```
  * @see {@link distinctUntilChanged}
  * @see {@link distinctUntilKeyChanged}
  *

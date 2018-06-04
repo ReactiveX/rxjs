@@ -21,7 +21,9 @@ import { OperatorFunction } from '../types';
  *
  * Use this operator in conjunction with {@link materialize}.
  *
- * @example <caption>Convert an Observable of Notifications to an actual Observable</caption>
+ * ## Example
+ * Convert an Observable of Notifications to an actual Observable
+ * ```javascript
  * const notifA = new Rx.Notification('N', 'A');
  * const notifB = new Rx.Notification('N', 'B');
  * const notifE = new Rx.Notification('E', void 0,
@@ -35,6 +37,7 @@ import { OperatorFunction } from '../types';
  * // A
  * // B
  * // TypeError: x.toUpperCase is not a function
+ * ```
  *
  * @see {@link Notification}
  * @see {@link materialize}

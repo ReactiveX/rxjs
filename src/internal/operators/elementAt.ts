@@ -22,7 +22,9 @@ import { take } from './take';
  * not given and the `index` is out of range, the output Observable will emit an
  * `ArgumentOutOfRangeError` error.
  *
- * @example <caption>Emit only the third click event</caption>
+ * ## Example
+ * Emit only the third click event
+ * ```javascript
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var result = clicks.elementAt(2);
  * result.subscribe(x => console.log(x));
@@ -31,6 +33,7 @@ import { take } from './take';
  * // click 1 = nothing
  * // click 2 = nothing
  * // click 3 = MouseEvent object logged to console
+ * ```
  *
  * @see {@link first}
  * @see {@link last}

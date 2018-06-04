@@ -34,13 +34,16 @@ export function expand<T>(project: (value: T, index: number) => ObservableInput<
  * given to the `project` function to produce new output values. This is how
  * *expand* behaves recursively.
  *
- * @example <caption>Start emitting the powers of two on every click, at most 10 of them</caption>
+ * ## Example
+ * Start emitting the powers of two on every click, at most 10 of them
+ * ```javascript
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var powersOfTwo = clicks
  *   .mapTo(1)
  *   .expand(x => Rx.Observable.of(2 * x).delay(1000))
  *   .take(10);
  * powersOfTwo.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link mergeMap}
  * @see {@link mergeScan}

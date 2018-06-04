@@ -105,15 +105,17 @@ export function bindNodeCallback(callbackFunc: Function, scheduler?: SchedulerLi
  * Note that even if error parameter is technically present in callback, but its value
  * is falsy, it still won't appear in array emitted by Observable.
  *
- *
- * @example <caption>Read a file from the filesystem and get the data as an Observable</caption>
+ * ## Examples
+ * ###  Read a file from the filesystem and get the data as an Observable
+ * ```javascript
  * import * as fs from 'fs';
  * var readFileAsObservable = bindNodeCallback(fs.readFile);
  * var result = readFileAsObservable('./roadNames.txt', 'utf8');
  * result.subscribe(x => console.log(x), e => console.error(e));
+ * ```
  *
- *
- * @example <caption>Use on function calling callback with multiple arguments</caption>
+ * ### Use on function calling callback with multiple arguments
+ * ```javascript
  * someFunction((err, a, b) => {
  *   console.log(err); // null
  *   console.log(a); // 5
@@ -124,8 +126,10 @@ export function bindNodeCallback(callbackFunc: Function, scheduler?: SchedulerLi
  * .subscribe(value => {
  *   console.log(value); // [5, "some string"]
  * });
+ * ```
  *
- * @example <caption>Use on function calling callback in regular style</caption>
+ * ### Use on function calling callback in regular style
+ * ```javascript
  * someFunction(a => {
  *   console.log(a); // 5
  * });
@@ -135,7 +139,7 @@ export function bindNodeCallback(callbackFunc: Function, scheduler?: SchedulerLi
  *   value => {}             // never gets called
  *   err => console.log(err) // 5
  * );
- *
+ * ```
  *
  * @see {@link bindCallback}
  * @see {@link from}

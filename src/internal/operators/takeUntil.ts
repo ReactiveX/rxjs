@@ -23,11 +23,14 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * and completes. If the `notifier` doesn't emit any value and completes
  * then `takeUntil` will pass all values.
  *
- * @example <caption>Tick every second until the first click happens</caption>
+ * ## Example
+ * Tick every second until the first click happens
+ * ```javascript
  * var interval = Rx.Observable.interval(1000);
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var result = interval.takeUntil(clicks);
  * result.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link take}
  * @see {@link takeLast}

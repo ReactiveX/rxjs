@@ -7,7 +7,9 @@ import { Subscription } from '../Subscription';
  * Convert an object into an observable sequence of [key, value] pairs
  * using an optional IScheduler to enumerate the object.
  *
- * @example <caption>Converts a javascript object to an Observable</caption>
+ * ## Example
+ * Converts a javascript object to an Observable
+ * ```javascript
  * var obj = {
  *   foo: 42,
  *   bar: 56,
@@ -26,6 +28,7 @@ import { Subscription } from '../Subscription';
  *   function () {
  *     console.log('Completed');
  *   });
+ * ```
  *
  * @param {Object} obj The object to inspect and turn into an
  * Observable sequence.

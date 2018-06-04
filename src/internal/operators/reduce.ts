@@ -34,13 +34,16 @@ export function reduce<T, R>(accumulator: (acc: R, value: T, index: number) => R
  * that value will be used as the initial value for the accumulator. If no seed
  * value is specified, the first item of the source is used as the seed.
  *
- * @example <caption>Count the number of click events that happened in 5 seconds</caption>
+ * ## Example
+ * Count the number of click events that happened in 5 seconds
+ * ```javascript
  * var clicksInFiveSeconds = Rx.Observable.fromEvent(document, 'click')
  *   .takeUntil(Rx.Observable.interval(5000));
  * var ones = clicksInFiveSeconds.mapTo(1);
  * var seed = 0;
  * var count = ones.reduce((acc, one) => acc + one, seed);
  * count.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link count}
  * @see {@link expand}

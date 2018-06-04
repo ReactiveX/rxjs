@@ -2,7 +2,6 @@ import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Observer, OperatorFunction } from '../types';
 import { Subscriber } from '../Subscriber';
-
 /**
  * Counts the number of emissions on the source and emits that number when the
  * source completes.
@@ -21,20 +20,25 @@ import { Subscriber } from '../Subscriber';
  * as argument, in which case the output emission will represent the number of
  * source values that matched `true` with the `predicate`.
  *
- * @example <caption>Counts how many seconds have passed before the first click happened</caption>
+ * ## Examples
+ *
+ * Counts how many seconds have passed before the first click happened
+ * ```javascript
  * const seconds = interval(1000);
  * const clicks = fromEvent(document, 'click');
  * const secondsBeforeClick = seconds.pipe(takeUntil(clicks));
  * const result = secondsBeforeClick.pipe(count());
  * result.subscribe(x => console.log(x));
+ * ```
  *
- * @example <caption>Counts how many odd numbers are there between 1 and 7</caption>
+ * Counts how many odd numbers are there between 1 and 7
+ * ```javascript
  * const numbers = range(1, 7);
  * const result = numbers.pipe(count(i => i % 2 === 1));
  * result.subscribe(x => console.log(x));
- *
  * // Results in:
  * // 4
+ * ```javascript
  *
  * @see {@link max}
  * @see {@link min}
@@ -51,6 +55,7 @@ import { Subscriber } from '../Subscriber';
  * @method count
  * @owner Observable
  */
+
 export function count<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, number> {
   return (source: Observable<T>) => source.lift(new CountOperator(predicate, source));
 }

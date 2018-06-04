@@ -22,18 +22,23 @@ import { OperatorFunction } from '../types';
  * started immediately at the start of the source and when each window completes
  * with size `windowSize`.
  *
- * @example <caption>Ignore every 3rd click event, starting from the first one</caption>
+ * ## Examples
+ * Ignore every 3rd click event, starting from the first one
+ * ```javascript
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var result = clicks.windowCount(3)
  *   .map(win => win.skip(1)) // skip first of every 3 clicks
  *   .mergeAll(); // flatten the Observable-of-Observables
  * result.subscribe(x => console.log(x));
+ * ```
  *
- * @example <caption>Ignore every 3rd click event, starting from the third one</caption>
+ * Ignore every 3rd click event, starting from the third one
+ * ```javascript
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var result = clicks.windowCount(2, 3)
  *   .mergeAll(); // flatten the Observable-of-Observables
  * result.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link window}
  * @see {@link windowTime}

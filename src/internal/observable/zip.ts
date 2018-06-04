@@ -48,8 +48,9 @@ export function zip<R>(...observables: Array<ObservableInput<any> | ((...values:
  * If the latest parameter is a function, this function is used to compute the created value from the input values.
  * Otherwise, an array of the input values is returned.
  *
- * @example <caption>Combine age and name from different sources</caption>
- *
+ * ## Example
+ * Combine age and name from different sources
+ * ```javascript
  * let age$ = Observable.of<number>(27, 25, 29);
  * let name$ = Observable.of<string>('Foo', 'Bar', 'Beer');
  * let isDev$ = Observable.of<boolean>(true, true, false);
@@ -65,7 +66,7 @@ export function zip<R>(...observables: Array<ObservableInput<any> | ((...values:
  * // { age: 27, name: 'Foo', isDev: true }
  * // { age: 25, name: 'Bar', isDev: true }
  * // { age: 29, name: 'Beer', isDev: false }
- *
+ * ```
  * @param observables
  * @return {Observable<R>}
  * @static true

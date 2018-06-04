@@ -12,12 +12,16 @@ import { noop } from '../util/noop';
  * Observable keeps the subscription from being disposed automatically.
  * Subscriptions need to be manually disposed.
  *
- * @example <caption>Emit the number 7, then never emit anything else (not even complete).</caption>
+ * ##  Example
+ * ### Emit the number 7, then never emit anything else (not even complete)
+ * ```javascript
  * function info() {
  *   console.log('Will not be called');
  * }
  * var result = NEVER.startWith(7);
  * result.subscribe(x => console.log(x), info, info);
+ *
+ * ```
  *
  * @see {@link create}
  * @see {@link EMPTY}

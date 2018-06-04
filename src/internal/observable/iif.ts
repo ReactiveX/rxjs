@@ -25,7 +25,9 @@ import { SubscribableOrPromise } from '../types';
  * and exists only for convenience and readability reasons.
  *
  *
- * @example <caption>Change at runtime which Observable will be subscribed</caption>
+ * ## Examples
+ * ### Change at runtime which Observable will be subscribed
+ * ```javascript
  * let subscribeToFirst;
  * const firstOrSecond = Rx.Observable.if(
  *   () => subscribeToFirst,
@@ -45,8 +47,10 @@ import { SubscribableOrPromise } from '../types';
  * // Logs:
  * // "second"
  *
+ * ```
  *
- * @example <caption>Control an access to an Observable</caption>
+ * ### Control an access to an Observable
+ * ```javascript
  * let accessGranted;
  * const observableIfYouHaveAccess = Rx.Observable.if(
  *   () => accessGranted,
@@ -73,6 +77,7 @@ import { SubscribableOrPromise } from '../types';
  *
  * // Logs:
  * // "The end"
+ * ```
  *
  * @see {@link defer}
  *

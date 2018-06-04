@@ -28,12 +28,15 @@ export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, 
  * that value will be used as the initial value for the accumulator. If no seed
  * value is specified, the first item of the source is used as the seed.
  *
- * @example <caption>Count the number of click events</caption>
+ * ## Example
+ * Count the number of click events
+ * ```javascript
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var ones = clicks.mapTo(1);
  * var seed = 0;
  * var count = ones.scan((acc, one) => acc + one, seed);
  * count.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link expand}
  * @see {@link mergeScan}

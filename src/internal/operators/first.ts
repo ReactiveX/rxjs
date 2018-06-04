@@ -26,15 +26,20 @@ import { identity } from '../util/identity';
  * before it is able to emit a valid value. Throws an error if `defaultValue`
  * was not provided and a matching element is not found.
  *
- * @example <caption>Emit only the first click that happens on the DOM</caption>
+ * ## Examples
+ * Emit only the first click that happens on the DOM
+ * ```javascript
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var result = clicks.first();
  * result.subscribe(x => console.log(x));
+ * ```
  *
- * @example <caption>Emits the first click that happens on a DIV</caption>
+ * Emits the first click that happens on a DIV
+ * ```javascript
  * var clicks = Rx.Observable.fromEvent(document, 'click');
  * var result = clicks.first(ev => ev.target.tagName === 'DIV');
  * result.subscribe(x => console.log(x));
+ * ```
  *
  * @see {@link filter}
  * @see {@link find}

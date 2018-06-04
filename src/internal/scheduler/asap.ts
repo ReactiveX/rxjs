@@ -21,8 +21,9 @@ import { AsapScheduler } from './AsapScheduler';
  * that task will execute first. That being said, if you need to schedule task asynchronously, but
  * as soon as possible, `asap` scheduler is your best bet.
  *
- * @example <caption>Compare async and asap scheduler</caption>
- *
+ * ## Example
+ * Compare async and asap scheduler<
+ * ```javascript
  * Rx.Scheduler.async.schedule(() => console.log('async')); // scheduling 'async' first...
  * Rx.Scheduler.asap.schedule(() => console.log('asap'));
  *
@@ -30,7 +31,7 @@ import { AsapScheduler } from './AsapScheduler';
  * // "asap"
  * // "async"
  * // ... but 'asap' goes first!
- *
+ * ```
  * @static true
  * @name asap
  * @owner Scheduler
