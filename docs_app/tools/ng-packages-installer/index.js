@@ -1,5 +1,4 @@
-'use strict';
-
+/*eslint-env es6*/
 const chalk = require('chalk');
 const fs = require('fs-extra');
 const path = require('canonical-path');
@@ -21,7 +20,6 @@ const ANGULAR_DIST_PACKAGES = path.resolve(ANGULAR_ROOT_DIR, 'dist/package');
  * applications.
  */
 class NgPackagesInstaller {
-
   /**
    * Create a new installer for a project in the specified directory.
    *
@@ -107,7 +105,7 @@ class NgPackagesInstaller {
         try {
           this._log(`Writing temporary local ${PACKAGE_JSON} to ${pathToPackageConfig}`);
           fs.writeFileSync(pathToPackageConfig, localPackageConfigJson);
-          this._installDeps('--no-lockfile', '--check-files');
+          this._installDeps();
           this._setLocalMarker(localPackageConfigJson);
         } finally {
           this._log(`Restoring original ${PACKAGE_JSON} to ${pathToPackageConfig}`);
@@ -129,7 +127,7 @@ class NgPackagesInstaller {
    * Yarn will also delete the local marker file for us.
    */
   restoreNpmDependencies() {
-    this._installDeps('--frozen-lockfile', '--check-files');
+    this._installDeps();
   }
 
   // Protected helpers
@@ -161,8 +159,10 @@ class NgPackagesInstaller {
         const sourcePackagePeerDeps = sourcePackage.config.peerDependencies || {};
         Object.keys(sourcePackagePeerDeps)
           // ignore peerDependencies which are already core Angular packages
-          .filter(key => !packages[key])
-          .forEach(key => peerDependencies[key] = sourcePackagePeerDeps[key]);
+          .filter(_key => !packages[_key])
+          .forEach(_key => {
+            peerDependencies[_key] = sourcePackagePeerDeps[_key];
+          });
       }
     });
 
@@ -188,7 +188,7 @@ class NgPackagesInstaller {
         .map(filePath => filePath.slice(distDir.length + 1))
         .filter(filePath => PACKAGE_JSON_REGEX.test(filePath))
         .forEach(packagePath => {
-          const packageName = `@angular/${packagePath.slice(0, -PACKAGE_JSON.length -1)}`;
+          const packageName = `@angular/${packagePath.slice(0, -PACKAGE_JSON.length - 1)}`;
           if (this.ignorePackages.indexOf(packageName) === -1) {
             const packageConfig = require(path.resolve(distDir, packagePath));
             packageConfigs[packageName] = {
@@ -200,7 +200,6 @@ class NgPackagesInstaller {
             this._log('Ignoring package', packageName);
           }
         });
-
     });
 
     this._log('Found the following Angular distributables:', Object.keys(packageConfigs).map(key => `\n - ${key}`));
@@ -208,7 +207,7 @@ class NgPackagesInstaller {
   }
 
   _installDeps(...options) {
-    const command = 'yarn install ' + options.join(' ');
+    const command = 'npm install ' + options.join(' ');
     this._log('Installing dependencies with:', command);
     shelljs.exec(command, {cwd: this.projectDir});
   }

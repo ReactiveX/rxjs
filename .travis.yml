@@ -41,7 +41,6 @@ matrix:
 before_install:
   - nvm install $NODE_VER
   - npm install -g npm@6 && node -v && npm -v
-  - npm install -g yarn
 
 install:
   - npm ci
@@ -54,8 +53,8 @@ script:
   - npm test
   - npm run test:systemjs
   - if [ "${TSC_VERSION}" ]; then npm install --no-save typescript@$TSC_VERSION && ./node_modules/.bin/tsc --version && npm run build_cjs ; fi
-  - if [ "$FULL_VALIDATE" == "true" ] && [ -n "DANGER_GITHUB_API_TOKEN" ]; then cd docs_app && yarn install && yarn run build; fi
+  - if [ "$FULL_VALIDATE" == "true" ] && [ -n "DANGER_GITHUB_API_TOKEN" ]; then cd docs_app && npm ci && npm run build && cd ..; fi
 
 after_success:
   - if [ "$FULL_VALIDATE" == "true" ]; then npm run test:cover && npx nyc report --reporter=text-lcov | npx coveralls; fi
-  - if [ "$FULL_VALIDATE" == "true" ] && [ "$BRANCH" == "master" ]; then cd docs_app && chmod 755 scripts/deploy-to-firebase.sh && yarn deploy-production; fi
+  - if [ "$FULL_VALIDATE" == "true" ] && [ "$BRANCH" == "master" ]; then cd docs_app && chmod 755 scripts/deploy-to-firebase.sh && npm run deploy-production; fi

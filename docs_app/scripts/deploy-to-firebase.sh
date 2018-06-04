@@ -87,13 +87,13 @@ fi
   cd "`dirname $0`/.."
 
   # Build the app
-  yarn build --env=$deployEnv
+  npm run build --env=$deployEnv
 
   # Include any mode-specific files
   cp -rf src/extra-files/$deployEnv/. dist/
 
   # Check payload size
-  # yarn payload-size
+  # npm run payload-size
 
   # Deploy to Firebase
   firebase use "$projectId" --token "$firebaseToken"
