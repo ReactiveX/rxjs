@@ -4,6 +4,7 @@ import { Subscription, teardownToFunction } from './Subscription';
 import { pipe } from './util/pipe';
 
 export interface ObservableConstructor {
+  <T>(init?: (subscriber: Subscriber<T>) => void): Observable<T>;
   new<T>(init?: (subscriber: Subscriber<T>) => void): Observable<T>;
 }
 
@@ -26,18 +27,11 @@ export interface Observable<T> extends FObs<T> {
 
 /** The Observable constructor */
 export const Observable: ObservableConstructor = function <T>(init?: (subscriber: Subscriber<T>) => void) {
-  const result = observable(init);
-  (result as any).__proto__ = Observable.prototype;
-  return result;
-} as any;
-
-/** A shorthand observable creation method */
-export function observable<T>(init?: (subscriber: Subscriber<T>) => void) {
   return sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T>, subs: Subscription) => {
     const subscriber = createSubscriber(dest, subs);
     subs.add(init(subscriber));
   });
-};
+} as any;
 
 export function sourceAsObservable<T>(source: Source<T>): Observable<T> {
   const result = source as Observable<T>;

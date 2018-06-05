@@ -20,8 +20,8 @@ timestamp.
 - `endWith` has no scheduler argument
 - `startWith` has no scheduler argument
 - `partition` is now a static method
-- `Observable` returns an object that passes `instanceof` checks
-- `observable` is a shorthand function for creating an observable that does not require the `new` keyword, and will not pass `instanceof` checks.
+- `Observable` no longer passes `instanceof` checks
+- `Observable(init)` works just like `new Observable(init)`, replacing `Observable.create`
 - `Subject()` works just like `new Subject()`
 - `Subject` does not pass `instanceof` checks
 - `Subject(observer, observable)` replaces `Subject.create`
