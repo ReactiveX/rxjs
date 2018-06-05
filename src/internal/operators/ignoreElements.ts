@@ -8,6 +8,34 @@ import { OperatorFunction } from '../types';
  *
  * <img src="./img/ignoreElements.png" width="100%">
  *
+ * ## Examples
+ * ### Ignores emitted values, reacts to observable's completion.
+ * ```javascript
+ * from(['you', 'talking', 'to', 'me']).pipe(
+ *   ignoreElements(),
+ * )
+ * .subscribe(
+ *   word => console.log(word),
+ *   err => console.log('error:', err),
+ *   () => console.log('the end'),
+ * );
+ * // result:
+ * // 'the end'
+ * ```
+ *
+ * ### Ignores emitted values, reacts to observable's error.
+ * ```javascript
+ * throwError('any error').pipe(
+ *   ignoreElements(),
+ * )
+ * .subscribe(
+ *   word => console.log(word),
+ *   err => console.log('error:', err),
+ *   () => console.log('the end'),
+ * );
+ * // result:
+ * // 'error: any error'
+ * ```
  * @return {Observable} An empty Observable that only calls `complete`
  * or `error`, based on which one is called by the source Observable.
  * @method ignoreElements
