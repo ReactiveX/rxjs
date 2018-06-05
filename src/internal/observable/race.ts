@@ -11,6 +11,37 @@ import { subscribeToResult } from '../util/subscribeToResult';
 
 /**
  * Returns an Observable that mirrors the first source Observable to emit an item.
+ *
+ * ## Examples
+ * ### Subscribes to the stream of clicks from the element that was the first to receive a click.
+ * Subsequent clicks on other elements won't emit a value.
+ *
+ * ```javascript
+ * const divAClicks = fromEvent(document.querySelector('#div-a'), 'click');
+ * const divBClicks = fromEvent(document.querySelector('#div-b'), 'click');
+ * const divCClicks = fromEvent(document.querySelector('#div-c'), 'click');
+ *
+ * race(divAClicks, divBClicks, divCClicks)
+ * .subscribe(
+ *   event  => console.log('you chose to listen to clicks from', event.target['id'])
+ * );
+ * ```
+ *
+ * ### Click to start a race between two observables, each emitting just once, at a random speed.
+ * The first to emit wins the race.
+ *
+ * ```javascript
+ * clicks.pipe(
+ *   switchMap(() => race(
+ *     timer(Math.random() * 1000).pipe(mapTo('fox')),
+ *     timer(Math.random() * 1000).pipe(mapTo('rabbit')),
+ *   )),
+ * )
+ * .subscribe(
+ *   animal => console.log(animal + ' won the race')
+ * );
+ * ```
+ *
  * @param {...Observables} ...observables sources used to race for which Observable emits first.
  * @return {Observable} an Observable that mirrors the output of the first Observable to emit an item.
  * @static true
