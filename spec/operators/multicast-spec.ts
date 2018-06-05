@@ -1,21 +1,20 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
+import { multicast, tap, mergeMapTo, takeLast, mergeMap, refCount, retry, repeat, switchMap, map } from 'rxjs/operators';
+import { Subject, ReplaySubject, of, ConnectableObservable, zip, concat, Subscription, Observable, from } from 'rxjs';
+import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
 
 declare const type: Function;
 declare const asDiagram: Function;
 
-declare const rxTestScheduler: Rx.TestScheduler;
-const Observable = Rx.Observable;
-const Subject = Rx.Subject;
-const ReplaySubject = Rx.ReplaySubject;
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {multicast} */
-describe('Observable.prototype.multicast', () => {
+describe('multicast operator', () => {
   asDiagram('multicast(() => new Subject<string>())')('should mirror a simple source Observable', () => {
     const source = cold('--1-2---3-4--5-|');
     const sourceSubs =  '^              !';
-    const multicasted = source.multicast(() => new Subject<string>());
+    const multicasted = source.pipe(multicast(() => new Subject<string>())) as ConnectableObservable<string>;
     const expected =    '--1-2---3-4--5-|';
 
     expectObservable(multicasted).toBe(expected);
@@ -27,7 +26,7 @@ describe('Observable.prototype.multicast', () => {
   it('should accept Subjects', (done) => {
     const expected = [1, 2, 3, 4];
 
-    const connectable = Observable.of(1, 2, 3, 4).multicast(new Subject<number>());
+    const connectable = of(1, 2, 3, 4).pipe(multicast((new Subject<number>()))) as ConnectableObservable<number>;
 
     connectable.subscribe((x) => { expect(x).to.equal(expected.shift()); },
         (x) => {
@@ -43,8 +42,8 @@ describe('Observable.prototype.multicast', () => {
     const expected = [1, 2, 3, 4];
 
     const source = new Subject<number>();
-    const connectable = source.multicast(new Subject<number>());
-    const replayed = connectable.multicast(new ReplaySubject<number>());
+    const connectable = source.pipe(multicast(new Subject<number>())) as ConnectableObservable<number>;
+    const replayed = connectable.pipe(multicast(new ReplaySubject<number>())) as ConnectableObservable<number>;
 
     connectable.connect();
     replayed.connect();
@@ -55,21 +54,22 @@ describe('Observable.prototype.multicast', () => {
     source.next(4);
     source.complete();
 
-    replayed.do({
-      next(x) {
-        expect(x).to.equal(expected.shift());
-      },
-      complete() {
-        expect(expected.length).to.equal(0);
-      }
-    })
-    .subscribe(null, done, done);
+    replayed.pipe(
+      tap({
+        next(x) {
+          expect(x).to.equal(expected.shift());
+        },
+        complete() {
+          expect(expected.length).to.equal(0);
+        }
+      })
+    ).subscribe(null, done, done);
   });
 
   it('should accept Subject factory functions', (done) => {
     const expected = [1, 2, 3, 4];
 
-    const connectable = Observable.of(1, 2, 3, 4).multicast(() => new Subject<number>());
+    const connectable = of(1, 2, 3, 4).pipe(multicast(() => new Subject<number>())) as ConnectableObservable<number>;
 
     connectable.subscribe((x) => { expect(x).to.equal(expected.shift()); },
         (x) => {
@@ -86,13 +86,17 @@ describe('Observable.prototype.multicast', () => {
     const sourceSubs =     ['^           !',
                             '    ^       !',
                             '        ^   !'];
-    const multicasted = source.multicast(() => new Subject<string>(),
-      x => x.zip(x, (a, b) => (parseInt(a) + parseInt(b)).toString()));
-    const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
+    const multicasted = source.pipe(
+      multicast(
+        () => new Subject<string>(),
+        x => zip(x, x, (a: any, b: any) => (parseInt(a) + parseInt(b)).toString())
+      )
+    );
+    const subscriber1 = hot('a|           ').pipe(mergeMapTo(multicasted));
     const expected1   =     '-2-4-6----8-|';
-    const subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
+    const subscriber2 = hot('    b|       ').pipe(mergeMapTo(multicasted));
     const expected2   =     '    -6----8-|';
-    const subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+    const subscriber3 = hot('        c|   ').pipe(mergeMapTo(multicasted));
     const expected3   =     '        --8-|';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -106,14 +110,18 @@ describe('Observable.prototype.multicast', () => {
     const sourceSubs =     ['^           !',
                             '    ^           !',
                             '        ^           !'];
-    const multicasted = source.multicast(() => new Subject<string>(),
-      x => x.zip(x, (a, b) => (parseInt(a) + parseInt(b)).toString()));
+    const multicasted = source.pipe(
+      multicast(
+        () => new Subject<string>(),
+        x => zip(x, x, (a: any, b: any) => (parseInt(a) + parseInt(b)).toString())
+      )
+    );
     const expected1   =     '-2-4-6----8-|';
     const expected2   =     '    -2-4-6----8-|';
     const expected3   =     '        -2-4-6----8-|';
-    const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
-    const subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
-    const subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+    const subscriber1 = hot('a|           ').pipe(mergeMapTo(multicasted));
+    const subscriber2 = hot('    b|       ').pipe(mergeMapTo(multicasted));
+    const subscriber3 = hot('        c|   ').pipe(mergeMapTo(multicasted));
 
     expectObservable(subscriber1).toBe(expected1);
     expectObservable(subscriber2).toBe(expected2);
@@ -126,14 +134,18 @@ describe('Observable.prototype.multicast', () => {
     const sourceSubs =     ['^           !',
                             '    ^           !',
                             '        ^           !'];
-    const multicasted = source.multicast(() => new ReplaySubject<string>(1),
-      x => x.concat(x.takeLast(1)));
+    const multicasted = source.pipe(
+      multicast(
+        () => new ReplaySubject<string>(1),
+        x => concat(x, x.pipe(takeLast(1)))
+      )
+    );
     const expected1   =     '-1-2-3----4-(4|)';
     const expected2   =     '    -1-2-3----4-(4|)';
     const expected3   =     '        -1-2-3----4-(4|)';
-    const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
-    const subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
-    const subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+    const subscriber1 = hot('a|           ').pipe(mergeMapTo(multicasted));
+    const subscriber2 = hot('    b|       ').pipe(mergeMapTo(multicasted));
+    const subscriber3 = hot('        c|   ').pipe(mergeMapTo(multicasted));
 
     expectObservable(subscriber1).toBe(expected1);
     expectObservable(subscriber2).toBe(expected2);
@@ -144,7 +156,7 @@ describe('Observable.prototype.multicast', () => {
   it('should do nothing if connect is not called, despite subscriptions', () => {
     const source = cold('--1-2---3-4--5-|');
     const sourceSubs: string[] = [];
-    const multicasted = source.multicast(() => new Subject<string>());
+    const multicasted = source.pipe(multicast(() => new Subject<string>()));
     const expected =    '-';
 
     expectObservable(multicasted).toBe(expected);
@@ -154,12 +166,12 @@ describe('Observable.prototype.multicast', () => {
   it('should multicast the same values to multiple observers', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^           !';
-    const multicasted = source.multicast(() => new Subject<string>());
-    const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
+    const multicasted = source.pipe(multicast(() => new Subject<string>())) as ConnectableObservable<string>;
+    const subscriber1 = hot('a|           ').pipe(mergeMapTo(multicasted));
     const expected1   =     '-1-2-3----4-|';
-    const subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
+    const subscriber2 = hot('    b|       ').pipe(mergeMapTo(multicasted));
     const expected2   =     '    -3----4-|';
-    const subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+    const subscriber3 = hot('        c|   ').pipe(mergeMapTo(multicasted));
     const expected3   =     '        --4-|';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -173,12 +185,12 @@ describe('Observable.prototype.multicast', () => {
   it('should multicast an error from the source to multiple observers', () => {
     const source =     cold('-1-2-3----4-#');
     const sourceSubs =      '^           !';
-    const multicasted = source.multicast(() => new Subject<string>());
-    const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
+    const multicasted = source.pipe(multicast(() => new Subject<string>())) as ConnectableObservable<string>;
+    const subscriber1 = hot('a|           ').pipe(mergeMapTo(multicasted));
     const expected1   =     '-1-2-3----4-#';
-    const subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
+    const subscriber2 = hot('    b|       ').pipe(mergeMapTo(multicasted));
     const expected2   =     '    -3----4-#';
-    const subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+    const subscriber3 = hot('        c|   ').pipe(mergeMapTo(multicasted));
     const expected3   =     '        --4-#';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -193,13 +205,13 @@ describe('Observable.prototype.multicast', () => {
   'but is unsubscribed explicitly and early', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^        !   ';
-    const multicasted = source.multicast(() => new Subject<string>());
+    const multicasted = source.pipe(multicast(() => new Subject<string>())) as ConnectableObservable<string>;
     const unsub =           '         u   ';
-    const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
+    const subscriber1 = hot('a|           ').pipe(mergeMapTo(multicasted));
     const expected1   =     '-1-2-3----   ';
-    const subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
+    const subscriber2 = hot('    b|       ').pipe(mergeMapTo(multicasted));
     const expected2   =     '    -3----   ';
-    const subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+    const subscriber3 = hot('        c|   ').pipe(mergeMapTo(multicasted));
     const expected3   =     '        --   ';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -208,10 +220,10 @@ describe('Observable.prototype.multicast', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
 
     // Set up unsubscription action
-    let connection: Rx.Subscription;
-    expectObservable(hot(unsub).do(() => {
+    let connection: Subscription;
+    expectObservable(hot(unsub).pipe(tap(() => {
       connection.unsubscribe();
-    })).toBe(unsub);
+    }))).toBe(unsub);
 
     connection = multicasted.connect();
   });
@@ -219,14 +231,15 @@ describe('Observable.prototype.multicast', () => {
   it('should not break unsubscription chains when result is unsubscribed explicitly', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^        !   ';
-    const multicasted = source
-      .mergeMap((x) => Observable.of(x))
-      .multicast(() => new Subject<string>());
-    const subscriber1 = hot('a|           ').mergeMapTo(multicasted);
+    const multicasted = source.pipe(
+      mergeMap((x) => of(x)),
+      multicast(() => new Subject<string>())
+    ) as ConnectableObservable<string>;
+    const subscriber1 = hot('a|           ').pipe(mergeMapTo(multicasted));
     const expected1   =     '-1-2-3----   ';
-    const subscriber2 = hot('    b|       ').mergeMapTo(multicasted);
+    const subscriber2 = hot('    b|       ').pipe(mergeMapTo(multicasted));
     const expected2   =     '    -3----   ';
-    const subscriber3 = hot('        c|   ').mergeMapTo(multicasted);
+    const subscriber3 = hot('        c|   ').pipe(mergeMapTo(multicasted));
     const expected3   =     '        --   ';
     const unsub =           '         u   ';
 
@@ -236,10 +249,10 @@ describe('Observable.prototype.multicast', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
 
     // Set up unsubscription action
-    let connection: Rx.Subscription;
-    expectObservable(hot(unsub).do(() => {
+    let connection: Subscription;
+    expectObservable(hot(unsub).pipe(tap(() => {
       connection.unsubscribe();
-    })).toBe(unsub);
+    }))).toBe(unsub);
 
     connection = multicasted.connect();
   });
@@ -247,7 +260,7 @@ describe('Observable.prototype.multicast', () => {
   it('should multicast an empty source', () => {
     const source = cold('|');
     const sourceSubs =  '(^!)';
-    const multicasted = source.multicast(() => new Subject<string>());
+    const multicasted = source.pipe(multicast(() => new Subject<string>())) as ConnectableObservable<string>;
     const expected =    '|';
 
     expectObservable(multicasted).toBe(expected);
@@ -259,7 +272,7 @@ describe('Observable.prototype.multicast', () => {
   it('should multicast a never source', () => {
     const source = cold('-');
     const sourceSubs =  '^';
-    const multicasted = source.multicast(() => new Subject<string>());
+    const multicasted = source.pipe(multicast(() => new Subject<string>())) as ConnectableObservable<string>;
     const expected =    '-';
 
     expectObservable(multicasted).toBe(expected);
@@ -271,7 +284,7 @@ describe('Observable.prototype.multicast', () => {
   it('should multicast a throw source', () => {
     const source = cold('#');
     const sourceSubs =  '(^!)';
-    const multicasted = source.multicast(() => new Subject<string>());
+    const multicasted = source.pipe(multicast(() => new Subject<string>())) as ConnectableObservable<string>;
     const expected =    '#';
 
     expectObservable(multicasted).toBe(expected);
@@ -284,12 +297,15 @@ describe('Observable.prototype.multicast', () => {
     it('should connect when first subscriber subscribes', () => {
       const source = cold(       '-1-2-3----4-|');
       const sourceSubs =      '   ^           !';
-      const multicasted = source.multicast(() => new Subject<string>()).refCount();
-      const subscriber1 = hot('   a|           ').mergeMapTo(multicasted);
+      const multicasted = source.pipe(
+        multicast(() => new Subject<string>()),
+        refCount()
+      );
+      const subscriber1 = hot('   a|           ').pipe(mergeMapTo(multicasted));
       const expected1 =       '   -1-2-3----4-|';
-      const subscriber2 = hot('       b|       ').mergeMapTo(multicasted);
+      const subscriber2 = hot('       b|       ').pipe(mergeMapTo(multicasted));
       const expected2 =       '       -3----4-|';
-      const subscriber3 = hot('           c|   ').mergeMapTo(multicasted);
+      const subscriber3 = hot('           c|   ').pipe(mergeMapTo(multicasted));
       const expected3 =       '           --4-|';
 
       expectObservable(subscriber1).toBe(expected1);
@@ -301,11 +317,14 @@ describe('Observable.prototype.multicast', () => {
     it('should disconnect when last subscriber unsubscribes', () => {
       const source =     cold(   '-1-2-3----4-|');
       const sourceSubs =      '   ^        !   ';
-      const multicasted = source.multicast(() => new Subject<string>()).refCount();
-      const subscriber1 = hot('   a|           ').mergeMapTo(multicasted);
+      const multicasted = source.pipe(
+        multicast(() => new Subject<string>()),
+        refCount()
+      );
+      const subscriber1 = hot('   a|           ').pipe(mergeMapTo(multicasted));
       const unsub1 =          '          !     ';
       const expected1   =     '   -1-2-3--     ';
-      const subscriber2 = hot('       b|       ').mergeMapTo(multicasted);
+      const subscriber2 = hot('       b|       ').pipe(mergeMapTo(multicasted));
       const unsub2 =          '            !   ';
       const expected2   =     '       -3----   ';
 
@@ -317,7 +336,10 @@ describe('Observable.prototype.multicast', () => {
     it('should be retryable when cold source is synchronous', () => {
       function subjectFactory() { return new Subject<string>(); }
       const source = cold('(123#)');
-      const multicasted = source.multicast(subjectFactory).refCount();
+      const multicasted = source.pipe(
+        multicast(subjectFactory),
+        refCount()
+      );
       const subscribe1 =  's               ';
       const expected1 =   '(123123123123#) ';
       const subscribe2 =  ' s              ';
@@ -331,21 +353,24 @@ describe('Observable.prototype.multicast', () => {
                           ' (^!)',
                           ' (^!)'];
 
-      expectObservable(hot(subscribe1).do(() => {
-        expectObservable(multicasted.retry(3)).toBe(expected1);
-      })).toBe(subscribe1);
+      expectObservable(hot(subscribe1).pipe(tap(() => {
+        expectObservable(multicasted.pipe(retry(3))).toBe(expected1);
+      }))).toBe(subscribe1);
 
-      expectObservable(hot(subscribe2).do(() => {
-        expectObservable(multicasted.retry(3)).toBe(expected2);
-      })).toBe(subscribe2);
+      expectObservable(hot(subscribe2).pipe(tap(() => {
+        expectObservable(multicasted.pipe(retry(3))).toBe(expected2);
+      }))).toBe(subscribe2);
 
       expectSubscriptions(source.subscriptions).toBe(sourceSubs);
     });
 
     it('should be retryable with ReplaySubject and cold source is synchronous', () => {
-      function subjectFactory() { return new Rx.ReplaySubject(1); }
+      function subjectFactory() { return new ReplaySubject(1); }
       const source = cold('(123#)');
-      const multicasted = source.multicast(subjectFactory).refCount();
+      const multicasted = source.pipe(
+        multicast(subjectFactory),
+        refCount()
+      );
       const subscribe1 =  's               ';
       const expected1 =   '(123123123123#) ';
       const subscribe2 =  ' s              ';
@@ -359,13 +384,17 @@ describe('Observable.prototype.multicast', () => {
                           ' (^!)',
                           ' (^!)'];
 
-      expectObservable(hot(subscribe1).do(() => {
-        expectObservable(multicasted.retry(3)).toBe(expected1);
-      })).toBe(subscribe1);
+      expectObservable(
+        hot(subscribe1).pipe(tap(() => {
+          expectObservable(multicasted.pipe(retry(3))).toBe(expected1);
+        }))
+      ).toBe(subscribe1);
 
-      expectObservable(hot(subscribe2).do(() => {
-        expectObservable(multicasted.retry(3)).toBe(expected2);
-      })).toBe(subscribe2);
+      expectObservable(
+        hot(subscribe2).pipe(tap(() => {
+          expectObservable(multicasted.pipe(retry(3))).toBe(expected2);
+        }))
+      ).toBe(subscribe2);
 
       expectSubscriptions(source.subscriptions).toBe(sourceSubs);
     });
@@ -373,7 +402,10 @@ describe('Observable.prototype.multicast', () => {
     it('should be repeatable when cold source is synchronous', () => {
       function subjectFactory() { return new Subject<string>(); }
       const source = cold('(123|)');
-      const multicasted = source.multicast(subjectFactory).refCount();
+      const multicasted = source.pipe(
+        multicast(subjectFactory),
+        refCount()
+      );
       const subscribe1 =  's                  ';
       const expected1 =   '(123123123123123|) ';
       const subscribe2 =  ' s                 ';
@@ -389,21 +421,28 @@ describe('Observable.prototype.multicast', () => {
                         ' (^!)',
                         ' (^!)'];
 
-      expectObservable(hot(subscribe1).do(() => {
-        expectObservable(multicasted.repeat(5)).toBe(expected1);
-      })).toBe(subscribe1);
+      expectObservable(
+        hot(subscribe1).pipe(tap(() => {
+          expectObservable(multicasted.pipe(repeat(5))).toBe(expected1);
+        }))
+      ).toBe(subscribe1);
 
-      expectObservable(hot(subscribe2).do(() => {
-        expectObservable(multicasted.repeat(5)).toBe(expected2);
-      })).toBe(subscribe2);
+      expectObservable(
+        hot(subscribe2).pipe(tap(() => {
+          expectObservable(multicasted.pipe(repeat(5))).toBe(expected2);
+        }))
+      ).toBe(subscribe2);
 
       expectSubscriptions(source.subscriptions).toBe(sourceSubs);
     });
 
     it('should be repeatable with ReplaySubject and cold source is synchronous', () => {
-      function subjectFactory() { return new Rx.ReplaySubject(1); }
+      function subjectFactory() { return new ReplaySubject(1); }
       const source = cold('(123|)');
-      const multicasted = source.multicast(subjectFactory).refCount();
+      const multicasted = source.pipe(
+        multicast(subjectFactory),
+        refCount()
+      );
       const subscribe1 =  's                  ';
       const expected1 =   '(123123123123123|) ';
       const subscribe2 =  ' s                 ';
@@ -419,13 +458,15 @@ describe('Observable.prototype.multicast', () => {
                         ' (^!)',
                         ' (^!)'];
 
-      expectObservable(hot(subscribe1).do(() => {
-        expectObservable(multicasted.repeat(5)).toBe(expected1);
-      })).toBe(subscribe1);
+      expectObservable(
+        hot(subscribe1).pipe(tap(() => {
+          expectObservable(multicasted.pipe(repeat(5))).toBe(expected1);
+        }))
+      ).toBe(subscribe1);
 
-      expectObservable(hot(subscribe2).do(() => {
-        expectObservable(multicasted.repeat(5)).toBe(expected2);
-      })).toBe(subscribe2);
+      expectObservable(hot(subscribe2).pipe(tap(() => {
+        expectObservable(multicasted.pipe(repeat(5))).toBe(expected2);
+      }))).toBe(subscribe2);
 
       expectSubscriptions(source.subscriptions).toBe(sourceSubs);
     });
@@ -436,38 +477,48 @@ describe('Observable.prototype.multicast', () => {
       const sourceSubs =     ['^           !                        ',
                             '            ^           !            ',
                             '                        ^           !'];
-      const multicasted = source.multicast(subjectFactory).refCount();
+      const multicasted = source.pipe(
+        multicast(subjectFactory),
+        refCount()
+      );
       const subscribe1 =      's                                    ';
       const expected1 =       '-1-2-3----4--1-2-3----4--1-2-3----4-#';
       const subscribe2 =      '    s                                ';
       const expected2 =       '    -3----4--1-2-3----4--1-2-3----4-#';
 
-      expectObservable(hot(subscribe1).do(() => {
-        expectObservable(multicasted.retry(2)).toBe(expected1);
-      })).toBe(subscribe1);
+      expectObservable(
+        hot(subscribe1).pipe(tap(() => {
+          expectObservable(multicasted.pipe(retry(2))).toBe(expected1);
+        }))
+      ).toBe(subscribe1);
 
-      expectObservable(hot(subscribe2).do(() => {
-        expectObservable(multicasted.retry(2)).toBe(expected2);
-      })).toBe(subscribe2);
+      expectObservable(
+        hot(subscribe2).pipe(tap(() => {
+          expectObservable(multicasted.pipe(retry(2))).toBe(expected2);
+        }))
+      ).toBe(subscribe2);
 
       expectSubscriptions(source.subscriptions).toBe(sourceSubs);
     });
 
     it('should be retryable using a ReplaySubject', () => {
-      function subjectFactory() { return new Rx.ReplaySubject(1); }
+      function subjectFactory() { return new ReplaySubject(1); }
       const source =     cold('-1-2-3----4-#                        ');
       const sourceSubs =     ['^           !                        ',
                               '            ^           !            ',
                               '                        ^           !'];
-      const multicasted = source.multicast(subjectFactory).refCount();
+      const multicasted = source.pipe(
+        multicast(subjectFactory),
+        refCount()
+      );
       const expected1 =       '-1-2-3----4--1-2-3----4--1-2-3----4-#';
       const subscribe2 = time('----|                                ');
       const expected2 =       '    23----4--1-2-3----4--1-2-3----4-#';
 
-      expectObservable(multicasted.retry(2)).toBe(expected1);
+      expectObservable(multicasted.pipe(retry(2))).toBe(expected1);
 
       rxTestScheduler.schedule(() =>
-        expectObservable(multicasted.retry(2)).toBe(expected2), subscribe2);
+        expectObservable(multicasted.pipe(retry(2))).toBe(expected2), subscribe2);
 
       expectSubscriptions(source.subscriptions).toBe(sourceSubs);
     });
@@ -478,50 +529,64 @@ describe('Observable.prototype.multicast', () => {
       const sourceSubs =     ['^           !                        ',
                               '            ^           !            ',
                               '                        ^           !'];
-      const multicasted = source.multicast(subjectFactory).refCount();
+      const multicasted = source.pipe(
+        multicast(subjectFactory),
+        refCount()
+      );
       const subscribe1 =      's                                    ';
       const expected1 =       '-1-2-3----4--1-2-3----4--1-2-3----4-|';
       const subscribe2 =      '    s                                ';
       const expected2 =       '    -3----4--1-2-3----4--1-2-3----4-|';
 
-      expectObservable(hot(subscribe1).do(() => {
-        expectObservable(multicasted.repeat(3)).toBe(expected1);
-      })).toBe(subscribe1);
+      expectObservable(
+        hot(subscribe1).pipe(tap(() => {
+          expectObservable(multicasted.pipe(repeat(3))).toBe(expected1);
+        }))
+      ).toBe(subscribe1);
 
-      expectObservable(hot(subscribe2).do(() => {
-        expectObservable(multicasted.repeat(3)).toBe(expected2);
-      })).toBe(subscribe2);
+      expectObservable(
+        hot(subscribe2).pipe(tap(() => {
+          expectObservable(multicasted.pipe(repeat(3))).toBe(expected2);
+        }))
+      ).toBe(subscribe2);
 
       expectSubscriptions(source.subscriptions).toBe(sourceSubs);
     });
 
     it('should be repeatable using a ReplaySubject', () => {
-      function subjectFactory() { return new Rx.ReplaySubject(1); }
+      function subjectFactory() { return new ReplaySubject(1); }
       const source =     cold('-1-2-3----4-|                        ');
       const sourceSubs =     ['^           !                        ',
                               '            ^           !            ',
                               '                        ^           !'];
-      const multicasted = source.multicast(subjectFactory).refCount();
+      const multicasted = source.pipe(
+        multicast(subjectFactory),
+        refCount()
+      );
       const subscribe1 =      's                                    ';
       const expected1 =       '-1-2-3----4--1-2-3----4--1-2-3----4-|';
       const subscribe2 =      '    s                                ';
       const expected2 =       '    23----4--1-2-3----4--1-2-3----4-|';
 
-      expectObservable(hot(subscribe1).do(() => {
-        expectObservable(multicasted.repeat(3)).toBe(expected1);
-      })).toBe(subscribe1);
+      expectObservable(
+        hot(subscribe1).pipe(tap(() => {
+          expectObservable(multicasted.pipe(repeat(3))).toBe(expected1);
+        }))
+      ).toBe(subscribe1);
 
-      expectObservable(hot(subscribe2).do(() => {
-        expectObservable(multicasted.repeat(3)).toBe(expected2);
-      })).toBe(subscribe2);
+      expectObservable(
+        hot(subscribe2).pipe(tap(() => {
+          expectObservable(multicasted.pipe(repeat(3))).toBe(expected2);
+        }))
+      ).toBe(subscribe2);
 
       expectSubscriptions(source.subscriptions).toBe(sourceSubs);
     });
   });
 
   it('should multicast one observable to multiple observers', (done) => {
-    const results1: string[] = [];
-    const results2: string[] = [];
+    const results1: number[] = [];
+    const results2: number[] = [];
     let subscriptions = 0;
 
     const source = new Observable<number>((observer) => {
@@ -533,9 +598,9 @@ describe('Observable.prototype.multicast', () => {
       observer.complete();
     });
 
-    const connectable = source.multicast(() => {
-      return new Subject<string>();
-    });
+    const connectable = source.pipe(multicast(() => {
+      return new Subject<number>();
+    })) as ConnectableObservable<number>;
 
     connectable.subscribe((x) => {
       results1.push(x);
@@ -561,7 +626,7 @@ describe('Observable.prototype.multicast', () => {
     const expected = [1, 2, 3, 4];
     let i = 0;
 
-    const source = Observable.from([1, 2, 3, 4]).multicast(subject);
+    const source = from([1, 2, 3, 4]).pipe(multicast(subject)) as ConnectableObservable<number>;
 
     source.subscribe((x) => {
       expect(x).to.equal(expected[i++]);
@@ -576,7 +641,7 @@ describe('Observable.prototype.multicast', () => {
       const expected = [1, 2, 3, 4];
       let i = 0;
 
-      const source = Observable.of(1, 2, 3, 4).multicast(() => new Subject<number>());
+      const source = of(1, 2, 3, 4).pipe(multicast(() => new Subject<number>())) as ConnectableObservable<number>;
 
       source.subscribe((x) => {
         expect(x).to.equal(expected[i++]);
@@ -596,15 +661,16 @@ describe('Observable.prototype.multicast', () => {
 
     it('should not throw ObjectUnsubscribedError when used in ' +
     'a switchMap', (done) => {
-      const source = Observable.of(1, 2, 3)
-        .multicast(() => new Subject<number>())
-        .refCount();
+      const source = of(1, 2, 3).pipe(
+        multicast(() => new Subject<number>()),
+        refCount()
+      );
 
       const expected = ['a1', 'a2', 'a3', 'b1', 'b2', 'b3', 'c1', 'c2', 'c3'];
 
-      Observable.of('a', 'b', 'c')
-        .switchMap((letter) => source.map((n) => String(letter + n)))
-        .subscribe((x) => {
+      of('a', 'b', 'c').pipe(
+        switchMap((letter) => source.pipe(map((n) => String(letter + n))))
+      ).subscribe((x) => {
           expect(x).to.equal(expected.shift());
         }, (x) => {
           done(new Error('should not be called'));
@@ -618,15 +684,16 @@ describe('Observable.prototype.multicast', () => {
   describe('when given a subject', () => {
     it('should not throw ObjectUnsubscribedError when used in ' +
     'a switchMap', (done) => {
-      const source = Observable.of(1, 2, 3)
-        .multicast(new Subject<number>())
-        .refCount();
+      const source = of(1, 2, 3).pipe(
+        multicast(new Subject<number>()),
+        refCount()
+      );
 
       const expected = ['a1', 'a2', 'a3'];
 
-      Observable.of('a', 'b', 'c')
-        .switchMap((letter) => source.map((n) => String(letter + n)))
-        .subscribe((x) => {
+      of('a', 'b', 'c').pipe(
+        switchMap((letter) => source.pipe(map((n) => String(letter + n))))
+      ).subscribe((x) => {
           expect(x).to.equal(expected.shift());
         }, (x) => {
           done(new Error('should not be called'));
@@ -640,44 +707,44 @@ describe('Observable.prototype.multicast', () => {
   describe('typings', () => {
     type('should infer the type', () => {
       /* tslint:disable:no-unused-variable */
-      const source = Rx.Observable.of<number>(1, 2, 3);
-      const result: Rx.ConnectableObservable<number> = source.multicast(() => new Subject<number>());
+      const source = of<number>(1, 2, 3);
+      const result: ConnectableObservable<number> = source.pipe(multicast(() => new Subject<number>())) as ConnectableObservable<number>;
       /* tslint:enable:no-unused-variable */
     });
 
     type('should infer the type with a selector', () => {
       /* tslint:disable:no-unused-variable */
-      const source = Rx.Observable.of<number>(1, 2, 3);
-      const result: Rx.Observable<number> = source.multicast(() => new Subject<number>(), s => s.map(x => x));
+      const source = of<number>(1, 2, 3);
+      const result: Observable<number> = source.pipe(multicast(() => new Subject<number>(), s => s.pipe(map(x => x))));
       /* tslint:enable:no-unused-variable */
     });
 
     type('should infer the type with a type-changing selector', () => {
       /* tslint:disable:no-unused-variable */
-      const source = Rx.Observable.of<number>(1, 2, 3);
-      const result: Rx.Observable<string> = source.multicast(() => new Subject<number>(), s => s.map(x => x + '!'));
+      const source = of<number>(1, 2, 3);
+      const result: Observable<string> = source.pipe(multicast(() => new Subject<number>(), s => s.pipe(map(x => x + '!'))));
       /* tslint:enable:no-unused-variable */
     });
 
     type('should infer the type for the pipeable operator', () => {
       /* tslint:disable:no-unused-variable */
-      const source = Rx.Observable.of<number>(1, 2, 3);
+      const source = of<number>(1, 2, 3);
       // TODO: https://github.com/ReactiveX/rxjs/issues/2972
-      const result: Rx.ConnectableObservable<number> = Rx.operators.multicast(() => new Subject<number>())(source);
+      const result: ConnectableObservable<number> = multicast(() => new Subject<number>())(source);
       /* tslint:enable:no-unused-variable */
     });
 
     type('should infer the type for the pipeable operator with a selector', () => {
       /* tslint:disable:no-unused-variable */
-      const source = Rx.Observable.of<number>(1, 2, 3);
-      const result: Rx.Observable<number> = source.pipe(Rx.operators.multicast(() => new Subject<number>(), s => s.map(x => x)));
+      const source = of<number>(1, 2, 3);
+      const result: Observable<number> = source.pipe(multicast(() => new Subject<number>(), s => s.pipe(map(x => x))));
       /* tslint:enable:no-unused-variable */
     });
 
     type('should infer the type for the pipeable operator with a type-changing selector', () => {
       /* tslint:disable:no-unused-variable */
-      const source = Rx.Observable.of<number>(1, 2, 3);
-      const result: Rx.Observable<string> = source.pipe(Rx.operators.multicast(() => new Subject<number>(), s => s.map(x => x + '!')));
+      const source = of<number>(1, 2, 3);
+      const result: Observable<string> = source.pipe(multicast(() => new Subject<number>(), s => s.pipe(map(x => x + '!'))));
       /* tslint:enable:no-unused-variable */
     });
   });
