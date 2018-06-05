@@ -43,6 +43,8 @@ function zipSource<T>(sources: ObservableInput<T>[]): Source<T> {
                 subs.unsubscribe();
               }
               break;
+            default:
+              break;
           }
         }, subs);
       }
