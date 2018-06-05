@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from 'rxjs/Rx';
+import { queueScheduler, Subscription } from 'rxjs';
 
-const Scheduler = Rx.Scheduler;
-const queue = Scheduler.queue;
+const queue = queueScheduler;
 
 /** @test {Scheduler} */
 describe('Scheduler.queue', () => {
@@ -51,7 +50,7 @@ describe('Scheduler.queue', () => {
   });
 
   it('should unsubscribe the rest of the scheduled actions if an action throws an error', () => {
-    const actions = [];
+    const actions: Subscription[] = [];
     let action2Exec = false;
     let action3Exec = false;
     let errorValue = undefined;
