@@ -24,12 +24,10 @@ import { empty } from './empty';
  * ## Example
  * ### Subscribe to either an Observable of clicks or an Observable of interval, at random
  * ```javascript
- * var clicksOrInterval = Rx.Observable.defer(function () {
- *   if (Math.random() > 0.5) {
- *     return Rx.Observable.fromEvent(document, 'click');
- *   } else {
- *     return Rx.Observable.interval(1000);
- *   }
+ * const clicksOrInterval = defer(function () {
+ *   return Math.random() > 0.5
+ *     ? fromEvent(document, 'click')
+ *     : interval(1000);
  * });
  * clicksOrInterval.subscribe(x => console.log(x));
  *

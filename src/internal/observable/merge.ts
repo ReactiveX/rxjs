@@ -38,9 +38,9 @@ export function merge<T, R>(...observables: (ObservableInput<any> | SchedulerLik
  * ## Examples
  * ### Merge together two Observables: 1s interval and clicks
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var timer = Rx.Observable.interval(1000);
- * var clicksOrTimer = Rx.Observable.merge(clicks, timer);
+ * const clicks = fromEvent(document, 'click');
+ * const timer = interval(1000);
+ * const clicksOrTimer = merge(clicks, timer);
  * clicksOrTimer.subscribe(x => console.log(x));
  *
  * // Results in the following:
@@ -52,11 +52,11 @@ export function merge<T, R>(...observables: (ObservableInput<any> | SchedulerLik
  *
  * ### Merge together 3 Observables, but only 2 run concurrently
  * ```javascript
- * var timer1 = Rx.Observable.interval(1000).take(10);
- * var timer2 = Rx.Observable.interval(2000).take(6);
- * var timer3 = Rx.Observable.interval(500).take(10);
- * var concurrent = 2; // the argument
- * var merged = Rx.Observable.merge(timer1, timer2, timer3, concurrent);
+ * const timer1 = interval(1000).pipe(take(10));
+ * const timer2 = interval(2000).pipe(take(6));
+ * const timer3 = interval(500).pipe(take(10));
+ * const concurrent = 2; // the argument
+ * const merged = merge(timer1, timer2, timer3, concurrent);
  * merged.subscribe(x => console.log(x));
  *
  * // Results in the following:

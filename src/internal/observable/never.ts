@@ -18,7 +18,7 @@ import { noop } from '../util/noop';
  * function info() {
  *   console.log('Will not be called');
  * }
- * var result = NEVER.startWith(7);
+ * const result = NEVER.pipe(startWith(7));
  * result.subscribe(x => console.log(x), info, info);
  *
  * ```

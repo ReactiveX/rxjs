@@ -51,16 +51,14 @@ export function zip<R>(...observables: Array<ObservableInput<any> | ((...values:
  * ## Example
  * Combine age and name from different sources
  * ```javascript
- * let age$ = Observable.of<number>(27, 25, 29);
- * let name$ = Observable.of<string>('Foo', 'Bar', 'Beer');
- * let isDev$ = Observable.of<boolean>(true, true, false);
+ * let age$ = of<number>(27, 25, 29);
+ * let name$ = of<string>('Foo', 'Bar', 'Beer');
+ * let isDev$ = of<boolean>(true, true, false);
  *
- * Observable
- *     .zip(age$,
- *          name$,
- *          isDev$,
- *          (age: number, name: string, isDev: boolean) => ({ age, name, isDev }))
- *     .subscribe(x => console.log(x));
+ * zip(age$, name$, isDev$).pipe(
+ *   map((age: number, name: string, isDev: boolean) => ({ age, name, isDev })),
+ * )
+ * .subscribe(x => console.log(x));
  *
  * // outputs
  * // { age: 27, name: 'Foo', isDev: true }

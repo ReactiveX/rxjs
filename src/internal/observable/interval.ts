@@ -23,7 +23,7 @@ import { Subscriber } from '../Subscriber';
  * ## Example
  * Emits ascending numbers, one every second (1000ms)
  * ```javascript
- * var numbers = Rx.Observable.interval(1000);
+ * const numbers = interval(1000);
  * numbers.subscribe(x => console.log(x));
  * ```javascript
  * @see {@link timer}

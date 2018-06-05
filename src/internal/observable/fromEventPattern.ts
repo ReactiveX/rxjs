@@ -35,9 +35,9 @@ export function fromEventPattern<T>(addHandler: (handler: Function) => any, remo
  *   document.removeEventListener('click', handler);
  * }
  *
- * var clicks = fromEventPattern(
+ * const clicks = fromEventPattern(
  *   addClickHandler,
- *   removeClickHandler
+ *   removeClickHandler,
  * );
  * clicks.subscribe(x => console.log(x));
  * ```

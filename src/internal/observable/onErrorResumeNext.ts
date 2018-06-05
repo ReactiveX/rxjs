@@ -39,7 +39,7 @@ export function onErrorResumeNext<R>(array: ObservableInput<any>[]): Observable<
  * ## Example
  * Subscribe to the next Observable after map fails</caption>
  * ```javascript
- * import { onErrorResumeNext, of } from 'rxjs/create';
+ * import { onErrorResumeNext, of } from 'rxjs';
  * import { map } from 'rxjs/operators';
  *
  * onErrorResumeNext(
@@ -54,7 +54,7 @@ export function onErrorResumeNext<R>(array: ObservableInput<any>[]): Observable<
  * .subscribe(
  *   val => console.log(val),
  *   err => console.log(err),          // Will never be called.
- *   () => console.log('done')
+ *   () => console.log('done'),
  * );
  *
  * // Logs:

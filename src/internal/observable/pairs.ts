@@ -10,24 +10,19 @@ import { Subscription } from '../Subscription';
  * ## Example
  * Converts a javascript object to an Observable
  * ```javascript
- * var obj = {
+ * const obj = {
  *   foo: 42,
  *   bar: 56,
- *   baz: 78
+ *   baz: 78,
  * };
  *
- * var source = Rx.Observable.pairs(obj);
+ * const source = pairs(obj);
  *
- * var subscription = source.subscribe(
- *   function (x) {
- *     console.log('Next: %s', x);
- *   },
- *   function (err) {
- *     console.log('Error: %s', err);
- *   },
- *   function () {
- *     console.log('Completed');
- *   });
+ * const subscription = source.subscribe(
+ *   x => console.log('Next: %s', x),
+ *   err => console.log('Error: %s', err),
+ *   () => console.log('Completed'),
+ * );
  * ```
  *
  * @param {Object} obj The object to inspect and turn into an

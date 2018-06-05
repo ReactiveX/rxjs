@@ -110,9 +110,12 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * ### Combine an array of Observables
  * ```javascript
  * const observables = [1, 5, 10].map(
- *   n => Rx.Observable.of(n).delay(n * 1000).startWith(0) // emit 0 and then emit n after n seconds
+ *   n => of(n).pipe(
+ *     delay(n * 1000),   // emit 0 and then emit n after n seconds
+ *     startWith(0),
+ *   )
  * );
- * const combined = Rx.Observable.combineLatest(observables);
+ * const combined = combineLatest(observables);
  * combined.subscribe(value => console.log(value));
  * // Logs
  * // [0, 0, 0] immediately
@@ -121,11 +124,14 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * // [1, 5, 10] after 10s
  * ```
  *
+ *
  * ### Use project function to dynamically calculate the Body-Mass Index
  * ```javascript
- * var weight = Rx.Observable.of(70, 72, 76, 79, 75);
- * var height = Rx.Observable.of(1.76, 1.77, 1.78);
- * var bmi = Rx.Observable.combineLatest(weight, height, (w, h) => w / (h * h));
+ * * const weight = of(70, 72, 76, 79, 75);
+ * const height = of(1.76, 1.77, 1.78);
+ * const bmi = combineLatest(weight, height).pipe(
+ *   map(([w, h]) => w / (h * h)),
+ * );
  * bmi.subscribe(x => console.log('BMI is ' + x));
  *
  * // With output to console:
