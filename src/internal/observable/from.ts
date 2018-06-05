@@ -17,7 +17,7 @@ export function from<T>(input: ObservableInput<T>, scheduler?: SchedulerLike): O
     if (input instanceof Observable) {
       return input;
     }
-    return new Observable(subscribeTo(input));
+    return new Observable<T>(subscribeTo(input));
   }
 
   if (input != null) {
