@@ -11,6 +11,7 @@ export { from } from './internal/create/from';
 export { merge } from './internal/create/merge';
 export { next } from './internal/create/next';
 export { of } from './internal/create/of';
+export { partition } from './internal/create/partition';
 export { race } from './internal/create/race';
 export { zip } from './internal/create/zip';
 

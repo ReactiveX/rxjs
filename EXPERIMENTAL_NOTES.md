@@ -19,3 +19,4 @@ timestamp.
 - `concatWith` is basically the old `concat` *operator*, just with a better name.
 - `endWith` has no scheduler argument
 - `startWith` has no scheduler argument
+- `partition` is now a static method
