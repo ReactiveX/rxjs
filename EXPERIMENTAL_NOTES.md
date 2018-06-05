@@ -22,3 +22,6 @@ timestamp.
 - `partition` is now a static method
 - `Observable` returns an object that passes `instanceof` checks
 - `observable` is a shorthand function for creating an observable that does not require the `new` keyword, and will not pass `instanceof` checks.
+- `Subject()` works just like `new Subject()`
+- `Subject` does not pass `instanceof` checks
+- `Subject(observer, observable)` replaces `Subject.create`

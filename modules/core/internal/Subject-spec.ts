@@ -1,4 +1,4 @@
-import { Subject } from './Subject';
+import { Subject, of } from 'rxjs';
 import { expect } from 'chai';
 
 describe('Subject', () => {
@@ -45,5 +45,37 @@ describe('Subject', () => {
 
     expect(error).to.be.an.instanceof(Error);
     expect(error.message).to.equal('bad');
+  });
+
+  describe('called with observer and observable', () => {
+    it('should glue them together into a FrankenSubject', () => {
+      const results: any[] = [];
+      const observer = {
+        next(value: any) { this.observed.push('next', value); },
+        error(err: any) { this.observed.push('error', err); },
+        complete() { this.observed.push('done'); },
+        observed: [] as any[],
+      };
+
+      const observable = of(1, 2, 3);
+
+      const frankenSubject = Subject(observer, observable);
+
+      frankenSubject.subscribe({
+        next(value) { results.push(value); },
+        complete() { results.push('done'); },
+      });
+
+      frankenSubject.next(4);
+      frankenSubject.next(5);
+      frankenSubject.next(6);
+
+      expect(observer.observed).to.deep.equal(['next', 4, 'next', 5, 'next', 6]);
+
+      frankenSubject.complete();
+      expect(observer.observed).to.deep.equal(['next', 4, 'next', 5, 'next', 6, 'done']);
+
+      expect(results).to.deep.equal([1, 2, 3, 'done']);
+    });
   });
 });

@@ -126,7 +126,7 @@ function observablePipe<T>(this: Observable<T>, ...operations: Array<Operation<T
   return pipe(...operations)(this);
 }
 
-function sinkFromObserver<T>(
+export function sinkFromObserver<T>(
   observer: PartialObserver<T>
 ): Sink<T> {
   return (type: FOType, arg: SinkArg<T>, subs: Subscription) => {
