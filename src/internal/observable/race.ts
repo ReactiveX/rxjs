@@ -28,11 +28,12 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * ```
  *
  * ### Click to start a race between two observables, each emitting just once, at a random speed.
- * The first to emit wins the race.
+ * The first to emit gets subscribed to and emits its value.
  *
  * ```javascript
+ * const clicks = fromEvent(document, 'click');
  * clicks.pipe(
- *   switchMap(() => race(
+ *   exhaustMap(() => race(
  *     timer(Math.random() * 1000).pipe(mapTo('fox')),
  *     timer(Math.random() * 1000).pipe(mapTo('rabbit')),
  *   )),
