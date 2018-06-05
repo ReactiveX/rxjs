@@ -59,6 +59,21 @@ describe('from', () => {
     })
   });
 
+  const fakeArrayObservable = <T>(...values: T[]) => {
+    let arr = ['bad array!'];
+    arr[Symbol.observable] = () =>  {
+      return {
+        subscribe: (observer: Observer<T>) => {
+          for (const value of values) {
+            observer.next(value);
+          }
+          observer.complete();
+        }
+      };
+    };
+    return arr;
+  };
+
   const fakerator = <T>(...values: T[]) => ({
     [Symbol.iterator as symbol]: () => {
       const clone = [...values];
@@ -75,6 +90,7 @@ describe('from', () => {
   const sources: Array<{ name: string, value: any }> = [
     { name: 'observable', value: of('x') },
     { name: 'observable-like', value: fakervable('x') },
+    { name: 'observable-like-array', value: fakeArrayObservable('x') },
     { name: 'array', value: ['x'] },
     { name: 'promise', value: Promise.resolve('x') },
     { name: 'iterator', value: fakerator('x') },
