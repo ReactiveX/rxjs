@@ -1,67 +1,66 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
+import { finalize, map, share } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { of, timer, interval } from 'rxjs';
 
 declare const type: Function;
 
-const Observable = Rx.Observable;
+declare const rxTestScheduler: TestScheduler;
 
-declare const rxTestScheduler: Rx.TestScheduler;
-
-/** @test {finally} */
-describe('Observable.prototype.finally', () => {
-  it('should call finally after complete', (done: MochaDone) => {
+/** @test {finalize} */
+describe('finalize operator', () => {
+  it('should call finalize after complete', (done: MochaDone) => {
     let completed = false;
-    Observable.of(1, 2, 3)
-      .finally(() => {
+    of(1, 2, 3).pipe(
+      finalize(() => {
         expect(completed).to.be.true;
         done();
       })
-      .subscribe(null, null, () => {
+    ).subscribe(null, null, () => {
         completed = true;
       });
   });
 
-  it('should call finally after error', (done: MochaDone) => {
+  it('should call finalize after error', (done: MochaDone) => {
     let thrown = false;
-    Observable.of(1, 2, 3)
-      .map(function (x) {
+    of(1, 2, 3).pipe(
+      map(function (x) {
         if (x === 3) {
           throw x;
         }
         return x;
-      })
-      .finally(() => {
+      }),
+      finalize(() => {
         expect(thrown).to.be.true;
         done();
       })
-      .subscribe(null, () => {
+    ).subscribe(null, () => {
         thrown = true;
       });
   });
 
-  it('should call finally upon disposal', (done: MochaDone) => {
+  it('should call finalize upon disposal', (done: MochaDone) => {
     let disposed = false;
-    const subscription = Observable
-      .timer(100)
-      .finally(() => {
+    const subscription = timer(100).pipe(
+      finalize(() => {
         expect(disposed).to.be.true;
         done();
-      }).subscribe();
+      })).subscribe();
     disposed = true;
     subscription.unsubscribe();
   });
 
-  it('should call finally when synchronously subscribing to and unsubscribing ' +
+  it('should call finalize when synchronously subscribing to and unsubscribing ' +
   'from a shared Observable', (done: MochaDone) => {
-    Observable.interval(50)
-      .finally(done)
-      .share()
-      .subscribe()
+    interval(50).pipe(
+      finalize(done),
+      share()
+    ).subscribe()
       .unsubscribe();
   });
 
-  it('should call two finally instances in succession on a shared Observable', (done: MochaDone) => {
+  it('should call two finalize instances in succession on a shared Observable', (done: MochaDone) => {
     let invoked = 0;
     function checkFinally() {
       invoked += 1;
@@ -70,20 +69,20 @@ describe('Observable.prototype.finally', () => {
       }
     }
 
-    Observable.of(1, 2, 3)
-      .finally(checkFinally)
-      .finally(checkFinally)
-      .share()
-      .subscribe();
+    of(1, 2, 3).pipe(
+      finalize(checkFinally),
+      finalize(checkFinally),
+      share()
+    ).subscribe();
   });
 
   it('should handle empty', () => {
     let executed = false;
     let s1 = hot('|');
-    let result = s1.finally(() => executed = true);
+    let result = s1.pipe(finalize(() => executed = true));
     let expected = '|';
     expectObservable(result).toBe(expected);
-    // manually flush so `finally()` has chance to execute before the test is over.
+    // manually flush so `finalize()` has chance to execute before the test is over.
     rxTestScheduler.flush();
     expect(executed).to.be.true;
   });
@@ -91,10 +90,10 @@ describe('Observable.prototype.finally', () => {
   it('should handle never', () => {
     let executed = false;
     let s1 = hot('-');
-    let result = s1.finally(() => executed = true);
+    let result = s1.pipe(finalize(() => executed = true));
     let expected = '-';
     expectObservable(result).toBe(expected);
-    // manually flush so `finally()` has chance to execute before the test is over.
+    // manually flush so `finalize()` has chance to execute before the test is over.
     rxTestScheduler.flush();
     expect(executed).to.be.false;
   });
@@ -102,10 +101,10 @@ describe('Observable.prototype.finally', () => {
   it('should handle throw', () => {
     let executed = false;
     let s1 = hot('#');
-    let result = s1.finally(() => executed = true);
+    let result = s1.pipe(finalize(() => executed = true));
     let expected = '#';
     expectObservable(result).toBe(expected);
-    // manually flush so `finally()` has chance to execute before the test is over.
+    // manually flush so `finalize()` has chance to execute before the test is over.
     rxTestScheduler.flush();
     expect(executed).to.be.true;
   });
@@ -115,10 +114,10 @@ describe('Observable.prototype.finally', () => {
     let s1 = hot(  '--a--b--c--|');
     let subs =     '^          !';
     let expected = '--a--b--c--|';
-    let result = s1.finally(() => executed = true);
+    let result = s1.pipe(finalize(() => executed = true));
     expectObservable(result).toBe(expected);
     expectSubscriptions(s1.subscriptions).toBe(subs);
-    // manually flush so `finally()` has chance to execute before the test is over.
+    // manually flush so `finalize()` has chance to execute before the test is over.
     rxTestScheduler.flush();
     expect(executed).to.be.true;
   });
@@ -128,10 +127,10 @@ describe('Observable.prototype.finally', () => {
     let s1 = cold(  '--a--b--c--|');
     let subs =      '^          !';
     let expected =  '--a--b--c--|';
-    let result = s1.finally(() => executed = true);
+    let result = s1.pipe(finalize(() => executed = true));
     expectObservable(result).toBe(expected);
     expectSubscriptions(s1.subscriptions).toBe(subs);
-    // manually flush so `finally()` has chance to execute before the test is over.
+    // manually flush so `finalize()` has chance to execute before the test is over.
     rxTestScheduler.flush();
     expect(executed).to.be.true;
   });
@@ -141,10 +140,10 @@ describe('Observable.prototype.finally', () => {
     let s1 = hot(  '--a--b--c--#');
     let subs =     '^          !';
     let expected = '--a--b--c--#';
-    let result = s1.finally(() => executed = true);
+    let result = s1.pipe(finalize(() => executed = true));
     expectObservable(result).toBe(expected);
     expectSubscriptions(s1.subscriptions).toBe(subs);
-    // manually flush so `finally()` has chance to execute before the test is over.
+    // manually flush so `finalize()` has chance to execute before the test is over.
     rxTestScheduler.flush();
     expect(executed).to.be.true;
   });
@@ -155,10 +154,10 @@ describe('Observable.prototype.finally', () => {
     let subs =     '^     !     ';
     let expected = '--a--b-';
     let unsub =    '      !';
-    let result = s1.finally(() => executed = true);
+    let result = s1.pipe(finalize(() => executed = true));
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(s1.subscriptions).toBe(subs);
-    // manually flush so `finally()` has chance to execute before the test is over.
+    // manually flush so `finalize()` has chance to execute before the test is over.
     rxTestScheduler.flush();
     expect(executed).to.be.true;
   });

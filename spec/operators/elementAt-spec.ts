@@ -1,19 +1,18 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
+import { elementAt, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { ArgumentOutOfRangeError, of, range } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 
-const Observable = Rx.Observable;
-
 /** @test {elementAt} */
-describe('Observable.prototype.elementAt', () => {
+describe('elementAt operator', () => {
   asDiagram('elementAt(2)')('should return last element by zero-based index', () => {
     const source = hot('--a--b--c-d---|');
     const subs =       '^       !      ';
     const expected =   '--------(c|)   ';
 
-    expectObservable((<any>source).elementAt(2)).toBe(expected);
+    expectObservable((<any>source).pipe(elementAt(2))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -22,7 +21,7 @@ describe('Observable.prototype.elementAt', () => {
     const subs =       '^ !';
     const expected =   '--(a|)';
 
-    expectObservable((<any>source).elementAt(0)).toBe(expected);
+    expectObservable((<any>source).pipe(elementAt(0))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -31,7 +30,7 @@ describe('Observable.prototype.elementAt', () => {
     const subs =       '^          !';
     const expected =   '-----------(d|)';
 
-    expectObservable((<any>source).elementAt(3)).toBe(expected);
+    expectObservable((<any>source).pipe(elementAt(3))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -40,7 +39,7 @@ describe('Observable.prototype.elementAt', () => {
     const subs =       '^       !';
     const expected =   '--------(c|)';
 
-    expectObservable((<any>source).elementAt(2)).toBe(expected);
+    expectObservable((<any>source).pipe(elementAt(2))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -49,7 +48,7 @@ describe('Observable.prototype.elementAt', () => {
     const subs =        '(^!)';
     const expected =    '#';
 
-    expectObservable((<any>source).elementAt(0)).toBe(expected, undefined, new Rx.ArgumentOutOfRangeError());
+    expectObservable((<any>source).pipe(elementAt(0))).toBe(expected, undefined, new ArgumentOutOfRangeError());
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -58,7 +57,7 @@ describe('Observable.prototype.elementAt', () => {
     const subs =        '(^!)';
     const expected =    '#';
 
-    expectObservable((<any>source).elementAt(0)).toBe(expected);
+    expectObservable((<any>source).pipe(elementAt(0))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -67,7 +66,7 @@ describe('Observable.prototype.elementAt', () => {
     const subs =        '^';
     const expected =    '-';
 
-    expectObservable((<any>source).elementAt(0)).toBe(expected);
+    expectObservable((<any>source).pipe(elementAt(0))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -77,7 +76,7 @@ describe('Observable.prototype.elementAt', () => {
     const expected =   '-------     ';
     const unsub =      '      !     ';
 
-    const result = (<any>source).elementAt(2);
+    const result = (<any>source).pipe(elementAt(2));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -89,18 +88,19 @@ describe('Observable.prototype.elementAt', () => {
     const expected =   '-------     ';
     const unsub =      '      !     ';
 
-    const result = (<any>source)
-      .mergeMap((x: any) => Observable.of(x))
-      .elementAt(2)
-      .mergeMap((x: any) => Observable.of(x));
+    const result = (<any>source).pipe(
+      mergeMap((x: any) => of(x)),
+      elementAt(2),
+      mergeMap((x: any) => of(x))
+    );
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should throw if index is smaller than zero', () => {
-    expect(() => { (<any>Observable.range(0, 10)).elementAt(-1); })
-      .to.throw(Rx.ArgumentOutOfRangeError);
+    expect(() => { (<any>range(0, 10)).elementAt(-1); })
+      .to.throw(ArgumentOutOfRangeError);
   });
 
   it('should raise error if index is out of range but does not have default value', () => {
@@ -108,8 +108,8 @@ describe('Observable.prototype.elementAt', () => {
     const subs =       '^    !';
     const expected =   '-----#';
 
-    expectObservable((<any>source).elementAt(3))
-      .toBe(expected, null, new Rx.ArgumentOutOfRangeError());
+    expectObservable((<any>source).pipe(elementAt(3)))
+      .toBe(expected, null, new ArgumentOutOfRangeError());
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -119,7 +119,7 @@ describe('Observable.prototype.elementAt', () => {
     const expected =   '-----(x|)';
     const defaultValue = '42';
 
-    expectObservable((<any>source).elementAt(3, defaultValue)).toBe(expected, { x: defaultValue });
+    expectObservable((<any>source).pipe(elementAt(3, defaultValue))).toBe(expected, { x: defaultValue });
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 });

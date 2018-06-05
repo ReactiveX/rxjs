@@ -1,18 +1,17 @@
-import * as Rx from 'rxjs/Rx';
+import { ignoreElements, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { of } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 
-const Observable = Rx.Observable;
-
 /** @test {ignoreElements} */
-describe('Observable.prototype.ignoreElements', () => {
+describe('ignoreElements operator', () => {
   asDiagram('ignoreElements')('should ignore all the elements of the source', () => {
     const source = hot('--a--b--c--d--|');
     const subs =       '^             !';
     const expected =   '--------------|';
 
-    expectObservable(source.ignoreElements()).toBe(expected);
+    expectObservable(source.pipe(ignoreElements())).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -22,7 +21,7 @@ describe('Observable.prototype.ignoreElements', () => {
     const expected =   '--------       ';
     const unsub =      '       !       ';
 
-    const result = source.ignoreElements();
+    const result = source.pipe(ignoreElements());
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -34,10 +33,11 @@ describe('Observable.prototype.ignoreElements', () => {
     const expected =   '--------       ';
     const unsub =      '       !       ';
 
-    const result = source
-      .mergeMap((x: string) => Observable.of(x))
-      .ignoreElements()
-      .mergeMap((x: string) => Observable.of(x));
+    const result = source.pipe(
+      mergeMap((x: string) => of(x)),
+      ignoreElements(),
+      mergeMap((x: string) => of(x))
+    );
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -48,7 +48,7 @@ describe('Observable.prototype.ignoreElements', () => {
     const subs =       '^    !';
     const expected =   '-----#';
 
-    expectObservable(source.ignoreElements()).toBe(expected);
+    expectObservable(source.pipe(ignoreElements())).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -57,7 +57,7 @@ describe('Observable.prototype.ignoreElements', () => {
     const subs =        '(^!)';
     const expected =    '|';
 
-    expectObservable(source.ignoreElements()).toBe(expected);
+    expectObservable(source.pipe(ignoreElements())).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -66,7 +66,7 @@ describe('Observable.prototype.ignoreElements', () => {
     const subs =        '^';
     const expected =    '-';
 
-    expectObservable(source.ignoreElements()).toBe(expected);
+    expectObservable(source.pipe(ignoreElements())).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -75,7 +75,7 @@ describe('Observable.prototype.ignoreElements', () => {
     const subs =        '(^!)';
     const expected =    '#';
 
-    expectObservable(source.ignoreElements()).toBe(expected);
+    expectObservable(source.pipe(ignoreElements())).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 });

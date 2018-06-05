@@ -1,16 +1,16 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
+import { expand, mergeMap } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { Subscribable } from 'rxjs/Observable';
+import { Subscribable, EMPTY, Observable, of, Observer } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 declare const type: Function;
 
-declare const rxTestScheduler: Rx.TestScheduler;
-const Observable = Rx.Observable;
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {expand} */
-describe('Observable.prototype.expand', () => {
+describe('expand operator', () => {
   asDiagram('expand(x => x === 8 ? empty : \u2014\u20142*x\u2014| )')
   ('should recursively map-and-flatten each item to an Observable', () => {
     const e1 =    hot('--x----|  ', {x: 1});
@@ -19,7 +19,7 @@ describe('Observable.prototype.expand', () => {
     const expected =  '--a-b-c-d|';
     const values = {a: 1, b: 2, c: 4, d: 8};
 
-    const result = e1.expand(x => x === 8 ? Observable.empty() : e2.map(c => c * x));
+    const result = e1.pipe(expand(x => x === 8 ? EMPTY : e2.map(c => c * x)));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -32,7 +32,7 @@ describe('Observable.prototype.expand', () => {
     const expected =  '--a-b-c-d|';
     const values = {a: 1, b: 2, c: 4, d: 8};
 
-    const result = e1.expand(x => x === 8 ? Observable.empty() : e2.map(c => c * x), Number.POSITIVE_INFINITY, rxTestScheduler);
+    const result = e1.pipe(expand(x => x === 8 ? EMPTY : e2.map(c => c * x), Number.POSITIVE_INFINITY, rxTestScheduler));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -65,13 +65,13 @@ describe('Observable.prototype.expand', () => {
       a--b--c--d--(e|)
     */
 
-    const result = e1.expand((x, index): Rx.Observable<any> => {
+    const result = e1.pipe(expand((x, index): Observable<any> => {
       if (x === 16) {
-        return Observable.empty();
+        return EMPTY;
       } else {
         return cold(e2shape, { z: x + x });
       }
-    });
+    }));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -90,12 +90,12 @@ describe('Observable.prototype.expand', () => {
     const e2shape =  '---(z|)      ';
     const expected = 'a--b--c--(d#)';
 
-    const result = e1.expand((x) => {
+    const result = e1.pipe(expand((x) => {
       if (x === 8) {
         return cold<number>('#');
       }
       return cold(e2shape, { z: x + x });
-    });
+    }));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -114,12 +114,12 @@ describe('Observable.prototype.expand', () => {
     const e2shape =  '---(z|)      ';
     const expected = 'a--b--c--(d#)';
 
-    const result = e1.expand((x) => {
+    const result = e1.pipe(expand((x) => {
       if (x === 8) {
         throw 'error';
       }
       return cold(e2shape, { z: x + x });
-    });
+    }));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -139,12 +139,12 @@ describe('Observable.prototype.expand', () => {
     const e2shape =  '---(z|)   ';
     const expected = 'a--b--c-  ';
 
-    const result = e1.expand((x): Rx.Observable<any> => {
+    const result = e1.pipe(expand((x): Observable<any> => {
       if (x === 16) {
-        return Observable.empty();
+        return EMPTY;
       }
       return cold(e2shape, { z: x + x });
-    });
+    }));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -164,15 +164,16 @@ describe('Observable.prototype.expand', () => {
     const expected = 'a--b--c-  ';
     const unsub =    '       !  ';
 
-    const result = e1
-      .mergeMap((x) => Observable.of(x))
-      .expand((x): Rx.Observable<any> => {
+    const result = e1.pipe(
+      mergeMap((x) => of(x)),
+      expand((x): Observable<any> => {
         if (x === 16) {
-          return Observable.empty();
+          return EMPTY;
         }
         return cold(e2shape, { z: x + x });
-      })
-      .mergeMap((x) => Observable.of(x));
+      }),
+      mergeMap((x) => of(x))
+    );
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -191,12 +192,12 @@ describe('Observable.prototype.expand', () => {
     const e2shape =  '---(z|)           ';
     const expected = 'a-ab-bc-cd-de-(e|)';
 
-    const result = e1.expand((x): Rx.Observable<any> => {
+    const result = e1.pipe(expand((x): Observable<any> => {
       if (x === 16) {
-        return Observable.empty();
+        return EMPTY;
       }
       return cold(e2shape, { z: x + x });
-    });
+    }));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -229,12 +230,12 @@ describe('Observable.prototype.expand', () => {
     const expected = 'a--u--b--v--c--x--d--y--(ez|)';
     const concurrencyLimit = 1;
 
-    const result = e1.expand((x): Rx.Observable<any> => {
+    const result = e1.pipe(expand((x): Observable<any> => {
       if (x === 16 || x === 160) {
-        return Observable.empty();
+        return EMPTY;
       }
       return cold(e2shape, { z: x + x });
-    }, concurrencyLimit);
+    }, concurrencyLimit));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -262,12 +263,12 @@ describe('Observable.prototype.expand', () => {
     const expected = 'a---a-u---b-b---v-(cc)(x|)';
     const concurrencyLimit = 2;
 
-    const result = e1.expand((x): Rx.Observable<any> => {
+    const result = e1.pipe(expand((x): Observable<any> => {
       if (x === 4 || x === 40) {
-        return Observable.empty();
+        return EMPTY;
       }
       return cold(e2shape, { z: x + x });
-    }, concurrencyLimit);
+    }, concurrencyLimit));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -292,12 +293,12 @@ describe('Observable.prototype.expand', () => {
     const expected = 'a-ub-vc-xd-ye-(z|)';
     const concurrencyLimit = 100;
 
-    const result = e1.expand((x): Rx.Observable<any> => {
+    const result = e1.pipe(expand((x): Observable<any> => {
       if (x === 16 || x === 160) {
-        return Observable.empty();
+        return EMPTY;
       }
       return cold(e2shape, { z: x + x });
-    }, concurrencyLimit);
+    }, concurrencyLimit));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -315,12 +316,12 @@ describe('Observable.prototype.expand', () => {
     const e1subs =   '(^!)';
     const expected = '(abcde|)';
 
-    const result = e1.expand((x) => {
+    const result = e1.pipe(expand((x) => {
       if (x === 16) {
-        return Observable.empty();
+        return EMPTY;
       }
-      return Observable.of(x + x); // scalar
-    });
+      return of(x + x); // scalar
+    }));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -328,14 +329,14 @@ describe('Observable.prototype.expand', () => {
 
   it('should recursively flatten promises', (done) => {
     const expected = [1, 2, 4, 8, 16];
-    Observable.of(1)
-      .expand((x): any => {
+    of(1).pipe(
+      expand((x): any => {
         if (x === 16) {
-          return Observable.empty();
+          return EMPTY;
         }
         return Promise.resolve(x + x);
       })
-      .subscribe((x) => {
+    ).subscribe((x) => {
         expect(x).to.equal(expected.shift());
       }, null, () => {
         expect(expected.length).to.equal(0);
@@ -345,14 +346,14 @@ describe('Observable.prototype.expand', () => {
 
   it('should recursively flatten Arrays', (done) => {
     const expected = [1, 2, 4, 8, 16];
-    Observable.of(1)
-      .expand((x): any => {
+    of(1).pipe(
+      expand((x): any => {
         if (x === 16) {
-          return Observable.empty();
+          return EMPTY;
         }
         return [x + x];
       })
-      .subscribe((x) => {
+    ).subscribe((x) => {
         expect(x).to.equal(expected.shift());
       }, null, () => {
         expect(expected.length).to.equal(0);
@@ -364,11 +365,11 @@ describe('Observable.prototype.expand', () => {
     const expected = [1, 2, 4, 8, 16];
     const project = (x: number, index: number): Subscribable<number> => {
       if (x === 16) {
-        return <any>Observable.empty();
+        return <any>EMPTY;
       }
 
       const ish = {
-        subscribe: (observer: Rx.Observer<number>) => {
+        subscribe: (observer: Observer<number>) => {
           observer.next(x + x);
           observer.complete();
         }
@@ -380,9 +381,9 @@ describe('Observable.prototype.expand', () => {
       return <Subscribable<number>> ish;
     };
 
-    Observable.of(1)
-      .expand(project)
-      .subscribe((x) => {
+    of(1).pipe(
+      expand(project)
+    ).subscribe((x) => {
         expect(x).to.equal(expected.shift());
       }, null, () => {
         expect(expected.length).to.equal(0);
@@ -403,14 +404,14 @@ describe('Observable.prototype.expand', () => {
     const e2shape =  '---(z|)         ';
     const expected = 'a--b--c--d--(e|)';
 
-    const project = (x: any, index: number): Rx.Observable<any> => {
+    const project = (x: any, index: number): Observable<any> => {
       if (x === 16) {
-        return Observable.empty();
+        return EMPTY;
       }
       return cold(e2shape, { z: x + x });
     };
 
-    const result = e1.expand(project, undefined, undefined);
+    const result = e1.pipe(expand(project, undefined, undefined));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

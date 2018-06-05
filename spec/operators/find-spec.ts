@@ -1,13 +1,12 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
+import { find, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { of, Observable, from } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 
-const Observable = Rx.Observable;
-
 /** @test {find} */
-describe('Observable.prototype.find', () => {
+describe('find operator', () => {
   function truePredicate(x: any) {
     return true;
   }
@@ -20,13 +19,13 @@ describe('Observable.prototype.find', () => {
 
     const predicate = function (x: number) { return x % 5 === 0; };
 
-    expectObservable((<any>source).find(predicate)).toBe(expected, values);
+    expectObservable((<any>source).pipe(find(predicate))).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should throw if not provided a function', () => {
     expect(() => {
-      (<any>Observable.of('yut', 'yee', 'sam')).find('yee');
+      (<any>of('yut', 'yee', 'sam')).pipe(find('yee' as any));
     }).to.throw(TypeError, 'predicate is not a function');
   });
 
@@ -35,7 +34,7 @@ describe('Observable.prototype.find', () => {
     const subs =       '^';
     const expected =   '-';
 
-    expectObservable((<any>source).find(truePredicate)).toBe(expected);
+    expectObservable((<any>source).pipe(find(truePredicate))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -44,7 +43,7 @@ describe('Observable.prototype.find', () => {
     const subs =        '(^!)';
     const expected =    '(x|)';
 
-    const result = (<any>source).find(truePredicate);
+    const result = (<any>source).pipe(find(truePredicate));
 
     expectObservable(result).toBe(expected, {x: undefined});
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -59,7 +58,7 @@ describe('Observable.prototype.find', () => {
       return value === 'a';
     };
 
-    expectObservable((<any>source).find(predicate)).toBe(expected);
+    expectObservable((<any>source).pipe(find(predicate))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -72,7 +71,7 @@ describe('Observable.prototype.find', () => {
       return value === 'b';
     };
 
-    expectObservable((<any>source).find(predicate)).toBe(expected);
+    expectObservable((<any>source).pipe(find(predicate))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -88,7 +87,7 @@ describe('Observable.prototype.find', () => {
       return value === this.target;
     };
 
-    expectObservable((<any>source).find(predicate, finder)).toBe(expected);
+    expectObservable((<any>source).pipe(find(predicate, finder))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -101,7 +100,7 @@ describe('Observable.prototype.find', () => {
       return value === 'z';
     };
 
-    expectObservable((<any>source).find(predicate)).toBe(expected, { x: undefined });
+    expectObservable((<any>source).pipe(find(predicate))).toBe(expected, { x: undefined });
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -111,7 +110,7 @@ describe('Observable.prototype.find', () => {
     const expected =   '-------     ';
     const unsub =      '      !     ';
 
-    const result = (<any>source).find((value: string) => value === 'z');
+    const result = (<any>source).pipe(find((value: string) => value === 'z'));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -123,10 +122,11 @@ describe('Observable.prototype.find', () => {
     const expected =   '-------     ';
     const unsub =      '      !     ';
 
-    const result = (<any>source)
-      .mergeMap((x: string) => Observable.of(x))
-      .find((value: string) => value === 'z')
-      .mergeMap((x: string) => Observable.of(x));
+    const result = (<any>source).pipe(
+      mergeMap((x: string) => of(x)),
+      find((value: string) => value === 'z'),
+      mergeMap((x: string) => of(x))
+    );
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -141,7 +141,7 @@ describe('Observable.prototype.find', () => {
       return value === 'z';
     };
 
-    expectObservable((<any>source).find(predicate)).toBe(expected);
+    expectObservable((<any>source).pipe(find(predicate))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -154,7 +154,7 @@ describe('Observable.prototype.find', () => {
       throw 'error';
     };
 
-    expectObservable((<any>source).find(predicate)).toBe(expected);
+    expectObservable((<any>source).pipe(find(predicate))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -171,38 +171,38 @@ describe('Observable.prototype.find', () => {
       const isBaz = (x: any): x is Baz => x && (<Baz>x).baz !== undefined;
 
       const foo: Foo = new Foo();
-      Observable.of(foo).find(foo => foo.baz === 42)
+      of(foo).pipe(find(foo => foo.baz === 42))
         .subscribe(x => x.baz); // x is still Foo
-      Observable.of(foo).find(isBar)
+      of(foo).pipe(find(isBar))
         .subscribe(x => x.bar); // x is Bar!
 
       const foobar: Bar = new Foo(); // type is interface, not the class
-      Observable.of(foobar).find(foobar => foobar.bar === 'name')
+      of(foobar).pipe(find(foobar => foobar.bar === 'name'))
         .subscribe(x => x.bar); // <-- x is still Bar
-      Observable.of(foobar).find(isBar)
+      of(foobar).pipe(find(isBar))
         .subscribe(x => x.bar); // <--- x is Bar!
 
       const barish = { bar: 'quack', baz: 42 }; // type can quack like a Bar
-      Observable.of(barish).find(x => x.bar === 'quack')
+      of(barish).pipe(find(x => x.bar === 'quack'))
         .subscribe(x => x.bar); // x is still { bar: string; baz: number; }
-      Observable.of(barish).find(isBar)
+      of(barish).pipe(find(isBar))
         .subscribe(bar => bar.bar); // x is Bar!
     }
 
     // type guards with primitive types
     {
-      const xs: Rx.Observable<string | number> = Observable.from([ 1, 'aaa', 3, 'bb' ]);
+      const xs: Observable<string | number> = from([ 1, 'aaa', 3, 'bb' ]);
 
       // This type guard will narrow a `string | number` to a string in the examples below
       const isString = (x: string | number): x is string => typeof x === 'string';
 
-      xs.find(isString)
+      xs.pipe(find(isString))
         .subscribe(s => s.length); // s is string
 
       // In contrast, this type of regular boolean predicate still maintains the original type
-      xs.find(x => typeof x === 'number')
+      xs.pipe(find(x => typeof x === 'number'))
         .subscribe(x => x); // x is still string | number
-      xs.find((x, i) => typeof x === 'number' && x > i)
+      xs.pipe(find((x, i) => typeof x === 'number' && x > i))
         .subscribe(x => x); // x is still string | number
     }
 
