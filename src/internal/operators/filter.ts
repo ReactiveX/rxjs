@@ -27,8 +27,8 @@ export function filter<T>(predicate: (value: T, index: number) => boolean,
  * ## Example
  * Emit only click events whose target was a DIV element
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var clicksOnDivs = clicks.filter(ev => ev.target.tagName === 'DIV');
+ * const clicks = fromEvent(document, 'click');
+ * const clicksOnDivs = clicks.pipe(filter(ev => ev.target.tagName === 'DIV'));
  * clicksOnDivs.subscribe(x => console.log(x));
  * ```
  *

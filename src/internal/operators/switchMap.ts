@@ -38,8 +38,8 @@ export function switchMap<T, I, R>(project: (value: T, index: number) => Observa
  * ## Example
  * Rerun an interval Observable on every click event
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = clicks.switchMap((ev) => Rx.Observable.interval(1000));
+ * const clicks = fromEvent(document, 'click');
+ * const result = clicks.pipe(switchMap((ev) => interval(1000)));
  * result.subscribe(x => console.log(x));
  * ```
  *

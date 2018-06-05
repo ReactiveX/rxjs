@@ -37,11 +37,12 @@ export function reduce<T, R>(accumulator: (acc: R, value: T, index: number) => R
  * ## Example
  * Count the number of click events that happened in 5 seconds
  * ```javascript
- * var clicksInFiveSeconds = Rx.Observable.fromEvent(document, 'click')
- *   .takeUntil(Rx.Observable.interval(5000));
- * var ones = clicksInFiveSeconds.mapTo(1);
- * var seed = 0;
- * var count = ones.reduce((acc, one) => acc + one, seed);
+ * const clicksInFiveSeconds = fromEvent(document, 'click').pipe(
+ *   takeUntil(interval(5000)),
+ * );
+ * const ones = clicksInFiveSeconds.pipe(mapTo(1));
+ * const seed = 0;
+ * const count = ones.reduce((acc, one) => acc + one, seed);
  * count.subscribe(x => console.log(x));
  * ```
  *

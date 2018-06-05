@@ -27,8 +27,8 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * ## Example
  * Emit clicks at a rate of at most one click per second
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = clicks.throttleTime(1000);
+ * const clicks = fromEvent(document, 'click');
+ * const result = clicks.pipe(throttleTime(1000));
  * result.subscribe(x => console.log(x));
  * ```
  *

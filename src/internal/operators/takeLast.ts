@@ -24,8 +24,8 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * ## Example
  * Take the last 3 values of an Observable with many values
  * ```javascript
- * var many = Rx.Observable.range(1, 100);
- * var lastThree = many.pipe(takeLast(3));
+ * const many = range(1, 100);
+ * const lastThree = many.pipe(takeLast(3));
  * lastThree.subscribe(x => console.log(x));
  * ```
  *

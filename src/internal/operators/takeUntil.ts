@@ -26,9 +26,9 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * ## Example
  * Tick every second until the first click happens
  * ```javascript
- * var interval = Rx.Observable.interval(1000);
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = interval.takeUntil(clicks);
+ * const interval = interval(1000);
+ * const clicks = fromEvent(document, 'click');
+ * const result = interval.pipe(takeUntil(clicks));
  * result.subscribe(x => console.log(x));
  * ```
  *

@@ -29,11 +29,12 @@ import { OperatorFunction } from '../types';
  * ## Example
  * Emit only the first two clicks events in every window of [1-5] random seconds
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = clicks
- *   .windowWhen(() => Rx.Observable.interval(1000 + Math.random() * 4000))
- *   .map(win => win.take(2)) // each window has at most 2 emissions
- *   .mergeAll(); // flatten the Observable-of-Observables
+ * const clicks = fromEvent(document, 'click');
+ * const result = clicks.pipe(
+ *   windowWhen(() => interval(1000 + Math.random() * 4000)),
+ *   map(win => win.pipe(take(2))),     // each window has at most 2 emissions
+ *   mergeAll(),                        // flatten the Observable-of-Observables
+ * );
  * result.subscribe(x => console.log(x));
  * ```
  *

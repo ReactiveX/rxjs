@@ -9,9 +9,10 @@ import { Observer, OperatorFunction } from '../types';
  * ## Example
  * A simple example emitting true if all elements are less than 5, false otherwise
  * ```javascript
- *  Observable.of(1, 2, 3, 4, 5, 6)
- *     .every(x => x < 5)
- *     .subscribe(x => console.log(x)); // -> false
+ *  of(1, 2, 3, 4, 5, 6).pipe(
+ *     every(x => x < 5),
+ * )
+ * .subscribe(x => console.log(x)); // -> false
  * ```
  *
  * @param {function} predicate A function for determining if an item meets a specified condition.

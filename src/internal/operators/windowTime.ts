@@ -33,27 +33,33 @@ import { OperatorFunction, SchedulerLike, SchedulerAction } from '../types';
  * ## Examples
  * In every window of 1 second each, emit at most 2 click events
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = clicks.windowTime(1000)
- *   .map(win => win.take(2)) // each window has at most 2 emissions
- *   .mergeAll(); // flatten the Observable-of-Observables
+ * const clicks = fromEvent(document, 'click');
+ * const result = clicks.pipe(
+ *   windowTime(1000),
+ *   map(win => win.take(2)),   // each window has at most 2 emissions
+ *   mergeAll(),                // flatten the Observable-of-Observables
+ * );
  * result.subscribe(x => console.log(x));
  * ```
  *
  * Every 5 seconds start a window 1 second long, and emit at most 2 click events per window
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = clicks.windowTime(1000, 5000)
- *   .map(win => win.take(2)) // each window has at most 2 emissions
- *   .mergeAll(); // flatten the Observable-of-Observables
+ * const clicks = fromEvent(document, 'click');
+ * const result = clicks.pipe(
+ *   windowTime(1000, 5000),
+ *   map(win => win.take(2)),   // each window has at most 2 emissions
+ *   mergeAll(),                // flatten the Observable-of-Observables
+ * );
  * result.subscribe(x => console.log(x));
  * ```
  *
  * Same as example above but with maxWindowCount instead of take
  * ```javascript
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var result = clicks.windowTime(1000, 5000, 2) // each window has still at most 2 emissions
- *   .mergeAll(); // flatten the Observable-of-Observables
+ * const clicks = fromEvent(document, 'click');
+ * const result = clicks.pipe(
+ *   windowTime(1000, 5000, 2), // each window has still at most 2 emissions
+ *   mergeAll(),                // flatten the Observable-of-Observables
+ * );
  * result.subscribe(x => console.log(x));
  * ```
  *
