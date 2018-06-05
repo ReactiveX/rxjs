@@ -13,6 +13,7 @@ export { next } from './internal/create/next';
 export { of } from './internal/create/of';
 export { partition } from './internal/create/partition';
 export { race } from './internal/create/race';
+export { throwError } from './internal/create/throwError';
 export { zip } from './internal/create/zip';
 
 export { identity } from './internal/util/identity';

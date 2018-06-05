@@ -6,11 +6,6 @@ describe('Observable', () => {
     expect(Observable).to.exist;
   });
 
-  it('should new a value that is an instancof Observable', () => {
-    const test = new Observable();
-    expect(test instanceof Observable).to.be.true;
-  });
-
   it('should work for the simplest use case', () => {
     const source = new Observable<number>(subscriber => {
       subscriber.next(1);
@@ -28,6 +23,25 @@ describe('Observable', () => {
 
     expect(results).to.deep.equal([1, 2, 3, 'done']);
   });
+
+  it('should work for the simplest use case without the new keyword', () => {
+    const source = Observable<number>(subscriber => {
+      subscriber.next(1);
+      subscriber.next(2);
+      subscriber.next(3);
+      subscriber.complete();
+    });
+
+    const results: any[] = [];
+
+    source.subscribe({
+      next(v) { results.push(v); },
+      complete() { results.push('done'); },
+    });
+
+    expect(results).to.deep.equal([1, 2, 3, 'done']);
+  });
+
 
   it('should be able to stop synchronous observables with the nexted subscription', () => {
     let calls = 0;
