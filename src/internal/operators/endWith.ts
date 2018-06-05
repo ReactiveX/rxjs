@@ -21,6 +21,44 @@ export function endWith<T>(...array: Array<T | SchedulerLike>): MonoTypeOperator
  * Returns an Observable that emits the items you specify as arguments after it finishes emitting
  * items emitted by the source Observable.
  *
+ * ## Examples
+ * ### Emits a value before completing (appends an emission to a series of emissions).
+ *
+ * ```javascript
+ * from(['hi', 'how are you?', 'sorry, I have to go now']).pipe(
+ *   endWith('goodbye!'),
+ * )
+ * .subscribe(word => console.log(word));
+ * // result:
+ * // 'hi'
+ * // 'how are you?'
+ * // 'sorry, I have to go now'
+ * // 'goodbye!'
+ * ```
+ *
+ * ### Emits a value before completing (with no prior emissions)
+ * ```javascript
+ * empty().pipe(
+ *   endWith('goodbye!'),
+ * )
+ * .subscribe(word => console.log(word));
+ * // result:
+ * // 'goodbye!'
+ * ```
+ *
+ * ### Does not work with abnormal termination
+ * ```javascript
+ * throwError('any error').pipe(
+ *   endWith('goodbye!'),
+ * )
+ * .subscribe(
+ *   word => console.log(word),
+ *   err => console.log('sorry, I choked'),
+ * );
+ * // result:
+ * // 'sorry, I choked' - endWith won't emit values when an error is thrown
+ * ```
+ *
  * @param {...T} values - Items you want the modified Observable to emit last.
  * @param {Scheduler} [scheduler] - A {@link IScheduler} to use for scheduling
  * the emissions of the `next` notifications.
