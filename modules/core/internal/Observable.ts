@@ -18,23 +18,36 @@ export interface Observable<T> extends FObs<T> {
 
   forEach(nextHandler: (value: T) => void, subscription?: Subscription): Promise<void>;
 
+  toPromise(): Promise<T>;
+
   // TODO: flush out types
   pipe(...operations: Array<Operation<any, any>>): Observable<any>;
 }
 
+/** The Observable constructor */
 export const Observable: ObservableConstructor = function <T>(init?: (subscriber: Subscriber<T>) => void) {
+  const result = observable(init);
+  (result as any).__proto__ = Observable.prototype;
+  return result;
+} as any;
+
+/** A shorthand observable creation method */
+export function observable<T>(init?: (subscriber: Subscriber<T>) => void) {
   return sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T>, subs: Subscription) => {
     const subscriber = createSubscriber(dest, subs);
     subs.add(init(subscriber));
   });
-} as any;
+};
 
 export function sourceAsObservable<T>(source: Source<T>): Observable<T> {
   const result = source as Observable<T>;
-  (result as any).__proto__ = Observable.prototype;
   result.subscribe = subscribe;
   result.pipe = observablePipe;
   result.forEach = forEach;
+  result.toPromise = toPromise;
+  if (Symbol && Symbol.observable) {
+    result[Symbol.observable] = () => result;
+  }
   return result;
 }
 
@@ -44,7 +57,7 @@ function subscribe<T>(
   errorHandler?: (err: any) => void,
   completeHandler?: () => void,
 ) {
-  let subscription = new Subscription();;
+  const subscription = new Subscription();;
   let sink: Sink<T>;
 
   if (nextOrObserver) {
@@ -98,6 +111,17 @@ function forEach<T>(this: Observable<T>, nextHandler: (value: T) => void, subscr
   });
 }
 
+function toPromise<T>(this: Observable<T>): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    this.subscribe({
+      _last: undefined,
+      next (value) { this._last = value; },
+      error(err) { reject(err); },
+      complete() { resolve(this._last); }
+    });
+  })
+}
+
 function observablePipe<T>(this: Observable<T>, ...operations: Array<Operation<T, T>>): Observable<T> {
   return pipe(...operations)(this);
 }
@@ -121,6 +145,8 @@ function sinkFromObserver<T>(
         if (typeof observer.complete === 'function') {
           observer.complete();
         }
+        break;
+      default:
         break;
     }
   };
@@ -147,6 +173,8 @@ function sinkFromHandlers<T>(
         if (typeof completeHandler === 'function') {
           completeHandler();
         }
+        break;
+      default:
         break;
     }
   };

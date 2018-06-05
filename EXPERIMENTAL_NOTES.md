@@ -20,3 +20,5 @@ timestamp.
 - `endWith` has no scheduler argument
 - `startWith` has no scheduler argument
 - `partition` is now a static method
+- `Observable` returns an object that passes `instanceof` checks
+- `observable` is a shorthand function for creating an observable that does not require the `new` keyword, and will not pass `instanceof` checks.

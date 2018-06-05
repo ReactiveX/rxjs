@@ -34,18 +34,21 @@ export interface NextObserver<T> {
   next: (value: T, subscription: Subscription) => void;
   error?: (err: any) => void;
   complete?: () => void;
+  [key: string]: any;
 }
 
 export interface ErrorObserver<T> {
   next?: (value: T, subscription: Subscription) => void;
   error: (err: any) => void;
   complete?: () => void;
+  [key: string]: any;
 }
 
 export interface CompleteObserver<T> {
   next?: (value: T, subscription: Subscription) => void;
   error?: (err: any) => void;
   complete: () => void;
+  [key: string]: any;
 }
 
 export type PartialObserver<T> = NextObserver<T> | ErrorObserver<T> | CompleteObserver<T>;
@@ -54,6 +57,7 @@ export interface Observer<T> {
   next: (value: T, subscription?: Subscription) => void;
   error: (err: any) => void;
   complete: () => void;
+  [key: string]: any;
 }
 
 export interface Scheduler {
@@ -114,6 +118,6 @@ export interface Timestamped<T> {
 
 declare global  {
   interface SymbolConstructor {
-    observable: symbol;
+    readonly observable: symbol;
   }
 }

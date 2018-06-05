@@ -9,13 +9,14 @@ import { isPromiseLike } from "../util/isPromiseLike";
 import { isIterable } from "../util/isIterable";
 import { isInteropObservable } from "../util/isInteropObservable";
 import { isAsyncIterable } from "../util/isAsyncIterable";
+import { isObservable } from '../util/isObservable';
 
 export function from<T>(input: ObservableInput<T>): Observable<T> {
   return sourceAsObservable(fromSource(input));
 }
 
 export function fromSource<T>(input: ObservableInput<T>): Source<T> {
-  if (input instanceof Observable) {
+  if (isObservable(input)) {
     return input;
   } else if (isPromiseLike(input)) {
     return promiseSource(input);

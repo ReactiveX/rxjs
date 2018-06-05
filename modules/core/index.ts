@@ -18,3 +18,4 @@ export { zip } from './internal/create/zip';
 export { identity } from './internal/util/identity';
 export { noop } from './internal/util/noop';
 export { pipe } from './internal/util/pipe';
+export { isObservable } from './internal/util/isObservable';
