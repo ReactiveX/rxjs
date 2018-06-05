@@ -340,7 +340,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
         }
         (<any>xhrProgress).progressSubscriber = progressSubscriber;
       }
-      let xhrError: (e: ErrorEvent) => void;
+      let xhrError: (e: any) => void;
       xhrError = function(this: XMLHttpRequest, e: ErrorEvent) {
         const { progressSubscriber, subscriber, request } = (<any>xhrError);
         if (progressSubscriber) {
