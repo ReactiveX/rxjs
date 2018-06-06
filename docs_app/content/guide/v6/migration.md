@@ -117,7 +117,7 @@ To make this code compile correctly in v6, change it as shown here:
 
 ```ts
 const userDefined = <T>() => (source: Observable<T>) => new Observable<T>((subscriber) => {
-    this.subscribe({
+    source.subscribe({
       next(value) { subscriber.next(value); },
       error(err) { subscriber.error(err); },
       complete() { subscriber.complete(); },
