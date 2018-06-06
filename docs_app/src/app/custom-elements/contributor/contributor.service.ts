@@ -10,7 +10,7 @@ import { Contributor, ContributorGroup } from './contributors.model';
 import { CONTENT_URL_PREFIX } from 'app/documents/document.service';
 
 const contributorsPath = CONTENT_URL_PREFIX + 'contributors.json';
-const knownGroups = ['Angular', 'GDE'];
+const knownGroups = ['Core Team', 'Learning Team', 'Alumn'];
 
 @Injectable()
 export class ContributorService {
