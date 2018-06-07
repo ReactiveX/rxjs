@@ -11,6 +11,24 @@ import { subscribeToResult } from '../util/subscribeToResult';
 
 /**
  * Returns an Observable that mirrors the first source Observable to emit an item.
+ *
+ * ## Example
+ * ### Subscribes to the observable that was the first to start emitting.
+ *
+ * ```javascript
+ * const obs1 = interval(1000).pipe(mapTo('fast one'));
+ * const obs2 = interval(3000).pipe(mapTo('medium one'));
+ * const obs3 = interval(5000).pipe(mapTo('slow one'));
+ *
+ * race(obs3, obs1, obs2)
+ * .subscribe(
+ *   winner => console.log(winner)
+ * );
+ *
+ * // result:
+ * // a series of 'fast one'
+ * ```
+ *
  * @param {...Observables} ...observables sources used to race for which Observable emits first.
  * @return {Observable} an Observable that mirrors the output of the first Observable to emit an item.
  * @static true
