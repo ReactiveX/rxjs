@@ -124,9 +124,12 @@ from the main (upstream) repository:
 
 ## Documentation
 
-- Documentation of RxJs will be shortly inline and more detailed in [rxjs-docs](https://github.com/ReactiveX/rxjs-docs)
-- The [Documentation Guidelines](https://github.com/ReactiveX/rxjs-docs/blob/master/DOCUMENTATION_GUIDELINES.md) will support you
-- Please keep both documents up to date
+- The documentation is auto-generated directly from the source code.
+- In short: From the source code we generate JSON documents, describing each operator, function ... and render this JSON within an Angular application
+- The folder `docs-app` contains everything you need for building and developing the docs
+- the folder `doc` used to be the documentation, but should remain until all content is transfered.
+- The [Documentation README](docs_app/README.md) will support you
+- After a PR is merged to master the docs will be published to https://rxjs-dev.firebaseapp.com/
 
 ## Unit Tests
 
