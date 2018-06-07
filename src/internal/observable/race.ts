@@ -22,7 +22,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
  *
  * race(obs3, obs1, obs2)
  * .subscribe(
- *   winner  => console.log(winner)
+ *   winner => console.log(winner)
  * );
  *
  * // result:
