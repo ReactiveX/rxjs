@@ -14,10 +14,12 @@ export class AsyncAction<T> extends Action<T> {
   public state: T;
   public delay: number;
   protected pending: boolean = false;
+  protected work: (this: this, state?: T) => void;
 
   constructor(protected scheduler: AsyncScheduler,
-              protected work: (this: AsyncAction<T>, state?: T) => void) {
+              work: (this: AsyncAction<T>, state?: T) => void) {
     super(scheduler, work);
+    this.work = work;
   }
 
   public schedule(state?: T, delay: number = 0): Subscription {
