@@ -1,18 +1,17 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { publishBehavior, mergeMapTo, tap, mergeMap, refCount, retry, repeat } from 'rxjs/operators';
+import { ConnectableObservable, of, Subscription, Observable } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 declare const type: Function;
 
-const Observable = Rx.Observable;
-
 /** @test {publishBehavior} */
-describe('Observable.prototype.publishBehavior', () => {
+describe('publishBehavior operator', () => {
   asDiagram('publishBehavior(0)')('should mirror a simple source Observable', () => {
     const source = cold('--1-2---3-4--5-|');
     const sourceSubs =  '^              !';
-    const published = source.publishBehavior('0');
+    const published = source.pipe(publishBehavior('0')) as ConnectableObservable<string>;
     const expected =    '0-1-2---3-4--5-|';
 
     expectObservable(published).toBe(expected);
@@ -22,7 +21,7 @@ describe('Observable.prototype.publishBehavior', () => {
   });
 
   it('should return a ConnectableObservable-ish', () => {
-    const source = Observable.of(1).publishBehavior(1);
+    const source = of(1).pipe(publishBehavior(1)) as ConnectableObservable<number>;
     expect(typeof (<any> source)._subscribe === 'function').to.be.true;
     expect(typeof (<any> source).getSubject === 'function').to.be.true;
     expect(typeof source.connect === 'function').to.be.true;
@@ -32,7 +31,7 @@ describe('Observable.prototype.publishBehavior', () => {
   it('should only emit default value if connect is not called, despite subscriptions', () => {
     const source = cold('--1-2---3-4--5-|');
     const sourceSubs: string[] = [];
-    const published = source.publishBehavior('0');
+    const published = source.pipe(publishBehavior('0'));
     const expected =    '0';
 
     expectObservable(published).toBe(expected);
@@ -42,12 +41,12 @@ describe('Observable.prototype.publishBehavior', () => {
   it('should multicast the same values to multiple observers', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^           !';
-    const published = source.publishBehavior('0');
-    const subscriber1 = hot('a|           ').mergeMapTo(published);
+    const published = source.pipe(publishBehavior('0')) as ConnectableObservable<string>;
+    const subscriber1 = hot('a|           ').pipe(mergeMapTo(published));
     const expected1   =     '01-2-3----4-|';
-    const subscriber2 = hot('    b|       ').mergeMapTo(published);
+    const subscriber2 = hot('    b|       ').pipe(mergeMapTo(published));
     const expected2   =     '    23----4-|';
-    const subscriber3 = hot('        c|   ').mergeMapTo(published);
+    const subscriber3 = hot('        c|   ').pipe(mergeMapTo(published));
     const expected3   =     '        3-4-|';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -61,12 +60,12 @@ describe('Observable.prototype.publishBehavior', () => {
   it('should multicast an error from the source to multiple observers', () => {
     const source =     cold('-1-2-3----4-#');
     const sourceSubs =      '^           !';
-    const published = source.publishBehavior('0');
-    const subscriber1 = hot('a|           ').mergeMapTo(published);
+    const published = source.pipe(publishBehavior('0')) as ConnectableObservable<string>;
+    const subscriber1 = hot('a|           ').pipe(mergeMapTo(published));
     const expected1   =     '01-2-3----4-#';
-    const subscriber2 = hot('    b|       ').mergeMapTo(published);
+    const subscriber2 = hot('    b|       ').pipe(mergeMapTo(published));
     const expected2   =     '    23----4-#';
-    const subscriber3 = hot('        c|   ').mergeMapTo(published);
+    const subscriber3 = hot('        c|   ').pipe(mergeMapTo(published));
     const expected3   =     '        3-4-#';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -81,13 +80,13 @@ describe('Observable.prototype.publishBehavior', () => {
   'but is unsubscribed explicitly and early', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^        !   ';
-    const published = source.publishBehavior('0');
+    const published = source.pipe(publishBehavior('0')) as ConnectableObservable<string>;
     const unsub =           '         u   ';
-    const subscriber1 = hot('a|           ').mergeMapTo(published);
+    const subscriber1 = hot('a|           ').pipe(mergeMapTo(published));
     const expected1   =     '01-2-3----   ';
-    const subscriber2 = hot('    b|       ').mergeMapTo(published);
+    const subscriber2 = hot('    b|       ').pipe(mergeMapTo(published));
     const expected2   =     '    23----   ';
-    const subscriber3 = hot('        c|   ').mergeMapTo(published);
+    const subscriber3 = hot('        c|   ').pipe(mergeMapTo(published));
     const expected3   =     '        3-   ';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -96,10 +95,10 @@ describe('Observable.prototype.publishBehavior', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
 
     // Set up unsubscription action
-    let connection: Rx.Subscription;
-    expectObservable(hot(unsub).do(() => {
+    let connection: Subscription;
+    expectObservable(hot(unsub).pipe(tap(() => {
       connection.unsubscribe();
-    })).toBe(unsub);
+    }))).toBe(unsub);
 
     connection = published.connect();
   });
@@ -107,14 +106,15 @@ describe('Observable.prototype.publishBehavior', () => {
   it('should not break unsubscription chains when result is unsubscribed explicitly', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^        !   ';
-    const published = source
-      .mergeMap((x) => Observable.of(x))
-      .publishBehavior('0');
-    const subscriber1 = hot('a|           ').mergeMapTo(published);
+    const published = source.pipe(
+      mergeMap((x) => of(x)),
+      publishBehavior('0')
+    ) as ConnectableObservable<string>;
+    const subscriber1 = hot('a|           ').pipe(mergeMapTo(published));
     const expected1   =     '01-2-3----   ';
-    const subscriber2 = hot('    b|       ').mergeMapTo(published);
+    const subscriber2 = hot('    b|       ').pipe(mergeMapTo(published));
     const expected2   =     '    23----   ';
-    const subscriber3 = hot('        c|   ').mergeMapTo(published);
+    const subscriber3 = hot('        c|   ').pipe(mergeMapTo(published));
     const expected3   =     '        3-   ';
     const unsub =           '         u   ';
 
@@ -124,10 +124,10 @@ describe('Observable.prototype.publishBehavior', () => {
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
 
     // Set up unsubscription action
-    let connection: Rx.Subscription;
-    expectObservable(hot(unsub).do(() => {
+    let connection: Subscription;
+    expectObservable(hot(unsub).pipe(tap(() => {
       connection.unsubscribe();
-    })).toBe(unsub);
+    }))).toBe(unsub);
 
     connection = published.connect();
   });
@@ -136,12 +136,15 @@ describe('Observable.prototype.publishBehavior', () => {
     it('should connect when first subscriber subscribes', () => {
       const source = cold(       '-1-2-3----4-|');
       const sourceSubs =      '   ^           !';
-      const replayed = source.publishBehavior('0').refCount();
-      const subscriber1 = hot('   a|           ').mergeMapTo(replayed);
+      const replayed = source.pipe(
+        publishBehavior('0'),
+        refCount()
+      );
+      const subscriber1 = hot('   a|           ').pipe(mergeMapTo(replayed));
       const expected1 =       '   01-2-3----4-|';
-      const subscriber2 = hot('       b|       ').mergeMapTo(replayed);
+      const subscriber2 = hot('       b|       ').pipe(mergeMapTo(replayed));
       const expected2 =       '       23----4-|';
-      const subscriber3 = hot('           c|   ').mergeMapTo(replayed);
+      const subscriber3 = hot('           c|   ').pipe(mergeMapTo(replayed));
       const expected3 =       '           3-4-|';
 
       expectObservable(subscriber1).toBe(expected1);
@@ -153,11 +156,14 @@ describe('Observable.prototype.publishBehavior', () => {
     it('should disconnect when last subscriber unsubscribes', () => {
       const source =     cold(   '-1-2-3----4-|');
       const sourceSubs =      '   ^        !   ';
-      const replayed = source.publishBehavior('0').refCount();
-      const subscriber1 = hot('   a|           ').mergeMapTo(replayed);
+      const replayed = source.pipe(
+        publishBehavior('0'),
+        refCount()
+      );
+      const subscriber1 = hot('   a|           ').pipe(mergeMapTo(replayed));
       const unsub1 =          '          !     ';
       const expected1   =     '   01-2-3--     ';
-      const subscriber2 = hot('       b|       ').mergeMapTo(replayed);
+      const subscriber2 = hot('       b|       ').pipe(mergeMapTo(replayed));
       const unsub2 =          '            !   ';
       const expected2   =     '       23----   ';
 
@@ -169,12 +175,16 @@ describe('Observable.prototype.publishBehavior', () => {
     it('should NOT be retryable', () => {
       const source =     cold('-1-2-3----4-#');
       const sourceSubs =      '^           !';
-      const published = source.publishBehavior('0').refCount().retry(3);
-      const subscriber1 = hot('a|           ').mergeMapTo(published);
+      const published = source.pipe(
+        publishBehavior('0'),
+        refCount(),
+        retry(3)
+      );
+      const subscriber1 = hot('a|           ').pipe(mergeMapTo(published));
       const expected1   =     '01-2-3----4-#';
-      const subscriber2 = hot('    b|       ').mergeMapTo(published);
+      const subscriber2 = hot('    b|       ').pipe(mergeMapTo(published));
       const expected2   =     '    23----4-#';
-      const subscriber3 = hot('        c|   ').mergeMapTo(published);
+      const subscriber3 = hot('        c|   ').pipe(mergeMapTo(published));
       const expected3   =     '        3-4-#';
 
       expectObservable(subscriber1).toBe(expected1);
@@ -186,12 +196,16 @@ describe('Observable.prototype.publishBehavior', () => {
     it('should NOT be repeatable', () => {
       const source =     cold('-1-2-3----4-|');
       const sourceSubs =      '^           !';
-      const published = source.publishBehavior('0').refCount().repeat(3);
-      const subscriber1 = hot('a|           ').mergeMapTo(published);
+      const published = source.pipe(
+        publishBehavior('0'),
+        refCount(),
+        repeat(3)
+      );
+      const subscriber1 = hot('a|           ').pipe(mergeMapTo(published));
       const expected1   =     '01-2-3----4-|';
-      const subscriber2 = hot('    b|       ').mergeMapTo(published);
+      const subscriber2 = hot('    b|       ').pipe(mergeMapTo(published));
       const expected2   =     '    23----4-|';
-      const subscriber3 = hot('        c|   ').mergeMapTo(published);
+      const subscriber3 = hot('        c|   ').pipe(mergeMapTo(published));
       const expected3   =     '        3-4-|';
 
       expectObservable(subscriber1).toBe(expected1);
@@ -215,7 +229,7 @@ describe('Observable.prototype.publishBehavior', () => {
       observer.complete();
     });
 
-    const connectable = source.publishBehavior(0);
+    const connectable = source.pipe(publishBehavior(0)) as ConnectableObservable<number>;
 
     connectable.subscribe(function (x) {
       results1.push(x);
@@ -243,7 +257,7 @@ describe('Observable.prototype.publishBehavior', () => {
   it('should multicast an empty source', () => {
     const source = cold('|');
     const sourceSubs =  '(^!)';
-    const published = source.publishBehavior('0');
+    const published = source.pipe(publishBehavior('0')) as ConnectableObservable<string>;
     const expected =    '(0|)';
 
     expectObservable(published).toBe(expected);
@@ -255,7 +269,7 @@ describe('Observable.prototype.publishBehavior', () => {
   it('should multicast a never source', () => {
     const source = cold('-');
     const sourceSubs =  '^';
-    const published = source.publishBehavior('0');
+    const published = source.pipe(publishBehavior('0')) as ConnectableObservable<string>;
     const expected =    '0';
 
     expectObservable(published).toBe(expected);
@@ -267,7 +281,7 @@ describe('Observable.prototype.publishBehavior', () => {
   it('should multicast a throw source', () => {
     const source = cold('#');
     const sourceSubs =  '(^!)';
-    const published = source.publishBehavior('0');
+    const published = source.pipe(publishBehavior('0')) as ConnectableObservable<string>;
     const expected =    '(0#)';
 
     expectObservable(published).toBe(expected);
@@ -289,7 +303,7 @@ describe('Observable.prototype.publishBehavior', () => {
       observer.next(4);
     });
 
-    const connectable = source.publishBehavior(0);
+    const connectable = source.pipe(publishBehavior(0)) as ConnectableObservable<number>;
 
     connectable.subscribe((x) => {
       results1.push(x);
@@ -322,7 +336,7 @@ describe('Observable.prototype.publishBehavior', () => {
       observer.complete();
     });
 
-    const connectable = source.publishBehavior(0);
+    const connectable = source.pipe(publishBehavior(0)) as ConnectableObservable<number>;
 
     connectable.connect();
 
@@ -336,16 +350,16 @@ describe('Observable.prototype.publishBehavior', () => {
 
   type('should infer the type', () => {
     /* tslint:disable:no-unused-variable */
-    const source = Rx.Observable.of<number>(1, 2, 3);
-    const result: Rx.ConnectableObservable<number> = source.publishBehavior(0);
+    const source = of<number>(1, 2, 3);
+    const result: ConnectableObservable<number> = source.pipe(publishBehavior(0)) as ConnectableObservable<number>;
     /* tslint:enable:no-unused-variable */
   });
 
   type('should infer the type for the pipeable operator', () => {
     /* tslint:disable:no-unused-variable */
-    const source = Rx.Observable.of<number>(1, 2, 3);
+    const source = of<number>(1, 2, 3);
     // TODO: https://github.com/ReactiveX/rxjs/issues/2972
-    const result: Rx.ConnectableObservable<number> = Rx.operators.publishBehavior(0)(source);
+    const result: ConnectableObservable<number> = publishBehavior(0)(source);
     /* tslint:enable:no-unused-variable */
   });
 });
