@@ -1,19 +1,20 @@
-import * as Rx from 'rxjs/Rx';
 import { hot, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { subscribeOn, mergeMap } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
+import { of } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 
-declare const rxTestScheduler: Rx.TestScheduler;
-const Observable = Rx.Observable;
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {subscribeOn} */
-describe('Observable.prototype.subscribeOn', () => {
+describe('subscribeOn operator', () => {
   asDiagram('subscribeOn(scheduler)')('should subscribe on specified scheduler', () => {
     const e1 =   hot('--a--b--|');
     const expected = '--a--b--|';
     const sub =      '^       !';
 
-    expectObservable(e1.subscribeOn(rxTestScheduler)).toBe(expected);
+    expectObservable(e1.pipe(subscribeOn(rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -22,7 +23,7 @@ describe('Observable.prototype.subscribeOn', () => {
     const expected = '-----b--|';
     const sub =      '   ^    !';
 
-    expectObservable(e1.subscribeOn(rxTestScheduler, 30)).toBe(expected);
+    expectObservable(e1.pipe(subscribeOn(rxTestScheduler, 30))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -31,7 +32,7 @@ describe('Observable.prototype.subscribeOn', () => {
     const expected = '--a--#';
     const sub =      '^    !';
 
-    expectObservable(e1.subscribeOn(rxTestScheduler)).toBe(expected);
+    expectObservable(e1.pipe(subscribeOn(rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -40,7 +41,7 @@ describe('Observable.prototype.subscribeOn', () => {
     const expected = '----|';
     const sub =      '^   !';
 
-    expectObservable(e1.subscribeOn(rxTestScheduler)).toBe(expected);
+    expectObservable(e1.pipe(subscribeOn(rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -49,7 +50,7 @@ describe('Observable.prototype.subscribeOn', () => {
     const expected = '----';
     const sub =      '^   ';
 
-    expectObservable(e1.subscribeOn(rxTestScheduler)).toBe(expected);
+    expectObservable(e1.pipe(subscribeOn(rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -59,7 +60,7 @@ describe('Observable.prototype.subscribeOn', () => {
     const expected =  '--a--    ';
     const unsub =     '    !    ';
 
-    const result = e1.subscribeOn(rxTestScheduler);
+    const result = e1.pipe(subscribeOn(rxTestScheduler));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
@@ -71,10 +72,11 @@ describe('Observable.prototype.subscribeOn', () => {
     const expected =  '--a--    ';
     const unsub =     '    !    ';
 
-    const result = e1
-      .mergeMap((x: string) => Observable.of(x))
-      .subscribeOn(rxTestScheduler)
-      .mergeMap((x: string) => Observable.of(x));
+    const result = e1.pipe(
+      mergeMap((x: string) => of(x)),
+      subscribeOn(rxTestScheduler),
+      mergeMap((x: string) => of(x))
+    );
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
