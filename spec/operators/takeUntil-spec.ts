@@ -1,12 +1,11 @@
-import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { takeUntil, mergeMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 
-const Observable = Rx.Observable;
-
 /** @test {takeUntil} */
-describe('Observable.prototype.takeUntil', () => {
+describe('takeUntil operator', () => {
   asDiagram('takeUntil')('should take values until notifier emits', () => {
     const e1 =     hot('--a--b--c--d--e--f--g--|');
     const e1subs =     '^            !          ';
@@ -14,7 +13,7 @@ describe('Observable.prototype.takeUntil', () => {
     const e2subs =     '^            !          ';
     const expected =   '--a--b--c--d-|          ';
 
-    expectObservable(e1.takeUntil(e2)).toBe(expected);
+    expectObservable(e1.pipe(takeUntil(e2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
@@ -26,7 +25,7 @@ describe('Observable.prototype.takeUntil', () => {
     const e2subs =     '^            !          ';
     const expected =   '--a--b--c--d-#          ';
 
-    expectObservable(e1.takeUntil(e2)).toBe(expected);
+    expectObservable(e1.pipe(takeUntil(e2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
@@ -38,7 +37,7 @@ describe('Observable.prototype.takeUntil', () => {
     const e2subs =     '^            !          ';
     const expected =   '--a--b--c--d--e--f--g--|';
 
-    expectObservable(e1.takeUntil(e2)).toBe(expected);
+    expectObservable(e1.pipe(takeUntil(e2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
@@ -50,17 +49,17 @@ describe('Observable.prototype.takeUntil', () => {
     const e2subs =     '^                      !';
     const expected =   '--a--b--c--d--e--f--g--|';
 
-    expectObservable(e1.takeUntil(e2)).toBe(expected);
+    expectObservable(e1.pipe(takeUntil(e2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
 
   it('should complete without subscribing to the source when notifier synchronously emits', () => {
     const e1 =   hot('----a--|');
-    const e2 =  Observable.of(0);
+    const e2 =  of(0);
     const expected = '(|)     ';
 
-    expectObservable(e1.takeUntil(e2)).toBe(expected);
+    expectObservable(e1.pipe(takeUntil(e2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe([]);
   });
 
@@ -72,7 +71,7 @@ describe('Observable.prototype.takeUntil', () => {
     const unsub =      '       !                ';
     const expected =   '--a--b--                ';
 
-    expectObservable(e1.takeUntil(e2), unsub).toBe(expected);
+    expectObservable(e1.pipe(takeUntil(e2)), unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
@@ -84,7 +83,7 @@ describe('Observable.prototype.takeUntil', () => {
     const e2subs =     '^ !';
     const expected =   '--|';
 
-    expectObservable(e1.takeUntil(e2)).toBe(expected);
+    expectObservable(e1.pipe(takeUntil(e2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
@@ -96,7 +95,7 @@ describe('Observable.prototype.takeUntil', () => {
     const e2subs =     '^ !';
     const expected =   '--#';
 
-    expectObservable(e1.takeUntil(e2)).toBe(expected);
+    expectObservable(e1.pipe(takeUntil(e2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
@@ -108,7 +107,7 @@ describe('Observable.prototype.takeUntil', () => {
     const e2subs =     '^ !';
     const expected =   '---';
 
-    expectObservable(e1.takeUntil(e2)).toBe(expected);
+    expectObservable(e1.pipe(takeUntil(e2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
@@ -120,7 +119,7 @@ describe('Observable.prototype.takeUntil', () => {
     const e2subs =     '^';
     const expected =   '-';
 
-    expectObservable(e1.takeUntil(e2)).toBe(expected);
+    expectObservable(e1.pipe(takeUntil(e2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
@@ -132,7 +131,7 @@ describe('Observable.prototype.takeUntil', () => {
     const e2subs =     '^ !     ';
     const expected =   '--|     ';
 
-    expectObservable(e1.takeUntil(e2)).toBe(expected);
+    expectObservable(e1.pipe(takeUntil(e2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
@@ -144,7 +143,7 @@ describe('Observable.prototype.takeUntil', () => {
     const e2subs =     '^             !     ';
     const expected =   '--a--b--c--d--#     ';
 
-    expectObservable(e1.takeUntil(e2)).toBe(expected);
+    expectObservable(e1.pipe(takeUntil(e2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
@@ -156,7 +155,7 @@ describe('Observable.prototype.takeUntil', () => {
     const e2subs =   '(^!)';
     const expected = '#';
 
-    expectObservable(e1.takeUntil(e2)).toBe(expected);
+    expectObservable(e1.pipe(takeUntil(e2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
@@ -168,7 +167,7 @@ describe('Observable.prototype.takeUntil', () => {
     const e2subs =   '^ !     ';
     const expected = '--|     ';
 
-    expectObservable(e1.takeUntil(e2)).toBe(expected);
+    expectObservable(e1.pipe(takeUntil(e2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
@@ -180,7 +179,7 @@ describe('Observable.prototype.takeUntil', () => {
     const e2subs =   '^    !     ';
     const expected = '--a--|     ';
 
-    expectObservable(e1.takeUntil(e2)).toBe(expected);
+    expectObservable(e1.pipe(takeUntil(e2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
   });
@@ -193,10 +192,11 @@ describe('Observable.prototype.takeUntil', () => {
     const unsub =      '       !                ';
     const expected =   '--a--b--                ';
 
-    const result = e1
-      .mergeMap((x: string) => Observable.of(x))
-      .takeUntil(e2)
-      .mergeMap((x: string) => Observable.of(x));
+    const result = e1.pipe(
+      mergeMap((x: string) => of(x)),
+      takeUntil(e2),
+      mergeMap((x: string) => of(x))
+    );
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
