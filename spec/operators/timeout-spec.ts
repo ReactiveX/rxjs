@@ -1,22 +1,22 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { timeout, mergeMap } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
+import { TimeoutError, of } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
-declare const rxTestScheduler: Rx.TestScheduler;
-
-const Observable = Rx.Observable;
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {timeout} */
-describe('Observable.prototype.timeout', () => {
-  const defaultTimeoutError = new Rx.TimeoutError();
+describe('timeout operator', () => {
+  const defaultTimeoutError = new TimeoutError();
 
   asDiagram('timeout(50)')('should timeout after a specified timeout period', () => {
     const e1 =  cold('-------a--b--|');
     const e1subs =   '^    !        ';
     const expected = '-----#        ';
 
-    const result = e1.timeout(50, rxTestScheduler);
+    const result = e1.pipe(timeout(50, rxTestScheduler));
 
     expectObservable(result).toBe(expected, null, defaultTimeoutError);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -24,7 +24,7 @@ describe('Observable.prototype.timeout', () => {
 
   it('should emit and error of an instanceof TimeoutError on timeout', () => {
     const e1 =  cold('-------a--b--|');
-    const result = e1.timeout(50, rxTestScheduler);
+    const result = e1.pipe(timeout(50, rxTestScheduler));
     let error;
     result.subscribe(() => {
       throw new Error('this should not next');
@@ -34,7 +34,7 @@ describe('Observable.prototype.timeout', () => {
       throw new Error('this should not complete');
     });
     rxTestScheduler.flush();
-    expect(error).to.be.an.instanceof(Rx.TimeoutError);
+    expect(error).to.be.an.instanceof(TimeoutError);
     expect(error).to.have.property('name', 'TimeoutError');
   });
 
@@ -45,7 +45,7 @@ describe('Observable.prototype.timeout', () => {
 
     const timeoutValue = new Date(rxTestScheduler.now() + (expected.length + 2) * 10);
 
-    expectObservable(e1.timeout(timeoutValue, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.pipe(timeout(timeoutValue, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -54,7 +54,7 @@ describe('Observable.prototype.timeout', () => {
     const e1subs =   '^                !';
     const expected = '--a--b--c--d--e--|';
 
-    expectObservable(e1.timeout(50, rxTestScheduler)).toBe(expected);
+    expectObservable(e1.pipe(timeout(50, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -64,7 +64,7 @@ describe('Observable.prototype.timeout', () => {
     const e1subs =   '^         !        ';
     const expected = '--a--b--c--        ';
 
-    const result = e1.timeout(50, rxTestScheduler);
+    const result = e1.pipe(timeout(50, rxTestScheduler));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -76,10 +76,11 @@ describe('Observable.prototype.timeout', () => {
     const expected = '--a--b--c--        ';
     const unsub =    '          !        ';
 
-    const result = e1
-      .mergeMap((x: string) => Observable.of(x))
-      .timeout(50, rxTestScheduler)
-      .mergeMap((x: string) => Observable.of(x));
+    const result = e1.pipe(
+      mergeMap((x: string) => of(x)),
+      timeout(50, rxTestScheduler),
+      mergeMap((x: string) => of(x))
+    );
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -92,7 +93,7 @@ describe('Observable.prototype.timeout', () => {
     const expected = '---a---b---c----#          ';
     const values = {a: 'a', b: 'b', c: 'c'};
 
-    const result = e1.timeout(50, rxTestScheduler);
+    const result = e1.pipe(timeout(50, rxTestScheduler));
 
     expectObservable(result).toBe(expected, values, defaultTimeoutError);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -103,7 +104,7 @@ describe('Observable.prototype.timeout', () => {
     const e1subs =   '^         !';
     const expected = '----------#';
 
-    const result = e1.timeout(new Date(rxTestScheduler.now() + 100), rxTestScheduler);
+    const result = e1.pipe(timeout(new Date(rxTestScheduler.now() + 100), rxTestScheduler));
 
     expectObservable(result).toBe(expected, null, defaultTimeoutError);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -115,7 +116,7 @@ describe('Observable.prototype.timeout', () => {
     const expected = '--a--b--c-#       ';
     const values = {a: 'a', b: 'b', c: 'c'};
 
-    const result = e1.timeout(new Date(rxTestScheduler.now() + 100), rxTestScheduler);
+    const result = e1.pipe(timeout(new Date(rxTestScheduler.now() + 100), rxTestScheduler));
 
     expectObservable(result).toBe(expected, values, defaultTimeoutError);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -139,7 +140,7 @@ describe('Observable.prototype.timeout', () => {
           return source.subscribe(timeoutSubscriber);
         }
       })
-      .timeout(50, rxTestScheduler);
+      .pipe(timeout(50, rxTestScheduler));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
