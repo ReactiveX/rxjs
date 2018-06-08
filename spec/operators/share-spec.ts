@@ -1,18 +1,18 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { share } from 'rxjs/operators';
-import { Observable, EMPTY, NEVER } from 'rxjs';
+import { share, retry, mergeMapTo, mergeMap, tap } from 'rxjs/operators';
+import { Observable, EMPTY, NEVER, of } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 
 /** @test {share} */
-describe('Observable.prototype.share', () => {
+describe('share operator', () => {
   asDiagram('share')('should mirror a simple source Observable', () => {
     const source = cold('--1-2---3-4--5-|');
     const sourceSubs =  '^              !';
     const expected =    '--1-2---3-4--5-|';
 
-    const shared = source.share();
+    const shared = source.pipe(share());
 
     expectObservable(shared).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -24,7 +24,7 @@ describe('Observable.prototype.share', () => {
       subscriptionCount++;
     });
 
-    const source = obs.share();
+    const source = obs.pipe(share());
 
     expect(subscriptionCount).to.equal(0);
 
@@ -39,7 +39,7 @@ describe('Observable.prototype.share', () => {
     const e1subs =       '^              !';
     const expected =     '---b--c--d--e--#';
 
-    expectObservable(e1.share()).toBe(expected);
+    expectObservable(e1.pipe(share())).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -48,7 +48,7 @@ describe('Observable.prototype.share', () => {
     const e1subs =   '^                 !';
     const expected = '---a--b--c--d--e--|';
 
-    expectObservable(e1.share()).toBe(expected);
+    expectObservable(e1.pipe(share())).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -57,7 +57,7 @@ describe('Observable.prototype.share', () => {
     const e1subs =   '^                 !';
     const expected = '---a--b--c--d--e--#';
 
-    expectObservable(e1.share()).toBe(expected);
+    expectObservable(e1.pipe(share())).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -67,19 +67,19 @@ describe('Observable.prototype.share', () => {
                    '                  ^                 !'];
     const expected = '---a--b--c--d--e-----a--b--c--d--e--#';
 
-    expectObservable(e1.share().retry(1)).toBe(expected);
+    expectObservable(e1.pipe(share(), retry(1))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should share the same values to multiple observers', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^           !';
-    const shared = source.share();
-    const subscriber1 = hot('a|           ').mergeMapTo(shared);
+    const shared = source.pipe(share());
+    const subscriber1 = hot('a|           ').pipe(mergeMapTo(shared));
     const expected1   =     '-1-2-3----4-|';
-    const subscriber2 = hot('    b|       ').mergeMapTo(shared);
+    const subscriber2 = hot('    b|       ').pipe(mergeMapTo(shared));
     const expected2   =     '    -3----4-|';
-    const subscriber3 = hot('        c|   ').mergeMapTo(shared);
+    const subscriber3 = hot('        c|   ').pipe(mergeMapTo(shared));
     const expected3   =     '        --4-|';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -91,12 +91,12 @@ describe('Observable.prototype.share', () => {
   it('should share an error from the source to multiple observers', () => {
     const source =     cold('-1-2-3----4-#');
     const sourceSubs =      '^           !';
-    const shared = source.share();
-    const subscriber1 = hot('a|           ').mergeMapTo(shared);
+    const shared = source.pipe(share());
+    const subscriber1 = hot('a|           ').pipe(mergeMapTo(shared));
     const expected1   =     '-1-2-3----4-#';
-    const subscriber2 = hot('    b|       ').mergeMapTo(shared);
+    const subscriber2 = hot('    b|       ').pipe(mergeMapTo(shared));
     const expected2   =     '    -3----4-#';
-    const subscriber3 = hot('        c|   ').mergeMapTo(shared);
+    const subscriber3 = hot('        c|   ').pipe(mergeMapTo(shared));
     const expected3   =     '        --4-#';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -109,13 +109,13 @@ describe('Observable.prototype.share', () => {
   'but is unsubscribed explicitly and early', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^        !   ';
-    const shared = source.share();
+    const shared = source.pipe(share());
     const unsub =           '         !   ';
-    const subscriber1 = hot('a|           ').mergeMapTo(shared);
+    const subscriber1 = hot('a|           ').pipe(mergeMapTo(shared));
     const expected1   =     '-1-2-3----   ';
-    const subscriber2 = hot('    b|       ').mergeMapTo(shared);
+    const subscriber2 = hot('    b|       ').pipe(mergeMapTo(shared));
     const expected2   =     '    -3----   ';
-    const subscriber3 = hot('        c|   ').mergeMapTo(shared);
+    const subscriber3 = hot('        c|   ').pipe(mergeMapTo(shared));
     const expected3   =     '        --   ';
 
     expectObservable(subscriber1, unsub).toBe(expected1);
@@ -127,7 +127,7 @@ describe('Observable.prototype.share', () => {
   it('should share an empty source', () => {
     const source = cold('|');
     const sourceSubs =  '(^!)';
-    const shared = source.share();
+    const shared = source.pipe(share());
     const expected =    '|';
 
     expectObservable(shared).toBe(expected);
@@ -137,7 +137,7 @@ describe('Observable.prototype.share', () => {
   it('should share a never source', () => {
     const source = cold('-');
     const sourceSubs =  '^';
-    const shared = source.share();
+    const shared = source.pipe(share());
     const expected =    '-';
 
     expectObservable(shared).toBe(expected);
@@ -147,7 +147,7 @@ describe('Observable.prototype.share', () => {
   it('should share a throw source', () => {
     const source = cold('#');
     const sourceSubs =  '(^!)';
-    const shared = source.share();
+    const shared = source.pipe(share());
     const expected =    '#';
 
     expectObservable(shared).toBe(expected);
@@ -157,12 +157,12 @@ describe('Observable.prototype.share', () => {
   it('should connect when first subscriber subscribes', () => {
     const source = cold(       '-1-2-3----4-|');
     const sourceSubs =      '   ^           !';
-    const shared = source.share();
-    const subscriber1 = hot('   a|           ').mergeMapTo(shared);
+    const shared = source.pipe(share());
+    const subscriber1 = hot('   a|           ').pipe(mergeMapTo(shared));
     const expected1 =       '   -1-2-3----4-|';
-    const subscriber2 = hot('       b|       ').mergeMapTo(shared);
+    const subscriber2 = hot('       b|       ').pipe(mergeMapTo(shared));
     const expected2 =       '       -3----4-|';
-    const subscriber3 = hot('           c|   ').mergeMapTo(shared);
+    const subscriber3 = hot('           c|   ').pipe(mergeMapTo(shared));
     const expected3 =       '           --4-|';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -174,11 +174,11 @@ describe('Observable.prototype.share', () => {
   it('should disconnect when last subscriber unsubscribes', () => {
     const source =     cold(   '-1-2-3----4-|');
     const sourceSubs =      '   ^        !   ';
-    const shared = source.share();
-    const subscriber1 = hot('   a|           ').mergeMapTo(shared);
+    const shared = source.pipe(share());
+    const subscriber1 = hot('   a|           ').pipe(mergeMapTo(shared));
     const unsub1 =          '          !     ';
     const expected1   =     '   -1-2-3--     ';
-    const subscriber2 = hot('       b|       ').mergeMapTo(shared);
+    const subscriber2 = hot('       b|       ').pipe(mergeMapTo(shared));
     const unsub2 =          '            !   ';
     const expected2   =     '       -3----   ';
 
@@ -190,14 +190,15 @@ describe('Observable.prototype.share', () => {
   it('should not break unsubscription chain when last subscriber unsubscribes', () => {
     const source =     cold(   '-1-2-3----4-|');
     const sourceSubs =      '   ^        !   ';
-    const shared = source
-      .mergeMap((x: string) => Observable.of(x))
-      .share()
-      .mergeMap((x: string) => Observable.of(x));
-    const subscriber1 = hot('   a|           ').mergeMapTo(shared);
+    const shared = source.pipe(
+      mergeMap((x: string) => of(x)),
+      share(),
+      mergeMap((x: string) => of(x))
+    );
+    const subscriber1 = hot('   a|           ').pipe(mergeMapTo(shared));
     const unsub1 =          '          !     ';
     const expected1   =     '   -1-2-3--     ';
-    const subscriber2 = hot('       b|       ').mergeMapTo(shared);
+    const subscriber2 = hot('       b|       ').pipe(mergeMapTo(shared));
     const unsub2 =          '            !   ';
     const expected2   =     '       -3----   ';
 
@@ -208,7 +209,7 @@ describe('Observable.prototype.share', () => {
 
   it('should be retryable when cold source is synchronous', () => {
     const source = cold('(123#)');
-    const shared = source.share();
+    const shared = source.pipe(share());
     const subscribe1 =  's         ';
     const expected1 =   '(123123#) ';
     const subscribe2 =  ' s        ';
@@ -218,20 +219,20 @@ describe('Observable.prototype.share', () => {
                       ' (^!)',
                       ' (^!)'];
 
-    expectObservable(hot(subscribe1).do(() => {
+    expectObservable(hot(subscribe1).pipe(tap(() => {
       expectObservable(shared.retry(1)).toBe(expected1);
-    })).toBe(subscribe1);
+    }))).toBe(subscribe1);
 
-    expectObservable(hot(subscribe2).do(() => {
+    expectObservable(hot(subscribe2).pipe(tap(() => {
       expectObservable(shared.retry(1)).toBe(expected2);
-    })).toBe(subscribe2);
+    }))).toBe(subscribe2);
 
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
   it('should be repeatable when cold source is synchronous', () => {
     const source = cold('(123|)');
-    const shared = source.share();
+    const shared = source.pipe(share());
     const subscribe1 =  's         ';
     const expected1 =   '(123123|) ';
     const subscribe2 =  ' s        ';
@@ -241,13 +242,13 @@ describe('Observable.prototype.share', () => {
                       ' (^!)',
                       ' (^!)'];
 
-    expectObservable(hot(subscribe1).do(() => {
+    expectObservable(hot(subscribe1).pipe(tap(() => {
       expectObservable(shared.repeat(2)).toBe(expected1);
-    })).toBe(subscribe1);
+    }))).toBe(subscribe1);
 
-    expectObservable(hot(subscribe2).do(() => {
+    expectObservable(hot(subscribe2).pipe(tap(() => {
       expectObservable(shared.repeat(2)).toBe(expected2);
-    })).toBe(subscribe2);
+    }))).toBe(subscribe2);
 
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
@@ -257,19 +258,19 @@ describe('Observable.prototype.share', () => {
     const sourceSubs =     ['^           !                        ',
                           '            ^           !            ',
                           '                        ^           !'];
-    const shared = source.share();
+    const shared = source.pipe(share());
     const subscribe1 =      's                                    ';
     const expected1 =       '-1-2-3----4--1-2-3----4--1-2-3----4-#';
     const subscribe2 =      '    s                                ';
     const expected2 =       '    -3----4--1-2-3----4--1-2-3----4-#';
 
-    expectObservable(hot(subscribe1).do(() => {
+    expectObservable(hot(subscribe1).pipe(tap(() => {
       expectObservable(shared.retry(2)).toBe(expected1);
-    })).toBe(subscribe1);
+    }))).toBe(subscribe1);
 
-    expectObservable(hot(subscribe2).do(() => {
+    expectObservable(hot(subscribe2).pipe(tap(() => {
       expectObservable(shared.retry(2)).toBe(expected2);
-    })).toBe(subscribe2);
+    }))).toBe(subscribe2);
 
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
@@ -279,19 +280,19 @@ describe('Observable.prototype.share', () => {
     const sourceSubs =     ['^           !                        ',
                           '            ^           !            ',
                           '                        ^           !'];
-    const shared = source.share();
+    const shared = source.pipe(share());
     const subscribe1 =      's                                    ';
     const expected1 =       '-1-2-3----4--1-2-3----4--1-2-3----4-|';
     const subscribe2 =      '    s                                ';
     const expected2 =       '    -3----4--1-2-3----4--1-2-3----4-|';
 
-    expectObservable(hot(subscribe1).do(() => {
+    expectObservable(hot(subscribe1).pipe(tap(() => {
       expectObservable(shared.repeat(3)).toBe(expected1);
-    })).toBe(subscribe1);
+    }))).toBe(subscribe1);
 
-    expectObservable(hot(subscribe2).do(() => {
+    expectObservable(hot(subscribe2).pipe(tap(() => {
       expectObservable(shared.repeat(3)).toBe(expected2);
-    })).toBe(subscribe2);
+    }))).toBe(subscribe2);
 
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
@@ -300,13 +301,13 @@ describe('Observable.prototype.share', () => {
     const e1 = NEVER;
     const expected = '-';
 
-    expectObservable(e1.share()).toBe(expected);
+    expectObservable(e1.pipe(share())).toBe(expected);
   });
 
   it('should not change the output of the observable when empty', () => {
     const e1 = Observable.empty();
     const expected = '|';
 
-    expectObservable(e1.share()).toBe(expected);
+    expectObservable(e1.pipe(share())).toBe(expected);
   });
 });
