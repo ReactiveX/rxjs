@@ -1,13 +1,12 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { skipWhile, mergeMap, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 
-const Observable = Rx.Observable;
-
 /** @test {skipWhile} */
-describe('Observable.prototype.skipWhile', () => {
+describe('skipWhile operator', () => {
   asDiagram('skipWhile(x => x < 4)')('should skip all elements until predicate is false', () => {
     const source = hot('-1-^2--3--4--5--6--|');
     const sourceSubs =    '^               !';
@@ -17,7 +16,7 @@ describe('Observable.prototype.skipWhile', () => {
       return +v < 4;
     };
 
-    expectObservable(source.skipWhile(predicate)).toBe(expected);
+    expectObservable(source.pipe(skipWhile(predicate))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
@@ -26,7 +25,7 @@ describe('Observable.prototype.skipWhile', () => {
     const sourceSubs =    '^               !';
     const expected =      '----------------|';
 
-    expectObservable(source.skipWhile(() => true)).toBe(expected);
+    expectObservable(source.pipe(skipWhile(() => true))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
@@ -35,7 +34,7 @@ describe('Observable.prototype.skipWhile', () => {
     const sourceSubs =    '^               !';
     const expected =      '----------------|';
 
-    expectObservable(source.skipWhile((): any => { return {}; })).toBe(expected);
+    expectObservable(source.pipe(skipWhile((): any => { return {}; }))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
@@ -44,7 +43,7 @@ describe('Observable.prototype.skipWhile', () => {
     const sourceSubs =    '^               !';
     const expected =      '-2--3--4--5--6--|';
 
-    expectObservable(source.skipWhile(() => false)).toBe(expected);
+    expectObservable(source.pipe(skipWhile(() => false))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
@@ -53,7 +52,7 @@ describe('Observable.prototype.skipWhile', () => {
     const sourceSubs =    '^               !';
     const expected =      '-2--3--4--5--6--|';
 
-    expectObservable(source.skipWhile(() => undefined)).toBe(expected);
+    expectObservable(source.pipe(skipWhile(() => undefined))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
@@ -66,7 +65,7 @@ describe('Observable.prototype.skipWhile', () => {
       return +v < 5;
     };
 
-    expectObservable(source.skipWhile(predicate)).toBe(expected);
+    expectObservable(source.pipe(skipWhile(predicate))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
@@ -79,7 +78,7 @@ describe('Observable.prototype.skipWhile', () => {
       return index < 2;
     };
 
-    expectObservable(source.skipWhile(predicate)).toBe(expected);
+    expectObservable(source.pipe(skipWhile(predicate))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
@@ -93,7 +92,7 @@ describe('Observable.prototype.skipWhile', () => {
       return index < 1;
     };
 
-    expectObservable(source.skipWhile(predicate), unsub).toBe(expected);
+    expectObservable(source.pipe(skipWhile(predicate)), unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
@@ -107,10 +106,11 @@ describe('Observable.prototype.skipWhile', () => {
       return index < 1;
     };
 
-    const result = source
-      .mergeMap(function (x) { return Observable.of(x); })
-      .skipWhile(predicate)
-      .mergeMap(function (x) { return Observable.of(x); });
+    const result = source.pipe(
+      mergeMap(function (x) { return of(x); }),
+      skipWhile(predicate),
+      mergeMap(function (x) { return of(x); })
+    );
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -125,7 +125,7 @@ describe('Observable.prototype.skipWhile', () => {
       return v !== 'd';
     };
 
-    expectObservable(source.skipWhile(predicate)).toBe(expected);
+    expectObservable(source.pipe(skipWhile(predicate))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
@@ -141,9 +141,12 @@ describe('Observable.prototype.skipWhile', () => {
     };
 
     expectObservable(
-      source.skipWhile(predicate).do(null, null, () => {
-        expect(invoked).to.equal(3);
-      })
+      source.pipe(
+        skipWhile(predicate),
+        tap(null, null, () => {
+          expect(invoked).to.equal(3);
+        })
+      )
     ).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
@@ -161,7 +164,7 @@ describe('Observable.prototype.skipWhile', () => {
       return v !== 'f';
     };
 
-    expectObservable(source.skipWhile(predicate)).toBe(expected, undefined, new Error('nom d\'une pipe !'));
+    expectObservable(source.pipe(skipWhile(predicate))).toBe(expected, undefined, new Error('nom d\'une pipe !'));
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
   });
 
@@ -170,7 +173,7 @@ describe('Observable.prototype.skipWhile', () => {
     const subs =        '(^!)';
     const expected =    '|';
 
-    expectObservable(source.skipWhile(() => true)).toBe(expected);
+    expectObservable(source.pipe(skipWhile(() => true))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -179,7 +182,7 @@ describe('Observable.prototype.skipWhile', () => {
     const subs =        '^';
     const expected =    '-';
 
-    expectObservable(source.skipWhile(() => true)).toBe(expected);
+    expectObservable(source.pipe(skipWhile(() => true))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -188,7 +191,7 @@ describe('Observable.prototype.skipWhile', () => {
     const subs =        '(^!)';
     const expected =    '#';
 
-    expectObservable(source.skipWhile(() => true)).toBe(expected);
+    expectObservable(source.pipe(skipWhile(() => true))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 });
