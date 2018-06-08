@@ -1,13 +1,11 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { NEVER } from 'rxjs';
-
-const Observable = Rx.Observable;
+import { NEVER, of, race as staticRace, timer, defer, Observable } from 'rxjs';
+import { race, mergeMap, map, finalize, startWith } from 'rxjs/operators';
 
 /** @test {race} */
-describe('Observable.prototype.race', () => {
+describe('race operator', () => {
   it('should race cold and cold', () => {
     const e1 =  cold('---a-----b-----c----|');
     const e1subs =   '^                   !';
@@ -15,7 +13,7 @@ describe('Observable.prototype.race', () => {
     const e2subs =   '^  !';
     const expected = '---a-----b-----c----|';
 
-    const result = e1.race(e2);
+    const result = e1.pipe(race(e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -29,7 +27,7 @@ describe('Observable.prototype.race', () => {
     const e2subs =   '^  !';
     const expected = '---a-----b-----c----|';
 
-    const result = e1.race([e2]);
+    const result = e1.pipe(race([e2]));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -43,7 +41,7 @@ describe('Observable.prototype.race', () => {
     const e2subs =   '^  !';
     const expected = '---a-----b-----c----|';
 
-    const result = e1.race(e2);
+    const result = e1.pipe(race(e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -57,7 +55,7 @@ describe('Observable.prototype.race', () => {
     const e2subs =   '^  !';
     const expected = '---a-----b-----c----|';
 
-    const result = e1.race(e2);
+    const result = e1.pipe(race(e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -71,7 +69,7 @@ describe('Observable.prototype.race', () => {
     const e2subs =   '^                   !';
     const expected = '---a-----b-----c----|';
 
-    const result = e1.race(e2);
+    const result = e1.pipe(race(e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -85,7 +83,7 @@ describe('Observable.prototype.race', () => {
     const e2subs =   '^    !';
     const expected = '-----|';
 
-    const result = e1.race(e2);
+    const result = e1.pipe(race(e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -100,7 +98,7 @@ describe('Observable.prototype.race', () => {
     const expected = '---a-----b---';
     const unsub =    '            !';
 
-    const result = e1.race(e2);
+    const result = e1.pipe(race(e2));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -115,10 +113,11 @@ describe('Observable.prototype.race', () => {
     const expected =      '---b--c---    ';
     const unsub =         '         !    ';
 
-    const result = e1
-      .mergeMap((x: string) => Observable.of(x))
-      .race(e2)
-      .mergeMap((x: string) => Observable.of(x));
+    const result = e1.pipe(
+      mergeMap((x: string) => of(x)),
+      race(e2),
+      mergeMap((x: string) => of(x))
+    );
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -131,7 +130,7 @@ describe('Observable.prototype.race', () => {
     const e1subs =   '^  !';
     const expected = '---|';
 
-    const source = e1.race(e2);
+    const source = e1.pipe(race(e2));
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -144,7 +143,7 @@ describe('Observable.prototype.race', () => {
     const e2subs =   '^  !';
     const expected = '---a-----#';
 
-    const result = e1.race(e2);
+    const result = e1.pipe(race(e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -158,7 +157,7 @@ describe('Observable.prototype.race', () => {
     const e2subs =   '^  !';
     const expected = '---#';
 
-    const result = e1.race(e2);
+    const result = e1.pipe(race(e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -166,10 +165,10 @@ describe('Observable.prototype.race', () => {
   });
 
   it('should allow observable emits immediately', (done: MochaDone) => {
-    const e1 = Observable.of(true);
-    const e2 = Observable.timer(200).map(_ => false);
+    const e1 = of(true);
+    const e2 = timer(200).pipe(map(_ => false));
 
-    Observable.race(e1, e2).subscribe(x => {
+    staticRace(e1, e2).subscribe(x => {
       expect(x).to.be.true;
     }, done, done);
   });
@@ -177,10 +176,10 @@ describe('Observable.prototype.race', () => {
   it('should ignore latter observables if a former one emits immediately', () => {
     const onNext = sinon.spy();
     const onSubscribe = sinon.spy();
-    const e1 = Observable.of('a'); // Wins the race
-    const e2 = Observable.defer(onSubscribe); // Should be ignored
+    const e1 = of('a'); // Wins the race
+    const e2 = defer(onSubscribe); // Should be ignored
 
-    e1.race(e2).subscribe(onNext);
+    e1.pipe(race(e2)).subscribe(onNext);
     expect(onNext.calledWithExactly('a')).to.be.true;
     expect(onSubscribe.called).to.be.false;
   });
@@ -188,10 +187,10 @@ describe('Observable.prototype.race', () => {
   it('should unsubscribe former observables if a latter one emits immediately', () => {
     const onNext = sinon.spy();
     const onUnsubscribe = sinon.spy();
-    const e1 = NEVER.finally(onUnsubscribe); // Should be unsubscribed
-    const e2 = Observable.of('b'); // Wins the race
+    const e1 = NEVER.pipe(finalize(onUnsubscribe)); // Should be unsubscribed
+    const e2 = of('b'); // Wins the race
 
-    e1.race(e2).subscribe(onNext);
+    e1.pipe(race(e2)).subscribe(onNext);
     expect(onNext.calledWithExactly('b')).to.be.true;
     expect(onUnsubscribe.calledOnce).to.be.true;
   });
@@ -199,10 +198,10 @@ describe('Observable.prototype.race', () => {
   it('should unsubscribe from immediately emitting observable on unsubscription', () => {
     const onNext = sinon.spy();
     const onUnsubscribe = sinon.spy();
-    const e1 = NEVER.startWith('a').finally(onUnsubscribe); // Wins the race
+    const e1 = <Observable<never>>NEVER.pipe(startWith('a'), finalize(onUnsubscribe)); // Wins the race
     const e2 = NEVER; // Loses the race
 
-    const subscription = e1.race(e2).subscribe(onNext);
+    const subscription = e1.pipe(race(e2)).subscribe(onNext);
     expect(onNext.calledWithExactly('a')).to.be.true;
     expect(onUnsubscribe.called).to.be.false;
     subscription.unsubscribe();
