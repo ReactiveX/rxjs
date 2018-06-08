@@ -1,14 +1,15 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
 import { cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { repeat, mergeMap, map, multicast, refCount } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
+import { of, Subject } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 
-declare const rxTestScheduler: Rx.TestScheduler;
-const Observable = Rx.Observable;
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {repeat} */
-describe('Observable.prototype.repeat', () => {
+describe('repeat operator', () => {
   asDiagram('repeat(3)')('should resubscribe count number of times', () => {
     const e1 =   cold('--a--b--|                ');
     const subs =     ['^       !                ',
@@ -16,7 +17,7 @@ describe('Observable.prototype.repeat', () => {
                     '                ^       !'];
     const expected =  '--a--b----a--b----a--b--|';
 
-    expectObservable(e1.repeat(3)).toBe(expected);
+    expectObservable(e1.pipe(repeat(3))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -28,7 +29,7 @@ describe('Observable.prototype.repeat', () => {
                     '                        ^       !'];
     const expected =  '--a--b----a--b----a--b----a--b--|';
 
-    expectObservable(e1.repeat(2).repeat(2)).toBe(expected);
+    expectObservable(e1.pipe(repeat(2), repeat(2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -37,7 +38,7 @@ describe('Observable.prototype.repeat', () => {
     const subs: string[] = [];
     const expected = '|';
 
-    expectObservable(e1.repeat(0)).toBe(expected);
+    expectObservable(e1.pipe(repeat(0))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -46,7 +47,7 @@ describe('Observable.prototype.repeat', () => {
     const subs =     '^       !';
     const expected = '--a--b--|';
 
-    expectObservable(e1.repeat(1)).toBe(expected);
+    expectObservable(e1.pipe(repeat(1))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -57,7 +58,7 @@ describe('Observable.prototype.repeat', () => {
     const unsub =    '              !';
     const expected = '--a--b----a--b-';
 
-    expectObservable(e1.repeat(10), unsub).toBe(expected);
+    expectObservable(e1.pipe(repeat(10)), unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -72,7 +73,7 @@ describe('Observable.prototype.repeat', () => {
     const unsub =    '                                            !';
     const expected = '--a--b----a--b----a--b----a--b----a--b----a--';
 
-    expectObservable(e1.repeat(), unsub).toBe(expected);
+    expectObservable(e1.pipe(repeat()), unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -87,10 +88,11 @@ describe('Observable.prototype.repeat', () => {
     const unsub =    '                                            !';
     const expected = '--a--b----a--b----a--b----a--b----a--b----a--';
 
-    const result = e1
-      .mergeMap((x: string) => Observable.of(x))
-      .repeat()
-      .mergeMap((x: string) => Observable.of(x));
+    const result = e1.pipe(
+      mergeMap((x: string) => of(x)),
+      repeat(),
+      mergeMap((x: string) => of(x))
+    );
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -107,7 +109,7 @@ describe('Observable.prototype.repeat', () => {
     const unsub =    '                                            !';
     const expected = '--a--b----a--b----a--b----a--b----a--b----a--';
 
-    expectObservable(e1.repeat(-1), unsub).toBe(expected);
+    expectObservable(e1.pipe(repeat(-1)), unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -116,7 +118,7 @@ describe('Observable.prototype.repeat', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    expectObservable(e1.repeat(3)).toBe(expected);
+    expectObservable(e1.pipe(repeat(3))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -126,7 +128,7 @@ describe('Observable.prototype.repeat', () => {
     const subs =     '^                             !';
     const expected = '-';
 
-    expectObservable(e1.repeat(3), unsub).toBe(expected);
+    expectObservable(e1.pipe(repeat(3)), unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -135,7 +137,7 @@ describe('Observable.prototype.repeat', () => {
     const subs: string[] = [];
     const expected = '|';
 
-    expectObservable(e1.repeat(0)).toBe(expected);
+    expectObservable(e1.pipe(repeat(0))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -144,7 +146,7 @@ describe('Observable.prototype.repeat', () => {
     const subs: string[] = [];
     const expected = '|';
 
-    expectObservable(e1.repeat(0)).toBe(expected);
+    expectObservable(e1.pipe(repeat(0))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -153,7 +155,7 @@ describe('Observable.prototype.repeat', () => {
     const subs =     ['^       '];
     const expected =  '--a--b--';
 
-    expectObservable(e1.repeat(3)).toBe(expected);
+    expectObservable(e1.pipe(repeat(3))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -162,7 +164,7 @@ describe('Observable.prototype.repeat', () => {
     const e1subs =  ['(^!)', '(^!)', '(^!)'];
     const expected = '|';
 
-    expectObservable(e1.repeat(3)).toBe(expected);
+    expectObservable(e1.pipe(repeat(3))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -173,7 +175,7 @@ describe('Observable.prototype.repeat', () => {
                    '        ^   !'];
     const expected = '------------|';
 
-    expectObservable(e1.repeat(3)).toBe(expected);
+    expectObservable(e1.pipe(repeat(3))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -182,7 +184,7 @@ describe('Observable.prototype.repeat', () => {
     const subs: string[] = [];
     const expected = '|';
 
-    expectObservable(e1.repeat(0)).toBe(expected);
+    expectObservable(e1.pipe(repeat(0))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -191,7 +193,7 @@ describe('Observable.prototype.repeat', () => {
     const subs =     '^       !';
     const expected = '--a--b--#';
 
-    expectObservable(e1.repeat(2)).toBe(expected);
+    expectObservable(e1.pipe(repeat(2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -200,7 +202,7 @@ describe('Observable.prototype.repeat', () => {
     const e1subs =   '(^!)';
     const expected = '#';
 
-    expectObservable(e1.repeat(3)).toBe(expected);
+    expectObservable(e1.pipe(repeat(3))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -209,34 +211,34 @@ describe('Observable.prototype.repeat', () => {
     const e1subs =   '(^!)';
     const expected = '#';
 
-    expectObservable(e1.repeat()).toBe(expected);
+    expectObservable(e1.pipe(repeat())).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should raise error after first emit succeed', () => {
     let repeated = false;
 
-    const e1 = cold('--a--|').map((x: string) => {
+    const e1 = cold('--a--|').pipe(map((x: string) => {
       if (repeated) {
         throw 'error';
       } else {
         repeated = true;
         return x;
       }
-    });
+    }));
     const expected = '--a----#';
 
-    expectObservable(e1.repeat(2)).toBe(expected);
+    expectObservable(e1.pipe(repeat(2))).toBe(expected);
   });
 
   it('should repeat a synchronous source (multicasted and refCounted) multiple times', (done: MochaDone) => {
     const expected = [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3];
 
-    Observable.of(1, 2, 3)
-      .multicast(() => new Rx.Subject<number>())
-      .refCount()
-      .repeat(5)
-      .subscribe(
+    of(1, 2, 3).pipe(
+      multicast(() => new Subject<number>()),
+      refCount(),
+      repeat(5)
+    ).subscribe(
         (x: number) => { expect(x).to.equal(expected.shift()); },
         (x) => {
           done(new Error('should not be called'));
