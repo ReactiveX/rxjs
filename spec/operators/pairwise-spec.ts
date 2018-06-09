@@ -1,9 +1,10 @@
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { pairwise } from 'rxjs/operators';
 
 declare function asDiagram(arg: string): Function;
 
 /** @test {pairwise} */
-describe('Observable.prototype.pairwise', () => {
+describe('pairwise operator', () => {
   asDiagram('pairwise')('should group consecutive emissions as arrays of two', () => {
     const e1 =   hot('--a--b-c----d--e---|');
     const expected = '-----u-v----w--x---|';
@@ -15,7 +16,7 @@ describe('Observable.prototype.pairwise', () => {
       x: ['d', 'e']
     };
 
-    const source = (<any>e1).pairwise();
+    const source = (<any>e1).pipe(pairwise());
 
     expectObservable(source).toBe(expected, values);
   });
@@ -33,7 +34,7 @@ describe('Observable.prototype.pairwise', () => {
       z: ['f', 'g']
     };
 
-    const source = (<any>e1).pairwise();
+    const source = (<any>e1).pipe(pairwise());
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -47,7 +48,7 @@ describe('Observable.prototype.pairwise', () => {
     const values = {
     };
 
-    const source = (<any>e1).pairwise();
+    const source = (<any>e1).pipe(pairwise());
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -64,7 +65,7 @@ describe('Observable.prototype.pairwise', () => {
       x: ['d', 'e']
     };
 
-    const source = (<any>e1).pairwise();
+    const source = (<any>e1).pipe(pairwise());
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -75,7 +76,7 @@ describe('Observable.prototype.pairwise', () => {
     const e1subs =   '(^!)';
     const expected = '|';
 
-    const source = (<any>e1).pairwise();
+    const source = (<any>e1).pipe(pairwise());
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -86,7 +87,7 @@ describe('Observable.prototype.pairwise', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    const source = (<any>e1).pairwise();
+    const source = (<any>e1).pipe(pairwise());
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -97,7 +98,7 @@ describe('Observable.prototype.pairwise', () => {
     const e1subs =   '(^!)';
     const expected = '#';
 
-    const source = (<any>e1).pairwise();
+    const source = (<any>e1).pipe(pairwise());
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

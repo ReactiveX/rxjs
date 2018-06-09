@@ -78,9 +78,9 @@ describe('switchMapTo', () => {
   });
 
   it('should switch a synchronous many outer to a synchronous many inner', (done) => {
-    const a = Observable.of(1, 2, 3);
+    const a = of(1, 2, 3);
     const expected = ['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c'];
-    a.pipe(switchMapTo(Observable.of('a', 'b', 'c'))).subscribe((x) => {
+    a.pipe(switchMapTo(of('a', 'b', 'c'))).subscribe((x) => {
       expect(x).to.equal(expected.shift());
     }, null, done);
   });
@@ -88,7 +88,7 @@ describe('switchMapTo', () => {
   it('should unsub inner observables', () => {
     let unsubbed = 0;
 
-    Observable.of('a', 'b').pipe(switchMapTo(
+    of('a', 'b').pipe(switchMapTo(
       new Observable<string>((subscriber) => {
         subscriber.complete();
         return () => {
@@ -257,7 +257,7 @@ describe('switchMapTo', () => {
     const e1subs =   '(^!)';
     const expected = '|';
 
-    expectObservable(e1.pipe(switchMapTo(Observable.of('foo')))).toBe(expected);
+    expectObservable(e1.pipe(switchMapTo(of('foo')))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -266,7 +266,7 @@ describe('switchMapTo', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    expectObservable(e1.pipe(switchMapTo(Observable.of('foo')))).toBe(expected);
+    expectObservable(e1.pipe(switchMapTo(of('foo')))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -275,7 +275,7 @@ describe('switchMapTo', () => {
     const e1subs =   '(^!)';
     const expected = '#';
 
-    expectObservable(e1.pipe(switchMapTo(Observable.of('foo')))).toBe(expected);
+    expectObservable(e1.pipe(switchMapTo(of('foo')))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });

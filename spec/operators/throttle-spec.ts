@@ -1,14 +1,13 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { throttle, mergeMap, mapTo } from 'rxjs/operators';
+import { of, concat, timer, Observable } from 'rxjs';
 
 declare const type: Function;
 declare function asDiagram(arg: string): Function;
 
-const Observable = Rx.Observable;
-
 /** @test {throttle} */
-describe('Observable.prototype.throttle', () =>  {
+describe('throttle operator', () =>  {
   asDiagram('throttle')('should immediately emit the first value in each time window', () =>  {
     const e1 =   hot('-a-xy-----b--x--cxxx-|');
     const e1subs =   '^                    !';
@@ -18,7 +17,7 @@ describe('Observable.prototype.throttle', () =>  {
                    '                ^   ! '];
     const expected = '-a--------b-----c----|';
 
-    const result = e1.throttle(() =>  e2);
+    const result = e1.pipe(throttle(() =>  e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -34,7 +33,7 @@ describe('Observable.prototype.throttle', () =>  {
                    '                ^   ! '];
     const expected = '-a--------b-----c----|';
 
-    const result = e1.throttle(() =>  e2);
+    const result = e1.pipe(throttle(() =>  e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -50,7 +49,7 @@ describe('Observable.prototype.throttle', () =>  {
                    '                ^   ! '];
     const expected = '-a--------b-----c----|';
 
-    const result = e1.throttle(() =>  e2);
+    const result = e1.pipe(throttle(() =>  e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -65,7 +64,7 @@ describe('Observable.prototype.throttle', () =>  {
     const e2subs =   ' ^            !               ';
     const expected = '-a-------------               ';
 
-    const result = e1.throttle(() =>  e2);
+    const result = e1.pipe(throttle(() =>  e2));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -80,10 +79,11 @@ describe('Observable.prototype.throttle', () =>  {
     const expected = '-a-------------               ';
     const unsub =    '              !               ';
 
-    const result = e1
-      .mergeMap((x: string) => Observable.of(x))
-      .throttle(() =>  e2)
-      .mergeMap((x: string) => Observable.of(x));
+    const result = e1.pipe(
+      mergeMap((x: string) => of(x)),
+      throttle(() =>  e2),
+      mergeMap((x: string) => of(x))
+    );
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -101,7 +101,7 @@ describe('Observable.prototype.throttle', () =>  {
                    '                        ^!'];
     const expected = 'a-----a-----a-----a-----a|';
 
-    const result = e1.throttle(() =>  e2);
+    const result = e1.pipe(throttle(() =>  e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -114,7 +114,7 @@ describe('Observable.prototype.throttle', () =>  {
     const e2 =  cold('|');
     const expected = 'abcdefabcdefabcdefabcdefa|';
 
-    const result = e1.throttle(() =>  e2);
+    const result = e1.pipe(throttle(() =>  e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -127,7 +127,7 @@ describe('Observable.prototype.throttle', () =>  {
     const e2subs =   '    ^                        !';
     const expected = '----a------------------------|';
 
-    const result = e1.throttle(() =>  e2);
+    const result = e1.pipe(throttle(() =>  e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -141,7 +141,7 @@ describe('Observable.prototype.throttle', () =>  {
     const e2subs =   '    ^                        !';
     const expected = '----a------------------------#';
 
-    const result = e1.throttle(() =>  e2);
+    const result = e1.pipe(throttle(() =>  e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -155,7 +155,7 @@ describe('Observable.prototype.throttle', () =>  {
     const e2subs =   '    (^!)                      ';
     const expected = '----(a#)                      ';
 
-    const result = e1.throttle(() =>  e2);
+    const result = e1.pipe(throttle(() =>  e2));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -178,7 +178,7 @@ describe('Observable.prototype.throttle', () =>  {
     const expected = 'a-----a---a-------a--a|   ';
 
     let i = 0;
-    const result = e1.throttle(() =>  e2[i++]);
+    const result = e1.pipe(throttle(() =>  e2[i++]));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -199,7 +199,7 @@ describe('Observable.prototype.throttle', () =>  {
     const expected = 'a-----a---a------#        ';
 
     let i = 0;
-    const result = e1.throttle(() =>  e2[i++]);
+    const result = e1.pipe(throttle(() =>  e2[i++]));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -218,12 +218,12 @@ describe('Observable.prototype.throttle', () =>  {
     const exp =      '---x-----x-----x-----(e#)';
 
     let i = 0;
-    const result = s1.throttle(() => {
+    const result = s1.pipe(throttle(() => {
       if (i++ === 3) {
         throw new Error('lol');
       }
       return n1;
-    });
+    }));
     expectObservable(result).toBe(exp, undefined, new Error('lol'));
     expectSubscriptions(s1.subscriptions).toBe(s1Subs);
     expectSubscriptions(n1.subscriptions).toBe(n1Subs);
@@ -235,7 +235,7 @@ describe('Observable.prototype.throttle', () =>  {
     const expected = '-----|';
     function durationSelector() { return cold('-----|'); }
 
-    expectObservable(e1.throttle(durationSelector)).toBe(expected);
+    expectObservable(e1.pipe(throttle(durationSelector))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -245,7 +245,7 @@ describe('Observable.prototype.throttle', () =>  {
     const expected = '-----#';
     function durationSelector() { return cold('-----|'); }
 
-    expectObservable(e1.throttle(durationSelector)).toBe(expected);
+    expectObservable(e1.pipe(throttle(durationSelector))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -255,7 +255,7 @@ describe('Observable.prototype.throttle', () =>  {
     const expected = '|';
     function durationSelector() { return cold('-----|'); }
 
-    expectObservable(e1.throttle(durationSelector)).toBe(expected);
+    expectObservable(e1.pipe(throttle(durationSelector))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -265,7 +265,7 @@ describe('Observable.prototype.throttle', () =>  {
     const expected = '-';
     function durationSelector() { return cold('-----|'); }
 
-    expectObservable(e1.throttle(durationSelector)).toBe(expected);
+    expectObservable(e1.pipe(throttle(durationSelector))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -275,21 +275,21 @@ describe('Observable.prototype.throttle', () =>  {
     const expected = '#';
     function durationSelector() { return cold('-----|'); }
 
-    expectObservable(e1.throttle(durationSelector)).toBe(expected);
+    expectObservable(e1.pipe(throttle(durationSelector))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
   it('should throttle by promise resolves', (done: MochaDone) => {
-    const e1 = Observable.concat(Observable.of(1),
-      Observable.timer(10).mapTo(2),
-      Observable.timer(10).mapTo(3),
-      Observable.timer(50).mapTo(4)
+    const e1 = concat(of(1),
+      timer(10).pipe(mapTo(2)),
+      timer(10).pipe(mapTo(3)),
+      timer(50).pipe(mapTo(4))
     );
     const expected = [1, 2, 3, 4];
 
-    e1.throttle(() =>  {
+    e1.pipe(throttle(() =>  {
       return new Promise((resolve: any) => { resolve(42); });
-    }).subscribe(
+    })).subscribe(
       (x: number) => {
         expect(x).to.equal(expected.shift()); },
       () =>  {
@@ -303,21 +303,21 @@ describe('Observable.prototype.throttle', () =>  {
   });
 
   it('should raise error when promise rejects', (done: MochaDone) => {
-    const e1 = Observable.concat(Observable.of(1),
-      Observable.timer(10).mapTo(2),
-      Observable.timer(10).mapTo(3),
-      Observable.timer(50).mapTo(4)
+    const e1 = concat(of(1),
+      timer(10).pipe(mapTo(2)),
+      timer(10).pipe(mapTo(3)),
+      timer(50).pipe(mapTo(4))
     );
     const expected = [1, 2, 3];
     const error = new Error('error');
 
-    e1.throttle((x: number) => {
+    e1.pipe(throttle((x: number) => {
       if (x === 3) {
         return new Promise((resolve: any, reject: any) => { reject(error); });
       } else {
         return new Promise((resolve: any) => { resolve(42); });
       }
-    }).subscribe(
+    })).subscribe(
       (x: number) => {
         expect(x).to.equal(expected.shift()); },
       (err: any) => {
@@ -333,17 +333,17 @@ describe('Observable.prototype.throttle', () =>  {
 
   type('should support selectors of the same type', () => {
     /* tslint:disable:no-unused-variable */
-    let o: Rx.Observable<number>;
-    let s: Rx.Observable<number>;
-    let r: Rx.Observable<number> = o.throttle((n) => s);
+    let o: Observable<number>;
+    let s: Observable<number>;
+    let r: Observable<number> = o.pipe(throttle((n) => s));
     /* tslint:enable:no-unused-variable */
   });
 
   type('should support selectors of a different type', () => {
     /* tslint:disable:no-unused-variable */
-    let o: Rx.Observable<number>;
-    let s: Rx.Observable<string>;
-    let r: Rx.Observable<number> = o.throttle((n) => s);
+    let o: Observable<number>;
+    let s: Observable<string>;
+    let r: Observable<number> = o.pipe(throttle((n) => s));
     /* tslint:enable:no-unused-variable */
   });
 
@@ -360,7 +360,7 @@ describe('Observable.prototype.throttle', () =>  {
                        '                      ^   !'];
       const expected = '-a---y----b---x---x---x---|';
 
-      const result = e1.throttle(() =>  e2, { leading: true, trailing: true });
+      const result = e1.pipe(throttle(() =>  e2, { leading: true, trailing: true }));
 
       expectObservable(result).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -374,7 +374,7 @@ describe('Observable.prototype.throttle', () =>  {
       const n1Subs = ['  ^                  !'];
       const exp =     '--x------------------|';
 
-      const result = s1.throttle(() => n1, { leading: true, trailing: true });
+      const result = s1.pipe(throttle(() => n1, { leading: true, trailing: true }));
       expectObservable(result).toBe(exp);
       expectSubscriptions(s1.subscriptions).toBe(s1Subs);
       expectSubscriptions(n1.subscriptions).toBe(n1Subs);
@@ -394,7 +394,7 @@ describe('Observable.prototype.throttle', () =>  {
                        '                      ^   !'];
       const expected = '-a---y----b---x---x---x---|';
 
-      const result = e1.throttle(() =>  e2, { leading: true, trailing: true });
+      const result = e1.pipe(throttle(() =>  e2, { leading: true, trailing: true }));
 
       expectObservable(result).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -408,7 +408,7 @@ describe('Observable.prototype.throttle', () =>  {
       const n1Subs = ['  ^                  !'];
       const exp =     '--x------------------|';
 
-      const result = s1.throttle(() => n1, { leading: true, trailing: true });
+      const result = s1.pipe(throttle(() => n1, { leading: true, trailing: true }));
       expectObservable(result).toBe(exp);
       expectSubscriptions(s1.subscriptions).toBe(s1Subs);
       expectSubscriptions(n1.subscriptions).toBe(n1Subs);

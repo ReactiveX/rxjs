@@ -1,14 +1,15 @@
-import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { window, mergeMap } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
+import { EMPTY, of, Observable } from 'rxjs';
 
 declare const type: Function;
 declare const asDiagram: Function;
 
-declare const rxTestScheduler: Rx.TestScheduler;
-const Observable = Rx.Observable;
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {window} */
-describe('Observable.prototype.window', () => {
+describe('window operator', () => {
   asDiagram('window')('should emit windows that close and reopen', () => {
     const source =   hot('---a---b---c---d---e---f---g---h---i---|    ');
     const sourceSubs =   '^                                      !    ';
@@ -20,7 +21,7 @@ describe('Observable.prototype.window', () => {
     const z = cold(                                '-g---h---i---|    ');
     const expectedValues = { x: x, y: y, z: z };
 
-    const result = source.window(closings);
+    const result = source.pipe(window(closings));
 
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -36,7 +37,7 @@ describe('Observable.prototype.window', () => {
     const w =         cold('|');
     const expectedValues = { w: w };
 
-    const result = source.window(closings);
+    const result = source.pipe(window(closings));
 
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -52,7 +53,7 @@ describe('Observable.prototype.window', () => {
     const w =        cold('|');
     const expectedValues = { w: w };
 
-    const result = source.window(closings);
+    const result = source.pipe(window(closings));
 
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -66,7 +67,7 @@ describe('Observable.prototype.window', () => {
     const w =        cold('|');
     const expectedValues = { w: w };
 
-    const result = source.window(Observable.empty());
+    const result = source.pipe(window(EMPTY));
 
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -83,7 +84,7 @@ describe('Observable.prototype.window', () => {
     const w =        cold('(a|)');
     const expectedValues = { w: w };
 
-    const result = source.window(closings);
+    const result = source.pipe(window(closings));
 
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -99,7 +100,7 @@ describe('Observable.prototype.window', () => {
     const w =        cold('------');
     const expectedValues = { w: w };
 
-    const result = source.window(closings);
+    const result = source.pipe(window(closings));
 
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -117,7 +118,7 @@ describe('Observable.prototype.window', () => {
     const c =        cold(     '---|');
     const expectedValues = { a: a, b: b, c: c };
 
-    const result = source.window(closings);
+    const result = source.pipe(window(closings));
 
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -133,7 +134,7 @@ describe('Observable.prototype.window', () => {
     const w =        cold('#');
     const expectedValues = { w: w };
 
-    const result = source.window(closings);
+    const result = source.pipe(window(closings));
 
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -152,7 +153,7 @@ describe('Observable.prototype.window', () => {
     const d = cold(                     '-9-|         ');
     const expectedValues = { a: a, b: b, c: c, d: d };
 
-    const result = source.window(closings);
+    const result = source.pipe(window(closings));
 
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -171,7 +172,7 @@ describe('Observable.prototype.window', () => {
     const d = cold(                     '-9-#         ');
     const expectedValues = { a: a, b: b, c: c, d: d };
 
-    const result = source.window(closings);
+    const result = source.pipe(window(closings));
 
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -189,7 +190,7 @@ describe('Observable.prototype.window', () => {
     const unsub =           '        !                ';
     const expectedValues = { a: a, b: b };
 
-    const result = source.window(closings);
+    const result = source.pipe(window(closings));
 
     expectObservable(result, unsub).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -207,10 +208,11 @@ describe('Observable.prototype.window', () => {
     const unsub =           '        !                ';
     const expectedValues = { a: a, b: b };
 
-    const result = source
-      .mergeMap((x: string) => Observable.of(x))
-      .window(closings)
-      .mergeMap((x: Rx.Observable<string>) => Observable.of(x));
+    const result = source.pipe(
+      mergeMap((x: string) => of(x)),
+      window(closings),
+      mergeMap((x: Observable<string>) => of(x))
+    );
 
     expectObservable(result, unsub).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -226,7 +228,7 @@ describe('Observable.prototype.window', () => {
     const a = cold(         '-3-4#           ');
     const expectedValues = { a: a };
 
-    const result = source.window(closings);
+    const result = source.pipe(window(closings));
 
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -244,7 +246,7 @@ describe('Observable.prototype.window', () => {
     const c = cold(                 '-7-8|   ');
     const expectedValues = { a: a, b: b, c: c };
 
-    const result = source.window(closings);
+    const result = source.pipe(window(closings));
 
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(subs);

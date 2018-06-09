@@ -1,13 +1,14 @@
-import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
+import { windowTime, mergeMap } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
+import { of, Observable } from 'rxjs';
 
 declare const type: Function;
 declare const asDiagram: Function;
-declare const rxTestScheduler: Rx.TestScheduler;
-const Observable = Rx.Observable;
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {windowTime} */
-describe('Observable.prototype.windowTime', () => {
+describe('windowTime operator', () => {
   asDiagram('windowTime(50, 100)')('should emit windows given windowTimeSpan ' +
   'and windowCreationInterval', () => {
     const source = hot('--1--2--^-a--b--c--d--e---f--g--h-|');
@@ -22,7 +23,7 @@ describe('Observable.prototype.windowTime', () => {
     const z = cold(                                '-g--h| ');
     const values = { x, y, z };
 
-    const result = source.windowTime(50, 100, rxTestScheduler);
+    const result = source.pipe(windowTime(50, 100, rxTestScheduler));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -39,7 +40,7 @@ describe('Observable.prototype.windowTime', () => {
     const z = cold(                                '-g-----|');
     const values = { x, y, z };
 
-    const result = source.windowTime(timeSpan, null, 2, rxTestScheduler);
+    const result = source.pipe(windowTime(timeSpan, null, 2, rxTestScheduler));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -59,7 +60,7 @@ describe('Observable.prototype.windowTime', () => {
     const z = cold(                                '-h--i| ');
     const values = { x, y, z };
 
-    const result = source.windowTime(50, 100, 3, rxTestScheduler);
+    const result = source.pipe(windowTime(50, 100, 3, rxTestScheduler));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -76,7 +77,7 @@ describe('Observable.prototype.windowTime', () => {
     const z = cold(                                '-g--h--|');
     const values = { x, y, z };
 
-    const result = source.windowTime(timeSpan, rxTestScheduler);
+    const result = source.pipe(windowTime(timeSpan, rxTestScheduler));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -97,7 +98,7 @@ describe('Observable.prototype.windowTime', () => {
     const z = cold(                                '-g--h|  ');
     const values = { x, y, z };
 
-    const result = source.windowTime(timeSpan, interval, rxTestScheduler);
+    const result = source.pipe(windowTime(timeSpan, interval, rxTestScheduler));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -112,7 +113,7 @@ describe('Observable.prototype.windowTime', () => {
     const timeSpan = time('-----|');
     const interval = time('----------|');
 
-    const result = source.windowTime(timeSpan, interval, rxTestScheduler);
+    const result = source.pipe(windowTime(timeSpan, interval, rxTestScheduler));
 
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -127,7 +128,7 @@ describe('Observable.prototype.windowTime', () => {
     const timeSpan = time('-----|');
     const interval = time('----------|');
 
-    const result = source.windowTime(timeSpan, interval, rxTestScheduler);
+    const result = source.pipe(windowTime(timeSpan, interval, rxTestScheduler));
 
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -146,7 +147,7 @@ describe('Observable.prototype.windowTime', () => {
     const unsub =         '          !';
     const expectedValues = { a, b, c, d };
 
-    const result = source.windowTime(timeSpan, interval, rxTestScheduler);
+    const result = source.pipe(windowTime(timeSpan, interval, rxTestScheduler));
 
     expectObservable(result, unsub).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -161,7 +162,7 @@ describe('Observable.prototype.windowTime', () => {
     const timeSpan = time('-----|');
     const interval = time('----------|');
 
-    const result = source.windowTime(timeSpan, interval, rxTestScheduler);
+    const result = source.pipe(windowTime(timeSpan, interval, rxTestScheduler));
 
     expectObservable(result).toBe(expected, expectedValues);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -182,7 +183,7 @@ describe('Observable.prototype.windowTime', () => {
     const z = cold(                                '-g--h|  ');
     const values = { x, y, z };
 
-    const result = source.windowTime(timeSpan, interval, rxTestScheduler);
+    const result = source.pipe(windowTime(timeSpan, interval, rxTestScheduler));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -204,7 +205,7 @@ describe('Observable.prototype.windowTime', () => {
     const unsub =              '           !                ';
     const values = { x, y };
 
-    const result = source.windowTime(timeSpan, interval, rxTestScheduler);
+    const result = source.pipe(windowTime(timeSpan, interval, rxTestScheduler));
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -225,10 +226,11 @@ describe('Observable.prototype.windowTime', () => {
     const unsub =              '              !             ';
     const values = { x, y };
 
-    const result = source
-      .mergeMap((x: string) => Observable.of(x))
-      .windowTime(timeSpan, interval, rxTestScheduler)
-      .mergeMap((x: Rx.Observable<string>) => Observable.of(x));
+    const result = source.pipe(
+      mergeMap((x: string) => of(x)),
+      windowTime(timeSpan, interval, rxTestScheduler),
+      mergeMap((x: Observable<string>) => of(x))
+    );
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(sourcesubs);

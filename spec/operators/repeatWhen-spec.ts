@@ -1,13 +1,12 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { repeatWhen, map, mergeMap, takeUntil, flatMap } from 'rxjs/operators';
+import { of, EMPTY, Observable, Subscriber } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 
-const Observable = Rx.Observable;
-
 /** @test {repeatWhen} */
-describe('Observable.prototype.repeatWhen', () => {
+describe('repeatWhen operator', () => {
   asDiagram('repeatWhen')('should handle a source with eventual complete using a hot notifier', () => {
     const source =  cold('-1--2--|');
     const subs =        ['^      !                     ',
@@ -16,7 +15,7 @@ describe('Observable.prototype.repeatWhen', () => {
     const notifier = hot('-------------r------------r-|');
     const expected =     '-1--2---------1--2---------1--2--|';
 
-    const result = source.repeatWhen((notifications: any) => notifier);
+    const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -30,7 +29,7 @@ describe('Observable.prototype.repeatWhen', () => {
     const notifier = hot('-----------r-------r---------#');
     const expected =     '-1--2-------1--2----1--2-----#';
 
-    const result = source.repeatWhen((notifications: any) => notifier);
+    const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -41,18 +40,18 @@ describe('Observable.prototype.repeatWhen', () => {
     const expected = [1, 2, 1, 2];
     let i = 0;
     try {
-    Observable.of(1, 2)
-      .map((n: number) => {
+    of(1, 2).pipe(
+      map((n: number) => {
         return n;
-      })
-      .repeatWhen((notifications: any) => notifications.map((x: any) => {
+      }),
+      repeatWhen((notifications: any) => notifications.pipe(map((x: any) => {
           if (retried) {
             throw new Error('done');
           }
           retried = true;
           return x;
-      }))
-      .subscribe((x: any) => {
+      })))
+    ).subscribe((x: any) => {
         expect(x).to.equal(expected[i++]);
       },
       (err: any) => {
@@ -67,12 +66,12 @@ describe('Observable.prototype.repeatWhen', () => {
   it('should not repeat when applying an empty notifier', (done: MochaDone) => {
     const expected = [1, 2];
     const nexted: number[] = [];
-    Observable.of(1, 2)
-      .map((n: number) => {
+    of(1, 2).pipe(
+      map((n: number) => {
         return n;
-      })
-      .repeatWhen((notifications: any) => Observable.empty())
-      .subscribe((n: number) => {
+      }),
+      repeatWhen((notifications: any) => EMPTY)
+    ).subscribe((n: number) => {
         expect(n).to.equal(expected.shift());
         nexted.push(n);
       }, (err: any) => {
@@ -94,18 +93,18 @@ describe('Observable.prototype.repeatWhen', () => {
     const originalSubscribe = Observable.prototype.subscribe;
     Observable.prototype.subscribe = function (...args: any[]): any {
       let [subscriber] = args;
-      if (!(subscriber instanceof Rx.Subscriber)) {
-        subscriber = new Rx.Subscriber<any>(...args);
+      if (!(subscriber instanceof Subscriber)) {
+        subscriber = new Subscriber<any>(...args);
       }
       subscriber.error = function (err: any): void {
         errors.push(err);
-        Rx.Subscriber.prototype.error.call(this, err);
+        Subscriber.prototype.error.call(this, err);
       };
       return originalSubscribe.call(this, subscriber);
     };
-    Observable.of(1, 2)
-      .repeatWhen((notifications: any) => Observable.empty())
-      .subscribe(undefined, err => errors.push(err));
+    of(1, 2).pipe(
+      repeatWhen((notifications: any) => EMPTY)
+    ).subscribe(undefined, err => errors.push(err));
     Observable.prototype.subscribe = originalSubscribe;
     expect(errors).to.deep.equal([]);
   });
@@ -121,18 +120,18 @@ describe('Observable.prototype.repeatWhen', () => {
     const originalSubscribe = Observable.prototype.subscribe;
     Observable.prototype.subscribe = function (...args: any[]): any {
       let [subscriber] = args;
-      if (!(subscriber instanceof Rx.Subscriber)) {
-        subscriber = new Rx.Subscriber<any>(...args);
+      if (!(subscriber instanceof Subscriber)) {
+        subscriber = new Subscriber<any>(...args);
       }
       subscriber.error = function (err: any): void {
         errors.push(err);
-        Rx.Subscriber.prototype.error.call(this, err);
+        Subscriber.prototype.error.call(this, err);
       };
       return originalSubscribe.call(this, subscriber);
     };
-    Observable.of(1, 2)
-      .repeatWhen((notifications: any) => Observable.of(1))
-      .subscribe(undefined, err => errors.push(err));
+    of(1, 2).pipe(
+      repeatWhen((notifications: any) => of(1))
+    ).subscribe(undefined, err => errors.push(err));
     Observable.prototype.subscribe = originalSubscribe;
     expect(errors).to.deep.equal([]);
   });
@@ -143,7 +142,7 @@ describe('Observable.prototype.repeatWhen', () => {
     const notifier = cold('|');
     const expected =      '|';
 
-    const result = source.repeatWhen((notifications: any) => notifier);
+    const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -155,7 +154,7 @@ describe('Observable.prototype.repeatWhen', () => {
     const notifier = cold('-');
     const expected =      '-';
 
-    const result = source.repeatWhen((notifications: any) => notifier);
+    const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -168,7 +167,7 @@ describe('Observable.prototype.repeatWhen', () => {
     const notifier = cold('|');
     const expected =      '-';
 
-    const result = source.repeatWhen((notifications: any) => notifier);
+    const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -181,7 +180,7 @@ describe('Observable.prototype.repeatWhen', () => {
     const notifier = cold('-');
     const expected =      '-';
 
-    const result = source.repeatWhen((notifications: any) => notifier);
+    const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -192,7 +191,7 @@ describe('Observable.prototype.repeatWhen', () => {
     const notifier = cold('|');
     const expected =      '#';
 
-    const result = source.repeatWhen((notifications: any) => notifier);
+    const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
     expectObservable(result).toBe(expected);
   });
@@ -202,7 +201,7 @@ describe('Observable.prototype.repeatWhen', () => {
     const notifier = cold('-');
     const expected =      '#';
 
-    const result = source.repeatWhen((notifications: any) => notifier);
+    const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
     expectObservable(result).toBe(expected);
   });
@@ -213,7 +212,7 @@ describe('Observable.prototype.repeatWhen', () => {
     const notifier = cold(           '-');
     const expected =      '--a--b--c---------------------------------';
 
-    const result = source.repeatWhen((notifications: any) => notifier);
+    const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -224,7 +223,7 @@ describe('Observable.prototype.repeatWhen', () => {
     const subs =        '^          !';
     const expected =    '--a--b--c--#';
 
-    const result = source.repeatWhen(<any>(() => { throw 'bad!'; }));
+    const result = source.pipe(repeatWhen(<any>(() => { throw 'bad!'; })));
 
     expectObservable(result).toBe(expected, undefined, 'bad!');
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -237,7 +236,7 @@ describe('Observable.prototype.repeatWhen', () => {
     const notifier = cold(           '|');
     const expected =      '--a--b--c--|';
 
-    const result = source.repeatWhen((notifications: any) => notifier);
+    const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -249,7 +248,7 @@ describe('Observable.prototype.repeatWhen', () => {
     const notifier = cold(           '|');
     const expected =      '--a--b--c--|';
 
-    const result = source.repeatWhen((notifications: any) => notifier);
+    const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -261,7 +260,7 @@ describe('Observable.prototype.repeatWhen', () => {
     const notifier = cold(           '|');
     const expected =      '--a--b--c---';
 
-    const result = source.repeatWhen((notifications: any) => notifier);
+    const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -273,7 +272,7 @@ describe('Observable.prototype.repeatWhen', () => {
     const notifier = cold(         '|');
     const expected =      '---b--c--|';
 
-    const result = source.repeatWhen((notifications: any) => notifier);
+    const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -287,13 +286,15 @@ describe('Observable.prototype.repeatWhen', () => {
     const nsubs =        '       ^           !';
     const expected =     '-1--2---      -5---|';
 
-    const result = source
-      .map((x: string) => {
+    const result = source.pipe(
+      map((x: string) => {
         if (x === '3') {
           throw 'error';
         }
         return x;
-      }).repeatWhen(() => notifier);
+      }),
+      repeatWhen(() => notifier)
+    );
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(ssubs);
@@ -310,7 +311,7 @@ describe('Observable.prototype.repeatWhen', () => {
     const nsubs =        '       ^            !       ';
     const expected =     '-1--2-----1--2----1--       ';
 
-    const result = source.repeatWhen((notifications: any) => notifier);
+    const result = source.pipe(repeatWhen((notifications: any) => notifier));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -327,10 +328,11 @@ describe('Observable.prototype.repeatWhen', () => {
     const expected =     '-1--2-----1--2----1--       ';
     const unsub =        '                    !       ';
 
-    const result = source
-      .mergeMap((x: string) => Observable.of(x))
-      .repeatWhen((notifications: any) => notifier)
-      .mergeMap((x: string) => Observable.of(x));
+    const result = source.pipe(
+      mergeMap((x: string) => of(x)),
+      repeatWhen((notifications: any) => notifier),
+      mergeMap((x: string) => of(x))
+    );
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -346,14 +348,14 @@ describe('Observable.prototype.repeatWhen', () => {
     const expected =    '-1--2---1--2---1--2--#';
 
     let invoked = 0;
-    const result = source.repeatWhen((notifications: any) =>
-      notifications.map((err: any) => {
+    const result = source.pipe(repeatWhen((notifications: any) =>
+      notifications.pipe(map((err: any) => {
         if (++invoked === 3) {
           throw 'error';
         } else {
           return 'x';
         }
-      }));
+      }))));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -368,17 +370,19 @@ describe('Observable.prototype.repeatWhen', () => {
     const expected =    '-1--2---1--2---1--2--|';
 
     let invoked = 0;
-    const result = source.repeatWhen((notifications: any) => notifications
-        .map(() => 'x')
-        .takeUntil(
-          notifications.flatMap(() => {
+    const result = source.pipe(
+      repeatWhen((notifications: any) => notifications.pipe(
+        map(() => 'x'),
+        takeUntil(
+          notifications.pipe(flatMap(() => {
             if (++invoked < 3) {
-              return Observable.empty();
+              return EMPTY;
             } else {
-              return Observable.of('stop!');
+              return of('stop!');
             }
-          })
-      ));
+          }))
+      )))
+    );
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);

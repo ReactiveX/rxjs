@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { switchMap, mergeMap } from 'rxjs/operators';
+import { switchMap, mergeMap, map } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
@@ -15,7 +15,7 @@ describe('switchMap', () => {
     const expected =  '--x-x-x-y-yz-z-z---|';
     const values = {x: 10, y: 30, z: 50};
 
-    const result = e1.pipe(switchMap(x => e2.map(i => i * +x)));
+    const result = e1.pipe(switchMap(x => e2.pipe(map(i => i * +x))));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

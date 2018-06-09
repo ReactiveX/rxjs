@@ -1,19 +1,18 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { onErrorResumeNext } from 'rxjs/operators';
+import { concat, throwError, of } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 
-const Observable = Rx.Observable;
-
-describe('Observable.prototype.onErrorResumeNext', () => {
+describe('onErrorResumeNext operator', () => {
   asDiagram('onErrorResumeNext')('should continue observable sequence with next observable', () => {
     const source =  hot('--a--b--#');
     const next   = cold(        '--c--d--|');
     const subs =        '^               !';
     const expected =    '--a--b----c--d--|';
 
-    expectObservable(source.onErrorResumeNext(next)).toBe(expected);
+    expectObservable(source.pipe(onErrorResumeNext(next))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -23,7 +22,7 @@ describe('Observable.prototype.onErrorResumeNext', () => {
     const subs =        '^               !';
     const expected =    '--a--b----c--d--|';
 
-    expectObservable(source.onErrorResumeNext(next)).toBe(expected);
+    expectObservable(source.pipe(onErrorResumeNext(next))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -35,7 +34,7 @@ describe('Observable.prototype.onErrorResumeNext', () => {
     const subs =         '^                            !';
     const expected =     '--a--b----c--d----e----f--g--|';
 
-    expectObservable(source.onErrorResumeNext(next)).toBe(expected);
+    expectObservable(source.pipe(onErrorResumeNext(next))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -47,7 +46,7 @@ describe('Observable.prototype.onErrorResumeNext', () => {
     const subs =         '^                            !';
     const expected =     '--a--b----c--d----e----f--g--|';
 
-    expectObservable(source.onErrorResumeNext(next1, next2, next3)).toBe(expected);
+    expectObservable(source.pipe(onErrorResumeNext(next1, next2, next3))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -59,7 +58,7 @@ describe('Observable.prototype.onErrorResumeNext', () => {
     const subs =         '^                            !';
     const expected =     '--a--b----c--d----e----f--g--|';
 
-    expectObservable(source.onErrorResumeNext(next1, next2, next3)).toBe(expected);
+    expectObservable(source.pipe(onErrorResumeNext(next1, next2, next3))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -71,7 +70,7 @@ describe('Observable.prototype.onErrorResumeNext', () => {
     const subs =         '^                    !';
     const expected =     '--c--d----e----f--g--|';
 
-    expectObservable(source.onErrorResumeNext(next1, next2, next3)).toBe(expected);
+    expectObservable(source.pipe(onErrorResumeNext(next1, next2, next3))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -81,7 +80,7 @@ describe('Observable.prototype.onErrorResumeNext', () => {
     const subs =         '^         ';
     const expected =     '--a--b----';
 
-    expectObservable(source.onErrorResumeNext(next1)).toBe(expected);
+    expectObservable(source.pipe(onErrorResumeNext(next1))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -91,7 +90,7 @@ describe('Observable.prototype.onErrorResumeNext', () => {
     const subs =         '^       ';
     const expected =     '-';
 
-    expectObservable(source.onErrorResumeNext(next1)).toBe(expected);
+    expectObservable(source.pipe(onErrorResumeNext(next1))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -101,15 +100,15 @@ describe('Observable.prototype.onErrorResumeNext', () => {
     const subs =        '^               !';
     const expected =    '--a--b----c--d--|';
 
-    expectObservable(source.onErrorResumeNext(next)).toBe(expected);
+    expectObservable(source.pipe(onErrorResumeNext(next))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should work with promise', (done: MochaDone) => {
     const expected = [1, 2];
-    const source = Observable.concat(Observable.of(1), Observable.throw('meh'));
+    const source = concat(of(1), throwError('meh'));
 
-    source.onErrorResumeNext(Promise.resolve(2))
+    source.pipe(onErrorResumeNext(Promise.resolve(2)))
       .subscribe(x => {
         expect(expected.shift()).to.equal(x);
       }, (err: any) => {
