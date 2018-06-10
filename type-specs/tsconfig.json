@@ -6,7 +6,10 @@
     "noEmit": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "paths": { "rxjs": ["../src"] },
+    "paths": {
+      "rxjs": ["../src"],
+      "rxjs/operators": ["../src/operators"]
+    },
     "strictFunctionTypes": true,
     "strictNullChecks": true
   }
