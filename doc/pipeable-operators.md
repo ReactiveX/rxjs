@@ -243,19 +243,3 @@ var config = {
 
 module.exports = config;
 ```
-
-**No Control over Build Process**
-
-If you have no control over your build process (or are unable to upgrade to Webpack 3+), the above solution will not work. Therefore importing from `rxjs/operators` will likely make your application bundle larger. However, there's still a way you can use pipeable operators. You will have to use deep imports, similar to how you import prior to version 5.5 and pipeable operators:
-
-```ts
-import { map, filter, reduce } from 'rxjs/operators';
-```
-
-becomes:
-
-```ts
-import { map } from 'rxjs/internal/operators/map';
-import { filter } from 'rxjs/internal/operators/filter';
-import { reduce } from 'rxjs/internal/operators/reduce';
-```
