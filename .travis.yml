@@ -49,7 +49,6 @@ install:
 script:
   - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
   - if [ "$FULL_VALIDATE" == "true" ] && [ -n "DANGER_GITHUB_API_TOKEN" ]; then echo {} > ./.babelrc && npx danger; fi
-  - npm run test_check
   - npm test
   - npm run test:systemjs
   - if [ "${TSC_VERSION}" ]; then npm install --no-save typescript@$TSC_VERSION && ./node_modules/.bin/tsc --version && npm run build_cjs ; fi
