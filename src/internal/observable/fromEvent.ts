@@ -13,6 +13,14 @@ export interface NodeStyleEventEmitter {
 
 export type NodeEventHandler = (...args: any[]) => void;
 
+// For APIs that implement `addListener` and `removeListener` methods that may
+// not use the same arguments or return EventEmitter values
+// such as React Native
+export interface NodeCompatibleEventEmitter {
+  addListener: (eventName: string, handler: NodeEventHandler) => void | {};
+  removeListener: (eventName: string, handler: NodeEventHandler) => void | {};
+}
+
 export interface JQueryStyleEventEmitter {
   on: (eventName: string, handler: Function) => void;
   off: (eventName: string, handler: Function) => void;
@@ -23,7 +31,7 @@ export interface HasEventTargetAddRemove<E> {
   removeEventListener(type: string, listener?: ((evt: E) => void) | null, options?: EventListenerOptions | boolean): void;
 }
 
-export type EventTargetLike<T> = HasEventTargetAddRemove<T> | NodeStyleEventEmitter | JQueryStyleEventEmitter;
+export type EventTargetLike<T> = HasEventTargetAddRemove<T> | NodeStyleEventEmitter | NodeCompatibleEventEmitter | JQueryStyleEventEmitter;
 
 export type FromEventTarget<T> = EventTargetLike<T> | ArrayLike<EventTargetLike<T>>;
 

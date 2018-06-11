@@ -1,8 +1,11 @@
 import { expect } from 'chai';
 import { expectObservable } from '../helpers/marble-testing';
-import { fromEvent, NEVER, timer, pipe } from 'rxjs';
+import { Observable, fromEvent, NEVER, timer, pipe } from 'rxjs';
+import { NodeStyleEventEmitter, NodeCompatibleEventEmitter, NodeEventHandler } from 'rxjs/internal/observable/fromEvent';
 import { mapTo, take, concat } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
+
+declare const type: Function;
 
 declare function asDiagram(arg: string): Function;
 declare const rxTestScheduler: TestScheduler;
@@ -89,7 +92,7 @@ describe('fromEvent', () => {
     expect(offHandler).to.equal(onHandler);
   });
 
-  it('should setup an event observable on objects with "addListener" and "removeListener" ', () => {
+  it('should setup an event observable on objects with "addListener" and "removeListener" returning event emitter', () => {
     let onEventName;
     let onHandler;
     let offEventName;
@@ -105,6 +108,37 @@ describe('fromEvent', () => {
         offEventName = a;
         offHandler = b;
         return this;
+      }
+    };
+
+    const subscription = fromEvent(obj, 'click')
+      .subscribe(() => {
+        //noop
+       });
+
+    subscription.unsubscribe();
+
+    expect(onEventName).to.equal('click');
+    expect(typeof onHandler).to.equal('function');
+    expect(offEventName).to.equal(onEventName);
+    expect(offHandler).to.equal(onHandler);
+  });
+
+  it('should setup an event observable on objects with "addListener" and "removeListener" returning nothing', () => {
+    let onEventName;
+    let onHandler;
+    let offEventName;
+    let offHandler;
+
+    const obj = {
+      addListener(a: string, b: (...args: any[]) => any, context?: any): { context: any } {
+        onEventName = a;
+        onHandler = b;
+        return { context: '' };
+      },
+      removeListener(a: string, b: (...args: any[]) => void) {
+        offEventName = a;
+        offHandler = b;
       }
     };
 
@@ -361,6 +395,47 @@ describe('fromEvent', () => {
       fromEvent(obj, 'foo').subscribe();
       done();
     }).to.not.throw(TypeError);
+  });
+
+  type('should support node style event emitters interfaces', () => {
+    /* tslint:disable:no-unused-variable */
+    let a: NodeStyleEventEmitter;
+    let b: Observable<any> = fromEvent(a, 'mock');
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type('should support node compatible event emitters interfaces', () => {
+    /* tslint:disable:no-unused-variable */
+    let a: NodeCompatibleEventEmitter;
+    let b: Observable<any> = fromEvent(a, 'mock');
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type('should support node style event emitters objects', () => {
+    /* tslint:disable:no-unused-variable */
+    interface NodeEventEmitter {
+      addListener(eventType: string | symbol, handler: NodeEventHandler): this;
+      removeListener(eventType: string | symbol, handler: NodeEventHandler): this;
+    }
+    let a: NodeEventEmitter;
+    let b: Observable<any> = fromEvent(a, 'mock');
+    /* tslint:enable:no-unused-variable */
+  });
+
+  type('should support React Native event emitters', () => {
+    /* tslint:disable:no-unused-variable */
+    interface EmitterSubscription {
+      context: any;
+    }
+    interface ReactNativeEventEmitterListener {
+      addListener(eventType: string, listener: (...args: any[]) => any, context?: any): EmitterSubscription;
+    }
+    interface ReactNativeEventEmitter extends ReactNativeEventEmitterListener {
+      removeListener(eventType: string, listener: (...args: any[]) => any): void;
+    }
+    let a: ReactNativeEventEmitter;
+    let b: Observable<any> = fromEvent(a, 'mock');
+    /* tslint:enable:no-unused-variable */
   });
 
 });
