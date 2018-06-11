@@ -1,8 +1,8 @@
 # Pipeable Operators
 
-Starting in version 5.5 we have shipped "pipeable operators", which can be accessed in `rxjs/operators` (notice the pluralized "operators"). These are meant to be a better approach for pulling in just the operators you need than the "patch" operators found in `rxjs/add/operator/*`.
+Starting in version 5.5 we have shipped "pipeable operators", which can be accessed in `rxjs/operators` (notice the pluralized "operators"). These are meant to be a better approach for pulling in just the operators you need than the "patch" operators found in `rxjs-compat` package.
 
-**NOTE**: Using `rxjs/operators` without making changes to your build process can result in larger bundles. See [Known Issues](#known-issues) section below.
+**NOTE**: Using `rxjs` or `rxjs/operators` without making changes to your build process can result in larger bundles. See [Known Issues](#known-issues) section below.
 
 **Renamed Operators**
 
@@ -23,16 +23,6 @@ The former `toPromise()` "operator" has been removed
 because an operator returns an `Observable`,
 not a `Promise`.
 There is now an `Observable.toPromise()`instance method.
-
-Because `throw` is a key word you could use `_throw` after `import { _throw } from 'rxjs/observable/throw'`.
-
-If the leading `_` bothers you (because a leading `_` typically means "_Internal - Do not use_"), you can do as follows:
-```
-import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-...
-const e = ErrorObservable.create(new Error('My bad'));
-const e2 = new ErrorObservable(new Error('My bad too'));
-```
 
 ## Why?
 
@@ -59,7 +49,7 @@ There is also a `pipe` utility function at `rxjs/util/pipe` that can be used to 
 You pull in any operator you need from one spot, under `'rxjs/operators'` (**plural!**). It's also recommended to pull in the Observable creation methods you need directly as shown below with `range`:
 
 ```ts
-import { range } from 'rxjs/observable/range';
+import { range } from 'rxjs';
 import { map, filter, scan } from 'rxjs/operators';
 
 const source$ = range(0, 10);
@@ -77,7 +67,7 @@ source$.pipe(
 You, in fact, could _always_ do this with `let`... but building your own operator is as simple as writing a function now. Notice, that you can compose your custom operator in with other rxjs operators seamlessly.
 
 ```ts
-import { interval } from 'rxjs/observable/interval';
+import { interval } from 'rxjs';
 import { filter, map, take, toArray } from 'rxjs/operators';
 
 /**
@@ -252,20 +242,4 @@ var config = {
 };
 
 module.exports = config;
-```
-
-**No Control over Build Process**
-
-If you have no control over your build process (or are unable to upgrade to Webpack 3+), the above solution will not work. Therefore importing from `rxjs/operators` will likely make your application bundle larger. However, there's still a way you can use pipeable operators. You will have to use deep imports, similar to how you import prior to version 5.5 and pipeable operators:
-
-```ts
-import { map, filter, reduce } from 'rxjs/operators';
-```
-
-becomes:
-
-```ts
-import { map } from 'rxjs/operators/map';
-import { filter } from 'rxjs/operators/filter';
-import { reduce } from 'rxjs/operators/reduce';
 ```
