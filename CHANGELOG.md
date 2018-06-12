@@ -1,3 +1,28 @@
+<a name="6.2.1"></a>
+## [6.2.1](https://github.com/reactivex/rxjs/compare/6.2.0...6.2.1) (2018-06-12)
+
+
+### Bug Fixes
+
+* **ci:** do not trigger postbuild script on PR ([f82c085](https://github.com/reactivex/rxjs/commit/f82c085))
+* **delayWhen:** Emit source value if duration selector completes synchronously ([#3664](https://github.com/reactivex/rxjs/issues/3664)) ([2c43af7](https://github.com/reactivex/rxjs/commit/2c43af7)), closes [#3663](https://github.com/reactivex/rxjs/issues/3663)
+* **docs:** fix broken github links ([#3802](https://github.com/reactivex/rxjs/issues/3802)) ([9f9bf9b](https://github.com/reactivex/rxjs/commit/9f9bf9b))
+* **docs:** fix code examples ([#3784](https://github.com/reactivex/rxjs/issues/3784)) ([a95441b](https://github.com/reactivex/rxjs/commit/a95441b))
+* **from:** Objects implementing Symbol.observable take precedence over other types ([80ceea0](https://github.com/reactivex/rxjs/commit/80ceea0))
+* **fromEvent:** Support React Native and node-compatible event sources. ([#3821](https://github.com/reactivex/rxjs/issues/3821)) ([1969f18](https://github.com/reactivex/rxjs/commit/1969f18))
+* **Observable.prototype.pipe:** TS typings now more correct for >8 parameters ([#3789](https://github.com/reactivex/rxjs/issues/3789)) ([ad010ea](https://github.com/reactivex/rxjs/commit/ad010ea))
+* **subscribe:** ignore syncError when deprecated ([#3749](https://github.com/reactivex/rxjs/issues/3749)) ([f94560c](https://github.com/reactivex/rxjs/commit/f94560c))
+* **Symbol.observable:** make observable declaration readonly ([#3697](https://github.com/reactivex/rxjs/issues/3697)) ([#3773](https://github.com/reactivex/rxjs/issues/3773)) ([e1c203f](https://github.com/reactivex/rxjs/commit/e1c203f))
+* **TypeScript:** resolved typings issue for TS 3.0 ([bf2cdeb](https://github.com/reactivex/rxjs/commit/bf2cdeb))
+* **typings:** allow bufferCreationInterval null for bufferTime ([#3734](https://github.com/reactivex/rxjs/issues/3734)) ([0bda9cd](https://github.com/reactivex/rxjs/commit/0bda9cd)), closes [#3728](https://github.com/reactivex/rxjs/issues/3728)
+
+
+### Performance Improvements
+
+* remove comments from js-files ([#3760](https://github.com/reactivex/rxjs/issues/3760)) ([bb2c334](https://github.com/reactivex/rxjs/commit/bb2c334))
+
+
+
 <a name="6.2.0"></a>
 # [6.2.0](https://github.com/ReactiveX/RxJS/compare/6.1.0...6.2.0) (2018-05-22)
 
