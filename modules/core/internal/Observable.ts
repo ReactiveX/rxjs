@@ -2,6 +2,7 @@ import { FObs, Operation, PartialObserver, FOType, Sink, Source, SinkArg, Teardo
 import { Subscriber, createSubscriber } from './Subscriber';
 import { Subscription, teardownToFunction } from './Subscription';
 import { pipe } from './util/pipe';
+import { tryUserFunction, resultIsError } from './util/userFunction';
 
 export interface ObservableConstructor {
   <T>(init?: (subscriber: Subscriber<T>) => void): Observable<T>;
@@ -26,10 +27,15 @@ export interface Observable<T> extends FObs<T> {
 }
 
 /** The Observable constructor */
-export const Observable: ObservableConstructor = function <T>(init?: (subscriber: Subscriber<T>) => void) {
+export const Observable: ObservableConstructor = function <T>(init?: (subscriber: Subscriber<T>) => Teardown) {
   return sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T>, subs: Subscription) => {
     const subscriber = createSubscriber(dest, subs);
-    subs.add(init(subscriber));
+    const teardown = tryUserFunction(init, subscriber);
+    if (resultIsError(teardown)) {
+      subscriber(FOType.ERROR, teardown.error, subs);
+      return;
+    }
+    subs.add(teardown);
   });
 } as any;
 

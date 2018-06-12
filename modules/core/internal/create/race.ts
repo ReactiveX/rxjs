@@ -2,6 +2,7 @@ import { ObservableInput, FOType, Sink, Source, SinkArg } from "../types";
 import { Observable, sourceAsObservable } from "../Observable";
 import { Subscription } from "../Subscription";
 import { fromSource } from "./from";
+import { tryUserFunction, resultIsError } from '../util/userFunction';
 
 export function race<T>(...sources: ObservableInput<T>[]): Observable<T> {
   return sourceAsObservable(raceSource(sources));
@@ -13,11 +14,9 @@ export function raceSource<T>(sources: ObservableInput<T>[]): Source<T> {
       let allSubs: Subscription[] = [];
       for (let s = 0; s < sources.length; s++) {
         const source = sources[s];
-        let src: Source<T>;
-        try {
-          src = fromSource(source);
-        } catch (err) {
-          sink(FOType.ERROR, err, subs);
+        const src = tryUserFunction(fromSource, source);
+        if (resultIsError(src)) {
+          sink(FOType.ERROR, src.error, subs);
           subs.unsubscribe();
           return;
         }

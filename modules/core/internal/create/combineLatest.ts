@@ -3,6 +3,7 @@ import { Observable, sourceAsObservable } from "../Observable";
 import { Subscription } from "../Subscription";
 import { fromSource } from "./from";
 import { identity } from '../util/identity';
+import { tryUserFunction, resultIsError } from '../util/userFunction';
 
 export function combineLatest<T>(...sources: ObservableInput<T>[]): Observable<T> {
   return sourceAsObservable(combineLatestSource(sources));
@@ -18,11 +19,9 @@ export function combineLatestSource<T>(sources: ObservableInput<T>[]): Source<T>
 
       for (let s = 0; s < sources.length; s++) {
         const source = sources[s];
-        let src: Source<T>;
-        try {
-          src = fromSource(source);
-        } catch (err) {
-          dest(FOType.ERROR, err, subs);
+        const src = tryUserFunction(fromSource, source);
+        if (resultIsError(src)) {
+          dest(FOType.ERROR, src.error, subs);
           subs.unsubscribe();
           return;
         }

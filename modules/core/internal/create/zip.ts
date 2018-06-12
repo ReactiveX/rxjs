@@ -3,6 +3,7 @@ import { ObservableInput, Source, FOType, Sink, SinkArg } from "../types";
 import { Subscription } from "../Subscription";
 import { fromSource } from "./from";
 import { identity } from "../util/identity";
+import { tryUserFunction, resultIsError } from '../util/userFunction';
 
 export function zip<T>(...sources: ObservableInput<T>[]): Observable<T> {
   return sourceAsObservable(zipSource(sources));
@@ -16,14 +17,13 @@ function zipSource<T>(sources: ObservableInput<T>[]): Source<T> {
 
       for (let s = 0; s < sources.length; s++) {
         const source = sources[s];
-        let src: Source<T>;
-        try {
-          src = fromSource(source);
-        } catch (err) {
-          sink(FOType.ERROR, err, subs);
+        const src = tryUserFunction(fromSource, source);
+        if (resultIsError(src)) {
+          sink(FOType.ERROR, src.error, subs);
           subs.unsubscribe();
           return;
         }
+
         src(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
           switch (t) {
             case FOType.NEXT:
