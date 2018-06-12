@@ -2,6 +2,7 @@ import { ObservableInput, Operation, FOType, Sink, SinkArg, Source } from '../ty
 import { Observable, sourceAsObservable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { fromSource } from '../create/from';
+import { tryUserFunction, resultIsError } from '../util/userFunction';
 
 export function mergeMap<T, R>(
   project: (value: T, index: number) => ObservableInput<R>,
@@ -19,11 +20,10 @@ export function mergeMap<T, R>(
         startNextInner = () => {
           while (buffer.length > 0 && active++ < concurrent) {
             const { outerValue, outerIndex } = buffer.shift();
-            let innerSource: Source<R>;
-            try {
-              innerSource = fromSource(project(outerValue, outerIndex));
-            } catch (err) {
-              dest(FOType.ERROR, err, subs);
+
+            const innerSource = tryUserFunction(() => fromSource(project(outerValue, outerIndex)));
+            if (resultIsError(innerSource)) {
+              dest(FOType.ERROR, innerSource.error, subs);
               subs.unsubscribe();
               return;
             }

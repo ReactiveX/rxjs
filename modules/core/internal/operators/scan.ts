@@ -1,6 +1,7 @@
 import { Operation, Sink, FOType, SinkArg } from "../types";
 import { Observable, sourceAsObservable } from "../Observable";
 import { Subscription } from "../Subscription";
+import { tryUserFunction, resultIsError } from '../util/userFunction';
 
 export function scan<T, R>(reducer: (state: R, value: T, index: number) => R, initialState?: R): Operation<T, R> {
   let hasState = arguments.length >= 2;
@@ -13,10 +14,9 @@ export function scan<T, R>(reducer: (state: R, value: T, index: number) => R, in
           if (t === FOType.NEXT) {
             const index = i++;
             if (hasState) {
-              try {
-                v = reducer(state, v, index);
-              } catch (err) {
-                dest(FOType.ERROR, err, subs);
+              v = tryUserFunction(reducer, state, v, index);
+              if (resultIsError(v)) {
+                dest(FOType.ERROR, v.error, subs);
                 subs.unsubscribe();
                 return;
               }

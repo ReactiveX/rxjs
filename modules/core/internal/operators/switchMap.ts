@@ -2,6 +2,7 @@ import { ObservableInput, Operation, FOType, Sink, SinkArg, Source } from '../ty
 import { Observable, sourceAsObservable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { fromSource } from '../create/from';
+import { tryUserFunction, resultIsError } from '../util/userFunction';
 
 export function switchMap<T, R>(
   project: (value: T, index: number) => ObservableInput<R>,
@@ -19,11 +20,9 @@ export function switchMap<T, R>(
               if (innerSubs) {
                 innerSubs.unsubscribe();
               }
-              let result: Source<R>;
-              try {
-                result = fromSource(project(v, index++))
-              } catch (err) {
-                dest(FOType.ERROR, err, subs);
+              const result = tryUserFunction(() => fromSource(project(v, index++)));
+              if (resultIsError(result)) {
+                dest(FOType.ERROR, result.error, subs);
                 return;
               }
 

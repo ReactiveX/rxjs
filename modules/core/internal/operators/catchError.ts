@@ -2,6 +2,7 @@ import { ObservableInput, Operation, FOType, Sink, SinkArg, Source } from "../ty
 import { Observable, sourceAsObservable } from "../Observable";
 import { Subscription } from "../Subscription";
 import { fromSource } from "../create/from";
+import { tryUserFunction, resultIsError } from '../util/userFunction';
 
 export function catchError<T, R>(handler: (err: any) => ObservableInput<R>): Operation<T, T|R> {
   return (source: Observable<T>) =>
@@ -12,11 +13,9 @@ export function catchError<T, R>(handler: (err: any) => ObservableInput<R>): Ope
         source(type, (t: FOType, v: SinkArg<T>, upstreamSubs: Subscription) => {
           if (t === FOType.ERROR) {
             upstreamSubs.unsubscribe();
-            let result: Source<T>;
-            try {
-              result = fromSource(handler(v));
-            } catch (err) {
-              dest(FOType.ERROR, err, downstreamSubs);
+            const result = tryUserFunction(() => fromSource(handler(v)));
+            if (resultIsError(result)) {
+              dest(FOType.ERROR, result.error, downstreamSubs);
               return;
             }
             result(FOType.SUBSCRIBE, dest, downstreamSubs);

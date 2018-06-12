@@ -3,6 +3,7 @@ import { Operation, FOType, Sink, SinkArg, FObs, GroupedObservable, ObservableIn
 import { Subscription } from '../Subscription';
 import { Subject, subjectSource } from '../Subject';
 import { fromSource } from '../create/from';
+import { tryUserFunction, resultIsError } from '../util/userFunction';
 
 /**
  * NOTES:
@@ -48,11 +49,9 @@ export function groupBy<T, K, R>(
 
         source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
           if (t === FOType.NEXT) {
-            let key: K;
-            try {
-              key = keySelector(v, index++);
-            } catch (err) {
-              allSink(FOType.ERROR, err, subs);
+            const key = tryUserFunction(keySelector, v, index++);
+            if (resultIsError(key)) {
+              allSink(FOType.ERROR, key.error, subs);
               subs.unsubscribe();
               return;
             }
@@ -64,11 +63,9 @@ export function groupBy<T, K, R>(
               lookup.set(key, group);
 
               if (durationSelector) {
-                let notifier: Source<any>;
-                try {
-                  notifier = fromSource(durationSelector(group));
-                } catch (err) {
-                  allSink(FOType.ERROR, err, subs);
+                const notifier = tryUserFunction(() => fromSource(durationSelector(group)));
+                if (resultIsError(notifier)) {
+                  allSink(FOType.ERROR, notifier.error, subs);
                   subs.unsubscribe();
                   return;
                 }

@@ -1,6 +1,7 @@
 import { Observable, sourceAsObservable } from '../Observable';
 import { Operation, FOType, Sink, SinkArg, FObs } from '../types';
 import { Subscription } from '../Subscription';
+import { tryUserFunction, resultIsError } from '../util/userFunction';
 
 export function filter<T>(predicate: (value: T, index: number) => boolean): Operation<T, T> {
   return (source: Observable<T>) =>
@@ -9,15 +10,13 @@ export function filter<T>(predicate: (value: T, index: number) => boolean): Oper
         let i = 0;
         source(type, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
           if (t === FOType.NEXT) {
-            let send = false;
-            try {
-              send = predicate(v, i++);
-            } catch (err) {
-              dest(FOType.ERROR, err, subs);
+            const result = tryUserFunction(predicate, v, i++);
+            if (resultIsError(result)) {
+              dest(FOType.ERROR, result.error, subs);
               subs.unsubscribe();
               return;
             }
-            if (!send) return;
+            if (!result) return;
           }
           dest(t, v, subs);
         }, subs);
