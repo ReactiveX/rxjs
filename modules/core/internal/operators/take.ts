@@ -1,6 +1,6 @@
 import { Operation, FOType, Sink, SinkArg } from "../types";
-import { Observable, Subscription } from "../..";
-import { sourceAsObservable } from "../Observable";
+import { Observable, sourceAsObservable } from "../Observable";
+import { Subscription } from '../Subscription';
 
 export function take<T>(count: number): Operation<T, T> {
   return (source: Observable<T>) =>

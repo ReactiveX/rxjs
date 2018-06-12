@@ -4,7 +4,7 @@ const ERROR_OBJECT = {
 
 /**
  * Executes a user-provided function within a try-catch, and returns either the result
- * or returns {@link ERROR_OBJECT} if an error has occured. Use {@link resultIsError} to
+ * or returns {@link ERROR_OBJECT} if an error has occurred. Use {@link resultIsError} to
  * verify whether the result is an error or not.
  *
  * @param fn the user-provided function to wrap in some error handling for safety

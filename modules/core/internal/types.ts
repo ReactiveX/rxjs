@@ -1,6 +1,5 @@
 import { Subscription } from './Subscription';
 import { Observable } from './Observable';
-import { Scheduler } from 'dist-compat/typings/compat';
 
 export enum FOType {
   SUBSCRIBE = 0,

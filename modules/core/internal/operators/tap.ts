@@ -1,7 +1,6 @@
 import { Observable, sourceAsObservable } from '../Observable';
-import { Operation, FOType, Sink, SinkArg, FObs } from '../types';
+import { Operation, FOType, Sink, SinkArg, FObs, PartialObserver } from '../types';
 import { Subscription } from '../Subscription';
-import { PartialObserver } from 'dist-compat/typings/src';
 
 export function tap<T>(
   observer: PartialObserver<T>
