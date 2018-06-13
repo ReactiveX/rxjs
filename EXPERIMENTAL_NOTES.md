@@ -41,7 +41,7 @@ timestamp.
 - [ ] combineAll
 - [ ] combineLatest (g3)
 - [x] concat (alias: concatWith) (g3)
-- [ ] concatAll (g3)
+- [x] concatAll (g3)
 - [ ] concatMap (g3)
 - [ ] concatMapTo
 - [ ] count (g3)
@@ -55,18 +55,18 @@ timestamp.
 - [ ] distinctUntilChanged (g3)
 - [ ] distinctUntilKeyChanged (g3)
 - [ ] elementAt (g3)
-- [ ] endWith
+- [x] endWith
 - [ ] every (g3)
 - [ ] exhaust
 - [ ] exhaustMap (g3)
 - [ ] expand (g3)
-- [ ] filter (g3)
+- [x] filter (g3)
 - [ ] finalize (g3)
 - [ ] find
 - [ ] findIndex
 - [ ] first (g3)
 - [ ] flatMap (g3)
-- [ ] groupBy (g3)
+- [x] groupBy (g3)
 - [ ] ignoreElements (g3)
 - [ ] isEmpty
 - [ ] last (g3)
@@ -93,38 +93,38 @@ timestamp.
 - [ ] race
 - [ ] reduce (g3)
 - [ ] refCount (g3)
-- [ ] repeat (g3)
+- [x] repeat (g3)
 - [ ] repeatWhen (g3)
 - [ ] retry (g3)
 - [ ] retryWhen (g3)
 - [ ] sample (g3)
 - [ ] sampleTime (g3)
-- [ ] scan (g3)
+- [x] scan (g3)
 - [ ] sequenceEqual
-- [ ] share (g3)
+- [x] share (g3)
 - [ ] shareReplay (g3)
 - [ ] single (g3)
 - [ ] skip (g3)
 - [ ] skipLast
 - [ ] skipUntil (g3)
 - [ ] skipWhile (g3)
-- [ ] startWith (g3)
+- [x] startWith (g3)
 - [ ] subscribeOn (g3)
 - [ ] switchAll (g3)
-- [ ] switchMap (g3)
+- [x] switchMap (g3)
 - [ ] switchMapTo (g3)
-- [ ] take (g3)
-- [ ] takeLast (g3)
+- [x] take (g3)
+- [x] takeLast (g3)
 - [ ] takeUntil (g3)
 - [ ] takeWhile (g3)
-- [ ] tap (g3)
+- [x] tap (g3)
 - [ ] throttle (g3)
 - [ ] throttleTime (g3)
 - [ ] throwIfEmpty
 - [ ] timeInterval (g3)
 - [ ] timeout (g3)
 - [ ] timeoutWith (g3)
-- [ ] timestamp
+- [x] timestamp
 - [ ] toArray (g3)
 - [ ] window
 - [ ] windowCount (g3)
