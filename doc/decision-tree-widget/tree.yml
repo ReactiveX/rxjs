@@ -117,6 +117,14 @@ children:
       - label: and output the computed values as a nested Observable when the source emits a value
         children:
         - label: mergeScan
+      - label: and perform math on the emitted values
+        children:
+          - label: and find the average of the emitted values
+            children:
+            - label: average
+          - label: and find the sum of the emitted values
+            children:
+            - label: sum
     - label: I want to wrap its messages with metadata
       children:
       - label: that describes each notification (next, error, or complete)
