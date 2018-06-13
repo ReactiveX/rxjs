@@ -38,7 +38,7 @@ import { Subscriber } from '../Subscriber';
  * result.subscribe(x => console.log(x));
  * // Results in:
  * // 4
- * ```javascript
+ * ```
  *
  * @see {@link max}
  * @see {@link min}

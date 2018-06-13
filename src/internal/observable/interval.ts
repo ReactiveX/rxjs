@@ -25,7 +25,8 @@ import { Subscriber } from '../Subscriber';
  * ```javascript
  * const numbers = interval(1000);
  * numbers.subscribe(x => console.log(x));
- * ```javascript
+ * ```
+ *
  * @see {@link timer}
  * @see {@link delay}
  *

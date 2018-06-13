@@ -65,6 +65,7 @@ export function concat<T, R>(...observables: (ObservableInput<any> | SchedulerLi
  * ```
  *
  * ### Concatenate an array of 3 Observables
+ * ```javascript
  * const timer1 = interval(1000).pipe(take(10));
  * const timer2 = interval(2000).pipe(take(6));
  * const timer3 = interval(500).pipe(take(10));
