@@ -87,15 +87,15 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
 
   // Additional jsdoc config (for RxJS source)
   .config(function(parseTagsProcessor) {
-    parseTagsProcessor.tagDefinitions.push({ name: 'internal' });
     parseTagsProcessor.tagDefinitions.push({ name: 'example', aliases: ['examples'], multi: true, docProperty: 'examples' });
     parseTagsProcessor.tagDefinitions.push({ name: 'owner' });
     parseTagsProcessor.tagDefinitions.push({ name: 'static' });
+    parseTagsProcessor.tagDefinitions.push({ name: 'nocollapse' });
     // Replace the Catharsis type parsing, as it doesn't understand TypeScript type annotations (i.e. `foo(x: SomeType)`), with a simpler dummy transform
     const typeTags = parseTagsProcessor.tagDefinitions.filter(tagDef => ['param', 'returns', 'type', 'private', 'property', 'protected', 'public'].indexOf(tagDef.name) !== -1);
     typeTags.forEach(typeTag => typeTag.transforms[0] = function dummyTypeTransform(doc, tag, value) {
       var TYPE_EXPRESSION_START = /^\s*\{[^@]/;
-      var start, position, count, length, expression;
+      var start, position, count, length;
 
       var match = TYPE_EXPRESSION_START.exec(value);
       if (match) {
@@ -134,7 +134,7 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
       } else {
         return value;
       }
-    })
+    });
   })
 
   .config(function(computeStability, splitDescription, EXPORT_DOC_TYPES, API_DOC_TYPES) {
