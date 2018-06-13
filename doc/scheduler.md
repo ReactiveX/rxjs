@@ -10,20 +10,31 @@
 
 In the example below, we take the usual simple Observable that emits values `1`, `2`, `3` synchronously, and use the operator `observeOn` to specify the `async` scheduler to use for delivering those values.
 
-```js
-var observable = Rx.Observable.create(function (observer) {
+[View on Stackblitz](https://stackblitz.com/edit/typescript-jexdny)
+```ts
+import { Observable, asyncScheduler } from 'rxjs';
+import { observeOn } from 'rxjs/operators';
+
+const observable = new Observable((observer) => {
   observer.next(1);
   observer.next(2);
   observer.next(3);
   observer.complete();
-})
-.observeOn(Rx.Scheduler.async);
+}).pipe(
+  observeOn(asyncScheduler)
+);
 
 console.log('just before subscribe');
 observable.subscribe({
-  next: x => console.log('got value ' + x),
-  error: err => console.error('something wrong occurred: ' + err),
-  complete: () => console.log('done'),
+  next(x) {
+    console.log('got value ' + x)
+  },
+  error(err) {
+    console.error('something wrong occurred: ' + err);
+  },
+  complete() {
+     console.log('done');
+  }
 });
 console.log('just after subscribe');
 ```
@@ -39,21 +50,31 @@ got value 3
 done
 ```
 
-Notice how the notifications `got value...` were delivered after `just after subscribe`, which is different to the default behavior we have seen so far. This is because `observeOn(Rx.Scheduler.async)` introduces a proxy Observer between `Observable.create` and the final Observer. Let's rename some identifiers to make that distinction obvious in the example code:
+Notice how the notifications `got value...` were delivered after `just after subscribe`, which is different to the default behavior we have seen so far. This is because `observeOn(asyncScheduler)` introduces a proxy Observer between `new Observable` and the final Observer. Let's rename some identifiers to make that distinction obvious in the example code:
 
-```js
-var observable = Rx.Observable.create(function (proxyObserver) {
+```ts
+import { Observable, asyncScheduler } from 'rxjs';
+import { observeOn } from 'rxjs/operators';
+
+var observable = new Observable((proxyObserver) => { 
   proxyObserver.next(1);
   proxyObserver.next(2);
   proxyObserver.next(3);
   proxyObserver.complete();
-})
-.observeOn(Rx.Scheduler.async);
+}).pipe(
+  observeOn(asyncScheduler)
+);
 
 var finalObserver = {
-  next: x => console.log('got value ' + x),
-  error: err => console.error('something wrong occurred: ' + err),
-  complete: () => console.log('done'),
+  next(x) {
+    console.log('got value ' + x)
+  },
+  error(err) {
+    console.error('something wrong occurred: ' + err);
+  },
+  complete() {
+     console.log('done');
+  }
 };
 
 console.log('just before subscribe');
@@ -63,10 +84,10 @@ console.log('just after subscribe');
 
 The `proxyObserver` is created in `observeOn(Rx.Scheduler.async)`, and its `next(val)` function is approximately the following:
 
-```js
-var proxyObserver = {
-  next: (val) => {
-    Rx.Scheduler.async.schedule(
+```ts
+const proxyObserver = {
+  next(val) {
+    asyncScheduler.schedule(
       (x) => finalObserver.next(x),
       0 /* delay */,
       val /* will be the x for the function above */
@@ -88,17 +109,17 @@ The `async` Scheduler is one of the built-in schedulers provided by RxJS. Each o
 | Scheduler | Purpose |
 | --- | --- |
 | `null` | By not passing any scheduler, notifications are delivered synchronously and recursively. Use this for constant-time operations or tail recursive operations. |
-| `Rx.Scheduler.queue` | Schedules on a queue in the current event frame (trampoline scheduler). Use this for iteration operations. |
-| `Rx.Scheduler.asap` | Schedules on the micro task queue, which uses the fastest transport mechanism available, either Node.js' `process.nextTick()` or Web Worker MessageChannel or setTimeout or others. Use this for asynchronous conversions. |
-| `Rx.Scheduler.async` | Schedules work with `setInterval`. Use this for time-based operations. |
-| `Rx.Scheduler.animationFrame` | Schedules task  that will happen just before next browser content repaint. Can be used to create smooth browser animations.|
+| `queueScheduler` | Schedules on a queue in the current event frame (trampoline scheduler). Use this for iteration operations. |
+| `asapScheduler` | Schedules on the micro task queue, which uses the fastest transport mechanism available, either Node.js' `process.nextTick()` or Web Worker MessageChannel or setTimeout or others. Use this for asynchronous conversions. |
+| `asyncScheduler` | Schedules work with `setInterval`. Use this for time-based operations. |
+| `animationFrameScheduler` | Schedules task  that will happen just before next browser content repaint. Can be used to create smooth browser animations.|
 
 
 ## Using Schedulers
 
 You may have already used schedulers in your RxJS code without explicitly stating the type of schedulers to be used. This is because all Observable operators that deal with concurrency have optional schedulers. If you do not provide the scheduler, RxJS will pick a default scheduler by using the principle of least concurrency. This means that the scheduler which introduces the least amount of concurrency that satisfies the needs of the operator is chosen. For example, for operators returning an observable with a finite and small number of messages, RxJS uses no Scheduler, i.e. `null` or `undefined`.  For operators returning a potentially large or infinite number of messages, `queue` Scheduler is used. For operators which use timers, `async` is used.
 
-Because RxJS uses the least concurrency scheduler, you can pick a different scheduler if you want to introduce concurrency for performance purpose.  To specify a particular scheduler, you can use those operator methods that take a scheduler, e.g., `from([10, 20, 30], Rx.Scheduler.async)`.
+Because RxJS uses the least concurrency scheduler, you can pick a different scheduler if you want to introduce concurrency for performance purpose.  To specify a particular scheduler, you can use those operator methods that take a scheduler, e.g., `from([10, 20, 30], asyncScheduler)`.
 
 **Static creation operators usually take a Scheduler as argument.** For instance, `from(array, scheduler)` lets you specify the Scheduler to use when delivering each notification converted from the `array`. It is usually the last argument to the operator. The following static creation operators take a Scheduler argument:
 
@@ -122,7 +143,7 @@ Because RxJS uses the least concurrency scheduler, you can pick a different sche
 
 **Instance operators may take a Scheduler as argument.**
 
-Time-related operators like `bufferTime`, `debounceTime`, `delay`, `auditTime`, `sampleTime`, `throttleTime`, `timeInterval`, `timeout`, `timeoutWith`, `windowTime` all take a Scheduler as the last argument, and otherwise operate by default on the `Rx.Scheduler.async` Scheduler.
+Time-related operators like `bufferTime`, `debounceTime`, `delay`, `auditTime`, `sampleTime`, `throttleTime`, `timeInterval`, `timeout`, `timeoutWith`, `windowTime` all take a Scheduler as the last argument, and otherwise operate by default on the `asyncScheduler`.
 
 Other instance operators that take a Scheduler as argument: `cache`, `combineLatest`, `concat`, `expand`, `merge`, `publishReplay`, `startWith`.
 
