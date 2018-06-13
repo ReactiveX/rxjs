@@ -91,6 +91,8 @@ The `async` Scheduler is one of the built-in schedulers provided by RxJS. Each o
 | `Rx.Scheduler.queue` | Schedules on a queue in the current event frame (trampoline scheduler). Use this for iteration operations. |
 | `Rx.Scheduler.asap` | Schedules on the micro task queue, which uses the fastest transport mechanism available, either Node.js' `process.nextTick()` or Web Worker MessageChannel or setTimeout or others. Use this for asynchronous conversions. |
 | `Rx.Scheduler.async` | Schedules work with `setInterval`. Use this for time-based operations. |
+| `Rx.Scheduler.animationFrame` | Schedules task  that will happen just before next browser content repaint. Can be used to create smooth browser animations.|
+
 
 ## Using Schedulers
 
