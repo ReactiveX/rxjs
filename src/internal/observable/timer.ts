@@ -18,8 +18,8 @@ import { Subscriber } from '../Subscriber';
  * integers, with a constant interval of time, `period` of your choosing
  * between those emissions. The first emission happens after the specified
  * `initialDelay`. The initial delay may be a `Date`. By default, this
- * operator uses the `async` IScheduler to provide a notion of time, but you
- * may pass any IScheduler to it. If `period` is not specified, the output
+ * operator uses the {@link asyncScheduler} {@link SchedulerLike} to provide a notion of time, but you
+ * may pass any {@link SchedulerLike} to it. If `period` is not specified, the output
  * Observable emits only one value, `0`. Otherwise, it emits an infinite
  * sequence.
  *

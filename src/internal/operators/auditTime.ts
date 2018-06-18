@@ -22,7 +22,7 @@ import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
  * the time unit determined internally by the optional `scheduler`) has passed,
  * the timer is disabled, then the most recent source value is emitted on the
  * output Observable, and this process repeats for the next source value.
- * Optionally takes a `Scheduler` for managing timers.
+ * Optionally takes a {@link SchedulerLike} for managing timers.
  *
  * ## Example
  *
@@ -42,7 +42,7 @@ import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
  * @param {number} duration Time to wait before emitting the most recent source
  * value, measured in milliseconds or the time unit determined internally
  * by the optional `scheduler`.
- * @param {Scheduler} [scheduler=async] The `Scheduler` to use for
+ * @param {Scheduler} [scheduler=async] The {@link SchedulerLike} to use for
  * managing the timers that handle the rate-limiting behavior.
  * @return {Observable<T>} An Observable that performs rate-limiting of
  * emissions from the source Observable.

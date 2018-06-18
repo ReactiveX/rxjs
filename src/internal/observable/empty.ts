@@ -47,7 +47,7 @@ export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
  * @see {@link of}
  * @see {@link throwError}
  *
- * @param {Scheduler} [scheduler] A `Scheduler` to use for scheduling
+ * @param {Scheduler} [scheduler] A {@link SchedulerLike} to use for scheduling
  * the emission of the complete notification.
  * @return {Observable} An "empty" Observable: emits only the complete
  * notification.
