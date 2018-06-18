@@ -46,7 +46,8 @@ export function mergeAll<T>(concurrent?: number): OperatorFunction<ObservableInp
  * @see {@link mergeMap}
  * @see {@link mergeMapTo}
  * @see {@link mergeScan}
- * @see {@link switch}
+ * @see {@link switchAll}
+ * @see {@link switchMap}
  * @see {@link zipAll}
  *
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of inner

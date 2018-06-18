@@ -38,7 +38,7 @@ import { empty } from './empty';
  * // than 0.5 it will emit ascending numbers, one every second(1000ms).
  * ```
  *
- * @see {@link create}
+ * @see {@link Observable}
  *
  * @param {function(): SubscribableOrPromise} observableFactory The Observable
  * factory function to invoke for each Observer that subscribes to the output

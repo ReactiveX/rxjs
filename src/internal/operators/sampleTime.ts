@@ -36,7 +36,7 @@ import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic
  *
  * @param {number} period The sampling period expressed in milliseconds or the
  * time unit determined internally by the optional `scheduler`.
- * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for
+ * @param {Scheduler} [scheduler=async] The `Scheduler` to use for
  * managing the timers that handle the sampling.
  * @return {Observable<T>} An Observable that emits the results of sampling the
  * values emitted by the source Observable at the specified time interval.

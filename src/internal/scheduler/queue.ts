@@ -7,7 +7,7 @@ import { QueueScheduler } from './QueueScheduler';
  *
  * <span class="informal">Put every next task on a queue, instead of executing it immediately</span>
  *
- * `queue` scheduler, when used with delay, behaves the same as {@link async} scheduler.
+ * `queue` scheduler, when used with delay, behaves the same as {@link asyncScheduler} scheduler.
  *
  * When used without delay, it schedules given task synchronously - executes it right when
  * it is scheduled. However when called recursively, that is when inside the scheduled task,

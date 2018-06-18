@@ -13,7 +13,7 @@ import { AsyncScheduler } from './AsyncScheduler';
  *
  * If you just want to "defer" task, that is to perform it right after currently
  * executing synchronous code ends (commonly achieved by `setTimeout(deferredTask, 0)`),
- * better choice will be the {@link asap} scheduler.
+ * better choice will be the {@link asapScheduler} scheduler.
  *
  * ## Examples
  * Use async scheduler to delay task

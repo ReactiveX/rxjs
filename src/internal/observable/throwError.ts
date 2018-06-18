@@ -36,13 +36,13 @@ import { Subscriber } from '../Subscriber';
  *   ),
  * ).subscribe(x => console.log(x), e => console.error(e));
  * ```
- * @see {@link create}
+ * @see {@link Observable}
  * @see {@link empty}
  * @see {@link never}
  * @see {@link of}
  *
  * @param {any} error The particular Error to pass to the error notification.
- * @param {Scheduler} [scheduler] A {@link IScheduler} to use for scheduling
+ * @param {Scheduler} [scheduler] A `Scheduler` to use for scheduling
  * the emission of the error notification.
  * @return {Observable} An error Observable: emits only the error notification
  * using the given error argument.

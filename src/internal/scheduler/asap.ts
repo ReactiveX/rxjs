@@ -7,7 +7,7 @@ import { AsapScheduler } from './AsapScheduler';
  *
  * <span class="informal">Perform task as fast as it can be performed asynchronously</span>
  *
- * `asap` scheduler behaves the same as {@link async} scheduler when you use it to delay task
+ * `asap` scheduler behaves the same as {@link asyncScheduler} scheduler when you use it to delay task
  * in time. If however you set delay to `0`, `asap` will wait for current synchronously executing
  * code to end and then it will try to execute given task as fast as possible.
  *

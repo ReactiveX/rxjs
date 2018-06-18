@@ -42,8 +42,7 @@ export class VirtualTimeScheduler extends AsyncScheduler {
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
+ * @nodoc
  */
 export class VirtualAction<T> extends AsyncAction<T> {
 

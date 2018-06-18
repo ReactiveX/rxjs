@@ -21,11 +21,11 @@ import { Observable } from '../Observable';
  * numbers.subscribe(x => console.log(x));
  * ```
  * @see {@link timer}
- * @see {@link interval}
+ * @see {@link index/interval}
  *
  * @param {number} [start=0] The value of the first integer in the sequence.
  * @param {number} [count=0] The number of sequential integers to generate.
- * @param {Scheduler} [scheduler] A {@link IScheduler} to use for scheduling
+ * @param {Scheduler} [scheduler] A `Scheduler` to use for scheduling
  * the emissions of the notifications.
  * @return {Observable} An Observable of numbers that emits a finite range of
  * sequential integers.

@@ -60,7 +60,7 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  * const res = generate(1, x => x < 5, x =>  * 2, x => x + 1, Rx.Scheduler.asap);
  *
  * @see {@link from}
- * @see {@link create}
+ * @see {@link Observable}
  *
  * @param {S} initialState Initial state.
  * @param {function (state: S): boolean} condition Condition to terminate generation (upon returning false).
@@ -90,7 +90,7 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  * const res = generate(1, x => x < 5, x => x  * 2, Rx.Scheduler.asap);
  *
  * @see {@link from}
- * @see {@link create}
+ * @see {@link Observable}
  *
  * @param {S} initialState Initial state.
  * @param {function (state: S): boolean} condition Condition to terminate generation (upon returning false).
@@ -120,7 +120,7 @@ export function generate<S>(initialState: S,
  * });
  *
  * @see {@link from}
- * @see {@link create}
+ * @see {@link Observable}
  *
  * @param {GenerateBaseOptions<S>} options Object that must contain initialState, iterate and might contain condition and scheduler.
  * @returns {Observable<S>} The generated sequence.
@@ -145,7 +145,7 @@ export function generate<S>(options: GenerateBaseOptions<S>): Observable<S>;
  * });
  *
  * @see {@link from}
- * @see {@link create}
+ * @see {@link Observable}
  *
  * @param {GenerateOptions<T, S>} options Object that must contain initialState, iterate, resultSelector and might contain condition and scheduler.
  * @returns {Observable<T>} The generated sequence.

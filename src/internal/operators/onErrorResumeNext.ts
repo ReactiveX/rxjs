@@ -44,8 +44,8 @@ export function onErrorResumeNext<T, R>(array: ObservableInput<any>[]): Operator
  * an error.
  *
  * Note that you do not get any access to errors emitted by the Observables. In particular do not
- * expect these errors to appear in error callback passed to {@link subscribe}. If you want to take
- * specific actions based on what error was emitted by an Observable, you should try out {@link catch} instead.
+ * expect these errors to appear in error callback passed to {@link Observable#subscribe}. If you want to take
+ * specific actions based on what error was emitted by an Observable, you should try out {@link catchError} instead.
  *
  *
  * ## Example
@@ -75,7 +75,7 @@ export function onErrorResumeNext<T, R>(array: ObservableInput<any>[]): Operator
  * ```
  *
  * @see {@link concat}
- * @see {@link catch}
+ * @see {@link catchError}
  *
  * @param {...ObservableInput} observables Observables passed either directly or as an array.
  * @return {Observable} An Observable that emits values from source Observable, but - if it errors - subscribes

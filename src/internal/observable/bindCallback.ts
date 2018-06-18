@@ -77,7 +77,7 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  * function is subscribed. This means if `func` makes an AJAX request, that request
  * will be made every time someone subscribes to the resulting Observable, but not before.
  *
- * The last optional parameter - {@link Scheduler} - can be used to control when the call
+ * The last optional parameter - `Scheduler` - can be used to control when the call
  * to `func` happens after someone subscribes to Observable, as well as when results
  * passed to callback will be emitted. By default, the subscription to  an Observable calls `func`
  * synchronously, but using `Scheduler.async` as the last parameter will defer the call to `func`,
@@ -159,7 +159,6 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  *
  * @see {@link bindNodeCallback}
  * @see {@link from}
- * @see {@link fromPromise}
  *
  * @param {function} func A function with a callback as the last parameter.
  * @param {Scheduler} [scheduler] The scheduler on which to schedule the

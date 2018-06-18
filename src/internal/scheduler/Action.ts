@@ -3,7 +3,7 @@ import { Subscription } from '../Subscription';
 import { SchedulerAction } from '../types';
 
 /**
- * A unit of work to be executed in a {@link Scheduler}. An action is typically
+ * A unit of work to be executed in a `Scheduler`. An action is typically
  * created from within a Scheduler and an RxJS user does not need to concern
  * themselves about creating and manipulating an Action.
  *

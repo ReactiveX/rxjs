@@ -18,7 +18,7 @@ export function switchMapTo<T, I, R>(observable: ObservableInput<I>, resultSelec
 
 /**
  * Projects each source value to the same Observable which is flattened multiple
- * times with {@link switch} in the output Observable.
+ * times with {@link switchMap} in the output Observable.
  *
  * <span class="informal">It's like {@link switchMap}, but maps each value
  * always to the same inner Observable.</span>
@@ -40,7 +40,7 @@ export function switchMapTo<T, I, R>(observable: ObservableInput<I>, resultSelec
  * ```
  *
  * @see {@link concatMapTo}
- * @see {@link switch}
+ * @see {@link switchAll}
  * @see {@link switchMap}
  * @see {@link mergeMapTo}
  *

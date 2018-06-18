@@ -51,7 +51,8 @@ export function concatAll<R>(): OperatorFunction<any, R>;
  * @see {@link concatMapTo}
  * @see {@link exhaust}
  * @see {@link mergeAll}
- * @see {@link switch}
+ * @see {@link switchAll}
+ * @see {@link switchMap}
  * @see {@link zipAll}
  *
  * @return {Observable} An Observable emitting values from all the inner

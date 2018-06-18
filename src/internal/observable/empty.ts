@@ -3,7 +3,7 @@ import { SchedulerLike } from '../types';
 
 /**
  * The same Observable instance returned by any call to {@link empty} without a
- * {@link Scheduler}. It is preferrable to use this over `empty()`.
+ * `Scheduler`. It is preferrable to use this over `empty()`.
  */
 export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
 
@@ -42,12 +42,12 @@ export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
  * // if x % 2 is not equal to 1 nothing will be output
  * ```
  *
- * @see {@link create}
+ * @see {@link Observable}
  * @see {@link never}
  * @see {@link of}
- * @see {@link throw}
+ * @see {@link throwError}
  *
- * @param {Scheduler} [scheduler] A {@link IScheduler} to use for scheduling
+ * @param {Scheduler} [scheduler] A `Scheduler` to use for scheduling
  * the emission of the complete notification.
  * @return {Observable} An "empty" Observable: emits only the complete
  * notification.

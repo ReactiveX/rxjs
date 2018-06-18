@@ -45,7 +45,7 @@ export function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T
  * ```
  *
  * @see {@link map}
- * @see {@link subscribe}
+ * @see {@link Observable#subscribe}
  *
  * @param {Observer|function} [nextOrObserver] A normal Observer object or a
  * callback for `next`.

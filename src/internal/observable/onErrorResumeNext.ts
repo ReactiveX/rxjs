@@ -27,7 +27,7 @@ export function onErrorResumeNext<R>(array: ObservableInput<any>[]): Observable<
  * If the source it's subscribed to emits an error or completes, it will move to the next source
  * without error.
  *
- * If `onErrorResumeNext` is provided no arguments, or a single, empty array, it will return {@link EMPTY}.
+ * If `onErrorResumeNext` is provided no arguments, or a single, empty array, it will return {@link index/EMPTY}.
  *
  * `onErrorResumeNext` is basically {@link concat}, only it will continue, even if one of its
  * sources emits an error.
@@ -68,7 +68,7 @@ export function onErrorResumeNext<R>(array: ObservableInput<any>[]): Observable<
  * ```
  *
  * @see {@link concat}
- * @see {@link catch}
+ * @see {@link catchError}
  *
  * @param {...ObservableInput} sources Observables (or anything that *is* observable) passed either directly or as an array.
  * @return {Observable} An Observable that concatenates all sources, one after the other,

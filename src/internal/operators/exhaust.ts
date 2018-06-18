@@ -39,7 +39,8 @@ export function exhaust<R>(): OperatorFunction<any, R>;
  *
  * @see {@link combineAll}
  * @see {@link concatAll}
- * @see {@link switch}
+ * @see {@link switchAll}
+ * @see {@link switchMap}
  * @see {@link mergeAll}
  * @see {@link exhaustMap}
  * @see {@link zipAll}
