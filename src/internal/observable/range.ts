@@ -7,7 +7,7 @@ import { Observable } from '../Observable';
  *
  * <span class="informal">Emits a sequence of numbers in a range.</span>
  *
- * <img src="./img/range.png" width="100%">
+ * <img src="range.png">
  *
  * `range` operator emits a range of sequential integers, in order, where you
  * select the `start` of the range and its `length`. By default, uses no

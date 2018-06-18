@@ -17,7 +17,7 @@ export function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T
  * <span class="informal">Intercepts each emission on the source and runs a
  * function, but returns an output which is identical to the source as long as errors don't occur.</span>
  *
- * <img src="./img/do.png" width="100%">
+ * <img src="do.png">
  *
  * Returns a mirrored Observable of the source Observable, but modified so that
  * the provided Observer is called to perform a side effect for every value,

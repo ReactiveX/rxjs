@@ -11,7 +11,7 @@ export function mergeAll<T>(concurrent?: number): OperatorFunction<ObservableInp
  *
  * <span class="informal">Flattens an Observable-of-Observables.</span>
  *
- * <img src="./img/mergeAll.png" width="100%">
+ * <img src="mergeAll.png">
  *
  * `mergeAll` subscribes to an Observable that emits Observables, also known as
  * a higher-order Observable. Each time it observes one of these emitted inner

@@ -12,7 +12,7 @@ import { Subscriber } from '../Subscriber';
  * <span class="informal">Its like {@link index/interval}, but you can specify when
  * should the emissions start.</span>
  *
- * <img src="./img/timer.png" width="100%">
+ * <img src="timer.png">
  *
  * `timer` returns an Observable that emits an infinite sequence of ascending
  * integers, with a constant interval of time, `period` of your choosing

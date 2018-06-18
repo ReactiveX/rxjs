@@ -14,7 +14,7 @@ import { throwError } from '../observable/throwError';
  *
  * <span class="informal">Timeouts on Observable that doesn't emit values fast enough.</span>
  *
- * <img src="./img/timeout.png" width="100%">
+ * <img src="timeout.png">
  *
  * `timeout` operator accepts as an argument either a number or a Date.
  *

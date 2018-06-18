@@ -18,7 +18,7 @@ export function timeoutWith<T, R>(due: number | Date, withObservable: Observable
  *
  * <span class="informal">It's a version of `timeout` operator that let's you specify fallback Observable.</span>
  *
- * <img src="./img/timeoutWith.png" width="100%">
+ * <img src="timeoutWith.png">
  *
  * `timeoutWith` is a variation of `timeout` operator. It behaves exactly the same,
  * still accepting as a first argument either a number or a Date, which control - respectively -

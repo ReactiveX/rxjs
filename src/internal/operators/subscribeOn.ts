@@ -7,7 +7,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
 /**
  * Asynchronously subscribes Observers to this Observable on the specified IScheduler.
  *
- * <img src="./img/subscribeOn.png" width="100%">
+ * <img src="subscribeOn.png">
  *
  * @param {Scheduler} scheduler - The IScheduler to perform subscription actions on.
  * @return {Observable<T>} The source Observable modified so that its subscriptions happen on the specified IScheduler.

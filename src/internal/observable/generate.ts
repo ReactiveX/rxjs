@@ -51,7 +51,7 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  * producing the sequence's elements, using the specified scheduler
  * to send out observer messages.
  *
- * <img src="./img/generate.png" width="100%">
+ * <img src="generate.png">
  *
  * @example <caption>Produces sequence of 0, 1, 2, ... 9, then completes.</caption>
  * const res = generate(0, x => x < 10, x => x + 1, x => x);
@@ -81,7 +81,7 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  * to send out observer messages.
  * The overload uses state as an emitted value.
  *
- * <img src="./img/generate.png" width="100%">
+ * <img src="generate.png">
  *
  * @example <caption>Produces sequence of 0, 1, 2, ... 9, then completes.</caption>
  * const res = generate(0, x => x < 10, x => x + 1);
@@ -110,7 +110,7 @@ export function generate<S>(initialState: S,
  * The overload accepts options object that might contain initial state, iterate,
  * condition and scheduler.
  *
- * <img src="./img/generate.png" width="100%">
+ * <img src="generate.png">
  *
  * @example <caption>Produces sequence of 0, 1, 2, ... 9, then completes.</caption>
  * const res = generate({
@@ -134,7 +134,7 @@ export function generate<S>(options: GenerateBaseOptions<S>): Observable<S>;
  * The overload accepts options object that might contain initial state, iterate,
  * condition, result selector and scheduler.
  *
- * <img src="./img/generate.png" width="100%">
+ * <img src="generate.png">
  *
  * @example <caption>Produces sequence of 0, 1, 2, ... 9, then completes.</caption>
  * const res = generate({

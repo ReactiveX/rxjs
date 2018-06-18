@@ -11,7 +11,7 @@ import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic
  * <span class="informal">Samples the source Observable at periodic time
  * intervals, emitting what it samples.</span>
  *
- * <img src="./img/sampleTime.png" width="100%">
+ * <img src="sampleTime.png">
  *
  * `sampleTime` periodically looks at the source Observable and emits whichever
  * value it has most recently emitted since the previous sampling, unless the

@@ -11,7 +11,7 @@ import { empty } from './empty';
  * is subscribed.
  * </span>
  *
- * <img src="./img/defer.png" width="100%">
+ * <img src="defer.png">
  *
  * `defer` allows you to create the Observable only when the Observer
  * subscribes, and create a fresh Observable for each Observer. It waits until

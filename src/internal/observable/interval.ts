@@ -11,7 +11,7 @@ import { Subscriber } from '../Subscriber';
  * <span class="informal">Emits incremental numbers periodically in time.
  * </span>
  *
- * <img src="./img/interval.png" width="100%">
+ * <img src="interval.png">
  *
  * `interval` returns an Observable that emits an infinite sequence of
  * ascending integers, with a constant interval of time of your choosing

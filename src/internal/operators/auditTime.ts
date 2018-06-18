@@ -11,7 +11,7 @@ import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
  * the next ones for `duration` milliseconds, and then it emits the most recent
  * value from the source.</span>
  *
- * <img src="./img/auditTime.png" width="100%">
+ * <img src="auditTime.png">
  *
  * `auditTime` is similar to `throttleTime`, but emits the last value from the
  * silenced time window, instead of the first value. `auditTime` emits the most

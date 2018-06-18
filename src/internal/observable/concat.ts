@@ -22,7 +22,7 @@ export function concat<T, R>(...observables: (ObservableInput<any> | SchedulerLi
  * <span class="informal">Concatenates multiple Observables together by
  * sequentially emitting their values, one Observable after the other.</span>
  *
- * <img src="./img/concat.png" width="100%">
+ * <img src="concat.png">
  *
  * `concat` joins multiple Observables together, by subscribing to them one at a time and
  * merging their results into the output Observable. You can pass either an array of
