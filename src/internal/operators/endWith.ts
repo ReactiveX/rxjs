@@ -21,6 +21,8 @@ export function endWith<T>(...array: Array<T | SchedulerLike>): MonoTypeOperator
  * Returns an Observable that emits the items you specify as arguments after it finishes emitting
  * items emitted by the source Observable.
  *
+ * <img src="endWith.png">
+ *
  * ## Example
  * ### After the source observable completes, appends an emission and then completes too.
  *
