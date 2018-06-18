@@ -61,7 +61,7 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
     readTypeScriptModules.ignoreExportsMatching = [/^[_ɵ]|^VERSION$/];
     readTypeScriptModules.hidePrivateMembers = true;
 
-    // NOTE: This list shold be in sync with tools/public_api_guard/BUILD.bazel
+    // NOTE: This list should be in sync with tools/public_api_guard/BUILD.bazel
     readTypeScriptModules.sourceFiles = [
       'index.ts',
       'operators/index.ts'
@@ -161,6 +161,19 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
       docTypes: EXPORT_DOC_TYPES.concat(['decorator', 'directive', 'pipe']),
       pathTemplate: '${moduleDoc.moduleFolder}/${name}',
       outputPathTemplate: '${moduleDoc.moduleFolder}/${name}.json',
+    });
+    // Override path for symbols that would otherwise collide with other names (index/observable vs. index/Observable)
+    // on case insensitive filesystems (eg. OS X).
+    computePathsProcessor.pathTemplates.push({
+      docTypes: ['const'],
+      getPath: (doc) => {
+        const id = doc.id;
+        if (doc.originalModule.indexOf('internal/symbol') !== -1) {
+          return `${API_SEGMENT}/${id.replace(/^index\//, 'index/symbol/')}`;
+        }
+        return `${API_SEGMENT}/${id}`;
+      },
+      outputPathTemplate: '${path}.json',
     });
   })
 
