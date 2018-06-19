@@ -20,7 +20,7 @@ export function startWith<T>(...array: Array<T | SchedulerLike>): MonoTypeOperat
  * Returns an Observable that emits the items you specify as arguments before it begins to emit
  * items emitted by the source Observable.
  *
- * <img src="startWith.png">
+ * ![](startWith.png)
  *
  * @param {...T} values - Items you want the modified Observable to emit first.
  * @param {Scheduler} [scheduler] - A {@link SchedulerLike} to use for scheduling

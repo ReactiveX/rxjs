@@ -12,7 +12,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * <span class="informal">It's like {@link delay}, but passes only the most
  * recent value from each burst of emissions.</span>
  *
- * <img src="debounceTime.png">
+ * ![](debounceTime.png)
  *
  * `debounceTime` delays values emitted by the source Observable, but drops
  * previous pending delayed emissions if a new value arrives on the source

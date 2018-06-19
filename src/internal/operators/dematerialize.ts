@@ -11,7 +11,7 @@ import { OperatorFunction } from '../types';
  * <span class="informal">Unwraps {@link Notification} objects as actual `next`,
  * `error` and `complete` emissions. The opposite of {@link materialize}.</span>
  *
- * <img src="dematerialize.png">
+ * ![](dematerialize.png)
  *
  * `dematerialize` is assumed to operate an Observable that only emits
  * {@link Notification} objects as `next` emissions, and does not emit any

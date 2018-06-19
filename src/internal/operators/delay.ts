@@ -13,7 +13,7 @@ import { MonoTypeOperatorFunction, PartialObserver, SchedulerAction, SchedulerLi
  * <span class="informal">Time shifts each item by some specified amount of
  * milliseconds.</span>
  *
- * <img src="delay.png">
+ * ![](delay.png)
  *
  * If the delay argument is a Number, this operator time shifts the source
  * Observable by that amount of time expressed in milliseconds. The relative

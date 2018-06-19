@@ -24,7 +24,7 @@ export function onErrorResumeNext<T, R>(array: ObservableInput<any>[]): Operator
  *
  * <span class="informal">Execute series of Observables no matter what, even if it means swallowing errors.</span>
  *
- * <img src="onErrorResumeNext.png">
+ * ![](onErrorResumeNext.png)
  *
  * `onErrorResumeNext` is an operator that accepts a series of Observables, provided either directly as
  * arguments or as an array. If no single Observable is provided, returned Observable will simply behave the same

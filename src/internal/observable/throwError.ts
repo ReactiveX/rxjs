@@ -9,7 +9,7 @@ import { Subscriber } from '../Subscriber';
  * <span class="informal">Just emits 'error', and nothing else.
  * </span>
  *
- * <img src="throw.png">
+ * ![](throw.png)
  *
  * This static operator is useful for creating a simple Observable that only
  * emits the error notification. It can be used for composing with other

@@ -21,7 +21,7 @@ export function onErrorResumeNext<R>(array: ObservableInput<any>[]): Observable<
  *
  * <span class="informal">Execute series of Observables no matter what, even if it means swallowing errors.</span>
  *
- * <img src="onErrorResumeNext.png">
+ * ![](onErrorResumeNext.png)
  *
  * `onErrorResumeNext` Will subscribe to each observable source it is provided, in order.
  * If the source it's subscribed to emits an error or completes, it will move to the next source

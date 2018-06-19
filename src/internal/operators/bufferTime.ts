@@ -18,7 +18,7 @@ export function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: nu
  * <span class="informal">Collects values from the past as an array, and emits
  * those arrays periodically in time.</span>
  *
- * <img src="bufferTime.png">
+ * ![](bufferTime.png)
  *
  * Buffers values from the source for a specific time duration `bufferTimeSpan`.
  * Unless the optional argument `bufferCreationInterval` is given, it emits and

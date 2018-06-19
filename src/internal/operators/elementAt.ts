@@ -14,7 +14,7 @@ import { take } from './take';
  *
  * <span class="informal">Emits only the i-th value, then completes.</span>
  *
- * <img src="elementAt.png">
+ * ![](elementAt.png)
  *
  * `elementAt` returns an Observable that emits the item at the specified
  * `index` in the source Observable, or a default value if that `index` is out

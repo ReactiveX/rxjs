@@ -9,7 +9,7 @@ import { Subscriber } from '../Subscriber';
  * <span class="informal">Tells how many values were emitted, when the source
  * completes.</span>
  *
- * <img src="count.png">
+ * ![](count.png)
  *
  * `count` transforms an Observable that emits values into an Observable that
  * emits a single value that represents the number of values emitted by the

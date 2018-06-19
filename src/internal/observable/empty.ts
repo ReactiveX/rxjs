@@ -14,7 +14,7 @@ export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
  * <span class="informal">Just emits 'complete', and nothing else.
  * </span>
  *
- * <img src="empty.png">
+ * ![](empty.png)
  *
  * This static operator is useful for creating a simple Observable that only
  * emits the complete notification. It can be used for composing with other

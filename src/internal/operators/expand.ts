@@ -22,7 +22,7 @@ export function expand<T>(project: (value: T, index: number) => ObservableInput<
  * projection function to every source value as well as every output value.
  * It's recursive.</span>
  *
- * <img src="expand.png">
+ * ![](expand.png)
  *
  * Returns an Observable that emits items based on applying a function that you
  * supply to each item emitted by the source Observable, where that function

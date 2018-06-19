@@ -23,7 +23,7 @@ export function switchMapTo<T, I, R>(observable: ObservableInput<I>, resultSelec
  * <span class="informal">It's like {@link switchMap}, but maps each value
  * always to the same inner Observable.</span>
  *
- * <img src="switchMapTo.png">
+ * ![](switchMapTo.png)
  *
  * Maps each source value to the given Observable `innerObservable` regardless
  * of the source value, and then flattens those resulting Observables into one

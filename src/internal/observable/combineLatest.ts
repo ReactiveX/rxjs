@@ -50,7 +50,7 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * computes a formula using the latest values from all the inputs, then emits
  * the output of that formula.</span>
  *
- * <img src="combineLatest.png">
+ * ![](combineLatest.png)
  *
  * `combineLatest` combines the values from all the Observables passed as
  * arguments. This is done by subscribing to each Observable in order and,

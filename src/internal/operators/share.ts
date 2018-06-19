@@ -15,7 +15,7 @@ function shareSubjectFactory() {
  * unsubscribe from the source Observable. Because the Observable is multicasting it makes the stream `hot`.
  * This is an alias for `multicast(() => new Subject()), refCount()`.
  *
- * <img src="share.png">
+ * ![](share.png)
  *
  * @return {Observable<T>} An Observable that upon connection causes the source Observable to emit items to its Observers.
  * @method share

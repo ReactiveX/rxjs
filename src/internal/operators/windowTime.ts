@@ -15,7 +15,7 @@ import { OperatorFunction, SchedulerLike, SchedulerAction } from '../types';
  * <span class="informal">It's like {@link bufferTime}, but emits a nested
  * Observable instead of an array.</span>
  *
- * <img src="windowTime.png">
+ * ![](windowTime.png)
  *
  * Returns an Observable that emits windows of items it collects from the source
  * Observable. The output Observable starts a new window periodically, as

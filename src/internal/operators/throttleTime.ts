@@ -13,7 +13,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * <span class="informal">Lets a value pass, then ignores source values for the
  * next `duration` milliseconds.</span>
  *
- * <img src="throttleTime.png">
+ * ![](throttleTime.png)
  *
  * `throttleTime` emits the source Observable values on the output Observable
  * when its internal timer is disabled, and ignores source values when the timer

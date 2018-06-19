@@ -22,13 +22,18 @@ module.exports = function embedMarbleDiagramsPostProcessor(log) {
             const expectedImgPath = `${service.marbleImagesPath}/${src}`;
 
             if (fs.existsSync(expectedImgPath)) {
+              const operator = path.basename(src, path.extname(src));
               const filename = path.basename(expectedImgPath);
               const targetPath = `${service.marbleImagesOutputPath}/${filename}`;
 
               mkdirp.sync(path.dirname(targetPath));
               fs.copyFileSync(expectedImgPath, targetPath);
+
               props.src = `${service.marbleImagesOutputWebPath}/${filename}`;
               props.width = '100%';
+              if (!props.alt) {
+                props.alt = `Marble diagram for ${operator} operator`;
+              }
 
               log.debug(`Found ${expectedImgPath} and copying it to ${targetPath}`);
             }

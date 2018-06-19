@@ -33,7 +33,7 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
   .processor(require('./processors/simplifyMemberAnchors'))
   .processor(require('./processors/computeStability'))
 
-  .factory(require('./post-processors/embed-marble-diagrams'))
+  .factory(require('./post-processors/embedMarbleDiagrams'))
 
   /**
    * These are the API doc types that will be rendered to actual files.

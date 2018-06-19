@@ -27,7 +27,7 @@ export function merge<T, R>(...observables: (ObservableInput<any> | SchedulerLik
  * <span class="informal">Flattens multiple Observables together by blending
  * their values into one Observable.</span>
  *
- * <img src="merge.png">
+ * ![](merge.png)
  *
  * `merge` subscribes to each given input Observable (as arguments), and simply
  * forwards (without doing any transformation) all the values from all the input
