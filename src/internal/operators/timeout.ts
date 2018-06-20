@@ -75,7 +75,7 @@ import { throwError } from '../observable/throwError';
  *
  * @param {number|Date} due Number specifying period within which Observable must emit values
  *                          or Date specifying before when Observable should complete
- * @param {Scheduler} [scheduler] Scheduler controlling when timeout checks occur.
+ * @param {SchedulerLike} [scheduler] Scheduler controlling when timeout checks occur.
  * @return {Observable<T>} Observable that mirrors behaviour of source, unless timeout checks fail.
  * @method timeout
  * @owner Observable

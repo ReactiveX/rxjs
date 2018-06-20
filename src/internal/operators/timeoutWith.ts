@@ -55,7 +55,7 @@ export function timeoutWith<T, R>(due: number | Date, withObservable: Observable
  * @param {number|Date} due Number specifying period within which Observable must emit values
  *                          or Date specifying before when Observable should complete
  * @param {Observable<T>} withObservable Observable which will be subscribed if source fails timeout check.
- * @param {Scheduler} [scheduler] Scheduler controlling when timeout checks occur.
+ * @param {SchedulerLike} [scheduler] Scheduler controlling when timeout checks occur.
  * @return {Observable<T>} Observable that mirrors behaviour of source or, when timeout check fails, of an Observable
  *                          passed as a second parameter.
  * @method timeoutWith

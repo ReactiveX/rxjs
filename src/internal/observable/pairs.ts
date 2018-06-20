@@ -5,7 +5,7 @@ import { Subscription } from '../Subscription';
 
 /**
  * Convert an object into an observable sequence of [key, value] pairs
- * using an optional IScheduler to enumerate the object.
+ * using an optional {@link SchedulerLike} to enumerate the object.
  *
  * ## Example
  * Converts a javascript object to an Observable
@@ -27,7 +27,7 @@ import { Subscription } from '../Subscription';
  *
  * @param {Object} obj The object to inspect and turn into an
  * Observable sequence.
- * @param {Scheduler} [scheduler] An optional IScheduler to run the
+ * @param {SchedulerLike} [scheduler] An optional {@link SchedulerLike} to run the
  * enumeration of the input sequence on.
  * @returns {(Observable<[string, T]>)} An observable sequence of
  * [key, value] pairs from the object.

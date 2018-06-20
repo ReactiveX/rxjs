@@ -105,7 +105,7 @@ export function concat<T, R>(...observables: (ObservableInput<any> | SchedulerLi
  * @param {ObservableInput} input1 An input Observable to concatenate with others.
  * @param {ObservableInput} input2 An input Observable to concatenate with others.
  * More than one input Observables may be given as argument.
- * @param {Scheduler} [scheduler=null] An optional IScheduler to schedule each
+ * @param {SchedulerLike} [scheduler=null] An optional {@link SchedulerLike} to schedule each
  * Observable subscription on.
  * @return {Observable} All values of each passed Observable merged into a
  * single Observable, in order, in serial fashion.

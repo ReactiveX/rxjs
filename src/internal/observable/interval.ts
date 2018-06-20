@@ -6,7 +6,7 @@ import { Subscriber } from '../Subscriber';
 
 /**
  * Creates an Observable that emits sequential numbers every specified
- * interval of time, on a specified IScheduler.
+ * interval of time, on a specified {@link SchedulerLike}.
  *
  * <span class="informal">Emits incremental numbers periodically in time.
  * </span>
@@ -17,8 +17,8 @@ import { Subscriber } from '../Subscriber';
  * ascending integers, with a constant interval of time of your choosing
  * between those emissions. The first emission is not sent immediately, but
  * only after the first period has passed. By default, this operator uses the
- * `async` IScheduler to provide a notion of time, but you may pass any
- * IScheduler to it.
+ * `async` {@link SchedulerLike} to provide a notion of time, but you may pass any
+ * {@link SchedulerLike} to it.
  *
  * ## Example
  * Emits ascending numbers, one every second (1000ms)
@@ -32,7 +32,7 @@ import { Subscriber } from '../Subscriber';
  *
  * @param {number} [period=0] The interval size in milliseconds (by default)
  * or the time unit determined by the scheduler's clock.
- * @param {Scheduler} [scheduler=async] The IScheduler to use for scheduling
+ * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for scheduling
  * the emission of values, and providing a notion of "time".
  * @return {Observable} An Observable that emits a sequential number each time
  * interval.

@@ -9,7 +9,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  *
  * ![](subscribeOn.png)
  *
- * @param {Scheduler} scheduler - The {@link SchedulerLike} to perform subscription actions on.
+ * @param {SchedulerLike} scheduler - The {@link SchedulerLike} to perform subscription actions on.
  * @return {Observable<T>} The source Observable modified so that its subscriptions happen on the specified {@link SchedulerLike}.
  .
  * @method subscribeOn

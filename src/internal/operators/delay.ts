@@ -43,7 +43,7 @@ import { MonoTypeOperatorFunction, PartialObserver, SchedulerAction, SchedulerLi
  *
  * @param {number|Date} delay The delay duration in milliseconds (a `number`) or
  * a `Date` until which the emission of the source items is delayed.
- * @param {Scheduler} [scheduler=async] The IScheduler to use for
+ * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
  * managing the timers that handle the time-shift for each item.
  * @return {Observable} An Observable that delays the emissions of the source
  * Observable by the specified timeout or Date.

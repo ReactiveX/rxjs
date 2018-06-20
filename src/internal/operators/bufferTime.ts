@@ -57,7 +57,7 @@ export function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: nu
  * @param {number} [bufferCreationInterval] The interval at which to start new
  * buffers.
  * @param {number} [maxBufferSize] The maximum buffer size.
- * @param {Scheduler} [scheduler=async] The scheduler on which to schedule the
+ * @param {SchedulerLike} [scheduler=async] The scheduler on which to schedule the
  * intervals that determine buffer boundaries.
  * @return {Observable<T[]>} An observable of arrays of buffered values.
  * @method bufferTime

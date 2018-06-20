@@ -46,7 +46,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * unit determined internally by the optional `scheduler`) for the window of
  * time required to wait for emission silence before emitting the most recent
  * source value.
- * @param {Scheduler} [scheduler=async] The {@link SchedulerLike} to use for
+ * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
  * managing the timers that handle the timeout for each value.
  * @return {Observable} An Observable that delays the emissions of the source
  * Observable by the specified `dueTime`, and may drop some values if they occur

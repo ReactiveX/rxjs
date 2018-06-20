@@ -108,7 +108,7 @@ export class Observable<T> implements Subscribable<T> {
    * Remember that callbacks provided to `subscribe` are not guaranteed to be called asynchronously.
    * It is an Observable itself that decides when these functions will be called. For example {@link of}
    * by default emits all its values synchronously. Always check documentation for how given Observable
-   * will behave when subscribed and if its default behavior can be modified with a `Scheduler`.
+   * will behave when subscribed and if its default behavior can be modified with a `scheduler`.
    *
    * ## Example
    * ### Subscribe with an Observer

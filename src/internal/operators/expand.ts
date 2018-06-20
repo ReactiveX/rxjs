@@ -54,7 +54,7 @@ export function expand<T>(project: (value: T, index: number) => ObservableInput<
  * returns an Observable.
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
  * Observables being subscribed to concurrently.
- * @param {Scheduler} [scheduler=null] The IScheduler to use for subscribing to
+ * @param {SchedulerLike} [scheduler=null] The {@link SchedulerLike} to use for subscribing to
  * each projected inner Observable.
  * @return {Observable} An Observable that emits the source values and also
  * result of applying the projection function to each value emitted on the

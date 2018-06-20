@@ -74,7 +74,7 @@ import { OperatorFunction, SchedulerLike, SchedulerAction } from '../types';
  * windows.
  * @param {number} [maxWindowSize=Number.POSITIVE_INFINITY] Max number of
  * values each window can emit before completion.
- * @param {Scheduler} [scheduler=async] The scheduler on which to schedule the
+ * @param {SchedulerLike} [scheduler=async] The scheduler on which to schedule the
  * intervals that determine window boundaries.
  * @return {Observable<Observable<T>>} An observable of windows, which in turn
  * are Observables.

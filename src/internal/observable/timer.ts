@@ -42,7 +42,7 @@ import { Subscriber } from '../Subscriber';
  * emitting the first value of `0`.
  * @param {number|SchedulerLike} [periodOrScheduler] The period of time between emissions of the
  * subsequent numbers.
- * @param {SchedulerLike} [scheduler=async] The IScheduler to use for scheduling
+ * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for scheduling
  * the emission of values, and providing a notion of "time".
  * @return {Observable} An Observable that emits a `0` after the
  * `initialDelay` and ever increasing numbers after each `period` of time
