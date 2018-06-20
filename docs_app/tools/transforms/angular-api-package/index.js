@@ -165,12 +165,10 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
       pathTemplate: '${moduleDoc.moduleFolder}/${name}',
       outputPathTemplate: '${moduleDoc.moduleFolder}/${name}.json',
     });
-    // Override path for symbols that would otherwise collide with other names (index/observable vs. index/Observable)
-    // on case insensitive filesystems (eg. OS X).
     computePathsProcessor.pathTemplates.push({
-      docTypes: ['const'],
+      docTypes: ['const', 'function', 'interface', 'class', 'type-alias'],
       getPath: (doc) => {
-        return `${API_SEGMENT}/${doc.id.replace(/^index\//, 'index/const/')}`;
+        return `${API_SEGMENT}/${doc.id.replace(/^index\//, `index/${doc.docType}/`)}`;
       },
       outputPathTemplate: '${path}.json',
     });

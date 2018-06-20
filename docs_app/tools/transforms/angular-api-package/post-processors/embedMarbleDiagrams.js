@@ -32,7 +32,7 @@ module.exports = function embedMarbleDiagramsPostProcessor(log) {
               props.src = `${service.marbleImagesOutputWebPath}/${filename}`;
               props.width = '100%';
               if (!props.alt) {
-                props.alt = `Marble diagram for ${operator} operator`;
+                props.alt = `${operator} marble diagram`;
               }
 
               log.debug(`Found ${expectedImgPath} and copying it to ${targetPath}`);
