@@ -1,5 +1,6 @@
 export { audit } from './audit';
 export { auditTime } from './auditTime';
+export { average } from './average';
 export { buffer } from './buffer';
 export { bufferCount } from './bufferCount';
 export { bufferTime } from './bufferTime';
@@ -77,6 +78,7 @@ export { skipUntil } from './skipUntil';
 export { skipWhile } from './skipWhile';
 export { startWith } from './startWith';
 export { subscribeOn } from './subscribeOn';
+export { sum } from './sum';
 export { switchAll } from './switchAll';
 export { switchMap } from './switchMap';
 export { switchMapTo } from './switchMapTo';

@@ -248,7 +248,9 @@ There are operators for different purposes, and they may be categorized as: crea
 
 ### Mathematical and Aggregate Operators
 
+- [`average`](../class/es6/Observable.js~Observable.html#instance-method-average)
 - [`count`](../class/es6/Observable.js~Observable.html#instance-method-count)
 - [`max`](../class/es6/Observable.js~Observable.html#instance-method-max)
 - [`min`](../class/es6/Observable.js~Observable.html#instance-method-min)
 - [`reduce`](../class/es6/Observable.js~Observable.html#instance-method-reduce)
+- [`sum`](../class/es6/Observable.js~Observable.html#instance-method-sum)

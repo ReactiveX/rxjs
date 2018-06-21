@@ -2,6 +2,7 @@
 /* Operator exports */
 export { audit } from '../internal/operators/audit';
 export { auditTime } from '../internal/operators/auditTime';
+export { average } from '../internal/operators/average';
 export { buffer } from '../internal/operators/buffer';
 export { bufferCount } from '../internal/operators/bufferCount';
 export { bufferTime } from '../internal/operators/bufferTime';
@@ -80,6 +81,7 @@ export { skipUntil } from '../internal/operators/skipUntil';
 export { skipWhile } from '../internal/operators/skipWhile';
 export { startWith } from '../internal/operators/startWith';
 export { subscribeOn } from '../internal/operators/subscribeOn';
+export { sum } from '../internal/operators/sum';
 export { switchAll } from '../internal/operators/switchAll';
 export { switchMap } from '../internal/operators/switchMap';
 export { switchMapTo } from '../internal/operators/switchMapTo';
