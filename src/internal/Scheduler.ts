@@ -23,8 +23,12 @@ import { SchedulerLike, SchedulerAction } from './types';
  */
 export class Scheduler implements SchedulerLike {
 
-  /** @nocollapse */
-  public static now: () => number = Date.now ? Date.now : () => +new Date();
+  /**
+   * Note: the extra arrow function wrapper is to make testing by overriding
+   * Date.now easier.
+   * @nocollapse
+   */
+  public static now: () => number = () => Date.now();
 
   constructor(private SchedulerAction: typeof Action,
               now: () => number = Scheduler.now) {
