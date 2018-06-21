@@ -62,7 +62,7 @@ export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, opti
  * <span class="informal">Creates an Observable from DOM events, or Node.js
  * EventEmitter events or others.</span>
  *
- * <img src="./img/fromEvent.png" width="100%">
+ * ![](fromEvent.png)
  *
  * `fromEvent` accepts as a first argument event target, which is an object with methods
  * for registering event handler functions. As a second argument it takes string that indicates

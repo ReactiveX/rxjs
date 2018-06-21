@@ -16,7 +16,7 @@ export function mergeMapTo<T, I, R>(innerObservable: ObservableInput<I>, resultS
  * <span class="informal">It's like {@link mergeMap}, but maps each value always
  * to the same inner Observable.</span>
  *
- * <img src="./img/mergeMapTo.png" width="100%">
+ * ![](mergeMapTo.png)
  *
  * Maps each source value to the given Observable `innerObservable` regardless
  * of the source value, and then merges those resulting Observables into one

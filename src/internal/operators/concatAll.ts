@@ -12,7 +12,7 @@ export function concatAll<R>(): OperatorFunction<any, R>;
  * <span class="informal">Flattens an Observable-of-Observables by putting one
  * inner Observable after the other.</span>
  *
- * <img src="./img/concatAll.png" width="100%">
+ * ![](concatAll.png)
  *
  * Joins every Observable emitted by the source (a higher-order Observable), in
  * a serial fashion. It subscribes to each inner Observable only after the
@@ -51,7 +51,8 @@ export function concatAll<R>(): OperatorFunction<any, R>;
  * @see {@link concatMapTo}
  * @see {@link exhaust}
  * @see {@link mergeAll}
- * @see {@link switch}
+ * @see {@link switchAll}
+ * @see {@link switchMap}
  * @see {@link zipAll}
  *
  * @return {Observable} An Observable emitting values from all the inner

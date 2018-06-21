@@ -11,7 +11,7 @@ export function mergeAll<T>(concurrent?: number): OperatorFunction<ObservableInp
  *
  * <span class="informal">Flattens an Observable-of-Observables.</span>
  *
- * <img src="./img/mergeAll.png" width="100%">
+ * ![](mergeAll.png)
  *
  * `mergeAll` subscribes to an Observable that emits Observables, also known as
  * a higher-order Observable. Each time it observes one of these emitted inner
@@ -46,7 +46,8 @@ export function mergeAll<T>(concurrent?: number): OperatorFunction<ObservableInp
  * @see {@link mergeMap}
  * @see {@link mergeMapTo}
  * @see {@link mergeScan}
- * @see {@link switch}
+ * @see {@link switchAll}
+ * @see {@link switchMap}
  * @see {@link zipAll}
  *
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of inner

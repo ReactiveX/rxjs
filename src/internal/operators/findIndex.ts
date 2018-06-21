@@ -8,7 +8,7 @@ import { OperatorFunction } from '../types';
  * <span class="informal">It's like {@link find}, but emits the index of the
  * found value, not the value itself.</span>
  *
- * <img src="./img/findIndex.png" width="100%">
+ * ![](findIndex.png)
  *
  * `findIndex` searches for the first item in the source Observable that matches
  * the specified condition embodied by the `predicate`, and returns the

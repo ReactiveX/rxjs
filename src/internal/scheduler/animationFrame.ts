@@ -7,7 +7,7 @@ import { AnimationFrameScheduler } from './AnimationFrameScheduler';
  *
  * <span class="informal">Perform task when `window.requestAnimationFrame` would fire</span>
  *
- * When `animationFrame` scheduler is used with delay, it will fall back to {@link async} scheduler
+ * When `animationFrame` scheduler is used with delay, it will fall back to {@link asyncScheduler} scheduler
  * behaviour.
  *
  * Without delay, `animationFrame` scheduler can be used to create smooth browser animations.

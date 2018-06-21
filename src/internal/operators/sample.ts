@@ -14,7 +14,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * <span class="informal">It's like {@link sampleTime}, but samples whenever
  * the `notifier` Observable emits something.</span>
  *
- * <img src="./img/sample.png" width="100%">
+ * ![](sample.png)
  *
  * Whenever the `notifier` Observable emits a value or completes, `sample`
  * looks at the source Observable and emits whichever value it has most recently

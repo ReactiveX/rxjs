@@ -17,7 +17,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * <span class="informal">It's like {@link auditTime}, but the silencing
  * duration is determined by a second Observable.</span>
  *
- * <img src="./img/audit.png" width="100%">
+ * ![](audit.png)
  *
  * `audit` is similar to `throttle`, but emits the last value from the silenced
  * time window, instead of the first value. `audit` emits the most recent value

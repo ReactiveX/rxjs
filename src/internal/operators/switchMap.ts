@@ -22,9 +22,9 @@ export function switchMap<T, I, R>(project: (value: T, index: number) => Observa
  * Observable, emitting values only from the most recently projected Observable.
  *
  * <span class="informal">Maps each value to an Observable, then flattens all of
- * these inner Observables using {@link switch}.</span>
+ * these inner Observables.</span>
  *
- * <img src="./img/switchMap.png" width="100%">
+ * ![](switchMap.png)
  *
  * Returns an Observable that emits items based on applying a function that you
  * supply to each item emitted by the source Observable, where that function
@@ -46,7 +46,7 @@ export function switchMap<T, I, R>(project: (value: T, index: number) => Observa
  * @see {@link concatMap}
  * @see {@link exhaustMap}
  * @see {@link mergeMap}
- * @see {@link switch}
+ * @see {@link switchAll}
  * @see {@link switchMapTo}
  *
  * @param {function(value: T, ?index: number): ObservableInput} project A function

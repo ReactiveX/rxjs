@@ -14,7 +14,7 @@ export function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOpera
  * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called
  * before it begins emitting items to those Observers that have subscribed to it.
  *
- * <img src="./img/publish.png" width="100%">
+ * ![](publish.png)
  *
  * @param {Function} [selector] - Optional selector function which can use the multicasted source sequence as many times
  * as needed, without causing multiple subscriptions to the source sequence.

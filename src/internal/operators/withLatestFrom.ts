@@ -32,7 +32,7 @@ export function withLatestFrom<T, R>(array: ObservableInput<any>[], project: (..
  * computes a formula using that value plus the latest values from other input
  * Observables, then emits the output of that formula.</span>
  *
- * <img src="./img/withLatestFrom.png" width="100%">
+ * ![](withLatestFrom.png)
  *
  * `withLatestFrom` combines each value from the source Observable (the
  * instance) with the latest values from the other input Observables only when

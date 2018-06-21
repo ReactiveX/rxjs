@@ -4,7 +4,7 @@ import { noop } from '../util/noop';
 /**
  * An Observable that emits no items to the Observer and never completes.
  *
- * <img src="./img/never.png" width="100%">
+ * ![](never.png)
  *
  * A simple Observable that emits neither values nor errors nor the completion
  * notification. It can be used for testing purposes or for composing with other
@@ -23,8 +23,8 @@ import { noop } from '../util/noop';
  *
  * ```
  *
- * @see {@link create}
- * @see {@link EMPTY}
+ * @see {@link Observable}
+ * @see {@link index/EMPTY}
  * @see {@link of}
  * @see {@link throwError}
  */

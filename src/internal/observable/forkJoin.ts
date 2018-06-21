@@ -36,7 +36,7 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  *
  * <span class="informal">Wait for Observables to complete and then combine last values they emitted.</span>
  *
- * <img src="./img/forkJoin.png" width="100%">
+ * ![](forkJoin.png)
  *
  * `forkJoin` is an operator that takes any number of Observables which can be passed either as an array
  * or directly as arguments. If no input Observables are provided, resulting stream will complete

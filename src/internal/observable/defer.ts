@@ -11,7 +11,7 @@ import { empty } from './empty';
  * is subscribed.
  * </span>
  *
- * <img src="./img/defer.png" width="100%">
+ * ![](defer.png)
  *
  * `defer` allows you to create the Observable only when the Observer
  * subscribes, and create a fresh Observable for each Observer. It waits until
@@ -38,7 +38,7 @@ import { empty } from './empty';
  * // than 0.5 it will emit ascending numbers, one every second(1000ms).
  * ```
  *
- * @see {@link create}
+ * @see {@link Observable}
  *
  * @param {function(): SubscribableOrPromise} observableFactory The Observable
  * factory function to invoke for each Observer that subscribes to the output

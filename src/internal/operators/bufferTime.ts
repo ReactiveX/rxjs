@@ -18,7 +18,7 @@ export function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: nu
  * <span class="informal">Collects values from the past as an array, and emits
  * those arrays periodically in time.</span>
  *
- * <img src="./img/bufferTime.png" width="100%">
+ * ![](bufferTime.png)
  *
  * Buffers values from the source for a specific time duration `bufferTimeSpan`.
  * Unless the optional argument `bufferCreationInterval` is given, it emits and
@@ -57,7 +57,7 @@ export function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: nu
  * @param {number} [bufferCreationInterval] The interval at which to start new
  * buffers.
  * @param {number} [maxBufferSize] The maximum buffer size.
- * @param {Scheduler} [scheduler=async] The scheduler on which to schedule the
+ * @param {SchedulerLike} [scheduler=async] The scheduler on which to schedule the
  * intervals that determine buffer boundaries.
  * @return {Observable<T[]>} An observable of arrays of buffered values.
  * @method bufferTime

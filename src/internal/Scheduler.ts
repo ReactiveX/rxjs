@@ -7,7 +7,7 @@ import { SchedulerLike, SchedulerAction } from './types';
  * execution. Provides a notion of (potentially virtual) time, through the
  * `now()` getter method.
  *
- * Each unit of work in a Scheduler is called an {@link Action}.
+ * Each unit of work in a Scheduler is called an `Action`.
  *
  * ```ts
  * class Scheduler {

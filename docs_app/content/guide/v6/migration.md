@@ -19,7 +19,7 @@ The overall process can be carried out in stages:
 
  To refactor TypeScript code so that it doesn't depend on rxjs-compat, you can use `rxjs-tslint`.
 
- ```sh
+```sh
 npm i -g rxjs-tslint
 rxjs-5-to-6-migrate -p [path/to/tsconfig.json]
 ```

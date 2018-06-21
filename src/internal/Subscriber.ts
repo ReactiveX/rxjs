@@ -105,7 +105,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
 
   /**
    * The {@link Observer} callback to receive notifications of type `error` from
-   * the Observable, with an attached {@link Error}. Notifies the Observer that
+   * the Observable, with an attached `Error`. Notifies the Observer that
    * the Observable has experienced an error condition.
    * @param {any} [err] The `error` exception.
    * @return {void}

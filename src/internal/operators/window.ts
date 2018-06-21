@@ -14,7 +14,7 @@ import { Operator } from '../Operator';
  * <span class="informal">It's like {@link buffer}, but emits a nested Observable
  * instead of an array.</span>
  *
- * <img src="./img/window.png" width="100%">
+ * ![](window.png)
  *
  * Returns an Observable that emits windows of items it collects from the source
  * Observable. The output Observable emits connected, non-overlapping

@@ -3,8 +3,8 @@ import { Subscription } from '../Subscription';
 import { SchedulerAction } from '../types';
 
 /**
- * A unit of work to be executed in a {@link Scheduler}. An action is typically
- * created from within a Scheduler and an RxJS user does not need to concern
+ * A unit of work to be executed in a `scheduler`. An action is typically
+ * created from within a {@link SchedulerLike} and an RxJS user does not need to concern
  * themselves about creating and manipulating an Action.
  *
  * ```ts
@@ -21,7 +21,7 @@ export class Action<T> extends Subscription {
     super();
   }
   /**
-   * Schedules this action on its parent Scheduler for execution. May be passed
+   * Schedules this action on its parent {@link SchedulerLike} for execution. May be passed
    * some context object, `state`. May happen at some point in the future,
    * according to the `delay` parameter, if specified.
    * @param {T} [state] Some contextual data that the `work` function uses when

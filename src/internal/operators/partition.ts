@@ -11,7 +11,7 @@ import { UnaryFunction } from '../types';
  * one like the output of {@link filter}, and the other with values that did not
  * pass the condition.</span>
  *
- * <img src="./img/partition.png" width="100%">
+ * ![](partition.png)
  *
  * `partition` outputs an array with two Observables that partition the values
  * from the source Observable through the given `predicate` function. The first

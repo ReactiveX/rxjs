@@ -17,7 +17,7 @@ export function multicast<T, R>(SubjectFactory: (this: Observable<T>) => Subject
  * Returns an Observable that emits the results of invoking a specified selector on items
  * emitted by a ConnectableObservable that shares a single subscription to the underlying stream.
  *
- * <img src="./img/multicast.png" width="100%">
+ * ![](multicast.png)
  *
  * @param {Function|Subject} subjectOrSubjectFactory - Factory function to create an intermediate subject through
  * which the source sequence's elements will be multicast to the selector function

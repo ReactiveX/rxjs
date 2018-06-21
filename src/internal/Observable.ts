@@ -76,7 +76,7 @@ export class Observable<T> implements Subscribable<T> {
    * <span class="informal">Use it when you have all these Observables, but still nothing is happening.</span>
    *
    * `subscribe` is not a regular operator, but a method that calls Observable's internal `subscribe` function. It
-   * might be for example a function that you passed to a {@link create} static factory, but most of the time it is
+   * might be for example a function that you passed to Observable's constructor, but most of the time it is
    * a library implementation, which defines what and when will be emitted by an Observable. This means that calling
    * `subscribe` is actually the moment when Observable starts its work, not when it is created, as it is often
    * thought.
@@ -108,7 +108,7 @@ export class Observable<T> implements Subscribable<T> {
    * Remember that callbacks provided to `subscribe` are not guaranteed to be called asynchronously.
    * It is an Observable itself that decides when these functions will be called. For example {@link of}
    * by default emits all its values synchronously. Always check documentation for how given Observable
-   * will behave when subscribed and if its default behavior can be modified with a {@link Scheduler}.
+   * will behave when subscribed and if its default behavior can be modified with a `scheduler`.
    *
    * ## Example
    * ### Subscribe with an Observer

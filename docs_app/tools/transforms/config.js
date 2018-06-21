@@ -11,6 +11,9 @@ const SRC_PATH = resolve(AIO_PATH, 'src');
 const OUTPUT_PATH = resolve(SRC_PATH, 'generated');
 const DOCS_OUTPUT_PATH = resolve(OUTPUT_PATH, 'docs');
 const API_SOURCE_PATH = resolve(PROJECT_ROOT, 'src');
+const MARBLE_IMAGES_PATH = resolve(PROJECT_ROOT, 'tmp/docs/img');
+const MARBLE_IMAGES_WEB_PATH = 'generated/images/marbles';
+const MARBLE_IMAGES_OUTPUT_PATH = resolve(OUTPUT_PATH, 'images/marbles');
 
 function requireFolder(dirname, folderPath) {
   const absolutePath = resolve(dirname, folderPath);
@@ -19,5 +22,6 @@ function requireFolder(dirname, folderPath) {
     .map(p => require(resolve(absolutePath, p)));
 }
 
-module.exports = { PROJECT_ROOT, AIO_PATH, TEMPLATES_PATH, API_TEMPLATES_PATH, CONTENTS_PATH, GUIDE_EXAMPLES_PATH, SRC_PATH, OUTPUT_PATH, DOCS_OUTPUT_PATH, API_SOURCE_PATH, requireFolder };
+module.exports = { PROJECT_ROOT, AIO_PATH, TEMPLATES_PATH, API_TEMPLATES_PATH, CONTENTS_PATH, GUIDE_EXAMPLES_PATH, SRC_PATH,
+  OUTPUT_PATH, DOCS_OUTPUT_PATH, API_SOURCE_PATH, MARBLE_IMAGES_PATH, MARBLE_IMAGES_OUTPUT_PATH, MARBLE_IMAGES_WEB_PATH, requireFolder };
 

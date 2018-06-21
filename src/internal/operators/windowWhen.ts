@@ -18,7 +18,7 @@ import { OperatorFunction } from '../types';
  * <span class="informal">It's like {@link bufferWhen}, but emits a nested
  * Observable instead of an array.</span>
  *
- * <img src="./img/windowWhen.png" width="100%">
+ * ![](windowWhen.png)
  *
  * Returns an Observable that emits windows of items it collects from the source
  * Observable. The output Observable emits connected, non-overlapping windows.

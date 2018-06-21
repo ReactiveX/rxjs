@@ -21,6 +21,8 @@ export function endWith<T>(...array: Array<T | SchedulerLike>): MonoTypeOperator
  * Returns an Observable that emits the items you specify as arguments after it finishes emitting
  * items emitted by the source Observable.
  *
+ * ![](endWith.png)
+ *
  * ## Example
  * ### After the source observable completes, appends an emission and then completes too.
  *
@@ -37,7 +39,7 @@ export function endWith<T>(...array: Array<T | SchedulerLike>): MonoTypeOperator
  * ```
  *
  * @param {...T} values - Items you want the modified Observable to emit last.
- * @param {Scheduler} [scheduler] - A {@link IScheduler} to use for scheduling
+ * @param {SchedulerLike} [scheduler] - A {@link SchedulerLike} to use for scheduling
  * the emissions of the `next` notifications.
  * @return {Observable} An Observable that emits the items emitted by the source Observable
  *  and then emits the items in the specified Iterable.

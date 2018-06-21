@@ -17,7 +17,7 @@ import { OperatorFunction } from '../types';
  * starts collecting values, it calls a function that returns an Observable that
  * tells when to close the buffer and restart collecting.</span>
  *
- * <img src="./img/bufferWhen.png" width="100%">
+ * ![](bufferWhen.png)
  *
  * Opens a buffer immediately, then closes the buffer when the observable
  * returned by calling `closingSelector` function emits a value. When it closes

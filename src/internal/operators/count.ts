@@ -9,7 +9,7 @@ import { Subscriber } from '../Subscriber';
  * <span class="informal">Tells how many values were emitted, when the source
  * completes.</span>
  *
- * <img src="./img/count.png" width="100%">
+ * ![](count.png)
  *
  * `count` transforms an Observable that emits values into an Observable that
  * emits a single value that represents the number of values emitted by the
@@ -38,7 +38,7 @@ import { Subscriber } from '../Subscriber';
  * result.subscribe(x => console.log(x));
  * // Results in:
  * // 4
- * ```javascript
+ * ```
  *
  * @see {@link max}
  * @see {@link min}

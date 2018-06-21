@@ -16,7 +16,7 @@ export function exhaust<R>(): OperatorFunction<any, R>;
  * <span class="informal">Flattens an Observable-of-Observables by dropping the
  * next inner Observables while the current inner is still executing.</span>
  *
- * <img src="./img/exhaust.png" width="100%">
+ * ![](exhaust.png)
  *
  * `exhaust` subscribes to an Observable that emits Observables, also known as a
  * higher-order Observable. Each time it observes one of these emitted inner
@@ -39,7 +39,8 @@ export function exhaust<R>(): OperatorFunction<any, R>;
  *
  * @see {@link combineAll}
  * @see {@link concatAll}
- * @see {@link switch}
+ * @see {@link switchAll}
+ * @see {@link switchMap}
  * @see {@link mergeAll}
  * @see {@link exhaustMap}
  * @see {@link zipAll}

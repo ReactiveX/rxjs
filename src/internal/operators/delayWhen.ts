@@ -20,7 +20,7 @@ export function delayWhen<T>(delayDurationSelector: (value: T) => Observable<any
  * <span class="informal">It's like {@link delay}, but the time span of the
  * delay duration is determined by a second Observable.</span>
  *
- * <img src="./img/delayWhen.png" width="100%">
+ * ![](delayWhen.png)
  *
  * `delayWhen` time shifts each emitted value from the source Observable by a
  * time span determined by another Observable. When the source emits a value,

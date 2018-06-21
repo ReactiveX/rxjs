@@ -18,7 +18,7 @@ export function find<T>(predicate: (value: T, index: number) => boolean,
  * <span class="informal">Finds the first value that passes some test and emits
  * that.</span>
  *
- * <img src="./img/find.png" width="100%">
+ * ![](find.png)
  *
  * `find` searches for the first item in the source Observable that matches the
  * specified condition embodied by the `predicate`, and returns the first

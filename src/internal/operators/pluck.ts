@@ -8,7 +8,7 @@ import { OperatorFunction } from '../types';
  * <span class="informal">Like {@link map}, but meant only for picking one of
  * the nested properties of every emitted object.</span>
  *
- * <img src="./img/pluck.png" width="100%">
+ * ![](pluck.png)
  *
  * Given a list of strings describing a path to an object property, retrieves
  * the value of a specified nested property from all values in the source

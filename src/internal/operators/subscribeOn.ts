@@ -5,12 +5,12 @@ import { SubscribeOnObservable } from '../observable/SubscribeOnObservable';
 import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types';
 
 /**
- * Asynchronously subscribes Observers to this Observable on the specified IScheduler.
+ * Asynchronously subscribes Observers to this Observable on the specified {@link SchedulerLike}.
  *
- * <img src="./img/subscribeOn.png" width="100%">
+ * ![](subscribeOn.png)
  *
- * @param {Scheduler} scheduler - The IScheduler to perform subscription actions on.
- * @return {Observable<T>} The source Observable modified so that its subscriptions happen on the specified IScheduler.
+ * @param {SchedulerLike} scheduler - The {@link SchedulerLike} to perform subscription actions on.
+ * @return {Observable<T>} The source Observable modified so that its subscriptions happen on the specified {@link SchedulerLike}.
  .
  * @method subscribeOn
  * @owner Observable

@@ -9,7 +9,7 @@ import { Subscriber } from '../Subscriber';
  * <span class="informal">Just emits 'error', and nothing else.
  * </span>
  *
- * <img src="./img/throw.png" width="100%">
+ * ![](throw.png)
  *
  * This static operator is useful for creating a simple Observable that only
  * emits the error notification. It can be used for composing with other
@@ -36,13 +36,13 @@ import { Subscriber } from '../Subscriber';
  *   ),
  * ).subscribe(x => console.log(x), e => console.error(e));
  * ```
- * @see {@link create}
+ * @see {@link Observable}
  * @see {@link empty}
  * @see {@link never}
  * @see {@link of}
  *
  * @param {any} error The particular Error to pass to the error notification.
- * @param {Scheduler} [scheduler] A {@link IScheduler} to use for scheduling
+ * @param {SchedulerLike} [scheduler] A {@link SchedulerLike} to use for scheduling
  * the emission of the error notification.
  * @return {Observable} An error Observable: emits only the error notification
  * using the given error argument.

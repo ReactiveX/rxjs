@@ -10,7 +10,7 @@ import { Subscription } from '../Subscription';
 /**
  * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.
  *
- * <img src="./img/skipUntil.png" width="100%">
+ * ![](skipUntil.png)
  *
  * @param {Observable} notifier - The second Observable that has to emit an item before the source Observable's elements begin to
  * be mirrored by the resulting Observable.

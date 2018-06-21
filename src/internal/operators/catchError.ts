@@ -9,7 +9,7 @@ import {ObservableInput, OperatorFunction, MonoTypeOperatorFunction} from '../ty
 /**
  * Catches errors on the observable to be handled by returning a new observable or throwing an error.
  *
- * <img src="./img/catch.png" width="100%">
+ * ![](catch.png)
  *
  * ## Examples
  * Continues with a different Observable when there's an error

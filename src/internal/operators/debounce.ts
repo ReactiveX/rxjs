@@ -15,7 +15,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * <span class="informal">It's like {@link debounceTime}, but the time span of
  * emission silence is determined by a second Observable.</span>
  *
- * <img src="./img/debounce.png" width="100%">
+ * ![](debounce.png)
  *
  * `debounce` delays values emitted by the source Observable, but drops previous
  * pending delayed emissions if a new value arrives on the source Observable.

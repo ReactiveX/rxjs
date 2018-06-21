@@ -17,7 +17,7 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  * and emits these grouped items as `GroupedObservables`, one
  * {@link GroupedObservable} per group.
  *
- * <img src="./img/groupBy.png" width="100%">
+ * ![](groupBy.png)
  *
  * ##Examples
  * Group objects by id and return as array

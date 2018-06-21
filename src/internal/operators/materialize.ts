@@ -13,7 +13,7 @@ import { OperatorFunction } from '../types';
  * {@link Notification} objects, emitted as `next` on the output Observable.
  * </span>
  *
- * <img src="./img/materialize.png" width="100%">
+ * ![](materialize.png)
  *
  * `materialize` returns an Observable that emits a `next` notification for each
  * `next`, `error`, or `complete` emission of the source Observable. When the

@@ -19,7 +19,7 @@ export function reduce<T, R>(accumulator: (acc: R, value: T, index: number) => R
  * using an accumulator function that knows how to join a new source value into
  * the accumulation from the past.</span>
  *
- * <img src="./img/reduce.png" width="100%">
+ * ![](reduce.png)
  *
  * Like
  * [Array.prototype.reduce()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce),

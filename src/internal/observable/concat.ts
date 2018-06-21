@@ -22,7 +22,7 @@ export function concat<T, R>(...observables: (ObservableInput<any> | SchedulerLi
  * <span class="informal">Concatenates multiple Observables together by
  * sequentially emitting their values, one Observable after the other.</span>
  *
- * <img src="./img/concat.png" width="100%">
+ * ![](concat.png)
  *
  * `concat` joins multiple Observables together, by subscribing to them one at a time and
  * merging their results into the output Observable. You can pass either an array of
@@ -65,6 +65,7 @@ export function concat<T, R>(...observables: (ObservableInput<any> | SchedulerLi
  * ```
  *
  * ### Concatenate an array of 3 Observables
+ * ```javascript
  * const timer1 = interval(1000).pipe(take(10));
  * const timer2 = interval(2000).pipe(take(6));
  * const timer3 = interval(500).pipe(take(10));
@@ -104,7 +105,7 @@ export function concat<T, R>(...observables: (ObservableInput<any> | SchedulerLi
  * @param {ObservableInput} input1 An input Observable to concatenate with others.
  * @param {ObservableInput} input2 An input Observable to concatenate with others.
  * More than one input Observables may be given as argument.
- * @param {Scheduler} [scheduler=null] An optional IScheduler to schedule each
+ * @param {SchedulerLike} [scheduler=null] An optional {@link SchedulerLike} to schedule each
  * Observable subscription on.
  * @return {Observable} All values of each passed Observable merged into a
  * single Observable, in order, in serial fashion.

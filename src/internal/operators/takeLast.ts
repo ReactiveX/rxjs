@@ -11,7 +11,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * <span class="informal">Remembers the latest `count` values, then emits those
  * only when the source completes.</span>
  *
- * <img src="./img/takeLast.png" width="100%">
+ * ![](takeLast.png)
  *
  * `takeLast` returns an Observable that emits at most the last `count` values
  * emitted by the source Observable. If the source emits fewer than `count`

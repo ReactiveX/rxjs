@@ -15,7 +15,7 @@ import { OperatorFunction, SubscribableOrPromise } from '../types';
  * collecting only when `opening` emits, and calls the `closingSelector`
  * function to get an Observable that tells when to close the buffer.</span>
  *
- * <img src="./img/bufferToggle.png" width="100%">
+ * ![](bufferToggle.png)
  *
  * Buffers values from the source by opening the buffer via signals from an
  * Observable provided to `openings`, and closing and sending the buffers when

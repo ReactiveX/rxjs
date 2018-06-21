@@ -12,7 +12,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * <span class="informal">It's like {@link delay}, but passes only the most
  * recent value from each burst of emissions.</span>
  *
- * <img src="./img/debounceTime.png" width="100%">
+ * ![](debounceTime.png)
  *
  * `debounceTime` delays values emitted by the source Observable, but drops
  * previous pending delayed emissions if a new value arrives on the source
@@ -25,7 +25,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * This is a rate-limiting operator, because it is impossible for more than one
  * value to be emitted in any time window of duration `dueTime`, but it is also
  * a delay-like operator since output emissions do not occur at the same time as
- * they did on the source Observable. Optionally takes a {@link IScheduler} for
+ * they did on the source Observable. Optionally takes a {@link SchedulerLike} for
  * managing timers.
  *
  * ## Example
@@ -46,7 +46,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * unit determined internally by the optional `scheduler`) for the window of
  * time required to wait for emission silence before emitting the most recent
  * source value.
- * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for
+ * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
  * managing the timers that handle the timeout for each value.
  * @return {Observable} An Observable that delays the emissions of the source
  * Observable by the specified `dueTime`, and may drop some values if they occur

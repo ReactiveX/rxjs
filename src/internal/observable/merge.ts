@@ -27,7 +27,7 @@ export function merge<T, R>(...observables: (ObservableInput<any> | SchedulerLik
  * <span class="informal">Flattens multiple Observables together by blending
  * their values into one Observable.</span>
  *
- * <img src="./img/merge.png" width="100%">
+ * ![](merge.png)
  *
  * `merge` subscribes to each given input Observable (as arguments), and simply
  * forwards (without doing any transformation) all the values from all the input
@@ -77,7 +77,7 @@ export function merge<T, R>(...observables: (ObservableInput<any> | SchedulerLik
  * @param {...ObservableInput} observables Input Observables to merge together.
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
  * Observables being subscribed to concurrently.
- * @param {Scheduler} [scheduler=null] The IScheduler to use for managing
+ * @param {SchedulerLike} [scheduler=null] The {@link SchedulerLike} to use for managing
  * concurrency of input Observables.
  * @return {Observable} an Observable that emits items that are the result of
  * every input Observable.

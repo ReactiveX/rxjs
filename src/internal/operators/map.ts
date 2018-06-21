@@ -11,7 +11,7 @@ import { OperatorFunction } from '../types';
  * it passes each source value through a transformation function to get
  * corresponding output values.</span>
  *
- * <img src="./img/map.png" width="100%">
+ * ![](map.png)
  *
  * Similar to the well known `Array.prototype.map` function, this operator
  * applies a projection to each value and emits that projection in the output

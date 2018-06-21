@@ -18,7 +18,7 @@ import { OperatorFunction } from '../types';
  * <span class="informal">It's like {@link bufferToggle}, but emits a nested
  * Observable instead of an array.</span>
  *
- * <img src="./img/windowToggle.png" width="100%">
+ * ![](windowToggle.png)
  *
  * Returns an Observable that emits windows of items it collects from the source
  * Observable. The output Observable emits windows that contain those items

@@ -11,7 +11,7 @@ import { OperatorFunction } from '../types';
  * <span class="informal">It's like {@link bufferCount}, but emits a nested
  * Observable instead of an array.</span>
  *
- * <img src="./img/windowCount.png" width="100%">
+ * ![](windowCount.png)
  *
  * Returns an Observable that emits windows of items it collects from the source
  * Observable. The output Observable emits windows every `startWindowEvery`

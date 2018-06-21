@@ -13,7 +13,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * <span class="informal">Lets a value pass, then ignores source values for the
  * next `duration` milliseconds.</span>
  *
- * <img src="./img/throttleTime.png" width="100%">
+ * ![](throttleTime.png)
  *
  * `throttleTime` emits the source Observable values on the output Observable
  * when its internal timer is disabled, and ignores source values when the timer
@@ -22,7 +22,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * is enabled. After `duration` milliseconds (or the time unit determined
  * internally by the optional `scheduler`) has passed, the timer is disabled,
  * and this process repeats for the next source value. Optionally takes a
- * {@link IScheduler} for managing timers.
+ * {@link SchedulerLike} for managing timers.
  *
  * ## Example
  * Emit clicks at a rate of at most one click per second
@@ -41,7 +41,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * @param {number} duration Time to wait before emitting another value after
  * emitting the last value, measured in milliseconds or the time unit determined
  * internally by the optional `scheduler`.
- * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for
+ * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
  * managing the timers that handle the throttling.
  * @param {Object} config a configuration object to define `leading` and
  * `trailing` behavior. Defaults to `{ leading: true, trailing: false }`.

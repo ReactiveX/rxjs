@@ -17,7 +17,7 @@ export function fromEventPattern<T>(addHandler: (handler: Function) => any, remo
  * <span class="informal">Converts any addHandler/removeHandler API to an
  * Observable.</span>
  *
- * <img src="./img/fromEventPattern.png" width="100%">
+ * ![](fromEventPattern.png)
  *
  * Creates an Observable by using the `addHandler` and `removeHandler`
  * functions to add and remove the handlers. The `addHandler` is

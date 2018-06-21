@@ -5,7 +5,7 @@ import { MonoTypeOperatorFunction } from '../types';
  * The Max operator operates on an Observable that emits numbers (or items that can be compared with a provided function),
  * and when source Observable completes it emits a single item: the item with the largest value.
  *
- * <img src="./img/max.png" width="100%">
+ * ![](max.png)
  *
  * ## Examples
  * Get the maximal value of a series of numbers

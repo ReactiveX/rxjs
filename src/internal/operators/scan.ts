@@ -16,7 +16,7 @@ export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, 
  * <span class="informal">It's like {@link reduce}, but emits the current
  * accumulation whenever the source emits a value.</span>
  *
- * <img src="./img/scan.png" width="100%">
+ * ![](scan.png)
  *
  * Combines together all values emitted on the source, using an accumulator
  * function that knows how to join a new source value into the accumulation from

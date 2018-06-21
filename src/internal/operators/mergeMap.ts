@@ -24,7 +24,7 @@ export function mergeMap<T, I, R>(project: (value: T, index: number) => Observab
  * <span class="informal">Maps each value to an Observable, then flattens all of
  * these inner Observables using {@link mergeAll}.</span>
  *
- * <img src="./img/mergeMap.png" width="100%">
+ * ![](mergeMap.png)
  *
  * Returns an Observable that emits items based on applying a function that you
  * supply to each item emitted by the source Observable, where that function

@@ -15,7 +15,7 @@ export function defaultIfEmpty<T, R>(defaultValue?: R): OperatorFunction<T, T | 
  * <span class="informal">If the source Observable turns out to be empty, then
  * this operator will emit a default value.</span>
  *
- * <img src="./img/defaultIfEmpty.png" width="100%">
+ * ![](defaultIfEmpty.png)
  *
  * `defaultIfEmpty` emits the values emitted by the source Observable or a
  * specified default value if the source Observable is empty (completes without

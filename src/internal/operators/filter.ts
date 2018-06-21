@@ -18,7 +18,7 @@ export function filter<T>(predicate: (value: T, index: number) => boolean,
  * [Array.prototype.filter()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter),
  * it only emits a value from the source if it passes a criterion function.</span>
  *
- * <img src="./img/filter.png" width="100%">
+ * ![](filter.png)
  *
  * Similar to the well-known `Array.prototype.filter` method, this operator
  * takes values from the source Observable, passes them through a `predicate`

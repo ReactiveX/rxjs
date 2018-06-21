@@ -15,7 +15,7 @@ import { identity } from '../util/identity';
  * the last item from the source Observable, the resulting Observable will emit the last item
  * from the source Observable that satisfies the predicate.
  *
- * <img src="./img/last.png" width="100%">
+ * ![](last.png)
  *
  * @throws {EmptyError} Delivers an EmptyError to the Observer's `error`
  * callback if the Observable completes before any `next` notification was sent.

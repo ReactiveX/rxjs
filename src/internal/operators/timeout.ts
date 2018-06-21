@@ -14,7 +14,7 @@ import { throwError } from '../observable/throwError';
  *
  * <span class="informal">Timeouts on Observable that doesn't emit values fast enough.</span>
  *
- * <img src="./img/timeout.png" width="100%">
+ * ![](timeout.png)
  *
  * `timeout` operator accepts as an argument either a number or a Date.
  *
@@ -75,7 +75,7 @@ import { throwError } from '../observable/throwError';
  *
  * @param {number|Date} due Number specifying period within which Observable must emit values
  *                          or Date specifying before when Observable should complete
- * @param {Scheduler} [scheduler] Scheduler controlling when timeout checks occur.
+ * @param {SchedulerLike} [scheduler] Scheduler controlling when timeout checks occur.
  * @return {Observable<T>} Observable that mirrors behaviour of source, unless timeout checks fail.
  * @method timeout
  * @owner Observable

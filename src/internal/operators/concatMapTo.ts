@@ -16,7 +16,7 @@ export function concatMapTo<T, I, R>(observable: ObservableInput<I>, resultSelec
  * <span class="informal">It's like {@link concatMap}, but maps each value
  * always to the same inner Observable.</span>
  *
- * <img src="./img/concatMapTo.png" width="100%">
+ * ![](concatMapTo.png)
  *
  * Maps each source value to the given Observable `innerObservable` regardless
  * of the source value, and then flattens those resulting Observables into one

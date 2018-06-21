@@ -7,12 +7,12 @@ import { Observable } from '../Observable';
  *
  * <span class="informal">Emits a sequence of numbers in a range.</span>
  *
- * <img src="./img/range.png" width="100%">
+ * ![](range.png)
  *
  * `range` operator emits a range of sequential integers, in order, where you
  * select the `start` of the range and its `length`. By default, uses no
- * IScheduler and just delivers the notifications synchronously, but may use
- * an optional IScheduler to regulate those deliveries.
+ * {@link SchedulerLike} and just delivers the notifications synchronously, but may use
+ * an optional {@link SchedulerLike} to regulate those deliveries.
  *
  * ## Example
  * Emits the numbers 1 to 10</caption>
@@ -21,11 +21,11 @@ import { Observable } from '../Observable';
  * numbers.subscribe(x => console.log(x));
  * ```
  * @see {@link timer}
- * @see {@link interval}
+ * @see {@link index/interval}
  *
  * @param {number} [start=0] The value of the first integer in the sequence.
  * @param {number} [count=0] The number of sequential integers to generate.
- * @param {Scheduler} [scheduler] A {@link IScheduler} to use for scheduling
+ * @param {SchedulerLike} [scheduler] A {@link SchedulerLike} to use for scheduling
  * the emissions of the notifications.
  * @return {Observable} An Observable of numbers that emits a finite range of
  * sequential integers.

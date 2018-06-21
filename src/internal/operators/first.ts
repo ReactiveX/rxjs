@@ -16,7 +16,7 @@ import { identity } from '../util/identity';
  * <span class="informal">Emits only the first value. Or emits only the first
  * value that passes some test.</span>
  *
- * <img src="./img/first.png" width="100%">
+ * ![](first.png)
  *
  * If called with no arguments, `first` emits the first value of the source
  * Observable, then completes. If called with a `predicate` function, `first`

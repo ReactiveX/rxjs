@@ -77,10 +77,10 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  * function is subscribed. This means if `func` makes an AJAX request, that request
  * will be made every time someone subscribes to the resulting Observable, but not before.
  *
- * The last optional parameter - {@link Scheduler} - can be used to control when the call
+ * The last optional parameter - `scheduler` - can be used to control when the call
  * to `func` happens after someone subscribes to Observable, as well as when results
  * passed to callback will be emitted. By default, the subscription to  an Observable calls `func`
- * synchronously, but using `Scheduler.async` as the last parameter will defer the call to `func`,
+ * synchronously, but using {@link asyncScheduler} as the last parameter will defer the call to `func`,
  * just like wrapping the call in `setTimeout` with a timeout of `0` would. If you use the async Scheduler
  * and call `subscribe` on the output Observable all function calls that are currently executing
  * will end before `func` is invoked.
@@ -88,7 +88,7 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  * By default results passed to the callback are emitted immediately after `func` invokes the callback.
  * In particular, if the callback is called synchronously the subscription of the resulting Observable
  * will call the `next` function synchronously as well.  If you want to defer that call,
- * you may use `Scheduler.async` just as before.  This means that by using `Scheduler.async` you can
+ * you may use {@link asyncScheduler} just as before.  This means that by using `Scheduler.async` you can
  * ensure that `func` always calls its callback asynchronously, thus avoiding terrifying Zalgo.
  *
  * Note that the Observable created by the output function will always emit a single value
@@ -159,10 +159,9 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  *
  * @see {@link bindNodeCallback}
  * @see {@link from}
- * @see {@link fromPromise}
  *
  * @param {function} func A function with a callback as the last parameter.
- * @param {Scheduler} [scheduler] The scheduler on which to schedule the
+ * @param {SchedulerLike} [scheduler] The scheduler on which to schedule the
  * callbacks.
  * @return {function(...params: *): Observable} A function which returns the
  * Observable that delivers the same values the callback would deliver.

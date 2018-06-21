@@ -73,10 +73,10 @@ export function bindNodeCallback(callbackFunc: Function, scheduler?: SchedulerLi
  * Note that `func` will not be called at the same time output function is,
  * but rather whenever resulting Observable is subscribed. By default call to
  * `func` will happen synchronously after subscription, but that can be changed
- * with proper {@link Scheduler} provided as optional third parameter. Scheduler
+ * with proper `scheduler` provided as optional third parameter. {@link SchedulerLike}
  * can also control when values from callback will be emitted by Observable.
  * To find out more, check out documentation for {@link bindCallback}, where
- * Scheduler works exactly the same.
+ * {@link SchedulerLike} works exactly the same.
  *
  * As in {@link bindCallback}, context (`this` property) of input function will be set to context
  * of returned function, when it is called.
@@ -143,10 +143,9 @@ export function bindNodeCallback(callbackFunc: Function, scheduler?: SchedulerLi
  *
  * @see {@link bindCallback}
  * @see {@link from}
- * @see {@link fromPromise}
  *
  * @param {function} func Function with a Node.js-style callback as the last parameter.
- * @param {Scheduler} [scheduler] The scheduler on which to schedule the
+ * @param {SchedulerLike} [scheduler] The scheduler on which to schedule the
  * callbacks.
  * @return {function(...params: *): Observable} A function which returns the
  * Observable that delivers the same values the Node.js callback would

@@ -9,7 +9,8 @@ const Package = require('dgeni').Package;
 
 const basePackage = require('../angular-base-package');
 const typeScriptPackage = require('dgeni-packages/typescript');
-const { API_SOURCE_PATH, API_TEMPLATES_PATH, requireFolder } = require('../config');
+const { API_SOURCE_PATH, API_TEMPLATES_PATH, MARBLE_IMAGES_PATH, MARBLE_IMAGES_WEB_PATH,
+  MARBLE_IMAGES_OUTPUT_PATH, requireFolder } = require('../config');
 
 module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
 
@@ -31,6 +32,8 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
   .processor(require('./processors/computeSearchTitle'))
   .processor(require('./processors/simplifyMemberAnchors'))
   .processor(require('./processors/computeStability'))
+
+  .factory(require('./post-processors/embedMarbleDiagrams'))
 
   /**
    * These are the API doc types that will be rendered to actual files.
@@ -61,7 +64,7 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
     readTypeScriptModules.ignoreExportsMatching = [/^[_ɵ]|^VERSION$/];
     readTypeScriptModules.hidePrivateMembers = true;
 
-    // NOTE: This list shold be in sync with tools/public_api_guard/BUILD.bazel
+    // NOTE: This list should be in sync with tools/public_api_guard/BUILD.bazel
     readTypeScriptModules.sourceFiles = [
       'index.ts',
       'operators/index.ts'
@@ -87,15 +90,15 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
 
   // Additional jsdoc config (for RxJS source)
   .config(function(parseTagsProcessor) {
-    parseTagsProcessor.tagDefinitions.push({ name: 'internal' });
     parseTagsProcessor.tagDefinitions.push({ name: 'example', aliases: ['examples'], multi: true, docProperty: 'examples' });
     parseTagsProcessor.tagDefinitions.push({ name: 'owner' });
     parseTagsProcessor.tagDefinitions.push({ name: 'static' });
+    parseTagsProcessor.tagDefinitions.push({ name: 'nocollapse' });
     // Replace the Catharsis type parsing, as it doesn't understand TypeScript type annotations (i.e. `foo(x: SomeType)`), with a simpler dummy transform
     const typeTags = parseTagsProcessor.tagDefinitions.filter(tagDef => ['param', 'returns', 'type', 'private', 'property', 'protected', 'public'].indexOf(tagDef.name) !== -1);
     typeTags.forEach(typeTag => typeTag.transforms[0] = function dummyTypeTransform(doc, tag, value) {
       var TYPE_EXPRESSION_START = /^\s*\{[^@]/;
-      var start, position, count, length, expression;
+      var start, position, count, length;
 
       var match = TYPE_EXPRESSION_START.exec(value);
       if (match) {
@@ -134,7 +137,7 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
       } else {
         return value;
       }
-    })
+    });
   })
 
   .config(function(computeStability, splitDescription, EXPORT_DOC_TYPES, API_DOC_TYPES) {
@@ -162,6 +165,13 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
       pathTemplate: '${moduleDoc.moduleFolder}/${name}',
       outputPathTemplate: '${moduleDoc.moduleFolder}/${name}.json',
     });
+    computePathsProcessor.pathTemplates.push({
+      docTypes: ['const', 'function', 'interface', 'class', 'type-alias'],
+      getPath: (doc) => {
+        return `${API_SEGMENT}/${doc.id.replace(/^index\//, `index/${doc.docType}/`)}`;
+      },
+      outputPathTemplate: '${path}.json',
+    });
   })
 
   .config(function(templateFinder) {
@@ -169,10 +179,17 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
     templateFinder.templateFolders.unshift(API_TEMPLATES_PATH);
   })
 
+  .config(function(embedMarbleDiagramsPostProcessor) {
+    embedMarbleDiagramsPostProcessor.marbleImagesPath = MARBLE_IMAGES_PATH;
+    embedMarbleDiagramsPostProcessor.marbleImagesOutputPath = MARBLE_IMAGES_OUTPUT_PATH;
+    embedMarbleDiagramsPostProcessor.marbleImagesOutputWebPath = `/${MARBLE_IMAGES_WEB_PATH}`;
+  })
 
-  .config(function(convertToJsonProcessor, postProcessHtml, API_DOC_TYPES_TO_RENDER, API_DOC_TYPES, autoLinkCode) {
+  .config(function(convertToJsonProcessor, postProcessHtml, API_DOC_TYPES_TO_RENDER, API_DOC_TYPES, autoLinkCode, embedMarbleDiagramsPostProcessor) {
     convertToJsonProcessor.docTypes = convertToJsonProcessor.docTypes.concat(API_DOC_TYPES_TO_RENDER);
     postProcessHtml.docTypes = convertToJsonProcessor.docTypes.concat(API_DOC_TYPES_TO_RENDER);
+    postProcessHtml.plugins = [embedMarbleDiagramsPostProcessor.process];
     autoLinkCode.docTypes = API_DOC_TYPES;
     autoLinkCode.codeElements = ['code', 'code-example', 'code-pane'];
   });
+

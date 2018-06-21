@@ -9,7 +9,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * calls `error`, this method will resubscribe to the source Observable for a maximum of `count` resubscriptions (given
  * as a number parameter) rather than propagating the `error` call.
  *
- * <img src="./img/retry.png" width="100%">
+ * ![](retry.png)
  *
  * Any and all items emitted by the source Observable will be emitted by the resulting Observable, even those emitted
  * during failed subscriptions. For example, if an Observable fails at first but emits [1, 2] then succeeds the second

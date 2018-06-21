@@ -10,7 +10,7 @@ import { OperatorFunction } from '../types';
  * <span class="informal">Puts the current value and previous value together as
  * an array, and emits that.</span>
  *
- * <img src="./img/pairwise.png" width="100%">
+ * ![](pairwise.png)
  *
  * The Nth emission from the source Observable will cause the output Observable
  * to emit an array [(N-1)th, Nth] of the previous and the current value, as a

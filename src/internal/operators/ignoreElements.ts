@@ -6,7 +6,7 @@ import { OperatorFunction } from '../types';
 /**
  * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.
  *
- * <img src="./img/ignoreElements.png" width="100%">
+ * ![](ignoreElements.png)
  *
  * ## Examples
  * ### Ignores emitted values, reacts to observable's completion.

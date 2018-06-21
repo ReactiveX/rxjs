@@ -10,7 +10,7 @@ import { OperatorFunction } from '../types';
  * <span class="informal">Like {@link map}, but it maps every source value to
  * the same output value every time.</span>
  *
- * <img src="./img/mapTo.png" width="100%">
+ * ![](mapTo.png)
  *
  * Takes a constant `value` as argument, and emits that whenever the source
  * Observable emits a value. In other words, ignores the actual source value,

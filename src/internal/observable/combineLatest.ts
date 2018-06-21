@@ -50,7 +50,7 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * computes a formula using the latest values from all the inputs, then emits
  * the output of that formula.</span>
  *
- * <img src="./img/combineLatest.png" width="100%">
+ * ![](combineLatest.png)
  *
  * `combineLatest` combines the values from all the Observables passed as
  * arguments. This is done by subscribing to each Observable in order and,
@@ -150,7 +150,7 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * or an array of Observables may be given as the first argument.
  * @param {function} [project] An optional function to project the values from
  * the combined latest values into a new value on the output Observable.
- * @param {Scheduler} [scheduler=null] The IScheduler to use for subscribing to
+ * @param {SchedulerLike} [scheduler=null] The {@link SchedulerLike} to use for subscribing to
  * each input Observable.
  * @return {Observable} An Observable of projected values from the most recent
  * values from each input Observable, or an array of the most recent values from
