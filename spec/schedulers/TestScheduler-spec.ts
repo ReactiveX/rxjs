@@ -90,6 +90,15 @@ describe('TestScheduler', () => {
         { frame: 10.2 + 10 + (1.2 * 1000) + 10 + (1000 * 60) + 10, notification: Notification.createComplete() }
       ]);
     });
+
+    it('should support a marble string with emojis', () => {
+      const result = TestScheduler.parseMarbles('-------✅---🔥---|', { ['✅']: 'A', ['🔥']: 'B' });
+      expect(result).deep.equal([
+        { frame: 70, notification: Notification.createNext('A') },
+        { frame: 110, notification: Notification.createNext('B') },
+        { frame: 150, notification: Notification.createComplete() }
+      ]);
+    });
   });
 
   describe('parseMarblesAsSubscriptions()', () => {
