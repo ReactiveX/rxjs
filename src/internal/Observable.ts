@@ -77,7 +77,7 @@ export class Observable<T> implements Subscribable<T> {
    *
    * `subscribe` is not a regular operator, but a method that calls Observable's internal `subscribe` function. It
    * might be for example a function that you passed to Observable's constructor, but most of the time it is
-   * a library implementation, which defines what will be emitted by an Observable, and when it be will emitted. This means 
+   * a library implementation, which defines what will be emitted by an Observable, and when it be will emitted. This means
    * that calling `subscribe` is actually the moment when Observable starts its work, not when it is created, as it is often
    * the thought.
    *
