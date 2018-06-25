@@ -70,7 +70,7 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * actually wait for all input Observables to emit at least once,
  * before it starts emitting results. This means if some Observable emits
  * values before other Observables started emitting, all that values but last
- * will be lost. On the other hand, is some Observable does not emit value but
+ * will be lost. On the other hand, if some Observable does not emit value but
  * completes, resulting Observable will complete at the same moment without
  * emitting anything, since it will be now impossible to include value from
  * completed Observable in resulting array. Also, if some input Observable does
