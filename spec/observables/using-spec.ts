@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { using, range, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 describe('using', () => {
   it('should dispose of the resource when the subscription is disposed', (done) => {
@@ -8,7 +9,7 @@ describe('using', () => {
       () => new Subscription(() => disposed = true),
       (resource) => range(0, 3)
     )
-    .take(2);
+    .pipe(take(2));
 
     source.subscribe();
 
