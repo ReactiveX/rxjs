@@ -1,7 +1,7 @@
 import { cold, expectObservable, time } from '../helpers/marble-testing';
 import { timer, NEVER, merge } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { mergeMap } from 'rxjs/operators';
+import { mergeMap, take, concat } from 'rxjs/operators';
 
 declare const asDiagram: any;
 declare const rxTestScheduler: TestScheduler;
@@ -9,9 +9,10 @@ declare const rxTestScheduler: TestScheduler;
 /** @test {timer} */
 describe('timer', () => {
   asDiagram('timer(3000, 1000)')('should create an observable emitting periodically', () => {
-    const e1 = timer(60, 20, rxTestScheduler)
-      .take(4) // make it actually finite, so it can be rendered
-      .concat(NEVER); // but pretend it's infinite by not completing
+    const e1 = timer(60, 20, rxTestScheduler).pipe(
+      take(4), // make it actually finite, so it can be rendered
+      concat(NEVER) // but pretend it's infinite by not completing
+    );
     const expected = '------a-b-c-d-';
     const values = {
       a: 0,
@@ -43,7 +44,7 @@ describe('timer', () => {
     const period  = time(    '--|');
     const expected =     '----a-b-c-d-(e|)';
 
-    const source = timer(dueTime, period, rxTestScheduler).take(5);
+    const source = timer(dueTime, period, rxTestScheduler).pipe(take(5));
     const values = { a: 0, b: 1, c: 2, d: 3, e: 4};
     expectObservable(source).toBe(expected, values);
   });
@@ -53,7 +54,7 @@ describe('timer', () => {
     const period  = time('---|');
     const expected =     'a--b--c--d--(e|)';
 
-    const source = timer(dueTime, period, rxTestScheduler).take(5);
+    const source = timer(dueTime, period, rxTestScheduler).pipe(take(5));
     const values = { a: 0, b: 1, c: 2, d: 3, e: 4};
     expectObservable(source).toBe(expected, values);
   });
@@ -84,7 +85,7 @@ describe('timer', () => {
     const expected =    '----a-b-c-d-(e|)';
 
     const dueTime = new Date(rxTestScheduler.now() + offset);
-    const source = timer(dueTime, period, rxTestScheduler).take(5);
+    const source = timer(dueTime, period, rxTestScheduler).pipe(take(5));
     const values = { a: 0, b: 1, c: 2, d: 3, e: 4};
     expectObservable(source).toBe(expected, values);
   });
