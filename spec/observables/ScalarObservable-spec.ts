@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
 import { of as scalar } from 'rxjs';
+import { TestScheduler } from 'rxjs/testing';
 
-declare const rxTestScheduler: Rx.TestScheduler;
+declare const rxTestScheduler: TestScheduler;
 
 describe('scalar', () => {
   it('should create expose a value property', () => {
