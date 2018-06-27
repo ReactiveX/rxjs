@@ -1,10 +1,11 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from 'rxjs/Rx';
 import { SubscribeOnObservable } from 'rxjs/observable/SubscribeOnObservable';
 import { hot, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { TestScheduler } from 'rxjs/testing';
+import { asapScheduler } from 'rxjs';
 
-declare const rxTestScheduler: Rx.TestScheduler;
+declare const rxTestScheduler: TestScheduler;
 
 describe('SubscribeOnObservable', () => {
   it('should create Observable to be subscribed on specified scheduler', () => {
@@ -23,7 +24,7 @@ describe('SubscribeOnObservable', () => {
 
     const scheduler = (<any>new SubscribeOnObservable(e1, 0, obj)).scheduler;
 
-    expect(scheduler).to.deep.equal(Rx.Scheduler.asap);
+    expect(scheduler).to.deep.equal(asapScheduler);
   });
 
   it('should create observable via staic create function', () => {
