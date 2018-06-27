@@ -1,15 +1,14 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from 'rxjs/Rx';
+import { asapScheduler, from } from 'rxjs';
 
 declare const process: any;
-const Observable = Rx.Observable;
 
 /** @test {fromPromise} */
-describe('Observable.fromPromise', () => {
+describe('from (fromPromise)', () => {
   it('should emit one value from a resolved promise', (done) => {
     const promise = Promise.resolve(42);
-    Observable.fromPromise(promise)
+    from(promise)
       .subscribe(
         (x) => { expect(x).to.equal(42); },
         (x) => {
@@ -21,7 +20,7 @@ describe('Observable.fromPromise', () => {
 
   it('should raise error from a rejected promise', (done) => {
     const promise = Promise.reject('bad');
-    Observable.fromPromise(promise)
+    from(promise)
       .subscribe((x) => {
           done(new Error('should not be called'));
         },
@@ -35,7 +34,7 @@ describe('Observable.fromPromise', () => {
 
   it('should share the underlying promise with multiple subscribers', (done) => {
     const promise = Promise.resolve(42);
-    const observable = Observable.fromPromise(promise);
+    const observable = from(promise);
 
     observable
       .subscribe(
@@ -59,7 +58,7 @@ describe('Observable.fromPromise', () => {
     const promise = Promise.resolve(42);
     promise.then((x) => {
       expect(x).to.equal(42);
-      Observable.fromPromise(promise)
+      from(promise)
         .subscribe(
           (y) => { expect(y).to.equal(42); },
           (x) => {
@@ -83,7 +82,7 @@ describe('Observable.fromPromise', () => {
       }
     }
     const promise = new CustomPromise(Promise.resolve(42));
-    Observable.fromPromise(promise)
+    from(promise)
       .subscribe(
         (x) => { expect(x).to.equal(42); },
         () => {
@@ -95,7 +94,7 @@ describe('Observable.fromPromise', () => {
 
   it('should emit a value from a resolved promise on a separate scheduler', (done) => {
     const promise = Promise.resolve(42);
-    Observable.fromPromise(promise, Rx.Scheduler.asap)
+    from(promise, asapScheduler)
       .subscribe(
         (x) => { expect(x).to.equal(42); },
         (x) => {
@@ -107,7 +106,7 @@ describe('Observable.fromPromise', () => {
 
   it('should raise error from a rejected promise on a separate scheduler', (done) => {
     const promise = Promise.reject('bad');
-    Observable.fromPromise(promise, Rx.Scheduler.asap)
+    from(promise, asapScheduler)
       .subscribe(
         (x) => { done(new Error('should not be called')); },
         (e) => {
@@ -120,7 +119,7 @@ describe('Observable.fromPromise', () => {
 
   it('should share the underlying promise with multiple subscribers on a separate scheduler', (done) => {
     const promise = Promise.resolve(42);
-    const observable = Observable.fromPromise(promise, Rx.Scheduler.asap);
+    const observable = from(promise, asapScheduler);
 
     observable
       .subscribe(
@@ -146,7 +145,7 @@ describe('Observable.fromPromise', () => {
     const throwSpy = sinon.spy();
     const completeSpy = sinon.spy();
     const promise = Promise.resolve(42);
-    const subscription = Observable.fromPromise(promise)
+    const subscription = from(promise)
       .subscribe(nextSpy, throwSpy, completeSpy);
     subscription.unsubscribe();
 
