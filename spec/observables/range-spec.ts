@@ -1,9 +1,10 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { Observable, Subscriber, asapScheduler as asap, range} from 'rxjs';
+import { Observable, Subscriber, asapScheduler as asap, range, of} from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { expectObservable } from '../helpers/marble-testing';
 import { dispatch } from 'rxjs/observable/range';
+import { concatMap, delay } from 'rxjs/operators';
 
 declare const asDiagram: any;
 
@@ -14,7 +15,7 @@ describe('range', () => {
   asDiagram('range(1, 10)')('should create an observable with numbers 1 to 10', () => {
     const e1 = range(1, 10)
       // for the purpose of making a nice diagram, spread out the synchronous emissions
-      .concatMap((x, i) => Observable.of(x).delay(i === 0 ? 0 : 20, rxTestScheduler));
+      .pipe(concatMap((x, i) => of(x).pipe(delay(i === 0 ? 0 : 20, rxTestScheduler))));
     const expected = 'a-b-c-d-e-f-g-h-i-(j|)';
     const values = {
       a: 1,
@@ -33,7 +34,7 @@ describe('range', () => {
 
   it('should work for two subscribers', () => {
     const e1 = range(1, 5)
-      .concatMap((x, i) => Observable.of(x).delay(i === 0 ? 0 : 20, rxTestScheduler));
+      .pipe(concatMap((x, i) => of(x).pipe(delay(i === 0 ? 0 : 20, rxTestScheduler))));
     const expected = 'a-b-c-d-(e|)';
     const values = {
       a: 1,
