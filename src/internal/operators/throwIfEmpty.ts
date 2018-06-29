@@ -7,6 +7,8 @@ import { MonoTypeOperatorFunction } from '../types';
  * an error. The error will be created at that time by the optional
  * `errorFactory` argument, otherwise, the error will be {@link EmptyError}.
  *
+ * ![](throwIfEmpty.png)
+ *
  * ## Example
  * ```javascript
  * const click$ = fromEvent(button, 'click');

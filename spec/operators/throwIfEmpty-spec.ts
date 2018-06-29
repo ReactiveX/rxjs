@@ -3,9 +3,19 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { EMPTY, of, EmptyError } from 'rxjs';
 import { throwIfEmpty } from 'rxjs/operators';
 
+declare function asDiagram(arg: string): Function;
+
 /** @test {timeout} */
 describe('throwIfEmpty', () => {
   describe('with errorFactory', () => {
+    asDiagram('throwIfEmpty')('should error when empty', () => {
+      const source = cold('----|');
+      const expected =    '----#';
+      expectObservable(
+        source.pipe(throwIfEmpty(() => new Error('test')))
+      ).toBe(expected, undefined, new Error('test'));
+    });
+
     it('should throw if empty', () => {
       const error = new Error('So empty inside');
       let thrown: any;
