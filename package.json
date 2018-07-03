@@ -87,6 +87,7 @@
     "perf:protractor": "echo \"Protractor is not working currently\" && exit -1 && protractor protractor.conf.js",
     "perf:micro": "node ./perf/micro/index.js",
     "prepublish": "shx rm -rf ./typings && npm run build_all",
+    "postpublish": "./docs_app/scripts/publish-docs.sh",
     "publish_docs": "./publish_docs.sh",
     "test": "cross-env TS_NODE_PROJECT=spec/tsconfig.json mocha --opts spec/support/default.opts \"spec/**/*-spec.ts\"",
     "test_transpile_only": "cross-env TS_NODE_PROJECT=spec/tsconfig.json TS_NODE_TRANSPILE_ONLY=true mocha --opts spec/support/default.opts \"spec/**/*-spec.ts\"",
