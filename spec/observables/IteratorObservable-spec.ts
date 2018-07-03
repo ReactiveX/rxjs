@@ -1,10 +1,13 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
 import { queue } from 'rxjs/scheduler/queue';
-import { fromIterable } from 'rxjs/observable/fromIterable';
+import { fromIterable } from 'rxjs/internal/observable/fromIterable';
+import { TestScheduler } from 'rxjs/testing';
+import { Notification, queueScheduler, Subscriber } from 'rxjs';
+import { observeOn, materialize, take } from 'rxjs/operators';
+import * as Rx from 'rxjs/Rx';
 
 declare const expectObservable: any;
-declare const rxTestScheduler: Rx.TestScheduler;
+declare const rxTestScheduler: TestScheduler;
 
 describe('fromIterable', () => {
   it('should not accept null (or truthy-equivalent to null) iterator', () => {
@@ -32,16 +35,16 @@ describe('fromIterable', () => {
 
   it('should get new iterator for each subscription', () => {
     const expected = [
-      Rx.Notification.createNext(10),
-      Rx.Notification.createNext(20),
-      Rx.Notification.createComplete()
+      Notification.createNext(10),
+      Notification.createNext(20),
+      Notification.createComplete()
     ];
 
-    const e1 = fromIterable<number>(new Int32Array([10, 20]), undefined).observeOn(rxTestScheduler);
+    const e1 = fromIterable<number>(new Int32Array([10, 20]), undefined).pipe(observeOn(rxTestScheduler));
 
-    let v1, v2: Array<Rx.Notification<any>>;
-    e1.materialize().toArray().subscribe((x) => v1 = x);
-    e1.materialize().toArray().subscribe((x) => v2 = x);
+    let v1, v2: Array<Notification<any>>;
+    e1.pipe(materialize()).toArray().subscribe((x) => v1 = x);
+    e1.pipe(materialize()).toArray().subscribe((x) => v2 = x);
 
     rxTestScheduler.flush();
     expect(v1).to.deep.equal(expected);
@@ -68,7 +71,7 @@ describe('fromIterable', () => {
     const results: any[] = [];
 
     fromIterable(iterable as any, undefined)
-      .take(3)
+      .pipe(take(3))
       .subscribe(
         x => results.push(x),
         null,
@@ -99,7 +102,7 @@ describe('fromIterable', () => {
     const results: any[] = [];
 
     fromIterable(iterable as any, queue)
-      .take(3)
+      .pipe(take(3))
       .subscribe(
         x => results.push(x),
         null,
@@ -127,10 +130,10 @@ describe('fromIterable', () => {
 
     const source = fromIterable(
       [10, 20, 30, 40],
-      Rx.Scheduler.queue
+      queueScheduler
     );
 
-    const subscriber = Rx.Subscriber.create(
+    const subscriber = Subscriber.create(
       (x) => {
         expect(x).to.equal(expected.shift());
         if (x === 30) {
@@ -163,7 +166,7 @@ describe('fromIterable', () => {
   it('should be possible to unsubscribe in the middle of the iteration', (done) => {
     const expected = [10, 20, 30];
 
-    const subscriber = Rx.Subscriber.create(
+    const subscriber = Subscriber.create(
       (x) => {
         expect(x).to.equal(expected.shift());
         if (x === 30) {

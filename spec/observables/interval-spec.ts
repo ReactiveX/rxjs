@@ -1,8 +1,9 @@
 import { expect } from 'chai';
-import * as sinon from 'sinon';
 import { expectObservable } from '../helpers/marble-testing';
 import { NEVER, interval, asapScheduler, Observable, animationFrameScheduler, queueScheduler } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
+import { take, concat } from 'rxjs/operators';
+import * as sinon from 'sinon';
 
 declare const asDiagram: any;
 declare const rxTestScheduler: TestScheduler;
@@ -10,9 +11,10 @@ declare const rxTestScheduler: TestScheduler;
 /** @test {interval} */
 describe('interval', () => {
   asDiagram('interval(1000)')('should create an observable emitting periodically', () => {
-    const e1 = interval(20, rxTestScheduler)
-      .take(6) // make it actually finite, so it can be rendered
-      .concat(NEVER); // but pretend it's infinite by not completing
+    const e1 = interval(20, rxTestScheduler).pipe(
+      take(6), // make it actually finite, so it can be rendered
+      concat(NEVER) // but pretend it's infinite by not completing
+    );
     const expected = '--a-b-c-d-e-f-';
     const values = {
       a: 0,
@@ -119,7 +121,7 @@ describe('interval', () => {
     const fakeTimer = sandbox.useFakeTimers();
     const period = 10;
     const events = [0, 1, 2, 3, 4, 5];
-    const source = interval(period, animationFrameScheduler).take(6);
+    const source = interval(period, animationFrameScheduler).pipe(take(6));
     source.subscribe({
       next(x) {
         expect(x).to.equal(events.shift());

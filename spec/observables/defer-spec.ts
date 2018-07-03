@@ -1,6 +1,7 @@
 import { expect } from 'chai';
-import { defer, Observable } from 'rxjs';
+import { defer, Observable, of } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { mergeMap } from 'rxjs/operators';
 
 declare function asDiagram(arg: string): Function;
 
@@ -103,8 +104,10 @@ describe('defer', () => {
     const expected =   '--a--b-     ';
     const unsub =      '      !     ';
 
-    const e1 = defer(() => source.mergeMap((x: string) => Observable.of(x)))
-      .mergeMap((x: string) => Observable.of(x));
+    const e1 = defer(() => source.pipe(
+      mergeMap((x: string) => of(x)),
+      mergeMap((x: string) => of(x))
+    ));
 
     expectObservable(e1, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);

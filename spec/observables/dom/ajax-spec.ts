@@ -1,14 +1,14 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from 'rxjs/Rx';
 import { root } from 'rxjs/util/root';
 import { TestScheduler } from 'rxjs/testing';
+import { ajax, AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError } from 'rxjs/ajax';
 
 declare const global: any;
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {ajax} */
-describe('Observable.ajax', () => {
+describe('ajax', () => {
   let gXHR: XMLHttpRequest;
   let rXHR: XMLHttpRequest;
 
@@ -35,12 +35,12 @@ describe('Observable.ajax', () => {
   });
 
   it('should create default XMLHttpRequest for non CORS', () => {
-    const obj: Rx.AjaxRequest = {
+    const obj: AjaxRequest = {
       url: '/',
       method: ''
     };
 
-    Rx.Observable.ajax(obj).subscribe();
+    ajax(obj).subscribe();
     expect(MockXMLHttpRequest.mostRecent.withCredentials).to.be.false;
   });
 
@@ -50,13 +50,13 @@ describe('Observable.ajax', () => {
     root.ActiveXObject = axObjectStub;
     root.XMLHttpRequest = null;
 
-    const obj: Rx.AjaxRequest = {
+    const obj: AjaxRequest = {
       url: '/',
       method: '',
       crossDomain: false,
     };
 
-    Rx.Observable.ajax(obj).subscribe();
+    ajax(obj).subscribe();
     expect(axObjectStub).to.have.been.called;
   });
 
@@ -64,23 +64,23 @@ describe('Observable.ajax', () => {
     root.XMLHttpRequest = null;
     root.ActiveXObject = null;
 
-    const obj: Rx.AjaxRequest = {
+    const obj: AjaxRequest = {
       url: '/',
       method: ''
     };
 
-    Rx.Observable.ajax(obj).subscribe(null, err => expect(err).to.exist);
+    ajax(obj).subscribe(null, err => expect(err).to.exist);
   });
 
   it('should create XMLHttpRequest for CORS', () => {
-    const obj: Rx.AjaxRequest = {
+    const obj: AjaxRequest = {
       url: '/',
       method: '',
       crossDomain: true,
       withCredentials: true
     };
 
-    Rx.Observable.ajax(obj).subscribe();
+    ajax(obj).subscribe();
     expect(MockXMLHttpRequest.mostRecent.withCredentials).to.be.true;
   });
 
@@ -90,14 +90,14 @@ describe('Observable.ajax', () => {
     root.XDomainRequest = xDomainStub;
     root.XMLHttpRequest = null;
 
-    const obj: Rx.AjaxRequest = {
+    const obj: AjaxRequest = {
       url: '/',
       method: '',
       crossDomain: true,
       withCredentials: true
     };
 
-    Rx.Observable.ajax(obj).subscribe();
+    ajax(obj).subscribe();
     expect(xDomainStub).to.have.been.called;
   });
 
@@ -105,18 +105,18 @@ describe('Observable.ajax', () => {
     root.XMLHttpRequest = null;
     root.XDomainRequest = null;
 
-    const obj: Rx.AjaxRequest = {
+    const obj: AjaxRequest = {
       url: '/',
       method: '',
       crossDomain: true,
       withCredentials: true
     };
 
-    Rx.Observable.ajax(obj).subscribe(null, err => expect(err).to.exist);
+    ajax(obj).subscribe(null, err => expect(err).to.exist);
   });
 
   it('should set headers', () => {
-    const obj: Rx.AjaxRequest = {
+    const obj: AjaxRequest = {
       url: '/talk-to-me-goose',
       headers: {
         'Content-Type': 'kenny/loggins',
@@ -126,7 +126,7 @@ describe('Observable.ajax', () => {
       method: ''
     };
 
-    Rx.Observable.ajax(obj).subscribe();
+    ajax(obj).subscribe();
 
     const request = MockXMLHttpRequest.mostRecent;
 
@@ -139,7 +139,7 @@ describe('Observable.ajax', () => {
   });
 
   it('should set the X-Requested-With if crossDomain is false', () => {
-    Rx.Observable.ajax({
+    ajax({
       url: '/test/monkey',
       method: 'GET',
       crossDomain: false,
@@ -154,12 +154,12 @@ describe('Observable.ajax', () => {
   });
 
   it('should not set default Content-Type header when no body is sent', () => {
-    const obj: Rx.AjaxRequest = {
+    const obj: AjaxRequest = {
       url: '/talk-to-me-goose',
       method: 'GET'
     };
 
-    Rx.Observable.ajax(obj).subscribe();
+    ajax(obj).subscribe();
 
     const request = MockXMLHttpRequest.mostRecent;
 
@@ -177,7 +177,7 @@ describe('Observable.ajax', () => {
       }
     };
 
-    Rx.Observable.ajax(<any>obj)
+    ajax(<any>obj)
       .subscribe((x: any) => {
         throw 'should not next';
       }, (err: any) => {
@@ -205,7 +205,7 @@ describe('Observable.ajax', () => {
       }
     };
 
-    Rx.Observable.ajax(obj)
+    ajax(obj)
       .subscribe(() => {
         done(new Error('should not be called'));
       }, (e: Error) => {
@@ -218,7 +218,7 @@ describe('Observable.ajax', () => {
 
   it('should succeed on 200', () => {
     const expected = { foo: 'bar' };
-    let result: Rx.AjaxResponse;
+    let result: AjaxResponse;
     let complete = false;
     const obj = {
       url: '/flibbertyJibbet',
@@ -226,7 +226,7 @@ describe('Observable.ajax', () => {
       method: ''
     };
 
-    Rx.Observable.ajax(obj)
+    ajax(obj)
       .subscribe((x: any) => {
         result = x;
       }, null, () => {
@@ -257,7 +257,7 @@ describe('Observable.ajax', () => {
       method: ''
     };
 
-    Rx.Observable.ajax(obj)
+    ajax(obj)
       .subscribe((x: any) => {
         throw 'should not next';
       }, (err: any) => {
@@ -274,14 +274,14 @@ describe('Observable.ajax', () => {
       'responseText': 'Wee! I am text!'
     });
 
-    expect(error instanceof Rx.AjaxError).to.be.true;
+    expect(error instanceof AjaxError).to.be.true;
     expect(error.name).to.equal('AjaxError');
     expect(error.message).to.equal('ajax error 404');
     expect(error.status).to.equal(404);
   });
 
   it('should succeed on 300', () => {
-    let result: Rx.AjaxResponse;
+    let result: AjaxResponse;
     let complete = false;
     const obj = {
       url: '/flibbertyJibbet',
@@ -292,7 +292,7 @@ describe('Observable.ajax', () => {
       method: ''
     };
 
-    Rx.Observable.ajax(obj)
+    ajax(obj)
       .subscribe((x: any) => {
         result = x;
       }, null, () => {
@@ -315,7 +315,7 @@ describe('Observable.ajax', () => {
   it('should succeed no settings', () => {
     const expected = JSON.stringify({ foo: 'bar' });
 
-    Rx.Observable.ajax('/flibbertyJibbet')
+    ajax('/flibbertyJibbet')
       .subscribe((x: any) => {
         expect(x.status).to.equal(200);
         expect(x.xhr.method).to.equal('GET');
@@ -335,7 +335,7 @@ describe('Observable.ajax', () => {
   it('should fail no settings', () => {
     const expected = JSON.stringify({ foo: 'bar' });
 
-    Rx.Observable.ajax('/flibbertyJibbet')
+    ajax('/flibbertyJibbet')
       .subscribe(() => {
         throw 'should not have been called';
       }, (x: any) => {
@@ -355,13 +355,13 @@ describe('Observable.ajax', () => {
   });
 
   it('should create an asynchronous request', () => {
-    const obj: Rx.AjaxRequest = {
+    const obj: AjaxRequest = {
       url: '/flibbertyJibbet',
       responseType: 'text',
       timeout: 10
     };
 
-    Rx.Observable.ajax(obj)
+    ajax(obj)
       .subscribe((x: any) => {
         expect(x.status).to.equal(200);
         expect(x.xhr.method).to.equal('GET');
@@ -384,13 +384,13 @@ describe('Observable.ajax', () => {
   });
 
   it('should error on timeout of asynchronous request', () => {
-    const obj: Rx.AjaxRequest = {
+    const obj: AjaxRequest = {
       url: '/flibbertyJibbet',
       responseType: 'text',
       timeout: 10
     };
 
-    Rx.Observable.ajax(obj)
+    ajax(obj)
       .subscribe((x: any) => {
         throw 'should not have been called';
       }, (e) => {
@@ -417,14 +417,14 @@ describe('Observable.ajax', () => {
   });
 
   it('should create a synchronous request', () => {
-    const obj: Rx.AjaxRequest = {
+    const obj: AjaxRequest = {
       url: '/flibbertyJibbet',
       responseType: 'text',
       timeout: 10,
       async: false
     };
 
-    Rx.Observable.ajax(obj)
+    ajax(obj)
       .subscribe((x: any) => {
         expect(x.status).to.equal(200);
         expect(x.xhr.method).to.equal('GET');
@@ -465,7 +465,7 @@ describe('Observable.ajax', () => {
         body: 'foobar'
       };
 
-      Rx.Observable.ajax(obj).subscribe();
+      ajax(obj).subscribe();
 
       expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
       expect(MockXMLHttpRequest.mostRecent.data).to.equal('foobar');
@@ -479,7 +479,7 @@ describe('Observable.ajax', () => {
         body: body
       };
 
-      Rx.Observable.ajax(obj).subscribe();
+      ajax(obj).subscribe();
 
       expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
       expect(MockXMLHttpRequest.mostRecent.data).to.deep.equal(body);
@@ -499,7 +499,7 @@ describe('Observable.ajax', () => {
         body: { '🌟': '🚀' }
       };
 
-      Rx.Observable.ajax(obj).subscribe();
+      ajax(obj).subscribe();
 
       expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
     });
@@ -517,7 +517,7 @@ describe('Observable.ajax', () => {
         body: body
       };
 
-      Rx.Observable.ajax(obj).subscribe();
+      ajax(obj).subscribe();
 
       expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
       expect(MockXMLHttpRequest.mostRecent.data).to.equal('%F0%9F%8C%9F=%F0%9F%9A%80');
@@ -536,7 +536,7 @@ describe('Observable.ajax', () => {
         body: body
       };
 
-      Rx.Observable.ajax(obj).subscribe();
+      ajax(obj).subscribe();
 
       expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
       expect(MockXMLHttpRequest.mostRecent.data).to.equal('{"🌟":"🚀"}');
@@ -559,7 +559,7 @@ describe('Observable.ajax', () => {
         }
       };
 
-      Rx.Observable.ajax(obj)
+      ajax(obj)
         .subscribe(() => {
           done(new Error('should not be called'));
         }, (e: Error) => {
@@ -577,8 +577,7 @@ describe('Observable.ajax', () => {
       let result;
       let complete = false;
 
-      Rx.Observable
-        .ajax.get('/flibbertyJibbet')
+      ajax.get('/flibbertyJibbet')
         .subscribe(x => {
           result = x.response;
         }, null, () => {
@@ -604,8 +603,7 @@ describe('Observable.ajax', () => {
       let result;
       let complete = false;
 
-      Rx.Observable
-        .ajax.get('/flibbertyJibbet')
+      ajax.get('/flibbertyJibbet')
         .subscribe(x => {
           result = x.response;
         }, null, () => {
@@ -631,8 +629,7 @@ describe('Observable.ajax', () => {
       let result;
       let complete = false;
 
-      Rx.Observable
-        .ajax.getJSON('/flibbertyJibbet')
+      ajax.getJSON('/flibbertyJibbet')
         .subscribe(x => {
           result = x;
         }, null, () => {
@@ -658,11 +655,10 @@ describe('Observable.ajax', () => {
 
     it('should succeed on 200', () => {
       const expected = { foo: 'bar', hi: 'there you' };
-      let result: Rx.AjaxResponse;
+      let result: AjaxResponse;
       let complete = false;
 
-      Rx.Observable
-        .ajax.post('/flibbertyJibbet', expected)
+      ajax.post('/flibbertyJibbet', expected)
         .subscribe(x => {
           result = x;
         }, null, () => {
@@ -690,11 +686,10 @@ describe('Observable.ajax', () => {
 
     it('should properly encode full URLs passed', () => {
       const expected = { test: 'https://google.com/search?q=encodeURI+vs+encodeURIComponent' };
-      let result: Rx.AjaxResponse;
+      let result: AjaxResponse;
       let complete = false;
 
-      Rx.Observable
-        .ajax.post('/flibbertyJibbet', expected)
+      ajax.post('/flibbertyJibbet', expected)
         .subscribe(x => {
           result = x;
         }, null, () => {
@@ -723,11 +718,10 @@ describe('Observable.ajax', () => {
 
     it('should succeed on 204 No Content', () => {
       const expected: null = null;
-      let result: Rx.AjaxResponse;
+      let result: AjaxResponse;
       let complete = false;
 
-      Rx.Observable
-        .ajax.post('/flibbertyJibbet', expected)
+      ajax.post('/flibbertyJibbet', expected)
         .subscribe(x => {
           result = x;
         }, null, () => {
@@ -755,13 +749,12 @@ describe('Observable.ajax', () => {
 
     it('should succeed in IE on 204 No Content', () => {
       const expected: null = null;
-      let result: Rx.AjaxResponse;
+      let result: AjaxResponse;
       let complete = false;
 
       root.XMLHttpRequest = MockXMLHttpRequestInternetExplorer;
 
-      Rx.Observable
-        .ajax.post('/flibbertyJibbet', expected)
+      ajax.post('/flibbertyJibbet', expected)
         .subscribe(x => {
           result = x;
         }, null, () => {
@@ -798,7 +791,7 @@ describe('Observable.ajax', () => {
         }
       });
 
-      Rx.Observable.ajax({
+      ajax({
         url: '/flibbertyJibbet',
         progressSubscriber
       })
@@ -830,7 +823,7 @@ describe('Observable.ajax', () => {
       root.XMLHttpRequest = MockXMLHttpRequestInternetExplorer;
       root.XDomainRequest = MockXMLHttpRequestInternetExplorer;
 
-      Rx.Observable.ajax({
+      ajax({
         url: '/flibbertyJibbet',
         progressSubscriber
       })
@@ -866,7 +859,7 @@ describe('Observable.ajax', () => {
       configurable: true
     });
 
-    Rx.Observable.ajax({
+    ajax({
       url: '/flibbertyJibbet'
     })
       .subscribe();
@@ -900,7 +893,7 @@ describe('Observable.ajax', () => {
       url: '/flibbertyJibbet'
     };
 
-    Rx.Observable.ajax(ajaxRequest)
+    ajax(ajaxRequest)
       .subscribe({
         error(err) {
           expect(err.name).to.equal('AjaxTimeoutError');
@@ -912,7 +905,7 @@ describe('Observable.ajax', () => {
     try {
       request.ontimeout((<any>'ontimeout'));
     } catch (e) {
-      expect(e.message).to.equal(new Rx.AjaxTimeoutError((<any>request), ajaxRequest).message);
+      expect(e.message).to.equal(new AjaxTimeoutError((<any>request), ajaxRequest).message);
     }
     delete root.XMLHttpRequest.prototype.ontimeout;
   });
@@ -934,7 +927,7 @@ describe('Observable.ajax', () => {
       configurable: true
     });
 
-    Rx.Observable.ajax({
+    ajax({
       url: '/flibbertyJibbet',
       progressSubscriber: (<any>{
         next: () => {
@@ -977,7 +970,7 @@ describe('Observable.ajax', () => {
       configurable: true
     });
 
-    Rx.Observable.ajax({
+    ajax({
       url: '/flibbertyJibbet'
     })
       .subscribe({
@@ -1003,8 +996,7 @@ describe('Observable.ajax', () => {
       const body = { foo: 'bar' };
       const headers = { first: 'first' };
       // returns Observable, not AjaxObservable, so needs a cast
-      const { request } = <any>Rx.Observable
-        .ajax.patch('/flibbertyJibbet', body, headers);
+      const { request } = <any>ajax.patch('/flibbertyJibbet', body, headers);
 
       expect(request.method).to.equal('PATCH');
       expect(request.url).to.equal('/flibbertyJibbet');
