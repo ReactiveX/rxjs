@@ -150,7 +150,7 @@ For JavaScript developers, the general rule is as follows:
 
 1. **rxjs:** Creation methods, types, schedulers and utilities
 ```ts
-import { Observable, Subject, asapScheduler, pipe, of, from, interval, merge, fromEvent } from 'rxjs';
+import { Observable, Subject, asapScheduler, pipe, of, from, interval, merge, fromEvent, SubscriptionLike, PartialObserver } from 'rxjs';
 ```
 
 2. **rxjs/operators**: All pipeable operators:
