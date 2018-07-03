@@ -1,1 +1,4 @@
-# [This file has been moved!](docs_app/content/guide/v6/migration.md)
+# [This file has been moved!](docs_app/content/guide/v6/migration.md
+
+
+WHY THE HELL DOES IT SAY THIS FILE HAS BEEN MOVED BUT DOES NOT SAY WHERE IT HAS MOVED TO? WHO THOUGHT THAT WAS A GOOD DECISION? FIX IT
