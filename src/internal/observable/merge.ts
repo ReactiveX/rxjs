@@ -48,7 +48,7 @@ export function merge<T, R>(...observables: (ObservableInput<any> | SchedulerLik
  * // clicks logs MouseEvents to console everytime the "document" is clicked
  * // Since the two streams are merged you see these happening
  * // as they occur.
- * ```javascript
+ * ```
  *
  * ### Merge together 3 Observables, but only 2 run concurrently
  * ```javascript
