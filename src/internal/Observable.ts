@@ -77,31 +77,31 @@ export class Observable<T> implements Subscribable<T> {
    *
    * `subscribe` is not a regular operator, but a method that calls Observable's internal `subscribe` function. It
    * might be for example a function that you passed to Observable's constructor, but most of the time it is
-   * a library implementation, which defines what and when will be emitted by an Observable. This means that calling
-   * `subscribe` is actually the moment when Observable starts its work, not when it is created, as it is often
-   * thought.
+   * a library implementation, which defines what will be emitted by an Observable, and when it be will emitted. This means
+   * that calling `subscribe` is actually the moment when Observable starts its work, not when it is created, as it is often
+   * the thought.
    *
    * Apart from starting the execution of an Observable, this method allows you to listen for values
    * that an Observable emits, as well as for when it completes or errors. You can achieve this in two
-   * following ways.
+   * of the following ways.
    *
    * The first way is creating an object that implements {@link Observer} interface. It should have methods
    * defined by that interface, but note that it should be just a regular JavaScript object, which you can create
    * yourself in any way you want (ES6 class, classic function constructor, object literal etc.). In particular do
    * not attempt to use any RxJS implementation details to create Observers - you don't need them. Remember also
    * that your object does not have to implement all methods. If you find yourself creating a method that doesn't
-   * do anything, you can simply omit it. Note however, that if `error` method is not provided, all errors will
+   * do anything, you can simply omit it. Note however, if the `error` method is not provided, all errors will
    * be left uncaught.
    *
    * The second way is to give up on Observer object altogether and simply provide callback functions in place of its methods.
-   * This means you can provide three functions as arguments to `subscribe`, where first function is equivalent
-   * of a `next` method, second of an `error` method and third of a `complete` method. Just as in case of Observer,
+   * This means you can provide three functions as arguments to `subscribe`, where the first function is equivalent
+   * of a `next` method, the second of an `error` method and the third of a `complete` method. Just as in case of Observer,
    * if you do not need to listen for something, you can omit a function, preferably by passing `undefined` or `null`,
    * since `subscribe` recognizes these functions by where they were placed in function call. When it comes
    * to `error` function, just as before, if not provided, errors emitted by an Observable will be thrown.
    *
-   * Whatever style of calling `subscribe` you use, in both cases it returns a Subscription object.
-   * This object allows you to call `unsubscribe` on it, which in turn will stop work that an Observable does and will clean
+   * Whichever style of calling `subscribe` you use, in both cases it returns a Subscription object.
+   * This object allows you to call `unsubscribe` on it, which in turn will stop the work that an Observable does and will clean
    * up all resources that an Observable used. Note that cancelling a subscription will not call `complete` callback
    * provided to `subscribe` function, which is reserved for a regular completion signal that comes from an Observable.
    *
