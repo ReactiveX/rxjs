@@ -7,8 +7,10 @@ import { Subscriber } from '../Subscriber';
 /**
  * Share source and replay specified number of emissions on subscription.
  *
- * This operator is a specialization of `replay` that connects to the connectable observable sequence
- * when the number of observers goes from zero to one, and disconnects when there are no more observers.
+ * This operator is a specialization of `replay` that connects to a source observable
+ * and multicasts through a `ReplaySubject` constructed with the specified arguments.
+ * A successfully completed source will stay cached in the `shareReplayed observable` forever,
+ * but an errored source can be retried.
  *
  * ## Why use shareReplay?
  * You generally want to use `shareReplay` when you have side-effects or taxing computations
@@ -35,8 +37,8 @@ import { Subscriber } from '../Subscriber';
  * @see {@link share}
  * @see {@link publishReplay}
  *
- * @param {Number} [bufferSize] Maximum element count of the replay buffer.
- * @param {Number} [windowTime] Maximum time length of the replay buffer in milliseconds.
+ * @param {Number} [bufferSize=Number.POSITIVE_INFINITY] Maximum element count of the replay buffer.
+ * @param {Number} [windowTime=Number.MAX_VALUE] Maximum time length of the replay buffer in milliseconds.
  * @param {Scheduler} [scheduler] Scheduler where connected observers within the selector function
  * will be invoked on.
  * @return {Observable} An observable sequence that contains the elements of a sequence produced
@@ -44,7 +46,11 @@ import { Subscriber } from '../Subscriber';
  * @method shareReplay
  * @owner Observable
  */
-export function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike ): MonoTypeOperatorFunction<T> {
+export function shareReplay<T>(
+  bufferSize: number = Number.POSITIVE_INFINITY,
+  windowTime: number = Number.MAX_VALUE,
+  scheduler?: SchedulerLike
+): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(shareReplayOperator(bufferSize, windowTime, scheduler));
 }
 
