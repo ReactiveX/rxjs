@@ -33,7 +33,7 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  *   {id: 2, name: 'qsgqsfg2'},
  * ).pipe(
  *   groupBy(p => p.id),
- *   flatMap((group$) => group$.pipe(reduce((acc, cur) => [...acc, cur], []))),
+ *   mergeMap((group$) => group$.pipe(reduce((acc, cur) => [...acc, cur], []))),
  * )
  * .subscribe(p => console.log(p));
  *
@@ -63,7 +63,7 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  *   {id: 2, name: 'qsgqsfg2'},
  * ).pipe(
  *   groupBy(p => p.id, p => p.name),
- *   flatMap( (group$) => group$.pipe(reduce((acc, cur) => [...acc, cur], ["" + group$.key]))),
+ *   mergeMap( (group$) => group$.pipe(reduce((acc, cur) => [...acc, cur], ["" + group$.key]))),
  *   map(arr => ({'id': parseInt(arr[0]), 'values': arr.slice(1)})),
  * )
  * .subscribe(p => console.log(p));

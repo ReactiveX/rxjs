@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { repeatWhen, map, mergeMap, takeUntil, flatMap } from 'rxjs/operators';
+import { repeatWhen, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { of, EMPTY, Observable, Subscriber } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
@@ -374,7 +374,7 @@ describe('repeatWhen operator', () => {
       repeatWhen((notifications: any) => notifications.pipe(
         map(() => 'x'),
         takeUntil(
-          notifications.pipe(flatMap(() => {
+          notifications.pipe(mergeMap(() => {
             if (++invoked < 3) {
               return EMPTY;
             } else {
