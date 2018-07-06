@@ -65,7 +65,7 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  * @param {S} initialState Initial state.
  * @param {function (state: S): boolean} condition Condition to terminate generation (upon returning false).
  * @param {function (state: S): S} iterate Iteration step function.
- * @param {function (state: S): T} resultSelector Selector function for results produced in the sequence.
+ * @param {function (state: S): T} resultSelector Selector function for results produced in the sequence. (deprecated)
  * @param {SchedulerLike} [scheduler] A {@link SchedulerLike} on which to run the generator loop. If not provided, defaults to emit immediately.
  * @returns {Observable<T>} The generated sequence.
  */

@@ -53,8 +53,8 @@ export function switchMap<T, I, R>(project: (value: T, index: number) => Observa
  * that, when applied to an item emitted by the source Observable, returns an
  * Observable.
  * @return {Observable} An Observable that emits the result of applying the
- * projection function (and the optional `resultSelector`) to each item emitted
- * by the source Observable and taking only the values from the most recently
+ * projection function (and the optional deprecated `resultSelector`) to each item
+ * emitted by the source Observable and taking only the values from the most recently
  * projected inner Observable.
  * @method switchMap
  * @owner Observable

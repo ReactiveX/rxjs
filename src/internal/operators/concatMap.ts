@@ -60,7 +60,7 @@ export function concatMap<T, I, R>(project: (value: T, index: number) =>  Observ
  * that, when applied to an item emitted by the source Observable, returns an
  * Observable.
  * @return {Observable} An Observable that emits the result of applying the
- * projection function (and the optional `resultSelector`) to each item emitted
+ * projection function (and the optional deprecated `resultSelector`) to each item emitted
  * by the source Observable and taking values from each projected inner
  * Observable sequentially.
  * @method concatMap
