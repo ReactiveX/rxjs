@@ -462,5 +462,18 @@ describe('TestScheduler', () => {
       expect(testScheduler['runMode']).to.equal(runMode);
       expect(AsyncScheduler.delegate).to.equal(delegate);
     });
+
+    it('should flush expectations correctly', () => {
+      expect(() => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(({ cold, expectObservable, flush }) => {
+          expectObservable(cold('-x')).toBe('-x');
+          expectObservable(cold('-y')).toBe('-y');
+          const expectation = expectObservable(cold('-z'));
+          flush();
+          expectation.toBe('-q');
+        });
+      }).to.throw();
+    });
   });
 });
