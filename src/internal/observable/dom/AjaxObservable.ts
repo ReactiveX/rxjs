@@ -329,7 +329,7 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       } else {
         subscriber.error(ajaxTimeoutError);
       }
-    };
+    }
     xhr.ontimeout = xhrTimeout;
     (<any>xhrTimeout).request = request;
     (<any>xhrTimeout).subscriber = this;
