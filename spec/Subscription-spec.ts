@@ -179,7 +179,7 @@ describe('Subscription', () => {
       const main = new Subscription();
       main.unsubscribe();
 
-      let isCalled = [];
+      let isCalled: boolean[] = [];
 
       const subscriptions = range(5)
         .map((_, i) => new Subscription(() => {
