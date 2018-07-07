@@ -35,7 +35,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * Emit clicks at a rate of at most one click per second
  * ```javascript
  * const clicks = fromEvent(document, 'click');
- * const result = clicks.pipe(audit(ev => Rx.Observable.interval(1000)));
+ * const result = clicks.pipe(audit(ev => interval(1000)));
  * result.subscribe(x => console.log(x));
  * ```
  * @see {@link auditTime}

@@ -158,11 +158,11 @@ class RefCountSubscriber<T> extends Subscriber<T> {
     // supply the RefCountSubscriber with the shared connection Subscription.
     // For example:
     // ```
-    // Observable.range(0, 10)
-    //   .publish()
-    //   .refCount()
-    //   .take(5)
-    //   .subscribe();
+    // range(0, 10).pipe(
+    //   publish(),
+    //   refCount(),
+    //   take(5),
+    // ).subscribe();
     // ```
     // In order to account for this case, RefCountSubscriber should only dispose
     // the ConnectableObservable's shared connection Subscription if the

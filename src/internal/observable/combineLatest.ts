@@ -96,9 +96,9 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * ## Examples
  * ### Combine two timer Observables
  * ```javascript
- * const firstTimer = Rx.Observable.timer(0, 1000); // emit 0, 1, 2... after every second, starting from now
- * const secondTimer = Rx.Observable.timer(500, 1000); // emit 0, 1, 2... after every second, starting 0,5s from now
- * const combinedTimers = Rx.Observable.combineLatest(firstTimer, secondTimer);
+ * const firstTimer = timer(0, 1000); // emit 0, 1, 2... after every second, starting from now
+ * const secondTimer = timer(500, 1000); // emit 0, 1, 2... after every second, starting 0,5s from now
+ * const combinedTimers = combineLatest(firstTimer, secondTimer);
  * combinedTimers.subscribe(value => console.log(value));
  * // Logs
  * // [0, 0] after 0.5s
