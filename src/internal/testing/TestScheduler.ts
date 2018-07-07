@@ -141,17 +141,14 @@ export class TestScheduler extends VirtualTimeScheduler {
     }
 
     super.flush();
-    const { flushTests } = this;
-    const flushTestsCopy = flushTests.slice();
 
-    for (let i = 0, l = flushTests.length; i < l; i++) {
-      const test = flushTestsCopy[i];
+    this.flushTests = this.flushTests.filter(test => {
       if (test.ready) {
-        // remove it from the original array, not our copy
-        flushTests.splice(i, 1);
         this.assertDeepEqual(test.actual, test.expected);
+        return false;
       }
-    }
+      return true;
+    });
   }
 
   /** @nocollapse */
