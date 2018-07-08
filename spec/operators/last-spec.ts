@@ -163,8 +163,6 @@ describe('Observable.prototype.last', () => {
       // After the type guard `last` predicates, the type is narrowed to string
       xs.pipe(last(isString))
         .subscribe(s => s.length); // s is string
-      xs.pipe(last(isString, s => s.substr(0))) // s is string in predicate)
-        .subscribe(s => s.length); // s is string
 
       // boolean predicates preserve the type
       xs.pipe(last(x => typeof x === 'string'))
