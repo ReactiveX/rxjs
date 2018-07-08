@@ -24,7 +24,7 @@ export class AsyncAction<T> extends Action<T> {
 
     if (this.closed) {
       return this;
-     }
+    }
 
     // Always replace the current state with the new state.
     this.state = state;
