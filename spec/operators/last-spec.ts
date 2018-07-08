@@ -160,6 +160,12 @@ describe('Observable.prototype.last', () => {
       // missing predicate preserves the type
       xs.pipe(last()).subscribe(x => x); // x is still string | number
 
+      // null predicate preserves the type
+      xs.pipe(last(null)).subscribe(x => x); // x is still string | number
+
+      // undefined predicate preserves the type
+      xs.pipe(last(undefined)).subscribe(x => x); // x is still string | number
+
       // After the type guard `last` predicates, the type is narrowed to string
       xs.pipe(last(isString))
         .subscribe(s => s.length); // s is string

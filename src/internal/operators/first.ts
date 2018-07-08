@@ -10,17 +10,16 @@ import { throwIfEmpty } from './throwIfEmpty';
 import { identity } from '../util/identity';
 
 /* tslint:disable:max-line-length */
-export function first<T>(): MonoTypeOperatorFunction<T>;
 export function first<T>(
-  predicate: null | undefined,
-  defaultValue: T
+  predicate?: null,
+  defaultValue?: T
 ): MonoTypeOperatorFunction<T>;
 export function first<T, S extends T>(
-  predicate?: (value: T, index: number, source: Observable<T>) => value is S,
+  predicate: (value: T, index: number, source: Observable<T>) => value is S,
   defaultValue?: T
 ): OperatorFunction<T, S>;
 export function first<T>(
-  predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+  predicate: (value: T, index: number, source: Observable<T>) => boolean,
   defaultValue?: T
 ): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
