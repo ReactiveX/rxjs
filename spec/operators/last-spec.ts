@@ -113,10 +113,6 @@ describe('Observable.prototype.last', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  // The current signature for last suggests that this test is not required. In
-  // fact, with type checking enabled, it will fail. See:
-  // https://github.com/ReactiveX/rxjs/issues/3717
-  /*
   it('should support type guards without breaking previous behavior', () => {
     // tslint:disable no-unused-variable
 
@@ -126,8 +122,8 @@ describe('Observable.prototype.last', () => {
       interface Baz { baz?: number; }
       class Foo implements Bar, Baz { constructor(public bar: string = 'name', public baz: number = 42) {} }
 
-      const isBar = (x: any): x is Bar => x && (<Bar>x).bar !== undefined;
-      const isBaz = (x: any): x is Baz => x && (<Baz>x).baz !== undefined;
+      const isBar = (x: any): x is Bar => x && (x as Bar).bar !== undefined;
+      const isBaz = (x: any): x is Baz => x && (x as Baz).baz !== undefined;
 
       const foo: Foo = new Foo();
       of(foo).pipe(last())
@@ -177,5 +173,4 @@ describe('Observable.prototype.last', () => {
 
     // tslint:disable enable
   });
-  */
 });
