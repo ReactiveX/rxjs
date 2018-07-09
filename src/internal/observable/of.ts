@@ -47,9 +47,9 @@ import { Observable } from '../Observable';
  * ```
  *
  * @see {@link from}
+ * @see {@link range}
  *
- * @param {T} args A comma separated list of arguments to be converted
- * into next notifications
+ * @param {...T} values A comma separated list of arguments you want to be emitted
  * @return {Observable} An Observable that emits the arguments
  * described above and then completes.
  * @method of
