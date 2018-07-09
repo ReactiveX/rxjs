@@ -14,7 +14,7 @@ import { UnaryFunction } from '../types';
  * the last emitted value.
  * Similarly to {@link publishReplay} and {@link publishBehavior}, this keeps storing the last
  * value even if it has no more subscribers. If subsequent subscriptions happen, they will
- * immediately emit that last stored value and complete.
+ * immediately get that last stored value and complete.
  *
  * ## Example
  *
