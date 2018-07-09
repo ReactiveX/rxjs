@@ -5,6 +5,57 @@ import { empty } from './empty';
 import { scalar } from './scalar';
 import { Observable } from '../Observable';
 
+/**
+ * Converts the arguments to an observable sequence.
+ *
+ * <span class="informal">Each argument becomes a `next` notification.</span>
+ *
+ * ![](of.png)
+ *
+ * Unlike {@link from}, it does not do any flattening and emits each argument in whole
+ * as a separate `next` notification.
+ *
+ * ## Examples
+ *
+ * Emit the values `10, 20, 30`
+ *
+ * ```javascript
+ * of(10, 20, 30)
+ * .subscribe(
+ *   next => console.log('next:', next),
+ *   err => console.log('error:', err),
+ *   () => console.log('the end'),
+ * );
+ * // result:
+ * // 'next: 10'
+ * // 'next: 20'
+ * // 'next: 30'
+ *
+ * ```
+ *
+ * Emit the array `[1,2,3]`
+ *
+ * ```javascript
+ * of([1,2,3])
+ * .subscribe(
+ *   next => console.log('next:', next),
+ *   err => console.log('error:', err),
+ *   () => console.log('the end'),
+ * );
+ * // result:
+ * // 'next: [1,2,3]'
+ * ```
+ *
+ * @see {@link from}
+ *
+ * @param {T} args A comma separated list of arguments to be converted
+ * into next notifications
+ * @return {Observable} An Observable that emits the arguments
+ * described above and then completes.
+ * @method of
+ * @owner Observable
+ */
+
 export function of<T>(a: T, scheduler?: SchedulerLike): Observable<T>;
 export function of<T, T2>(a: T, b: T2, scheduler?: SchedulerLike): Observable<T | T2>;
 export function of<T, T2, T3>(a: T, b: T2, c: T3, scheduler?: SchedulerLike): Observable<T | T2 | T3>;
