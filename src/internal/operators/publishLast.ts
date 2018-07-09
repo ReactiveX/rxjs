@@ -12,7 +12,7 @@ import { UnaryFunction } from '../types';
  *
  * Similar to {@link publish}, but it waits until the source observable completes and stores
  * the last emitted value.
- * Similar to {@link publishReplay} and {@link publishBehavior}, this keeps storing the last
+ * Similarly to {@link publishReplay} and {@link publishBehavior}, this keeps storing the last
  * value even if it has no more subscribers. If subsequent subscriptions happen, they will
  * immediately emit that last stored value and complete.
  *
