@@ -1,8 +1,8 @@
 // TODO: require rxjs/core as a peer dep
-import { Scheduler, ObservableInput, FOType, Sink } from "../../../core/internal/types";
-import { isArrayLike } from "../../../core/internal/util/isArrayLike";
-import { sourceAsObservable } from "../../../core/internal/Observable";
-import { Subscription } from "../../../core/internal/Subscription";
+import { Scheduler, ObservableInput, FOType, Sink } from "../types";
+import { isArrayLike } from "../util/isArrayLike";
+import { sourceAsObservable } from "../Observable";
+import { Subscription } from "../Subscription";
 
 export function fromScheduled<T>(input: ObservableInput<T>, scheduler: Scheduler) {
   if (isArrayLike(input)) {

@@ -24,9 +24,9 @@
     "watch": "Watch codebase, trigger compile when source code changes"
   },
   "scripts": {
-    "test": "cross-env TS_NODE_PROJECT=tsconfig.json mocha --opts mocha-options.opts \"modules/**/*-spec.ts\"",
-    "test2": "mocha -r ts-node/register modules/**/*-spec.ts",
-    "watch": "watch 'npm run test' modules",
+    "test": "cross-env TS_NODE_PROJECT=tsconfig.json mocha --opts mocha-options.opts \"src/**/*-spec.ts\"",
+    "test2": "mocha -r ts-node/register src/**/*-spec.ts",
+    "watch": "watch 'npm run test' src",
     "build": "tsc"
   },
   "repository": {
