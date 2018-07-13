@@ -21,7 +21,12 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  *
  * ##Examples
  * Group objects by id and return as array
- * ```javascript
+ * ```typescript
+ * interface Obj {
+ *    id: number,
+ *    name: string,
+ * }
+ * 
  * of<Obj>(
  *   {id: 1, name: 'aze1'},
  *   {id: 2, name: 'sf2'},
@@ -51,7 +56,7 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  * ```
  *
  * Pivot data on the id field
- * ```javascript
+ * ```typescript
  * of<Obj>(
  *   {id: 1, name: 'aze1'},
  *   {id: 2, name: 'sf2'},

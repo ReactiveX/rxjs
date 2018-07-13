@@ -24,9 +24,9 @@ import { OperatorFunction } from '../types';
  * ## Example
  * Convert an Observable of Notifications to an actual Observable
  * ```javascript
- * const notifA = new Rx.Notification('N', 'A');
- * const notifB = new Rx.Notification('N', 'B');
- * const notifE = new Rx.Notification('E', void 0,
+ * const notifA = new Notification('N', 'A');
+ * const notifB = new Notification('N', 'B');
+ * const notifE = new Notification('E', undefined,
  *   new TypeError('x.toUpperCase is not a function')
  * );
  * const materialized = of(notifA, notifB, notifE);
