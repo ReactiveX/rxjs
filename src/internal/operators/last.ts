@@ -2,12 +2,27 @@ import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { EmptyError } from '../util/EmptyError';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { MonoTypeOperatorFunction, OperatorFunction } from '../../internal/types';
 import { filter } from './filter';
 import { takeLast } from './takeLast';
 import { throwIfEmpty } from './throwIfEmpty';
 import { defaultIfEmpty } from './defaultIfEmpty';
 import { identity } from '../util/identity';
+
+/* tslint:disable:max-line-length */
+export function last<T>(
+  predicate?: null,
+  defaultValue?: T
+): MonoTypeOperatorFunction<T>;
+export function last<T, S extends T>(
+  predicate: (value: T, index: number, source: Observable<T>) => value is S,
+  defaultValue?: T
+): OperatorFunction<T, S>;
+export function last<T>(
+  predicate: (value: T, index: number, source: Observable<T>) => boolean,
+  defaultValue?: T
+): MonoTypeOperatorFunction<T>;
+/* tslint:enable:max-line-length */
 
 /**
  * Returns an Observable that emits only the last item emitted by the source Observable.

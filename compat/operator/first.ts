@@ -1,8 +1,12 @@
 import { Observable } from 'rxjs';
 import { first as higherOrder } from 'rxjs/operators';
 
-export function first<T>(this: Observable<T>, predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-                         defaultValue?: T): Observable<T>;
+/* tslint:disable:max-line-length */
+export function first<T>(this: Observable<T>, predicate?: null, defaultValue?: T): Observable<T>;
+export function first<T, S extends T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => value is S, defaultValue?: T): Observable<S>;
+export function first<T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => boolean, defaultValue?: T): Observable<T>;
+/* tslint:enable:max-line-length */
+
 /**
  * Emits only the first value (or the first value that meets some condition)
  * emitted by the source Observable.
@@ -47,5 +51,5 @@ export function first<T>(this: Observable<T>, predicate?: (value: T, index: numb
  * @owner Observable
  */
 export function first<T>(this: Observable<T>, ...args: any[]): Observable<T> {
-    return higherOrder<T>(...args)(this);
-  }
+  return higherOrder<T>(...args)(this);
+}

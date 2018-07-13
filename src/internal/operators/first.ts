@@ -2,12 +2,27 @@ import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { EmptyError } from '../util/EmptyError';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { MonoTypeOperatorFunction, OperatorFunction } from '../../internal/types';
 import { filter } from './filter';
 import { take } from './take';
 import { defaultIfEmpty } from './defaultIfEmpty';
 import { throwIfEmpty } from './throwIfEmpty';
 import { identity } from '../util/identity';
+
+/* tslint:disable:max-line-length */
+export function first<T>(
+  predicate?: null,
+  defaultValue?: T
+): MonoTypeOperatorFunction<T>;
+export function first<T, S extends T>(
+  predicate: (value: T, index: number, source: Observable<T>) => value is S,
+  defaultValue?: T
+): OperatorFunction<T, S>;
+export function first<T>(
+  predicate: (value: T, index: number, source: Observable<T>) => boolean,
+  defaultValue?: T
+): MonoTypeOperatorFunction<T>;
+/* tslint:enable:max-line-length */
 
 /**
  * Emits only the first value (or the first value that meets some condition)
