@@ -1,3 +1,13 @@
+<a name="6.2.2"></a>
+## [6.2.2](https://github.com/reactivex/rxjs/compare/6.2.1...6.2.2) (2018-07-13)
+
+### Bug Fixes
+
+* **first:** improved type gaurds for TypeScript ([3e12f7a](https://github.com/reactivex/rxjs/commit/3e12f7a))
+* **last:** improved type gaurds for TypeScript ([3e12f7a](https://github.com/reactivex/rxjs/commit/3e12f7a))
+
+
+
 <a name="6.2.1"></a>
 ## [6.2.1](https://github.com/reactivex/rxjs/compare/6.2.0...6.2.1) (2018-06-12)
 
