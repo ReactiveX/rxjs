@@ -1,6 +1,6 @@
-import { FObs, Operation, PartialObserver, FOType, Sink, Source, SinkArg, Teardown, Scheduler, FObsArg } from './types';
+import { FObs, Operation, PartialObserver, FOType, Sink, Source, SinkArg, Teardown } from './types';
 import { Subscriber, createSubscriber } from './Subscriber';
-import { Subscription, teardownToFunction } from './Subscription';
+import { Subscription } from './Subscription';
 import { pipe } from './util/pipe';
 import { tryUserFunction, resultIsError } from './util/userFunction';
 
@@ -22,7 +22,19 @@ export interface Observable<T> extends FObs<T> {
 
   toPromise(): Promise<T>;
 
-  // TODO: flush out types
+  pipe(): Observable<T>;
+  pipe<R>(op1: Operation<T, R>, ): Observable<R>;
+  pipe<A, R>(op1: Operation<T, A>, op2: Operation<A, R>, ): Observable<R>;
+  pipe<A, B, R>(op1: Operation<T, A>, op2: Operation<A, B>, op3: Operation<B, R>, ): Observable<R>;
+  pipe<A, B, C, R>(op1: Operation<T, A>, op2: Operation<A, B>, op3: Operation<B, C>, op4: Operation<C, R>, ): Observable<R>;
+  pipe<A, B, C, D, R>(op1: Operation<T, A>, op2: Operation<A, B>, op3: Operation<B, C>, op4: Operation<C, D>, op5: Operation<D, R>, ): Observable<R>;
+  pipe<A, B, C, D, E, R>(op1: Operation<T, A>, op2: Operation<A, B>, op3: Operation<B, C>, op4: Operation<C, D>, op5: Operation<D, E>, op6: Operation<E, R>, ): Observable<R>;
+  pipe<A, B, C, D, E, F, R>(op1: Operation<T, A>, op2: Operation<A, B>, op3: Operation<B, C>, op4: Operation<C, D>, op5: Operation<D, E>, op6: Operation<E, F>, op8: Operation<F, R>, ): Observable<R>;
+  pipe<A, B, C, D, E, F, G, R>(op1: Operation<T, A>, op2: Operation<A, B>, op3: Operation<B, C>, op4: Operation<C, D>, op5: Operation<D, E>, op6: Operation<E, F>, op8: Operation<F, G>, op9: Operation<G, R>, ): Observable<R>;
+  pipe<A, B, C, D, E, F, G, H, R>(op1: Operation<T, A>, op2: Operation<A, B>, op3: Operation<B, C>, op4: Operation<C, D>, op5: Operation<D, E>, op6: Operation<E, F>, op8: Operation<F, G>, op9: Operation<G, H>, op10: Operation<H, R>, ): Observable<R>;
+  pipe<A, B, C, D, E, F, G, H, I, R>(op1: Operation<T, A>, op2: Operation<A, B>, op3: Operation<B, C>, op4: Operation<C, D>, op5: Operation<D, E>, op6: Operation<E, F>, op8: Operation<F, G>, op9: Operation<G, H>, op10: Operation<H, I>, op11: Operation<I, R>, ): Observable<R>;
+  pipe<A, B, C, D, E, F, G, H, I, J, R>(op1: Operation<T, A>, op2: Operation<A, B>, op3: Operation<B, C>, op4: Operation<C, D>, op5: Operation<D, E>, op6: Operation<E, F>, op8: Operation<F, G>, op9: Operation<G, H>, op10: Operation<H, I>, op11: Operation<I, J>, op12: Operation<J, R>, ): Observable<R>;
+  pipe<A, B, C, D, E, F, G, H, I, J, K, R>(op1: Operation<T, A>, op2: Operation<A, B>, op3: Operation<B, C>, op4: Operation<C, D>, op5: Operation<D, E>, op6: Operation<E, F>, op8: Operation<F, G>, op9: Operation<G, H>, op10: Operation<H, I>, op11: Operation<I, J>, op12: Operation<J, K>, op13: Operation<K, R>, ): Observable<R>;
   pipe(...operations: Array<Operation<any, any>>): Observable<any>;
 }
 
