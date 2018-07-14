@@ -44,54 +44,54 @@ timestamp.
 - [x] concatAll (g3)
 - [ ] concatMap (g3)
 - [ ] concatMapTo
-- [ ] count (g3)
+- [x] count (g3)
 - [ ] debounce (g3)
 - [ ] debounceTime (g3)
-- [ ] defaultIfEmpty (g3)
+- [x] defaultIfEmpty (g3)
 - [ ] delay (g3)
 - [ ] delayWhen (g3)
 - [ ] dematerialize
 - [ ] distinct (g3)
 - [ ] distinctUntilChanged (g3)
 - [ ] distinctUntilKeyChanged (g3)
-- [ ] elementAt (g3)
+- [x] elementAt (g3)
 - [x] endWith
-- [ ] every (g3)
+- [x] every (g3)
 - [ ] exhaust
 - [ ] exhaustMap (g3)
 - [ ] expand (g3)
 - [x] filter (g3)
 - [ ] finalize (g3)
-- [ ] find
-- [ ] findIndex
-- [ ] first (g3)
+- [x] find
+- [x] findIndex
+- [x] first (g3)
 - [ ] flatMap (g3)
 - [x] groupBy (g3)
 - [ ] ignoreElements (g3)
 - [ ] isEmpty
 - [ ] last (g3)
-- [ ] map (g3)
+- [x] map (g3)
 - [ ] mapTo (g3)
-- [ ] materialize (g3)
-- [ ] max
+- [x] materialize (g3)
+- [x] max
 - [ ] merge (g3)
-- [ ] mergeAll (g3)
+- [x] mergeAll (g3)
 - [ ] mergeMap (g3)
 - [ ] mergeMapTo (g3)
 - [ ] mergeScan
-- [ ] min
+- [x] min
 - [ ] multicast (g3)
 - [ ] observeOn (g3)
 - [ ] onErrorResumeNext (g3)
-- [ ] pairwise (g3)
+- [x] pairwise (g3)
 - [ ] partition (g3)
-- [ ] pluck (g3)
+- [x] pluck (g3)
 - [ ] publish (g3)
 - [ ] publishBehavior (g3)
 - [ ] publishLast (g3)
 - [ ] publishReplay (g3)
 - [ ] race
-- [ ] reduce (g3)
+- [x] reduce (g3)
 - [ ] refCount (g3)
 - [x] repeat (g3)
 - [ ] repeatWhen (g3)
@@ -104,10 +104,10 @@ timestamp.
 - [x] share (g3)
 - [ ] shareReplay (g3)
 - [ ] single (g3)
-- [ ] skip (g3)
+- [x] skip (g3)
 - [ ] skipLast
-- [ ] skipUntil (g3)
-- [ ] skipWhile (g3)
+- [x] skipUntil (g3)
+- [x] skipWhile (g3)
 - [x] startWith (g3)
 - [ ] subscribeOn (g3)
 - [ ] switchAll (g3)
@@ -115,17 +115,17 @@ timestamp.
 - [ ] switchMapTo (g3)
 - [x] take (g3)
 - [x] takeLast (g3)
-- [ ] takeUntil (g3)
-- [ ] takeWhile (g3)
+- [x] takeUntil (g3)
+- [x] takeWhile (g3)
 - [x] tap (g3)
 - [ ] throttle (g3)
 - [ ] throttleTime (g3)
-- [ ] throwIfEmpty
+- [x] throwIfEmpty
 - [ ] timeInterval (g3)
 - [ ] timeout (g3)
 - [ ] timeoutWith (g3)
 - [x] timestamp
-- [ ] toArray (g3)
+- [x] toArray (g3)
 - [ ] window
 - [ ] windowCount (g3)
 - [ ] windowTime
