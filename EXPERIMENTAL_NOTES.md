@@ -76,7 +76,7 @@ timestamp.
 - [x] max
 - [ ] merge (g3)
 - [x] mergeAll (g3)
-- [ ] mergeMap (g3)
+- [x] mergeMap (g3)
 - [ ] mergeMapTo (g3)
 - [ ] mergeScan
 - [x] min
