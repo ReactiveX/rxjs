@@ -9,6 +9,7 @@ export { concat } from './internal/create/concat';
 export { defer } from './internal/create/defer';
 export { from } from './internal/create/from';
 export { fromScheduled } from './internal/create/fromScheduled';
+export { interval } from './internal/create/interval';
 export { merge } from './internal/create/merge';
 export { next } from './internal/create/next';
 export { of } from './internal/create/of';
