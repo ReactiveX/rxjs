@@ -19,6 +19,7 @@ export { concatAll } from './internal/operators/derived/concatAll';
 export { concatWith } from './internal/operators/derived/concatWith';
 export { count } from './internal/operators/derived/count';
 export { endWith } from './internal/operators/derived/endWith';
+export { max } from './internal/operators/derived/max';
 export { mergeAll } from './internal/operators/derived/mergeAll';
 export { reduce } from './internal/operators/derived/reduce';
 export { startWith } from './internal/operators/derived/startWith';
