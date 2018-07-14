@@ -21,6 +21,7 @@ export { count } from './internal/operators/derived/count';
 export { endWith } from './internal/operators/derived/endWith';
 export { max } from './internal/operators/derived/max';
 export { mergeAll } from './internal/operators/derived/mergeAll';
+export { min } from './internal/operators/derived/min';
 export { reduce } from './internal/operators/derived/reduce';
 export { startWith } from './internal/operators/derived/startWith';
 export { timestamp } from './internal/operators/derived/timestamp';

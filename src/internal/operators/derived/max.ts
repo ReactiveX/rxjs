@@ -8,4 +8,4 @@ export const max = <T>(comparer?: (a: T, b: T) => number) => {
     : DEFAULT_COMPARER;
 
   return reduce(reducer);
-}
+};
