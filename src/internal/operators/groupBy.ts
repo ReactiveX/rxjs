@@ -1,9 +1,10 @@
 import { Observable, sourceAsObservable } from '../Observable';
 import { Operation, FOType, Sink, SinkArg, FObs, GroupedObservable, ObservableInput, Source } from '../types';
 import { Subscription } from '../Subscription';
-import { Subject, subjectSource } from '../Subject';
+import { subjectSource } from '../Subject';
 import { fromSource } from '../create/from';
 import { tryUserFunction, resultIsError } from '../util/userFunction';
+import { operator } from '../util/operator';
 
 /**
  * NOTES:
@@ -30,62 +31,59 @@ export function groupBy<T, K, R>(
     ? { keySelector: keySelectorOrConfig }
     : keySelectorOrConfig;
 
-  return (source: Observable<T>) =>
-    sourceAsObservable((type: FOType, dest: Sink<T>, subs: Subscription) => {
-      if (type === FOType.SUBSCRIBE) {
-        const { keySelector, durationSelector } = config;
-        const lookup = new Map<K, GroupedObservable<K, R>>();
-        let index = 0;
+  return operator((source: Observable<T>, type: FOType, dest: Sink<T>, subs: Subscription) => {
+    const { keySelector, durationSelector } = config;
+    const lookup = new Map<K, GroupedObservable<K, R>>();
+    let index = 0;
 
-        const allSink = (t: FOType, v: SinkArg<R>, subs: Subscription) => {
-          const groups = lookup.values();
-          while (true) {
-            const { done, value } = groups.next();
-            if (done) break;
-            value(t, v, subs);
-          }
-          dest(t, v, subs);
-        };
+    const allSink = (t: FOType, v: SinkArg<R>, subs: Subscription) => {
+      const groups = lookup.values();
+      while (true) {
+        const { done, value } = groups.next();
+        if (done) break;
+        value(t, v, subs);
+      }
+      dest(t, v, subs);
+    };
 
-        source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
-          if (t === FOType.NEXT) {
-            const key = tryUserFunction(keySelector, v, index++);
-            if (resultIsError(key)) {
-              allSink(FOType.ERROR, key.error, subs);
+    source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
+      if (t === FOType.NEXT) {
+        const key = tryUserFunction(keySelector, v, index++);
+        if (resultIsError(key)) {
+          allSink(FOType.ERROR, key.error, subs);
+          subs.unsubscribe();
+          return;
+        }
+        let group: GroupedObservable<K, R>;
+        if (lookup.has(key)) {
+          group = lookup.get(key);
+        } else {
+          group = groupedObservable(key);
+          lookup.set(key, group);
+
+          if (durationSelector) {
+            const notifier = tryUserFunction(() => fromSource(durationSelector(group)));
+            if (resultIsError(notifier)) {
+              allSink(FOType.ERROR, notifier.error, subs);
               subs.unsubscribe();
               return;
             }
-            let group: GroupedObservable<K, R>;
-            if (lookup.has(key)) {
-              group = lookup.get(key);
-            } else {
-              group = groupedObservable(key);
-              lookup.set(key, group);
-
-              if (durationSelector) {
-                const notifier = tryUserFunction(() => fromSource(durationSelector(group)));
-                if (resultIsError(notifier)) {
-                  allSink(FOType.ERROR, notifier.error, subs);
-                  subs.unsubscribe();
-                  return;
-                }
-                notifier(FOType.SUBSCRIBE, (nt: FOType, nv: SinkArg<any>, subs: Subscription) => {
-                  if (nt === FOType.NEXT) {
-                    group(FOType.COMPLETE, undefined, subs);
-                    lookup.delete(key);
-                  }
-                }, subs);
+            notifier(FOType.SUBSCRIBE, (nt: FOType, nv: SinkArg<any>, subs: Subscription) => {
+              if (nt === FOType.NEXT) {
+                group(FOType.COMPLETE, undefined, subs);
+                lookup.delete(key);
               }
-
-              dest(FOType.NEXT, group, subs);
-            }
-            group(FOType.NEXT, v, subs);
-          } else {
-            allSink(t, v, subs);
+            }, subs);
           }
-        }, subs);
+
+          dest(FOType.NEXT, group, subs);
+        }
+        group(FOType.NEXT, v, subs);
+      } else {
+        allSink(t, v, subs);
       }
-    });
+    }, subs);
+  });
 }
 
 

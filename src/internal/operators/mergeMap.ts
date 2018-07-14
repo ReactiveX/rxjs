@@ -3,86 +3,84 @@ import { Observable, sourceAsObservable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { fromSource } from '../create/from';
 import { tryUserFunction, resultIsError } from '../util/userFunction';
+import { operator } from '../util/operator';
 
 export function mergeMap<T, R>(
   project: (value: T, index: number) => ObservableInput<R>,
   concurrent = Number.POSITIVE_INFINITY,
 ): Operation<T, R> {
-  return (source: Observable<T>) =>
-    sourceAsObservable((type: FOType, dest: Sink<R>, subs: Subscription) => {
-      if (type === FOType.SUBSCRIBE) {
-        let counter = 0;
-        let active = 0;
-        let outerComplete = false;
-        const buffer: Array<{outerValue: T, outerIndex: number}> = [];
+  return operator((source: Observable<T>, type: FOType, dest: Sink<R>, subs: Subscription) => {
+    let counter = 0;
+    let active = 0;
+    let outerComplete = false;
+    const buffer: Array<{outerValue: T, outerIndex: number}> = [];
 
-        let startNextInner: () => void;
-        startNextInner = () => {
-          while (buffer.length > 0 && active++ < concurrent) {
-            const { outerValue, outerIndex } = buffer.shift();
+    let startNextInner: () => void;
+    startNextInner = () => {
+      while (buffer.length > 0 && active++ < concurrent) {
+        const { outerValue, outerIndex } = buffer.shift();
 
-            const innerSource = tryUserFunction(() => fromSource(project(outerValue, outerIndex)));
-            if (resultIsError(innerSource)) {
-              dest(FOType.ERROR, innerSource.error, subs);
-              subs.unsubscribe();
-              return;
-            }
-
-            let innerSubs: Subscription;
-            innerSubs = new Subscription(() => subs.remove(innerSubs));
-            subs.add(innerSubs);
-
-            innerSource(FOType.SUBSCRIBE, (type: FOType, v: SinkArg<R>, innerSubs: Subscription) => {
-              switch (type) {
-                case FOType.NEXT:
-                  dest(FOType.NEXT, v, subs);
-                  break;
-                case FOType.ERROR:
-                  dest(FOType.ERROR, v, subs);
-                  subs.unsubscribe();
-                  break;
-                case FOType.COMPLETE:
-                  active--;
-                  innerSubs.unsubscribe();
-                  if (buffer.length > 0) {
-                    startNextInner();
-                  } else {
-                    if (outerComplete && active === 0) {
-                      dest(FOType.COMPLETE, undefined, subs);
-                    }
-                  }
-                default:
-              }
-            }, innerSubs);
-          }
+        const innerSource = tryUserFunction(() => fromSource(project(outerValue, outerIndex)));
+        if (resultIsError(innerSource)) {
+          dest(FOType.ERROR, innerSource.error, subs);
+          subs.unsubscribe();
+          return;
         }
 
-        source(type, (t: FOType, v: SinkArg<T>) => {
-          switch (t) {
-            case FOType.SUBSCRIBE:
-              subs = v;
-              break;
+        let innerSubs: Subscription;
+        innerSubs = new Subscription(() => subs.remove(innerSubs));
+        subs.add(innerSubs);
+
+        innerSource(FOType.SUBSCRIBE, (type: FOType, v: SinkArg<R>, innerSubs: Subscription) => {
+          switch (type) {
             case FOType.NEXT:
-              let outerIndex = counter++;
-              buffer.push({ outerValue: v, outerIndex });
-              startNextInner();
+              dest(FOType.NEXT, v, subs);
               break;
             case FOType.ERROR:
               dest(FOType.ERROR, v, subs);
               subs.unsubscribe();
               break;
             case FOType.COMPLETE:
-              outerComplete = true;
+              active--;
+              innerSubs.unsubscribe();
               if (buffer.length > 0) {
                 startNextInner();
-              } else if (active === 0) {
-                dest(FOType.COMPLETE, undefined, subs);
-                subs.unsubscribe();
+              } else {
+                if (outerComplete && active === 0) {
+                  dest(FOType.COMPLETE, undefined, subs);
+                }
               }
-              break;
             default:
           }
-        }, subs);
+        }, innerSubs);
       }
-    });
+    }
+
+    source(type, (t: FOType, v: SinkArg<T>) => {
+      switch (t) {
+        case FOType.SUBSCRIBE:
+          subs = v;
+          break;
+        case FOType.NEXT:
+          let outerIndex = counter++;
+          buffer.push({ outerValue: v, outerIndex });
+          startNextInner();
+          break;
+        case FOType.ERROR:
+          dest(FOType.ERROR, v, subs);
+          subs.unsubscribe();
+          break;
+        case FOType.COMPLETE:
+          outerComplete = true;
+          if (buffer.length > 0) {
+            startNextInner();
+          } else if (active === 0) {
+            dest(FOType.COMPLETE, undefined, subs);
+            subs.unsubscribe();
+          }
+          break;
+        default:
+      }
+    }, subs);
+  });
 }

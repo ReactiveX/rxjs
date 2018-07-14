@@ -1,6 +1,7 @@
 import { Observable, sourceAsObservable } from '../Observable';
 import { Operation, FOType, Sink, SinkArg, FObs, PartialObserver } from '../types';
 import { Subscription } from '../Subscription';
+import { operator } from '../util/operator';
 
 export function tap<T>(
   observer: PartialObserver<T>
@@ -35,23 +36,22 @@ export function tap<T>(
     }
   }
 
-  return (source: Observable<T>) =>
-    sourceAsObservable((type: FOType, dest: Sink<T>, subs: Subscription) => {
-      if (type === FOType.SUBSCRIBE) {
-        source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
-          switch (t) {
-            case FOType.NEXT:
-              if (nextHandler) nextHandler(v);
-              break;
-            case FOType.ERROR:
-              if (errorHandler) errorHandler(v);
-              break;
-            case FOType.COMPLETE:
-              if (completeHandler) completeHandler();
-              break;
-          }
-          dest(t, v, subs);
-        }, subs);
+  return operator((source: Observable<T>, type: FOType, dest: Sink<T>, subs: Subscription) => {
+    source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
+      switch (t) {
+        case FOType.NEXT:
+          if (nextHandler) nextHandler(v);
+          break;
+        case FOType.ERROR:
+          if (errorHandler) errorHandler(v);
+          break;
+        case FOType.COMPLETE:
+          if (completeHandler) completeHandler();
+          break;
+        default:
+          break;
       }
-    });
+      dest(t, v, subs);
+    }, subs);
+  });
 }
