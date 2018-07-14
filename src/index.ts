@@ -12,6 +12,8 @@ export { fromScheduled } from './internal/create/fromScheduled';
 export { merge } from './internal/create/merge';
 export { next } from './internal/create/next';
 export { of } from './internal/create/of';
+export { onEmptyResumeNext } from './internal/create/onEmptyResumeNext';
+export { onErrorResumeNext } from './internal/create/onErrorResumeNext';
 export { partition } from './internal/create/partition';
 export { race } from './internal/create/race';
 export { throwError } from './internal/create/throwError';
