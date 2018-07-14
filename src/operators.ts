@@ -10,6 +10,7 @@ export { mergeMap } from './internal/operators/mergeMap';
 export { repeat } from './internal/operators/repeat';
 export { scan } from './internal/operators/scan';
 export { skip } from './internal/operators/skip';
+export { skipWhile } from './internal/operators/skipWhile';
 export { share } from './internal/operators/share';
 export { switchMap } from './internal/operators/switchMap';
 export { take } from './internal/operators/take';
