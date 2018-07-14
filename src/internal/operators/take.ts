@@ -8,24 +8,17 @@ export function take<T>(count: number): Operation<T, T> {
     if (count <= 0) {
       dest(FOType.COMPLETE, undefined, subs);
       subs.unsubscribe();
-      return;
     }
-    let counter = 0;
+    let i = 0;
+    let taking = true;
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
-      switch (t) {
-        case FOType.NEXT:
-          counter++;
-          dest(FOType.NEXT, v, subs);
-          if (counter >= count) {
-            dest(FOType.COMPLETE, undefined, subs);
-            subs.unsubscribe();
-          }
-          break;
-        case FOType.ERROR:
-        case FOType.COMPLETE:
-        default:
-          dest(t, v, subs);
-          break;
+      if (taking && t === FOType.NEXT) {
+        taking = ++i < count;
+      }
+      dest(t, v, subs);
+      if (!taking && t === FOType.NEXT) {
+        dest(FOType.COMPLETE, undefined, subs);
+        subs.unsubscribe();
       }
     }, subs);
   });
