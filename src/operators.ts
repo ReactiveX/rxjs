@@ -1,6 +1,8 @@
 // ################ CORE OPERATORS #################`
 export { catchError } from './internal/operators/catchError';
 export { defaultIfEmpty } from './internal/operators/defaultIfEmpty';
+export { distinct } from './internal/operators/distinct';
+export { distinctUntilChanged } from './internal/operators/distinctUntilChanged';
 export { every } from './internal/operators/every';
 export { filter } from './internal/operators/filter';
 export { groupBy } from './internal/operators/groupBy';
@@ -25,6 +27,7 @@ export { tap } from './internal/operators/tap';
 export { concatAll } from './internal/operators/derived/concatAll';
 export { concatWith } from './internal/operators/derived/concatWith';
 export { count } from './internal/operators/derived/count';
+export { distinctUntilKeyChanged } from './internal/operators/derived/distinctUntilKeyChanged';
 export { elementAt } from './internal/operators/derived/elementAt';
 export { endWith } from './internal/operators/derived/endWith';
 export { find } from './internal/operators/derived/find';
