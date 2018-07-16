@@ -145,7 +145,7 @@ describe('TestScheduler', () => {
     it('should create a cold observable', () => {
       const expected = ['A', 'B'];
       const scheduler = new TestScheduler(null);
-      const source = scheduler.createColdObservable<string>('--a---b--|', { a: 'A', b: 'B' });
+      const source = scheduler.createColdObservable('--a---b--|', { a: 'A', b: 'B' });
       expect(source).to.be.an.instanceOf(Observable);
       source.subscribe(x => {
         expect(x).to.equal(expected.shift());
@@ -159,7 +159,7 @@ describe('TestScheduler', () => {
     it('should create a cold observable', () => {
       const expected = ['A', 'B'];
       const scheduler = new TestScheduler(null);
-      const source = scheduler.createHotObservable<string>('--a---b--|', { a: 'A', b: 'B' });
+      const source = scheduler.createHotObservable('--a---b--|', { a: 'A', b: 'B' });
       expect(source).to.be.an.instanceof(Subject);
       source.subscribe(x => {
         expect(x).to.equal(expected.shift());
