@@ -50,7 +50,7 @@ timestamp.
 - [x] defaultIfEmpty (g3)
 - [ ] delay (g3)
 - [ ] delayWhen (g3)
-- [ ] dematerialize
+- [x] dematerialize
 - [x] distinct (g3)
 - [x] distinctUntilChanged (g3)
 - [x] distinctUntilKeyChanged (g3)

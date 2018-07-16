@@ -1,6 +1,7 @@
 // ################ CORE OPERATORS #################`
 export { catchError } from './internal/operators/catchError';
 export { defaultIfEmpty } from './internal/operators/defaultIfEmpty';
+export { dematerialize } from './internal/operators/dematerialize';
 export { distinct } from './internal/operators/distinct';
 export { distinctUntilChanged } from './internal/operators/distinctUntilChanged';
 export { every } from './internal/operators/every';
