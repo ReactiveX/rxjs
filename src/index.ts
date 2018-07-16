@@ -4,6 +4,8 @@ export { Subject } from './internal/Subject';
 export { Subscription } from './internal/Subscription';
 export { ReplaySubject } from './internal/ReplaySubject';
 
+export { EMPTY } from './internal/EMPTY';
+
 export { combineLatest } from './internal/create/combineLatest';
 export { concat } from './internal/create/concat';
 export { defer } from './internal/create/defer';

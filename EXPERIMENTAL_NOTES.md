@@ -51,9 +51,9 @@ timestamp.
 - [ ] delay (g3)
 - [ ] delayWhen (g3)
 - [ ] dematerialize
-- [ ] distinct (g3)
-- [ ] distinctUntilChanged (g3)
-- [ ] distinctUntilKeyChanged (g3)
+- [x] distinct (g3)
+- [x] distinctUntilChanged (g3)
+- [x] distinctUntilKeyChanged (g3)
 - [x] elementAt (g3)
 - [x] endWith
 - [x] every (g3)
@@ -68,7 +68,7 @@ timestamp.
 - [ ] flatMap (g3)
 - [x] groupBy (g3)
 - [ ] ignoreElements (g3)
-- [ ] isEmpty
+- [x] isEmpty
 - [ ] last (g3)
 - [x] map (g3)
 - [ ] mapTo (g3)
