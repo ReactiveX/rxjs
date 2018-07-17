@@ -61,7 +61,7 @@ timestamp.
 - [ ] exhaustMap (g3)
 - [ ] expand (g3)
 - [x] filter (g3)
-- [ ] finalize (g3)
+- [x] finalize (g3)
 - [x] find
 - [x] findIndex
 - [x] first (g3)
