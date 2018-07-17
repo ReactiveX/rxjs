@@ -26,7 +26,7 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  *    id: number,
  *    name: string,
  * }
- * 
+ *
  * of<Obj>(
  *   {id: 1, name: 'aze1'},
  *   {id: 2, name: 'sf2'},
