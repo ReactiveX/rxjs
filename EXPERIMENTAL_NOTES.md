@@ -102,7 +102,7 @@ timestamp.
 - [x] scan (g3)
 - [ ] sequenceEqual
 - [x] share (g3)
-- [ ] shareReplay (g3)
+- [x] shareReplay (g3)
 - [ ] single (g3)
 - [x] skip (g3)
 - [ ] skipLast

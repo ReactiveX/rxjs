@@ -19,11 +19,19 @@ export const ReplaySubject: ReplaySubjectConstructor =
     bufferSize = Number.POSITIVE_INFINITY,
     windowTime = Number.POSITIVE_INFINITY,
   ) => {
+
+  return sourceAsSubject(replaySubjectSource(bufferSize, windowTime));
+}) as any;
+
+export function replaySubjectSource<T>(
+  bufferSize = Number.POSITIVE_INFINITY,
+  windowTime = Number.POSITIVE_INFINITY,
+) {
   const base = subjectBaseSource<T>();
   const buffer: ReplayValue<T>[] = [];
   let closed = false;
 
-  let result = ((type: FOType, arg: FObsArg<T>, subs: Subscription) => {
+  return ((type: FOType, arg: FObsArg<T>, subs: Subscription) => {
     base(type, arg, subs);
     const now = Date.now();
 
@@ -38,16 +46,17 @@ export const ReplaySubject: ReplaySubjectConstructor =
       }
     }
 
-    if (type != FOType.SUBSCRIBE) {
+    if (type !== FOType.SUBSCRIBE) {
       if (!closed) {
         buffer.push({ type, arg, timeout: now + windowTime });
+        if(buffer.length > bufferSize) {
+          buffer.splice(buffer.length - bufferSize, bufferSize);
+        }
       }
       if (type === FOType.ERROR || type === FOType.COMPLETE) {
         closed = true;
       }
     }
   });
-
-  return sourceAsSubject(result);
-}) as any;
+}
 

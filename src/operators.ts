@@ -20,6 +20,7 @@ export { skip } from './internal/operators/skip';
 export { skipUntil } from './internal/operators/skipUntil';
 export { skipWhile } from './internal/operators/skipWhile';
 export { share } from './internal/operators/share';
+export { shareReplay } from './internal/operators/shareReplay';
 export { switchMap } from './internal/operators/switchMap';
 export { take } from './internal/operators/take';
 export { takeUntil } from './internal/operators/takeUntil';
