@@ -12,6 +12,7 @@ export { map } from './internal/operators/map';
 export { materialize } from './internal/operators/materialize';
 export { mergeMap } from './internal/operators/mergeMap';
 export { repeat } from './internal/operators/repeat';
+export { retry } from './internal/operators/retry';
 export { scan } from './internal/operators/scan';
 export { skip } from './internal/operators/skip';
 export { skipUntil } from './internal/operators/skipUntil';
