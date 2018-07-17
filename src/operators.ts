@@ -8,6 +8,7 @@ export { every } from './internal/operators/every';
 export { filter } from './internal/operators/filter';
 export { groupBy } from './internal/operators/groupBy';
 export { isEmpty } from './internal/operators/isEmpty';
+export { ignoreElements } from './internal/operators/ignoreElements';
 export { map } from './internal/operators/map';
 export { materialize } from './internal/operators/materialize';
 export { mergeMap } from './internal/operators/mergeMap';

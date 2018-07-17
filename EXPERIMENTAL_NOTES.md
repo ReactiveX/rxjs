@@ -67,7 +67,7 @@ timestamp.
 - [x] first (g3)
 - [ ] flatMap (g3)
 - [x] groupBy (g3)
-- [ ] ignoreElements (g3)
+- [x] ignoreElements (g3)
 - [x] isEmpty
 - [ ] last (g3)
 - [x] map (g3)
@@ -82,7 +82,7 @@ timestamp.
 - [x] min
 - [ ] multicast (g3)
 - [ ] observeOn (g3)
-- [ ] onErrorResumeNext (g3)
+- [x] onErrorResumeNext (g3) (as onErrorResumeWith)
 - [x] pairwise (g3)
 - [ ] partition (g3)
 - [x] pluck (g3)
