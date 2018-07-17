@@ -94,7 +94,7 @@ timestamp.
 - [x] reduce (g3)
 - [ ] refCount (g3)
 - [x] repeat (g3)
-- [ ] repeatWhen (g3)
+- [x] repeatWhen (g3)
 - [x] retry (g3)
 - [x] retryWhen (g3)
 - [ ] sample (g3)

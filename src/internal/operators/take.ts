@@ -1,5 +1,5 @@
 import { Operation, FOType, Sink, SinkArg } from "../types";
-import { Observable, sourceAsObservable } from "../Observable";
+import { Observable } from "../Observable";
 import { Subscription } from '../Subscription';
 import { operator } from '../util/operator';
 
@@ -10,15 +10,17 @@ export function take<T>(count: number): Operation<T, T> {
       subs.unsubscribe();
     }
     let i = 0;
-    let taking = true;
+    let doneTaking = false;
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
-      if (taking && t === FOType.NEXT) {
-        taking = ++i < count;
-      }
-      dest(t, v, subs);
-      if (!taking && t === FOType.NEXT) {
-        dest(FOType.COMPLETE, undefined, subs);
-        subs.unsubscribe();
+      if (t === FOType.NEXT) {
+        doneTaking = ++i >= count;
+        dest(t, v, subs);
+        if (doneTaking) {
+          dest(FOType.COMPLETE, undefined, subs);
+          subs.unsubscribe();
+        }
+      } else {
+        dest(t, v, subs);
       }
     }, subs);
   });

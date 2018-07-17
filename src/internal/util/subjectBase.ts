@@ -5,6 +5,7 @@ import { Subject } from "../Subject";
 
 export function subjectBaseSource<T>(): FObs<T> {
   let state: any[];
+
   return (type: FOType, arg: FObsArg<T>, subs: Subscription) => {
     switch (type) {
       case FOType.SUBSCRIBE:
