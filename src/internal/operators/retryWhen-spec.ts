@@ -1,9 +1,10 @@
-import { Observable } from 'rxjs';
-import { retry } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { retryWhen } from 'rxjs/operators';
 import { expect } from 'chai';
+import { mergeMap } from 'rxjs/internal/operators/mergeMap';
 
-describe('retry', () => {
-  it('should retry and error', () => {
+describe('retryWhen', () => {
+  it('should retryWhen and complete', () => {
     const results: any[] = [];
 
     new Observable(subscriber => {
@@ -11,7 +12,9 @@ describe('retry', () => {
       subscriber.next(2);
       subscriber.error('womp womp');
     }).pipe(
-      retry(3),
+      retryWhen(errors => errors.pipe(
+        mergeMap((err, i) => i < 2 ? of('go') : throwError(err)),
+      )),
     )
     .subscribe({
       next(value) { results.push(value); },
@@ -32,7 +35,9 @@ describe('retry', () => {
     });
 
     source.pipe(
-      retry(3),
+      retryWhen(errors => errors.pipe(
+        mergeMap((err, i) => i < 2 ? of('go') : throwError(err))
+      )),
     ).subscribe();
 
     return Promise.resolve().then(() => expect(teardowns).to.equal(3))
