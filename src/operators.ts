@@ -27,6 +27,7 @@ export { tap } from './internal/operators/tap';
 
 // ################ DERIVED OPERATORS ##################
 export { concatAll } from './internal/operators/derived/concatAll';
+export { concatMap } from './internal/operators/derived/concatMap';
 export { concatWith } from './internal/operators/derived/concatWith';
 export { count } from './internal/operators/derived/count';
 export { distinctUntilKeyChanged } from './internal/operators/derived/distinctUntilKeyChanged';

@@ -17,7 +17,8 @@ export function mergeMap<T, R>(
 
     let startNextInner: () => void;
     startNextInner = () => {
-      while (buffer.length > 0 && active++ < concurrent) {
+      while (buffer.length > 0 && active < concurrent) {
+        active++;
         const { outerValue, outerIndex } = buffer.shift();
 
         const innerSource = tryUserFunction(() => fromSource(project(outerValue, outerIndex)));
@@ -27,8 +28,7 @@ export function mergeMap<T, R>(
           return;
         }
 
-        let innerSubs: Subscription;
-        innerSubs = new Subscription(() => subs.remove(innerSubs));
+        const innerSubs = new Subscription();
         subs.add(innerSubs);
 
         innerSource(FOType.SUBSCRIBE, (type: FOType, v: SinkArg<R>, innerSubs: Subscription) => {
@@ -45,11 +45,10 @@ export function mergeMap<T, R>(
               innerSubs.unsubscribe();
               if (buffer.length > 0) {
                 startNextInner();
-              } else {
-                if (outerComplete && active === 0) {
-                  dest(FOType.COMPLETE, undefined, subs);
-                }
+              } else if (outerComplete && active === 0) {
+                dest(FOType.COMPLETE, undefined, subs);
               }
+
             default:
           }
         }, innerSubs);

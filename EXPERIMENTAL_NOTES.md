@@ -42,7 +42,7 @@ timestamp.
 - [ ] combineLatest (g3)
 - [x] concat (alias: concatWith) (g3)
 - [x] concatAll (g3)
-- [ ] concatMap (g3)
+- [x] concatMap (g3)
 - [ ] concatMapTo
 - [x] count (g3)
 - [ ] debounce (g3)
