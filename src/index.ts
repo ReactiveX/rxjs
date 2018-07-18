@@ -1,4 +1,5 @@
 export { BehaviorSubject } from './internal/BehaviorSubject';
+export { ConnectableObservable } from './internal/ConnectableObservable';
 export { Observable } from './internal/Observable';
 export { Subject } from './internal/Subject';
 export { Subscription } from './internal/Subscription';
