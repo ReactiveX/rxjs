@@ -4,7 +4,7 @@ import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 
 export function pairwise<T>(): Operation<T, [T, T]> {
-  return operator((source: Observable<T>, type: FOType, dest: Sink<[T, T]>, subs: Subscription) => {
+  return operator((source: Observable<T>, dest: Sink<[T, T]>, subs: Subscription) => {
     let prev: T;
     let hasPrev = false;
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {

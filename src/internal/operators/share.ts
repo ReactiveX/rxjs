@@ -6,7 +6,7 @@ import { operator } from '../util/operator';
 export function share<T>(): Operation<T, T> {
   let state: any[];
   let connection: Subscription;
-  return operator((source: Observable<T>, type: FOType, sink: Sink<T>, subs: Subscription) => {
+  return operator((source: Observable<T>, sink: Sink<T>, subs: Subscription) => {
     state = state || [];
     state.push(sink, subs);
     if (!connection) {

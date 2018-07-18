@@ -5,7 +5,7 @@ import { operator } from '../util/operator';
 
 export function takeLast<T>(count: number = 1): Operation<T, T> {
   count = Math.max(count, 0);
-  return operator((source: Observable<T>, type: FOType, dest: Sink<T>, subs: Subscription) => {
+  return operator((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     const buffer: T[] = [];
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
       switch (t) {

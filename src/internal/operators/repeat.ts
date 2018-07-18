@@ -5,7 +5,7 @@ import { Subscription } from '../Subscription';
 import { operator } from '../util/operator';
 
 export function repeat<T>(count: number): Operation<T, T> {
-  return operator((source: Observable<T>, type: FOType, dest: Sink<T>, downstreamSubs: Subscription) => {
+  return operator((source: Observable<T>, dest: Sink<T>, downstreamSubs: Subscription) => {
     let counter = 0;
     const upstreamSubs = new RecyclableSubscription();
     downstreamSubs.add(upstreamSubs);

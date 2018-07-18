@@ -4,8 +4,8 @@ import { Subscription } from '../Subscription';
 import { operator } from '../util/operator';
 
 export function isEmpty<T>(): Operation<T, boolean> {
-  return operator((source: Observable<T>, type: FOType, dest: Sink<boolean>, subs: Subscription) => {
-    source(type, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
+  return operator((source: Observable<T>, dest: Sink<boolean>, subs: Subscription) => {
+    source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
       if (t === FOType.NEXT) {
         dest(FOType.NEXT, false, subs);
         dest(FOType.COMPLETE, undefined, subs);

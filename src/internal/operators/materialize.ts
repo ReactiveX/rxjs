@@ -4,7 +4,7 @@ import { Subscription } from '../Subscription';
 import { operator } from '../util/operator';
 
 export function materialize<T>(includeSubscriptionNotifications = false): Operation<T, Notification<T>> {
-  return operator((source: Observable<T>, type: FOType, dest: Sink<Notification<T>>, subs: Subscription) => {
+  return operator((source: Observable<T>, dest: Sink<Notification<T>>, subs: Subscription) => {
     if (includeSubscriptionNotifications) {
       subs.add(() => dest(FOType.NEXT, { kind: 'U' }, subs));
       dest(FOType.NEXT, { kind: 'S' }, subs);

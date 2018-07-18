@@ -9,7 +9,7 @@ export function switchMap<T, R>(
   project: (value: T, index: number) => ObservableInput<R>,
   concurrent = Number.POSITIVE_INFINITY,
 ): Operation<T, R> {
-  return operator((source: Observable<T>, type: FOType, dest: Sink<R>, subs: Subscription) => {
+  return operator((source: Observable<T>, dest: Sink<R>, subs: Subscription) => {
     let index = 0;
     let outerComplete = false;
     let innerSubs: Subscription;

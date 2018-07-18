@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { tryUserFunction, resultIsError } from '../util/userFunction';
 
 export function skipWhile<T>(predicate: (value: T, index: number) => boolean) {
-  return operator((source: Observable<T>, type: FOType, dest: Sink<T>, subs: Subscription) => {
+  return operator((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     let skipping = true;
     let i = 0;
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {

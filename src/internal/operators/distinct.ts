@@ -6,7 +6,7 @@ import { fromSource } from '../create/from';
 import { tryUserFunction, resultIsError } from '../util/userFunction';
 
 export function distinct<T, K>(keySelector?: (value: T) => K, flushes?: ObservableInput<any>): Operation<T, T> {
-  return operator((source: Observable<T>, type: FOType, dest: Sink<T>, subs: Subscription)  =>{
+  return operator((source: Observable<T>, dest: Sink<T>, subs: Subscription)  =>{
     const values = new Set<T>();
     if (flushes) {
       fromSource(flushes)(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<any>, subs: Subscription) => {

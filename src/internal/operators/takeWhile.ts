@@ -6,7 +6,7 @@ import { tryUserFunction, resultIsError } from '../util/userFunction';
 
 
 export function takeWhile<T>(predicate: (value: T, index: number) => boolean): Operation<T, T> {
-  return operator((source: Observable<T>, type: FOType, dest: Sink<T>, subs: Subscription) => {
+  return operator((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     let i = 0;
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
       if (t === FOType.NEXT) {

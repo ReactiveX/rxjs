@@ -6,10 +6,10 @@ import { tryUserFunction, resultIsError } from '../util/userFunction';
 import { operator } from '../util/operator';
 
 export function catchError<T, R>(handler: (err: any) => ObservableInput<R>): Operation<T, T|R> {
-  return operator((source: Observable<T>, type: FOType, dest: Sink<T|R>, downstreamSubs: Subscription) => {
+  return operator((source: Observable<T>, dest: Sink<T|R>, downstreamSubs: Subscription) => {
       const upstreamSubs = new Subscription();
       downstreamSubs.add(upstreamSubs);
-      source(type, (t: FOType, v: SinkArg<T>, upstreamSubs: Subscription) => {
+      source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, upstreamSubs: Subscription) => {
         if (t === FOType.ERROR) {
           upstreamSubs.unsubscribe();
           const result = tryUserFunction(() => fromSource(handler(v)));

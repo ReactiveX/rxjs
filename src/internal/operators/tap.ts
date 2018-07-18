@@ -36,7 +36,7 @@ export function tap<T>(
     }
   }
 
-  return operator((source: Observable<T>, type: FOType, dest: Sink<T>, subs: Subscription) => {
+  return operator((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
       switch (t) {
         case FOType.NEXT:

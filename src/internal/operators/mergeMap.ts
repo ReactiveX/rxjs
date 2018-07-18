@@ -9,7 +9,7 @@ export function mergeMap<T, R>(
   project: (value: T, index: number) => ObservableInput<R>,
   concurrent = Number.POSITIVE_INFINITY,
 ): Operation<T, R> {
-  return operator((source: Observable<T>, type: FOType, dest: Sink<R>, subs: Subscription) => {
+  return operator((source: Observable<T>, dest: Sink<R>, subs: Subscription) => {
     let counter = 0;
     let active = 0;
     let outerComplete = false;
@@ -55,7 +55,7 @@ export function mergeMap<T, R>(
       }
     }
 
-    source(type, (t: FOType, v: SinkArg<T>) => {
+    source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>) => {
       switch (t) {
         case FOType.SUBSCRIBE:
           subs = v;

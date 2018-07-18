@@ -10,7 +10,7 @@ export function scan<T, R>(reducer: (state: R, valeu: T, index: number) => R, in
 export function scan<T, R, I>(reducer: (state: I|R, value: T, index: number) => R, initialState: I): Operation<T, R|I>;
 export function scan<T, R, I>(reducer: (state: T|R|I, value: T, index: number) => R, initialState?: R|I): Operation<T, T|R|I> {
   let hasState = arguments.length >= 2;
-  return operator((source: Observable<T>, type: FOType, dest: Sink<R>, subs: Subscription) => {
+  return operator((source: Observable<T>, dest: Sink<R>, subs: Subscription) => {
     let i = 0;
     let state = initialState;
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {

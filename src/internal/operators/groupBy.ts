@@ -31,7 +31,7 @@ export function groupBy<T, K, R>(
     ? { keySelector: keySelectorOrConfig }
     : keySelectorOrConfig;
 
-  return operator((source: Observable<T>, type: FOType, dest: Sink<T>, subs: Subscription) => {
+  return operator((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     const { keySelector, durationSelector } = config;
     const lookup = new Map<K, GroupedObservable<K, R>>();
     let index = 0;

@@ -5,9 +5,9 @@ import { tryUserFunction, resultIsError } from '../util/userFunction';
 import { operator } from '../util/operator';
 
 export function map<T, R>(project: (value: T, index: number) => R): Operation<T, R> {
-  return operator((source: Observable<T>, type: FOType, dest: Sink<R>, subs: Subscription) => {
+  return operator((source: Observable<T>, dest: Sink<R>, subs: Subscription) => {
     let i = 0;
-    source(type, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
+    source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
       if (t === FOType.NEXT) {
         v = tryUserFunction(project, v, i++);
         if (resultIsError(v)) {

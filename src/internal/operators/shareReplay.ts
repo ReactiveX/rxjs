@@ -10,7 +10,7 @@ export function shareReplay<T>(
 ): Operation<T, T> {
   let replayer: FObs<T>;
   let connection: Subscription;
-  return operator((source: Observable<T>, type: FOType, sink: Sink<T>, subs: Subscription) => {
+  return operator((source: Observable<T>, sink: Sink<T>, subs: Subscription) => {
     replayer = replayer || replaySubjectSource(bufferSize, windowTime);
     replayer(FOType.SUBSCRIBE, sink, subs);
     if (!connection) {

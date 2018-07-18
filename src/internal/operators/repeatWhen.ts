@@ -8,7 +8,7 @@ import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction'
 import { fromSource } from 'rxjs/internal/create/from';
 
 export function repeatWhen<T>(notifierSetup: (completions: Observable<any>) => Observable<any>): Operation<T, T> {
-  return operator((source: Observable<T>, type: FOType, dest: Sink<T>, downstreamSubs: Subscription) => {
+  return operator((source: Observable<T>, dest: Sink<T>, downstreamSubs: Subscription) => {
     const upstreamSubs = new RecyclableSubscription();
     downstreamSubs.add(upstreamSubs);
     const completions = subjectSource();

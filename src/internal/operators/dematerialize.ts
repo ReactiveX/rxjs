@@ -4,7 +4,7 @@ import { Subscription } from '../Subscription';
 import { FOType, Operation, Notification, Sink, SinkArg } from '../types';
 
 export function dematerialize<T>() : Operation<Notification<T>, T> {
-  return operator((source: Observable<Notification<T>>, type: FOType, dest: Sink<T>, subs: Subscription) => {
+  return operator((source: Observable<Notification<T>>, dest: Sink<T>, subs: Subscription) => {
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<Notification<T>>, subs: Subscription) => {
       if (t === FOType.NEXT) {
         const notification = v as Notification<T>;

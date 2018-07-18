@@ -5,7 +5,7 @@ import { fromSource } from 'rxjs/internal/create/from';
 import { FOType, ObservableInput, Operation, Sink, SinkArg } from 'rxjs/internal/types';
 
 export function skipUntil<T>(notifier: ObservableInput<any>): Operation<T, T> {
-  return operator((source: Observable<T>, type: FOType, dest: Sink<T>, subs: Subscription) => {
+  return operator((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     let notified = false;
     const notifierSubs = new Subscription();
     subs.add(notifierSubs);

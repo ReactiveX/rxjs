@@ -4,7 +4,7 @@ import { Subscription } from '../Subscription';
 import { operator } from '../util/operator';
 
 export function take<T>(count: number): Operation<T, T> {
-  return operator((source: Observable<T>, type: FOType, dest: Sink<T>, subs: Subscription) => {
+  return operator((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     if (count <= 0) {
       dest(FOType.COMPLETE, undefined, subs);
       subs.unsubscribe();
