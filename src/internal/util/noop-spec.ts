@@ -1,4 +1,4 @@
-import { noop } from "./noop";
+import { noop } from "rxjs/internal/util/noop";
 import { expect } from "chai";
 
 describe('noop', () => {

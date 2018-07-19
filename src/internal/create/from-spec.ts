@@ -1,10 +1,10 @@
-import { from } from './from';
+import { from } from 'rxjs/internal/create/from';
 import { expect } from 'chai';
-import { take } from '../operators/take';
-import { Subscription } from '../Subscription';
-import { symbolObservable } from '../util/symbolObservable';
-import { Observer, InteropObservable } from '../types';
-import { symbolAsyncIterator } from '../util/symbolAsyncIterator';
+import { take } from 'rxjs/internal/operators/take';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { symbolObservable } from 'rxjs/internal/util/symbolObservable';
+import { Observer, InteropObservable } from 'rxjs/internal/types';
+import { symbolAsyncIterator } from 'rxjs/internal/util/symbolAsyncIterator';
 
 describe('from', () => {
   it('should convert a Promise to an observable', (done) => {

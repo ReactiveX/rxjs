@@ -1,6 +1,6 @@
-import { scan } from './scan';
+import { scan } from 'rxjs/internal/operators/scan';
 import { expect } from 'chai';
-import { of } from '../create/of';
+import { of } from 'rxjs/internal/create/of';
 
 describe('scan', () => {
   it('should reduce and emit', () => {

@@ -1,8 +1,8 @@
-import { operator } from '../util/operator';
+import { lift } from 'rxjs/internal/util/lift';
 import { Observable, sourceAsObservable } from '../Observable';
-import { FOType, Sink, SinkArg, Operation} from '../types';
-import { Subscription } from '../Subscription';
-import { RecyclableSubscription } from '../RecyclableSubscription';
+import { FOType, Sink, SinkArg, Operation} from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { RecyclableSubscription } from 'rxjs/internal/RecyclableSubscription';
 
 export function onEmptyResumeNext<T>(...sources: Array<Observable<T>>): Observable<T> {
   return sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T>, downstreamSubs: Subscription) => {

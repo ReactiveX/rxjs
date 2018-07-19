@@ -1,4 +1,4 @@
-import { identity } from './identity';
+import { identity } from 'rxjs/internal/util/identity';
 import { expect } from 'chai';
 
 describe('identity', () => {

@@ -1,6 +1,6 @@
-import { of } from './of';
+import { of } from 'rxjs/internal/create/of';
 import { expect } from 'chai';
-import { asapScheduler } from '../scheduler/asapScheduler';
+import { asapScheduler } from 'rxjs/internal/scheduler/asapScheduler';
 
 describe('of', () => {
   it('should handle no arguments passed', () => {

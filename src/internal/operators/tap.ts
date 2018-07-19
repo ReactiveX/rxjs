@@ -1,7 +1,7 @@
 import { Observable, sourceAsObservable } from '../Observable';
-import { Operation, FOType, Sink, SinkArg, FObs, PartialObserver } from '../types';
-import { Subscription } from '../Subscription';
-import { operator } from '../util/operator';
+import { Operation, FOType, Sink, SinkArg, FObs, PartialObserver } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { lift } from 'rxjs/internal/util/lift';
 
 export function tap<T>(
   observer: PartialObserver<T>
@@ -36,7 +36,7 @@ export function tap<T>(
     }
   }
 
-  return operator((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
+  return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
       switch (t) {
         case FOType.NEXT:

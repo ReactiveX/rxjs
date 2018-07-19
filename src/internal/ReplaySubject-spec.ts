@@ -1,4 +1,4 @@
-import { ReplaySubject } from './ReplaySubject';
+import { ReplaySubject } from 'rxjs/internal/ReplaySubject';
 import { expect } from 'chai';
 
 describe('ReplaySubject', () => {

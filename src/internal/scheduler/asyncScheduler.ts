@@ -1,5 +1,5 @@
-import { Subscription } from '../Subscription';
-import { Scheduler } from '../types';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { Scheduler } from 'rxjs/internal/types';
 
 export const asyncScheduler: Scheduler = {
   now() {

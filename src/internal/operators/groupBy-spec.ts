@@ -1,7 +1,7 @@
-import { groupBy } from './groupBy';
+import { groupBy } from 'rxjs/internal/operators/groupBy';
 import { expect } from 'chai';
-import { of } from '../create/of';
-import { mergeMap } from './mergeMap';
+import { of } from 'rxjs/internal/create/of';
+import { mergeMap } from 'rxjs/internal/operators/mergeMap';
 
 describe('groupBy', () => {
   it('should group things', () => {

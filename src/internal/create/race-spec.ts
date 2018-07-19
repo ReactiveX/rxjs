@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { race } from "./race";
+import { race } from "rxjs/internal/create/race";
 
 // TODO: add zones.js based tests for this
 

@@ -1,4 +1,4 @@
-import { noop } from "./noop";
+import { noop } from "rxjs/internal/util/noop";
 
 export function pipe<A, R>(fnA: (value: A) => R): (value: A) => R;
 export function pipe<A, B, R>(fnA: (value: A) => B, fnB: (value: B) => R): (value: A) => R;

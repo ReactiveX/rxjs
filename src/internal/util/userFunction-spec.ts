@@ -1,4 +1,4 @@
-import { tryUserFunction, resultIsError } from './userFunction';
+import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 import { expect } from 'chai';
 
 describe('tryUserFunction and resultIsError', () => {

@@ -1,4 +1,4 @@
-import { EMPTY } from "./EMPTY";
+import { EMPTY } from "rxjs/internal/EMPTY";
 import { expect } from "chai";
 
 describe('EMPTY', () => {

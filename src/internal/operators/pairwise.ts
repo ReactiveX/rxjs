@@ -1,10 +1,10 @@
-import { operator } from '../util/operator';
-import { Operation, FOType, Sink, SinkArg } from '../types';
+import { lift } from 'rxjs/internal/util/lift';
+import { Operation, FOType, Sink, SinkArg } from 'rxjs/internal/types';
 import { Observable } from '../Observable';
-import { Subscription } from '../Subscription';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 export function pairwise<T>(): Operation<T, [T, T]> {
-  return operator((source: Observable<T>, dest: Sink<[T, T]>, subs: Subscription) => {
+  return lift((source: Observable<T>, dest: Sink<[T, T]>, subs: Subscription) => {
     let prev: T;
     let hasPrev = false;
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {

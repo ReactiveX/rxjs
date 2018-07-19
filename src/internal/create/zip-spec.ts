@@ -1,5 +1,5 @@
-import { of } from "./of";
-import { zip } from "./zip";
+import { of } from "rxjs/internal/create/of";
+import { zip } from "rxjs/internal/create/zip";
 import { expect } from "chai";
 
 describe('zip', () => {

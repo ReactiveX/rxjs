@@ -2,10 +2,10 @@ import { Operation, FOType, Sink, SinkArg } from 'rxjs/internal/types';
 import { Observable } from '../Observable';
 import { RecyclableSubscription } from 'rxjs/internal/RecyclableSubscription';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { operator } from 'rxjs/internal/util/operator';
+import { lift } from 'rxjs/internal/util/lift';
 
 export function retry<T>(count: number): Operation<T, T> {
-  return operator((source: Observable<T>, dest: Sink<T>, downstreamSubs: Subscription) => {
+  return lift((source: Observable<T>, dest: Sink<T>, downstreamSubs: Subscription) => {
     let counter = 0;
     const upstreamSubs = new RecyclableSubscription();
     downstreamSubs.add(upstreamSubs);

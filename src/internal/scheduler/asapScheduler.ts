@@ -1,6 +1,6 @@
-import { Scheduler } from '../types';
-import { Subscription } from '../Subscription';
-import { asyncScheduler } from './asyncScheduler';
+import { Scheduler } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
 
 const p = Promise.resolve();
 

@@ -1,7 +1,7 @@
-import { Subscriber, createSubscriber } from './Subscriber';
+import { Subscriber, createSubscriber } from 'rxjs/internal/Subscriber';
 import { expect } from 'chai';
-import { FOType, Sink } from './types';
-import { Subscription } from './Subscription';
+import { FOType, Sink } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 describe('Subscriber', () => {
   let mockDestCalls: Array<{ type: FOType, arg: any }>;

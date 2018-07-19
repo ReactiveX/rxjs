@@ -1,11 +1,11 @@
-import { operator } from 'rxjs/internal/util/operator';
+import { lift } from 'rxjs/internal/util/lift';
 import { Observable } from '../Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { fromSource } from 'rxjs/internal/create/from';
 import { FOType, ObservableInput, Operation, Sink, SinkArg } from 'rxjs/internal/types';
 
 export function skipUntil<T>(notifier: ObservableInput<any>): Operation<T, T> {
-  return operator((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
+  return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     let notified = false;
     const notifierSubs = new Subscription();
     subs.add(notifierSubs);

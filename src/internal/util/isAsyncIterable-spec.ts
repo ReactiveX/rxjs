@@ -1,4 +1,4 @@
-import { isAsyncIterable } from "./isAsyncIterable";
+import { isAsyncIterable } from "rxjs/internal/util/isAsyncIterable";
 import { expect } from "chai";
 
 describe('isAsyncIterable', () => {

@@ -1,4 +1,4 @@
-import { Subscription } from './Subscription';
+import { Subscription } from 'rxjs/internal/Subscription';
 import { Observable } from './Observable';
 
 export enum FOType {

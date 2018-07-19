@@ -1,5 +1,5 @@
-import { of } from '../create/of';
-import { take } from './take';
+import { of } from 'rxjs/internal/create/of';
+import { take } from 'rxjs/internal/operators/take';
 import { expect } from 'chai';
 
 describe('take', () => {

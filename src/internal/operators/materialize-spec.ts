@@ -1,6 +1,6 @@
-import { of } from '../create/of';
-import { materialize } from './materialize';
-import { map } from './map';
+import { of } from 'rxjs/internal/create/of';
+import { materialize } from 'rxjs/internal/operators/materialize';
+import { map } from 'rxjs/internal/operators/map';
 import { expect } from 'chai';
 
 describe('materialize', () => {

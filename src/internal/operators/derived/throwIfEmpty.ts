@@ -1,5 +1,5 @@
-import { tap } from '../tap';
-import { EmptyError } from '../../error/EmptyError';
+import { tap } from 'rxjs/internal/operators/tap';
+import { EmptyError } from 'rxjs/internal/error/EmptyError';
 
 export function throwIfEmpty<T>(errorFactory: (() => any) = defaultErrorFactory) {
   return tap<T>({

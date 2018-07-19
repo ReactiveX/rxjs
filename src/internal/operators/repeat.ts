@@ -1,11 +1,11 @@
-import { Operation, FOType, Sink, SinkArg } from '../types';
+import { Operation, FOType, Sink, SinkArg } from 'rxjs/internal/types';
 import { sourceAsObservable, Observable } from '../Observable';
-import { RecyclableSubscription } from '../RecyclableSubscription';
-import { Subscription } from '../Subscription';
-import { operator } from '../util/operator';
+import { RecyclableSubscription } from 'rxjs/internal/RecyclableSubscription';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { lift } from 'rxjs/internal/util/lift';
 
 export function repeat<T>(count: number): Operation<T, T> {
-  return operator((source: Observable<T>, dest: Sink<T>, downstreamSubs: Subscription) => {
+  return lift((source: Observable<T>, dest: Sink<T>, downstreamSubs: Subscription) => {
     let counter = 0;
     const upstreamSubs = new RecyclableSubscription();
     downstreamSubs.add(upstreamSubs);

@@ -1,15 +1,15 @@
-import { ObservableInput, Operation, FOType, Sink, SinkArg, Source } from '../types';
+import { ObservableInput, Operation, FOType, Sink, SinkArg, Source } from 'rxjs/internal/types';
 import { Observable, sourceAsObservable } from '../Observable';
-import { Subscription } from '../Subscription';
-import { fromSource } from '../create/from';
-import { tryUserFunction, resultIsError } from '../util/userFunction';
-import { operator } from '../util/operator';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { fromSource } from 'rxjs/internal/create/from';
+import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
+import { lift } from 'rxjs/internal/util/lift';
 
 export function mergeMap<T, R>(
   project: (value: T, index: number) => ObservableInput<R>,
   concurrent = Number.POSITIVE_INFINITY,
 ): Operation<T, R> {
-  return operator((source: Observable<T>, dest: Sink<R>, subs: Subscription) => {
+  return lift((source: Observable<T>, dest: Sink<R>, subs: Subscription) => {
     let counter = 0;
     let active = 0;
     let outerComplete = false;

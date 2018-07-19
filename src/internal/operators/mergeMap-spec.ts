@@ -1,6 +1,6 @@
-import { mergeMap } from './mergeMap';
+import { mergeMap } from 'rxjs/internal/operators/mergeMap';
 import { expect } from 'chai';
-import { of } from '../create/of';
+import { of } from 'rxjs/internal/create/of';
 
 describe('mergeMap', () => {
   it('should work in the basic use case', () => {

@@ -1,15 +1,15 @@
-import { operator } from '../util/operator';
+import { lift } from 'rxjs/internal/util/lift';
 import { Observable } from '../Observable';
-import { FOType, ObservableInput, Operation, Sink, SinkArg } from '../types';
-import { Subscription } from '../Subscription';
-import { tryUserFunction, resultIsError } from '../util/userFunction';
+import { FOType, ObservableInput, Operation, Sink, SinkArg } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 
 function DEFAULT_COMPARER<T>(a: T, b: T) {
   return a === b;
 }
 
 export function distinctUntilChanged<T, K>(comparer: (a:T, b:T) => boolean = DEFAULT_COMPARER, keySelector?: (value: T) => K) {
-  return operator((source: Observable<T>, type: FOType, dest: Sink<T>, subs: Subscription)  => {
+  return lift((source: Observable<T>, type: FOType, dest: Sink<T>, subs: Subscription)  => {
     let key: K;
     let hasKey = false;
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {

@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import { share } from './share';
-import { take } from './take';
-import { repeat } from './repeat';
-import { Observable } from '../..';
+import { share } from 'rxjs/internal/operators/share';
+import { take } from 'rxjs/internal/operators/take';
+import { repeat } from 'rxjs/internal/operators/repeat';
+import { Observable } from 'rxjs';
 
 describe('share', () => {
   it('should share emitted values', (done: MochaDone) => {

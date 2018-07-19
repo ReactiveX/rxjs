@@ -1,4 +1,4 @@
-import { of } from '../../create/of';
+import { of } from 'rxjs/internal/create/of';
 import { timestamp } from 'rxjs/internal/operators/derived/timestamp';
 import { expect } from 'chai';
 

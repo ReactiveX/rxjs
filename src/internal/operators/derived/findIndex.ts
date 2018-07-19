@@ -1,7 +1,7 @@
-import { filter } from '../filter';
-import { pipe } from '../../util/pipe';
-import { Operation } from '../../types';
-import { map } from '../map';
+import { filter } from 'rxjs/internal/operators/filter';
+import { pipe } from 'rxjs/internal/util/pipe';
+import { Operation } from 'rxjs/internal/types';
+import { map } from 'rxjs/internal/operators/map';
 
 export function findIndex<T>(predicate: (value: T, index: number) => boolean): Operation<T, number> {
   return pipe(

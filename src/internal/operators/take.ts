@@ -1,10 +1,10 @@
-import { Operation, FOType, Sink, SinkArg } from "../types";
+import { Operation, FOType, Sink, SinkArg } from "rxjs/internal/types";
 import { Observable } from "../Observable";
-import { Subscription } from '../Subscription';
-import { operator } from '../util/operator';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { lift } from 'rxjs/internal/util/lift';
 
 export function take<T>(count: number): Operation<T, T> {
-  return operator((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
+  return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     if (count <= 0) {
       dest(FOType.COMPLETE, undefined, subs);
       subs.unsubscribe();

@@ -1,12 +1,12 @@
-import { Operation, FOType, Sink, SinkArg } from '../types';
+import { Operation, FOType, Sink, SinkArg } from 'rxjs/internal/types';
 import { sourceAsObservable, Observable } from '../Observable';
-import { Subscription } from '../Subscription';
-import { operator } from '../util/operator';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { lift } from 'rxjs/internal/util/lift';
 
 export function share<T>(): Operation<T, T> {
   let state: any[];
   let connection: Subscription;
-  return operator((source: Observable<T>, sink: Sink<T>, subs: Subscription) => {
+  return lift((source: Observable<T>, sink: Sink<T>, subs: Subscription) => {
     state = state || [];
     state.push(sink, subs);
     if (!connection) {

@@ -1,5 +1,5 @@
-import { of } from '../create/of';
-import { filter } from './filter';
+import { of } from 'rxjs/internal/create/of';
+import { filter } from 'rxjs/internal/operators/filter';
 import { expect } from 'chai';
 
 describe('filter', () => {

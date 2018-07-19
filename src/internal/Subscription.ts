@@ -1,6 +1,6 @@
-import { Teardown, SubscriptionLike } from './types';
-import { noop } from './util/noop';
-import { isSubscription } from './util/isSubscription';
+import { Teardown, SubscriptionLike } from 'rxjs/internal/types';
+import { noop } from 'rxjs/internal/util/noop';
+import { isSubscription } from 'rxjs/internal/util/isSubscription';
 
 export enum SubsCmd {
   UNSUBSCRIBE = 0,

@@ -1,4 +1,4 @@
-import { isObserver } from "./isObserver";
+import { isObserver } from "rxjs/internal/util/isObserver";
 import { expect } from "chai";
 
 describe('isObserver', () => {

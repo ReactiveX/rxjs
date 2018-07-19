@@ -1,4 +1,4 @@
-import { BehaviorSubject } from "./BehaviorSubject";
+import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
 import { expect } from 'chai';
 
 describe('BehaviorSubject', () => {

@@ -1,9 +1,9 @@
 import { sourceAsObservable, Observable } from "../Observable";
-import { ObservableInput, Source, FOType, Sink, SinkArg } from "../types";
-import { Subscription } from "../Subscription";
-import { fromSource } from "./from";
-import { identity } from "../util/identity";
-import { tryUserFunction, resultIsError } from '../util/userFunction';
+import { ObservableInput, Source, FOType, Sink, SinkArg } from "rxjs/internal/types";
+import { Subscription } from "rxjs/internal/Subscription";
+import { fromSource } from "rxjs/internal/create/from";
+import { identity } from "rxjs/internal/util/identity";
+import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 
 export function zip<T>(...sources: ObservableInput<T>[]): Observable<T> {
   return sourceAsObservable(zipSource(sources));

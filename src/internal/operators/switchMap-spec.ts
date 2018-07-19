@@ -1,6 +1,6 @@
-import { switchMap } from './switchMap';
+import { switchMap } from 'rxjs/internal/operators/switchMap';
 import { expect } from 'chai';
-import { Subject } from '../Subject';
+import { Subject } from 'rxjs/internal/Subject';
 
 describe('switchMap', () => {
   it('should switchMap', () => {

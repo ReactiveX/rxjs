@@ -1,4 +1,4 @@
-import { reduce } from './reduce';
+import { reduce } from 'rxjs/internal/operators/derived/reduce';
 
 const DEFAULT_COMPARER = <T>(a: T, b: T) => a > b ? a : b;
 

@@ -1,8 +1,8 @@
-import { FObs, Operation, PartialObserver, FOType, Sink, Source, SinkArg, Teardown } from './types';
-import { Subscriber, createSubscriber } from './Subscriber';
-import { Subscription } from './Subscription';
-import { pipe } from './util/pipe';
-import { tryUserFunction, resultIsError } from './util/userFunction';
+import { FObs, Operation, PartialObserver, FOType, Sink, Source, SinkArg, Teardown } from 'rxjs/internal/types';
+import { Subscriber, createSubscriber } from 'rxjs/internal/Subscriber';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { pipe } from 'rxjs/internal/util/pipe';
+import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 
 export interface ObservableConstructor {
   <T>(init?: (subscriber: Subscriber<T>) => void): Observable<T>;
@@ -191,3 +191,5 @@ function sinkFromHandlers<T>(
     }
   };
 }
+
+

@@ -1,6 +1,6 @@
-import { reduce } from './reduce';
+import { reduce } from 'rxjs/internal/operators/derived/reduce';
 import { expect } from 'chai';
-import { of } from '../../create/of';
+import { of } from 'rxjs/internal/create/of';
 
 describe('reduce', () => {
   it('should reduce and emit', () => {

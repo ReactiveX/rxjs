@@ -1,6 +1,6 @@
 import { sourceAsObservable, Observable } from "./Observable";
-import { Source, FOType, Sink } from "./types";
-import { Subscription } from "./Subscription";
+import { Source, FOType, Sink } from "rxjs/internal/types";
+import { Subscription } from "rxjs/internal/Subscription";
 
 export const EMPTY_SOURCE: Source<never> =
   (type: FOType.SUBSCRIBE, sink: Sink<never>, subs: Subscription) => {

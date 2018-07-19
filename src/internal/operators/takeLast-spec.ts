@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { of } from '../create/of';
-import { takeLast } from './takeLast';
+import { of } from 'rxjs/internal/create/of';
+import { takeLast } from 'rxjs/internal/operators/takeLast';
 
 describe('takeLast', () => {
   it('should take the last n values when the observable completes', () => {

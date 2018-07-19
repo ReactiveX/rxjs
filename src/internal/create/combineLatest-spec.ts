@@ -1,5 +1,5 @@
-import { of } from "./of";
-import { combineLatest } from "./combineLatest";
+import { of } from "rxjs/internal/create/of";
+import { combineLatest } from "rxjs/internal/create/combineLatest";
 import { expect } from "chai";
 
 // TODO: write a zone.js test to cover this with a timer

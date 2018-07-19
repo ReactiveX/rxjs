@@ -1,11 +1,11 @@
-import { Subscription } from '../Subscription';
-import { asyncScheduler } from './asyncScheduler';
-import { Scheduler } from '../types';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
+import { Scheduler } from 'rxjs/internal/types';
 
 let flushing = false;
 const queue: any[] = [];
 export const queueScheduler: Scheduler = {
-  now() { 
+  now() {
     return Date.now();
   },
   schedule<T>(work: (state: T) => void, delay: number, state: T, subs: Subscription) {

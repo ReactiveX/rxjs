@@ -1,4 +1,4 @@
-import { isIterable } from "./isIterable";
+import { isIterable } from "rxjs/internal/util/isIterable";
 import { expect } from 'chai';
 
 describe('isIterable', () => {

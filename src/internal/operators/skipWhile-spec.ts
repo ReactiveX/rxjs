@@ -1,4 +1,4 @@
-import { of } from '../create/of';
+import { of } from 'rxjs/internal/create/of';
 import { skipWhile } from 'rxjs/operators';
 import { expect } from 'chai';
 

@@ -1,5 +1,5 @@
-import { of } from '../create/of';
-import { tap } from './tap';
+import { of } from 'rxjs/internal/create/of';
+import { tap } from 'rxjs/internal/operators/tap';
 import { expect } from 'chai';
 
 describe('tap', () => {

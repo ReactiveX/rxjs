@@ -1,6 +1,6 @@
-import { ConnectableObservable } from '../ConnectableObservable';
+import { ConnectableObservable } from 'rxjs/internal/ConnectableObservable';
 import { Observable } from '../Observable';
-import { Subject } from '../Subject';
+import { Subject } from 'rxjs/internal/Subject';
 import { isObserver } from 'rxjs/internal/util/isObserver';
 
 export function multicast<T>(source: Observable<T>, subjectOrFactory: Subject<T>|(() => Subject<T>)): ConnectableObservable<T> {

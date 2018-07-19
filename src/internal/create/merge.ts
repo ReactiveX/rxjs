@@ -1,6 +1,6 @@
-import { ObservableInput } from '../types';
+import { ObservableInput } from 'rxjs/internal/types';
 import { Observable } from '../Observable';
-import { of } from './of';
+import { of } from 'rxjs/internal/create/of';
 import { mergeAll } from 'rxjs/internal/operators/derived/mergeAll';
 
 export function merge<T>(...sources: ObservableInput<T>[]): Observable<T> {

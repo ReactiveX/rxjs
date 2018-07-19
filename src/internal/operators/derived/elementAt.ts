@@ -1,10 +1,10 @@
-import { Operation } from '../../types';
+import { Operation } from 'rxjs/internal/types';
 import { Observable } from '../../Observable';
-import { ArgumentOutOfRangeError } from '../../error/ArgumentOutOfRangeError';
-import { filter } from '../filter';
-import { take } from '../take';
-import { throwIfEmpty } from './throwIfEmpty';
-import { defaultIfEmpty } from '../defaultIfEmpty';
+import { ArgumentOutOfRangeError } from 'rxjs/internal/error/ArgumentOutOfRangeError';
+import { filter } from 'rxjs/internal/operators/filter';
+import { take } from 'rxjs/internal/operators/take';
+import { throwIfEmpty } from 'rxjs/internal/operators/derived/throwIfEmpty';
+import { defaultIfEmpty } from 'rxjs/internal/operators/defaultIfEmpty';
 
 export function elementAt<T>(index: number, defaultValue?: T): Operation<T, T> {
   if (index < 0) { throw new ArgumentOutOfRangeError(); }

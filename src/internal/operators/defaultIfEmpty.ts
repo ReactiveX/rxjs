@@ -1,10 +1,10 @@
-import { operator } from '../util/operator';
+import { lift } from 'rxjs/internal/util/lift';
 import { Observable } from '../Observable';
-import { FOType, Sink, Operation, SinkArg } from '../types';
-import { Subscription } from '../Subscription';
+import { FOType, Sink, Operation, SinkArg } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 export function defaultIfEmpty<T, R>(defaultValue: R = null): Operation<T, T|R> {
-  return operator((source: Observable<T>, dest: Sink<T|R>, subs: Subscription) => {
+  return lift((source: Observable<T>, dest: Sink<T|R>, subs: Subscription) => {
     let empty = true;
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
       if (t === FOType.COMPLETE && empty) {

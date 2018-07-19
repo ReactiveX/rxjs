@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { isArrayLike } from "./isArrayLike";
+import { isArrayLike } from "rxjs/internal/util/isArrayLike";
 
 describe('isArrayLike', () => {
   it('should pass for an ArrayLike', () => {

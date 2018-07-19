@@ -1,4 +1,4 @@
-import { Subscription, SubsCmd } from './Subscription';
+import { Subscription, SubsCmd } from 'rxjs/internal/Subscription';
 import { expect } from 'chai';
 
 describe('Subscription', () => {

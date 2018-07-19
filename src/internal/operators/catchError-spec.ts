@@ -1,6 +1,6 @@
-import { of } from '../create/of';
-import { map } from './map';
-import { catchError } from './catchError';
+import { of } from 'rxjs/internal/create/of';
+import { map } from 'rxjs/internal/operators/map';
+import { catchError } from 'rxjs/internal/operators/catchError';
 import { expect } from 'chai';
 
 describe('catchError', () => {

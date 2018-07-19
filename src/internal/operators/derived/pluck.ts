@@ -1,6 +1,6 @@
-import { Operation } from '../../types';
+import { Operation } from 'rxjs/internal/types';
 import { Observable } from '../../Observable';
-import { map } from '../map';
+import { map } from 'rxjs/internal/operators/map';
 
 export function pluck<T, R>(...properties: string[]): Operation<T, R> {
   const length = properties.length;

@@ -1,4 +1,4 @@
-import { operator } from 'rxjs/internal/util/operator';
+import { lift } from 'rxjs/internal/util/lift';
 import { Observable, sourceAsObservable } from '../Observable';
 import { FOType, Sink, SinkArg, Operation} from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';

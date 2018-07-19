@@ -1,11 +1,11 @@
-import { filter } from '../filter';
-import { Operation } from '../../types';
+import { filter } from 'rxjs/internal/operators/filter';
+import { Operation } from 'rxjs/internal/types';
 import { Observable } from '../../Observable';
-import { identity } from '../../util/identity';
-import { throwIfEmpty } from './throwIfEmpty';
-import { defaultIfEmpty } from '../defaultIfEmpty';
-import { take } from '../take';
-import { EmptyError } from '../../error/EmptyError';
+import { identity } from 'rxjs/internal/util/identity';
+import { throwIfEmpty } from 'rxjs/internal/operators/derived/throwIfEmpty';
+import { defaultIfEmpty } from 'rxjs/internal/operators/defaultIfEmpty';
+import { take } from 'rxjs/internal/operators/take';
+import { EmptyError } from 'rxjs/internal/error/EmptyError';
 
 export function first<T>(
   predicate?: (value: T, index: number) => boolean,

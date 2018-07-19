@@ -1,7 +1,7 @@
-import { FOType, FObsArg, FObs } from "../types";
-import { Subscription } from "../Subscription";
+import { FOType, FObsArg, FObs } from "rxjs/internal/types";
+import { Subscription } from "rxjs/internal/Subscription";
 import { sourceAsObservable } from "../Observable";
-import { Subject } from "../Subject";
+import { Subject } from "rxjs/internal/Subject";
 
 export function subjectBaseSource<T>(): FObs<T> {
   let state: any[];

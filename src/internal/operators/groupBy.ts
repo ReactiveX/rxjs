@@ -1,10 +1,10 @@
 import { Observable, sourceAsObservable } from '../Observable';
-import { Operation, FOType, Sink, SinkArg, FObs, GroupedObservable, ObservableInput, Source } from '../types';
-import { Subscription } from '../Subscription';
-import { subjectSource } from '../Subject';
-import { fromSource } from '../create/from';
-import { tryUserFunction, resultIsError } from '../util/userFunction';
-import { operator } from '../util/operator';
+import { Operation, FOType, Sink, SinkArg, FObs, GroupedObservable, ObservableInput, Source } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { subjectSource } from 'rxjs/internal/Subject';
+import { fromSource } from 'rxjs/internal/create/from';
+import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
+import { lift } from 'rxjs/internal/util/lift';
 
 /**
  * NOTES:
@@ -31,7 +31,7 @@ export function groupBy<T, K, R>(
     ? { keySelector: keySelectorOrConfig }
     : keySelectorOrConfig;
 
-  return operator((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
+  return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     const { keySelector, durationSelector } = config;
     const lookup = new Map<K, GroupedObservable<K, R>>();
     let index = 0;

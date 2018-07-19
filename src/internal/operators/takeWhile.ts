@@ -1,12 +1,12 @@
-import { Operation, FOType, Sink, SinkArg } from "../types";
+import { Operation, FOType, Sink, SinkArg } from "rxjs/internal/types";
 import { Observable } from "../Observable";
-import { Subscription } from '../Subscription';
-import { operator } from '../util/operator';
-import { tryUserFunction, resultIsError } from '../util/userFunction';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { lift } from 'rxjs/internal/util/lift';
+import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 
 
 export function takeWhile<T>(predicate: (value: T, index: number) => boolean): Operation<T, T> {
-  return operator((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
+  return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     let i = 0;
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
       if (t === FOType.NEXT) {

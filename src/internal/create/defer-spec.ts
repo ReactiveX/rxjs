@@ -1,6 +1,6 @@
-import { of } from "./of";
+import { of } from "rxjs/internal/create/of";
 import { expect } from "chai";
-import { defer } from './defer';
+import { defer } from 'rxjs/internal/create/defer';
 
 describe('defer', () => {
   it('should create an observable from a deferred call to a function', () => {

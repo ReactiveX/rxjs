@@ -1,5 +1,5 @@
-import { of } from '../create/of';
-import { repeat } from './repeat';
+import { of } from 'rxjs/internal/create/of';
+import { repeat } from 'rxjs/internal/operators/repeat';
 import { expect } from 'chai';
 import { Observable } from '../Observable';
 
