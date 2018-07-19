@@ -18,7 +18,7 @@ export function pipe<T, R>(...fns: Array<UnaryFunction<T, R>>): UnaryFunction<T,
   return pipeFromArray(fns);
 }
 
-/* @internal */
+/** @internal */
 export function pipeFromArray<T, R>(fns: Array<UnaryFunction<T, R>>): UnaryFunction<T, R> {
   if (!fns) {
     return noop as UnaryFunction<any, any>;
