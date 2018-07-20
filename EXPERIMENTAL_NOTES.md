@@ -43,7 +43,7 @@ timestamp.
 - [x] concat (alias: concatWith) (g3)
 - [x] concatAll (g3)
 - [x] concatMap (g3)
-- [ ] concatMapTo
+- [x] concatMapTo
 - [x] count (g3)
 - [ ] debounce (g3)
 - [ ] debounceTime (g3)
@@ -59,25 +59,25 @@ timestamp.
 - [x] every (g3)
 - [ ] exhaust
 - [ ] exhaustMap (g3)
-- [ ] expand (g3)
+- [x] expand (g3)
 - [x] filter (g3)
 - [x] finalize (g3)
 - [x] find
 - [x] findIndex
 - [x] first (g3)
-- [ ] flatMap (g3)
+- [x] flatMap (g3)
 - [x] groupBy (g3)
 - [x] ignoreElements (g3)
 - [x] isEmpty
 - [ ] last (g3)
 - [x] map (g3)
-- [ ] mapTo (g3)
+- [x] mapTo (g3)
 - [x] materialize (g3)
 - [x] max
 - [ ] merge (g3)
 - [x] mergeAll (g3)
 - [x] mergeMap (g3)
-- [ ] mergeMapTo (g3)
+- [x] mergeMapTo (g3)
 - [ ] mergeScan
 - [x] min
 - [ ] multicast (g3)
@@ -112,7 +112,7 @@ timestamp.
 - [ ] subscribeOn (g3)
 - [ ] switchAll (g3)
 - [x] switchMap (g3)
-- [ ] switchMapTo (g3)
+- [x] switchMapTo (g3)
 - [x] take (g3)
 - [x] takeLast (g3)
 - [x] takeUntil (g3)
