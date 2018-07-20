@@ -80,13 +80,13 @@ timestamp.
 - [x] mergeMapTo (g3)
 - [ ] mergeScan
 - [x] min
-- [ ] multicast (g3)
+- [x] multicast (g3) (multicast and multicastAs)
 - [ ] observeOn (g3)
 - [x] onErrorResumeNext (g3) (as onErrorResumeWith)
 - [x] pairwise (g3)
 - [ ] partition (g3)
 - [x] pluck (g3)
-- [ ] publish (g3)
+- [x] publish (g3) (publish static and publishAs)
 - [ ] publishBehavior (g3)
 - [ ] publishLast (g3)
 - [ ] publishReplay (g3)
