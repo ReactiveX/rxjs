@@ -109,7 +109,7 @@ describe('zipAll operator', () => {
         z: ['d', 3]
       };
 
-      expectObservable(of(e1, myIterator).pipe(zipAll())).toBe(expected, values);
+      expectObservable(of(e1, myIterator).pipe(zipAll<string | number>())).toBe(expected, values);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
 
@@ -160,7 +160,7 @@ describe('zipAll operator', () => {
       const b = [1];
       const expected = '|';
 
-      expectObservable(of(a, b).pipe(zipAll())).toBe(expected);
+      expectObservable(of(a, b).pipe(zipAll<string | number>())).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
     });
 
@@ -180,7 +180,7 @@ describe('zipAll operator', () => {
       const b = [1];
       const expected = '-';
 
-      expectObservable(of(a, b).pipe(zipAll())).toBe(expected);
+      expectObservable(of(a, b).pipe(zipAll<string | number>())).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
     });
 
@@ -190,7 +190,7 @@ describe('zipAll operator', () => {
       const b = [2];
       const expected = '-----(x|)';
 
-      expectObservable(of(a, b).pipe(zipAll())).toBe(expected, { x: ['1', 2] });
+      expectObservable(of(a, b).pipe(zipAll<string | number>())).toBe(expected, { x: ['1', 2] });
       expectSubscriptions(a.subscriptions).toBe(asubs);
     });
 
@@ -210,7 +210,7 @@ describe('zipAll operator', () => {
       const b = [1];
       const expected = '-----#';
 
-      expectObservable(of(a, b).pipe(zipAll())).toBe(expected);
+      expectObservable(of(a, b).pipe(zipAll<string | number>())).toBe(expected);
       expectSubscriptions(a.subscriptions).toBe(asubs);
     });
 
@@ -220,7 +220,7 @@ describe('zipAll operator', () => {
       const b = [4, 5, 6];
       const expected = '---x--y--(z|)';
 
-      expectObservable(of(a, b).pipe(zipAll())).toBe(expected,
+      expectObservable(of(a, b).pipe(zipAll<string | number>())).toBe(expected,
         { x: ['1', 4], y: ['2', 5], z: ['3', 6] });
       expectSubscriptions(a.subscriptions).toBe(asubs);
     });
