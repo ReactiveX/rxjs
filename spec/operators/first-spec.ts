@@ -132,7 +132,7 @@ describe('Observable.prototype.first', () => {
     const e1 = hot('--a-^--b--c--a--c--|');
     const expected =   '---------------(d|)';
     const sub =        '^              !';
-    expectObservable(e1.pipe(first(x => x === 's', 'd'))).toBe(expected);
+    expectObservable(e1.pipe(first<string>(x => x === 's', 'd'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
