@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "lib": ["es2015"],
+    "module": "commonjs",
+    "noEmit": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "paths": {
+      "rxjs": ["../src"],
+      "rxjs/operators": ["../src/operators"]
+    },
+    "strictFunctionTypes": true,
+    "strictNullChecks": true
+  }
+}
