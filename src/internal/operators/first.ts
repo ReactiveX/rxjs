@@ -16,7 +16,7 @@ export function first<T>(
 ): MonoTypeOperatorFunction<T>;
 export function first<T, S extends T>(
   predicate: (value: T, index: number, source: Observable<T>) => value is S,
-  defaultValue?: T
+  defaultValue?: S
 ): OperatorFunction<T, S>;
 export function first<T>(
   predicate: (value: T, index: number, source: Observable<T>) => boolean,
@@ -72,10 +72,10 @@ export function first<T>(
  * @method first
  * @owner Observable
  */
-export function first<T>(
+export function first<T, S extends T>(
   predicate?: ((value: T, index: number, source: Observable<T>) => boolean) | null,
-  defaultValue?: T
-): MonoTypeOperatorFunction<T> {
+  defaultValue?: S
+): OperatorFunction<T, S> {
   const hasDefaultValue = arguments.length >= 2;
   return (source: Observable<T>) => source.pipe(
     predicate ? filter((v, i) => predicate(v, i, source)) : identity,
