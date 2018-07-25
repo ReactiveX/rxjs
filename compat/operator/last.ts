@@ -2,9 +2,9 @@ import { Observable } from 'rxjs';
 import { last as higherOrder } from 'rxjs/operators';
 
 /* tslint:disable:max-line-length */
-export function last<T>(this: Observable<T>, predicate?: null, defaultValue?: T): Observable<T>;
-export function last<T, S extends T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => value is S, defaultValue?: T): Observable<S>;
-export function last<T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => boolean, defaultValue?: T): Observable<T>;
+export function last<T, D = T>(this: Observable<T>, predicate?: null, defaultValue?: D): Observable<T | D>;
+export function last<T, S extends T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => value is S, defaultValue?: S): Observable<S>;
+export function last<T, D = T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => boolean, defaultValue?: D): Observable<T | D>;
 /* tslint:enable:max-line-length */
 /**
  * Returns an Observable that emits only the last item emitted by the source Observable.
