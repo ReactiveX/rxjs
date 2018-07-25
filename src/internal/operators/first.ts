@@ -73,7 +73,7 @@ export function first<T>(
  * @owner Observable
  */
 export function first<T>(
-  predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+  predicate?: ((value: T, index: number, source: Observable<T>) => boolean) | null,
   defaultValue?: T
 ): MonoTypeOperatorFunction<T> {
   const hasDefaultValue = arguments.length >= 2;
