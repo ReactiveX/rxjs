@@ -16,7 +16,7 @@ export function last<T>(
 ): MonoTypeOperatorFunction<T>;
 export function last<T, S extends T>(
   predicate: (value: T, index: number, source: Observable<T>) => value is S,
-  defaultValue?: T
+  defaultValue?: S
 ): OperatorFunction<T, S>;
 export function last<T>(
   predicate: (value: T, index: number, source: Observable<T>) => boolean,
@@ -41,10 +41,10 @@ export function last<T>(
  * from the source, or an NoSuchElementException if no such items are emitted.
  * @throws - Throws if no items that match the predicate are emitted by the source Observable.
  */
-export function last<T>(
+export function last<T, S extends T>(
   predicate?: ((value: T, index: number, source: Observable<T>) => boolean) | null,
-  defaultValue?: T
-): MonoTypeOperatorFunction<T> {
+  defaultValue?: S
+): OperatorFunction<T, S> {
   const hasDefaultValue = arguments.length >= 2;
   return (source: Observable<T>) => source.pipe(
     predicate ? filter((v, i) => predicate(v, i, source)) : identity,
