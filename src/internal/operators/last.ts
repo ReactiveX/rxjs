@@ -42,7 +42,7 @@ export function last<T>(
  * @throws - Throws if no items that match the predicate are emitted by the source Observable.
  */
 export function last<T>(
-  predicate?: (value: T, index: number, source: Observable<T>) => boolean,
+  predicate?: ((value: T, index: number, source: Observable<T>) => boolean) | null,
   defaultValue?: T
 ): MonoTypeOperatorFunction<T> {
   const hasDefaultValue = arguments.length >= 2;
