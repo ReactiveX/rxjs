@@ -1,4 +1,4 @@
-import { of, OperatorFunction } from 'rxjs';
+import { Observable, of, OperatorFunction } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 
 function a<I extends string, O extends string>(input: I, output: O): OperatorFunction<I, O>;
@@ -90,5 +90,10 @@ describe('pipe', () => {
 
   it('should not enforce types beyond the 9th argument', () => {
     const o = of('foo').pipe(a('1'), a('2'), a('3'), a('4'), a('5'), a('6'), a('7'), a('8'), a('9'), a('#', '10')); // $ExpectType Observable<{}>
+  });
+
+  it('should support operators that return generics', () => {
+    const customOperator = () => <T>(a: Observable<T>) => a;
+    const o = of('foo').pipe(customOperator()); // $ExpectType Observable<string>
   });
 });
