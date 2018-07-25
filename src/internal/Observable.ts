@@ -318,7 +318,7 @@ export class Observable<T> implements Subscribable<T> {
    *   .subscribe(x => console.log(x))
    * ```
    */
-  pipe<R>(...operations: OperatorFunction<any, any>[]): Observable<R> {
+  pipe(...operations: OperatorFunction<any, any>[]): Observable<any> {
     if (operations.length === 0) {
       return this as any;
     }
