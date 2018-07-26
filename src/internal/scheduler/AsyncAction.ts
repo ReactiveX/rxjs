@@ -93,7 +93,7 @@ export class AsyncAction<T> extends Action<T> {
     }
 
     this.pending = false;
-    const error = this._execute(state, delay);
+    const error = this._execute(state);
     if (error) {
       return error;
     } else if (this.pending === false && this.id != null) {
@@ -114,7 +114,7 @@ export class AsyncAction<T> extends Action<T> {
     }
   }
 
-  protected _execute(state: T, delay: number): any {
+  protected _execute(state: T): any {
     let errored: boolean = false;
     let errorValue: any = undefined;
     try {
