@@ -7,6 +7,7 @@ import { SubscriptionLog } from './SubscriptionLog';
 import { Subscription } from '../Subscription';
 import { VirtualTimeScheduler, VirtualAction } from '../scheduler/VirtualTimeScheduler';
 import { AsyncScheduler } from '../scheduler/AsyncScheduler';
+import { stringToArray } from '../../internal/util/stringToArray';
 
 const defaultMaxFrame: number = 750;
 
@@ -265,13 +266,15 @@ export class TestScheduler extends VirtualTimeScheduler {
                       errorValue?: any,
                       materializeInnerObservables: boolean = false,
                       runMode = false): TestMessage[] {
-    if (marbles.indexOf('!') !== -1) {
+    // `stringToArray` can correctly split string with emoji
+    const emojiMarbles = stringToArray(marbles);
+    if (emojiMarbles.indexOf('!') !== -1) {
       throw new Error('conventional marble diagrams cannot have the ' +
         'unsubscription marker "!"');
     }
-    const len = marbles.length;
+    const len = emojiMarbles.length;
     const testMessages: TestMessage[] = [];
-    const subIndex = runMode ? marbles.replace(/^[ ]+/, '').indexOf('^') : marbles.indexOf('^');
+    const subIndex = runMode ? emojiMarbles.filter(x => x !== ' ').indexOf('^') : emojiMarbles.indexOf('^');
     let frame = subIndex === -1 ? 0 : (subIndex * -this.frameTimeFactor);
     const getValue = typeof values !== 'object' ?
       (x: any) => x :
@@ -291,7 +294,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       };
 
       let notification: Notification<any>;
-      const c = marbles[i];
+      const c = emojiMarbles[i];
       switch (c) {
         case ' ':
           // Whitespace no longer advances time
@@ -326,8 +329,8 @@ export class TestScheduler extends VirtualTimeScheduler {
           if (runMode && c.match(/^[0-9]$/)) {
             // Time progression must be preceeded by at least one space
             // if it's not at the beginning of the diagram
-            if (i === 0 || marbles[i - 1] === ' ') {
-              const buffer = marbles.slice(i);
+            if (i === 0 || emojiMarbles[i - 1] === ' ') {
+              const buffer = emojiMarbles.slice(i).join('');
               const match = buffer.match(/^([0-9]+(?:\.[0-9]+)?)(ms|s|m) /);
               if (match) {
                 i += match[0].length - 1;
