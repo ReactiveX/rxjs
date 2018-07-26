@@ -64,7 +64,7 @@ fromEvent(button, 'click')
   .subscribe(count => console.log(`Clicked ${count} times`));
 ```
 
-The **scan** operator works just like **reduce** for arrays. It takes a value which is exposed to a callback. The returned value of the callback will then become the next value exposed the next time the callback runs.
+The [**scan**](/api/operators/scan) operator works similarly to [**reduce**](/api/operators/reduce) for arrays, except it emits every accumulated value instead of only the final one. It takes a value which is exposed to a callback. The returned value of the callback will then become the next value exposed the next time the callback runs.
 
 ### Flow
 
