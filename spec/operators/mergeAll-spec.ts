@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { mergeAll, mergeMap } from 'rxjs/operators';
+import { mergeAll, mergeMap, take } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { throwError, from, of, Observable } from 'rxjs';
 
@@ -411,6 +411,36 @@ describe('mergeAll oeprator', () => {
         done();
       },
       () => { done(new Error('should not be called')); });
+  });
+
+  it('should finalize generators when merged if the subscription ends', () => {
+    const iterable = {
+      finalized: false,
+      next() {
+        return {value: 'duck', done: false};
+      },
+      return() {
+        this.finalized = true;
+      },
+      [Symbol.iterator]() {
+        return this;
+      }
+    };
+
+    const results: string[] = [];
+
+    const iterableObservable = from<string>(iterable as any);
+    of(iterableObservable).pipe(
+      mergeAll(),
+      take(3)
+    ).subscribe(
+      x => results.push(x),
+      null,
+      () => results.push('GOOSE!')
+    );
+
+    expect(results).to.deep.equal(['duck', 'duck', 'duck', 'GOOSE!']);
+    expect(iterable.finalized).to.be.true;
   });
 
   type(() => {
