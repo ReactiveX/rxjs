@@ -9,8 +9,8 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
 /* tslint:disable:max-line-length */
 /** @deprecated In future versions, empty notifiers will no longer re-emit the source value on the output observable. */
-export function delayWhen<T>(delayDurationSelector: (value: T) => Observable<never>, subscriptionDelay?: Observable<any>): MonoTypeOperatorFunction<T>;
-export function delayWhen<T>(delayDurationSelector: (value: T) => Observable<any>, subscriptionDelay?: Observable<any>): MonoTypeOperatorFunction<T>;
+export function delayWhen<T>(delayDurationSelector: (value: T, index: number) => Observable<never>, subscriptionDelay?: Observable<any>): MonoTypeOperatorFunction<T>;
+export function delayWhen<T>(delayDurationSelector: (value: T, index: number) => Observable<any>, subscriptionDelay?: Observable<any>): MonoTypeOperatorFunction<T>;
 /* tslint:disable:max-line-length */
 
 /**
@@ -51,7 +51,7 @@ export function delayWhen<T>(delayDurationSelector: (value: T) => Observable<any
  * @see {@link debounce}
  * @see {@link delay}
  *
- * @param {function(value: T): Observable} delayDurationSelector A function that
+ * @param {function(value: T, index: number): Observable} delayDurationSelector A function that
  * returns an Observable for each value emitted by the source Observable, which
  * is then used to delay the emission of that item on the output Observable
  * until the Observable returned from this function emits a value.
@@ -63,7 +63,7 @@ export function delayWhen<T>(delayDurationSelector: (value: T) => Observable<any
  * @method delayWhen
  * @owner Observable
  */
-export function delayWhen<T>(delayDurationSelector: (value: T) => Observable<any>,
+export function delayWhen<T>(delayDurationSelector: (value: T, index: number) => Observable<any>,
                              subscriptionDelay?: Observable<any>): MonoTypeOperatorFunction<T> {
   if (subscriptionDelay) {
     return (source: Observable<T>) =>
@@ -74,7 +74,7 @@ export function delayWhen<T>(delayDurationSelector: (value: T) => Observable<any
 }
 
 class DelayWhenOperator<T> implements Operator<T, T> {
-  constructor(private delayDurationSelector: (value: T) => Observable<any>) {
+  constructor(private delayDurationSelector: (value: T, index: number) => Observable<any>) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -90,9 +90,10 @@ class DelayWhenOperator<T> implements Operator<T, T> {
 class DelayWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
   private completed: boolean = false;
   private delayNotifierSubscriptions: Array<Subscription> = [];
+  private index: number = 0;
 
   constructor(destination: Subscriber<T>,
-              private delayDurationSelector: (value: T) => Observable<any>) {
+              private delayDurationSelector: (value: T, index: number) => Observable<any>) {
     super(destination);
   }
 
@@ -117,8 +118,9 @@ class DelayWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   protected _next(value: T): void {
+    const index = this.index++;
     try {
-      const delayNotifier = this.delayDurationSelector(value);
+      const delayNotifier = this.delayDurationSelector(value, index);
       if (delayNotifier) {
         this.tryDelay(delayNotifier, value);
       }
