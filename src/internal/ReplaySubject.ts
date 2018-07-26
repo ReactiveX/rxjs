@@ -27,34 +27,34 @@ export function replaySubjectSource<T>(
   bufferSize = Number.POSITIVE_INFINITY,
   windowTime = Number.POSITIVE_INFINITY,
 ) {
-  const base = subjectBaseSource<T>();
-  const buffer: ReplayValue<T>[] = [];
-  let closed = false;
+  const _base = subjectBaseSource<T>();
+  const _buffer: ReplayValue<T>[] = [];
+  let _closed = false;
 
   return ((type: FOType, arg: FObsArg<T>, subs: Subscription) => {
-    base(type, arg, subs);
+    _base(type, arg, subs);
     const now = Date.now();
 
-    for (let i = 0; i < buffer.length; i++) {
-      const { type: t, arg: a, timeout } = buffer[i];
+    for (let i = 0; i < _buffer.length; i++) {
+      const { type: t, arg: a, timeout } = _buffer[i];
       if (timeout < now) {
-        buffer.splice(i);
+        _buffer.splice(i);
         break;
       }
       if (type === FOType.SUBSCRIBE) {
-        base(t, a, subs);
+        _base(t, a, subs);
       }
     }
 
     if (type !== FOType.SUBSCRIBE) {
-      if (!closed) {
-        buffer.push({ type, arg, timeout: now + windowTime });
-        if(buffer.length > bufferSize) {
-          buffer.splice(buffer.length - bufferSize, bufferSize);
+      if (!_closed) {
+        _buffer.push({ type, arg, timeout: now + windowTime });
+        if(_buffer.length > bufferSize) {
+          _buffer.splice(_buffer.length - bufferSize, bufferSize);
         }
       }
       if (type === FOType.ERROR || type === FOType.COMPLETE) {
-        closed = true;
+        _closed = true;
       }
     }
   });

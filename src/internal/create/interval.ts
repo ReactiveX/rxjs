@@ -1,11 +1,21 @@
 import { sourceAsObservable } from  '../Observable';
-import { FOType, Sink } from 'rxjs/internal/types';
-import { Subscription } from 'rxjs/internal/Subscription';
+import { FOType, Sink, SchedulerLike } from '../types';
+import { Subscription } from '../Subscription';
+import { asyncScheduler } from '../scheduler/asyncScheduler';
 
-export function interval(delay: number) {
+export function interval(interval: number, scheduler: SchedulerLike = asyncScheduler) {
   return sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<number>, subs: Subscription) => {
-    let i = 0;
-    const id = setInterval(() => dest(FOType.NEXT, i++, subs), delay);
-    subs.add(() => clearInterval(id));
+    if (type === FOType.SUBSCRIBE) {
+      const state = { i: 0, subs, interval, dest, scheduler };
+      scheduler.schedule(intervalWork, interval, state, subs);
+    }
   });
+}
+
+export function intervalWork(state: { i: number, subs: Subscription, interval: number, dest: Sink<number>, scheduler: SchedulerLike }) {
+  const { subs, dest, interval, scheduler } = state;
+  if (!subs.closed) {
+    dest(FOType.NEXT, state.i++, subs);
+    scheduler.schedule(intervalWork, interval, state, subs);
+  }
 }

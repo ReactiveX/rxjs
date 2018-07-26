@@ -35,10 +35,8 @@ export function fromSource<T>(input: ObservableInput<T>): Source<T> {
 function promiseSource<T>(promise: PromiseLike<T>): Source<T> {
   return (type: FOType.SUBSCRIBE, sink: Sink<T>, subs: Subscription) => {
     if (type === FOType.SUBSCRIBE) {
-      let closed = false;
-      subs.add(() => closed = true);
       promise.then(value => {
-        if (!closed) {
+        if (!subs.closed) {
           sink(FOType.NEXT, value, subs);
           sink(FOType.COMPLETE, undefined, subs);
         }
@@ -52,11 +50,9 @@ function promiseSource<T>(promise: PromiseLike<T>): Source<T> {
 function iterableSource<T>(iterable: Iterable<T>): Source<T> {
   return (type: FOType.SUBSCRIBE, sink: Sink<T>, subs: Subscription) => {
     if (type === FOType.SUBSCRIBE) {
-      let closed = false;
-      subs.add(() => closed = true);
       const iterator = iterable[Symbol.iterator]();
       while (true) {
-        if (closed) return;
+        if (subs.closed) return;
         const { done, value } = iterator.next();
         if (done) break;
         sink(FOType.NEXT, value, subs);

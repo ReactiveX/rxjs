@@ -1,14 +1,15 @@
 import { Subscription } from 'rxjs/internal/Subscription';
 import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
-import { Scheduler } from 'rxjs/internal/types';
+import { SchedulerLike } from 'rxjs/internal/types';
 
 let flushing = false;
 const queue: any[] = [];
-export const queueScheduler: Scheduler = {
+export const queueScheduler: SchedulerLike = {
   now() {
     return Date.now();
   },
-  schedule<T>(work: (state: T) => void, delay: number, state: T, subs: Subscription) {
+  schedule<T>(work: (state: T) => void, delay = 0, state = undefined as T, subs?: Subscription): Subscription {
+    subs = subs || new Subscription();
     if (delay > 0) {
       return asyncScheduler.schedule(work, delay, state, subs);
     }
@@ -25,5 +26,6 @@ export const queueScheduler: Scheduler = {
       }
       flushing = false;
     }
+    return subs;
   }
 }

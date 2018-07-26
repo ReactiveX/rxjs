@@ -1,14 +1,15 @@
 import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { Scheduler } from 'rxjs/internal/types';
+import { SchedulerLike } from 'rxjs/internal/types';
 
 const toAnimate: any[] = [];
 let animId = 0;
-export const animationFrameScheduler: Scheduler = {
+export const animationFrameScheduler: SchedulerLike = {
   now() {
     return Date.now();
   },
-  schedule<T>(work: (state: T) => void, delay: number, state: T, subs: Subscription) {
+  schedule<T>(work: (state: T) => void,delay = 0, state = undefined as T, subs?: Subscription): Subscription {
+    subs = subs || new Subscription();
     if (delay > 0) {
       asyncScheduler.schedule((state) => {
         animationFrameScheduler.schedule(work, 0, state, subs);
@@ -32,5 +33,6 @@ export const animationFrameScheduler: Scheduler = {
         });
       }
     }
+    return subs;
   }
 }

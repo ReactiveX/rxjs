@@ -59,9 +59,12 @@ export interface Observer<T> {
   [key: string]: any;
 }
 
-export interface Scheduler {
+export interface SchedulerLike {
   now(): number;
-  schedule<T>(work: (state: T) => void, delay: number, state: T, subs: Subscription): void;
+  schedule<T>(work: () => void): Subscription;
+  schedule<T>(work: () => void, delay: number): Subscription;
+  schedule<T>(work: (state?: T) => void, delay: number, state: T): Subscription;
+  schedule<T>(work: (state?: T) => void, delay: number, state: T, subs: Subscription): Subscription;
 }
 
 export type Operation<T, R> = (source: Observable<T>) => Observable<R>;

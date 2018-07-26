@@ -12,6 +12,7 @@ export interface Subscription {
   unsubscribe(): void;
   add(...teardowns: Teardown[]): void;
   remove(...teardowns: Teardown[]): void;
+  readonly closed: boolean;
 }
 
 export interface SubscriptionConstructor {
@@ -29,7 +30,9 @@ export const Subscription: SubscriptionConstructor = function Subscription(this:
   this._closed = false;
 } as any;
 
-Subscription.prototype.add = function (...teardowns: Teardown[]) {
+const subscriptionProto = Subscription.prototype;
+
+subscriptionProto.add = function (...teardowns: Teardown[]) {
   const { _teardowns } = this;
   for (let teardown of teardowns) {
     if (teardown) {
@@ -45,7 +48,7 @@ Subscription.prototype.add = function (...teardowns: Teardown[]) {
   }
 }
 
-Subscription.prototype.remove = function (...teardowns: Teardown[]) {
+subscriptionProto.remove = function (...teardowns: Teardown[]) {
   const { _teardowns } = this;
   for (let teardown of teardowns) {
     if (teardown) {
@@ -57,7 +60,7 @@ Subscription.prototype.remove = function (...teardowns: Teardown[]) {
   }
 };
 
-Subscription.prototype.unsubscribe = function () {
+subscriptionProto.unsubscribe = function () {
   if (!this._closed) {
     this._closed = true;
     const { _teardowns } = this;
@@ -66,6 +69,12 @@ Subscription.prototype.unsubscribe = function () {
     }
   }
 };
+
+Object.defineProperty(subscriptionProto, 'closed', {
+  get() {
+    return this._closed;
+  },
+});
 
 export function teardownToFunction(teardown: any): () => void {
   if (teardown) {

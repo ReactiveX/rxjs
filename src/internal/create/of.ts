@@ -9,14 +9,11 @@ export function of<T>(...values: T[]): Observable<T> {
 export function ofSource<T>(values: ArrayLike<T>): Source<T> {
   return (type: FOType, sink: Sink<T>, subs: Subscription) => {
     if (type === FOType.SUBSCRIBE) {
-      let closed = false;
-      subs.add(() => closed = true);
-      for (let i = 0; i < values.length; i++) {
-        if (closed) return;
+      for (let i = 0; i < values.length && !subs.closed; i++) {
+        if (subs.closed) return;
         sink(FOType.NEXT, values[i], subs);
       }
-      if (closed) return;
-      sink(FOType.COMPLETE, undefined, subs);
+      if (!subs.closed) sink(FOType.COMPLETE, undefined, subs);
     }
   };
 }

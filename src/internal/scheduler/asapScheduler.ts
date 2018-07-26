@@ -1,16 +1,18 @@
-import { Scheduler } from 'rxjs/internal/types';
+import { SchedulerLike } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
 
 const p = Promise.resolve();
 
-export const asapScheduler: Scheduler = {
+export const asapScheduler: SchedulerLike = {
   now() {
     return Date.now();
   },
-  schedule<T>(work: (state: T) => void, delay: number, state: T, subs: Subscription) {
+  schedule<T>(work: (state: T) => void, delay = 0, state = undefined as T, subs?: Subscription): Subscription {
+    subs = subs || new Subscription();
     if (delay > 0) {
-      return asyncScheduler.schedule(work, delay, state, subs);
+      asyncScheduler.schedule(work, delay, state, subs);
+      return subs;
     }
     let stop = false;
     subs.add(() => stop = true);
@@ -19,5 +21,6 @@ export const asapScheduler: Scheduler = {
         work(state);
       }
     });
+    return subs;
   }
 }

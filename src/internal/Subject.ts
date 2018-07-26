@@ -38,22 +38,22 @@ export function frankenSubjectSource<T>(
 
 export function subjectSource<T>(): FObs<T> {
   const base = subjectBaseSource<T>();
-  let closed = false;
-  let hasError = false;
-  let error: any;
+  let _closed = false;
+  let _hasError = false;
+  let _error: any;
   return (type: FOType, arg: FObsArg<T>, subs: Subscription) => {
     if (type === FOType.SUBSCRIBE) {
-      if (hasError) {
-        arg(FOType.ERROR, error, subs);
+      if (_hasError) {
+        arg(FOType.ERROR, _error, subs);
       }
     }
 
-    if (!closed) {
+    if (!_closed) {
       if (type === FOType.COMPLETE || type === FOType.ERROR) {
-        closed = true;
+        _closed = true;
         if (type === FOType.ERROR) {
-          hasError = true;
-          error = arg;
+          _hasError = true;
+          _error = arg;
         }
       }
       base(type, arg, subs);
