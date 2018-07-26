@@ -80,6 +80,10 @@ describe('Subscription', () => {
   });
 
   describe('Subscription.add()', () => {
+    const range = (length: number) =>
+      Array.from({ length })
+        .map((_, i) => i);
+
     it('Should returns the self if the self is passed', () => {
       const sub = new Subscription();
       const ret = sub.add(sub);
@@ -159,6 +163,51 @@ describe('Subscription', () => {
       main.add(child);
 
       expect(isCalled).to.equal(true);
+    });
+
+    it('Should returns the Subscription contains all teardown logics', () => {
+      const sub = new Subscription();
+      const teardowns = [
+        sub, () => 0, { unsubscribe: () => 1 }
+      ];
+      const ret = sub.add( ...teardowns );
+
+      expect((ret as any)._subscriptions.length).to.equal(teardowns.length);
+    });
+
+    it('Should unsubscribe all the passed subscriptions if the self has been unsubscribed', () => {
+      const main = new Subscription();
+      main.unsubscribe();
+
+      let isCalled: boolean[] = [];
+
+      const subscriptions = range(5)
+        .map((_, i) => new Subscription(() => {
+          isCalled[i] = true;
+        }));
+
+      main.add(...subscriptions);
+
+      expect(isCalled).to.deep.equal(range(5).map(() => true));
+    });
+
+    it('Should be able to remove the passed one from subscription', () => {
+      const main = new Subscription();
+
+      let isCalled = range(5).map(() => false);
+
+      const subscriptions = range(5)
+        .map((_, i) => new Subscription(() => {
+          isCalled[i] = true;
+        }));
+
+      const subscription = main.add(...subscriptions);
+
+      subscription.remove(subscriptions[1]);
+
+      main.unsubscribe();
+
+      expect(isCalled).to.deep.equal(range(5).map((i) => i !== 1));
     });
   });
 });
