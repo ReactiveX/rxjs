@@ -230,7 +230,7 @@ describe('scan operator', () => {
 
   type('should accept array typed reducers', () => {
     let a: Observable<{ a: number; b: string }>;
-    a.pipe(reduce((acc, value) => acc.concat(value), []));
+    a.pipe(reduce<{ a: number; b: string }>((acc, value) => acc.concat(value), []));
   });
 
   type('should accept T typed reducers', () => {

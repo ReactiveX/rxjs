@@ -136,7 +136,7 @@ describe('startWith operator', () => {
     const e1subs =   '^  !';
     const expected = '-a-|';
 
-    expectObservable(e1.pipe(startWith(rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(startWith<any>(rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
