@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { EmptyError } from '../util/EmptyError';
-import { MonoTypeOperatorFunction, OperatorFunction } from '../../internal/types';
+import { OperatorFunction } from '../../internal/types';
 import { filter } from './filter';
 import { take } from './take';
 import { defaultIfEmpty } from './defaultIfEmpty';
@@ -10,18 +10,18 @@ import { throwIfEmpty } from './throwIfEmpty';
 import { identity } from '../util/identity';
 
 /* tslint:disable:max-line-length */
-export function first<T>(
+export function first<T, D = T>(
   predicate?: null,
-  defaultValue?: T
-): MonoTypeOperatorFunction<T>;
+  defaultValue?: D
+): OperatorFunction<T, T | D>;
 export function first<T, S extends T>(
   predicate: (value: T, index: number, source: Observable<T>) => value is S,
-  defaultValue?: T
+  defaultValue?: S
 ): OperatorFunction<T, S>;
-export function first<T>(
+export function first<T, D = T>(
   predicate: (value: T, index: number, source: Observable<T>) => boolean,
-  defaultValue?: T
-): MonoTypeOperatorFunction<T>;
+  defaultValue?: D
+): OperatorFunction<T, T | D>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -72,14 +72,14 @@ export function first<T>(
  * @method first
  * @owner Observable
  */
-export function first<T>(
-  predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-  defaultValue?: T
-): MonoTypeOperatorFunction<T> {
+export function first<T, D>(
+  predicate?: ((value: T, index: number, source: Observable<T>) => boolean) | null,
+  defaultValue?: D
+): OperatorFunction<T, T | D> {
   const hasDefaultValue = arguments.length >= 2;
   return (source: Observable<T>) => source.pipe(
     predicate ? filter((v, i) => predicate(v, i, source)) : identity,
     take(1),
-    hasDefaultValue ? defaultIfEmpty(defaultValue) : throwIfEmpty(() => new EmptyError()),
+    hasDefaultValue ? defaultIfEmpty<T | D>(defaultValue) : throwIfEmpty(() => new EmptyError()),
   );
 }
