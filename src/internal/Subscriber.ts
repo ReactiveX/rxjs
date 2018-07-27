@@ -1,6 +1,6 @@
 import { isFunction } from './util/isFunction';
 import { empty as emptyObserver } from './Observer';
-import { Observer, PartialObserver } from './types';
+import { Observer, PartialObserver, TeardownLogic } from './types';
 import { Subscription } from './Subscription';
 import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscriber';
 import { config } from './config';
@@ -47,6 +47,8 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   protected isStopped: boolean = false;
   protected destination: PartialObserver<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
 
+  private _parentSubscription: Subscription | null = null;
+
   /**
    * @param {Observer|function(value: T): void} [destinationOrNext] A partially
    * defined Observer or a `next` callback function.
@@ -76,7 +78,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
             const trustedSubscriber = destinationOrNext[rxSubscriberSymbol]() as Subscriber<any>;
             this.syncErrorThrowable = trustedSubscriber.syncErrorThrowable;
             this.destination = trustedSubscriber;
-            trustedSubscriber.add(this);
+            trustedSubscriber._addParentTeardownLogic(this);
           } else {
             this.syncErrorThrowable = true;
             this.destination = new SafeSubscriber<T>(this, <PartialObserver<any>> destinationOrNext);
@@ -114,6 +116,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     if (!this.isStopped) {
       this.isStopped = true;
       this._error(err);
+      this._unsubscribeParentSubscription();
     }
   }
 
@@ -127,6 +130,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     if (!this.isStopped) {
       this.isStopped = true;
       this._complete();
+      this._unsubscribeParentSubscription();
     }
   }
 
@@ -153,6 +157,18 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
+  _addParentTeardownLogic(parentTeardownLogic: TeardownLogic) {
+    this._parentSubscription = this.add(parentTeardownLogic);
+  }
+
+  /** @deprecated This is an internal implementation detail, do not use. */
+  _unsubscribeParentSubscription() {
+    if (this._parentSubscription !== null) {
+      this._parentSubscription.unsubscribe();
+    }
+  }
+
+  /** @deprecated This is an internal implementation detail, do not use. */
   _unsubscribeAndRecycle(): Subscriber<T> {
     const { _parent, _parents } = this;
     this._parent = null;
@@ -162,6 +178,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     this.isStopped = false;
     this._parent = _parent;
     this._parents = _parents;
+    this._parentSubscription = null;
     return this;
   }
 }
