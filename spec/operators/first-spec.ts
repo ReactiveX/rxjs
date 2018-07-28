@@ -111,7 +111,7 @@ describe('Observable.prototype.first', () => {
 
     const duration = rxTestScheduler.createTime('--|');
 
-    expectObservable((<any>source).pipe(
+    expectObservable(source.pipe(
       first(),
       delay(duration, rxTestScheduler)
     )).toBe(expected);
