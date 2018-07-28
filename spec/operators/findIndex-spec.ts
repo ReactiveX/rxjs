@@ -1,8 +1,11 @@
-import { findIndex, mergeMap } from 'rxjs/operators';
+import { findIndex, mergeMap, delay } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { of } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
+
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {findIndex} */
 describe('findIndex operator', () => {
@@ -122,6 +125,20 @@ describe('findIndex operator', () => {
     );
 
     expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should unsubscribe when the predicate is matched', () => {
+    const source = hot('--a--b---c-|');
+    const subs =       '^    !';
+    const expected =   '-------(x|)';
+
+    const duration = rxTestScheduler.createTime('--|');
+
+    expectObservable((<any>source).pipe(
+      findIndex((value: string) => value === 'b'),
+      delay(duration, rxTestScheduler)
+    )).toBe(expected, { x: 1 });
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
