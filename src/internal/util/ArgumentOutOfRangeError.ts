@@ -1,3 +1,19 @@
+export interface ArgumentOutOfRangeError extends Error {
+}
+
+export interface ArgumentOutOfRangeErrorCtor {
+  new(): ArgumentOutOfRangeError;
+}
+
+function ArgumentOutOfRangeErrorImpl(this: any) {
+  Error.call(this);
+  this.message = 'argument out of range';
+  this.name = 'ArgumentOutOfRangeError';
+  return this;
+}
+
+ArgumentOutOfRangeErrorImpl.prototype = Object.create(Error.prototype);
+
 /**
  * An error thrown when an element was queried at a certain index of an
  * Observable, but no such index or position exists in that sequence.
@@ -8,12 +24,4 @@
  *
  * @class ArgumentOutOfRangeError
  */
-export class ArgumentOutOfRangeError extends Error {
-
-  public readonly name = 'ArgumentOutOfRangeError';
-
-  constructor() {
-    super('argument out of range');
-    (Object as any).setPrototypeOf(this, ArgumentOutOfRangeError.prototype);
-  }
-}
+export const ArgumentOutOfRangeError: ArgumentOutOfRangeErrorCtor = ArgumentOutOfRangeErrorImpl as any;

@@ -461,7 +461,7 @@ export type AjaxErrorNames = 'AjaxError' | 'AjaxTimeoutError';
  *
  * @class AjaxError
  */
-export class AjaxError extends Error {
+export interface AjaxError extends Error {
   /** @type {XMLHttpRequest} The XHR instance associated with the error */
   xhr: XMLHttpRequest;
 
@@ -476,21 +476,27 @@ export class AjaxError extends Error {
 
   /** @type {string|ArrayBuffer|Document|object|any} The response data */
   response: any;
-
-  public readonly name: AjaxErrorNames = 'AjaxError';
-
-  constructor(message: string, xhr: XMLHttpRequest, request: AjaxRequest) {
-    super(message);
-    this.message = message;
-    this.xhr = xhr;
-    this.request = request;
-    this.status = xhr.status;
-    this.responseType = xhr.responseType || request.responseType;
-    this.response = parseXhrResponse(this.responseType, xhr);
-
-    (Object as any).setPrototypeOf(this, AjaxError.prototype);
-  }
 }
+
+export interface AjaxErrorCtor {
+  new(message: string, xhr: XMLHttpRequest, request: AjaxRequest): AjaxError;
+}
+
+function AjaxErrorImpl(this: any, message: string, xhr: XMLHttpRequest, request: AjaxRequest): AjaxError {
+  Error.call(this);
+  this.message = message;
+  this.name = 'AjaxError';
+  this.xhr = xhr;
+  this.request = request;
+  this.status = xhr.status;
+  this.responseType = xhr.responseType || request.responseType;
+  this.response = parseXhrResponse(this.responseType, xhr);
+  return this;
+}
+
+AjaxErrorImpl.prototype = Object.create(Error.prototype);
+
+export const AjaxError: AjaxErrorCtor = AjaxErrorImpl as any;
 
 function parseJson(xhr: XMLHttpRequest) {
   // HACK(benlesh): TypeScript shennanigans
@@ -517,17 +523,22 @@ function parseXhrResponse(responseType: string, xhr: XMLHttpRequest) {
   }
 }
 
+export interface AjaxTimeoutError extends AjaxError {
+}
+
+export interface AjaxTimeoutErrorCtor {
+  new(xhr: XMLHttpRequest, request: AjaxRequest): AjaxTimeoutError;
+}
+
+function AjaxTimeoutErrorImpl(this: any, xhr: XMLHttpRequest, request: AjaxRequest) {
+  AjaxError.call(this, 'ajax timeout', xhr, request);
+  this.name = 'AjaxTimeoutError';
+  return this;
+}
+
 /**
  * @see {@link ajax}
  *
  * @class AjaxTimeoutError
  */
-export class AjaxTimeoutError extends AjaxError {
-
-  public readonly name: AjaxErrorNames = 'AjaxTimeoutError';
-
-  constructor(xhr: XMLHttpRequest, request: AjaxRequest) {
-    super('ajax timeout', xhr, request);
-    (Object as any).setPrototypeOf(this, AjaxTimeoutError.prototype);
-  }
-}
+export const AjaxTimeoutError: AjaxTimeoutErrorCtor = AjaxTimeoutErrorImpl as any;
