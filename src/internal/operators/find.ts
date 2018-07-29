@@ -1,16 +1,12 @@
 import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {OperatorFunction, MonoTypeOperatorFunction} from '../types';
+import {OperatorFunction} from '../types';
 
 export function find<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S,
-                                     thisArg?: any): OperatorFunction<T, S>;
-export function find<T, S extends T>(predicate: (value: T, index: number) => value is S,
-                                     thisArg?: any): OperatorFunction<T, S>;
+                                     thisArg?: any): OperatorFunction<T, S | undefined>;
 export function find<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                        thisArg?: any): MonoTypeOperatorFunction<T>;
-export function find<T>(predicate: (value: T, index: number) => boolean,
-                        thisArg?: any): MonoTypeOperatorFunction<T>;
+                        thisArg?: any): OperatorFunction<T, T | undefined>;
 /**
  * Emits only the first value emitted by the source Observable that meets some
  * condition.
@@ -48,14 +44,14 @@ export function find<T>(predicate: (value: T, index: number) => boolean,
  * @owner Observable
  */
 export function find<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                        thisArg?: any): MonoTypeOperatorFunction<T> {
+                        thisArg?: any): OperatorFunction<T, T | undefined> {
   if (typeof predicate !== 'function') {
     throw new TypeError('predicate is not a function');
   }
-  return (source: Observable<T>) => source.lift(new FindValueOperator(predicate, source, false, thisArg));
+  return (source: Observable<T>) => source.lift(new FindValueOperator(predicate, source, false, thisArg)) as Observable<T | undefined>;
 }
 
-export class FindValueOperator<T> implements Operator<T, T> {
+export class FindValueOperator<T> implements Operator<T, T | number | undefined> {
   constructor(private predicate: (value: T, index: number, source: Observable<T>) => boolean,
               private source: Observable<T>,
               private yieldIndex: boolean,
