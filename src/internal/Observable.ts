@@ -198,7 +198,7 @@ export class Observable<T> implements Subscribable<T> {
     if (operator) {
       operator.call(sink, this.source);
     } else {
-      sink.add(
+      sink._addParentTeardownLogic(
         this.source || (config.useDeprecatedSynchronousErrorHandling && !sink.syncErrorThrowable) ?
         this._subscribe(sink) :
         this._trySubscribe(sink)

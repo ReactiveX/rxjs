@@ -313,7 +313,7 @@ describe('TestScheduler', () => {
           const expected = '     -- 9ms a 9ms b 9ms (c|) ';
 
           expectObservable(output).toBe(expected);
-          expectSubscriptions(input.subscriptions).toBe('  ^- - - - --------------------------!');
+          expectSubscriptions(input.subscriptions).toBe('  ^- - - - - !');
         });
       });
 

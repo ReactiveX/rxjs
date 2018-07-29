@@ -14,7 +14,7 @@ describe('expand operator', () => {
   asDiagram('expand(x => x === 8 ? empty : \u2014\u20142*x\u2014| )')
   ('should recursively map-and-flatten each item to an Observable', () => {
     const e1 =    hot('--x----|  ', {x: 1});
-    const e1subs =    '^        !';
+    const e1subs =    '^      !  ';
     const e2 =   cold(  '--c|    ', {c: 2});
     const expected =  '--a-b-c-d|';
     const values = {a: 1, b: 2, c: 4, d: 8};
@@ -27,7 +27,7 @@ describe('expand operator', () => {
 
   it('should work with scheduler', () => {
     const e1 =    hot('--x----|  ', {x: 1});
-    const e1subs =    '^        !';
+    const e1subs =    '^      !  ';
     const e2 =   cold(  '--c|    ', {c: 2});
     const expected =  '--a-b-c-d|';
     const values = {a: 1, b: 2, c: 4, d: 8};
@@ -47,7 +47,7 @@ describe('expand operator', () => {
       e: 8 + 8, // d + d
     };
     const e1 =   hot('(a|)', values);
-    const e1subs =   '^           !   ';
+    const e1subs =   '(^!)            ';
     const e2shape =  '---(z|)         ';
     const expected = 'a--b--c--d--(e|)';
     /*
@@ -86,7 +86,7 @@ describe('expand operator', () => {
       e: 8 + 8, // d + d
     };
     const e1 =   hot('(a|)', values);
-    const e1subs =   '^        !   ';
+    const e1subs =   '(^!)         ';
     const e2shape =  '---(z|)      ';
     const expected = 'a--b--c--(d#)';
 
@@ -110,7 +110,7 @@ describe('expand operator', () => {
       e: 8 + 8, // d + d
     };
     const e1 =   hot('(a|)', values);
-    const e1subs =   '^        !   ';
+    const e1subs =   '(^!)         ';
     const e2shape =  '---(z|)      ';
     const expected = 'a--b--c--(d#)';
 
@@ -135,7 +135,7 @@ describe('expand operator', () => {
     };
     const e1 =   hot('(a|)', values);
     const unsub =    '       !  ';
-    const e1subs =   '^      !  ';
+    const e1subs =   '(^!)      ';
     const e2shape =  '---(z|)   ';
     const expected = 'a--b--c-  ';
 
@@ -159,7 +159,7 @@ describe('expand operator', () => {
       e: 8 + 8, // d + d
     };
     const e1 =   hot('(a|)', values);
-    const e1subs =   '^      !  ';
+    const e1subs =   '(^!)      ';
     const e2shape =  '---(z|)   ';
     const expected = 'a--b--c-  ';
     const unsub =    '       !  ';
@@ -188,7 +188,7 @@ describe('expand operator', () => {
       e: 8 + 8, // d + d
     };
     const e1 =   hot('a-a|              ', values);
-    const e1subs =   '^             !   ';
+    const e1subs =   '^  !              ';
     const e2shape =  '---(z|)           ';
     const expected = 'a-ab-bc-cd-de-(e|)';
 
@@ -226,7 +226,7 @@ describe('expand operator', () => {
     //                                ---(z|)
     //                                   ---(z|)
     // Notice how for each column, there is at most 1 `-` character.
-    const e1subs =   '^                       !    ';
+    const e1subs =   '^  !                         ';
     const expected = 'a--u--b--v--c--x--d--y--(ez|)';
     const concurrencyLimit = 1;
 
@@ -259,7 +259,7 @@ describe('expand operator', () => {
     //                              ------(z|)
     //                                ------(z|)
     // Notice how for each column, there is at most 2 `-` characters.
-    const e1subs =   '^                     !   ';
+    const e1subs =   '^     !                   ';
     const expected = 'a---a-u---b-b---v-(cc)(x|)';
     const concurrencyLimit = 2;
 
@@ -288,7 +288,7 @@ describe('expand operator', () => {
       z: 160, // y + y
     };
     const e1 =   hot('a-u|              ', values);
-    const e1subs =   '^             !   ';
+    const e1subs =   '^  !              ';
     const e2shape =  '---(z|)           ';
     const expected = 'a-ub-vc-xd-ye-(z|)';
     const concurrencyLimit = 100;
@@ -400,7 +400,7 @@ describe('expand operator', () => {
       e: 8 + 8, // d + d
     };
     const e1 =   hot('(a|)', values);
-    const e1subs =   '^           !   ';
+    const e1subs =   '(^!)            ';
     const e2shape =  '---(z|)         ';
     const expected = 'a--b--c--d--(e|)';
 

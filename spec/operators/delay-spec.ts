@@ -14,7 +14,7 @@ describe('delay operator', () => {
     const e1 =   hot('---a--b--|  ');
     const t =   time(   '--|      ');
     const expected = '-----a--b--|';
-    const subs =     '^          !';
+    const subs =     '^        !  ';
 
     const result = e1.pipe(delay(t, rxTestScheduler));
 
@@ -23,10 +23,10 @@ describe('delay operator', () => {
   });
 
   it('should delay by absolute time period', () => {
-    const e1 =   hot('--a--b--|  ');
-    const t =   time(  '---|     ');
+    const e1 =   hot('--a--b--|   ');
+    const t =   time(  '---|      ');
     const expected = '-----a--b--|';
-    const subs =     '^          !';
+    const subs =     '^       !   ';
 
     const absoluteDelay = new Date(rxTestScheduler.now() + t);
     const result = e1.pipe(delay(absoluteDelay, rxTestScheduler));
@@ -36,10 +36,10 @@ describe('delay operator', () => {
   });
 
   it('should delay by absolute time period after subscription', () => {
-    const e1 =   hot('---^--a--b--|  ');
-    const t =   time(      '---|     ');
+    const e1 =   hot('---^--a--b--|   ');
+    const t =   time(      '---|      ');
     const expected =    '------a--b--|';
-    const subs =        '^           !';
+    const subs =        '^        !   ';
 
     const absoluteDelay = new Date(rxTestScheduler.now() + t);
     const result = e1.pipe(delay(absoluteDelay, rxTestScheduler));
@@ -90,7 +90,7 @@ describe('delay operator', () => {
     const e1 =   hot('----|   ');
     const t =   time(    '---|');
     const expected = '-------|';
-    const subs =     '^      !';
+    const subs =     '^   !   ';
 
     const result = e1.pipe(delay(t, rxTestScheduler));
 

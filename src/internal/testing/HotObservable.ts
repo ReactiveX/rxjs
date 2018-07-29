@@ -28,10 +28,12 @@ export class HotObservable<T> extends Subject<T> implements SubscriptionLoggable
   _subscribe(subscriber: Subscriber<any>): Subscription {
     const subject: HotObservable<T> = this;
     const index = subject.logSubscribedFrame();
-    subscriber.add(new Subscription(() => {
+    const subscription = new Subscription();
+    subscription.add(new Subscription(() => {
       subject.logUnsubscribedFrame(index);
     }));
-    return super._subscribe(subscriber);
+    subscription.add(super._subscribe(subscriber));
+    return subscription;
   }
 
   setup() {

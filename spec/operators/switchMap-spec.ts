@@ -100,7 +100,7 @@ describe('switchMap', () => {
     const y =   cold(                   '---f---g---h---i--|');
     const ysubs =    '                   ^                 !';
     const e1 =   hot('---------x---------y---------|        ');
-    const e1subs =   '^                                    !';
+    const e1subs =   '^                            !        ';
     const expected = '-----------a--b--c----f---g---h---i--|';
 
     const observableLookup = { x: x, y: y };
@@ -175,7 +175,7 @@ describe('switchMap', () => {
     const y =   cold(                   '---f---g---h---i--');
     const ysubs =    '                   ^                 ';
     const e1 =   hot('---------x---------y---------|       ');
-    const e1subs =   '^                                    ';
+    const e1subs =   '^                            !       ';
     const expected = '-----------a--b--c----f---g---h---i--';
 
     const observableLookup = { x: x, y: y };
@@ -232,7 +232,7 @@ describe('switchMap', () => {
     const y =    hot('--p-o-o-p-------------f---g---h---i--|');
     const ysubs =    '                   ^                 !';
     const e1 =   hot('---------x---------y---------|        ');
-    const e1subs =   '^                                    !';
+    const e1subs =   '^                            !        ';
     const expected = '-----------c--d--e----f---g---h---i--|';
 
     const observableLookup = { x: x, y: y };
@@ -270,7 +270,7 @@ describe('switchMap', () => {
     const xsubs =    '         (^!)                 ';
     const ysubs =    '                   ^          ';
     const e1 =   hot('---------x---------y---------|');
-    const e1subs =   '^                             ';
+    const e1subs =   '^                            !';
     const expected = '------------------------------';
 
     const observableLookup = { x: x, y: y };
