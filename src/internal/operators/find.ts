@@ -1,12 +1,12 @@
 import {Observable} from '../Observable';
 import {Operator} from '../Operator';
 import {Subscriber} from '../Subscriber';
-import {OperatorFunction, MonoTypeOperatorFunction} from '../types';
+import {OperatorFunction} from '../types';
 
 export function find<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S,
                                      thisArg?: any): OperatorFunction<T, S | undefined>;
 export function find<T>(predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                        thisArg?: any): MonoTypeOperatorFunction<T | undefined>;
+                        thisArg?: any): OperatorFunction<T, T | undefined>;
 /**
  * Emits only the first value emitted by the source Observable that meets some
  * condition.
