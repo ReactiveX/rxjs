@@ -325,12 +325,16 @@ export class Observable<T> implements Subscribable<T> {
    */
   forEach(next: (value: T) => void, promiseCtorOrSubscription?: PromiseConstructorLike|Subscription): Promise<void> {
     let promiseCtor: PromiseConstructorLike;
-    let subs = isSubscription(promiseCtorOrSubscription) ? promiseCtorOrSubscription : undefined;
+    let subs: Subscription;
+    if (isSubscription(promiseCtorOrSubscription)) {
+      subs = promiseCtorOrSubscription;
+    } else {
+      subs = new Subscription();
+      promiseCtor = promiseCtorOrSubscription;
+    }
     promiseCtor = getPromiseCtor(promiseCtor);
 
     return new promiseCtor<void>((resolve, reject) => {
-      subs = subs || new Subscription();
-
       // If the promise resolves with a complete, calling reject should noop.
       subs.add(() => reject(new Error('Observable forEach unsubscribed')));
 
