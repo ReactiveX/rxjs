@@ -8,6 +8,7 @@ import { throwError } from './observable/throwError';
 import { observable as Symbol_observable } from '../internal/symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
+import { isSubscription } from 'rxjs/internal/util/isSubscription';
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
@@ -237,23 +238,28 @@ export class Observable<T> implements Subscribable<T> {
    * @return {Promise} a promise that either resolves on observable completion or
    *  rejects with the handled error
    */
-  forEach(next: (value: T) => void, promiseCtor?: PromiseConstructorLike): Promise<void> {
+  forEach(next: (value: T) => void, promiseCtorOrSubscription?: PromiseConstructorLike|Subscription): Promise<void> {
+    let promiseCtor: PromiseConstructorLike;
+    let subs = isSubscription(promiseCtorOrSubscription) ? promiseCtorOrSubscription : undefined;
     promiseCtor = getPromiseCtor(promiseCtor);
 
     return new promiseCtor<void>((resolve, reject) => {
+      subs = subs || new Subscription();
+
+      // If the promise resolves with a complete, calling reject should noop.
+      subs.add(() => reject(new Error('Observable forEach unsubscribed')));
+
       // Must be declared in a separate statement to avoid a RefernceError when
       // accessing subscription below in the closure due to Temporal Dead Zone.
-      let subscription: Subscription;
-      subscription = this.subscribe((value) => {
+      subs.add(this.subscribe(function (this: Subscription, value) {
         try {
           next(value);
         } catch (err) {
           reject(err);
-          if (subscription) {
-            subscription.unsubscribe();
-          }
+          this.unsubscribe();
         }
-      }, reject, resolve);
+      }, reject, resolve));
+
     }) as Promise<void>;
   }
 
