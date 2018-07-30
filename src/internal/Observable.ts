@@ -5,10 +5,10 @@ import { TeardownLogic, OperatorFunction, PartialObserver, Subscribable } from '
 import { toSubscriber } from './util/toSubscriber';
 import { iif } from './observable/iif';
 import { throwError } from './observable/throwError';
-import { observable as Symbol_observable } from '../internal/symbol/observable';
+import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
-import { isSubscription } from 'rxjs/internal/util/isSubscription';
+import { isSubscription } from './util/isSubscription';
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
