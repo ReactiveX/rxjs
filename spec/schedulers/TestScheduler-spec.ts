@@ -145,7 +145,7 @@ describe('TestScheduler', () => {
     it('should create a cold observable', () => {
       const expected = ['A', 'B'];
       const scheduler = new TestScheduler(null);
-      const source = scheduler.createColdObservable<string>('--a---b--|', { a: 'A', b: 'B' });
+      const source = scheduler.createColdObservable('--a---b--|', { a: 'A', b: 'B' });
       expect(source).to.be.an.instanceOf(Observable);
       source.subscribe(x => {
         expect(x).to.equal(expected.shift());
@@ -159,7 +159,7 @@ describe('TestScheduler', () => {
     it('should create a cold observable', () => {
       const expected = ['A', 'B'];
       const scheduler = new TestScheduler(null);
-      const source = scheduler.createHotObservable<string>('--a---b--|', { a: 'A', b: 'B' });
+      const source = scheduler.createHotObservable('--a---b--|', { a: 'A', b: 'B' });
       expect(source).to.be.an.instanceof(Subject);
       source.subscribe(x => {
         expect(x).to.equal(expected.shift());
@@ -313,7 +313,7 @@ describe('TestScheduler', () => {
           const expected = '     -- 9ms a 9ms b 9ms (c|) ';
 
           expectObservable(output).toBe(expected);
-          expectSubscriptions(input.subscriptions).toBe('  ^- - - - --------------------------!');
+          expectSubscriptions(input.subscriptions).toBe('  ^- - - - - !');
         });
       });
 
@@ -461,6 +461,19 @@ describe('TestScheduler', () => {
       expect(testScheduler.maxFrames).to.equal(maxFrames);
       expect(testScheduler['runMode']).to.equal(runMode);
       expect(AsyncScheduler.delegate).to.equal(delegate);
+    });
+
+    it('should flush expectations correctly', () => {
+      expect(() => {
+        const testScheduler = new TestScheduler(assertDeepEquals);
+        testScheduler.run(({ cold, expectObservable, flush }) => {
+          expectObservable(cold('-x')).toBe('-x');
+          expectObservable(cold('-y')).toBe('-y');
+          const expectation = expectObservable(cold('-z'));
+          flush();
+          expectation.toBe('-q');
+        });
+      }).to.throw();
     });
   });
 });

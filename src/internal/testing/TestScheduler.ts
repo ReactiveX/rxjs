@@ -45,7 +45,12 @@ export class TestScheduler extends VirtualTimeScheduler {
     return indexOf * TestScheduler.frameTimeFactor;
   }
 
-  createColdObservable<T>(marbles: string, values?: any, error?: any): ColdObservable<T> {
+  /**
+   * @param marbles A diagram in the marble DSL. Letters map to keys in `values` if provided.
+   * @param values Values to use for the letters in `marbles`. If ommitted, the letters themselves are used.
+   * @param error The error to use for the `#` marble (if present).
+   */
+  createColdObservable<T = string>(marbles: string, values?: { [marble: string]: T }, error?: any): ColdObservable<T> {
     if (marbles.indexOf('^') !== -1) {
       throw new Error('cold observable cannot have subscription offset "^"');
     }
@@ -58,7 +63,12 @@ export class TestScheduler extends VirtualTimeScheduler {
     return cold;
   }
 
-  createHotObservable<T>(marbles: string, values?: any, error?: any): HotObservable<T> {
+  /**
+   * @param marbles A diagram in the marble DSL. Letters map to keys in `values` if provided.
+   * @param values Values to use for the letters in `marbles`. If ommitted, the letters themselves are used.
+   * @param error The error to use for the `#` marble (if present).
+   */
+  createHotObservable<T = string>(marbles: string, values?: { [marble: string]: T }, error?: any): HotObservable<T> {
     if (marbles.indexOf('!') !== -1) {
       throw new Error('hot observable cannot have unsubscription marker "!"');
     }
@@ -141,17 +151,14 @@ export class TestScheduler extends VirtualTimeScheduler {
     }
 
     super.flush();
-    const { flushTests } = this;
-    const flushTestsCopy = flushTests.slice();
 
-    for (let i = 0, l = flushTests.length; i < l; i++) {
-      const test = flushTestsCopy[i];
+    this.flushTests = this.flushTests.filter(test => {
       if (test.ready) {
-        // remove it from the original array, not our copy
-        flushTests.splice(i, 1);
         this.assertDeepEqual(test.actual, test.expected);
+        return false;
       }
-    }
+      return true;
+    });
   }
 
   /** @nocollapse */

@@ -47,7 +47,7 @@ import { Subscriber } from '../Subscriber';
  * @return {Observable} An error Observable: emits only the error notification
  * using the given error argument.
  * @static true
- * @name throw
+ * @name throwError
  * @owner Observable
  */
 export function throwError(error: any, scheduler?: SchedulerLike): Observable<never> {

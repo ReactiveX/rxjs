@@ -246,6 +246,34 @@ describe('ajax', () => {
     expect(complete).to.be.true;
   });
 
+  it('should fail if fails to parse response', () => {
+    let error: any;
+    const obj = {
+      url: '/flibbertyJibbet',
+      responseType: 'json',
+      method: ''
+    };
+
+    ajax(obj)
+      .subscribe((x: any) => {
+        throw 'should not next';
+      }, (err: any) => {
+        error = err;
+      }, () => {
+        throw 'should not complete';
+      });
+
+    MockXMLHttpRequest.mostRecent.respondWith({
+      'status': 207,
+      'contentType': '',
+      'responseType': '',
+      'responseText': 'Wee! I am text, but should be valid JSON!'
+    });
+
+    expect(error instanceof SyntaxError).to.be.true;
+    expect(error.message).to.equal('Unexpected token W in JSON at position 0');
+  });
+
   it('should fail on 404', () => {
     let error: any;
     const obj = {
@@ -310,6 +338,36 @@ describe('ajax', () => {
     expect(result.xhr).exist;
     expect(result.response).to.deep.equal('Wee! I am text!');
     expect(complete).to.be.true;
+  });
+
+  it('should fail if fails to parse error response', () => {
+    let error: any;
+    const obj = {
+      url: '/flibbertyJibbet',
+      normalizeError: (e: any, xhr: any, type: any) => {
+        return xhr.response || xhr.responseText;
+      },
+      responseType: 'json',
+      method: ''
+    };
+
+    ajax(obj).subscribe(x => {
+      throw 'should not next';
+    }, (err: any) => {
+      error = err;
+    }, () => {
+      throw 'should not complete';
+    });
+
+    MockXMLHttpRequest.mostRecent.respondWith({
+      'status': 404,
+      'contentType': '',
+      'responseType': '',
+      'responseText': 'Wee! I am text, but should be valid JSON!'
+    });
+
+    expect(error instanceof SyntaxError).to.be.true;
+    expect(error.message).to.equal('Unexpected token W in JSON at position 0');
   });
 
   it('should succeed no settings', () => {
@@ -1104,8 +1162,6 @@ class MockXMLHttpRequest {
   protected defaultResponseValue() {
     if (this.async === false) {
       this.response = this.responseText;
-    } else {
-      throw new Error('unhandled type "' + this.responseType + '"');
     }
   }
 
@@ -1121,8 +1177,9 @@ class MockXMLHttpRequest {
     };
     this.status = response.status || 200;
     this.responseText = response.responseText;
+    const responseType = response.responseType !== undefined ? response.responseType : this.responseType;
     if (!('response' in response)) {
-      switch (this.responseType) {
+      switch (responseType) {
       case 'json':
         this.jsonResponseValue(response);
         break;

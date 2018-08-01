@@ -193,7 +193,7 @@ describe('reduce operator', () => {
       throw 'error';
     };
 
-    expectObservable(e1.pipe(reduce(reduceFunction, seed))).toBe(expected);
+    expectObservable(e1.pipe(reduce<string>(reduceFunction, seed))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -292,7 +292,7 @@ describe('reduce operator', () => {
 
   type('should accept array typed reducers', () => {
     let a: Observable<{ a: number; b: string }>;
-    a.pipe(reduce((acc, value) => acc.concat(value), []));
+    a.pipe(reduce<{ a: number; b: string }>((acc, value) => acc.concat(value), []));
   });
 
   type('should accept T typed reducers', () => {
@@ -322,7 +322,7 @@ describe('reduce operator', () => {
 
   type('should accept R typed reduces when R is an array of T', () => {
     let a: Observable<number>;
-    const reduced = a.pipe(reduce((acc, value) => {
+    const reduced = a.pipe(reduce<number>((acc, value) => {
       acc.push(value);
       return acc;
     }, []));
@@ -380,7 +380,7 @@ describe('reduce operator', () => {
 
   type('should accept array of R typed reducers and reduce to array of R', () => {
     let a: Observable<number>;
-    const reduced = a.pipe(reduce((acc, cur) => {
+    const reduced = a.pipe(reduce<number, string[]>((acc, cur) => {
       console.log(acc);
       acc.push(cur.toString());
       return acc;

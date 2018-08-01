@@ -2,12 +2,27 @@ import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { EmptyError } from '../util/EmptyError';
-import { MonoTypeOperatorFunction } from '../../internal/types';
+import { OperatorFunction } from '../../internal/types';
 import { filter } from './filter';
 import { take } from './take';
 import { defaultIfEmpty } from './defaultIfEmpty';
 import { throwIfEmpty } from './throwIfEmpty';
 import { identity } from '../util/identity';
+
+/* tslint:disable:max-line-length */
+export function first<T, D = T>(
+  predicate?: null,
+  defaultValue?: D
+): OperatorFunction<T, T | D>;
+export function first<T, S extends T>(
+  predicate: (value: T, index: number, source: Observable<T>) => value is S,
+  defaultValue?: S
+): OperatorFunction<T, S>;
+export function first<T, D = T>(
+  predicate: (value: T, index: number, source: Observable<T>) => boolean,
+  defaultValue?: D
+): OperatorFunction<T, T | D>;
+/* tslint:enable:max-line-length */
 
 /**
  * Emits only the first value (or the first value that meets some condition)
@@ -21,10 +36,10 @@ import { identity } from '../util/identity';
  * If called with no arguments, `first` emits the first value of the source
  * Observable, then completes. If called with a `predicate` function, `first`
  * emits the first value of the source that matches the specified condition. It
- * may also take a `resultSelector` function to produce the output value from
- * the input value, and a `defaultValue` to emit in case the source completes
- * before it is able to emit a valid value. Throws an error if `defaultValue`
- * was not provided and a matching element is not found.
+ * may also take a deprecated `resultSelector` function to produce the output
+ * value from the input value, and a `defaultValue` to emit in case the source
+ * completes before it is able to emit a valid value. Throws an error if
+ * `defaultValue` was not provided and a matching element is not found.
  *
  * ## Examples
  * Emit only the first click that happens on the DOM
@@ -57,14 +72,14 @@ import { identity } from '../util/identity';
  * @method first
  * @owner Observable
  */
-export function first<T>(
-  predicate?: (value: T, index: number, source: Observable<T>) => boolean,
-  defaultValue?: T
-): MonoTypeOperatorFunction<T> {
+export function first<T, D>(
+  predicate?: ((value: T, index: number, source: Observable<T>) => boolean) | null,
+  defaultValue?: D
+): OperatorFunction<T, T | D> {
   const hasDefaultValue = arguments.length >= 2;
   return (source: Observable<T>) => source.pipe(
     predicate ? filter((v, i) => predicate(v, i, source)) : identity,
     take(1),
-    hasDefaultValue ? defaultIfEmpty(defaultValue) : throwIfEmpty(() => new EmptyError()),
+    hasDefaultValue ? defaultIfEmpty<T | D>(defaultValue) : throwIfEmpty(() => new EmptyError()),
   );
 }

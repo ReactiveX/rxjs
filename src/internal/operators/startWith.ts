@@ -20,7 +20,25 @@ export function startWith<T>(...array: Array<T | SchedulerLike>): MonoTypeOperat
  * Returns an Observable that emits the items you specify as arguments before it begins to emit
  * items emitted by the source Observable.
  *
+ * <span class="informal">First emits its arguments in order, and then any
+ * emissions from the source.</span>
+ *
  * ![](startWith.png)
+ *
+ * ## Examples
+ *
+ * Start the chain of emissions with `"first"`, `"second"`
+ *
+ * ```javascript
+ *   of("from source")
+ *    .pipe(startWith("first", "second"))
+ *    .subscribe(x => console.log(x));
+ *
+ * // results:
+ * //   "first"
+ * //   "second"
+ * //   "from source"
+ * ```
  *
  * @param {...T} values - Items you want the modified Observable to emit first.
  * @param {SchedulerLike} [scheduler] - A {@link SchedulerLike} to use for scheduling

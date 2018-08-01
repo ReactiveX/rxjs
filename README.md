@@ -13,7 +13,7 @@
 
 ### MIGRATION AND RELEASE INFORMATION:
 
-Find out how up update to v6, **automatically update your TypeScript code**, and more!
+Find out how to update to v6, **automatically update your TypeScript code**, and more!
 
 - [Current home is MIGRATION.md](./docs_app/content/guide/v6/migration.md)
 

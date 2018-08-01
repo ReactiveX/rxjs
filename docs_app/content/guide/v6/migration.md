@@ -100,7 +100,7 @@ The following example shows the kind of changes you will need to make in user-de
 Here is an example of a user-defined prototype operator:
 
 ```ts
-Observable.prototype.userDefined = () => {
+Observable.prototype.userDefined = function () {
   return new Observable((subscriber) => {
     this.subscribe({
       next(value) { subscriber.next(value); },
@@ -108,7 +108,7 @@ Observable.prototype.userDefined = () => {
       complete() { subscriber.complete(); },
    });
   });
-});
+};
 
 source$.userDefined().subscribe();
 ```

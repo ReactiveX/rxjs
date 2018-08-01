@@ -44,7 +44,7 @@ before_install:
 
 install:
   - npm ci
-  - if [ "$FULL_VALIDATE" == "true" ]; then npm run lint && npm run test:circular; fi
+  - if [ "$FULL_VALIDATE" == "true" ]; then npm run lint && npm run dtslint && npm run test:circular; fi
 
 script:
   - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)

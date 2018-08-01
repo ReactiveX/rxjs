@@ -47,8 +47,8 @@ export function switchMapTo<T, I, R>(observable: ObservableInput<I>, resultSelec
  * @param {ObservableInput} innerObservable An Observable to replace each value from
  * the source Observable.
  * @return {Observable} An Observable that emits items from the given
- * `innerObservable` (and optionally transformed through `resultSelector`) every
- * time a value is emitted on the source Observable, and taking only the values
+ * `innerObservable` (and optionally transformed through the deprecated `resultSelector`)
+ * every time a value is emitted on the source Observable, and taking only the values
  * from the most recently projected inner Observable.
  * @method switchMapTo
  * @owner Observable

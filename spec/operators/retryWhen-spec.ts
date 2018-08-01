@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { retryWhen, map, mergeMap, takeUntil, flatMap } from 'rxjs/operators';
+import { retryWhen, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { of, EMPTY } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
@@ -319,7 +319,7 @@ describe('retryWhen operator', () => {
     const result = source.pipe(retryWhen((errors: any) => errors.pipe(
         map(() => 'x'),
         takeUntil(
-          errors.pipe(flatMap(() => {
+          errors.pipe(mergeMap(() => {
             if (++invoked < 3) {
               return EMPTY;
             } else {

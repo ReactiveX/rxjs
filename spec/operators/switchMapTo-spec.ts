@@ -104,9 +104,9 @@ describe('switchMapTo', () => {
     const x =   cold(         '--a--b--c--d--e--|          ');
     const xsubs =   ['         ^         !                 ',
     //                                 --a--b--c--d--e--|
-                   '                   ^                !'];
+                     '                   ^                !'];
     const e1 =   hot('---------x---------x---------|       ');
-    const e1subs =   '^                                   !';
+    const e1subs =   '^                            !       ';
     const expected = '-----------a--b--c---a--b--c--d--e--|';
 
     expectObservable(e1.pipe(switchMapTo(x))).toBe(expected);
@@ -130,7 +130,7 @@ describe('switchMapTo', () => {
     const x =   cold(         '--a--b--c--d--e--|   ');
     const xsubs =   ['         ^         !          ',
     //                                 --a--b--c--d--e--|
-                   '                   ^  !       '];
+                     '                   ^  !       '];
     const e1 =   hot('---------x---------x---------|');
     const unsub =    '                      !       ';
     const e1subs =   '^                     !       ';
@@ -145,7 +145,7 @@ describe('switchMapTo', () => {
     const x =   cold(         '--a--b--c--d--e--|   ');
     const xsubs =   ['         ^         !          ',
     //                                 --a--b--c--d--e--|
-                   '                   ^  !       '];
+                     '                   ^  !       '];
     const e1 =   hot('---------x---------x---------|');
     const e1subs =   '^                     !       ';
     const expected = '-----------a--b--c---a-       ';
@@ -166,9 +166,9 @@ describe('switchMapTo', () => {
     const x =   cold(         '--a--b--c--d--e-          ');
     const xsubs =   ['         ^         !               ',
     //                                 --a--b--c--d--e-
-                   '                   ^               '];
+                     '                   ^               '];
     const e1 =   hot('---------x---------y---------|     ');
-    const e1subs =   '^                                  ';
+    const e1subs =   '^                            !     ';
     const expected = '-----------a--b--c---a--b--c--d--e-';
 
     expectObservable(e1.pipe(switchMapTo(x))).toBe(expected);
@@ -179,7 +179,7 @@ describe('switchMapTo', () => {
   it('should handle a synchronous switch to the inner observable', () => {
     const x =   cold(         '--a--b--c--d--e--|   ');
     const xsubs =   ['         (^!)                 ',
-                   '         ^                !   '];
+                     '         ^                !   '];
     const e1 =   hot('---------(xx)----------------|');
     const e1subs =   '^                            !';
     const expected = '-----------a--b--c--d--e-----|';
@@ -204,7 +204,7 @@ describe('switchMapTo', () => {
   it('should switch an inner hot observable', () => {
     const x =    hot('--p-o-o-p---a--b--c--d-|      ');
     const xsubs =   ['         ^         !          ',
-                   '                   ^   !      '];
+                     '                   ^   !      '];
     const e1 =   hot('---------x---------x---------|');
     const e1subs =   '^                            !';
     const expected = '------------a--b--c--d-------|';
@@ -217,7 +217,7 @@ describe('switchMapTo', () => {
   it('should switch to an inner empty', () => {
     const x = cold('|');
     const xsubs =   ['         (^!)                 ',
-                   '                   (^!)       '];
+                     '                   (^!)       '];
     const e1 =   hot('---------x---------x---------|');
     const e1subs =   '^                            !';
     const expected = '-----------------------------|';
@@ -230,9 +230,9 @@ describe('switchMapTo', () => {
   it('should switch to an inner never', () => {
     const x = cold('-');
     const xsubs =   ['         ^         !          ',
-                   '                   ^          '];
+                     '                   ^          '];
     const e1 =   hot('---------x---------x---------|');
-    const e1subs =   '^                             ';
+    const e1subs =   '^                            !';
     const expected = '------------------------------';
 
     expectObservable(e1.pipe(switchMapTo(x))).toBe(expected);

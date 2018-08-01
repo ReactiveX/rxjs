@@ -66,7 +66,7 @@ describe('mergeScan', () => {
 
   it('should not stop ongoing async projections when source completes', () => {
     const e1 = hot('--a--^--b--c--d--e--f--g--|');
-    const e1subs =      '^                      !';
+    const e1subs =      '^                    !';
     const expected =    '--------u--v--w--x--y--(z|)';
 
     const values = {
@@ -183,7 +183,7 @@ describe('mergeScan', () => {
 
   it('should handle a never projected Observable', () => {
     const e1 = hot('--a--^--b--c--d--e--f--g--|');
-    const e1subs =      '^                     ';
+    const e1subs =      '^                    !';
     const expected =    '----------------------';
 
     const values = { x: <string[]>[] };
@@ -252,7 +252,7 @@ describe('mergeScan', () => {
 
   it('should mergescan projects cold Observable with single concurrency', () => {
     const e1 =   hot('--a--b--c--|');
-    const e1subs =   '^                                  !';
+    const e1subs =   '^          !';
 
     const inner = [
       cold(          '--d--e--f--|                      '),
@@ -293,7 +293,7 @@ describe('mergeScan', () => {
 
   it('should emit accumulator if inner completes without value after source completes', () => {
     const e1 = hot('--a--^--b--c--d--e--f--g--|');
-    const e1subs =      '^                      !';
+    const e1subs =      '^                    !';
     const expected =    '-----------------------(x|)';
 
     const source = e1.pipe(
@@ -306,7 +306,7 @@ describe('mergeScan', () => {
 
   it('should mergescan projects hot Observable with single concurrency', () => {
     const e1 =   hot('---a---b---c---|');
-    const e1subs =   '^                           !';
+    const e1subs =   '^              !';
 
     const inner = [
       hot(         '--d--e--f--|'),
@@ -336,7 +336,7 @@ describe('mergeScan', () => {
 
   it('should mergescan projects cold Observable with dual concurrency', () => {
     const e1 =   hot('----a----b----c----|');
-    const e1subs =   '^                                 !';
+    const e1subs =   '^                  !';
 
     const inner = [
       cold(            '---d---e---f---|               '),
@@ -366,7 +366,7 @@ describe('mergeScan', () => {
 
   it('should mergescan projects hot Observable with dual concurrency', () => {
     const e1 =   hot('---a---b---c---|');
-    const e1subs =   '^                           !';
+    const e1subs =   '^              !';
 
     const inner = [
       hot(         '--d--e--f--|'),

@@ -20,9 +20,9 @@ describe('observeOn operator', () => {
   });
 
   it('should observe after specified delay', () => {
-    const e1 =    hot('--a--b--|');
+    const e1 =    hot('--a--b--|   ');
     const expected =  '-----a--b--|';
-    const sub =       '^          !';
+    const sub =       '^       !   ';
 
     expectObservable(e1.pipe(observeOn(rxTestScheduler, 30))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
@@ -104,7 +104,7 @@ describe('observeOn operator', () => {
       .subscribe(
         x => {
           const observeOnSubscriber = subscription._subscriptions[0];
-          expect(observeOnSubscriber._subscriptions.length).to.equal(2); // 1 for the consumer, and one for the notification
+          expect(observeOnSubscriber._subscriptions.length).to.equal(2); // one for the consumer, and one for the notification
           expect(observeOnSubscriber._subscriptions[1].state.notification.kind)
             .to.equal('N');
           expect(observeOnSubscriber._subscriptions[1].state.notification.value)
@@ -114,10 +114,11 @@ describe('observeOn operator', () => {
         err => done(err),
         () => {
           // now that the last nexted value is done, there should only be a complete notification scheduled
+          // the consumer will have been unsubscribed via Subscriber#_parentSubscription
           const observeOnSubscriber = subscription._subscriptions[0];
-          expect(observeOnSubscriber._subscriptions.length).to.equal(2); // 1 for the consumer, one for the complete notification
+          expect(observeOnSubscriber._subscriptions.length).to.equal(1); // one for the complete notification
           // only this completion notification should remain.
-          expect(observeOnSubscriber._subscriptions[1].state.notification.kind)
+          expect(observeOnSubscriber._subscriptions[0].state.notification.kind)
             .to.equal('C');
           // After completion, the entire _subscriptions list is nulled out anyhow, so we can't test much further than this.
           expect(results).to.deep.equal([1, 2, 3]);

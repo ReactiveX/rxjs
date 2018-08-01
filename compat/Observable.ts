@@ -1,1 +1,2 @@
-export {Observable, Subscribable, SubscribableOrPromise, ObservableInput} from 'rxjs';
+export {Observable} from 'rxjs/internal/Observable';
+export {Subscribable, SubscribableOrPromise, ObservableInput} from 'rxjs/internal/types';
