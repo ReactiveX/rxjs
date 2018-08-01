@@ -1,8 +1,11 @@
-import { findIndex, mergeMap } from 'rxjs/operators';
+import { findIndex, mergeMap, delay } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { of } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
+
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {findIndex} */
 describe('findIndex operator', () => {
@@ -18,7 +21,7 @@ describe('findIndex operator', () => {
 
     const predicate = function (x: number) { return x % 5 === 0; };
 
-    expectObservable((<any>source).pipe(findIndex(predicate))).toBe(expected, { x: 2 });
+    expectObservable(source.pipe(findIndex(predicate))).toBe(expected, { x: 2 });
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -27,7 +30,7 @@ describe('findIndex operator', () => {
     const subs =       '^';
     const expected =   '-';
 
-    expectObservable((<any>source).pipe(findIndex(truePredicate))).toBe(expected);
+    expectObservable(source.pipe(findIndex(truePredicate))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -36,7 +39,7 @@ describe('findIndex operator', () => {
     const subs =        '(^!)';
     const expected =    '(x|)';
 
-    const result = (<any>source).pipe(findIndex(truePredicate));
+    const result = source.pipe(findIndex(truePredicate));
 
     expectObservable(result).toBe(expected, {x: -1});
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -52,7 +55,7 @@ describe('findIndex operator', () => {
       return value === sourceValue;
     };
 
-    expectObservable((<any>source).pipe(findIndex(predicate))).toBe(expected, { x: 0 });
+    expectObservable(source.pipe(findIndex(predicate))).toBe(expected, { x: 0 });
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -65,7 +68,7 @@ describe('findIndex operator', () => {
       return value === 7;
     };
 
-    expectObservable((<any>source).pipe(findIndex(predicate))).toBe(expected, { x: 1 });
+    expectObservable(source.pipe(findIndex(predicate))).toBe(expected, { x: 1 });
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -78,7 +81,7 @@ describe('findIndex operator', () => {
     const predicate = function (this: typeof sourceValues, value: number) {
       return value === this.b;
     };
-    const result = (<any>source).pipe(findIndex(predicate, sourceValues));
+    const result = source.pipe(findIndex(predicate, sourceValues));
 
     expectObservable(result).toBe(expected, { x: 1 });
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -93,7 +96,7 @@ describe('findIndex operator', () => {
       return value === 'z';
     };
 
-    expectObservable((<any>source).pipe(findIndex(predicate))).toBe(expected, { x: -1 });
+    expectObservable(source.pipe(findIndex(predicate))).toBe(expected, { x: -1 });
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -103,7 +106,7 @@ describe('findIndex operator', () => {
     const expected =   '-------     ';
     const unsub =      '      !     ';
 
-    const result = (<any>source).pipe(findIndex((value: string) => value === 'z'));
+    const result = source.pipe(findIndex((value: string) => value === 'z'));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -115,13 +118,27 @@ describe('findIndex operator', () => {
     const expected =   '-------     ';
     const unsub =      '      !     ';
 
-    const result = (<any>source).pipe(
+    const result = source.pipe(
       mergeMap((x: string) => of(x)),
       findIndex((value: string) => value === 'z'),
-      mergeMap((x: string) => of(x))
+      mergeMap((x: number) => of(x))
     );
 
     expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should unsubscribe when the predicate is matched', () => {
+    const source = hot('--a--b---c-|');
+    const subs =       '^    !';
+    const expected =   '-------(x|)';
+
+    const duration = rxTestScheduler.createTime('--|');
+
+    expectObservable(source.pipe(
+      findIndex((value: string) => value === 'b'),
+      delay(duration, rxTestScheduler)
+    )).toBe(expected, { x: 1 });
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -134,7 +151,7 @@ describe('findIndex operator', () => {
       return value === 'z';
     };
 
-    expectObservable((<any>source).pipe(findIndex(predicate))).toBe(expected);
+    expectObservable(source.pipe(findIndex(predicate))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -147,7 +164,7 @@ describe('findIndex operator', () => {
       throw 'error';
     };
 
-    expectObservable((<any>source).pipe(findIndex(predicate))).toBe(expected);
+    expectObservable(source.pipe(findIndex(predicate))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 });

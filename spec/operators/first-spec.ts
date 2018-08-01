@@ -1,9 +1,12 @@
 import { expect } from 'chai';
 import { hot, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { first, mergeMap } from 'rxjs/operators';
+import { first, mergeMap, delay } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
 import { of, from, Observable, Subject, EmptyError } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
+
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {first} */
 describe('Observable.prototype.first', () => {
@@ -99,6 +102,20 @@ describe('Observable.prototype.first', () => {
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should unsubscribe when the first value is receiv', () => {
+    const source = hot('--a--b---c-|');
+    const subs =       '^ !';
+    const expected =   '----(a|)';
+
+    const duration = rxTestScheduler.createTime('--|');
+
+    expectObservable(source.pipe(
+      first(),
+      delay(duration, rxTestScheduler)
+    )).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should return first value that matches a predicate', () => {

@@ -1,9 +1,12 @@
 import { expect } from 'chai';
-import { find, mergeMap } from 'rxjs/operators';
+import { find, mergeMap, delay } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { of, Observable, from } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
+
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {find} */
 describe('find operator', () => {
@@ -19,13 +22,13 @@ describe('find operator', () => {
 
     const predicate = function (x: number) { return x % 5 === 0; };
 
-    expectObservable((<any>source).pipe(find(predicate))).toBe(expected, values);
+    expectObservable(source.pipe(find(predicate))).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
   it('should throw if not provided a function', () => {
     expect(() => {
-      (<any>of('yut', 'yee', 'sam')).pipe(find('yee' as any));
+      of('yut', 'yee', 'sam').pipe(find('yee' as any));
     }).to.throw(TypeError, 'predicate is not a function');
   });
 
@@ -34,7 +37,7 @@ describe('find operator', () => {
     const subs =       '^';
     const expected =   '-';
 
-    expectObservable((<any>source).pipe(find(truePredicate))).toBe(expected);
+    expectObservable(source.pipe(find(truePredicate))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -43,7 +46,7 @@ describe('find operator', () => {
     const subs =        '(^!)';
     const expected =    '(x|)';
 
-    const result = (<any>source).pipe(find(truePredicate));
+    const result = source.pipe(find(truePredicate));
 
     expectObservable(result).toBe(expected, {x: undefined});
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -58,7 +61,7 @@ describe('find operator', () => {
       return value === 'a';
     };
 
-    expectObservable((<any>source).pipe(find(predicate))).toBe(expected);
+    expectObservable(source.pipe(find(predicate))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -71,7 +74,7 @@ describe('find operator', () => {
       return value === 'b';
     };
 
-    expectObservable((<any>source).pipe(find(predicate))).toBe(expected);
+    expectObservable(source.pipe(find(predicate))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -87,7 +90,7 @@ describe('find operator', () => {
       return value === this.target;
     };
 
-    expectObservable((<any>source).pipe(find(predicate, finder))).toBe(expected);
+    expectObservable(source.pipe(find(predicate, finder))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -100,7 +103,7 @@ describe('find operator', () => {
       return value === 'z';
     };
 
-    expectObservable((<any>source).pipe(find(predicate))).toBe(expected, { x: undefined });
+    expectObservable(source.pipe(find(predicate))).toBe(expected, { x: undefined });
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -110,7 +113,7 @@ describe('find operator', () => {
     const expected =   '-------     ';
     const unsub =      '      !     ';
 
-    const result = (<any>source).pipe(find((value: string) => value === 'z'));
+    const result = source.pipe(find((value: string) => value === 'z'));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -122,13 +125,27 @@ describe('find operator', () => {
     const expected =   '-------     ';
     const unsub =      '      !     ';
 
-    const result = (<any>source).pipe(
+    const result = source.pipe(
       mergeMap((x: string) => of(x)),
       find((value: string) => value === 'z'),
       mergeMap((x: string) => of(x))
     );
 
     expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should unsubscribe when the predicate is matched', () => {
+    const source = hot('--a--b---c-|');
+    const subs =       '^    !';
+    const expected =   '-------(b|)';
+
+    const duration = rxTestScheduler.createTime('--|');
+
+    expectObservable(source.pipe(
+      find((value: string) => value === 'b'),
+      delay(duration, rxTestScheduler)
+    )).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -141,7 +158,7 @@ describe('find operator', () => {
       return value === 'z';
     };
 
-    expectObservable((<any>source).pipe(find(predicate))).toBe(expected);
+    expectObservable(source.pipe(find(predicate))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -154,7 +171,7 @@ describe('find operator', () => {
       throw 'error';
     };
 
-    expectObservable((<any>source).pipe(find(predicate))).toBe(expected);
+    expectObservable(source.pipe(find(predicate))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
