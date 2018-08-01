@@ -21,7 +21,7 @@ export function race<T, R>(...observables: Array<Observable<any> | Array<Observa
  * @return {Observable} An Observable that mirrors the output of the first Observable to emit an item.
  * @method race
  * @owner Observable
- * @deprecated Deprecated in favor of static race.
+ * @deprecated Deprecated in favor of static {@link race}.
  */
 export function race<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): MonoTypeOperatorFunction<T> {
   return function raceOperatorFunction(source: Observable<T>) {

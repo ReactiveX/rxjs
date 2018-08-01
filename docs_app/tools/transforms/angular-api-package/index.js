@@ -19,6 +19,7 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
   .processor(require('./processors/splitDescription'))
   .processor(require('./processors/convertPrivateClassesToInterfaces'))
   .processor(require('./processors/generateApiListDoc'))
+  .processor(require('./processors/generateDeprecationsListDoc'))
   .processor(require('./processors/addNotYetDocumentedProperty'))
   .processor(require('./processors/mergeDecoratorDocs'))
   .processor(require('./processors/extractDecoratedClasses'))
@@ -41,7 +42,7 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
    * more Angular specific API types, such as decorators and directives.
    */
   .factory(function API_DOC_TYPES_TO_RENDER(EXPORT_DOC_TYPES) {
-    return EXPORT_DOC_TYPES.concat(['decorator', 'directive', 'pipe', 'module']);
+    return EXPORT_DOC_TYPES.concat(['decorator', 'directive', 'pipe', 'module', 'deprecation']);
   })
 
   /**
@@ -146,11 +147,12 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
     splitDescription.docTypes = API_DOC_TYPES;
   })
 
-  .config(function(computePathsProcessor, EXPORT_DOC_TYPES, generateApiListDoc) {
+  .config(function(computePathsProcessor, EXPORT_DOC_TYPES, generateApiListDoc, generateDeprecationListDoc) {
 
     const API_SEGMENT = 'api';
 
     generateApiListDoc.outputFolder = API_SEGMENT;
+    generateDeprecationListDoc.outputFolder = API_SEGMENT;
 
     computePathsProcessor.pathTemplates.push({
       docTypes: ['module'],

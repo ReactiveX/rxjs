@@ -39,7 +39,7 @@ export function combineLatest<T, TOther, R>(array: ObservableInput<TOther>[], pr
 /* tslint:enable:max-line-length */
 
 /**
- * @deprecated Deprecated in favor of static combineLatest.
+ * @deprecated Deprecated in favor of static {@link combineLatest}.
  */
 export function combineLatest<T, R>(...observables: Array<ObservableInput<any> |
                                                     Array<ObservableInput<any>> |

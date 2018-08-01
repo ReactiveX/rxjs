@@ -138,7 +138,7 @@ class WindowToggleSubscriber<T, O> extends OuterSubscriber<T, any> {
     super._complete();
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
+  /** @internal This is an internal implementation detail, do not use. */
   _unsubscribe() {
     const { contexts } = this;
     this.contexts = null;

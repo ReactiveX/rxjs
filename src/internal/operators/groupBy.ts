@@ -243,7 +243,7 @@ class GroupDurationSubscriber<K, T> extends Subscriber<T> {
     this.complete();
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
+  /** @internal This is an internal implementation detail, do not use. */
   _unsubscribe() {
     const { parent, key } = this;
     this.key = this.parent = null;
@@ -262,14 +262,14 @@ class GroupDurationSubscriber<K, T> extends Subscriber<T> {
  * @class GroupedObservable<K, T>
  */
 export class GroupedObservable<K, T> extends Observable<T> {
-  /** @deprecated Do not construct this type. Internal use only */
+  /** @internal Do not construct this type. Internal use only */
   constructor(public key: K,
               private groupSubject: Subject<T>,
               private refCountSubscription?: RefCountSubscription) {
     super();
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
+  /** @internal This is an internal implementation detail, do not use. */
   _subscribe(subscriber: Subscriber<T>) {
     const subscription = new Subscription();
     const { refCountSubscription, groupSubject } = this;

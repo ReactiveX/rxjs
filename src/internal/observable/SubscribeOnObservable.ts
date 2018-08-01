@@ -39,7 +39,7 @@ export class SubscribeOnObservable<T> extends Observable<T> {
     }
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
+  /** @internal This is an internal implementation detail, do not use. */
   _subscribe(subscriber: Subscriber<T>) {
     const delay = this.delayTime;
     const source = this.source;

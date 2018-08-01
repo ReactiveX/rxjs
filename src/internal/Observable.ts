@@ -20,10 +20,10 @@ export class Observable<T> implements Subscribable<T> {
   /** Internal implementation detail, do not use directly. */
   public _isScalar: boolean = false;
 
-  /** @deprecated This is an internal implementation detail, do not use. */
+  /** @internal This is an internal implementation detail, do not use. */
   source: Observable<any>;
 
-  /** @deprecated This is an internal implementation detail, do not use. */
+  /** @internal This is an internal implementation detail, do not use. */
   operator: Operator<any, T>;
 
   /**
@@ -257,7 +257,7 @@ export class Observable<T> implements Subscribable<T> {
     }) as Promise<void>;
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
+  /** @internal This is an internal implementation detail, do not use. */
   _subscribe(subscriber: Subscriber<any>): TeardownLogic {
     const { source } = this;
     return source && source.subscribe(subscriber);

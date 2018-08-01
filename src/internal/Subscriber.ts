@@ -152,7 +152,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     this.unsubscribe();
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
+  /** @internal This is an internal implementation detail, do not use. */
   _unsubscribeAndRecycle(): Subscriber<T> {
     const { _parent, _parents } = this;
     this._parent = null;
@@ -297,7 +297,7 @@ class SafeSubscriber<T> extends Subscriber<T> {
     return false;
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
+  /** @internal This is an internal implementation detail, do not use. */
   _unsubscribe(): void {
     const { _parentSubscriber } = this;
     this._context = null;

@@ -22,7 +22,7 @@ export function concat<T, R>(...observables: Array<ObservableInput<any> | Schedu
 /* tslint:enable:max-line-length */
 
 /**
- * @deprecated Deprecated in favor of static concat.
+ * @deprecated Deprecated in favor of static {@link concat}.
  */
 export function concat<T, R>(...observables: Array<ObservableInput<any> | SchedulerLike>): OperatorFunction<T, R> {
   return (source: Observable<T>) => source.lift.call(concatStatic<T, R>(source, ...observables));
