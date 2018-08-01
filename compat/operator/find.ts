@@ -4,10 +4,10 @@ import { find as higherOrder } from 'rxjs/operators';
 /* tslint:disable:max-line-length */
 export function find<T, S extends T>(this: Observable<T>,
                                      predicate: (value: T, index: number) => value is S,
-                                     thisArg?: any): Observable<S>;
+                                     thisArg?: any): Observable<S | undefined>;
 export function find<T>(this: Observable<T>,
                         predicate: (value: T, index: number) => boolean,
-                        thisArg?: any): Observable<T>;
+                        thisArg?: any): Observable<T | undefined>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -44,6 +44,6 @@ export function find<T>(this: Observable<T>,
  * @owner Observable
  */
 export function find<T>(this: Observable<T>, predicate: (value: T, index: number, source: Observable<T>) => boolean,
-                        thisArg?: any): Observable<T> {
+                        thisArg?: any): Observable<T | undefined> {
   return higherOrder(predicate, thisArg)(this);
 }
