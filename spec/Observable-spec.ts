@@ -132,8 +132,6 @@ describe('Observable', () => {
       .catch(err => results.push(err))
       .then(
         () => {
-          // Since the consuming code can no longer interfere with the synchronous
-          // producer, the remaining results are nexted.
           expect(results).to.deep.equal([1, 2, 3, expected]);
         }
       ).then(
