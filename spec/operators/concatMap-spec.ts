@@ -594,7 +594,7 @@ describe('Observable.prototype.concatMap', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should mergeMap many outer to inner arrays, outer unsubscribed early', () => {
+  it('should concatMap many outer to inner arrays, outer unsubscribed early', () => {
     const e1 =   hot('2-----4--------3--------2-------|');
     const e1subs =   '^            !                   ';
     const unsub =    '             !                   ';
