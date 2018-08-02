@@ -129,7 +129,7 @@ export class AsyncAction<T> extends Action<T> {
     }
   }
 
-  /** @internal This is an internal implementation detail, do not use. */
+  /** @deprecated This is an internal implementation detail, do not use. */
   _unsubscribe() {
 
     const id = this.id;

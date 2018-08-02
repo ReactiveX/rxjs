@@ -24,7 +24,7 @@ export class HotObservable<T> extends Subject<T> implements SubscriptionLoggable
     this.scheduler = scheduler;
   }
 
-  /** @internal This is an internal implementation detail, do not use. */
+  /** @deprecated This is an internal implementation detail, do not use. */
   _subscribe(subscriber: Subscriber<any>): Subscription {
     const subject: HotObservable<T> = this;
     const index = subject.logSubscribedFrame();

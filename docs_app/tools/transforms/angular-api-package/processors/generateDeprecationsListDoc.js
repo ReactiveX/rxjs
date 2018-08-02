@@ -11,16 +11,14 @@ module.exports = function generateDeprecationListDoc() {
         path: this.outputFolder + '/deprecations',
         outputPath: this.outputFolder + '/deprecations.json',
         data: docs
-          .filter(doc => {
-            console.log(doc.members);
-            return doc.deprecated;})
+          .filter(doc => doc.deprecated)
           .map(doc => {
             return {
               name: doc.name,
               type: doc.docType,
               path: doc.path,
               text: doc.deprecated
-            }
+            };
           })
       });
     }

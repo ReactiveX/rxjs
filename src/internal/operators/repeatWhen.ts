@@ -86,7 +86,7 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  /** @internal This is an internal implementation detail, do not use. */
+  /** @deprecated This is an internal implementation detail, do not use. */
   _unsubscribe() {
     const { notifications, retriesSubscription } = this;
     if (notifications) {
@@ -100,7 +100,7 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.retries = null;
   }
 
-  /** @internal This is an internal implementation detail, do not use. */
+  /** @deprecated This is an internal implementation detail, do not use. */
   _unsubscribeAndRecycle(): Subscriber<T> {
     const { _unsubscribe } = this;
 

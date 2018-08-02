@@ -100,7 +100,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     this.observers = null;
   }
 
-  /** @internal This is an internal implementation detail, do not use. */
+  /** @deprecated This is an internal implementation detail, do not use. */
   _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
@@ -109,7 +109,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     }
   }
 
-  /** @internal This is an internal implementation detail, do not use. */
+  /** @deprecated This is an internal implementation detail, do not use. */
   _subscribe(subscriber: Subscriber<T>): Subscription {
     if (this.closed) {
       throw new ObjectUnsubscribedError();
@@ -162,7 +162,7 @@ export class AnonymousSubject<T> extends Subject<T> {
     }
   }
 
-  /** @internal This is an internal implementation detail, do not use. */
+  /** @deprecated This is an internal implementation detail, do not use. */
   _subscribe(subscriber: Subscriber<T>): Subscription {
     const { source } = this;
     if (source) {

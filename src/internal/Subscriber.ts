@@ -156,7 +156,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     this.unsubscribe();
   }
 
-  /** @internal This is an internal implementation detail, do not use. */
+  /** @deprecated This is an internal implementation detail, do not use. */
   _addParentTeardownLogic(parentTeardownLogic: TeardownLogic) {
     this._parentSubscription = this.add(parentTeardownLogic);
   }

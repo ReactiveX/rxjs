@@ -181,7 +181,7 @@ export class AjaxObservable<T> extends Observable<T> {
     this.request = request;
   }
 
-  /** @internal This is an internal implementation detail, do not use. */
+  /** @deprecated This is an internal implementation detail, do not use. */
   _subscribe(subscriber: Subscriber<T>): TeardownLogic {
     return new AjaxSubscriber(subscriber, this.request);
   }

@@ -20,10 +20,10 @@ export class Observable<T> implements Subscribable<T> {
   /** Internal implementation detail, do not use directly. */
   public _isScalar: boolean = false;
 
-  /** @internal This is an internal implementation detail, do not use. */
+  /** @deprecated This is an internal implementation detail, do not use. */
   source: Observable<any>;
 
-  /** @internal This is an internal implementation detail, do not use. */
+  /** @deprecated This is an internal implementation detail, do not use. */
   operator: Operator<any, T>;
 
   /**

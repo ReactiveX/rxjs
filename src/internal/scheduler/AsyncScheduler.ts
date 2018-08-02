@@ -11,7 +11,7 @@ export class AsyncScheduler extends Scheduler {
    * A flag to indicate whether the Scheduler is currently executing a batch of
    * queued actions.
    * @type {boolean}
-   * @internal internal use only
+   * @deprecated internal use only
    */
   public active: boolean = false;
   /**
@@ -19,7 +19,7 @@ export class AsyncScheduler extends Scheduler {
    * coming from `setTimeout`, `setInterval`, `requestAnimationFrame`, and
    * others.
    * @type {any}
-   * @internal internal use only
+   * @deprecated internal use only
    */
   public scheduled: any = undefined;
 

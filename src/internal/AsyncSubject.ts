@@ -10,7 +10,7 @@ export class AsyncSubject<T> extends Subject<T> {
   private hasNext: boolean = false;
   private hasCompleted: boolean = false;
 
-  /** @internal This is an internal implementation detail, do not use. */
+  /** @deprecated This is an internal implementation detail, do not use. */
   _subscribe(subscriber: Subscriber<any>): Subscription {
     if (this.hasError) {
       subscriber.error(this.thrownError);
