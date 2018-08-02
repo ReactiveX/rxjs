@@ -9,6 +9,7 @@ import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
 import { isSubscription } from './util/isSubscription';
+import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
@@ -264,7 +265,7 @@ export class Observable<T> implements Subscribable<T> {
    * Subscribes to and nexts out each value of from the observable, passing values
    * to the supplied next handler. The subscription may be cancelled with a provided
    * subscription. When the provided subscription is unsubscribed, the operation is cancelled
-   * and the returned promise will reject with "Observable forEach unsubscribed" so that
+   * and the returned promise will reject with an {@link ObjectUnsubscribedError} so that
    * it can be handled in a try-catch block in async-await.
    *
    * ### Example
@@ -294,7 +295,7 @@ export class Observable<T> implements Subscribable<T> {
    * // "start logging"
    * // 0
    * // 1
-   * // "ERROR: Observable forEach unsubscribed"
+   * // "ERROR: object unsubscribed"
    * // "done logging"
    * }
    *
@@ -336,7 +337,7 @@ export class Observable<T> implements Subscribable<T> {
 
     return new promiseCtor<void>((resolve, reject) => {
       // If the promise resolves with a complete, calling reject should noop.
-      subs.add(() => reject(new Error('Observable forEach unsubscribed')));
+      subs.add(() => reject(new ObjectUnsubscribedError()));
 
       // Must be declared in a separate statement to avoid a RefernceError when
       // accessing subscription below in the closure due to Temporal Dead Zone.

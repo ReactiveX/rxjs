@@ -188,7 +188,7 @@ describe('Observable', () => {
       Promise.resolve().then(() => {
         expect(called).to.equal(0);
         expect(completed).to.equal(0);
-        expect(error.message).to.equal('Observable forEach unsubscribed');
+        expect(error.message).to.equal('object unsubscribed');
       })
       .then(
         () => done(),
@@ -213,7 +213,7 @@ describe('Observable', () => {
         .then(() => {
           expect(called).to.equal(0);
           expect(completed).to.equal(0);
-          expect(error.message).to.equal('Observable forEach unsubscribed');
+          expect(error.message).to.equal('object unsubscribed');
         })
         .then(
           () => done(),
@@ -236,7 +236,7 @@ describe('Observable', () => {
         } catch (err) {
           error = err;
         }
-        expect(error.message).to.equal('Observable forEach unsubscribed');
+        expect(error.message).to.equal('object unsubscribed');
       }
 
       test().then(() => done(), done);
