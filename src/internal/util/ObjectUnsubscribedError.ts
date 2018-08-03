@@ -20,6 +20,7 @@ ObjectUnsubscribedErrorImpl.prototype = Object.create(Error.prototype);
  *
  * @see {@link Subject}
  * @see {@link BehaviorSubject}
+ * @see {@link Observable.prototype.forEach}
  *
  * @class ObjectUnsubscribedError
  */

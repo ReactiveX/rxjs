@@ -1,18 +1,16 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from 'rxjs/Rx';
 import { Observer, TeardownLogic } from '../src/internal/types';
 import { cold, expectObservable, expectSubscriptions } from './helpers/marble-testing';
 import { map } from '../src/internal/operators/map';
 import * as HostReportErrorModule from '../src/internal/util/hostReportError';
 import { noop } from '../src/internal/util/noop';
+import { Subscription, interval, timer, Observable, Operator, config, Subscriber, Subject } from 'rxjs';
 
 //tslint:disable-next-line
 require('./helpers/test-helper');
 
 declare const asDiagram: any, rxTestScheduler: any;
-
-const Observable = Rx.Observable;
 
 declare const __root__: any;
 
@@ -82,7 +80,7 @@ describe('Observable', () => {
     it('should allow Promise to be globally configured', (done) => {
       let wasCalled = false;
 
-      Rx.config.Promise = function MyPromise(callback: any) {
+      config.Promise = function MyPromise(callback: any) {
         wasCalled = true;
         return new Promise<number>(callback);
       } as any;
@@ -114,7 +112,7 @@ describe('Observable', () => {
       });
     });
 
-    it('should handle a synchronous throw from the next handler', () => {
+    it('should handle a synchronous throw from the next handler', (done: MochaDone) => {
       const expected = new Error('I told, you Bobby Boucher, threes are the debil!');
       const syncObservable = new Observable<number>((observer) => {
         observer.next(1);
@@ -125,21 +123,20 @@ describe('Observable', () => {
 
       const results: Array<number | Error> = [];
 
-      return syncObservable.forEach((x) => {
+      syncObservable.forEach((x) => {
         results.push(x);
         if (x === 3) {
           throw expected;
         }
-      }).then(
+      })
+      .catch(err => results.push(err))
+      .then(
         () => {
-          throw new Error('should not be called');
-        },
-        (err) => {
-          results.push(err);
-          // Since the consuming code can no longer interfere with the synchronous
-          // producer, the remaining results are nexted.
-          expect(results).to.deep.equal([1, 2, 3, 4, expected]);
+          expect(results).to.deep.equal([1, 2, 3, expected]);
         }
+      ).then(
+        () => done(),
+        done,
       );
     });
 
@@ -170,6 +167,79 @@ describe('Observable', () => {
           expect(results).to.deep.equal([1, 2, expected]);
         }
       );
+    });
+
+    it('should be cancellable with a second Subscription argument', (done: MochaDone) => {
+      const source = interval(1000);
+      const subs = new Subscription();
+      let called = 0;
+      let completed = 0;
+      let error: any = undefined;
+
+      source.forEach(() => called++, subs)
+        .then(
+          () => completed++,
+          (err) => error = err,
+        );
+
+      subs.unsubscribe();
+
+      // wait a tick
+      Promise.resolve().then(() => {
+        expect(called).to.equal(0);
+        expect(completed).to.equal(0);
+        expect(error.message).to.equal('object unsubscribed');
+      })
+      .then(
+        () => done(),
+        done
+      );
+    });
+
+    it('should be cancellable with a second Subscription argument, if the subscription is already unsubbed', (done: MochaDone) => {
+      const source = interval(1000);
+      const subs = new Subscription();
+      let called = 0;
+      let completed = 0;
+      let error: any = undefined;
+
+      subs.unsubscribe();
+
+      source.forEach(() => called++, subs)
+        .then(
+          () => completed++,
+          (err) => error = err,
+        )
+        .then(() => {
+          expect(called).to.equal(0);
+          expect(completed).to.equal(0);
+          expect(error.message).to.equal('object unsubscribed');
+        })
+        .then(
+          () => done(),
+          done,
+        );
+    });
+
+    it('should throw an error if unsubscribed in async-await', (done: MochaDone) => {
+      async function test() {
+        const subs = new Subscription();
+        const results: any[] = [];
+        const observableComplete = timer(1000).forEach(x => results.push(x), subs);
+
+        // async, but should be the 1000ms above.
+        Promise.resolve().then(() => subs.unsubscribe());
+
+        let error: any = undefined;
+        try {
+          await observableComplete;
+        } catch (err) {
+          error = err;
+        }
+        expect(error.message).to.equal('object unsubscribed');
+      }
+
+      test().then(() => done(), done);
     });
   });
 
@@ -304,7 +374,7 @@ describe('Observable', () => {
       const sub = source.subscribe(() => {
         //noop
        });
-      expect(sub instanceof Rx.Subscription).to.be.true;
+      expect(sub instanceof Subscription).to.be.true;
       expect(unsubscribeCalled).to.be.false;
       expect(sub.unsubscribe).to.be.a('function');
 
@@ -555,10 +625,10 @@ describe('Observable', () => {
           warnCalledWith.push(args);
         };
 
-        Rx.config.useDeprecatedSynchronousErrorHandling = true;
+        config.useDeprecatedSynchronousErrorHandling = true;
         expect(warnCalledWith.length).to.equal(1);
 
-        Rx.config.useDeprecatedSynchronousErrorHandling = false;
+        config.useDeprecatedSynchronousErrorHandling = false;
         expect(logCalledWith.length).to.equal(1);
 
         console.log = _log;
@@ -570,7 +640,7 @@ describe('Observable', () => {
       beforeEach(() => {
         const _warn = console.warn;
         console.warn = noop;
-        Rx.config.useDeprecatedSynchronousErrorHandling = true;
+        config.useDeprecatedSynchronousErrorHandling = true;
         console.warn = _warn;
       });
 
@@ -584,7 +654,7 @@ describe('Observable', () => {
           observer.next(1);
         });
 
-        const sink = Rx.Subscriber.create(() => {
+        const sink = Subscriber.create(() => {
           throw 'error!';
         });
 
@@ -596,7 +666,7 @@ describe('Observable', () => {
       afterEach(() => {
         const _log = console.log;
         console.log = noop;
-        Rx.config.useDeprecatedSynchronousErrorHandling = false;
+        config.useDeprecatedSynchronousErrorHandling = false;
         console.log = _log;
       });
     });
@@ -649,7 +719,7 @@ describe('Observable.create', () => {
 
   it('should provide an observer to the function', () => {
     let called = false;
-    const result = Observable.create((observer: Rx.Observer<any>) => {
+    const result = Observable.create((observer: Observer<any>) => {
       called = true;
       expectFullObserver(observer);
       observer.complete();
@@ -680,13 +750,13 @@ describe('Observable.create', () => {
 /** @test {Observable} */
 describe('Observable.lift', () => {
 
-  class MyCustomObservable<T> extends Rx.Observable<T> {
+  class MyCustomObservable<T> extends Observable<T> {
     static from<T>(source: any) {
       const observable = new MyCustomObservable<T>();
-      observable.source = <Rx.Observable<T>> source;
+      observable.source = <Observable<T>> source;
       return observable;
     }
-    lift<R>(operator: Rx.Operator<T, R>): Rx.Observable<R> {
+    lift<R>(operator: Operator<T, R>): Observable<R> {
       const observable = new MyCustomObservable<R>();
       (<any>observable).source = this;
       (<any>observable).operator = operator;
@@ -723,7 +793,7 @@ describe('Observable.lift', () => {
       observer.next(3);
       observer.complete();
     })
-    .multicast(() => new Rx.Subject<number>())
+    .multicast(() => new Subject<number>())
     .refCount()
     .map((x) => { return 10 * x; });
 
@@ -748,7 +818,7 @@ describe('Observable.lift', () => {
       observer.next(3);
       observer.complete();
     })
-    .multicast(() => new Rx.Subject<number>(), (shared) => shared.map((x) => { return 10 * x; }));
+    .multicast(() => new Subject<number>(), (shared) => shared.map((x) => { return 10 * x; }));
 
     expect(result instanceof MyCustomObservable).to.be.true;
 
@@ -837,7 +907,7 @@ describe('Observable.lift', () => {
     // The custom Subscriber
     const log: Array<string> = [];
 
-    class LogSubscriber<T> extends Rx.Subscriber<T> {
+    class LogSubscriber<T> extends Subscriber<T> {
       next(value?: T): void {
         log.push('next ' + value);
         if (!this.isStopped) {
@@ -847,18 +917,18 @@ describe('Observable.lift', () => {
     }
 
     // The custom Operator
-    class LogOperator<T, R> implements Rx.Operator<T, R> {
-      constructor(private childOperator: Rx.Operator<T, R>) {
+    class LogOperator<T, R> implements Operator<T, R> {
+      constructor(private childOperator: Operator<T, R>) {
       }
 
-      call(subscriber: Rx.Subscriber<R>, source: any): TeardownLogic {
+      call(subscriber: Subscriber<R>, source: any): TeardownLogic {
         return this.childOperator.call(new LogSubscriber<R>(subscriber), source);
       }
     }
 
     // The custom Observable
     class LogObservable<T> extends Observable<T> {
-      lift<R>(operator: Rx.Operator<T, R>): Rx.Observable<R> {
+      lift<R>(operator: Operator<T, R>): Observable<R> {
         const observable = new LogObservable<R>();
         (<any>observable).source = this;
         (<any>observable).operator = new LogOperator(operator);
