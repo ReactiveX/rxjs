@@ -353,7 +353,7 @@ export class Observable<T> implements Subscribable<T> {
     }) as Promise<void>;
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
+  /** @internal This is an internal implementation detail, do not use. */
   _subscribe(subscriber: Subscriber<any>): TeardownLogic {
     const { source } = this;
     return source && source.subscribe(subscriber);

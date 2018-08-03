@@ -314,7 +314,7 @@ class SafeSubscriber<T> extends Subscriber<T> {
     return false;
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
+  /** @internal This is an internal implementation detail, do not use. */
   _unsubscribe(): void {
     const { _parentSubscriber } = this;
     this._context = null;

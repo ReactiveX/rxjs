@@ -54,7 +54,7 @@ export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
  * @static true
  * @name empty
  * @owner Observable
- * @deprecated Deprecated in favor of using EMPTY constant.
+ * @deprecated Deprecated in favor of using {@link index/EMPTY} constant.
  */
 export function empty(scheduler?: SchedulerLike) {
   return scheduler ? emptyScheduled(scheduler) : EMPTY;

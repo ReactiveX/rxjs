@@ -95,7 +95,7 @@ export class NavigationService {
       this.location.currentPath,
 
       (navMap, url) => {
-        const urlKey = url.startsWith('api/') ? 'api' : url;
+        const urlKey = url.startsWith('api/') && !url.endsWith('deprecations') ? 'api' : url;
         return navMap.get(urlKey) || { '' : { view: '', url: urlKey, nodes: [] }};
       })
       .pipe(publishReplay(1));

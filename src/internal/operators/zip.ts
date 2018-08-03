@@ -34,7 +34,7 @@ export function zip<T, TOther, R>(array: Array<ObservableInput<TOther>>, project
 /* tslint:enable:max-line-length */
 
 /**
- * @deprecated Deprecated in favor of static zip.
+ * @deprecated Deprecated in favor of static {@link zip}.
  */
 export function zip<T, R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): OperatorFunction<T, R> {
   return function zipOperatorFunction(source: Observable<T>) {
