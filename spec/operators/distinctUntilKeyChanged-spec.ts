@@ -185,7 +185,7 @@ describe('distinctUntilKeyChanged operator', () => {
     const e1subs =   '^                !';
     const expected = '--a--------------|';
 
-    expectObservable((<any>e1).pipe(distinctUntilKeyChanged('val', () => true))).toBe(expected, values);
+    expectObservable(e1.pipe(distinctUntilKeyChanged('val', () => true))).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -195,7 +195,7 @@ describe('distinctUntilKeyChanged operator', () => {
     const e1subs =   '^                   !';
     const expected = '--a--a--a--a--a--a--|';
 
-    expectObservable((<any>e1).pipe(distinctUntilKeyChanged('val', () => false))).toBe(expected, values);
+    expectObservable(e1.pipe(distinctUntilKeyChanged('val', () => false))).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -206,7 +206,7 @@ describe('distinctUntilKeyChanged operator', () => {
     const expected = '--a-----c-----e--|';
     const selector = (x: number, y: number) => y % 2 === 0;
 
-    expectObservable((<any>e1).pipe(distinctUntilKeyChanged('val', selector))).toBe(expected, values);
+    expectObservable(e1.pipe(distinctUntilKeyChanged('val', selector))).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -222,7 +222,7 @@ describe('distinctUntilKeyChanged operator', () => {
       return x === y;
     };
 
-    expectObservable((<any>e1).pipe(distinctUntilKeyChanged('val', selector))).toBe(expected, values);
+    expectObservable(e1.pipe(distinctUntilKeyChanged('val', selector))).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });
