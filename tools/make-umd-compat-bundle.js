@@ -1,12 +1,8 @@
-var _ = require('lodash');
-
 var rollup = require('rollup');
 var rollupAlias = require('rollup-plugin-alias');
-var rollupInject = require('rollup-plugin-inject');
 var rollupNodeResolve = require('rollup-plugin-node-resolve');
 
 var fs = require('fs');
-var tslib = require('tslib');
 
 rollup.rollup({
   entry: 'dist-compat/esm5_for_rollup/compat/umd.js',
@@ -21,12 +17,6 @@ rollup.rollup({
     }),
     rollupNodeResolve({
       jsnext: true,
-    }),
-    rollupInject({
-      exclude: 'node_modules/**',
-      modules: _.mapValues(tslib, function (value, key) {
-        return ['tslib', key];
-      }),
     }),
   ],
 }).then(function (bundle) {
