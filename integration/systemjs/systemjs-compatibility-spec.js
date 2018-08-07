@@ -2,7 +2,10 @@ var System = require('systemjs');
 var path = require('path');
 
 System.config({
-  map: { 'rxjs': path.join(__dirname, '..', '..', 'dist', 'package', '/') },
+  map: {
+    'rxjs': path.join(__dirname, '..', '..', 'dist', 'package', '/'),
+    'tslib': 'node_modules/tslib/tslib.js',
+  },
   packages: {
     'rxjs': {main: 'index.js', defaultExtension: 'js' },
     'rxjs/ajax': {main: 'index.js', defaultExtension: 'js' },
