@@ -248,6 +248,13 @@ describe('TestScheduler', () => {
         const expected =      '--a';
         expectObservable(source, unsubscribe).toBe(expected);
       });
+
+      it('should accept a subscription marble diagram', () => {
+        const source = hot('-a-b-c|');
+        const subscribe =  '---^';
+        const expected =   '---b-c|';
+        expectObservable(source, subscribe).toBe(expected);
+      });
     });
 
     describe('expectSubscriptions()', () => {
