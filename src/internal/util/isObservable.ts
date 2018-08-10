@@ -1,5 +1,4 @@
 import { Observable } from '../Observable';
-import { ObservableInput } from '../types';
 
 /**
  * Tests to see if the object is an RxJS {@link Observable}

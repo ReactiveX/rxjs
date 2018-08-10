@@ -1,6 +1,5 @@
 import { tap } from './tap';
 import { EmptyError } from '../util/EmptyError';
-import { MonoTypeOperatorFunction } from '../types';
 
 /**
  * If the source observable completes without emitting a value, it will emit
