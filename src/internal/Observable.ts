@@ -5,11 +5,9 @@ import { TeardownLogic, OperatorFunction, PartialObserver, Subscribable } from '
 import { toSubscriber } from './util/toSubscriber';
 import { iif } from './observable/iif';
 import { throwError } from './observable/throwError';
-import { observable as Symbol_observable } from './symbol/observable';
+import { observable as Symbol_observable } from '../internal/symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
-import { isSubscription } from './util/isSubscription';
-import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
@@ -233,123 +231,29 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /**
-   * Subscribes to and nexts out each value of from the observable, passing values
-   * to the supplied next handler. Useful for async-await
-   *
-   * ### Example
-   *
-   * ```javascript
-   * async function foo() {
-   *   console.log('start logging');
-   *   await interval(1000).pipe(take(3))
-   *       .forEach(x => console.log(x));
-   *   console.log('done logging');
-   * }
-   *
-   * foo();
-   *
-   * // Logs
-   * // "start logging"
-   * // 0
-   * // 1
-   * // 2
-   * // "done logging"
-   * ```
-   * @param next a handler for each value emitted by the observable
-   * @returns A promise that resolves when the observable completes or rejects if the
-   * observable errors.
-   */
-  forEach(next: (value: T) => void): Promise<void>;
-
-  /**
-   * Subscribes to and nexts out each value of from the observable, passing values
-   * to the supplied next handler. The subscription may be cancelled with a provided
-   * subscription. When the provided subscription is unsubscribed, the operation is cancelled
-   * and the returned promise will reject with an {@link ObjectUnsubscribedError} so that
-   * it can be handled in a try-catch block in async-await.
-   *
-   * ### Example
-   *
-   * ```js
-   * async function foo() {
-   *
-   * async function foo() {
-   *   console.log('start logging');
-   *
-   *   const cancel = new Subscription();
-   *   setTimeout(() => cancel.unsubscribe(), 2500);
-   *
-   *   try {
-   *     await interval(1000).pipe(take(3))
-   *         .forEach(x => console.log(x), cancel);
-   *   } catch (err) {
-   *     console.log("ERROR: " + err.message);
-   *   }
-   *
-   *   console.log('done logging');
-   * }
-   *
-   * foo();
-   *
-   * // Logs
-   * // "start logging"
-   * // 0
-   * // 1
-   * // "ERROR: object unsubscribed"
-   * // "done logging"
-   * }
-   *
-   * ```
-   *
-   * @param next a handler for each value emitted by the observable
-   * @param cancelSubs a {@link Subscription} used like a cancellation token, that,
-   * when unsubscribed, will reject the returned promise with an error
-   * @returns A promise that resolves when the observable completes or rejects if the
-   * observable errors or is unsubscribed.
-   */
-  forEach(next: (value: T) => void, cancelSubs: Subscription): Promise<void>;
-
-  /**
-   * Nexts out each value from the observable to the `next` handler, and returns a promise,
-   * created from a specified promise constructor that resolves on Observable completion, or
-   * rejects if there's an error.
-   * @deprecated use {@link config} to configure the Promise Constructor if you need to configure promises.
-   */
-  forEach(next: (value: T) => void, promiseCtor: PromiseConstructorLike): Promise<void>;
-
-  /**
    * @method forEach
    * @param {Function} next a handler for each value emitted by the observable
-   * @param {PromiseConstructorLike|Subscription} [promiseCtorOrSubscription] a constructor function used to instantiate the Promise
+   * @param {PromiseConstructor} [promiseCtor] a constructor function used to instantiate the Promise
    * @return {Promise} a promise that either resolves on observable completion or
    *  rejects with the handled error
    */
-  forEach(next: (value: T) => void, promiseCtorOrSubscription?: PromiseConstructorLike|Subscription): Promise<void> {
-    let promiseCtor: PromiseConstructorLike;
-    let subs: Subscription;
-    if (isSubscription(promiseCtorOrSubscription)) {
-      subs = promiseCtorOrSubscription;
-    } else {
-      subs = new Subscription();
-      promiseCtor = promiseCtorOrSubscription;
-    }
+  forEach(next: (value: T) => void, promiseCtor?: PromiseConstructorLike): Promise<void> {
     promiseCtor = getPromiseCtor(promiseCtor);
 
     return new promiseCtor<void>((resolve, reject) => {
-      // If the promise resolves with a complete, calling reject should noop.
-      subs.add(() => reject(new ObjectUnsubscribedError()));
-
       // Must be declared in a separate statement to avoid a RefernceError when
       // accessing subscription below in the closure due to Temporal Dead Zone.
-      subs.add(this.subscribe(function (this: Subscription, value) {
+      let subscription: Subscription;
+      subscription = this.subscribe((value) => {
         try {
           next(value);
         } catch (err) {
           reject(err);
-          this.unsubscribe();
+          if (subscription) {
+            subscription.unsubscribe();
+          }
         }
-      }, reject, resolve));
-
+      }, reject, resolve);
     }) as Promise<void>;
   }
 

@@ -3,8 +3,8 @@ import { Observable } from 'rxjs';
 import { distinctUntilKeyChanged as higherOrder } from 'rxjs/operators';
 
 /* tslint:disable:max-line-length */
-export function distinctUntilKeyChanged<T>(this: Observable<T>, key: string): Observable<T>;
-export function distinctUntilKeyChanged<T, K>(this: Observable<T>, key: string, compare: (x: K, y: K) => boolean): Observable<T>;
+export function distinctUntilKeyChanged<T>(this: Observable<T>, key: keyof T): Observable<T>;
+export function distinctUntilKeyChanged<T, K extends keyof T>(this: Observable<T>, key: K, compare: (x: T[K], y: T[K]) => boolean): Observable<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -64,6 +64,7 @@ export function distinctUntilKeyChanged<T, K>(this: Observable<T>, key: string, 
  * @method distinctUntilKeyChanged
  * @owner Observable
  */
-export function distinctUntilKeyChanged<T>(this: Observable<T>, key: string, compare?: (x: T, y: T) => boolean): Observable<T> {
-  return higherOrder<T, T>(key, compare)(this);
+// tslint:disable-next-line:max-line-length
+export function distinctUntilKeyChanged<T, K extends keyof T>(this: Observable<T>, key: K, compare?: (x: T[K], y: T[K]) => boolean): Observable<T> {
+  return higherOrder<T, K>(key, compare)(this);
 }
