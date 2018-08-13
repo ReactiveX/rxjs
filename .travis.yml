@@ -19,23 +19,23 @@ env:
 
   matrix:
   - NODE_VER=8 FULL_VALIDATE=true
-  - NODE_VER=8 TSC_VERSION=latest
+  - NODE_VER=8 TSC_VERSION=2.8.*
   - NODE_VER=8 TSC_VERSION=next
   - NODE_VER=9
-  - NODE_VER=9 TSC_VERSION=latest
+  - NODE_VER=9 TSC_VERSION=2.8.*
   - NODE_VER=9 TSC_VERSION=next
   - NODE_VER=10
-  - NODE_VER=10 TSC_VERSION=latest
+  - NODE_VER=10 TSC_VERSION=2.8.*
   - NODE_VER=10 TSC_VERSION=next
 
 matrix:
   fast_finish: true
   allow_failures:
-    - NODE_VER=8 TSC_VERSION=latest
+    - NODE_VER=8 TSC_VERSION=2.8.*
     - NODE_VER=8 TSC_VERSION=next
-    - NODE_VER=9 TSC_VERSION=latest
+    - NODE_VER=9 TSC_VERSION=2.8.*
     - NODE_VER=9 TSC_VERSION=next
-    - NODE_VER=10 TSC_VERSION=latest
+    - NODE_VER=10 TSC_VERSION=2.8.*
     - NODE_VER=10 TSC_VERSION=next
 
 before_install:
