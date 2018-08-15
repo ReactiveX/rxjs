@@ -178,10 +178,9 @@ export const operators = _operators;
  * @typedef {Object} Rx.Scheduler
  * @property {Scheduler} queue Schedules on a queue in the current event frame
  * (trampoline scheduler). Use this for iteration operations.
- * @property {Scheduler} asap Schedules on the micro task queue, which uses the
- * fastest transport mechanism available, either Node.js' `process.nextTick()`
- * or Web Worker MessageChannel or setTimeout or others. Use this for
- * asynchronous conversions.
+ * @property {Scheduler} asap Schedules on the micro task queue, which is the same
+ * queue used for promises. Basically after the current job, but before the next
+ * job. Use this for asynchronous conversions.
  * @property {Scheduler} async Schedules work with `setInterval`. Use this for
  * time-based operations.
  * @property {Scheduler} animationFrame Schedules work with `requestAnimationFrame`.
