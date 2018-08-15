@@ -89,7 +89,7 @@ export function fromEventPattern<T>(addHandler: (handler: Function) => any, remo
  *   function(handler) { return someAPI.registerEventHandler(handler); }, // Note that we return the token here...
  *   function(handler, token) { someAPI.unregisterEventHandler(token); }  // ...to then use it here.
  * );
- *
+ * ```
  *
  * ## Example
  * ### Use with project function
