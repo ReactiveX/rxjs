@@ -38,7 +38,7 @@ For details about this package, see https://www.npmjs.com/package/rxjs-compat.
 The compatibility package increases the bundle size of your application, which is why we recommend removing it as soon as your application and dependencies have been updated. 
 This size increase is exacerbated if you are using a version of Webpack before 4.0.0. 
 
-For a full explanation of what you will have to update in order to remove `rxjs-compat`, see [Dropping the compatibility layer]<a id="drop-compat"></a>. Note also that fully updating your application to v6 may expose existing type errors that were not previously shown. 
+For a full explanation of what you will have to update in order to remove `rxjs-compat`, see [Dropping the compatibility layer](#drop-compat). Note also that fully updating your application to v6 may expose existing type errors that were not previously shown. 
 
 <a id="breaking-changes"></a>
 
