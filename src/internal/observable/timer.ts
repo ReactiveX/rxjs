@@ -1,9 +1,9 @@
-import { Observable } from '../Observable';
-import { SchedulerAction, SchedulerLike } from '../types';
-import { async } from '../scheduler/async';
-import { isNumeric } from '../util/isNumeric';
-import { isScheduler } from '../util/isScheduler';
-import { Subscriber } from '../Subscriber';
+import {Observable} from '../Observable';
+import {SchedulerAction, SchedulerLike} from '../types';
+import {async} from '../scheduler/async';
+import {isNumeric} from '../util/isNumeric';
+import {isScheduler} from '../util/isScheduler';
+import {Subscriber} from '../Subscriber';
 
 /**
  * Creates an Observable that starts emitting after an `dueTime` and
@@ -39,7 +39,7 @@ import { Subscriber } from '../Subscriber';
  * @see {@link delay}
  *
  * @param {number|Date} [dueTime] The initial delay time specified as a Date object or as an integer denoting
-      milliseconds to wait before emitting the first value of 0`.
+ * milliseconds to wait before emitting the first value of 0`.
  * @param {number|SchedulerLike} [periodOrScheduler] The period of time between emissions of the
  * subsequent numbers.
  * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for scheduling
@@ -51,49 +51,47 @@ import { Subscriber } from '../Subscriber';
  * @name timer
  * @owner Observable
  */
-export function timer(
-    dueTime: number | Date = 0,
-    periodOrScheduler?: number | SchedulerLike,
-    scheduler?: SchedulerLike
-): Observable<number> {
-    let period = -1;
-    if (isNumeric(periodOrScheduler)) {
-        period = (Number(periodOrScheduler) < 1 && 1) || Number(periodOrScheduler);
-    } else if (isScheduler(periodOrScheduler)) {
-        scheduler = periodOrScheduler as any;
-    }
+export function timer(dueTime: number | Date = 0,
+                      periodOrScheduler?: number | SchedulerLike,
+                      scheduler?: SchedulerLike): Observable<number> {
+  let period = -1;
+  if (isNumeric(periodOrScheduler)) {
+    period = (Number(periodOrScheduler) < 1 && 1) || Number(periodOrScheduler);
+  } else if (isScheduler(periodOrScheduler)) {
+    scheduler = periodOrScheduler as any;
+  }
 
-    if (!isScheduler(scheduler)) {
-        scheduler = async;
-    }
+  if (!isScheduler(scheduler)) {
+    scheduler = async;
+  }
 
-    return new Observable((subscriber) => {
-        const due = isNumeric(dueTime) ? dueTime as number : +dueTime - scheduler.now();
+  return new Observable((subscriber) => {
+    const due = isNumeric(dueTime) ? dueTime as number : +dueTime - scheduler.now();
 
-        return scheduler.schedule(dispatch, due, {
-            index: 0,
-            period,
-            subscriber
-        });
+    return scheduler.schedule(dispatch, due, {
+      index: 0,
+      period,
+      subscriber
     });
+  });
 }
 
 interface TimerState {
-    index: number;
-    period: number;
-    subscriber: Subscriber<number>;
+  index: number;
+  period: number;
+  subscriber: Subscriber<number>;
 }
 
 function dispatch(this: SchedulerAction<TimerState>, state: TimerState) {
-    const { index, period, subscriber } = state;
-    subscriber.next(index);
+  const {index, period, subscriber} = state;
+  subscriber.next(index);
 
-    if (subscriber.closed) {
-        return;
-    } else if (period === -1) {
-        return subscriber.complete();
-    }
+  if (subscriber.closed) {
+    return;
+  } else if (period === -1) {
+    return subscriber.complete();
+  }
 
-    state.index = index + 1;
-    this.schedule(state, period);
+  state.index = index + 1;
+  this.schedule(state, period);
 }
