@@ -1,9 +1,9 @@
-import {Observable} from '../Observable';
-import {SchedulerAction, SchedulerLike} from '../types';
-import {async} from '../scheduler/async';
-import {isNumeric} from '../util/isNumeric';
-import {isScheduler} from '../util/isScheduler';
-import {Subscriber} from '../Subscriber';
+import { Observable } from '../Observable';
+import { SchedulerAction, SchedulerLike } from '../types';
+import { async } from '../scheduler/async';
+import { isNumeric } from '../util/isNumeric';
+import { isScheduler } from '../util/isScheduler';
+import { Subscriber } from '../Subscriber';
 
 /**
  * Creates an Observable that starts emitting after an `dueTime` and
@@ -56,7 +56,7 @@ export function timer(dueTime: number | Date = 0,
                       scheduler?: SchedulerLike): Observable<number> {
   let period = -1;
   if (isNumeric(periodOrScheduler)) {
-    period = (Number(periodOrScheduler) < 1 && 1) || Number(periodOrScheduler);
+    period = Number(periodOrScheduler) < 1 && 1 || Number(periodOrScheduler);
   } else if (isScheduler(periodOrScheduler)) {
     scheduler = periodOrScheduler as any;
   }
@@ -65,13 +65,13 @@ export function timer(dueTime: number | Date = 0,
     scheduler = async;
   }
 
-  return new Observable((subscriber) => {
-    const due = isNumeric(dueTime) ? dueTime as number : +dueTime - scheduler.now();
+  return new Observable(subscriber => {
+    const due = isNumeric(dueTime)
+      ? (dueTime as number)
+      : (+dueTime - scheduler.now());
 
     return scheduler.schedule(dispatch, due, {
-      index: 0,
-      period,
-      subscriber
+      index: 0, period, subscriber
     });
   });
 }
@@ -83,7 +83,7 @@ interface TimerState {
 }
 
 function dispatch(this: SchedulerAction<TimerState>, state: TimerState) {
-  const {index, period, subscriber} = state;
+  const { index, period, subscriber } = state;
   subscriber.next(index);
 
   if (subscriber.closed) {
