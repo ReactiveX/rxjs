@@ -7,14 +7,15 @@
 <mat-toolbar color="primary" class="app-toolbar no-print" [class.transitioning]="isTransitioning">
   <mat-toolbar-row class="notification-container">
     <aio-notification
-      icon="insert_comment"
-      iconLabel="Survey"
-      buttonText="Go to survey"
-      actionUrl="https://bit.ly/angular-survey-2018"
-      notificationId="survey-january-2018"
-      expirationDate="2018-01-19"
+      notificationId="angular-v6-announcement"
+      expirationDate="2018-07-01"
+      [dismissOnContentClick]="true"
       (dismissed)="notificationDismissed()">
-      Help Angular by taking a <b>1 minute survey</b>!
+      <a href="https://blog.angular.io/version-6-0-0-of-angular-now-available-cc56b0efa7a4">
+        <mat-icon class="icon" svgIcon="insert_comment" aria-label="Announcement"></mat-icon>
+        <span class="message">Version 6 of Angular Now Available!</span>
+        <span class="action-button">Learn More</span>
+      </a>
     </aio-notification>
   </mat-toolbar-row>
   <mat-toolbar-row>
@@ -27,6 +28,13 @@
       <img *ngSwitchDefault src="http://rxjsdocs.com/assets/img/Rx_Trnsprt_Logo-48-48.png" width="37" height="40" title="Home" alt="Home">
     </a>
     <aio-top-menu *ngIf="isSideBySide" [nodes]="topMenuNodes"></aio-top-menu>
+    <!-- <aio-search-box class="search-container" #searchBox (onSearch)="doSearch($event)" (onFocus)="doSearch($event)"></aio-search-box>
+    <div class="toolbar-external-icons-container">
+      <a  href="https://twitter.com/reactivex" title="Twitter">
+        <img src="assets/images/logos/twitter-icon.svg"></a>
+      <a  href="https://github.com/ReactiveX/rxjs" title="GitHub">
+        <img src="assets/images/logos/github-icon.svg"></a>
+    </div> -->
   </mat-toolbar-row>
 </mat-toolbar>
 
@@ -34,10 +42,13 @@
 
 <mat-sidenav-container class="sidenav-container" [class.starting]="isStarting" [class.has-floating-toc]="hasFloatingToc" role="main">
 
-  <mat-sidenav [ngClass]="{'collapsed': !isSideBySide}" #sidenav class="sidenav" [opened]="isOpened" [mode]="mode" (open)="updateHostClasses()" (close)="updateHostClasses()">
+  <mat-sidenav [ngClass]="{'collapsed': !isSideBySide}" #sidenav class="sidenav" [mode]="mode" [opened]="isOpened" (openedChange)="updateHostClasses()">
     <aio-nav-menu *ngIf="!isSideBySide" [nodes]="topMenuNarrowNodes" [currentNode]="currentNodes?.TopBarNarrow" [isWide]="false"></aio-nav-menu>
     <aio-nav-menu [nodes]="sideNavNodes" [currentNode]="currentNodes?.SideNav" [isWide]="isSideBySide"></aio-nav-menu>
 
+    <!-- <div class="doc-version">
+      <aio-select (change)="onDocVersionChange($event.index)" [options]="docVersions" [selected]="currentDocVersion"></aio-select>
+    </div> -->
   </mat-sidenav>
 
   <section class="sidenav-content" [id]="pageId" role="content">
@@ -55,7 +66,7 @@
 </mat-sidenav-container>
 
 <div *ngIf="hasFloatingToc" class="toc-container no-print" [style.max-height.px]="tocMaxHeight" (mousewheel)="restrainScrolling($event)">
-  <aio-toc></aio-toc>
+  <aio-lazy-ce selector="aio-toc"></aio-lazy-ce>
 </div>
 
 <footer class="no-print">

@@ -61,7 +61,6 @@ export class DocumentService {
       .get<DocumentContents>(requestPath, {responseType: 'json'})
       .pipe(
         tap(data => {
-          console.log(data);
           if (!data || typeof data !== 'object') {
             this.logger.log('received invalid data:', data);
             throw Error('Invalid data');
