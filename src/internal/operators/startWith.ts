@@ -7,6 +7,7 @@ import { isScheduler } from '../util/isScheduler';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 
 /* tslint:disable:max-line-length */
+export function startWith<T>(scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 export function startWith<T>(v1: T, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 export function startWith<T>(v1: T, v2: T, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 export function startWith<T>(v1: T, v2: T, v3: T, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
