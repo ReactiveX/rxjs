@@ -1,6 +1,6 @@
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { Observable, of, from } from 'rxjs';
-import { exhaustMap, mergeMap } from 'rxjs/operators';
+import { concat, defer, Observable, of, from } from 'rxjs';
+import { exhaustMap, mergeMap, takeWhile } from 'rxjs/operators';
 import { expect } from 'chai';
 
 declare function asDiagram(arg: string): Function;
@@ -200,6 +200,31 @@ describe('exhaustMap', () => {
     expectSubscriptions(y.subscriptions).toBe(ysubs);
     expectSubscriptions(z.subscriptions).toBe(zsubs);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = concat(
+      defer(() => {
+        sideEffects.push(1);
+        return of(1);
+      }),
+      defer(() => {
+        sideEffects.push(2);
+        return of(2);
+      }),
+      defer(() => {
+        sideEffects.push(3);
+        return of(3);
+      })
+    );
+
+    of(null).pipe(
+      exhaustMap(() => synchronousObservable),
+      takeWhile((x) => x != 2) // unsubscribe at the second side-effect
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([1, 2]);
   });
 
   it('should switch inner cold observables, inner never completes', () => {
