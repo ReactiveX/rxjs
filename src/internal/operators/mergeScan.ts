@@ -100,7 +100,9 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   private _innerSub(ish: any, value: T, index: number): void {
-    this.add(subscribeToResult<T, R>(this, ish, value, index));
+    const innerSubscriber = new InnerSubscriber(this, undefined, undefined);
+    this.add(innerSubscriber);
+    subscribeToResult<T, R>(this, ish, value, index, innerSubscriber);
   }
 
   protected _complete(): void {

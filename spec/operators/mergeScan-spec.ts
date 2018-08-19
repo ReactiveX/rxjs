@@ -1,7 +1,8 @@
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { TestScheduler } from 'rxjs/testing';
-import { of, EMPTY, NEVER, concat, throwError } from 'rxjs';
-import { mergeScan, delay, mergeMap } from 'rxjs/operators';
+import { of, defer, EMPTY, NEVER, concat, throwError } from 'rxjs';
+import { mergeScan, delay, mergeMap, takeWhile } from 'rxjs/operators';
+import { expect } from 'chai';
 
 declare const rxTestScheduler: TestScheduler;
 /** @test {mergeScan} */
@@ -134,6 +135,31 @@ describe('mergeScan', () => {
 
     expectObservable(source, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = concat(
+      defer(() => {
+        sideEffects.push(1);
+        return of(1);
+      }),
+      defer(() => {
+        sideEffects.push(2);
+        return of(2);
+      }),
+      defer(() => {
+        sideEffects.push(3);
+        return of(3);
+      })
+    );
+
+    of(null).pipe(
+      mergeScan(() => synchronousObservable, 0),
+      takeWhile((x) => x != 2) // unsubscribe at the second side-effect
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([1, 2]);
   });
 
   it('should handle errors in the projection function', () => {
