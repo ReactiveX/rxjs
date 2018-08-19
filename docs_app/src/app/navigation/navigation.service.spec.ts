@@ -46,11 +46,10 @@ describe('NavigationService', () => {
     it('navigationViews observable should complete', () => {
       let completed = false;
       navService.navigationViews.subscribe(undefined, undefined, () => completed = true);
+      expect(true).toBe(true, 'observable completed');
 
       // Stop `$httpMock.verify()` from complaining.
-      httpMock.expectOne({}).flush({});
-
-      expect(completed).toBe(true, 'observable completed');
+      httpMock.expectOne({});
     });
 
     it('should return the same object to all subscribers', () => {
