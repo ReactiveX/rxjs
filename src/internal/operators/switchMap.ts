@@ -113,7 +113,9 @@ class SwitchMapSubscriber<T, R> extends OuterSubscriber<T, R> {
     if (innerSubscription) {
       innerSubscription.unsubscribe();
     }
-    this.add(this.innerSubscription = subscribeToResult(this, result, value, index));
+    const innerSubscriber = new InnerSubscriber(this, undefined, undefined);
+    this.add(innerSubscriber);
+    this.innerSubscription = subscribeToResult(this, result, value, index, innerSubscriber);
   }
 
   protected _complete(): void {
