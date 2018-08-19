@@ -3,6 +3,7 @@ import {Subscriber} from '../Subscriber';
 import {Observable} from '../Observable';
 
 import {OuterSubscriber} from '../OuterSubscriber';
+import { InnerSubscriber } from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 import {ObservableInput, OperatorFunction, MonoTypeOperatorFunction} from '../types';
 
@@ -121,7 +122,9 @@ class CatchSubscriber<T, R> extends OuterSubscriber<T, T | R> {
         return;
       }
       this._unsubscribeAndRecycle();
-      this.add(subscribeToResult(this, result));
+      const innerSubscriber = new InnerSubscriber(this, undefined, undefined);
+      this.add(innerSubscriber);
+      subscribeToResult(this, result, undefined, undefined, innerSubscriber);
     }
   }
 }
