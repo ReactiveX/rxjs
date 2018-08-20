@@ -56,7 +56,7 @@ class TakeUntilOperator<T> implements Operator<T, T> {
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     const takeUntilSubscriber = new TakeUntilSubscriber(subscriber);
     const notifierSubscription = subscribeToResult(takeUntilSubscriber, this.notifier);
-    if (notifierSubscription && !notifierSubscription.closed) {
+    if (notifierSubscription && !takeUntilSubscriber.seenValue) {
       takeUntilSubscriber.add(notifierSubscription);
       return source.subscribe(takeUntilSubscriber);
     }
@@ -70,6 +70,7 @@ class TakeUntilOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class TakeUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
+  seenValue = false;
 
   constructor(destination: Subscriber<any>, ) {
     super(destination);
@@ -78,6 +79,7 @@ class TakeUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
   notifyNext(outerValue: T, innerValue: R,
              outerIndex: number, innerIndex: number,
              innerSub: InnerSubscriber<T, R>): void {
+    this.seenValue = true;
     this.complete();
   }
 

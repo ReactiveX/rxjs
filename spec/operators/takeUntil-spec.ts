@@ -1,6 +1,6 @@
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { takeUntil, mergeMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, EMPTY } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 
@@ -56,11 +56,21 @@ describe('takeUntil operator', () => {
 
   it('should complete without subscribing to the source when notifier synchronously emits', () => {
     const e1 =   hot('----a--|');
-    const e2 =  of(0);
+    const e2 =  of(1, 2, 3);
     const expected = '(|)     ';
 
     expectObservable(e1.pipe(takeUntil(e2))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe([]);
+  });
+
+  it('should subscribe to the source when notifier synchronously completes without emitting', () => {
+    const e1 =   hot('----a--|');
+    const e1subs =   '^      !';
+    const e2 = EMPTY;
+    const expected = '----a--|';
+
+    expectObservable(e1.pipe(takeUntil(e2))).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
   it('should allow unsubscribing explicitly and early', () => {
