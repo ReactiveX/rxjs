@@ -6,7 +6,6 @@ import { createVirtualScheduler, VirtualScheduler} from '../scheduler/virtualSch
 import { Notification, SchedulerLike, FOType, Sink } from '../types';
 import { isObservable } from '../util/isObservable';
 
-
 export interface SubscriptionLog {
   subscribedFrame: number;
   unsubscribedFrame: number;
@@ -18,7 +17,6 @@ export interface TestMessage<T> {
   isGhost?: boolean;
 }
 
-const DEFAULT_MAX_FRAME = 750;
 const FRAME_TIME_FACTOR = 1;
 
 export interface RunHelpers {
@@ -57,6 +55,10 @@ export interface TestScheduler extends VirtualScheduler {
   run<T>(callback: (helpers: RunHelpers) => T): T;
 }
 
+export interface TestSchedulerCtor {
+  new (assertDeepEqual: (actual: any, expected: any) => boolean | void): TestScheduler;
+}
+
 export function subscriptionLogger() {
   return {
     logSubscription(frame: number): number {
@@ -78,7 +80,8 @@ export function subscriptionLog(subscribedFrame: number, unsubscribedFrame = Num
   };
 }
 
-export function createTestScheduler(assertDeepEqual: (actual: any, expected: any) => boolean | void): TestScheduler {
+export const TestScheduler: TestSchedulerCtor =
+  (function createTestScheduler(assertDeepEqual: (actual: any, expected: any) => boolean | void): TestScheduler {
   const coldObservables: TestObservable<any>[] = [];
   const hotObservables: HotObservable<any>[] = [];
 
@@ -88,8 +91,10 @@ export function createTestScheduler(assertDeepEqual: (actual: any, expected: any
 
   let flushTests: FlushableTest[] = [];
 
-  function _materializeInnerObservable(observable: Observable<any>,
-    outerFrame: number, scheduler: VirtualScheduler): TestMessage<any>[] {
+  function _materializeInnerObservable(
+    observable: Observable<any>,
+    outerFrame: number,
+    scheduler: VirtualScheduler): TestMessage<any>[] {
       const messages: TestMessage<any>[] = [];
       observable.subscribe((value) => {
         messages.push({ frame: scheduler.frame - outerFrame, notification: { kind: 'N', value } });
@@ -101,10 +106,9 @@ export function createTestScheduler(assertDeepEqual: (actual: any, expected: any
       return messages;
     }
 
-  return {
+  const result = {
     hotObservables,
     coldObservables,
-    frame: 0,
     index: -1,
     frameTimeFactor: FRAME_TIME_FACTOR,
     maxFrames: 750, // TODO: Change this? It's the old default. Maybe remove it.
@@ -158,8 +162,10 @@ export function createTestScheduler(assertDeepEqual: (actual: any, expected: any
       return subject;
     },
 
-    expectObservable(observable: Observable<any>,
-                   unsubscriptionMarbles: string = null): ({ toBe: observableToBeFn }) {
+    expectObservable(
+      observable: Observable<any>,
+      unsubscriptionMarbles: string = null
+    ): ({ toBe: observableToBeFn }) {
       const actual: TestMessage<any>[] = [];
       const flushTest: FlushableTest = { actual, ready: false };
       const unsubscriptionFrame = parseMarblesAsSubscriptions(unsubscriptionMarbles, runMode).unsubscribedFrame;
@@ -169,7 +175,7 @@ export function createTestScheduler(assertDeepEqual: (actual: any, expected: any
         subscription = observable.subscribe(x => {
           let value = x;
           // Support Observable-of-Observables
-          if (x instanceof Observable) {
+          if (isObservable(x)) {
             value = _materializeInnerObservable(value, this.frame, this);
           }
           actual.push({ frame: this.frame, notification: { kind: 'N', value } });
@@ -227,6 +233,7 @@ export function createTestScheduler(assertDeepEqual: (actual: any, expected: any
       };
       try {
         const ret = callback(helpers);
+
         this.flush();
         return ret;
       } finally {
@@ -255,10 +262,17 @@ export function createTestScheduler(assertDeepEqual: (actual: any, expected: any
       });
     }
   };
-}
 
+  Object.defineProperty(result, 'frame', {
+    get() {
+      return virtualScheduler.frame;
+    }
+  });
 
-function parseMarblesAsSubscriptions(marbles: string, runMode = false): SubscriptionLog {
+  return result as TestScheduler;
+}) as any;
+
+export function parseMarblesAsSubscriptions(marbles: string, runMode = false): SubscriptionLog {
   if (typeof marbles !== 'string') {
     return subscriptionLog(Number.POSITIVE_INFINITY);
   }
@@ -361,11 +375,12 @@ function isTestObservable(value: any): value is TestObservable<any> {
   return isObservable(value) && Array.isArray((value as any).subscriptions);
 }
 
-function parseMarbles<T=string>(marbles: string,
-                      values?: { [key: string]: T },
-                      errorValue?: any,
-                      materializeInnerObservables = false,
-                      runMode = false): TestMessage<T>[] {
+export function parseMarbles<T = string>(
+  marbles: string,
+  values?: { [key: string]: T },
+  errorValue?: any,
+  materializeInnerObservables = false,
+  runMode = false): TestMessage<T>[] {
     if (marbles.indexOf('!') !== -1) {
       throw new Error('conventional marble diagrams cannot have the ' +
         'unsubscription marker "!"');

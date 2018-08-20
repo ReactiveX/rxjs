@@ -55,7 +55,6 @@ export function createVirtualScheduler(maxFrames = Number.POSITIVE_INFINITY): Vi
         flushing = true;
         let action: VirtualAction;
         while ((action = actions.shift()) && (this.frame = action.delay) <= maxFrames) {
-          const action = actions.shift();
           try {
             action.work(action.state);
           } catch (err) {

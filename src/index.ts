@@ -6,6 +6,7 @@ export { Subscription } from 'rxjs/internal/Subscription';
 export { ReplaySubject } from 'rxjs/internal/ReplaySubject';
 
 export { EMPTY } from 'rxjs/internal/EMPTY';
+export { NEVER } from 'rxjs/internal/NEVER';
 
 export { combineLatest } from 'rxjs/internal/create/combineLatest';
 export { concat } from 'rxjs/internal/create/concat';
@@ -35,3 +36,5 @@ export { animationFrameScheduler } from 'rxjs/internal/scheduler/animationFrameS
 export { asapScheduler } from 'rxjs/internal/scheduler/asapScheduler';
 export { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
 export { queueScheduler } from 'rxjs/internal/scheduler/queueScheduler';
+
+export * from './internal/types';
