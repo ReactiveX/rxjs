@@ -19,23 +19,34 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  *
  * ![](groupBy.png)
  *
- * ##Examples
- * Group objects by id and return as array
- * ```typescript
+ * When the Observable emits an item, a key is computed for this item with the keySelector function.
+ *
+ * If a {@link GroupedObservable} for this key exists, this {@link GroupedObservable} emits. Elsewhere, a new
+ * {@link GroupedObservable} for this key is created and emits.
+ *
+ * A {@link GroupedObservable} represents values belonging to the same group represented by a common key. The common
+ * key is available as the key field of a {@link GroupedObservable} instance.
+ *
+ * The elements emitted by {@link GroupedObservable}s are by default the items emitted by the Observable, or elements
+ * returned by the elementSelector function.
+ *
+ * ## Examples
+ * ### Group objects by id and return as array
+ * ```javascript
+ * import { mergeMap, groupBy } from 'rxjs/operators';
+ * import { of } from 'rxjs/observable/of';
+ *
  * interface Obj {
  *    id: number,
  *    name: string,
  * }
  *
  * of<Obj>(
- *   {id: 1, name: 'aze1'},
- *   {id: 2, name: 'sf2'},
- *   {id: 2, name: 'dg2'},
- *   {id: 1, name: 'erg1'},
- *   {id: 1, name: 'df1'},
- *   {id: 2, name: 'sfqfb2'},
- *   {id: 3, name: 'qfs3'},
- *   {id: 2, name: 'qsgqsfg2'},
+ *   {id: 1, name: 'javascript'},
+ *   {id: 2, name: 'parcel'},
+ *   {id: 2, name: 'webpack'},
+ *   {id: 1, name: 'typescript'},
+ *   {id: 3, name: 'tslint'}
  * ).pipe(
  *   groupBy(p => p.id),
  *   mergeMap((group$) => group$.pipe(reduce((acc, cur) => [...acc, cur], []))),
@@ -43,29 +54,26 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  * .subscribe(p => console.log(p));
  *
  * // displays:
- * // [ { id: 1, name: 'aze1' },
- * //   { id: 1, name: 'erg1' },
- * //   { id: 1, name: 'df1' } ]
+ * // [ { id: 1, name: 'javascript'},
+ * //   { id: 1, name: 'typescript'} ]
  * //
- * // [ { id: 2, name: 'sf2' },
- * //   { id: 2, name: 'dg2' },
- * //   { id: 2, name: 'sfqfb2' },
- * //   { id: 2, name: 'qsgqsfg2' } ]
+ * // [ { id: 2, name: 'parcel'},
+ * //   { id: 2, name: 'webpack'} ]
  * //
- * // [ { id: 3, name: 'qfs3' } ]
+ * // [ { id: 3, name: 'tslint'} ]
  * ```
  *
- * Pivot data on the id field
- * ```typescript
+ * ### Pivot data on the id field
+ * ```javascript
+ * import { mergeMap, groupBy, map } from 'rxjs/operators';
+ * import { of } from 'rxjs/observable/of';
+ *
  * of<Obj>(
- *   {id: 1, name: 'aze1'},
- *   {id: 2, name: 'sf2'},
- *   {id: 2, name: 'dg2'},
- *   {id: 1, name: 'erg1'},
- *   {id: 1, name: 'df1'},
- *   {id: 2, name: 'sfqfb2'},
- *   {id: 3, name: 'qfs1'},
- *   {id: 2, name: 'qsgqsfg2'},
+ *   {id: 1, name: 'javascript'},
+ *   {id: 2, name: 'parcel'},
+ *   {id: 2, name: 'webpack'},
+ *   {id: 1, name: 'typescript'}
+ *   {id: 3, name: 'tslint'}
  * ).pipe(
  *   groupBy(p => p.id, p => p.name),
  *   mergeMap( (group$) => group$.pipe(reduce((acc, cur) => [...acc, cur], ["" + group$.key]))),
@@ -74,9 +82,9 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  * .subscribe(p => console.log(p));
  *
  * // displays:
- * // { id: 1, values: [ 'aze1', 'erg1', 'df1' ] }
- * // { id: 2, values: [ 'sf2', 'dg2', 'sfqfb2', 'qsgqsfg2' ] }
- * // { id: 3, values: [ 'qfs1' ] }
+ * // { id: 1, values: [ 'javascript', 'typescript' ] }
+ * // { id: 2, values: [ 'parcel', 'webpack' ] }
+ * // { id: 3, values: [ 'tslint' ] }
  * ```
  *
  * @param {function(value: T): K} keySelector A function that extracts the key
