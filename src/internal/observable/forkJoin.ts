@@ -109,7 +109,7 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  *
  * ### Use forkJoin with project function
  * ```javascript
- * import { jorkJoin, interval } from 'rxjs';
+ * import { forkJoin, interval } from 'rxjs';
  * import { take } from 'rxjs/operators';
  *
  * const observable = forkJoin(
