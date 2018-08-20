@@ -92,11 +92,13 @@ export class TestScheduler extends VirtualTimeScheduler {
   }
 
   expectObservable(observable: Observable<any>,
-                   unsubscriptionMarbles: string = null): ({ toBe: observableToBeFn }) {
+                   subscriptionMarbles: string = null): ({ toBe: observableToBeFn }) {
     const actual: TestMessage[] = [];
     const flushTest: FlushableTest = { actual, ready: false };
-    const unsubscriptionFrame = TestScheduler
-      .parseMarblesAsSubscriptions(unsubscriptionMarbles, this.runMode).unsubscribedFrame;
+    const subscriptionParsed = TestScheduler.parseMarblesAsSubscriptions(subscriptionMarbles, this.runMode);
+    const subscriptionFrame = subscriptionParsed.subscribedFrame === Number.POSITIVE_INFINITY ?
+      0 : subscriptionParsed.subscribedFrame;
+    const unsubscriptionFrame = subscriptionParsed.unsubscribedFrame;
     let subscription: Subscription;
 
     this.schedule(() => {
@@ -112,7 +114,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       }, () => {
         actual.push({ frame: this.frame, notification: Notification.createComplete() });
       });
-    }, 0);
+    }, subscriptionFrame);
 
     if (unsubscriptionFrame !== Number.POSITIVE_INFINITY) {
       this.schedule(() => subscription.unsubscribe(), unsubscriptionFrame);
