@@ -24,7 +24,7 @@ export interface RunHelpers {
   hot<T = string>(marbles: string, values?: { [marble: string]: T }, error?: any): HotObservable<T>;
   flush(): void;
   expectObservable(observable: Observable<any>, unsubscriptionMarbles?: string): ({ toBe: observableToBeFn });
-  expectSubscriptions(actualSubscriptionLogs: SubscriptionLog[]): ({ toBe: subscriptionLogsToBeFn });
+  expectSubscriptionsTo(observable: TestObservable<any>): ({ toBe: subscriptionLogsToBeFn });
 }
 
 interface FlushableTest {
@@ -50,7 +50,7 @@ export interface TestScheduler extends VirtualScheduler {
   createHotObservable<T = string>(marbles: string, values?: { [marble: string]: T }, error?: any): HotObservable<T>;
 
   expectObservable(observable: Observable<any>, unsubscriptionMarbles?: string): ({ toBe: observableToBeFn });
-  expectSubscriptions(actualSubscriptionLogs: SubscriptionLog[]): ({ toBe: subscriptionLogsToBeFn });
+  expectSubscriptionsTo(observable: TestObservable<any>): ({ toBe: subscriptionLogsToBeFn });
 
   run<T>(callback: (helpers: RunHelpers) => T): T;
 }
@@ -80,6 +80,8 @@ export function subscriptionLog(subscribedFrame: number, unsubscribedFrame = Num
   };
 }
 
+// TODO(benlesh): We should really refactor this and the VirtualScheduler into
+// ES5 classes. Trying to avoid any tslib bloat here.
 export const TestScheduler: TestSchedulerCtor =
   (function createTestScheduler(assertDeepEqual: (actual: any, expected: any) => boolean | void): TestScheduler {
   const coldObservables: TestObservable<any>[] = [];
@@ -106,7 +108,7 @@ export const TestScheduler: TestSchedulerCtor =
       return messages;
     }
 
-  const result = {
+  const result: TestScheduler = {
     hotObservables,
     coldObservables,
     index: -1,
@@ -142,7 +144,7 @@ export const TestScheduler: TestSchedulerCtor =
         throw new Error('cold observable cannot have unsubscription marker "!"');
       }
       const messages = parseMarbles(marbles, values, error, undefined, runMode);
-      const cold = coldObservable<T>(messages, this);
+      const cold = coldObservable<T>(messages, this as TestScheduler);
       this.coldObservables.push(cold);
       return cold;
     },
@@ -157,18 +159,21 @@ export const TestScheduler: TestSchedulerCtor =
         throw new Error('hot observable cannot have unsubscription marker "!"');
       }
       const messages = parseMarbles(marbles, values, error, undefined, runMode);
-      const subject = hotObservable<T>(messages, this);
+      const subject = hotObservable<T>(messages, this as TestScheduler);
       this.hotObservables.push(subject);
       return subject;
     },
 
     expectObservable(
       observable: Observable<any>,
-      unsubscriptionMarbles: string = null
+      subscriptionMarbles: string = null
     ): ({ toBe: observableToBeFn }) {
       const actual: TestMessage<any>[] = [];
       const flushTest: FlushableTest = { actual, ready: false };
-      const unsubscriptionFrame = parseMarblesAsSubscriptions(unsubscriptionMarbles, runMode).unsubscribedFrame;
+      const subscriptionParsed = parseMarblesAsSubscriptions(subscriptionMarbles, this.runMode);
+      const subscriptionFrame = subscriptionParsed.subscribedFrame === Number.POSITIVE_INFINITY ?
+        0 : subscriptionParsed.subscribedFrame;
+    const unsubscriptionFrame = subscriptionParsed.unsubscribedFrame;
       let subscription: Subscription;
 
       this.schedule(() => {
@@ -176,15 +181,15 @@ export const TestScheduler: TestSchedulerCtor =
           let value = x;
           // Support Observable-of-Observables
           if (isObservable(x)) {
-            value = _materializeInnerObservable(value, this.frame, this);
+            value = _materializeInnerObservable(value, virtualScheduler.frame, this);
           }
-          actual.push({ frame: this.frame, notification: { kind: 'N', value } });
+          actual.push({ frame: virtualScheduler.frame, notification: { kind: 'N', value } });
         }, (error) => {
-          actual.push({ frame: this.frame, notification: { kind: 'E', error } });
+          actual.push({ frame: virtualScheduler.frame, notification: { kind: 'E', error } });
         }, () => {
-          actual.push({ frame: this.frame, notification: { kind: 'C' } });
+          actual.push({ frame: virtualScheduler.frame, notification: { kind: 'C' } });
         });
-      }, 0);
+      }, subscriptionFrame);
 
       if (unsubscriptionFrame !== Number.POSITIVE_INFINITY) {
         this.schedule(() => subscription.unsubscribe(), unsubscriptionFrame);
@@ -200,9 +205,16 @@ export const TestScheduler: TestSchedulerCtor =
       };
     },
 
-    expectSubscriptions(actualSubscriptionLogs: SubscriptionLog[]): ({ toBe: subscriptionLogsToBeFn }) {
-      const flushTest: FlushableTest = { actual: actualSubscriptionLogs, ready: false };
-      flushTests.push(flushTest);
+    expectSubscriptionsTo(observable: TestObservable<any>): ({ toBe: subscriptionLogsToBeFn }) {
+      const actual: any[] = [];
+      const flushTest: FlushableTest = { actual, ready: false };
+
+      this.schedule(() => {
+        observable.subscriptions.map(log => {
+          actual.push(log);
+        })
+      }, 0);
+
       return {
         toBe(marbles: string | string[]) {
           const marblesArray: string[] = (typeof marbles === 'string') ? [marbles] : marbles;
@@ -215,7 +227,6 @@ export const TestScheduler: TestSchedulerCtor =
     },
 
     run<T>(callback: (helpers: RunHelpers) => T): T {
-      const prevFrameTimeFactor = this.frameTimeFactor;
       const prevMaxFrames = this.maxFrames;
 
       // TestScheduler.FRAME_TIME_FACTOR = 1;
@@ -229,7 +240,7 @@ export const TestScheduler: TestSchedulerCtor =
         hot: this.createHotObservable.bind(this),
         flush: this.flush.bind(this),
         expectObservable: this.expectObservable.bind(this),
-        expectSubscriptions: this.expectSubscriptions.bind(this),
+        expectSubscriptionsTo: this.expectSubscriptionsTo.bind(this),
       };
       try {
         const ret = callback(helpers);
@@ -237,7 +248,6 @@ export const TestScheduler: TestSchedulerCtor =
         this.flush();
         return ret;
       } finally {
-        // TestScheduler.FRAME_TIME_FACTOR = prevFrameTimeFactor;
         this.maxFrames = prevMaxFrames;
         runMode = false;
         // TODO: Unpatch all schedulers
@@ -261,7 +271,7 @@ export const TestScheduler: TestSchedulerCtor =
         return true;
       });
     }
-  };
+  } as any;
 
   Object.defineProperty(result, 'frame', {
     get() {

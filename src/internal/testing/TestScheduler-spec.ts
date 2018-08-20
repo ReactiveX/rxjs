@@ -174,7 +174,7 @@ describe('TestScheduler', () => {
       // it('should ignore whitespace', () => {
       //   const testScheduler = new TestScheduler(assertDeepEquals);
 
-      //   testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+      //   testScheduler.run(({ cold, expectObservable, expectSubscriptionsTo }) => {
       //     const input = cold('  -a - b -    c |       ');
       //     const output = input.pipe(
       //       concatMap(d => of(d).pipe(
@@ -184,14 +184,14 @@ describe('TestScheduler', () => {
       //     const expected = '     -- 9ms a 9ms b 9ms (c|) ';
 
       //     expectObservable(output).toBe(expected);
-      //     expectSubscriptions(input.subscriptions).toBe('  ^- - - - - !');
+      //     expectSubscriptionsTo(input).toBe('  ^- - - - - !');
       //   });
       // });
 
       it('should support time progression syntax', () => {
         const testScheduler = new TestScheduler(assertDeepEquals);
 
-        testScheduler.run(({ cold, hot, flush, expectObservable, expectSubscriptions }) => {
+        testScheduler.run(({ cold, hot, flush, expectObservable, expectSubscriptionsTo }) => {
           const output = cold('10.2ms a 1.2s b 1m c|');
           const expected = '   10.2ms a 1.2s b 1m c|';
 
@@ -203,12 +203,12 @@ describe('TestScheduler', () => {
     it('should provide the correct helpers', () => {
       const testScheduler = new TestScheduler(assertDeepEquals);
 
-      testScheduler.run(({ cold, hot, flush, expectObservable, expectSubscriptions }) => {
+      testScheduler.run(({ cold, hot, flush, expectObservable, expectSubscriptionsTo }) => {
         expect(cold).to.be.a('function');
         expect(hot).to.be.a('function');
         expect(flush).to.be.a('function');
         expect(expectObservable).to.be.a('function');
-        expect(expectSubscriptions).to.be.a('function');
+        expect(expectSubscriptionsTo).to.be.a('function');
 
         const obs1 = cold('-a-c-e|');
         const obs2 = hot(' ^-b-d-f|');
@@ -216,8 +216,8 @@ describe('TestScheduler', () => {
         const expected = ' -abcdef|';
 
         expectObservable(output).toBe(expected);
-        expectSubscriptions(obs1.subscriptions).toBe('^-----!');
-        expectSubscriptions(obs2.subscriptions).toBe('^------!');
+        expectSubscriptionsTo(obs1).toBe('^-----!');
+        expectSubscriptionsTo(obs2).toBe('^------!');
       });
     });
 

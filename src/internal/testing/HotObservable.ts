@@ -1,5 +1,4 @@
 import { Subject } from '../Subject';
-import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { TestMessage, TestScheduler, subscriptionLogger, TestObservable } from './TestScheduler';
 import { FOType, Sink } from '../types';

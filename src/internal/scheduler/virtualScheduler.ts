@@ -54,7 +54,19 @@ export function createVirtualScheduler(maxFrames = Number.POSITIVE_INFINITY): Vi
       if (!flushing) {
         flushing = true;
         let action: VirtualAction;
-        while ((action = actions.shift()) && (this.frame = action.delay) <= maxFrames) {
+        while (action = actions.shift()) {
+          // ) && (this.frame = action.delay) <= maxFrames
+
+          if (this.frame > action.delay) {
+            // skip frames that were scheduled in the past. That shouldn't be possible.
+            continue;
+          }
+
+          this.frame = action.delay;
+          if (this.frame > maxFrames) {
+            break;
+          }
+
           try {
             action.work(action.state);
           } catch (err) {
@@ -64,6 +76,7 @@ export function createVirtualScheduler(maxFrames = Number.POSITIVE_INFINITY): Vi
             throw err;
           }
         }
+        actions.length = 0;
         flushing = false;
       }
     },

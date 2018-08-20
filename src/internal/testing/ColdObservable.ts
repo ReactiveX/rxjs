@@ -1,7 +1,6 @@
-import { Observable, sourceAsObservable } from '../Observable';
+import { sourceAsObservable } from '../Observable';
 import { Subscription } from '../Subscription';
-import { Subscriber } from '../Subscriber';
-import { TestMessage, TestScheduler, subscriptionLogger, SubscriptionLog, TestObservable } from './TestScheduler';
+import { TestMessage, TestScheduler, subscriptionLogger, TestObservable } from './TestScheduler';
 import { FOType, Sink } from '../types';
 
 export function coldObservable<T>(messages: TestMessage<T>[], scheduler: TestScheduler): TestObservable<T> {
