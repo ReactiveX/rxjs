@@ -1,10 +1,11 @@
-import { Observable, sourceAsObservable } from '../Observable';
-import { Operation, FOType, Sink, SinkArg, FObs, GroupedObservable, ObservableInput, Source } from 'rxjs/internal/types';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { subjectSource } from 'rxjs/internal/Subject';
-import { fromSource } from 'rxjs/internal/create/from';
-import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
-import { lift } from 'rxjs/internal/util/lift';
+import { Observable } from '../Observable';
+import { sourceAsObservable } from '../util/sourceAsObservable';
+import { Operation, FOType, Sink, SinkArg, GroupedObservable, ObservableInput } from '../types';
+import { Subscription } from '../Subscription';
+import { subjectSource } from '../Subject';
+import { fromSource } from '../create/from';
+import { tryUserFunction, resultIsError } from '../util/userFunction';
+import { lift } from '../util/lift';
 
 /**
  * NOTES:

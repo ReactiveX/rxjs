@@ -1,8 +1,7 @@
-import { Subject, subjectSource } from "rxjs/internal/Subject";
-import { FOType, FObsArg } from "rxjs/internal/types";
-import { Subscription } from "rxjs/internal/Subscription";
-import { sourceAsObservable } from "./Observable";
-import { sourceAsSubject } from "rxjs/internal/util/subjectBase";
+import { Subject, subjectSource } from './Subject';
+import { FOType, FObsArg } from './types';
+import { Subscription } from './Subscription';
+import { sourceAsSubject } from './util/sourceAsSubject';
 
 
 export interface BehaviorSubjectConstructor {

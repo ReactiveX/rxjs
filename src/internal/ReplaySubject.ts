@@ -1,8 +1,8 @@
-import { Subject } from "rxjs/internal/Subject";
-import { FOType, FObsArg, SinkArg, Sink } from "rxjs/internal/types";
-import { Subscription } from "rxjs/internal/Subscription";
-import { sourceAsObservable } from "./Observable";
-import { subjectBaseSource, sourceAsSubject } from "rxjs/internal/util/subjectBase";
+import { Subject } from './Subject';
+import { FOType, FObsArg, SinkArg } from './types';
+import { Subscription } from './Subscription';
+import { sourceAsSubject } from './util/sourceAsSubject';
+import { subjectBaseSource } from './util/subjectBaseSource';
 
 export interface ReplaySubjectConstructor {
   new <T>(bufferSize?: number, windowTime?: number): Subject<T>;

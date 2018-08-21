@@ -1,4 +1,4 @@
-import { FOType, Sink, SinkArg, PartialObserver } from 'rxjs/internal/types';
+import { FOType, Sink, SinkArg } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
 
 export interface Subscriber<T> extends Sink<T> {

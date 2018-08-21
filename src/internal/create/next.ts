@@ -1,7 +1,7 @@
-import { sourceAsObservable, Observable } from "../Observable";
-import { FOType, Sink } from "rxjs/internal/types";
-import { Subscription } from "rxjs/internal/Subscription";
-import { of } from 'rxjs/internal/create/of';
+import { Observable } from '../Observable';
+import { sourceAsObservable } from '../util/sourceAsObservable';
+import { FOType, Sink } from '../types';
+import { Subscription } from '../Subscription';
 
 /**
  * Emits values on microtasks. Similar to {@link of} but not synchronous.

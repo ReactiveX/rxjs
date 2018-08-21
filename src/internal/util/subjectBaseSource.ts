@@ -1,7 +1,5 @@
-import { FOType, FObsArg, FObs } from "rxjs/internal/types";
-import { Subscription } from "rxjs/internal/Subscription";
-import { sourceAsObservable } from "../Observable";
-import { Subject } from "rxjs/internal/Subject";
+import { FOType, FObsArg, FObs } from "../types";
+import { Subscription } from "../Subscription";
 
 export function subjectBaseSource<T>(): FObs<T> {
   let state: any[];
@@ -37,27 +35,4 @@ export function subjectBaseSource<T>(): FObs<T> {
         break;
     }
   };
-}
-
-export function sourceAsSubject<T>(source: any): Subject<T> {
-  source = sourceAsObservable(source) as Subject<T>;
-  source.next = next;
-  source.error = error;
-  source.complete = complete;
-  return source;
-}
-
-function next<T>(this: Subject<T>, value: T, subs: Subscription) {
-  this(FOType.NEXT, value, subs);
-}
-
-// NOTE: For error and complete, subscription doesn't matter, as
-// we are passing it from state
-
-function error<T>(this: Subject<T>, err: any) {
-  this(FOType.ERROR, err, undefined);
-}
-
-function complete<T>(this: Subject<T>) {
-  this(FOType.COMPLETE, undefined, undefined);
 }

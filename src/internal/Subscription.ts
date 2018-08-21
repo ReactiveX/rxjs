@@ -1,4 +1,4 @@
-import { Teardown, SubscriptionLike } from 'rxjs/internal/types';
+import { Teardown } from 'rxjs/internal/types';
 import { noop } from 'rxjs/internal/util/noop';
 import { isSubscription } from 'rxjs/internal/util/isSubscription';
 

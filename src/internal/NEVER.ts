@@ -1,3 +1,3 @@
-import { sourceAsObservable } from "./Observable";
+import { sourceAsObservable } from './util/sourceAsObservable';
 
 export const NEVER = sourceAsObservable(() => { /* noop */ });

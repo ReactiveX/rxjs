@@ -1,7 +1,8 @@
-import { Observable, sourceAsObservable } from './Observable';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { Subject, subjectSource } from 'rxjs/internal/Subject';
-import { FOType, Sink } from 'rxjs/internal/types';
+import { Observable } from './Observable';
+import { sourceAsObservable } from './util/sourceAsObservable';
+import { Subscription } from './Subscription';
+import { Subject } from './Subject';
+import { FOType, Sink } from './types';
 
 export interface ConnectableObservable<T> extends Observable<T> {
   connect(): Subscription;

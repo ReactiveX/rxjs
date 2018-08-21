@@ -1,4 +1,4 @@
-import { sourceAsObservable } from '../Observable';
+import { sourceAsObservable } from '../util/sourceAsObservable';
 import { Subscription } from '../Subscription';
 import { TestMessage, TestScheduler, subscriptionLogger, TestObservable } from './TestScheduler';
 import { FOType, Sink } from '../types';

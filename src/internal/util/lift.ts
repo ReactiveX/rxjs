@@ -1,4 +1,5 @@
-import { Observable, sourceAsObservable } from 'rxjs/internal/Observable';
+import { Observable } from 'rxjs/internal/Observable';
+import { sourceAsObservable } from '../util/sourceAsObservable';
 import { FOType, Sink } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
 

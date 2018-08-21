@@ -1,4 +1,4 @@
-import { filter } from 'rxjs/internal/operators/filter';
+import { filter } from '../operators/filter';
 import { Observable } from '../Observable';
 
 

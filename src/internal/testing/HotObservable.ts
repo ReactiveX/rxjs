@@ -2,7 +2,7 @@ import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
 import { TestMessage, TestScheduler, subscriptionLogger, TestObservable } from './TestScheduler';
 import { FOType, Sink } from '../types';
-import { sourceAsObservable } from '../Observable';
+import { sourceAsObservable } from '../util/sourceAsObservable';
 
 export interface HotObservable<T> extends TestObservable<T> {
   setup(): void;

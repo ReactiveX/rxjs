@@ -1,4 +1,4 @@
-import { Subscription, SubscriptionConstructor, SubscriptionContext, teardownToFunction } from 'rxjs/internal/Subscription';
+import { Subscription, SubscriptionContext, teardownToFunction } from 'rxjs/internal/Subscription';
 import { Teardown } from 'rxjs/internal/types';
 
 export interface RecyclableSubscription extends Subscription {
