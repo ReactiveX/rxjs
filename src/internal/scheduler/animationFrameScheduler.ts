@@ -1,6 +1,6 @@
-import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { SchedulerLike } from 'rxjs/internal/types';
+import { asyncScheduler } from '../scheduler/asyncScheduler';
+import { Subscription } from '../Subscription';
+import { SchedulerLike } from '../types';
 
 const toAnimate: any[] = [];
 let animId = 0;
