@@ -6,7 +6,7 @@ import { Subscription } from '../Subscription';
 import { lift } from '../util/lift';
 import { subjectSource } from '../Subject';
 import { tryUserFunction, resultIsError } from '../util/userFunction';
-import { fromSource } from '../create/from';
+import { fromSource } from "rxjs/internal/sources/fromSource";
 
 export function repeatWhen<T>(notifierSetup: (completions: Observable<any>) => Observable<any>): Operation<T, T> {
   return lift((source: Observable<T>, dest: Sink<T>, downstreamSubs: Subscription) => {

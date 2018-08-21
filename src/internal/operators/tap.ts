@@ -1,5 +1,5 @@
-import { Observable, sourceAsObservable } from '../Observable';
-import { Operation, FOType, Sink, SinkArg, FObs, PartialObserver } from 'rxjs/internal/types';
+import { Observable } from '../Observable';
+import { Operation, FOType, Sink, SinkArg, PartialObserver } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { lift } from 'rxjs/internal/util/lift';
 

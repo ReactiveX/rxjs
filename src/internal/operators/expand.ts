@@ -3,7 +3,7 @@ import { lift } from 'rxjs/internal/util/lift';
 import { Observable } from '../Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
-import { fromSource } from 'rxjs/internal/create/from';
+import { fromSource } from "rxjs/internal/sources/fromSource";
 
 export function expand<T, R>(project: (value: T|R, index: number) => ObservableInput<R>, concurrent = Number.POSITIVE_INFINITY): Operation<T, R> {
   return lift((source: Observable<T>, dest: Sink<R>, subs: Subscription) => {

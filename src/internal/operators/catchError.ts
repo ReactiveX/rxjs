@@ -1,9 +1,9 @@
-import { ObservableInput, Operation, FOType, Sink, SinkArg, Source } from "rxjs/internal/types";
-import { Observable, sourceAsObservable } from "../Observable";
-import { Subscription } from "rxjs/internal/Subscription";
-import { fromSource } from "rxjs/internal/create/from";
-import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
-import { lift } from 'rxjs/internal/util/lift';
+import { ObservableInput, Operation, FOType, Sink, SinkArg } from '../types';
+import { Observable } from '../Observable';
+import { Subscription } from '../Subscription';
+import { fromSource } from '../sources/fromSource';
+import { tryUserFunction, resultIsError } from '../util/userFunction';
+import { lift } from '../util/lift';
 
 export function catchError<T, R>(handler: (err: any) => ObservableInput<R>): Operation<T, T|R> {
   return lift((source: Observable<T>, dest: Sink<T|R>, downstreamSubs: Subscription) => {

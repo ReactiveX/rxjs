@@ -1,15 +1,18 @@
 // TODO: require rxjs/core as a peer dep
-import { SchedulerLike, ObservableInput, FOType, Sink } from "../types";
-import { isArrayLike } from "../util/isArrayLike";
-import { sourceAsObservable, Observable } from "../Observable";
-import { Subscription } from "../Subscription";
-import { isIterable } from "../util/isIterable";
+import { SchedulerLike, ObservableInput, FOType, Sink } from '../types';
+import { isArrayLike } from '../util/isArrayLike';
+import { Observable } from '../Observable';
+import { sourceAsObservable } from '../util/sourceAsObservable';
+import { Subscription } from '../Subscription';
+import { isIterable } from '../util/isIterable';
 
 export function fromScheduled<T>(input: ObservableInput<T>, scheduler: SchedulerLike): Observable<T> {
   if (isIterable(input)) {
     return sourceAsObservable(fromIterableScheduledSource(input as Iterable<T>, scheduler));
   } else if (isArrayLike(input)) {
     return sourceAsObservable(fromArrayLikeScheduledSource(input, scheduler));
+  } else {
+    throw new Error('not implemented yet');
   }
 }
 

@@ -16,7 +16,6 @@ export { fromScheduled } from './internal/create/fromScheduled';
 export { interval } from './internal/create/interval';
 export { merge } from './internal/create/merge';
 export { multicast } from './internal/create/multicast';
-export { next } from './internal/create/next';
 export { of } from './internal/create/of';
 export { onEmptyResumeNext } from './internal/create/onEmptyResumeNext';
 export { onErrorResumeNext } from './internal/create/onErrorResumeNext';

@@ -2,7 +2,7 @@ import { lift } from 'rxjs/internal/util/lift';
 import { Observable } from '../Observable';
 import { FOType, ObservableInput, Operation, Sink, SinkArg } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { fromSource } from 'rxjs/internal/create/from';
+import { fromSource } from "rxjs/internal/sources/fromSource";
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 
 export function distinct<T, K>(keySelector?: (value: T) => K, flushes?: ObservableInput<any>): Operation<T, T> {

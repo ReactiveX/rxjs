@@ -1,4 +1,4 @@
-import { Observable, sourceAsObservable } from '../Observable';
+import { Observable } from '../Observable';
 import { Operation, FOType, Sink, SinkArg, FObs } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';

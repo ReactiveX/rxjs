@@ -2,7 +2,7 @@ import { Subject } from './Subject';
 import { FOType, FObsArg, SinkArg } from './types';
 import { Subscription } from './Subscription';
 import { sourceAsSubject } from './util/sourceAsSubject';
-import { subjectBaseSource } from './util/subjectBaseSource';
+import { subjectBaseSource } from 'rxjs/internal/sources/subjectBaseSource';
 
 export interface ReplaySubjectConstructor {
   new <T>(bufferSize?: number, windowTime?: number): Subject<T>;
