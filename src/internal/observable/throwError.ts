@@ -22,7 +22,13 @@ import { Subscriber } from '../Subscriber';
  *
  * const result = concat(of(7), throwError(new Error('oops!')));
  * result.subscribe(x => console.log(x), e => console.error(e));
- * ```javascript
+ *
+ * // Logs:
+ * // 7
+ * // Error: oops!
+ * ```
+ *
+ * ---
  *
  * ### Map and flatten numbers to the sequence 'a', 'b', 'c', but throw an error for 13
  * ```javascript
@@ -30,12 +36,22 @@ import { Subscriber } from '../Subscriber';
  * import { mergeMap } from 'rxjs/operators';
  *
  * interval(1000).pipe(
- *   mergeMap(x => x === 13
- *     ? throwError('Thirteens are bad')
+ *   mergeMap(x => x === 2
+ *     ? throwError('Twos are bad')
  *     : of('a', 'b', 'c')
  *   ),
  * ).subscribe(x => console.log(x), e => console.error(e));
+ *
+ * // Logs:
+ * // a
+ * // b
+ * // c
+ * // a
+ * // b
+ * // c
+ * // Twos are bad
  * ```
+ *
  * @see {@link Observable}
  * @see {@link empty}
  * @see {@link never}
