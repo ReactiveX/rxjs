@@ -21,10 +21,22 @@ import { Subscriber } from '../Subscriber';
  * {@link SchedulerLike} to it.
  *
  * ## Example
- * Emits ascending numbers, one every second (1000ms)
+ * Emits ascending numbers, one every second (1000ms) up to the number 3
  * ```javascript
+ * import { interval } from 'rxjs';
+ * import { take } from 'rxjs/operators';
+ *
  * const numbers = interval(1000);
- * numbers.subscribe(x => console.log(x));
+ *
+ * const takeFourNumbers = numbers.pipe(take(4));
+ *
+ * takeFourNumbers.subscribe(x => console.log('Next: ', x));
+ *
+ * // Logs:
+ * // Next: 0
+ * // Next: 1
+ * // Next: 2
+ * // Next: 3
  * ```
  *
  * @see {@link timer}
