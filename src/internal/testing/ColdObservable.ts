@@ -28,9 +28,11 @@ export function coldObservable<T>(messages: TestMessage<T>[], scheduler: TestSch
           } else {
             continue;
           }
-          scheduler.schedule(({ t, a, subs }) => sink(t, a, subs), frame, { t, a, subs });
+          scheduler.schedule(({ t, a, subs }) => {
+            sink(t, a, subs);
+          }, frame, { t, a, subs }, subs);
         }
-      });
+      }, 0, undefined, subs);
     }
   });
 

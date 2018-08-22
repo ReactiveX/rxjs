@@ -9,7 +9,9 @@ export function promiseSource<T>(promise: PromiseLike<T>): Source<T> {
           sink(FOType.COMPLETE, undefined, subs);
         }
       }, err => {
-        sink(FOType.ERROR, err, subs);
+        if (!subs.closed) {
+          sink(FOType.ERROR, err, subs);
+        }
       });
     }
   };
