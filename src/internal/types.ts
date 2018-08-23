@@ -1,7 +1,7 @@
 import { Subscription } from './Subscription';
 import { Observable } from './Observable';
 
-export enum FOType {
+export const enum FOType {
   SUBSCRIBE = 0,
   NEXT = 1,
   COMPLETE = 2,
