@@ -10,11 +10,11 @@ import { map } from './map';
 import { from } from '../observable/from';
 
 /* tslint:disable:max-line-length */
-export function switchMap<T, R>(project: (value: T, index: number) => ObservableInput<R>): OperatorFunction<T, R>;
+export function switchMap<T, R>(project: (value: T, index: number, abortSignal: AbortSignal) => ObservableInput<R>): OperatorFunction<T, R>;
 /** @deprecated resultSelector is no longer supported, use inner map instead */
-export function switchMap<T, R>(project: (value: T, index: number) => ObservableInput<R>, resultSelector: undefined): OperatorFunction<T, R>;
+export function switchMap<T, R>(project: (value: T, index: number, abortSignal: AbortSignal) => ObservableInput<R>, resultSelector: undefined): OperatorFunction<T, R>;
 /** @deprecated resultSelector is no longer supported, use inner map instead */
-export function switchMap<T, I, R>(project: (value: T, index: number) => ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
+export function switchMap<T, I, R>(project: (value: T, index: number, abortSignal: AbortSignal) => ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -60,12 +60,12 @@ export function switchMap<T, I, R>(project: (value: T, index: number) => Observa
  * @owner Observable
  */
 export function switchMap<T, I, R>(
-  project: (value: T, index: number) => ObservableInput<I>,
+  project: (value: T, index: number, abortSignal: AbortSignal) => ObservableInput<I>,
   resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R,
 ): OperatorFunction<T, I|R> {
   if (typeof resultSelector === 'function') {
     return (source: Observable<T>) => source.pipe(
-      switchMap((a, i) => from(project(a, i)).pipe(
+      switchMap((a, i, s) => from(project(a, i, s)).pipe(
         map((b, ii) => resultSelector(a, b, i, ii))
       ))
     );
@@ -74,7 +74,7 @@ export function switchMap<T, I, R>(
 }
 
 class SwitchMapOperator<T, R> implements Operator<T, R> {
-  constructor(private project: (value: T, index: number) => ObservableInput<R>) {
+  constructor(private project: (value: T, index: number, abortSignal: AbortSignal) => ObservableInput<R>) {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {
@@ -92,28 +92,34 @@ class SwitchMapSubscriber<T, R> extends OuterSubscriber<T, R> {
   private innerSubscription: Subscription;
 
   constructor(destination: Subscriber<R>,
-              private project: (value: T, index: number) => ObservableInput<R>) {
+              private project: (value: T, index: number, abortSignal: AbortSignal) => ObservableInput<R>) {
     super(destination);
   }
 
   protected _next(value: T) {
     let result: ObservableInput<R>;
     const index = this.index++;
+    const abortController = typeof AbortController === 'function' ? new AbortController() : undefined;
     try {
-      result = this.project(value, index);
+      result = this.project(value, index, abortController && abortController.signal);
     } catch (error) {
       this.destination.error(error);
       return;
     }
-    this._innerSub(result, value, index);
+    this._innerSub(result, value, index, abortController);
   }
 
-  private _innerSub(result: ObservableInput<R>, value: T, index: number) {
-    const innerSubscription = this.innerSubscription;
-    if (innerSubscription) {
-      innerSubscription.unsubscribe();
+  private _innerSub(result: ObservableInput<R>, value: T, index: number, abortController: AbortController) {
+    const previousInnerSubscription = this.innerSubscription;
+    if (previousInnerSubscription) {
+      previousInnerSubscription.unsubscribe();
     }
-    this.add(this.innerSubscription = subscribeToResult(this, result, value, index));
+    const newInnerSubscription = subscribeToResult(this, result, value, index);
+    if (abortController) {
+      newInnerSubscription.add(() => abortController.abort());
+    }
+    this.innerSubscription = newInnerSubscription;
+    this.add(newInnerSubscription);
   }
 
   protected _complete(): void {
