@@ -50,16 +50,21 @@ import { empty } from './empty';
  * @name defer
  * @owner Observable
  */
-export function defer<T>(observableFactory: () => SubscribableOrPromise<T> | void): Observable<T> {
+export function defer<T>(observableFactory: (signal: AbortSignal) => SubscribableOrPromise<T> | void): Observable<T> {
   return new Observable(subscriber => {
     let input: SubscribableOrPromise<T> | void;
+    const abortController = typeof AbortController === 'function' ? new AbortController() : undefined;
     try {
-      input = observableFactory();
+      input = observableFactory(abortController && abortController.signal);
     } catch (err) {
       subscriber.error(err);
       return undefined;
     }
     const source = input ? from(input) : empty();
-    return source.subscribe(subscriber);
+    const subscription = source.subscribe(subscriber);
+    if (abortController) {
+      subscription.add(() => abortController.abort());
+    }
+    return subscription;
   });
 }
