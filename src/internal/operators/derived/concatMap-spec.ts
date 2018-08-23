@@ -48,505 +48,548 @@ describe('concatMap', () => {
     });
   });
 
-  it('should concatenate many regular interval inners', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const a =   cold('--a-a-a-(a|)                            ');
-    const asubs =    '^       !                               ';
-    const b =   cold(        '----b--b--(b|)                  ');
-    const bsubs =    '        ^         !                     ';
-    const c =   cold(                         '-c-c-(c|)      ');
-    const csubs =    '                         ^    !         ';
-    const d =   cold(                              '------(d|)');
-    const dsubs =    '                              ^     !   ';
-    const e1 =   hot('a---b--------------------c-d----|       ');
-    const e1subs =   '^                               !       ';
-    const expected = '--a-a-a-a---b--b--b-------c-c-c-----(d|)';
+  it('should concatenate many regular interval inners', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const a =   cold('--a-a-a-(a|)                            ');
+      const asubs =    '^       !                               ';
+      const b =   cold(        '----b--b--(b|)                  ');
+      const bsubs =    '        ^         !                     ';
+      const c =   cold(                         '-c-c-(c|)      ');
+      const csubs =    '                         ^    !         ';
+      const d =   cold(                              '------(d|)');
+      const dsubs =    '                              ^     !   ';
+      const e1 =   hot('a---b--------------------c-d----|       ');
+      const e1subs =   '^                               !       ';
+      const expected = '--a-a-a-a---b--b--b-------c-c-c-----(d|)';
 
-    const observableLookup = { a: a, b: b, c: c, d: d };
-    const source = e1.pipe(concatMap((value) => observableLookup[value]));
+      const observableLookup = { a: a, b: b, c: c, d: d };
+      const source = e1.pipe(concatMap((value) => observableLookup[value]));
 
-    expectObservable(source).toBe(expected);
-    expectSubscriptionsTo(a).toBe(asubs);
-    expectSubscriptionsTo(b).toBe(bsubs);
-    expectSubscriptionsTo(c).toBe(csubs);
-    expectSubscriptionsTo(d).toBe(dsubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(source).toBe(expected);
+      expectSubscriptionsTo(a).toBe(asubs);
+      expectSubscriptionsTo(b).toBe(bsubs);
+      expectSubscriptionsTo(c).toBe(csubs);
+      expectSubscriptionsTo(d).toBe(dsubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should concatMap many outer values to many inner values', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
-    const e1 =     hot('-a---b---c---d---|                        ');
-    const e1subs =     '^                !                        ';
-    const inner = cold('--i-j-k-l-|                               ', values);
-    const innersubs = [' ^         !                              ',
-                       '           ^         !                    ',
-                       '                     ^         !          ',
-                       '                               ^         !'];
-    const expected =   '---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l-|';
+  it('should concatMap many outer values to many inner values', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
+      const e1 =     hot('-a---b---c---d---|                        ');
+      const e1subs =     '^                !                        ';
+      const inner = cold('--i-j-k-l-|                               ', values);
+      const innersubs = [' ^         !                              ',
+                        '           ^         !                    ',
+                        '                     ^         !          ',
+                        '                               ^         !'];
+      const expected =   '---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l-|';
 
-    const result = e1.pipe(concatMap((value) => inner));
+      const result = e1.pipe(concatMap((value) => inner));
 
-    expectObservable(result).toBe(expected, values);
-    expectSubscriptionsTo(inner).toBe(innersubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result).toBe(expected, values);
+      expectSubscriptionsTo(inner).toBe(innersubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should handle an empty source', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const e1 = cold( '|');
-    const e1subs =   '(^!)';
-    const inner = cold('-1-2-3|');
-    const innersubs: string[] = [];
-    const expected = '|';
+  it('should handle an empty source', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const e1 = cold( '|');
+      const e1subs =   '(^!)';
+      const inner = cold('-1-2-3|');
+      const innersubs: string[] = [];
+      const expected = '|';
 
-    const result = e1.pipe(concatMap(() => inner));
+      const result = e1.pipe(concatMap(() => inner));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptionsTo(inner).toBe(innersubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result).toBe(expected);
+      expectSubscriptionsTo(inner).toBe(innersubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should handle a never source', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const e1 = cold( '-');
-    const e1subs =   '^';
-    const inner = cold('-1-2-3|');
-    const innersubs: string[] = [];
-    const expected = '-';
+  it('should handle a never source', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const e1 = cold( '-');
+      const e1subs =   '^';
+      const inner = cold('-1-2-3|');
+      const innersubs: string[] = [];
+      const expected = '-';
 
-    const result = e1.pipe(concatMap(() => { return inner; }));
+      const result = e1.pipe(concatMap(() => { return inner; }));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptionsTo(inner).toBe(innersubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result).toBe(expected);
+      expectSubscriptionsTo(inner).toBe(innersubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should error immediately if given a just-throw source', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const e1 = cold( '#');
-    const e1subs =   '(^!)';
-    const inner = cold('-1-2-3|');
-    const innersubs: string[] = [];
-    const expected = '#';
+  it('should error immediately if given a just-throw source', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const e1 = cold( '#');
+      const e1subs =   '(^!)';
+      const inner = cold('-1-2-3|');
+      const innersubs: string[] = [];
+      const expected = '#';
 
-    const result = e1.pipe(concatMap(() => { return inner; }));
+      const result = e1.pipe(concatMap(() => { return inner; }));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptionsTo(inner).toBe(innersubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result).toBe(expected);
+      expectSubscriptionsTo(inner).toBe(innersubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should return a silenced version of the source if the mapped inner is empty', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const e1 = cold(   '--a-b--c-| ');
-    const e1subs =     '^        ! ';
-    const inner = cold('|');
-    const innersubs = ['  (^!)     ',
-                       '    (^!)   ',
-                       '       (^!)'];
-    const expected =   '---------| ';
+  it('should return a silenced version of the source if the mapped inner is empty', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const e1 = cold(   '--a-b--c-| ');
+      const e1subs =     '^        ! ';
+      const inner = cold('|');
+      const innersubs = ['  (^!)     ',
+                         '    (^!)   ',
+                         '       (^!)'];
+      const expected =   '---------| ';
 
-    const result = e1.pipe(concatMap(() => { return inner; }));
+      const result = e1.pipe(concatMap(() => { return inner; }));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptionsTo(inner).toBe(innersubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result).toBe(expected);
+      expectSubscriptionsTo(inner).toBe(innersubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should return a never if the mapped inner is never', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const e1 = cold(  '--a-b--c-|');
-    const e1subs =    '^        !';
-    const inner = cold('-');
-    const innersubs = '  ^       ';
-    const expected =  '----------';
+  it('should return a never if the mapped inner is never', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const e1 = cold(  '--a-b--c-|');
+      const e1subs =    '^        !';
+      const inner = cold('-');
+      const innersubs = '  ^       ';
+      const expected =  '----------';
 
-    const result = e1.pipe(concatMap(() => { return inner; }));
+      const result = e1.pipe(concatMap(() => { return inner; }));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptionsTo(inner).toBe(innersubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result).toBe(expected);
+      expectSubscriptionsTo(inner).toBe(innersubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should propagate errors if the mapped inner is a just-throw Observable', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const e1 = cold(  '--a-b--c-|');
-    const e1subs =    '^ !       ';
-    const inner = cold('#');
-    const innersubs = '  (^!)    ';
-    const expected =  '--#       ';
+  it('should propagate errors if the mapped inner is a just-throw Observable', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const e1 = cold(  '--a-b--c-|');
+      const e1subs =    '^ !       ';
+      const inner = cold('#');
+      const innersubs = '  (^!)    ';
+      const expected =  '--#       ';
 
-    const result = e1.pipe(concatMap(() => { return inner; }));
+      const result = e1.pipe(concatMap(() => { return inner; }));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptionsTo(inner).toBe(innersubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result).toBe(expected);
+      expectSubscriptionsTo(inner).toBe(innersubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should concatMap many outer to many inner, complete late', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
-    const e1 =     hot('-a---b---c---d----------------------------------|');
-    const e1subs =     '^                                               !';
-    const inner =  cold('--i-j-k-l-|                                     ', values);
-    const innersubs = [' ^         !                                     ',
-                       '           ^         !                           ',
-                       '                     ^         !                 ',
-                       '                               ^         !       '];
-    const expected =   '---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l--------|';
+  it('should concatMap many outer to many inner, complete late', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
+      const e1 =     hot('-a---b---c---d----------------------------------|');
+      const e1subs =     '^                                               !';
+      const inner =  cold('--i-j-k-l-|                                     ', values);
+      const innersubs = [' ^         !                                     ',
+                        '           ^         !                           ',
+                        '                     ^         !                 ',
+                        '                               ^         !       '];
+      const expected =   '---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l--------|';
 
-    const result = e1.pipe(concatMap((value) => inner));
+      const result = e1.pipe(concatMap((value) => inner));
 
-    expectObservable(result).toBe(expected, values);
-    expectSubscriptionsTo(inner).toBe(innersubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result).toBe(expected, values);
+      expectSubscriptionsTo(inner).toBe(innersubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should concatMap many outer to many inner, outer never completes', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
-    const e1 =     hot('-a---b---c---d-----------------------------------');
-    const e1subs =     '^                                                ';
-    const inner =  cold('--i-j-k-l-|                                     ', values);
-    const innersubs = [' ^         !                                     ',
-                       '           ^         !                           ',
-                       '                     ^         !                 ',
-                       '                               ^         !       '];
-    const expected =   '---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l---------';
+  it('should concatMap many outer to many inner, outer never completes', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
+      const e1 =     hot('-a---b---c---d-----------------------------------');
+      const e1subs =     '^                                                ';
+      const inner =  cold('--i-j-k-l-|                                     ', values);
+      const innersubs = [' ^         !                                     ',
+                        '           ^         !                           ',
+                        '                     ^         !                 ',
+                        '                               ^         !       '];
+      const expected =   '---i-j-k-l---i-j-k-l---i-j-k-l---i-j-k-l---------';
 
-    const result = e1.pipe(concatMap((value) => inner));
+      const result = e1.pipe(concatMap((value) => inner));
 
-    expectObservable(result).toBe(expected, values);
-    expectSubscriptionsTo(inner).toBe(innersubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result).toBe(expected, values);
+      expectSubscriptionsTo(inner).toBe(innersubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should concatMap many outer to many inner, inner never completes', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
-    const e1 =     hot('-a---b---c---d---|');
-    const e1subs =     '^                !';
-    const inner =  cold('--i-j-k-l-       ', values);
-    const innersubs =  ' ^                ';
-    const expected =   '---i-j-k-l--------';
+  it('should concatMap many outer to many inner, inner never completes', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
+      const e1 =     hot('-a---b---c---d---|');
+      const e1subs =     '^                !';
+      const inner =  cold('--i-j-k-l-       ', values);
+      const innersubs =  ' ^                ';
+      const expected =   '---i-j-k-l--------';
 
-    const result = e1.pipe(concatMap((value) => inner));
+      const result = e1.pipe(concatMap((value) => inner));
 
-    expectObservable(result).toBe(expected, values);
-    expectSubscriptionsTo(inner).toBe(innersubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result).toBe(expected, values);
+      expectSubscriptionsTo(inner).toBe(innersubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should concatMap many outer to many inner, and inner throws', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
-    const e1 =     hot('-a---b---c---d---|');
-    const e1subs =     '^          !      ';
-    const inner =  cold('--i-j-k-l-#      ', values);
-    const innersubs =  ' ^         !      ';
-    const expected =   '---i-j-k-l-#      ';
+  it('should concatMap many outer to many inner, and inner throws', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
+      const e1 =     hot('-a---b---c---d---|');
+      const e1subs =     '^          !      ';
+      const inner =  cold('--i-j-k-l-#      ', values);
+      const innersubs =  ' ^         !      ';
+      const expected =   '---i-j-k-l-#      ';
 
-    const result = e1.pipe(concatMap((value) => inner));
+      const result = e1.pipe(concatMap((value) => inner));
 
-    expectObservable(result).toBe(expected, values);
-    expectSubscriptionsTo(inner).toBe(innersubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result).toBe(expected, values);
+      expectSubscriptionsTo(inner).toBe(innersubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should concatMap many outer to many inner, and outer throws', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
-    const e1 =     hot('-a---b---c---d---#');
-    const e1subs =     '^                !';
-    const inner =  cold('--i-j-k-l-|      ', values);
-    const innersubs = [' ^         !      ',
-                       '           ^     !'];
-    const expected =   '---i-j-k-l---i-j-#';
+  it('should concatMap many outer to many inner, and outer throws', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
+      const e1 =     hot('-a---b---c---d---#');
+      const e1subs =     '^                !';
+      const inner =  cold('--i-j-k-l-|      ', values);
+      const innersubs = [' ^         !      ',
+                        '           ^     !'];
+      const expected =   '---i-j-k-l---i-j-#';
 
-    const result = e1.pipe(concatMap((value) => inner));
+      const result = e1.pipe(concatMap((value) => inner));
 
-    expectObservable(result).toBe(expected, values);
-    expectSubscriptionsTo(inner).toBe(innersubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result).toBe(expected, values);
+      expectSubscriptionsTo(inner).toBe(innersubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should concatMap many outer to many inner, both inner and outer throw', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
-    const e1 =     hot('-a---b---c---d---#');
-    const e1subs =     '^          !      ';
-    const inner =  cold('--i-j-k-l-#      ', values);
-    const innersubs =  ' ^         !      ';
-    const expected =   '---i-j-k-l-#      ';
+  it('should concatMap many outer to many inner, both inner and outer throw', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
+      const e1 =     hot('-a---b---c---d---#');
+      const e1subs =     '^          !      ';
+      const inner =  cold('--i-j-k-l-#      ', values);
+      const innersubs =  ' ^         !      ';
+      const expected =   '---i-j-k-l-#      ';
 
-    const result = e1.pipe(concatMap((value) => inner));
+      const result = e1.pipe(concatMap((value) => inner));
 
-    expectObservable(result).toBe(expected, values);
-    expectSubscriptionsTo(inner).toBe(innersubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result).toBe(expected, values);
+      expectSubscriptionsTo(inner).toBe(innersubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should concatMap many complex, where all inners are finite', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const a =   cold( '-#                                                          ');
-    const asubs: string[] = [];
-    const b =   cold(   '-#                                                        ');
-    const bsubs: string[] = [];
-    const c =   cold(        '-2--3--4--5----6-|                                   ');
-    const csubs =          '  ^                !                                   ';
-    const d =   cold(                         '----2--3|                           ');
-    const dsubs =          '                   ^       !                           ';
-    const e =   cold(                                 '-1------2--3-4-5---|        ');
-    const esubs =          '                           ^                  !        ';
-    const f =   cold(                                                    '--|      ');
-    const fsubs =          '                                              ^ !      ';
-    const g =   cold(                                                      '---1-2|');
-    const gsubs =          '                                                ^     !';
-    const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
-    const e1subs =         '^                                      !               ';
-    const expected =       '---2--3--4--5----6-----2--3-1------2--3-4-5--------1-2|';
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+  it('should concatMap many complex, where all inners are finite', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const a =   cold( '-#                                                          ');
+      const asubs: string[] = [];
+      const b =   cold(   '-#                                                        ');
+      const bsubs: string[] = [];
+      const c =   cold(        '-2--3--4--5----6-|                                   ');
+      const csubs =          '  ^                !                                   ';
+      const d =   cold(                         '----2--3|                           ');
+      const dsubs =          '                   ^       !                           ';
+      const e =   cold(                                 '-1------2--3-4-5---|        ');
+      const esubs =          '                           ^                  !        ';
+      const f =   cold(                                                    '--|      ');
+      const fsubs =          '                                              ^ !      ';
+      const g =   cold(                                                      '---1-2|');
+      const gsubs =          '                                                ^     !';
+      const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
+      const e1subs =         '^                                      !               ';
+      const expected =       '---2--3--4--5----6-----2--3-1------2--3-4-5--------1-2|';
+      const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    const result = e1.pipe(concatMap((value) => observableLookup[value]));
+      const result = e1.pipe(concatMap((value) => observableLookup[value]));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptionsTo(a).toBe(asubs);
-    expectSubscriptionsTo(b).toBe(bsubs);
-    expectSubscriptionsTo(c).toBe(csubs);
-    expectSubscriptionsTo(d).toBe(dsubs);
-    expectSubscriptionsTo(e).toBe(esubs);
-    expectSubscriptionsTo(f).toBe(fsubs);
-    expectSubscriptionsTo(g).toBe(gsubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result).toBe(expected);
+      expectSubscriptionsTo(a).toBe(asubs);
+      expectSubscriptionsTo(b).toBe(bsubs);
+      expectSubscriptionsTo(c).toBe(csubs);
+      expectSubscriptionsTo(d).toBe(dsubs);
+      expectSubscriptionsTo(e).toBe(esubs);
+      expectSubscriptionsTo(f).toBe(fsubs);
+      expectSubscriptionsTo(g).toBe(gsubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should concatMap many complex, all inners finite except one', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const a =   cold( '-#                                                          ');
-    const asubs: string[] = [];
-    const b =   cold(   '-#                                                        ');
-    const bsubs: string[] = [];
-    const c =   cold(        '-2--3--4--5----6-|                                   ');
-    const csubs =          '  ^                !                                   ';
-    const d =   cold(                         '----2--3-                           ');
-    const dsubs =          '                   ^                                   ';
-    const e =   cold(                                 '-1------2--3-4-5---|        ');
-    const esubs: string[] = [];
-    const f =   cold(                                                    '--|      ');
-    const fsubs: string[] = [];
-    const g =   cold(                                                      '---1-2|');
-    const gsubs: string[] = [];
-    const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
-    const e1subs =         '^                                      !               ' ;
-    const expected =       '---2--3--4--5----6-----2--3----------------------------';
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+  it('should concatMap many complex, all inners finite except one', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const a =   cold( '-#                                                          ');
+      const asubs: string[] = [];
+      const b =   cold(   '-#                                                        ');
+      const bsubs: string[] = [];
+      const c =   cold(        '-2--3--4--5----6-|                                   ');
+      const csubs =          '  ^                !                                   ';
+      const d =   cold(                         '----2--3-                           ');
+      const dsubs =          '                   ^                                   ';
+      const e =   cold(                                 '-1------2--3-4-5---|        ');
+      const esubs: string[] = [];
+      const f =   cold(                                                    '--|      ');
+      const fsubs: string[] = [];
+      const g =   cold(                                                      '---1-2|');
+      const gsubs: string[] = [];
+      const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
+      const e1subs =         '^                                      !               ' ;
+      const expected =       '---2--3--4--5----6-----2--3----------------------------';
+      const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    const result = e1.pipe(concatMap((value) => observableLookup[value]));
+      const result = e1.pipe(concatMap((value) => observableLookup[value]));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptionsTo(a).toBe(asubs);
-    expectSubscriptionsTo(b).toBe(bsubs);
-    expectSubscriptionsTo(c).toBe(csubs);
-    expectSubscriptionsTo(d).toBe(dsubs);
-    expectSubscriptionsTo(e).toBe(esubs);
-    expectSubscriptionsTo(f).toBe(fsubs);
-    expectSubscriptionsTo(g).toBe(gsubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result).toBe(expected);
+      expectSubscriptionsTo(a).toBe(asubs);
+      expectSubscriptionsTo(b).toBe(bsubs);
+      expectSubscriptionsTo(c).toBe(csubs);
+      expectSubscriptionsTo(d).toBe(dsubs);
+      expectSubscriptionsTo(e).toBe(esubs);
+      expectSubscriptionsTo(f).toBe(fsubs);
+      expectSubscriptionsTo(g).toBe(gsubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should concatMap many complex, inners finite, outer does not complete', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const a =   cold( '-#                                                          ');
-    const asubs: string[] = [];
-    const b =   cold(   '-#                                                        ');
-    const bsubs: string[] = [];
-    const c =   cold(        '-2--3--4--5----6-|                                   ');
-    const csubs =          '  ^                !                                   ';
-    const d =   cold(                         '----2--3|                           ');
-    const dsubs =          '                   ^       !                           ';
-    const e =   cold(                                 '-1------2--3-4-5---|        ');
-    const esubs =          '                           ^                  !        ';
-    const f =   cold(                                                    '--|      ');
-    const fsubs =          '                                              ^ !      ';
-    const g =   cold(                                                      '---1-2|');
-    const gsubs =          '                                                ^     !';
-    const e1 =   hot('-a-b--^-c-----d------e----------------f-----g---             ');
-    const e1subs =         '^                                                      ';
-    const expected =       '---2--3--4--5----6-----2--3-1------2--3-4-5--------1-2-';
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+  it('should concatMap many complex, inners finite, outer does not complete', () => {
+      testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const a =   cold( '-#                                                          ');
+      const asubs: string[] = [];
+      const b =   cold(   '-#                                                        ');
+      const bsubs: string[] = [];
+      const c =   cold(        '-2--3--4--5----6-|                                   ');
+      const csubs =          '  ^                !                                   ';
+      const d =   cold(                         '----2--3|                           ');
+      const dsubs =          '                   ^       !                           ';
+      const e =   cold(                                 '-1------2--3-4-5---|        ');
+      const esubs =          '                           ^                  !        ';
+      const f =   cold(                                                    '--|      ');
+      const fsubs =          '                                              ^ !      ';
+      const g =   cold(                                                      '---1-2|');
+      const gsubs =          '                                                ^     !';
+      const e1 =   hot('-a-b--^-c-----d------e----------------f-----g---             ');
+      const e1subs =         '^                                                      ';
+      const expected =       '---2--3--4--5----6-----2--3-1------2--3-4-5--------1-2-';
+      const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    const result = e1.pipe(concatMap((value) => observableLookup[value]));
+      const result = e1.pipe(concatMap((value) => observableLookup[value]));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptionsTo(a).toBe(asubs);
-    expectSubscriptionsTo(b).toBe(bsubs);
-    expectSubscriptionsTo(c).toBe(csubs);
-    expectSubscriptionsTo(d).toBe(dsubs);
-    expectSubscriptionsTo(e).toBe(esubs);
-    expectSubscriptionsTo(f).toBe(fsubs);
-    expectSubscriptionsTo(g).toBe(gsubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
+      expectObservable(result).toBe(expected);
+      expectSubscriptionsTo(a).toBe(asubs);
+      expectSubscriptionsTo(b).toBe(bsubs);
+      expectSubscriptionsTo(c).toBe(csubs);
+      expectSubscriptionsTo(d).toBe(dsubs);
+      expectSubscriptionsTo(e).toBe(esubs);
+      expectSubscriptionsTo(f).toBe(fsubs);
+      expectSubscriptionsTo(g).toBe(gsubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
   });
 });
-  it('should concatMap many complex, all inners finite, and outer throws', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const a =   cold( '-#                                                          ');
-    const asubs: string[] = [];
-    const b =   cold(   '-#                                                        ');
-    const bsubs: string[] = [];
-    const c =   cold(        '-2--3--4--5----6-|                                   ');
-    const csubs =          '  ^                !                                   ';
-    const d =   cold(                         '----2--3|                           ');
-    const dsubs =          '                   ^       !                           ';
-    const e =   cold(                                 '-1------2--3-4-5---|        ');
-    const esubs =          '                           ^           !               ';
-    const f =   cold(                                                    '--|      ');
-    const fsubs: string[] = [];
-    const g =   cold(                                                      '---1-2|');
-    const gsubs: string[] = [];
-    const e1 =   hot('-a-b--^-c-----d------e----------------f-----g#               ');
-    const e1subs =         '^                                      !               ';
-    const expected =       '---2--3--4--5----6-----2--3-1------2--3#               ';
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+  it('should concatMap many complex, all inners finite, and outer throws', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const a =   cold( '-#                                                          ');
+      const asubs: string[] = [];
+      const b =   cold(   '-#                                                        ');
+      const bsubs: string[] = [];
+      const c =   cold(        '-2--3--4--5----6-|                                   ');
+      const csubs =          '  ^                !                                   ';
+      const d =   cold(                         '----2--3|                           ');
+      const dsubs =          '                   ^       !                           ';
+      const e =   cold(                                 '-1------2--3-4-5---|        ');
+      const esubs =          '                           ^           !               ';
+      const f =   cold(                                                    '--|      ');
+      const fsubs: string[] = [];
+      const g =   cold(                                                      '---1-2|');
+      const gsubs: string[] = [];
+      const e1 =   hot('-a-b--^-c-----d------e----------------f-----g#               ');
+      const e1subs =         '^                                      !               ';
+      const expected =       '---2--3--4--5----6-----2--3-1------2--3#               ';
+      const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    const result = e1.pipe(concatMap((value) => observableLookup[value]));
+      const result = e1.pipe(concatMap((value) => observableLookup[value]));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptionsTo(a).toBe(asubs);
-    expectSubscriptionsTo(b).toBe(bsubs);
-    expectSubscriptionsTo(c).toBe(csubs);
-    expectSubscriptionsTo(d).toBe(dsubs);
-    expectSubscriptionsTo(e).toBe(esubs);
-    expectSubscriptionsTo(f).toBe(fsubs);
-    expectSubscriptionsTo(g).toBe(gsubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result).toBe(expected);
+      expectSubscriptionsTo(a).toBe(asubs);
+      expectSubscriptionsTo(b).toBe(bsubs);
+      expectSubscriptionsTo(c).toBe(csubs);
+      expectSubscriptionsTo(d).toBe(dsubs);
+      expectSubscriptionsTo(e).toBe(esubs);
+      expectSubscriptionsTo(f).toBe(fsubs);
+      expectSubscriptionsTo(g).toBe(gsubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should concatMap many complex, all inners complete except one throws', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const a =   cold( '-#                                                          ');
-    const asubs: string[] = [];
-    const b =   cold(   '-#                                                        ');
-    const bsubs: string[] = [];
-    const c =   cold(        '-2--3--4--5----6-#                                   ');
-    const csubs =          '  ^                !                                   ';
-    const d =   cold(                         '----2--3|                           ');
-    const dsubs: string[] = [];
-    const e =   cold(                                 '-1------2--3-4-5---|        ');
-    const esubs: string[] = [];
-    const f =   cold(                                                    '--|      ');
-    const fsubs: string[] = [];
-    const g =   cold(                                                      '---1-2|');
-    const gsubs: string[] = [];
-    const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
-    const e1subs =         '^                  !                                   ';
-    const expected =       '---2--3--4--5----6-#                                   ';
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+  it('should concatMap many complex, all inners complete except one throws', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const a =   cold( '-#                                                          ');
+      const asubs: string[] = [];
+      const b =   cold(   '-#                                                        ');
+      const bsubs: string[] = [];
+      const c =   cold(        '-2--3--4--5----6-#                                   ');
+      const csubs =          '  ^                !                                   ';
+      const d =   cold(                         '----2--3|                           ');
+      const dsubs: string[] = [];
+      const e =   cold(                                 '-1------2--3-4-5---|        ');
+      const esubs: string[] = [];
+      const f =   cold(                                                    '--|      ');
+      const fsubs: string[] = [];
+      const g =   cold(                                                      '---1-2|');
+      const gsubs: string[] = [];
+      const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
+      const e1subs =         '^                  !                                   ';
+      const expected =       '---2--3--4--5----6-#                                   ';
+      const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    const result = e1.pipe(concatMap((value) => observableLookup[value]));
+      const result = e1.pipe(concatMap((value) => observableLookup[value]));
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptionsTo(a).toBe(asubs);
-    expectSubscriptionsTo(b).toBe(bsubs);
-    expectSubscriptionsTo(c).toBe(csubs);
-    expectSubscriptionsTo(d).toBe(dsubs);
-    expectSubscriptionsTo(e).toBe(esubs);
-    expectSubscriptionsTo(f).toBe(fsubs);
-    expectSubscriptionsTo(g).toBe(gsubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result).toBe(expected);
+      expectSubscriptionsTo(a).toBe(asubs);
+      expectSubscriptionsTo(b).toBe(bsubs);
+      expectSubscriptionsTo(c).toBe(csubs);
+      expectSubscriptionsTo(d).toBe(dsubs);
+      expectSubscriptionsTo(e).toBe(esubs);
+      expectSubscriptionsTo(f).toBe(fsubs);
+      expectSubscriptionsTo(g).toBe(gsubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should concatMap many complex, all inners finite, outer is unsubscribed early', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const a =   cold( '-#                                                          ');
-    const asubs: string[] = [];
-    const b =   cold(   '-#                                                        ');
-    const bsubs: string[] = [];
-    const c =   cold(        '-2--3--4--5----6-|                                   ');
-    const csubs =          '  ^                !                                   ';
-    const d =   cold(                         '----2--3|                           ');
-    const dsubs =          '                   ^       !                           ';
-    const e =   cold(                                 '-1------2--3-4-5---|        ');
-    const esubs =          '                           ^  !                        ';
-    const f =   cold(                                                    '--|      ');
-    const fsubs: string[] = [];
-    const g =   cold(                                                      '---1-2|');
-    const gsubs: string[] = [];
-    const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
-    const e1subs =         '^                             !                        ';
-    const unsub =          '                              !                        ';
-    const expected =       '---2--3--4--5----6-----2--3-1--                        ';
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+  it('should concatMap many complex, all inners finite, outer is unsubscribed early', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const a =   cold( '-#                                                          ');
+      const asubs: string[] = [];
+      const b =   cold(   '-#                                                        ');
+      const bsubs: string[] = [];
+      const c =   cold(        '-2--3--4--5----6-|                                   ');
+      const csubs =          '  ^                !                                   ';
+      const d =   cold(                         '----2--3|                           ');
+      const dsubs =          '                   ^       !                           ';
+      const e =   cold(                                 '-1------2--3-4-5---|        ');
+      const esubs =          '                           ^  !                        ';
+      const f =   cold(                                                    '--|      ');
+      const fsubs: string[] = [];
+      const g =   cold(                                                      '---1-2|');
+      const gsubs: string[] = [];
+      const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
+      const e1subs =         '^                             !                        ';
+      const unsub =          '                              !                        ';
+      const expected =       '---2--3--4--5----6-----2--3-1--                        ';
+      const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    const result = e1.pipe(concatMap((value) => observableLookup[value]));
+      const result = e1.pipe(concatMap((value) => observableLookup[value]));
 
-    expectObservable(result, unsub).toBe(expected);
-    expectSubscriptionsTo(a).toBe(asubs);
-    expectSubscriptionsTo(b).toBe(bsubs);
-    expectSubscriptionsTo(c).toBe(csubs);
-    expectSubscriptionsTo(d).toBe(dsubs);
-    expectSubscriptionsTo(e).toBe(esubs);
-    expectSubscriptionsTo(f).toBe(fsubs);
-    expectSubscriptionsTo(g).toBe(gsubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result, unsub).toBe(expected);
+      expectSubscriptionsTo(a).toBe(asubs);
+      expectSubscriptionsTo(b).toBe(bsubs);
+      expectSubscriptionsTo(c).toBe(csubs);
+      expectSubscriptionsTo(d).toBe(dsubs);
+      expectSubscriptionsTo(e).toBe(esubs);
+      expectSubscriptionsTo(f).toBe(fsubs);
+      expectSubscriptionsTo(g).toBe(gsubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should not break unsubscription chains when result is unsubscribed explicitly', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const a =   cold( '-#                                                          ');
-    const asubs: string[] = [];
-    const b =   cold(   '-#                                                        ');
-    const bsubs: string[] = [];
-    const c =   cold(        '-2--3--4--5----6-|                                   ');
-    const csubs =          '  ^                !                                   ';
-    const d =   cold(                         '----2--3|                           ');
-    const dsubs =          '                   ^       !                           ';
-    const e =   cold(                                 '-1------2--3-4-5---|        ');
-    const esubs =          '                           ^  !                        ';
-    const f =   cold(                                                    '--|      ');
-    const fsubs: string[] = [];
-    const g =   cold(                                                      '---1-2|');
-    const gsubs: string[] = [];
-    const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
-    const e1subs =         '^                             !                        ';
-    const unsub =          '                              !                        ';
-    const expected =       '---2--3--4--5----6-----2--3-1--                        ';
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+  it('should not break unsubscription chains when result is unsubscribed explicitly', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const a =   cold( '-#                                                          ');
+      const asubs: string[] = [];
+      const b =   cold(   '-#                                                        ');
+      const bsubs: string[] = [];
+      const c =   cold(        '-2--3--4--5----6-|                                   ');
+      const csubs =          '  ^                !                                   ';
+      const d =   cold(                         '----2--3|                           ');
+      const dsubs =          '                   ^       !                           ';
+      const e =   cold(                                 '-1------2--3-4-5---|        ');
+      const esubs =          '                           ^  !                        ';
+      const f =   cold(                                                    '--|      ');
+      const fsubs: string[] = [];
+      const g =   cold(                                                      '---1-2|');
+      const gsubs: string[] = [];
+      const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
+      const e1subs =         '^                             !                        ';
+      const unsub =          '                              !                        ';
+      const expected =       '---2--3--4--5----6-----2--3-1--                        ';
+      const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    const result = e1.pipe(
-      mergeMap(x => of(x)),
-      concatMap(value => observableLookup[value]),
-      mergeMap(x => of(x))
-    );
+      const result = e1.pipe(
+        mergeMap(x => of(x)),
+        concatMap(value => observableLookup[value]),
+        mergeMap(x => of(x))
+      );
 
-    expectObservable(result, unsub).toBe(expected);
-    expectSubscriptionsTo(a).toBe(asubs);
-    expectSubscriptionsTo(b).toBe(bsubs);
-    expectSubscriptionsTo(c).toBe(csubs);
-    expectSubscriptionsTo(d).toBe(dsubs);
-    expectSubscriptionsTo(e).toBe(esubs);
-    expectSubscriptionsTo(f).toBe(fsubs);
-    expectSubscriptionsTo(g).toBe(gsubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result, unsub).toBe(expected);
+      expectSubscriptionsTo(a).toBe(asubs);
+      expectSubscriptionsTo(b).toBe(bsubs);
+      expectSubscriptionsTo(c).toBe(csubs);
+      expectSubscriptionsTo(d).toBe(dsubs);
+      expectSubscriptionsTo(e).toBe(esubs);
+      expectSubscriptionsTo(f).toBe(fsubs);
+      expectSubscriptionsTo(g).toBe(gsubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should concatMap many complex, all inners finite, project throws', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const a =   cold( '-#                                                          ');
-    const asubs: string[] = [];
-    const b =   cold(   '-#                                                        ');
-    const bsubs: string[] = [];
-    const c =   cold(        '-2--3--4--5----6-|                                   ');
-    const csubs =          '  ^                !                                   ';
-    const d =   cold(                         '----2--3|                           ');
-    const dsubs =          '                   ^       !                           ';
-    const e =   cold(                                 '-1------2--3-4-5---|        ');
-    const esubs: string[] = [];
-    const f =   cold(                                                    '--|      ');
-    const fsubs: string[] = [];
-    const g =   cold(                                                      '---1-2|');
-    const gsubs: string[] = [];
-    const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
-    const e1subs =         '^                          !                           ';
-    const expected =       '---2--3--4--5----6-----2--3#                           ';
-    const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
+  it('should concatMap many complex, all inners finite, project throws', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const a =   cold( '-#                                                          ');
+      const asubs: string[] = [];
+      const b =   cold(   '-#                                                        ');
+      const bsubs: string[] = [];
+      const c =   cold(        '-2--3--4--5----6-|                                   ');
+      const csubs =          '  ^                !                                   ';
+      const d =   cold(                         '----2--3|                           ');
+      const dsubs =          '                   ^       !                           ';
+      const e =   cold(                                 '-1------2--3-4-5---|        ');
+      const esubs: string[] = [];
+      const f =   cold(                                                    '--|      ');
+      const fsubs: string[] = [];
+      const g =   cold(                                                      '---1-2|');
+      const gsubs: string[] = [];
+      const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
+      const e1subs =         '^                          !                           ';
+      const expected =       '---2--3--4--5----6-----2--3#                           ';
+      const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
-    const result = e1.pipe(
-      concatMap((value) => {
-      if (value === 'e') { throw 'error'; }
-      return observableLookup[value];
-    })
-  );
+      const result = e1.pipe(
+        concatMap((value) => {
+          if (value === 'e') { throw 'error'; }
+          return observableLookup[value];
+        })
+      );
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptionsTo(a).toBe(asubs);
-    expectSubscriptionsTo(b).toBe(bsubs);
-    expectSubscriptionsTo(c).toBe(csubs);
-    expectSubscriptionsTo(d).toBe(dsubs);
-    expectSubscriptionsTo(e).toBe(esubs);
-    expectSubscriptionsTo(f).toBe(fsubs);
-    expectSubscriptionsTo(g).toBe(gsubs);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result).toBe(expected);
+      expectSubscriptionsTo(a).toBe(asubs);
+      expectSubscriptionsTo(b).toBe(bsubs);
+      expectSubscriptionsTo(c).toBe(csubs);
+      expectSubscriptionsTo(d).toBe(dsubs);
+      expectSubscriptionsTo(e).toBe(esubs);
+      expectSubscriptionsTo(f).toBe(fsubs);
+      expectSubscriptionsTo(g).toBe(gsubs);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
   function arrayRepeat(value: string, times: number) {
     let results = [];
@@ -556,7 +599,8 @@ describe('concatMap', () => {
     return results;
   }
 
-  it('should concatMap many outer to an array for each value', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+  it('should concatMap many outer to an array for each value', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
     const e1 =   hot('2-----4--------3--------2-------|');
     const e1subs =   '^                               !';
     const expected = '(22)--(4444)---(333)----(22)----|';
@@ -565,38 +609,44 @@ describe('concatMap', () => {
 
     expectObservable(result).toBe(expected);
     expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+    });
+  });
 
-  it('should concatMap many outer to inner arrays, outer unsubscribed early', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const e1 =   hot('2-----4--------3--------2-------|');
-    const e1subs =   '^            !                   ';
-    const unsub =    '             !                   ';
-    const expected = '(22)--(4444)--                   ';
+  it('should concatMap many outer to inner arrays, outer unsubscribed early', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const e1 =   hot('2-----4--------3--------2-------|');
+      const e1subs =   '^            !                   ';
+      const unsub =    '             !                   ';
+      const expected = '(22)--(4444)--                   ';
 
-    const result = e1.pipe(concatMap((value) => arrayRepeat(value, +value)));
+      const result = e1.pipe(concatMap((value) => arrayRepeat(value, +value)));
 
-    expectObservable(result, unsub).toBe(expected);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result, unsub).toBe(expected);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
-  it('should concatMap many outer to inner arrays, project throws', () => {     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-    const e1 =   hot('2-----4--------3--------2-------|');
-    const e1subs =   '^              !                 ';
-    const expected = '(22)--(4444)---#                 ';
+  it('should concatMap many outer to inner arrays, project throws', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const e1 =   hot('2-----4--------3--------2-------|');
+      const e1subs =   '^              !                 ';
+      const expected = '(22)--(4444)---#                 ';
 
-    let invoked = 0;
-    const result = e1.pipe(concatMap((value) => {
-      invoked++;
-      if (invoked === 3) {
-        throw 'error';
-      }
-      return arrayRepeat(value, +value);
-    })
-  );
+      let invoked = 0;
+      const result = e1.pipe(
+        concatMap((value) => {
+          invoked++;
+          if (invoked === 3) {
+            throw 'error';
+          }
+          return arrayRepeat(value, +value);
+        })
+      );
 
-    expectObservable(result).toBe(expected);
-    expectSubscriptionsTo(e1).toBe(e1subs);
-  });});
+      expectObservable(result).toBe(expected);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 
   it('should map values to constant resolved promises and concatenate', (done: MochaDone) => {
     const source = from([4, 3, 2, 1]);
