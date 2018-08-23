@@ -2,6 +2,9 @@ import { expect } from 'chai';
 import { TestScheduler, parseMarbles, parseMarblesAsSubscriptions } from './TestScheduler';
 import { Observable, NEVER, EMPTY, Subject, of, concat, merge, Notification } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
+import { asapScheduler } from 'rxjs/internal/scheduler/asapScheduler';
+import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
+import { queueScheduler, QueueScheduler } from 'rxjs/internal/scheduler/QueueScheduler';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -345,6 +348,61 @@ describe('TestScheduler', () => {
           expectation.toBe('-q');
         });
       }).to.throw();
+    });
+
+    it('should patch asapScheduler', () => {
+      const testScheduler = new TestScheduler(assertDeepEquals);
+      let test: number;
+      testScheduler.run(() => {
+        asapScheduler.schedule(() => {
+          test = asapScheduler.now();
+        }, 10000);
+      });
+      expect(test).to.equal(10000);
+    });
+
+    it('should patch asyncScheduler', () => {
+      const testScheduler = new TestScheduler(assertDeepEquals);
+      let test: number;
+      testScheduler.run(() => {
+        asyncScheduler.schedule(() => {
+          test = asyncScheduler.now();
+        }, 10000);
+      });
+      expect(test).to.equal(10000);
+    });
+
+    it('should work with queueScheduler', () => {
+      const testScheduler = new TestScheduler(assertDeepEquals);
+      let log: number[] = [];
+      testScheduler.run(() => {
+        queueScheduler.schedule(() => {
+          log.push(queueScheduler.now());
+          queueScheduler.schedule(() => log.push(queueScheduler.now()));
+          queueScheduler.schedule(() => {
+            log.push(queueScheduler.now());
+            queueScheduler.schedule(() => log.push(queueScheduler.now()));
+          });
+        }, 10000);
+      });
+      expect(log).to.deep.equal([10000, 10000, 10000, 10000]);
+    });
+
+    it('should work with new QueueScheduler', () => {
+      const testScheduler = new TestScheduler(assertDeepEquals);
+      let log: number[] = [];
+      const queueScheduler = new QueueScheduler();
+      testScheduler.run(() => {
+        queueScheduler.schedule(() => {
+          log.push(queueScheduler.now());
+          queueScheduler.schedule(() => log.push(queueScheduler.now()));
+          queueScheduler.schedule(() => {
+            log.push(queueScheduler.now());
+            queueScheduler.schedule(() => log.push(queueScheduler.now()));
+          });
+        }, 10000);
+      });
+      expect(log).to.deep.equal([10000, 10000, 10000, 10000]);
     });
   });
 });

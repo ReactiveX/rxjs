@@ -5,6 +5,71 @@ import { Subscription } from '../Subscription';
 import { VirtualScheduler} from '../scheduler/VirtualScheduler';
 import { Notification, SchedulerLike, FOType, Sink } from '../types';
 import { isObservable } from '../util/isObservable';
+import { asyncScheduler } from '../scheduler/asyncScheduler';
+import { asapScheduler } from '../scheduler/asapScheduler';
+import { QueueScheduler } from '../scheduler/QueueScheduler';
+
+// TODO(benlesh): we need to figure out how to have TestScheduler support testing
+// the animation frame scheduler
+function createSchedulerPatch(scheduler: SchedulerLike): SchedulerPatch {
+  return {
+    _schedule: null,
+    _now: null,
+    _patched: false,
+    patch(testScheduler) {
+      if (!this._patched) {
+        this._patched = true;
+        this._schedule = scheduler.schedule;
+        this._now = scheduler.now;
+        scheduler.schedule = testScheduler.schedule.bind(testScheduler);
+        scheduler.now = testScheduler.now.bind(testScheduler);
+      }
+    },
+    unpatch() {
+      if (this._patched) {
+        scheduler.schedule = this._schedule;
+        scheduler.now = this._now;
+      }
+      this._patched = false;
+    }
+  };
+}
+
+// Since the queue flushes synchronously, and any delay over 0 is pushed through
+// the asyncScheduler, which is already patched, queueScheduler only needs to patch
+// the now function.
+const QUEUE_SCHEDULER_PATCH: SchedulerPatch = {
+  _now: null,
+  _patched: false,
+  patch(testScheduler) {
+    if (!this._patched) {
+      this._patched = true;
+      this._now = QueueScheduler.prototype.now;
+      QueueScheduler.prototype.now = testScheduler.now.bind(testScheduler);
+    }
+  },
+  unpatch() {
+    if (this._patched) {
+      QueueScheduler.prototype.now = this._now;
+    }
+    this._patched = false;
+  }
+};
+
+const DEFAULT_SCHEDULER_PATCHES: SchedulerPatch[] = [
+  createSchedulerPatch(asyncScheduler),
+  createSchedulerPatch(asapScheduler),
+  QUEUE_SCHEDULER_PATCH,
+];
+
+/**
+ * Used for extending what the TestScheduler is patching.
+ */
+export interface SchedulerPatch {
+  patch: (testScheduler: TestScheduler) => void;
+  unpatch: () => void;
+  [key: string]: any;
+}
 
 export interface SubscriptionLog {
   subscribedFrame: number;
@@ -59,13 +124,17 @@ export interface TestSchedulerCtor {
   new (assertDeepEqual: (actual: any, expected: any) => boolean | void): TestScheduler;
 }
 
-function TestSchedulerImpl(this: any, assertDeepEqual: (actual: any, expected: any) => boolean | void) {
+function TestSchedulerImpl(
+  this: any,
+  assertDeepEqual: (actual: any, expected: any) => boolean | void,
+) {
   VirtualScheduler.call(this);
   this._assertDeepEqual = assertDeepEqual;
   this._runMode = false;
   this._flushTests = [];
   this.hotObservables = [];
   this.coldObservables = [];
+  this._patches = DEFAULT_SCHEDULER_PATCHES;
 }
 
 TestSchedulerImpl.prototype = Object.create(VirtualScheduler.prototype);
@@ -182,12 +251,13 @@ proto.expectSubscriptionsTo = function (observable: TestObservable<any>): ({ toB
 
 proto.run = function<T>(callback: (helpers: RunHelpers) => T): T {
   const prevMaxFrames = this.maxFrames;
-
-  // TestScheduler.FRAME_TIME_FACTOR = 1;
   this.maxFrames = Number.POSITIVE_INFINITY;
   this._runMode = true;
-  // TODO: Monkey patch all schedulers.
-  // AsyncScheduler.delegate = this;
+
+  const patches: SchedulerPatch[] = this._patches;
+
+  // Patch the schedulers
+  patches.forEach(patch => patch.patch(this));
 
   const helpers = {
     cold: this.createColdObservable.bind(this),
@@ -204,8 +274,8 @@ proto.run = function<T>(callback: (helpers: RunHelpers) => T): T {
   } finally {
     this.maxFrames = prevMaxFrames;
     this._runMode = false;
-    // TODO: Unpatch all schedulers
-    // AsyncScheduler.delegate = undefined;
+    // Unpatch the schedulers
+    patches.forEach(patch => patch.unpatch());
   }
 },
 
@@ -361,133 +431,134 @@ export function parseMarbles<T = string>(
   values?: { [key: string]: T },
   errorValue?: any,
   materializeInnerObservables = false,
-  runMode = false): TestMessage<T>[] {
-    if (marbles.indexOf('!') !== -1) {
-      throw new Error('conventional marble diagrams cannot have the ' +
-        'unsubscription marker "!"');
-    }
-    const len = marbles.length;
-    const testMessages: TestMessage<T>[] = [];
-    const subIndex = runMode ? marbles.replace(/^[ ]+/, '').indexOf('^') : marbles.indexOf('^');
-    let frame = subIndex === -1 ? 0 : (subIndex * - FRAME_TIME_FACTOR);
-    const getValue = typeof values !== 'object' ?
-      (x: any) => x :
-      (x: any) => {
-        // Support Observable-of-Observables
-        const value = values[x];
-        if (materializeInnerObservables && isTestObservable(value)) {
-          return value.messages;
+  runMode = false): TestMessage<T>[]
+{
+  if (marbles.indexOf('!') !== -1) {
+    throw new Error('conventional marble diagrams cannot have the ' +
+      'unsubscription marker "!"');
+  }
+  const len = marbles.length;
+  const testMessages: TestMessage<T>[] = [];
+  const subIndex = runMode ? marbles.replace(/^[ ]+/, '').indexOf('^') : marbles.indexOf('^');
+  let frame = subIndex === -1 ? 0 : (subIndex * - FRAME_TIME_FACTOR);
+  const getValue = typeof values !== 'object' ?
+    (x: any) => x :
+    (x: any) => {
+      // Support Observable-of-Observables
+      const value = values[x];
+      if (materializeInnerObservables && isTestObservable(value)) {
+        return value.messages;
+      }
+      return value;
+    };
+  let groupStart = -1;
+
+  for (let i = 0; i < len; i++) {
+    let nextFrame = frame;
+    const advanceFrameBy = (count: number) => {
+      nextFrame += count * FRAME_TIME_FACTOR;
+    };
+
+    let notification: Notification<any>;
+    const c = marbles[i];
+    switch (c) {
+      case ' ':
+        // Whitespace no longer advances time
+        if (!runMode) {
+          advanceFrameBy(1);
         }
-        return value;
-      };
-    let groupStart = -1;
+        break;
+      case '-':
+        advanceFrameBy(1);
+        break;
+      case '(':
+        groupStart = frame;
+        advanceFrameBy(1);
+        break;
+      case ')':
+        groupStart = -1;
+        advanceFrameBy(1);
+        break;
+      case '|':
+        notification = { kind: 'C' };
+        advanceFrameBy(1);
+        break;
+      case '^':
+        advanceFrameBy(1);
+        break;
+      case '#':
+        notification = { kind: 'E', error: errorValue || 'error' };
+        advanceFrameBy(1);
+        break;
+      default:
+        // Might be time progression syntax, or a value literal
+        if (runMode && c.match(/^[0-9]$/)) {
+          // Time progression must be preceeded by at least one space
+          // if it's not at the beginning of the diagram
+          if (i === 0 || marbles[i - 1] === ' ') {
+            const buffer = marbles.slice(i);
+            const match = buffer.match(/^([0-9]+(?:\.[0-9]+)?)(ms|s|m) /);
+            if (match) {
+              i += match[0].length - 1;
+              const duration = parseFloat(match[1]);
+              const unit = match[2];
+              let durationInMs: number;
 
-    for (let i = 0; i < len; i++) {
-      let nextFrame = frame;
-      const advanceFrameBy = (count: number) => {
-        nextFrame += count * FRAME_TIME_FACTOR;
-      };
-
-      let notification: Notification<any>;
-      const c = marbles[i];
-      switch (c) {
-        case ' ':
-          // Whitespace no longer advances time
-          if (!runMode) {
-            advanceFrameBy(1);
-          }
-          break;
-        case '-':
-          advanceFrameBy(1);
-          break;
-        case '(':
-          groupStart = frame;
-          advanceFrameBy(1);
-          break;
-        case ')':
-          groupStart = -1;
-          advanceFrameBy(1);
-          break;
-        case '|':
-          notification = { kind: 'C' };
-          advanceFrameBy(1);
-          break;
-        case '^':
-          advanceFrameBy(1);
-          break;
-        case '#':
-          notification = { kind: 'E', error: errorValue || 'error' };
-          advanceFrameBy(1);
-          break;
-        default:
-          // Might be time progression syntax, or a value literal
-          if (runMode && c.match(/^[0-9]$/)) {
-            // Time progression must be preceeded by at least one space
-            // if it's not at the beginning of the diagram
-            if (i === 0 || marbles[i - 1] === ' ') {
-              const buffer = marbles.slice(i);
-              const match = buffer.match(/^([0-9]+(?:\.[0-9]+)?)(ms|s|m) /);
-              if (match) {
-                i += match[0].length - 1;
-                const duration = parseFloat(match[1]);
-                const unit = match[2];
-                let durationInMs: number;
-
-                switch (unit) {
-                  case 'ms':
-                    durationInMs = duration;
-                    break;
-                  case 's':
-                    durationInMs = duration * 1000;
-                    break;
-                  case 'm':
-                    durationInMs = duration * 1000 * 60;
-                    break;
-                  default:
-                    break;
-                }
-
-                advanceFrameBy(durationInMs / FRAME_TIME_FACTOR);
-                break;
+              switch (unit) {
+                case 'ms':
+                  durationInMs = duration;
+                  break;
+                case 's':
+                  durationInMs = duration * 1000;
+                  break;
+                case 'm':
+                  durationInMs = duration * 1000 * 60;
+                  break;
+                default:
+                  break;
               }
+
+              advanceFrameBy(durationInMs / FRAME_TIME_FACTOR);
+              break;
             }
           }
-
-          notification = { kind: 'N', value: getValue(c) };
-          advanceFrameBy(1);
-          break;
-      }
-
-      if (notification) {
-        testMessages.push({ frame: groupStart > -1 ? groupStart : frame, notification });
-      }
-
-      frame = nextFrame;
-    }
-    return testMessages;
-  }
-
-  export function scheduleNotifications(scheduler: SchedulerLike, messages: TestMessage<any>[], subject: Sink<any>, subs: Subscription) {
-    scheduler.schedule(() => {
-      for (const message of messages) {
-        let t: FOType;
-        let a: any = undefined;
-        const { notification, frame } = message;
-        if (notification.kind === 'N') {
-          t = FOType.NEXT;
-          a = notification.value;
-        } else if (notification.kind === 'E') {
-          t = FOType.ERROR;
-          a = notification.error;
-        } else if (notification.kind === 'C') {
-          t = FOType.COMPLETE;
-        } else {
-          continue;
         }
-        scheduler.schedule(({ t, a, subs }) => subject(t, a, subs), frame, { t, a, subs });
-      }
-    });
+
+        notification = { kind: 'N', value: getValue(c) };
+        advanceFrameBy(1);
+        break;
+    }
+
+    if (notification) {
+      testMessages.push({ frame: groupStart > -1 ? groupStart : frame, notification });
+    }
+
+    frame = nextFrame;
   }
+  return testMessages;
+}
+
+export function scheduleNotifications(scheduler: SchedulerLike, messages: TestMessage<any>[], subject: Sink<any>, subs: Subscription) {
+  scheduler.schedule(() => {
+    for (const message of messages) {
+      let t: FOType;
+      let a: any = undefined;
+      const { notification, frame } = message;
+      if (notification.kind === 'N') {
+        t = FOType.NEXT;
+        a = notification.value;
+      } else if (notification.kind === 'E') {
+        t = FOType.ERROR;
+        a = notification.error;
+      } else if (notification.kind === 'C') {
+        t = FOType.COMPLETE;
+      } else {
+        continue;
+      }
+      scheduler.schedule(({ t, a, subs }) => subject(t, a, subs), frame, { t, a, subs });
+    }
+  });
+}
 
 
-  export const TestScheduler: TestSchedulerCtor = TestSchedulerImpl as any;
+export const TestScheduler: TestSchedulerCtor = TestSchedulerImpl as any;
