@@ -78,7 +78,7 @@ export interface InteropObservable<T> {
 }
 
 export type ObservableInput<T> = Observable<T> | ObservableLike<T> | PromiseLike<T> |
-  Array<T> | ArrayLike<T> | InteropObservable<T> | AsyncIterable<T>;
+  Array<T> | ArrayLike<T> | InteropObservable<T> | AsyncIterable<T> | Iterable<T>;
 
 export interface SubscriptionLike {
   unsubscribe(): void;

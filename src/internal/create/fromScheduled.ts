@@ -1,19 +1,134 @@
 // TODO: require rxjs/core as a peer dep
-import { SchedulerLike, ObservableInput, FOType, Sink } from '../types';
+import { SchedulerLike, ObservableInput, FOType, Sink, SinkArg, InteropObservable } from '../types';
 import { isArrayLike } from '../util/isArrayLike';
 import { Observable } from '../Observable';
 import { sourceAsObservable } from '../util/sourceAsObservable';
 import { Subscription } from '../Subscription';
 import { isIterable } from '../util/isIterable';
+import { isObservable } from 'rxjs/internal/util/isObservable';
+import { isInteropObservable } from 'rxjs/internal/util/isInteropObservable';
+import { isPromiseLike } from 'rxjs/internal/util/isPromiseLike';
+import { isAsyncIterable } from 'rxjs/internal/util/isAsyncIterable';
+import { symbolAsyncIterator } from 'rxjs/internal/util/symbolAsyncIterator';
 
 export function fromScheduled<T>(input: ObservableInput<T>, scheduler: SchedulerLike): Observable<T> {
-  if (isIterable(input)) {
+  if (isObservable(input)) {
+    return sourceAsObservable(fromObservableScheduledSource(input, scheduler));
+  } else if (isInteropObservable(input)) {
+    return sourceAsObservable(fromInteropObservableSource(input, scheduler));
+  } else if (isPromiseLike(input)) {
+    return sourceAsObservable(fromPromiseLikeSource(input, scheduler));
+  } else if (isAsyncIterable(input)) {
+    return sourceAsObservable(fromAsyncIterableSource(input, scheduler));
+  } else if (isIterable(input)) {
     return sourceAsObservable(fromIterableScheduledSource(input as Iterable<T>, scheduler));
   } else if (isArrayLike(input)) {
     return sourceAsObservable(fromArrayLikeScheduledSource(input, scheduler));
   } else {
     throw new Error('not implemented yet');
   }
+}
+
+// TODO: this could be refactored with subscribeOn and observeOn (perhaps "scheduleOn")?
+function fromObservableScheduledSource<T>(
+  input: Observable<T>,
+  scheduler: SchedulerLike,
+) {
+  return (type: FOType.SUBSCRIBE, sink: Sink<T>, subs: Subscription) => {
+    if (type === FOType.SUBSCRIBE) {
+      scheduler.schedule(() => {
+        input(FOType.SUBSCRIBE, (t: FOType, a: SinkArg<T>, subs: Subscription) => {
+          scheduler.schedule(() => {
+            sink(t, a, subs);
+          }, 0, null, subs);
+        }, subs);
+      }, 0, null, subs);
+    }
+  };
+}
+
+function fromInteropObservableSource<T>(
+  input: InteropObservable<T>,
+  scheduler: SchedulerLike,
+) {
+  return (type: FOType.SUBSCRIBE, sink: Sink<T>, subs: Subscription) => {
+    if (type === FOType.SUBSCRIBE) {
+      scheduler.schedule(() => {
+        const source = input[Symbol.observable]();
+        const innerSubs = source.subscribe({
+          next(value) {
+            scheduler.schedule(() => sink(FOType.NEXT, value, subs), 0, null, subs);
+          },
+          error(err) {
+            scheduler.schedule(() => {
+              sink(FOType.ERROR, err, subs);
+              subs.unsubscribe();
+            }, 0, null, subs);
+          },
+          complete() {
+            scheduler.schedule(() => {
+              sink(FOType.COMPLETE, undefined, subs);
+              subs.unsubscribe();
+            }, 0, null, subs);
+          }
+        });
+        subs.add(innerSubs);
+      }, 0, null, subs);
+    }
+  };
+}
+
+function fromPromiseLikeSource<T>(
+  input: PromiseLike<T>,
+  scheduler: SchedulerLike,
+) {
+  return (type: FOType.SUBSCRIBE, sink: Sink<T>, subs: Subscription) => {
+    if (type === FOType.SUBSCRIBE) {
+      scheduler.schedule(() => {
+        input.then(
+          value => {
+            scheduler.schedule(() => {
+              sink(FOType.NEXT, value, subs);
+              scheduler.schedule(() => sink(FOType.COMPLETE, undefined, subs), 0, null, subs);
+            }, 0, null, subs);
+          },
+          err => {
+            scheduler.schedule(() => sink(FOType.ERROR, err, subs), 0, null, subs);
+          },
+        );
+      }, 0, null, subs);
+    }
+  };
+}
+
+function fromAsyncIterableSource<T>(
+  input: AsyncIterable<T>,
+  scheduler: SchedulerLike,
+) {
+  return (type: FOType.SUBSCRIBE, sink: Sink<T>, subs: Subscription) => {
+    if (type === FOType.SUBSCRIBE) {
+      scheduler.schedule(() => {
+        const ai: AsyncIterator<T> = input[symbolAsyncIterator]();
+        const go = () => scheduler.schedule(() => {
+          ai.next().then(
+            result => {
+              const { done, value } = result;
+              if (done) {
+                scheduler.schedule(() => sink(FOType.COMPLETE, undefined, subs), 0, null, subs);
+              } else {
+                scheduler.schedule(() => sink(FOType.NEXT, value, subs), 0, null, subs);
+                go();
+              }
+            },
+            err => {
+              scheduler.schedule(() => sink(FOType.ERROR, err, subs), 0, null, subs);
+            }
+          );
+        }, 0, null, subs);
+        go();
+      }, 0, null, subs);
+    }
+  };
 }
 
 function fromArrayLikeScheduledSource<T>(
