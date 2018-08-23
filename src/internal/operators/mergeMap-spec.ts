@@ -5,6 +5,13 @@ import { TestScheduler } from 'rxjs/testing';
 
 
 describe('mergeMap', () => {
+  let testScheduler: TestScheduler;
+
+  beforeEach(() => {
+    testScheduler = new TestScheduler((a, b) => { expect(a).to.deep.equal(b); });
+  });
+
+
   it('should work in the basic use case', () => {
     const results: any[] = [];
 
@@ -67,15 +74,6 @@ describe('mergeMap', () => {
       1,
       2,
     ]);
-  });
-});
-
-/** @test {mergeMap} */
-describe('mergeMap', () => {
-  let testScheduler: TestScheduler;
-
-  beforeEach(() => {
-    testScheduler = new TestScheduler((a, b) => { expect(a).to.deep.equal(b); });
   });
 
   //asDiagram('mergeMap(i => 10*i\u2014\u201410*i\u2014\u201410*i\u2014| )')
