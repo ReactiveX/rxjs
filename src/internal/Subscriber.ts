@@ -1,5 +1,5 @@
-import { FOType, Sink, SinkArg } from 'rxjs/internal/types';
-import { Subscription } from 'rxjs/internal/Subscription';
+import { FOType, Sink, SinkArg } from './types';
+import { Subscription } from './Subscription';
 
 export interface Subscriber<T> extends Sink<T> {
   next(value: T): void;

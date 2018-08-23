@@ -3,7 +3,7 @@ import { sourceAsObservable } from '../util/sourceAsObservable';
 import { Operation, FOType, Sink, SinkArg, GroupedObservable, ObservableInput } from '../types';
 import { Subscription } from '../Subscription';
 import { subjectSource } from '../Subject';
-import { fromSource } from "rxjs/internal/sources/fromSource";
+import { fromSource } from "../sources/fromSource";
 import { tryUserFunction, resultIsError } from '../util/userFunction';
 import { lift } from '../util/lift';
 

@@ -1,9 +1,9 @@
-import { ObservableInput, Sink, Operation, FOType, SinkArg } from 'rxjs/internal/types';
-import { lift } from 'rxjs/internal/util/lift';
+import { ObservableInput, Sink, Operation, FOType, SinkArg } from '../types';
+import { lift } from '../util/lift';
 import { Observable } from '../Observable';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
-import { fromSource } from "rxjs/internal/sources/fromSource";
+import { Subscription } from '../Subscription';
+import { tryUserFunction, resultIsError } from '../util/userFunction';
+import { fromSource } from "../sources/fromSource";
 
 export function expand<T, R>(project: (value: T|R, index: number) => ObservableInput<R>, concurrent = Number.POSITIVE_INFINITY): Operation<T, R> {
   return lift((source: Observable<T>, dest: Sink<R>, subs: Subscription) => {

@@ -1,6 +1,6 @@
-import { FOType, Sink, InteropObservable, ObservableLike } from 'rxjs/internal/types';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { symbolObservable } from 'rxjs/internal/util/symbolObservable';
+import { FOType, Sink, InteropObservable, ObservableLike } from '../types';
+import { Subscription } from '../Subscription';
+import { symbolObservable } from '../util/symbolObservable';
 export function symbolObservableSource<T>(input: InteropObservable<T>) {
   return (type: FOType.SUBSCRIBE, sink: Sink<T>, subs: Subscription) => {
     if (type === FOType.SUBSCRIBE) {

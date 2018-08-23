@@ -1,8 +1,8 @@
-import { Operation, FOType, Sink, SinkArg, FObs } from 'rxjs/internal/types';
+import { Operation, FOType, Sink, SinkArg, FObs } from '../types';
 import { Observable } from '../Observable';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { lift } from 'rxjs/internal/util/lift';
-import { replaySubjectSource } from 'rxjs/internal/ReplaySubject';
+import { Subscription } from '../Subscription';
+import { lift } from '../util/lift';
+import { replaySubjectSource } from '../ReplaySubject';
 
 export function shareReplay<T>(
   bufferSize = Number.POSITIVE_INFINITY,

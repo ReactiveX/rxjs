@@ -1,5 +1,5 @@
-import { Source, FOType, Sink } from 'rxjs/internal/types';
-import { Subscription } from 'rxjs/internal/Subscription';
+import { Source, FOType, Sink } from '../types';
+import { Subscription } from '../Subscription';
 export function iterableSource<T>(iterable: Iterable<T>): Source<T> {
   return (type: FOType.SUBSCRIBE, sink: Sink<T>, subs: Subscription) => {
     if (type === FOType.SUBSCRIBE) {

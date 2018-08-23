@@ -1,9 +1,9 @@
-import { ObservableInput, Operation, FOType, Sink, SinkArg, Source } from 'rxjs/internal/types';
+import { ObservableInput, Operation, FOType, Sink, SinkArg, Source } from '../types';
 import { Observable } from '../Observable';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { fromSource } from "rxjs/internal/sources/fromSource";
-import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
-import { lift } from 'rxjs/internal/util/lift';
+import { Subscription } from '../Subscription';
+import { fromSource } from "../sources/fromSource";
+import { tryUserFunction, resultIsError } from '../util/userFunction';
+import { lift } from '../util/lift';
 
 export function mergeMap<T, R>(
   project: (value: T, index: number) => ObservableInput<R>,

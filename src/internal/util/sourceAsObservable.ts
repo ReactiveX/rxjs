@@ -1,6 +1,6 @@
 import { Operation, PartialObserver, FOType, Sink, Source, SinkArg } from '../types';
 import { Subscription } from '../Subscription';
-import { pipe } from './pipe';
+import { pipeArray } from './pipe';
 import { Observable } from '../Observable';
 import { sinkFromObserver } from './sinkFromObserver';
 
@@ -81,7 +81,7 @@ function toPromise<T>(this: Observable<T>): Promise<T> {
   });
 }
 function observablePipe<T>(this: Observable<T>, ...operations: Array<Operation<T, T>>): Observable<T> {
-  return pipe(...operations)(this);
+  return pipeArray(operations)(this);
 }
 
 export function sinkFromHandlers<T>(

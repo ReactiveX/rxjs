@@ -1,15 +1,15 @@
-import { ObservableInput, Source } from 'rxjs/internal/types';
-import { ofSource } from 'rxjs/internal/create/of';
-import { isArrayLike } from 'rxjs/internal/util/isArrayLike';
-import { isPromiseLike } from 'rxjs/internal/util/isPromiseLike';
-import { isIterable } from 'rxjs/internal/util/isIterable';
-import { isInteropObservable } from 'rxjs/internal/util/isInteropObservable';
-import { isAsyncIterable } from 'rxjs/internal/util/isAsyncIterable';
-import { isObservable } from 'rxjs/internal/util/isObservable';
-import { asyncIterableSource } from "rxjs/internal/sources/asyncIterableSource";
-import { symbolObservableSource } from "rxjs/internal/sources/symbolObservableSource";
-import { iterableSource } from "rxjs/internal/sources/iterableSource";
-import { promiseSource } from "rxjs/internal/sources/promiseSource";
+import { ObservableInput, Source } from '../types';
+import { ofSource } from '../create/of';
+import { isArrayLike } from '../util/isArrayLike';
+import { isPromiseLike } from '../util/isPromiseLike';
+import { isIterable } from '../util/isIterable';
+import { isInteropObservable } from '../util/isInteropObservable';
+import { isAsyncIterable } from '../util/isAsyncIterable';
+import { isObservable } from '../util/isObservable';
+import { asyncIterableSource } from "../sources/asyncIterableSource";
+import { symbolObservableSource } from "../sources/symbolObservableSource";
+import { iterableSource } from "../sources/iterableSource";
+import { promiseSource } from "../sources/promiseSource";
 export function fromSource<T>(input: ObservableInput<T>): Source<T> {
   if (isObservable(input)) {
     return input;

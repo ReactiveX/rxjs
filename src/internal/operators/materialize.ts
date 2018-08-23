@@ -1,7 +1,7 @@
-import { Operation, FOType, Sink, SinkArg, Notification } from 'rxjs/internal/types';
+import { Operation, FOType, Sink, SinkArg, Notification } from '../types';
 import { sourceAsObservable, Observable } from '../Observable';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { lift } from 'rxjs/internal/util/lift';
+import { Subscription } from '../Subscription';
+import { lift } from '../util/lift';
 
 export function materialize<T>(includeSubscriptionNotifications = false): Operation<T, Notification<T>> {
   return lift((source: Observable<T>, dest: Sink<Notification<T>>, subs: Subscription) => {

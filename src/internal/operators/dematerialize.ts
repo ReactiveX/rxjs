@@ -1,7 +1,7 @@
-import { lift } from 'rxjs/internal/util/lift';
+import { lift } from '../util/lift';
 import { Observable } from '../Observable';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { FOType, Operation, Notification, Sink, SinkArg } from 'rxjs/internal/types';
+import { Subscription } from '../Subscription';
+import { FOType, Operation, Notification, Sink, SinkArg } from '../types';
 
 export function dematerialize<T>() : Operation<Notification<T>, T> {
   return lift((source: Observable<Notification<T>>, dest: Sink<T>, subs: Subscription) => {

@@ -1,7 +1,7 @@
-import { lift } from 'rxjs/internal/util/lift';
+import { lift } from '../util/lift';
 import { Observable } from '../Observable';
-import { FOType, Sink, SinkArg } from 'rxjs/internal/types';
-import { Subscription } from 'rxjs/internal/Subscription';
+import { FOType, Sink, SinkArg } from '../types';
+import { Subscription } from '../Subscription';
 
 export function skip<T>(count: number) {
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {

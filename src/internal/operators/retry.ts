@@ -1,8 +1,8 @@
-import { Operation, FOType, Sink, SinkArg } from 'rxjs/internal/types';
+import { Operation, FOType, Sink, SinkArg } from '../types';
 import { Observable } from '../Observable';
-import { RecyclableSubscription } from 'rxjs/internal/RecyclableSubscription';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { lift } from 'rxjs/internal/util/lift';
+import { RecyclableSubscription } from '../RecyclableSubscription';
+import { Subscription } from '../Subscription';
+import { lift } from '../util/lift';
 
 export function retry<T>(count: number): Operation<T, T> {
   return lift((source: Observable<T>, dest: Sink<T>, downstreamSubs: Subscription) => {

@@ -2,7 +2,7 @@ import { Observer, FOType, FObsArg, FObs, Sink, Source } from './types';
 import { Observable } from './Observable';
 import { Subscription } from './Subscription';
 import { sourceAsSubject } from './util/sourceAsSubject';
-import { subjectBaseSource } from 'rxjs/internal/sources/subjectBaseSource';
+import { subjectBaseSource } from './sources/subjectBaseSource';
 import { sinkFromObserver } from "./util/sinkFromObserver";
 
 export interface Subject<T> extends Observer<T>, Observable<T> {
