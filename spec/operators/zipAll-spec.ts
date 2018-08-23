@@ -231,7 +231,7 @@ describe('zipAll operator', () => {
       const b = [4, 5, 6];
       const expected = '---x--#';
 
-      const selector = function (x: number, y: number) {
+      const selector = function (x: string, y: number) {
         if (y === 5) {
           throw new Error('too bad');
         } else {
