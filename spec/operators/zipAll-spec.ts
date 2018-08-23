@@ -39,7 +39,7 @@ describe('zipAll operator', () => {
       of('a', 'b', 'c'),
       of(1, 2, 3)
     )
-    .pipe(zipAll((a, b) => a + b))
+    .pipe(zipAll((a, b) => String(a) + String(b)))
     .subscribe((x) => {
       expect(x).to.equal(expected[i++]);
     }, null, done);
@@ -378,7 +378,7 @@ describe('zipAll operator', () => {
       of('a', 'b', 'c'),
       of(1, 2)
     )
-    .pipe(zipAll((a, b) => a + b))
+    .pipe(zipAll((a, b) => String(a) + String(b)))
     .subscribe((x) => {
       expect(x).to.equal(expected[i++]);
     }, null, done);
