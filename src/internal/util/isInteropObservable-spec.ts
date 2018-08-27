@@ -1,16 +1,11 @@
 import { isInteropObservable } from "rxjs/internal/util/isInteropObservable";
 import { expect } from "chai";
+import { symbolObservable } from './symbolObservable';
 
 describe('isInteropObservable', () => {
-  before(() => {
-    if (!Symbol.observable) {
-      (Symbol as any).observable = Symbol('test polyfill observable');
-    }
-  });
-
   it('should pass for objects with Symbol.observable', () => {
     const obj = {
-      [Symbol.observable]() { /* noop */ },
+      [symbolObservable]() { /* noop */ },
     };
 
     expect(isInteropObservable(obj)).to.be.true;
