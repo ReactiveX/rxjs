@@ -22,6 +22,7 @@ export function switchMap<T, R>(
           const result = tryUserFunction(() => fromSource(project(v, index++)));
           if (resultIsError(result)) {
             dest(FOType.ERROR, result.error, subs);
+            subs.unsubscribe();
             return;
           }
 
@@ -36,9 +37,13 @@ export function switchMap<T, R>(
               innerSubs.unsubscribe();
               if (outerComplete) {
                 dest(FOType.COMPLETE, undefined, subs);
+                subs.unsubscribe();
               }
             } else {
               dest(ti, vi, subs);
+              if (ti === FOType.ERROR) {
+                subs.unsubscribe();
+              }
             }
           }, innerSubs);
           break;
@@ -47,6 +52,7 @@ export function switchMap<T, R>(
           if (innerSubs) break;
         case FOType.ERROR:
           dest(t, v, subs);
+          subs.unsubscribe();
           break;
         default:
           break;
