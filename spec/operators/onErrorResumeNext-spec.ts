@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { onErrorResumeNext } from 'rxjs/operators';
-import { concat, throwError, of } from 'rxjs';
+import { onErrorResumeNext, takeWhile } from 'rxjs/operators';
+import { concat, defer, throwError, of } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 
@@ -102,6 +102,31 @@ describe('onErrorResumeNext operator', () => {
 
     expectObservable(source.pipe(onErrorResumeNext(next))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = concat(
+      defer(() => {
+        sideEffects.push(1);
+        return of(1);
+      }),
+      defer(() => {
+        sideEffects.push(2);
+        return of(2);
+      }),
+      defer(() => {
+        sideEffects.push(3);
+        return of(3);
+      })
+    );
+
+    throwError(new Error('Some error')).pipe(
+      onErrorResumeNext(synchronousObservable),
+      takeWhile((x) => x != 2) // unsubscribe at the second side-effect
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([1, 2]);
   });
 
   it('should work with promise', (done: MochaDone) => {

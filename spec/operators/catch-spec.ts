@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { concat, Observable, of, throwError, EMPTY, from } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { concat, defer, Observable, of, throwError, EMPTY, from } from 'rxjs';
+import { catchError, map, mergeMap, takeWhile } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import * as sinon from 'sinon';
 import { createObservableInputs } from '../helpers/test-helper';
@@ -119,6 +119,31 @@ describe('catchError operator', () => {
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
     expectSubscriptions(e2.subscriptions).toBe(e2subs);
+  });
+
+  it('should stop listening to a synchronous observable when unsubscribed', () => {
+    const sideEffects: number[] = [];
+    const synchronousObservable = concat(
+      defer(() => {
+        sideEffects.push(1);
+        return of(1);
+      }),
+      defer(() => {
+        sideEffects.push(2);
+        return of(2);
+      }),
+      defer(() => {
+        sideEffects.push(3);
+        return of(3);
+      })
+    );
+
+    throwError(new Error('Some error')).pipe(
+      catchError(() => synchronousObservable),
+      takeWhile((x) => x != 2) // unsubscribe at the second side-effect
+    ).subscribe(() => { /* noop */ });
+
+    expect(sideEffects).to.deep.equal([1, 2]);
   });
 
   it('should catch error and replace it with a hot Observable', () => {

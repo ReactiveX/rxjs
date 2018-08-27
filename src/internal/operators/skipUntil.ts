@@ -44,7 +44,10 @@ class SkipUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   constructor(destination: Subscriber<R>, notifier: ObservableInput<any>) {
     super(destination);
-    this.add(this.innerSubscription = subscribeToResult(this, notifier));
+    const innerSubscriber = new InnerSubscriber(this, undefined, undefined);
+    this.add(innerSubscriber);
+    this.innerSubscription = innerSubscriber;
+    subscribeToResult(this, notifier, undefined, undefined, innerSubscriber);
   }
 
   protected _next(value: T) {
