@@ -25,7 +25,9 @@ timestamp.
 - `Subject()` works just like `new Subject()`
 - `Subject` does not pass `instanceof` checks
 - `Subject(observer, observable)` replaces `Subject.create`
-
+- `map` no longer supports `thisArg`
+- `map` no longer sync throws if passed a non-function
+- `filter` no longer supports `thisArg`.
 
 
 

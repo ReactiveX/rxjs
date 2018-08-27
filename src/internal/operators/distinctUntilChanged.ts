@@ -1,6 +1,6 @@
 import { lift } from '../util/lift';
 import { Observable } from '../Observable';
-import { FOType, ObservableInput, Operation, Sink, SinkArg } from '../types';
+import { FOType, Operation, Sink, SinkArg } from '../types';
 import { Subscription } from '../Subscription';
 import { tryUserFunction, resultIsError } from '../util/userFunction';
 
