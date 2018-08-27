@@ -39,9 +39,8 @@ export type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<never> | P
 /** OBSERVABLE INTERFACES */
 
 export interface Subscribable<T> {
-  subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
-            error?: (error: any) => void,
-            complete?: () => void): Unsubscribable;
+  subscribe(observer?: PartialObserver<T>): Unsubscribable;
+  subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Unsubscribable;
 }
 
 export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T> | Iterable<T>;
