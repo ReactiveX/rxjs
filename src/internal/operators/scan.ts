@@ -25,10 +25,7 @@ export function scan<T, R, I>(reducer: (state: T|R|I, value: T, index: number) =
           }
         }
         state = v;
-        if (!hasState) {
-          hasState = true;
-          return;
-        }
+        hasState = true;
       }
       dest(t, v, subs);
     }, subs);
