@@ -8,8 +8,12 @@ function DEFAULT_COMPARER<T>(a: T, b: T) {
   return a === b;
 }
 
-export function distinctUntilChanged<T, K>(comparer: (a:T, b:T) => boolean = DEFAULT_COMPARER, keySelector?: (value: T) => K) {
-  return lift((source: Observable<T>, type: FOType, dest: Sink<T>, subs: Subscription)  => {
+export function distinctUntilChanged<T, K>(
+  comparer: ((a:T, b:T) => boolean)|undefined|null,
+  keySelector?: (value: T) => K
+): Operation<T, T> {
+  comparer = comparer || DEFAULT_COMPARER;
+  return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription)  => {
     let key: K;
     let hasKey = false;
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
@@ -39,6 +43,7 @@ export function distinctUntilChanged<T, K>(comparer: (a:T, b:T) => boolean = DEF
           }
         }
 
+        key = k;
         hasKey = true;
       }
 
