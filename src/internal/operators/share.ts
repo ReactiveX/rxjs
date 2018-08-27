@@ -1,5 +1,5 @@
 import { Operation, FOType, Sink, SinkArg } from '../types';
-import { sourceAsObservable, Observable } from '../Observable';
+import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { lift } from '../util/lift';
 
