@@ -4,16 +4,17 @@ import { scalar } from '../observable/scalar';
 import { empty } from '../observable/empty';
 import { concat as concatStatic } from '../observable/concat';
 import { isScheduler } from '../util/isScheduler';
-import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
+import { MonoTypeOperatorFunction, OperatorFunction, SchedulerLike } from '../types';
 
 /* tslint:disable:max-line-length */
-export function startWith<T>(v1: T, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
-export function startWith<T>(v1: T, v2: T, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
-export function startWith<T>(v1: T, v2: T, v3: T, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
-export function startWith<T>(v1: T, v2: T, v3: T, v4: T, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
-export function startWith<T>(v1: T, v2: T, v3: T, v4: T, v5: T, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
-export function startWith<T>(v1: T, v2: T, v3: T, v4: T, v5: T, v6: T, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
-export function startWith<T>(...array: Array<T | SchedulerLike>): MonoTypeOperatorFunction<T>;
+export function startWith<T>(scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+export function startWith<T, D = T>(v1: D, scheduler?: SchedulerLike): OperatorFunction<T, T | D>;
+export function startWith<T, D = T, E = T>(v1: D, v2: E, scheduler?: SchedulerLike): OperatorFunction<T, T | D | E>;
+export function startWith<T, D = T, E = T, F = T>(v1: D, v2: E, v3: F, scheduler?: SchedulerLike): OperatorFunction<T, T | D | E | F>;
+export function startWith<T, D = T, E = T, F = T, G = T>(v1: D, v2:  E, v3: F, v4: G, scheduler?: SchedulerLike): OperatorFunction<T, T | D | E | F | G>;
+export function startWith<T, D = T, E = T, F = T, G = T, H = T>(v1: D, v2: E, v3: F, v4: G, v5: H, scheduler?: SchedulerLike): OperatorFunction<T, T | D | E | F | G | H>;
+export function startWith<T, D = T, E = T, F = T, G = T, H = T, I = T>(v1: D, v2: E, v3: F, v4: G, v5: H, v6: I, scheduler?: SchedulerLike): OperatorFunction<T, T | D | E | F | G | H | I>;
+export function startWith<T, D = T>(...array: Array<D | SchedulerLike>): OperatorFunction<T, T | D>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -48,7 +49,7 @@ export function startWith<T>(...array: Array<T | SchedulerLike>): MonoTypeOperat
  * @method startWith
  * @owner Observable
  */
-export function startWith<T>(...array: Array<T | SchedulerLike>): MonoTypeOperatorFunction<T> {
+export function startWith<T, D>(...array: Array<T | SchedulerLike>): OperatorFunction<T, T | D> {
   return (source: Observable<T>) => {
     let scheduler = <SchedulerLike>array[array.length - 1];
     if (isScheduler(scheduler)) {
