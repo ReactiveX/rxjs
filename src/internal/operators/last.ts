@@ -1,6 +1,4 @@
 import { Observable } from '../Observable';
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
 import { EmptyError } from '../util/EmptyError';
 import { OperatorFunction } from '../../internal/types';
 import { filter } from './filter';

@@ -1,4 +1,3 @@
-import { ObservableInput } from '../types';
 import { Subscription } from '../Subscription';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { OuterSubscriber } from '../OuterSubscriber';

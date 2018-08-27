@@ -1,10 +1,7 @@
 import { async } from '../scheduler/async';
-import { isDate } from '../util/isDate';
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { TimeoutError } from '../util/TimeoutError';
-import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
 import { timeoutWith } from './timeoutWith';
 import { throwError } from '../observable/throwError';
 
