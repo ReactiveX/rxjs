@@ -11,30 +11,18 @@ npm install rxjs
 To import the entire core set of functionality:
 
 ```js
-import Rx from 'rxjs/Rx';
+import * as rxjs from 'rxjs';
 
-Rx.Observable.of(1, 2, 3);
+rxjs.of(1, 2, 3);
 ```
 
 To import only what you need by patching (this is useful for size-sensitive bundling):
 
 ```js
-import ❴ Observable ❵ from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/map';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-Observable.of(1,2,3).map(x => x + '!!!'); // etc
-```
-
-To import what you need and use it with proposed bind operator:
-Note: This additional syntax requires transpiler support and this syntax may be completely withdrawn from TC39 without notice! Use at your own risk.
-
-```js
-import ❴ Observable ❵ from 'rxjs/Observable';
-import ❴ of ❵ from 'rxjs/observable/of';
-import ❴ map ❵ from 'rxjs/operator/map';
-
-Observable::of(1,2,3)::map(x => x + '!!!'); // etc
+of(1,2,3).pipe(map(x => x + '!!!')); // etc
 ```
 
 ## CommonJS via npm
