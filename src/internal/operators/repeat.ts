@@ -20,6 +20,7 @@ export function repeat<T>(count: number): Operation<T, T> {
             subscribe();
           } else {
             dest(FOType.COMPLETE, undefined, downstreamSubs);
+            upstreamSubs.unsubscribe();
           }
         } else {
           dest(t, v, downstreamSubs);

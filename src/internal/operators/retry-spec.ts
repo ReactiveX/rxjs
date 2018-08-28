@@ -19,7 +19,7 @@ describe('retry', () => {
       complete() { results.push('done'); }
     });
 
-    expect(results).to.deep.equal([1, 2, 1, 2, 1, 2, 'womp womp']);
+    expect(results).to.deep.equal([1, 2, 1, 2, 1, 2, 1, 2, 'womp womp']);
   });
 
   it('should teardown the source between repetitions', () => {
@@ -35,6 +35,6 @@ describe('retry', () => {
       retry(3),
     ).subscribe();
 
-    return Promise.resolve().then(() => expect(teardowns).to.equal(3))
+    return Promise.resolve().then(() => expect(teardowns).to.equal(4))
   });
 });

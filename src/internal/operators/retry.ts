@@ -15,7 +15,7 @@ export function retry<T>(count: number): Operation<T, T> {
       source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, _: Subscription) => {
         if (t === FOType.ERROR) {
           counter++;
-          if (counter < count) {
+          if (counter <= count) {
             upstreamSubs.recycle();
             subscribe();
           } else {

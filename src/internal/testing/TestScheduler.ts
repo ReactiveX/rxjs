@@ -204,7 +204,7 @@ const unsubscriptionFrame = subscriptionParsed.unsubscribedFrame;
       let value = x;
       // Support Observable-of-Observables
       if (isObservable(x)) {
-        value = this._materializeInnerObservable(value, this.frame, this);
+        value = this._materializeInnerObservable(x, this.frame, this);
       }
       actual.push({ frame: this.frame, notification: { kind: 'N', value } });
     }, (error) => {
