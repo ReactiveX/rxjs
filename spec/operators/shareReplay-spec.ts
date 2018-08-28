@@ -163,6 +163,16 @@ describe('shareReplay operator', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
+  it('when no windowTime is given ReplaySubject should be in _infiniteTimeWindow mode', () => {
+    const spy = sinon.spy(rxTestScheduler, 'now');
+
+    of(1)
+      .pipe(shareReplay(1, undefined, rxTestScheduler))
+      .subscribe();
+    spy.restore();
+    expect(spy, 'ReplaySubject should not call scheduler.now() when no windowTime is given').to.be.not.called;
+  });
+
   it('should not restart if refCount hits 0 due to unsubscriptions', () => {
     const results: number[] = [];
     const source = interval(10, rxTestScheduler).pipe(
@@ -177,14 +187,18 @@ describe('shareReplay operator', () => {
     expect(results).to.deep.equal([0, 1, 2, 4, 5, 6, 7, 8, 9]);
   });
 
-  it('when no windowTime is given ReplaySubject should be in _infiniteTimeWindow mode', () => {
-    const spy = sinon.spy(rxTestScheduler, 'now');
+  it('should restart if refCount hits 0 due to unsubscriptions', () => {
+    const results: number[] = [];
+    const source = interval(10, rxTestScheduler).pipe(
+      take(10),
+      shareReplay(1)
+    );
+    const subs = source.subscribe(x => results.push(x));
+    rxTestScheduler.schedule(() => subs.unsubscribe(), 35);
+    rxTestScheduler.schedule(() => source.subscribe(x => results.push(x)), 54);
 
-    of(1)
-      .pipe(shareReplay(1, undefined, rxTestScheduler))
-      .subscribe();
-    spy.restore();
-    expect(spy, 'ReplaySubject should not call scheduler.now() when no windowTime is given').to.be.not.called;
+    rxTestScheduler.flush();
+    expect(results).to.deep.equal([0, 1, 2, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
   });
 
   it('should not break lift() composability', (done: MochaDone) => {
