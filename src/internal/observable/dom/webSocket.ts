@@ -8,33 +8,32 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  * `webSocket` is a factory function that produces a `WebSocketSubject`,
  * which can be used to make WebSocket connection with an arbitrary endpoint.
  * `webSocket` accepts as an argument either a string with url of WebSocket endpoint, or an
- * {@link WebSocketSubjectConfig} object, where you can provide additional configuration, as
+ * {@link WebSocketSubjectConfig} object for providing additional configuration, as
  * well as Observers for tracking lifecycle of WebSocket connection.
  *
  * When `WebSocketSubject` is subscribed, it attempts to make a socket connection,
  * unless there is one made already. This means that many subscribers will always listen
- * on the same socket, thus saving your resources. If however you make two instances of `WebSocketSubject`,
+ * on the same socket, thus saving resources. If however, two instances are made of `WebSocketSubject`,
  * even if these two were provided with the same url, they will attempt to make separate
  * connections. When consumer of a `WebSocketSubject` unsubscribes, socket connection is closed,
- * but only if there is no more subscribers still listening. If after some time someone starts
+ * only if there are no more subscribers still listening. If after some time a consumer starts
  * subscribing again, connection is reestablished.
  *
- * Once connection is made, whenever new message comes from the server, `WebSocketSubject` will emit that
- * message as a value in the stream. By default message from the socket is parsed via `JSON.parse`. If you
+ * Once connection is made, whenever a new message comes from the server, `WebSocketSubject` will emit that
+ * message as a value in the stream. By default, a message from the socket is parsed via `JSON.parse`. If you
  * want to customize how deserialization is handled (if at all), you can provide custom `resultSelector`
  * function in {@link WebSocketSubject}. When connection closes, stream will complete, provided it happened without
  * any errors. If at any point (starting, maintaining or closing a connection) there is an error,
- * stream will also error with whatever WebSocket API have thrown.
+ * stream will also error with whatever WebSocket API has thrown.
  *
- * By virtue of being a {@link Subject}, `WebSocketSubject` allows not only to receive messages, but to send them
- * to the server as well. In order to communicate with a connected endpoint, you can use `next`, `error`
- * and `complete` methods. `next` sends a value to the server, but bear in mind that this value will not be serialized
- * beforehand. This means you will have to call `JSON.stringify` on a value by hand, before calling `next` with a result.
- * Note also that if at the moment of nexting value
+ * By virtue of being a {@link Subject}, `WebSocketSubject` allows for receiving and sending messages from the server. In order
+ * to communicate with a connected endpoint, use `next`, `error` and `complete` methods. `next` sends a value to the server, so bear in mind
+ * that this value will not be serialized beforehand. Because of This, `JSON.stringify` will have to be called on a value by hand,
+ * before calling `next` with a result. Note also that if at the moment of nexting value
  * there is no socket connection (for example no one is subscribing), those values will be buffered, and sent when connection
- * is finally established. `complete` method closes socket connection. `error` does so as well,
- * but also notifies server that something went wrong via status code and string with details of what happened.
- * Since status code is required in WebSocket API, `WebSocketSubject` does not allow, like regular Subject,
+ * is finally established. `complete` method closes socket connection. `error` does the same,
+ * as well as notifying the server that something went wrong via status code and string with details of what happened.
+ * Since status code is required in WebSocket API, `WebSocketSubject` does not allow, like regular `Subject`,
  * arbitrary values being passed to the `error` method. It needs to be called with an object that has `code`
  * property with status code number and optional `reason` property with string describing details
  * of an error.
@@ -42,50 +41,48 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  * Calling `next` does not affect subscribers of `WebSocketSubject` - they have no
  * information that something was sent to the server (unless of course the server
  * responds somehow to a message). On the other hand, since calling `complete` triggers
- * an attempt to close socket connection, if that connection is closed without any errors, stream will
+ * an attempt to close socket connection. If that connection is closed without any errors, stream will
  * complete, thus notifying all subscribers. And since calling `error` closes
  * socket connection as well, just with a different status code for the server, if closing itself proceeds
- * without errors, subscribed Observable will not error, as you might expect, but complete as usual. In both cases
+ * without errors, subscribed Observable will not error, as one might expect, but complete as usual. In both cases
  * (calling `complete` or `error`), if process of closing socket connection results in some errors, *then* stream
  * will error.
  *
  * **Multiplexing**
  *
- * `WebSocketSubject` has additional operator, not found in other Subjects. It is called `multiplex` and it is
+ * `WebSocketSubject` has an additional operator, not found in other Subjects. It is called `multiplex` and it is
  * used to simulate opening several socket connections, while in reality maintaining only one.
- * Let's say that your application has both chat panel
- * and real-time notifications about sport news. Since these are two distinct functions, it would make sense
- * to have two separate connections for each. Perhaps you would even have two separate services with WebSocket
- * endpoints, running on separate machines with only GUI combining them together. But having a socket connection
- * for each functionality could become too resource expensive, so it is a common pattern to have single
- * WebSocket endpoint that acts as a gateway for the other services (in our case chat and sport news services).
- * But even though we have single connection in a client app, we want to manipulate streams as if it
- * were two separate sockets, so that we do not have to manually register and unregister in a gateway for
- * given service and filter out messages that we are actually interested in. And that is exactly what
- * `multiplex` method is for.
+ * For example, an application has both chat panel and real-time notifications about sport news. Since these are two distinct functions,
+ * it would make sense to have two separate connections for each. Perhaps there could even be two separate services with WebSocket
+ * endpoints, running on separate machines with only GUI combining them together. Having a socket connection
+ * for each functionality could become too resource expensive. It is a common pattern to have single
+ * WebSocket endpoint that acts as a gateway for the other services (in this case chat and sport news services).
+ * Even though there is a single connection in a client app, having the ability to manipulate streams as if it
+ * were two separate sockets is desirable. This eliminates manually registering and unregistering in a gateway for
+ * given service and filter out messages of interest. This is exactly what `multiplex` method is for.
  *
  * Method accepts three parameters. First two are functions returning subscription and unsubscription messages
  * respectively. These are messages that will be sent to the server, whenever consumer of resulting Observable
  * subscribes and unsubscribes. Server can use them to verify that some kind of messages should start or stop
- * being forwarded to the client. In case of our application, after getting subscription message with proper identifier,
+ * being forwarded to the client. In case of the above example application, after getting subscription message with proper identifier,
  * gateway server can decide that it should connect to real sport news service and start forwarding messages from it.
- * Note that both messages will be sent as returned by the functions, so you have to serialize them yourself, just
+ * Note that both messages will be sent as returned by the functions, meaning they will have to be serialized manually, just
  * as messages pushed via `next`. Also bear in mind that these messages will be sent on *every* subscription and
  * unsubscription. This is potentially dangerous, because one consumer of an Observable may unsubscribe and the server
- * might stop sending messages, since it got unsubscription message. You need to either handle this case
- * on the server or use {@link publish} on a Observable returned from 'multiplex'.
+ * might stop sending messages, since it got unsubscription message. This needs to be handled
+ * on the server or using {@link publish} on a Observable returned from 'multiplex'.
  *
  * Last argument to `multiplex` is a `messageFilter` function which filters out messages
- * sent by the server to only those that belong to simulated WebSocket stream. For example server might mark these
+ * sent by the server to only those that belong to simulated WebSocket stream. For example, server might mark these
  * messages with some kind of string identifier on a message object and `messageFilter` would return `true`
  * if there is such identifier on an object emitted by the socket.
  *
  * Return value of `multiplex` is an Observable with messages incoming from emulated socket connection. Note that this
  * is not a `WebSocketSubject`, so calling `next` or `multiplex` again will fail. For pushing values to the
- * server you still need to use root `WebSocketSubject`.
+ * server, use root `WebSocketSubject`.
  *
- *
- * @example <caption>Listening for messages from the server.</caption>
+ * ### Examples
+ * #### Listening for messages from the server
  * const subject = Rx.Observable.webSocket('ws://localhost:8081');
  *
  * subject.subscribe(
@@ -95,7 +92,7 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  *  );
  *
  *
- * @example <caption>Pushing messages to the server.</caption>
+ * #### Pushing messages to the server
  * const subject = Rx.Observable.webSocket('ws://localhost:8081');
  *
  * subject.subscribe(); // Note that at least one consumer has to subscribe to
@@ -114,7 +111,7 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  *                                                                     // this closing is caused by some error.
  *
  *
- * @example <caption>Multiplexing WebSocket</caption>
+ * #### Multiplexing WebSocket
  * const subject = Rx.Observable.webSocket('ws://localhost:8081');
  *
  * const observableA = subject.multiplex(
