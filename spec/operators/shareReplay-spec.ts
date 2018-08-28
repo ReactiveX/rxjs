@@ -177,7 +177,7 @@ describe('shareReplay operator', () => {
     const results: number[] = [];
     const source = interval(10, rxTestScheduler).pipe(
       take(10),
-      shareReplay(1, undefined, { refCount: false })
+      shareReplay({ bufferSize: 1, refCount: false })
     );
     const subs = source.subscribe(x => results.push(x));
     rxTestScheduler.schedule(() => subs.unsubscribe(), 35);
@@ -191,7 +191,7 @@ describe('shareReplay operator', () => {
     const results: number[] = [];
     const source = interval(10, rxTestScheduler).pipe(
       take(10),
-      shareReplay(1, undefined, { refCount: true })
+      shareReplay({ bufferSize: 1, refCount: true })
     );
     const subs = source.subscribe(x => results.push(x));
     rxTestScheduler.schedule(() => subs.unsubscribe(), 35);
