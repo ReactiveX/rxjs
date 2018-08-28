@@ -173,7 +173,35 @@ describe('shareReplay operator', () => {
     expect(spy, 'ReplaySubject should not call scheduler.now() when no windowTime is given').to.be.not.called;
   });
 
-  it('should not restart if refCount hits 0 due to unsubscriptions', () => {
+  it('should not restart due to unsubscriptions if refCount is false', () => {
+    const results: number[] = [];
+    const source = interval(10, rxTestScheduler).pipe(
+      take(10),
+      shareReplay(1, undefined, { refCount: false })
+    );
+    const subs = source.subscribe(x => results.push(x));
+    rxTestScheduler.schedule(() => subs.unsubscribe(), 35);
+    rxTestScheduler.schedule(() => source.subscribe(x => results.push(x)), 54);
+
+    rxTestScheduler.flush();
+    expect(results).to.deep.equal([0, 1, 2, 4, 5, 6, 7, 8, 9]);
+  });
+
+  it('should restart due to unsubscriptions if refCount is true', () => {
+    const results: number[] = [];
+    const source = interval(10, rxTestScheduler).pipe(
+      take(10),
+      shareReplay(1, undefined, { refCount: true })
+    );
+    const subs = source.subscribe(x => results.push(x));
+    rxTestScheduler.schedule(() => subs.unsubscribe(), 35);
+    rxTestScheduler.schedule(() => source.subscribe(x => results.push(x)), 54);
+
+    rxTestScheduler.flush();
+    expect(results).to.deep.equal([0, 1, 2, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  });
+
+  it('should default to refCount being false', () => {
     const results: number[] = [];
     const source = interval(10, rxTestScheduler).pipe(
       take(10),
@@ -185,20 +213,6 @@ describe('shareReplay operator', () => {
 
     rxTestScheduler.flush();
     expect(results).to.deep.equal([0, 1, 2, 4, 5, 6, 7, 8, 9]);
-  });
-
-  it('should restart if refCount hits 0 due to unsubscriptions', () => {
-    const results: number[] = [];
-    const source = interval(10, rxTestScheduler).pipe(
-      take(10),
-      shareReplay(1)
-    );
-    const subs = source.subscribe(x => results.push(x));
-    rxTestScheduler.schedule(() => subs.unsubscribe(), 35);
-    rxTestScheduler.schedule(() => source.subscribe(x => results.push(x)), 54);
-
-    rxTestScheduler.flush();
-    expect(results).to.deep.equal([0, 1, 2, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
   });
 
   it('should not break lift() composability', (done: MochaDone) => {
