@@ -15,16 +15,18 @@ export function shareReplay<T>(
     replayer(FOType.SUBSCRIBE, sink, subs);
     if (!connection) {
       connection = new Subscription();
-      source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, connection: Subscription) => {
+      source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, conn: Subscription) => {
         if (t === FOType.SUBSCRIBE) return;
-        let conn: Subscription;
-        if (t !== FOType.NEXT) {
-          conn = connection;
+        if (t === FOType.ERROR) {
           connection = undefined;
         }
-        replayer(t, v, connection);
-        if (conn) {
+        replayer = replayer || replaySubjectSource(bufferSize, windowTime);
+        const dest = replayer;
+        if (t === FOType.ERROR) {
           replayer = undefined;
+        }
+        dest(t, v, conn);
+        if (t !== FOType.NEXT) {
           conn.unsubscribe();
         }
       }, connection);

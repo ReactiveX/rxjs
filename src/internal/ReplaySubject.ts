@@ -9,7 +9,6 @@ export interface ReplaySubjectConstructor {
 }
 
 interface ReplayValue<T> {
-  type: FOType,
   arg: SinkArg<T>,
   timeout: number,
 }
@@ -29,33 +28,48 @@ export function replaySubjectSource<T>(
 ) {
   const _base = subjectBaseSource<T>();
   const _buffer: ReplayValue<T>[] = [];
-  let _closed = false;
+  let _endType: FOType;
+  let _endArg: any;
 
   return ((type: FOType, arg: FObsArg<T>, subs: Subscription) => {
     _base(type, arg, subs);
     const now = Date.now();
 
     for (let i = 0; i < _buffer.length; i++) {
-      const { type: t, arg: a, timeout } = _buffer[i];
+      const { arg: a, timeout } = _buffer[i];
       if (timeout < now) {
         _buffer.splice(i);
         break;
       }
       if (type === FOType.SUBSCRIBE) {
-        _base(t, a, subs);
+        arg(FOType.NEXT, a, subs);
       }
     }
 
-    if (type !== FOType.SUBSCRIBE) {
-      if (!_closed) {
-        _buffer.push({ type, arg, timeout: now + windowTime });
+    if (_endType) {
+      if (type === FOType.SUBSCRIBE) {
+        arg(_endType, _endArg, subs);
+        subs.unsubscribe();
+      }
+      return;
+    }
+
+    switch (type) {
+      case FOType.NEXT:
+        _buffer.push({ arg, timeout: now + windowTime });
         if(_buffer.length > bufferSize) {
-          _buffer.splice(_buffer.length - bufferSize, bufferSize);
+          _buffer.splice(0, _buffer.length - bufferSize);
         }
-      }
-      if (type === FOType.ERROR || type === FOType.COMPLETE) {
-        _closed = true;
-      }
+        break;
+      case FOType.ERROR:
+        _endType = FOType.ERROR;
+        _endArg = arg;
+        break;
+      case FOType.COMPLETE:
+        _endType = FOType.COMPLETE;
+        break;
+      default:
+        break;
     }
   });
 }
