@@ -11,30 +11,27 @@ npm install rxjs
 To import the entire core set of functionality:
 
 ```js
-import Rx from 'rxjs/Rx';
+import * as rxjs from 'rxjs';
 
-Rx.Observable.of(1, 2, 3);
+rxjs.of(1, 2, 3);
 ```
 
-To import only what you need by patching (this is useful for size-sensitive bundling):
+To import only what you need using pipeable operators:
 
 ```js
-import ❴ Observable ❵ from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/map';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-Observable.of(1,2,3).map(x => x + '!!!'); // etc
+of(1,2,3).pipe(map(x => x + '!!!')); // etc
 ```
+* See [Pipeable Operator Documentation](https://github.com/ReactiveX/rxjs/blob/91088dae1df097be2370c73300ffa11b27fd0100/doc/pipeable-operators.md) for more information about pipeable operator.
 
-To import what you need and use it with proposed bind operator:
-Note: This additional syntax requires transpiler support and this syntax may be completely withdrawn from TC39 without notice! Use at your own risk.
-
+To use with globally imported bundle
 ```js
-import ❴ Observable ❵ from 'rxjs/Observable';
-import ❴ of ❵ from 'rxjs/observable/of';
-import ❴ map ❵ from 'rxjs/operator/map';
+const { of } = rxjs;
+const { map } = rxjs.operators;
 
-Observable::of(1,2,3)::map(x => x + '!!!'); // etc
+of(1,2,3).pipe(map(x => x + '!!!')); // etc
 ```
 
 ## CommonJS via npm
@@ -72,3 +69,5 @@ For CDN, you can use. [unpkg](https://unpkg.com/). Just replace version with the
 For RxJS 5.0.0-beta.1 through beta.11: [https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.umd.js](https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.umd.js)
 
 For RxJS 5.0.0-beta.12 and higher: [https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.js](https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.js)
+
+For RxJS 6.0.0 and higher: [https://unpkg.com/@reactivex/rxjs@version/dist/global/rxjs.umd.js](https://unpkg.com/@reactivex/rxjs@version/dist/global/rxjs.umd.js)

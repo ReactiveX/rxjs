@@ -751,3 +751,19 @@ fromEvent(button, 'click').pipe(
  map(resultSelector)
 )
 ```
+
+### UMD module name change
+In RxJS v6.x, UMD module name has been changed from Rx to rxjs so that it's align with other imports module name.
+
+```js
+const rx= Rx;
+
+rx.Observable.of(1,2,3).map(x => x + '!!!');
+
+// becomes
+
+const { of } = rxjs;
+const { map } = rxjs.operators;
+
+of(1,2,3).pipe(map(x => x + '!!!')); // etc
+```
