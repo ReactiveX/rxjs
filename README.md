@@ -107,6 +107,7 @@ range(1, 200)
 
 - `npm run build_all` - builds everything
 - `npm test` - runs tests
+- `npm run test_no_cache` - run test with `ts-node` set to false
 
 `npm run info` will list available scripts (there are a lot LOL)
 
