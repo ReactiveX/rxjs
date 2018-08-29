@@ -16,7 +16,7 @@ import * as rxjs from 'rxjs';
 rxjs.of(1, 2, 3);
 ```
 
-To import only what you need by patching (this is useful for size-sensitive bundling):
+To import only what you need using pipeable operators:
 
 ```js
 import { of } from 'rxjs';
@@ -24,6 +24,7 @@ import { map } from 'rxjs/operators';
 
 of(1,2,3).pipe(map(x => x + '!!!')); // etc
 ```
+* See [Pipeable Operator Documentation](https://github.com/ReactiveX/rxjs/blob/91088dae1df097be2370c73300ffa11b27fd0100/doc/pipeable-operators.md) for more information about pipeable operator.
 
 To use with globally imported bundle
 ```js
