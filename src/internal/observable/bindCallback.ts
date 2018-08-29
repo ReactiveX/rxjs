@@ -61,32 +61,32 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  * Observable.</span>
  *
  * `bindCallback` is not an operator because its input and output are not
- * Observables. The input is a function `func` with some parameters, the
+ * Observables. The input is a function `func` with some parameters. The
  * last parameter must be a callback function that `func` calls when it is
  * done.
  *
  * The output of `bindCallback` is a function that takes the same parameters
  * as `func`, except the last one (the callback). When the output function
  * is called with arguments it will return an Observable. If function `func`
- * calls its callback with one argument the Observable will emit that value.
+ * calls its callback with one argument, the Observable will emit that value.
  * If on the other hand the callback is called with multiple values the resulting
  * Observable will emit an array with said values as arguments.
  *
- * It is very important to remember that input function `func` is not called
+ * It is **very important** to remember that input function `func` is not called
  * when the output function is, but rather when the Observable returned by the output
  * function is subscribed. This means if `func` makes an AJAX request, that request
  * will be made every time someone subscribes to the resulting Observable, but not before.
  *
  * The last optional parameter - `scheduler` - can be used to control when the call
  * to `func` happens after someone subscribes to Observable, as well as when results
- * passed to callback will be emitted. By default, the subscription to  an Observable calls `func`
+ * passed to callback will be emitted. By default, the subscription to an Observable calls `func`
  * synchronously, but using {@link asyncScheduler} as the last parameter will defer the call to `func`,
- * just like wrapping the call in `setTimeout` with a timeout of `0` would. If you use the async Scheduler
- * and call `subscribe` on the output Observable all function calls that are currently executing
+ * just like wrapping the call in `setTimeout` with a timeout of `0` would. If you were to use the async Scheduler
+ * and call `subscribe` on the output Observable, all function calls that are currently executing
  * will end before `func` is invoked.
  *
- * By default results passed to the callback are emitted immediately after `func` invokes the callback.
- * In particular, if the callback is called synchronously the subscription of the resulting Observable
+ * By default, results passed to the callback are emitted immediately after `func` invokes the callback.
+ * In particular, if the callback is called synchronously, then the subscription of the resulting Observable
  * will call the `next` function synchronously as well.  If you want to defer that call,
  * you may use {@link asyncScheduler} just as before.  This means that by using `Scheduler.async` you can
  * ensure that `func` always calls its callback asynchronously, thus avoiding terrifying Zalgo.
@@ -96,7 +96,7 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  * calls will not appear in the stream. If you need to listen for multiple calls,
  *  you probably want to use {@link fromEvent} or {@link fromEventPattern} instead.
  *
- * If `func` depends on some context (`this` property) and is not already bound the context of `func`
+ * If `func` depends on some context (`this` property) and is not already bound, the context of `func`
  * will be the context that the output function has at call time. In particular, if `func`
  * is called as a method of some objec and if `func` is not already bound, in order to preserve the context
  * it is recommended that the context of the output function is set to that object as well.
@@ -112,8 +112,8 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  * ### Convert jQuery's getJSON to an Observable API
  * ```javascript
  * // Suppose we have jQuery.getJSON('/my/url', callback)
- * var getJSONAsObservable = bindCallback(jQuery.getJSON);
- * var result = getJSONAsObservable('/my/url');
+ * const getJSONAsObservable = bindCallback(jQuery.getJSON);
+ * const result = getJSONAsObservable('/my/url');
  * result.subscribe(x => console.log(x), e => console.error(e));
  * ```
  *
