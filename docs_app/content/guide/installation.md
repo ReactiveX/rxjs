@@ -25,6 +25,14 @@ import { map } from 'rxjs/operators';
 of(1,2,3).pipe(map(x => x + '!!!')); // etc
 ```
 
+To use with globally imported bundle
+```js
+const { of } = rxjs;
+const { map } = rxjs.operators;
+
+of(1,2,3).pipe(map(x => x + '!!!')); // etc
+```
+
 ## CommonJS via npm
 
 If you receive an error like error TS2304: Cannot find name 'Promise' or error TS2304: Cannot find name 'Iterable' when using RxJS you may need to install a supplemental set of typings.
@@ -60,3 +68,5 @@ For CDN, you can use. [unpkg](https://unpkg.com/). Just replace version with the
 For RxJS 5.0.0-beta.1 through beta.11: [https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.umd.js](https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.umd.js)
 
 For RxJS 5.0.0-beta.12 and higher: [https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.js](https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.js)
+
+For RxJS 6.0.0 and higher: [https://unpkg.com/@reactivex/rxjs@version/dist/global/rxjs.umd.js](https://unpkg.com/@reactivex/rxjs@version/dist/global/rxjs.umd.js)
