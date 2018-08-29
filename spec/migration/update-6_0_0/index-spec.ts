@@ -13,11 +13,12 @@ describe('Migration Schematic', () => {
     tree.create('/package.json', `{}`);
   });
 
-  it('adds missing dependencies', () => {
+  it('adds missing dependencies', (done) => {
     const runner = new SchematicTestRunner('schematics', collectionPath);
     tree = runner.runSchematic('rxjs-migration-01', {}, tree);
 
     const pkg = JSON.parse(tree.readContent('/package.json'));
     expect(pkg.dependencies['rxjs-compat']).to.equal('^6.0.0-rc.0');
+    done();
   });
 });
