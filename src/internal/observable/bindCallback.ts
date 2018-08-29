@@ -81,7 +81,7 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  * to `func` happens after someone subscribes to Observable, as well as when results
  * passed to callback will be emitted. By default, the subscription to an Observable calls `func`
  * synchronously, but using {@link asyncScheduler} as the last parameter will defer the call to `func`,
- * just like wrapping the call in `setTimeout` with a timeout of `0` would. If you to use the async Scheduler
+ * just like wrapping the call in `setTimeout` with a timeout of `0` would. If you were to use the async Scheduler
  * and call `subscribe` on the output Observable, all function calls that are currently executing
  * will end before `func` is invoked.
  *
