@@ -1,3 +1,14 @@
+<a name="5.5.12"></a>
+## [5.5.12](https://github.com/ReactiveX/RxJS/compare/5.5.11...5.5.12) (2018-08-30)
+
+
+### Bug Fixes
+
+* **AjaxObservable:** switch to encodeURIComponent to properly encode body form data ([#3832](https://github.com/ReactiveX/RxJS/issues/3832)) ([09e4359](https://github.com/ReactiveX/RxJS/commit/09e4359)), closes [#3824](https://github.com/ReactiveX/RxJS/issues/3824)
+* make TS type def of VirtualAction compatible with TS 2.9 ([#3813](https://github.com/ReactiveX/RxJS/issues/3813)) ([d56e6c6](https://github.com/ReactiveX/RxJS/commit/d56e6c6))
+
+
+
 <a name="5.5.11"></a>
 ## [5.5.11](https://github.com/ReactiveX/RxJS/compare/5.5.10...5.5.11) (2018-05-22)
 
