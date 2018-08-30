@@ -191,3 +191,30 @@ aio-search-box.search-container {
     }
   }
 }
+
+// EXTERNAL LINK ICONS
+.app-toolbar {
+  .toolbar-external-icons-container {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+
+    a {
+      display: flex;
+      align-items: center;
+      margin-left: 16px;
+
+      @media screen and (max-width: 480px) {
+        margin-left: 8px;
+      }
+
+      &:hover {
+        opacity: 0.8;
+      }
+
+      img {
+        height: 24px;
+      }
+    }
+  }
+}
