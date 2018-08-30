@@ -25,16 +25,12 @@
 * **switchMap:** stop listening to a synchronous inner-obervable when unsubscribed ([260d52a](https://github.com/reactivex/rxjs/commit/260d52a))
 * **takeUntil:** takeUntil should subscribe to the source if notifier sync completes without emitting ([#4039](https://github.com/reactivex/rxjs/issues/4039)) ([21fd0b4](https://github.com/reactivex/rxjs/commit/21fd0b4)), closes [#3504](https://github.com/reactivex/rxjs/issues/3504)
 * **testscheduler:** type arguments to Observable creation functions ([#3928](https://github.com/reactivex/rxjs/issues/3928)) ([0e30ef1](https://github.com/reactivex/rxjs/commit/0e30ef1))
-* **TS@next:** remove unnecessary return statement ([#4006](https://github.com/reactivex/rxjs/issues/4006)) ([41c6574](https://github.com/reactivex/rxjs/commit/41c6574))
 
 
 ### Features
 
-* **compat:** License added to rxjs-compat package ([#4064](https://github.com/reactivex/rxjs/issues/4064)) ([daf37f6](https://github.com/reactivex/rxjs/commit/daf37f6)), closes [#3926](https://github.com/reactivex/rxjs/issues/3926)
 * **delayWhen:** add index to the selector function ([#2473](https://github.com/reactivex/rxjs/issues/2473)) ([0979d31](https://github.com/reactivex/rxjs/commit/0979d31))
 * **forEach:** deprecating passing promise constructor ([5178ab9](https://github.com/reactivex/rxjs/commit/5178ab9))
-* **forEach:** now allows cancellation by passing a Subscription ([8b74c2a](https://github.com/reactivex/rxjs/commit/8b74c2a))
-* **test:** Add npm script to test with ts-node not caching ([#4065](https://github.com/reactivex/rxjs/issues/4065)) ([2f86b9d](https://github.com/reactivex/rxjs/commit/2f86b9d)), closes [#3948](https://github.com/reactivex/rxjs/issues/3948)
 * **TestScheduler:** Add subscription schedule to expectObservable ([#3997](https://github.com/reactivex/rxjs/issues/3997)) ([0d20255](https://github.com/reactivex/rxjs/commit/0d20255))
 
 
