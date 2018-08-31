@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { delay, mergeMap, map } from 'rxjs/operators';
-import { defer, Observable, from, of } from 'rxjs';
+import { mergeMap, map } from 'rxjs/operators';
+import { asapScheduler, defer, Observable, from, of } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare const type: Function;
@@ -712,7 +712,7 @@ describe('mergeMap', () => {
     expect(completed).to.be.true;
   });
 
-  it('should support nested merges', (done: any) => {
+  it('should support nested merges', (done: MochaDone) => {
 
     // Added as a failing test when investigating:
     // https://github.com/ReactiveX/rxjs/issues/4071
@@ -721,10 +721,10 @@ describe('mergeMap', () => {
 
     of(1).pipe(
       mergeMap(() => defer(() =>
-        of(2).pipe(delay(0))
+        of(2, asapScheduler)
       ).pipe(
         mergeMap(() => defer(() =>
-          of(3).pipe(delay(0))
+          of(3, asapScheduler)
         ))
       ))
     )
@@ -736,10 +736,10 @@ describe('mergeMap', () => {
     setTimeout(() => {
       expect(results).to.deep.equal([3, 'done']);
       done();
-    }, 10);
+    }, 0);
   });
 
-  it('should support nested merges with promises', (done: any) => {
+  it('should support nested merges with promises', (done: MochaDone) => {
 
     // Added as a failing test when investigating:
     // https://github.com/ReactiveX/rxjs/issues/4071
