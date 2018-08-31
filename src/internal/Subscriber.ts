@@ -190,7 +190,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
  * @ignore
  * @extends {Ignored}
  */
-class SafeSubscriber<T> extends Subscriber<T> {
+export class SafeSubscriber<T> extends Subscriber<T> {
 
   private _context: any;
 
@@ -326,5 +326,5 @@ class SafeSubscriber<T> extends Subscriber<T> {
 }
 
 function isTrustedSubscriber(obj: any) {
-  return obj instanceof Subscriber || ('syncErrorThrowable' in obj && obj[rxSubscriberSymbol]);
+  return obj instanceof Subscriber || ('_addParentTeardownLogic' in obj && obj[rxSubscriberSymbol]);
 }
