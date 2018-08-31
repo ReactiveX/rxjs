@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { mergeMap, map } from 'rxjs/operators';
-import { Observable, from, of } from 'rxjs';
+import { asapScheduler, defer, Observable, from, of } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare const type: Function;
@@ -710,6 +710,58 @@ describe('mergeMap', () => {
     });
 
     expect(completed).to.be.true;
+  });
+
+  it('should support nested merges', (done: MochaDone) => {
+
+    // Added as a failing test when investigating:
+    // https://github.com/ReactiveX/rxjs/issues/4071
+
+    const results: any[] = [];
+
+    of(1).pipe(
+      mergeMap(() => defer(() =>
+        of(2, asapScheduler)
+      ).pipe(
+        mergeMap(() => defer(() =>
+          of(3, asapScheduler)
+        ))
+      ))
+    )
+    .subscribe({
+      next(value: any) { results.push(value); },
+      complete() { results.push('done'); }
+    });
+
+    setTimeout(() => {
+      expect(results).to.deep.equal([3, 'done']);
+      done();
+    }, 0);
+  });
+
+  it('should support nested merges with promises', (done: MochaDone) => {
+
+    // Added as a failing test when investigating:
+    // https://github.com/ReactiveX/rxjs/issues/4071
+
+    const results: any[] = [];
+
+    of(1).pipe(
+      mergeMap(() =>
+        from(Promise.resolve(2)).pipe(
+          mergeMap(() => Promise.resolve(3))
+        )
+      )
+    )
+    .subscribe({
+      next(value) { results.push(value); },
+      complete() { results.push('done'); }
+    });
+
+    setTimeout(() => {
+      expect(results).to.deep.equal([3, 'done']);
+      done();
+    }, 0);
   });
 
   type('should support type signatures', () => {
