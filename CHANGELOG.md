@@ -1,3 +1,13 @@
+<a name="6.3.1"></a>
+## [6.3.1](https://github.com/reactivex/rxjs/compare/6.3.0...6.3.1) (2018-08-31)
+
+
+### Bug Fixes
+
+* **mergeMap:** fix nested mergeMaps ([#4072](https://github.com/reactivex/rxjs/issues/4072)) ([0ab701b](https://github.com/reactivex/rxjs/commit/0ab701b)), closes [#4071](https://github.com/reactivex/rxjs/issues/4071)
+
+
+
 <a name="6.3.0"></a>
 # [6.3.0](https://github.com/reactivex/rxjs/compare/6.2.2...6.3.0) (2018-08-30)
 
