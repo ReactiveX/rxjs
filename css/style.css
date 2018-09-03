@@ -123,7 +123,7 @@ li > code {
   width: 100%;
   z-index: 1;
   background-color: white;
-  top: 0;
+  top: 28px;
   border-bottom: solid 1px #E02130;
 }
 .layout-container > header > a{
@@ -140,9 +140,24 @@ li > code {
   vertical-align: top;
 }
 
-.navigation {
+.banner {
+  background: #B7178C;
+  color: #fff;
+  padding: .25em;
   position: fixed;
   top: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.banner > a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.navigation {
+  position: fixed;
+  top: 28px;
   left: 0;
   box-sizing: border-box;
   width: 250px;
