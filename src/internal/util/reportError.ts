@@ -1,4 +1,4 @@
-import { empty } from '../Observer';
+import { Subscriber } from '../Subscriber';
 import { ErrorObserver } from '../types';
 
 /**
@@ -18,7 +18,7 @@ function canReportError(observer: ErrorObserver<any>): boolean {
   const { closed, destination, isStopped } = observer as any;
   if (closed || isStopped) {
     return false;
-  } else if (destination && destination !== empty) {
+  } else if (destination instanceof Subscriber) {
     return canReportError(destination);
   }
   return true;
