@@ -18,6 +18,7 @@ const ROOT = 'dist-compat/';
 const CJS_ROOT = ROOT + 'cjs/compat/';
 const ESM5_ROOT = ROOT + 'esm5/compat/';
 const ESM2015_ROOT = ROOT + 'esm2015/compat/';
+const GLOBAL_ROOT = ROOT + 'global/';
 const TYPE_ROOT = ROOT + 'typings/compat/';
 const PKG_ROOT = ROOT + 'package/';
 const CJS_PKG = PKG_ROOT + '';
@@ -43,5 +44,7 @@ copySources(ESM5_ROOT, ESM5_PKG, true);
 cleanSourceMapRoot(ESM5_PKG, SRC_ROOT_PKG);
 copySources(ESM2015_ROOT, ESM2015_PKG, true);
 cleanSourceMapRoot(ESM2015_PKG, SRC_ROOT_PKG);
+copySources(GLOBAL_ROOT, UMD_PKG, true);
+cleanSourceMapRoot(UMD_PKG, SRC_ROOT_PKG);
 
 fs.copySync('compat/package.json', PKG_ROOT + '/package.json');
