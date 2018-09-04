@@ -3,6 +3,8 @@ import { Observable } from '../Observable';
 import { AsyncSubject } from '../AsyncSubject';
 import { Subscriber } from '../Subscriber';
 import { map } from '../operators/map';
+import { canReportError } from '../util/canReportError';
+import { consoleWarn } from '../util/consoleWarn';
 import { isArray } from '../util/isArray';
 import { isScheduler } from '../util/isScheduler';
 
@@ -204,7 +206,11 @@ export function bindCallback<T>(
           try {
             callbackFunc.apply(context, [...args, handler]);
           } catch (err) {
-            subject.error(err);
+            if (canReportError(subject)) {
+              subject.error(err);
+            } else {
+              consoleWarn(err);
+            }
           }
         }
         return subject.subscribe(subscriber);
