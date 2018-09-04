@@ -8,11 +8,15 @@ import { ErrorObserver } from '../types';
  * @param err the error to report
  */
 export function canReportError(observer: ErrorObserver<any>): boolean {
-  const { closed, destination, isStopped } = observer as any;
-  if (closed || isStopped) {
-    return false;
-  } else if (destination instanceof Subscriber || (destination && destination[rxSubscriberSymbol])) {
-    return canReportError(destination);
+  while (observer) {
+    const { closed, destination, isStopped } = observer as any;
+    if (closed || isStopped) {
+      return false;
+    } else if (destination instanceof Subscriber || (destination && destination[rxSubscriberSymbol])) {
+      observer = destination;
+    } else {
+      observer = null;
+    }
   }
   return true;
 }
