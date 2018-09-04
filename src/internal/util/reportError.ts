@@ -7,11 +7,11 @@ import { ErrorObserver } from '../types';
  * stopped - in which case, an alternative reporting mechanism is used.
  * @param err the error to report
  */
-export function reportError(err: any, observer: ErrorObserver<any>, report?: (err: any) => void): void {
+export function reportError(err: any, observer: ErrorObserver<any>): void {
   if (canReportError(observer)) {
      observer.error(err);
   } else {
-    (report || consoleWarn)(err);
+    consoleWarn(err);
   }
 }
 
