@@ -19,7 +19,7 @@ function canReportError(observer: ErrorObserver<any>): boolean {
   const { closed, destination, isStopped } = observer as any;
   if (closed || isStopped) {
     return false;
-  } else if (destination instanceof Subscriber || destination[rxSubscriberSymbol]) {
+  } else if (destination instanceof Subscriber || (destination && destination[rxSubscriberSymbol])) {
     return canReportError(destination);
   }
   return true;
