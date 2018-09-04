@@ -3,9 +3,10 @@ import { rxSubscriber as rxSubscriberSymbol } from '../symbol/rxSubscriber';
 import { ErrorObserver } from '../types';
 
 /**
- * Reports the error to the ErrorObserver unless the observer is closed or
- * stopped - in which case, an alternative reporting mechanism is used.
- * @param err the error to report
+ * Determines whether the ErrorObserver is closed or stopped or has a
+ * destination that is closed or stopped - in which case errors will
+ * need to be reported via a different mechanism.
+ * @param observer the observer
  */
 export function canReportError(observer: ErrorObserver<any>): boolean {
   while (observer) {
