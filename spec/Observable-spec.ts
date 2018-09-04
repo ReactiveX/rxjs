@@ -901,5 +901,20 @@ describe('Observable.lift', () => {
           ]);
           done();
         });
-    });
+  });
+
+  it('should not swallow internal errors', () => {
+    const consoleStub = sinon.stub(console, 'warn');
+    try {
+      let source = new Observable<number>(observer => observer.next(42));
+      for (let i = 0; i < 10000; ++i) {
+        let base = source;
+        source = new Observable<number>(observer => base.subscribe(observer));
+      }
+      source.subscribe();
+      expect(consoleStub).to.have.property('called', true);
+    } finally {
+      consoleStub.restore();
+    }
+  });
 });
