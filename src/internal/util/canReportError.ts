@@ -7,15 +7,7 @@ import { ErrorObserver } from '../types';
  * stopped - in which case, an alternative reporting mechanism is used.
  * @param err the error to report
  */
-export function reportError(err: any, observer: ErrorObserver<any>): void {
-  if (canReportError(observer)) {
-    observer.error(err);
-  } else {
-    consoleWarn(err);
-  }
-}
-
-function canReportError(observer: ErrorObserver<any>): boolean {
+export function canReportError(observer: ErrorObserver<any>): boolean {
   const { closed, destination, isStopped } = observer as any;
   if (closed || isStopped) {
     return false;
@@ -23,12 +15,4 @@ function canReportError(observer: ErrorObserver<any>): boolean {
     return canReportError(destination);
   }
   return true;
-}
-
-function consoleWarn(err: any): void {
-  if (console.warn) {
-    console.warn(err);
-  } else {
-    console.log(err);
-  }
 }
