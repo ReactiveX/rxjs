@@ -1,3 +1,13 @@
+<a name="6.3.2"></a>
+## [6.3.2](https://github.com/reactivex/rxjs/compare/6.3.1...6.3.2) (2018-09-04)
+
+
+### Bug Fixes
+
+* **node:** will no longer error mixing RxJS 6.3 and 6.2 ([#4078](https://github.com/reactivex/rxjs/issues/4078)) ([69d9ccf](https://github.com/reactivex/rxjs/commit/69d9ccf)), closes [#4077](https://github.com/reactivex/rxjs/issues/4077)
+
+
+
 <a name="6.3.1"></a>
 ## [6.3.1](https://github.com/reactivex/rxjs/compare/6.3.0...6.3.1) (2018-08-31)
 
