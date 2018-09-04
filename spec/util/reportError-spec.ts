@@ -6,7 +6,7 @@ import * as sinon from 'sinon';
 describe('reportError', () => {
   it('should report errors to an observer if possible', () => {
     const error = new Error('kaboom');
-    const subscriber = new Subscriber(noop, e => console.log(e));
+    const subscriber = new Subscriber(noop);
     const errorStub = sinon.stub(subscriber, 'error');
     const reportStub = sinon.stub();
     reportError(error, subscriber, reportStub);
