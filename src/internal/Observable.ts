@@ -2,6 +2,7 @@ import { Operator } from './Operator';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
 import { TeardownLogic, OperatorFunction, PartialObserver, Subscribable } from './types';
+import { reportError } from './util/reportError';
 import { toSubscriber } from './util/toSubscriber';
 import { iif } from './observable/iif';
 import { throwError } from './observable/throwError';
@@ -226,7 +227,7 @@ export class Observable<T> implements Subscribable<T> {
         sink.syncErrorThrown = true;
         sink.syncErrorValue = err;
       }
-      sink.error(err);
+      reportError(err, sink);
     }
   }
 
