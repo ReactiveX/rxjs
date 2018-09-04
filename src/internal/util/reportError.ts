@@ -11,7 +11,7 @@ export function reportError(err: any, observer: ErrorObserver<any>, report?: (er
   if (canReportError(observer)) {
      observer.error(err);
   } else {
-    (report || consoleReportError)(err);
+    (report || consoleWarn)(err);
   }
 }
 
@@ -25,7 +25,7 @@ function canReportError(observer: ErrorObserver<any>): boolean {
   return true;
 }
 
-function consoleReportError(err: any): void {
+function consoleWarn(err: any): void {
   if (console.warn) {
     console.warn(err);
   } else {
