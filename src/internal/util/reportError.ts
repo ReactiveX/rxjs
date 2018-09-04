@@ -9,7 +9,7 @@ import { ErrorObserver } from '../types';
  */
 export function reportError(err: any, observer: ErrorObserver<any>): void {
   if (canReportError(observer)) {
-     observer.error(err);
+    observer.error(err);
   } else {
     consoleWarn(err);
   }
