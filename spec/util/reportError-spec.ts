@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import { noop, Subject, Subscriber } from 'rxjs';
+import { noop, Subscriber } from 'rxjs';
+import { empty } from 'rxjs/internal/Observer';
 import { reportError } from 'rxjs/internal/util/reportError';
 import * as sinon from 'sinon';
 
@@ -27,11 +28,10 @@ describe('reportError', () => {
 
   it('should not report errors to a closed observer', () => {
     const error = new Error('kaboom');
-    const subject = new Subject<{}>();
-    subject.unsubscribe();
-    const errorStub = sinon.stub(subject, 'error');
+    const closed = { ...empty };
+    const errorStub = sinon.stub(closed, 'error');
     const reportStub = sinon.stub();
-    reportError(error, subject, reportStub);
+    reportError(error, closed, reportStub);
     expect(errorStub).to.have.property('called', false);
     expect(reportStub).to.have.property('called', true);
   });
