@@ -9,6 +9,14 @@ it('should infer correctly multiple types', () => {
   const o = of(1, 2, 3).pipe(mergeMapTo(of('foo', 4))); // $ExpectType Observable<string | number>
 });
 
+it('should infer correctly with an array', () => {
+  const o = of(1, 2, 3).pipe(mergeMapTo([4, 5, 6])); // $ExpectType Observable<number>
+});
+
+it('should infer correctly with a Promise', () => {
+  const o = of(1, 2, 3).pipe(mergeMapTo(new Promise<string>(() => {}))); // $ExpectType Observable<string>
+});
+
 it('should support a concurrent parameter', () => {
   const o = of(1, 2, 3).pipe(mergeMapTo(of('foo'), 4)); // $ExpectType Observable<string>
 });
@@ -39,6 +47,7 @@ it('should enforce types', () => {
 
 it('should enforce the return type', () => {
   const o = of(1, 2, 3).pipe(mergeMapTo(p => p)); // $ExpectError
+  const p = of(1, 2, 3).pipe(mergeMapTo(4)); // $ExpectError
 });
 
 it('should enforce types of the concurrent parameter', () => {
