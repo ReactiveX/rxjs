@@ -3,7 +3,7 @@ import { noop, Subscriber } from 'rxjs';
 import { empty } from 'rxjs/internal/Observer';
 import { canReportError } from 'rxjs/internal/util/canReportError';
 
-describe('reportError', () => {
+describe('canReportError', () => {
   it('should report errors to an observer if possible', () => {
     const subscriber = new Subscriber(noop);
     expect(canReportError(subscriber)).to.be.true;
