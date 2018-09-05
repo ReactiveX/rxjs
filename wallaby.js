@@ -1,33 +1,36 @@
 module.exports = wallaby => ({
   files: [
-    'src/**/*.ts',
-    { pattern: 'spec/helpers/*.ts', instrument: false }
+    "tsconfig.base.json",
+    "tsconfig.json",
+    "migrations/**/*",
+    "legacy-reexport/**/*.ts",
+    "compat/**/*.ts",
+    "src/**/*.ts",
+    { pattern: "spec/helpers/*.ts", instrument: false, load: true }
   ],
 
-  tests: ['spec/**/*-spec.ts'],
-
-  compilers: {
-    '**/*.ts': wallaby.compilers.typeScript({
-      module: 1,  // commonjs
-      target: 1,  // ES5
-      preserveConstEnums: true,
-    })
-  },
+  tests: ["spec/**/*-spec.ts"],
 
   testFramework: {
-    type: 'mocha',
-    path: 'mocha'
+    type: "mocha",
+    path: "mocha"
   },
 
   env: {
-    type: 'node'
+    type: "node"
   },
 
-  workers: { initial: 1, regular: 1 },
+  workers: { initial: 2, regular: 1 },
 
-  bootstrap: function (w) {
+  setup: function (w) {
+    if (!global._tsconfigPathsRegistered) {
+      const tsConfigPaths = require("tsconfig-paths");
+      tsConfigPaths.register();
+      global._tsconfigPathsRegistered = true;
+    }
+
     // Global test helpers
-    global.mocha = require('mocha');
+    global.mocha = require("mocha");
     global.Suite = global.mocha.Suite;
     global.Test = global.mocha.Test;
 
@@ -38,7 +41,8 @@ module.exports = wallaby => ({
     }
 
     const mocha = wallaby.testFramework;
-    const path = require('path');
-    mocha.ui(path.resolve(w.projectCacheDir, 'spec/helpers/testScheduler-ui'));
+    const path = require("path");
+    require(path.resolve(w.projectCacheDir, "spec/helpers/polyfills"))
+    mocha.ui(path.resolve(w.projectCacheDir, "spec/helpers/testScheduler-ui"));
   }
 });

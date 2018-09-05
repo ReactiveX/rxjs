@@ -4,14 +4,9 @@ import * as Rx from 'rxjs/Rx';
 import { Observer, TeardownLogic } from '../src/internal/types';
 import { cold, expectObservable, expectSubscriptions } from './helpers/marble-testing';
 import { map } from '../src/internal/operators/map';
-import * as HostReportErrorModule from '../src/internal/util/hostReportError';
 import { noop } from '../src/internal/util/noop';
 
-//tslint:disable-next-line
-require('./helpers/test-helper');
-
 declare const asDiagram: any, rxTestScheduler: any;
-
 const Observable = Rx.Observable;
 
 declare const __root__: any;
@@ -26,6 +21,14 @@ function expectFullObserver(val: any) {
 
 /** @test {Observable} */
 describe('Observable', () => {
+  let originalConfigPromise: any;
+  before(() => originalConfigPromise = Rx.config.Promise);
+
+  after(() => {
+    Rx.config.Promise = originalConfigPromise;
+    originalConfigPromise = null;
+  });
+
   it('should be constructed with a subscriber function', (done) => {
     const source = new Observable<number>(function (observer) {
       expectFullObserver(observer);
@@ -40,14 +43,14 @@ describe('Observable', () => {
     new Observable<number>((observer) => {
       throw new Error('this should be handled');
     })
-    .subscribe({
-      error(err) {
-        expect(err).to.exist
-          .and.be.instanceof(Error)
-          .and.have.property('message', 'this should be handled');
-        done();
-      }
-    });
+      .subscribe({
+        error(err) {
+          expect(err).to.exist
+            .and.be.instanceof(Error)
+            .and.have.property('message', 'this should be handled');
+          done();
+        }
+      });
   });
 
   it('should allow empty ctor, which is effectively a never-observable', () => {
@@ -61,9 +64,9 @@ describe('Observable', () => {
       const result = Observable.of(1, 2, 3).forEach(function (x) {
         expect(x).to.equal(expected.shift());
       }, Promise)
-      .then(() => {
-        done();
-      });
+        .then(() => {
+          done();
+        });
 
       expect(result.then).to.be.a('function');
     });
@@ -104,14 +107,14 @@ describe('Observable', () => {
         }
         results.push(x);
       }, Promise)
-      .then(() => {
-        done(new Error('should not be called'));
-      }, (err) => {
-        expect(err).to.be.an('error', 'NO THREES!');
-        expect(results).to.deep.equal([1, 2]);
-      }).then(() => {
-        done();
-      });
+        .then(() => {
+          done(new Error('should not be called'));
+        }, (err) => {
+          expect(err).to.be.an('error', 'NO THREES!');
+          expect(results).to.deep.equal([1, 2]);
+        }).then(() => {
+          done();
+        });
     });
 
     it('should handle a synchronous throw from the next handler', () => {
@@ -266,7 +269,7 @@ describe('Observable', () => {
       });
 
       source.subscribe({
-        error (err) {
+        error(err) {
           /* noop: expected error */
         }
       });
@@ -303,7 +306,7 @@ describe('Observable', () => {
 
       const sub = source.subscribe(() => {
         //noop
-       });
+      });
       expect(sub instanceof Rx.Subscription).to.be.true;
       expect(unsubscribeCalled).to.be.false;
       expect(sub.unsubscribe).to.be.a('function');
@@ -327,14 +330,14 @@ describe('Observable', () => {
           done();
         };
       })
-      .do(() => times += 1)
-      .subscribe(
-        function() {
-          if (times === 2) {
-            subscription.unsubscribe();
+        .do(() => times += 1)
+        .subscribe(
+          function () {
+            if (times === 2) {
+              subscription.unsubscribe();
+            }
           }
-        }
-      );
+        );
 
     });
 
@@ -358,15 +361,15 @@ describe('Observable', () => {
           done();
         };
       })
-      .do(() => times += 1)
-      .subscribe(
-        function() {
-          if (times === 2) {
-            subscription.unsubscribe();
-          }
-        },
-        function() { errorCalled = true; }
-      );
+        .do(() => times += 1)
+        .subscribe(
+          function () {
+            if (times === 2) {
+              subscription.unsubscribe();
+            }
+          },
+          function () { errorCalled = true; }
+        );
     });
 
     it('should ignore complete messages after unsubscription', (done) => {
@@ -389,62 +392,62 @@ describe('Observable', () => {
           done();
         };
       })
-      .do(() => times += 1)
-      .subscribe(
-        function() {
-          if (times === 2) {
-            subscription.unsubscribe();
-          }
-        },
-        null,
-        function() { completeCalled = true; }
-      );
+        .do(() => times += 1)
+        .subscribe(
+          function () {
+            if (times === 2) {
+              subscription.unsubscribe();
+            }
+          },
+          null,
+          function () { completeCalled = true; }
+        );
     });
 
     describe('when called with an anonymous observer', () => {
       it('should accept an anonymous observer with just a next function and call the next function in the context' +
         ' of the anonymous observer', (done) => {
-        //intentionally not using lambda to avoid typescript's this context capture
-        const o = {
-          myValue: 'foo',
-          next(x: any) {
-            expect(this.myValue).to.equal('foo');
-            expect(x).to.equal(1);
-            done();
-          }
-        };
+          //intentionally not using lambda to avoid typescript's this context capture
+          const o = {
+            myValue: 'foo',
+            next(x: any) {
+              expect(this.myValue).to.equal('foo');
+              expect(x).to.equal(1);
+              done();
+            }
+          };
 
-        Observable.of(1).subscribe(o);
-      });
+          Observable.of(1).subscribe(o);
+        });
 
       it('should accept an anonymous observer with just an error function and call the error function in the context' +
         ' of the anonymous observer', (done) => {
-        //intentionally not using lambda to avoid typescript's this context capture
-        const o = {
-          myValue: 'foo',
-          error(err: any) {
-            expect(this.myValue).to.equal('foo');
-            expect(err).to.equal('bad');
-            done();
-          }
-        };
+          //intentionally not using lambda to avoid typescript's this context capture
+          const o = {
+            myValue: 'foo',
+            error(err: any) {
+              expect(this.myValue).to.equal('foo');
+              expect(err).to.equal('bad');
+              done();
+            }
+          };
 
-        Observable.throwError('bad').subscribe(o);
-      });
+          Observable.throwError('bad').subscribe(o);
+        });
 
       it('should accept an anonymous observer with just a complete function and call the complete function in the' +
         ' context of the anonymous observer', (done) => {
-        //intentionally not using lambda to avoid typescript's this context capture
-         const o = {
-          myValue: 'foo',
-          complete: function complete() {
-            expect(this.myValue).to.equal('foo');
-            done();
-          }
-        };
+          //intentionally not using lambda to avoid typescript's this context capture
+          const o = {
+            myValue: 'foo',
+            complete: function complete() {
+              expect(this.myValue).to.equal('foo');
+              done();
+            }
+          };
 
-        Observable.empty().subscribe(o);
-      });
+          Observable.empty().subscribe(o);
+        });
 
       it('should accept an anonymous observer with no functions at all', () => {
         expect(() => {
@@ -467,14 +470,14 @@ describe('Observable', () => {
             done();
           };
         })
-        .do(() => times += 1)
-        .subscribe({
-          next() {
-            if (times === 2) {
-              subscription.unsubscribe();
+          .do(() => times += 1)
+          .subscribe({
+            next() {
+              if (times === 2) {
+                subscription.unsubscribe();
+              }
             }
-          }
-        });
+          });
       });
 
       it('should ignore error messages after unsubscription', (done) => {
@@ -496,15 +499,15 @@ describe('Observable', () => {
             done();
           };
         })
-        .do(() => times += 1)
-        .subscribe({
-          next() {
-            if (times === 2) {
-              subscription.unsubscribe();
-            }
-          },
-          error() { errorCalled = true; }
-        });
+          .do(() => times += 1)
+          .subscribe({
+            next() {
+              if (times === 2) {
+                subscription.unsubscribe();
+              }
+            },
+            error() { errorCalled = true; }
+          });
       });
 
       it('should ignore complete messages after unsubscription', (done) => {
@@ -527,15 +530,15 @@ describe('Observable', () => {
             done();
           };
         })
-        .do(() => times += 1)
-        .subscribe({
-          next() {
-            if (times === 2) {
-              subscription.unsubscribe();
-            }
-          },
-          complete() { completeCalled = true; }
-        });
+          .do(() => times += 1)
+          .subscribe({
+            next() {
+              if (times === 2) {
+                subscription.unsubscribe();
+              }
+            },
+            complete() { completeCalled = true; }
+          });
 
       });
     });
@@ -634,16 +637,16 @@ describe('Observable', () => {
 /** @test {Observable} */
 describe('Observable.create', () => {
   asDiagram('create(obs => { obs.next(1); })')
-  ('should create a cold observable that emits just 1', () => {
-    const e1 = Observable.create((obs: Observer<number>) => { obs.next(1); });
-    const expected = 'x';
-    expectObservable(e1).toBe(expected, {x: 1});
-  });
+    ('should create a cold observable that emits just 1', () => {
+      const e1 = Observable.create((obs: Observer<number>) => { obs.next(1); });
+      const expected = 'x';
+      expectObservable(e1).toBe(expected, { x: 1 });
+    });
 
   it('should create an Observable', () => {
     const result = Observable.create(() => {
       //noop
-     });
+    });
     expect(result instanceof Observable).to.be.true;
   });
 
@@ -666,14 +669,14 @@ describe('Observable.create', () => {
     Observable.create((observer: Observer<any>) => {
       throw new Error('this should be handled');
     })
-    .subscribe({
-      error(err: Error) {
-        expect(err).to.exist
-          .and.be.instanceof(Error)
-          .and.have.property('message', 'this should be handled');
-        done();
-      }
-    });
+      .subscribe({
+        error(err: Error) {
+          expect(err).to.exist
+            .and.be.instanceof(Error)
+            .and.have.property('message', 'this should be handled');
+          done();
+        }
+      });
   });
 });
 
@@ -683,7 +686,7 @@ describe('Observable.lift', () => {
   class MyCustomObservable<T> extends Rx.Observable<T> {
     static from<T>(source: any) {
       const observable = new MyCustomObservable<T>();
-      observable.source = <Rx.Observable<T>> source;
+      observable.source = <Rx.Observable<T>>source;
       return observable;
     }
     lift<R>(operator: Rx.Operator<T, R>): Rx.Observable<R> {
@@ -723,9 +726,9 @@ describe('Observable.lift', () => {
       observer.next(3);
       observer.complete();
     })
-    .multicast(() => new Rx.Subject<number>())
-    .refCount()
-    .map((x) => { return 10 * x; });
+      .multicast(() => new Rx.Subject<number>())
+      .refCount()
+      .map((x) => { return 10 * x; });
 
     expect(result instanceof MyCustomObservable).to.be.true;
 
@@ -748,7 +751,7 @@ describe('Observable.lift', () => {
       observer.next(3);
       observer.complete();
     })
-    .multicast(() => new Rx.Subject<number>(), (shared) => shared.map((x) => { return 10 * x; }));
+      .multicast(() => new Rx.Subject<number>(), (shared) => shared.map((x) => { return 10 * x; }));
 
     expect(result instanceof MyCustomObservable).to.be.true;
 
@@ -765,8 +768,8 @@ describe('Observable.lift', () => {
   });
 
   it('should compose through combineLatest', () => {
-    const e1 =   cold('-a--b-----c-d-e-|');
-    const e2 =   cold('--1--2-3-4---|   ');
+    const e1 = cold('-a--b-----c-d-e-|');
+    const e2 = cold('--1--2-3-4---|   ');
     const expected = '--A-BC-D-EF-G-H-|';
 
     const result = MyCustomObservable.from(e1).combineLatest(e2, (a, b) => String(a) + String(b));
@@ -779,9 +782,9 @@ describe('Observable.lift', () => {
   });
 
   it('should compose through concat', () => {
-    const e1 =   cold('--a--b-|');
-    const e2 =   cold(       '--x---y--|');
-    const expected =  '--a--b---x---y--|';
+    const e1 = cold('--a--b-|');
+    const e2 = cold('--x---y--|');
+    const expected = '--a--b---x---y--|';
 
     const result = MyCustomObservable.from(e1).concat(e2, rxTestScheduler);
 
@@ -791,9 +794,9 @@ describe('Observable.lift', () => {
   });
 
   it('should compose through merge', () => {
-    const e1 =   cold('-a--b-| ');
-    const e2 =   cold('--x--y-|');
-    const expected =  '-ax-by-|';
+    const e1 = cold('-a--b-| ');
+    const e2 = cold('--x--y-|');
+    const expected = '-ax-by-|';
 
     const result = MyCustomObservable.from(e1).merge(e2, rxTestScheduler);
 
@@ -803,10 +806,10 @@ describe('Observable.lift', () => {
   });
 
   it('should compose through race', () => {
-    const e1 =  cold('---a-----b-----c----|');
-    const e1subs =   '^                   !';
-    const e2 =  cold('------x-----y-----z----|');
-    const e2subs =   '^  !';
+    const e1 = cold('---a-----b-----c----|');
+    const e1subs = '^                   !';
+    const e2 = cold('------x-----y-----z----|');
+    const e2subs = '^  !';
     const expected = '---a-----b-----c----|';
 
     const result = MyCustomObservable.from(e1).race(e2);
@@ -819,8 +822,8 @@ describe('Observable.lift', () => {
   });
 
   it('should compose through zip', () => {
-    const e1 =   cold('-a--b-----c-d-e-|');
-    const e2 =   cold('--1--2-3-4---|   ');
+    const e1 = cold('-a--b-----c-d-e-|');
+    const e2 = cold('--1--2-3-4---|   ');
     const expected = ('--A--B----C-D|   ');
 
     const result = MyCustomObservable.from(e1).zip(e2, (a, b) => String(a) + String(b));
@@ -833,70 +836,70 @@ describe('Observable.lift', () => {
   });
 
   it('should allow injecting behaviors into all subscribers in an operator ' +
-  'chain when overridden', (done) => {
-    // The custom Subscriber
-    const log: Array<string> = [];
+    'chain when overridden', (done) => {
+      // The custom Subscriber
+      const log: Array<string> = [];
 
-    class LogSubscriber<T> extends Rx.Subscriber<T> {
-      next(value?: T): void {
-        log.push('next ' + value);
-        if (!this.isStopped) {
-          this._next(value);
+      class LogSubscriber<T> extends Rx.Subscriber<T> {
+        next(value?: T): void {
+          log.push('next ' + value);
+          if (!this.isStopped) {
+            this._next(value);
+          }
         }
       }
-    }
 
-    // The custom Operator
-    class LogOperator<T, R> implements Rx.Operator<T, R> {
-      constructor(private childOperator: Rx.Operator<T, R>) {
+      // The custom Operator
+      class LogOperator<T, R> implements Rx.Operator<T, R> {
+        constructor(private childOperator: Rx.Operator<T, R>) {
+        }
+
+        call(subscriber: Rx.Subscriber<R>, source: any): TeardownLogic {
+          return this.childOperator.call(new LogSubscriber<R>(subscriber), source);
+        }
       }
 
-      call(subscriber: Rx.Subscriber<R>, source: any): TeardownLogic {
-        return this.childOperator.call(new LogSubscriber<R>(subscriber), source);
+      // The custom Observable
+      class LogObservable<T> extends Observable<T> {
+        lift<R>(operator: Rx.Operator<T, R>): Rx.Observable<R> {
+          const observable = new LogObservable<R>();
+          (<any>observable).source = this;
+          (<any>observable).operator = new LogOperator(operator);
+          return observable;
+        }
       }
-    }
 
-    // The custom Observable
-    class LogObservable<T> extends Observable<T> {
-      lift<R>(operator: Rx.Operator<T, R>): Rx.Observable<R> {
-        const observable = new LogObservable<R>();
-        (<any>observable).source = this;
-        (<any>observable).operator = new LogOperator(operator);
-        return observable;
-      }
-    }
+      // Use the LogObservable
+      const result = new LogObservable<number>((observer) => {
+        observer.next(1);
+        observer.next(2);
+        observer.next(3);
+        observer.complete();
+      })
+        .map((x) => { return 10 * x; })
+        .filter((x) => { return x > 15; })
+        .count();
 
-    // Use the LogObservable
-    const result = new LogObservable<number>((observer) => {
-      observer.next(1);
-      observer.next(2);
-      observer.next(3);
-      observer.complete();
-    })
-    .map((x) => { return 10 * x; })
-    .filter((x) => { return x > 15; })
-    .count();
+      expect(result instanceof LogObservable).to.be.true;
 
-    expect(result instanceof LogObservable).to.be.true;
+      const expected = [2];
 
-    const expected = [2];
-
-    result.subscribe(
-      function (x) {
-        expect(x).to.equal(expected.shift());
-      },
-      (x) => {
-        done(new Error('should not be called'));
-      }, () => {
-        expect(log).to.deep.equal([
-          'next 10', // map
-          'next 20', // map
-          'next 20', // filter
-          'next 30', // map
-          'next 30', // filter
-          'next 2' // count
-        ]);
-        done();
-      });
-  });
+      result.subscribe(
+        function (x) {
+          expect(x).to.equal(expected.shift());
+        },
+        (x) => {
+          done(new Error('should not be called'));
+        }, () => {
+          expect(log).to.deep.equal([
+            'next 10', // map
+            'next 20', // map
+            'next 20', // filter
+            'next 30', // map
+            'next 30', // filter
+            'next 2' // count
+          ]);
+          done();
+        });
+    });
 });

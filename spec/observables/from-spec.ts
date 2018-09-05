@@ -49,7 +49,7 @@ describe('from', () => {
   });
 
   const fakervable = <T>(...values: T[]) => ({
-    [Symbol.observable]: () => ({
+    [observable]: () => ({
       subscribe: (observer: Observer<T>) => {
         for (const value of values) {
           observer.next(value);
@@ -61,7 +61,7 @@ describe('from', () => {
 
   const fakeArrayObservable = <T>(...values: T[]) => {
     let arr = ['bad array!'];
-    arr[Symbol.observable] = () =>  {
+    arr[observable] = () =>  {
       return {
         subscribe: (observer: Observer<T>) => {
           for (const value of values) {
