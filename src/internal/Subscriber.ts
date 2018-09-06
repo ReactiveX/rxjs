@@ -166,7 +166,9 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   /** @deprecated This is an internal implementation detail, do not use. */
   _unsubscribeParentSubscription() {
     if (this._parentSubscription !== null) {
+      ++this._keepAliveCount;
       this._parentSubscription.unsubscribe();
+      --this._keepAliveCount;
     }
   }
 

@@ -36,6 +36,8 @@ export class Subscription implements SubscriptionLike {
   /** @internal */
   protected _parents: Subscription[] = null;
   /** @internal */
+  protected _keepAliveCount: number = 0;
+  /** @internal */
   private _subscriptions: SubscriptionLike[] = null;
 
   /**
@@ -45,7 +47,6 @@ export class Subscription implements SubscriptionLike {
   constructor(unsubscribe?: () => void) {
     if (unsubscribe) {
       (<any> this)._unsubscribe = unsubscribe;
-
     }
   }
 
@@ -59,7 +60,7 @@ export class Subscription implements SubscriptionLike {
     let hasErrors = false;
     let errors: any[];
 
-    if (this.closed) {
+    if (this.closed || this._keepAliveCount > 0) {
       return;
     }
 
