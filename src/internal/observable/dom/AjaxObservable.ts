@@ -411,6 +411,13 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
       }
     }
     xhr.onload = xhrLoad;
+    xhr.onabort = () => {
+      const { subscriber, progressSubscriber } = (<any>xhrLoad);
+      if (progressSubscriber) {
+        progressSubscriber.complete();
+      }
+      subscriber.complete();
+    }
     (<any>xhrLoad).subscriber = this;
     (<any>xhrLoad).progressSubscriber = progressSubscriber;
     (<any>xhrLoad).request = request;
