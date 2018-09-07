@@ -325,6 +325,6 @@ export class SafeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function isTrustedSubscriber(obj: any) {
+export function isTrustedSubscriber(obj: any) {
   return obj instanceof Subscriber || ('_addParentTeardownLogic' in obj && obj[rxSubscriberSymbol]);
 }

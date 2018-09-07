@@ -1,5 +1,4 @@
-import { Subscriber } from '../Subscriber';
-import { rxSubscriber as rxSubscriberSymbol } from '../symbol/rxSubscriber';
+import { isTrustedSubscriber } from '../Subscriber';
 import { ErrorObserver } from '../types';
 
 /**
@@ -13,7 +12,7 @@ export function canReportError(observer: ErrorObserver<any>): boolean {
     const { closed, destination, isStopped } = observer as any;
     if (closed || isStopped) {
       return false;
-    } else if (destination instanceof Subscriber || (destination && destination[rxSubscriberSymbol])) {
+    } else if (destination && isTrustedSubscriber(destination)) {
       observer = destination;
     } else {
       observer = null;
