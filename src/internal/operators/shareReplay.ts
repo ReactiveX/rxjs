@@ -54,7 +54,6 @@ export interface ShareReplayConfig {
  * @owner Observable
  */
 export function shareReplay<T>(config: ShareReplayConfig): MonoTypeOperatorFunction<T>;
-/** @deprecated Use config parameter */
 export function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
 export function shareReplay<T>(
   configOrBufferSize?: ShareReplayConfig | number,
