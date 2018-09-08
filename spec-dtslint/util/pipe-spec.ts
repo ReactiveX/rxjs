@@ -44,6 +44,14 @@ it('should infer for 9 arguments', () => {
   const o = pipe(a('0', '1'), a('1', '2'), a('2', '3'), a('3', '4'), a('4', '5'), a('5', '6'), a('6', '7'), a('7', '8'), a('8', '9')); // $ExpectType UnaryFunction<"0", "9">
 });
 
+it('should infer {} for more than 9 arguments', () => {
+  const o =  pipe(a('0', '1'), a('1', '2'), a('2', '3'), a('3', '4'), a('4', '5'), a('5', '6'), a('6', '7'), a('7', '8'), a('8', '9'), a('9', '10'));  // $ExpectType UnaryFunction<"0", {}>
+});
+
+it('should require a type assertion for more than 9 arguments', () => {
+  const o: UnaryFunction<'0', '10'> = pipe(a('0', '1'), a('1', '2'), a('2', '3'), a('3', '4'), a('4', '5'), a('5', '6'), a('6', '7'), a('7', '8'), a('8', '9'), a('9', '10')); // $ExpectError
+});
+
 it('should enforce types for the 2nd argument', () => {
   const o = pipe(a('0', '1'), a('#', '2')); // $ExpectError
 });
