@@ -7,7 +7,6 @@ import { ShareReplayConfig } from 'rxjs/internal-compatibility';
  * @owner Observable
  */
 export function shareReplay<T>(this: Observable<T>, config: ShareReplayConfig): Observable<T>;
-/** @deprecated Use config parameter */
 export function shareReplay<T>(this: Observable<T>, bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): Observable<T>;
 export function shareReplay<T>(this: Observable<T>, configOrBufferSize?: ShareReplayConfig | number, windowTime?: number, scheduler?: SchedulerLike):
   Observable<T> {
