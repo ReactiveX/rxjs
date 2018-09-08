@@ -4,7 +4,6 @@ import { Subscriber } from '../Subscriber';
 import { SchedulerAction, SchedulerLike } from '../types';
 import { map } from '../operators/map';
 import { canReportError } from '../util/canReportError';
-import { consoleWarn } from '../util/consoleWarn';
 import { isScheduler } from '../util/isScheduler';
 import { isArray } from '../util/isArray';
 
@@ -203,7 +202,7 @@ export function bindNodeCallback<T>(
             if (canReportError(subject)) {
               subject.error(err);
             } else {
-              consoleWarn(err);
+              console.warn(err);
             }
           }
         }

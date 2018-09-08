@@ -3,7 +3,6 @@ import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
 import { TeardownLogic, OperatorFunction, PartialObserver, Subscribable } from './types';
 import { canReportError } from './util/canReportError';
-import { consoleWarn } from './util/consoleWarn';
 import { toSubscriber } from './util/toSubscriber';
 import { iif } from './observable/iif';
 import { throwError } from './observable/throwError';
@@ -231,7 +230,7 @@ export class Observable<T> implements Subscribable<T> {
       if (canReportError(sink)) {
         sink.error(err);
       } else {
-        consoleWarn(err);
+        console.warn(err);
       }
     }
   }
