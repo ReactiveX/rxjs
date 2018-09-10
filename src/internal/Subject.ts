@@ -8,12 +8,6 @@ import { SubjectSubscription } from './SubjectSubscription';
 import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscriber';
 
 /**
- * A Subject is a special type of Observable that allows values to be
- * multicasted to many Observables. Subjects are like EventEmitters
- *
- * Every Subject is an Observable and an Observer. You can subscribe to a
- * Subject, and you can call next to feed values as well as error and complete
- *
  * @class SubjectSubscriber<T>
  */
 export class SubjectSubscriber<T> extends Subscriber<T> {
@@ -23,6 +17,12 @@ export class SubjectSubscriber<T> extends Subscriber<T> {
 }
 
 /**
+ * A Subject is a special type of Observable that allows values to be
+ * multicasted to many Observables. Subjects are like EventEmitters.
+ *
+ * Every Subject is an Observable and an Observer. You can subscribe to a
+ * Subject, and you can call next to feed values as well as error and complete.
+ *
  * @class Subject<T>
  */
 export class Subject<T> extends Observable<T> implements SubscriptionLike {
