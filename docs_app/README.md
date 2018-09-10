@@ -26,7 +26,7 @@ Here are the most important tasks you might need to use:
 * `npm run e2e` - run all the e2e tests for the doc-viewer.
 
 * `npm run docs` - generate all the docs from the source files.
-* `npm run docs-watch` - watch the RxJS source and the docs files and run a short-circuited doc-gen for the docs that changed.
+* `npm run docs-watch` - watch the RxJS source and the docs files and run a short-circuited doc-gen for the docs that changed (don't work properly at the moment).
 * `npm run docs-lint` - check that the doc gen code follows our style rules.
 * `npm run docs-test` - run the unit tests for the doc generation code.
 
@@ -44,7 +44,7 @@ Here are the most important tasks you might need to use:
 
 ## Using ServiceWorker locally
 
-Since abb36e3cb, running `npm run start --prod` will no longer set up the ServiceWorker, which
+Running `npm run start --prod` will no longer set up the ServiceWorker, which
 would require manually running `npm run sw-manifest` and `npm run sw-copy` (something that is not possible
 with webpack serving the files from memory).
 
@@ -125,3 +125,8 @@ be regenerated, the app will rebuild and the page will reload.
 
 * If you get a build error complaining about examples or any other odd behavior, be sure to consult
 the [Authors Style Guide](https://angular.io/guide/docs-style-guide).
+
+## Disclaimer
+
+Starting the new documentation, we worked closely together with the Angular team and therefore adapted their way of generating docs. This leads to the effect, that there may be some references to angular (e.g. variable names, file names ...). Don't be confused by this, this shouldn't bother you. Thanks to the Angular Team for their support.  
+Anyway RxJS will always be an independent project, which aims to work closely with other technologies and frameworks!
