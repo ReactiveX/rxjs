@@ -1,8 +1,9 @@
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { shareReplay, mergeMapTo, retry, take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { Observable, interval, Operator, Observer } from 'rxjs';
+import { Observable, interval, Operator, Observer, of } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 declare const rxTestScheduler: TestScheduler;
@@ -174,6 +175,16 @@ describe('shareReplay operator', () => {
 
     rxTestScheduler.flush();
     expect(results).to.deep.equal([0, 1, 2, 4, 5, 6, 7, 8, 9]);
+  });
+
+  it('when no windowTime is given ReplaySubject should be in _infiniteTimeWindow mode', () => {
+    const spy = sinon.spy(rxTestScheduler, 'now');
+
+    of(1)
+      .pipe(shareReplay(1, undefined, rxTestScheduler))
+      .subscribe();
+    spy.restore();
+    expect(spy, 'ReplaySubject should not call scheduler.now() when no windowTime is given').to.be.not.called;
   });
 
   it('should not break lift() composability', (done: MochaDone) => {
