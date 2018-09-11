@@ -234,6 +234,22 @@ describe('ReplaySubject', () => {
       )).toBe(sourceTemplate);
       expectObservable(subscriber1).toBe(expected1);
     });
+
+    it('should only replay bufferSize items when 40 time units ago more were emited', () => {
+      const replaySubject = new ReplaySubject<string>(2, 40, rxTestScheduler);
+      function feedNextIntoSubject(x: string) { replaySubject.next(x); }
+      function feedErrorIntoSubject(err: any) { replaySubject.error(err); }
+      function feedCompleteIntoSubject() { replaySubject.complete(); }
+
+      const sourceTemplate =  '1234     |';
+      const subscriber1 = hot('    (a|)').mergeMapTo(replaySubject);
+      const expected1   =     '    (34) |';
+
+      expectObservable(hot(sourceTemplate).do(
+        feedNextIntoSubject, feedErrorIntoSubject, feedCompleteIntoSubject
+      )).toBe(sourceTemplate);
+      expectObservable(subscriber1).toBe(expected1);
+    });
   });
 
   it('should be an Observer which can be given to Observable.subscribe', () => {
