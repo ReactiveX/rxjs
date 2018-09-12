@@ -280,4 +280,18 @@ describe('bindCallback', () => {
       expect(calls).to.equal(0);
     });
   });
+
+  it('should not swallow post-callback errors', () => {
+    function badFunction(callback: (answer: number) => void): void {
+      callback(42);
+      throw new Error('kaboom');
+    }
+    const consoleStub = sinon.stub(console, 'warn');
+    try {
+      bindCallback(badFunction)().subscribe();
+      expect(consoleStub).to.have.property('called', true);
+    } finally {
+      consoleStub.restore();
+    }
+  });
 });
