@@ -1,8 +1,11 @@
 import { noop } from './noop';
-import { UnaryFunction } from '../types';
+import { UnaryFunction, MonoTypeOperatorFunction } from '../types';
+import { Observable } from '../Observable';
 
 /* tslint:disable:max-line-length */
 export function pipe<T>(): UnaryFunction<T, T>;
+export function pipe<T>(...operators: MonoTypeOperatorFunction<T>[]): <R extends T>(source: Observable<R>) => Observable<R>;
+export function pipe<T>(...operators: UnaryFunction<T, T>[]): <R extends T>(source: R) => R;
 export function pipe<T, A>(op1: UnaryFunction<T, A>): UnaryFunction<T, A>;
 export function pipe<T, A, B>(op1: UnaryFunction<T, A>, op2: UnaryFunction<A, B>): UnaryFunction<T, B>;
 export function pipe<T, A, B, C>(op1: UnaryFunction<T, A>, op2: UnaryFunction<A, B>, op3: UnaryFunction<B, C>): UnaryFunction<T, C>;

@@ -1,4 +1,4 @@
-import { pipe, UnaryFunction } from 'rxjs';
+import { pipe, UnaryFunction, of, Observable } from 'rxjs';
 
 function a<I extends string, O extends string>(input: I, output: O): UnaryFunction<I, O> {
   return i => output;
@@ -74,4 +74,16 @@ it('should enforce types for the 8th argument', () => {
 
 it('should enforce types for the 9th argument', () => {
   const o = pipe(a('0', '1'), a('1', '2'), a('2', '3'), a('3', '4'), a('4', '5'), a('5', '6'), a('6', '7'), a('7', '8'), a('#', '9')); // $ExpectError
+});
+
+it('should return generic OperatorFunction', () => {
+  const customOperator = <T>() => (a: Observable<T>) => a;
+
+  const staticPipe = pipe(customOperator());
+  const o = of('foo').pipe(staticPipe); // $ExpectType Observable<string>
+});
+
+it('should return generic function', () => {
+  const func = pipe((value: string) => value);
+  const value = func("foo"); // $ExpectType "foo"
 });
