@@ -140,7 +140,7 @@ export class MergeMapSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private _innerSub(ish: ObservableInput<R>, value: T, index: number): void {
     const innerSubscriber = new InnerSubscriber(this, undefined, undefined);
-    const destination = this.destination as any as Subscription;
+    const destination = this.destination as Subscription;
     destination.add(innerSubscriber);
     subscribeToResult<T, R>(this, ish, value, index, innerSubscriber);
   }
