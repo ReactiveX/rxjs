@@ -23,8 +23,8 @@ describe('Subscriber', () => {
   it('should accept subscribers as a destination if they meet the proper criteria', () => {
     const fakeSubscriber = {
       [rxSubscriber](this: any) { return this; },
-      _addParentTeardownLogic() { /* noop */ },
-      add() { /* noop */ }
+      add() { /* noop */ },
+      syncErrorThrowable: false
     };
 
     const subscriber = new Subscriber(fakeSubscriber as any);

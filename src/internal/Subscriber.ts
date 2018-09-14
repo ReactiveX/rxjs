@@ -155,11 +155,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
-  _addParentTeardownLogic(parentTeardownLogic: TeardownLogic) {
-    /*noop*/
-  }
-
-  /** @deprecated This is an internal implementation detail, do not use. */
   _unsubscribeAndRecycle(): Subscriber<T> {
     const { _parent, _parents } = this;
     this._parent = null;
@@ -315,5 +310,5 @@ export class SafeSubscriber<T> extends Subscriber<T> {
 }
 
 export function isTrustedSubscriber(obj: any) {
-  return obj instanceof Subscriber || ('_addParentTeardownLogic' in obj && obj[rxSubscriberSymbol]);
+  return obj instanceof Subscriber || ('syncErrorThrowable' in obj && obj[rxSubscriberSymbol]);
 }
