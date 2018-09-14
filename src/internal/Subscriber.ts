@@ -78,7 +78,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
             const trustedSubscriber = destinationOrNext[rxSubscriberSymbol]() as Subscriber<any>;
             this.syncErrorThrowable = trustedSubscriber.syncErrorThrowable;
             this.destination = trustedSubscriber;
-            trustedSubscriber._addParentTeardownLogic(this);
+            trustedSubscriber.add(this);
           } else {
             this.syncErrorThrowable = true;
             this.destination = new SafeSubscriber<T>(this, <PartialObserver<any>> destinationOrNext);
@@ -116,7 +116,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     if (!this.isStopped) {
       this.isStopped = true;
       this._error(err);
-      this._unsubscribeParentSubscription();
     }
   }
 
@@ -130,7 +129,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     if (!this.isStopped) {
       this.isStopped = true;
       this._complete();
-      this._unsubscribeParentSubscription();
     }
   }
 
@@ -158,18 +156,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
 
   /** @deprecated This is an internal implementation detail, do not use. */
   _addParentTeardownLogic(parentTeardownLogic: TeardownLogic) {
-    if (parentTeardownLogic !== this) {
-      this._parentSubscription = this.add(parentTeardownLogic);
-    }
-  }
-
-  /** @deprecated This is an internal implementation detail, do not use. */
-  _unsubscribeParentSubscription() {
-    if (this._parentSubscription !== null) {
-      ++this._keepAliveCount;
-      this._parentSubscription.unsubscribe();
-      --this._keepAliveCount;
-    }
+    /*noop*/
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */

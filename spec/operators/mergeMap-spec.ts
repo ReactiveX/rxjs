@@ -7,7 +7,7 @@ declare const type: Function;
 declare const asDiagram: Function;
 
 /** @test {mergeMap} */
-describe('mergeMap', () => {
+describe.only('mergeMap', () => {
   asDiagram('mergeMap(i => 10*i\u2014\u201410*i\u2014\u201410*i\u2014| )')
   ('should map-and-flatten each item to an Observable', () => {
     const e1 =    hot('--1-----3--5-------|');
