@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { Observable, of, NEVER, queueScheduler, Subject } from 'rxjs';
-import { switchAll } from 'rxjs/operators';
+import { map, switchAll } from 'rxjs/operators';
 
 declare function asDiagram(arg: string): Function;
 declare const type: Function;
@@ -222,9 +222,9 @@ describe('switchAll', () => {
   it('should not leak when child completes before each switch (prevent memory leaks #2355)', () => {
     let iStream: Subject<number>;
     const oStreamControl = new Subject<number>();
-    const oStream = oStreamControl.map(() => {
-      return (iStream = new Subject<number>());
-    });
+    const oStream = oStreamControl.pipe(
+      map(() => (iStream = new Subject<number>()))
+    );
     const switcher = oStream.pipe(switchAll());
     const result: number[] = [];
     let sub = switcher.subscribe((x) => result.push(x));
@@ -242,9 +242,9 @@ describe('switchAll', () => {
 
   it('should not leak if we switch before child completes (prevent memory leaks #2355)', () => {
     const oStreamControl = new Subject<number>();
-    const oStream = oStreamControl.map(() => {
-      return (new Subject<number>());
-    });
+    const oStream = oStreamControl.pipe(
+      map(() => new Subject<number>())
+    );
     const switcher = oStream.pipe(switchAll());
     const result: number[] = [];
     let sub = switcher.subscribe((x) => result.push(x));
