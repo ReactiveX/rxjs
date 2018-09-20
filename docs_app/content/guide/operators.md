@@ -37,7 +37,7 @@ Which outputs:
 
 Notice that a subscribe to `output` will cause the `input` Observable to be subscribed. We call this an "operator subscription chain".
 
-You can also create custom operators by wrapping calls to existing operators. We can reimplement our `multiplyByTen` operator by wrapping the `map` operators which will project our multiplicatoin function.
+You can also create custom operators by wrapping calls to existing operators. We can reimplement our `multiplyByTen` operator by wrapping the `map` operator which will project our multiplication function over values emitted by the source.
 
 ```js
 import { map } from 'rxjs/operators';
@@ -52,6 +52,8 @@ const multiplyByTen = () => map((value) => 10 * value);
 A typical example of a creation operator would be the `interval` function. It takes a number (not an Observable) as input argument, and produces an Observable as output:
 
 ```js
+import { interval } from 'rxjs';
+
 const observable = interval(1000 /* number of milliseconds */);
 ```
 
@@ -74,13 +76,15 @@ To explain how operators work, textual descriptions are often not enough. Many o
 
 Below you can see the anatomy of a marble diagram.
 
-<img src="assets/images/examples/marble-diagram-anatomy.svg">
+<img src="assets/images/guide/marble-diagram-anatomy.svg">
 
 Throughout this documentation site, we extensively use marble diagrams to explain how operators work. They may be really useful in other contexts too, like on a whiteboard or even in our unit tests (as ASCII diagrams).
 
 ## Categories of operators
 
 There are operators for different purposes, and they may be categorized as: creation, transformation, filtering, combination, multicasting, error handling, utility, etc. In the following list you will find all the operators organized in categories.
+
+For a complete overview, see the [references page](/api).
 
 ### Creation Operators
 
