@@ -41,6 +41,7 @@
   "scripts": {
     "precommit": "lint-staged",
     "commitmsg": "validate-commit-msg",
+    "build": "tsc -b ./tsconfig/tsconfig.cjs.json ./tsconfig/compat/tsconfig.cjs.json",
     "build_all": "npm-run-all compat_build_all clean_dist copy_sources build_cjs build_esm5 build_esm2015 build_esm5_for_rollup build_umd build_types build_legacy_reexport build_migrations generate_packages",
     "build_cjs": "npm-run-all clean_dist_cjs compile_dist_cjs",
     "build_esm5": "npm-run-all clean_dist_esm5 compile_dist_esm5",

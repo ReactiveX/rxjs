@@ -1,9 +1,10 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "noEmit": false,
     "baseUrl": "../../compat",
     "sourceRoot": "../../compat",
+    "rootDir": "../../",
     "paths": {
       "rxjs": ["../src/index"],
       "rxjs/*": ["../src/*"],
@@ -15,6 +16,7 @@
     }
   },
   "include": [
-    "../../compat/**/*.ts"
+    "../../compat/**/*.ts",
+    "../../src/**/*"
   ]
 }
