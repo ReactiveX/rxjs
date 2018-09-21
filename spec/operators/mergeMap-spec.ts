@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { mergeMap, map, mapTo } from 'rxjs/operators';
-import { asapScheduler, concat, defer, Observable, from, of, timer } from 'rxjs';
+import { mergeMap, map } from 'rxjs/operators';
+import { asapScheduler, defer, Observable, from, of, timer } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare const type: Function;
@@ -772,18 +772,18 @@ describe('mergeMap', () => {
     const results: (number | string)[] = [];
 
     const wrapped = new Observable<number>(subscriber => {
-        const subscription = timer(0, asapScheduler).pipe(mapTo(42)).subscribe(subscriber);
+        const subscription = timer(0, asapScheduler).subscribe(subscriber);
         return () => subscription.unsubscribe();
     });
     wrapped.pipe(
-      mergeMap(value => concat(of(value), timer(0, asapScheduler).pipe(mapTo(value))))
+      mergeMap(() => timer(0, asapScheduler))
     ).subscribe({
       next(value) { results.push(value); },
       complete() { results.push('done'); }
     });
 
     setTimeout(() => {
-      expect(results).to.deep.equal([42, 42, 'done']);
+      expect(results).to.deep.equal([0, 'done']);
       done();
     }, 0);
   });
