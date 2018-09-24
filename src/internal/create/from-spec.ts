@@ -246,17 +246,20 @@ describe('from', () => {
   });
 
   describe('from(asyncIterable)', () => {
-    let _original: any;
+    const _existingAsyncIterator = Symbol.asyncIterator;
 
     before(() => {
       let counter = 0;
-      _original = Symbol && Symbol.asyncIterator;
-      Symbol = Symbol || function (desc: string ) { return '' + (counter++); } as any;
-      (Symbol as any).asyncIterator = (Symbol as any).asyncIterator || symbolAsyncIterator;
+      if (!_existingAsyncIterator) {
+        Symbol = Symbol || function () { return '' + (counter++); } as any;
+        (Symbol as any).asyncIterator = (Symbol as any).asyncIterator || symbolAsyncIterator;
+      }
     });
 
     after(() => {
-      (Symbol as any).asyncIterator = _original;
+      if (!_existingAsyncIterator) {
+        (Symbol as any).asyncIterator = undefined;
+      }
     });
 
     it('should convert an asyncIterable', (done: MochaDone) => {

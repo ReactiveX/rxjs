@@ -9,7 +9,7 @@ describe('fromScheduled', () => {
   let testScheduler: TestScheduler;
 
   let _symbolObservableOrig: Symbol;
-  let _symbolAsyncIteratorOrig: Symbol;
+  const _existingAsyncIterator = Symbol.asyncIterator;
 
   before(() => {
     let counter = 0;
@@ -17,15 +17,17 @@ describe('fromScheduled', () => {
     Symbol = Symbol || function (desc: string ) { return '' + (counter++); } as any;
     (Symbol as any).observable = (Symbol as any).observable || symbolObservable;
 
-
-    _symbolAsyncIteratorOrig = Symbol && Symbol.asyncIterator;
-    Symbol = Symbol || function (desc: string ) { return '' + (counter++); } as any;
-    (Symbol as any).asyncIterator = (Symbol as any).asyncIterator || symbolAsyncIterator;
+    if (!_existingAsyncIterator) {
+      Symbol = Symbol || function (desc: string ) { return '' + (counter++); } as any;
+      (Symbol as any).asyncIterator = (Symbol as any).asyncIterator || symbolAsyncIterator;
+    }
   });
 
   after(() => {
     (Symbol as any).observable = _symbolObservableOrig;
-    (Symbol as any).asyncIterator = _symbolAsyncIteratorOrig;
+    if (!_existingAsyncIterator) {
+      (Symbol as any).asyncIterator = undefined;
+    }
   });
 
   beforeEach(() => {
