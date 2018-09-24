@@ -56,9 +56,10 @@ describe('pipe', () => {
     const o: Observable<'10'> = of('foo').pipe(a('1'), a('2'), a('3'), a('4'), a('5'), a('6'), a('7'), a('8'), a('9'), a('10')); // $ExpectError
   });
 
-  it('should infer any for a spread of an array of operators', () => {
-    const operators = ['1', '2', '3', '4'].map(n => a(n));
-    const o = of('foo').pipe(...operators); // $ExpectType Observable<any>
+  it('should support an array of operators but require typing', () => {
+    const operators = Array.from({ length: 100 }, n => '' + n).map(a);
+    const o = of('foo').pipe(operators); // $ExpectType Observable<{}>
+    const o2 = of('foo').pipe<string>(operators); // $ExpectType Observable<string>
   });
 
   it('should enforce types for the 1st argument', () => {
@@ -66,7 +67,7 @@ describe('pipe', () => {
   });
 
   it('should enforce types for the 2nd argument', () => {
-    const o = of('foo').pipe(a('1'), a('#', '2')); // $ExpectError
+    const o = of('foo').pipe(a('1'), (source: Observable<number>) => new Observable<string>()); // $ExpectError
   });
 
   it('should enforce types for the 3rd argument', () => {

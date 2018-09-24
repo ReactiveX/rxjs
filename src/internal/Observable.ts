@@ -302,7 +302,7 @@ export class Observable<T> implements Subscribable<T> {
   pipe<A, B, C, D, E, F, G, H>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op7: OperatorFunction<F, G>, op8: OperatorFunction<G, H>): Observable<H>;
   pipe<A, B, C, D, E, F, G, H, I>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op7: OperatorFunction<F, G>, op8: OperatorFunction<G, H>, op9: OperatorFunction<H, I>): Observable<I>;
   pipe<A, B, C, D, E, F, G, H, I>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op7: OperatorFunction<F, G>, op8: OperatorFunction<G, H>, op9: OperatorFunction<H, I>, ...operations: OperatorFunction<any, any>[]): Observable<{}>;
-  pipe(...operators: OperatorFunction<any, any>[]): Observable<any>;
+  pipe<R>(operations: OperatorFunction<any, any>[]): Observable<R>;
   /* tslint:enable:max-line-length */
 
   /**
@@ -324,12 +324,17 @@ export class Observable<T> implements Subscribable<T> {
    *   .subscribe(x => console.log(x))
    * ```
    */
-  pipe(...operations: OperatorFunction<any, any>[]): Observable<any> {
-    if (operations.length === 0) {
+  pipe(...args: any[]): Observable<any> {
+    if (args.length === 0) {
       return this as any;
     }
 
-    return pipeFromArray(operations)(this);
+    const first = args[0];
+    if (Array.isArray(first)) {
+      return pipeFromArray(first)(this) as Observable<any>;
+    }
+
+    return pipeFromArray(args)(this) as Observable<any>;
   }
 
   /* tslint:disable:max-line-length */
