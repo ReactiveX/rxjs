@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { mergeMap, map } from 'rxjs/operators';
-import { asapScheduler, defer, Observable, from, of } from 'rxjs';
+import { asapScheduler, defer, Observable, from, of, timer } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare const type: Function;
@@ -717,7 +717,7 @@ describe('mergeMap', () => {
     // Added as a failing test when investigating:
     // https://github.com/ReactiveX/rxjs/issues/4071
 
-    const results: any[] = [];
+    const results: (number | string)[] = [];
 
     of(1).pipe(
       mergeMap(() => defer(() =>
@@ -744,7 +744,7 @@ describe('mergeMap', () => {
     // Added as a failing test when investigating:
     // https://github.com/ReactiveX/rxjs/issues/4071
 
-    const results: any[] = [];
+    const results: (number | string)[] = [];
 
     of(1).pipe(
       mergeMap(() =>
@@ -760,6 +760,30 @@ describe('mergeMap', () => {
 
     setTimeout(() => {
       expect(results).to.deep.equal([3, 'done']);
+      done();
+    }, 0);
+  });
+
+  it('should support wrapped sources', (done: MochaDone) => {
+
+    // Added as a failing test when investigating:
+    // https://github.com/ReactiveX/rxjs/issues/4095
+
+    const results: (number | string)[] = [];
+
+    const wrapped = new Observable<number>(subscriber => {
+        const subscription = timer(0, asapScheduler).subscribe(subscriber);
+        return () => subscription.unsubscribe();
+    });
+    wrapped.pipe(
+      mergeMap(() => timer(0, asapScheduler))
+    ).subscribe({
+      next(value) { results.push(value); },
+      complete() { results.push('done'); }
+    });
+
+    setTimeout(() => {
+      expect(results).to.deep.equal([0, 'done']);
       done();
     }, 0);
   });

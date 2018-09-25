@@ -45,7 +45,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   /** @internal */ syncErrorThrowable: boolean = false;
 
   protected isStopped: boolean = false;
-  protected destination: PartialObserver<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
+  protected destination: PartialObserver<any> | Subscriber<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
 
   private _parentSubscription: Subscription | null = null;
 
@@ -78,7 +78,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
             const trustedSubscriber = destinationOrNext[rxSubscriberSymbol]() as Subscriber<any>;
             this.syncErrorThrowable = trustedSubscriber.syncErrorThrowable;
             this.destination = trustedSubscriber;
-            trustedSubscriber._addParentTeardownLogic(this);
+            trustedSubscriber.add(this);
           } else {
             this.syncErrorThrowable = true;
             this.destination = new SafeSubscriber<T>(this, <PartialObserver<any>> destinationOrNext);
@@ -116,7 +116,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     if (!this.isStopped) {
       this.isStopped = true;
       this._error(err);
-      this._unsubscribeParentSubscription();
     }
   }
 
@@ -130,7 +129,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     if (!this.isStopped) {
       this.isStopped = true;
       this._complete();
-      this._unsubscribeParentSubscription();
     }
   }
 
@@ -154,20 +152,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   protected _complete(): void {
     this.destination.complete();
     this.unsubscribe();
-  }
-
-  /** @deprecated This is an internal implementation detail, do not use. */
-  _addParentTeardownLogic(parentTeardownLogic: TeardownLogic) {
-    if (parentTeardownLogic !== this) {
-      this._parentSubscription = this.add(parentTeardownLogic);
-    }
-  }
-
-  /** @deprecated This is an internal implementation detail, do not use. */
-  _unsubscribeParentSubscription() {
-    if (this._parentSubscription !== null) {
-      this._parentSubscription.unsubscribe();
-    }
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
@@ -326,5 +310,5 @@ export class SafeSubscriber<T> extends Subscriber<T> {
 }
 
 export function isTrustedSubscriber(obj: any) {
-  return obj instanceof Subscriber || ('_addParentTeardownLogic' in obj && obj[rxSubscriberSymbol]);
+  return obj instanceof Subscriber || ('syncErrorThrowable' in obj && obj[rxSubscriberSymbol]);
 }

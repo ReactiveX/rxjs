@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { Observable, of, NEVER, queueScheduler, Subject } from 'rxjs';
-import { switchAll } from 'rxjs/operators';
+import { map, switchAll } from 'rxjs/operators';
 
 declare function asDiagram(arg: string): Function;
 declare const type: Function;
@@ -222,9 +222,9 @@ describe('switchAll', () => {
   it('should not leak when child completes before each switch (prevent memory leaks #2355)', () => {
     let iStream: Subject<number>;
     const oStreamControl = new Subject<number>();
-    const oStream = oStreamControl.map(() => {
-      return (iStream = new Subject<number>());
-    });
+    const oStream = oStreamControl.pipe(
+      map(() => (iStream = new Subject<number>()))
+    );
     const switcher = oStream.pipe(switchAll());
     const result: number[] = [];
     let sub = switcher.subscribe((x) => result.push(x));
@@ -242,9 +242,9 @@ describe('switchAll', () => {
 
   it('should not leak if we switch before child completes (prevent memory leaks #2355)', () => {
     const oStreamControl = new Subject<number>();
-    const oStream = oStreamControl.map(() => {
-      return (new Subject<number>());
-    });
+    const oStream = oStreamControl.pipe(
+      map(() => new Subject<number>())
+    );
     const switcher = oStream.pipe(switchAll());
     const result: number[] = [];
     let sub = switcher.subscribe((x) => result.push(x));
@@ -252,9 +252,14 @@ describe('switchAll', () => {
     [0, 1, 2, 3, 4].forEach((n) => {
       oStreamControl.next(n); // creates inner
     });
-    // Expect two children of switch(): The oStream and the first inner
+    // Expect one child of switch(): The oStream
     expect(
       (sub as any)._subscriptions[0]._subscriptions.length
+    ).to.equal(1);
+    // Expect two children of subscribe(): The destination and the first inner
+    // See #4106 - inner subscriptions are now added to destinations
+    expect(
+      (sub as any)._subscriptions.length
     ).to.equal(2);
     sub.unsubscribe();
   });
