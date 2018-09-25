@@ -18,7 +18,3 @@ it('should not accept empty observer', () => {
 it('should enforce type for next observer function', () => {
   const a = of(1, 2, 3).pipe(tap({ next: (x: string) => { })); // $ExpectError
 });
-
-it('should accept any type for error observer function', () => {
-  const a = of(1, 2, 3).pipe(tap({ error: (x: any) => { } })); // $ExpectType Observable<number>
-});
