@@ -35,11 +35,10 @@ describe('zipAll operator', () => {
   it('should take all observables from the source and zip them', (done) => {
     const expected = ['a1', 'b2', 'c3'];
     let i = 0;
-    of(
+    const source = of(
       of('a', 'b', 'c'),
       of(1, 2, 3)
-    )
-    .pipe(zipAll((a, b) => String(a) + String(b)))
+    ).pipe(zipAll((a: string, b: number) => a + b))
     .subscribe((x) => {
       expect(x).to.equal(expected[i++]);
     }, null, done);
@@ -378,7 +377,7 @@ describe('zipAll operator', () => {
       of('a', 'b', 'c'),
       of(1, 2)
     )
-    .pipe(zipAll((a, b) => String(a) + String(b)))
+    .pipe(zipAll((a: string, b: number) => a + b))
     .subscribe((x) => {
       expect(x).to.equal(expected[i++]);
     }, null, done);
