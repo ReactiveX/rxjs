@@ -33,8 +33,8 @@ timestamp.
 
 
 ## Operators TODO
-- [ ] audit (g3)
-- [ ] auditTime (g3)
+- [x] audit (g3)
+- [x] auditTime (g3)
 - [ ] buffer (g3)
 - [ ] bufferCount (g3)
 - [ ] bufferTime (g3)
@@ -137,3 +137,12 @@ timestamp.
 - [ ] withLatestFrom (g3)
 - [ ] zip (g3)
 - [ ] zipAll
+
+
+### Creation Methods
+
+TODO: Still need to research all of these and port tests.
+
+- [ ] interval (TODO: still need tests)
+- [x] timer
+- [ ] from (TODO: port tests)

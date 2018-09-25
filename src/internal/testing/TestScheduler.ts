@@ -87,6 +87,7 @@ const FRAME_TIME_FACTOR = 1;
 export interface RunHelpers {
   cold<T = string>(marbles: string, values?: { [marble: string]: T }, error?: any): TestObservable<T>;
   hot<T = string>(marbles: string, values?: { [marble: string]: T }, error?: any): HotObservable<T>;
+  time(marbles: string): number;
   flush(): void;
   expectObservable(observable: Observable<any>, unsubscriptionMarbles?: string): ({ toBe: observableToBeFn });
   expectSubscriptionsTo(observable: TestObservable<any>): ({ toBe: subscriptionLogsToBeFn });
@@ -265,6 +266,7 @@ proto.run = function<T>(callback: (helpers: RunHelpers) => T): T {
     flush: this.flush.bind(this),
     expectObservable: this.expectObservable.bind(this),
     expectSubscriptionsTo: this.expectSubscriptionsTo.bind(this),
+    time: this.createTime.bind(this),
   };
   try {
     const ret = callback(helpers);

@@ -24,6 +24,7 @@ export { publish } from './internal/create/publish';
 export { publishReplay } from './internal/create/publishReplay';
 export { race } from './internal/create/race';
 export { throwError } from './internal/create/throwError';
+export { timer } from './internal/create/timer';
 export { zip } from './internal/create/zip';
 
 export { identity } from './internal/util/identity';

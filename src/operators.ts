@@ -1,5 +1,6 @@
 // ################ CORE OPERATORS #################`
 export { audit } from 'rxjs/internal/operators/audit';
+export { auditTime } from 'rxjs/internal/operators/derived/auditTime';
 export { catchError } from 'rxjs/internal/operators/catchError';
 export { defaultIfEmpty } from 'rxjs/internal/operators/defaultIfEmpty';
 export { dematerialize } from 'rxjs/internal/operators/dematerialize';
