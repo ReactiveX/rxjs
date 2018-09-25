@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import { SafeSubscriber } from 'rxjs/internal/Subscriber';
 import { Subscriber } from 'rxjs';
-import { rxSubscriber } from 'rxjs/internal/symbol/rxSubscriber';
 
 /** @test {Subscriber} */
 describe('Subscriber', () => {
@@ -18,17 +17,6 @@ describe('Subscriber', () => {
     sub.next();
 
     expect(times).to.equal(2);
-  });
-
-  it('should accept subscribers as a destination if they meet the proper criteria', () => {
-    const fakeSubscriber = {
-      [rxSubscriber](this: any) { return this; },
-      add() { /* noop */ },
-      syncErrorThrowable: false
-    };
-
-    const subscriber = new Subscriber(fakeSubscriber as any);
-    expect((subscriber as any).destination).to.equal(fakeSubscriber);
   });
 
   it('should wrap unsafe observers in a safe subscriber', () => {
