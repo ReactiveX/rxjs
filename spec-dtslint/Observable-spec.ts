@@ -1,6 +1,22 @@
 import { Observable, of, OperatorFunction } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 
+// The `a` (for argument) function is used to keep the tests uncluttered.
+// It returns an `OperatorFunction` with the specified literal type parameters.
+// That is, `a('0', '1')` returns `OperatorFunction<'0', '1'>`.
+// That means that the `a` function can be used to create consecutive
+// arguments that are either compatible or incompatible.
+//
+// For example:
+// `a('0', '1'), a('1', '2') // OK
+// `a('0', '1'), a('#', '2') // Error '1' is not compatible with '#'
+//
+// If `a` is passed only one argument, that argument is used for the output
+// type parameter and the input type parameters is inferred.
+//
+// For example:
+// of('foo').pipe(a('1')/* OperatorFunction<'foo', '1'> */);
+
 function a<I extends string, O extends string>(input: I, output: O): OperatorFunction<I, O>;
 function a<I, O extends string>(output: O): OperatorFunction<I, O>;
 function a<I, O extends string>(inputOrOutput: I | O, output?: O): OperatorFunction<I, O> {
