@@ -8,8 +8,8 @@ import { mapTo } from 'rxjs/operators';
 // arguments that are either compatible or incompatible.
 //
 // For example:
-// `a('0', '1'), a('1', '2') // OK
-// `a('0', '1'), a('#', '2') // Error '1' is not compatible with '#'
+// a('0', '1'), a('1', '2') // OK
+// a('0', '1'), a('#', '2') // Error '1' is not compatible with '#'
 //
 // If `a` is passed only one argument, that argument is used for the output
 // type parameter and the input type parameters is inferred.

@@ -7,8 +7,8 @@ import { pipe, UnaryFunction, of, Observable } from 'rxjs';
 // arguments that are either compatible or incompatible.
 //
 // For example:
-// `a('0', '1'), a('1', '2') // OK
-// `a('0', '1'), a('#', '2') // Error '1' is not compatible with '#'
+// a('0', '1'), a('1', '2') // OK
+// a('0', '1'), a('#', '2') // Error '1' is not compatible with '#'
 
 function a<I extends string, O extends string>(input: I, output: O): UnaryFunction<I, O> {
   return i => output;
