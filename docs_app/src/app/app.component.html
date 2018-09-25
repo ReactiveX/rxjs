@@ -38,7 +38,7 @@
 
 <aio-search-results #searchResultsView *ngIf="showSearchResults" [searchResults]="searchResults | async" (resultSelected)="hideSearchResults()"></aio-search-results>
 
-<mat-sidenav-container class="sidenav-container" [class.starting]="isStarting" [class.has-floating-toc]="hasFloatingToc" role="main">
+<mat-sidenav-container class="sidenav-container" [class.starting]="isStarting" [class.has-floating-toc]="hasFloatingToc">
 
   <mat-sidenav [ngClass]="{'collapsed': !isSideBySide}" #sidenav class="sidenav" [mode]="mode" [opened]="isOpened" (openedChange)="updateHostClasses()">
     <aio-nav-menu *ngIf="!isSideBySide" [nodes]="topMenuNarrowNodes" [currentNode]="currentNodes?.TopBarNarrow" [isWide]="false"></aio-nav-menu>
@@ -49,7 +49,7 @@
     </div> -->
   </mat-sidenav>
 
-  <section class="sidenav-content" [id]="pageId" role="content">
+  <section class="sidenav-content" [id]="pageId" role="main">
     <aio-mode-banner [mode]="deployment.mode" [version]="versionInfo"></aio-mode-banner>
     <aio-doc-viewer [class.no-animations]="isStarting"
         [doc]="currentDocument"
