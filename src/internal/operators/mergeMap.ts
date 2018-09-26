@@ -57,17 +57,16 @@ export function mergeMap<T, R>(
 
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>) => {
       switch (t) {
-        case FOType.SUBSCRIBE:
-          subs = v;
-          break;
         case FOType.NEXT:
           let outerIndex = counter++;
           buffer.push({ outerValue: v, outerIndex });
           startNextInner();
           break;
         case FOType.ERROR:
-          dest(FOType.ERROR, v, subs);
-          subs.unsubscribe();
+          if (!subs.closed) {
+            dest(FOType.ERROR, v, subs);
+            subs.unsubscribe();
+          }
           break;
         case FOType.COMPLETE:
           outerComplete = true;

@@ -18,11 +18,12 @@ describe('Observable.prototype.buffer', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
       const a =    hot('-a-b-c-d-e-f-g-h-i-|');
       const b =    hot('-----B-----B-----B-|');
-      const expected = '-----x-----y-----z-|';
+      const expected = '-----x-----y-----z-(a|)';
       const expectedValues = {
         x: ['a', 'b', 'c'],
         y: ['d', 'e', 'f'],
-        z: ['g', 'h', 'i']
+        z: ['g', 'h', 'i'],
+        a: [] as string[],
       };
       expectObservable(a.pipe(buffer(b))).toBe(expected, expectedValues);
     });
@@ -32,8 +33,8 @@ describe('Observable.prototype.buffer', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
       const a = EMPTY;
       const b = EMPTY;
-      const expected = '|';
-      expectObservable(a.pipe(buffer(b))).toBe(expected);
+      const expected = '(x|)';
+      expectObservable(a.pipe(buffer(b))).toBe(expected, { x: [] });
     });
   });
 
@@ -41,8 +42,8 @@ describe('Observable.prototype.buffer', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
       const a = EMPTY;
       const b = hot('-----a-----');
-      const expected = '|';
-      expectObservable(a.pipe(buffer(b))).toBe(expected);
+      const expected = '(x|)';
+      expectObservable(a.pipe(buffer(b))).toBe(expected, { x: [] });
     })
   });
 
@@ -50,8 +51,8 @@ describe('Observable.prototype.buffer', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
       const a = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
       const b = EMPTY;
-      const expected = '|';
-      expectObservable(a.pipe(buffer(b))).toBe(expected);
+      const expected = '(x|)';
+      expectObservable(a.pipe(buffer(b))).toBe(expected, { x: [] });
     });
   });
 
@@ -68,8 +69,8 @@ describe('Observable.prototype.buffer', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
       const a = NEVER;
       const b = EMPTY;
-      const expected = '|';
-      expectObservable(a.pipe(buffer(b))).toBe(expected);
+      const expected = '(x|)';
+      expectObservable(a.pipe(buffer(b))).toBe(expected, { x: [] });
     });
   });
 
@@ -77,8 +78,8 @@ describe('Observable.prototype.buffer', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
       const a = EMPTY;
       const b = NEVER;
-      const expected = '|';
-      expectObservable(a.pipe(buffer(b))).toBe(expected);
+      const expected = '(x|)';
+      expectObservable(a.pipe(buffer(b))).toBe(expected, { x: [] });
     });
   });
 
@@ -123,14 +124,15 @@ describe('Observable.prototype.buffer', () => {
       // Buffer Boundaries Simple (RxJS 4)
       const a = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
       const b = hot('--------^--a-------b---cd---------e---f---|');
-      const expected =      '---a-------b---cd---------e---f-|';
+      const expected =      '---a-------b---cd---------e---f-(x|)';
       const expectedValues = {
         a: ['3'],
         b: ['4', '5'],
         c: ['6'],
         d: [] as string[],
         e: ['7', '8', '9'],
-        f: ['0']
+        f: ['0'],
+        x: [] as string[],
       };
       expectObservable(a.pipe(buffer(b))).toBe(expected, expectedValues);
     });
@@ -142,12 +144,13 @@ describe('Observable.prototype.buffer', () => {
       const a = hot('--1--2--^--3--4--5---6----7--8--9---0---|');
       const subs =          '^                !               ';
       const b = hot('--------^--a-------b---cd|               ');
-      const expected =      '---a-------b---cd|               ';
+      const expected =      '---a-------b---cd(x|)               ';
       const expectedValues = {
         a: ['3'],
         b: ['4', '5'],
         c: ['6'],
-        d: [] as string[]
+        d: [] as string[],
+        x: [] as string[],
       };
       expectObservable(a.pipe(buffer(b))).toBe(expected, expectedValues);
       expectSubscriptionsTo(a).toBe(subs);

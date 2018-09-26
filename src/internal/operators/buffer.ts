@@ -1,8 +1,9 @@
 import { Observable } from '../Observable';
-import { Operation, Sink, FOType, SinkArg } from '../types';
+import { Operation } from '../types';
 import { pipe } from '../util/pipe';
-import { lift } from 'rxjs/internal/util/lift';
-import { Subscription } from '../Subscription';
+import { window } from './window';
+import { mergeMap } from './mergeMap';
+import { toArray } from './derived/toArray';
 
 /**
  * Buffers the source Observable values until `closingNotifier` emits.
@@ -42,31 +43,8 @@ import { Subscription } from '../Subscription';
  * @owner Observable
  */
 export function buffer<T>(closingNotifier: Observable<any>): Operation<T, T[]> {
-  return lift((source: Observable<T>, dest: Sink<T[]>, subs: Subscription) => {
-    const closingSubs = new Subscription();
-    let buffer: T[] = [];
-
-    subs.add(closingSubs);
-    closingNotifier(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<any>, closingSubs: Subscription) => {
-      if (t === FOType.NEXT) {
-        const copy = buffer.slice();
-        buffer = [];
-        dest(FOType.NEXT, copy, subs);
-      } else {
-        dest(t, v, subs);
-        subs.unsubscribe();
-      }
-    }, closingSubs);
-
-    if (!subs.closed) {
-      source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
-        if (t === FOType.NEXT) {
-          buffer.push(v);
-        } else {
-          dest(t, v, subs);
-          subs.unsubscribe();
-        }
-      }, subs);
-    }
-  });
+  return pipe(
+    window(closingNotifier),
+    mergeMap(toArray()),
+  );
 }
