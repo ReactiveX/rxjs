@@ -1,6 +1,5 @@
 // ################ CORE OPERATORS #################`
 export { audit } from 'rxjs/internal/operators/audit';
-export { auditTime } from 'rxjs/internal/operators/derived/auditTime';
 export { catchError } from 'rxjs/internal/operators/catchError';
 export { defaultIfEmpty } from 'rxjs/internal/operators/defaultIfEmpty';
 export { dematerialize } from 'rxjs/internal/operators/dematerialize';
@@ -32,9 +31,11 @@ export { takeUntil } from 'rxjs/internal/operators/takeUntil';
 export { takeWhile } from 'rxjs/internal/operators/takeWhile';
 export { takeLast } from 'rxjs/internal/operators/takeLast';
 export { tap } from 'rxjs/internal/operators/tap';
+export { window } from 'rxjs/internal/operators/window';
 
 
 // ################ DERIVED OPERATORS ##################
+export { auditTime } from 'rxjs/internal/operators/derived/auditTime';
 export { concatAll } from 'rxjs/internal/operators/derived/concatAll';
 export { concatMap } from 'rxjs/internal/operators/derived/concatMap';
 export { concatMapTo } from 'rxjs/internal/operators/derived/concatMapTo';
