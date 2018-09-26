@@ -36,6 +36,7 @@ export { window } from 'rxjs/internal/operators/window';
 
 // ################ DERIVED OPERATORS ##################
 export { auditTime } from 'rxjs/internal/operators/derived/auditTime';
+export { buffer } from 'rxjs/internal/operators/buffer';
 export { concatAll } from 'rxjs/internal/operators/derived/concatAll';
 export { concatMap } from 'rxjs/internal/operators/derived/concatMap';
 export { concatMapTo } from 'rxjs/internal/operators/derived/concatMapTo';

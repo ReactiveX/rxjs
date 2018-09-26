@@ -292,6 +292,7 @@ proto.flush = function (): void {
   this._flushTests = this._flushTests.filter((test: any) => {
     if (test.ready) {
       // console.log(JSON.stringify(test.actual, null, 2));
+      // console.log(JSON.stringify(test.expected, null, 2));
       this._assertDeepEqual(test.actual, test.expected);
       return false;
     }

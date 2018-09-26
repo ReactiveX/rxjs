@@ -2,6 +2,7 @@ import { scan } from 'rxjs/internal/operators/scan';
 import { takeLast } from 'rxjs/internal/operators/takeLast';
 import { pipe } from 'rxjs/internal/util/pipe';
 import { Operation } from 'rxjs/internal/types';
+import { defaultIfEmpty } from '../defaultIfEmpty';
 
 export function reduce<T>(reducer: (state: T, value: T, index: number) => T): Operation<T, T>;
 export function reduce<T, R>(reducer: (state: T|R, value: T, index: number) => R): Operation<T, R>;
@@ -10,8 +11,12 @@ export function reduce<T, R, I>(reducer: (state: I|R, value: T, index: number) =
 export function reduce<T, R, I>(reducer: (state: T|R|I, value: T, index: number) => R, initialState?: R|I): Operation<T, T|R|I> {
   const hasSeed = arguments.length >= 2;
 
-  return pipe(
-    hasSeed ? scan(reducer, initialState) : scan(reducer),
+  return hasSeed ? pipe(
+    scan(reducer, initialState),
+    takeLast(),
+    defaultIfEmpty(initialState),
+  ) : pipe(
+    scan(reducer),
     takeLast(),
   );
 }

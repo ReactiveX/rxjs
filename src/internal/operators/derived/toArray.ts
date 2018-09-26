@@ -1,3 +1,13 @@
 import { reduce } from 'rxjs/internal/operators/derived/reduce';
 
-export const toArray = <T>() => reduce<T, T[]>((arr, value) => (arr.push(value), arr), []);
+function toArrayReducer<T>(arr: T[], item: T, index: number) {
+  if (index === 0) {
+    return [item];
+  }
+  arr.push(item);
+  return arr;
+}
+
+export function toArray<T>() {
+  return reduce<T, T[]>(toArrayReducer, []);
+}
