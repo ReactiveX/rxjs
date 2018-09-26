@@ -41,13 +41,16 @@ export interface Observable<T> extends FObs<T> {
 /** The Observable constructor */
 export const Observable: ObservableConstructor = function <T>(init?: (subscriber: Subscriber<T>) => Teardown) {
   return sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T>, subs: Subscription) => {
-    const subscriber = createSubscriber(dest, subs);
-    const teardown = tryUserFunction(init, subscriber);
-    if (resultIsError(teardown)) {
-      subscriber(FOType.ERROR, teardown.error, subs);
-      return;
+    if (init) {
+      const subscriber = createSubscriber(dest, subs);
+      const teardown = tryUserFunction(init, subscriber);
+      if (resultIsError(teardown)) {
+        subscriber(FOType.ERROR, teardown.error, subs);
+        subs.unsubscribe();
+        return;
+      }
+      subs.add(teardown);
     }
-    subs.add(teardown);
   });
 } as any;
 

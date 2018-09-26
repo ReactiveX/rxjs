@@ -4,6 +4,7 @@ import { Subscription } from '../Subscription';
 import { pipeArray } from './pipe';
 import { Observable } from '../Observable';
 import { sinkFromObserver } from './sinkFromObserver';
+import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 
 export function sourceAsObservable<T>(source: Source<T>): Observable<T> {
   const result = source as Observable<T>;
@@ -35,6 +36,7 @@ function subscribe<T>(this: Source<T>, nextOrObserver?: PartialObserver<T> | ((v
   this(FOType.SUBSCRIBE, sink, subscription);
   return subscription;
 }
+
 function forEach<T>(this: Observable<T>, nextHandler: (value: T) => void, subscription?: Subscription): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     let completed = false;
@@ -50,14 +52,22 @@ function forEach<T>(this: Observable<T>, nextHandler: (value: T) => void, subscr
     }
     subscription = subscription || new Subscription();
     this(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
+      if (subs.closed) {
+        return;
+      }
       switch (t) {
         case FOType.NEXT:
-          // make sure the next handler is on a microtask
-          Promise.resolve(v).then(nextHandler);
+          const result = tryUserFunction(nextHandler, v);
+          if (resultIsError(result)) {
+            errored = true;
+            reject(result.error);
+            subs.unsubscribe();
+          }
           break;
         case FOType.COMPLETE:
+          console.log('complete');
           completed = true;
-          resolve(undefined);
+          resolve();
           subs.unsubscribe();
           break;
         case FOType.ERROR:
