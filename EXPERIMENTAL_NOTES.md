@@ -29,13 +29,16 @@ timestamp.
 - `map` no longer sync throws if passed a non-function
 - `filter` no longer supports `thisArg`.
 
+## Fixes that are breaking changes to some
+
+- Resolved the [issue](https://github.com/ReactiveX/rxjs/issues/3990) where `buffer` was omitting the last buffer when the source completed [here](https://github.com/ReactiveX/rxjs/commit/61b1767ec58450325ee16a5d21eadb3789acc069)
 
 
 
 ## Operators TODO
 - [x] audit (g3)
 - [x] auditTime (g3)
-- [ ] buffer (g3)
+- [x] buffer (g3)
 - [ ] bufferCount (g3)
 - [ ] bufferTime (g3)
 - [ ] bufferToggle
@@ -129,7 +132,7 @@ timestamp.
 - [ ] timeoutWith (g3)
 - [x] timestamp
 - [x] toArray (g3)
-- [ ] window
+- [x] window
 - [ ] windowCount (g3)
 - [ ] windowTime
 - [ ] windowToggle
