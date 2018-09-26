@@ -65,7 +65,6 @@ function forEach<T>(this: Observable<T>, nextHandler: (value: T) => void, subscr
           }
           break;
         case FOType.COMPLETE:
-          console.log('complete');
           completed = true;
           resolve();
           subs.unsubscribe();

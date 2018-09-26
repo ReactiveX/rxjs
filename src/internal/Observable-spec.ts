@@ -120,7 +120,6 @@ describe('Observable', () => {
         },
         (err) => {
           results.push(err);
-          console.log(results);
           expect(results).to.deep.equal([1, 2, 3, expected]);
         }
       );
@@ -151,6 +150,50 @@ describe('Observable', () => {
         (err) => {
           results.push(err);
           expect(results).to.deep.equal([1, 2, expected]);
+        }
+      );
+    });
+
+    it('should be cancellable via passed Subscription', () => {
+      const source = of(1, 2, 3, 4);
+      const results: any[] = [];
+      const subs = new Subscription();
+      return source.forEach(x => {
+        results.push(x);
+        if (x === 3) subs.unsubscribe();
+      }, subs)
+      .then(
+        () => {
+          throw new Error('should not complete');
+        },
+        err => {
+          expect(results).to.deep.equal([1, 2, 3]);
+          expect(err).to.exist
+            .and.be.instanceof(Error)
+            .and.have.property('message', 'forEach aborted');
+        }
+      );
+    });
+
+    it('should be cancelled if the Subscription is already unsubscribed', () => {
+      const source = of(1, 2, 3, 4);
+      const results: any[] = [];
+      const subs = new Subscription();
+      subs.unsubscribe();
+
+      return source.forEach(x => {
+        results.push(x);
+        if (x === 3) subs.unsubscribe();
+      }, subs)
+      .then(
+        () => {
+          throw new Error('should not complete');
+        },
+        err => {
+          expect(results).to.deep.equal([]);
+          expect(err).to.exist
+            .and.be.instanceof(Error)
+            .and.have.property('message', 'forEach aborted');
         }
       );
     });
@@ -234,7 +277,7 @@ describe('Observable', () => {
     });
 
     it('should run unsubscription logic when an error is sent asynchronously and subscribe is called with no arguments', (done) => {
-      const sandbox = sinon.sandbox.create();
+      const sandbox = sinon.createSandbox();
       const fakeTimer = sandbox.useFakeTimers();
 
       let unsubscribeCalled = false;
