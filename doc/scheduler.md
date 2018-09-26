@@ -110,9 +110,9 @@ The `async` Scheduler is one of the built-in schedulers provided by RxJS. Each o
 | --- | --- |
 | `null` | By not passing any scheduler, notifications are delivered synchronously and recursively. Use this for constant-time operations or tail recursive operations. |
 | `queueScheduler` | Schedules on a queue in the current event frame (trampoline scheduler). Use this for iteration operations. |
-| `asapScheduler` | Schedules on the micro task queue, which is the same queue used for promises. Basically after the current job, but before the next job. Use this for asynchronous conversions. |
 | `asyncScheduler` | Schedules work with `setInterval`. Use this for time-based operations. |
-| `animationFrameScheduler` | Schedules task  that will happen just before next browser content repaint. Can be used to create smooth browser animations.|
+| `asapScheduler` | Schedulers that behave the same as async scheduler when you use it to delay task in time. If however you set delay to 0, asap will wait for current synchronously executing code to end and then it will try to execute given task as fast as possible. Use this for asynchronous conversions. |
+| `animationFrameScheduler` | Schedules task that will happen just before next browser content repaint. Can be used to create smooth browser animations.|
 
 
 ## Using Schedulers
