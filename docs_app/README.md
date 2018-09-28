@@ -20,6 +20,7 @@ Here are the most important tasks you might need to use:
 * `npm run serve-and-sync` - run both the `docs-watch` and `start` in the same console.
 * `npm run lint` - check that the doc-viewer code follows our style rules.
 * `npm test` - watch all the source files, for the doc-viewer, and run all the unit tests when any change.
+* `npm test --watch=false` - run all the unit tests once.
 * `npm run e2e` - run all the e2e tests for the doc-viewer.
 
 * `npm run docs` - generate all the docs from the source files.
@@ -31,12 +32,9 @@ Here are the most important tasks you might need to use:
 
 ## Using ServiceWorker locally
 
-Running `npm run start --prod` will no longer set up the ServiceWorker, which
-would require manually running `npm run sw-manifest` and `npm run sw-copy` (something that is not possible
-with webpack serving the files from memory).
-
-If you want to test ServiceWorker locally, you can use `npm build` and serve the files in `dist/`
-with `npm run http-server dist -p 4200`.
+Running `npm run start` (even when explicitly targeting production mode) does not set up the
+ServiceWorker. If you want to test the ServiceWorker locally, you can use `npm run build` and then
+serve the files in `dist/` with `npm run http-server dist -p 4200`.
 
 ## Guide to authoring
 
