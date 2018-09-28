@@ -4,7 +4,6 @@ Everything in this folder is part of the documentation project. This includes
 
 * the web site for displaying the documentation
 * the dgeni configuration for converting source files to rendered files that can be viewed in the web site.
-* the tooling for setting up examples for development; and generating live-example and zip files from the examples.
 
 ## Developer tasks
 
@@ -13,16 +12,15 @@ You should run all these tasks from the `rxjs/docs_app` folder.
 Here are the most important tasks you might need to use:
 
 * `npm install` - install all the dependencies.
-* `npm run setup` - install all the dependencies, boilerplate, stackblitz, zips and run dgeni on the docs.
-* `npm run setup-local` - same as `setup`, but use the locally built RxJS packages for docs and docs examples boilerplate.
+* `npm run setup` - install all the dependencies and run dgeni on the docs.
 
-* `npm run build` - create a production build of the application (after installing dependencies, boilerplate, etc).
-* `npm run build-local` - same as `build`, but use `setup-local` instead of `setup`.
+* `npm run build` - create a production build of the application (after installing dependencies, etc).
 
 * `npm start` - run a development web server that watches the files; then builds the doc-viewer and reloads the page, as necessary.
 * `npm run serve-and-sync` - run both the `docs-watch` and `start` in the same console.
 * `npm run lint` - check that the doc-viewer code follows our style rules.
 * `npm test` - watch all the source files, for the doc-viewer, and run all the unit tests when any change.
+* `npm test --watch=false` - run all the unit tests once.
 * `npm run e2e` - run all the e2e tests for the doc-viewer.
 
 * `npm run docs` - generate all the docs from the source files.
@@ -30,26 +28,13 @@ Here are the most important tasks you might need to use:
 * `npm run docs-lint` - check that the doc gen code follows our style rules.
 * `npm run docs-test` - run the unit tests for the doc generation code.
 
-* `npm run boilerplate:add` - generate all the boilerplate code for the examples, so that they can be run locally. Add the option `--local` to use your local version of Angular contained in the "dist" folder.
-* `npm run boilerplate:remove` - remove all the boilerplate code that was added via `npm run boilerplate:add`.
-* `npm run generate-stackblitz` - generate the stackblitz files that are used by the `live-example` tags in the docs.
-* `npm run generate-zips` - generate the zip files from the examples. Zip available via the `live-example` tags in the docs.
-
-* `npm run example-e2e` - run all e2e tests for examples
-  - `npm run example-e2e --setup` - force webdriver update & other setup, then run tests
-  - `npm run example-e2e --filter=foo` - limit e2e tests to those containing the word "foo"
-  - `npm run example-e2e --setup --local` - run e2e tests with the local version of RxJS contained in the "dist" folder
-
 * `npm run build-ie-polyfills` - generates a js file of polyfills that can be loaded in Internet Explorer.
 
 ## Using ServiceWorker locally
 
-Running `npm run start --prod` will no longer set up the ServiceWorker, which
-would require manually running `npm run sw-manifest` and `npm run sw-copy` (something that is not possible
-with webpack serving the files from memory).
-
-If you want to test ServiceWorker locally, you can use `npm build` and serve the files in `dist/`
-with `npm run http-server dist -p 4200`.
+Running `npm run start` (even when explicitly targeting production mode) does not set up the
+ServiceWorker. If you want to test the ServiceWorker locally, you can use `npm run build` and then
+serve the files in `dist/` with `npm run http-server dist -p 4200`.
 
 ## Guide to authoring
 
@@ -64,16 +49,6 @@ The content is written in markdown.
 * **Other content**: guides, tutorials, and other marketing material.
 All other content is written using markdown in text files, located in the `rxjs/docs_app/content` folder.
 More specifically, there are sub-folders that contain particular types of content: guides, tutorial and marketing.
-
-* **Code examples**: code examples need to be testable to ensure their accuracy.
-Also, our examples have a specific look and feel and allow the user to copy the source code. For larger
-examples they are rendered in a tabbed interface (e.g. template, HTML, and TypeScript on separate
-tabs). Additionally, some are live examples, which provide links where the code can be edited, executed, and/or downloaded. For details on working with code examples, please read the [Code snippets](https://angular.io/guide/docs-style-guide#code-snippets), [Source code markup](https://angular.io/guide/docs-style-guide#source-code-markup), and [Live examples](https://angular.io/guide/docs-style-guide#live-examples) pages of the [Authors Style Guide](https://angular.io/guide/docs-style-guide).
-
-We use the [dgeni](https://github.com/angular/dgeni) tool to convert these files into docs that can be viewed in the doc-viewer.
-
-The [Authors Style Guide](https://angular.io/guide/docs-style-guide) prescribes guidelines for
-writing guide pages, explains how to use the documentation classes and components, and how to markup sample source code to produce code snippets.
 
 ### Generating the complete docs
 
@@ -128,5 +103,5 @@ the [Authors Style Guide](https://angular.io/guide/docs-style-guide).
 
 ## Disclaimer
 
-Starting the new documentation, we worked closely together with the Angular team and therefore adapted their way of generating docs. This leads to the effect, that there may be some references to angular (e.g. variable names, file names ...). Don't be confused by this, this shouldn't bother you. Thanks to the Angular Team for their support.  
+Starting the new documentation, we worked closely together with the Angular team and therefore adapted their way of generating docs. This leads to the effect, that there may be some references to angular (e.g. variable names, file names ...). Don't be confused by this, this shouldn't bother you. Thanks to the Angular Team for their support.
 Anyway RxJS will always be an independent project, which aims to work closely with other technologies and frameworks!

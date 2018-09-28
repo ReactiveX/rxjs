@@ -22,7 +22,6 @@
               "src/assets",
               "src/generated",
               "src/app/search/search-worker.js",
-              "src/favicon.ico",
               "src/pwa-manifest.json",
               "src/google385281288605d160.html",
               {
@@ -44,7 +43,7 @@
           "configurations": {
             "fast": {
               "optimization": false
-            },            
+            },
             "next": {
               "optimization": true,
               "outputHashing": "all",
@@ -60,7 +59,8 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.next.ts"
                 }
-              ]
+              ],
+              "serviceWorker": true
             },
             "stable": {
               "optimization": true,
@@ -77,7 +77,8 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.stable.ts"
                 }
-              ]
+              ],
+              "serviceWorker": true
             },
             "archive": {
               "optimization": true,
@@ -94,7 +95,8 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.archive.ts"
                 }
-              ]
+              ],
+              "serviceWorker": true
             },
             "production": {
               "optimization": true,
@@ -105,7 +107,8 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "serviceWorker": true
             }
           }
         },
@@ -117,7 +120,7 @@
           "configurations": {
             "fast": {
               "browserTarget": "site:build:fast"
-            },            
+            },
             "next": {
               "browserTarget": "site:build:next"
             },
@@ -154,7 +157,6 @@
               "src/assets",
               "src/generated",
               "src/app/search/search-worker.js",
-              "src/favicon.ico",
               "src/pwa-manifest.json",
               "src/google385281288605d160.html",
               {
