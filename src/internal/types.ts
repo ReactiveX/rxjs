@@ -40,6 +40,12 @@ export type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<never> | P
 
 export interface Subscribable<T> {
   subscribe(observer?: PartialObserver<T>): Unsubscribable;
+  /** @deprecated */
+  subscribe(next: null, error: null, complete: () => void): Unsubscribable;
+  /** @deprecated */
+  subscribe(next: null, error: (error: any) => void, complete?: () => void): Unsubscribable;
+  /** @deprecated */
+  subscribe(next: (value: T) => void, error: null, complete: () => void): Unsubscribable;
   subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Unsubscribable;
 }
 
