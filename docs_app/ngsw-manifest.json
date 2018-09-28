@@ -11,7 +11,7 @@
   "static.ignore": [
     "\\.js\\.map$",
     "^(?:/|\\\\)assets(?:/|\\\\)images(?:/|\\\\).*(?:/|\\\\)_unused(?:/|\\\\)",
-    "^(?:/|\\\\)generated(?:/|\\\\)(?:docs(?:/|\\\\)(?!api(?:/|\\\\)api-list\\.json).*|images(?:/|\\\\)(?!marketing(?:/|\\\\)).*|live-examples|zips)(?:/|\\\\)"
+    "^(?:/|\\\\)generated(?:/|\\\\)(?:docs(?:/|\\\\)(?!api(?:/|\\\\)api-list\\.json).*|images(?:/|\\\\)(?!marketing(?:/|\\\\)).*)(?:/|\\\\)"
   ],
   "static.versioned": [
     "\\.[0-9a-z]{20}\\."
@@ -19,7 +19,7 @@
   "routing": {
     "index": "/index.html",
     "routes": {
-      "^(?!/styleguide|/docs/.|(?:/guide/(?:cli-quickstart|metadata|ngmodule|service-worker-(?:getstart|comm|configref)|learning-angular)|/news)(?:\\.html|/)?$|/testing|/api/(?:.+/[^/]+-|platform-browser/AnimationDriver|testing/|api/|animate/|(?:common/(?:NgModel|Control|MaxLengthValidator))|(?:[^/]+/)?(?:NgFor(?:$|-)|AnimationStateDeclarationMetadata|CORE_DIRECTIVES|PLATFORM_PIPES|DirectiveMetadata|HTTP_PROVIDERS))|.*/stackblitz(?:\\.html)?$|.*\\.[^\/.]+$)": {
+      "^(?!.*\\.[^\/.]+$)": {
         "match": "regex"
       }
     }
