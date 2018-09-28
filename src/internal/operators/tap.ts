@@ -6,6 +6,12 @@ import { noop } from '../util/noop';
 import { isFunction } from '../util/isFunction';
 
 /* tslint:disable:max-line-length */
+/** @deprecated */
+export function tap<T>(next: null, error: null, complete: () => void): MonoTypeOperatorFunction<T>;
+/** @deprecated */
+export function tap<T>(next: null, error: (error: any) => void, complete?: () => void): MonoTypeOperatorFunction<T>;
+/** @deprecated */
+export function tap<T>(next: (value: T) => void, error: null, complete: () => void): MonoTypeOperatorFunction<T>;
 export function tap<T>(next?: (x: T) => void, error?: (e: any) => void, complete?: () => void): MonoTypeOperatorFunction<T>;
 export function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
