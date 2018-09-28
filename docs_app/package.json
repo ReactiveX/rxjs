@@ -18,6 +18,7 @@
     "pree2e": "npm run update-webdriver",
     "e2e": "ng e2e --no-webdriver-update",
     "e2e-prod": "npm run e2e --environment=dev --target=production",
+    "http-server": "http-server",
     "test-pwa-score-localhost": "concurrently --kill-others --success first \"http-server dist -p 4200 --silent\" \"npm run test-pwa-score http://localhost:4200 90\"",
     "test-pwa-score": "node scripts/test-pwa-score",
     "deploy-production": "scripts/deploy-to-firebase.sh",
