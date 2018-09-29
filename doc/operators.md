@@ -250,5 +250,7 @@ There are operators for different purposes, and they may be categorized as: crea
 
 - [`count`](../class/es6/Observable.js~Observable.html#instance-method-count)
 - [`max`](../class/es6/Observable.js~Observable.html#instance-method-max)
+- [`maxStream`](../class/es6/Observable.js~Observable.html#instance-method-maxStream)
 - [`min`](../class/es6/Observable.js~Observable.html#instance-method-min)
+- [`minStream`](../class/es6/Observable.js~Observable.html#instance-method-minStream)
 - [`reduce`](../class/es6/Observable.js~Observable.html#instance-method-reduce)

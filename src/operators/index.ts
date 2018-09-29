@@ -1,4 +1,3 @@
-
 /* Operator exports */
 export { audit } from '../internal/operators/audit';
 export { auditTime } from '../internal/operators/auditTime';
@@ -43,6 +42,7 @@ export { map } from '../internal/operators/map';
 export { mapTo } from '../internal/operators/mapTo';
 export { materialize } from '../internal/operators/materialize';
 export { max } from '../internal/operators/max';
+export { maxStream } from '../internal/operators/maxStream';
 export { merge } from '../internal/operators/merge';
 export { mergeAll } from '../internal/operators/mergeAll';
 export { mergeMap } from '../internal/operators/mergeMap';
@@ -50,6 +50,7 @@ export { mergeMap as flatMap } from '../internal/operators/mergeMap';
 export { mergeMapTo } from '../internal/operators/mergeMapTo';
 export { mergeScan } from '../internal/operators/mergeScan';
 export { min } from '../internal/operators/min';
+export { minStream } from '../internal/operators/minStream';
 export { multicast } from '../internal/operators/multicast';
 export { observeOn } from '../internal/operators/observeOn';
 export { onErrorResumeNext } from '../internal/operators/onErrorResumeNext';
