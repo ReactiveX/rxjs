@@ -21,7 +21,6 @@ function zipSource<T>(sources: ObservableInput<T>[]): Source<T> {
         const src = tryUserFunction(fromSource, source);
         if (resultIsError(src)) {
           sink(FOType.ERROR, src.error, subs);
-          subs.unsubscribe();
           return;
         }
 
@@ -41,7 +40,6 @@ function zipSource<T>(sources: ObservableInput<T>[]): Source<T> {
               if (complete.every(identity)) {
                 buffers = null;
                 sink(t, v, subs);
-                subs.unsubscribe();
               }
               break;
             default:

@@ -15,7 +15,6 @@ export function deferSource<T>(fn: () => ObservableInput<T>): Source<T> {
       const result = tryUserFunction(() => fromSource(fn()));
       if (resultIsError(result)) {
         sink(FOType.ERROR, result.error, subs);
-        subs.unsubscribe();
         return;
       }
       result(FOType.SUBSCRIBE, sink, subs);

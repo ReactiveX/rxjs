@@ -23,7 +23,6 @@ export function combineLatestSource<T>(sources: ObservableInput<T>[]): Source<T>
         const src = tryUserFunction(fromSource, source);
         if (resultIsError(src)) {
           dest(FOType.ERROR, src.error, subs);
-          subs.unsubscribe();
           return;
         }
 
@@ -38,13 +37,11 @@ export function combineLatestSource<T>(sources: ObservableInput<T>[]): Source<T>
               break;
             case FOType.ERROR:
               dest(t, v, subs);
-              subs.unsubscribe();
               break;
             case FOType.COMPLETE:
               completed[s] = true;
               if (completed.every(identity)) {
-                dest(FOType.COMPLETE, undefined, subs)
-                subs.unsubscribe();
+                dest(FOType.COMPLETE, undefined, subs);
               }
               break;
             default:

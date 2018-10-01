@@ -99,7 +99,6 @@ function timerDelayWork<T>(state: { dest: Sink<T>, scheduler: SchedulerLike, sub
       scheduler.schedule(timerDelayWork as any, period, state, subs);
     } else {
       dest(FOType.COMPLETE, undefined, subs);
-      subs.unsubscribe();
     }
   }
 }

@@ -1,5 +1,5 @@
 import { sinkFromHandlers } from './sinkFromHandlers';
-import { Operation, PartialObserver, FOType, Sink, Source, SinkArg } from '../types';
+import { Operation, PartialObserver, FOType, Sink, Source, SinkArg, FObsArg } from '../types';
 import { Subscription } from '../Subscription';
 import { pipeArray } from './pipe';
 import { Observable } from '../Observable';
@@ -33,8 +33,23 @@ function subscribe<T>(this: Source<T>, nextOrObserver?: PartialObserver<T> | ((v
   else {
     sink = () => { };
   }
-  this(FOType.SUBSCRIBE, sink, subscription);
+  this(FOType.SUBSCRIBE, safeSink(sink), subscription);
   return subscription;
+}
+
+function safeSink<T>(sink: Sink<T>) {
+  return (type: FOType, arg: FObsArg<T>, subs: Subscription) => {
+    if (subs.closed) {
+      if (type === FOType.ERROR) {
+        console.warn('Error thrown after subscription closed', arg);
+      }
+    } else {
+      sink(type, arg, subs);
+      if (type >= 2) {
+        subs.unsubscribe();
+      }
+    }
+  }
 }
 
 function forEach<T>(this: Observable<T>, nextHandler: (value: T) => void, subscription?: Subscription): Promise<void> {

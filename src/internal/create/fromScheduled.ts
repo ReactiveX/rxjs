@@ -62,13 +62,11 @@ function fromInteropObservableSource<T>(
           error(err) {
             scheduler.schedule(() => {
               sink(FOType.ERROR, err, subs);
-              subs.unsubscribe();
             }, 0, null, subs);
           },
           complete() {
             scheduler.schedule(() => {
               sink(FOType.COMPLETE, undefined, subs);
-              subs.unsubscribe();
             }, 0, null, subs);
           }
         });
