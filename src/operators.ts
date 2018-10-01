@@ -32,7 +32,7 @@ export { takeWhile } from 'rxjs/internal/operators/takeWhile';
 export { takeLast } from 'rxjs/internal/operators/takeLast';
 export { tap } from 'rxjs/internal/operators/tap';
 export { window } from 'rxjs/internal/operators/window';
-
+export { withLatestFrom } from 'rxjs/internal/operators/withLatestFrom';
 
 // ################ DERIVED OPERATORS ##################
 export { auditTime } from 'rxjs/internal/operators/derived/auditTime';
