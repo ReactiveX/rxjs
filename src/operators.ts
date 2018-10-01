@@ -42,6 +42,7 @@ export { concatMap } from 'rxjs/internal/operators/derived/concatMap';
 export { concatMapTo } from 'rxjs/internal/operators/derived/concatMapTo';
 export { concatWith } from 'rxjs/internal/operators/derived/concatWith';
 export { count } from 'rxjs/internal/operators/derived/count';
+export { delay } from 'rxjs/internal/operators/derived/delay';
 export { distinctUntilKeyChanged } from 'rxjs/internal/operators/derived/distinctUntilKeyChanged';
 export { elementAt } from 'rxjs/internal/operators/derived/elementAt';
 export { endWith } from 'rxjs/internal/operators/derived/endWith';
