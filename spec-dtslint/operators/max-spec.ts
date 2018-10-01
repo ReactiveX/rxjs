@@ -10,8 +10,8 @@ it(' should except empty comparer', () => {
     const a = of(1, 2, 3).pipe(max()); // $ExpectType Observable<number>
 });
 
-it('should infer on comparer types', () => {
-    const a = of(1, 2, 3).pipe(max((a: number, b: number) => a <= b ? -1 : 1)); // $ExpectType Observable<number>
-    const b = of(1, 2, 3).pipe(max((a: number, b: string) => a <= b ? -1 : 1)); // $ExpectError
-    const c = of(1, 2, 3).pipe(max((a: string, b: number) => a <= b ? -1 : 1)); // $ExpectError
+it('should enforce comparer types', () => {
+    const a = of(1, 2, 3).pipe(max((a: number, b: number) => a - b)); // $ExpectType Observable<number>
+    const b = of(1, 2, 3).pipe(max((a: number, b: string) => 0)); // $ExpectError
+    const c = of(1, 2, 3).pipe(max((a: string, b: number) => 0)); // $ExpectError
 });
