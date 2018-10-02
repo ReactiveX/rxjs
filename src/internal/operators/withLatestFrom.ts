@@ -70,26 +70,19 @@ export function withLatestFrom<T, R>(...args: Array<ObservableInput<any>>): Oper
     : args;
 
   return lift((source: Observable<T>, dest: Sink<R>, subs: Subscription) => {
-    let sources = [source, ...otherSources.map(s => {
-      const src = tryUserFunction(() => fromSource(s));
-      if (resultIsError(src)) {
-        dest(FOType.ERROR, src.error, subs);
-        subs.unsubscribe();
-        return undefined;
-      }
-      return s;
-    })];
+    const others = tryUserFunction(() => otherSources.map(fromSource));
+    if (resultIsError(others)) {
+      dest(FOType.ERROR, others.error, subs);
+      subs.unsubscribe();
+      return;
+    }
+    let sources = [source, ...others];
     let cache = sources.map(() => undefined);
     let hasValue = sources.map(() => false);
     let allHaveValues = false;
 
     for (let i = 0; i < sources.length && !subs.closed; i++) {
-      const src = tryUserFunction(() => fromSource(sources[i]));
-      if (resultIsError(src)) {
-        dest(FOType.ERROR, src.error, subs);
-        subs.unsubscribe();
-        return;
-      }
+      const src = sources[i];
       const innerSubs = new Subscription();
       subs.add(innerSubs);
       src(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<any>, innerSubs: Subscription) => {
