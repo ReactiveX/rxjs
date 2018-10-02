@@ -54,7 +54,7 @@ timestamp.
 - [ ] debounce (g3)
 - [ ] debounceTime (g3)
 - [x] defaultIfEmpty (g3)
-- [ ] delay (g3)
+- [x] delay (g3)
 - [ ] delayWhen (g3)
 - [x] dematerialize
 - [x] distinct (g3)
@@ -137,7 +137,7 @@ timestamp.
 - [ ] windowTime
 - [ ] windowToggle
 - [ ] windowWhen
-- [ ] withLatestFrom (g3)
+- [x] withLatestFrom (g3)
 - [ ] zip (g3)
 - [ ] zipAll
 
