@@ -1,5 +1,5 @@
-import { noop } from "rxjs/internal/util/noop";
-import { expect } from "chai";
+import { noop } from 'rxjs';
+import { expect } from 'chai';
 
 describe('noop', () => {
   it('should be a function that does nothing', () => {

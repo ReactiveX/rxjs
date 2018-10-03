@@ -1,5 +1,5 @@
-import { expect } from "chai";
-import { NEVER } from "rxjs/internal/NEVER";
+import { expect } from 'chai';
+import { NEVER } from 'rxjs';
 
 describe('NEVER', () => {
   it('should exist', () => {

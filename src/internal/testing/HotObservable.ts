@@ -42,7 +42,9 @@ export function hotObservable<T>(messages: TestMessage<T>[], scheduler: TestSche
         } else {
           continue;
         }
-        scheduler.schedule(({ t, a, subs }) => subject(t, a, subs), frame, { t, a, subs });
+        scheduler.schedule(({ t, a, subs }) => {
+          subject(t, a, subs);
+        }, frame, { t, a, subs });
       }
     });
   }

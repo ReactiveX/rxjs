@@ -24,8 +24,8 @@
     "watch": "Watch codebase, trigger compile when source code changes"
   },
   "scripts": {
-    "test": "cross-env TS_NODE_PROJECT=tsconfig.json mocha --opts mocha-options.opts \"src/**/*-spec.ts\"",
-    "test2": "mocha -r ts-node/register src/**/*-spec.ts",
+    "pretest": "shx rm -rf tmp/tests && tsc -p tsconfig.tests.json",
+    "test": "cross-env NODE_PATH=tmp/tests/ mocha --opts mocha-options.opts \"tmp/tests/**/*-spec.js\"",
     "watch": "watch 'npm run test' src",
     "build": "tsc"
   },
@@ -63,6 +63,7 @@
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^4.19.1",
     "mocha": "^5.0.5",
+    "shx": "^0.3.2",
     "sinon": "^6.3.4",
     "ts-node": "5.0.1",
     "tsconfig-paths": "^3.3.2",

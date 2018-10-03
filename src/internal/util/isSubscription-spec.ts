@@ -1,6 +1,6 @@
-import { Subscription } from "rxjs/internal/Subscription";
-import { expect } from "chai";
-import { isSubscription } from "rxjs/internal/util/isSubscription";
+import { Subscription } from 'rxjs';
+import { expect } from 'chai';
+import { isSubscription } from 'rxjs/internal/util/isSubscription';
 
 describe('isSubscription', () => {
   it('should pass for Subscriptions', () => {

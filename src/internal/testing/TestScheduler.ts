@@ -445,7 +445,7 @@ export function parseMarbles<T = string>(
   const testMessages: TestMessage<T>[] = [];
   const subIndex = runMode ? marbles.replace(/^[ ]+/, '').indexOf('^') : marbles.indexOf('^');
   let frame = subIndex === -1 ? 0 : (subIndex * - FRAME_TIME_FACTOR);
-  const getValue = typeof values !== 'object' ?
+  const getValue = !values ?
     (x: any) => x :
     (x: any) => {
       // Support Observable-of-Observables

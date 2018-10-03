@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "rxjs": [
+        "./src"
+      ],
+      "rxjs/*": [
+        "./src/*"
+      ]
+    },
+    "outDir": "./tmp/tests/rxjs",
+  },
+  "exclude": [
+    "./dist"
+  ]
+}

@@ -1,5 +1,5 @@
-import { EMPTY } from "rxjs/internal/EMPTY";
-import { expect } from "chai";
+import { EMPTY } from 'rxjs';
+import { expect } from 'chai';
 
 describe('EMPTY', () => {
   it('should complete and emit nothing', () => {

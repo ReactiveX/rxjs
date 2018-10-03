@@ -1,4 +1,4 @@
-import { RecyclableSubscription } from "rxjs/internal/RecyclableSubscription";
+import { RecyclableSubscription } from 'rxjs/internal/RecyclableSubscription';
 import { expect } from 'chai';
 
 describe('RecyclableSubscription', () => {

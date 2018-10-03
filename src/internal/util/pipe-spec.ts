@@ -1,6 +1,5 @@
-import { pipe } from "rxjs/internal/util/pipe";
-import { expect } from "chai";
-import { identity } from "rxjs/internal/util/identity";
+import { pipe, identity } from 'rxjs';
+import { expect } from 'chai';
 
 describe('pipe', () => {
   it('should chain multiple functions one after the other', () => {

@@ -74,7 +74,6 @@ export function mergeMap<T, R>(
             startNextInner();
           } else if (active === 0) {
             dest(FOType.COMPLETE, undefined, subs);
-            subs.unsubscribe();
           }
           break;
         default:

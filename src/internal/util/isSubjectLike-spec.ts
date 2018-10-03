@@ -1,7 +1,6 @@
-import { Subject } from "rxjs/internal/Subject";
-import { expect } from "chai";
-import { isSubjectLike } from "rxjs/internal/util/isSubjectLike";
-import { Observable } from "../Observable";
+import { Subject, Observable } from 'rxjs';
+import { expect } from 'chai';
+import { isSubjectLike } from 'rxjs/internal/util/isSubjectLike';
 
 describe('isSubjectLike', () => {
   it('should pass for Subjects', () => {

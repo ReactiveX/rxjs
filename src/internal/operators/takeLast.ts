@@ -7,6 +7,10 @@ export function takeLast<T>(count: number = 1): Operation<T, T> {
   count = Math.max(count, 0);
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     const buffer: T[] = [];
+    if (count === 0) {
+      dest(FOType.COMPLETE, undefined, subs);
+      return;
+    }
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
       switch (t) {
         case FOType.NEXT:
