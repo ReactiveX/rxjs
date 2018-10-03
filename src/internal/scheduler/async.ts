@@ -43,6 +43,8 @@ import { AsyncScheduler } from './AsyncScheduler';
  * // 3 after 6s
  * ```
  *
+ * async doesn't work with rxjs6. In the case of a timeout, it will execute basic in async.
+ *
  * @static true
  * @name async
  * @owner Scheduler
