@@ -6,7 +6,7 @@ it('should infer correctly', () => {
 });
 
 it('should support Promises', () => {
-  const promise = new Promise<string>(() => 'a');
+  const promise = Promise.resolve('a');
   const o = of(1, 2, 3).pipe(bufferToggle(promise, value => of(new Date()))); // $ExpectType Observable<number[]>
   const p = of(1, 2, 3).pipe(bufferToggle(of('a', 'b', 'c'), value => promise)); // $ExpectType Observable<number[]>
   const q = of(1, 2, 3).pipe(bufferToggle(promise, value => promise)); // $ExpectType Observable<number[]>
