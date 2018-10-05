@@ -156,7 +156,7 @@ describe('TestScheduler', () => {
   });
 
   describe('createHotObservable()', () => {
-    it('should create a cold observable', () => {
+    it('should create a hot observable', () => {
       const expected = ['A', 'B'];
       const scheduler = new TestScheduler(null);
       const source = scheduler.createHotObservable('--a---b--|', { a: 'A', b: 'B' });
