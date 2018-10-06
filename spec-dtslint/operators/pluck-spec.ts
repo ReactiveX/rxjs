@@ -69,24 +69,6 @@ it('should support nested object of 6 layer depth', () => {
   }).pipe(pluck('address', 'postcode', 'x', 'y', 'z', 'aa')); // $ExpectType Observable<number>
 });
 
-it('should support nested object of 6 layer depth', () => {
-  const a = of({
-    name: 'def',
-    id: 256,
-    address: {
-      postcode: {
-        x: {
-          y: {
-            z: {
-              aa: 1
-            }
-          }
-        }
-      }
-    }
-  }).pipe(pluck('address', 'postcode', 'x', 'y', 'z', 'aa')); // $ExpectType Observable<number>
-});
-
 it('should infer empty interface for more than 6 layer depth', () => {
   const a = of({
     name: 'def',
@@ -105,6 +87,14 @@ it('should infer empty interface for more than 6 layer depth', () => {
       }
     }
   }).pipe(pluck('address', 'postcode', 'x', 'y', 'z', 'aa', 'ab')); // $ExpectType Observable<{}>
+});
+
+it('should infer empty interface for non-existance key', () => {
+  const a = of({ name: 'abc', id: 123 }).pipe(pluck('xyz')); // $ExpectType Observable<{}>
+});
+
+it('should infer empty interface for empty parameter', () => {
+  const a = of({ name: 'abc', id: 123 }).pipe(pluck()); // $ExpectType Observable<{}>
 });
 
 it('should accept string only', () => {
