@@ -31,6 +31,7 @@ export function mergeMap<T, R>(
         const innerSubs = new Subscription();
         subs.add(innerSubs);
 
+        // INNER subscription
         innerSource(FOType.SUBSCRIBE, (type: FOType, v: SinkArg<R>, innerSubs: Subscription) => {
           switch (type) {
             case FOType.NEXT:
@@ -41,11 +42,12 @@ export function mergeMap<T, R>(
               subs.unsubscribe();
               break;
             case FOType.COMPLETE:
+              subs.remove(innerSubs);
               active--;
-              innerSubs.unsubscribe();
               if (buffer.length > 0) {
                 startNextInner();
-              } else if (outerComplete && active === 0) {
+              }
+              if (outerComplete && buffer.length == 0 && active === 0) {
                 dest(FOType.COMPLETE, undefined, subs);
               }
 
@@ -55,6 +57,7 @@ export function mergeMap<T, R>(
       }
     }
 
+    // OUTER subscription
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>) => {
       switch (t) {
         case FOType.NEXT:

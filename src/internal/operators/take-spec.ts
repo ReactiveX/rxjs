@@ -171,20 +171,18 @@ describe('take operator', () => {
     source.subscribe();
   });
 
-  // TODO(benlesh): uncomment
-
-  // it('should complete when the source is reentrant', () => {
-  //   let completed = false;
-  //   const source = new Subject();
-  //   source.pipe(take(5)).subscribe({
-  //     next() {
-  //       source.next();
-  //     },
-  //     complete() {
-  //       completed = true;
-  //     }
-  //   });
-  //   source.next();
-  //   expect(completed).to.be.true;
-  // });
+  it('should complete when the source is reentrant', () => {
+    let completed = false;
+    const source = new Subject();
+    source.pipe(take(5)).subscribe({
+      next() {
+        source.next(undefined);
+      },
+      complete() {
+        completed = true;
+      }
+    });
+    source.next(undefined);
+    expect(completed).to.be.true;
+  });
 });

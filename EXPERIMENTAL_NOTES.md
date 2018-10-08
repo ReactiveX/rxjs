@@ -28,6 +28,7 @@ timestamp.
 - `map` no longer supports `thisArg`
 - `map` no longer sync throws if passed a non-function
 - `filter` no longer supports `thisArg`.
+- `combineAll` no longer accepts the selector or the scheduler
 
 ## Fixes that are breaking changes to some
 
@@ -44,7 +45,7 @@ timestamp.
 - [ ] bufferToggle
 - [ ] bufferWhen (g3)
 - [x] catchError (g3)
-- [ ] combineAll
+- [x] combineAll
 - [ ] combineLatest (g3)
 - [x] concat (alias: concatWith) (g3)
 - [x] concatAll (g3)

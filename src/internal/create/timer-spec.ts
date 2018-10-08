@@ -1,7 +1,9 @@
-import { timer, NEVER, merge } from 'rxjs';
+import { timer, NEVER, merge, of, concat, from } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { mergeMap, take, concatWith } from 'rxjs/operators';
+import { mergeMap, take, concatWith, mapTo, ignoreElements, defaultIfEmpty } from 'rxjs/operators';
 import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
+import { expect } from 'chai';
+import { Subject } from 'rxjs/internal/Subject';
 
 /** @test {timer} */
 describe('timer', () => {
