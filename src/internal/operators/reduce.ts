@@ -42,7 +42,7 @@ export function reduce<T, R>(accumulator: (acc: R, value: T, index: number) => R
  * );
  * const ones = clicksInFiveSeconds.pipe(mapTo(1));
  * const seed = 0;
- * const count = ones.reduce((acc, one) => acc + one, seed);
+ * const count = ones.pipe(reduce((acc, one) => acc + one, seed));
  * count.subscribe(x => console.log(x));
  * ```
  *
