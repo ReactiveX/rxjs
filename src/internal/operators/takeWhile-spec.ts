@@ -245,4 +245,22 @@ describe('takeWhile operator', () => {
       expectSubscriptionsTo(e1).toBe(e1subs);
     });
   });
+
+  it('should not break the subscription chain', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const source = hot('--^-----a-b-|');
+      const subs =         '^       !  ';
+      const inner = cold('        -----x|');
+      const innerSubs =    '      ^     ';
+      const expected =   '  -----------x|';
+      const tested = source.pipe(
+        takeWhile(x => x !== 'b'),
+        mergeMap(() => inner),
+      );
+
+      expectObservable(tested).toBe(expected);
+      expectSubscriptionsTo(source).toBe(subs);
+      expectSubscriptionsTo(inner).toBe(innerSubs);
+    });
+  });
 });
