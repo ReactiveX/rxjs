@@ -65,7 +65,7 @@ timestamp.
 - [x] endWith
 - [x] every (g3)
 - [ ] exhaust
-- [ ] exhaustMap (g3)
+- [x] exhaustMap (g3)
 - [x] expand (g3)
 - [x] filter (g3)
 - [x] finalize (g3)

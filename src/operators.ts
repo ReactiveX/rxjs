@@ -8,6 +8,7 @@ export { dematerialize } from 'rxjs/internal/operators/dematerialize';
 export { distinct } from 'rxjs/internal/operators/distinct';
 export { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
 export { every } from 'rxjs/internal/operators/every';
+export { exhaustMap } from 'rxjs/internal/operators/exhaustMap';
 export { expand } from 'rxjs/internal/operators/expand';
 export { filter } from 'rxjs/internal/operators/filter';
 export { groupBy } from 'rxjs/internal/operators/groupBy';
