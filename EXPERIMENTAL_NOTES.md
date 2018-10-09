@@ -56,7 +56,7 @@ timestamp.
 - [ ] debounceTime (g3)
 - [x] defaultIfEmpty (g3)
 - [x] delay (g3)
-- [ ] delayWhen (g3)
+- [x] delayWhen (g3)
 - [x] dematerialize
 - [x] distinct (g3)
 - [x] distinctUntilChanged (g3)
