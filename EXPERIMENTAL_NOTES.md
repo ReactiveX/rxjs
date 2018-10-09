@@ -29,6 +29,7 @@ timestamp.
 - `map` no longer sync throws if passed a non-function
 - `filter` no longer supports `thisArg`.
 - `combineAll` no longer accepts the selector or the scheduler
+- `exhaustMap` now supports concurrency argument
 
 ## Fixes that are breaking changes to some
 

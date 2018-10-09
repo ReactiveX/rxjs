@@ -384,4 +384,25 @@ describe('exhaustMap', () => {
       expectSubscriptionsTo(e1).toBe(e1subs);
     });
   });
+
+  describe('with concurrency=2', () => {
+    it ('should exhaust two observables at the same time', () => {
+      testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+        const s1 = hot('----^----o--o--x--o--o--x--o--|');
+        const ssubs =      '^                         !';
+        const i1 = cold(   '     --e-e-e-|');
+        const isubs = [    '     ^       !                  ',
+                          '        ^       !               ',
+                          '              ^       !         ',
+                          '                 ^       !      ',
+                          '                       ^       !',]
+        const expected = '  -------e-eeee-e-e-eeee-e-e-e-e-|';
+
+        const result = s1.pipe(exhaustMap(() => i1, 2));
+        expectObservable(result).toBe(expected);
+        expectSubscriptionsTo(s1).toBe(ssubs);
+        expectSubscriptionsTo(i1).toBe(isubs);
+      });
+    });
+  });
 });
