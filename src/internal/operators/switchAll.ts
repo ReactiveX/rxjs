@@ -13,17 +13,16 @@ export function switchAll<R>(): OperatorFunction<any, R>;
  *
  * ![](switchAll.png)
  *
- * `switchAll` subscribes to an Observable that emits Observables, also known as
- * a higher-order Observable. The observable sequence that at any point in time
- * produces the elements of the most recent inner observable sequence that has
- * been received. The output Observable only
- * completes once all inner Observables have completed. Any error delivered by
- * a inner Observable will be immediately emitted on the output Observable.
+ * `switchAll` subscribes to an Observable that emits Observables, also known as a higher-order Observable.
+ * The observable sequence that at any point in time produces the elements of the most recent inner
+ * observable sequence that has been received. The output Observable only completes once the source observable,
+ * and all inner Observables have completed. Any error delivered by the source or inner Observables will be immediately
+ * emitted on the output Observable.
  *
  * ## Examples
  * Spawn a new interval Observable for each click event, but for every new
- * click it just cancel the previous one then it subscribes to the new one
- * ```javascript
+ * click, it just cancel the previous one then it subscribes to the new one
+ * ```ts
  * import { fromEvent } from "rxjs";
  * import { switchAll, map } from "rxjs/operators";
  *
@@ -35,7 +34,7 @@ export function switchAll<R>(): OperatorFunction<any, R>;
  *
  * Hit on the screen and it will let you track the last 10 mouse position.
  * For every click you are able to track the mouse position.
- * ```javascript
+ * ```ts
  * import { fromEvent } from "rxjs";
  * import { switchAll, map, take } from "rxjs/operators";
  *
@@ -69,13 +68,6 @@ export function switchAll<R>(): OperatorFunction<any, R>;
  * @see {@link switchMap}
  * @see {@link switchMapTo}
  * @see {@link mergeAll}
- *
- * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of inner
- * Observables being subscribed to concurrently.
- * @return {Observable} An Observable that emits values coming from all the
- * inner Observables emitted by the source Observable.
- * @method switchAll
- * @owner Observable
  */
 
 export function switchAll<T>(): OperatorFunction<ObservableInput<T>, T> {
