@@ -84,21 +84,21 @@ it('should enforce types for the 9th argument', () => {
   const o = pipe(a('0', '1'), a('1', '2'), a('2', '3'), a('3', '4'), a('4', '5'), a('5', '6'), a('6', '7'), a('7', '8'), a('#', '9')); // $ExpectError
 });
 
-it('should return generic OperatorFunction 1', () => {
+it('should return a non-narrowed Observable type', () => {
   const customOperator = <T>(p: T) => (a: Observable<T>) => a;
 
   const staticPipe = pipe(customOperator('infer'));
   const o = of('foo').pipe(staticPipe); // $ExpectType Observable<string>
 });
 
-it('should return generic OperatorFunction 2', () => {
+it('should return an explicit Observable type', () => {
   const customOperator = <T>() => (a: Observable<T>) => a;
 
   const staticPipe = pipe(customOperator<string>());
   const o = of('foo').pipe(staticPipe); // $ExpectType Observable<string>
 });
 
-it('should return generic OperatorFunction 3', () => {
+it('should return Observable<{}> when T cannot be inferred', () => {
   const customOperator = <T>() => (a: Observable<T>) => a;
 
   // type can't be possibly be inferred here, so it's {} instead of T.
@@ -106,7 +106,7 @@ it('should return generic OperatorFunction 3', () => {
   const o = of('foo').pipe(staticPipe); // $ExpectType Observable<{}>
 });
 
-it('should return generic function', () => {
+it('should return a non-narrowed type', () => {
   const func = pipe((value: string) => value, (value: string) => value + value);
-  const value = func("foo"); // $ExpectType string
+  const value = func('foo'); // $ExpectType string
 });
