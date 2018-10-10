@@ -122,7 +122,7 @@ class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private throttle(value: T): void {
     const duration = this.tryDurationSelector(value);
-    if (duration) {
+    if (!!duration) {
       this.add(this._throttled = subscribeToResult(this, duration));
     }
   }

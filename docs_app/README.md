@@ -20,7 +20,7 @@ Here are the most important tasks you might need to use:
 * `npm run serve-and-sync` - run both the `docs-watch` and `start` in the same console.
 * `npm run lint` - check that the doc-viewer code follows our style rules.
 * `npm test` - watch all the source files, for the doc-viewer, and run all the unit tests when any change.
-* `npm test --watch=false` - run all the unit tests once.
+* `npm test -- --watch=false` - run all the unit tests once.
 * `npm run e2e` - run all the e2e tests for the doc-viewer.
 
 * `npm run docs` - generate all the docs from the source files.
@@ -34,7 +34,7 @@ Here are the most important tasks you might need to use:
 
 Running `npm run start` (even when explicitly targeting production mode) does not set up the
 ServiceWorker. If you want to test the ServiceWorker locally, you can use `npm run build` and then
-serve the files in `dist/` with `npm run http-server dist -p 4200`.
+serve the files in `dist/` with `npm run http-server -- dist -p 4200`.
 
 ## Guide to authoring
 
@@ -93,7 +93,7 @@ npm run serve-and-sync
 ```
 
 * Open a browser at https://localhost:4200/ and navigate to the document on which you want to work.
-You can automatically open the browser by using `npm run start -o` in the first terminal.
+You can automatically open the browser by using `npm start -- -o` in the first terminal.
 
 * Make changes to the page's associated doc or example files. Every time a file is saved, the doc will
 be regenerated, the app will rebuild and the page will reload.
