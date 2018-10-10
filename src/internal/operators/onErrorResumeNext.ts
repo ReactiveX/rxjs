@@ -154,7 +154,7 @@ class OnErrorResumeNextSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private subscribeToNextSource(): void {
     const next = this.nextSources.shift();
-    if (next) {
+    if (!!next) {
       const innerSubscriber = new InnerSubscriber(this, undefined, undefined);
       const destination = this.destination as Subscription;
       destination.add(innerSubscriber);
