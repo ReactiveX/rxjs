@@ -151,3 +151,8 @@ TODO: Still need to research all of these and port tests.
 - [ ] interval (TODO: still need tests)
 - [x] timer
 - [ ] from (TODO: port tests)
+- [x] race
+- [x] throwError
+- [x] of
+- [x] from
+- [x] concat
