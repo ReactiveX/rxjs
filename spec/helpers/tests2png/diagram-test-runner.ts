@@ -96,7 +96,7 @@ global.asDiagram = function asDiagram(operatorLabel: string, glit: glitFn) {
         let inputStreams = getInputStreams(global.rxTestScheduler);
         global.rxTestScheduler.flush();
         inputStreams = updateInputStreamsPostFlush(inputStreams);
-        let filename = './tmp/docs/img/' + makeFilename(operatorLabel);
+        let filename = './docs_app/content/img/' + makeFilename(operatorLabel);
         painter(inputStreams, operatorLabel, outputStreams, filename);
         console.log('Painted ' + filename);
       });
