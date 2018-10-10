@@ -33,10 +33,10 @@ it('should infer type for rest parameters', () => {
   const a = of(1, 2, 3).pipe(endWith(4, 5, 6, 7, 8, 9, 10)); // $ExpectType Observable<number>
 });
 
-it('should accept empty parameter', () => {
-  const a = of(1, 2, 3).pipe(endWith()); // $ExpectType Observable<number>
+it('should infer with different types', () => {
+  const a = of(1, 2, 3).pipe(endWith('4', true)); // $ExpectType Observable<string | number | boolean>
 });
 
-it('should enforce type', () => {
-  const a = of(1, 2, 3).pipe(endWith('4')); // $ExpectError
+it('should accept empty parameter', () => {
+  const a = of(1, 2, 3).pipe(endWith()); // $ExpectType Observable<number>
 });
