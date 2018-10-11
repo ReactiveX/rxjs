@@ -55,8 +55,5 @@ import { isNumeric } from 'rxjs/internal/util/isNumeric';
 export function delay<T>(delay: number|Date, scheduler: SchedulerLike = asyncScheduler): Operation<T, T> {
   const delayFor = !isNumeric(delay) ? (+delay - scheduler.now()) : Math.abs(delay);
 
-  return (source: Observable<T>) => concat(
-    source.pipe(mergeMap((value: T) => timer(delayFor, scheduler).pipe(mapTo(value)))),
-    timer(delayFor, scheduler).pipe(ignoreElements()),
-  );
+  return mergeMap((value: T) => timer(delayFor, scheduler).pipe(mapTo(value)));
 }

@@ -17,6 +17,7 @@ export { ignoreElements } from 'rxjs/internal/operators/ignoreElements';
 export { map } from 'rxjs/internal/operators/map';
 export { materialize } from 'rxjs/internal/operators/materialize';
 export { mergeMap } from 'rxjs/internal/operators/mergeMap';
+export { mergeScan } from 'rxjs/internal/operators/mergeScan';
 export { multicastAs } from 'rxjs/internal/operators/multicastAs';
 export { observeOn } from 'rxjs/internal/operators/observeOn';
 export { repeat } from 'rxjs/internal/operators/repeat';

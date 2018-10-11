@@ -15,10 +15,10 @@ describe('delay operator', () => {
   // asDiagram('delay(20)')
   it('should delay by specified timeframe', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo, time }) => {
-      const e1 =   hot('---a--b--|  ');
-      const t =   time(   '--|      ');
-      const expected = '-----a--b--|';
-      const subs =     '^        !  ';
+      const e1 =   hot('---a--b---|');
+      const t =   time(   '--|     ');
+      const expected = '-----a--b-|';
+      const subs =     '^         !';
 
       const result = e1.pipe(delay(t, testScheduler));
 
@@ -31,7 +31,7 @@ describe('delay operator', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo, time }) => {
       const e1 =   hot('--a--b--|   ');
       const t =   time(  '---|      ');
-      const expected = '-----a--b--|';
+      const expected = '-----a--(b|)';
       const subs =     '^       !   ';
 
       const absoluteDelay = new Date(testScheduler.now() + t);
@@ -46,7 +46,7 @@ describe('delay operator', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo, time }) => {
       const e1 =   hot('---^--a--b--|   ');
       const t =   time(      '---|      ');
-      const expected =    '------a--b--|';
+      const expected =    '------a--(b|)';
       const subs =        '^        !   ';
 
       const absoluteDelay = new Date(testScheduler.now() + t);
@@ -101,11 +101,11 @@ describe('delay operator', () => {
     });
   });
 
-  it('should delay when source does not emits', () => {
+  it('should NOT delay when source does not emits', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo, time }) => {
       const e1 =   hot('----|   ');
       const t =   time(    '---|');
-      const expected = '-------|';
+      const expected = '----|';
       const subs =     '^   !   ';
 
       const result = e1.pipe(delay(t, testScheduler));
@@ -115,11 +115,11 @@ describe('delay operator', () => {
     });
   });
 
-  it('should delay when source is empty', () => {
+  it('should NOT delay when source is empty', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo, time }) => {
       const e1 =  cold('|');
       const t =   time('---|');
-      const expected = '---|';
+      const expected = '|';
 
       const result = e1.pipe(delay(t, testScheduler));
 

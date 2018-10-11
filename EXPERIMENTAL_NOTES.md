@@ -30,6 +30,7 @@ timestamp.
 - `filter` no longer supports `thisArg`.
 - `combineAll` no longer accepts the selector or the scheduler
 - `exhaustMap` now supports concurrency argument
+- `delay` no longer delays the emission of "complete" inconsistently (#4149)
 
 ## Fixes that are breaking changes to some
 
