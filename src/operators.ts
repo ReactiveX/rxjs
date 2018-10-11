@@ -3,6 +3,7 @@ export { finalize } from 'rxjs/internal/operators/finalize';
 export { audit } from 'rxjs/internal/operators/audit';
 export { buffer } from 'rxjs/internal/operators/buffer';
 export { catchError } from 'rxjs/internal/operators/catchError';
+export { debounce } from 'rxjs/internal/operators/debounce';
 export { defaultIfEmpty } from 'rxjs/internal/operators/defaultIfEmpty';
 export { dematerialize } from 'rxjs/internal/operators/dematerialize';
 export { distinct } from 'rxjs/internal/operators/distinct';
