@@ -1,10 +1,10 @@
-import { FOType, Sink, SchedulerLike }  from '../types';
-import { sourceAsObservable } from '../util/sourceAsObservable';
-import { Subscription } from '../Subscription';
-import { asyncScheduler } from '../scheduler/asyncScheduler';
-import { Observable } from '../Observable';
-import { isNumeric } from '../util/isNumeric';
-import { isScheduler } from '../util/isScheduler';
+import { FOType, Sink, SchedulerLike }  from 'rxjs/internal/types';
+import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
+import { Observable } from 'rxjs/internal/Observable';
+import { isNumeric } from 'rxjs/internal/util/isNumeric';
+import { isScheduler } from 'rxjs/internal/util/isScheduler';
 
 export function timer(): Observable<0>;
 export function timer(delay: number|Date): Observable<0>;

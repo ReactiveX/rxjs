@@ -1,4 +1,4 @@
-import { symbolObservable } from '../util/symbolObservable';
+import { symbolObservable } from 'rxjs/internal/util/symbolObservable';
 
 export function lowerCaseO<T>(...args: Array<any>): any {
   const o = {

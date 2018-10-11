@@ -1,4 +1,4 @@
-import { Observable } from '../../Observable';
+import { Observable } from 'rxjs/internal/Observable';
 import { Operation} from 'rxjs/internal/types';
 import { onEmptyResumeNext } from 'rxjs/internal/create/onEmptyResumeNext';
 

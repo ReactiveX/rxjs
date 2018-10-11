@@ -1,5 +1,5 @@
 import { onErrorResumeNext } from 'rxjs/internal/create/onErrorResumeNext';
-import { Observable } from '../../Observable';
+import { Observable } from 'rxjs/internal/Observable';
 import { Operation } from 'rxjs/internal/types';
 
 export function onErrorResumeWith<T, R>(...sources: Array<Observable<R>>): Operation<T, T|R> {

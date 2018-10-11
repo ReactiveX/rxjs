@@ -1,7 +1,7 @@
-import { multicastAs } from '../../operators/multicastAs';
-import { Observable } from '../../Observable';
-import { Operation, ObservableInput } from '../../types';
-import { ReplaySubject } from '../../ReplaySubject';
+import { multicastAs } from 'rxjs/internal/operators/multicastAs';
+import { Observable } from 'rxjs/internal/Observable';
+import { Operation, ObservableInput } from 'rxjs/internal/types';
+import { ReplaySubject } from 'rxjs/internal/ReplaySubject';
 
 export function publishReplayAs<T, R>(project: (published: Observable<T>) => ObservableInput<R>): Operation<T, R>;
 export function publishReplayAs<T, R>(bufferSize: number, project: (published: Observable<T>) => ObservableInput<R>): Operation<T, R>;

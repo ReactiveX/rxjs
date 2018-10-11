@@ -1,6 +1,6 @@
 import { isInteropObservable } from "rxjs/internal/util/isInteropObservable";
 import { expect } from "chai";
-import { symbolObservable } from './symbolObservable';
+import { symbolObservable } from 'rxjs/internal/util/symbolObservable';
 
 describe('isInteropObservable', () => {
   it('should pass for objects with Symbol.observable', () => {

@@ -1,7 +1,7 @@
-import { Observable } from '../Observable';
-import { Operation, FOType, Sink, SinkArg } from '../types';
-import { Subscription } from '../Subscription';
-import { lift } from '../util/lift';
+import { Observable } from 'rxjs/internal/Observable';
+import { Operation, FOType, Sink, SinkArg } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { lift } from 'rxjs/internal/util/lift';
 
 export function ignoreElements<T>(): Operation<T, never> {
   return lift((source: Observable<T>, dest: Sink<never>, subs: Subscription) => {

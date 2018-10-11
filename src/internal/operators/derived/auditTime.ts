@@ -1,8 +1,8 @@
-import { audit } from '../audit';
-import { SchedulerLike } from '../../types';
-import { asyncScheduler } from '../../scheduler/asyncScheduler';
-import { Operation } from '../../types';
-import { timer } from '../../create/timer';
+import { audit } from 'rxjs/internal/operators/audit';
+import { SchedulerLike } from 'rxjs/internal/types';
+import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
+import { Operation } from 'rxjs/internal/types';
+import { timer } from 'rxjs/internal/create/timer';
 
 /**
  * Ignores source values for `duration` milliseconds, then emits the most recent

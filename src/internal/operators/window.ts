@@ -1,9 +1,9 @@
-import { lift } from '../util/lift';
-import { Observable } from '../Observable';
-import { Operation, Sink, FOType, SinkArg, FObs } from '../types';
-import { Subscription } from '../Subscription';
-import { subjectBaseSource } from '../sources/subjectBaseSource';
-import { sourceAsObservable } from '../util/sourceAsObservable';
+import { lift } from 'rxjs/internal/util/lift';
+import { Observable } from 'rxjs/internal/Observable';
+import { Operation, Sink, FOType, SinkArg, FObs } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { subjectBaseSource } from 'rxjs/internal/sources/subjectBaseSource';
+import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
 
 /**
  * Branch out the source Observable values as a nested Observable whenever

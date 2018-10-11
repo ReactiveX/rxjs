@@ -1,9 +1,9 @@
-import { Observable } from '../Observable';
-import { Operation } from '../types';
-import { pipe } from '../util/pipe';
-import { window } from './window';
-import { mergeMap } from './mergeMap';
-import { toArray } from './derived/toArray';
+import { Observable } from 'rxjs/internal/Observable';
+import { Operation } from 'rxjs/internal/types';
+import { pipe } from 'rxjs/internal/util/pipe';
+import { window } from 'rxjs/internal/operators/window';
+import { mergeMap } from 'rxjs/internal/operators/mergeMap';
+import { toArray } from 'rxjs/internal/operators/derived/toArray';
 
 /**
  * Buffers the source Observable values until `closingNotifier` emits.

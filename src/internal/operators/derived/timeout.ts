@@ -1,8 +1,8 @@
-import { asyncScheduler } from '../../scheduler/asyncScheduler';
-import { SchedulerLike } from '../../types';
-import { timeoutWith } from './timeoutWith';
-import { throwError } from '../../create/throwError';
-import { TimeoutError } from '../../util/TimeoutError';
+import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
+import { SchedulerLike } from 'rxjs/internal/types';
+import { timeoutWith } from 'rxjs/internal/operators/derived/timeoutWith';
+import { throwError } from 'rxjs/internal/create/throwError';
+import { TimeoutError } from 'rxjs/internal/util/TimeoutError';
 
 /**
  *

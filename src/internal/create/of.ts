@@ -1,7 +1,7 @@
-import { Observable } from '../Observable';
-import { sourceAsObservable } from '../util/sourceAsObservable';
-import { FOType, Sink, Source } from '../types';
-import { Subscription } from '../Subscription';
+import { Observable } from 'rxjs/internal/Observable';
+import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
+import { FOType, Sink, Source } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 export function of<T>(...values: T[]): Observable<T> {
   return sourceAsObservable(ofSource(values));

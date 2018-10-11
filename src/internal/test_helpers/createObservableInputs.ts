@@ -1,6 +1,6 @@
 import { ObservableInput, of, asyncScheduler, fromScheduled } from 'rxjs';
-import { symbolObservable } from '../util/symbolObservable';
-import { symbolIterator } from '../util/symbolIterator';
+import { symbolObservable } from 'rxjs/internal/util/symbolObservable';
+import { symbolIterator } from 'rxjs/internal/util/symbolIterator';
 
 export const createObservableInputs = <T>(value: T) => of<ObservableInput<T>>(
   of<T>(value),

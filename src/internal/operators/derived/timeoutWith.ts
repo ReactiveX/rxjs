@@ -1,9 +1,9 @@
-import { race } from '../../create/race';
-import { Observable } from '../../Observable';
-import { SchedulerLike, ObservableInput, Operation } from '../../types';
-import { asyncScheduler } from '../../scheduler/asyncScheduler';
-import { switchMapTo } from './switchMapTo';
-import { timer } from '../../create/timer';
+import { race } from 'rxjs/internal/create/race';
+import { Observable } from 'rxjs/internal/Observable';
+import { SchedulerLike, ObservableInput, Operation } from 'rxjs/internal/types';
+import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
+import { switchMapTo } from 'rxjs/internal/operators/derived/switchMapTo';
+import { timer } from 'rxjs/internal/create/timer';
 
 /**
  *

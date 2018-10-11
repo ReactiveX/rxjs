@@ -1,7 +1,7 @@
-import { sourceAsObservable } from  '../util/sourceAsObservable';
-import { FOType, Sink, SchedulerLike } from '../types';
-import { Subscription } from '../Subscription';
-import { asyncScheduler } from '../scheduler/asyncScheduler';
+import { sourceAsObservable } from  'rxjs/internal/util/sourceAsObservable';
+import { FOType, Sink, SchedulerLike } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
 
 export function interval(interval: number, scheduler: SchedulerLike = asyncScheduler) {
   return sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<number>, subs: Subscription) => {

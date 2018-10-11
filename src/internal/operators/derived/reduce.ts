@@ -2,7 +2,7 @@ import { scan } from 'rxjs/internal/operators/scan';
 import { takeLast } from 'rxjs/internal/operators/takeLast';
 import { pipe } from 'rxjs/internal/util/pipe';
 import { Operation } from 'rxjs/internal/types';
-import { defaultIfEmpty } from '../defaultIfEmpty';
+import { defaultIfEmpty } from 'rxjs/internal/operators/defaultIfEmpty';
 
 export function reduce<T>(reducer: (state: T, value: T, index: number) => T): Operation<T, T>;
 export function reduce<T, R>(reducer: (state: T|R, value: T, index: number) => R): Operation<T, R>;

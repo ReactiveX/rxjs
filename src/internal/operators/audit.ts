@@ -1,9 +1,9 @@
-import { ObservableInput, Operation, Sink, FOType, SinkArg } from '../types';
-import { lift } from '../util/lift';
-import { Observable } from '../Observable';
-import { Subscription } from '../Subscription';
-import { tryUserFunction, resultIsError } from '../util/userFunction';
-import { fromSource } from '../sources/fromSource';
+import { ObservableInput, Operation, Sink, FOType, SinkArg } from 'rxjs/internal/types';
+import { lift } from 'rxjs/internal/util/lift';
+import { Observable } from 'rxjs/internal/Observable';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
+import { fromSource } from 'rxjs/internal/sources/fromSource';
 
 /**
  * Ignores source values for a duration determined by another Observable, then

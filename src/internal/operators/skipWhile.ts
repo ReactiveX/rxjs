@@ -1,8 +1,8 @@
-import { lift } from '../util/lift';
-import { Observable } from '../Observable';
-import { FOType, Sink, SinkArg } from '../types';
-import { Subscription } from '../Subscription';
-import { tryUserFunction, resultIsError } from '../util/userFunction';
+import { lift } from 'rxjs/internal/util/lift';
+import { Observable } from 'rxjs/internal/Observable';
+import { FOType, Sink, SinkArg } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 
 export function skipWhile<T>(predicate: (value: T, index: number) => boolean) {
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {

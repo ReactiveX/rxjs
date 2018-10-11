@@ -1,8 +1,8 @@
-import { Subject } from '../Subject';
-import { Subscription } from '../Subscription';
-import { TestMessage, TestScheduler, subscriptionLogger, TestObservable } from './TestScheduler';
-import { FOType, Sink } from '../types';
-import { sourceAsObservable } from '../util/sourceAsObservable';
+import { Subject } from 'rxjs/internal/Subject';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { TestMessage, TestScheduler, subscriptionLogger, TestObservable } from 'rxjs/internal/testing/TestScheduler';
+import { FOType, Sink } from 'rxjs/internal/types';
+import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
 
 export interface HotObservable<T> extends TestObservable<T> {
   setup(): void;

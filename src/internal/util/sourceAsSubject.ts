@@ -1,7 +1,7 @@
-import { FOType } from '../types';
-import { Subscription } from '../Subscription';
-import { sourceAsObservable } from './sourceAsObservable';
-import { Subject } from '../Subject';
+import { FOType } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
+import { Subject } from 'rxjs/internal/Subject';
 
 export function sourceAsSubject<T>(source: any): Subject<T> {
   source = sourceAsObservable(source) as Subject<T>;

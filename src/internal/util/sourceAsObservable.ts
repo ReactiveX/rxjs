@@ -1,9 +1,9 @@
-import { sinkFromHandlers } from './sinkFromHandlers';
-import { Operation, PartialObserver, FOType, Sink, Source, SinkArg, FObsArg } from '../types';
-import { Subscription } from '../Subscription';
-import { pipeArray } from './pipe';
-import { Observable } from '../Observable';
-import { sinkFromObserver } from './sinkFromObserver';
+import { sinkFromHandlers } from 'rxjs/internal/util/sinkFromHandlers';
+import { Operation, PartialObserver, FOType, Sink, Source, SinkArg, FObsArg } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { pipeArray } from 'rxjs/internal/util/pipe';
+import { Observable } from 'rxjs/internal/Observable';
+import { sinkFromObserver } from 'rxjs/internal/util/sinkFromObserver';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 
 export function sourceAsObservable<T>(source: Source<T>): Observable<T> {

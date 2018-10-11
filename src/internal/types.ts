@@ -1,5 +1,5 @@
-import { Subscription } from './Subscription';
-import { Observable } from './Observable';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { Observable } from 'rxjs/internal/Observable';
 
 export const enum FOType {
   SUBSCRIBE = 0,

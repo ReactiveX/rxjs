@@ -1,13 +1,13 @@
-import { Observable } from '../Observable';
-import { coldObservable } from './ColdObservable';
-import { HotObservable, hotObservable } from './HotObservable';
-import { Subscription } from '../Subscription';
-import { VirtualScheduler} from '../scheduler/VirtualScheduler';
-import { Notification, SchedulerLike, FOType, Sink } from '../types';
-import { isObservable } from '../util/isObservable';
-import { asyncScheduler } from '../scheduler/asyncScheduler';
-import { asapScheduler } from '../scheduler/asapScheduler';
-import { QueueScheduler } from '../scheduler/QueueScheduler';
+import { Observable } from 'rxjs/internal/Observable';
+import { coldObservable } from 'rxjs/internal/testing/ColdObservable';
+import { HotObservable, hotObservable } from 'rxjs/internal/testing/HotObservable';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { VirtualTimeScheduler} from 'rxjs/internal/scheduler/VirtualTimeScheduler';
+import { Notification, SchedulerLike, FOType, Sink } from 'rxjs/internal/types';
+import { isObservable } from 'rxjs/internal/util/isObservable';
+import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
+import { asapScheduler } from 'rxjs/internal/scheduler/asapScheduler';
+import { QueueScheduler } from 'rxjs/internal/scheduler/QueueScheduler';
 
 // TODO(benlesh): we need to figure out how to have TestScheduler support testing
 // the animation frame scheduler
@@ -107,7 +107,7 @@ export interface TestObservable<T> extends Observable<T> {
 export type observableToBeFn = (marbles: string, values?: any, errorValue?: any) => void;
 export type subscriptionLogsToBeFn = (marbles: string | string[]) => void;
 
-export interface TestScheduler extends VirtualScheduler {
+export interface TestScheduler extends VirtualTimeScheduler {
   readonly hotObservables: HotObservable<any>[];
   readonly coldObservables: TestObservable<any>[];
 
@@ -129,7 +129,7 @@ function TestSchedulerImpl(
   this: any,
   assertDeepEqual: (actual: any, expected: any) => boolean | void,
 ) {
-  VirtualScheduler.call(this);
+  VirtualTimeScheduler.call(this);
   this._assertDeepEqual = assertDeepEqual;
   this._runMode = false;
   this._flushTests = [];
@@ -138,7 +138,7 @@ function TestSchedulerImpl(
   this._patches = DEFAULT_SCHEDULER_PATCHES;
 }
 
-TestSchedulerImpl.prototype = Object.create(VirtualScheduler.prototype);
+TestSchedulerImpl.prototype = Object.create(VirtualTimeScheduler.prototype);
 
 const proto = TestSchedulerImpl.prototype;
 
@@ -287,7 +287,7 @@ proto.flush = function (): void {
     hotObservables.shift().setup();
   }
 
-  VirtualScheduler.prototype.flush.call(this);
+  VirtualTimeScheduler.prototype.flush.call(this);
 
   this._flushTests = this._flushTests.filter((test: any) => {
     if (test.ready) {

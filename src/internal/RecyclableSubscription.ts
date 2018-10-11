@@ -1,5 +1,5 @@
-import { Subscription, SubscriptionContext, teardownToFunction } from './Subscription';
-import { Teardown } from './types';
+import { Subscription, SubscriptionContext, teardownToFunction } from 'rxjs/internal/Subscription';
+import { Teardown } from 'rxjs/internal/types';
 
 export interface RecyclableSubscription extends Subscription {
   recycle(): void;

@@ -1,11 +1,11 @@
 import { SchedulerLike } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
 
-export interface VirtualSchedulerCtor {
-  new (maxFrames?: number): VirtualScheduler;
+export interface VirtualTimeSchedulerCtor {
+  new (maxFrames?: number): VirtualTimeScheduler;
 }
 
-export interface VirtualScheduler extends SchedulerLike {
+export interface VirtualTimeScheduler extends SchedulerLike {
   frameTimeFactor: number;
   index: number;
   maxFrames: number;
@@ -21,7 +21,7 @@ interface VirtualAction<T=any> {
   subs: Subscription;
 }
 
-function VirtualSchedulerImpl(this: any, maxFrames = Number.POSITIVE_INFINITY) {
+function VirtualTimeSchedulerImpl(this: any, maxFrames = Number.POSITIVE_INFINITY) {
   this._actions = [];
   this._flushing = false;
   this.maxFrames = Number.POSITIVE_INFINITY;
@@ -30,7 +30,7 @@ function VirtualSchedulerImpl(this: any, maxFrames = Number.POSITIVE_INFINITY) {
   this.index = -1;
 }
 
-const proto = VirtualSchedulerImpl.prototype;
+const proto = VirtualTimeSchedulerImpl.prototype;
 
 proto.schedule = function<T>(this: any, work: (state: T) => void, delay = 0, state = undefined as T, subs?: Subscription): Subscription {
   subs = subs || new Subscription();
@@ -91,7 +91,7 @@ proto.flush = function (this: any) {
   }
 }
 
-export const VirtualScheduler: VirtualSchedulerCtor = VirtualSchedulerImpl as any;
+export const VirtualTimeScheduler: VirtualTimeSchedulerCtor = VirtualTimeSchedulerImpl as any;
 
 function sortActions(a: VirtualAction, b: VirtualAction) {
   if (a.delay === b.delay) {

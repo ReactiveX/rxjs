@@ -1,6 +1,6 @@
 import { filter } from 'rxjs/internal/operators/filter';
 import { Operation } from 'rxjs/internal/types';
-import { Observable } from '../../Observable';
+import { Observable } from 'rxjs/internal/Observable';
 import { identity } from 'rxjs/internal/util/identity';
 import { throwIfEmpty } from 'rxjs/internal/operators/derived/throwIfEmpty';
 import { defaultIfEmpty } from 'rxjs/internal/operators/defaultIfEmpty';

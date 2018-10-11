@@ -1,7 +1,7 @@
-import { Operation, ObservableInput, Sink, FOType, SinkArg } from '../types';
-import { lift } from '../util/lift';
-import { Subscription } from '../Subscription';
-import { Observable } from '../Observable';
+import { Operation, ObservableInput, Sink, FOType, SinkArg } from 'rxjs/internal/types';
+import { lift } from 'rxjs/internal/util/lift';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { Observable } from 'rxjs/internal/Observable';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 import { fromSource } from 'rxjs/internal/sources/fromSource';
 import { identity } from 'rxjs/internal/util/identity';

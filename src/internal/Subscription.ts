@@ -1,6 +1,6 @@
-import { Teardown } from './types';
-import { noop } from './util/noop';
-import { isSubscription } from './util/isSubscription';
+import { Teardown } from 'rxjs/internal/types';
+import { noop } from 'rxjs/internal/util/noop';
+import { isSubscription } from 'rxjs/internal/util/isSubscription';
 
 export interface Subscription {
   unsubscribe(): void;

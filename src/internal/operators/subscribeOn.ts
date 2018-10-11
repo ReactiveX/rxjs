@@ -1,7 +1,7 @@
-import { SchedulerLike, FOType, SinkArg, Sink } from '../types';
-import { lift } from '../util/lift';
-import { Subscription } from '../Subscription';
-import { Observable } from '../Observable';
+import { SchedulerLike, FOType, SinkArg, Sink } from 'rxjs/internal/types';
+import { lift } from 'rxjs/internal/util/lift';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { Observable } from 'rxjs/internal/Observable';
 
 /**
  * Asynchronously subscribes Observers to this Observable on the specified {@link SchedulerLike}.

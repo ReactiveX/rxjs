@@ -1,7 +1,7 @@
-import { lift } from '../util/lift';
-import { Observable } from '../Observable';
-import { FOType, Sink, Operation, SinkArg } from '../types';
-import { Subscription } from '../Subscription';
+import { lift } from 'rxjs/internal/util/lift';
+import { Observable } from 'rxjs/internal/Observable';
+import { FOType, Sink, Operation, SinkArg } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 export function defaultIfEmpty<T, R>(defaultValue: R = null): Operation<T, T|R> {
   return lift((source: Observable<T>, dest: Sink<T|R>, subs: Subscription) => {

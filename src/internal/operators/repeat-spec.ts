@@ -1,7 +1,7 @@
 import { of } from 'rxjs/internal/create/of';
 import { repeat } from 'rxjs/internal/operators/repeat';
 import { expect } from 'chai';
-import { Observable } from '../Observable';
+import { Observable } from 'rxjs/internal/Observable';
 
 describe('repeat', () => {
   it('should repeat and complete', () => {

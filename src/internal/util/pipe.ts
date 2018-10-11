@@ -1,4 +1,4 @@
-import { identity } from "./identity";
+import { identity } from "rxjs/internal/util/identity";
 
 export function pipe<T>(): (value: T) => T;
 export function pipe<A, R>(fnA: (value: A) => R): (value: A) => R;

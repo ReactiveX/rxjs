@@ -1,8 +1,8 @@
-import { lift } from '../util/lift';
-import { Observable } from '../Observable';
-import { FOType, Operation, Sink, SinkArg } from '../types';
-import { Subscription } from '../Subscription';
-import { tryUserFunction, resultIsError } from '../util/userFunction';
+import { lift } from 'rxjs/internal/util/lift';
+import { Observable } from 'rxjs/internal/Observable';
+import { FOType, Operation, Sink, SinkArg } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 
 function DEFAULT_COMPARER<T>(a: T, b: T) {
   return a === b;

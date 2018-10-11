@@ -1,10 +1,10 @@
-import { toArray } from './toArray';
-import { Observable } from '../../Observable';
-import { Operation, ObservableInput } from '../../types';
-import { pipeArray } from '../../util/pipe';
-import { switchMap } from '../switchMap';
-import { combineLatest } from '../../create/combineLatest';
-import { tap } from '../tap';
+import { toArray } from 'rxjs/internal/operators/derived/toArray';
+import { Observable } from 'rxjs/internal/Observable';
+import { Operation, ObservableInput } from 'rxjs/internal/types';
+import { pipeArray } from 'rxjs/internal/util/pipe';
+import { switchMap } from 'rxjs/internal/operators/switchMap';
+import { combineLatest } from 'rxjs/internal/create/combineLatest';
+import { tap } from 'rxjs/internal/operators/tap';
 
 
 export function combineAll<T>(): Operation<ObservableInput<T>, T[]>;

@@ -1,5 +1,5 @@
-import { FOType, SinkArg } from '../types';
-import { Subscription } from '../Subscription';
+import { FOType, SinkArg } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 export function sinkFromHandlers<T>(nextHandler: (value: T, subscription: Subscription) => void, errorHandler: (err: any) => void, completeHandler: () => void) {
   return (type: FOType, arg: SinkArg<T>, subs: Subscription) => {

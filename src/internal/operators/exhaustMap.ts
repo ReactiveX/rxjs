@@ -1,4 +1,4 @@
-import { Operation, ObservableInput, Sink, FOType, SinkArg } from '../types';
+import { Operation, ObservableInput, Sink, FOType, SinkArg } from 'rxjs/internal/types';
 import { lift } from 'rxjs/internal/util/lift';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Observable } from 'rxjs/internal/Observable';

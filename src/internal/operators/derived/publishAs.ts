@@ -1,5 +1,5 @@
 import { multicastAs } from 'rxjs/internal/operators/multicastAs';
-import { Observable } from '../../Observable';
+import { Observable } from 'rxjs/internal/Observable';
 import { Operation } from 'rxjs/internal/types';
 import { Subject } from 'rxjs/internal/Subject';
 

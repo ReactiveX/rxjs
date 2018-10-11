@@ -1,8 +1,8 @@
-import { Observable } from '../Observable';
-import { sourceAsObservable } from '../util/sourceAsObservable';
-import { FOType, Sink, SinkArg} from '../types';
-import { Subscription } from '../Subscription';
-import { RecyclableSubscription } from '../RecyclableSubscription';
+import { Observable } from 'rxjs/internal/Observable';
+import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
+import { FOType, Sink, SinkArg} from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { RecyclableSubscription } from 'rxjs/internal/RecyclableSubscription';
 
 export function onErrorResumeNext<T>(...sources: Array<Observable<T>>): Observable<T> {
   return sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T>, downstreamSubs: Subscription) => {

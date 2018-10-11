@@ -55,7 +55,7 @@ timestamp.
 - [x] concatMapTo
 - [x] count (g3)
 - [x] debounce (g3)
-- [ ] debounceTime (g3)
+- [x] debounceTime (g3)
 - [x] defaultIfEmpty (g3)
 - [x] delay (g3)
 - [x] delayWhen (g3)

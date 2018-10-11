@@ -1,5 +1,5 @@
-import { PartialObserver, FOType, Sink, SinkArg } from '../types';
-import { Subscription } from '../Subscription';
+import { PartialObserver, FOType, Sink, SinkArg } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 export function sinkFromObserver<T>(observer: PartialObserver<T>): Sink<T> {
   return (type: FOType, arg: SinkArg<T>, subs: Subscription) => {

@@ -1,5 +1,5 @@
 import { Operation } from 'rxjs/internal/types';
-import { Observable } from '../../Observable';
+import { Observable } from 'rxjs/internal/Observable';
 import { ArgumentOutOfRangeError } from 'rxjs/internal/error/ArgumentOutOfRangeError';
 import { filter } from 'rxjs/internal/operators/filter';
 import { take } from 'rxjs/internal/operators/take';

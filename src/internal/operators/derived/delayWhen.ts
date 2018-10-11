@@ -1,10 +1,10 @@
-import { Operation, ObservableInput } from '../../types';
-import { Observable } from '../../Observable';
-import { take } from '../take';
-import { mergeMap } from '../mergeMap';
-import { mapTo } from './mapTo';
-import { from } from '../../create/from';
-import { defaultIfEmpty } from '../defaultIfEmpty';
+import { Operation, ObservableInput } from 'rxjs/internal/types';
+import { Observable } from 'rxjs/internal/Observable';
+import { take } from 'rxjs/internal/operators/take';
+import { mergeMap } from 'rxjs/internal/operators/mergeMap';
+import { mapTo } from 'rxjs/internal/operators/derived/mapTo';
+import { from } from 'rxjs/internal/create/from';
+import { defaultIfEmpty } from 'rxjs/internal/operators/defaultIfEmpty';
 import { defer } from 'rxjs';
 
 /* tslint:disable:max-line-length */

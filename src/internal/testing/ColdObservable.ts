@@ -1,7 +1,7 @@
-import { sourceAsObservable } from '../util/sourceAsObservable';
-import { Subscription } from '../Subscription';
-import { TestMessage, TestScheduler, subscriptionLogger, TestObservable } from './TestScheduler';
-import { FOType, Sink } from '../types';
+import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { TestMessage, TestScheduler, subscriptionLogger, TestObservable } from 'rxjs/internal/testing/TestScheduler';
+import { FOType, Sink } from 'rxjs/internal/types';
 
 export function coldObservable<T>(messages: TestMessage<T>[], scheduler: TestScheduler): TestObservable<T> {
   const subsLogger = subscriptionLogger();

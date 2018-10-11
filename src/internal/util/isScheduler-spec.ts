@@ -1,4 +1,4 @@
-import { isScheduler } from './isScheduler';
+import { isScheduler } from 'rxjs/internal/util/isScheduler';
 import { expect } from 'chai';
 
 describe('isScheduler', () => {

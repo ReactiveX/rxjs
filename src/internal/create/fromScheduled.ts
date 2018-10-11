@@ -1,15 +1,15 @@
 // TODO: require rxjs/core as a peer dep
-import { SchedulerLike, ObservableInput, FOType, Sink, SinkArg, InteropObservable } from '../types';
-import { isArrayLike } from '../util/isArrayLike';
-import { Observable } from '../Observable';
-import { sourceAsObservable } from '../util/sourceAsObservable';
-import { Subscription } from '../Subscription';
-import { isIterable } from '../util/isIterable';
-import { isObservable } from '../util/isObservable';
-import { isInteropObservable } from '../util/isInteropObservable';
-import { isPromiseLike } from '../util/isPromiseLike';
-import { isAsyncIterable } from '../util/isAsyncIterable';
-import { symbolAsyncIterator } from '../util/symbolAsyncIterator';
+import { SchedulerLike, ObservableInput, FOType, Sink, SinkArg, InteropObservable } from 'rxjs/internal/types';
+import { isArrayLike } from 'rxjs/internal/util/isArrayLike';
+import { Observable } from 'rxjs/internal/Observable';
+import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { isIterable } from 'rxjs/internal/util/isIterable';
+import { isObservable } from 'rxjs/internal/util/isObservable';
+import { isInteropObservable } from 'rxjs/internal/util/isInteropObservable';
+import { isPromiseLike } from 'rxjs/internal/util/isPromiseLike';
+import { isAsyncIterable } from 'rxjs/internal/util/isAsyncIterable';
+import { symbolAsyncIterator } from 'rxjs/internal/util/symbolAsyncIterator';
 
 export function fromScheduled<T>(input: ObservableInput<T>, scheduler: SchedulerLike): Observable<T> {
   if (isObservable(input)) {

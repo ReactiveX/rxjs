@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { Observable, isObservable, of, throwError, EMPTY, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { assertDeepEquals } from './test_helpers/assertDeepEquals';
+import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
 import * as sinon from 'sinon';
 
 function expectFullObserver(val: any) {

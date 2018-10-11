@@ -1,1 +1,1 @@
-export * from './internal/testing/TestScheduler';
+export * from 'rxjs/internal/testing/TestScheduler';

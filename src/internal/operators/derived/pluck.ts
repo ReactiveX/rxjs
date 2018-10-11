@@ -1,5 +1,5 @@
 import { Operation } from 'rxjs/internal/types';
-import { Observable } from '../../Observable';
+import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
 
 export function pluck<T, R>(...properties: string[]): Operation<T, R> {

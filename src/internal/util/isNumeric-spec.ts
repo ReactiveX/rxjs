@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import { isNumeric } from './isNumeric';
+import { isNumeric } from 'rxjs/internal/util/isNumeric';
 
 /** @test {isNumeric} */
 describe('isNumeric', () => {

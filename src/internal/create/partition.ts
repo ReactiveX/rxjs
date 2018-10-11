@@ -1,5 +1,5 @@
-import { filter } from '../operators/filter';
-import { Observable } from '../Observable';
+import { filter } from 'rxjs/internal/operators/filter';
+import { Observable } from 'rxjs/internal/Observable';
 
 
 export function partition<T>(source: Observable<T>, predicate: (value: T, index: number) => boolean) {

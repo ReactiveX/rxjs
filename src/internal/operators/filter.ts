@@ -1,8 +1,8 @@
-import { Observable } from '../Observable';
-import { Operation, FOType, Sink, SinkArg, FObs } from '../types';
-import { Subscription } from '../Subscription';
-import { tryUserFunction, resultIsError } from '../util/userFunction';
-import { lift } from '../util/lift';
+import { Observable } from 'rxjs/internal/Observable';
+import { Operation, FOType, Sink, SinkArg, FObs } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
+import { lift } from 'rxjs/internal/util/lift';
 
 export function filter<T>(predicate: (value: T, index: number) => boolean): Operation<T, T> {
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {

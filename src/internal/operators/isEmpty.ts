@@ -1,7 +1,7 @@
-import { Observable } from '../Observable';
-import { Operation, FOType, Sink, SinkArg, FObs } from '../types';
-import { Subscription } from '../Subscription';
-import { lift } from '../util/lift';
+import { Observable } from 'rxjs/internal/Observable';
+import { Operation, FOType, Sink, SinkArg, FObs } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { lift } from 'rxjs/internal/util/lift';
 
 export function isEmpty<T>(): Operation<T, boolean> {
   return lift((source: Observable<T>, dest: Sink<boolean>, subs: Subscription) => {

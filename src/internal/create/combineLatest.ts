@@ -1,10 +1,10 @@
-import { ObservableInput, FOType, Sink, Source, SinkArg } from '../types';
-import { Observable } from '../Observable';
-import { sourceAsObservable } from '../util/sourceAsObservable';
-import { Subscription } from '../Subscription';
-import { fromSource } from "../sources/fromSource";
-import { identity } from '../util/identity';
-import { tryUserFunction, resultIsError } from '../util/userFunction';
+import { ObservableInput, FOType, Sink, Source, SinkArg } from 'rxjs/internal/types';
+import { Observable } from 'rxjs/internal/Observable';
+import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { fromSource } from "rxjs/internal/sources/fromSource";
+import { identity } from 'rxjs/internal/util/identity';
+import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 
 /* tslint:disable:max-line-length */
 export function combineLatest<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>): Observable<[T, T2]>;
