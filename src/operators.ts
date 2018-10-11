@@ -38,6 +38,7 @@ export { takeUntil } from 'rxjs/internal/operators/takeUntil';
 export { takeWhile } from 'rxjs/internal/operators/takeWhile';
 export { takeLast } from 'rxjs/internal/operators/takeLast';
 export { tap } from 'rxjs/internal/operators/tap';
+export { throttle } from 'rxjs/internal/operators/throttle';
 export { window } from 'rxjs/internal/operators/window';
 export { withLatestFrom } from 'rxjs/internal/operators/withLatestFrom';
 
