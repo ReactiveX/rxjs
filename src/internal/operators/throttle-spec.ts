@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { throttle, mergeMap, mapTo } from 'rxjs/operators';
-import { of, concat, timer, Observable } from 'rxjs';
+import { of, concat, timer, Observable, EMPTY } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
 
@@ -29,6 +29,19 @@ describe('throttle operator', () =>  {
       expectSubscriptionsTo(e1).toBe(e1subs);
       expectSubscriptionsTo(e2).toBe(e2subs);
     });
+  });
+
+  it('should pass an index to the duration selector', () => {
+    const results: any[] = [];
+
+    of('a', 'b', 'c').pipe(
+      throttle((value, index) => {
+        results.push(value, index);
+        return EMPTY;
+      })
+    ).subscribe();
+
+    expect(results).to.deep.equal(['a', 0, 'b', 1, 'c', 2]);
   });
 
   it('should simply mirror the source if values are not emitted often enough', () =>  {

@@ -31,6 +31,8 @@ timestamp.
 - `combineAll` no longer accepts the selector or the scheduler
 - `exhaustMap` now supports concurrency argument
 - `delay` no longer delays the emission of "complete" inconsistently (#4149)
+- `debounce` now passes `index` to `durationSelector`.
+- `throttle` now passes `index` to `durationSelector`.
 
 ## Fixes that are breaking changes to some
 

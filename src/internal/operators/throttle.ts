@@ -48,7 +48,7 @@ export const defaultThrottleConfig: ThrottleConfig = {
  * @see {@link sample}
  * @see {@link throttleTime}
  *
- * @param {function(value: T): SubscribableOrPromise} durationSelector A function
+ * @param {function(value: T, index: number): SubscribableOrPromise} durationSelector A function
  * that receives a value from the source Observable, for computing the silencing
  * duration for each source value, returned as an Observable or a Promise.
  * @param {Object} config a configuration object to define `leading` and `trailing` behavior. Defaults
@@ -59,15 +59,17 @@ export const defaultThrottleConfig: ThrottleConfig = {
  * @owner Observable
  */
 export function throttle<T>(
-  durationSelector: (value: T) => ObservableInput<any>,
+  durationSelector: (value: T, index: number) => ObservableInput<any>,
   config = defaultThrottleConfig
 ): Operation<T, T> {
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     let _innerSubs: Subscription;
     let _sendValue: T;
     let _hasValue = false;
+    let _i = 0;
+
     const throttle = (value: T) => {
-      const duration = tryUserFunction(() => fromSource(durationSelector(value)));
+      const duration = tryUserFunction(() => fromSource(durationSelector(value, _i++)));
       if (resultIsError(duration)) {
         dest(FOType.ERROR, duration.error, subs);
       } else {
