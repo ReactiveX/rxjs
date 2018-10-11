@@ -4,11 +4,17 @@ RxJS is mostly useful for its *operators*, even though the Observable is the fou
 
 ## What are operators?
 
-Operators are **functions** that can be piped to Obseravales, such as `map(...)`, `filter(...)`, `merge(...)`, etc. When called, they do not *change* the existing Observable instance. Instead, they return a *new* Observable, whose subscription logic is based on the first Observable.
+Operators are **functions**. There are two kinds of operators:
 
-<span class="informal">An Operator is a function which creates a new Observable based on the current Observable. This is a pure operation: the previous Observable stays unmodified.</span>
+**Pipeable Operators** are the kind that can be piped to Observables using the syntax `observableInstance.pipe(operator())`. These include `map(...)`, `filter(...)`, and `mergeMap(...)`. When called, they do not *change* the existing Observable instance. Instead, they return a *new* Observable, whose subscription logic is based on the first Observable.
 
-An Operator is essentially a pure function which takes one Observable as input and generates another Observable as output. Subscribing to the output Observable will also subscribe to the input Observable. In the following example, we create a custom operator function that multiplies each value received from the input Observable by 10:
+<span class="informal">A Pipeable Operator is a function that creates a new Observable based on the current Observable. This is a pure operation: the previous Observable stays unmodified.</span>
+
+An Pipeable Operator is essentially a pure function which takes one Observable as input and generates another Observable as output. Subscribing to the output Observable will also subscribe to the input Observable.
+
+**Creation Operators** are the other kind of operator that can be called as standalone functions to create a new Observable. For example: `of(1, 2, 3)`. These will be discussed in more detail in the next section.
+
+In the following example, we create a custom pipeable operator function that multiplies each value received from the input Observable by 10. We test this by creating a new Observable using the creation operator function `from` which can create an Observable from an array of values.
 
 ```js
 const multiplyByTen = () => (source) => {
@@ -37,7 +43,7 @@ Which outputs:
 
 Notice that a subscribe to `output` will cause the `input` Observable to be subscribed. We call this an "operator subscription chain".
 
-You can also create custom operators by wrapping calls to existing operators. We can reimplement our `multiplyByTen` operator by wrapping the `map` operator which will project our multiplication function over values emitted by the source.
+You can also create custom operators by wrapping calls to existing operators. We can reimplement our `multiplyByTen` operator by wrapping the `map` operator which will project our multiplication function over values emitted by the source Observable.
 
 ```js
 import { map } from 'rxjs/operators';
@@ -47,7 +53,7 @@ const multiplyByTen = () => map((value) => 10 * value);
 
 ## Creation Operators
 
-**What are creation operators?** Besides pipeable operators, creation operators are functions that can be used to create an Observable with some common predefined behavior or by combining other Observables.
+**What are creation operators?** Besides pipeable operators, creation operators are functions that can be used to create an Observable with some common predefined behavior or by joining other Observables.
 
 A typical example of a creation operator would be the `interval` function. It takes a number (not an Observable) as input argument, and produces an Observable as output:
 
@@ -59,7 +65,7 @@ const observable = interval(1000 /* number of milliseconds */);
 
 See the list of [all static creation operators here](#creation-operators).
 
-Some *Combination Operators* such as `merge`, `combineLatest`, `concat`, etc. take *multiple* Observables as input, not just one, for instance:
+Some *Join Operators* such as `merge`, `combineLatest`, `concat`, etc. take *multiple* Observables as input, not just one, for instance:
 
 ```js
 const observable1 = interval(1000);
@@ -67,6 +73,8 @@ const observable2 = interval(400);
 
 const merged = merge(observable1, observable2);
 ```
+
+Join operators emit the values of multiple source Observables according to their logic.
 
 ## Marble diagrams
 
@@ -82,7 +90,7 @@ Throughout this documentation site, we extensively use marble diagrams to explai
 
 ## Categories of operators
 
-There are operators for different purposes, and they may be categorized as: creation, transformation, filtering, combination, multicasting, error handling, utility, etc. In the following list you will find all the operators organized in categories.
+There are operators for different purposes, and they may be categorized as: creation, transformation, filtering, joining, multicasting, error handling, utility, etc. In the following list you will find all the operators organized in categories.
 
 For a complete overview, see the [references page](/api).
 
@@ -102,6 +110,17 @@ For a complete overview, see the [references page](/api).
 - [`range`](/api/index/function/range)
 - [`throwError`](/api/index/function/throwError)
 - [`timer`](/api/index/function/timer)
+- [`iif`](/api/index/function/iif)
+
+### Join Creation Operators
+These are Observable creation operators that also have join functionality -- emitting values of multiple source Observables.
+
+- [`combineLatest`](/api/index/function/combineLatest)
+- [`concat`](/api/index/function/concat)
+- [`forkJoin`](/api/index/function/forkJoin)
+- [`merge`](/api/index/function/merge)
+- [`race`](/api/index/function/race)
+- [`zip`](/api/index/function/zip)
 
 ### Transformation Operators
 
@@ -162,20 +181,15 @@ For a complete overview, see the [references page](/api).
 - [`throttle`](/api/operators/throttle)
 - [`throttleTime`](/api/operators/throttleTime)
 
-### Combination Operators
+### Join Operators
+Also see the [Join Creation Operators](#join-creation-operators) section above.
 
 - [`combineAll`](/api/operators/combineAll)
-- [`combineLatest`](/api/index/function/combineLatest)
-- [`concat`](/api/index/function/concat)
 - [`concatAll`](/api/operators/concatAll)
 - [`exhaust`](/api/operators/exhaust)
-- [`forkJoin`](/api/index/function/forkJoin)
-- [`merge`](/api/index/function/merge)
 - [`mergeAll`](/api/operators/mergeAll)
-- [`race`](/api/index/function/race)
 - [`startWith`](/api/operators/startWith)
 - [`withLatestFrom`](/api/operators/withLatestFrom)
-- [`zip`](/api/index/function/zip)
 
 ### Multicasting Operators
 
