@@ -89,7 +89,7 @@ timestamp.
 - [ ] mergeScan
 - [x] min
 - [x] multicast (g3) (multicast and multicastAs)
-- [ ] observeOn (g3)
+- [x] observeOn (g3)
 - [x] onErrorResumeNext (g3) (as onErrorResumeWith)
 - [x] pairwise (g3)
 - [ ] partition (g3)
@@ -97,7 +97,7 @@ timestamp.
 - [x] publish (g3) (publish static and publishAs)
 - [ ] publishBehavior (g3)
 - [ ] publishLast (g3)
-- [ ] publishReplay (g3)
+- [x] publishReplay (g3) (publishReplay static and publishReplayAs)
 - [ ] race
 - [x] reduce (g3)
 - [ ] refCount (g3)
@@ -117,7 +117,7 @@ timestamp.
 - [x] skipUntil (g3)
 - [x] skipWhile (g3)
 - [x] startWith (g3)
-- [ ] subscribeOn (g3)
+- [x] subscribeOn (g3)
 - [ ] switchAll (g3)
 - [x] switchMap (g3)
 - [x] switchMapTo (g3)
