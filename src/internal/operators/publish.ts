@@ -19,14 +19,11 @@ export function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOpera
  * ![](publish.png)
  *
  * ## Examples
- * No one of connectable$ observables start emitting values until the screen gets click (calling connect method of
- * the observable) . After clicked on the screen it will output values every two second before each one
- * (connectable$) gets complete.
- * ```javascript
- * import { of, zip, interval, fromEvent } from "rxjs";
- * import { map, publish, take } from "rxjs/operators";
- *
- * const click$ = fromEvent<MouseEvent>(document, "click");
+ * Make source$ hot by applying publish operator, then merge each inner observable into a single one
+ * and subscribe.
+ * ```ts
+ * import { of, zip, interval, merge } from "rxjs";
+ * import { map, publish } from "rxjs/operators";
  *
  * const source$ = zip(
  *    interval(2000),
@@ -35,16 +32,14 @@ export function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOpera
  *       map(values => values[1])
  *    );
  *
- * const connectable$ = source$.pipe(publish());
- *
- * connectable$.subscribe(items => console.log(`connectable 1: ${items}`));
- * connectable$.subscribe(items => console.log(`connectable 2: ${items}`));
- * connectable$.subscribe(items => console.log(`connectable 3: ${items}`));
- * connectable$.subscribe(items => console.log(`connectable 4: ${items}`));
- * connectable$.subscribe(items => console.log(`connectable 5: ${items}`));
- *
- * click$.pipe(take(1))
- *    .subscribe(() => connectable$.connect());
+ * source$.pipe(
+ *    publish(multicasted$ => {
+ *       return merge(
+ *          multicasted$.pipe(tap(x => console.log('1', x))),
+ *          multicasted$.pipe(tap(x => console.log('2', x))),
+ *          multicasted$.pipe(tap(x => console.log('3', x))),
+ *       );
+ *    })).subscribe();
  * ```
  *
  * @param {Function} [selector] - Optional selector function which can use the multicasted source sequence as many times
