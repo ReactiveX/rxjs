@@ -138,7 +138,7 @@ timestamp.
 - [x] timestamp
 - [x] toArray (g3)
 - [x] window
-- [ ] windowCount (g3)
+- [x] windowCount (g3)
 - [ ] windowTime
 - [ ] windowToggle
 - [ ] windowWhen
