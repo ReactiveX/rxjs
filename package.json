@@ -19,14 +19,15 @@
     ]
   },
   "scripts-info": {
-    "info": "List available script",
+    "info": "List available scripts",
     "test": "Execute mocha test runner",
-    "watch": "Watch codebase, trigger compile when source code changes"
+    "dev": "Watch codebase, trigger compile when source code changes",
+    "build": "Builds the files (currently not well implemented)"
   },
   "scripts": {
     "pretest": "shx rm -rf tmp/tests && tsc -p tsconfig.tests.json",
     "test": "cross-env NODE_PATH=tmp/tests/ mocha --opts mocha-options.opts \"tmp/tests/**/*-spec.js\"",
-    "watch": "watch 'npm run test' src",
+    "dev": "watch 'npm run test' src",
     "build": "tsc"
   },
   "repository": {

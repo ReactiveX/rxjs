@@ -140,7 +140,7 @@ timestamp.
 - [x] window
 - [x] windowCount (g3)
 - [ ] windowTime
-- [ ] windowToggle
+- [x] windowToggle
 - [ ] windowWhen
 - [x] withLatestFrom (g3)
 - [ ] zip (g3)
