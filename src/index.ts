@@ -32,6 +32,9 @@ export { noop } from 'rxjs/internal/util/noop';
 export { pipe } from 'rxjs/internal/util/pipe';
 export { isObservable } from 'rxjs/internal/util/isObservable';
 
+export { ObjectUnsubscribedError } from 'rxjs/internal/util/ObjectUnsubscribedError';
+export { TimeoutError } from 'rxjs/internal/util/TimeoutError';
+
 export { animationFrameScheduler } from 'rxjs/internal/scheduler/animationFrameScheduler';
 export { asapScheduler } from 'rxjs/internal/scheduler/asapScheduler';
 export { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';

@@ -41,6 +41,7 @@ export { tap } from 'rxjs/internal/operators/tap';
 export { throttle } from 'rxjs/internal/operators/throttle';
 export { window } from 'rxjs/internal/operators/window';
 export { windowCount } from 'rxjs/internal/operators/windowCount';
+export { windowToggle } from 'rxjs/internal/operators/windowToggle';
 export { withLatestFrom } from 'rxjs/internal/operators/withLatestFrom';
 
 // ################ DERIVED OPERATORS ##################
