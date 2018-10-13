@@ -23,13 +23,27 @@ export function switchAll<R>(): OperatorFunction<any, R>;
  * Spawn a new interval Observable for each click event, but for every new
  * click, it just cancel the previous one then it subscribes to the new one
  * ```ts
- * import { fromEvent } from "rxjs";
+ * import { fromEvent, interval } from "rxjs";
  * import { switchAll, map } from "rxjs/operators";
  *
  * const clicks = fromEvent(document, 'click');
  * const higherOrder = clicks.pipe(map((ev) => interval(1000)));
  * const firstOrder = higherOrder.pipe(switchAll());
  * firstOrder.subscribe(x => console.log(x));
+ *
+ /* Outout
+ *  1
+ *  2
+ *  3
+ *  4
+ *  ...
+ *  (click)
+ *  1
+ *  2
+ *  3
+ *  ...
+ *  (click)
+ *  ...
  * ```
  *
  * Hit on the screen and it will let you track the last 10 mouse position.
@@ -60,6 +74,20 @@ export function switchAll<R>(): OperatorFunction<any, R>;
  *   console.log,
  *   null,
  *   () => console.log("I complete ;)"))
+ *
+ /* Output
+ * (click)
+ * {x: 187, y: 51}
+ * {x: 187, y: 53}
+ * ...
+ * {x: 127, y: 92}
+ * (click)
+ * {x: 315, y: 62}
+ * {x: 315, y: 63}
+ * ...
+ * {x: 255, y: 118}
+ * (click)
+ * ...
  * ```
  *
  * @see {@link combineAll}
