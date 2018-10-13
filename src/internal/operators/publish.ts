@@ -14,7 +14,7 @@ export function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOpera
  * Returns a ConnectableObservable, which is a variety of Observable that waits until its connect method is called
  * before it begins emitting items to those Observers that have subscribed to it.
  *
- * <span class="informal">Share the same source, prevent it from emitting values until calling connect.</span>
+ * <span class="informal">Makes a cold Observable hot</span>
  *
  * ![](publish.png)
  *
@@ -35,11 +35,22 @@ export function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOpera
  * source$.pipe(
  *    publish(multicasted$ => {
  *       return merge(
- *          multicasted$.pipe(tap(x => console.log('1', x))),
- *          multicasted$.pipe(tap(x => console.log('2', x))),
- *          multicasted$.pipe(tap(x => console.log('3', x))),
+ *          multicasted$.pipe(tap(x => console.log('Stream 1:', x))),
+ *          multicasted$.pipe(tap(x => console.log('Stream 2:', x))),
+ *          multicasted$.pipe(tap(x => console.log('Stream 3:', x))),
  *       );
  *    })).subscribe();
+ *
+ /* Results every two seconds
+ * Stream 1: 1
+ * Stream 2: 1
+ * Stream 3: 1
+ *
+ * ...
+ *
+ * Stream 1: 9
+ * Stream 2: 9
+ * Stream 3: 9
  * ```
  *
  * @param {Function} [selector] - Optional selector function which can use the multicasted source sequence as many times
