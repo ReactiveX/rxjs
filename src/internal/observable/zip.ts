@@ -57,7 +57,7 @@ export function zip<R>(...observables: Array<ObservableInput<any> | ((...values:
  * let isDev$ = of<boolean>(true, true, false);
  *
  * zip(age$, name$, isDev$).pipe(
- *   map((age: number, name: string, isDev: boolean) => ({ age, name, isDev })),
+ *   map(([age, name, isDev]) => ({ age, name, isDev })),
  * )
  * .subscribe(x => console.log(x));
  *
