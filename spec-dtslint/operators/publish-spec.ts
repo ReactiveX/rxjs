@@ -2,8 +2,12 @@ import { of, Observable } from 'rxjs';
 import { publish } from 'rxjs/operators';
 
 it('should support empty parameter', () => {
-  // Typescript limitations - inference only happen in one direction from operator to pipe
-  const a = of(1, 2, 3).pipe(publish()); // $ExpectType Observable<any>
+  // Here, TypeScript versions 3.1 and earlier infer Observable<any>. However,
+  // the next version infers Observable<number>. It's not possible to specify
+  // an upper bound for the TypeScript version used by dtslint, so an
+  // expectation cannot be applied.
+  // TODO: put the test back after Typescript > 3.2
+  const a = of(1, 2, 3).pipe(publish());
 });
 
 it('should infer when type is specified', () => {
