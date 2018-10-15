@@ -6,7 +6,7 @@ it('should enforce parameter', () => {
 });
 
 it('should infer correctly with parameter', () => {
-  const a = of(1, 2, 3).pipe(publishBehavior(4)); // $ExpectType observable<number>
+  const a = of(1, 2, 3).pipe(publishBehavior(4)); // $ExpectType Observable<number>
 });
 
 it('should enforce type on parameter', () => {
