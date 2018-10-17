@@ -68,7 +68,7 @@ timestamp.
 - [x] elementAt (g3)
 - [x] endWith
 - [x] every (g3)
-- [ ] exhaust
+- [x] exhaust
 - [x] exhaustMap (g3)
 - [x] expand (g3)
 - [x] filter (g3)
@@ -121,7 +121,7 @@ timestamp.
 - [x] skipWhile (g3)
 - [x] startWith (g3)
 - [x] subscribeOn (g3)
-- [ ] switchAll (g3)
+- [x] switchAll (g3)
 - [x] switchMap (g3)
 - [x] switchMapTo (g3)
 - [x] take (g3)

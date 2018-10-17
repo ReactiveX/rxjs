@@ -72,6 +72,7 @@ export { onEmptyResumeWith } from 'rxjs/internal/operators/derived/onEmptyResume
 export { onErrorResumeWith } from 'rxjs/internal/operators/derived/onErrorResumeWith';
 export { reduce } from 'rxjs/internal/operators/derived/reduce';
 export { startWith } from 'rxjs/internal/operators/derived/startWith';
+export { switchAll } from 'rxjs/internal/operators/derived/switchAll';
 export { switchMapTo } from 'rxjs/internal/operators/derived/switchMapTo';
 export { timestamp } from 'rxjs/internal/operators/derived/timestamp';
 export { throwIfEmpty } from 'rxjs/internal/operators/derived/throwIfEmpty';
