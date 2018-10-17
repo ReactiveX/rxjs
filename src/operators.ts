@@ -25,6 +25,7 @@ export { repeat } from 'rxjs/internal/operators/repeat';
 export { repeatWhen } from 'rxjs/internal/operators/repeatWhen';
 export { retry } from 'rxjs/internal/operators/retry';
 export { retryWhen } from 'rxjs/internal/operators/retryWhen';
+export { sample } from 'rxjs/internal/operators/sample';
 export { scan } from 'rxjs/internal/operators/scan';
 export { skip } from 'rxjs/internal/operators/skip';
 export { skipLast } from 'rxjs/internal/operators/skipLast';

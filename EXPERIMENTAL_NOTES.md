@@ -108,7 +108,7 @@ timestamp.
 - [x] repeatWhen (g3)
 - [x] retry (g3)
 - [x] retryWhen (g3)
-- [ ] sample (g3)
+- [x] sample (g3)
 - [ ] sampleTime (g3)
 - [x] scan (g3)
 - [ ] sequenceEqual
