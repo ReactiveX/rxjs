@@ -139,7 +139,7 @@ timestamp.
 - [x] toArray (g3)
 - [x] window
 - [x] windowCount (g3)
-- [ ] windowTime
+- [x] windowTime
 - [x] windowToggle
 - [ ] windowWhen
 - [x] withLatestFrom (g3)
