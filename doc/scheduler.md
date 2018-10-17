@@ -82,7 +82,7 @@ observable.subscribe(finalObserver);
 console.log('just after subscribe');
 ```
 
-The `proxyObserver` is created in `observeOn(Rx.Scheduler.async)`, and its `next(val)` function is approximately the following:
+The `proxyObserver` is created in `observeOn(asyncScheduler)`, and its `next(val)` function is approximately the following:
 
 ```ts
 const proxyObserver = {
