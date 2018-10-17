@@ -60,6 +60,7 @@ export { delayWhen } from 'rxjs/internal/operators/derived/delayWhen';
 export { distinctUntilKeyChanged } from 'rxjs/internal/operators/derived/distinctUntilKeyChanged';
 export { elementAt } from 'rxjs/internal/operators/derived/elementAt';
 export { endWith } from 'rxjs/internal/operators/derived/endWith';
+export { exhaust } from 'rxjs/internal/operators/derived/exhaust';
 export { find } from 'rxjs/internal/operators/derived/find';
 export { findIndex } from 'rxjs/internal/operators/derived/findIndex';
 export { first } from 'rxjs/internal/operators/derived/first';
