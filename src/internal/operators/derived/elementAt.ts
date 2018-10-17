@@ -1,6 +1,6 @@
 import { Operation } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
-import { ArgumentOutOfRangeError } from 'rxjs/internal/error/ArgumentOutOfRangeError';
+import { ArgumentOutOfRangeError } from 'rxjs/internal/util/ArgumentOutOfRangeError';
 import { filter } from 'rxjs/internal/operators/filter';
 import { take } from 'rxjs/internal/operators/take';
 import { throwIfEmpty } from 'rxjs/internal/operators/derived/throwIfEmpty';

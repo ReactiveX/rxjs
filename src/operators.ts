@@ -27,6 +27,7 @@ export { retry } from 'rxjs/internal/operators/retry';
 export { retryWhen } from 'rxjs/internal/operators/retryWhen';
 export { scan } from 'rxjs/internal/operators/scan';
 export { skip } from 'rxjs/internal/operators/skip';
+export { skipLast } from 'rxjs/internal/operators/skipLast';
 export { skipUntil } from 'rxjs/internal/operators/skipUntil';
 export { skipWhile } from 'rxjs/internal/operators/skipWhile';
 export { share } from 'rxjs/internal/operators/share';

@@ -116,7 +116,7 @@ timestamp.
 - [x] shareReplay (g3)
 - [ ] single (g3)
 - [x] skip (g3)
-- [ ] skipLast
+- [x] skipLast
 - [x] skipUntil (g3)
 - [x] skipWhile (g3)
 - [x] startWith (g3)

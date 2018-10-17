@@ -32,6 +32,7 @@ export { noop } from 'rxjs/internal/util/noop';
 export { pipe } from 'rxjs/internal/util/pipe';
 export { isObservable } from 'rxjs/internal/util/isObservable';
 
+export { ArgumentOutOfRangeError } from 'rxjs/internal/util/ArgumentOutOfRangeError';
 export { ObjectUnsubscribedError } from 'rxjs/internal/util/ObjectUnsubscribedError';
 export { TimeoutError } from 'rxjs/internal/util/TimeoutError';
 
