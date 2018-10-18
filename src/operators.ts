@@ -32,6 +32,7 @@ export { skipUntil } from 'rxjs/internal/operators/skipUntil';
 export { skipWhile } from 'rxjs/internal/operators/skipWhile';
 export { share } from 'rxjs/internal/operators/share';
 export { shareReplay } from 'rxjs/internal/operators/shareReplay';
+export { single } from 'rxjs/internal/operators/single';
 export { subscribeOn } from 'rxjs/internal/operators/subscribeOn';
 export { switchMap } from 'rxjs/internal/operators/switchMap';
 export { take } from 'rxjs/internal/operators/take';
