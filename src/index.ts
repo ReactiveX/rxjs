@@ -23,6 +23,7 @@ export { partition } from 'rxjs/internal/create/partition';
 export { publish } from 'rxjs/internal/create/publish';
 export { publishReplay } from 'rxjs/internal/create/publishReplay';
 export { race } from 'rxjs/internal/create/race';
+export { range } from 'rxjs/internal/create/range';
 export { throwError } from 'rxjs/internal/create/throwError';
 export { timer } from 'rxjs/internal/create/timer';
 export { zip } from 'rxjs/internal/create/zip';

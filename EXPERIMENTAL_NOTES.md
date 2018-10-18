@@ -33,6 +33,7 @@ timestamp.
 - `delay` no longer delays the emission of "complete" inconsistently (#4149)
 - `debounce` now passes `index` to `durationSelector`.
 - `throttle` now passes `index` to `durationSelector`.
+- `range` no longer supports scheduling... if you want to schedule that, use `fromScheduled` and a generator. (possibly we'll implement a scheduled range?)
 
 ## Fixes that are breaking changes to some
 
@@ -159,3 +160,4 @@ TODO: Still need to research all of these and port tests.
 - [x] of
 - [x] from
 - [x] concat
+- [x] range
