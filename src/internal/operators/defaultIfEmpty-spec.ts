@@ -13,7 +13,7 @@ describe('defaultIfEmpty', () => {
   });
 
   // asDiagram('defaultIfEmpty(42)')
-  it('should return the Observable if not empty with a default value', () => {
+  it('should emit the default value if the source Observable is empty', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
       const e1 =   hot('--------|');
       const expected = '--------(x|)';
