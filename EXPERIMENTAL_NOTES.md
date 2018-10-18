@@ -89,7 +89,7 @@ timestamp.
 - [x] mergeAll (g3)
 - [x] mergeMap (g3)
 - [x] mergeMapTo (g3)
-- [ ] mergeScan
+- [x] mergeScan
 - [x] min
 - [x] multicast (g3) (multicast and multicastAs)
 - [x] observeOn (g3)
