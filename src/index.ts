@@ -33,6 +33,7 @@ export { pipe } from 'rxjs/internal/util/pipe';
 export { isObservable } from 'rxjs/internal/util/isObservable';
 
 export { ArgumentOutOfRangeError } from 'rxjs/internal/util/ArgumentOutOfRangeError';
+export { EmptyError } from 'rxjs/internal/util/EmptyError';
 export { ObjectUnsubscribedError } from 'rxjs/internal/util/ObjectUnsubscribedError';
 export { TimeoutError } from 'rxjs/internal/util/TimeoutError';
 

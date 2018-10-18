@@ -64,6 +64,7 @@ export { exhaust } from 'rxjs/internal/operators/derived/exhaust';
 export { find } from 'rxjs/internal/operators/derived/find';
 export { findIndex } from 'rxjs/internal/operators/derived/findIndex';
 export { first } from 'rxjs/internal/operators/derived/first';
+export { last } from 'rxjs/internal/operators/derived/last';
 export { mapTo } from 'rxjs/internal/operators/derived/mapTo';
 export { max } from 'rxjs/internal/operators/derived/max';
 export { mergeAll } from 'rxjs/internal/operators/derived/mergeAll';

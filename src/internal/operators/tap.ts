@@ -2,6 +2,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { Operation, FOType, Sink, SinkArg, PartialObserver } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { lift } from 'rxjs/internal/util/lift';
+import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 
 export function tap<T>(
   observer: PartialObserver<T>
@@ -36,22 +37,30 @@ export function tap<T>(
     }
   }
 
+  const handler = (t: FOType, v: SinkArg<T>) => {
+    switch (t) {
+      case FOType.NEXT:
+        if (nextHandler) nextHandler(v);
+        break;
+      case FOType.ERROR:
+        if (errorHandler) errorHandler(v);
+        break;
+      case FOType.COMPLETE:
+        if (completeHandler) completeHandler();
+        break;
+      default:
+        break;
+    }
+  }
+
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
-      switch (t) {
-        case FOType.NEXT:
-          if (nextHandler) nextHandler(v);
-          break;
-        case FOType.ERROR:
-          if (errorHandler) errorHandler(v);
-          break;
-        case FOType.COMPLETE:
-          if (completeHandler) completeHandler();
-          break;
-        default:
-          break;
+      const result = tryUserFunction(handler, t, v);
+      if (resultIsError(result)) {
+        dest(FOType.ERROR, result.error, subs);
+      } else {
+        dest(t, v, subs);
       }
-      dest(t, v, subs);
     }, subs);
   });
 }
