@@ -3,6 +3,8 @@ import { Operation, FOType, Sink, SinkArg, PartialObserver } from 'rxjs/internal
 import { Subscription } from 'rxjs/internal/Subscription';
 import { lift } from 'rxjs/internal/util/lift';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
+import { sinkFromObserver } from 'rxjs/internal/util/sinkFromObserver';
+import { sinkFromHandlers } from 'rxjs/internal/util/sinkFromHandlers';
 
 export function tap<T>(
   observer: PartialObserver<T>
@@ -25,37 +27,16 @@ export function tap<T>(
   errorHandler?: (err: any) => void,
   completeHandler?: () => void,
 ): Operation<T, T> {
-  let nextHandler: (value: T) => void;
-
-  if (nextOrObserver) {
-    if (typeof nextOrObserver === 'object') {
-      nextHandler = nextOrObserver.next && nextOrObserver.next.bind(nextOrObserver);
-      errorHandler = nextOrObserver.error && nextOrObserver.error.bind(nextOrObserver);
-      completeHandler = nextOrObserver.complete && nextOrObserver.complete.bind(nextOrObserver);
-    } else {
-      nextHandler = nextOrObserver;
-    }
+  let sink: Sink<T>;
+  if (nextOrObserver && typeof nextOrObserver === 'object') {
+    sink = sinkFromObserver(nextOrObserver);
   }
-
-  const handler = (t: FOType, v: SinkArg<T>) => {
-    switch (t) {
-      case FOType.NEXT:
-        if (nextHandler) nextHandler(v);
-        break;
-      case FOType.ERROR:
-        if (errorHandler) errorHandler(v);
-        break;
-      case FOType.COMPLETE:
-        if (completeHandler) completeHandler();
-        break;
-      default:
-        break;
-    }
+  else {
+    sink = sinkFromHandlers(nextOrObserver as ((value: T) => void), errorHandler, completeHandler);
   }
-
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
-      const result = tryUserFunction(handler, t, v);
+      const result = tryUserFunction(sink, t, v, subs);
       if (resultIsError(result)) {
         dest(FOType.ERROR, result.error, subs);
       } else {
