@@ -8,22 +8,20 @@ export function onEmptyResumeNext<T>(...sources: Array<Observable<T>>): Observab
   return sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T>, downstreamSubs: Subscription) => {
     if (type === FOType.SUBSCRIBE) {
       const remainingSources = sources.slice();
-      let empty = true;
+      let hasValue = false;
       const upstreamSubs = new RecyclableSubscription();
       downstreamSubs.add(upstreamSubs);
 
       let subscribe: () => void;
       subscribe = () => {
         const source = remainingSources.shift();
-        empty = true;
+        hasValue = false;
         source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, _: Subscription) => {
-          if (t === FOType.COMPLETE && empty) {
+          hasValue = hasValue || t === FOType.NEXT;
+          if (t === FOType.COMPLETE && !hasValue) {
             upstreamSubs.recycle();
             subscribe();
           } else {
-            if (t === FOType.NEXT) {
-              empty = false;
-            }
             dest(t, v, downstreamSubs);
           }
         }, upstreamSubs);
