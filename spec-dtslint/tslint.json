@@ -1,7 +1,9 @@
 {
   "extends": "dtslint/dtslint.json",
+  "rulesDirectory": ["../node_modules/tslint-etc/dist/rules"],
   "rules": {
     "file-name-casing": false,
+    "no-missing-dollar-expect": true,
     "no-unnecessary-generics": false,
     "no-useless-files": false
   }
