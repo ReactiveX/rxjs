@@ -22,11 +22,11 @@ it('should accept windowTime, bufferSize, selector of OperatorFunction', () => {
 });
 
 it('should accept windowTime, bufferSize, selector  of MonoTypeOperatorFunction', () => {
-  const a = of(1, 2, 3).pipe(publishReplay(1, 1, (x) => x)); // $ExpectType Observable<string>
+  const a = of(1, 2, 3).pipe(publishReplay(1, 1, (x) => x)); // $ExpectType Observable<number>
 });
 
 it('should accept windowTime, bufferSize, selector of OperatorFunction, and scheduler', () => {
-  const a = of(1, 2, 3).pipe(publishReplay(1, 1, (x) => of('a'), asyncScheduler)); // $ExpectType Observable<number>
+  const a = of(1, 2, 3).pipe(publishReplay(1, 1, (x) => of('a'), asyncScheduler)); // $ExpectType Observable<string>
 });
 
 it('should accept windowTime, bufferSize, selector of MonoTypeOperatorFunction, and scheduler', () => {
