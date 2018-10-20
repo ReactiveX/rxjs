@@ -30,15 +30,15 @@ Problems with the patched operators for dot-chaining are:
 
 1. Any library that imports a patch operator will augment the `Observable.prototype` for all consumers of that library, creating blind dependencies. If the library removes their usage, they unknowingly break everyone else. With pipeables, you have to import the operators you need into each file you use them in.
 
-2. Operators patched directly onto the prototype are not "tree-shakeable" by tools like rollup or webpack. Pipeable operators will be as they are just functions pulled in from modules directly.
+2. Operators patched directly onto the prototype are not ["tree-shakeable"](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking) by tools like rollup or webpack. Pipeable operators will be as they are just functions pulled in from modules directly.
 
-3. Unused operators that are being imported in apps cannot be detected reliably by any sort of build tooling or lint rule. That means that you might import `scan`, but stop using it, and it's still being added to your output bundle. With pipeable operators, if you're not using it, a lint rule can pick it up for you.
+3. Unused operators that are being imported in apps cannot be detected reliably by any sort of build tool or lint rule. That means that you might import `scan`, but stop using it, and it's still being added to your output bundle. With pipeable operators, if you're not using it, a lint rule can pick it up for you.
 
-4. Functional composition is awesome. Building your own custom operators becomes much, much easier, and now they work and look just like all other operators from rxjs. You don't need to extend Observable or override `lift` anymore.
+4. Functional composition is awesome. Building your own custom operators becomes much easier, and now they work and look just like all other operators in rxjs. You don't need to extend Observable or override `lift` anymore.
 
 ## What?
 
-What is a pipeable operator? Simply put, a function that can be used with the current `let` operator. It used to be the origin of the name ("lettable"), but that was confusing and we call them "pipeable" now because they're intended to be used with the `pipe` utility. A pipeable operator is basically any function that returns a function with the signature: `<T, R>(source: Observable<T>) => Observable<R>`.
+What is a pipeable operator? Simply put, a function that can be used with the current `let` operator. It used to be the origin of the name ("lettable"), but that was confusing so we now call them "pipeable" because they're intended to be used with the `pipe` utility. A pipeable operator is basically any function that returns a function with the signature: `<T, R>(source: Observable<T>) => Observable<R>`.
 
 There is a `pipe` method built into `Observable` now at `Observable.prototype.pipe` that сan be used to compose the operators in similar manner to what you're used to with dot-chaining (shown below).
 
@@ -60,14 +60,21 @@ source$.pipe(
   scan((acc, x) => acc + x, 0)
 )
 .subscribe(x => console.log(x))
+
+// Logs:
+// 0
+// 4
+// 12
+// 24
+// 40
 ```
 
 ## Build Your Own Operators Easily
 
-You, in fact, could _always_ do this with `let`... but building your own operator is as simple as writing a function now. Notice, that you can compose your custom operator in with other rxjs operators seamlessly.
+You, in fact, could _always_ do this with `let`... but building your own operator is now as simple as writing a function. Notice, that you can compose your custom operator in with other rxjs operators seamlessly.
 
 ```ts
-import { interval } from 'rxjs';
+import { Observable, interval } from 'rxjs';
 import { filter, map, take, toArray } from 'rxjs/operators';
 
 /**
@@ -106,6 +113,7 @@ interval(1000).pipe(
   toArray()
 )
 .subscribe(x => console.log(x));
+// Logs:
 // [0, 2304, 9216]
 ```
 
