@@ -112,10 +112,10 @@ timestamp.
 - [x] sample (g3)
 - [ ] sampleTime (g3)
 - [x] scan (g3)
-- [ ] sequenceEqual
+- [x] sequenceEqual
 - [x] share (g3)
 - [x] shareReplay (g3)
-- [ ] single (g3)
+- [x] single (g3)
 - [x] skip (g3)
 - [x] skipLast
 - [x] skipUntil (g3)

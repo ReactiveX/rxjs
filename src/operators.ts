@@ -77,6 +77,7 @@ export { min } from 'rxjs/internal/operators/derived/min';
 export { onEmptyResumeWith } from 'rxjs/internal/operators/derived/onEmptyResumeWith';
 export { onErrorResumeWith } from 'rxjs/internal/operators/derived/onErrorResumeWith';
 export { reduce } from 'rxjs/internal/operators/derived/reduce';
+export { sequenceEqual } from 'rxjs/internal/operators/derived/sequenceEqual';
 export { startWith } from 'rxjs/internal/operators/derived/startWith';
 export { switchAll } from 'rxjs/internal/operators/derived/switchAll';
 export { switchMapTo } from 'rxjs/internal/operators/derived/switchMapTo';
