@@ -45,9 +45,9 @@ timestamp.
 - [x] audit (g3)
 - [x] auditTime (g3)
 - [x] buffer (g3)
-- [ ] bufferCount (g3)
-- [ ] bufferTime (g3)
-- [ ] bufferToggle
+- [x] bufferCount (g3)
+- [x] bufferTime (g3)
+- [x] bufferToggle
 - [ ] bufferWhen (g3)
 - [x] catchError (g3)
 - [x] combineAll
@@ -81,7 +81,7 @@ timestamp.
 - [x] groupBy (g3)
 - [x] ignoreElements (g3)
 - [x] isEmpty
-- [ ] last (g3)
+- [x] last (g3)
 - [x] map (g3)
 - [x] mapTo (g3)
 - [x] materialize (g3)
@@ -133,7 +133,7 @@ timestamp.
 - [x] throttle (g3)
 - [ ] throttleTime (g3)
 - [x] throwIfEmpty
-- [ ] timeInterval (g3)
+- [x] timeInterval (g3)
 - [ ] timeout (g3)
 - [ ] timeoutWith (g3)
 - [x] timestamp

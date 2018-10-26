@@ -49,6 +49,9 @@ export { withLatestFrom } from 'rxjs/internal/operators/withLatestFrom';
 // ################ DERIVED OPERATORS ##################
 export { auditTime } from 'rxjs/internal/operators/derived/auditTime';
 export { buffer } from 'rxjs/internal/operators/derived/buffer';
+export { bufferCount } from 'rxjs/internal/operators/derived/bufferCount';
+export { bufferTime } from 'rxjs/internal/operators/derived/bufferTime';
+export { bufferToggle } from 'rxjs/internal/operators/derived/bufferToggle';
 export { combineAll } from 'rxjs/internal/operators/derived/combineAll';
 export { concatAll } from 'rxjs/internal/operators/derived/concatAll';
 export { concatMap } from 'rxjs/internal/operators/derived/concatMap';
@@ -77,6 +80,7 @@ export { reduce } from 'rxjs/internal/operators/derived/reduce';
 export { startWith } from 'rxjs/internal/operators/derived/startWith';
 export { switchAll } from 'rxjs/internal/operators/derived/switchAll';
 export { switchMapTo } from 'rxjs/internal/operators/derived/switchMapTo';
+export { timeInterval } from 'rxjs/internal/operators/derived/timeInterval';
 export { timestamp } from 'rxjs/internal/operators/derived/timestamp';
 export { throwIfEmpty } from 'rxjs/internal/operators/derived/throwIfEmpty';
 export { toArray } from 'rxjs/internal/operators/derived/toArray';
