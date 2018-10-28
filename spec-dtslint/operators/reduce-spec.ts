@@ -13,12 +13,7 @@ it('should infer correctly for accumulator of type array', () => {
   const a = of(1, 2, 3).pipe(reduce((x: number[], y: number, i: number) => x, [])); // $ExpectType Observable<number[]>
 });
 
-it('should infer correctly for accumulator that change type', () => {
-  const a = of(1, 2, 3).pipe(reduce((x: string, y: number, i: number) => x + 'a')); // $ExpectType Observable<string>
-});
-
 it('should accept seed parameter of the same type', () => {
   const a = of(1, 2, 3).pipe(reduce((x, y, z) => x + 1, 5)); // $ExpectType Observable<number>
-  const b = of(1, 2, 3).pipe(reduce((x: string, y: number, z: number) => x + 'a', 5)); // $ExpectError
-  const c = of(1, 2, 3).pipe(reduce((x, y, z) => x + 1, '5')); // $ExpectError
+  const b = of(1, 2, 3).pipe(reduce((x, y, z) => x + 1, '5')); // $ExpectError
 });
