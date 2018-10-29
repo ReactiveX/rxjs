@@ -8,6 +8,42 @@ import { Observer, NextObserver } from '../../types';
 import { tryCatch } from '../../util/tryCatch';
 import { errorObject } from '../../util/errorObject';
 
+/**
+ * WebSocketSubjectConfig is a plain Object that allows us to make our
+ * webSocket configurable.
+ *
+ * <span class="informal">Provides flexibility to {@link webSocket}</span>
+ *
+ * It defines a set of properties to provide a custom behaviour in specific
+ * moments of the socket's lyfecicle. When the connection just open we can
+ * use `openObserver`, when the connection is closed `closeObserver`, if we
+ * are interested in listening for data comming from server: `deserializer`,
+ * allows us to make custom transformation over this data before passing it
+ * to the socket client.
+ *
+ * ## Example
+ * By default `deserializer` is going to apply `JSON.parse` to each message comming
+ * from the Server, but you can modify this behaviour.
+ * ```ts
+ * import { webSocket } from 'rxjs/webSocket';
+ *
+ * const wsSubject = webSocket({
+ *     url: 'ws://localhost:8081',
+ * //Apply any transformation of your choice. Here I am letting the raw data comming from the server pass to the clients
+ *     deserializer: ({data}) => data
+ * });
+ *
+ * wsSubject.subscribe(console.log);
+ *
+ * // Let's suppose we have this on the Server: ws.send({ title: "bbc news" })
+ * //output
+ * //
+ * // { title: "bbc news" }
+ * // { title: "bbc news" }
+ * // { title: "bbc news" }
+ * ```
+ * */
+
 export interface WebSocketSubjectConfig<T> {
   /** The url of the socket server to connect to */
   url: string;
