@@ -5,12 +5,20 @@ it('should infer correctly', () => {
   const o = of(1, 2, 3).pipe(catchError((() => of(4, 5, 6)))); // $ExpectType Observable<number>
 });
 
+it('should infer correctly when not returning', () => {
+  const o = of(1, 2, 3).pipe(catchError((() => { throw new Error('your hands in the air'); }))); // $ExpectType Observable<number>
+});
+
 it('should infer correctly when returning another type', () => {
   const o = of(1, 2, 3).pipe(catchError((() => of('a', 'b', 'c')))); // $ExpectType Observable<string | number>
 });
 
 it('should enforce types', () => {
   const o = of(1, 2, 3).pipe(catchError()); // $ExpectError
+});
+
+it('should enforce that selector returns an Observable', () => {
+  const o = of(1, 2, 3).pipe(catchError((err) => {})); // $ExpectError
 });
 
 it('should enforce type of caught', () => {
