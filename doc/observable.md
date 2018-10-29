@@ -279,7 +279,7 @@ Core Observable concerns:
 
 The `Observable` constructor takes one argument: the `subscribe` function.
 
-The following example creates an Observable to emit the string `'hi'` every second to an subscriber.
+The following example creates an Observable to emit the string `'hi'` every second to a subscriber.
 
 ```ts
 import { Observable } from 'rxjs';
@@ -291,7 +291,7 @@ const observable = new Observable(function subscribe(subscriber) {
 });
 ```
 
-<span class="informal">Observables can be created with `new Observable`, but usually we use the so-called [creation operators](./overview.html#creation-operators), like `of`, `from`, `interval`, etc.</span>
+<span class="informal">Observables can be created with `new Observable`. Most commonly, observables are created using creation functions, like `of`, `from`, `interval`, etc.</span>
 
 In the example above, the `subscribe` function is the most important piece to describe the Observable. Let's look at what subscribing means.
 
@@ -323,7 +323,7 @@ There are three types of values an Observable Execution can deliver:
 - "Error" notification: sends a JavaScript Error or exception.
 - "Complete" notification: does not send a value.
 
-Next notifications are the most important and most common type: they represent actual data being delivered to an subscriber. Error and Complete notifications may happen only once during the Observable Execution, and there can only be either one of them.
+"Next" notifications are the most important and most common type: they represent actual data being delivered to an subscriber. Error and Complete notifications may happen only once during the Observable Execution, and there can only be either one of them.
 
 These constraints are expressed best in the so-called *Observable Grammar* or *Contract*, written as a regular expression:
 
