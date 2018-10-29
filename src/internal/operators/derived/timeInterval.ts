@@ -13,7 +13,7 @@ export function timeInterval<T>(scheduler: SchedulerLike = asyncScheduler): Oper
         ({ current }, value) => ({ value, current: scheduler.now(), last: current }),
         { current: scheduler.now(), value: undefined,  last: undefined }
       ),
-      map<any, TimeInterval<T>>(({ current, last, value }) => new TimeInterval(value, current - last)),
+      map(({ current, last, value }) => new TimeInterval(value, current - last)),
     );
   });
 }

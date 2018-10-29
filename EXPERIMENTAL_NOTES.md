@@ -134,8 +134,8 @@ timestamp.
 - [ ] throttleTime (g3)
 - [x] throwIfEmpty
 - [x] timeInterval (g3)
-- [ ] timeout (g3)
-- [ ] timeoutWith (g3)
+- [x] timeout (g3)
+- [x] timeoutWith (g3)
 - [x] timestamp
 - [x] toArray (g3)
 - [x] window
