@@ -23,10 +23,11 @@
     "test-pwa-score": "node scripts/test-pwa-score",
     "deploy-production": "scripts/deploy-to-firebase.sh",
     "payload-size": "scripts/payload.sh",
-    "docs": "dgeni ./tools/transforms/angular.io-package",
+    "docs": "dgeni ./tools/transforms/angular.io-package && npm run docs-decision-tree",
     "docs-watch": "node tools/transforms/authors-package/watchr.js",
     "docs-lint": "eslint --ignore-path=\"tools/transforms/.eslintignore\" tools/transforms",
     "docs-test": "node tools/transforms/test.js",
+    "docs-decision-tree": "ts-node -P tools/decision-tree-generator/tsconfig.json tools/decision-tree-generator/main.ts",
     "firebase-utils-test": "jasmine-ts tools/firebase-test-utils/*.spec.ts",
     "tools-lint": "tslint -c \"tools/tslint.json\" \"tools/firebase-test-utils/**/*.ts\"",
     "tools-test": "./scripts/deploy-to-firebase.test.sh && npm run docs-test && npm run firebase-utils-test",
@@ -94,6 +95,7 @@
     "image-size": "^0.5.1",
     "jasmine": "^2.6.0",
     "jasmine-core": "^2.8.0",
+    "jasmine-marbles": "^0.4.0",
     "jasmine-spec-reporter": "^4.1.0",
     "jasmine-ts": "^0.2.1",
     "jsdom": "^9.12.0",
@@ -128,6 +130,7 @@
     "watchr": "^3.0.1",
     "webpack-cli": "^3.1.0",
     "xregexp": "^4.0.0",
+    "yamljs": "^0.3.0",
     "yargs": "^7.0.2"
   }
 }

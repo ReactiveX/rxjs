@@ -48,6 +48,10 @@ export const ELEMENT_MODULE_PATHS_AS_ROUTES = [
     selector: 'live-example',
     loadChildren: './live-example/live-example.module#LiveExampleModule'
   },
+  {
+    selector: 'aio-operator-decision-tree',
+    loadChildren: './operator-decision-tree/operator-decision-tree.module#OperatorDecisionTreeModule'
+  }
 ];
 
 /**
