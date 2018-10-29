@@ -42,6 +42,22 @@ import { errorObject } from '../../util/errorObject';
  * // { title: "bbc news" }
  * // { title: "bbc news" }
  * ```
+ *
+ * Set code and reason while closing the connection
+ * ```ts
+ * const wsSubject = webSocket({
+ *     url: 'ws://localhost:8081',
+ *     closeObserver: {
+        next(closeEvent) {
+            const customError = { code: 6666, reason: "Custom reason message" }
+            console.log(`code: ${customError.code}, reason: ${customError.reason}`);
+        }
+    }
+ * });
+ *
+ * //output
+ * // code: 6666, reason: Custom reason message
+ * ```
  * */
 
 export interface WebSocketSubjectConfig<T> {
