@@ -83,6 +83,7 @@ export { switchAll } from 'rxjs/internal/operators/derived/switchAll';
 export { switchMapTo } from 'rxjs/internal/operators/derived/switchMapTo';
 export { timeInterval } from 'rxjs/internal/operators/derived/timeInterval';
 export { timestamp } from 'rxjs/internal/operators/derived/timestamp';
+export { throttleTime } from 'rxjs/internal/operators/throttleTime';
 export { throwIfEmpty } from 'rxjs/internal/operators/derived/throwIfEmpty';
 export { toArray } from 'rxjs/internal/operators/derived/toArray';
 export { windowTime } from 'rxjs/internal/operators/derived/windowTime';

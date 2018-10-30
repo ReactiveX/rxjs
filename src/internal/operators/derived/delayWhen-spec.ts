@@ -3,7 +3,6 @@ import { delayWhen, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { expect } from 'chai';
 import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
-import { xdescribe } from 'mocha';
 
 /** @test {delayWhen} */
 describe('delayWhen operator', () => {

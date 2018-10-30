@@ -1,8 +1,8 @@
-import { windowTime } from './windowTime';
-import { Operation, SchedulerLike } from '../../types';
-import { pipe } from '../../util/pipe';
-import { mergeMap } from '../mergeMap';
-import { toArray } from './toArray';
+import { windowTime } from 'rxjs/internal/operators/derived/windowTime';
+import { Operation, SchedulerLike } from 'rxjs/internal/types';
+import { pipe } from 'rxjs/internal/util/pipe';
+import { mergeMap } from 'rxjs/internal/operators/mergeMap';
+import { toArray } from 'rxjs/internal/operators/derived/toArray';
 
 export function bufferTime<T>(bufferTimeSpan: number, scheduler?: SchedulerLike): Operation<T, T[]>;
 

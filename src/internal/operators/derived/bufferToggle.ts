@@ -1,9 +1,9 @@
-import { Observable } from '../../Observable';
-import { Operation } from '../../types';
-import { pipe } from '../../util/pipe';
-import { mergeMap } from '../mergeMap';
-import { toArray } from './toArray';
-import { windowToggle } from '../windowToggle';
+import { Observable } from 'rxjs/internal/Observable';
+import { Operation } from 'rxjs/internal/types';
+import { pipe } from 'rxjs/internal/util/pipe';
+import { mergeMap } from 'rxjs/internal/operators/mergeMap';
+import { toArray } from 'rxjs/internal/operators/derived/toArray';
+import { windowToggle } from 'rxjs/internal/operators/windowToggle';
 
 export function bufferToggle<T, O>(
   openings: Observable<O>,

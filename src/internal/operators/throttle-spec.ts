@@ -432,11 +432,11 @@ describe('throttle operator', () =>  {
         const e1subs =   '^                         !';
         const e2 =  cold( '----|                     ');
         const e2subs =  [' ^   !                     ',
-                        '     ^   !                 ',
-                        '          ^   !            ',
-                        '              ^   !        ',
-                        '                  ^   !    ',
-                        '                      ^   !'];
+                         '     ^   !                 ',
+                         '          ^   !            ',
+                         '              ^   !        ',
+                         '                  ^   !    ',
+                         '                      ^   !'];
         const expected = '-a---y----b---x---x---x---|';
 
         const result = e1.pipe(throttle(() =>  e2, { leading: true, trailing: true }));

@@ -10,7 +10,7 @@ export interface ThrottleConfig {
   trailing?: boolean;
 }
 
-export const defaultThrottleConfig: ThrottleConfig = {
+export const DEFAULT_THROTTLE_CONFIG: ThrottleConfig = {
   leading: true,
   trailing: false
 };
@@ -60,7 +60,7 @@ export const defaultThrottleConfig: ThrottleConfig = {
  */
 export function throttle<T>(
   durationSelector: (value: T, index: number) => ObservableInput<any>,
-  config = defaultThrottleConfig
+  config = DEFAULT_THROTTLE_CONFIG
 ): Operation<T, T> {
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     let _innerSubs: Subscription;

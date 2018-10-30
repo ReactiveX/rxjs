@@ -1,10 +1,10 @@
-import { Observable } from '../../Observable';
-import { Operation } from '../../types';
-import { zip } from '../../create/zip';
-import { filter } from '../filter';
-import { take } from '../take';
-import { mapTo } from './mapTo';
-import { endWith } from './endWith';
+import { Observable } from 'rxjs/internal/Observable';
+import { Operation } from 'rxjs/internal/types';
+import { zip } from 'rxjs/internal/create/zip';
+import { filter } from 'rxjs/internal/operators/filter';
+import { take } from 'rxjs/internal/operators/take';
+import { mapTo } from 'rxjs/internal/operators/derived/mapTo';
+import { endWith } from 'rxjs/internal/operators/derived/endWith';
 
 const DEFAULT_COMPAROR = (a: any, b: any) => a === b;
 

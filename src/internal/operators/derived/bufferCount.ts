@@ -1,8 +1,8 @@
-import { windowCount } from '../windowCount';
-import { Operation } from '../../types';
-import { pipe } from '../../util/pipe';
-import { mergeMap } from '../mergeMap';
-import { toArray } from './toArray';
+import { windowCount } from 'rxjs/internal/operators/windowCount';
+import { Operation } from 'rxjs/internal/types';
+import { pipe } from 'rxjs/internal/util/pipe';
+import { mergeMap } from 'rxjs/internal/operators/mergeMap';
+import { toArray } from 'rxjs/internal/operators/derived/toArray';
 
 export function bufferCount<T>(
   bufferSize: number,

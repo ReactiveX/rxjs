@@ -1,10 +1,10 @@
 
-import { Observable } from '../../Observable';
-import { asyncScheduler } from '../../scheduler/asyncScheduler';
-import { SchedulerLike, Operation } from '../../types';
-import { scan } from '../scan';
-import { defer } from '../../create/defer';
-import { map } from '../map';
+import { Observable } from 'rxjs/internal/Observable';
+import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
+import { SchedulerLike, Operation } from 'rxjs/internal/types';
+import { scan } from 'rxjs/internal/operators/scan';
+import { defer } from 'rxjs/internal/create/defer';
+import { map } from 'rxjs/internal/operators/map';
 
 export function timeInterval<T>(scheduler: SchedulerLike = asyncScheduler): Operation<T, TimeInterval<T>> {
   return (source: Observable<T>) => defer(() => {
