@@ -14,11 +14,11 @@ import { errorObject } from '../../util/errorObject';
  *
  * <span class="informal">Provides flexibility to {@link webSocket}</span>
  *
- * It defines a set of properties to provide a custom behaviour in specific
- * moments of the socket's lyfecicle. When the connection just open we can
+ * It defines a set of properties to provide custom behavior in specific
+ * moments of the socket's lifecycle. When the connection opens we can
  * use `openObserver`, when the connection is closed `closeObserver`, if we
  * are interested in listening for data comming from server: `deserializer`,
- * allows us to make custom transformation over this data before passing it
+ * which allows us to customize the deserialization strategy of data before passing it
  * to the socket client.
  *
  * ## Example
