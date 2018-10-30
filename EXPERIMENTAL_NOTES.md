@@ -145,7 +145,7 @@ timestamp.
 - [ ] windowWhen
 - [x] withLatestFrom (g3)
 - [ ] zip (g3)
-- [ ] zipAll
+- [x] zipAll
 
 
 ### Creation Methods
