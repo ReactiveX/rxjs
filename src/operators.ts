@@ -87,3 +87,4 @@ export { throttleTime } from 'rxjs/internal/operators/throttleTime';
 export { throwIfEmpty } from 'rxjs/internal/operators/derived/throwIfEmpty';
 export { toArray } from 'rxjs/internal/operators/derived/toArray';
 export { windowTime } from 'rxjs/internal/operators/derived/windowTime';
+export { zipAll } from 'rxjs/internal/operators/derived/zipAll';

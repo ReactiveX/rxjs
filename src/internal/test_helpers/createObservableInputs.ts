@@ -2,9 +2,9 @@ import { ObservableInput, of, asyncScheduler, fromScheduled } from 'rxjs';
 import { symbolObservable } from 'rxjs/internal/util/symbolObservable';
 import { symbolIterator } from 'rxjs/internal/util/symbolIterator';
 
-export const createObservableInputs = <T>(value: T) => of<ObservableInput<T>>(
-  of<T>(value),
-  fromScheduled<T>([value], asyncScheduler),
+export const createObservableInputs = <T>(value: T) => of(
+  of(value),
+  fromScheduled([value], asyncScheduler),
   [value],
   Promise.resolve(value),
   {
@@ -21,6 +21,6 @@ export const createObservableInputs = <T>(value: T) => of<ObservableInput<T>>(
     }
   } as any,
   {
-    [symbolObservable]: () => of<T>(value)
+    [symbolObservable]: () => of(value)
   } as any
 );

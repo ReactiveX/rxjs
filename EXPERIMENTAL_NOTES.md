@@ -131,7 +131,7 @@ timestamp.
 - [x] takeWhile (g3)
 - [x] tap (g3)
 - [x] throttle (g3)
-- [ ] throttleTime (g3)
+- [x] throttleTime (g3)
 - [x] throwIfEmpty
 - [x] timeInterval (g3)
 - [x] timeout (g3)
