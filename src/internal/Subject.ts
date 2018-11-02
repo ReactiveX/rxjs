@@ -6,6 +6,7 @@ import { subjectBaseSource } from 'rxjs/internal/sources/subjectBaseSource';
 import { sinkFromObserver } from "rxjs/internal/util/sinkFromObserver";
 
 export interface Subject<T> extends Observer<T>, Observable<T> {
+  unsubscribe(): void;
 }
 
 export interface SubjectConstructor {
@@ -40,23 +41,24 @@ export function frankenSubjectSource<T>(
 
 export function subjectSource<T>(): FObs<T> {
   const base = subjectBaseSource<T>();
-  let _closed = false;
+  let _completed = false;
   let _hasError = false;
   let _error: any;
   return (type: FOType, arg: FObsArg<T>, subs: Subscription) => {
     if (type === FOType.SUBSCRIBE) {
-      if (_hasError) {
+      if (_completed) {
+        arg(FOType.COMPLETE, undefined, subs);
+      } else if (_hasError) {
         arg(FOType.ERROR, _error, subs);
       }
     }
 
-    if (!_closed) {
-      if (type === FOType.COMPLETE || type === FOType.ERROR) {
-        _closed = true;
-        if (type === FOType.ERROR) {
-          _hasError = true;
-          _error = arg;
-        }
+    if (!_completed && !_hasError) {
+      if (type === FOType.COMPLETE) {
+        _completed = true;
+      } else if (type === FOType.ERROR) {
+        _hasError = true;
+        _error = arg;
       }
       base(type, arg, subs);
     }

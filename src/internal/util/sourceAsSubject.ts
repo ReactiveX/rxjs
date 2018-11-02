@@ -8,6 +8,7 @@ export function sourceAsSubject<T>(source: any): Subject<T> {
   source.next = next;
   source.error = error;
   source.complete = complete;
+  source.unsubscribe = unsubscribe;
   return source;
 }
 
@@ -24,4 +25,8 @@ function error<T>(this: Subject<T>, err: any) {
 
 function complete<T>(this: Subject<T>) {
   this(FOType.COMPLETE, undefined, undefined);
+}
+
+function unsubscribe<T>(this: Subject<T>) {
+  this(FOType.DISPOSE, undefined, undefined);
 }

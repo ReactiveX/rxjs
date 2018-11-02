@@ -6,9 +6,14 @@ export const enum FOType {
   NEXT = 1,
   COMPLETE = 2,
   ERROR = 3,
+  DISPOSE = 4,
 }
 
 export type SinkArg<T> = T | void | any;
+
+export interface DisposableFObs {
+  (type: FOType.DISPOSE, arg: void, subs: Subscription): void;
+}
 
 export interface Sink<T> {
   (type: FOType.NEXT, value: T, subs: Subscription): void;
