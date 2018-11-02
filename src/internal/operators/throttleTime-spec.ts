@@ -208,7 +208,6 @@ describe('throttleTime operator', () => {
         const expected = '-----y--------x----(x|)';
 
         const result = e1.pipe(throttleTime(t, testScheduler, { leading: false, trailing: true }));
-        console.log(t);
         expectObservable(result).toBe(expected);
         expectSubscriptionsTo(e1).toBe(e1subs);
       });

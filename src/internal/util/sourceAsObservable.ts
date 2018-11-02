@@ -22,12 +22,12 @@ function subscribe<T>(this: Source<T>, nextOrObserver?: PartialObserver<T> | ((v
   const subscription = new Subscription();
   ;
   let sink: Sink<T>;
-  if (nextOrObserver) {
-    if (typeof nextOrObserver === 'object') {
+  if (nextOrObserver || errorHandler || completeHandler) {
+    if (nextOrObserver && typeof nextOrObserver === 'object') {
       sink = sinkFromObserver(nextOrObserver);
     }
     else {
-      sink = sinkFromHandlers(nextOrObserver, errorHandler, completeHandler);
+      sink = sinkFromHandlers(nextOrObserver as any, errorHandler, completeHandler);
     }
   }
   else {
