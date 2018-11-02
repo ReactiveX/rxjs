@@ -5,6 +5,7 @@ import { lift } from 'rxjs/internal/util/lift';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 import { sinkFromObserver } from 'rxjs/internal/util/sinkFromObserver';
 import { sinkFromHandlers } from 'rxjs/internal/util/sinkFromHandlers';
+import { isPartialObserver } from '../util/isPartialObserver';
 
 export function tap<T>(
   observer: PartialObserver<T>
@@ -28,7 +29,7 @@ export function tap<T>(
   completeHandler?: () => void,
 ): Operation<T, T> {
   let sink: Sink<T>;
-  if (nextOrObserver && typeof nextOrObserver === 'object') {
+  if (isPartialObserver(nextOrObserver)) {
     sink = sinkFromObserver(nextOrObserver);
   }
   else {
@@ -40,6 +41,9 @@ export function tap<T>(
       if (resultIsError(result)) {
         dest(FOType.ERROR, result.error, subs);
       } else {
+        if (t === FOType.COMPLETE) {
+          debugger;
+        }
         dest(t, v, subs);
       }
     }, subs);

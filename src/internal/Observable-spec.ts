@@ -4,6 +4,8 @@ import { map, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
 import * as sinon from 'sinon';
+import { Subject } from './Subject';
+import { resultIsError } from './util/userFunction';
 
 function expectFullObserver(val: any) {
   expect(val).to.be.a('function');
@@ -227,6 +229,24 @@ describe('Observable', () => {
 
       expect(mutatedByNext).to.be.true;
       expect(mutatedByComplete).to.be.true;
+    });
+
+    it('should work if subscribe is called with a Subject', () => {
+      const subject = new Subject();
+      const results: any[] = [];
+
+      subject.subscribe({
+        next(value) { results.push(value); },
+        complete() { results.push('done'); },
+      })
+      const source = new Observable<string>((subscriber) => {
+        subscriber.next('foo');
+        subscriber.complete();
+      });
+
+      source.subscribe(subject);
+
+      expect(results).to.deep.equal(['foo', 'done']);
     });
 
     it('should work when subscribe is called with no arguments', () => {

@@ -5,6 +5,7 @@ import { pipeArray } from 'rxjs/internal/util/pipe';
 import { Observable } from 'rxjs/internal/Observable';
 import { sinkFromObserver } from 'rxjs/internal/util/sinkFromObserver';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
+import { isPartialObserver } from './isPartialObserver';
 
 export function sourceAsObservable<T>(source: Source<T>): Observable<T> {
   const result = source as Observable<T>;
@@ -23,7 +24,7 @@ function subscribe<T>(this: Source<T>, nextOrObserver?: PartialObserver<T> | ((v
   ;
   let sink: Sink<T>;
   if (nextOrObserver || errorHandler || completeHandler) {
-    if (nextOrObserver && typeof nextOrObserver === 'object') {
+    if (isPartialObserver(nextOrObserver)) {
       sink = sinkFromObserver(nextOrObserver);
     }
     else {
