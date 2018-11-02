@@ -5,7 +5,7 @@ import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
 
 
 /** @test {buffer} */
-describe('Observable.prototype.buffer', () => {
+describe('buffer', () => {
 
   let testScheduler: TestScheduler;
 

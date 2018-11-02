@@ -5,7 +5,7 @@ import { of, Subject, EmptyError } from 'rxjs';
 import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
 
 /** @test {first} */
-describe('Observable.prototype.first', () => {
+describe('first', () => {
   let testScheduler: TestScheduler;
 
   beforeEach(() => {

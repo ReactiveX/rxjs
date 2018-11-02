@@ -5,7 +5,7 @@ import { TestScheduler } from 'rxjs/testing';
 import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
 
 /** @test {last} */
-describe('Observable.prototype.last', () => {
+describe('last', () => {
   let testScheduler: TestScheduler;
 
   beforeEach(() => {
