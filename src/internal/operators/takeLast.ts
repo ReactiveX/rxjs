@@ -1,9 +1,9 @@
-import { Operation, FOType, Sink, SinkArg } from "rxjs/internal/types";
+import { OperatorFunction, FOType, Sink, SinkArg } from "rxjs/internal/types";
 import { Observable } from "rxjs/internal/Observable";
 import { Subscription } from "rxjs/internal/Subscription";
 import { lift } from 'rxjs/internal/util/lift';
 
-export function takeLast<T>(count: number = 1): Operation<T, T> {
+export function takeLast<T>(count: number = 1): OperatorFunction<T, T> {
   count = Math.max(count, 0);
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     const buffer: T[] = [];

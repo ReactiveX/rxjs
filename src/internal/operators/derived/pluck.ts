@@ -1,8 +1,8 @@
-import { Operation } from 'rxjs/internal/types';
+import { OperatorFunction } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
 
-export function pluck<T, R>(...properties: string[]): Operation<T, R> {
+export function pluck<T, R>(...properties: string[]): OperatorFunction<T, R> {
   const length = properties.length;
   if (length === 0) {
     throw new Error('list of properties cannot be empty.');

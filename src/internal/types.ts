@@ -32,7 +32,7 @@ export interface FObs<T> extends Source<T>, Sink<T> {
 
 export type FObsArg<T> = SinkArg<T> | void;
 
-export type Teardown = SubscriptionLike | (() => void) | void;
+export type TeardownLogic = Unsubscribable | (() => void) | void;
 
 export interface NextObserver<T> {
   next: (value: T, subscription: Subscription) => void;
@@ -72,10 +72,10 @@ export interface SchedulerLike {
   schedule<T>(work: (state?: T) => void, delay: number, state: T, subs: Subscription): Subscription;
 }
 
-export type Operation<T, R> = (source: Observable<T>) => Observable<R>;
+export type OperatorFunction<T, R> = (source: Observable<T>) => Observable<R>;
 
 export interface ObservableLike<T> {
-  subscribe(observer: Observer<T>): SubscriptionLike;
+  subscribe(observer: Observer<T>): Unsubscribable;
 }
 
 export interface InteropObservable<T> {
@@ -85,8 +85,13 @@ export interface InteropObservable<T> {
 export type ObservableInput<T> = Observable<T> | ObservableLike<T> | PromiseLike<T> |
   Array<T> | ArrayLike<T> | InteropObservable<T> | AsyncIterable<T> | Iterable<T>;
 
-export interface SubscriptionLike {
+export interface Unsubscribable {
   unsubscribe(): void;
+}
+
+export interface SubscriptionLike extends Unsubscribable {
+  unsubscribe(): void;
+  closed: boolean;
 }
 
 export interface GroupedObservable<K, T> extends Observable<T> {

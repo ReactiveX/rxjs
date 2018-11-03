@@ -1,5 +1,5 @@
 import { Observable } from "rxjs/internal/Observable";
-import { Operation, Sink, FObs, FOType, SinkArg } from "rxjs/internal/types";
+import { OperatorFunction, Sink, FObs, FOType, SinkArg } from "rxjs/internal/types";
 import { lift } from "rxjs/internal/util/lift";
 import { Subscription } from "rxjs/internal/Subscription";
 import { subjectSource } from "rxjs/internal/Subject";
@@ -65,7 +65,7 @@ import { sourceAsObservable } from "rxjs/internal/util/sourceAsObservable";
 export function windowCount<T>(
   windowSize: number,
   startWindowEvery: number = 0
-): Operation<T, Observable<T>> {
+): OperatorFunction<T, Observable<T>> {
   return lift((source: Observable<T>, dest: Sink<Observable<T>>, subs: Subscription) => {
     const _windows: FObs<T>[] = [ subjectSource<T>() ];
     let _count = 0;

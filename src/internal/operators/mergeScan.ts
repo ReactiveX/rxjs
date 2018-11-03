@@ -1,4 +1,4 @@
-import { ObservableInput, Operation, Sink, FOType, SinkArg } from 'rxjs/internal/types';
+import { ObservableInput, OperatorFunction, Sink, FOType, SinkArg } from 'rxjs/internal/types';
 import { lift } from 'rxjs/internal/util/lift';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Observable } from 'rxjs/internal/Observable';
@@ -45,7 +45,7 @@ export function mergeScan<T, R>(
   accumulator: (acc: R, value: T) => ObservableInput<R>,
   seed: R,
   concurrent: number = Number.POSITIVE_INFINITY
-  ): Operation<T, R> {
+  ): OperatorFunction<T, R> {
   return lift((source: Observable<T>, dest: Sink<R>, subs: Subscription) => {
     const buffer: T[] = [];
     let active = 0;

@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs/internal/Observable';
-import { Operation, FOType, Sink, SinkArg, FObs } from 'rxjs/internal/types';
+import { OperatorFunction, FOType, Sink, SinkArg, FObs } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { lift } from 'rxjs/internal/util/lift';
 
-export function isEmpty<T>(): Operation<T, boolean> {
+export function isEmpty<T>(): OperatorFunction<T, boolean> {
   return lift((source: Observable<T>, dest: Sink<boolean>, subs: Subscription) => {
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
       if (t === FOType.NEXT) {

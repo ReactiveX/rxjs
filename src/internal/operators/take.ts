@@ -1,9 +1,9 @@
-import { Operation, FOType, Sink, SinkArg } from "rxjs/internal/types";
+import { OperatorFunction, FOType, Sink, SinkArg } from "rxjs/internal/types";
 import { Observable } from "rxjs/internal/Observable";
 import { Subscription } from 'rxjs/internal/Subscription';
 import { lift } from 'rxjs/internal/util/lift';
 
-export function take<T>(total: number): Operation<T, T> {
+export function take<T>(total: number): OperatorFunction<T, T> {
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     if (total <= 0) {
       dest(FOType.COMPLETE, undefined, subs);

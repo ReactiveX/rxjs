@@ -1,4 +1,4 @@
-import { Operation, ObservableInput, Sink, FOType, SinkArg } from "rxjs/internal/types";
+import { OperatorFunction, ObservableInput, Sink, FOType, SinkArg } from "rxjs/internal/types";
 import { lift } from "rxjs/internal/util/lift";
 import { Observable } from "rxjs/internal/Observable";
 import { Subscription } from "rxjs/internal/Subscription";
@@ -61,7 +61,7 @@ export const DEFAULT_THROTTLE_CONFIG: ThrottleConfig = {
 export function throttle<T>(
   durationSelector: (value: T, index: number) => ObservableInput<any>,
   config = DEFAULT_THROTTLE_CONFIG
-): Operation<T, T> {
+): OperatorFunction<T, T> {
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     let _innerSubs: Subscription;
     let _sendValue: T;

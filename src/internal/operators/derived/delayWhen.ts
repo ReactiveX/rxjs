@@ -1,4 +1,4 @@
-import { Operation, ObservableInput } from 'rxjs/internal/types';
+import { OperatorFunction, ObservableInput } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
 import { take } from 'rxjs/internal/operators/take';
 import { mergeMap } from 'rxjs/internal/operators/mergeMap';
@@ -9,8 +9,8 @@ import { defer } from 'rxjs';
 
 /* tslint:disable:max-line-length */
 /** @deprecated In future versions, empty notifiers will no longer re-emit the source value on the output observable. */
-export function delayWhen<T>(delayDurationSelector: (value: T, index: number) => Observable<never>, subscriptionDelay?: Observable<any>): Operation<T, T>;
-export function delayWhen<T>(delayDurationSelector: (value: T, index: number) => Observable<any>, subscriptionDelay?: Observable<any>): Operation<T, T>;
+export function delayWhen<T>(delayDurationSelector: (value: T, index: number) => Observable<never>, subscriptionDelay?: Observable<any>): OperatorFunction<T, T>;
+export function delayWhen<T>(delayDurationSelector: (value: T, index: number) => Observable<any>, subscriptionDelay?: Observable<any>): OperatorFunction<T, T>;
 /* tslint:disable:max-line-length */
 
 /**
@@ -65,7 +65,7 @@ export function delayWhen<T>(delayDurationSelector: (value: T, index: number) =>
  */
 export function delayWhen<T>(
   delayDurationSelector: (value: T, index: number) => ObservableInput<any>,
-  subscriptionDelay?: Observable<any>): Operation<T, T> {
+  subscriptionDelay?: Observable<any>): OperatorFunction<T, T> {
     return (source: Observable<T>): Observable<T> => {
       const modifiedSource = source.pipe(
         mergeMap((v, i) => from(delayDurationSelector(v, i)).pipe(

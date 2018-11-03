@@ -1,4 +1,4 @@
-import { ObservableInput, Operation, FOType, Sink, SinkArg, Source } from 'rxjs/internal/types';
+import { ObservableInput, OperatorFunction, FOType, Sink, SinkArg, Source } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { fromSource } from "rxjs/internal/sources/fromSource";
@@ -8,7 +8,7 @@ import { lift } from 'rxjs/internal/util/lift';
 export function mergeMap<T, R>(
   project: (value: T, index: number) => ObservableInput<R>,
   concurrent = Number.POSITIVE_INFINITY,
-): Operation<T, R> {
+): OperatorFunction<T, R> {
   return lift((source: Observable<T>, dest: Sink<R>, subs: Subscription) => {
     let counter = 0;
     let active = 0;

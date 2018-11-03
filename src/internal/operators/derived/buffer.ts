@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/internal/Observable';
-import { Operation } from 'rxjs/internal/types';
+import { OperatorFunction } from 'rxjs/internal/types';
 import { pipe } from 'rxjs/internal/util/pipe';
 import { window } from 'rxjs/internal/operators/window';
 import { mergeMap } from 'rxjs/internal/operators/mergeMap';
@@ -42,7 +42,7 @@ import { toArray } from 'rxjs/internal/operators/derived/toArray';
  * @method buffer
  * @owner Observable
  */
-export function buffer<T>(closingNotifier: Observable<any>): Operation<T, T[]> {
+export function buffer<T>(closingNotifier: Observable<any>): OperatorFunction<T, T[]> {
   return pipe(
     window(closingNotifier),
     mergeMap(toArray()),

@@ -1,4 +1,4 @@
-import { Operation, ObservableInput, Sink, FOType, SinkArg } from 'rxjs/internal/types';
+import { OperatorFunction, ObservableInput, Sink, FOType, SinkArg } from 'rxjs/internal/types';
 import { lift } from 'rxjs/internal/util/lift';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Observable } from 'rxjs/internal/Observable';
@@ -50,7 +50,7 @@ import { fromSource } from 'rxjs/internal/sources/fromSource';
 export function exhaustMap<T, R>(
   project: (value: T, index: number) => ObservableInput<R>,
   concurrency = 1,
-): Operation<T, R> {
+): OperatorFunction<T, R> {
   return lift((source: Observable<T>, dest: Sink<R>, subs: Subscription) => {
     let index = 0;
     let active = 0;

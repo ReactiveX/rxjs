@@ -1,9 +1,9 @@
-import { Operation, FOType, Sink, SinkArg } from 'rxjs/internal/types';
+import { OperatorFunction, FOType, Sink, SinkArg } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { lift } from 'rxjs/internal/util/lift';
 
-export function share<T>(): Operation<T, T> {
+export function share<T>(): OperatorFunction<T, T> {
   let state: any[];
   let connection: Subscription;
   return lift((source: Observable<T>, sink: Sink<T>, subs: Subscription) => {

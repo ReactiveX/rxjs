@@ -1,4 +1,4 @@
-import { SchedulerLike, Operation, Sink, FOType, SinkArg } from 'rxjs/internal/types';
+import { SchedulerLike, OperatorFunction, Sink, FOType, SinkArg } from 'rxjs/internal/types';
 import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
 import { ThrottleConfig, DEFAULT_THROTTLE_CONFIG } from 'rxjs/internal/operators/throttle';
 import { lift } from 'rxjs/internal/util/lift';
@@ -53,7 +53,7 @@ export function throttleTime<T>(
   duration: number,
   scheduler: SchedulerLike = asyncScheduler,
   config: ThrottleConfig = DEFAULT_THROTTLE_CONFIG
-): Operation<T, T>
+): OperatorFunction<T, T>
 {
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     let _hasTrailingValue = false;

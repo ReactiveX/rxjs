@@ -1,4 +1,4 @@
-import { Operation, ObservableInput, Sink, FOType, SinkArg } from 'rxjs/internal/types';
+import { OperatorFunction, ObservableInput, Sink, FOType, SinkArg } from 'rxjs/internal/types';
 import { lift } from 'rxjs/internal/util/lift';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Observable } from 'rxjs/internal/Observable';
@@ -7,20 +7,20 @@ import { fromSource } from 'rxjs/internal/sources/fromSource';
 import { identity } from 'rxjs/internal/util/identity';
 
 /* tslint:disable:max-line-length */
-export function withLatestFrom<T, R>(project: (v1: T) => R): Operation<T, R>;
-export function withLatestFrom<T, T2, R>(v2: ObservableInput<T2>, project: (v1: T, v2: T2) => R): Operation<T, R>;
-export function withLatestFrom<T, T2, T3, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, project: (v1: T, v2: T2, v3: T3) => R): Operation<T, R>;
-export function withLatestFrom<T, T2, T3, T4, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, project: (v1: T, v2: T2, v3: T3, v4: T4) => R): Operation<T, R>;
-export function withLatestFrom<T, T2, T3, T4, T5, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => R): Operation<T, R>;
-export function withLatestFrom<T, T2, T3, T4, T5, T6, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => R): Operation<T, R> ;
-export function withLatestFrom<T, T2>(v2: ObservableInput<T2>): Operation<T, [T, T2]>;
-export function withLatestFrom<T, T2, T3>(v2: ObservableInput<T2>, v3: ObservableInput<T3>): Operation<T, [T, T2, T3]>;
-export function withLatestFrom<T, T2, T3, T4>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): Operation<T, [T, T2, T3, T4]>;
-export function withLatestFrom<T, T2, T3, T4, T5>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Operation<T, [T, T2, T3, T4, T5]>;
-export function withLatestFrom<T, T2, T3, T4, T5, T6>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Operation<T, [T, T2, T3, T4, T5, T6]> ;
-export function withLatestFrom<T, R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Operation<T, R>;
-export function withLatestFrom<T, R>(array: ObservableInput<any>[]): Operation<T, R>;
-export function withLatestFrom<T, R>(array: ObservableInput<any>[], project: (...values: Array<any>) => R): Operation<T, R>;
+export function withLatestFrom<T, R>(project: (v1: T) => R): OperatorFunction<T, R>;
+export function withLatestFrom<T, T2, R>(v2: ObservableInput<T2>, project: (v1: T, v2: T2) => R): OperatorFunction<T, R>;
+export function withLatestFrom<T, T2, T3, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, project: (v1: T, v2: T2, v3: T3) => R): OperatorFunction<T, R>;
+export function withLatestFrom<T, T2, T3, T4, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, project: (v1: T, v2: T2, v3: T3, v4: T4) => R): OperatorFunction<T, R>;
+export function withLatestFrom<T, T2, T3, T4, T5, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5) => R): OperatorFunction<T, R>;
+export function withLatestFrom<T, T2, T3, T4, T5, T6, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, project: (v1: T, v2: T2, v3: T3, v4: T4, v5: T5, v6: T6) => R): OperatorFunction<T, R> ;
+export function withLatestFrom<T, T2>(v2: ObservableInput<T2>): OperatorFunction<T, [T, T2]>;
+export function withLatestFrom<T, T2, T3>(v2: ObservableInput<T2>, v3: ObservableInput<T3>): OperatorFunction<T, [T, T2, T3]>;
+export function withLatestFrom<T, T2, T3, T4>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): OperatorFunction<T, [T, T2, T3, T4]>;
+export function withLatestFrom<T, T2, T3, T4, T5>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): OperatorFunction<T, [T, T2, T3, T4, T5]>;
+export function withLatestFrom<T, T2, T3, T4, T5, T6>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): OperatorFunction<T, [T, T2, T3, T4, T5, T6]> ;
+export function withLatestFrom<T, R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): OperatorFunction<T, R>;
+export function withLatestFrom<T, R>(array: ObservableInput<any>[]): OperatorFunction<T, R>;
+export function withLatestFrom<T, R>(array: ObservableInput<any>[], project: (...values: Array<any>) => R): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -64,7 +64,7 @@ export function withLatestFrom<T, R>(array: ObservableInput<any>[], project: (..
  * @method withLatestFrom
  * @owner Observable
  */
-export function withLatestFrom<T, R>(...args: Array<ObservableInput<any>>): Operation<T, R> {
+export function withLatestFrom<T, R>(...args: Array<ObservableInput<any>>): OperatorFunction<T, R> {
   const otherSources: Array<ObservableInput<any>> = (args && args.length === 1 && Array.isArray(args[0]))
     ? args[0] as Array<ObservableInput<any>>
     : args;

@@ -1,10 +1,10 @@
-import { Operation, FOType, Sink, SinkArg } from 'rxjs/internal/types';
+import { OperatorFunction, FOType, Sink, SinkArg } from 'rxjs/internal/types';
 import { lift } from 'rxjs/internal/util/lift';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 
-export function every<T>(predicate: (value: T, index: number) => boolean): Operation<T, boolean> {
+export function every<T>(predicate: (value: T, index: number) => boolean): OperatorFunction<T, boolean> {
   return lift((source: Observable<T>, dest: Sink<boolean>, subs: Subscription) => {
     let i = 0;
     const everySubs = new Subscription();

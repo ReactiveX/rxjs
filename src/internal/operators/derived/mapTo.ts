@@ -1,6 +1,6 @@
 import { map } from 'rxjs/internal/operators/map';
-import { Operation } from 'rxjs/internal/types';
+import { OperatorFunction } from 'rxjs/internal/types';
 
-export function mapTo<T, R>(value: R): Operation<T, R> {
+export function mapTo<T, R>(value: R): OperatorFunction<T, R> {
   return map(() => value);
 }

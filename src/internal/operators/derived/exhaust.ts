@@ -1,9 +1,9 @@
-import { Operation, ObservableInput } from 'rxjs/internal/types';
+import { OperatorFunction, ObservableInput } from 'rxjs/internal/types';
 import { exhaustMap } from 'rxjs/internal/operators/exhaustMap';
 import { identity } from 'rxjs/internal/util/identity';
 
-export function exhaust<T>(): Operation<ObservableInput<T>, T>;
-export function exhaust<R>(): Operation<any, R>;
+export function exhaust<T>(): OperatorFunction<ObservableInput<T>, T>;
+export function exhaust<R>(): OperatorFunction<any, R>;
 
 /**
  * Converts a higher-order Observable into a first-order Observable by dropping
@@ -46,6 +46,6 @@ export function exhaust<R>(): Operation<any, R>;
  * @method exhaust
  * @owner Observable
  */
-export function exhaust<T>(): Operation<any, T> {
+export function exhaust<T>(): OperatorFunction<any, T> {
   return exhaustMap(identity);
 }

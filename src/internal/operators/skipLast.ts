@@ -1,4 +1,4 @@
-import { Operation, Sink, FOType, SinkArg } from "rxjs/internal/types";
+import { OperatorFunction, Sink, FOType, SinkArg } from "rxjs/internal/types";
 import { lift } from "rxjs/internal/util/lift";
 import { Observable } from "rxjs/internal/Observable";
 import { Subscription } from "rxjs/internal/Subscription";
@@ -39,7 +39,7 @@ import { ArgumentOutOfRangeError } from "rxjs/internal/util/ArgumentOutOfRangeEr
  * @method skipLast
  * @owner Observable
  */
-export function skipLast<T>(count: number): Operation<T, T> {
+export function skipLast<T>(count: number): OperatorFunction<T, T> {
   if (count < 0) {
     throw new ArgumentOutOfRangeError();
   }

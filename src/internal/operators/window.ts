@@ -1,6 +1,6 @@
 import { lift } from 'rxjs/internal/util/lift';
 import { Observable } from 'rxjs/internal/Observable';
-import { Operation, Sink, FOType, SinkArg, FObs } from 'rxjs/internal/types';
+import { OperatorFunction, Sink, FOType, SinkArg, FObs } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { subjectBaseSource } from 'rxjs/internal/sources/subjectBaseSource';
 import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
@@ -45,7 +45,7 @@ import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
  * @method window
  * @owner Observable
  */
-export function window<T>(windowBoundaries: Observable<any>): Operation<T, Observable<T>> {
+export function window<T>(windowBoundaries: Observable<any>): OperatorFunction<T, Observable<T>> {
   return lift((source: Observable<T>, dest: Sink<Observable<T>>, subs: Subscription) => {
     let currentWindow: FObs<T>;
     const openWindow = () => {

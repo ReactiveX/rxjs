@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/internal/Observable';
-import { Operation } from 'rxjs/internal/types';
+import { OperatorFunction } from 'rxjs/internal/types';
 import { zip } from 'rxjs/internal/create/zip';
 import { filter } from 'rxjs/internal/operators/filter';
 import { take } from 'rxjs/internal/operators/take';
@@ -63,7 +63,7 @@ const DEFAULT_COMPAROR = (a: any, b: any) => a === b;
  * @owner Observable
  */
 export function sequenceEqual<A, B>(compareTo: Observable<B>,
-                                 comparor: (a: A, b: B) => boolean = DEFAULT_COMPAROR): Operation<A, boolean> {
+                                 comparor: (a: A, b: B) => boolean = DEFAULT_COMPAROR): OperatorFunction<A, boolean> {
   return (source: Observable<A>) => zip(source, compareTo).pipe(
     filter(([a, b]: [A, B]) => !comparor(a, b)),
     mapTo(false),

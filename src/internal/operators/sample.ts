@@ -1,4 +1,4 @@
-import { Operation, Sink, FOType, SinkArg } from "rxjs/internal/types";
+import { OperatorFunction, Sink, FOType, SinkArg } from "rxjs/internal/types";
 import { Observable } from "rxjs/internal/Observable";
 import { lift } from "rxjs/internal/util/lift";
 import { Subscription } from "rxjs/internal/Subscription";
@@ -40,7 +40,7 @@ import { Subscription } from "rxjs/internal/Subscription";
  * @method sample
  * @owner Observable
  */
-export function sample<T>(notifier: Observable<any>): Operation<T, T> {
+export function sample<T>(notifier: Observable<any>): OperatorFunction<T, T> {
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     let _value: T;
     let _hasValue = false;

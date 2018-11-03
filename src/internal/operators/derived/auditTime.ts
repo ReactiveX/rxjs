@@ -1,7 +1,7 @@
 import { audit } from 'rxjs/internal/operators/audit';
 import { SchedulerLike } from 'rxjs/internal/types';
 import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
-import { Operation } from 'rxjs/internal/types';
+import { OperatorFunction } from 'rxjs/internal/types';
 import { timer } from 'rxjs/internal/create/timer';
 
 /**
@@ -50,6 +50,6 @@ import { timer } from 'rxjs/internal/create/timer';
  * @method auditTime
  * @owner Observable
  */
-export function auditTime<T>(duration: number, scheduler: SchedulerLike = asyncScheduler): Operation<T, T> {
+export function auditTime<T>(duration: number, scheduler: SchedulerLike = asyncScheduler): OperatorFunction<T, T> {
   return audit(() => timer(duration, scheduler));
 }

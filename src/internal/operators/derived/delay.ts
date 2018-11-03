@@ -1,4 +1,4 @@
-import { Operation, SchedulerLike } from 'rxjs/internal/types';
+import { OperatorFunction, SchedulerLike } from 'rxjs/internal/types';
 import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
 import { mergeMap } from 'rxjs/internal/operators/mergeMap';
 import { mapTo } from 'rxjs/internal/operators/derived/mapTo';
@@ -52,7 +52,7 @@ import { isNumeric } from 'rxjs/internal/util/isNumeric';
  * @method delay
  * @owner Observable
  */
-export function delay<T>(delay: number|Date, scheduler: SchedulerLike = asyncScheduler): Operation<T, T> {
+export function delay<T>(delay: number|Date, scheduler: SchedulerLike = asyncScheduler): OperatorFunction<T, T> {
   const delayFor = !isNumeric(delay) ? (+delay - scheduler.now()) : Math.abs(delay);
 
   return mergeMap((value: T) => timer(delayFor, scheduler).pipe(mapTo(value)));

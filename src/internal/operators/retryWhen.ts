@@ -1,4 +1,4 @@
-import { Operation, FOType, Sink, SinkArg } from 'rxjs/internal/types';
+import { OperatorFunction, FOType, Sink, SinkArg } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
 import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
 import { RecyclableSubscription } from 'rxjs/internal/RecyclableSubscription';
@@ -8,7 +8,7 @@ import { subjectSource } from 'rxjs/internal/Subject';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 import { fromSource } from "rxjs/internal/sources/fromSource";
 
-export function retryWhen<T>(notifierSetup: (errors: Observable<any>) => Observable<any>): Operation<T, T> {
+export function retryWhen<T>(notifierSetup: (errors: Observable<any>) => Observable<any>): OperatorFunction<T, T> {
   return lift((source: Observable<T>, dest: Sink<T>, downstreamSubs: Subscription) => {
     const upstreamSubs = new RecyclableSubscription();
     downstreamSubs.add(upstreamSubs);

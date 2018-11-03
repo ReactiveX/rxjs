@@ -1,11 +1,11 @@
 import { lift } from 'rxjs/internal/util/lift';
 import { Observable } from 'rxjs/internal/Observable';
-import { FOType, ObservableInput, Operation, Sink, SinkArg } from 'rxjs/internal/types';
+import { FOType, ObservableInput, OperatorFunction, Sink, SinkArg } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { fromSource } from "rxjs/internal/sources/fromSource";
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 
-export function distinct<T, K>(keySelector?: (value: T) => K, flushes?: ObservableInput<any>): Operation<T, T> {
+export function distinct<T, K>(keySelector?: (value: T) => K, flushes?: ObservableInput<any>): OperatorFunction<T, T> {
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription)  =>{
     const values = new Set<T>();
     if (flushes) {

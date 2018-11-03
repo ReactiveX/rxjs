@@ -1,6 +1,6 @@
 import { map } from 'rxjs/internal/operators/map';
-import { Operation, Timestamped } from 'rxjs/internal/types';
+import { OperatorFunction, Timestamped } from 'rxjs/internal/types';
 
-export function timestamp<T>(): Operation<T, Timestamped<T>> {
+export function timestamp<T>(): OperatorFunction<T, Timestamped<T>> {
   return map((value: T) => ({ value, timestamp: Date.now() }));
 }

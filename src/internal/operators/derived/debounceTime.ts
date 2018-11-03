@@ -1,4 +1,4 @@
-import { Operation, SchedulerLike } from "rxjs/internal/types";
+import { OperatorFunction, SchedulerLike } from "rxjs/internal/types";
 import { debounce } from "rxjs/internal/operators/debounce";
 import { timer } from "rxjs/internal/create/timer";
 import { asyncScheduler } from "rxjs/internal/scheduler/asyncScheduler";
@@ -52,6 +52,6 @@ import { asyncScheduler } from "rxjs/internal/scheduler/asyncScheduler";
  * @method debounceTime
  * @owner Observable
  */
-export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyncScheduler): Operation<T, T> {
+export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = asyncScheduler): OperatorFunction<T, T> {
   return debounce(() => timer(dueTime, scheduler));
 }

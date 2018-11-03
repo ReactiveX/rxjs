@@ -2,9 +2,9 @@ import { lift } from 'rxjs/internal/util/lift';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { fromSource } from "rxjs/internal/sources/fromSource";
-import { FOType, ObservableInput, Operation, Sink, SinkArg } from 'rxjs/internal/types';
+import { FOType, ObservableInput, OperatorFunction, Sink, SinkArg } from 'rxjs/internal/types';
 
-export function skipUntil<T>(notifier: ObservableInput<any>): Operation<T, T> {
+export function skipUntil<T>(notifier: ObservableInput<any>): OperatorFunction<T, T> {
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     let notified = false;
     const notifierSubs = new Subscription();

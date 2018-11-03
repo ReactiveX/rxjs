@@ -1,5 +1,5 @@
 import { sinkFromHandlers } from 'rxjs/internal/util/sinkFromHandlers';
-import { Operation, PartialObserver, FOType, Sink, Source, SinkArg, FObsArg } from 'rxjs/internal/types';
+import { OperatorFunction, PartialObserver, FOType, Sink, Source, SinkArg, FObsArg } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { pipeArray } from 'rxjs/internal/util/pipe';
 import { Observable } from 'rxjs/internal/Observable';
@@ -107,6 +107,6 @@ function toPromise<T>(this: Observable<T>): Promise<T> {
   });
 }
 
-function observablePipe<T>(this: Observable<T>, ...operations: Array<Operation<T, T>>): Observable<T> {
+function observablePipe<T>(this: Observable<T>, ...operations: Array<OperatorFunction<T, T>>): Observable<T> {
   return pipeArray(operations)(this);
 }

@@ -1,32 +1,32 @@
-import { Teardown } from 'rxjs/internal/types';
+import { TeardownLogic } from 'rxjs/internal/types';
 import { noop } from 'rxjs/internal/util/noop';
 import { isSubscription } from 'rxjs/internal/util/isSubscription';
 
 export interface Subscription {
   unsubscribe(): void;
-  add(...teardowns: Teardown[]): void;
-  remove(...teardowns: Teardown[]): void;
+  add(...teardowns: TeardownLogic[]): void;
+  remove(...teardowns: TeardownLogic[]): void;
   readonly closed: boolean;
 }
 
 export interface SubscriptionConstructor {
   new(): Subscription;
-  new(...teardowns: Teardown[]): Subscription;
+  new(...teardowns: TeardownLogic[]): Subscription;
 }
 
 export interface SubscriptionContext {
-  _teardowns: Teardown[];
+  _teardowns: TeardownLogic[];
   _closed: boolean;
 }
 
-export const Subscription: SubscriptionConstructor = function Subscription(this: SubscriptionContext, ...teardowns: Teardown[]) {
+export const Subscription: SubscriptionConstructor = function Subscription(this: SubscriptionContext, ...teardowns: TeardownLogic[]) {
   this._teardowns = teardowns;
   this._closed = false;
 } as any;
 
 const subscriptionProto = Subscription.prototype;
 
-subscriptionProto.add = function (...teardowns: Teardown[]) {
+subscriptionProto.add = function (...teardowns: TeardownLogic[]) {
   const { _teardowns } = this;
   for (let teardown of teardowns) {
     if (teardown) {
@@ -42,7 +42,7 @@ subscriptionProto.add = function (...teardowns: Teardown[]) {
   }
 }
 
-subscriptionProto.remove = function (...teardowns: Teardown[]) {
+subscriptionProto.remove = function (...teardowns: TeardownLogic[]) {
   const { _teardowns } = this;
   for (let teardown of teardowns) {
     if (teardown) {

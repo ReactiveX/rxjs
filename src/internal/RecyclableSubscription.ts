@@ -1,16 +1,16 @@
 import { Subscription, SubscriptionContext, teardownToFunction } from 'rxjs/internal/Subscription';
-import { Teardown } from 'rxjs/internal/types';
+import { TeardownLogic } from 'rxjs/internal/types';
 
 export interface RecyclableSubscription extends Subscription {
   recycle(): void;
 }
 
 export interface RecyclableSubscriptionConstructor {
-  new(...teardowns: Teardown[]): RecyclableSubscription;
+  new(...teardowns: TeardownLogic[]): RecyclableSubscription;
 }
 
 export const RecyclableSubscription: RecyclableSubscriptionConstructor =
-  function RecyclableSubscription(this: any, ...teardowns: Teardown[]) {
+  function RecyclableSubscription(this: any, ...teardowns: TeardownLogic[]) {
     Subscription.apply(this, teardowns);
   } as any;
 

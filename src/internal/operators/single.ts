@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/internal/Observable';
 import { filter } from 'rxjs/internal/operators/filter';
-import { Operation, Sink, FOType, SinkArg } from 'rxjs/internal/types';
+import { OperatorFunction, Sink, FOType, SinkArg } from 'rxjs/internal/types';
 import { take } from 'rxjs/internal/operators/take';
 import { throwIfEmpty } from 'rxjs/internal/operators/derived/throwIfEmpty';
 import { lift } from 'rxjs/internal/util/lift';
@@ -25,7 +25,7 @@ import { EmptyError } from 'rxjs/internal/util/EmptyError';
  * @method single
  * @owner Observable
  */
-export function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): Operation<T, T> {
+export function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): OperatorFunction<T, T> {
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     let _hasValue = false;
     let _i = 0;

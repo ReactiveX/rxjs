@@ -1,4 +1,4 @@
-import { ObservableInput, Operation, Sink, FOType, SinkArg } from 'rxjs/internal/types';
+import { ObservableInput, OperatorFunction, Sink, FOType, SinkArg } from 'rxjs/internal/types';
 import { lift } from 'rxjs/internal/util/lift';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
@@ -50,7 +50,7 @@ import { fromSource } from 'rxjs/internal/sources/fromSource';
  * @method debounce
  * @owner Observable
  */
-export function debounce<T>(durationSelector: (value: T, index: number) => ObservableInput<any>): Operation<T, T> {
+export function debounce<T>(durationSelector: (value: T, index: number) => ObservableInput<any>): OperatorFunction<T, T> {
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     let _innerSubs: Subscription;
     let _i = 0;

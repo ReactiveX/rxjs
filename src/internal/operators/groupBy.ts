@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/internal/Observable';
 import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
-import { Operation, FOType, Sink, SinkArg, GroupedObservable, ObservableInput } from 'rxjs/internal/types';
+import { OperatorFunction, FOType, Sink, SinkArg, GroupedObservable, ObservableInput } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { subjectSource } from 'rxjs/internal/Subject';
 import { fromSource } from "rxjs/internal/sources/fromSource";
@@ -20,13 +20,13 @@ export interface GroupByConfig<T, K, R> {
 }
 
 /* tslint:disable:max-line-length */
-export function groupBy<T, K>(keySelector: (value: T, index: number) => K): Operation<T, GroupedObservable<K, T>>;
-export function groupBy<T, K, R>(config: GroupByConfig<T, K, R>): Operation<T, GroupedObservable<K, T>>;
+export function groupBy<T, K>(keySelector: (value: T, index: number) => K): OperatorFunction<T, GroupedObservable<K, T>>;
+export function groupBy<T, K, R>(config: GroupByConfig<T, K, R>): OperatorFunction<T, GroupedObservable<K, T>>;
 /* tslint:enable:max-line-length */
 
 export function groupBy<T, K, R>(
   keySelectorOrConfig: ((value: T, index: number) => K) | GroupByConfig<T, K, R>,
-): Operation<T, T> {
+): OperatorFunction<T, T> {
 
   const config = (typeof keySelectorOrConfig === 'function')
     ? { keySelector: keySelectorOrConfig }

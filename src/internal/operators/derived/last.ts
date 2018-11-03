@@ -1,4 +1,4 @@
-import { Operation } from 'rxjs/internal/types';
+import { OperatorFunction } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
 import { identity } from 'rxjs/internal/util/identity';
 import { throwIfEmpty } from 'rxjs/internal/operators/derived/throwIfEmpty';
@@ -11,15 +11,15 @@ import { EmptyError } from 'rxjs/internal/util/EmptyError';
 export function last<T, D = T>(
   predicate?: null,
   defaultValue?: D
-): Operation<T, T | D>;
+): OperatorFunction<T, T | D>;
 export function last<T, S extends T>(
   predicate: (value: T, index: number, source: Observable<T>) => value is S,
   defaultValue?: S
-): Operation<T, S>;
+): OperatorFunction<T, S>;
 export function last<T, D = T>(
   predicate: (value: T, index: number, source: Observable<T>) => boolean,
   defaultValue?: D
-): Operation<T, T | D>;
+): OperatorFunction<T, T | D>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -42,7 +42,7 @@ export function last<T, D = T>(
 export function last<T, D>(
   predicate?: ((value: T, index: number, source: Observable<T>) => boolean) | null,
   defaultValue?: D
-): Operation<T, T | D> {
+): OperatorFunction<T, T | D> {
   const hasDefaultValue = arguments.length >= 2;
   return (source: Observable<T>) => source.pipe(
     predicate ? filter((v, i) => predicate(v, i, source)) : identity,

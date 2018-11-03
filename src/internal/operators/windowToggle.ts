@@ -1,5 +1,5 @@
 import { Observable } from "rxjs/internal/Observable";
-import { Operation, Sink, FOType, SinkArg, FObs } from "rxjs/internal/types";
+import { OperatorFunction, Sink, FOType, SinkArg, FObs } from "rxjs/internal/types";
 import { lift } from "rxjs/internal/util/lift";
 import { Subscription } from "rxjs/internal/Subscription";
 import { tryUserFunction, resultIsError } from "rxjs/internal/util/userFunction";
@@ -54,7 +54,7 @@ import { sourceAsObservable } from "rxjs/internal/util/sourceAsObservable";
 export function windowToggle<T, O>(
   openings: Observable<O>,
   closingSelector: (openValue: O) => Observable<any>
-): Operation<T, Observable<T>> {
+): OperatorFunction<T, Observable<T>> {
   return lift((source: Observable<T>, dest: Sink<Observable<T>>, subs: Subscription) => {
     const _windows: FObs<T>[] = [];
     let _openSubs = new Subscription();

@@ -1,14 +1,14 @@
 import { toArray } from 'rxjs/internal/operators/derived/toArray';
 import { Observable } from 'rxjs/internal/Observable';
-import { Operation, ObservableInput } from 'rxjs/internal/types';
+import { OperatorFunction, ObservableInput } from 'rxjs/internal/types';
 import { pipeArray } from 'rxjs/internal/util/pipe';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
 import { combineLatest } from 'rxjs/internal/create/combineLatest';
 import { tap } from 'rxjs/internal/operators/tap';
 
 
-export function combineAll<T>(): Operation<ObservableInput<T>, T[]>;
-export function combineAll<T>(): Operation<any, T[]>;
+export function combineAll<T>(): OperatorFunction<ObservableInput<T>, T[]>;
+export function combineAll<T>(): OperatorFunction<any, T[]>;
 /**
  * Flattens an Observable-of-Observables by applying {@link combineLatest} when the Observable-of-Observables completes.
  *
@@ -51,7 +51,7 @@ export function combineAll<T>(): Operation<any, T[]>;
  * @return {Observable<T>}
  * @name combineAll
  */
-export function combineAll<T>(): Operation<T, T> {
+export function combineAll<T>(): OperatorFunction<T, T> {
   return pipeArray([
     toArray(),
     switchMap<Observable<T>[], Observable<T[]>>(sources => combineLatest(sources)),

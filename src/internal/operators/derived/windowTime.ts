@@ -1,4 +1,4 @@
-import { SchedulerLike, Operation } from "rxjs/internal/types";
+import { SchedulerLike, OperatorFunction } from "rxjs/internal/types";
 import { isScheduler } from "rxjs/internal/util/isScheduler";
 import { asyncScheduler } from "rxjs/internal/scheduler/asyncScheduler";
 import { Observable } from "rxjs/internal/Observable";
@@ -84,21 +84,21 @@ import { window } from "rxjs/internal/operators/window";
  * @owner Observable
  */
 export function windowTime<T>(windowTimeSpan: number,
-  scheduler?: SchedulerLike): Operation<T, Observable<T>>;
+  scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 export function windowTime<T>(windowTimeSpan: number,
   windowCreationInterval: number,
-  scheduler?: SchedulerLike): Operation<T, Observable<T>>;
+  scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 export function windowTime<T>(windowTimeSpan: number,
   windowCreationInterval: number,
   maxWindowSize: number,
-  scheduler?: SchedulerLike): Operation<T, Observable<T>>;
+  scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 
 export function windowTime<T>(
   windowTimeSpan: number,
   arg2?: number|SchedulerLike,
   arg3?: number|SchedulerLike,
   arg4?: SchedulerLike
-): Operation<T, Observable<T>> {
+): OperatorFunction<T, Observable<T>> {
   let scheduler: SchedulerLike = asyncScheduler;
   let windowCreationInterval: number = null;
   let maxWindowSize = Number.POSITIVE_INFINITY;
@@ -121,7 +121,7 @@ export function windowTime<T>(
 
   const closing = timer(windowTimeSpan, scheduler);
 
-  const windowed: Operation<T, Observable<T>> =
+  const windowed: OperatorFunction<T, Observable<T>> =
     windowCreationInterval !== null
     ? windowToggle(timer(0, windowCreationInterval, scheduler), () => closing)
     : window(timer(windowTimeSpan, windowTimeSpan, scheduler));

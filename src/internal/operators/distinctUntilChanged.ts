@@ -1,6 +1,6 @@
 import { lift } from 'rxjs/internal/util/lift';
 import { Observable } from 'rxjs/internal/Observable';
-import { FOType, Operation, Sink, SinkArg } from 'rxjs/internal/types';
+import { FOType, OperatorFunction, Sink, SinkArg } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 
@@ -11,7 +11,7 @@ function DEFAULT_COMPARER<T>(a: T, b: T) {
 export function distinctUntilChanged<T, K>(
   comparer: ((a:T, b:T) => boolean) = DEFAULT_COMPARER,
   keySelector?: (value: T) => K
-): Operation<T, T> {
+): OperatorFunction<T, T> {
   comparer = comparer || DEFAULT_COMPARER;
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription)  => {
     let key: K;
