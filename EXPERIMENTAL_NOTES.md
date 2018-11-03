@@ -34,6 +34,7 @@ timestamp.
 - `debounce` now passes `index` to `durationSelector`.
 - `throttle` now passes `index` to `durationSelector`.
 - `range` no longer supports scheduling... if you want to schedule that, use `fromScheduled` and a generator. (possibly we'll implement a scheduled range?)
+- `merge` no longer supports scheduling... use `fromScheduled(sources).pipe(mergeAll())`.
 
 ## Fixes that are breaking changes to some
 
