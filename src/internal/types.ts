@@ -133,3 +133,5 @@ declare global  {
     readonly observable: symbol;
   }
 }
+
+export type MonoTypeOperatorFunction<T> = OperatorFunction<T, T>;
