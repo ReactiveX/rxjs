@@ -11,6 +11,7 @@ export { NEVER } from 'rxjs/internal/NEVER';
 export { combineLatest } from 'rxjs/internal/create/combineLatest';
 export { concat } from 'rxjs/internal/create/concat';
 export { defer } from 'rxjs/internal/create/defer';
+export { forkJoin } from 'rxjs/internal/create/forkJoin';
 export { from } from 'rxjs/internal/create/from';
 export { fromScheduled } from 'rxjs/internal/create/fromScheduled';
 export { interval } from 'rxjs/internal/create/interval';
