@@ -4,20 +4,22 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { sourceAsSubject } from 'rxjs/internal/util/sourceAsSubject';
 import { subjectBaseSource } from 'rxjs/internal/sources/subjectBaseSource';
 import { sinkFromObserver } from "rxjs/internal/util/sinkFromObserver";
+import { isPartialObserver } from './util/isPartialObserver';
 
-export interface Subject<T> extends Observer<T>, Observable<T> {
+export interface Subject<O, I=O> extends Observer<I>, Observable<O> {
   unsubscribe(): void;
+  asObservable(): Observable<O>;
 }
 
 export interface SubjectConstructor {
   <T>(): Subject<T>;
-  <T>(observer: Observer<T>, observable: Observable<T>): Subject<T>;
+  <O, I>(observer: Observer<I>, observable: Observable<O>): Subject<O, I>;
   new<T>(): Subject<T>;
 }
 
-export const Subject: SubjectConstructor = (<T>(observer?: Observer<T>, observable?: Observable<T>) => {
+export const Subject: SubjectConstructor =  (function Subject<T>(observer?: Observer<T>, observable?: Observable<T>) {
   return sourceAsSubject(
-    observer
+    arguments.length > 0
     ? frankenSubjectSource(
       sinkFromObserver(observer),
       observable,
@@ -26,11 +28,11 @@ export const Subject: SubjectConstructor = (<T>(observer?: Observer<T>, observab
   )
 }) as any;
 
-export function frankenSubjectSource<T>(
-  sink: Sink<T>,
-  source: Source<T>
+export function frankenSubjectSource<O, I>(
+  sink: Sink<I>,
+  source: Source<O>
 ) {
-  return (type: FOType, arg: FObsArg<T>, subs: Subscription) => {
+  return (type: FOType, arg: FObsArg<O|I>, subs: Subscription) => {
     if (type === FOType.SUBSCRIBE) {
       source(type, arg, subs);
     } else {
@@ -44,7 +46,13 @@ export function subjectSource<T>(): FObs<T> {
   let _completed = false;
   let _hasError = false;
   let _error: any;
+  let _disposed = false;
+
   return (type: FOType, arg: FObsArg<T>, subs: Subscription) => {
+    if (type === FOType.DISPOSE) {
+      _disposed = true;
+    }
+
     if (type === FOType.SUBSCRIBE) {
       if (_completed) {
         arg(FOType.COMPLETE, undefined, subs);
@@ -53,7 +61,7 @@ export function subjectSource<T>(): FObs<T> {
       }
     }
 
-    if (!_completed && !_hasError) {
+    if (_disposed || (!_completed && !_hasError)) {
       if (type === FOType.COMPLETE) {
         _completed = true;
       } else if (type === FOType.ERROR) {

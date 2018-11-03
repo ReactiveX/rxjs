@@ -86,7 +86,6 @@ describe('tap operator', () => {
       }
     });
 
-    debugger;
     of(1, 2, 3).pipe(
       tap(subject)
     ).subscribe();

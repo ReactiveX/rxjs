@@ -1,4 +1,4 @@
-import { FOType } from 'rxjs/internal/types';
+import { FOType, FObsArg } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
 import { Subject } from 'rxjs/internal/Subject';
@@ -9,6 +9,7 @@ export function sourceAsSubject<T>(source: any): Subject<T> {
   source.error = error;
   source.complete = complete;
   source.unsubscribe = unsubscribe;
+  source.asObservable = asObservable;
   return source;
 }
 
@@ -29,4 +30,10 @@ function complete<T>(this: Subject<T>) {
 
 function unsubscribe<T>(this: Subject<T>) {
   this(FOType.DISPOSE, undefined, undefined);
+}
+
+function asObservable<T>(this: Subject<T>) {
+  return sourceAsObservable((t: FOType, v: FObsArg<T>, subs: Subscription) => {
+    this(t, v, subs);
+  });
 }

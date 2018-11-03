@@ -41,9 +41,6 @@ export function tap<T>(
       if (resultIsError(result)) {
         dest(FOType.ERROR, result.error, subs);
       } else {
-        if (t === FOType.COMPLETE) {
-          debugger;
-        }
         dest(t, v, subs);
       }
     }, subs);
