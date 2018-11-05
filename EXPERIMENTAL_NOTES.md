@@ -35,7 +35,7 @@ timestamp.
 - `throttle` now passes `index` to `durationSelector`.
 - `range` no longer supports scheduling... if you want to schedule that, use `fromScheduled` and a generator. (possibly we'll implement a scheduled range?)
 - `merge` no longer supports scheduling... use `fromScheduled(sources).pipe(mergeAll())`.
-
+- `throwError` no longer supports scheduling... use `throwError(err).pipe(observeOn(scheduler))`
 ## Fixes that are breaking changes to some
 
 - Resolved the [issue](https://github.com/ReactiveX/rxjs/issues/3990) where `buffer` was omitting the last buffer when the source completed [here](https://github.com/ReactiveX/rxjs/commit/61b1767ec58450325ee16a5d21eadb3789acc069)
@@ -165,14 +165,14 @@ TODO: Still need to research all of these and port tests.
 - [ ] generate
 - [x] iif
 - [x] interval
-- [ ] merge
+- [x] merge
 - [x] never (as `NEVER`)
 - [x] of
 - [x] onErrorResumeNext
 - [ ] pairs
 - [x] race
-- [ ] range
-- [ ] throwError
-- [ ] timer
+- [x] range
+- [x] throwError
+- [x] timer
 - [ ] using
-- [ ] zip
+- [x] zip

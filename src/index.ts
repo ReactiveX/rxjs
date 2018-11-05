@@ -13,6 +13,7 @@ export { concat } from 'rxjs/internal/create/concat';
 export { defer } from 'rxjs/internal/create/defer';
 export { forkJoin } from 'rxjs/internal/create/forkJoin';
 export { from } from 'rxjs/internal/create/from';
+export { fromEvent } from 'rxjs/internal/create/fromEvent';
 export { fromScheduled } from 'rxjs/internal/create/fromScheduled';
 export { iif } from 'rxjs/internal/create/iif';
 export { interval } from 'rxjs/internal/create/interval';
