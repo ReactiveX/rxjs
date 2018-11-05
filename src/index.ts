@@ -14,6 +14,7 @@ export { defer } from 'rxjs/internal/create/defer';
 export { forkJoin } from 'rxjs/internal/create/forkJoin';
 export { from } from 'rxjs/internal/create/from';
 export { fromScheduled } from 'rxjs/internal/create/fromScheduled';
+export { iif } from 'rxjs/internal/create/iif';
 export { interval } from 'rxjs/internal/create/interval';
 export { merge } from 'rxjs/internal/create/merge';
 export { multicast } from 'rxjs/internal/create/multicast';
