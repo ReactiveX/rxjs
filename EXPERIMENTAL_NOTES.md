@@ -154,7 +154,7 @@ timestamp.
 TODO: Still need to research all of these and port tests.
 
 - [ ] ajax
-- [ ] combineLatest
+- [x] combineLatest
 - [x] concat
 - [x] defer
 - [x] empty (as `EMPTY` and `fromScheduled([], scheduler)`)
@@ -164,11 +164,11 @@ TODO: Still need to research all of these and port tests.
 - [ ] fromEventPattern
 - [ ] generate
 - [x] iif
-- [ ] interval
+- [x] interval
 - [ ] merge
-- [ ] never
-- [ ] of
-- [ ] onErrorResumeNext
+- [x] never (as `NEVER`)
+- [x] of
+- [x] onErrorResumeNext
 - [ ] pairs
 - [x] race
 - [ ] range

@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
 
 export function interval(interval: number, scheduler: SchedulerLike = asyncScheduler) {
+  interval = Math.max(0, interval);
   return sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<number>, subs: Subscription) => {
     if (type === FOType.SUBSCRIBE) {
       const state = { i: 0, subs, interval, dest, scheduler };
