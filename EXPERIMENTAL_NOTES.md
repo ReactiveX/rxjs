@@ -155,22 +155,22 @@ TODO: Still need to research all of these and port tests.
 
 - [ ] ajax
 - [ ] combineLatest
-- [ ] concat
-- [ ] defer
-- [ ] empty (scheduled)
-- [ ] forkJoin
+- [x] concat
+- [x] defer
+- [x] empty (as `EMPTY` and `fromScheduled([], scheduler)`)
+- [x] forkJoin
 - [x] from (via from and fromScheduled)
 - [ ] fromEvent
 - [ ] fromEventPattern
 - [ ] generate
-- [ ] iif
+- [x] iif
 - [ ] interval
 - [ ] merge
 - [ ] never
 - [ ] of
 - [ ] onErrorResumeNext
 - [ ] pairs
-- [ ] race
+- [x] race
 - [ ] range
 - [ ] throwError
 - [ ] timer
