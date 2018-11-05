@@ -21,7 +21,16 @@
       "es2015.symbol.wellknown",
       "esnext.asynciterable",
       "dom"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "rxjs": [
+        "./package/src"
+      ],
+      "rxjs/*": [
+        "./package/src/*"
+      ]
+    }
   },
   "formatCodeOptions": {
     "indentSize": 2,

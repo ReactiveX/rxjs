@@ -4,15 +4,17 @@
     "baseUrl": ".",
     "paths": {
       "rxjs": [
-        "./src"
+        "./package/src"
       ],
       "rxjs/*": [
-        "./src/*"
+        "./package/src/*"
       ]
-    },
-    "outDir": "./tmp/tests/rxjs",
+    }
   },
+  "include": [
+    "./package/src/**/*"
+  ],
   "exclude": [
-    "./package"
+    "./package/src/**/*-spec.ts"
   ]
 }

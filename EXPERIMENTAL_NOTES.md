@@ -153,12 +153,26 @@ timestamp.
 
 TODO: Still need to research all of these and port tests.
 
-- [ ] interval (TODO: still need tests)
-- [x] timer
-- [ ] from (TODO: port tests)
-- [x] race
-- [x] throwError
-- [x] of
-- [x] from
-- [x] concat
-- [x] range
+- [ ] ajax
+- [ ] combineLatest
+- [ ] concat
+- [ ] defer
+- [ ] empty (scheduled)
+- [ ] forkJoin
+- [x] from (via from and fromScheduled)
+- [ ] fromEvent
+- [ ] fromEventPattern
+- [ ] generate
+- [ ] iif
+- [ ] interval
+- [ ] merge
+- [ ] never
+- [ ] of
+- [ ] onErrorResumeNext
+- [ ] pairs
+- [ ] race
+- [ ] range
+- [ ] throwError
+- [ ] timer
+- [ ] using
+- [ ] zip
