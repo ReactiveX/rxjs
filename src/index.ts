@@ -23,6 +23,7 @@ export { of } from 'rxjs/internal/create/of';
 export { onEmptyResumeNext } from 'rxjs/internal/create/onEmptyResumeNext';
 export { onErrorResumeNext } from 'rxjs/internal/create/onErrorResumeNext';
 export { partition } from 'rxjs/internal/create/partition';
+export { pairs } from 'rxjs/internal/create/pairs';
 export { publish } from 'rxjs/internal/create/publish';
 export { publishReplay } from 'rxjs/internal/create/publishReplay';
 export { race } from 'rxjs/internal/create/race';

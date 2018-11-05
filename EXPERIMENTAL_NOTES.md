@@ -160,7 +160,7 @@ TODO: Still need to research all of these and port tests.
 - [x] empty (as `EMPTY` and `fromScheduled([], scheduler)`)
 - [x] forkJoin
 - [x] from (via from and fromScheduled)
-- [ ] fromEvent
+- [x] fromEvent
 - [ ] fromEventPattern
 - [ ] generate
 - [x] iif
@@ -169,10 +169,11 @@ TODO: Still need to research all of these and port tests.
 - [x] never (as `NEVER`)
 - [x] of
 - [x] onErrorResumeNext
-- [ ] pairs
+- [x] pairs
 - [x] race
 - [x] range
 - [x] throwError
 - [x] timer
 - [ ] using
+- [ ] webSocket
 - [x] zip
