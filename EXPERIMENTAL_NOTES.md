@@ -174,6 +174,6 @@ TODO: Still need to research all of these and port tests.
 - [x] range
 - [x] throwError
 - [x] timer
-- [ ] using
+- [x] using
 - [ ] webSocket
 - [x] zip
