@@ -30,6 +30,7 @@ export { race } from 'rxjs/internal/create/race';
 export { range } from 'rxjs/internal/create/range';
 export { throwError } from 'rxjs/internal/create/throwError';
 export { timer } from 'rxjs/internal/create/timer';
+export { using } from 'rxjs/internal/create/using';
 export { zip } from 'rxjs/internal/create/zip';
 
 export { identity } from 'rxjs/internal/util/identity';
