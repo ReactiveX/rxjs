@@ -182,14 +182,14 @@ TODO: Still need to research all of these and port tests.
 
 ### Other Things
 
-- [ ] AsyncSubject
+- [x] AsyncSubject
 - [x] ConnectableObservable
 - [x] Notification
 - [ ] Subscriber
 - [x] identity
-- [ ] isObservable
+- [x] isObservable
 - [x] noop
-- [ ] pipe
+- [x] pipe
 - [ ] config
 
 ### Error Types

@@ -486,7 +486,7 @@ describe('Subject', () => {
 });
 
 describe('FrankenSubject', () => {
-  it('should not eager', () => {
+  it('should not be eager', () => {
     let subscribed = false;
 
     const subject = Subject(null, new Observable(observer => {
