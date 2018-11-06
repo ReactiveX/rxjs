@@ -3,7 +3,7 @@ import { coldObservable } from 'rxjs/internal/testing/ColdObservable';
 import { HotObservable, hotObservable } from 'rxjs/internal/testing/HotObservable';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { VirtualTimeScheduler} from 'rxjs/internal/scheduler/VirtualTimeScheduler';
-import { Notification, SchedulerLike, FOType, Sink } from 'rxjs/internal/types';
+import { NotificationLike, SchedulerLike, FOType, Sink } from 'rxjs/internal/types';
 import { isObservable } from 'rxjs/internal/util/isObservable';
 import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
 import { asapScheduler } from 'rxjs/internal/scheduler/asapScheduler';
@@ -78,7 +78,7 @@ export interface SubscriptionLog {
 
 export interface TestMessage<T> {
   frame: number;
-  notification: Notification<T>;
+  notification: NotificationLike<T>;
   isGhost?: boolean;
 }
 
@@ -463,7 +463,7 @@ export function parseMarbles<T = string>(
       nextFrame += count * FRAME_TIME_FACTOR;
     };
 
-    let notification: Notification<any>;
+    let notification: NotificationLike<any>;
     const c = marbles[i];
     switch (c) {
       case ' ':

@@ -1,13 +1,13 @@
 import { lift } from 'rxjs/internal/util/lift';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { FOType, OperatorFunction, Notification, Sink, SinkArg } from 'rxjs/internal/types';
+import { FOType, OperatorFunction, NotificationLike, Sink, SinkArg } from 'rxjs/internal/types';
 
-export function dematerialize<T>() : OperatorFunction<Notification<T>, T> {
-  return lift((source: Observable<Notification<T>>, dest: Sink<T>, subs: Subscription) => {
-    source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<Notification<T>>, subs: Subscription) => {
+export function dematerialize<T>() : OperatorFunction<NotificationLike<T>, T> {
+  return lift((source: Observable<NotificationLike<T>>, dest: Sink<T>, subs: Subscription) => {
+    source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<NotificationLike<T>>, subs: Subscription) => {
       if (t === FOType.NEXT) {
-        const notification = v as Notification<T>;
+        const notification = v as NotificationLike<T>;
         switch (notification.kind) {
           case 'N':
             dest(FOType.NEXT, notification.value, subs);

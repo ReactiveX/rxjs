@@ -180,7 +180,7 @@ TODO: Still need to research all of these and port tests.
 
 ### Other Things
 
-- [ ] Notification
+- [x] Notification
 - [x] identity
 - [x] noop
 

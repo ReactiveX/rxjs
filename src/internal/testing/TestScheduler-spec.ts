@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { TestScheduler, parseMarbles, parseMarblesAsSubscriptions } from 'rxjs/internal/testing/TestScheduler';
-import { Observable, NEVER, EMPTY, Subject, of, concat, merge, Notification } from 'rxjs';
+import { Observable, NEVER, EMPTY, Subject, of, concat, merge, NotificationLike } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
 import { asapScheduler } from 'rxjs/internal/scheduler/asapScheduler';
 import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';

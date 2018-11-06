@@ -1,5 +1,6 @@
 export { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 export { ConnectableObservable } from 'rxjs/internal/ConnectableObservable';
+export { Notification } from 'rxjs/internal/Notification';
 export { Observable } from 'rxjs/internal/Observable';
 export { Subject } from 'rxjs/internal/Subject';
 export { Subscription } from 'rxjs/internal/Subscription';
