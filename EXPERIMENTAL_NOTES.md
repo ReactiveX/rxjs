@@ -52,7 +52,7 @@ timestamp.
 - [ ] bufferWhen (g3)
 - [x] catchError (g3)
 - [x] combineAll
-- [ ] combineLatest (g3)
+- [x] combineLatest (g3) (static only)
 - [x] concat (alias: concatWith) (g3)
 - [x] concatAll (g3)
 - [x] concatMap (g3)
@@ -87,7 +87,7 @@ timestamp.
 - [x] mapTo (g3)
 - [x] materialize (g3)
 - [x] max
-- [ ] merge (g3)
+- [x] merge (g3) (static only)
 - [x] mergeAll (g3)
 - [x] mergeMap (g3)
 - [x] mergeMapTo (g3)
@@ -97,15 +97,15 @@ timestamp.
 - [x] observeOn (g3)
 - [x] onErrorResumeNext (g3) (as onErrorResumeWith)
 - [x] pairwise (g3)
-- [ ] partition (g3)
+- [x] partition (g3) (static only)
 - [x] pluck (g3)
 - [x] publish (g3) (publish static and publishAs)
-- [ ] publishBehavior (g3)
+- [x] publishBehavior (g3) (publishBehavior static and publishBehaviorAs)
 - [ ] publishLast (g3)
 - [x] publishReplay (g3) (publishReplay static and publishReplayAs)
-- [ ] race
+- [x] race (static only)
 - [x] reduce (g3)
-- [ ] refCount (g3)
+- [x] refCount (g3) (only as a method on ConnectableObservable)
 - [x] repeat (g3)
 - [x] repeatWhen (g3)
 - [x] retry (g3)
@@ -145,7 +145,7 @@ timestamp.
 - [x] windowToggle
 - [ ] windowWhen
 - [x] withLatestFrom (g3)
-- [ ] zip (g3)
+- [x] zip (g3) (static only)
 - [x] zipAll
 
 
@@ -161,7 +161,7 @@ TODO: Still need to research all of these and port tests.
 - [x] forkJoin
 - [x] from (via from and fromScheduled)
 - [x] fromEvent
-- [ ] fromEventPattern
+- [x] fromEventPattern
 - [ ] generate
 - [x] iif
 - [x] interval
@@ -177,3 +177,17 @@ TODO: Still need to research all of these and port tests.
 - [x] using
 - [ ] webSocket
 - [x] zip
+
+### Other Things
+
+- [ ] Notification
+- [x] identity
+- [x] noop
+
+
+### Schedulers
+
+- [x] animationFrameScheduler
+- [x] asapScheduler
+- [x] asyncScheduler
+- [x] queueScheduler
