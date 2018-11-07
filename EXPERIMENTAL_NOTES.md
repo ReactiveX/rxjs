@@ -101,7 +101,7 @@ timestamp.
 - [x] pluck (g3)
 - [x] publish (g3) (publish static and publishAs)
 - [x] publishBehavior (g3) (publishBehavior static and publishBehaviorAs)
-- [ ] publishLast (g3)
+- [x] publishLast (g3) (publishLast static and publishLastAs)
 - [x] publishReplay (g3) (publishReplay static and publishReplayAs)
 - [x] race (static only)
 - [x] reduce (g3)
@@ -185,7 +185,7 @@ TODO: Still need to research all of these and port tests.
 - [x] AsyncSubject
 - [x] ConnectableObservable
 - [x] Notification
-- [ ] Subscriber
+- [x] Subscriber
 - [x] identity
 - [x] isObservable
 - [x] noop

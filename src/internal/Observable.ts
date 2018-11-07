@@ -1,12 +1,12 @@
 import { FObs, OperatorFunction, PartialObserver, FOType, Sink, SinkArg, TeardownLogic } from 'rxjs/internal/types';
-import { Subscriber, createSubscriber } from 'rxjs/internal/Subscriber';
+import { RxSubscriber, createSubscriber } from 'rxjs/internal/RxSubscriber';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
 
 export interface ObservableConstructor {
-  <T>(init?: (subscriber: Subscriber<T>) => void): Observable<T>;
-  new<T>(init?: (subscriber: Subscriber<T>) => void): Observable<T>;
+  <T>(init?: (subscriber: RxSubscriber<T>) => void): Observable<T>;
+  new<T>(init?: (subscriber: RxSubscriber<T>) => void): Observable<T>;
 }
 
 export interface Observable<T> extends FObs<T> {
@@ -39,7 +39,7 @@ export interface Observable<T> extends FObs<T> {
 }
 
 /** The Observable constructor */
-export const Observable: ObservableConstructor = function <T>(init?: (subscriber: Subscriber<T>) => TeardownLogic) {
+export const Observable: ObservableConstructor = function <T>(init?: (subscriber: RxSubscriber<T>) => TeardownLogic) {
   return sourceAsObservable((type: FOType.SUBSCRIBE, dest: Sink<T>, subs: Subscription) => {
     if (init) {
       const subscriber = createSubscriber(dest, subs);

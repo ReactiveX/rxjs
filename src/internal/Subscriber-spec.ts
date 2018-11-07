@@ -1,86 +1,100 @@
-import { createSubscriber } from 'rxjs/internal/Subscriber';
 import { expect } from 'chai';
-import { FOType, Sink, Subscription } from 'rxjs';
+import { SafeSubscriber } from 'rxjs/internal/Subscriber';
+import { Subscriber } from 'rxjs';
 
+/** @test {Subscriber} */
 describe('Subscriber', () => {
-  let mockDestCalls: Array<{ type: FOType, arg: any }>;
-  let mockDest: Sink<any>;
+  it('should ignore next messages after unsubscription', () => {
+    let times = 0;
 
-  beforeEach(() => {
-    mockDestCalls = [];
-    mockDest = (type: FOType, arg: any) => {
-      mockDestCalls.push({ type, arg });
+    const sub = new Subscriber({
+      next() { times += 1; }
+    });
+
+    sub.next();
+    sub.next();
+    sub.unsubscribe();
+    sub.next();
+
+    expect(times).to.equal(2);
+  });
+
+  it('should wrap unsafe observers in a safe subscriber', () => {
+    const observer = {
+      next(x: any) { /* noop */ },
+      error(err: any) { /* noop */ },
+      complete() { /* noop */ }
     };
+
+    const subscriber = new Subscriber(observer);
+    expect((subscriber as any).destination).not.to.equal(observer);
+    expect((subscriber as any).destination).to.be.an.instanceof(SafeSubscriber);
   });
 
-  it('should flag closed if completed', () => {
-    const subs = new Subscription();
-    const subscriber = createSubscriber(mockDest, subs);
+  it('should ignore error messages after unsubscription', () => {
+    let times = 0;
+    let errorCalled = false;
 
-    subscriber.next(1);
-    expect(subscriber.closed).to.be.false;
-    subscriber.next(2);
-    expect(subscriber.closed).to.be.false;
-    subscriber.complete();
-    expect(subscriber.closed).to.be.true;
-    subscriber.next(3);
-    expect(subscriber.closed).to.be.true;
+    const sub = new Subscriber({
+      next() { times += 1; },
+      error() { errorCalled = true; }
+    });
+
+    sub.next();
+    sub.next();
+    sub.unsubscribe();
+    sub.next();
+    sub.error();
+
+    expect(times).to.equal(2);
+    expect(errorCalled).to.be.false;
   });
 
-  it('should send appropriate messages to the destination with completions', () => {
-    const subs = new Subscription();
-    const subscriber = createSubscriber(mockDest, subs);
+  it('should ignore complete messages after unsubscription', () => {
+    let times = 0;
+    let completeCalled = false;
 
-    subscriber.next(1);
-    subscriber.next(2);
-    subscriber.complete();
-    subscriber.next(3);
+    const sub = new Subscriber({
+      next() { times += 1; },
+      complete() { completeCalled = true; }
+    });
 
-    expect(mockDestCalls).to.deep.equal([
-      { type: FOType.NEXT, arg: 1 },
-      { type: FOType.NEXT, arg: 2 },
-      { type: FOType.COMPLETE, arg: undefined },
-    ]);
+    sub.next();
+    sub.next();
+    sub.unsubscribe();
+    sub.next();
+    sub.complete();
+
+    expect(times).to.equal(2);
+    expect(completeCalled).to.be.false;
   });
 
-  it('should send appropriate messages to the destination with an error', () => {
-    const subs = new Subscription();
-    const subscriber = createSubscriber(mockDest, subs);
-    const err = new Error('bad');
+  it('should not be closed when other subscriber with same observer instance completes', () => {
+    const observer = {
+      next: function () { /*noop*/ }
+    };
 
-    subscriber.next(1);
-    subscriber.next(2);
-    subscriber.error(err);
-    subscriber.next(3);
+    const sub1 = new Subscriber(observer);
+    const sub2 = new Subscriber(observer);
 
-    expect(mockDestCalls).to.deep.equal([
-      { type: FOType.NEXT, arg: 1 },
-      { type: FOType.NEXT, arg: 2 },
-      { type: FOType.ERROR, arg: err },
-    ]);
+    sub2.complete();
+
+    expect(sub1.closed).to.be.false;
+    expect(sub2.closed).to.be.true;
   });
 
-  it('should unsubscribe subscriptions sent to it when it completes', () => {
-    let unsubbed = false;
-    const subs = new Subscription(() => unsubbed = true);
-    const subscriber = createSubscriber(mockDest, subs);
+  it('should call complete observer without any arguments', () => {
+    let argument: Array<any> = null;
 
-    expect(unsubbed).to.be.false;
-    subscriber.next(1);
-    expect(unsubbed).to.be.false;
-    subscriber.complete();
-    expect(unsubbed).to.be.true;
-  });
+    const observer = {
+      complete: (...args: Array<any>) => {
+        argument = args;
+      }
+    };
 
-  it('should unsubscribe subscriptions sent to it when it errors', () => {
-    let unsubbed = false;
-    const subs = new Subscription(() => unsubbed = true);
-    const subscriber = createSubscriber(mockDest, subs)
+    const sub1 = new Subscriber(observer);
+    sub1.complete();
 
-    expect(unsubbed).to.be.false;
-    subscriber.next(1);
-    expect(unsubbed).to.be.false;
-    subscriber.error(new Error());
-    expect(unsubbed).to.be.true;
+    expect(argument).to.have.lengthOf(0);
   });
 });

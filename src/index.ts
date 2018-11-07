@@ -4,6 +4,7 @@ export { ConnectableObservable } from 'rxjs/internal/ConnectableObservable';
 export { Notification } from 'rxjs/internal/Notification';
 export { Observable } from 'rxjs/internal/Observable';
 export { Subject } from 'rxjs/internal/Subject';
+export { Subscriber } from 'rxjs/internal/Subscriber';
 export { Subscription } from 'rxjs/internal/Subscription';
 export { ReplaySubject } from 'rxjs/internal/ReplaySubject';
 
@@ -28,6 +29,8 @@ export { onErrorResumeNext } from 'rxjs/internal/create/onErrorResumeNext';
 export { partition } from 'rxjs/internal/create/partition';
 export { pairs } from 'rxjs/internal/create/pairs';
 export { publish } from 'rxjs/internal/create/publish';
+export { publishBehavior } from 'rxjs/internal/create/publishBehavior';
+export { publishLast } from 'rxjs/internal/create/publishLast';
 export { publishReplay } from 'rxjs/internal/create/publishReplay';
 export { race } from 'rxjs/internal/create/race';
 export { range } from 'rxjs/internal/create/range';
