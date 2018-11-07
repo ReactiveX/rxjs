@@ -5,7 +5,7 @@ import { mergeMap } from 'rxjs/internal/operators/mergeMap';
 import { mapTo } from 'rxjs/internal/operators/derived/mapTo';
 import { from } from 'rxjs/internal/create/from';
 import { defaultIfEmpty } from 'rxjs/internal/operators/defaultIfEmpty';
-import { defer } from 'rxjs';
+import { defer } from 'rxjs/internal/create/defer';
 
 /* tslint:disable:max-line-length */
 /** @deprecated In future versions, empty notifiers will no longer re-emit the source value on the output observable. */
