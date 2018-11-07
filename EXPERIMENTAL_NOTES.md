@@ -1,5 +1,13 @@
 ## Differences
 
+**NOTE: THESE DIFFERENCES ARE NOT FINAL** This is just experimental, the goal is to
+try to limit differences to what is necessary to reduce the overall size of the library.
+
+The most painful of these changes, I suspect, will be forgoing the ability to subclass
+`Observable` and `Subject`. With this architecture, there are limited ways around this.
+It's possible that we can introduce some sort of inheritable adapter for backwards compatability,
+but that is still be researched.
+
 - `of` has no scheduler argument
 - `from` has no scheduler argument
 - `Observable` instances are now `typeof` `"function"`.
