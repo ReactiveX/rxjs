@@ -32,7 +32,8 @@
     "pretest": "shx rm -rf tmp/ && tsc -p tsconfig.tests.json",
     "test": "cross-env NODE_PATH=tmp/tests/ mocha --opts mocha-options.opts \"tmp/tests/**/*-spec.js\" && shx rm -rf tmp/",
     "dev": "watch 'npm run test' src",
-    "build": "shx rm -rf package/ && shx mkdir -p package/ && shx cp -r src/ package/src/ && tsc -p tsconfig.cjs.json && tsc -p tsconfig.es2015.json && tsc -p tsconfig.es5.json && tsc -p tsconfig.types.json && shx cp package.json package/package.json && shx cp LICENSE.txt package/LICENSE.txt"
+    "build:umd": "shx rm -rf package/bundles/ && mkdirp ./package/bundles && node ./tools/make-umd-bundle.js && node ./tools/make-closure-core.js",
+    "build": "shx rm -rf package/ && shx mkdir -p package/ && shx cp -r src/ package/src/ && tsc -p tsconfig.cjs.json && tsc -p tsconfig.es2015.json && tsc -p tsconfig.es5.json && tsc -p tsconfig.types.json && shx cp package.json package/package.json && shx cp LICENSE.txt package/LICENSE.txt && npm run build:umd"
   },
   "repository": {
     "type": "git",
@@ -68,7 +69,13 @@
     "cross-env": "^5.1.6",
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^4.19.1",
+    "google-closure-compiler-js": "^20181028.0.0",
+    "lodash": "^4.17.11",
     "mocha": "^5.0.5",
+    "rollup": "^0.67.0",
+    "rollup-plugin-alias": "^1.4.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-typescript": "^1.0.0",
     "shx": "^0.3.2",
     "sinon": "^6.3.5",
     "ts-node": "5.0.1",

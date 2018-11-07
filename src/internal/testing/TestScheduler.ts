@@ -1,6 +1,4 @@
 import { Observable } from 'rxjs/internal/Observable';
-import { coldObservable } from 'rxjs/internal/testing/ColdObservable';
-import { HotObservable, hotObservable } from 'rxjs/internal/testing/HotObservable';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { VirtualTimeScheduler} from 'rxjs/internal/scheduler/VirtualTimeScheduler';
 import { NotificationLike, SchedulerLike, FOType, Sink } from 'rxjs/internal/types';
@@ -8,6 +6,9 @@ import { isObservable } from 'rxjs/internal/util/isObservable';
 import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
 import { asapScheduler } from 'rxjs/internal/scheduler/asapScheduler';
 import { QueueScheduler } from 'rxjs/internal/scheduler/QueueScheduler';
+import { sourceAsSubject } from '../util/sourceAsSubject';
+import { Subject } from '../Subject';
+import { sourceAsObservable } from '../util/sourceAsObservable';
 
 // TODO(benlesh): we need to figure out how to have TestScheduler support testing
 // the animation frame scheduler
@@ -300,12 +301,6 @@ proto.flush = function (): void {
   });
 };
 
-
-
-
-
-
-
 export function subscriptionLogger() {
   return {
     logSubscription(frame: number): number {
@@ -563,6 +558,90 @@ export function scheduleNotifications(scheduler: SchedulerLike, messages: TestMe
     }
   });
 }
+export interface HotObservable<T> extends TestObservable<T>, Subject<T> {
+  setup(): void;
+}
 
+export function hotObservable<T>(messages: TestMessage<T>[], scheduler: TestScheduler): HotObservable<T> {
+  const subsLogger = subscriptionLogger();
+  const subject = new Subject();
+
+  const result = sourceAsSubject((type: FOType.SUBSCRIBE, sink: Sink<any>, subs: Subscription) => {
+    if (type === FOType.SUBSCRIBE) {
+      const subsLogIndex = subsLogger.logSubscription(scheduler.now());
+
+      subs.add(() => subsLogger.logUnsubscription(subsLogIndex, scheduler.now()));
+
+      subject(type, sink, subs);
+    }
+  }) as Observable<T> as HotObservable<T>;
+
+  result.subscriptions = subsLogger.logs;
+  result.messages = messages;
+  result.setup = () => {
+    const subs = new Subscription();
+    scheduler.schedule(() => {
+      for (const message of messages) {
+        let t: FOType;
+        let a: any = undefined;
+        const { notification, frame } = message;
+        if (notification.kind === 'N') {
+          t = FOType.NEXT;
+          a = notification.value;
+        } else if (notification.kind === 'E') {
+          t = FOType.ERROR;
+          a = notification.error;
+        } else if (notification.kind === 'C') {
+          t = FOType.COMPLETE;
+        } else {
+          continue;
+        }
+        scheduler.schedule(({ t, a, subs }) => {
+          subject(t, a, subs);
+        }, frame, { t, a, subs });
+      }
+    });
+  }
+  return result;
+}
+
+export function coldObservable<T>(messages: TestMessage<T>[], scheduler: TestScheduler): TestObservable<T> {
+  const subsLogger = subscriptionLogger();
+
+  const result = sourceAsObservable((type: FOType.SUBSCRIBE, sink: Sink<any>, subs: Subscription) => {
+    if (type === FOType.SUBSCRIBE) {
+      const subsLogIndex = subsLogger.logSubscription(scheduler.now());
+
+      subs.add(() => subsLogger.logUnsubscription(subsLogIndex, scheduler.now()));
+
+      scheduler.schedule(() => {
+        for (const message of messages) {
+          let t: FOType;
+          let a: any = undefined;
+          const { notification, frame } = message;
+          if (notification.kind === 'N') {
+            t = FOType.NEXT;
+            a = notification.value;
+          } else if (notification.kind === 'E') {
+            t = FOType.ERROR;
+            a = notification.error;
+          } else if (notification.kind === 'C') {
+            t = FOType.COMPLETE;
+          } else {
+            continue;
+          }
+          scheduler.schedule(({ t, a, subs }) => {
+            sink(t, a, subs);
+          }, frame, { t, a, subs }, subs);
+        }
+      }, 0, undefined, subs);
+    }
+  });
+
+  (result as TestObservable<T>).subscriptions = subsLogger.logs;
+  (result as TestObservable<T>).messages = messages;
+
+  return result as TestObservable<T>;
+}
 
 export const TestScheduler: TestSchedulerCtor = TestSchedulerImpl as any;
