@@ -4,6 +4,8 @@
 - `from` has no scheduler argument
 - `Observable` instances are now `typeof` `"function"`.
 - `lift` is no longer on `Observable`
+- No one should inherit from any RxJS classes. Especialy `Observable` and `Subject` derivatives, which are no longer inheritable because of their implementation.
+- `Observable.create` and `Subject.create` are no longer implemented. Use `Observable()` and `Subject()` without `new`.
 - `materialize`: `Notification` is no longer a class. `hasValue` and `hasError` are no longer properties, instead users would check `'error' in notification` if they were worried about falsiness mismatches.
 - All `Scheduler`-related functionality is moved to another package
 - `timestamp` - no longer accepts a `Scheduler`, instead, zones-based testing will be required to test
