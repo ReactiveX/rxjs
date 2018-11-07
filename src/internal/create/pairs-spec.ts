@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
 import { pairs } from 'rxjs';
-import { Test } from 'mocha';
 import { assertDeepEquals } from '../test_helpers/assertDeepEquals';
 
 describe('pairs', () => {

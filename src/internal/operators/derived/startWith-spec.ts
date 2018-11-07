@@ -1,7 +1,6 @@
 import { startWith, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { of } from 'rxjs';
-import { Test } from 'mocha';
 import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
 
 /** @test {startWith} */
