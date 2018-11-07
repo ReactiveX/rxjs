@@ -1,6 +1,8 @@
 import { TeardownLogic } from 'rxjs/internal/types';
 import { noop } from 'rxjs/internal/util/noop';
 import { isSubscription } from 'rxjs/internal/util/isSubscription';
+import { tryUserFunction, resultIsError } from './util/userFunction';
+import { UnsubscriptionError } from './util/UnsubscriptionError';
 
 export interface Subscription {
   unsubscribe(): void;
@@ -12,6 +14,7 @@ export interface Subscription {
 export interface SubscriptionConstructor {
   new(): Subscription;
   new(...teardowns: TeardownLogic[]): Subscription;
+  EMPTY: Subscription
 }
 
 export interface SubscriptionContext {
@@ -23,6 +26,11 @@ export const Subscription: SubscriptionConstructor = function Subscription(this:
   this._teardowns = teardowns;
   this._closed = false;
 } as any;
+
+const EMPTY_SUBSCRIPTION = new Subscription();
+(EMPTY_SUBSCRIPTION as any)._closed = true;
+
+Subscription.EMPTY = EMPTY_SUBSCRIPTION;
 
 const subscriptionProto = Subscription.prototype;
 
@@ -58,9 +66,17 @@ subscriptionProto.unsubscribe = function () {
   if (!this._closed) {
     this._closed = true;
     const { _teardowns } = this;
+    let unsubError: UnsubscriptionError;
+
     while (_teardowns.length > 0) {
-      teardownToFunction(_teardowns.shift())();
+      const result = tryUserFunction(teardownToFunction(_teardowns.shift()));
+      if (resultIsError(result)) {
+        const err = result.error;
+        unsubError = unsubError || new UnsubscriptionError(err instanceof UnsubscriptionError ? err.errors : []);
+        unsubError.errors.push(err);
+      }
     }
+    if (unsubError) throw unsubError;
   }
 };
 

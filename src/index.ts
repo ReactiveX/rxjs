@@ -48,6 +48,7 @@ export { ArgumentOutOfRangeError } from 'rxjs/internal/util/ArgumentOutOfRangeEr
 export { EmptyError } from 'rxjs/internal/util/EmptyError';
 export { ObjectUnsubscribedError } from 'rxjs/internal/util/ObjectUnsubscribedError';
 export { TimeoutError } from 'rxjs/internal/util/TimeoutError';
+export { UnsubscriptionError } from 'rxjs/internal/util/UnsubscriptionError';
 
 export { animationFrameScheduler } from 'rxjs/internal/scheduler/animationFrameScheduler';
 export { asapScheduler } from 'rxjs/internal/scheduler/asapScheduler';

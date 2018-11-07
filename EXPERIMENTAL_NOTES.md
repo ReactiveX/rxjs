@@ -36,6 +36,10 @@ timestamp.
 - `range` no longer supports scheduling... if you want to schedule that, use `fromScheduled` and a generator. (possibly we'll implement a scheduled range?)
 - `merge` no longer supports scheduling... use `fromScheduled(sources).pipe(mergeAll())`.
 - `throwError` no longer supports scheduling... use `throwError(err).pipe(observeOn(scheduler))`
+- `Subscription` `add` no longer returns a `Subscription` object.
+- `Subscription` `remove` will accepts a rest of `TeardownLogic[]`
+- `Subscription` `add` accepts a rest of `TeardownLogic[]`.
+
 ## Fixes that are breaking changes to some
 
 - Resolved the [issue](https://github.com/ReactiveX/rxjs/issues/3990) where `buffer` was omitting the last buffer when the source completed [here](https://github.com/ReactiveX/rxjs/commit/61b1767ec58450325ee16a5d21eadb3789acc069)
@@ -197,7 +201,7 @@ TODO: Still need to research all of these and port tests.
 - [x] ArgumentOutOfRangeError
 - [x] EmptyError
 - [x] ObjectUnsubscribedError
-- [ ] UnsubscriptionError
+- [x] UnsubscriptionError
 - [x] TimeoutError
 
 ### Schedulers
@@ -206,6 +210,6 @@ TODO: Still need to research all of these and port tests.
 - [x] asapScheduler
 - [x] asyncScheduler
 - [x] queueScheduler
-- [ ] VirtualTimeScheduler
-- [ ] Scheduler
-- [ ] VirtualAction
+- [x] VirtualTimeScheduler
+- [ ] Scheduler (skipped)
+- [ ] VirtualAction (skipped)
