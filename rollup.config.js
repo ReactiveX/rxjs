@@ -2,13 +2,13 @@ import typescript from 'rollup-plugin-typescript';
 import { terser } from 'rollup-plugin-terser';
 
 const config = min => ({
-	input: 'src/index.ts',
+	input: 'package/src/internal/umd.ts',
 		output: {
 			file: min
-				? `packages/bundles/rxjs.umd.min.js`
-				: `packages/bundles/rxjs.umd.js`,
+				? `package/bundles/rxjs.umd.min.js`
+				: `package/bundles/rxjs.umd.js`,
 			format: 'umd',
-			name: 'RxJS',
+			name: 'rxjs',
 			sourcemap: true
 		},
 		plugins: [
