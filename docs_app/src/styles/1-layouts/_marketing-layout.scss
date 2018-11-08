@@ -58,6 +58,10 @@ section#intro {
     justify-content: center;
     align-items: center;
 
+    .hero-cta + .hero-cta {
+      margin-top: 15px;
+    }
+
     @media  (max-width: 780px) {
       display: flex;
       flex-direction: column;
