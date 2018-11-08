@@ -1,5 +1,5 @@
 var path = require('path');
-// var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+var TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = {
   entry: './package/src/internal/umd.ts',
@@ -15,9 +15,7 @@ module.exports = {
   },
   resolve: {
     extensions: [ '.ts' ],
-    alias: {
-      'rxjs': path.resolve(__dirname, 'package/src/'),
-    },
+    plugins: [new TsconfigPathsPlugin({ /*configFile: "./path/to/tsconfig.json" */ })],
   },
   output: {
     path: path.resolve(__dirname, 'package/bundles/'),
