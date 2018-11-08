@@ -1,12 +1,6 @@
 language: node_js
 sudo: false
 
-addons:
-  sauce_connect:
-    # Update SAUCE_USERNAME / SAUCE_ACCESS_KEY in travis if necessary
-    # https://docs.travis-ci.com/user/environment-variables/#Defining-Variables-in-Repository-Settings
-    sauce_connect: true
-
 cache:
   timeout: 1000
   directories:
