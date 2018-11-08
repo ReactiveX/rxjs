@@ -1,19 +1,18 @@
 environment:
   matrix:
   # node.js
-    - nodejs_version: "6"
-    - nodejs_version: "7"
     - nodejs_version: "8"
+    - nodejs_version: "10"
 
 install:
   - ps: Install-Product node $env:nodejs_version
   - set PATH=%APPDATA%\npm;%PATH%
-  - npm install -g npm@5.6.0
+  - npm install -g npm npx
   - node -v && npm -v
   - npm install
 
 build_script:
-  - npm run build_all
+  - npm run build
 
 test_script:
   - npm test
