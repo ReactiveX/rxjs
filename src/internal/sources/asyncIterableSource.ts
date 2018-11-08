@@ -10,8 +10,7 @@ export function asyncIterableSource<T>(input: AsyncIterable<T>) {
       getNextValue = () => ai.next().then(result => {
         if (result.done) {
           sink(FOType.COMPLETE, undefined, subs);
-        }
-        else {
+        } else {
           sink(FOType.NEXT, result.value, subs);
           getNextValue();
         }

@@ -5,7 +5,6 @@ import { TestScheduler } from 'rxjs/testing';
 import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
 import { fromScheduled } from 'rxjs/internal/create/fromScheduled';
 
-
 /** @test {combineAll} */
 describe('combineAll operator', () => {
   let testScheduler: TestScheduler;

@@ -30,7 +30,7 @@
   },
   "scripts": {
     "pretest": "shx rm -rf tmp/ && tsc -p tsconfig.tests.json",
-    "test": "cross-env NODE_PATH=tmp/tests/ mocha --opts mocha-options.opts \"tmp/tests/**/*-spec.js\" && shx rm -rf tmp/",
+    "test": "npx tslint -c tslint.json 'src/**/*.ts' && cross-env NODE_PATH=tmp/tests/ mocha --opts mocha-options.opts \"tmp/tests/**/*-spec.js\" && shx rm -rf tmp/",
     "dev": "watch 'npm run test' src",
     "build:umd": "shx rm -rf package/bundles/ && rollup -c",
     "build": "shx rm -rf package/ && shx mkdir -p package/ && shx cp -r src/ package/src/ && tsc -p tsconfig.cjs.json && tsc -p tsconfig.es2015.json && tsc -p tsconfig.es5.json && tsc -p tsconfig.types.json && shx cp package.json package/package.json && shx cp LICENSE.txt package/LICENSE.txt && npm run build:umd"

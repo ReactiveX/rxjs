@@ -10,7 +10,7 @@ describe('mergeScan', () => {
 
   beforeEach(() => {
     testScheduler = new TestScheduler(assertDeepEquals);
-  })
+  });
 
   it('should mergeScan things', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {

@@ -143,11 +143,11 @@ function fromArrayLikeScheduledSource<T>(
 
 function fromArrayLikeWork<T>(state: { i: number, input: ArrayLike<T>, subs: Subscription, sink: Sink<T>, scheduler: SchedulerLike}) {
   const { i, input, subs, sink, scheduler } = state;
-  if (subs.closed) return;
+  if (subs.closed) { return; }
   if (i < input.length) {
     if (i < input.length) {
       sink(FOType.NEXT, input[state.i++], subs);
-      if (subs.closed) return;
+      if (subs.closed) { return; }
       scheduler.schedule(fromArrayLikeWork as any, 0, state, subs);
     } else {
       sink(FOType.COMPLETE, undefined, subs);
@@ -169,7 +169,7 @@ function fromIterableScheduledSource<T>(
 
 function fromIterableWork<T>(state: { iterator: Iterator<T>, subs: Subscription, sink: Sink<T>, scheduler: SchedulerLike }) {
   const { iterator, subs, sink, scheduler } = state;
-  if (subs.closed) return;
+  if (subs.closed) { return; }
   const { done, value } = iterator.next();
   if (done) {
     sink(FOType.COMPLETE, undefined, subs);

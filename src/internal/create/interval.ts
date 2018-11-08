@@ -1,4 +1,4 @@
-import { sourceAsObservable } from  'rxjs/internal/util/sourceAsObservable';
+import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
 import { FOType, Sink, SchedulerLike } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';

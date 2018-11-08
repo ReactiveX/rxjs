@@ -1,7 +1,7 @@
-import { Unsubscribable, ObservableInput, FOType, Sink } from "../types";
-import { Observable } from "../Observable";
-import { from } from "./from";
-import { EMPTY } from "../EMPTY";
+import { Unsubscribable, ObservableInput, FOType, Sink } from '../types';
+import { Observable } from '../Observable';
+import { from } from './from';
+import { EMPTY } from '../EMPTY';
 
 /**
  * Creates an Observable that uses a resource which will be disposed at the same time as the Observable.

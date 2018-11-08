@@ -2,7 +2,7 @@ import { ObservableInput, FOType, Sink, Source } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
 import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { fromSource } from "rxjs/internal/sources/fromSource";
+import { fromSource } from 'rxjs/internal/sources/fromSource';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 
 export function defer<T>(fn: () => ObservableInput<T>): Observable<T> {

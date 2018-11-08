@@ -1,4 +1,4 @@
-import { FObs, OperatorFunction, PartialObserver, FOType, Sink, SinkArg, TeardownLogic } from 'rxjs/internal/types';
+import { FObs, OperatorFunction, PartialObserver, FOType, Sink, TeardownLogic } from 'rxjs/internal/types';
 import { RxSubscriber, createSubscriber } from 'rxjs/internal/RxSubscriber';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
@@ -22,6 +22,7 @@ export interface Observable<T> extends FObs<T> {
 
   toPromise(): Promise<T>;
 
+  /* tslint:disable:max-line-length */
   pipe(): Observable<T>;
   pipe<R>(op1: OperatorFunction<T, R>, ): Observable<R>;
   pipe<A, R>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, R>, ): Observable<R>;
@@ -36,6 +37,7 @@ export interface Observable<T> extends FObs<T> {
   pipe<A, B, C, D, E, F, G, H, I, J, R>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op8: OperatorFunction<F, G>, op9: OperatorFunction<G, H>, op10: OperatorFunction<H, I>, op11: OperatorFunction<I, J>, op12: OperatorFunction<J, R>, ): Observable<R>;
   pipe<A, B, C, D, E, F, G, H, I, J, K, R>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op8: OperatorFunction<F, G>, op9: OperatorFunction<G, H>, op10: OperatorFunction<H, I>, op11: OperatorFunction<I, J>, op12: OperatorFunction<J, K>, op13: OperatorFunction<K, R>, ): Observable<R>;
   pipe(...operations: Array<OperatorFunction<any, any>>): Observable<any>;
+  /* tslint:enable:max-line-length */
 }
 
 /** The Observable constructor */
@@ -53,5 +55,3 @@ export const Observable: ObservableConstructor = function <T>(init?: (subscriber
     }
   });
 } as any;
-
-

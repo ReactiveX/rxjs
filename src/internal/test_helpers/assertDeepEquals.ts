@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from 'chai';
 
 /** Used throughout the test suite to set up TestScheduler */
 export function assertDeepEquals(actual: any, expected: any): void {

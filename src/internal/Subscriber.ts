@@ -1,11 +1,12 @@
-import { Subscription } from "./Subscription";
-import { Observer, PartialObserver } from "./types";
-import { hostReportError } from "./util/hostReportError";
+import { Subscription } from './Subscription';
+import { Observer, PartialObserver } from './types';
+import { hostReportError } from './util/hostReportError';
+import { noop } from './util/noop';
 
 const EMPTY_OBSERVER = {
-  next() {},
-  error() {},
-  complete() {}
+  next: noop,
+  error: noop,
+  complete: noop
 };
 
 /**
@@ -152,7 +153,6 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
     this.unsubscribe();
   }
 }
-
 
 /**
  * We need this JSDoc comment for affecting ESDoc.

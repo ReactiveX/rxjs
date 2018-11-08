@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
 import { ObservableInput, Source, FOType, Sink, SinkArg } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { fromSource } from "rxjs/internal/sources/fromSource";
+import { fromSource } from 'rxjs/internal/sources/fromSource';
 import { identity } from 'rxjs/internal/util/identity';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 import { isIterable } from '../util/isIterable';

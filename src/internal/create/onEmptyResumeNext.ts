@@ -31,4 +31,3 @@ export function onEmptyResumeNext<T>(...sources: Array<Observable<T>>): Observab
     }
   });
 }
-

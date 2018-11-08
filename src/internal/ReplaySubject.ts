@@ -9,8 +9,8 @@ export interface ReplaySubjectConstructor {
 }
 
 interface ReplayValue<T> {
-  arg: SinkArg<T>,
-  timeout: number,
+  arg: SinkArg<T>;
+  timeout: number;
 }
 
 export const ReplaySubject: ReplaySubjectConstructor =
@@ -57,7 +57,7 @@ export function replaySubjectSource<T>(
     switch (type) {
       case FOType.NEXT:
         _buffer.push({ arg, timeout: now + windowTime });
-        if(_buffer.length > bufferSize) {
+        if (_buffer.length > bufferSize) {
           _buffer.splice(0, _buffer.length - bufferSize);
         }
         break;
@@ -73,4 +73,3 @@ export function replaySubjectSource<T>(
     }
   });
 }
-

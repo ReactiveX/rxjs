@@ -3,7 +3,6 @@ import { defaultIfEmpty, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
 
-
 /** @test {defaultIfEmpty} */
 describe('defaultIfEmpty', () => {
   let testScheduler: TestScheduler;

@@ -11,4 +11,4 @@ export const asyncScheduler: SchedulerLike = {
     subs.add(() => clearTimeout(id));
     return subs;
   }
-}
+};

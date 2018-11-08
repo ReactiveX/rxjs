@@ -4,7 +4,6 @@ import { Subject, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
 
-
 /** @test {sample} */
 describe('sample operator', () => {
   let testScheduler: TestScheduler;

@@ -1,9 +1,8 @@
-import { OperatorFunction, FOType, Sink, SinkArg } from "rxjs/internal/types";
-import { Observable } from "rxjs/internal/Observable";
+import { OperatorFunction, FOType, Sink, SinkArg } from 'rxjs/internal/types';
+import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { lift } from 'rxjs/internal/util/lift';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
-
 
 export function takeWhile<T>(predicate: (value: T, index: number) => boolean): OperatorFunction<T, T> {
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {

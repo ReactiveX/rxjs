@@ -1,6 +1,6 @@
-import { FOType, FObsArg, FObs } from "rxjs/internal/types";
-import { Subscription } from "rxjs/internal/Subscription";
-import { ObjectUnsubscribedError } from "../util/ObjectUnsubscribedError";
+import { FOType, FObsArg, FObs } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { ObjectUnsubscribedError } from '../util/ObjectUnsubscribedError';
 
 export function subjectBaseSource<T>(): FObs<T> {
   let state: any[];
@@ -13,7 +13,7 @@ export function subjectBaseSource<T>(): FObs<T> {
       state = (state || []);
       state.push(arg, subs);
       subs.add(() => {
-        if (!state) return;
+        if (!state) { return; }
         const i = state.indexOf(arg);
         state.splice(i, 2);
       });

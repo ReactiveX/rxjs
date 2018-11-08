@@ -3,12 +3,14 @@ import { lift } from 'rxjs/internal/util/lift';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
-import { fromSource } from "rxjs/internal/sources/fromSource";
-
+import { fromSource } from 'rxjs/internal/sources/fromSource';
 
 export function expand<T>(project: (value: T, index: number) => ObservableInput<T>, concurrent?: number): OperatorFunction<T, T>;
 
-export function expand<T, R>(project: (value: T|R, index: number) => ObservableInput<R>, concurrent = Number.POSITIVE_INFINITY): OperatorFunction<T, R> {
+export function expand<T, R>(
+  project: (value: T|R, index: number) => ObservableInput<R>,
+  concurrent = Number.POSITIVE_INFINITY
+): OperatorFunction<T, R> {
   return lift((source: Observable<T>, dest: Sink<R>, subs: Subscription) => {
     let i = 0;
     let active = 0;
@@ -27,7 +29,7 @@ export function expand<T, R>(project: (value: T|R, index: number) => ObservableI
           subs.add(innerSubs);
           active++;
           result(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, innerSubs: Subscription) => {
-            switch(t) {
+            switch (t) {
               case FOType.NEXT:
                 nextHandler(v);
                 break;
@@ -51,7 +53,7 @@ export function expand<T, R>(project: (value: T|R, index: number) => ObservableI
       } else {
         buffer.push(v);
       }
-    }
+    };
 
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
       if (t === FOType.NEXT) {

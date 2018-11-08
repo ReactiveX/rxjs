@@ -1,5 +1,5 @@
-import { expect } from "chai";
-import { isPromiseLike } from "rxjs/internal/util/isPromiseLike";
+import { expect } from 'chai';
+import { isPromiseLike } from 'rxjs/internal/util/isPromiseLike';
 
 describe('isPromiseLike', () => {
   it('should pass for thennables', () => {

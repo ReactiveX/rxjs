@@ -156,7 +156,7 @@ proto._materializeInnerObservable = function (
     messages.push({ frame: this.frame - outerFrame, notification: { kind: 'C' } });
   });
   return messages;
-}
+};
 
 proto.createTime = function (marbles: string): number {
   const indexOf: number = marbles.indexOf('|');
@@ -164,7 +164,7 @@ proto.createTime = function (marbles: string): number {
     throw new Error('marble diagram for time should have a completion marker "|"');
   }
   return indexOf * this.frameTimeFactor;
-}
+};
 
 proto.createColdObservable = function <T = string>(marbles: string, values?: { [marble: string]: T }, error?: any): TestObservable<T> {
  if (marbles.indexOf('^') !== -1) {
@@ -177,7 +177,7 @@ proto.createColdObservable = function <T = string>(marbles: string, values?: { [
  const cold = coldObservable<T>(messages, this as TestScheduler);
  this.coldObservables.push(cold);
  return cold;
-}
+};
 
 proto.createHotObservable = function <T = string>(marbles: string, values?: { [marble: string]: T }, error?: any): HotObservable<T> {
   if (marbles.indexOf('!') !== -1) {
@@ -187,7 +187,7 @@ proto.createHotObservable = function <T = string>(marbles: string, values?: { [m
   const subject = hotObservable<T>(messages, this as TestScheduler);
   this.hotObservables.push(subject);
   return subject;
-}
+};
 
 proto.expectObservable = function(
   observable: Observable<any>,
@@ -228,7 +228,7 @@ const unsubscriptionFrame = subscriptionParsed.unsubscribedFrame;
       flushTest.expected = parseMarbles(marbles, values, errorValue, true, this._runMode);
     }
   };
-}
+};
 
 proto.expectSubscriptionsTo = function (observable: TestObservable<any>): ({ toBe: subscriptionLogsToBeFn }) {
   const actual: any[] = [];
@@ -237,7 +237,7 @@ proto.expectSubscriptionsTo = function (observable: TestObservable<any>): ({ toB
   this.schedule(() => {
     observable.subscriptions.map(log => {
       actual.push(log);
-    })
+    });
   }, 0);
 
   return {
@@ -430,8 +430,7 @@ export function parseMarbles<T = string>(
   values?: { [key: string]: T },
   errorValue?: any,
   materializeInnerObservables = false,
-  runMode = false): TestMessage<T>[]
-{
+  runMode = false): TestMessage<T>[] {
   if (marbles.indexOf('!') !== -1) {
     throw new Error('conventional marble diagrams cannot have the ' +
       'unsubscription marker "!"');
@@ -601,7 +600,7 @@ export function hotObservable<T>(messages: TestMessage<T>[], scheduler: TestSche
         }, frame, { t, a, subs });
       }
     });
-  }
+  };
   return result;
 }
 

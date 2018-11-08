@@ -1,5 +1,5 @@
-import { isObservableLike } from "rxjs/internal/util/isObservableLike";
-import { expect } from "chai";
+import { isObservableLike } from 'rxjs/internal/util/isObservableLike';
+import { expect } from 'chai';
 
 describe('isObservableLike', () => {
   it('should pass for subscribable objects', () => {

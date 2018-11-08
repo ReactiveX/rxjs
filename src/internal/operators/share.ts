@@ -22,13 +22,13 @@ export function share<T>(): OperatorFunction<T, T> {
     if (!connection) {
       connection = new Subscription();
       source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, conn: Subscription) => {
-        if (t === FOType.SUBSCRIBE) return;
+        if (t === FOType.SUBSCRIBE) { return; }
         const copy = state.slice(0);
         if (t !== FOType.NEXT) {
           connection = undefined;
         }
 
-        for(let i = 0; i < copy.length; i += 2) {
+        for (let i = 0; i < copy.length; i += 2) {
           copy[i](t, v, copy[i + 1]);
         }
 

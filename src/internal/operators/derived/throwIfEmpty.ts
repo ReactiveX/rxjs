@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/internal/Observable';
 import { lift } from 'rxjs/internal/util/lift';
 import { Subscription } from 'rxjs/internal/Subscription';
 
-
 function defaultErrorFactory() {
   return new EmptyError();
 }

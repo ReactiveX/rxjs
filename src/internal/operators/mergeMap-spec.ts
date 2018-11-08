@@ -3,14 +3,12 @@ import { expect } from 'chai';
 import { of, from} from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 
-
 describe('mergeMap', () => {
   let testScheduler: TestScheduler;
 
   beforeEach(() => {
     testScheduler = new TestScheduler((a, b) => { expect(a).to.deep.equal(b); });
   });
-
 
   it('should work in the basic use case', () => {
     const results: any[] = [];
@@ -19,7 +17,7 @@ describe('mergeMap', () => {
       mergeMap((n, i) => of([n, i]))
     )
     .subscribe({
-      next(value) { results.push(value) },
+      next(value) { results.push(value); },
       complete() { results.push('done'); },
     });
 
@@ -44,7 +42,7 @@ describe('mergeMap', () => {
       })
     )
     .subscribe({
-      next(value) { results.push(value) },
+      next(value) { results.push(value); },
       error(err) { error = err; },
       complete() { results.push('done'); },
     });
@@ -65,7 +63,7 @@ describe('mergeMap', () => {
     .subscribe({
       next(value, subscription) {
         results.push(value);
-        if (value === 2) subscription.unsubscribe();
+        if (value === 2) { subscription.unsubscribe(); }
       },
       complete() { results.push('done'); },
     });

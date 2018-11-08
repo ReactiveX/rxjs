@@ -35,6 +35,6 @@ describe('retry', () => {
       retry(3),
     ).subscribe();
 
-    return Promise.resolve().then(() => expect(teardowns).to.equal(4))
+    return Promise.resolve().then(() => expect(teardowns).to.equal(4));
   });
 });

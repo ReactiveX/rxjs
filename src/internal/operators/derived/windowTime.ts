@@ -1,14 +1,14 @@
-import { SchedulerLike, OperatorFunction } from "rxjs/internal/types";
-import { isScheduler } from "rxjs/internal/util/isScheduler";
-import { asyncScheduler } from "rxjs/internal/scheduler/asyncScheduler";
-import { Observable } from "rxjs/internal/Observable";
-import { windowToggle } from "rxjs/internal/operators/windowToggle";
-import { timer } from "rxjs/internal/create/timer";
-import { map } from "rxjs/internal/operators/map";
-import { take } from "rxjs/internal/operators/take";
-import { pipe } from "rxjs/internal/util/pipe";
-import { isNumeric } from "rxjs/internal/util/isNumeric";
-import { window } from "rxjs/internal/operators/window";
+import { SchedulerLike, OperatorFunction } from 'rxjs/internal/types';
+import { isScheduler } from 'rxjs/internal/util/isScheduler';
+import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
+import { Observable } from 'rxjs/internal/Observable';
+import { windowToggle } from 'rxjs/internal/operators/windowToggle';
+import { timer } from 'rxjs/internal/create/timer';
+import { map } from 'rxjs/internal/operators/map';
+import { take } from 'rxjs/internal/operators/take';
+import { pipe } from 'rxjs/internal/util/pipe';
+import { isNumeric } from 'rxjs/internal/util/isNumeric';
+import { window } from 'rxjs/internal/operators/window';
 
 /**
  * Branch out the source Observable values as a nested Observable periodically
@@ -84,14 +84,14 @@ import { window } from "rxjs/internal/operators/window";
  * @owner Observable
  */
 export function windowTime<T>(windowTimeSpan: number,
-  scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
+                              scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 export function windowTime<T>(windowTimeSpan: number,
-  windowCreationInterval: number,
-  scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
+                              windowCreationInterval: number,
+                              scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 export function windowTime<T>(windowTimeSpan: number,
-  windowCreationInterval: number,
-  maxWindowSize: number,
-  scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
+                              windowCreationInterval: number,
+                              maxWindowSize: number,
+                              scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
 
 export function windowTime<T>(
   windowTimeSpan: number,

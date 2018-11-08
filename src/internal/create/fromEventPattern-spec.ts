@@ -45,7 +45,7 @@ describe('fromEventPattern', () => {
     let removeHandlerCalls: any[] = [];
     const removeHandler = function() {
       removeHandlerCalls.push(Array.from(arguments));
-    }
+    };
 
     fromEventPattern(noop, removeHandler).subscribe(noop).unsubscribe();
 

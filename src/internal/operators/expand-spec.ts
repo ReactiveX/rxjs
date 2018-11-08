@@ -8,7 +8,7 @@ describe('expand', () => {
 
     of(1, 2).pipe(
       expand((v, i) => {
-        if (i >= 3) return EMPTY;
+        if (i >= 3) { return EMPTY; }
         return of(1, 2, 3).pipe(
           map(w => v + '-' + w),
         );

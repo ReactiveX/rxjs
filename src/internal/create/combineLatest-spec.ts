@@ -50,7 +50,7 @@ describe('static combineLatest', () => {
 
       const combined = combineLatest([firstSource, secondSource]);
 
-      expectObservable(combined).toBe(expected, {u: ['a', 'd'], v: ['a', 'e'], w: ['a', 'f'], x:['b', 'f'], y: ['b', 'g'], z: ['c', 'g']});
+      expectObservable(combined).toBe(expected, {u: ['a', 'd'], v: ['a', 'e'], w: ['a', 'f'], x: ['b', 'f'], y: ['b', 'g'], z: ['c', 'g']});
     });
   });
 

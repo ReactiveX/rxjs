@@ -75,7 +75,7 @@ describe('Subscriber', () => {
   it('should unsubscribe subscriptions sent to it when it errors', () => {
     let unsubbed = false;
     const subs = new Subscription(() => unsubbed = true);
-    const subscriber = createSubscriber(mockDest, subs)
+    const subscriber = createSubscriber(mockDest, subs);
 
     expect(unsubbed).to.be.false;
     subscriber.next(1);

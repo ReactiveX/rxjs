@@ -99,7 +99,7 @@ export function withLatestFrom<T, R>(...args: Array<ObservableInput<any>>): Oper
           dest(t, v, subs);
           subs.unsubscribe();
         }
-      }, innerSubs)
+      }, innerSubs);
     }
   });
 }

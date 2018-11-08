@@ -40,4 +40,3 @@ export function onErrorResumeNext<T>(...sources: ObservableInput<T>[]): Observab
     subscribe();
   });
 }
-

@@ -3,10 +3,10 @@ import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { sourceAsSubject } from 'rxjs/internal/util/sourceAsSubject';
 import { subjectBaseSource } from 'rxjs/internal/sources/subjectBaseSource';
-import { sinkFromObserver } from "rxjs/internal/util/sinkFromObserver";
+import { sinkFromObserver } from 'rxjs/internal/util/sinkFromObserver';
 import { isPartialObserver } from './util/isPartialObserver';
 
-export interface Subject<O, I=O> extends Observer<I>, Observable<O> {
+export interface Subject<O, I= O> extends Observer<I>, Observable<O> {
   unsubscribe(): void;
   asObservable(): Observable<O>;
 }
@@ -25,7 +25,7 @@ export const Subject: SubjectConstructor =  (function Subject<T>(observer?: Obse
       observable,
     )
     : subjectSource<T>()
-  )
+  );
 }) as any;
 
 export function frankenSubjectSource<O, I>(

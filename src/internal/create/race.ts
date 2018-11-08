@@ -2,9 +2,8 @@ import { ObservableInput, FOType, Sink, Source, SinkArg } from 'rxjs/internal/ty
 import { Observable } from 'rxjs/internal/Observable';
 import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { fromSource } from "rxjs/internal/sources/fromSource";
+import { fromSource } from 'rxjs/internal/sources/fromSource';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
-
 
 /**
  * Returns an Observable that mirrors the first source Observable to emit an item.
@@ -59,7 +58,7 @@ export function raceSource<T>(sources: ObservableInput<T>[]): Source<T> {
         src(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, mySubs: Subscription) => {
           if (allSubs && t === FOType.NEXT) {
             for (let childSubs of allSubs) {
-              if (childSubs !== mySubs) childSubs.unsubscribe();
+              if (childSubs !== mySubs) { childSubs.unsubscribe(); }
             }
             allSubs = null;
           }

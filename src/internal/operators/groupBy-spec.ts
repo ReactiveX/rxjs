@@ -22,7 +22,7 @@ describe('groupBy', () => {
           complete() {
             (group.key ? groupEvens : groupOdds).push('done');
           }
-        })
+        });
       },
       complete() { results.push('done'); },
     });

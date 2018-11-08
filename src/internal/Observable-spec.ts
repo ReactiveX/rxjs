@@ -84,7 +84,6 @@ describe('Observable', () => {
     it('should reject promise if nextHandler throws', (done) => {
       const results: number[] = [];
 
-
       of(1, 2, 3).forEach((x) => {
         if (x === 3) {
           throw new Error('NO THREES!');
@@ -162,7 +161,9 @@ describe('Observable', () => {
       const subs = new Subscription();
       return source.forEach(x => {
         results.push(x);
-        if (x === 3) subs.unsubscribe();
+        if (x === 3) {
+          subs.unsubscribe();
+        }
       }, subs)
       .then(
         () => {
@@ -185,7 +186,9 @@ describe('Observable', () => {
 
       return source.forEach(x => {
         results.push(x);
-        if (x === 3) subs.unsubscribe();
+        if (x === 3) {
+          subs.unsubscribe();
+        }
       }, subs)
       .then(
         () => {
@@ -238,7 +241,8 @@ describe('Observable', () => {
       subject.subscribe({
         next(value) { results.push(value); },
         complete() { results.push('done'); },
-      })
+      });
+
       const source = new Observable<string>((subscriber) => {
         subscriber.next('foo');
         subscriber.complete();

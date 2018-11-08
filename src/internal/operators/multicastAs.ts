@@ -6,7 +6,10 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { lift } from 'rxjs/internal/util/lift';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 
-export function multicastAs<T, R>(subjectOrFactory: Subject<T>|(() => Subject<T>), project: (multicasted: Observable<T>) => Observable<R>): OperatorFunction<T, R> {
+export function multicastAs<T, R>(
+  subjectOrFactory: Subject<T>|(() => Subject<T>),
+  project: (multicasted: Observable<T>) => Observable<R>
+): OperatorFunction<T, R> {
   return lift((source: Observable<T>, dest: Sink<R>, subs: Subscription) => {
     const multicasted = multicast(source, subjectOrFactory);
     const projected = tryUserFunction(project, multicasted);

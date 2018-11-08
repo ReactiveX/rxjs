@@ -395,7 +395,7 @@ describe('exhaustMap', () => {
                           '        ^       !               ',
                           '              ^       !         ',
                           '                 ^       !      ',
-                          '                       ^       !',]
+                          '                       ^       !', ];
         const expected = '  -------e-eeee-e-e-eeee-e-e-e-e-|';
 
         const result = s1.pipe(exhaustMap(() => i1, 2));

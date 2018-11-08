@@ -9,7 +9,7 @@ function DEFAULT_COMPARER<T>(a: T, b: T) {
 }
 
 export function distinctUntilChanged<T, K>(
-  comparer: ((a:T, b:T) => boolean) = DEFAULT_COMPARER,
+  comparer: ((a: T, b: T) => boolean) = DEFAULT_COMPARER,
   keySelector?: (value: T) => K
 ): OperatorFunction<T, T> {
   comparer = comparer || DEFAULT_COMPARER;

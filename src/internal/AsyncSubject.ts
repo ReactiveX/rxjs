@@ -3,7 +3,6 @@ import { FOType, FObsArg } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { sourceAsSubject } from 'rxjs/internal/util/sourceAsSubject';
 
-
 export interface AsyncSubjectConstructor {
   new <T>(): AsyncSubject<T>;
 }
@@ -49,4 +48,3 @@ export const AsyncSubject: AsyncSubjectConstructor = (<T>() => {
   result = sourceAsSubject(result) as AsyncSubject<T>;
   return result;
 }) as any;
-

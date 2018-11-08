@@ -1,4 +1,4 @@
-import { isIterable } from "rxjs/internal/util/isIterable";
+import { isIterable } from 'rxjs/internal/util/isIterable';
 import { expect } from 'chai';
 
 describe('isIterable', () => {
@@ -13,7 +13,6 @@ describe('isIterable', () => {
   it('should pass for a string', () => {
     expect(isIterable('weee')).to.be.true;
   });
-
 
   it('should fail for a plain object', () => {
     expect(isIterable({})).to.be.false;

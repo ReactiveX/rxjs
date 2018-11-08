@@ -8,7 +8,7 @@ describe('tryUserFunction and resultIsError', () => {
     function erroringFunction(...args: any[]) {
       passedArgs = args;
       throw new Error('test');
-    };
+    }
 
     const result = tryUserFunction(erroringFunction, 1, 2, 3);
 
@@ -22,7 +22,7 @@ describe('tryUserFunction and resultIsError', () => {
     function happyFunction(...args: any[]) {
       passedArgs = args;
       return 'happy result';
-    };
+    }
 
     const result = tryUserFunction(happyFunction, 1, 2, 3);
 

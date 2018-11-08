@@ -1,5 +1,5 @@
-import { OperatorFunction, FOType, Sink, SinkArg } from "rxjs/internal/types";
-import { Observable } from "rxjs/internal/Observable";
+import { OperatorFunction, FOType, Sink, SinkArg } from 'rxjs/internal/types';
+import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { lift } from 'rxjs/internal/util/lift';
 

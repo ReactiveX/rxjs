@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { sinkFromObserver } from 'rxjs/internal/util/sinkFromObserver';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 import { isPartialObserver } from './isPartialObserver';
+import { noop } from './noop';
 
 export function sourceAsObservable<T>(source: Source<T>): Observable<T> {
   const result = source as Observable<T>;
@@ -19,20 +20,23 @@ export function sourceAsObservable<T>(source: Source<T>): Observable<T> {
   return result;
 }
 
-function subscribe<T>(this: Source<T>, nextOrObserver?: PartialObserver<T> | ((value: T, subscription: Subscription) => void), errorHandler?: (err: any) => void, completeHandler?: () => void) {
+function subscribe<T>(
+  this: Source<T>,
+  nextOrObserver?: PartialObserver<T> | ((value: T, subscription: Subscription) => void),
+  errorHandler?: (err: any) => void,
+  completeHandler?: () => void
+) {
   const subscription = new Subscription();
-  ;
+
   let sink: Sink<T>;
   if (nextOrObserver || errorHandler || completeHandler) {
     if (isPartialObserver(nextOrObserver)) {
       sink = sinkFromObserver(nextOrObserver);
-    }
-    else {
+    } else {
       sink = sinkFromHandlers(nextOrObserver as any, errorHandler, completeHandler);
     }
-  }
-  else {
-    sink = () => { };
+  } else {
+    sink = noop;
   }
   this(FOType.SUBSCRIBE, safeSink(sink), subscription);
   return subscription;
@@ -50,7 +54,7 @@ function safeSink<T>(sink: Sink<T>) {
         subs.unsubscribe();
       }
     }
-  }
+  };
 }
 
 function forEach<T>(this: Observable<T>, nextHandler: (value: T) => void, subscription?: Subscription): Promise<void> {

@@ -35,7 +35,6 @@ export const ConnectableObservable: ConnectableObservableCtor = (<T>(source: Obs
   return connectable;
 }) as any;
 
-
 function refCount<T>(this: ConnectableObservable<T>) {
   let _refCounter = 0;
   let _connection: Subscription;

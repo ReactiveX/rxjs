@@ -8,7 +8,7 @@ export const animationFrameScheduler: SchedulerLike = {
   now() {
     return Date.now();
   },
-  schedule<T>(work: (state: T) => void,delay = 0, state = undefined as T, subs?: Subscription): Subscription {
+  schedule<T>(work: (state: T) => void, delay = 0, state = undefined as T, subs?: Subscription): Subscription {
     subs = subs || new Subscription();
     if (delay > 0) {
       asyncScheduler.schedule((state) => {
@@ -35,4 +35,4 @@ export const animationFrameScheduler: SchedulerLike = {
     }
     return subs;
   }
-}
+};

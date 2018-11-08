@@ -21,4 +21,4 @@ RecyclableSubscription.prototype.recycle = function (this: SubscriptionContext) 
   while (_teardowns.length > 0) {
     teardownToFunction(_teardowns.shift())();
   }
-}
+};

@@ -11,4 +11,3 @@ export const EMPTY_SOURCE: Source<never> =
   };
 
 export const EMPTY: Observable<never> = sourceAsObservable(EMPTY_SOURCE);
-

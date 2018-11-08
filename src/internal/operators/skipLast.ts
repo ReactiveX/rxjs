@@ -1,8 +1,8 @@
-import { OperatorFunction, Sink, FOType, SinkArg } from "rxjs/internal/types";
-import { lift } from "rxjs/internal/util/lift";
-import { Observable } from "rxjs/internal/Observable";
-import { Subscription } from "rxjs/internal/Subscription";
-import { ArgumentOutOfRangeError } from "rxjs/internal/util/ArgumentOutOfRangeError";
+import { OperatorFunction, Sink, FOType, SinkArg } from 'rxjs/internal/types';
+import { lift } from 'rxjs/internal/util/lift';
+import { Observable } from 'rxjs/internal/Observable';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { ArgumentOutOfRangeError } from 'rxjs/internal/util/ArgumentOutOfRangeError';
 
 /**
  * Skip the last `count` values emitted by the source Observable.

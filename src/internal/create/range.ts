@@ -1,7 +1,7 @@
-import { Observable } from "rxjs/internal/Observable";
-import { sourceAsObservable } from "rxjs/internal/util/sourceAsObservable";
-import { FOType, Sink } from "rxjs/internal/types";
-import { Subscription } from "rxjs/internal/Subscription";
+import { Observable } from 'rxjs/internal/Observable';
+import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
+import { FOType, Sink } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 /**
  * Creates an Observable that emits a sequence of numbers within a specified

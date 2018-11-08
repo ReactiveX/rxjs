@@ -63,7 +63,7 @@ const DEFAULT_COMPAROR = (a: any, b: any) => a === b;
  * @owner Observable
  */
 export function sequenceEqual<A, B>(compareTo: Observable<B>,
-                                 comparor: (a: A, b: B) => boolean = DEFAULT_COMPAROR): OperatorFunction<A, boolean> {
+                                    comparor: (a: A, b: B) => boolean = DEFAULT_COMPAROR): OperatorFunction<A, boolean> {
   return (source: Observable<A>) => zip(source, compareTo).pipe(
     filter(([a, b]: [A, B]) => !comparor(a, b)),
     mapTo(false),

@@ -3,7 +3,7 @@ import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
 import { OperatorFunction, FOType, Sink, SinkArg, GroupedObservable, ObservableInput } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { subjectSource } from 'rxjs/internal/Subject';
-import { fromSource } from "rxjs/internal/sources/fromSource";
+import { fromSource } from 'rxjs/internal/sources/fromSource';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 import { lift } from 'rxjs/internal/util/lift';
 
@@ -16,7 +16,7 @@ import { lift } from 'rxjs/internal/util/lift';
 
 export interface GroupByConfig<T, K, R> {
   keySelector: (value: T, index: number) => K;
-  durationSelector?: (grouped: GroupedObservable<K, R>) => ObservableInput<any>,
+  durationSelector?: (grouped: GroupedObservable<K, R>) => ObservableInput<any>;
 }
 
 /* tslint:disable:max-line-length */
@@ -41,7 +41,7 @@ export function groupBy<T, K, R>(
       const groups = lookup.values();
       while (true) {
         const { done, value } = groups.next();
-        if (done) break;
+        if (done) { break; }
         value(t, v, subs);
       }
       dest(t, v, subs);
@@ -86,7 +86,6 @@ export function groupBy<T, K, R>(
     }, subs);
   });
 }
-
 
 function groupedObservable<K, R>(key: K): GroupedObservable<K, R> {
   let result = sourceAsObservable(subjectSource<R>()) as GroupedObservable<K, R>;

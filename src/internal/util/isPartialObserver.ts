@@ -1,4 +1,4 @@
-import { PartialObserver } from "../types";
+import { PartialObserver } from '../types';
 
 /**
  * Because Subjects are `typeof "function"`, we have this method to test to

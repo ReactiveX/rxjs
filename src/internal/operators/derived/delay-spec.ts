@@ -3,7 +3,6 @@ import { delay, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
 
-
 /** @test {delay} */
 describe('delay operator', () => {
   let testScheduler: TestScheduler;

@@ -4,7 +4,6 @@ import { TestScheduler } from 'rxjs/testing';
 import { of, concat, timer } from 'rxjs';
 import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
 
-
 /** @test {throttleTime} */
 describe('throttleTime operator', () => {
   let testScheduler: TestScheduler;

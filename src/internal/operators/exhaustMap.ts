@@ -88,4 +88,4 @@ export function exhaustMap<T, R>(
       }
     }, subs);
   });
-};
+}

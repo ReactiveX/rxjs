@@ -15,7 +15,7 @@ export function filter<T>(predicate: (value: T, index: number) => boolean): Oper
           subs.unsubscribe();
           return;
         }
-        if (!result) return;
+        if (!result) { return; }
       }
       dest(t, v, subs);
     }, subs);

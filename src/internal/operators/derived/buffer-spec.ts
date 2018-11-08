@@ -3,7 +3,6 @@ import { EMPTY, NEVER, throwError, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
 
-
 /** @test {buffer} */
 describe('buffer', () => {
 
@@ -44,7 +43,7 @@ describe('buffer', () => {
       const b = hot('-----a-----');
       const expected = '(x|)';
       expectObservable(a.pipe(buffer(b))).toBe(expected, { x: [] });
-    })
+    });
   });
 
   it('should work with non-empty and empty selector', () => {

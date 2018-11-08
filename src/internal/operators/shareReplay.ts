@@ -16,7 +16,7 @@ export function shareReplay<T>(
     if (!connection) {
       connection = new Subscription();
       source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, conn: Subscription) => {
-        if (t === FOType.SUBSCRIBE) return;
+        if (t === FOType.SUBSCRIBE) { return; }
         if (t === FOType.ERROR) {
           connection = undefined;
         }

@@ -6,7 +6,7 @@ export function lowerCaseO<T>(...args: Array<any>): any {
       args.forEach(v => observer.next(v));
       observer.complete();
       return {
-        unsubscribe() { }
+        unsubscribe() { /* stub */ }
       };
     }
   };

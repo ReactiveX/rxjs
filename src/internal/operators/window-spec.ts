@@ -3,7 +3,6 @@ import { TestScheduler } from 'rxjs/testing';
 import { EMPTY, of, Observable } from 'rxjs';
 import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
 
-
 /** @test {window} */
 describe('window operator', () => {
   let testScheduler: TestScheduler;

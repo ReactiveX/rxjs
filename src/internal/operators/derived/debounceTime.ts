@@ -1,7 +1,7 @@
-import { OperatorFunction, SchedulerLike } from "rxjs/internal/types";
-import { debounce } from "rxjs/internal/operators/debounce";
-import { timer } from "rxjs/internal/create/timer";
-import { asyncScheduler } from "rxjs/internal/scheduler/asyncScheduler";
+import { OperatorFunction, SchedulerLike } from 'rxjs/internal/types';
+import { debounce } from 'rxjs/internal/operators/debounce';
+import { timer } from 'rxjs/internal/create/timer';
+import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
 
 /**
  * Emits a value from the source Observable only after a particular time span

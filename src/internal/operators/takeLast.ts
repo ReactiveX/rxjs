@@ -1,6 +1,6 @@
-import { OperatorFunction, FOType, Sink, SinkArg } from "rxjs/internal/types";
-import { Observable } from "rxjs/internal/Observable";
-import { Subscription } from "rxjs/internal/Subscription";
+import { OperatorFunction, FOType, Sink, SinkArg } from 'rxjs/internal/types';
+import { Observable } from 'rxjs/internal/Observable';
+import { Subscription } from 'rxjs/internal/Subscription';
 import { lift } from 'rxjs/internal/util/lift';
 
 export function takeLast<T>(count: number = 1): OperatorFunction<T, T> {

@@ -5,6 +5,6 @@ import { Subscription } from 'rxjs/internal/Subscription';
 
 export function throwError(err: any): Observable<never> {
   return sourceAsObservable((type: FOType.SUBSCRIBE, sink: Sink<never>, subs: Subscription) => {
-    if (type === FOType.SUBSCRIBE) sink(FOType.ERROR, err, subs);
+    if (type === FOType.SUBSCRIBE) { sink(FOType.ERROR, err, subs); }
   });
 }

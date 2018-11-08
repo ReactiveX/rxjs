@@ -9,19 +9,19 @@ import { isPartialObserver } from '../util/isPartialObserver';
 
 export function tap<T>(
   observer: PartialObserver<T>
-): OperatorFunction<T, T>
+): OperatorFunction<T, T>;
 
 export function tap<T>(
   nextHandler?: (value: T) => void,
   errorHandler?: (err: any) => void,
   completeHandler?: () => void,
-): OperatorFunction<T, T>
+): OperatorFunction<T, T>;
 
 export function tap<T>(
   nextOrObserver?: PartialObserver<T>|((value: T) => void),
   errorHandler?: (err: any) => void,
   completeHandler?: () => void,
-): OperatorFunction<T, T>
+): OperatorFunction<T, T>;
 
 export function tap<T>(
   nextOrObserver?: PartialObserver<T>|((value: T) => void),
@@ -31,8 +31,7 @@ export function tap<T>(
   let sink: Sink<T>;
   if (isPartialObserver(nextOrObserver)) {
     sink = sinkFromObserver(nextOrObserver);
-  }
-  else {
+  } else {
     sink = sinkFromHandlers(nextOrObserver as ((value: T) => void), errorHandler, completeHandler);
   }
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {

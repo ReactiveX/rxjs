@@ -14,7 +14,7 @@ export interface Subscription {
 export interface SubscriptionConstructor {
   new(): Subscription;
   new(...teardowns: TeardownLogic[]): Subscription;
-  EMPTY: Subscription
+  EMPTY: Subscription;
 }
 
 export interface SubscriptionContext {
@@ -48,7 +48,7 @@ subscriptionProto.add = function (...teardowns: TeardownLogic[]) {
       }
     }
   }
-}
+};
 
 subscriptionProto.remove = function (...teardowns: TeardownLogic[]) {
   const { _teardowns } = this;
@@ -76,7 +76,7 @@ subscriptionProto.unsubscribe = function () {
         unsubError.errors.push(err);
       }
     }
-    if (unsubError) throw unsubError;
+    if (unsubError) { throw unsubError; }
   }
 };
 

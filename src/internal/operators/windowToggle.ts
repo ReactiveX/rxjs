@@ -1,10 +1,10 @@
-import { Observable } from "rxjs/internal/Observable";
-import { OperatorFunction, Sink, FOType, SinkArg, FObs } from "rxjs/internal/types";
-import { lift } from "rxjs/internal/util/lift";
-import { Subscription } from "rxjs/internal/Subscription";
-import { tryUserFunction, resultIsError } from "rxjs/internal/util/userFunction";
-import { subjectSource } from "rxjs/internal/Subject";
-import { sourceAsObservable } from "rxjs/internal/util/sourceAsObservable";
+import { Observable } from 'rxjs/internal/Observable';
+import { OperatorFunction, Sink, FOType, SinkArg, FObs } from 'rxjs/internal/types';
+import { lift } from 'rxjs/internal/util/lift';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
+import { subjectSource } from 'rxjs/internal/Subject';
+import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
 
 /**
  * Branch out the source Observable values as a nested Observable starting from
@@ -70,7 +70,7 @@ export function windowToggle<T, O>(
     const notifyError = (err: any) => {
       notifyWindows(FOType.ERROR, err, subs);
       dest(FOType.ERROR, err, subs);
-    }
+    };
 
     openings(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<O>, _openSubs: Subscription) => {
       if (t === FOType.NEXT) {

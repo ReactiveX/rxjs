@@ -55,7 +55,11 @@ import { timer } from 'rxjs/internal/create/timer';
  * @method timeoutWith
  * @owner Observable
  */
-export function timeoutWith<T, R>(due: number | Date, withObservable: ObservableInput<R>, scheduler: SchedulerLike = asyncScheduler): OperatorFunction<T, T|R> {
+export function timeoutWith<T, R>(
+  due: number | Date,
+  withObservable: ObservableInput<R>,
+  scheduler: SchedulerLike = asyncScheduler
+): OperatorFunction<T, T|R> {
   return (source: Observable<T>) => race(
     source,
     timer(due, scheduler).pipe(switchMapTo(withObservable)),

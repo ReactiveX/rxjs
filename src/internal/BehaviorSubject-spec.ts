@@ -152,7 +152,7 @@ describe('BehaviorSubject', () => {
       ))).toBe(sourceTemplate);
       expectObservable(subscriber1).toBe(expected1);
     });
-  })
+  });
 
   it('should be an Observer which can be given to Observable.subscribe', (done: MochaDone) => {
     const source = of(1, 2, 3, 4, 5);

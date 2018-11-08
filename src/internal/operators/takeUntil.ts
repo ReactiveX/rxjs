@@ -1,7 +1,7 @@
 import { lift } from 'rxjs/internal/util/lift';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { fromSource } from "rxjs/internal/sources/fromSource";
+import { fromSource } from 'rxjs/internal/sources/fromSource';
 import { FOType, ObservableInput, OperatorFunction, Sink, SinkArg } from 'rxjs/internal/types';
 
 export function takeUntil<T>(notifier: ObservableInput<any>): OperatorFunction<T, T> {

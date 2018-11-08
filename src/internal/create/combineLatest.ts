@@ -2,7 +2,7 @@ import { ObservableInput, FOType, Sink, Source, SinkArg } from 'rxjs/internal/ty
 import { Observable } from 'rxjs/internal/Observable';
 import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { fromSource } from "rxjs/internal/sources/fromSource";
+import { fromSource } from 'rxjs/internal/sources/fromSource';
 import { identity } from 'rxjs/internal/util/identity';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 

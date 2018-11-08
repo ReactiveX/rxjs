@@ -11,7 +11,7 @@ export interface Notification<T> extends NotificationLike<T> {
   hasValue: boolean;
   observe(observer: PartialObserver<T>): void;
   do(next: (value: T) => void, error?: (err: any) => void, complete?: () => void): void;
-  accept(nextOrObserver: PartialObserver<T> | ((value: T) => void), error?: (err: any) => void, complete?: () => void) : void;
+  accept(nextOrObserver: PartialObserver<T> | ((value: T) => void), error?: (err: any) => void, complete?: () => void): void;
   toObservable(): Observable<T>;
 }
 
@@ -53,7 +53,12 @@ Notification.prototype.observe = function <T>(observer: PartialObserver<T>, subs
   }
 };
 
-Notification.prototype.do = function<T>(next: (value: T, subscription: Subscription) => void, error?: (err: any) => void, complete?: () => void, subscription?: Subscription) {
+Notification.prototype.do = function<T>(
+  next: (value: T, subscription: Subscription) => void,
+  error?: (err: any) => void,
+  complete?: () => void,
+  subscription?: Subscription
+) {
   const kind = this.kind;
   switch (kind) {
     case 'N':
@@ -65,7 +70,12 @@ Notification.prototype.do = function<T>(next: (value: T, subscription: Subscript
   }
 };
 
-Notification.prototype.accept = function<T>(nextOrObserver: PartialObserver<T> | ((value: T) => void), error?: (err: any) => void, complete?: () => void, subscription?: Subscription) {
+Notification.prototype.accept = function<T>(
+  nextOrObserver: PartialObserver<T> | ((value: T) => void),
+  error?: (err: any) => void,
+  complete?: () => void,
+  subscription?: Subscription
+) {
   if (isPartialObserver(nextOrObserver)) {
     return this.observe(<PartialObserver<T>>nextOrObserver, subscription);
   } else {
@@ -84,7 +94,7 @@ Notification.prototype.toObservable = function<T>() {
       return EMPTY;
   }
   throw new Error('unexpected notification kind value');
-}
+};
 
 const COMPLETE_NOTIFICATION = new Notification('C');
 const UNDEFINED_NEXT_NOTIFICATION = new Notification('N');

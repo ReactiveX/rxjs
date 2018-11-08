@@ -11,7 +11,7 @@ describe('withLatestFrom operator', () => {
 
   beforeEach(() => {
     testScheduler = new TestScheduler(assertDeepEquals);
-  })
+  });
 
   //asDiagram('withLatestFrom')
   it('should combine events from cold observables', () => {
@@ -49,7 +49,6 @@ describe('withLatestFrom operator', () => {
       expectSubscriptionsTo(e3).toBe(e3subs);
     });
   });
-
 
   it('should allow unsubscribing early and explicitly', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {

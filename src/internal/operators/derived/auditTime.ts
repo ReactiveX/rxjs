@@ -1,7 +1,6 @@
 import { audit } from 'rxjs/internal/operators/audit';
-import { SchedulerLike } from 'rxjs/internal/types';
+import { SchedulerLike, OperatorFunction } from 'rxjs/internal/types';
 import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
-import { OperatorFunction } from 'rxjs/internal/types';
 import { timer } from 'rxjs/internal/create/timer';
 
 /**

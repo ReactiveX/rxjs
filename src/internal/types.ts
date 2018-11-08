@@ -105,7 +105,7 @@ export interface NotificationLike<T> {
 }
 
 export interface Timestamped<T> {
-  value: T,
+  value: T;
   timestamp: number;
 }
 

@@ -1,5 +1,5 @@
-import { expect } from "chai";
-import { isArrayLike } from "rxjs/internal/util/isArrayLike";
+import { expect } from 'chai';
+import { isArrayLike } from 'rxjs/internal/util/isArrayLike';
 
 describe('isArrayLike', () => {
   it('should pass for an ArrayLike', () => {
@@ -30,4 +30,4 @@ describe('isArrayLike', () => {
   it('should fail for numbers', () => {
     expect(isArrayLike(1337)).to.be.false;
   });
-})
+});

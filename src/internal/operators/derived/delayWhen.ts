@@ -80,5 +80,5 @@ export function delayWhen<T>(
         defaultIfEmpty(undefined),
         mergeMap(() => modifiedSource)
       ) : modifiedSource;
-  }
+  };
 }

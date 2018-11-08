@@ -7,10 +7,10 @@ describe('isObservable', () => {
   });
 
   it('should return false for plain functions', () => {
-    expect(isObservable(() => {})).to.be.false;
+    expect(isObservable(() => { /* stub */ })).to.be.false;
   });
 
   it('should return false for a simple object with subscribe', () => {
-    expect(isObservable({ subscribe() { } })).to.be.false;
+    expect(isObservable({ subscribe() { /* stub */ } })).to.be.false;
   });
 });

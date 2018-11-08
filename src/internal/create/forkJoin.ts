@@ -1,10 +1,10 @@
-import { ObservableInput, FOType, Sink, SinkArg } from "rxjs/internal/types";
-import { Observable } from "rxjs/internal/Observable";
-import { sourceAsObservable } from "rxjs/internal/util/sourceAsObservable";
-import { Subscription } from "rxjs/internal/Subscription";
-import { tryUserFunction, resultIsError } from "rxjs/internal/util/userFunction";
-import { fromSource } from "rxjs/internal/sources/fromSource";
-import { EMPTY } from "rxjs/internal/EMPTY";
+import { ObservableInput, FOType, Sink, SinkArg } from 'rxjs/internal/types';
+import { Observable } from 'rxjs/internal/Observable';
+import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
+import { fromSource } from 'rxjs/internal/sources/fromSource';
+import { EMPTY } from 'rxjs/internal/EMPTY';
 
 /* tslint:disable:max-line-length */
 // forkJoin([a$, b$, c$]);

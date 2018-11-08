@@ -69,7 +69,7 @@ export function debounce<T>(durationSelector: (value: T, index: number) => Obser
         _lastValue = null;
         dest(FOType.NEXT, v, subs);
       }
-    }
+    };
 
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
       if (t === FOType.NEXT) {
@@ -100,4 +100,4 @@ export function debounce<T>(durationSelector: (value: T, index: number) => Obser
       }
     }, subs);
   });
-};
+}

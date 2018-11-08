@@ -24,7 +24,7 @@ describe('filter', () => {
     testScheduler = new TestScheduler((a, b) => {
       expect(a).to.deep.equal(b);
     });
-  })
+  });
 
   //asDiagram('filter(x => x % 2 === 1)')
   it('should filter out even values', () => {

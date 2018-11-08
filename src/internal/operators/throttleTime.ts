@@ -53,8 +53,7 @@ export function throttleTime<T>(
   duration: number,
   scheduler: SchedulerLike = asyncScheduler,
   config: ThrottleConfig = DEFAULT_THROTTLE_CONFIG
-): OperatorFunction<T, T>
-{
+): OperatorFunction<T, T> {
   return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
     let _hasTrailingValue = false;
     let _trailingValue: T;

@@ -1,7 +1,7 @@
-import { Observable } from "rxjs/internal/Observable";
-import { sourceAsObservable } from "rxjs/internal/util/sourceAsObservable";
-import { Subscription } from "rxjs/internal/Subscription";
-import { FOType, Sink } from "rxjs/internal/types";
+import { Observable } from 'rxjs/internal/Observable';
+import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { FOType, Sink } from 'rxjs/internal/types';
 
 export interface NodeStyleEventEmitter {
   addListener: (eventName: string | symbol, handler: NodeEventHandler) => this;
@@ -178,8 +178,8 @@ export function fromEvent<T>(
 }
 
 function setupSubscription<T>(sourceObj: FromEventTarget<T>, eventName: string,
-  handler: (...args: any[]) => void, subs: Subscription, sink: Sink<T>,
-  options?: EventListenerOptions) {
+                              handler: (...args: any[]) => void, subs: Subscription, sink: Sink<T>,
+                              options?: EventListenerOptions) {
   let unsubscribe: () => void;
   if (isEventTarget(sourceObj)) {
     const source = sourceObj;

@@ -1,7 +1,7 @@
 import { ObservableInput, OperatorFunction, FOType, Sink, SinkArg, Source } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { fromSource } from "rxjs/internal/sources/fromSource";
+import { fromSource } from 'rxjs/internal/sources/fromSource';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 import { lift } from 'rxjs/internal/util/lift';
 
@@ -55,7 +55,7 @@ export function mergeMap<T, R>(
           }
         }, innerSubs);
       }
-    }
+    };
 
     // OUTER subscription
     source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>) => {

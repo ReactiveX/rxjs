@@ -23,4 +23,4 @@ export const asapScheduler: SchedulerLike = {
     });
     return subs;
   }
-}
+};

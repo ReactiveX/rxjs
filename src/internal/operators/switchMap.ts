@@ -1,7 +1,7 @@
 import { ObservableInput, OperatorFunction, FOType, Sink, SinkArg, Source } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { fromSource } from "rxjs/internal/sources/fromSource";
+import { fromSource } from 'rxjs/internal/sources/fromSource';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 import { lift } from 'rxjs/internal/util/lift';
 
@@ -49,7 +49,7 @@ export function switchMap<T, R>(
           break;
         case FOType.COMPLETE:
           outerComplete = true;
-          if (innerSubs) break;
+          if (innerSubs) { break; }
         case FOType.ERROR:
           dest(t, v, subs);
           subs.unsubscribe();

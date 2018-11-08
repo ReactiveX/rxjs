@@ -5,7 +5,7 @@ import { symbolAsyncIterator } from 'rxjs/internal/util/symbolAsyncIterator';
 describe('isAsyncIterable', () => {
   it('should pass for any object with an Symbol.asyncIterator', () => {
     const obj = {
-      [symbolAsyncIterator]() {}
+      [symbolAsyncIterator]() { /* stub */ }
     };
 
     expect(isAsyncIterable(obj)).to.be.true;

@@ -1,5 +1,5 @@
-import { isInteropObservable } from "rxjs/internal/util/isInteropObservable";
-import { expect } from "chai";
+import { isInteropObservable } from 'rxjs/internal/util/isInteropObservable';
+import { expect } from 'chai';
 import { symbolObservable } from 'rxjs/internal/util/symbolObservable';
 
 describe('isInteropObservable', () => {

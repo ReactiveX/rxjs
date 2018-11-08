@@ -10,7 +10,7 @@ describe('distinctUntilChanged operator', () => {
   let testScheduler: TestScheduler;
 
   beforeEach(() => {
-    testScheduler = new TestScheduler(assertDeepEquals)
+    testScheduler = new TestScheduler(assertDeepEquals);
   });
 
   //asDiagram('distinctUntilChanged')

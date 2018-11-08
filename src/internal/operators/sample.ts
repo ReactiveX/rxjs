@@ -1,7 +1,7 @@
-import { OperatorFunction, Sink, FOType, SinkArg } from "rxjs/internal/types";
-import { Observable } from "rxjs/internal/Observable";
-import { lift } from "rxjs/internal/util/lift";
-import { Subscription } from "rxjs/internal/Subscription";
+import { OperatorFunction, Sink, FOType, SinkArg } from 'rxjs/internal/types';
+import { Observable } from 'rxjs/internal/Observable';
+import { lift } from 'rxjs/internal/util/lift';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 /**
  * Emits the most recently emitted value from the source Observable whenever

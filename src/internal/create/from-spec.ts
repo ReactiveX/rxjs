@@ -115,7 +115,6 @@ describe('from', () => {
       expect(results).to.deep.equal(['W', 'e', 'e', 'e', '!', 'done']);
     });
 
-
     it('should work with take', () => {
       const results: any[] = [];
       const source = 'Weeeeeeeeeeeeeee!';
@@ -209,13 +208,13 @@ describe('from', () => {
               observer.next(3);
               observer.complete();
             }
-          }
+          };
         }
       } as InteropObservable<number>;
 
       from<number>(obj).subscribe({
         next(value) { results.push(value); },
-        complete() { results.push('done') },
+        complete() { results.push('done'); },
       });
 
       expect(results).to.deep.equal([1, 2, 3, 'done']);
@@ -232,7 +231,7 @@ describe('from', () => {
                 unsubscribe() {
                   unsubscribed = true;
                 }
-              }
+              };
             }
           };
         }

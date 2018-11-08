@@ -1,5 +1,5 @@
-import { isObserver } from "rxjs/internal/util/isObserver";
-import { expect } from "chai";
+import { isObserver } from 'rxjs/internal/util/isObserver';
+import { expect } from 'chai';
 
 describe('isObserver', () => {
   it('should pass for fully flushed-out Observers', () => {
@@ -20,7 +20,6 @@ describe('isObserver', () => {
 
     expect(isObserver(o)).to.be.false;
   });
-
 
   it('should fail for partial observers', () => {
     const o = {

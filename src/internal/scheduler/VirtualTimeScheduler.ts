@@ -13,7 +13,7 @@ export interface VirtualTimeScheduler extends SchedulerLike {
   frame: number;
 }
 
-interface VirtualAction<T=any> {
+interface VirtualAction<T= any> {
   index: number;
   delay: number;
   work: (state: T) => void;
@@ -80,7 +80,7 @@ proto.flush = function (this: any) {
       try {
         action.work(action.state);
       } catch (err) {
-        while(actions.length > 0) {
+        while (actions.length > 0) {
           actions.shift().subs.unsubscribe();
         }
         throw err;
@@ -89,7 +89,7 @@ proto.flush = function (this: any) {
     actions.length = 0;
     this._flushing = false;
   }
-}
+};
 
 export const VirtualTimeScheduler: VirtualTimeSchedulerCtor = VirtualTimeSchedulerImpl as any;
 

@@ -35,6 +35,6 @@ describe('repeatWhen', () => {
       )),
     ).subscribe();
 
-    return Promise.resolve().then(() => expect(teardowns).to.equal(3))
+    return Promise.resolve().then(() => expect(teardowns).to.equal(3));
   });
 });

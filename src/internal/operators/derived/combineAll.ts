@@ -6,7 +6,6 @@ import { switchMap } from 'rxjs/internal/operators/switchMap';
 import { combineLatest } from 'rxjs/internal/create/combineLatest';
 import { tap } from 'rxjs/internal/operators/tap';
 
-
 export function combineAll<T>(): OperatorFunction<ObservableInput<T>, T[]>;
 export function combineAll<T>(): OperatorFunction<any, T[]>;
 /**

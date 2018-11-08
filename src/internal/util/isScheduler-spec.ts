@@ -4,12 +4,11 @@ import { expect } from 'chai';
 describe('isScheduler', () => {
   it('should identify any scheduler like', () => {
     const result = isScheduler({
-      schedule() { }
+      schedule() { /* stub */ }
     });
 
     expect(result).to.be.true;
   });
-
 
   it('should identify things that are not schedulers', () => {
     expect(isScheduler(null)).to.be.false;

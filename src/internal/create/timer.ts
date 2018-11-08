@@ -1,4 +1,4 @@
-import { FOType, Sink, SchedulerLike }  from 'rxjs/internal/types';
+import { FOType, Sink, SchedulerLike } from 'rxjs/internal/types';
 import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
@@ -59,8 +59,8 @@ export function timer(delay: number|Date, interval: number, scheduler: Scheduler
  * @owner Observable
  */
 export function timer(dueTime: number | Date = 0,
-  periodOrScheduler?: number | SchedulerLike,
-  scheduler?: SchedulerLike): Observable<number> {
+                      periodOrScheduler?: number | SchedulerLike,
+                      scheduler?: SchedulerLike): Observable<number> {
 
   let period = -1;
   if (isNumeric(periodOrScheduler)) {
@@ -92,7 +92,7 @@ export function timer(dueTime: number | Date = 0,
 
 function timerDelayWork<T>(state: { dest: Sink<T>, scheduler: SchedulerLike, subs: Subscription, i: number, period: number }) {
   const { dest, scheduler, subs, period } = state;
-  if (subs.closed) return;
+  if (subs.closed) { return; }
   dest(FOType.NEXT, state.i++, subs);
   if (!subs.closed) {
     if (period >= 0) {

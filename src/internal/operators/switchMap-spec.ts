@@ -12,7 +12,7 @@ describe('switchMap', () => {
 
   beforeEach(() => {
     testScheduler = new TestScheduler(assertDeepEquals);
-  })
+  });
   //asDiagram('switchMap(i => 10*i\u2014\u201410*i\u2014\u201410*i\u2014| )')
   it('should map-and-flatten each item to an Observable', () => {
       testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {

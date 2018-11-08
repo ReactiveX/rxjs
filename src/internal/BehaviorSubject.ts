@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { sourceAsSubject } from 'rxjs/internal/util/sourceAsSubject';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 
-
 export interface BehaviorSubjectConstructor {
   new <T>(initialValue: T): BehaviorSubject<T>;
 }
@@ -47,15 +46,18 @@ export const BehaviorSubject: BehaviorSubjectConstructor = (<T>(initialValue: T)
 
   result = sourceAsSubject(result) as BehaviorSubject<T>;
   result.getValue = () => {
-    if (disposed) throw new ObjectUnsubscribedError();
-    if (hasError) throw error;
+    if (disposed) {
+      throw new ObjectUnsubscribedError();
+    }
+    if (hasError) {
+      throw error;
+    }
     return value;
   };
   Object.defineProperty(result, 'value', {
     get() {
-      return value
+      return value;
     }
-  })
+  });
   return result;
 }) as any;
-

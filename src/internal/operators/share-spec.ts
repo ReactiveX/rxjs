@@ -281,8 +281,6 @@ describe('share operator', () => {
                           ' (^!)',
                           ' (^!)'];
 
-
-
       expectObservable(shared, subscribe1).toBe(expected1);
       expectObservable(shared, subscribe2).toBe(expected2);
 
