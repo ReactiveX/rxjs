@@ -3,6 +3,32 @@ import { mapTo } from 'rxjs/operators';
 
 function a<I extends string, O extends string>(input: I, output: O): OperatorFunction<I, O>;
 function a<I, O extends string>(output: O): OperatorFunction<I, O>;
+
+/**
+ * Used to keep the tests uncluttered.
+ *
+ * Returns an `OperatorFunction` with the specified literal type parameters.
+ * That is, `a('0', '1')` returns `OperatorFunction<'0', '1'>`.
+ * That means that the `a` function can be used to create consecutive
+ * arguments that are either compatible or incompatible.
+ * 
+ * ```javascript
+ * a('0', '1'), a('1', '2') // OK
+ * a('0', '1'), a('#', '2') // Error '1' is not compatible with '#'
+ * ```
+ *
+ * If passed only one argument, that argument is used for the output
+ * type parameter and the input type parameters is inferred.
+ *
+ * ```javascript
+ * of('foo').pipe(
+ *   a('1') // OperatorFunction<'foo', '1'>
+ * );
+ * ```
+ *
+ * @param {string} input The `OperatorFunction` input type parameter
+ * @param {string} output The `OperatorFunction` output type parameter
+ */
 function a<I, O extends string>(inputOrOutput: I | O, output?: O): OperatorFunction<I, O> {
   return mapTo<I, O>(output === undefined ? inputOrOutput as O : output);
 }
