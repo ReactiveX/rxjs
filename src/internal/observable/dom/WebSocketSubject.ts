@@ -19,17 +19,18 @@ import { errorObject } from '../../util/errorObject';
  * use `openObserver`, when the connection is closed `closeObserver`, if we
  * are interested in listening for data comming from server: `deserializer`,
  * which allows us to customize the deserialization strategy of data before passing it
- * to the socket client.
+ * to the socket client. By default `deserializer` is going to apply `JSON.parse` to each message comming
+ * from the Server.
  *
  * ## Example
- * By default `deserializer` is going to apply `JSON.parse` to each message comming
- * from the Server, but you can modify this behaviour.
+ * We can also let messages pass through as they were sent by the server (skipping `JSON.parse`).
+ * This is pretty useful if the messages are coming in JSON format.
  * ```ts
  * import { webSocket } from 'rxjs/webSocket';
  *
  * const wsSubject = webSocket({
  *     url: 'ws://localhost:8081',
- * //Apply any transformation of your choice. Here I am letting the raw data comming from the server pass to the clients
+ * //Apply any transformation of your choice.
  *     deserializer: ({data}) => data
  * });
  *
@@ -95,7 +96,7 @@ export interface WebSocketSubjectConfig<T> {
    * WebSocket impl in Node (WebSocket is a DOM API), or for mocking a WebSocket
    * for testing purposes
    */
-  WebSocketCtor?: { new(url: string, protocols?: string|string[]): WebSocket };
+  WebSocketCtor?: { new (url: string, protocols?: string|string[]): WebSocket };
   /** Sets the `binaryType` property of the underlying WebSocket. */
   binaryType?: 'blob' | 'arraybuffer';
 }
