@@ -1,7 +1,7 @@
-import { Observable } from "../Observable";
-import { sourceAsObservable } from "../util/sourceAsObservable";
-import { FOType, Sink } from "../types";
-import { Subscription } from "../Subscription";
+import { Observable } from 'rxjs/internal/Observable';
+import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
+import { FOType, Sink } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 /**
  * Convert an object into an Observable of `[key, value]` pairs.

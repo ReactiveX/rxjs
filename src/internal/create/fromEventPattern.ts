@@ -1,8 +1,8 @@
-import { Observable } from "../Observable";
-import { sourceAsObservable } from "../util/sourceAsObservable";
-import { FOType, Sink } from "../types";
-import { Subscription } from "../Subscription";
-import { tryUserFunction, resultIsError } from "../util/userFunction";
+import { Observable } from 'rxjs/internal/Observable';
+import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
+import { FOType, Sink } from 'rxjs/internal/types';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 
 /**
  * Creates an Observable from an arbitrary API for registering event handlers.

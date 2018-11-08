@@ -32,7 +32,7 @@
     "pretest": "shx rm -rf tmp/ && tsc -p tsconfig.tests.json",
     "test": "cross-env NODE_PATH=tmp/tests/ mocha --opts mocha-options.opts \"tmp/tests/**/*-spec.js\" && shx rm -rf tmp/",
     "dev": "watch 'npm run test' src",
-    "build:umd": "shx rm -rf package/bundles/ && mkdirp ./package/bundles && node ./tools/make-umd-bundle.js && node ./tools/make-closure-core.js",
+    "build:umd": "shx rm -rf package/bundles/ && mkdirp ./package/bundles && npx webpack && npx webpack --config ./webpack.unminified.config.js",
     "build": "shx rm -rf package/ && shx mkdir -p package/ && shx cp -r src/ package/src/ && tsc -p tsconfig.cjs.json && tsc -p tsconfig.es2015.json && tsc -p tsconfig.es5.json && tsc -p tsconfig.types.json && shx cp package.json package/package.json && shx cp LICENSE.txt package/LICENSE.txt && npm run build:umd"
   },
   "repository": {
@@ -73,9 +73,13 @@
     "mocha": "^5.0.5",
     "shx": "^0.3.2",
     "sinon": "^6.3.5",
+    "ts-loader": "^5.3.0",
     "tsconfig-paths": "^3.3.2",
     "tslint": "^5.9.1",
     "typescript": "^3.1.4",
-    "watch": "^1.0.2"
+    "uglifyjs-webpack-plugin": "^2.0.1",
+    "watch": "^1.0.2",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2"
   }
 }

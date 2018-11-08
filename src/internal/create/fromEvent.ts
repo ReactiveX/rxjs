@@ -1,7 +1,7 @@
-import { Observable } from "../Observable";
-import { sourceAsObservable } from "../util/sourceAsObservable";
-import { Subscription } from "../Subscription";
-import { FOType, Sink } from "../types";
+import { Observable } from "rxjs/internal/Observable";
+import { sourceAsObservable } from "rxjs/internal/util/sourceAsObservable";
+import { Subscription } from "rxjs/internal/Subscription";
+import { FOType, Sink } from "rxjs/internal/types";
 
 export interface NodeStyleEventEmitter {
   addListener: (eventName: string | symbol, handler: NodeEventHandler) => this;
