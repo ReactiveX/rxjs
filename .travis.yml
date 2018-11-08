@@ -54,4 +54,4 @@ script:
 
 after_success:
   - if [ "$FULL_VALIDATE" == "true" ]; then npm run test:cover && npx nyc report --reporter=text-lcov | npx coveralls; fi
-  - if [ "$FULL_VALIDATE" == "true" ] && [ "$BRANCH" == "master" ]; then npm run tests2png && cd docs_app && chmod 755 scripts/deploy-to-firebase.sh && npm run deploy-production; fi
+  - if [ "$FULL_VALIDATE" == "true" ]; then npm run tests2png && cd docs_app && chmod 755 scripts/deploy-to-firebase.sh && npm run deploy-production; fi
