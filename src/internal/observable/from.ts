@@ -86,7 +86,6 @@ export function from<T>(input: ObservableInput<ObservableInput<T>>, scheduler?: 
  *
  * @see {@link fromEvent}
  * @see {@link fromEventPattern}
- * @see {@link fromPromise}
  *
  * @param {ObservableInput<T>} A subscription object, a Promise, an Observable-like,
  * an Array, an iterable, or an array-like object to be converted.

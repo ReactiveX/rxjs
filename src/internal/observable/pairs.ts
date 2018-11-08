@@ -36,9 +36,9 @@ import { Subscription } from '../Subscription';
  * );
  *
  * // Logs:
- * // ["foo": 42],
- * // ["bar": 56],
- * // ["baz": 78],
+ * // ["foo", 42],
+ * // ["bar", 56],
+ * // ["baz", 78],
  * // "the end!"
  * ```
  *

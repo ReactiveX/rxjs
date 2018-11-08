@@ -42,7 +42,7 @@ export function reduce<T, R>(accumulator: (acc: R, value: T, index: number) => R
  * );
  * const ones = clicksInFiveSeconds.pipe(mapTo(1));
  * const seed = 0;
- * const count = ones.reduce((acc, one) => acc + one, seed);
+ * const count = ones.pipe(reduce((acc, one) => acc + one, seed));
  * count.subscribe(x => console.log(x));
  * ```
  *
@@ -71,8 +71,9 @@ export function reduce<T, R>(accumulator: (acc: R, value: T, index?: number) => 
     };
   }
   return function reduceOperatorFunction(source: Observable<T>): Observable<R> {
-    return pipe(scan<T, T | R>((acc, value, index) => {
-      return accumulator(<R>acc, value, index + 1);
-    }), takeLast(1))(source) as Observable<R>;
+    return pipe(
+      scan((acc: R, value: T, index: number): R => accumulator(acc, value, index + 1)),
+      takeLast(1),
+    )(source);
   };
 }

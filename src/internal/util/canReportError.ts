@@ -1,4 +1,4 @@
-import { isTrustedSubscriber, Subscriber } from '../Subscriber';
+import { Subscriber } from '../Subscriber';
 import { Subject } from '../Subject';
 
 /**
@@ -12,7 +12,7 @@ export function canReportError(observer: Subscriber<any> | Subject<any>): boolea
     const { closed, destination, isStopped } = observer as any;
     if (closed || isStopped) {
       return false;
-    } else if (destination && isTrustedSubscriber(destination)) {
+    } else if (destination && destination instanceof Subscriber) {
       observer = destination;
     } else {
       observer = null;

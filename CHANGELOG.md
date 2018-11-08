@@ -1,3 +1,18 @@
+<a name="6.3.3"></a>
+## [6.3.3](https://github.com/reactivex/rxjs/compare/6.3.2...6.3.3) (2018-09-25)
+
+
+### Bug Fixes
+
+* **pipe:** align static pipe to Observable pipe rest parameters overl… ([#4112](https://github.com/reactivex/rxjs/issues/4112)) ([8c607e9](https://github.com/reactivex/rxjs/commit/8c607e9)), closes [#4109](https://github.com/reactivex/rxjs/issues/4109) [#4109](https://github.com/reactivex/rxjs/issues/4109)
+* **RxJS:** each instance of RxJS now has a unique Subscriber symbol ([0972c56](https://github.com/reactivex/rxjs/commit/0972c56))
+* **subscribe:** report errors that occur in subscribe after the initial error ([#4089](https://github.com/reactivex/rxjs/issues/4089)) ([9b4b2bc](https://github.com/reactivex/rxjs/commit/9b4b2bc)), closes [#3803](https://github.com/reactivex/rxjs/issues/3803)
+* **Subscriber:** Can no longer subscribe to itself in a circular manner ([#4106](https://github.com/reactivex/rxjs/issues/4106)) ([e623ec6](https://github.com/reactivex/rxjs/commit/e623ec6)), closes [#4095](https://github.com/reactivex/rxjs/issues/4095)
+* **Subscriber:** use only local Subscriber instances ([50ee0a7](https://github.com/reactivex/rxjs/commit/50ee0a7))
+* **TypeScript:** ensure RxJS builds with TS@next as well ([f03e790](https://github.com/reactivex/rxjs/commit/f03e790))
+
+
+
 <a name="6.3.2"></a>
 ## [6.3.2](https://github.com/reactivex/rxjs/compare/6.3.1...6.3.2) (2018-09-04)
 
