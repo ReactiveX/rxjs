@@ -80,6 +80,7 @@ export { skipWhile } from '../internal/operators/skipWhile';
 export { startWith } from '../internal/operators/startWith';
 export { subscribeOn } from '../internal/operators/subscribeOn';
 export { switchAll } from '../internal/operators/switchAll';
+export { switchScan } from '../internal/operators/switchScan';
 export { switchMap } from '../internal/operators/switchMap';
 export { switchMapTo } from '../internal/operators/switchMapTo';
 export { take } from '../internal/operators/take';
