@@ -2,7 +2,7 @@ import { of, asyncScheduler } from 'rxjs';
 import { expand } from 'rxjs/operators';
 
 it('should infer correctly', () => {
-  const o = of(1, 2, 3).pipe(expand((value, index) => of(value))); // $ExpectType Observable<number>
+  const o = of(1, 2, 3).pipe(expand(value => of(value))); // $ExpectType Observable<number>
   const p = of(1, 2, 3).pipe(expand(value => [value])); // $ExpectType Observable<number>
   const q = of(1, 2, 3).pipe(expand(value => Promise.resolve(value))); // $ExpectType Observable<number>
 });
