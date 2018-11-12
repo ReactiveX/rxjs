@@ -31,6 +31,9 @@ module.exports = function rollupBundle(options) {
     return bundle.generate({
       format: 'umd',
       name: 'rxjs',
+      amd: {
+        id: 'rxjs'
+      },
       sourcemap: true,
     });
   }).then(function (result) {
