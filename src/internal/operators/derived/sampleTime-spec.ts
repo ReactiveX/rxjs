@@ -127,14 +127,14 @@ describe('sampleTime operator', () => {
   });
 
   // TODO: this is not testable; the TestScheduler will effect an out-of-memory error
-  // it('should not completes if source does not complete', () => {
-  //   testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-  //     const e1 =  cold('-');
-  //     const e1subs =   '^';
-  //     const expected = '-';
+  it.skip('should not completes if source does not complete', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
+      const e1 =  cold('-');
+      const e1subs =   '^';
+      const expected = '-';
 
-  //     expectObservable(e1.pipe(sampleTime(6, testScheduler))).toBe(expected);
-  //     expectSubscriptionsTo(e1).toBe(e1subs);
-  //   });
-  // });
+      expectObservable(e1.pipe(sampleTime(6, testScheduler))).toBe(expected);
+      expectSubscriptionsTo(e1).toBe(e1subs);
+    });
+  });
 });
