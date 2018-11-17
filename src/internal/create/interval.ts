@@ -13,7 +13,7 @@ export function interval(interval: number, scheduler: SchedulerLike = asyncSched
   });
 }
 
-export function intervalWork(state: { i: number, subs: Subscription, interval: number, dest: Sink<number>, scheduler: SchedulerLike }) {
+function intervalWork(state: { i: number, subs: Subscription, interval: number, dest: Sink<number>, scheduler: SchedulerLike }) {
   const { subs, dest, interval, scheduler } = state;
   if (!subs.closed) {
     dest(FOType.NEXT, state.i++, subs);
