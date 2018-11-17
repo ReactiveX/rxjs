@@ -11,6 +11,7 @@ export { ReplaySubject } from 'rxjs/internal/ReplaySubject';
 export { EMPTY } from 'rxjs/internal/EMPTY';
 export { NEVER } from 'rxjs/internal/NEVER';
 
+export { bindCallback } from 'rxjs/internal/create/bindCallback';
 export { combineLatest } from 'rxjs/internal/create/combineLatest';
 export { concat } from 'rxjs/internal/create/concat';
 export { defer } from 'rxjs/internal/create/defer';
