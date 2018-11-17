@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { exhaust, mergeMap } from 'rxjs/operators';
-import { of, Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
 
