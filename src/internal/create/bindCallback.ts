@@ -173,18 +173,20 @@ export function bindCallback<T>(
     const context = this;
     let subject: AsyncSubject<T>;
     const params = {
-      context,
-      subject,
+      args,
       callbackFunc,
       scheduler,
+      context,
+      subject,
     };
     return sourceAsObservable((type: FOType.SUBSCRIBE, sink: Sink<T>, subs: Subscription) => {
       if (type === FOType.SUBSCRIBE) {
         if (!scheduler) {
           if (!subject) {
             subject = new AsyncSubject<T>();
-            const handler = (...innerArgs: any[]) => {
-              subject.next(innerArgs.length <= 1 ? innerArgs[0] : innerArgs);
+
+            const handler = (...handlerArgs: any[]) => {
+              subject.next(handlerArgs.length <= 1 ? handlerArgs[0] : handlerArgs);
               subject.complete();
             };
 
@@ -202,9 +204,9 @@ export function bindCallback<T>(
           subject(FOType.SUBSCRIBE, sink, subs);
         } else {
           const state: WorkState<T> = {
-            args, subs, sink, params,
+            subs, sink, params,
           };
-          scheduler.schedule<WorkState<T>>(bindCallbackWork, 0, state, subs);
+          scheduler.schedule<WorkState<T>>(callbackWork, 0, state, subs);
         }
       }
     });
@@ -212,32 +214,34 @@ export function bindCallback<T>(
 }
 
 interface WorkState<T> {
-  args: any[];
   subs: Subscription;
   sink: Sink<T>;
-  params: ParamsContext<T>;
+  params: ParamsState<T>;
 }
 
-interface ParamsContext<T> {
+interface ParamsState<T> {
+  args: any[];
   callbackFunc: Function;
   scheduler: SchedulerLike;
   context: any;
   subject: AsyncSubject<T>;
 }
 
-function bindCallbackWork<T>(state: WorkState<T>) {
-  const { args, subs, sink, params } = state;
+function callbackWork<T>(state: WorkState<T>) {
+  const { subs, sink, params } = state;
   if (subs.closed) {
     return;
   }
   let { subject } = params;
   if (!subject) {
-    const { callbackFunc, scheduler, context } = params;
+    const { args, callbackFunc, scheduler, context } = params;
     subject = params.subject = new AsyncSubject<T>();
+
     const handler = (...handlerArgs: any[]) => {
       const value = handlerArgs.length <= 1 ? handlerArgs[0] : handlerArgs;
       scheduler.schedule<NextState<T>>(nextWork, 0, { value, subject }, subs);
     };
+
     try {
       callbackFunc.apply(context, [...args, handler]);
     } catch (err) {
