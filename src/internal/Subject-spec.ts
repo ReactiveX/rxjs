@@ -426,14 +426,57 @@ describe('Subject', () => {
     expect(results).to.deep.equal(['a', 'C']);
   });
 
+  it('should not error after completed', () => {
+    const error = new Error('wut?');
+    const subject = new Subject<string>();
+    const results: (string|Error)[] = [];
+    subject.subscribe(x => results.push(x), (err) => results.push(err), () => results.push('C'));
+    subject.next('a');
+    subject.complete();
+    subject.error(error);
+    expect(results).to.deep.equal(['a', 'C']);
+  });
+
+  it('should not complete after completed', () => {
+    const subject = new Subject<string>();
+    const results: string[] = [];
+    subject.subscribe(x => results.push(x), null, () => results.push('C'));
+    subject.next('a');
+    subject.complete();
+    subject.complete();
+    expect(results).to.deep.equal(['a', 'C']);
+  });
+
   it('should not next after error', () => {
     const error = new Error('wut?');
     const subject = new Subject<string>();
-    const results: string[] = [];
+    const results: (string|Error)[] = [];
     subject.subscribe(x => results.push(x), (err) => results.push(err));
     subject.next('a');
     subject.error(error);
     subject.next('b');
+    expect(results).to.deep.equal(['a', error]);
+  });
+
+  it('should not error after error', () => {
+    const error = new Error('wut?');
+    const subject = new Subject<string>();
+    const results: (string|Error)[] = [];
+    subject.subscribe(x => results.push(x), (err) => results.push(err));
+    subject.next('a');
+    subject.error(error);
+    subject.error(error);
+    expect(results).to.deep.equal(['a', error]);
+  });
+
+  it('should not complete after error', () => {
+    const error = new Error('wut?');
+    const subject = new Subject<string>();
+    const results: (string|Error)[] = [];
+    subject.subscribe(x => results.push(x), (err) => results.push(err), () => results.push('C'));
+    subject.next('a');
+    subject.error(error);
+    subject.complete();
     expect(results).to.deep.equal(['a', error]);
   });
 
