@@ -5,15 +5,15 @@ it('should infer correctly', () => {
   const o = of(1, 2, 3).pipe(groupBy(value => value.toString())); // $ExpectType Observable<GroupedObservable<string, number>>
 });
 
-it('should support an duration selector', () => {
+it('should support an element selector', () => {
   const o = of(1, 2, 3).pipe(groupBy(value => value.toString(), value => Boolean(value))); // $ExpectType Observable<GroupedObservable<string, boolean>>
 });
 
-it('should support a element selector', () => {
+it('should support a duration selector', () => {
   const o = of(1, 2, 3).pipe(groupBy(value => value.toString(), undefined, (value: GroupedObservable<string, number>) => of(true, false))); // $ExpectType Observable<GroupedObservable<string, number>>
 });
 
-it('should support infer type of element selector based on duration selector', () => {
+it('should infer type of duration selector based on element selector', () => {
   /* tslint:disable-next-line:max-line-length */
   const o = of(1, 2, 3).pipe(groupBy(value => value.toString(), value => Boolean(value), (value: GroupedObservable<string, boolean>) => value)); // $ExpectType Observable<GroupedObservable<string, boolean>>
 });
