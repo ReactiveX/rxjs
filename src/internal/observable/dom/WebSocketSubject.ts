@@ -23,8 +23,9 @@ import { errorObject } from '../../util/errorObject';
  * from the Server.
  *
  * ## Example
- * We can also let messages pass through as they were sent by the server (skipping `JSON.parse`).
- * This is pretty useful if the messages are coming in JSON format.
+ * **deserializer**, the default for this property is `JSON.parse` but since there are just two options
+ * for incomming data, either be text or binarydata. We can apply a custom deserialization strategy
+ * or just simply skip the default behaviour.
  * ```ts
  * import { webSocket } from 'rxjs/webSocket';
  *
@@ -36,28 +37,65 @@ import { errorObject } from '../../util/errorObject';
  *
  * wsSubject.subscribe(console.log);
  *
- * // Let's suppose we have this on the Server: ws.send({ title: "bbc news" })
+ * // Let's suppose we have this on the Server: ws.send("This is a msg from the server")
  * //output
  * //
- * // { title: "bbc news" }
- * // { title: "bbc news" }
- * // { title: "bbc news" }
+ * // This is a msg from the server
  * ```
  *
- * Set code and reason while closing the connection
+ * **serializer** allows us tom apply custom serialization strategy but for the outgoing messages
  * ```ts
+ * import { webSocket } from 'rxjs/webSocket';
+ *
+ * const wsSubject = webSocket({
+ *     url: 'ws://localhost:8081',
+ * //Apply any transformation of your choice.
+ *     serializer: msg => JSON.stringify({channel: "webDevelopment", msg: msg})
+ * });
+ *
+ * wsSubject.subscribe(() => subject.next("msg to the server"));
+ *
+ * // Let's suppose we have this on the Server: ws.send("This is a msg from the server")
+ * //output
+ * //
+ * // {"channel":"webDevelopment","msg":"msg to the server"}
+ * ```
+ *
+ * **closeObserver** allows us to set a custom error when an error raise up.
+ * ```ts
+ * import { webSocket } from 'rxjs/webSocket';
+ *
  * const wsSubject = webSocket({
  *     url: 'ws://localhost:8081',
  *     closeObserver: {
         next(closeEvent) {
-            const customError = { code: 6666, reason: "Custom reason message" }
+            const customError = { code: 6666, reason: "Custom evil reason" }
             console.log(`code: ${customError.code}, reason: ${customError.reason}`);
         }
     }
  * });
  *
  * //output
- * // code: 6666, reason: Custom reason message
+ * // code: 6666, reason: Custom evil reason
+ * ```
+ *
+ * **openObserver**, Let's say we need to make some kind of init task before sending/receiving msgs to the
+ * webSocket or sending notification that the connection was successful, this is when
+ * openObserver is usefull for.
+ * ```ts
+ * import { webSocket } from 'rxjs/webSocket';
+ *
+ * const wsSubject = webSocket({
+ *     url: 'ws://localhost:8081',
+ *     openObserver: {
+ *         next: () => {
+ *             console.log('connetion ok');
+ *         }
+ *     },
+ * });
+ *
+ * //output
+ * // connetion ok`
  * ```
  * */
 
