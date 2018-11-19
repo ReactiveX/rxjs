@@ -73,6 +73,21 @@ describe('range', () => {
     });
 
   });
+
+  it('should accept only one argument where count is argument and start is zero', () => {
+    const e1 = range(5)
+      .pipe(concatMap((x, i) => of(x).pipe(delay(i === 0 ? 0 : 20, rxTestScheduler))));
+    const expected = 'a-b-c-d-(e|)';
+    const values = {
+      a: 0,
+      b: 1,
+      c: 2,
+      d: 3,
+      e: 4
+    };
+    expectObservable(e1).toBe(expected, values);
+    expectObservable(e1).toBe(expected, values);
+  });
 });
 
 describe('RangeObservable', () => {
