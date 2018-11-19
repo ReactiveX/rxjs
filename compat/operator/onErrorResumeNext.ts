@@ -76,5 +76,5 @@ export function onErrorResumeNext<T, R>(this: Observable<T>, array: ObservableIn
 export function onErrorResumeNext<T, R>(this: Observable<T>, ...nextSources: Array<ObservableInput<any> |
                                                        Array<ObservableInput<any>> |
                                                        ((...values: Array<any>) => R)>): Observable<R> {
-  return higherOrder(...nextSources)(this);
+  return higherOrder(...nextSources)(this) as Observable<R>;
 }
