@@ -134,7 +134,7 @@ export interface WebSocketSubjectConfig<T> {
    * WebSocket impl in Node (WebSocket is a DOM API), or for mocking a WebSocket
    * for testing purposes
    */
-  WebSocketCtor?: { new (url: string, protocols?: string|string[]): WebSocket };
+  WebSocketCtor?: { new(url: string, protocols?: string|string[]): WebSocket };
   /** Sets the `binaryType` property of the underlying WebSocket. */
   binaryType?: 'blob' | 'arraybuffer';
 }
