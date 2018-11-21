@@ -3,6 +3,7 @@ import { windowCount } from 'rxjs/operators';
 
 it('should infer correctly', () => {
   of('test').pipe(windowCount(1)); // $ExpectType Observable<Observable<string>>
+  of('test').pipe(windowCount(1, 2)); // $ExpectType Observable<Observable<string>>
 });
 
 it('should enforce windowSize type', () => {
