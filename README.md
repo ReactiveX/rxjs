@@ -46,18 +46,19 @@ By contributing or commenting on issues in this repository, whether you've read 
 npm install rxjs
 ```
 
-To import only what you need by patching (this is useful for size-sensitive bundling):
+It's recommended to pull in the Observable creation methods you need directly from `'rxjs'` as shown below with `range`. And you can pull in any operator you need from one spot, under `'rxjs/operators'`.
 
 ```js
-import { Observable, Subject, ReplaySubject, from, of, range } from 'rxjs';
-import { map, filter, switchMap } from 'rxjs/operators';
+import { range } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
 
-range(1, 200)
-  .pipe(filter(x => x % 2 === 1), map(x => x + x))
-  .subscribe(x => console.log(x));
+range(1, 200).pipe(
+  filter(x => x % 2 === 1),
+  map(x => x + x)
+).subscribe(x => console.log(x));
 ```
 
-Alternatively, you can use the built-in `pipe` method on Observables. See [pipeable operators](https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md) for more information.
+Here, we're using the built-in `pipe` method on Observables to combine operators. See [pipeable operators](https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md) for more information.
 
 ### CommonJS via npm
 
@@ -70,12 +71,13 @@ npm install rxjs
 (Note: destructuring available in Node 8+)
 
 ```js
-const { Observable, Subject, ReplaySubject, from, of, range } = require('rxjs');
-const { map, filter, switchMap } = require('rxjs/operators');
+const { range } = require('rxjs');
+const { map, filter } = require('rxjs/operators');
 
-range(1, 200)
-  .pipe(filter(x => x % 2 === 1), map(x => x + x))
-  .subscribe(x => console.log(x));
+range(1, 200).pipe(
+  filter(x => x % 2 === 1),
+  map(x => x + x)
+).subscribe(x => console.log(x));
 ```
 
 ### CDN
@@ -87,19 +89,20 @@ https://unpkg.com/rxjs/bundles/rxjs.umd.min.js
 The global namespace for rxjs is `rxjs`:
 
 ```js
-const { Observable, Subject, ReplaySubject, from, of, range } = rxjs;
-const { map, filter, switchMap } = rxjs.operators;
+const { range } = rxjs;
+const { map, filter } = rxjs.operators;
 
-range(1, 200)
-  .pipe(filter(x => x % 2 === 1), map(x => x + x))
-  .subscribe(x => console.log(x));
+range(1, 200).pipe(
+  filter(x => x % 2 === 1),
+  map(x => x + x)
+).subscribe(x => console.log(x));
 ```
 
 ## Goals
 
 - Smaller overall bundles sizes
 - Provide better performance than preceding versions of RxJS
-- To model/follow the [Observable Spec Proposal](https://github.com/zenparsing/es-observable) to the observable.
+- To model/follow the [Observable Spec Proposal](https://github.com/zenparsing/es-observable) to the observable
 - Provide more modular file structure in a variety of formats
 - Provide more debuggable call stacks than preceding versions of RxJS
 
