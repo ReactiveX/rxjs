@@ -26,7 +26,8 @@ of(1,2,3).pipe(map(x => x + '!!!')); // etc
 ```
 * See [Pipeable Operator Documentation](https://github.com/ReactiveX/rxjs/blob/91088dae1df097be2370c73300ffa11b27fd0100/doc/pipeable-operators.md) for more information about pipeable operator.
 
-To use with globally imported bundle
+To use with globally imported bundle:
+
 ```js
 const { of } = rxjs;
 const { map } = rxjs.operators;
@@ -64,7 +65,7 @@ npm install @reactivex/rxjs@5.0.0-beta.1
 
 ## CDN
 
-For CDN, you can use. [unpkg](https://unpkg.com/). Just replace version with the current version on the link below:
+For CDN, you can use [unpkg](https://unpkg.com/). Just replace version with the current version on the link below:
 
 For RxJS 5.0.0-beta.1 through beta.11: [https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.umd.js](https://unpkg.com/@reactivex/rxjs@version/dist/global/Rx.umd.js)
 
