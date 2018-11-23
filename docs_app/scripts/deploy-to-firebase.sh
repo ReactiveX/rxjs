@@ -4,10 +4,11 @@
 set +x -eu -o pipefail
 
 ## Only deploy if this not a PR. PRs are deployed early in `build.sh`.
-if [[ $TRAVIS_PULL_REQUEST != "false" ]]; then
-  echo "Skipping deploy because this is a PR build."
-  exit 0
-fi
+# TODO: UDNO ME LATER!
+# if [[ $TRAVIS_PULL_REQUEST != "false" ]]; then
+#   echo "Skipping deploy because this is a PR build."
+#   exit 0
+# fi
 
 # Do not deploy if the current commit is not the latest on its branch.
 readonly LATEST_COMMIT=$(git ls-remote origin $TRAVIS_BRANCH | cut -c1-40)
