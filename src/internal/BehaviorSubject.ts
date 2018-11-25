@@ -1,63 +1,34 @@
-import { Subject, subjectSource } from 'rxjs/internal/Subject';
-import { FOType, FObsArg } from 'rxjs/internal/types';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { sourceAsSubject } from 'rxjs/internal/util/sourceAsSubject';
-import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
+import { Subject } from "./Subject";
+import { Subscriber } from "./Subscriber";
 
-export interface BehaviorSubjectConstructor {
-  new <T>(initialValue: T): BehaviorSubject<T>;
+
+export class BehaviorSubject<T> extends Subject<T> {
+  private _lastValue: T;
+
+  get value() {
+    return this._lastValue;
+  }
+
+  getValue() {
+    return this._lastValue;
+  }
+
+  constructor(initialValue: T) {
+    super();
+    this._lastValue = initialValue;
+  }
+
+  protected _init(subscriber: Subscriber<T>) {
+    if (!this._closed) {
+      subscriber.next(this._lastValue);
+    }
+    return super._init(subscriber);
+  }
+
+  next(value: T) {
+    if (!this._closed) {
+      this._lastValue = value;
+      super.next(value);
+    }
+  }
 }
-
-export interface BehaviorSubject<T> extends Subject<T> {
-  getValue(): T;
-}
-
-export const BehaviorSubject: BehaviorSubjectConstructor = (<T>(initialValue: T) => {
-  let completed = false;
-  let value = initialValue;
-  let hasError = false;
-  let disposed = false;
-  let error: any;
-  const subject = subjectSource<T>();
-
-  let result = ((type: FOType, arg: FObsArg<T>, subs: Subscription) => {
-    switch (type) {
-      case FOType.SUBSCRIBE:
-        if (!completed && !hasError) {
-          arg(FOType.NEXT, value, subs);
-        }
-        break;
-      case FOType.NEXT:
-        value = arg;
-        break;
-      case FOType.ERROR:
-        hasError = true;
-        error = arg;
-        break;
-      case FOType.COMPLETE:
-        completed = true;
-        break;
-      case FOType.DISPOSE:
-        disposed = true;
-        break;
-    }
-    subject(type, arg, subs);
-  }) as BehaviorSubject<T>;
-
-  result = sourceAsSubject(result) as BehaviorSubject<T>;
-  result.getValue = () => {
-    if (disposed) {
-      throw new ObjectUnsubscribedError();
-    }
-    if (hasError) {
-      throw error;
-    }
-    return value;
-  };
-  Object.defineProperty(result, 'value', {
-    get() {
-      return value;
-    }
-  });
-  return result;
-}) as any;

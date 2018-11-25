@@ -3,164 +3,117 @@
 **NOTE: THESE DIFFERENCES ARE NOT FINAL** This is just experimental, the goal is to
 try to limit differences to what is necessary to reduce the overall size of the library.
 
-The most painful of these changes, I suspect, will be forgoing the ability to subclass
-`Observable` and `Subject`. With this architecture, there are limited ways around this.
-It's possible that we can introduce some sort of inheritable adapter for backwards compatability,
-but that is still be researched.
-
-- `of` has no scheduler argument
-- `from` has no scheduler argument
-- `Observable` instances are now `typeof` `"function"`.
-- `lift` is no longer on `Observable`
-- No one should inherit from any RxJS classes. Especialy `Observable` and `Subject` derivatives, which are no longer inheritable because of their implementation.
-- `Observable.create` and `Subject.create` are no longer implemented. Use `Observable()` and `Subject()` without `new`.
-- `materialize`: `Notification` is no longer a class. `hasValue` and `hasError` are no longer properties, instead users would check `'error' in notification` if they were worried about falsiness mismatches.
-- All `Scheduler`-related functionality is moved to another package
-- `timestamp` - no longer accepts a `Scheduler`, instead, zones-based testing will be required to test
-timestamp.
-- `forEach`
-  - `nextHandler` is always called on a microtask now.
-  - optional subscription argument to allow users to cancel/abort/unsubscribe a
-    forEach'ed observable. When `unsubscribe` is called, the resulting promise will
-    reject with an `Error` that has the `name` `"AbortError"`, this is to somewhat
-    align it with the behavior of `fetch` and `AbortSignal`.
-- `next` (Name to be bikeshedded)... this is a equivalent to Rx5's `of(...values, asapScheduler)`.
-  given this is one of the primary
-- `concatWith` is basically the old `concat` *operator*, just with a better name.
-- `endWith` has no scheduler argument
-- `startWith` has no scheduler argument
-- `partition` is now a static method
-- `Observable` no longer passes `instanceof` checks
-- `Observable(init)` works just like `new Observable(init)`, replacing `Observable.create`
-- `Subject()` works just like `new Subject()`
-- `Subject` does not pass `instanceof` checks
-- `Subject(observer, observable)` replaces `Subject.create`
-- `map` no longer supports `thisArg`
-- `map` no longer sync throws if passed a non-function
-- `filter` no longer supports `thisArg`.
-- `combineAll` no longer accepts the selector or the scheduler
-- `exhaustMap` now supports concurrency argument
-- `delay` no longer delays the emission of "complete" inconsistently (#4149)
-- `debounce` now passes `index` to `durationSelector`.
-- `throttle` now passes `index` to `durationSelector`.
-- `range` no longer supports scheduling... if you want to schedule that, use `fromScheduled` and a generator. (possibly we'll implement a scheduled range?)
-- `merge` no longer supports scheduling... use `fromScheduled(sources).pipe(mergeAll())`.
-- `throwError` no longer supports scheduling... use `throwError(err).pipe(observeOn(scheduler))`
-- `Subscription` `add` no longer returns a `Subscription` object.
-- `Subscription` `remove` will accepts a rest of `TeardownLogic[]`
-- `Subscription` `add` accepts a rest of `TeardownLogic[]`.
+TBD
 
 ## Fixes that are breaking changes to some
 
-- Resolved the [issue](https://github.com/ReactiveX/rxjs/issues/3990) where `buffer` was omitting the last buffer when the source completed [here](https://github.com/ReactiveX/rxjs/commit/61b1767ec58450325ee16a5d21eadb3789acc069)
-
-
+TBD
 
 ## Operators TODO
-- [x] audit (g3)
-- [x] auditTime (g3)
-- [x] buffer (g3)
-- [x] bufferCount (g3)
-- [x] bufferTime (g3)
-- [x] bufferToggle
+- [ ] audit (g3)
+- [ ] auditTime (g3)
+- [ ] buffer (g3)
+- [ ] bufferCount (g3)
+- [ ] bufferTime (g3)
+- [ ] bufferToggle
 - [ ] bufferWhen (g3)
-- [x] catchError (g3)
-- [x] combineAll
-- [x] combineLatest (g3) (static only)
-- [x] concat (alias: concatWith) (g3)
-- [x] concatAll (g3)
-- [x] concatMap (g3)
-- [x] concatMapTo
-- [x] count (g3)
-- [x] debounce (g3)
-- [x] debounceTime (g3)
-- [x] defaultIfEmpty (g3)
-- [x] delay (g3)
-- [x] delayWhen (g3)
-- [x] dematerialize
-- [x] distinct (g3)
-- [x] distinctUntilChanged (g3)
-- [x] distinctUntilKeyChanged (g3)
-- [x] elementAt (g3)
-- [x] endWith
-- [x] every (g3)
-- [x] exhaust
-- [x] exhaustMap (g3)
-- [x] expand (g3)
-- [x] filter (g3)
-- [x] finalize (g3)
-- [x] find
-- [x] findIndex
-- [x] first (g3)
-- [x] flatMap (g3)
-- [x] groupBy (g3)
-- [x] ignoreElements (g3)
-- [x] isEmpty
-- [x] last (g3)
-- [x] map (g3)
-- [x] mapTo (g3)
-- [x] materialize (g3)
-- [x] max
-- [x] merge (g3) (static only)
-- [x] mergeAll (g3)
-- [x] mergeMap (g3)
-- [x] mergeMapTo (g3)
-- [x] mergeScan
-- [x] min
-- [x] multicast (g3) (multicast and multicastAs)
-- [x] observeOn (g3)
-- [x] onErrorResumeNext (g3) (as onErrorResumeWith)
-- [x] pairwise (g3)
-- [x] partition (g3) (static only)
-- [x] pluck (g3)
-- [x] publish (g3) (publish static and publishAs)
-- [x] publishBehavior (g3) (publishBehavior static and publishBehaviorAs)
-- [x] publishLast (g3) (publishLast static and publishLastAs)
-- [x] publishReplay (g3) (publishReplay static and publishReplayAs)
-- [x] race (static only)
-- [x] reduce (g3)
-- [x] refCount (g3) (only as a method on ConnectableObservable)
-- [x] repeat (g3)
-- [x] repeatWhen (g3)
-- [x] retry (g3)
-- [x] retryWhen (g3)
-- [x] sample (g3)
+- [ ] catchError (g3)
+- [ ] combineAll
+- [ ] combineLatest (g3) (static only)
+- [ ] concat (alias: concatWith) (g3)
+- [ ] concatAll (g3)
+- [ ] concatMap (g3)
+- [ ] concatMapTo
+- [ ] count (g3)
+- [ ] debounce (g3)
+- [ ] debounceTime (g3)
+- [ ] defaultIfEmpty (g3)
+- [ ] delay (g3)
+- [ ] delayWhen (g3)
+- [ ] dematerialize
+- [ ] distinct (g3)
+- [ ] distinctUntilChanged (g3)
+- [ ] distinctUntilKeyChanged (g3)
+- [ ] elementAt (g3)
+- [ ] endWith
+- [ ] every (g3)
+- [ ] exhaust
+- [ ] exhaustMap (g3)
+- [ ] expand (g3)
+- [ ] filter (g3)
+- [ ] finalize (g3)
+- [ ] find
+- [ ] findIndex
+- [ ] first (g3)
+- [ ] flatMap (g3)
+- [ ] groupBy (g3)
+- [ ] ignoreElements (g3)
+- [ ] isEmpty
+- [ ] last (g3)
+- [ ] map (g3)
+- [ ] mapTo (g3)
+- [ ] materialize (g3)
+- [ ] max
+- [ ] merge (g3) (static only)
+- [ ] mergeAll (g3)
+- [ ] mergeMap (g3)
+- [ ] mergeMapTo (g3)
+- [ ] mergeScan
+- [ ] min
+- [ ] multicast (g3) (multicast and multicastAs)
+- [ ] observeOn (g3)
+- [ ] onErrorResumeNext (g3) (as onErrorResumeWith)
+- [ ] pairwise (g3)
+- [ ] partition (g3) (static only)
+- [ ] pluck (g3)
+- [ ] publish (g3) (publish static and publishAs)
+- [ ] publishBehavior (g3) (publishBehavior static and publishBehaviorAs)
+- [ ] publishLast (g3) (publishLast static and publishLastAs)
+- [ ] publishReplay (g3) (publishReplay static and publishReplayAs)
+- [ ] race (static only)
+- [ ] reduce (g3)
+- [ ] refCount (g3) (only as a method on ConnectableObservable)
+- [ ] repeat (g3)
+- [ ] repeatWhen (g3)
+- [ ] retry (g3)
+- [ ] retryWhen (g3)
+- [ ] sample (g3)
 - [ ] sampleTime (g3)
-- [x] scan (g3)
-- [x] sequenceEqual
-- [x] share (g3)
-- [x] shareReplay (g3)
-- [x] single (g3)
-- [x] skip (g3)
-- [x] skipLast
-- [x] skipUntil (g3)
-- [x] skipWhile (g3)
-- [x] startWith (g3)
-- [x] subscribeOn (g3)
-- [x] switchAll (g3)
-- [x] switchMap (g3)
-- [x] switchMapTo (g3)
-- [x] take (g3)
-- [x] takeLast (g3)
-- [x] takeUntil (g3)
-- [x] takeWhile (g3)
-- [x] tap (g3)
-- [x] throttle (g3)
-- [x] throttleTime (g3)
-- [x] throwIfEmpty
-- [x] timeInterval (g3)
-- [x] timeout (g3)
-- [x] timeoutWith (g3)
-- [x] timestamp
-- [x] toArray (g3)
-- [x] window
-- [x] windowCount (g3)
-- [x] windowTime
-- [x] windowToggle
+- [ ] scan (g3)
+- [ ] sequenceEqual
+- [ ] share (g3)
+- [ ] shareReplay (g3)
+- [ ] single (g3)
+- [ ] skip (g3)
+- [ ] skipLast
+- [ ] skipUntil (g3)
+- [ ] skipWhile (g3)
+- [ ] startWith (g3)
+- [ ] subscribeOn (g3)
+- [ ] switchAll (g3)
+- [ ] switchMap (g3)
+- [ ] switchMapTo (g3)
+- [ ] take (g3)
+- [ ] takeLast (g3)
+- [ ] takeUntil (g3)
+- [ ] takeWhile (g3)
+- [ ] tap (g3)
+- [ ] throttle (g3)
+- [ ] throttleTime (g3)
+- [ ] throwIfEmpty
+- [ ] timeInterval (g3)
+- [ ] timeout (g3)
+- [ ] timeoutWith (g3)
+- [ ] timestamp
+- [ ] toArray (g3)
+- [ ] window
+- [ ] windowCount (g3)
+- [ ] windowTime
+- [ ] windowToggle
 - [ ] windowWhen
-- [x] withLatestFrom (g3)
-- [x] zip (g3) (static only)
-- [x] zipAll
+- [ ] withLatestFrom (g3)
+- [ ] zip (g3) (static only)
+- [ ] zipAll
 
 
 ### Creation Methods
@@ -170,56 +123,56 @@ TODO: Still need to research all of these and port tests.
 - [ ] ajax
 - [ ] bindCallback
 - [ ] bindNodeCallback
-- [x] combineLatest
-- [x] concat
-- [x] defer
-- [x] empty (as `EMPTY` and `fromScheduled([], scheduler)`)
-- [x] forkJoin
-- [x] from (via from and fromScheduled)
-- [x] fromEvent
-- [x] fromEventPattern
+- [ ] combineLatest
+- [ ] concat
+- [ ] defer
+- [ ] empty (as `EMPTY` and `fromScheduled([], scheduler)`)
+- [ ] forkJoin
+- [ ] from (via from and fromScheduled)
+- [ ] fromEvent
+- [ ] fromEventPattern
 - [ ] generate
-- [x] iif
-- [x] interval
-- [x] merge
-- [x] never (as `NEVER`)
-- [x] of
-- [x] onErrorResumeNext
-- [x] pairs
-- [x] race
-- [x] range
-- [x] throwError
-- [x] timer
-- [x] using
+- [ ] iif
+- [ ] interval
+- [ ] merge
+- [ ] never (as `NEVER`)
+- [ ] of
+- [ ] onErrorResumeNext
+- [ ] pairs
+- [ ] race
+- [ ] range
+- [ ] throwError
+- [ ] timer
+- [ ] using
 - [ ] webSocket
-- [x] zip
+- [ ] zip
 
 ### Other Things
 
-- [x] AsyncSubject
-- [x] ConnectableObservable
-- [x] Notification
-- [x] Subscriber
-- [x] identity
-- [x] isObservable
-- [x] noop
-- [x] pipe
+- [ ] AsyncSubject
+- [ ] ConnectableObservable
+- [ ] Notification
+- [ ] Subscriber
+- [ ] identity
+- [ ] isObservable
+- [ ] noop
+- [ ] pipe
 - [ ] config
 
 ### Error Types
 
-- [x] ArgumentOutOfRangeError
-- [x] EmptyError
-- [x] ObjectUnsubscribedError
-- [x] UnsubscriptionError
-- [x] TimeoutError
+- [ ] ArgumentOutOfRangeError
+- [ ] EmptyError
+- [ ] ObjectUnsubscribedError
+- [ ] UnsubscriptionError
+- [ ] TimeoutError
 
 ### Schedulers
 
-- [x] animationFrameScheduler
-- [x] asapScheduler
-- [x] asyncScheduler
-- [x] queueScheduler
-- [x] VirtualTimeScheduler
+- [ ] animationFrameScheduler
+- [ ] asapScheduler
+- [ ] asyncScheduler
+- [ ] queueScheduler
+- [ ] VirtualTimeScheduler
 - [ ] Scheduler (skipped)
 - [ ] VirtualAction (skipped)

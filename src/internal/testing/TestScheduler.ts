@@ -6,9 +6,7 @@ import { isObservable } from 'rxjs/internal/util/isObservable';
 import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
 import { asapScheduler } from 'rxjs/internal/scheduler/asapScheduler';
 import { QueueScheduler } from 'rxjs/internal/scheduler/QueueScheduler';
-import { sourceAsSubject } from '../util/sourceAsSubject';
 import { Subject } from '../Subject';
-import { sourceAsObservable } from '../util/sourceAsObservable';
 
 // TODO(benlesh): we need to figure out how to have TestScheduler support testing
 // the animation frame scheduler
@@ -100,9 +98,9 @@ interface FlushableTest {
   expected?: any[];
 }
 
-export interface TestObservable<T> extends Observable<T> {
-  subscriptions: SubscriptionLog[];
-  messages: TestMessage<T>[];
+export abstract class TestObservable<T> extends Observable<T> {
+  subscriptions: SubscriptionLog[] = [];
+  messages: TestMessage<T>[] = [];
 }
 
 export type observableToBeFn = (marbles: string, values?: any, errorValue?: any) => void;

@@ -1,5 +1,6 @@
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Observable } from 'rxjs/internal/Observable';
+import { Subscriber } from 'rxjs/internal/Subscriber';
 
 export const enum FOType {
   SUBSCRIBE = 0,
@@ -116,3 +117,7 @@ declare global  {
 }
 
 export type MonoTypeOperatorFunction<T> = OperatorFunction<T, T>;
+
+export interface Operator<T> {
+  call(subscriber: Subscriber<any>, source: any, subscription: Subscription): TeardownLogic;
+}

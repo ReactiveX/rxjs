@@ -1,22 +1,36 @@
 import { Observable } from 'rxjs/internal/Observable';
-import { OperatorFunction, FOType, Sink, SinkArg, FObs } from 'rxjs/internal/types';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
-import { lift } from 'rxjs/internal/util/lift';
+import { OperatorSubscriber } from 'rxjs/internal/OperatorSubscriber';
+import { Subscriber } from '../Subscriber';
+import { tryUserFunction, resultIsError } from '../util/userFunction';
+import { Subscription } from '../Subscription';
+import { OperatorFunction } from '../types';
+
 
 export function map<T, R>(project: (value: T, index: number) => R): OperatorFunction<T, R> {
-  return lift((source: Observable<T>, dest: Sink<R>, subs: Subscription) => {
-    let i = 0;
-    source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
-      if (t === FOType.NEXT) {
-        v = tryUserFunction(project, v, i++);
-        if (resultIsError(v)) {
-          dest(FOType.ERROR, v.error, subs);
-          subs.unsubscribe();
-          return;
-        }
-      }
-      dest(t, v, subs);
-    }, subs);
-  });
+  return (source: Observable<T>) => source.lift(mapOperator(project));
+}
+
+function mapOperator<T, R>(project: (value: T, index: number) => R) {
+  return function mapLift(this: Subscriber<R>, source: Observable<T>, subscription: Subscription) {
+    return source.subscribe(new MapSubscriber(subscription, this, project))
+  }
+}
+
+class MapSubscriber<T, R> extends OperatorSubscriber<T> {
+  private _index = 0;
+
+  constructor(subscription: Subscription, destination: Subscriber<R>, private _project: (value: T, index: number) => R) {
+    super(subscription, destination);
+  }
+
+  next(value: T) {
+    const index = this._index++;
+    const { _destination } = this;
+    const result = tryUserFunction(this._project, value, index);
+    if (resultIsError(result)) {
+      _destination.error(result.error);
+    } else {
+      _destination.next(result);
+    }
+  }
 }

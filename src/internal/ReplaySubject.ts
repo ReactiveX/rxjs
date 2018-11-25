@@ -1,75 +1,56 @@
 import { Subject } from 'rxjs/internal/Subject';
-import { FOType, FObsArg, SinkArg } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { sourceAsSubject } from 'rxjs/internal/util/sourceAsSubject';
-import { subjectBaseSource } from 'rxjs/internal/sources/subjectBaseSource';
+import { Subscriber } from 'rxjs/internal/Subscriber';
+import { SchedulerLike } from 'rxjs/internal/types';
 
-export interface ReplaySubjectConstructor {
-  new <T>(bufferSize?: number, windowTime?: number): Subject<T>;
+interface ReplayEvent<T> {
+  value: T;
+  timestamp: number;
 }
 
-interface ReplayValue<T> {
-  arg: SinkArg<T>;
-  timeout: number;
+export class ReplaySubject<T> extends Subject<T> {
+  private _buffer: ReplayEvent<T>[] = [];
+
+  constructor(
+    private _bufferSize: number = Number.POSITIVE_INFINITY,
+    private _windowTime: number = Number.POSITIVE_INFINITY,
+    private _scheduler?: SchedulerLike
+  ) {
+    super();
+  }
+  
+  protected _init(subscriber: Subscriber<T>) {
+    this._cleanBuffer();
+    for (let { value } of this._buffer) {
+      subscriber.next(value);
+    }
+    return super._init(subscriber);
+  }
+
+  next(value: T) {
+    const { _buffer, _scheduler, _bufferSize, _windowTime } = this;
+    const timestamp = _scheduler.now();
+    _buffer.push({ value, timestamp });
+    this._cleanBuffer();
+    super.next(value);
+  }
+
+  private _cleanBuffer() {
+    const { _buffer, _scheduler, _bufferSize, _windowTime } = this;
+    const now = _scheduler.now();
+
+    if (_bufferSize < Number.POSITIVE_INFINITY) {
+      _buffer.splice(0, _buffer.length - _bufferSize);
+    }
+
+    if (_windowTime < Number.POSITIVE_INFINITY) {
+      const cutoff = now - _windowTime;
+      let i = 0;
+      while (i < _buffer.length && _buffer[i].timestamp < cutoff) {
+        i++;
+      }
+      _buffer.splice(0, i);
+    }
+  }
 }
 
-export const ReplaySubject: ReplaySubjectConstructor =
-  (<T>(
-    bufferSize = Number.POSITIVE_INFINITY,
-    windowTime = Number.POSITIVE_INFINITY,
-  ) => {
-
-  return sourceAsSubject(replaySubjectSource(bufferSize, windowTime));
-}) as any;
-
-export function replaySubjectSource<T>(
-  bufferSize = Number.POSITIVE_INFINITY,
-  windowTime = Number.POSITIVE_INFINITY,
-) {
-  const _base = subjectBaseSource<T>();
-  const _buffer: ReplayValue<T>[] = [];
-  let _endType: FOType;
-  let _endArg: any;
-
-  return ((type: FOType, arg: FObsArg<T>, subs: Subscription) => {
-    _base(type, arg, subs);
-    const now = Date.now();
-
-    for (let i = 0; i < _buffer.length; i++) {
-      const { arg: a, timeout } = _buffer[i];
-      if (timeout < now) {
-        _buffer.splice(i);
-        break;
-      }
-      if (type === FOType.SUBSCRIBE) {
-        arg(FOType.NEXT, a, subs);
-      }
-    }
-
-    if (_endType) {
-      if (type === FOType.SUBSCRIBE) {
-        arg(_endType, _endArg, subs);
-        subs.unsubscribe();
-      }
-      return;
-    }
-
-    switch (type) {
-      case FOType.NEXT:
-        _buffer.push({ arg, timeout: now + windowTime });
-        if (_buffer.length > bufferSize) {
-          _buffer.splice(0, _buffer.length - bufferSize);
-        }
-        break;
-      case FOType.ERROR:
-        _endType = FOType.ERROR;
-        _endArg = arg;
-        break;
-      case FOType.COMPLETE:
-        _endType = FOType.COMPLETE;
-        break;
-      default:
-        break;
-    }
-  });
-}

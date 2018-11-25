@@ -1,74 +1,80 @@
-import { Observer, FOType, FObsArg, FObs, Sink, Source } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
+import { Observer, TeardownLogic } from 'rxjs/internal/types';
+import { Subscriber } from 'rxjs/internal/Subscriber';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { sourceAsSubject } from 'rxjs/internal/util/sourceAsSubject';
-import { subjectBaseSource } from 'rxjs/internal/sources/subjectBaseSource';
-import { sinkFromObserver } from 'rxjs/internal/util/sinkFromObserver';
-import { isPartialObserver } from './util/isPartialObserver';
+import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 
-export interface Subject<O, I= O> extends Observer<I>, Observable<O> {
-  unsubscribe(): void;
-  asObservable(): Observable<O>;
-}
+export class Subject<T> extends Observable<T> implements Observer<T> {
+  private _subscribers: Subscriber<T>[] = [];
+  protected _closed = false;
+  protected _hasError = false;
+  private _error: any;
+  protected _disposed = false;
 
-export interface SubjectConstructor {
-  <T>(): Subject<T>;
-  <O, I>(observer: Observer<I>, observable: Observable<O>): Subject<O, I>;
-  new<T>(): Subject<T>;
-}
-
-export const Subject: SubjectConstructor =  (function Subject<T>(observer?: Observer<T>, observable?: Observable<T>) {
-  return sourceAsSubject(
-    arguments.length > 0
-    ? frankenSubjectSource(
-      sinkFromObserver(observer),
-      observable,
-    )
-    : subjectSource<T>()
-  );
-}) as any;
-
-export function frankenSubjectSource<O, I>(
-  sink: Sink<I>,
-  source: Source<O>
-) {
-  return (type: FOType, arg: FObsArg<O|I>, subs: Subscription) => {
-    if (type === FOType.SUBSCRIBE) {
-      source(type, arg, subs);
-    } else {
-      sink(type, arg, subs);
-    }
-  };
-}
-
-export function subjectSource<T>(): FObs<T> {
-  const base = subjectBaseSource<T>();
-  let _completed = false;
-  let _hasError = false;
-  let _error: any;
-  let _disposed = false;
-
-  return (type: FOType, arg: FObsArg<T>, subs: Subscription) => {
-    if (type === FOType.DISPOSE) {
-      _disposed = true;
+  protected _init(subscriber: Subscriber<T>): TeardownLogic {
+    this._throwIfDisposed();
+    if (this._hasError) {
+      subscriber.error(this._error);
+      return;
     }
 
-    if (type === FOType.SUBSCRIBE) {
-      if (_completed) {
-        arg(FOType.COMPLETE, undefined, subs);
-      } else if (_hasError) {
-        arg(FOType.ERROR, _error, subs);
+    if (this._closed) {
+      return;
+    }
+
+    const { _subscribers } = this;
+    _subscribers.push(subscriber);
+    return () => {
+      const i = _subscribers.indexOf(subscriber);
+      if (i >= 0) {
+        _subscribers.splice(i, 1);
+      }
+    };
+  }
+
+  next(value: T) {
+    this._throwIfDisposed();
+    if (!this._closed) {
+      const { _subscribers } = this;
+      for (const subscriber of _subscribers) {
+        subscriber.next(value);
       }
     }
+  }
 
-    if (_disposed || (!_completed && !_hasError)) {
-      if (type === FOType.COMPLETE) {
-        _completed = true;
-      } else if (type === FOType.ERROR) {
-        _hasError = true;
-        _error = arg;
+  error(err: any) {
+    this._throwIfDisposed();
+    if (!this._closed) {
+      this._closed = true;
+      this._hasError = true;
+      this._error = err;
+      const { _subscribers } = this;
+      for (const subscriber of _subscribers) {
+        subscriber.error(err);
       }
-      base(type, arg, subs);
+      _subscribers.length = 0;
     }
-  };
+  }
+
+  complete() {
+    this._throwIfDisposed();
+    if (!this._closed) {
+      this._closed = true;
+      const { _subscribers } = this;
+      for (const subscriber of _subscribers) {
+        subscriber.complete();
+      }
+      _subscribers.length = 0;
+    }
+  }
+
+  unsubscribe() {
+    this._disposed = true;
+  }
+
+  private _throwIfDisposed() {
+    if (this._disposed) { 
+      throw new ObjectUnsubscribedError();
+    }
+  }
 }

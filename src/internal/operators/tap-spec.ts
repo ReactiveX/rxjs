@@ -5,7 +5,7 @@ import { TestScheduler } from 'rxjs/testing';
 import { assertDeepEquals } from '../test_helpers/assertDeepEquals';
 
 /** @test {tap} */
-describe('tap operator', () => {
+describe.only('tap operator', () => {
   let testScheduler: TestScheduler;
 
   beforeEach(() => {

@@ -5,7 +5,6 @@ import { TestScheduler } from 'rxjs/testing';
 import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
 import * as sinon from 'sinon';
 import { Subject } from './Subject';
-import { resultIsError } from './util/userFunction';
 
 function expectFullObserver(val: any) {
   expect(val).to.be.a('function');

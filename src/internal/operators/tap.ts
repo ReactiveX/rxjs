@@ -1,11 +1,12 @@
 import { Observable } from 'rxjs/internal/Observable';
-import { OperatorFunction, FOType, Sink, SinkArg, PartialObserver } from 'rxjs/internal/types';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { lift } from 'rxjs/internal/util/lift';
-import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
-import { sinkFromObserver } from 'rxjs/internal/util/sinkFromObserver';
-import { sinkFromHandlers } from 'rxjs/internal/util/sinkFromHandlers';
+import { Operator, OperatorFunction, FOType, Sink, SinkArg, PartialObserver } from 'rxjs/internal/types';
+import { Subscriber } from '../Subscriber';
+import { Subscription } from '../Subscription';
+import { OperatorSubscriber } from '../OperatorSubscriber';
 import { isPartialObserver } from '../util/isPartialObserver';
+import { noop } from '../util/noop';
+import { tryUserFunction, resultIsError } from '../util/userFunction';
+
 
 export function tap<T>(
   observer: PartialObserver<T>
@@ -28,20 +29,67 @@ export function tap<T>(
   errorHandler?: (err: any) => void,
   completeHandler?: () => void,
 ): OperatorFunction<T, T> {
-  let sink: Sink<T>;
-  if (isPartialObserver(nextOrObserver)) {
-    sink = sinkFromObserver(nextOrObserver);
-  } else {
-    sink = sinkFromHandlers(nextOrObserver as ((value: T) => void), errorHandler, completeHandler);
+  return (source: Observable<T>) => source.lift(tapOperator(nextOrObserver, errorHandler, completeHandler));
+}
+
+export function tapOperator<T>(
+  nextOrObserver?: PartialObserver<T>|((value: T) => void),
+  errorHandler?: (err: any) => void,
+  completeHandler?: () => void,
+) {
+  return function tapLift(this: Subscriber<T>, source: Observable<T>, subscription: Subscription) {
+    return source.subscribe(new TapSubscriber(subscription, this, nextOrObserver, errorHandler, completeHandler))
   }
-  return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
-    source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
-      const result = tryUserFunction(sink, t, v, subs);
-      if (resultIsError(result)) {
-        dest(FOType.ERROR, result.error, subs);
-      } else {
-        dest(t, v, subs);
-      }
-    }, subs);
-  });
+}
+
+class TapSubscriber<T> extends OperatorSubscriber<T> {
+  private _tapNext: (value: T, subscription: Subscription) => void;
+  private _tapError: (error: any) => void;
+  private _tapComplete: () => void;
+
+  constructor(
+    subscription: Subscription,
+    destination: Subscriber<T>,
+    nextOrObserver: PartialObserver<T>|((value: T) => void)|undefined,
+    errorHandler: ((err: any) => void)|undefined,
+    completeHandler: (() => void)|undefined
+  ) {
+    super(subscription, destination);
+
+    if (isPartialObserver(nextOrObserver)) {
+      this._tapNext = (nextOrObserver.next || noop).bind(nextOrObserver);
+      this._tapError = (nextOrObserver.error || noop).bind(nextOrObserver);
+      this._tapComplete = (nextOrObserver.complete || noop).bind(nextOrObserver);
+    } else {
+      this._tapNext = nextOrObserver as any || noop;
+      this._tapError = errorHandler || noop;
+      this._tapComplete = completeHandler || noop;
+    }
+  }
+  next(value: T) {
+    const result = tryUserFunction(this._tapNext, value, this._subscription);
+    if (resultIsError(result)) {
+      this._destination.error(result.error);
+    } else {
+      this._destination.next(value);
+    }
+  }
+
+  error(err: any) {
+    const result = tryUserFunction(this._tapError, err);
+    if (resultIsError(result)) {
+      this._destination.error(result.error);
+    } else {
+      this._destination.error(err);
+    }
+  }
+
+  complete() {
+    const result = tryUserFunction(this._tapComplete);
+    if (resultIsError(result)) {
+      this._destination.error(result.error);
+    } else {
+      this._destination.complete();
+    }
+  }
 }
