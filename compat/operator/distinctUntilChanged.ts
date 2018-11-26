@@ -28,7 +28,7 @@ export function distinctUntilChanged<T, K>(this: Observable<T>, compare: (x: K, 
  * Observable.of<Person>(
  *     { age: 4, name: 'Foo'},
  *     { age: 7, name: 'Bar'},
- *     { age: 5, name: 'Foo'})
+ *     { age: 5, name: 'Foo'},
  *     { age: 6, name: 'Foo'})
  *     .distinctUntilChanged((p: Person, q: Person) => p.name === q.name)
  *     .subscribe(x => console.log(x));
