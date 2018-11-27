@@ -29,14 +29,17 @@
     "all": true
   },
   "lint-staged": {
-    "*.@(js)": [
-      "eslint --fix",
-      "git add"
-    ],
-    "*.@(ts)": [
-      "tslint --fix",
-      "git add"
-    ]
+    "linters": {
+      "*.@(js)": [
+        "eslint --fix",
+        "git add"
+      ],
+      "*.@(ts)": [
+        "tslint --fix",
+        "git add"
+      ]
+    },
+    "ignore": ["spec-dtslint/**/*.{js,ts}"]
   },
   "scripts": {
     "precommit": "lint-staged",
