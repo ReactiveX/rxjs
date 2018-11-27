@@ -9,6 +9,9 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 
+export function race<T>(observables: Array<Observable<T>>): Observable<T>;
+export function race<T>(observables: Array<Observable<any>>): Observable<T>;
+export function race<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T>;
 /**
  * Returns an Observable that mirrors the first source Observable to emit an item.
  *
@@ -35,9 +38,6 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @name race
  * @owner Observable
  */
-export function race<T>(observables: Array<Observable<T>>): Observable<T>;
-export function race<T>(observables: Array<Observable<any>>): Observable<T>;
-export function race<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T>;
 export function race<T>(...observables: Array<Observable<any> | Array<Observable<any>>>): Observable<T> {
   // if the only argument is an array, it was most likely called with
   // `race([obs1, obs2, ...])`
