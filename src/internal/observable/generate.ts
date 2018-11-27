@@ -193,7 +193,7 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  *
  *
  * @see {@link from}
- * @see {@link create}
+ * @see {@link index/Observable.create}
  *
  * @param {S} initialState Initial state.
  * @param {function (state: S): boolean} condition Condition to terminate generation (upon returning false).
