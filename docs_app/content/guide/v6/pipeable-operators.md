@@ -42,7 +42,14 @@ What is a pipeable operator? Simply put, a function that can be used with the cu
 
 There is a `pipe` method built into `Observable` now at `Observable.prototype.pipe` that сan be used to compose the operators in similar manner to what you're used to with dot-chaining (shown below).
 
-There is also a `pipe` utility function at `rxjs/util/pipe` that can be used to build reusable pipeable operators from other pipeable operators.
+There is also a `pipe` utility function that can be imported from `import { pipe } from 'rxjs';`. The `pipe` function can be used to build reusable pipeable operators from other pipeable operators. For example:
+
+```ts
+import { pipe } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+const mapTwice = <T,R>(fn: (value: T, index: number) => R) => pipe(map(fn), map(fn));
+```
 
 ## Usage
 
