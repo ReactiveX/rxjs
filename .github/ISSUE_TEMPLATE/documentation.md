@@ -18,4 +18,4 @@ about: Issues around documentation
 
 ### Description Of The Issue
 
-<!-- Descrbe the issue in detail here -->
+<!-- Describe the issue in detail here -->
