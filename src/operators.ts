@@ -81,6 +81,7 @@ export { publishBehaviorAs } from 'rxjs/internal/operators/derived/publishBehavi
 export { publishLastAs } from 'rxjs/internal/operators/derived/publishLastAs';
 export { publishReplayAs } from 'rxjs/internal/operators/derived/publishReplayAs';
 export { reduce } from 'rxjs/internal/operators/derived/reduce';
+export { sampleTime } from 'rxjs/internal/operators/derived/sampleTime';
 export { sequenceEqual } from 'rxjs/internal/operators/derived/sequenceEqual';
 export { startWith } from 'rxjs/internal/operators/derived/startWith';
 export { switchAll } from 'rxjs/internal/operators/derived/switchAll';
