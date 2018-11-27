@@ -50,6 +50,7 @@ export class Observable<T> implements Subscribable<T> {
    * @param {Function} subscribe? the subscriber function to be passed to the Observable constructor
    * @return {Observable} a new cold observable
    * @nocollapse
+   * @deprecated use new Observable() instead
    */
   static create: Function = <T>(subscribe?: (subscriber: Subscriber<T>) => TeardownLogic) => {
     return new Observable<T>(subscribe);
