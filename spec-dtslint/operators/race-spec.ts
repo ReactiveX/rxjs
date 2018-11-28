@@ -15,10 +15,6 @@ it('should allow an array of observables', () => {
   const p = of('a', 'b', 'c').pipe(race([of('x', 'y', 'z'), of('t', 'i', 'm')])); // $ExpectType Observable<string>
 });
 
-it('should allow observables and arrays', () => {
-  const o = of('a', 'b', 'c').pipe(race(of('x', 'y', 'z'), [of('t', 'i', 'm')])); // $ExpectType Observable<string>
-});
-
 it('should be possible to provide a return type', () => {
   const o = of('a', 'b', 'c').pipe(race<string, number>([of(1, 2, 3)])); // $ExpectType Observable<number>
   const p = of('a', 'b', 'c').pipe(race<string, number>([of(1, 2, 3), of('t', 'i', 'm')])); // $ExpectType Observable<number>
