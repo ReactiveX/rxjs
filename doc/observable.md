@@ -42,7 +42,7 @@ console.log('just before subscribe');
 observable.subscribe({
   next(x) { console.log('got value ' + x); },
   error(err) { console.error('something wrong occurred: ' + err); },
-  complete() { console.log('done'); },
+  complete() { console.log('done'); }
 });
 console.log('just after subscribe');
 ```
@@ -128,7 +128,7 @@ const foo = new Observable(subscriber => {
 foo.subscribe(x => {
   console.log(x);
 });
-foo.subscribe(function (y) {
+foo.subscribe(y => {
   console.log(y);
 });
 ```
@@ -323,7 +323,7 @@ There are three types of values an Observable Execution can deliver:
 - "Error" notification: sends a JavaScript Error or exception.
 - "Complete" notification: does not send a value.
 
-"Next" notifications are the most important and most common type: they represent actual data being delivered to an subscriber. Error and Complete notifications may happen only once during the Observable Execution, and there can only be either one of them.
+"Next" notifications are the most important and most common type: they represent actual data being delivered to an subscriber. "Error" and "Complete" notifications may happen only once during the Observable Execution, and there can only be either one of them.
 
 These constraints are expressed best in the so-called *Observable Grammar* or *Contract*, written as a regular expression:
 
@@ -390,7 +390,7 @@ const subscription = observable.subscribe(x => console.log(x));
 The Subscription represents the ongoing execution, and has a minimal API which allows you to cancel that execution. Read more about the [`Subscription` type here](./subscription). With `subscription.unsubscribe()` you can cancel the ongoing execution:
 
 ```ts
-import { Observable, from } from 'rxjs';
+import { from } from 'rxjs';
 
 const observable = from([10, 20, 30]);
 const subscription = observable.subscribe(x => console.log(x));

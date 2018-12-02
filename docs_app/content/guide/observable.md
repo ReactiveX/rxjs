@@ -12,13 +12,13 @@ Observables are lazy Push collections of multiple values. They fill the missing 
 ```ts
 import { Observable } from 'rxjs';
 
-const observable = Observable.create(function (observer) {
-  observer.next(1);
-  observer.next(2);
-  observer.next(3);
+const observable = new Observable(subscriber => {
+  subscriber.next(1);
+  subscriber.next(2);
+  subscriber.next(3);
   setTimeout(() => {
-    observer.next(4);
-    observer.complete();
+    subscriber.next(4);
+    subscriber.complete();
   }, 1000);
 });
 ```
@@ -28,21 +28,21 @@ To invoke the Observable and see these values, we need to *subscribe* to it:
 ```ts
 import { Observable } from 'rxjs';
 
-const observable = Observable.create(function (observer) {
-  observer.next(1);
-  observer.next(2);
-  observer.next(3);
+const observable = new Observable(subscriber => {
+  subscriber.next(1);
+  subscriber.next(2);
+  subscriber.next(3);
   setTimeout(() => {
-    observer.next(4);
-    observer.complete();
+    subscriber.next(4);
+    subscriber.complete();
   }, 1000);
 });
 
 console.log('just before subscribe');
 observable.subscribe({
-  next: x => console.log('got value ' + x),
-  error: err => console.error('something wrong occurred: ' + err),
-  complete: () => console.log('done'),
+  next(x) { console.log('got value ' + x); },
+  error(err) { console.error('something wrong occurred: ' + err); },
+  complete() { console.log('done'); }
 });
 console.log('just after subscribe');
 ```
@@ -120,15 +120,15 @@ You can write the same behavior above, but with Observables:
 ```ts
 import { Observable } from 'rxjs';
 
-const foo = Observable.create(function (observer) {
+const foo = new Observable(subscriber => {
   console.log('Hello');
-  observer.next(42);
+  subscriber.next(42);
 });
 
-foo.subscribe(function (x) {
+foo.subscribe(x => {
   console.log(x);
 });
-foo.subscribe(function (y) {
+foo.subscribe(y => {
   console.log(y);
 });
 ```
@@ -167,7 +167,7 @@ And this is the same behavior with Observables:
 
 ```js
 console.log('before');
-foo.subscribe(function (x) {
+foo.subscribe(x => {
   console.log(x);
 });
 console.log('after');
@@ -201,15 +201,15 @@ Functions can only return one value. Observables, however, can do this:
 ```ts
 import { Observable } from 'rxjs';
 
-const foo = Observable.create(function (observer) {
+const foo = new Observable(subscriber => {
   console.log('Hello');
-  observer.next(42);
-  observer.next(100); // "return" another value
-  observer.next(200); // "return" yet another
+  subscriber.next(42);
+  subscriber.next(100); // "return" another value
+  subscriber.next(200); // "return" yet another
 });
 
 console.log('before');
-foo.subscribe(function (x) {
+foo.subscribe(x => {
   console.log(x);
 });
 console.log('after');
@@ -231,18 +231,18 @@ But you can also "return" values asynchronously:
 ```ts
 import { Observable } from 'rxjs';
 
-const foo = Observable.create(function (observer) {
+const foo = new Observable(subscriber => {
   console.log('Hello');
-  observer.next(42);
-  observer.next(100);
-  observer.next(200);
+  subscriber.next(42);
+  subscriber.next(100);
+  subscriber.next(200);
   setTimeout(() => {
-    observer.next(300); // happens asynchronously
+    subscriber.next(300); // happens asynchronously
   }, 1000);
 });
 
 console.log('before');
-foo.subscribe(function (x) {
+foo.subscribe(x => {
   console.log(x);
 });
 console.log('after');
@@ -267,7 +267,7 @@ Conclusion:
 
 ## Anatomy of an Observable
 
-Observables are **created** using `Observable.create` or a creation operator, are **subscribed** to with an Observer, **execute** to deliver `next` / `error` / `complete` notifications to the Observer, and their execution may be **disposed**. These four aspects are all encoded in an Observable instance, but some of these aspects are related to other types, like Observer and Subscription.
+Observables are **created** using `new Observable` or a creation operator, are **subscribed** to with an Observer, **execute** to deliver `next` / `error` / `complete` notifications to the Observer, and their execution may be **disposed**. These four aspects are all encoded in an Observable instance, but some of these aspects are related to other types, like Observer and Subscription.
 
 Core Observable concerns:
 - **Creating** Observables
@@ -277,21 +277,21 @@ Core Observable concerns:
 
 ### Creating Observables
 
-`Observable.create` is an alias for the `Observable` constructor, and it takes one argument: the `subscribe` function.
+The `Observable` constructor takes one argument: the `subscribe` function.
 
-The following example creates an Observable to emit the string `'hi'` every second to an Observer.
+The following example creates an Observable to emit the string `'hi'` every second to a subscriber.
 
 ```ts
 import { Observable } from 'rxjs';
 
-const observable = Observable.create(function subscribe(observer) {
+const observable = new Observable(function subscribe(subscriber) {
   const id = setInterval(() => {
-    observer.next('hi')
+    subscriber.next('hi')
   }, 1000);
 });
 ```
 
-<span class="informal">Observables can be created with `create`, but usually we use the so-called [creation operators](./overview.html#creation-operators), like `of`, `from`, `interval`, etc.</span>
+<span class="informal">Observables can be created with `new Observable`. Most commonly, observables are created using creation functions, like `of`, `from`, `interval`, etc.</span>
 
 In the example above, the `subscribe` function is the most important piece to describe the Observable. Let's look at what subscribing means.
 
@@ -303,9 +303,9 @@ The Observable `observable` in the example can be *subscribed* to, like this:
 observable.subscribe(x => console.log(x));
 ```
 
-It is not a coincidence that `observable.subscribe` and `subscribe` in `Observable.create(function subscribe(observer) {...})` have the same name. In the library, they are different, but for practical purposes you can consider them conceptually equal.
+It is not a coincidence that `observable.subscribe` and `subscribe` in `new Observable(function subscribe(subscriber) {...})` have the same name. In the library, they are different, but for practical purposes you can consider them conceptually equal.
 
-This shows how `subscribe` calls are not shared among multiple Observers of the same Observable. When calling `observable.subscribe` with an Observer, the function `subscribe` in `Observable.create(function subscribe(observer) {...})` is run for that given Observer. Each call to `observable.subscribe` triggers its own independent setup for that given Observer.
+This shows how `subscribe` calls are not shared among multiple Observers of the same Observable. When calling `observable.subscribe` with an Observer, the function `subscribe` in `new Observable(function subscribe(subscriber) {...})` is run for that given subscriber. Each call to `observable.subscribe` triggers its own independent setup for that given subscriber.
 
 <span class="informal">Subscribing to an Observable is like calling a function, providing callbacks where the data will be delivered to.</span>
 
@@ -315,7 +315,7 @@ A `subscribe` call is simply a way to start an "Observable execution" and delive
 
 ### Executing Observables
 
-The code inside `Observable.create(function subscribe(observer) {...})` represents an "Observable execution", a lazy computation that only happens for each Observer that subscribes. The execution produces multiple values over time, either synchronously or asynchronously.
+The code inside `new Observable(function subscribe(subscriber) {...})` represents an "Observable execution", a lazy computation that only happens for each Observer that subscribes. The execution produces multiple values over time, either synchronously or asynchronously.
 
 There are three types of values an Observable Execution can deliver:
 
@@ -323,7 +323,7 @@ There are three types of values an Observable Execution can deliver:
 - "Error" notification: sends a JavaScript Error or exception.
 - "Complete" notification: does not send a value.
 
-Next notifications are the most important and most common type: they represent actual data being delivered to an Observer. Error and Complete notifications may happen only once during the Observable Execution, and there can only be either one of them.
+"Next" notifications are the most important and most common type: they represent actual data being delivered to an subscriber. "Error" and "Complete" notifications may happen only once during the Observable Execution, and there can only be either one of them.
 
 These constraints are expressed best in the so-called *Observable Grammar* or *Contract*, written as a regular expression:
 
@@ -338,11 +338,11 @@ The following is an example of an Observable execution that delivers three Next 
 ```ts
 import { Observable } from 'rxjs';
 
-const observable = Observable.create(function subscribe(observer) {
-  observer.next(1);
-  observer.next(2);
-  observer.next(3);
-  observer.complete();
+const observable = new Observable(function subscribe(subscriber) {
+  subscriber.next(1);
+  subscriber.next(2);
+  subscriber.next(3);
+  subscriber.complete();
 });
 ```
 
@@ -351,12 +351,12 @@ Observables strictly adhere to the Observable Contract, so the following code wo
 ```ts
 import { Observable } from 'rxjs';
 
-const observable = Observable.create(function subscribe(observer) {
-  observer.next(1);
-  observer.next(2);
-  observer.next(3);
-  observer.complete();
-  observer.next(4); // Is not delivered because it would violate the contract
+const observable = new Observable(function subscribe(subscriber) {
+  subscriber.next(1);
+  subscriber.next(2);
+  subscriber.next(3);
+  subscriber.complete();
+  subscriber.next(4); // Is not delivered because it would violate the contract
 });
 ```
 
@@ -365,14 +365,14 @@ It is a good idea to wrap any code in `subscribe` with `try`/`catch` block that 
 ```ts
 import { Observable } from 'rxjs';
 
-const observable = Observable.create(function subscribe(observer) {
+const observable = new Observable(function subscribe(subscriber) {
   try {
-    observer.next(1);
-    observer.next(2);
-    observer.next(3);
-    observer.complete();
+    subscriber.next(1);
+    subscriber.next(2);
+    subscriber.next(3);
+    subscriber.complete();
   } catch (err) {
-    observer.error(err); // delivers an error if it caught one
+    subscriber.error(err); // delivers an error if it caught one
   }
 });
 ```
@@ -390,9 +390,9 @@ const subscription = observable.subscribe(x => console.log(x));
 The Subscription represents the ongoing execution, and has a minimal API which allows you to cancel that execution. Read more about the [`Subscription` type here](./guide/subscription). With `subscription.unsubscribe()` you can cancel the ongoing execution:
 
 ```ts
-import { Observable } from 'rxjs';
+import { from } from 'rxjs';
 
-const observable = Observable.from([10, 20, 30]);
+const observable = from([10, 20, 30]);
 const subscription = observable.subscribe(x => console.log(x));
 // Later:
 subscription.unsubscribe();
@@ -405,33 +405,33 @@ Each Observable must define how to dispose resources of that execution when we c
 For instance, this is how we clear an interval execution set with `setInterval`:
 
 ```js
-var observable = Observable.create(function subscribe(observer) {
+const observable = new Observable(function subscribe(subscriber) {
   // Keep track of the interval resource
-  var intervalID = setInterval(() => {
-    observer.next('hi');
+  const intervalId = setInterval(() => {
+    subscriber.next('hi');
   }, 1000);
 
   // Provide a way of canceling and disposing the interval resource
   return function unsubscribe() {
-    clearInterval(intervalID);
+    clearInterval(intervalId);
   };
 });
 ```
 
-Just like `observable.subscribe` resembles `Observable.create(function subscribe() {...})`, the `unsubscribe` we return from `subscribe` is conceptually equal to `subscription.unsubscribe`. In fact, if we remove the ReactiveX types surrounding these concepts, we're left with rather straightforward JavaScript.
+Just like `observable.subscribe` resembles `new Observable(function subscribe() {...})`, the `unsubscribe` we return from `subscribe` is conceptually equal to `subscription.unsubscribe`. In fact, if we remove the ReactiveX types surrounding these concepts, we're left with rather straightforward JavaScript.
 
 ```js
-function subscribe(observer) {
-  var intervalID = setInterval(() => {
-    observer.next('hi');
+function subscribe(subscriber) {
+  const intervalId = setInterval(() => {
+    subscriber.next('hi');
   }, 1000);
 
   return function unsubscribe() {
-    clearInterval(intervalID);
+    clearInterval(intervalId);
   };
 }
 
-var unsubscribe = subscribe({next: (x) => console.log(x)});
+const unsubscribe = subscribe({next: (x) => console.log(x)});
 
 // Later:
 unsubscribe(); // dispose the resources
