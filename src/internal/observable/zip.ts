@@ -46,7 +46,7 @@ export function zip<R>(...observables: Array<ObservableInput<any> | ((...values:
  * Combines multiple Observables to create an Observable whose values are calculated from the values, in order, of each
  * of its input Observables.
  *
- * If the latest parameter is a function, this function is used to compute the created value from the input values.
+ * If the last parameter is a function, this function is used to compute the created value from the input values.
  * Otherwise, an array of the input values is returned.
  *
  * ## Example
