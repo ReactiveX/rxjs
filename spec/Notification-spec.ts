@@ -12,7 +12,7 @@ describe('Notification', () => {
   });
 
   it('should not allow convert to observable if given kind is unknown', () => {
-    const n = new Notification('x');
+    const n = new Notification('x' as any);
     expect(() => n.toObservable()).to.throw();
   });
 
