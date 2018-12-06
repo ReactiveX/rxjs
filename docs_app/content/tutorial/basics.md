@@ -2,34 +2,32 @@
 
 ## Converting to observables
 
-<!-- skip-example -->
-
 ```ts
-import { Observable } from 'rxjs';
+import { of, from, fromEvent } from 'rxjs';
 
 // From one or multiple values
-const ofObser = Observable.of('foo', 'bar');
+const ofObser = of('foo', 'bar');
 
 // From array of values
-const fromObser = Observable.from([1, 2, 3]);
+const fromObser = from([1, 2, 3]);
 
 // From an event
-const fromEventObser = Observable.fromEvent(
+const fromEventObser = fromEvent(
   document.querySelector('button'),
   'click'
 );
 
 // From a Promise
-const fromPromiseObser = Observable.fromPromise(fetch('/users'));
+const fromPromiseObser = from(fetch('/users'));
 
 // From a callback (last argument is a callback)
 // fs.exists = (path, cb(exists))
-var exists = Observable.bindCallback(fs.exists);
+const exists = Observable.bindCallback(fs.exists);
 exists('file.txt').subscribe(exists => console.log('Does file exist?', exists));
 
 // From a callback (last argument is a callback)
 // fs.rename = (pathA, pathB, cb(err, result))
-var rename = Observable.bindNodeCallback(fs.rename);
+const rename = Observable.bindNodeCallback(fs.rename);
 rename('file.txt', 'else.txt').subscribe(() => console.log('Renamed!'));
 ```
 
@@ -40,7 +38,7 @@ Externally produce new events.
 ```ts
 import { Subject } from 'rxjs';
 
-var myObservable = new Subject();
+const myObservable = new Subject();
 myObservable.subscribe(value => console.log(value));
 myObservable.next('foo');
 ```
@@ -48,7 +46,9 @@ myObservable.next('foo');
 Internally produce new events.
 
 ```ts
-var myObservable = Observable.create(observer => {
+import { Observable } from 'rxjs';
+
+const myObservable = Observable.create(observer => {
   observer.next('foo');
   setTimeout(() => observer.next('bar'), 1000);
 });
@@ -60,7 +60,7 @@ Which one you choose depends on the scenario. The normal **Observable** is great
 ## Controlling the flow
 
 ```ts
-import { Observable, pipe } from 'rxjs';
+import { fromEvent, pipe } from 'rxjs';
 import {
   map,
   delay,
@@ -72,7 +72,7 @@ import {
 } from 'rxjs/operators';
 
 // typing "hello world"
-var input = Observable.fromEvent(document.querySelector('input'), 'input');
+const input = fromEvent(document.querySelector('input'), 'input');
 
 // Filter out target values less than 3 characters long
 input
@@ -115,7 +115,7 @@ input
   .subscribe(value => console.log(value)); // "hel"
 
 // Passes through events until other observable triggers an event
-var stopStream = Observable.fromEvent(
+const stopStream = fromEvent(
   document.querySelector('button'),
   'click'
 );
@@ -130,7 +130,7 @@ input
 ## Producing values
 
 ```ts
-import { Observable, pipe } from 'rxjs';
+import {  pipe } from 'rxjs';
 import {
   map,
   pluck,
@@ -140,7 +140,7 @@ import {
 } from 'rxjs/operators';
 
 // typing "hello world"
-var input = Observable.fromEvent(document.querySelector('input'), 'input');
+const input = fromEvent(document.querySelector('input'), 'input');
 
 // Pass on a new value
 input
