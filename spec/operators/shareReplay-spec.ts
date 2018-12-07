@@ -30,7 +30,7 @@ describe('shareReplay operator', () => {
   });
 
   it('should multicast the same values to multiple observers, bufferSize=1', () => {
-    const source =     cold('-1-2-3----4-|'); const shared = source.pipe(shareReplay(1));
+    const source =     cold('-1-2-3----4-|'); const shared = source.pipe(shareReplay({bufferSize: 1}));
     const sourceSubs =      '^           !';
     const subscriber1 = hot('a|           ').pipe(mergeMapTo(shared));
     const expected1   =     '-1-2-3----4-|';
@@ -46,7 +46,7 @@ describe('shareReplay operator', () => {
   });
 
   it('should multicast the same values to multiple observers, bufferSize=2', () => {
-    const source =     cold('-1-2-----3------4-|'); const shared = source.pipe(shareReplay(2));
+    const source =     cold('-1-2-----3------4-|'); const shared = source.pipe(shareReplay({bufferSize: 2}));
     const sourceSubs =      '^                 !';
     const subscriber1 = hot('a|                 ').pipe(mergeMapTo(shared));
     const expected1   =     '-1-2-----3------4-|';
@@ -175,6 +175,20 @@ describe('shareReplay operator', () => {
 
     rxTestScheduler.flush();
     expect(results).to.deep.equal([0, 1, 2, 4, 5, 6, 7, 8, 9]);
+  });
+
+  it('should restart if refCount hits 0 due to unsubscriptions if told to', () => {
+    const results: number[] = [];
+    const source = interval(10, rxTestScheduler).pipe(
+      take(10),
+      shareReplay({ bufferSize: 1, disconnect: true } )
+    );
+    const subs = source.subscribe(x => results.push(x));
+    rxTestScheduler.schedule(() => subs.unsubscribe(), 35);
+    rxTestScheduler.schedule(() => source.subscribe(x => results.push(x)), 54);
+
+    rxTestScheduler.flush();
+    expect(results).to.deep.equal([0, 1, 2, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
   });
 
   it('when no windowTime is given ReplaySubject should be in _infiniteTimeWindow mode', () => {
