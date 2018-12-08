@@ -1,22 +1,16 @@
 language: node_js
 sudo: false
-
 addons:
-  sauce_connect:
-    # Update SAUCE_USERNAME / SAUCE_ACCESS_KEY in travis if necessary
-    # https://docs.travis-ci.com/user/environment-variables/#Defining-Variables-in-Repository-Settings
-    # TODO: reenable saucelabs once we have update browser tests
-    # sauce_connect: true
-
+  sauce_connect: 
 cache:
   timeout: 1000
   directories:
-    - $HOME/.npm
-
+  - "$HOME/.npm"
 env:
   global:
-    -  secure: "w5r90XyIDrXNwIkfDJWrbojht0ASyRDPkSxIQ7QDnIJWoL9z9NnpatQ7ENFJFZqWnEaLmaUR3h+hlBek+g+rwb8TE2KEbgwnSaGEtL2rZhLbqDIAx+X1OSTJ057AHYPlXrCYyoxOC9tY+mOc7pJfg7b1URPWHLCWYFRDVdKwo2/9DE9OyVitUbNg72L2SIn8fNrn6MJy8JbtLZeiuThoHuHkkrPzSFH7eihic88kR0n2o2Sy6WeZ+dZPp3OiNh1EfC976MNvnkxGNkANAALXqRQMR/nWX3HVHDvGW25EKIDNoedoJe725ZZ/Q6Raj6KcpLEbCgw3sFBAbvMXLzHK2DQ5nPXERIMqJSgh6h0H0Qw1Dgo9TZY48YSgwy8zc6qaY9n6kprADc52mz27BRzn3pUAHy0NtkxVrLzX0FLQovltjgKvuZTLdbByRTkTIMcm6qfL/QB6zUrrHqItgXwNNJB8lC4dAmY+6/iKivpN5LKSodn+Pb/JoiosSg7QeOd9qOggd4MXd5wAKUvAl5ksxLvnjKcwZyzC9uACJ7BYRwkaXwjdgpuD6CP3bcsQopNG6Z+kJTLRoSWWV4EFV52jcn52vuBqs72PnIx1tBLZFONWJhRNJR186srUfYol4joNN4ECpLXMUWBO6KvjJT8MFCk8qiKlVJ8h0ZkFle+lHV0="
-
+  - secure: w5r90XyIDrXNwIkfDJWrbojht0ASyRDPkSxIQ7QDnIJWoL9z9NnpatQ7ENFJFZqWnEaLmaUR3h+hlBek+g+rwb8TE2KEbgwnSaGEtL2rZhLbqDIAx+X1OSTJ057AHYPlXrCYyoxOC9tY+mOc7pJfg7b1URPWHLCWYFRDVdKwo2/9DE9OyVitUbNg72L2SIn8fNrn6MJy8JbtLZeiuThoHuHkkrPzSFH7eihic88kR0n2o2Sy6WeZ+dZPp3OiNh1EfC976MNvnkxGNkANAALXqRQMR/nWX3HVHDvGW25EKIDNoedoJe725ZZ/Q6Raj6KcpLEbCgw3sFBAbvMXLzHK2DQ5nPXERIMqJSgh6h0H0Qw1Dgo9TZY48YSgwy8zc6qaY9n6kprADc52mz27BRzn3pUAHy0NtkxVrLzX0FLQovltjgKvuZTLdbByRTkTIMcm6qfL/QB6zUrrHqItgXwNNJB8lC4dAmY+6/iKivpN5LKSodn+Pb/JoiosSg7QeOd9qOggd4MXd5wAKUvAl5ksxLvnjKcwZyzC9uACJ7BYRwkaXwjdgpuD6CP3bcsQopNG6Z+kJTLRoSWWV4EFV52jcn52vuBqs72PnIx1tBLZFONWJhRNJR186srUfYol4joNN4ECpLXMUWBO6KvjJT8MFCk8qiKlVJ8h0ZkFle+lHV0=
+  - secure: bvxNyiL0w+abl9V7tvvbOKVCj0FwK7V5SXIgAmzBAMnC5i8EKjr9um8ohU3wyvyk45kbI54iUanFoJCZgmp64Z/x7cTujVp4A13l8J63YCdoQAcICpqUCM9lQ8VfVYBfXK4PQbn/T/aIt3FR3ZNtrJOykRu2Sqw7Y6b37Y2aNxYAy5bnDhn4C3Xu58P8ZKFfCfyZfSa2TSA5MD16IRVJg3NQhwpDsJzw5gxQs4ltFrV2cZpALZYg8fpXuDjfqsjvXNWJPwMn4H9Efdj4krZj3rd7SEcHDTtUG1akWSXbHtA7Ll1B0xctSks9e/XR062kFLSVnDNNEAtp9UGkbxCEOeSlWeBCmJMXM3HeX6UXlKQC+QVvQlqFj2JaSqbGtv3Dc7U5fg/1r0BVZ72GH98dSucuVk8IsiYZE+77IZpohQtjC0IrKX9CAeqqrWruiZaEtswBUxoTwx9cpgzh/ASkVMgowUxiwqnEH9y8N6EnwBR9X2o9VfgKRBdChfyhwLFbirsToK6lM1SjX8UHKtfMxuHi5TjpoEyKt2FsYSUBTrXbst5y3Xu82qHWjmiLNtArJhm+pVV90urjmLVzIIgmj1VPoP5rt4w2nYD1qYpx5N0+OwLJ8kcFleBFa35Cb5aK/XenKEjwh79rcb1IfZARpgzsW67Ogxr6am9sgB8m+ww=
+  - secure: h2/mxIrtfZZhk1MqX1BW2OllfcRbFSdLDDFa1F3M/Alollmt3205IFIWKteo3FqX/SLpB1RPpaHVkzJVlHkAmWA57ntmayRVPOvkv8AUAlc2vnVuxCi6SGIPLcUheBTOg3Un0cxbTg3vGzshvpqRT42jIXLW2v+uzhW3M6wnKxhUpQ8F+FeIF40XHn6gPAO3ojJX4D7HThEcUijCPa9RG2uFjC2ivUfleBTYQcmmbKQLC7xIWf6KT6+azKgp8C+rC6AWnW3tPabM3lX1GYP0nmLIXnRhVJiAvv8K8qstVM3fJCc0trVwCGYCoZOthS+3pU4ly+I2lBPL6EYDb8M/wPAeawI/wgZ9e7JbTo0crTrv7uDLLJJwTi0pz4AewY+I6l9UekRKZ7PYIfspc13OPVGibMsrCtEgGkhSEoNo0Uigm7qnEW8ot+qJdsUeQsq1PTxQBd3XlJY0q8voyvTkJFSUwATRkrtyupz9GJq/UghuJ0wwSUc9mZRKgdD5q7jVNIGHikoZ5wtBYiZgmel/c/ywb/q31QTac6EDTqMFu6PHBS5BHCpXU/JrgM2nvGk9Lm6qXEXa5rOuyqzYY+tOjstFGRilZLXQV3CLXfYW5GpglVboO4ewbkp8/HwHqKcsaNdbkyFJjbvohFCnh6PallsTz/oRmZaNCnxM7A7eU5w=
   matrix:
   - NODE_VER=8 FULL_VALIDATE=true
   - NODE_VER=8 TSC_VERSION=2.8.*
@@ -27,33 +21,33 @@ env:
   - NODE_VER=10
   - NODE_VER=10 TSC_VERSION=2.8.*
   - NODE_VER=10 TSC_VERSION=next
-
 matrix:
   fast_finish: true
   allow_failures:
-    - NODE_VER=8 TSC_VERSION=2.8.*
-    - NODE_VER=8 TSC_VERSION=next
-    - NODE_VER=9 TSC_VERSION=2.8.*
-    - NODE_VER=9 TSC_VERSION=next
-    - NODE_VER=10 TSC_VERSION=2.8.*
-    - NODE_VER=10 TSC_VERSION=next
-
+  - NODE_VER=8 TSC_VERSION=2.8.*
+  - NODE_VER=8 TSC_VERSION=next
+  - NODE_VER=9 TSC_VERSION=2.8.*
+  - NODE_VER=9 TSC_VERSION=next
+  - NODE_VER=10 TSC_VERSION=2.8.*
+  - NODE_VER=10 TSC_VERSION=next
 before_install:
-  - nvm install $NODE_VER
-  - npm install -g npm@6 && node -v && npm -v
-
+- nvm install $NODE_VER
+- npm install -g npm@6 && node -v && npm -v
 install:
-  - npm ci
- # - if [ "$FULL_VALIDATE" == "trrunue" ]; then npm  lint && npm run dtslint && npm run test:circular; fi
-
+- npm ci
 script:
-  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
-  - if [ "$FULL_VALIDATE" == "true" ] && [ -n "DANGER_GITHUB_API_TOKEN" ]; then echo {} > ./.babelrc && npx danger; fi
-  - npm test
-  - npm run test:systemjs
-  - if [ "${TSC_VERSION}" ]; then npm install --no-save typescript@$TSC_VERSION && ./node_modules/.bin/tsc --version && npm run build_cjs ; fi
-  - if [ "$FULL_VALIDATE" == "true" ] && [ -n "DANGER_GITHUB_API_TOKEN" ]; then cd docs_app && npm ci && npm run build && cd ..; fi
-
+- export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH;
+  else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+- if [ "$FULL_VALIDATE" == "true" ] && [ -n "DANGER_GITHUB_API_TOKEN" ]; then echo
+  {} > ./.babelrc && npx danger; fi
+- npm test
+- npm run test:systemjs
+- if [ "${TSC_VERSION}" ]; then npm install --no-save typescript@$TSC_VERSION && ./node_modules/.bin/tsc
+  --version && npm run build_cjs ; fi
+- if [ "$FULL_VALIDATE" == "true" ] && [ -n "DANGER_GITHUB_API_TOKEN" ]; then cd docs_app
+  && npm ci && npm run build && cd ..; fi
 after_success:
-  - if [ "$FULL_VALIDATE" == "true" ]; then npm run test:cover && npx nyc report --reporter=text-lcov | npx coveralls; fi
-  - if [ "$FULL_VALIDATE" == "true" ]; then npm run tests2png && cd docs_app && chmod 755 scripts/deploy-to-firebase.sh && npm run deploy-production; fi
+- if [ "$FULL_VALIDATE" == "true" ]; then npm run test:cover && npx nyc report --reporter=text-lcov
+  | npx coveralls; fi
+- if [ "$FULL_VALIDATE" == "true" ]; then npm run tests2png && cd docs_app && chmod
+  755 scripts/deploy-to-firebase.sh && npm run deploy-production; fi
