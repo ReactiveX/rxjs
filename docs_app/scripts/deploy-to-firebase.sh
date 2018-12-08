@@ -61,7 +61,7 @@ case $deployEnv in
   next)
     readonly projectId=rxjs-dev
     readonly deployedUrl=https://rxjs-dev.firebaseapp.com
-    readonly firebaseToken=$FIREBASE_TOKEN
+    readonly firebaseToken=$FIREBASE_LOGIN
     ;;
 #  stable)
 #    readonly projectId=beta-rxjsdocs
