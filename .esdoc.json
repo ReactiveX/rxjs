@@ -1,0 +1,59 @@
+{
+  "source": "./dist/es6",
+  "destination": "./tmp/docs",
+  "plugins": [
+    {
+      "name": "esdoc-standard-plugin",
+      "undocumentIdentifier": false,
+      "brand": {
+        "title": "RxJS",        
+        "repository": "https://github.com/ReactiveX/rxjs",
+        "site": "https://rxjs-dev.firebaseapp.com"
+      },
+      "test": {
+        "type": "mocha",
+        "source": "./spec-js",
+        "includes": ["(spec)\\.(js|ts)$"]
+      },
+      "manual": {
+        "index": "./doc/index.md",
+        "asset": "./doc/asset",
+        "files": [
+          "./doc/introduction.md",
+          "./doc/observable.md",
+          "./doc/observer.md",
+          "./doc/subscription.md",
+          "./doc/subject.md",
+          "./doc/operators.md",
+          "./doc/scheduler.md",
+          "./doc/tutorial/basics.md",
+          "./doc/tutorial/applications.md",
+          "./doc/external-references.md" 
+        ]
+      }
+    },
+    {
+      "name": "esdoc-inject-style-plugin",
+      "option": {
+        "enabled": true,
+        "styles": ["./doc/styles/main.css"]
+      }
+    },
+    {
+      "name": "esdoc-inject-script-plugin",
+      "option": {
+        "enabled": true,
+        "scripts": [
+          "./dist/global/rxjs.umd.js",
+          "./doc/asset/devtools-welcome.js",
+          "./doc/scripts/custom-manual-styles.js",
+          "./doc/decision-tree-widget/dist/decision-tree-widget.min.js",
+          "./doc/scripts/theme-toggler.js"
+        ]
+      }
+    },
+    {
+      "name": "./tools/custom-esdoc-plugin.js"
+    }
+  ]
+}
