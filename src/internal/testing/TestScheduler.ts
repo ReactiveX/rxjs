@@ -7,6 +7,7 @@ import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
 import { asapScheduler } from 'rxjs/internal/scheduler/asapScheduler';
 import { QueueScheduler } from 'rxjs/internal/scheduler/QueueScheduler';
 import { Subject } from '../Subject';
+import { Notification } from '../Notification';
 
 // TODO(benlesh): we need to figure out how to have TestScheduler support testing
 // the animation frame scheduler
@@ -77,7 +78,7 @@ export interface SubscriptionLog {
 
 export interface TestMessage<T> {
   frame: number;
-  notification: NotificationLike<T>;
+  notification: Notification<T>;
   isGhost?: boolean;
 }
 
@@ -147,11 +148,11 @@ proto._materializeInnerObservable = function (
 ): TestMessage<any>[] {
   const messages: TestMessage<any>[] = [];
   observable.subscribe((value) => {
-    messages.push({ frame: this.frame - outerFrame, notification: { kind: 'N', value } });
+    messages.push({ frame: this.frame - outerFrame, notification: Notification.createNext(value) });
   }, (error) => {
-    messages.push({ frame: this.frame - outerFrame, notification: { kind: 'E', error } });
+    messages.push({ frame: this.frame - outerFrame, notification: Notification.createError(error) });
   }, () => {
-    messages.push({ frame: this.frame - outerFrame, notification: { kind: 'C' } });
+    messages.push({ frame: this.frame - outerFrame, notification: Notification.createComplete() });
   });
   return messages;
 };
@@ -206,11 +207,11 @@ const unsubscriptionFrame = subscriptionParsed.unsubscribedFrame;
       if (isObservable(x)) {
         value = this._materializeInnerObservable(x, this.frame, this);
       }
-      actual.push({ frame: this.frame, notification: { kind: 'N', value } });
+      actual.push({ frame: this.frame, notification: Notification.createNext(value) });
     }, (error) => {
-      actual.push({ frame: this.frame, notification: { kind: 'E', error } });
+      actual.push({ frame: this.frame, notification: Notification.createError(error) });
     }, () => {
-      actual.push({ frame: this.frame, notification: { kind: 'C' } });
+      actual.push({ frame: this.frame, notification: Notification.createComplete() });
     });
   }, subscriptionFrame);
 
@@ -455,7 +456,7 @@ export function parseMarbles<T = string>(
       nextFrame += count * FRAME_TIME_FACTOR;
     };
 
-    let notification: NotificationLike<any>;
+    let notification: Notification<any>;
     const c = marbles[i];
     switch (c) {
       case ' ':
@@ -476,14 +477,14 @@ export function parseMarbles<T = string>(
         advanceFrameBy(1);
         break;
       case '|':
-        notification = { kind: 'C' };
+        notification = Notification.createComplete();
         advanceFrameBy(1);
         break;
       case '^':
         advanceFrameBy(1);
         break;
       case '#':
-        notification = { kind: 'E', error: errorValue || 'error' };
+        notification = Notification.createError(errorValue || 'error');
         advanceFrameBy(1);
         break;
       default:
@@ -520,7 +521,7 @@ export function parseMarbles<T = string>(
           }
         }
 
-        notification = { kind: 'N', value: getValue(c) };
+        notification = Notification.createNext(getValue(c));
         advanceFrameBy(1);
         break;
     }
@@ -555,84 +556,67 @@ export function scheduleNotifications(scheduler: SchedulerLike, messages: TestMe
     }
   });
 }
-export interface HotObservable<T> extends TestObservable<T>, Subject<T> {
+export interface HotObservable<T> extends Subject<T> {
   setup(): void;
+  subscriptions: SubscriptionLog[];
+  messages: TestMessage<T>[];
 }
 
 export function hotObservable<T>(messages: TestMessage<T>[], scheduler: TestScheduler): HotObservable<T> {
   const subsLogger = subscriptionLogger();
-  const subject = new Subject();
 
-  const result = sourceAsSubject((type: FOType.SUBSCRIBE, sink: Sink<any>, subs: Subscription) => {
-    if (type === FOType.SUBSCRIBE) {
-      const subsLogIndex = subsLogger.logSubscription(scheduler.now());
+  const result = new Subject<T>();
 
-      subs.add(() => subsLogger.logUnsubscription(subsLogIndex, scheduler.now()));
+  const _subscribe = result.subscribe;
 
-      subject(type, sink, subs);
-    }
-  }) as Observable<T> as HotObservable<T>;
+  result.subscribe = function () {
+    const subsLogIndex = subsLogger.logSubscription(scheduler.now());
 
-  result.subscriptions = subsLogger.logs;
-  result.messages = messages;
-  result.setup = () => {
+    const subs = new Subscription();
+
+    subs.add(() => subsLogger.logUnsubscription(subsLogIndex, scheduler.now()));
+
+    subs.add(_subscribe.apply(result, arguments));
+
+    return subs;
+  };
+
+  (result as any).subscriptions = subsLogger.logs;
+  (result as any).messages = messages;
+  (result as any).setup = () => {
     const subs = new Subscription();
     scheduler.schedule(() => {
-      for (const message of messages) {
-        let t: FOType;
-        let a: any = undefined;
-        const { notification, frame } = message;
-        if (notification.kind === 'N') {
-          t = FOType.NEXT;
-          a = notification.value;
-        } else if (notification.kind === 'E') {
-          t = FOType.ERROR;
-          a = notification.error;
-        } else if (notification.kind === 'C') {
-          t = FOType.COMPLETE;
-        } else {
-          continue;
-        }
-        scheduler.schedule(({ t, a, subs }) => {
-          subject(t, a, subs);
-        }, frame, { t, a, subs });
+      for (const { frame, notification } of messages) {
+
+        subs.add(scheduler.schedule(() => {
+          notification.observe(result);
+        }, frame));
       }
     });
   };
-  return result;
+  return result as HotObservable<T>;
 }
 
 export function coldObservable<T>(messages: TestMessage<T>[], scheduler: TestScheduler): TestObservable<T> {
   const subsLogger = subscriptionLogger();
 
-  const result = sourceAsObservable((type: FOType.SUBSCRIBE, sink: Sink<any>, subs: Subscription) => {
-    if (type === FOType.SUBSCRIBE) {
-      const subsLogIndex = subsLogger.logSubscription(scheduler.now());
+  const result = new Observable<T>(subscriber => {
+    const subsLogIndex = subsLogger.logSubscription(scheduler.now());
 
-      subs.add(() => subsLogger.logUnsubscription(subsLogIndex, scheduler.now()));
+    const subs = new Subscription();
 
-      scheduler.schedule(() => {
-        for (const message of messages) {
-          let t: FOType;
-          let a: any = undefined;
-          const { notification, frame } = message;
-          if (notification.kind === 'N') {
-            t = FOType.NEXT;
-            a = notification.value;
-          } else if (notification.kind === 'E') {
-            t = FOType.ERROR;
-            a = notification.error;
-          } else if (notification.kind === 'C') {
-            t = FOType.COMPLETE;
-          } else {
-            continue;
-          }
-          scheduler.schedule(({ t, a, subs }) => {
-            sink(t, a, subs);
-          }, frame, { t, a, subs }, subs);
-        }
-      }, 0, undefined, subs);
-    }
+    subs.add(() => subsLogger.logUnsubscription(subsLogIndex, scheduler.now()));
+
+    subs.add(scheduler.schedule(() => {
+      for (const message of messages) {
+        const { notification, frame } = message;
+        subs.add(scheduler.schedule(() => {
+          notification.observe(subscriber);
+        }, frame));
+      }
+    }));
+
+    return subs;
   });
 
   (result as TestObservable<T>).subscriptions = subsLogger.logs;

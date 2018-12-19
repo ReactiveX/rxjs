@@ -18,7 +18,7 @@ export class Observable<T> {
       subscriber.error(result.error);
     }
   }
-  
+
   subscribe(observer: PartialObserver<T>): Subscription;
   subscribe(
     nextHandler?: (value: T, subscription: Subscription) => void,
@@ -31,7 +31,7 @@ export class Observable<T> {
   subscribe(
     nextOrObserver?: PartialObserver<T>|((value: T, subscription: Subscription) => void),
     errorHandler?: (err: any) => void,
-    completeHandler?: () => void, 
+    completeHandler?: () => void,
     subscription?: Subscription,
   ): Subscription {
     subscription = subscription || new Subscription();
@@ -39,9 +39,9 @@ export class Observable<T> {
     const subscriber = nextOrObserver instanceof OperatorSubscriber
       ? nextOrObserver
       : new SafeSubscriber(subscription, nextOrObserver, errorHandler, completeHandler);
-    
+
     subscription.add(this._operator ? this._operator.call(subscriber, this._source, subscription) : this._init(subscriber));
-  
+
     return subscription;
   }
 
@@ -58,7 +58,7 @@ export class Observable<T> {
       reject('not implemented');
     });
   }
-  
+
   toPromise(): Promise<T> {
     return Promise.reject('not implented');
   }
