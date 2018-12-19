@@ -1,8 +1,7 @@
 import { Observable } from 'rxjs/internal/Observable';
 import { Observer, TeardownLogic } from 'rxjs/internal/types';
 import { Subscriber } from 'rxjs/internal/Subscriber';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
+import { ObjectUnsubscribedError } from 'rxjs/internal/util/ObjectUnsubscribedError';
 
 export class Subject<T> extends Observable<T> implements Observer<T> {
   private _subscribers: Subscriber<T>[] = [];
@@ -10,6 +9,14 @@ export class Subject<T> extends Observable<T> implements Observer<T> {
   protected _hasError = false;
   private _error: any;
   protected _disposed = false;
+
+  get closed() {
+    return this._closed;
+  }
+
+  get disposed() {
+    return this._disposed;
+  }
 
   protected _init(subscriber: Subscriber<T>): TeardownLogic {
     this._throwIfDisposed();
@@ -69,6 +76,7 @@ export class Subject<T> extends Observable<T> implements Observer<T> {
   }
 
   unsubscribe() {
+    this._subscribers = null;
     this._disposed = true;
   }
 

@@ -3,9 +3,14 @@ import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Subscriber } from 'rxjs/internal/Subscriber';
 import { OperatorSubscriber } from 'rxjs/internal/OperatorSubscriber';
+import { ArgumentOutOfRangeError } from 'rxjs/internal/util/ArgumentOutOfRangeError';
+import { EMPTY } from 'rxjs/internal/EMPTY';
 
 export function take<T>(total: number): OperatorFunction<T, T> {
-  return (source: Observable<T>) => source.lift(takeOperator(total));
+  if (total < 0) {
+    throw new ArgumentOutOfRangeError();
+  }
+  return (source: Observable<T>) => total === 0 ? EMPTY : source.lift(takeOperator(total));
 }
 
 function takeOperator<T>(total: number) {

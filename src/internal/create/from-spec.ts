@@ -1,9 +1,7 @@
-import { from } from 'rxjs/internal/create/from';
+import { from, Subscription, Observer, InteropObservable } from 'rxjs';
 import { expect } from 'chai';
-import { take } from 'rxjs/internal/operators/take';
-import { Subscription } from 'rxjs/internal/Subscription';
+import { take } from 'rxjs/operators';
 import { symbolObservable } from 'rxjs/internal/util/symbolObservable';
-import { Observer, InteropObservable } from 'rxjs/internal/types';
 import { symbolAsyncIterator } from 'rxjs/internal/util/symbolAsyncIterator';
 
 describe('from', () => {
