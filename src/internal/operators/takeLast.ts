@@ -1,31 +1,40 @@
-import { OperatorFunction, FOType, Sink, SinkArg } from 'rxjs/internal/types';
+import { OperatorFunction } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { lift } from 'rxjs/internal/util/lift';
+import { Subscriber } from '../Subscriber';
+import { OperatorSubscriber } from '../OperatorSubscriber';
+import { EMPTY } from '../EMPTY';
 
 export function takeLast<T>(count: number = 1): OperatorFunction<T, T> {
   count = Math.max(count, 0);
-  return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
-    const buffer: T[] = [];
-    if (count === 0) {
-      dest(FOType.COMPLETE, undefined, subs);
-      return;
+  return (source: Observable<T>) => count === 0 ? EMPTY : source.lift(takeLastOperator(count));
+}
+
+function takeLastOperator<T>(count: number) {
+  return function takeLastLift(this: Subscriber<T>, source: Observable<T>, subscription: Subscription) {
+    return source.subscribe(new TakeLastSubscriber(subscription, this, count));
+  };
+}
+
+class TakeLastSubscriber<T> extends OperatorSubscriber<T> {
+  private _buffer: T[] = [];
+
+  constructor(subscription: Subscription, destination: Subscriber<T>, private _count: number) {
+    super(subscription, destination);
+  }
+
+  next(value: T) {
+    const { _buffer } = this;
+    _buffer.push(value);
+    _buffer.splice(0, _buffer.length - this._count);
+  }
+
+  complete() {
+    const { _buffer, _destination } = this;
+    for (let i = 0; i < _buffer.length && !_destination.closed; i++) {
+      _destination.next(_buffer[i]);
     }
-    source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
-      switch (t) {
-        case FOType.NEXT:
-          buffer.push(v);
-          buffer.splice(0, buffer.length - count);
-          break;
-        case FOType.COMPLETE:
-          while (buffer.length > 0) {
-            dest(FOType.NEXT, buffer.shift(), subs);
-          }
-          // allow fall through, because t === COMPLETE and v === undefined
-        default:
-          dest(t, v, subs);
-          break;
-      }
-    }, subs);
-  });
+    _destination.complete();
+    this._buffer = null;
+  }
 }
