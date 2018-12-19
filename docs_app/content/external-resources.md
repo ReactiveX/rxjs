@@ -2,7 +2,7 @@
 
 This is a collection of resources that can be found to help with the learning process of RxJS. The list is ever growing which will make it a place for you to come to for finding helpful information.
 
-**Note**: RxJS is not responsible for the content of the sites listed below unless directly from the RxJS site.
+**Note**: RxJS maintainers are not responsible for any of the following content that is not part of the official rxjs documentation site. Please adhere to the terms and copyrights of the sites and links listed.
 
 ---
 
