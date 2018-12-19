@@ -1,33 +1,37 @@
-import { OperatorFunction, FOType, Sink, SinkArg } from 'rxjs/internal/types';
+import { OperatorFunction } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { lift } from 'rxjs/internal/util/lift';
+import { Subscriber } from 'rxjs/internal/Subscriber';
+import { OperatorSubscriber } from 'rxjs/internal/OperatorSubscriber';
 
 export function take<T>(total: number): OperatorFunction<T, T> {
-  return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
-    if (total <= 0) {
-      dest(FOType.COMPLETE, undefined, subs);
-      subs.unsubscribe();
-      return;
+  return (source: Observable<T>) => source.lift(takeOperator(total));
+}
+
+function takeOperator<T>(total: number) {
+  return function takeLift(this: Subscriber<T>, source: Observable<T>, subscription: Subscription) {
+    return source.subscribe(new TakeSubscriber(subscription, this, total), subscription);
+  };
+}
+
+class TakeSubscriber<T> extends OperatorSubscriber<T> {
+  private _counter = 0;
+
+  constructor(subscription: Subscription, destination: Subscriber<any>, private total: number) {
+    super(subscription, destination);
+    if (total === 0) {
+      destination.complete();
     }
-    let count = 0;
+  }
 
-    const takeSubs = new Subscription();
-    subs.add(takeSubs);
-
-    source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
-      if (t === FOType.NEXT) {
-        const c = ++count;
-        if (c <= total) {
-          dest(FOType.NEXT, v, subs);
-          if (c === total) {
-            dest(FOType.COMPLETE, undefined, subs);
-            takeSubs.unsubscribe();
-          }
-        }
-      } else {
-        dest(t, v, subs);
+  next(value: T) {
+    const { _destination } = this;
+    const c = ++this._counter;
+    if (c <= this.total) {
+      _destination.next(value);
+      if (c === this.total) {
+        _destination.complete();
       }
-    }, takeSubs);
-  });
+    }
+  }
 }

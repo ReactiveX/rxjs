@@ -35,7 +35,7 @@ export { mergeMap } from 'rxjs/internal/operators/mergeMap';
 // export { single } from 'rxjs/internal/operators/single';
 // export { subscribeOn } from 'rxjs/internal/operators/subscribeOn';
 // export { switchMap } from 'rxjs/internal/operators/switchMap';
-// export { take } from 'rxjs/internal/operators/take';
+export { take } from 'rxjs/internal/operators/take';
 // export { takeUntil } from 'rxjs/internal/operators/takeUntil';
 // export { takeWhile } from 'rxjs/internal/operators/takeWhile';
 // export { takeLast } from 'rxjs/internal/operators/takeLast';
