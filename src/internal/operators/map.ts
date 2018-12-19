@@ -11,7 +11,7 @@ export function map<T, R>(project: (value: T, index: number) => R): OperatorFunc
 
 function mapOperator<T, R>(project: (value: T, index: number) => R) {
   return function mapLift(this: Subscriber<R>, source: Observable<T>, subscription: Subscription) {
-  return source.subscribe(new MapSubscriber(subscription, this, project));
+    return source.subscribe(new MapSubscriber(subscription, this, project), subscription);
   };
 }
 

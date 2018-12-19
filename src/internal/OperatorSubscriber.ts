@@ -7,14 +7,20 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
   }
 
   next(value: T) {
-    this._destination.next(value);
+    if (!this.closed) {
+      this._destination.next(value);
+    }
   }
 
   error(err: any) {
-    this._destination.error(err);
+    if (!this.closed) {
+      this._destination.error(err);
+    }
   }
 
   complete() {
-    this._destination.complete();
+    if (!this.closed) {
+      this._destination.complete();
+    }
   }
 }

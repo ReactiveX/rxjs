@@ -15,7 +15,7 @@ export { NEVER } from 'rxjs/internal/NEVER';
 // export { concat } from 'rxjs/internal/create/concat';
 // export { defer } from 'rxjs/internal/create/defer';
 // export { forkJoin } from 'rxjs/internal/create/forkJoin';
-// export { from } from 'rxjs/internal/create/from';
+export { from } from 'rxjs/internal/create/from';
 // export { fromEvent } from 'rxjs/internal/create/fromEvent';
 // export { fromEventPattern } from 'rxjs/internal/create/fromEventPattern';
 // export { fromScheduled } from 'rxjs/internal/create/fromScheduled';

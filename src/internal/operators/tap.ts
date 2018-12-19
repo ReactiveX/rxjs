@@ -66,29 +66,32 @@ class TapSubscriber<T> extends OperatorSubscriber<T> {
     }
   }
   next(value: T) {
+    const { _destination } = this;
     const result = tryUserFunction(this._tapNext, [value, this._subscription]);
     if (resultIsError(result)) {
-      this._destination.error(result.error);
+      _destination.error(result.error);
     } else {
-      this._destination.next(value);
+      _destination.next(value);
     }
   }
 
   error(err: any) {
+    const { _destination } = this;
     const result = tryUserFunction(this._tapError, [err]);
     if (resultIsError(result)) {
-      this._destination.error(result.error);
+      _destination.error(result.error);
     } else {
-      this._destination.error(err);
+      _destination.error(err);
     }
   }
 
   complete() {
+    const { _destination } = this;
     const result = tryUserFunction(this._tapComplete);
     if (resultIsError(result)) {
-      this._destination.error(result.error);
+      _destination.error(result.error);
     } else {
-      this._destination.complete();
+      _destination.complete();
     }
   }
 }

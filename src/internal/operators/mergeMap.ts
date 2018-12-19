@@ -1,86 +1,73 @@
-import { ObservableInput, OperatorFunction, FOType, Sink, SinkArg, Source } from 'rxjs/internal/types';
+import { ObservableInput, OperatorFunction } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { fromSource } from 'rxjs/internal/sources/fromSource';
+import { Subscriber } from 'rxjs/internal/Subscriber';
+import { OperatorSubscriber } from 'rxjs/internal/OperatorSubscriber';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
-import { lift } from 'rxjs/internal/util/lift';
+import { from } from 'rxjs/internal/create/from';
 
 export function mergeMap<T, R>(
   project: (value: T, index: number) => ObservableInput<R>,
   concurrent = Number.POSITIVE_INFINITY,
 ): OperatorFunction<T, R> {
-  return lift((source: Observable<T>, dest: Sink<R>, subs: Subscription) => {
-    let counter = 0;
-    let active = 0;
-    let outerComplete = false;
-    const buffer: Array<{outerValue: T, outerIndex: number}> = [];
+  return (source: Observable<T>) => source.lift(mergeMapOperator(project, concurrent));
+}
 
-    let startNextInner: () => void;
-    startNextInner = () => {
-      while (buffer.length > 0 && active < concurrent) {
-        active++;
-        const { outerValue, outerIndex } = buffer.shift();
+function mergeMapOperator<T, R>(project: (value: T, index: number) => ObservableInput<R>, concurrent: number) {
+  return function mergeMapLift(this: Subscriber<R>, source: Observable<T>, subscription: Subscription) {
+    return source.subscribe(new MergeMapSubscriber(subscription, this, project, concurrent), subscription);
+  };
+}
 
-        const innerSource = tryUserFunction(() => fromSource(project(outerValue, outerIndex)));
-        if (resultIsError(innerSource)) {
-          dest(FOType.ERROR, innerSource.error, subs);
-          subs.unsubscribe();
-          return;
-        }
+class MergeMapSubscriber<T, R> extends OperatorSubscriber<T> {
+  private _index = 0;
+  private _active = 0;
+  private _buffer: T[] = [];
+  private _complete = false;
 
-        const innerSubs = new Subscription();
-        subs.add(innerSubs);
+  constructor(
+    subscription: Subscription,
+    destination: Subscriber<R>,
+    private project: (value: T, index: number) => ObservableInput<R>,
+    private concurrent: number
+  ) {
+    super(subscription, destination);
+  }
 
-        // INNER subscription
-        innerSource(FOType.SUBSCRIBE, (type: FOType, v: SinkArg<R>, innerSubs: Subscription) => {
-          switch (type) {
-            case FOType.NEXT:
-              dest(FOType.NEXT, v, subs);
-              break;
-            case FOType.ERROR:
-              dest(FOType.ERROR, v, subs);
-              subs.unsubscribe();
-              break;
-            case FOType.COMPLETE:
-              subs.remove(innerSubs);
-              active--;
-              if (buffer.length > 0) {
-                startNextInner();
-              }
-              if (outerComplete && buffer.length == 0 && active === 0) {
-                dest(FOType.COMPLETE, undefined, subs);
-              }
+  next(value: T) {
+    this._buffer.push(value);
+    this._tryInnerSubscribe();
+  }
 
-            default:
+  complete() {
+    this._complete = true;
+    if (this._active === 0 && this._buffer.length === 0) {
+      this._destination.complete();
+    }
+  }
+
+  private _tryInnerSubscribe() {
+    const { _destination, _subscription } = this;
+    while (this._buffer.length > 0 && this._active < this.concurrent) {
+      this._active++;
+      const value = this._buffer.shift();
+      const result = tryUserFunction((value, index) => from(this.project(value, index)), [value, this._index++]);
+      if (resultIsError(result)) {
+        _destination.error(result.error);
+      } else {
+        _subscription.add(result.subscribe({
+          next: (value: R) => _destination.next(value),
+          error: (err: any) => _destination.error(err),
+          complete: () => {
+            this._active--;
+            if (this._buffer.length > 0) {
+              this._tryInnerSubscribe();
+            } else if (this._complete && this._active === 0) {
+              _destination.complete();
+            }
           }
-        }, innerSubs);
+        }));
       }
-    };
-
-    // OUTER subscription
-    source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>) => {
-      switch (t) {
-        case FOType.NEXT:
-          let outerIndex = counter++;
-          buffer.push({ outerValue: v, outerIndex });
-          startNextInner();
-          break;
-        case FOType.ERROR:
-          if (!subs.closed) {
-            dest(FOType.ERROR, v, subs);
-            subs.unsubscribe();
-          }
-          break;
-        case FOType.COMPLETE:
-          outerComplete = true;
-          if (buffer.length > 0) {
-            startNextInner();
-          } else if (active === 0) {
-            dest(FOType.COMPLETE, undefined, subs);
-          }
-          break;
-        default:
-      }
-    }, subs);
-  });
+    }
+  }
 }
