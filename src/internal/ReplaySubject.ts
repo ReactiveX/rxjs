@@ -18,7 +18,7 @@ export class ReplaySubject<T> extends Subject<T> {
   ) {
     super();
   }
-  
+
   protected _init(subscriber: Subscriber<T>) {
     this._cleanBuffer();
     for (let { value } of this._buffer) {
@@ -53,4 +53,3 @@ export class ReplaySubject<T> extends Subject<T> {
     }
   }
 }
-

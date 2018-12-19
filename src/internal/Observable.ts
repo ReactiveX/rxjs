@@ -13,13 +13,18 @@ export class Observable<T> {
   constructor(private _subscribe?: (subscriber: Subscriber<T>) => TeardownLogic) {}
 
   protected _init(subscriber: Subscriber<T>): TeardownLogic {
-    const result = tryUserFunction(this._init, subscriber);
-    if (resultIsError(result)) {
-      subscriber.error(result.error);
+    if (this._subscribe) {
+      const result = tryUserFunction(this._subscribe, [subscriber], this);
+      if (resultIsError(result)) {
+        subscriber.error(result.error);
+        return;
+      }
+      return result;
     }
   }
 
   subscribe(observer: PartialObserver<T>): Subscription;
+  subscribe(observer: PartialObserver<T>, subscription: Subscription): Subscription;
   subscribe(
     nextHandler?: (value: T, subscription: Subscription) => void,
     errorHandler?: (err: any) => void,
@@ -30,17 +35,31 @@ export class Observable<T> {
 
   subscribe(
     nextOrObserver?: PartialObserver<T>|((value: T, subscription: Subscription) => void),
-    errorHandler?: (err: any) => void,
+    errorHandler?: ((err: any) => void)|Subscription,
     completeHandler?: () => void,
     subscription?: Subscription,
   ): Subscription {
-    subscription = subscription || new Subscription();
+    if (typeof nextOrObserver === 'function') {
+      subscription = subscription || new Subscription();
+      errorHandler = typeof errorHandler === 'function' ? errorHandler : null;
+    } else {
+      if (errorHandler instanceof Subscription) {
+        subscription = errorHandler;
+      } else {
+        subscription = new Subscription();
+      }
+      errorHandler = null;
+    }
 
     const subscriber = nextOrObserver instanceof OperatorSubscriber
       ? nextOrObserver
-      : new SafeSubscriber(subscription, nextOrObserver, errorHandler, completeHandler);
+      : new SafeSubscriber(subscription, nextOrObserver, errorHandler as any, completeHandler);
 
-    subscription.add(this._operator ? this._operator.call(subscriber, this._source, subscription) : this._init(subscriber));
+    if (this._operator) {
+      this._operator.call(subscriber, this._source, subscription);
+    } else {
+      subscription.add(this._init(subscriber));
+    }
 
     return subscription;
   }
@@ -52,15 +71,54 @@ export class Observable<T> {
     return lifted;
   }
 
-
   forEach(nextHandler: (value: T) => void, subscription?: Subscription): Promise<void> {
     return new Promise((resolve, reject) => {
-      reject('not implemented');
+      let result: any;
+
+      let completed = false;
+      let errored = false;
+      if (subscription) {
+        subscription.add(() => {
+          if (!completed && !errored) {
+            const error = new Error('forEach aborted');
+            error.name = 'AbortError';
+            reject(error);
+          }
+        });
+      }
+
+      subscription = subscription || new Subscription();
+
+      this.subscribe({
+        next(value) {
+          result = tryUserFunction(nextHandler, [value]);
+          if (resultIsError(result)) {
+            errored = true;
+            reject(result.error);
+            subscription.unsubscribe();
+          }
+        },
+        error(err) {
+          errored = true;
+          reject(err);
+        },
+        complete() {
+          completed = true;
+          resolve(result);
+        }
+      }, subscription);
     });
   }
 
   toPromise(): Promise<T> {
-    return Promise.reject('not implented');
+    return new Promise<T>((resolve, reject) => {
+      this.subscribe({
+        _last: undefined,
+        next(value) { this._last = value; },
+        error(err) { reject(err); },
+        complete() { resolve(this._last); }
+      });
+    });
   }
 
   /* tslint:disable:max-line-length */

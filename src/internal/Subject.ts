@@ -73,7 +73,7 @@ export class Subject<T> extends Observable<T> implements Observer<T> {
   }
 
   private _throwIfDisposed() {
-    if (this._disposed) { 
+    if (this._disposed) {
       throw new ObjectUnsubscribedError();
     }
   }

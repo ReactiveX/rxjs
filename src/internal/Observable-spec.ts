@@ -7,7 +7,7 @@ import * as sinon from 'sinon';
 import { Subject } from './Subject';
 
 function expectFullObserver(val: any) {
-  expect(val).to.be.a('function');
+  expect(val).to.be.a('object');
   expect(val.next).to.be.a('function');
   expect(val.error).to.be.a('function');
   expect(val.complete).to.be.a('function');
@@ -71,11 +71,11 @@ describe('Observable', () => {
     });
 
     it('should reject promise when in error', () => {
-      return throwError('bad').forEach((x) => {
+      return throwError('bad').forEach(() => {
         throw new Error('should not be called');
       }).then(() => {
         throw new Error('should not complete');
-      }, (err) => {
+      }, (err: any) => {
         expect(err).to.equal('bad');
       });
     });
@@ -100,11 +100,11 @@ describe('Observable', () => {
 
     it('should handle a synchronous throw from the next handler', () => {
       const expected = 'I told, you Bobby Boucher, threes are the debil!';
-      const syncObservable = new Observable<number>((observer) => {
-        observer.next(1);
-        observer.next(2);
-        observer.next(3);
-        observer.next(4);
+      const syncObservable = new Observable<number>((subscriber) => {
+        subscriber.next(1);
+        subscriber.next(2);
+        subscriber.next(3);
+        subscriber.next(4);
       });
 
       const results: Array<number | Error> = [];
@@ -314,11 +314,7 @@ describe('Observable', () => {
         };
       });
 
-      source.subscribe({
-        error(err) {
-          /* noop: expected error */
-        }
-      });
+      source.subscribe();
 
       setTimeout(() => {
         let err;
@@ -634,58 +630,4 @@ describe('Observable', () => {
   //     consoleStub.restore();
   //   }
   // });
-});
-
-/** @test {Observable} */
-describe('Observable() without new', () => {
-  let testScheduler: TestScheduler;
-
-  beforeEach(() => {
-    testScheduler = new TestScheduler(assertDeepEquals);
-  });
-
-  //asDiagram('create(obs => { obs.next(1); })')
-  it('should create a cold observable that emits just 1', () => {
-    testScheduler.run(({ expectObservable }) => {
-      const e1 = Observable(obs => { obs.next(1); });
-      const expected = 'x';
-      expectObservable(e1).toBe(expected, { x: 1 });
-    });
-  });
-
-  it('should create an Observable', () => {
-    const result = Observable(() => {
-      //noop
-    });
-    expect(isObservable(result)).to.be.true;
-  });
-
-  it('should provide an observer to the function', () => {
-    let called = false;
-    const result = Observable(observer => {
-      called = true;
-      expectFullObserver(observer);
-      observer.complete();
-    });
-
-    expect(called).to.be.false;
-    result.subscribe(() => {
-      //noop
-    });
-    expect(called).to.be.true;
-  });
-
-  it('should send errors thrown in the passed function down the error path', (done) => {
-    Observable(() => {
-      throw new Error('this should be handled');
-    })
-    .subscribe({
-      error(err: Error) {
-        expect(err).to.exist
-          .and.be.instanceof(Error)
-          .and.have.property('message', 'this should be handled');
-        done();
-      }
-    });
-  });
 });

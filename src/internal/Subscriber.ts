@@ -8,9 +8,9 @@ export abstract class Subscriber<T> implements Observer<T> {
 
   constructor(protected _subscription: Subscription) {}
 
-  next(value: T): void {}
+  next(value: T): void { /* noop */ }
 
-  error(err: any): void {}
+  error(err: any): void { /* noop */ }
 
-  complete(): void {}
+  complete(): void { /* noop */ }
 }

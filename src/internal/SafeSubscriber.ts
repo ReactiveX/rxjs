@@ -6,7 +6,7 @@ import { noop } from './util/noop';
 
 const DEFAULT_ERROR_HANDLER = (err: any) => {
   setTimeout(() => { throw err; });
-}
+};
 
 export class SafeSubscriber<T> extends Subscriber<T> {
   private _next: (value: T, subscription: Subscription) => void;
@@ -41,6 +41,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
   error(err: any) {
     if (!this.closed) {
       this._error(err);
+      this._subscription.unsubscribe();
     } else {
       console.warn('Subscription called error multiple times');
     }
@@ -49,6 +50,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
   complete() {
     if (!this.closed) {
       this._complete();
+      this._subscription.unsubscribe();
     }
   }
 }

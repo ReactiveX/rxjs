@@ -22,5 +22,5 @@ export function of<T>(...values: T[]): Observable<T> {
       subscriber.next(values[i]);
     }
     subscriber.complete();
-  })
+  });
 }

@@ -34,7 +34,7 @@ export { of } from 'rxjs/internal/create/of';
 // export { publishReplay } from 'rxjs/internal/create/publishReplay';
 // export { race } from 'rxjs/internal/create/race';
 // export { range } from 'rxjs/internal/create/range';
-// export { throwError } from 'rxjs/internal/create/throwError';
+export { throwError } from 'rxjs/internal/create/throwError';
 // export { timer } from 'rxjs/internal/create/timer';
 // export { using } from 'rxjs/internal/create/using';
 // export { zip } from 'rxjs/internal/create/zip';

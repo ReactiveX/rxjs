@@ -1,6 +1,5 @@
-import { Subject } from "./Subject";
-import { Subscriber } from "./Subscriber";
-
+import { Subject } from './Subject';
+import { Subscriber } from './Subscriber';
 
 export class BehaviorSubject<T> extends Subject<T> {
   private _lastValue: T;

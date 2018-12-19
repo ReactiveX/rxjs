@@ -1,6 +1,6 @@
-import { Observable } from "./Observable";
-import { Subject } from "./Subject";
-import { Subscription } from "./Subscription";
+import { Observable } from './Observable';
+import { Subject } from './Subject';
+import { Subscription } from './Subscription';
 
 export class ConnectableObservable<T> extends Observable<T> {
   private _connection: Subscription;

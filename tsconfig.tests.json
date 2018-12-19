@@ -12,6 +12,12 @@
     },
     "outDir": "./tmp/tests/rxjs",
   },
+  "include": [
+    "./src/index.ts",
+    "./src/operators.ts",
+    "./src/testing.ts",
+    "./src/**/*-spec.ts",
+  ],
   "exclude": [
     "./package"
   ]

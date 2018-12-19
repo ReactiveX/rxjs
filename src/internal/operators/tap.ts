@@ -7,7 +7,6 @@ import { isPartialObserver } from '../util/isPartialObserver';
 import { noop } from '../util/noop';
 import { tryUserFunction, resultIsError } from '../util/userFunction';
 
-
 export function tap<T>(
   observer: PartialObserver<T>
 ): OperatorFunction<T, T>;
@@ -38,8 +37,8 @@ export function tapOperator<T>(
   completeHandler?: () => void,
 ) {
   return function tapLift(this: Subscriber<T>, source: Observable<T>, subscription: Subscription) {
-    return source.subscribe(new TapSubscriber(subscription, this, nextOrObserver, errorHandler, completeHandler))
-  }
+    return source.subscribe(new TapSubscriber(subscription, this, nextOrObserver, errorHandler, completeHandler), subscription);
+  };
 }
 
 class TapSubscriber<T> extends OperatorSubscriber<T> {
@@ -67,7 +66,7 @@ class TapSubscriber<T> extends OperatorSubscriber<T> {
     }
   }
   next(value: T) {
-    const result = tryUserFunction(this._tapNext, value, this._subscription);
+    const result = tryUserFunction(this._tapNext, [value, this._subscription]);
     if (resultIsError(result)) {
       this._destination.error(result.error);
     } else {
@@ -76,7 +75,7 @@ class TapSubscriber<T> extends OperatorSubscriber<T> {
   }
 
   error(err: any) {
-    const result = tryUserFunction(this._tapError, err);
+    const result = tryUserFunction(this._tapError, [err]);
     if (resultIsError(result)) {
       this._destination.error(result.error);
     } else {
