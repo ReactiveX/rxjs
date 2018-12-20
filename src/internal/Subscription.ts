@@ -4,8 +4,8 @@ import { isSubscription } from 'rxjs/internal/util/isSubscription';
 import { tryUserFunction, resultIsError } from './util/userFunction';
 import { UnsubscriptionError } from './util/UnsubscriptionError';
 export class Subscription {
-  private _teardowns: TeardownLogic[];
-  private _closed = false;
+  protected _teardowns: TeardownLogic[];
+  protected _closed = false;
 
   get closed() {
     return this._closed;
