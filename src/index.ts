@@ -19,7 +19,7 @@ export { from } from 'rxjs/internal/create/from';
 // export { fromEvent } from 'rxjs/internal/create/fromEvent';
 // export { fromEventPattern } from 'rxjs/internal/create/fromEventPattern';
 // export { fromScheduled } from 'rxjs/internal/create/fromScheduled';
-// export { iif } from 'rxjs/internal/create/iif';
+export { iif } from 'rxjs/internal/create/iif';
 export { interval } from 'rxjs/internal/create/interval';
 export { merge } from 'rxjs/internal/create/merge';
 // export { multicast } from 'rxjs/internal/create/multicast';

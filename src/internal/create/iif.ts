@@ -87,7 +87,6 @@ import { defer } from './defer';
  * @return {Observable} Either first or second Observable, depending on condition.
  * @static true
  * @name iif
- * @owner Observable
  */
 export function iif<T, F>(
   condition: () => boolean,
