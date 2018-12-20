@@ -6,11 +6,13 @@ import { OperatorSubscriber } from 'rxjs/internal/OperatorSubscriber';
 import { ArgumentOutOfRangeError } from 'rxjs/internal/util/ArgumentOutOfRangeError';
 import { EMPTY } from 'rxjs/internal/EMPTY';
 
+export function take(total: 0): OperatorFunction<any, never>;
+export function take<T>(total: number): OperatorFunction<T, T>;
 export function take<T>(total: number): OperatorFunction<T, T> {
   if (total < 0) {
     throw new ArgumentOutOfRangeError();
   }
-  return (source: Observable<T>) => total === 0 ? EMPTY : source.lift(takeOperator(total));
+  return (source: Observable<T>) => total === 0 ? EMPTY as Observable<T> : source.lift(takeOperator(total));
 }
 
 function takeOperator<T>(total: number) {

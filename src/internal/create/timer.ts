@@ -1,5 +1,5 @@
-import { FOType, Sink, SchedulerLike } from 'rxjs/internal/types';
-import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
+import { SchedulerLike } from 'rxjs/internal/types';
+import { Subscriber } from 'rxjs/internal/Subscriber';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
 import { Observable } from 'rxjs/internal/Observable';
@@ -73,32 +73,25 @@ export function timer(dueTime: number | Date = 0,
     scheduler = asyncScheduler;
   }
 
-  return sourceAsObservable((type = FOType.SUBSCRIBE, dest: Sink<number>, subs: Subscription) => {
+  return new Observable<number>(subscriber => {
     const due = isNumeric(dueTime)
       ? (dueTime as number)
       : (+dueTime - scheduler.now());
-
-    if (type === FOType.SUBSCRIBE) {
-      scheduler.schedule(timerDelayWork as any, due, {
-        dest,
-        scheduler,
-        subs,
-        i: 0,
-        period,
-      }, subs);
-    }
+    const subscription = new Subscription();
+    scheduler.schedule(timerDelayWork, due, { subscriber, scheduler, subscription, i: 0, period }, subscription);
+    return subscription;
   });
 }
 
-function timerDelayWork<T>(state: { dest: Sink<T>, scheduler: SchedulerLike, subs: Subscription, i: number, period: number }) {
-  const { dest, scheduler, subs, period } = state;
-  if (subs.closed) { return; }
-  dest(FOType.NEXT, state.i++, subs);
-  if (!subs.closed) {
+function timerDelayWork(state: { subscriber: Subscriber<number>, scheduler: SchedulerLike, subscription: Subscription, i: number, period: number }) {
+  const { subscriber, scheduler, subscription, period } = state;
+  if (subscription.closed) { return; }
+  subscriber.next(state.i++);
+  if (!subscription.closed) {
     if (period >= 0) {
-      scheduler.schedule(timerDelayWork as any, period, state, subs);
+      scheduler.schedule(timerDelayWork as any, period, state, subscription);
     } else {
-      dest(FOType.COMPLETE, undefined, subs);
+      subscriber.complete();
     }
   }
 }

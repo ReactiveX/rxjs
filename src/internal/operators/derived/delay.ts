@@ -3,9 +3,6 @@ import { asyncScheduler } from 'rxjs/internal/scheduler/asyncScheduler';
 import { mergeMap } from 'rxjs/internal/operators/mergeMap';
 import { mapTo } from 'rxjs/internal/operators/derived/mapTo';
 import { timer } from 'rxjs/internal/create/timer';
-import { concat } from 'rxjs/internal/create/concat';
-import { Observable } from 'rxjs/internal/Observable';
-import { ignoreElements } from 'rxjs/internal/operators/ignoreElements';
 import { isNumeric } from 'rxjs/internal/util/isNumeric';
 
 /**
