@@ -1,12 +1,12 @@
 import { dematerialize } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, NotificationLike } from 'rxjs';
 import { expect } from 'chai';
 
 describe('dematerialize', () => {
   it('should make a stream from notifications', () => {
     const results: any[] = [];
 
-    of(
+    of<NotificationLike<number>>(
       { kind: 'N', value: 1 },
       { kind: 'N', value: 2 },
       { kind: 'N', value: 3 },
@@ -26,7 +26,7 @@ describe('dematerialize', () => {
   it('should handle error notifications', () => {
     const results: any[] = [];
 
-    of(
+    of<NotificationLike<number>>(
       { kind: 'N', value: 1 },
       { kind: 'N', value: 2 },
       { kind: 'N', value: 3 },

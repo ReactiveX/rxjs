@@ -1,31 +1,34 @@
-import { OperatorFunction, FOType, Sink, SinkArg } from 'rxjs/internal/types';
+import { OperatorFunction } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { lift } from 'rxjs/internal/util/lift';
 import { Notification } from 'rxjs/internal/Notification';
+import { Subscriber } from '../Subscriber';
+import { OperatorSubscriber } from '../OperatorSubscriber';
 
-export function materialize<T>(includeSubscriptionNotifications = false): OperatorFunction<T, Notification<T>> {
-  return lift((source: Observable<T>, dest: Sink<Notification<T>>, subs: Subscription) => {
-    if (includeSubscriptionNotifications) {
-      subs.add(() => dest(FOType.NEXT, { kind: 'U' }, subs));
-      dest(FOType.NEXT, { kind: 'S' }, subs);
-    }
-    source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
-      switch (t) {
-        case FOType.NEXT:
-          dest(FOType.NEXT, Notification.createNext(v), subs);
-          break;
-        case FOType.ERROR:
-          dest(FOType.NEXT, Notification.createError(v), subs);
-          dest(FOType.COMPLETE, undefined, subs);
-          break;
-        case FOType.COMPLETE:
-          dest(FOType.NEXT, Notification.createComplete(), subs);
-          dest(FOType.COMPLETE, undefined, subs);
-          break;
-        default:
-          break;
-      }
-    }, subs);
-  });
+export function materialize<T>(): OperatorFunction<T, Notification<T>> {
+  return (source: Observable<T>) => source.lift(materializeOperator());
+}
+
+function materializeOperator<T>() {
+  return function materializeLift(this: Subscriber<Notification<T>>, source: Observable<T>, subscription: Subscription) {
+    return source.subscribe(new MaterializeSubscriber(subscription, this), subscription);
+  };
+}
+
+class MaterializeSubscriber<T> extends OperatorSubscriber<T> {
+  next(value: T) {
+    this._destination.next(Notification.createNext(value));
+  }
+
+  error(err: any) {
+    const { _destination } = this;
+    _destination.next(Notification.createError(err));
+    _destination.complete();
+  }
+
+  complete() {
+    const { _destination } = this;
+    _destination.next(Notification.createComplete());
+    _destination.complete();
+  }
 }

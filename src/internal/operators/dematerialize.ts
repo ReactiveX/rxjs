@@ -1,31 +1,34 @@
-import { lift } from 'rxjs/internal/util/lift';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { FOType, OperatorFunction, NotificationLike, Sink, SinkArg } from 'rxjs/internal/types';
+import { OperatorFunction, NotificationLike } from 'rxjs/internal/types';
+import { Subscriber } from '../Subscriber';
+import { OperatorSubscriber } from '../OperatorSubscriber';
 
 export function dematerialize<T>(): OperatorFunction<NotificationLike<T>, T> {
-  return lift((source: Observable<NotificationLike<T>>, dest: Sink<T>, subs: Subscription) => {
-    source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<NotificationLike<T>>, subs: Subscription) => {
-      if (t === FOType.NEXT) {
-        const notification = v as NotificationLike<T>;
-        switch (notification.kind) {
-          case 'N':
-            dest(FOType.NEXT, notification.value, subs);
-            break;
-          case 'C':
-            dest(FOType.COMPLETE, undefined, subs);
-            subs.unsubscribe();
-            break;
-          case 'E':
-            dest(FOType.ERROR, notification.error, subs);
-            subs.unsubscribe();
-            break;
-          default:
-            throw new Error(`unhandled notification type ${notification.kind}`);
-        }
-      } else {
-        dest(t, v, subs);
-      }
-    }, subs);
-  });
+  return (source: Observable<NotificationLike<T>>) => source.lift(dematerializeOperator());
+}
+
+function dematerializeOperator<T>() {
+  return function dematerializeLift(this: Subscriber<T>, source: Observable<NotificationLike<T>>, subscription: Subscription) {
+    return source.subscribe(new DematerializeSubscriber(subscription, this), subscription);
+  };
+}
+
+class DematerializeSubscriber<T> extends OperatorSubscriber<NotificationLike<T>> {
+  next(notification: NotificationLike<T>) {
+    const { _destination } = this;
+    switch (notification.kind) {
+      case 'N':
+        _destination.next(notification.value);
+        break;
+      case 'C':
+        _destination.complete();
+        break;
+      case 'E':
+        _destination.error(notification.error);
+        break;
+      default:
+        throw new Error(`unhandled notification type ${notification.kind}`);
+    }
+  }
 }

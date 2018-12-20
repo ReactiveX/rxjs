@@ -4,7 +4,7 @@
 // export { catchError } from 'rxjs/internal/operators/catchError';
 // export { debounce } from 'rxjs/internal/operators/debounce';
 export { defaultIfEmpty } from 'rxjs/internal/operators/defaultIfEmpty';
-// export { dematerialize } from 'rxjs/internal/operators/dematerialize';
+export { dematerialize } from 'rxjs/internal/operators/dematerialize';
 // export { distinct } from 'rxjs/internal/operators/distinct';
 // export { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
 // export { every } from 'rxjs/internal/operators/every';
@@ -15,7 +15,7 @@ export { defaultIfEmpty } from 'rxjs/internal/operators/defaultIfEmpty';
 // export { isEmpty } from 'rxjs/internal/operators/isEmpty';
 // export { ignoreElements } from 'rxjs/internal/operators/ignoreElements';
 export { map } from 'rxjs/internal/operators/map';
-// export { materialize } from 'rxjs/internal/operators/materialize';
+export { materialize } from 'rxjs/internal/operators/materialize';
 export { mergeMap } from 'rxjs/internal/operators/mergeMap';
 // export { mergeScan } from 'rxjs/internal/operators/mergeScan';
 // export { multicastAs } from 'rxjs/internal/operators/multicastAs';
