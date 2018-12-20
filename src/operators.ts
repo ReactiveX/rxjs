@@ -10,7 +10,7 @@ export { dematerialize } from 'rxjs/internal/operators/dematerialize';
 // export { every } from 'rxjs/internal/operators/every';
 // export { exhaustMap } from 'rxjs/internal/operators/exhaustMap';
 // export { expand } from 'rxjs/internal/operators/expand';
-// export { filter } from 'rxjs/internal/operators/filter';
+export { filter } from 'rxjs/internal/operators/filter';
 // export { groupBy } from 'rxjs/internal/operators/groupBy';
 // export { isEmpty } from 'rxjs/internal/operators/isEmpty';
 // export { ignoreElements } from 'rxjs/internal/operators/ignoreElements';
