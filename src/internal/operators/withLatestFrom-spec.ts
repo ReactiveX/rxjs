@@ -92,9 +92,9 @@ describe('withLatestFrom operator', () => {
       };
 
       const result = e1.pipe(
-        mergeMap((x: string) => of(x)),
+        mergeMap(x => of(x)),
         withLatestFrom(e2, e3),
-        mergeMap((x: string) => of(x))
+        mergeMap(x => of(x))
       );
 
       expectObservable(result, unsub).toBe(expected, values);

@@ -44,7 +44,7 @@ export { tap } from 'rxjs/internal/operators/tap';
 // export { window } from 'rxjs/internal/operators/window';
 // export { windowCount } from 'rxjs/internal/operators/windowCount';
 // export { windowToggle } from 'rxjs/internal/operators/windowToggle';
-// export { withLatestFrom } from 'rxjs/internal/operators/withLatestFrom';
+export { withLatestFrom } from 'rxjs/internal/operators/withLatestFrom';
 
 // // ################ DERIVED OPERATORS ##################
 // export { auditTime } from 'rxjs/internal/operators/derived/auditTime';

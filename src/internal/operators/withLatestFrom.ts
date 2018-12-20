@@ -1,10 +1,11 @@
-import { OperatorFunction, ObservableInput, Sink, FOType, SinkArg } from 'rxjs/internal/types';
-import { lift } from 'rxjs/internal/util/lift';
+import { OperatorFunction, ObservableInput } from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Observable } from 'rxjs/internal/Observable';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
-import { fromSource } from 'rxjs/internal/sources/fromSource';
 import { identity } from 'rxjs/internal/util/identity';
+import { OperatorSubscriber } from '../OperatorSubscriber';
+import { Subscriber } from '../Subscriber';
+import { from } from '../create/from';
 
 /* tslint:disable:max-line-length */
 export function withLatestFrom<T, R>(project: (v1: T) => R): OperatorFunction<T, R>;
@@ -69,37 +70,50 @@ export function withLatestFrom<T, R>(...args: Array<ObservableInput<any>>): Oper
     ? args[0] as Array<ObservableInput<any>>
     : args;
 
-  return lift((source: Observable<T>, dest: Sink<R>, subs: Subscription) => {
-    const others = tryUserFunction(() => otherSources.map(fromSource));
-    if (resultIsError(others)) {
-      dest(FOType.ERROR, others.error, subs);
-      subs.unsubscribe();
-      return;
-    }
-    let sources = [source, ...others];
-    let cache = sources.map(() => undefined);
-    let hasValue = sources.map(() => false);
-    let allHaveValues = false;
+  return (source: Observable<T>) => source.lift(withLatestFromOperator(otherSources));
+}
 
-    for (let i = 0; i < sources.length && !subs.closed; i++) {
-      const src = sources[i];
-      const innerSubs = new Subscription();
-      subs.add(innerSubs);
-      src(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<any>, innerSubs: Subscription) => {
-        if (t === FOType.NEXT) {
-          if (!allHaveValues) {
-            hasValue[i] = true;
-            allHaveValues = hasValue.every(identity);
+function withLatestFromOperator<T, R>(otherSources: ObservableInput<any>[]) {
+  return function withLatestFromLift(this: Subscriber<R>, source: Observable<T>, subscription: Subscription) {
+    return source.subscribe(new WithLatestFromSubscriber(subscription, this, otherSources), subscription);
+  };
+}
+
+class WithLatestFromSubscriber<T, R> extends OperatorSubscriber<T> {
+  private _cache: any[];
+  private _hasValue: boolean[];
+  private _allHaveValues = false;
+
+  constructor(subscription: Subscription, destination: Subscriber<R>, private _otherSources: ObservableInput<any>[]) {
+    super(subscription, destination);
+    this._cache = new Array(_otherSources.length);
+    this._hasValue = _otherSources.map(() => false);
+
+    for (let i = 0; i < _otherSources.length && !subscription.closed; i++) {
+      const result = tryUserFunction(from, [_otherSources[i]]);
+      if (resultIsError(result)) {
+        destination.error(result.error);
+        return;
+      } else {
+        subscription.add(result.subscribe({
+          next: (value: any) => {
+            if (!this._allHaveValues) {
+              this._hasValue[i] = true;
+              this._allHaveValues = this._hasValue.every(identity);
+            }
+            this._cache[i] = value;
+          },
+          error(err: any) {
+            destination.error(err);
           }
-          cache[i] = v;
-          if (allHaveValues && i === 0) {
-            dest(t, cache.slice(), subs);
-          }
-        } else if (t === FOType.ERROR || i === 0) {
-          dest(t, v, subs);
-          subs.unsubscribe();
-        }
-      }, innerSubs);
+        }));
+      }
     }
-  });
+  }
+
+  next(value: T) {
+    if (this._allHaveValues) {
+      this._destination.next([value, ...this._cache]);
+    }
+  }
 }
