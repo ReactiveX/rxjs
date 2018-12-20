@@ -1,7 +1,6 @@
 import { Observable } from 'rxjs/internal/Observable';
-import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { FOType, Sink } from 'rxjs/internal/types';
+import { Subscriber } from '../Subscriber';
 
 export interface NodeStyleEventEmitter {
   addListener: (eventName: string | symbol, handler: NodeEventHandler) => this;
@@ -168,18 +167,25 @@ export function fromEvent<T>(
   eventName: string,
   options?: EventListenerOptions,
 ): Observable<T> {
-  return sourceAsObservable((type: FOType.SUBSCRIBE, sink: Sink<T>, subs: Subscription) => {
+  return new Observable<T>(subscriber => {
+    const subscription = new Subscription();
     function handler(e: T) {
       const arg = arguments.length > 1 ? Array.from(arguments) : e;
-      sink(FOType.NEXT, arg, subs);
+      subscriber.next(arg as T);
     }
-    setupSubscription(target, eventName, handler, subs, sink,  options as EventListenerOptions);
+    setupSubscription(target, eventName, handler, subscription, subscriber, options as EventListenerOptions);
+    return subscription;
   });
 }
 
-function setupSubscription<T>(sourceObj: FromEventTarget<T>, eventName: string,
-                              handler: (...args: any[]) => void, subs: Subscription, sink: Sink<T>,
-                              options?: EventListenerOptions) {
+function setupSubscription<T>(
+  sourceObj: FromEventTarget<T>,
+  eventName: string,
+  handler: (...args: any[]) => void,
+  subscription: Subscription,
+  subscriber: Subscriber<T>,
+  options?: EventListenerOptions
+) {
   let unsubscribe: () => void;
   if (isEventTarget(sourceObj)) {
     const source = sourceObj;
@@ -195,14 +201,14 @@ function setupSubscription<T>(sourceObj: FromEventTarget<T>, eventName: string,
     unsubscribe = () => source.removeListener(eventName, handler as NodeEventHandler);
   } else if (sourceObj && (sourceObj as any).length) {
     for (let i = 0, len = (sourceObj as any).length; i < len; i++) {
-      setupSubscription(sourceObj[i], eventName, handler, subs, sink, options);
+      setupSubscription(sourceObj[i], eventName, handler, subscription, subscriber, options);
     }
   } else {
-    sink(FOType.ERROR, new TypeError('Invalid event target'), subs);
+    subscriber.error(new TypeError('Invalid event target'));
     return;
   }
 
-  subs.add(unsubscribe);
+  subscription.add(unsubscribe);
 }
 
 function isNodeStyleEventEmitter(sourceObj: any): sourceObj is NodeStyleEventEmitter {
