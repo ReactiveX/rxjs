@@ -1,10 +1,9 @@
-import { ObservableInput, FOType, Sink, SinkArg } from 'rxjs/internal/types';
+import { ObservableInput } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
-import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
-import { fromSource } from 'rxjs/internal/sources/fromSource';
 import { EMPTY } from 'rxjs/internal/EMPTY';
+import { from } from './from';
 
 /* tslint:disable:max-line-length */
 // forkJoin([a$, b$, c$]);
@@ -144,37 +143,31 @@ export function forkJoin<T>(
     return forkJoin(...(sources[0] as ObservableInput<T>[]));
   }
 
-  const validSources = sources as ObservableInput<T>[];
-
-  return sourceAsObservable((type: FOType.SUBSCRIBE, sink: Sink<T[]>, subs: Subscription) => {
-    if (type === FOType.SUBSCRIBE) {
-      const state = validSources.map(toEmptyState);
-
-      for (let i = 0; i < validSources.length && !subs.closed; i++) {
-        const source = tryUserFunction(fromSource, validSources[i]);
-        if (resultIsError(source)) {
-          sink(FOType.ERROR, source.error, subs);
-        } else {
-          source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
-            const s = state[i];
-            if (t === FOType.NEXT) {
-              s.hasValue = true;
-              s.value = v;
-            } else if (t === FOType.COMPLETE) {
-              s.completed = true;
-              if (!s.hasValue || state.every(isComplete)) {
-                if (state.every(hasValue)) {
-                  sink(FOType.NEXT, state.map(getValue), subs);
-                }
-                sink(FOType.COMPLETE, undefined, subs);
-              }
-            } else if (t === FOType.ERROR) {
-              sink(FOType.ERROR, v, subs);
+  return new Observable<T[]>(subscriber => {
+    const state = sources.map(toEmptyState);
+    const subscription = new Subscription();
+    for (let i = 0; i < sources.length && !subscriber.closed; i++) {
+      const source = from(sources[i] as ObservableInput<T>);
+      subscription.add(source.subscribe({
+        next(value: T) {
+          const s = state[i];
+          s.hasValue = true;
+          s.value = value;
+        },
+        error(err) { subscriber.error(err); },
+        complete() {
+          const s = state[i];
+          s.completed = true;
+          if (!s.hasValue || state.every(isComplete)) {
+            if (state.every(hasValue)) {
+              subscriber.next(state.map(getValue) as T[]);
             }
-          }, subs);
+            subscriber.complete();
+          }
         }
-      }
+      }));
     }
+    return subscription;
   });
 }
 
@@ -193,6 +186,6 @@ function hasValue(s: { hasValue: boolean }) {
   return s.hasValue;
 }
 
-function getValue<T>(o: { value: T } ) {
+function getValue<T>(o: { value: T } ): T {
   return o.value;
 }
