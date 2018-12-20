@@ -45,10 +45,10 @@ export class Observable<T> {
     } else {
       if (errorHandler instanceof Subscription) {
         subscription = errorHandler;
+        errorHandler = null;
       } else {
         subscription = new Subscription();
       }
-      errorHandler = null;
     }
 
     const subscriber = nextOrObserver instanceof OperatorSubscriber
