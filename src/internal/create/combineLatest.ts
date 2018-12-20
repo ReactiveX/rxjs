@@ -1,10 +1,9 @@
 import { ObservableInput, FOType, Sink, Source, SinkArg } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
-import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { fromSource } from 'rxjs/internal/sources/fromSource';
 import { identity } from 'rxjs/internal/util/identity';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
+import { from } from 'rxjs/internal/create/from';
 
 /* tslint:disable:max-line-length */
 export function combineLatest<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>): Observable<[T, T2]>;
@@ -17,52 +16,38 @@ export function combineLatest<R>(array: ObservableInput<any>[]): Observable<R>;
 export function combineLatest<T>(...observables: Array<ObservableInput<T>>): Observable<T[]>;
 /* tslint:enable:max-line-length */
 
-export function combineLatest<T>(...sources: ObservableInput<T>[]): Observable<T> {
+export function combineLatest<T>(...sources: ObservableInput<T>[]): Observable<T[]> {
   if (sources && sources.length === 1 && Array.isArray(sources[0])) {
     sources = sources[0] as any;
   }
-  return sourceAsObservable(combineLatestSource(sources));
-}
+  return new Observable<T[]>(subscriber => {
+    const values = new Array(sources.length);
+    let emittedOnce = sources.map(() => false);
+    let completed = sources.map(() => false);
+    let hasValues = false;
+    const subscription = new Subscription();
 
-export function combineLatestSource<T>(sources: ObservableInput<T>[]): Source<T> {
-  return (type: FOType, dest: Sink<T>, subs: Subscription) => {
-    if (type === FOType.SUBSCRIBE) {
-      const values = new Array(sources.length);
-      let emittedOnce = sources.map(() => false);
-      let completed = sources.map(() => false);
-      let hasValues = false;
-
-      for (let s = 0; s < sources.length; s++) {
-        const source = sources[s];
-        const src = tryUserFunction(fromSource, source);
-        if (resultIsError(src)) {
-          dest(FOType.ERROR, src.error, subs);
-          return;
-        }
-
-        src(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, subs: Subscription) => {
-          switch (t) {
-            case FOType.NEXT:
-              values[s] = v;
-              emittedOnce[s] = true;
-              if (hasValues || (hasValues = emittedOnce.every(identity))) {
-                dest(FOType.NEXT, values.slice(0), subs);
-              }
-              break;
-            case FOType.ERROR:
-              dest(t, v, subs);
-              break;
-            case FOType.COMPLETE:
-              completed[s] = true;
-              if (completed.every(identity)) {
-                dest(FOType.COMPLETE, undefined, subs);
-              }
-              break;
-            default:
-              break;
+    for (let s = 0; s < sources.length; s++) {
+      subscription.add(from(sources[s]).subscribe({
+        next(value: T) {
+          values[s] = value;
+          emittedOnce[s] = true;
+          if (hasValues || (hasValues = emittedOnce.every(identity))) {
+            subscriber.next(values.slice(0));
           }
-        }, subs);
-      }
+        },
+        error(err: any) {
+          subscriber.error(err);
+        },
+        complete() {
+          completed[s] = true;
+          if (completed.every(identity)) {
+            subscriber.complete();
+          }
+        }
+      }));
     }
-  };
+
+    return subscription;
+  });
 }
