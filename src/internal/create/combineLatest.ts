@@ -22,17 +22,22 @@ export function combineLatest<T>(...sources: ObservableInput<T>[]): Observable<T
   }
   return new Observable<T[]>(subscriber => {
     const values = new Array(sources.length);
-    let emittedOnce = sources.map(() => false);
-    let completed = sources.map(() => false);
-    let hasValues = false;
+    let emittedOnce = 0;
+    let allHaveEmittedOnce = false;
+    let completed = 0;
     const subscription = new Subscription();
 
     for (let s = 0; s < sources.length; s++) {
+      let first = true;
       subscription.add(from(sources[s]).subscribe({
         next(value: T) {
           values[s] = value;
-          emittedOnce[s] = true;
-          if (hasValues || (hasValues = emittedOnce.every(identity))) {
+          if (!allHaveEmittedOnce && first) {
+            emittedOnce++;
+            first = false;
+            allHaveEmittedOnce = emittedOnce === sources.length;
+          }
+          if (allHaveEmittedOnce) {
             subscriber.next(values.slice(0));
           }
         },
@@ -40,8 +45,8 @@ export function combineLatest<T>(...sources: ObservableInput<T>[]): Observable<T
           subscriber.error(err);
         },
         complete() {
-          completed[s] = true;
-          if (completed.every(identity)) {
+          completed++;
+          if (completed === sources.length) {
             subscriber.complete();
           }
         }
