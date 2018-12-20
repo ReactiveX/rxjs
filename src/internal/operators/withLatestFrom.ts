@@ -81,13 +81,12 @@ function withLatestFromOperator<T, R>(otherSources: ObservableInput<any>[]) {
 
 class WithLatestFromSubscriber<T, R> extends OperatorSubscriber<T> {
   private _cache: any[];
-  private _hasValue: boolean[];
+  private _hasValue = 0;
   private _allHaveValues = false;
 
   constructor(subscription: Subscription, destination: Subscriber<R>, private _otherSources: ObservableInput<any>[]) {
     super(subscription, destination);
     this._cache = new Array(_otherSources.length);
-    this._hasValue = _otherSources.map(() => false);
 
     for (let i = 0; i < _otherSources.length && !subscription.closed; i++) {
       const result = tryUserFunction(from, [_otherSources[i]]);
@@ -95,11 +94,13 @@ class WithLatestFromSubscriber<T, R> extends OperatorSubscriber<T> {
         destination.error(result.error);
         return;
       } else {
+        let first = true;
         subscription.add(result.subscribe({
           next: (value: any) => {
-            if (!this._allHaveValues) {
-              this._hasValue[i] = true;
-              this._allHaveValues = this._hasValue.every(identity);
+            if (!this._allHaveValues && first) {
+              first = false;
+              this._hasValue++;
+              this._allHaveValues = this._hasValue === _otherSources.length;
             }
             this._cache[i] = value;
           },
