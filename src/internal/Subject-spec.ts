@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import { Subject, Observable, ObjectUnsubscribedError, of, isObservable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { assertDeepEquals } from './test_helpers/assertDeepEquals';
-import { delay } from 'rxjs/operators';
 import { isSubjectLike } from './util/isSubjectLike';
 
 /** @test {Subject} */
@@ -26,7 +25,7 @@ describe('Subject', () => {
     subject.complete();
   });
 
-  it('should pump values to multiple subscribers', (done: MochaDone) => {
+  it('should pump values to multiple subscribers', () => {
     const subject = new Subject<string>();
     const expected = ['foo', 'bar'];
 
@@ -39,7 +38,7 @@ describe('Subject', () => {
 
     subject.subscribe(function (x) {
       expect(x).to.equal(expected[j++]);
-    }, null, done);
+    });
 
     subject.next('foo');
     subject.next('bar');
@@ -290,97 +289,97 @@ describe('Subject', () => {
     done();
   });
 
-  it('should work as a function to create a FrankenSubject', () => {
-    expect(Subject).to.be.a('function');
-    const source = of(1, 2, 3, 4, 5);
-    const nexts: any[] = [];
-    const output: number[] = [];
+  // it('should work as a function to create a FrankenSubject', () => {
+  //   expect(Subject).to.be.a('function');
+  //   const source = of(1, 2, 3, 4, 5);
+  //   const nexts: any[] = [];
+  //   const output: number[] = [];
 
-    let error: any;
-    let complete = false;
-    let outputComplete = false;
+  //   let error: any;
+  //   let complete = false;
+  //   let outputComplete = false;
 
-    const observer = {
-      closed: false,
-      next: function (x: string) {
-        nexts.push(x);
-      },
-      error: function (err: any) {
-        error = err;
-        this.closed = true;
-      },
-      complete: function () {
-        complete = true;
-        this.closed = true;
-      }
-    };
+  //   const observer = {
+  //     closed: false,
+  //     next: function (x: string) {
+  //       nexts.push(x);
+  //     },
+  //     error: function (err: any) {
+  //       error = err;
+  //       this.closed = true;
+  //     },
+  //     complete: function () {
+  //       complete = true;
+  //       this.closed = true;
+  //     }
+  //   };
 
-    const sub = Subject(observer, source);
+  //   const sub = Subject(observer, source);
 
-    sub.subscribe(function (x) {
-      output.push(x);
-    }, null, () => {
-      outputComplete = true;
-    });
+  //   sub.subscribe(function (x) {
+  //     output.push(x);
+  //   }, null, () => {
+  //     outputComplete = true;
+  //   });
 
-    sub.next('a');
-    sub.next('b');
-    sub.next('c');
-    sub.complete();
+  //   sub.next('a');
+  //   sub.next('b');
+  //   sub.next('c');
+  //   sub.complete();
 
-    expect(nexts).to.deep.equal(['a', 'b', 'c']);
-    expect(complete).to.be.true;
-    expect(error).to.be.a('undefined');
+  //   expect(nexts).to.deep.equal(['a', 'b', 'c']);
+  //   expect(complete).to.be.true;
+  //   expect(error).to.be.a('undefined');
 
-    expect(output).to.deep.equal([1, 2, 3, 4, 5]);
-    expect(outputComplete).to.be.true;
-  });
+  //   expect(output).to.deep.equal([1, 2, 3, 4, 5]);
+  //   expect(outputComplete).to.be.true;
+  // });
 
-  it('should have a static create function that works also to raise errors', () => {
-    expect(Subject).to.be.a('function');
-    const source = of(1, 2, 3, 4, 5);
-    const nexts: number[] = [];
-    const output: number[] = [];
+  // it('should have a static create function that works also to raise errors', () => {
+  //   expect(Subject).to.be.a('function');
+  //   const source = of(1, 2, 3, 4, 5);
+  //   const nexts: number[] = [];
+  //   const output: number[] = [];
 
-    let error: any;
-    let complete = false;
-    let outputComplete = false;
+  //   let error: any;
+  //   let complete = false;
+  //   let outputComplete = false;
 
-    const destination = {
-      closed: false,
-      next: function (x: number) {
-        nexts.push(x);
-      },
-      error: function (err: any) {
-        error = err;
-        this.closed = true;
-      },
-      complete: function () {
-        complete = true;
-        this.closed = true;
-      }
-    };
+  //   const destination = {
+  //     closed: false,
+  //     next: function (x: number) {
+  //       nexts.push(x);
+  //     },
+  //     error: function (err: any) {
+  //       error = err;
+  //       this.closed = true;
+  //     },
+  //     complete: function () {
+  //       complete = true;
+  //       this.closed = true;
+  //     }
+  //   };
 
-    const sub = Subject(destination, source);
+  //   const sub = Subject(destination, source);
 
-    sub.subscribe(function (x: number) {
-      output.push(x);
-    }, null, () => {
-      outputComplete = true;
-    });
+  //   sub.subscribe(function (x: number) {
+  //     output.push(x);
+  //   }, null, () => {
+  //     outputComplete = true;
+  //   });
 
-    sub.next(1);
-    sub.next(2);
-    sub.next(3);
-    sub.error('boom');
+  //   sub.next(1);
+  //   sub.next(2);
+  //   sub.next(3);
+  //   sub.error('boom');
 
-    expect(nexts).to.deep.equal([1, 2, 3]);
-    expect(complete).to.be.false;
-    expect(error).to.equal('boom');
+  //   expect(nexts).to.deep.equal([1, 2, 3]);
+  //   expect(complete).to.be.false;
+  //   expect(error).to.equal('boom');
 
-    expect(output).to.deep.equal([1, 2, 3, 4, 5]);
-    expect(outputComplete).to.be.true;
-  });
+  //   expect(output).to.deep.equal([1, 2, 3, 4, 5]);
+  //   expect(outputComplete).to.be.true;
+  // });
 
   it('should be an Observer which can be given to Observable.subscribe', (done: MochaDone) => {
     const source = of(1, 2, 3, 4, 5);
@@ -485,22 +484,22 @@ describe('Subject', () => {
   });
 });
 
-describe('FrankenSubject', () => {
-  it('should not be eager', () => {
-    let subscribed = false;
+// describe('FrankenSubject', () => {
+//   it('should not be eager', () => {
+//     let subscribed = false;
 
-    const subject = Subject(null, new Observable(observer => {
-      subscribed = true;
-      const subscription = of('x').subscribe(observer);
-      return () => {
-        subscription.unsubscribe();
-      };
-    }));
+//     const subject = Subject(null, new Observable(observer => {
+//       subscribed = true;
+//       const subscription = of('x').subscribe(observer);
+//       return () => {
+//         subscription.unsubscribe();
+//       };
+//     }));
 
-    const observable = subject.asObservable();
-    expect(subscribed).to.be.false;
+//     const observable = subject.asObservable();
+//     expect(subscribed).to.be.false;
 
-    observable.subscribe();
-    expect(subscribed).to.be.true;
-  });
-});
+//     observable.subscribe();
+//     expect(subscribed).to.be.true;
+//   });
+// });

@@ -51,7 +51,7 @@ export class Observable<T> {
       }
     }
 
-    const subscriber = nextOrObserver instanceof OperatorSubscriber
+    const subscriber = nextOrObserver instanceof Subscriber
       ? nextOrObserver
       : new SafeSubscriber(subscription, nextOrObserver, errorHandler as any, completeHandler);
 

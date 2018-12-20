@@ -1,41 +1,15 @@
-import { OperatorFunction, FOType, Sink, SinkArg } from 'rxjs/internal/types';
+import { OperatorFunction } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { lift } from 'rxjs/internal/util/lift';
+import { multicast } from '../create/multicast';
+import { Subscriber } from '../Subscriber';
+import { Subject } from '../Subject';
+import { ConnectableObservable } from '../ConnectableObservable';
 
 export function share<T>(): OperatorFunction<T, T> {
-  let state: any[];
-  let connection: Subscription;
-  return lift((source: Observable<T>, sink: Sink<T>, subs: Subscription) => {
-    state = state || [];
-    state.push(sink, subs);
-    subs.add(() => {
-      const index = state.indexOf(sink);
-      if (index >= 0) {
-        state.splice(index, 2);
-        if (connection && state.length === 0) {
-          connection.unsubscribe();
-          connection = undefined;
-        }
-      }
-    });
-    if (!connection) {
-      connection = new Subscription();
-      source(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, conn: Subscription) => {
-        if (t === FOType.SUBSCRIBE) { return; }
-        const copy = state.slice(0);
-        if (t !== FOType.NEXT) {
-          connection = undefined;
-        }
+  return (source: Observable<T>) => multicast(source, () => new Subject<T>()).lift(shareLift);
+}
 
-        for (let i = 0; i < copy.length; i += 2) {
-          copy[i](t, v, copy[i + 1]);
-        }
-
-        if (t !== FOType.NEXT) {
-          conn.unsubscribe();
-        }
-      }, connection);
-    }
-  });
+function shareLift<T>(this: Subscriber<T>, source: ConnectableObservable<T>, subscription: Subscription) {
+  return source.refCount().subscribe(this, subscription);
 }

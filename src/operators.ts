@@ -1,5 +1,5 @@
 // // ################ CORE OPERATORS #################`
-// export { finalize } from 'rxjs/internal/operators/finalize';
+export { finalize } from 'rxjs/internal/operators/finalize';
 // export { audit } from 'rxjs/internal/operators/audit';
 // export { catchError } from 'rxjs/internal/operators/catchError';
 // export { debounce } from 'rxjs/internal/operators/debounce';
@@ -20,9 +20,9 @@ export { mergeMap } from 'rxjs/internal/operators/mergeMap';
 // export { mergeScan } from 'rxjs/internal/operators/mergeScan';
 // export { multicastAs } from 'rxjs/internal/operators/multicastAs';
 // export { observeOn } from 'rxjs/internal/operators/observeOn';
-// export { repeat } from 'rxjs/internal/operators/repeat';
+export { repeat } from 'rxjs/internal/operators/repeat';
 // export { repeatWhen } from 'rxjs/internal/operators/repeatWhen';
-// export { retry } from 'rxjs/internal/operators/retry';
+export { retry } from 'rxjs/internal/operators/retry';
 // export { retryWhen } from 'rxjs/internal/operators/retryWhen';
 // export { sample } from 'rxjs/internal/operators/sample';
 export { scan } from 'rxjs/internal/operators/scan';
@@ -30,7 +30,7 @@ export { scan } from 'rxjs/internal/operators/scan';
 // export { skipLast } from 'rxjs/internal/operators/skipLast';
 // export { skipUntil } from 'rxjs/internal/operators/skipUntil';
 // export { skipWhile } from 'rxjs/internal/operators/skipWhile';
-// export { share } from 'rxjs/internal/operators/share';
+export { share } from 'rxjs/internal/operators/share';
 // export { shareReplay } from 'rxjs/internal/operators/shareReplay';
 // export { single } from 'rxjs/internal/operators/single';
 // export { subscribeOn } from 'rxjs/internal/operators/subscribeOn';

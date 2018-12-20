@@ -7,6 +7,7 @@ export class OperatorSubscriber<T> extends Subscriber<T> {
   }
 
   next(value: T) {
+    debugger;
     this._destination.next(value);
   }
 

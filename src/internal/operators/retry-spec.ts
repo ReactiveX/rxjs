@@ -5,7 +5,6 @@ import { expect } from 'chai';
 describe('retry', () => {
   it('should retry and error', () => {
     const results: any[] = [];
-
     new Observable(subscriber => {
       subscriber.next(1);
       subscriber.next(2);
@@ -26,6 +25,7 @@ describe('retry', () => {
     let teardowns = 0;
     const source = new Observable(subscriber => {
       subscriber.error('bwuhahaha');
+      debugger;
       return () => {
         teardowns++;
       };
@@ -33,7 +33,9 @@ describe('retry', () => {
 
     source.pipe(
       retry(3),
-    ).subscribe();
+    ).subscribe({
+      error() { /* do nothing */ },
+    });
 
     return Promise.resolve().then(() => expect(teardowns).to.equal(4));
   });

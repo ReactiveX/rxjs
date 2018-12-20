@@ -7,6 +7,7 @@ export class Subject<T> extends Observable<T> implements Observer<T> {
   private _subscribers: Subscriber<T>[] = [];
   protected _closed = false;
   protected _hasError = false;
+  protected _hasCompleted = false;
   private _error: any;
   protected _disposed = false;
 
@@ -22,6 +23,11 @@ export class Subject<T> extends Observable<T> implements Observer<T> {
     this._throwIfDisposed();
     if (this._hasError) {
       subscriber.error(this._error);
+      return;
+    }
+
+    if (this._hasCompleted) {
+      subscriber.complete();
       return;
     }
 
@@ -42,8 +48,8 @@ export class Subject<T> extends Observable<T> implements Observer<T> {
   next(value: T) {
     this._throwIfDisposed();
     if (!this._closed) {
-      const { _subscribers } = this;
-      for (const subscriber of _subscribers) {
+      const copy = this._subscribers.slice();
+      for (const subscriber of copy) {
         subscriber.next(value);
       }
     }
@@ -55,11 +61,11 @@ export class Subject<T> extends Observable<T> implements Observer<T> {
       this._closed = true;
       this._hasError = true;
       this._error = err;
-      const { _subscribers } = this;
-      for (const subscriber of _subscribers) {
+      const copy = this._subscribers.slice();
+      for (const subscriber of copy) {
         subscriber.error(err);
       }
-      _subscribers.length = 0;
+      this._subscribers.length = 0;
     }
   }
 
@@ -67,17 +73,22 @@ export class Subject<T> extends Observable<T> implements Observer<T> {
     this._throwIfDisposed();
     if (!this._closed) {
       this._closed = true;
-      const { _subscribers } = this;
-      for (const subscriber of _subscribers) {
+      this._hasCompleted = true;
+      const copy = this._subscribers.slice();
+      for (const subscriber of copy) {
         subscriber.complete();
       }
-      _subscribers.length = 0;
+      this._subscribers.length = 0;
     }
   }
 
   unsubscribe() {
     this._subscribers = null;
     this._disposed = true;
+  }
+
+  asObservable(): Observable<T> {
+    return new Observable<T>(subscriber => this._init(subscriber));
   }
 
   private _throwIfDisposed() {

@@ -1,11 +1,15 @@
 import { Observable } from 'rxjs/internal/Observable';
-import { OperatorFunction, FOType, Sink } from 'rxjs/internal/types';
+import { OperatorFunction} from 'rxjs/internal/types';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { lift } from 'rxjs/internal/util/lift';
+import { Subscriber } from '../Subscriber';
 
 export function finalize<T>(callback: () => void): OperatorFunction<T, T> {
-  return lift((source: Observable<T>, dest: Sink<T>, subs: Subscription) => {
-    subs.add(callback);
-    source(FOType.SUBSCRIBE, dest, subs);
-  });
+  return (source: Observable<T>) => source.lift(finalizeOperator(callback));
+}
+
+function finalizeOperator<T>(callback: () => void) {
+  return function finalizeLift(this: Subscriber<T>, source: Observable<T>, subscription: Subscription) {
+    subscription.add(callback);
+    return source.subscribe(this, subscription);
+  };
 }
