@@ -1,8 +1,4 @@
 import { Observable } from 'rxjs/internal/Observable';
-import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
-import { FOType, Sink } from 'rxjs/internal/types';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
 
 /**
  * Creates an Observable from an arbitrary API for registering event handlers.
@@ -130,19 +126,11 @@ export function fromEventPattern<T>(
   addHandler: (handler: Function) => any,
   removeHandler?: (handler: Function, signal?: any) => void
 ): Observable<T | T[]> {
-  return sourceAsObservable((type: FOType.SUBSCRIBE, sink: Sink<T>, subs: Subscription) => {
-    const handler = (...e: T[]) => sink(FOType.NEXT, e.length === 1 ? e[0] : e, subs);
-
-    const retValue = tryUserFunction(addHandler, handler);
-    if (resultIsError(retValue)) {
-      sink(FOType.ERROR, retValue.error, subs);
-      return;
-    }
-
-    if (typeof removeHandler !== 'function') {
-      return;
-    }
-
-    subs.add(() => removeHandler(handler, retValue));
+  return new Observable<T | T[]>(subscriber => {
+    const handler = (...e: T[]) => subscriber.next(e.length === 1 ? e[0] : e);
+    const retValue = addHandler(handler);
+    return typeof removeHandler === 'function'
+      ? () => removeHandler(handler, retValue)
+      : undefined;
   });
 }
