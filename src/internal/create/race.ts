@@ -1,9 +1,7 @@
-import { ObservableInput, FOType, Sink, Source, SinkArg } from 'rxjs/internal/types';
+import { ObservableInput } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
-import { sourceAsObservable } from 'rxjs/internal/util/sourceAsObservable';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { fromSource } from 'rxjs/internal/sources/fromSource';
-import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
+import { from } from './from';
 
 /**
  * Returns an Observable that mirrors the first source Observable to emit an item.
@@ -37,34 +35,31 @@ export function race<T>(...sources: ObservableInput<T>[]): Observable<T> {
   if (sources.length === 1 && Array.isArray(sources[0])) {
     sources = sources[0] as any;
   }
-  return sourceAsObservable(raceSource(sources));
-}
+  return new Observable<T>(subscriber => {
+    const subscription = new Subscription();
+    let subscriptions: Subscription[]|null = [];
 
-export function raceSource<T>(sources: ObservableInput<T>[]): Source<T> {
-  return (type: FOType, sink: Sink<T>, subs: Subscription) => {
-    if (type === FOType.SUBSCRIBE) {
-      let allSubs: Subscription[] = [];
-      for (let s = 0; s < sources.length; s++) {
-        const source = sources[s];
-        const src = tryUserFunction(fromSource, source);
-        if (resultIsError(src)) {
-          sink(FOType.ERROR, src.error, subs);
-          return;
-        }
-
-        const mySubs = new Subscription();
-        subs.add(mySubs);
-        allSubs.push(mySubs);
-        src(FOType.SUBSCRIBE, (t: FOType, v: SinkArg<T>, mySubs: Subscription) => {
-          if (allSubs && t === FOType.NEXT) {
-            for (let childSubs of allSubs) {
-              if (childSubs !== mySubs) { childSubs.unsubscribe(); }
+    for (let s = 0; s < sources.length && !subscriber.closed; s++) {
+      const source = from(sources[s]);
+      const innerSubs = source.subscribe({
+        next(value) {
+          if (subscriptions) {
+            for (let i = 0; i < subscriptions.length; i++) {
+              if (i !== s) {
+                subscriptions[i].unsubscribe();
+              }
             }
-            allSubs = null;
+            subscriptions = null;
           }
-          sink(t, v, subs);
-        }, mySubs);
-      }
+          subscriber.next(value);
+        },
+        error(err: any) { subscriber.error(err); },
+        complete() { subscriber.complete(); },
+      });
+      subscriptions.push(innerSubs);
+      subscription.add(innerSubs);
     }
-  };
+
+    return subscription;
+  });
 }

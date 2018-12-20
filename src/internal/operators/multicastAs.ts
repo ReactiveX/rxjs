@@ -12,7 +12,7 @@ export function multicastAs<T, R>(
 ): OperatorFunction<T, R> {
   return lift((source: Observable<T>, dest: Sink<R>, subs: Subscription) => {
     const multicasted = multicast(source, subjectOrFactory);
-    const projected = tryUserFunction(project, multicasted);
+    const projected = tryUserFunction(project, [multicasted]);
     if (resultIsError(projected)) {
       dest(FOType.ERROR, projected.error, subs);
       return;

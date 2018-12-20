@@ -32,7 +32,7 @@ export { of } from 'rxjs/internal/create/of';
 // export { publishBehavior } from 'rxjs/internal/create/publishBehavior';
 // export { publishLast } from 'rxjs/internal/create/publishLast';
 // export { publishReplay } from 'rxjs/internal/create/publishReplay';
-// export { race } from 'rxjs/internal/create/race';
+export { race } from 'rxjs/internal/create/race';
 // export { range } from 'rxjs/internal/create/range';
 export { throwError } from 'rxjs/internal/create/throwError';
 // export { timer } from 'rxjs/internal/create/timer';
