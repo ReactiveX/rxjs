@@ -86,7 +86,7 @@
     "lint_spec": "tslint -c tslint.json \"spec/**/*.ts\"",
     "lint_src": "tslint -c tslint.json \"src/**/*.ts\"",
     "lint": "npm-run-all --parallel lint_*",
-    "dtslint": "npx dtslint spec-dtslint",
+    "dtslint": "npm run build_types && npx dtslint spec-dtslint",
     "perf:protractor": "echo \"Protractor is not working currently\" && exit -1 && protractor protractor.conf.js",
     "perf:micro": "node ./perf/micro/index.js",
     "prepublish": "shx rm -rf ./typings && npm run build_all",
