@@ -1,4 +1,4 @@
-import { from, of, asyncScheduler } from 'rxjs';
+import { from, of, animationFrameScheduler } from 'rxjs';
 
 it('should accept an array', () => {
   const o = from([1, 2, 3, 4]); // $ExpectType Observable<number>
@@ -42,4 +42,8 @@ it('should accept an array of Inputs', () => {
   }());
 
   const o = from([of(1), ['test'], iterable]); // $ExpectType Observable<IterableIterator<number> | Observable<number> | string[]>
+});
+
+it('should support scheduler', () => {
+  const a = from([1, 2, 3], animationFrameScheduler); // $ExpectType Observable<number>
 });
