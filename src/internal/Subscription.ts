@@ -168,14 +168,15 @@ export class Subscription implements SubscriptionLike {
       }
     }
 
-    // Optimize for the common case when adding the first subscription.
-    const subscriptions = this._subscriptions;
-    if (subscriptions) {
-      subscriptions.push(subscription);
-    } else {
-      this._subscriptions = [subscription];
+    if (subscription._addParent(this)) {
+      // Optimize for the common case when adding the first subscription.
+      const subscriptions = this._subscriptions;
+      if (subscriptions) {
+        subscriptions.push(subscription);
+      } else {
+        this._subscriptions = [subscription];
+      }
     }
-    subscription._addParent(this);
 
     return subscription;
   }
@@ -197,20 +198,26 @@ export class Subscription implements SubscriptionLike {
   }
 
   /** @internal */
-  private _addParent(parent: Subscription) {
+  private _addParent(parent: Subscription): boolean {
     let { _parent, _parents } = this;
-    if (!_parent || _parent === parent) {
-      // If we don't have a parent, or the new parent is the same as the
-      // current parent, then set this._parent to the new parent.
+    if (_parent === parent) {
+      // If the new parent is the same as the current parent, then do nothing.
+      return false;
+    } else if (!_parent) {
+      // If we don't have a parent, then set this._parent to the new parent.
       this._parent = parent;
+      return true;
     } else if (!_parents) {
       // If there's already one parent, but not multiple, allocate an Array to
       // store the rest of the parent Subscriptions.
       this._parents = [parent];
+      return true;
     } else if (_parents.indexOf(parent) === -1) {
       // Only add the new parent to the _parents list if it's not already there.
       _parents.push(parent);
+      return true;
     }
+    return false;
   }
 }
 
