@@ -4,7 +4,7 @@ Can't get enough RxJS? Check out these other great resources!
 
 ## Tutorials
 
-- [RxJS @ Egghead.io](https://egghead.io/technologies/rx)
+- [RxJS @ Egghead.io](https://egghead.io/courses/for/rxjs)
 - [The introduction to Reactive Programming you've been missing](https://gist.github.com/staltz/868e7e9bc2a7b8c1f754)
 - [2 minute introduction to Rx](https://medium.com/@andrestaltz/2-minute-introduction-to-rx-24c8ca793877)
 - [Learn RxJS - @jhusain](https://github.com/jhusain/learnrx)

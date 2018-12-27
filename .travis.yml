@@ -14,8 +14,6 @@ cache:
     - $HOME/.npm
 
 env:
-  global:
-    -  secure: "wRUxg3L05UjigEq0zPTfW+vFEPdDQrWFB8O3/p/7LYYL1EqnIvQETd/4g5vnzyu4iysPeCHtMY7a+oyX/LM81JD3EU2nzxfY1bRDL6kyU+KrWNhZ6Jf4XosCUQ1vpdD0jBIlpLoTLr056PUNrS/13onnJHVAWzIhjcDwUJXQlyzR8z32SN3Wa6yjQhHwGvQqqdJB/H83H0BcYTCxwKfut58zQZ+RVcubHj6T+K3LI8OPHvZeK2/NiWcaZB/zky5cD9lFiY7lF+/0PhYPw1EYwbzA2dPhyKxy+d8hweCEFMUb5Z9s980tAd8m1IdqGXPZu51lvj7MMWwj4X2vUUtF9XrB4K2Kt11PSyB49bF2brQI2axsyYWZGeW0nsb8+MlHUa3eli7XR6dA6VVeIJT08ULvXUVzEvXiogHE/5G9ZXVFWDgCkFsXdEAtf2EOo3RpCoUYSXmqRvr9ZBP6C/KMYogENQ8JdTk3SXpn8heo6oraBKfOg0DRfoiMVyl7vfOVQYRgbbDGZVJfcHSYpyFQfqKOMlEiSSyh51PL7Dt6BYSCBoUKh8AAAtIi2+exgTuUHwy8fZBBJm5Bbem8Ku9il89gkOWS8jPYxat8/9HlouNO/COBBb3DUPIKEOE+YwLji44GiVOB4bnZ1Hz1ucBZEvYzFSW3/wac7S9fqDaeOVE="
 
   matrix:
   - NODE_VER=8 FULL_VALIDATE=true
@@ -56,4 +54,4 @@ script:
 
 after_success:
   - if [ "$FULL_VALIDATE" == "true" ]; then npm run test:cover && npx nyc report --reporter=text-lcov | npx coveralls; fi
-  - if [ "$FULL_VALIDATE" == "true" ] && [ "$BRANCH" == "master" ]; then cd docs_app && chmod 755 scripts/deploy-to-firebase.sh && npm run deploy-production; fi
+  - if [ "$FULL_VALIDATE" == "true" ]; then npm run tests2png && cd docs_app && chmod 755 scripts/deploy-to-firebase.sh && npm run deploy-production; fi

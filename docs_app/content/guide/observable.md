@@ -405,7 +405,7 @@ Each Observable must define how to dispose resources of that execution when we c
 For instance, this is how we clear an interval execution set with `setInterval`:
 
 ```js
-var observable = Rx.Observable.create(function subscribe(observer) {
+var observable = Observable.create(function subscribe(observer) {
   // Keep track of the interval resource
   var intervalID = setInterval(() => {
     observer.next('hi');

@@ -7,6 +7,9 @@ import { InnerSubscriber } from '../InnerSubscriber';
 import {subscribeToResult} from '../util/subscribeToResult';
 import {ObservableInput, OperatorFunction, MonoTypeOperatorFunction} from '../types';
 
+export function catchError<T>(selector: (err: any, caught: Observable<T>) => never): MonoTypeOperatorFunction<T>;
+export function catchError<T, R>(selector: (err: any, caught: Observable<T>) => ObservableInput<R>): OperatorFunction<T, T | R>;
+
 /**
  * Catches errors on the observable to be handled by returning a new observable or throwing an error.
  *
@@ -74,8 +77,6 @@ import {ObservableInput, OperatorFunction, MonoTypeOperatorFunction} from '../ty
  *  catch `selector` function.
  * @name catchError
  */
-export function catchError<T>(selector: (err: any, caught: Observable<T>) => never): MonoTypeOperatorFunction<T>;
-export function catchError<T, R>(selector: (err: any, caught: Observable<T>) => ObservableInput<R>): OperatorFunction<T, T | R>;
 export function catchError<T, R>(selector: (err: any, caught: Observable<T>) => ObservableInput<R>): OperatorFunction<T, T | R> {
   return function catchErrorOperatorFunction(source: Observable<T>): Observable<T | R> {
     const operator = new CatchOperator(selector);

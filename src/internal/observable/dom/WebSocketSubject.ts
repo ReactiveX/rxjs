@@ -59,11 +59,6 @@ const WEBSOCKETSUBJECT_INVALID_ERROR_OBJECT =
 
 export type WebSocketMessage = string | ArrayBuffer | Blob | ArrayBufferView;
 
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @extends {Ignored}
- * @hide true
- */
 export class WebSocketSubject<T> extends AnonymousSubject<T> {
 
   private _config: WebSocketSubjectConfig<T>;

@@ -19,32 +19,44 @@
   ],
 
   "TopBarNarrow": [],
-
-  "SideNav": [
-    {
-      "url": "guide/overview",
-      "title": "Overview",
-      "tooltip": "RxJS Overview",
-      "children": [
+	"SideNav": [
+		{
+			"url": "guide/overview",
+			"title": "Overview",
+			"tooltip": "RxJS Overview",
+			"children": [
         {
-          "url": "guide/observable",
-          "title": "Observables"
+					"url": "guide/observable",
+					"title": "Observables"
         },
         {
-          "url": "guide/subscription",
-          "title": "Subscription"
-        },
+					"url": "guide/subscription",
+					"title": "Subscription"
+				},
         {
-          "url": "guide/subject",
-          "title": "Subjects"
-        }
-      ]
-    },
-    {
-      "url": "guide/installation",
-      "title": "Installation",
-      "tooltip": "Installation"
-    },
+					"url": "guide/subject",
+					"title": "Subjects"
+				},
+        {
+					"url": "guide/scheduler",
+					"title": "Scheduler"
+        },
+				{
+					"title": "Testing",
+					"children": [
+						{
+							"url": "guide/testing/marble-testing",
+							"title": "Marble Testing"
+						}
+					]
+				}
+			]
+		},
+		{
+			"url": "guide/installation",
+			"title": "Installation",
+			"tooltip": "Installation"
+		},
     {
       "url": "api",
       "title": "Reference",
@@ -61,25 +73,29 @@
         }
       ]
     },
-    {
-      "title": "About Version 6",
-      "children": [
-        {
-          "url": "guide/v6/migration",
-          "title": "Migration"
-        },
-        {
-          "url": "api/deprecations",
-          "title": "Deprecations",
-          "tooltip": "List of Deprecations"
-        }
-      ]
-    },
-    {
-      "url": "code-of-conduct",
-      "title": "Code of Conduct",
-      "tooltip": "Code of Conduct"
-    }
-  ],
-  "docVersions": []
+		{
+			"title": "About Version 6",
+			"children": [
+				{
+					"url": "guide/v6/migration",
+					"title": "Migration"
+				},
+				{
+					"url": "guide/v6/pipeable-operators",
+					"title": "Pipeable Operators"
+				},
+				{
+					"url": "api/deprecations",
+					"title": "Deprecations",
+					"tooltip": "List of Deprecations"
+				}
+			]
+		},
+		{
+			"url": "code-of-conduct",
+			"title": "Code of Conduct",
+			"tooltip": "Code of Conduct"
+		}
+	],
+	"docVersions": []
 }
