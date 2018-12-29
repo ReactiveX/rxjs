@@ -69,7 +69,7 @@ export function from<T>(input: ObservableInput<ObservableInput<T>>, scheduler?: 
  * ### with async scheduler
  * ```javascript
  * import { from } from 'rxjs/observable/from';
- * import { async } from 'rxjs/scheduler/async';
+ * import { async } from 'rxjs';
  *
  * console.log('start');
  *
