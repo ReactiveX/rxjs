@@ -6,7 +6,7 @@ import { switchScan, map, mergeMap, takeWhile } from 'rxjs/operators';
 declare function asDiagram(arg: string): Function;
 
 /** @test {switchScan} */
-describe.only('switchScan', () => {
+describe('switchScan', () => {
   asDiagram('switchScan(i => 10*i\u2014\u201410*i\u2014\u201410*i\u2014|, 0)')
   ('should map-and-flatten each item to an Observable while passing the seed', () => {
     const e1 =    hot('--1-----3--5-------|');
