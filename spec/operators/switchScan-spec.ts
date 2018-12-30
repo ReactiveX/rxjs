@@ -3,29 +3,35 @@ import { concat, defer, Observable, of } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { switchScan, map, mergeMap, takeWhile } from 'rxjs/operators';
 
+declare function asDiagram(arg: string): Function;
+
 /** @test {switchScan} */
 describe.only('switchScan', () => {
-  it('should map-and-flatten each item to an Observable while passing the seed', () => {
+  asDiagram('switchScan(i => 10*i\u2014\u201410*i\u2014\u201410*i\u2014|, 0)')
+  ('should map-and-flatten each item to an Observable while passing the seed', () => {
     const e1 =    hot('--1-----3--5-------|');
     const e1subs =    '^                  !';
     const e2 =   cold('x-x-x|              ', {x: 10});
     const expected =  '--x-x-x-y-yz-z-z---|';
     const values = {x: 10, y: 40, z: 90};
 
-    const result = e1.pipe(switchScan((acc, x) => e2.pipe(map(i => i * Number(x) + acc)), 0));
+    const result = e1.pipe(switchScan((acc: number, x: string) => e2.pipe(map(i => i * Number(x) + acc)), 0));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should pass seed even when seed is not defined', () => {
-    const seeds: any[] = [];
-    const result = of(1, 3, 5).pipe(switchScan((acc, x) => {
-      seeds.push(acc);
-      return of(10).pipe(map(v => (v * Number(x)) + ((acc || 0) as number)));
-    })).subscribe();
+  it('should not pass seed when undefined', () => {
+    const seeds: number[] = [];
 
-    expect(seeds).to.deep.equal([undefined, 10, 40]);
+    of(1, 3, 5).pipe(
+      switchScan((acc, x) => {
+        seeds.push(acc);
+        return of(10).pipe(map(v => v * x + acc));
+      }),
+    ).subscribe();
+
+    expect(seeds).to.deep.equal([1, 31]);
   });
 
   it('should unsub inner observables', () => {
@@ -39,6 +45,7 @@ describe.only('switchScan', () => {
             unsubbed.push(x);
           };
         }),
+        null
       )
     ).subscribe();
 
@@ -56,7 +63,7 @@ describe.only('switchScan', () => {
 
     const observableLookup = { x: x, y: y };
 
-    const result = e1.pipe(switchScan((acc, value) => observableLookup[value]));
+    const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -72,7 +79,7 @@ describe.only('switchScan', () => {
       throw 'error';
     }
 
-    expectObservable(e1.pipe(switchScan(project))).toBe(expected);
+    expectObservable(e1.pipe(switchScan(project, null))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -88,7 +95,7 @@ describe.only('switchScan', () => {
 
     const observableLookup = { x: x, y: y };
 
-    const result = e1.pipe(switchScan((acc, value) => observableLookup[value]));
+    const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -110,7 +117,7 @@ describe.only('switchScan', () => {
 
     const result = e1.pipe(
       mergeMap(x => of(x)),
-      switchScan((acc, value) => observableLookup[value]),
+      switchScan((acc, value) => observableLookup[value], null),
       mergeMap(x => of(x)),
     );
 
@@ -138,7 +145,7 @@ describe.only('switchScan', () => {
     );
 
     of(null).pipe(
-      switchScan(() => synchronousObservable),
+      switchScan(() => synchronousObservable, null),
       takeWhile((x) => x != 2) // unsubscribe at the second side-effect
     ).subscribe(() => { /* noop */ });
 
@@ -156,7 +163,7 @@ describe.only('switchScan', () => {
 
     const observableLookup = { x: x, y: y };
 
-    const result = e1.pipe(switchScan((acc, value) => observableLookup[value]));
+    const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -175,7 +182,7 @@ describe.only('switchScan', () => {
 
     const observableLookup = { x: x, y: y };
 
-    const result = e1.pipe(switchScan((acc, value) => observableLookup[value]));
+    const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -194,7 +201,7 @@ describe.only('switchScan', () => {
 
     const observableLookup = { x: x, y: y };
 
-    const result = e1.pipe(switchScan((acc, value) => observableLookup[value]));
+    const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -213,7 +220,7 @@ describe.only('switchScan', () => {
 
     const observableLookup = { x: x, y: y };
 
-    const result = e1.pipe(switchScan((acc, value) => observableLookup[value]));
+    const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -232,7 +239,7 @@ describe.only('switchScan', () => {
 
     const observableLookup = { x: x, y: y };
 
-    const result = e1.pipe(switchScan((acc, value) => observableLookup[value]));
+    const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -251,7 +258,7 @@ describe.only('switchScan', () => {
 
     const observableLookup = { x: x, y: y };
 
-    const result = e1.pipe(switchScan((acc, value) => observableLookup[value]));
+    const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -270,7 +277,7 @@ describe.only('switchScan', () => {
 
     const observableLookup = { x: x, y: y };
 
-    const result = e1.pipe(switchScan((acc, value) => observableLookup[value]));
+    const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -289,7 +296,7 @@ describe.only('switchScan', () => {
 
     const observableLookup = { x: x, y: y };
 
-    const result = e1.pipe(switchScan((acc, value) => observableLookup[value]));
+    const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
     expectObservable(result).toBe(expected, undefined, 'sad');
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -308,7 +315,7 @@ describe.only('switchScan', () => {
 
     const observableLookup = { x: x, y: y };
 
-    const result = e1.pipe(switchScan((acc, value) => observableLookup[value]));
+    const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
     expectObservable(result).toBe(expected, undefined, 'sad');
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -358,21 +365,21 @@ describe.only('switchScan', () => {
 
     const observableLookup = { x: x };
 
-    const result = e1.pipe(switchScan((acc, value) => observableLookup[value]));
+    const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should pass index to the project function', () => {
+  it('should pass index to the accumulator function', () => {
     const indices: number[] = [];
 
     of('a', 'b', 'c', 'd').pipe(
       switchScan((acc, x, index) => {
         indices.push(index);
         return of();
-      }),
+      }, null),
     ).subscribe();
 
     expect(indices).to.deep.equal([0, 1, 2, 3]);

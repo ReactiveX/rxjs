@@ -79,6 +79,7 @@ export function scan<V, A, S>(accumulator: (acc: A | S, value: V, index: number)
  * @see {@link expand}
  * @see {@link mergeScan}
  * @see {@link reduce}
+ * @see {@link switchScan}
  *
  * @param accumulator A "reducer function". This will be called for each value after an initial state is
  * acquired.
