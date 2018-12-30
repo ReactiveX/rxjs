@@ -17,6 +17,8 @@ export function switchScan<T, R>(accumulator: (acc: R, value: T, index: number) 
  * <span class="informal">It's like {@link scan}, but only to most recent
  * Observable returned by the accumulator is merged into the outer Observable.</span>
  *
+ * ![](switchScan.png)
+ *
  * @see {@link scan}
  * @see {@link mergeScan}
  *
