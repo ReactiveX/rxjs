@@ -11,10 +11,10 @@ declare const rxTestScheduler: TestScheduler;
 /** @test {delay} */
 describe('delay operator', () => {
   asDiagram('delay(20)')('should delay by specified timeframe', () => {
-    const e1 =   hot('---a--b--|  ');
-    const t =   time(   '--|      ');
-    const expected = '-----a--b--|';
-    const subs =     '^        !  ';
+    const e1 =   hot('---a--b--|');
+    const t =   time(   '--|    ');
+    const expected = '-----a--b|';
+    const subs =     '^        !';
 
     const result = e1.pipe(delay(t, rxTestScheduler));
 
@@ -25,7 +25,7 @@ describe('delay operator', () => {
   it('should delay by absolute time period', () => {
     const e1 =   hot('--a--b--|   ');
     const t =   time(  '---|      ');
-    const expected = '-----a--b--|';
+    const expected = '-----a--(b|)';
     const subs =     '^       !   ';
 
     const absoluteDelay = new Date(rxTestScheduler.now() + t);
@@ -38,7 +38,7 @@ describe('delay operator', () => {
   it('should delay by absolute time period after subscription', () => {
     const e1 =   hot('---^--a--b--|   ');
     const t =   time(      '---|      ');
-    const expected =    '------a--b--|';
+    const expected =    '------a--(b|)';
     const subs =        '^        !   ';
 
     const absoluteDelay = new Date(rxTestScheduler.now() + t);
@@ -86,10 +86,10 @@ describe('delay operator', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1Sub);
   });
 
-  it('should delay when source does not emits', () => {
+  it('should not delay when source does not emits', () => {
     const e1 =   hot('----|   ');
     const t =   time(    '---|');
-    const expected = '-------|';
+    const expected = '----|';
     const subs =     '^   !   ';
 
     const result = e1.pipe(delay(t, rxTestScheduler));
@@ -98,10 +98,20 @@ describe('delay operator', () => {
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
-  it('should delay when source is empty', () => {
+  it('should not delay when source is empty', () => {
     const e1 =  cold('|');
     const t =   time('---|');
-    const expected = '---|';
+    const expected = '|';
+
+    const result = e1.pipe(delay(t, rxTestScheduler));
+
+    expectObservable(result).toBe(expected);
+  });
+
+  it('should delay complete when a value is scheduled', () => {
+    const e1 =  cold('-a-|');
+    const t =   time('---|');
+    const expected = '----(a|)';
 
     const result = e1.pipe(delay(t, rxTestScheduler));
 
