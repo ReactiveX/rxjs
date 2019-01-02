@@ -187,6 +187,12 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     });
 
     socket.onopen = (e: Event) => {
+      const { _socket } = this;
+      if (!_socket) {
+        socket.close();
+        this._resetState();
+        return;
+      }
       const { openObserver } = this._config;
       if (openObserver) {
         openObserver.next(e);
@@ -285,14 +291,11 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   }
 
   unsubscribe() {
-    const { source, _socket } = this;
+    const { _socket } = this;
     if (_socket && _socket.readyState === 1) {
       _socket.close();
-      this._resetState();
     }
+    this._resetState();
     super.unsubscribe();
-    if (!source) {
-      this.destination = new ReplaySubject();
-    }
   }
 }
