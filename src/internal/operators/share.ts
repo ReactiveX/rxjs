@@ -1,15 +1,56 @@
-import { OperatorFunction } from 'rxjs/internal/types';
+import { OperatorFunction, TeardownLogic } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { multicast } from '../create/multicast';
-import { Subscriber } from '../Subscriber';
+import { Subscription } from '../Subscription';
 import { Subject } from '../Subject';
-import { ConnectableObservable } from '../ConnectableObservable';
+import { Subscriber } from '../Subscriber';
 
 export function share<T>(): OperatorFunction<T, T> {
-  return (source: Observable<T>) => multicast(source, () => new Subject<T>()).lift(shareLift);
+  let subject: Subject<T>;
+  let refCount = 0;
+  let connection: Subscription;
+
+  const reset = () => {
+    refCount = 0;
+    connection && connection.unsubscribe();
+    connection = null;
+    subject = null;
+  };
+
+  return (source: Observable<T>) => new SharedObservable(source);
 }
 
-function shareLift<T>(this: Subscriber<T>, source: ConnectableObservable<T>, subscription: Subscription) {
-  return source.refCount().subscribe(this, subscription);
+class SharedObservable<T> extends Observable<T> {
+  private _subject: Subject<T>;
+  private _refCount = 0;
+  private _connection: Subscription;
+
+  constructor(private _source: Observable<T>) {
+    super();
+  }
+
+  _init(subscriber: Subscriber<T>): TeardownLogic {
+    this._refCount++;
+
+    if (!this._subject || this._subject.closed) {
+      this._subject = new Subject();
+      this._connection = null;
+    }
+
+    const innerSub = this._subject.subscribe(subscriber);
+
+    if (!this._connection || this._connection.closed) {
+      this._connection = this._source.subscribe(this._subject);
+    }
+
+    this._connection.add(innerSub);
+
+    return () => {
+      this._refCount--;
+      innerSub.unsubscribe();
+
+      if (this._refCount === 0) {
+        this._connection.unsubscribe();
+      }
+    };
+  }
 }

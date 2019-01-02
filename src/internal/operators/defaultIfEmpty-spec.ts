@@ -70,7 +70,7 @@ describe('defaultIfEmpty', () => {
       const e1 =   hot('--a--b--|');
       const e1subs =   '^   !    ';
       const expected = '--a--    ';
-      const unsub =    '    !    ';
+      const unsub =    '^---!    ';
 
       const result = e1.pipe(defaultIfEmpty('x'));
 
@@ -84,7 +84,7 @@ describe('defaultIfEmpty', () => {
       const e1 =   hot('--a--b--|');
       const e1subs =   '^   !    ';
       const expected = '--a--    ';
-      const unsub =    '    !    ';
+      const unsub =    '^---!    ';
 
       const result = e1.pipe(
         mergeMap(x => of(x)),

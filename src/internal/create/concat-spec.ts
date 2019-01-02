@@ -50,9 +50,9 @@ describe('static concat', () => {
   'but the result is unsubscribed early', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
       const inner =  cold('--i-j-k-l-|     ');
-      const unsub =       '               !';
+      const unsub =       '^--------------!';
       const innersubs =  ['^         !     ',
-                        '          ^    !'];
+                          '          ^    !'];
       const expected =    '--i-j-k-l---i-j-';
 
       const result = concat(inner, inner, inner, inner);
@@ -68,7 +68,7 @@ describe('static concat', () => {
       const innersubs =  ['^         !     ',
                         '          ^    !'];
       const expected =    '--i-j-k-l---i-j-';
-      const unsub =       '               !';
+      const unsub =       '^--------------!';
 
       const innerWrapped = inner.pipe(mergeMap((x) => of(x)));
       const result = concat(innerWrapped, innerWrapped, innerWrapped, innerWrapped)
@@ -254,7 +254,7 @@ describe('static concat', () => {
       const e1subs =    '^        !            ';
       const e2 =   cold(         '-----b-b--b-|');
       const e2subs =    '         ^       !    ';
-      const unsub =     '                 !    ';
+      const unsub =     '^----------------!    ';
       const expected =  '---a-a--a-----b-b     ';
 
       expectObservable(concat(e1, e2), unsub).toBe(expected);

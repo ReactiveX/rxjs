@@ -70,13 +70,7 @@ export function withLatestFrom<T, R>(...args: Array<ObservableInput<any>>): Oper
     ? args[0] as Array<ObservableInput<any>>
     : args;
 
-  return (source: Observable<T>) => source.lift(withLatestFromOperator(otherSources));
-}
-
-function withLatestFromOperator<T, R>(otherSources: ObservableInput<any>[]) {
-  return function withLatestFromLift(this: Subscriber<R>, source: Observable<T>, subscription: Subscription) {
-    return source.subscribe(new WithLatestFromSubscriber(subscription, this, otherSources), subscription);
-  };
+  return (source: Observable<T>) => new Observable(subscriber => source.subscribe(new WithLatestFromSubscriber(subscriber, otherSources)));
 }
 
 class WithLatestFromSubscriber<T, R> extends OperatorSubscriber<T> {
@@ -84,18 +78,18 @@ class WithLatestFromSubscriber<T, R> extends OperatorSubscriber<T> {
   private _hasValue = 0;
   private _allHaveValues = false;
 
-  constructor(subscription: Subscription, destination: Subscriber<R>, private _otherSources: ObservableInput<any>[]) {
-    super(subscription, destination);
+  constructor(destination: Subscriber<R>, private _otherSources: ObservableInput<any>[]) {
+    super(destination);
     this._cache = new Array(_otherSources.length);
 
-    for (let i = 0; i < _otherSources.length && !subscription.closed; i++) {
+    for (let i = 0; i < _otherSources.length && !this.closed; i++) {
       const result = tryUserFunction(from, [_otherSources[i]]);
       if (resultIsError(result)) {
         destination.error(result.error);
         return;
       } else {
         let first = true;
-        subscription.add(result.subscribe({
+        this._subscription.add(result.subscribe({
           next: (value: any) => {
             if (!this._allHaveValues && first) {
               first = false;

@@ -38,7 +38,7 @@ describe('interval', () => {
   it('should set up an interval', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
       const expected = '----------0---------1---------2---------3---------4---------5---------6-----';
-      const subs =     '^                                                                          !';
+      const subs =     '^--------------------------------------------------------------------------!';
       expectObservable(interval(10, testScheduler), subs).toBe(expected, [0, 1, 2, 3, 4, 5, 6]);
     });
   });

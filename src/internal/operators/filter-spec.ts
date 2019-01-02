@@ -73,7 +73,7 @@ describe('filter', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptionsTo }) => {
       const source = hot('-1--2--^-3-4-5-6--7-8--9--|');
       const subs =              '^           !       ';
-      const unsub =             '            !       ';
+      const unsub =             '^-----------!       ';
       const expected =          '--3---5----7-       ';
 
       expectObservable(source.pipe(filter(isPrime)), unsub).toBe(expected);
@@ -154,7 +154,7 @@ describe('filter', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptionsTo }) => {
       const source = hot('-1--2--^-3-4-5-6--7-8--9--|');
       const subs =              '^           !       ';
-      const unsub =             '            !       ';
+      const unsub =             '^-----------!       ';
       const expected =          '--3--------7-       ';
 
       function predicate(x: any, i: number) {
@@ -314,7 +314,7 @@ describe('filter', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptionsTo }) => {
       const source = hot('-1--2--^-3-4-5-6--7-8--9--|');
       const subs =              '^           !       ';
-      const unsub =             '            !       ';
+      const unsub =             '^-----------!       ';
       const expected =          '--3---5----7-       ';
 
       const r = source.pipe(

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
@@ -117,7 +117,7 @@ describe('map operator', () => {
   it('should allow unsubscribing explicitly and early', () => {
     testScheduler.run(({ cold, hot, expectObservable, expectSubscriptionsTo }) => {
       const a =   cold('--1--2--3--|');
-      const unsub =    '      !     ';
+      const unsub =    '^-----!     ';
       const asubs =    '^     !     ';
       const expected = '--x--y-     ';
 
@@ -220,22 +220,21 @@ describe('map operator', () => {
     });
   });
 
-  // TODO(benlesh): uncomment
-  // it('should not break unsubscription chain when unsubscribed explicitly', () => {
-  //   testScheduler.run(({ cold, hot, expectObservable, expectSubscriptionsTo }) => {
-  //     const a =   cold('--1--2--3--|');
-  //     const unsub =    '      !     ';
-  //     const asubs =    '^     !     ';
-  //     const expected = '--x--y-     ';
+  it('should not break unsubscription chain when unsubscribed explicitly', () => {
+    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptionsTo }) => {
+      const a =   cold('--1--2--3--|');
+      const unsub =    '^-----!     ';
+      const asubs =    '^     !     ';
+      const expected = '--x--y-     ';
 
-  //     const r = a.pipe(
-  //       mergeMap((x: string) => of(x)),
-  //       map(addDrama),
-  //       mergeMap((x: string) => of(x))
-  //     );
+      const r = a.pipe(
+        mergeMap((x: string) => of(x)),
+        map(addDrama),
+        mergeMap((x: string) => of(x))
+      );
 
-  //     expectObservable(r, unsub).toBe(expected, {x: '1!', y: '2!'});
-  //     expectSubscriptionsTo(a).toBe(asubs);
-  //   });
-  // });
+      expectObservable(r, unsub).toBe(expected, {x: '1!', y: '2!'});
+      expectSubscriptionsTo(a).toBe(asubs);
+    });
+  });
 });

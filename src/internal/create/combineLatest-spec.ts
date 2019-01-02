@@ -477,7 +477,7 @@ describe('static combineLatest', () => {
       const e2 =   hot('---e-^---f--g---h-|');
       const e2subs =        '^        !    ';
       const expected =      '----x-yz--    ';
-      const unsub =         '         !    ';
+      const unsub =         '^--------!    ';
       const values = { x: ['b', 'f'], y: ['c', 'f'], z: ['c', 'g'] };
 
       const result = combineLatest(e1, e2);
@@ -495,7 +495,7 @@ describe('static combineLatest', () => {
       const e2 =   hot('---e-^---f--g---h-|');
       const e2subs =        '^        !    ';
       const expected =      '----x-yz--    ';
-      const unsub =         '         !    ';
+      const unsub =         '^--------!    ';
       const values = { x: ['b', 'f'], y: ['c', 'f'], z: ['c', 'g'] };
 
       const result = combineLatest(

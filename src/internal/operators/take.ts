@@ -12,20 +12,14 @@ export function take<T>(total: number): OperatorFunction<T, T> {
   if (total < 0) {
     throw new ArgumentOutOfRangeError();
   }
-  return (source: Observable<T>) => total === 0 ? EMPTY as Observable<T> : source.lift(takeOperator(total));
+  return (source: Observable<T>) => total === 0 ? EMPTY :
+    new Observable(subscriber => source.subscribe(new TakeSubscriber(subscriber, total)));
 }
-
-function takeOperator<T>(total: number) {
-  return function takeLift(this: Subscriber<T>, source: Observable<T>, subscription: Subscription) {
-    return source.subscribe(new TakeSubscriber(subscription, this, total), subscription);
-  };
-}
-
 class TakeSubscriber<T> extends OperatorSubscriber<T> {
   private _counter = 0;
 
-  constructor(subscription: Subscription, destination: Subscriber<any>, private total: number) {
-    super(subscription, destination);
+  constructor(destination: Subscriber<any>, private total: number) {
+    super(destination);
     if (total === 0) {
       destination.complete();
     }

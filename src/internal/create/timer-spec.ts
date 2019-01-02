@@ -78,7 +78,7 @@ describe('timer', () => {
       const dueTime = time('|');
       const period  = time('---|');
       const expected = 'a--b--c--d--e';
-      const unsub   =  '^            !';
+      const unsub   =  '^------------!';
 
       const source = timer(dueTime, period, testScheduler);
       const values = { a: 0, b: 1, c: 2, d: 3, e: 4};

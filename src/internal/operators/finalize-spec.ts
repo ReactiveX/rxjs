@@ -155,7 +155,7 @@ describe('finalize operator', () => {
       let s1 = hot(  '--a--b--c--|');
       let subs =     '^     !     ';
       let expected = '--a--b-';
-      let unsub =    '      !';
+      let unsub =    '^-----!';
       let result = s1.pipe(finalize(() => executed = true));
       expectObservable(result, unsub).toBe(expected);
       expectSubscriptionsTo(s1).toBe(subs);

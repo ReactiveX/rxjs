@@ -6,23 +6,17 @@ import { Subscription } from '../Subscription';
 import { OperatorFunction } from '../types';
 
 export function map<T, R>(project: (value: T, index: number) => R): OperatorFunction<T, R> {
-  return (source: Observable<T>) => source.lift(mapOperator(project));
-}
-
-function mapOperator<T, R>(project: (value: T, index: number) => R) {
-  return function mapLift(this: Subscriber<R>, source: Observable<T>, subscription: Subscription) {
-    return source.subscribe(new MapSubscriber(subscription, this, project), subscription);
-  };
+  return (source: Observable<T>) => new Observable(subscriber => source.subscribe(new MapSubscriber(subscriber, project)));
 }
 
 class MapSubscriber<T, R> extends OperatorSubscriber<T> {
   private _index = 0;
 
-  constructor(subscription: Subscription, destination: Subscriber<R>, private _project: (value: T, index: number) => R) {
-    super(subscription, destination);
+  constructor(destination: Subscriber<R>, private _project: (value: T, index: number) => R) {
+    super(destination);
   }
 
-  next(value: T) {
+  _next(value: T) {
     const index = this._index++;
     const { _destination } = this;
     const result = tryUserFunction(this._project, [value, index]);

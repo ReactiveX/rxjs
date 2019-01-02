@@ -174,7 +174,7 @@ describe('tap operator', () => {
   it('should allow unsubscribing explicitly and early', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
       const e1 =   hot('--1--2--3--#');
-      const unsub =    '       !    ';
+      const unsub =    '^------!    ';
       const e1subs =   '^      !    ';
       const expected = '--1--2--    ';
 
@@ -191,7 +191,7 @@ describe('tap operator', () => {
       const e1 =   hot('--1--2--3--#');
       const e1subs =   '^      !    ';
       const expected = '--1--2--    ';
-      const unsub =    '       !    ';
+      const unsub =    '^------!    ';
 
       const result = e1.pipe(
         mergeMap((x: any) => of(x)),

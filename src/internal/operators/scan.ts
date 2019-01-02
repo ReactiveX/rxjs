@@ -50,13 +50,8 @@ export function scan<T, R>(reducer: (state: R, valeu: T, index: number) => R, in
 export function scan<T, R, I>(reducer: (state: I|R, value: T, index: number) => R, initialState: I): OperatorFunction<T, R|I>;
 export function scan<T, R, I>(reducer: (state: T|R|I, value: T, index: number) => R, initialState?: R|I): OperatorFunction<T, T|R|I> {
   let hasState = arguments.length >= 2;
-  return (source: Observable<T>) => source.lift(scanOperator<T, R, I>(reducer, initialState, hasState));
-}
-
-function scanOperator<T, R, I>(reducer: (state: T|R|I, value: T, index: number) => R, initialState: R|I, hasState: boolean) {
-  return function scanLift(this: Subscriber<T|R|I>, source: Observable<T>, subscription: Subscription) {
-    return source.subscribe(new ScanSubscriber<T, R, I>(subscription, this, reducer, initialState, hasState));
-  };
+  return (source: Observable<T>) => new Observable(subscriber =>
+    source.subscribe(new ScanSubscriber<T, R, I>(subscriber, reducer, initialState, hasState)));
 }
 
 class ScanSubscriber<T, R, I> extends OperatorSubscriber<T> {
@@ -64,19 +59,18 @@ class ScanSubscriber<T, R, I> extends OperatorSubscriber<T> {
   private _state: T|R|I;
 
   constructor(
-    subscription: Subscription,
     destination: Subscriber<T|R|I>,
     private _reducer: (state: T|R|I, value: T, index: number) => R,
     _initialState: R|I,
     private _hasState: boolean
   ) {
-    super(subscription, destination);
+    super(destination);
     if (_hasState) {
       this._state = _initialState;
     }
   }
 
-  next(value: T) {
+  _next(value: T) {
     const { _destination } = this;
     const index = this._index++;
     if (this._hasState) {

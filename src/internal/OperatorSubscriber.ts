@@ -1,21 +1,20 @@
 import { Subscriber } from './Subscriber';
-import { Subscription } from './Subscription';
 
 export class OperatorSubscriber<T> extends Subscriber<T> {
-  constructor(subscription: Subscription, protected _destination: Subscriber<any>) {
-    super(subscription);
+  constructor(protected _destination: Subscriber<any>) {
+    super();
+    (this._destination as any)._subscription.add(this._subscription);
   }
 
-  next(value: T) {
-    debugger;
+  _next(value: T) {
     this._destination.next(value);
   }
 
-  error(err: any) {
+  _error(err: any) {
     this._destination.error(err);
   }
 
-  complete() {
+  _complete() {
     this._destination.complete();
   }
 }

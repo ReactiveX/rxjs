@@ -223,7 +223,7 @@ describe('mergeMap', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
       const values = {i: 'foo', j: 'bar', k: 'baz', l: 'qux'};
       const e1 =    hot('-a-------b-------c-------d-------e---------------f------');
-      const unsub =     '                                                       !';
+      const unsub =     '^------------------------------------------------------!';
       const e1subs =    '^                                                      !';
       const inner = cold('----i---j---k---l---|                                  ', values);
       const expected =  '-----i---j---(ki)(lj)(ki)(lj)(ki)(lj)(ki)(lj)k---l---i--';
@@ -242,7 +242,7 @@ describe('mergeMap', () => {
       const e1subs =    '^                                                      !';
       const inner = cold('----i---j---k---l---|                                  ', values);
       const expected =  '-----i---j---(ki)(lj)(ki)(lj)(ki)(lj)(ki)(lj)k---l---i--';
-      const unsub =     '                                                       !';
+      const unsub =     '^------------------------------------------------------!';
 
       const source = e1.pipe(
         map(x => x),
@@ -615,7 +615,7 @@ describe('mergeMap', () => {
       const f =   cold(                                      '--|'            );
       const g =   cold(                                            '---1-2|'  );
       const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|'       );
-      const unsub =          '                              !                ';
+      const unsub =          '^-----------------------------!                ';
       const e1subs =         '^                             !                ';
       const expected =       '---2--3--4--5---1--2--3--2--3--                ';
 
@@ -692,7 +692,7 @@ describe('mergeMap', () => {
   it('should mergeMap many outer to inner arrays, outer gets unsubscribed', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
       const e1 =   hot('2-----4--------3--------2-------|');
-      const unsub =    '             !                   ';
+      const unsub =    '^------------!                   ';
       const e1subs  =  '^            !                   ';
       const expected = '(22)--(4444)--                   ';
 

@@ -106,7 +106,7 @@ describe('defer', () => {
       const source = hot('--a--b--c--|');
       const sourceSubs = '^     !     ';
       const expected =   '--a--b-     ';
-      const unsub =      '      !     ';
+      const unsub =      '^-----!     ';
 
       const e1 = defer(() => source);
 
@@ -120,7 +120,7 @@ describe('defer', () => {
       const source = hot('--a--b--c--|');
       const sourceSubs = '^     !     ';
       const expected =   '--a--b-     ';
-      const unsub =      '      !     ';
+      const unsub =      '^-----!     ';
 
       const e1 = defer(() => source.pipe(
         mergeMap(x => of(x)),

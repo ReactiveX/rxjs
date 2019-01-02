@@ -9,59 +9,56 @@ import { from } from 'rxjs/internal/create/from';
 export function switchMap<T, R>(
   project: (value: T, index: number) => ObservableInput<R>
 ): OperatorFunction<T, R> {
-  return (source: Observable<T>) => source.lift(switchMapOperator(project));
-}
-
-function switchMapOperator<T, R>(project: (value: T, index: number) => ObservableInput<R>) {
-  return function switchMapLift(this: Subscriber<R>, source: Observable<T>, subscription: Subscription) {
-    return source.subscribe(new SwitchMapSubscriber(subscription, this, project), subscription);
-  };
+  return (source: Observable<T>) =>
+    new Observable(subscriber => source.subscribe(new SwitchMapSubscriber(subscriber, project)));
 }
 
 class SwitchMapSubscriber<T, R> extends OperatorSubscriber<T> {
   private _innerSub: Subscription;
-  private _complete = false;
+  private _completed = false;
   private _index = 0;
 
   constructor(
-    subscription: Subscription,
     destination: Subscriber<R>,
     private project: (value: T, index: number) => ObservableInput<R>
   ) {
-    super(subscription, destination);
+    super(destination);
   }
 
-  next(value: T) {
+  _next(value: T) {
     const { _destination } = this;
     const result = tryUserFunction(() => from(this.project(value, this._index++)));
     if (resultIsError(result)) {
       _destination.error(result.error);
     } else {
       if (this._innerSub) {
+        this._subscription.remove(this._innerSub);
         this._innerSub.unsubscribe();
+        this._innerSub = null;
       }
-      const innerSub = this._innerSub = new Subscription();
-      this._subscription.add(innerSub);
-      innerSub.add(() => {
-        this._subscription.remove(innerSub);
-        this._innerSub = undefined;
-      });
-      result.subscribe({
-        next: (value: R) => _destination.next(value),
-        error: (err: any) => _destination.error(err),
-        complete: () => {
-          if (this._complete) {
-            _destination.complete();
-          }
-        }
-      }, innerSub);
+      const innerSubscriber = new InnerSubscriber(this._destination, this);
+      this._subscription.add(this._innerSub = result.subscribe(innerSubscriber));
     }
   }
 
   complete() {
-    this._complete = true;
-    if (!this._innerSub) {
+    this._completed = true;
+    if (!this._innerSub || this._innerSub.closed) {
+      super.complete();
+    }
+  }
+}
+
+class InnerSubscriber<T> extends OperatorSubscriber<T> {
+  constructor(destination: Subscriber<T>, private outerSubscriber: SwitchMapSubscriber<any, T>) {
+    super(destination);
+  }
+
+  _complete() {
+    const { outerSubscriber } = this;
+    if ((outerSubscriber as any)._completed) {
       this._destination.complete();
     }
+    this._subscription.unsubscribe();
   }
 }

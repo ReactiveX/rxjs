@@ -89,7 +89,7 @@ describe('switchMap', () => {
       const ysubs =    '                   ^ !                ';
       const e1 =   hot('---------x---------y---------|        ');
       const e1subs =   '^                    !                ';
-      const unsub =    '                     !                ';
+      const unsub =    '^--------------------!                ';
       const expected = '-----------a--b--c----                ';
 
       const observableLookup = { x: x, y: y };
@@ -112,7 +112,7 @@ describe('switchMap', () => {
       const e1 =   hot('---------x---------y---------|        ');
       const e1subs =   '^                    !                ';
       const expected = '-----------a--b--c----                ';
-      const unsub =    '                     !                ';
+      const unsub =    '^--------------------!                ';
 
       const observableLookup = { x: x, y: y };
 
@@ -138,10 +138,12 @@ describe('switchMap', () => {
       }),
       defer(() => {
         sideEffects.push(2);
+        debugger;
         return of(2);
       }),
       defer(() => {
         sideEffects.push(3);
+        debugger;
         return of(3);
       })
     );
@@ -290,7 +292,7 @@ describe('switchMap', () => {
       const e1subs =   '^                            !';
       const expected = '-----------------------------|';
 
-      const observableLookup = { x: x, y: y };
+      const observableLookup = { x, y };
 
       const result = e1.pipe(switchMap(value => observableLookup[value]));
 

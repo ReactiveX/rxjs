@@ -5,17 +5,11 @@ import { Subscriber } from '../Subscriber';
 import { OperatorSubscriber } from '../OperatorSubscriber';
 
 export function dematerialize<T>(): OperatorFunction<NotificationLike<T>, T> {
-  return (source: Observable<NotificationLike<T>>) => source.lift(dematerializeOperator());
-}
-
-function dematerializeOperator<T>() {
-  return function dematerializeLift(this: Subscriber<T>, source: Observable<NotificationLike<T>>, subscription: Subscription) {
-    return source.subscribe(new DematerializeSubscriber(subscription, this), subscription);
-  };
+  return (source: Observable<NotificationLike<T>>) => new Observable(subscriber => source.subscribe(new DematerializeSubscriber(subscriber)));
 }
 
 class DematerializeSubscriber<T> extends OperatorSubscriber<NotificationLike<T>> {
-  next(notification: NotificationLike<T>) {
+  _next(notification: NotificationLike<T>) {
     const { _destination } = this;
     switch (notification.kind) {
       case 'N':

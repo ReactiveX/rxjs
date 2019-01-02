@@ -492,8 +492,8 @@ describe('concatMap', () => {
       const g =   cold(                                                      '---1-2|');
       const gsubs: string[] = [];
       const e1 =   hot('-a-b--^-c-----d------e----------------f-----g|               ');
-      const e1subs =         '^                             !                        ';
-      const unsub =          '                              !                        ';
+      const e1subs =         '^-----------------------------!                        ';
+      const unsub =          '^-----------------------------!                        ';
       const expected =       '---2--3--4--5----6-----2--3-1--                        ';
       const observableLookup = { a: a, b: b, c: c, d: d, e: e, f: f, g: g };
 
@@ -616,7 +616,7 @@ describe('concatMap', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
       const e1 =   hot('2-----4--------3--------2-------|');
       const e1subs =   '^            !                   ';
-      const unsub =    '             !                   ';
+      const unsub =    '^------------!                   ';
       const expected = '(22)--(4444)--                   ';
 
       const result = e1.pipe(concatMap((value) => arrayRepeat(value, +value)));

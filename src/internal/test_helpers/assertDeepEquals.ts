@@ -2,9 +2,9 @@ import { expect } from 'chai';
 
 /** Used throughout the test suite to set up TestScheduler */
 export function assertDeepEquals(actual: any, expected: any): void {
-  console.log(JSON.stringify({
-    actual, expected
-  }, null, 2));
+  // console.log(JSON.stringify({
+  //   actual, expected
+  // }, null, 2));
   expect(actual.map(deleteErrorNotificationStack)).to.deep.equal(expected.map(deleteErrorNotificationStack));
 }
 

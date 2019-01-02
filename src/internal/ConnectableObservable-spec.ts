@@ -8,7 +8,7 @@ describe('ConnectableObservable', () => {
 
     const source = of(1, 2, 3);
 
-    const connectable = new ConnectableObservable(source, () => new Subject());
+    const connectable = new ConnectableObservable(source, new Subject());
 
     connectable.subscribe({
       next(value) { results1.push(value); },

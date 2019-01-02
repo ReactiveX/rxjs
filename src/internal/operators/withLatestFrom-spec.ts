@@ -59,7 +59,7 @@ describe('withLatestFrom operator', () => {
       const e3 =   hot('--i--^-j---k---l------|');
       const e3subs =        '^          !   ';
       const expected =      '----x---y---   ';
-      const unsub =         '           !   ';
+      const unsub =         '^----------!   ';
       const values = {
         x: ['b', 'f', 'j'],
         y: ['c', 'g', 'k'],
@@ -84,7 +84,7 @@ describe('withLatestFrom operator', () => {
       const e3 =   hot('--i--^-j---k---l------|');
       const e3subs =        '^          !   ';
       const expected =      '----x---y---   ';
-      const unsub =         '           !   ';
+      const unsub =         '^----------!   ';
       const values = {
         x: ['b', 'f', 'j'],
         y: ['c', 'g', 'k'],

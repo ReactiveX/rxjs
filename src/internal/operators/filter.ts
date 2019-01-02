@@ -6,23 +6,17 @@ import { Subscriber } from '../Subscriber';
 import { OperatorSubscriber } from '../OperatorSubscriber';
 
 export function filter<T>(predicate: (value: T, index: number) => boolean): OperatorFunction<T, T> {
-  return (source: Observable<T>) => source.lift(filterOperator(predicate));
-}
-
-function filterOperator<T>(predicate: (value: T, index: number) => boolean) {
-  return function filterLift(this: Subscriber<T>, source: Observable<T>, subscription: Subscription) {
-    return source.subscribe(new FilterSubscriber(subscription, this, predicate));
-  };
+  return (source: Observable<T>) => new Observable(subscriber => source.subscribe(new FilterSubscriber(subscriber, predicate)));
 }
 
 class FilterSubscriber<T> extends OperatorSubscriber<T> {
   private _index = 0;
 
-  constructor(subscription: Subscription, destination: Subscriber<T>, private _predicate: (value: T, index: number) => boolean) {
-    super(subscription, destination);
+  constructor(destination: Subscriber<T>, private _predicate: (value: T, index: number) => boolean) {
+    super(destination);
   }
 
-  next(value: T) {
+  _next(value: T) {
     const { _destination } = this;
     const result = tryUserFunction(this._predicate, [value, this._index++]);
     if (resultIsError(result)) {

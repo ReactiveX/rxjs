@@ -183,7 +183,7 @@ describe('scan', () => {
   it('should allow unsubscribing explicitly and early', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
       const e1 = hot('--a--^--b--c--d--e--f--g--|');
-      const unsub =       '              !       ';
+      const unsub =       '^-------------!       ';
       const e1subs =      '^             !       ';
       const expected =    '---u--v--w--x--       ';
       const values = {
@@ -207,7 +207,7 @@ describe('scan', () => {
       const e1 = hot('--a--^--b--c--d--e--f--g--|');
       const e1subs =      '^             !       ';
       const expected =    '---u--v--w--x--       ';
-      const unsub =       '              !       ';
+      const unsub =       '^-------------!       ';
       const values = {
         u: ['b'],
         v: ['b', 'c'],

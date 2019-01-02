@@ -127,7 +127,7 @@ describe('static race', () => {
       const e2 =   hot('------x-----y-----z----|');
       const e2subs =   '^  !';
       const expected = '---a-----b---';
-      const unsub =    '            !';
+      const unsub =    '^-----------!';
 
       const result = race(e1, e2);
 
@@ -144,7 +144,7 @@ describe('static race', () => {
       const e2 =   hot('---e-^---f--g---h-|');
       const e2subs =        '^  !    ';
       const expected =      '---b--c---    ';
-      const unsub =         '         !    ';
+      const unsub =         '^--------!    ';
 
       const result = race(
           e1.pipe(mergeMap((x: string) => of(x))),

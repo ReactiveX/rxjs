@@ -7,29 +7,23 @@ import { EMPTY } from '../EMPTY';
 
 export function takeLast<T>(count: number = 1): OperatorFunction<T, T> {
   count = Math.max(count, 0);
-  return (source: Observable<T>) => count === 0 ? EMPTY : source.lift(takeLastOperator(count));
-}
-
-function takeLastOperator<T>(count: number) {
-  return function takeLastLift(this: Subscriber<T>, source: Observable<T>, subscription: Subscription) {
-    return source.subscribe(new TakeLastSubscriber(subscription, this, count));
-  };
+  return (source: Observable<T>) => count === 0 ? EMPTY : new Observable(subscriber => source.subscribe(new TakeLastSubscriber(subscriber, count)));
 }
 
 class TakeLastSubscriber<T> extends OperatorSubscriber<T> {
   private _buffer: T[] = [];
 
-  constructor(subscription: Subscription, destination: Subscriber<T>, private _count: number) {
-    super(subscription, destination);
+  constructor(destination: Subscriber<T>, private _count: number) {
+    super(destination);
   }
 
-  next(value: T) {
+  _next(value: T) {
     const { _buffer } = this;
     _buffer.push(value);
     _buffer.splice(0, _buffer.length - this._count);
   }
 
-  complete() {
+  _complete() {
     const { _buffer, _destination } = this;
     for (let i = 0; i < _buffer.length && !_destination.closed; i++) {
       _destination.next(_buffer[i]);

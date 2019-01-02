@@ -119,5 +119,5 @@ declare global  {
 export type MonoTypeOperatorFunction<T> = OperatorFunction<T, T>;
 
 export interface Operator<T> {
-  call(subscriber: Subscriber<any>, source: any, subscription: Subscription): TeardownLogic;
+  call(subscriber: Subscriber<any>, source: any): TeardownLogic;
 }

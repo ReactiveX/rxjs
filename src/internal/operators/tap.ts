@@ -28,17 +28,8 @@ export function tap<T>(
   errorHandler?: (err: any) => void,
   completeHandler?: () => void,
 ): OperatorFunction<T, T> {
-  return (source: Observable<T>) => source.lift(tapOperator(nextOrObserver, errorHandler, completeHandler));
-}
-
-export function tapOperator<T>(
-  nextOrObserver?: PartialObserver<T>|((value: T) => void),
-  errorHandler?: (err: any) => void,
-  completeHandler?: () => void,
-) {
-  return function tapLift(this: Subscriber<T>, source: Observable<T>, subscription: Subscription) {
-    return source.subscribe(new TapSubscriber(subscription, this, nextOrObserver, errorHandler, completeHandler), subscription);
-  };
+  return (source: Observable<T>) =>
+    new Observable(subscriber => source.subscribe(new TapSubscriber(subscriber, nextOrObserver, errorHandler, completeHandler)));
 }
 
 class TapSubscriber<T> extends OperatorSubscriber<T> {
@@ -47,13 +38,12 @@ class TapSubscriber<T> extends OperatorSubscriber<T> {
   private _tapComplete: () => void;
 
   constructor(
-    subscription: Subscription,
     destination: Subscriber<T>,
     nextOrObserver: PartialObserver<T>|((value: T) => void)|undefined,
     errorHandler: ((err: any) => void)|undefined,
     completeHandler: (() => void)|undefined
   ) {
-    super(subscription, destination);
+    super(destination);
 
     if (isPartialObserver(nextOrObserver)) {
       this._tapNext = (nextOrObserver.next || noop).bind(nextOrObserver);
@@ -65,7 +55,8 @@ class TapSubscriber<T> extends OperatorSubscriber<T> {
       this._tapComplete = completeHandler || noop;
     }
   }
-  next(value: T) {
+
+  _next(value: T) {
     const { _destination } = this;
     const result = tryUserFunction(this._tapNext, [value, this._subscription]);
     if (resultIsError(result)) {
@@ -75,7 +66,7 @@ class TapSubscriber<T> extends OperatorSubscriber<T> {
     }
   }
 
-  error(err: any) {
+  _error(err: any) {
     const { _destination } = this;
     const result = tryUserFunction(this._tapError, [err]);
     if (resultIsError(result)) {
@@ -85,7 +76,7 @@ class TapSubscriber<T> extends OperatorSubscriber<T> {
     }
   }
 
-  complete() {
+  _complete() {
     const { _destination } = this;
     const result = tryUserFunction(this._tapComplete);
     if (resultIsError(result)) {

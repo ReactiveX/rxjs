@@ -117,7 +117,7 @@ describe('take operator', () => {
   it('should allow unsubscribing explicitly and early', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
       const e1 = hot('---^--a--b-----c--d--e--|');
-      const unsub =     '         !            ';
+      const unsub =     '^--------!            ';
       const e1subs =    '^        !            ';
       const expected =  '---a--b---            ';
 
@@ -146,7 +146,7 @@ describe('take operator', () => {
   it('should not break unsubscription chain when unsubscribed explicitly', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
       const e1 = hot('---^--a--b-----c--d--e--|');
-      const unsub =     '         !            ';
+      const unsub =     '^--------!            ';
       const e1subs =    '^        !            ';
       const expected =  '---a--b---            ';
 

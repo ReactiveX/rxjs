@@ -107,198 +107,176 @@ export abstract class TestObservable<T> extends Observable<T> {
 export type observableToBeFn = (marbles: string, values?: any, errorValue?: any) => void;
 export type subscriptionLogsToBeFn = (marbles: string | string[]) => void;
 
-export interface TestScheduler extends VirtualTimeScheduler {
-  readonly hotObservables: HotObservable<any>[];
-  readonly coldObservables: TestObservable<any>[];
+export class TestScheduler extends VirtualTimeScheduler {
+  private _runMode = false;
+  private _flushTests: FlushableTest[] = [];
+  private _patches = DEFAULT_SCHEDULER_PATCHES;
 
-  createTime(marbles: string): number;
-  createColdObservable<T = string>(marbles: string, values?: { [marble: string]: T }, error?: any): TestObservable<T>;
-  createHotObservable<T = string>(marbles: string, values?: { [marble: string]: T }, error?: any): HotObservable<T>;
+  protected _hotObservables: HotObservable<any>[] = [];
+  protected _coldObservables: TestObservable<any>[] = [];
 
-  expectObservable(observable: Observable<any>, unsubscriptionMarbles?: string): ({ toBe: observableToBeFn });
-  expectSubscriptionsTo(observable: TestObservable<any>): ({ toBe: subscriptionLogsToBeFn });
-
-  run<T>(callback: (helpers: RunHelpers) => T): T;
-}
-
-export interface TestSchedulerCtor {
-  new (assertDeepEqual: (actual: any, expected: any) => boolean | void): TestScheduler;
-}
-
-function TestSchedulerImpl(
-  this: any,
-  assertDeepEqual: (actual: any, expected: any) => boolean | void,
-) {
-  VirtualTimeScheduler.call(this);
-  this._assertDeepEqual = assertDeepEqual;
-  this._runMode = false;
-  this._flushTests = [];
-  this.hotObservables = [];
-  this.coldObservables = [];
-  this._patches = DEFAULT_SCHEDULER_PATCHES;
-}
-
-TestSchedulerImpl.prototype = Object.create(VirtualTimeScheduler.prototype);
-
-const proto = TestSchedulerImpl.prototype;
-
-proto._materializeInnerObservable = function (
-  observable: Observable<any>,
-  outerFrame: number
-): TestMessage<any>[] {
-  const messages: TestMessage<any>[] = [];
-  observable.subscribe((value) => {
-    messages.push({ frame: this.frame - outerFrame, notification: Notification.createNext(value) });
-  }, (error) => {
-    messages.push({ frame: this.frame - outerFrame, notification: Notification.createError(error) });
-  }, () => {
-    messages.push({ frame: this.frame - outerFrame, notification: Notification.createComplete() });
-  });
-  return messages;
-};
-
-proto.createTime = function (marbles: string): number {
-  const indexOf: number = marbles.indexOf('|');
-  if (indexOf === -1) {
-    throw new Error('marble diagram for time should have a completion marker "|"');
+  constructor(private _assertDeepEqual: (actual: any, expected: any) => boolean | void) {
+    super();
   }
-  return indexOf * this.frameTimeFactor;
-};
 
-proto.createColdObservable = function <T = string>(marbles: string, values?: { [marble: string]: T }, error?: any): TestObservable<T> {
- if (marbles.indexOf('^') !== -1) {
-   throw new Error('cold observable cannot have subscription offset "^"');
- }
- if (marbles.indexOf('!') !== -1) {
-   throw new Error('cold observable cannot have unsubscription marker "!"');
- }
- const messages = parseMarbles(marbles, values, error, undefined, this._runMode);
- const cold = coldObservable<T>(messages, this as TestScheduler);
- this.coldObservables.push(cold);
- return cold;
-};
+  _materializeInnerObservable(
+    observable: Observable<any>,
+    outerFrame: number
+  ): TestMessage<any>[] {
+    const messages: TestMessage<any>[] = [];
+    observable.subscribe((value) => {
+      messages.push({ frame: this.frame - outerFrame, notification: Notification.createNext(value) });
+    }, (error) => {
+      messages.push({ frame: this.frame - outerFrame, notification: Notification.createError(error) });
+    }, () => {
+      messages.push({ frame: this.frame - outerFrame, notification: Notification.createComplete() });
+    });
+    return messages;
+  }
 
-proto.createHotObservable = function <T = string>(marbles: string, values?: { [marble: string]: T }, error?: any): HotObservable<T> {
+  createTime(marbles: string): number {
+    const indexOf: number = marbles.indexOf('|');
+    if (indexOf === -1) {
+      throw new Error('marble diagram for time should have a completion marker "|"');
+    }
+    return indexOf * this.frameTimeFactor;
+  }
+
+  createColdObservable<T = string>(marbles: string, values?: { [marble: string]: T }, error?: any): TestObservable<T> {
+  if (marbles.indexOf('^') !== -1) {
+    throw new Error('cold observable cannot have subscription offset "^"');
+  }
   if (marbles.indexOf('!') !== -1) {
-    throw new Error('hot observable cannot have unsubscription marker "!"');
+    throw new Error('cold observable cannot have unsubscription marker "!"');
   }
   const messages = parseMarbles(marbles, values, error, undefined, this._runMode);
-  const subject = hotObservable<T>(messages, this as TestScheduler);
-  this.hotObservables.push(subject);
-  return subject;
-};
+  const cold = coldObservable<T>(messages, this as TestScheduler);
+  this._coldObservables.push(cold);
+  return cold;
+  }
 
-proto.expectObservable = function(
-  observable: Observable<any>,
-  subscriptionMarbles: string = null
-): ({ toBe: observableToBeFn }) {
-  const actual: TestMessage<any>[] = [];
-  const flushTest: FlushableTest = { actual, ready: false };
-  const subscriptionParsed = parseMarblesAsSubscriptions(subscriptionMarbles, this.runMode);
-  const subscriptionFrame = subscriptionParsed.subscribedFrame === Number.POSITIVE_INFINITY ?
-    0 : subscriptionParsed.subscribedFrame;
-const unsubscriptionFrame = subscriptionParsed.unsubscribedFrame;
-  let subscription: Subscription;
+  createHotObservable<T = string>(marbles: string, values?: { [marble: string]: T }, error?: any): HotObservable<T> {
+    if (marbles.indexOf('!') !== -1) {
+      throw new Error('hot observable cannot have unsubscription marker "!"');
+    }
+    const messages = parseMarbles(marbles, values, error, undefined, this._runMode);
+    const subject = hotObservable<T>(messages, this as TestScheduler);
+    this._hotObservables.push(subject);
+    return subject;
+  }
 
-  this.schedule(() => {
-    subscription = observable.subscribe(x => {
-      let value = x;
-      // Support Observable-of-Observables
-      if (isObservable(x)) {
-        value = this._materializeInnerObservable(x, this.frame, this);
+  expectObservable(
+    observable: Observable<any>,
+    subscriptionMarbles: string = null
+  ): ({ toBe: observableToBeFn }) {
+    const actual: TestMessage<any>[] = [];
+    const flushTest: FlushableTest = { actual, ready: false };
+    const subscriptionParsed = parseMarblesAsSubscriptions(subscriptionMarbles, this._runMode);
+    const subscriptionFrame = subscriptionParsed.subscribedFrame === Number.POSITIVE_INFINITY ?
+      0 : subscriptionParsed.subscribedFrame;
+  const unsubscriptionFrame = subscriptionParsed.unsubscribedFrame;
+    let subscription: Subscription;
+
+    this.schedule(() => {
+      subscription = observable.subscribe(x => {
+        let value = x;
+        // Support Observable-of-Observables
+        if (isObservable(x)) {
+          value = this._materializeInnerObservable(x, this.frame);
+        }
+        actual.push({ frame: this.frame, notification: Notification.createNext(value) });
+      }, (error) => {
+        actual.push({ frame: this.frame, notification: Notification.createError(error) });
+      }, () => {
+        actual.push({ frame: this.frame, notification: Notification.createComplete() });
+      });
+    }, subscriptionFrame);
+
+    if (unsubscriptionFrame !== Number.POSITIVE_INFINITY) {
+      this.schedule(() => subscription.unsubscribe(), unsubscriptionFrame);
+    }
+
+    this._flushTests.push(flushTest);
+
+    return {
+      toBe: (marbles: string, values?: any, errorValue?: any) => {
+        flushTest.ready = true;
+        flushTest.expected = parseMarbles(marbles, values, errorValue, true, this._runMode);
       }
-      actual.push({ frame: this.frame, notification: Notification.createNext(value) });
-    }, (error) => {
-      actual.push({ frame: this.frame, notification: Notification.createError(error) });
-    }, () => {
-      actual.push({ frame: this.frame, notification: Notification.createComplete() });
+    };
+  }
+
+  expectSubscriptionsTo(observable: TestObservable<any>): ({ toBe: subscriptionLogsToBeFn }) {
+    const actual: any[] = [];
+    const flushTest: FlushableTest = { actual, ready: false };
+
+    this.schedule(() => {
+      observable.subscriptions.map(log => {
+        actual.push(log);
+      });
+    }, 0);
+
+    return {
+      toBe: (marbles: string | string[]) => {
+        const marblesArray: string[] = (typeof marbles === 'string') ? [marbles] : marbles;
+        flushTest.ready = true;
+        flushTest.expected = marblesArray.map(marbles =>
+          parseMarblesAsSubscriptions(marbles, this._runMode)
+        );
+      }
+    };
+  }
+
+  run<T>(callback: (helpers: RunHelpers) => T): T {
+    const prevMaxFrames = this.maxFrames;
+    this.maxFrames = Number.POSITIVE_INFINITY;
+    this._runMode = true;
+
+    const patches: SchedulerPatch[] = this._patches;
+
+    // Patch the schedulers
+    patches.forEach(patch => patch.patch(this));
+
+    const helpers = {
+      cold: this.createColdObservable.bind(this),
+      hot: this.createHotObservable.bind(this),
+      flush: this.flush.bind(this),
+      expectObservable: this.expectObservable.bind(this),
+      expectSubscriptionsTo: this.expectSubscriptionsTo.bind(this),
+      time: this.createTime.bind(this),
+    };
+    try {
+      const ret = callback(helpers);
+
+      this.flush();
+      return ret;
+    } finally {
+      this.maxFrames = prevMaxFrames;
+      this._runMode = false;
+      // Unpatch the schedulers
+      patches.forEach(patch => patch.unpatch());
+    }
+  }
+
+  flush(): void {
+    const hotObservables = this._hotObservables;
+    while (hotObservables.length > 0) {
+      hotObservables.shift().setup();
+    }
+
+    super.flush();
+
+    this._flushTests = this._flushTests.filter((test: any) => {
+      if (test.ready) {
+        // console.log(JSON.stringify(test.actual, null, 2));
+        // console.log(JSON.stringify(test.expected, null, 2));
+        this._assertDeepEqual(test.actual, test.expected);
+        return false;
+      }
+      return true;
     });
-  }, subscriptionFrame);
-
-  if (unsubscriptionFrame !== Number.POSITIVE_INFINITY) {
-    this.schedule(() => subscription.unsubscribe(), unsubscriptionFrame);
   }
-
-  this._flushTests.push(flushTest);
-
-  return {
-    toBe: (marbles: string, values?: any, errorValue?: any) => {
-      flushTest.ready = true;
-      flushTest.expected = parseMarbles(marbles, values, errorValue, true, this._runMode);
-    }
-  };
-};
-
-proto.expectSubscriptionsTo = function (observable: TestObservable<any>): ({ toBe: subscriptionLogsToBeFn }) {
-  const actual: any[] = [];
-  const flushTest: FlushableTest = { actual, ready: false };
-
-  this.schedule(() => {
-    observable.subscriptions.map(log => {
-      actual.push(log);
-    });
-  }, 0);
-
-  return {
-    toBe: (marbles: string | string[]) => {
-      const marblesArray: string[] = (typeof marbles === 'string') ? [marbles] : marbles;
-      flushTest.ready = true;
-      flushTest.expected = marblesArray.map(marbles =>
-        parseMarblesAsSubscriptions(marbles, this._runMode)
-      );
-    }
-  };
-},
-
-proto.run = function<T>(callback: (helpers: RunHelpers) => T): T {
-  const prevMaxFrames = this.maxFrames;
-  this.maxFrames = Number.POSITIVE_INFINITY;
-  this._runMode = true;
-
-  const patches: SchedulerPatch[] = this._patches;
-
-  // Patch the schedulers
-  patches.forEach(patch => patch.patch(this));
-
-  const helpers = {
-    cold: this.createColdObservable.bind(this),
-    hot: this.createHotObservable.bind(this),
-    flush: this.flush.bind(this),
-    expectObservable: this.expectObservable.bind(this),
-    expectSubscriptionsTo: this.expectSubscriptionsTo.bind(this),
-    time: this.createTime.bind(this),
-  };
-  try {
-    const ret = callback(helpers);
-
-    this.flush();
-    return ret;
-  } finally {
-    this.maxFrames = prevMaxFrames;
-    this._runMode = false;
-    // Unpatch the schedulers
-    patches.forEach(patch => patch.unpatch());
-  }
-},
-
-proto.flush = function (): void {
-  const hotObservables = this.hotObservables;
-  while (hotObservables.length > 0) {
-    hotObservables.shift().setup();
-  }
-
-  VirtualTimeScheduler.prototype.flush.call(this);
-
-  this._flushTests = this._flushTests.filter((test: any) => {
-    if (test.ready) {
-      // console.log(JSON.stringify(test.actual, null, 2));
-      // console.log(JSON.stringify(test.expected, null, 2));
-      this._assertDeepEqual(test.actual, test.expected);
-      return false;
-    }
-    return true;
-  });
-};
+}
 
 export function subscriptionLogger() {
   return {
@@ -569,7 +547,7 @@ export function hotObservable<T>(messages: TestMessage<T>[], scheduler: TestSche
 
   const _subscribe = result.subscribe;
 
-  result.subscribe = function () {
+  result.subscribe = function() {
     const subsLogIndex = subsLogger.logSubscription(scheduler.now());
 
     const subs = new Subscription();
@@ -624,5 +602,3 @@ export function coldObservable<T>(messages: TestMessage<T>[], scheduler: TestSch
 
   return result as TestObservable<T>;
 }
-
-export const TestScheduler: TestSchedulerCtor = TestSchedulerImpl as any;

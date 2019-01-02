@@ -72,7 +72,7 @@ describe('materialize operator', () => {
   it('should allow unsubscribing explicitly and early', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
       const e1 =   hot('--a--b--c--|');
-      const unsub =    '      !     ';
+      const unsub =    '^-----!     ';
       const e1subs =   '^     !     ';
       const expected = '--w--x-     ';
 
@@ -91,7 +91,7 @@ describe('materialize operator', () => {
       const e1 =   hot('--a--b--c--|');
       const e1subs =   '^     !     ';
       const expected = '--w--x-     ';
-      const unsub =    '      !     ';
+      const unsub =    '^-----!     ';
 
       const expectedValue = {
         w: Notification.createNext('a'),
