@@ -3,12 +3,15 @@ import { errorObject } from './errorObject';
 let tryCatchTarget: Function;
 
 function tryCatcher(this: any): any {
+  let result;
   try {
-    return tryCatchTarget.apply(this, arguments);
+    result = tryCatchTarget.apply(this, arguments);
   } catch (e) {
     errorObject.e = e;
-    return errorObject;
+    result = errorObject;
   }
+  tryCatchTarget = undefined;
+  return result;
 }
 
 export function tryCatch<T extends Function>(fn: T): T {
