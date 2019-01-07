@@ -202,17 +202,18 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
     const headers = request.headers = request.headers || {};
 
     // force CORS if requested
-    if (!request.crossDomain && !headers['X-Requested-With']) {
+    if (!request.crossDomain && !this.getHeader(headers, 'X-Requested-With')) {
       headers['X-Requested-With'] = 'XMLHttpRequest';
     }
 
     // ensure content type is set
-    if (!('Content-Type' in headers) && !(root.FormData && request.body instanceof root.FormData) && typeof request.body !== 'undefined') {
+    let contentTypeHeader = this.getHeader(headers, 'Content-Type');
+    if (!contentTypeHeader && !(root.FormData && request.body instanceof root.FormData) && typeof request.body !== 'undefined') {
       headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
     }
 
     // properly serialize body
-    request.body = this.serializeBody(request.body, request.headers['Content-Type']);
+    request.body = this.serializeBody(request.body, this.getHeader(request.headers, 'Content-Type'));
 
     this.send();
   }
@@ -313,6 +314,16 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
         xhr.setRequestHeader(key, headers[key]);
       }
     }
+  }
+
+  private getHeader(headers: {}, headerName: string): any {
+    for (let key in headers) {
+      if (key.toLowerCase() === headerName.toLowerCase()) {
+        return headers[key];
+      }
+    }
+
+    return undefined;
   }
 
   private setupEvents(xhr: XMLHttpRequest, request: AjaxRequest) {
