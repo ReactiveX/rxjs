@@ -4,14 +4,15 @@ let tryCatchTarget: Function;
 
 function tryCatcher(this: any): any {
   let result;
+  errorObject.e = undefined;
   try {
-    result = tryCatchTarget.apply(this, arguments);
+    return tryCatchTarget.apply(this, arguments);
   } catch (e) {
     errorObject.e = e;
-    result = errorObject;
+    return errorObject;
+  } finally {
+    tryCatchTarget = undefined;
   }
-  tryCatchTarget = undefined;
-  return result;
 }
 
 export function tryCatch<T extends Function>(fn: T): T {
