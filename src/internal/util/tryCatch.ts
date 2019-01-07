@@ -3,7 +3,6 @@ import { errorObject } from './errorObject';
 let tryCatchTarget: Function;
 
 function tryCatcher(this: any): any {
-  let result;
   errorObject.e = undefined;
   try {
     return tryCatchTarget.apply(this, arguments);
