@@ -72,10 +72,10 @@ export function exhaustMap<T, I, R>(
     );
   }
   return (source: Observable<T>) =>
-    source.lift(new ExhauseMapOperator(project));
+    source.lift(new ExhaustMapOperator(project));
 }
 
-class ExhauseMapOperator<T, R> implements Operator<T, R> {
+class ExhaustMapOperator<T, R> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => ObservableInput<R>) {
   }
 
