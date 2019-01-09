@@ -22,3 +22,7 @@ it('should infer correctly with parameter', () => {
 it('should enforce type on selector', () => {
   const a = of(1, 2, 3).pipe(publish((x: Observable<string>) => x)); // $ExpectError
 });
+
+it('should support union types in selector', () => {
+  const a = of(1, 2, 3).pipe(publish(() => Math.random() > 0.5 ? of(123) : of('test'))); // $ExpectType Observable<string | number>
+});
