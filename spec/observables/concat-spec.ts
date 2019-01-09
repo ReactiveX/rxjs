@@ -366,7 +366,6 @@ describe('static concat', () => {
     const source = cold('--a---b----c---|');
     const result = concat(source);
 
-    expect(result).to.equal(source);
     expectObservable(result).toBe('--a---b----c---|');
   });
 
