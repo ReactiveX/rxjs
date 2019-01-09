@@ -21,10 +21,6 @@ it('should support a currency', () => {
   const o = of(1, 2, 3).pipe(mergeScan((acc, value) => of(acc + value), '', 47)); // $ExpectType Observable<string>
 });
 
-it('should support an index parameter', () => {
-  const o = of(1, 2, 3).pipe(mergeScan((acc, value, index) => of(index), 0)); // $ExpectType Observable<number>
-});
-
 it('should enforce types', () => {
   const o = of(1, 2, 3).pipe(mergeScan()); // $ExpectError
 });
