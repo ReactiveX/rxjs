@@ -158,7 +158,7 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * each input Observable.
  */
 export function combineLatest<O extends ObservableInput<any>, R>(
-  ...observables: (O | ((...values: ObservedValueOf<O>) => R) | SchedulerLike)[]
+  ...observables: (O | ((...values: ObservedValueOf<O>[]) => R) | SchedulerLike)[]
 ): Observable<R> {
   let resultSelector: (...values: Array<any>) => R =  null;
   let scheduler: SchedulerLike = null;
