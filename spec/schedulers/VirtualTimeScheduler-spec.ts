@@ -102,7 +102,7 @@ describe('VirtualTimeScheduler', () => {
 
     const actualMessages: string[] = [];
 
-    messages.forEach(function (message: string, index: number): void {
+    messages.forEach((message, index) => {
       v.schedule(
         (state: string) => actualMessages.push(state),
         index * MAX_FRAMES,
@@ -112,8 +112,8 @@ describe('VirtualTimeScheduler', () => {
 
     v.flush();
 
-    expect(actualMessages).to.deep.equal(messages.slice(0, 2));
-    expect(v.actions.map(a => a.state)).to.deep.equal(messages.slice(2));
+    expect(actualMessages).to.deep.equal(['first message', 'second message']);
+    expect(v.actions.map(a => a.state)).to.deep.equal(['third message']);
   });
 
   it('should pick up actions execution where it left off after reaching previous maxFrames limit', function () {
@@ -123,7 +123,7 @@ describe('VirtualTimeScheduler', () => {
 
     const actualMessages: string[] = [];
 
-    messages.forEach(function (message: string, index: number): void {
+    messages.forEach((message, index) => {
       v.schedule(
         state => actualMessages.push(state),
         index * MAX_FRAMES,
