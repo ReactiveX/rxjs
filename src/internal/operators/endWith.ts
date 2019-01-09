@@ -61,7 +61,7 @@ export function endWith<T>(...array: Array<T | SchedulerLike>): MonoTypeOperator
     } else if (len > 0) {
       return concatStatic(source, fromArray(array as T[], scheduler));
     } else {
-      return concatStatic<T>(source, empty(scheduler) as any);
+      return concatStatic(source, empty(scheduler));
     }
   };
 }

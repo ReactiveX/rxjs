@@ -64,7 +64,7 @@ export function startWith<T, D>(...array: Array<T | SchedulerLike>): OperatorFun
     } else if (len > 0) {
       return concatStatic(fromArray(array as T[], scheduler), source);
     } else {
-      return concatStatic<T>(empty(scheduler) as any, source);
+      return concatStatic(empty(scheduler), source);
     }
   };
 }
