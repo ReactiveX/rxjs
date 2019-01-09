@@ -52,3 +52,14 @@ it('should enforce types', () => {
   const o = concat(5); // $ExpectError
   const p = concat(of(5), 6); // $ExpectError
 });
+
+it('should support union types', () => {
+  const u = Math.random() > 0.5 ? of(123) : of('abc');
+  const o = concat(u, u, u); // $ExpectType Observable<string | number>
+});
+
+it('should support different union types', () => {
+  const u1 = Math.random() > 0.5 ? of(123) : of('abc');
+  const u2 = Math.random() > 0.5 ? of(true) : of([1, 2, 3]);
+  const o = concat(u1, u2); // $ExpectType Observable<string | number | boolean | number[]>
+});
