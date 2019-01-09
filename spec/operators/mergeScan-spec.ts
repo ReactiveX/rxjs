@@ -6,7 +6,7 @@ import { expect } from 'chai';
 
 declare const rxTestScheduler: TestScheduler;
 /** @test {mergeScan} */
-describe('mergeScan', () => {
+describe.only('mergeScan', () => {
   it('should mergeScan things', () => {
     const e1 = hot('--a--^--b--c--d--e--f--g--|');
     const e1subs =      '^                    !';
@@ -423,13 +423,14 @@ describe('mergeScan', () => {
   it('should pass current index to accumulator', () => {
     const recorded: number[] = [];
     const expected = [0, 1, 2, 3];
-    const e1 = of('a', 'b', 'c', 'd');
+    const e1 = hot('--a--b--c--d-|');
 
     e1.pipe(mergeScan((acc, x, index) => {
       recorded.push(index);
       return of(x);
     }, 0)).subscribe();
 
+    rxTestScheduler.flush();
     expect(recorded).to.deep.equal(expected);
   });
 });
