@@ -1,12 +1,12 @@
 import { of, combineLatest, asyncScheduler } from 'rxjs';
 
-class A {}
-class B {}
-class C {}
-class D {}
-class E {}
-class F {}
-class G {}
+class A { a = 0; }
+class B { b = 0; }
+class C { c = 0; }
+class D { d = 0; }
+class E { e = 0; }
+class F { f = 0; }
+class G { g = 0; }
 
 const a = of(new A());
 const b = of(new B());
@@ -40,8 +40,8 @@ it('should accept 6 params', () => {
   const o = combineLatest(a, b, c, d, e, f); // $ExpectType Observable<[A, B, C, D, E, F]>
 });
 
-it('should result in Observable<any[]> for 7 or more params', () => {
-  const o = combineLatest(a, b, c, d, e, f, g); // $ExpectType Observable<any[]>
+it('should result in Observable<{}> for 7 or more params', () => {
+  const o = combineLatest(a, b, c, d, e, f, g); // $ExpectType Observable<{}>
 });
 
 it('should accept union types', () => {
