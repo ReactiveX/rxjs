@@ -10,7 +10,7 @@ it('should handle empty (never) appropriately', () => {
 });
 
 it('should handle a throw', () => {
-  let f: () => never;
+  let f: () => never = () => { throw 'wee'; };
   const o = of(1, 2, 3).pipe(catchError(f)); // $ExpectType Observable<number>
 });
 
