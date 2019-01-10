@@ -6,7 +6,12 @@ it('should infer correctly', () => {
 });
 
 it('should handle empty (never) appropriately', () => {
-  const o = of(1, 2, 3).pipe(catchError(() => EMPTY));
+  const o = of(1, 2, 3).pipe(catchError(() => EMPTY)); // $ExpectType Observable<number>
+});
+
+it('should handle a throw', () => {
+  let f: () => never;
+  const o = of(1, 2, 3).pipe(catchError(f)); // $ExpectType Observable<number>
 });
 
 it('should infer correctly when not returning', () => {
