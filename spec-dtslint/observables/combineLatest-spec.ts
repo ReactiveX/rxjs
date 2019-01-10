@@ -17,7 +17,6 @@ const f = of(new F());
 const g = of(new G());
 
 it('should accept 1 param', () => {
-  // Since this is an uncommon case, we're just allowing A[]
   const o = combineLatest(a); // $ExpectType Observable<[A]>
 });
 
