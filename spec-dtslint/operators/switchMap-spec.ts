@@ -18,11 +18,11 @@ it('should infer correctly by using the resultSelector second parameter', () => 
 });
 
 it('should support a resultSelector that takes an inner index', () => {
-  const o = of(1, 2, 3).pipe(switchMap(p => of(Boolean(p)), a => a)); // $ExpectType Observable<number>
+  const o = of(1, 2, 3).pipe(switchMap(p => of(Boolean(p)), (a, b, i) => a)); // $ExpectType Observable<number>
 });
 
 it('should support a resultSelector that takes an inner and outer index', () => {
-  const o = of(1, 2, 3).pipe(switchMap(p => of(Boolean(p)), a => a)); // $ExpectType Observable<number>
+  const o = of(1, 2, 3).pipe(switchMap(p => of(Boolean(p)), (a, b, i, ii) => a)); // $ExpectType Observable<number>
 });
 
 it('should support an undefined resultSelector', () => {
