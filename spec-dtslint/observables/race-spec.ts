@@ -41,6 +41,11 @@ it('should support 5 parameters with different types', () => {
   const o = race(a, b, c, d, e); // $ExpectType Observable<string> | Observable<number> | Observable<boolean> | Observable<number[]> | Observable<string[]>
 });
 
+it('should support 6 or more parameters of the same type', () => {
+  const a = of(1);
+  const o = race(a, a, a, a, a, a, a, a, a, a, a, a, a, a); // $ExpectType Observable<number>
+});
+
 it('should return {} for 6 or more arguments of different types', () => {
   const a = of(1);
   const b = of('a');
@@ -49,4 +54,16 @@ it('should return {} for 6 or more arguments of different types', () => {
   const e = of(['blah']);
   const f = of({ foo: 'bar' });
   const o = race(a, b, c, d, e, f); // $ExpectType Observable<{}>
+});
+
+it('should handle an array of observables', () => {
+  const a = of(1);
+  const b = of(2);
+  const o = race([a, b]); // $ExpectType Observable<number>
+});
+
+it('should return {} for array of observables of different types', () => {
+  const a = of(1);
+  const b = of('test');
+  const o = race([a, b]); // $ExpectType Observable<{}>
 });

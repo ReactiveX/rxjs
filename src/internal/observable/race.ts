@@ -16,9 +16,9 @@ export function race<A, B, C, D>(a: Observable<A>, b: Observable<B>, c: Observab
 export function race<A, B, C, D, E>(a: Observable<A>, b: Observable<B>, c: Observable<C>, d: Observable<D>, e: Observable<E>): Observable<A> | Observable<B> | Observable<C> | Observable<D> | Observable<E>;
 // tslint:enable:max-line-length
 
-export function race<T>(observables: Array<Observable<T>>): Observable<T>;
-export function race<T>(observables: Array<Observable<any>>): Observable<T>;
-export function race<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T>;
+export function race<T>(observables: Observable<T>[]): Observable<T>;
+export function race(observables: Observable<any>[]): Observable<{}>;
+export function race<T>(...observables: Observable<T>[]): Observable<T>;
 export function race(...observables: Observable<any>[]): Observable<{}>;
 
 /**
