@@ -5,14 +5,14 @@ import { Subscription } from '../Subscription';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
-import { ObservableInput, OperatorFunction } from '../types';
+import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 import { map } from './map';
 import { from } from '../observable/from';
 
 /* tslint:disable:max-line-length */
-export function exhaustMap<T, R>(project: (value: T, index: number) => ObservableInput<R>): OperatorFunction<T, R>;
+export function exhaustMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated resultSelector is no longer supported. Use inner map instead. */
-export function exhaustMap<T, R>(project: (value: T, index: number) => ObservableInput<R>, resultSelector: undefined): OperatorFunction<T, R>;
+export function exhaustMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: undefined): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated resultSelector is no longer supported. Use inner map instead. */
 export function exhaustMap<T, I, R>(project: (value: T, index: number) => ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
@@ -59,15 +59,15 @@ export function exhaustMap<T, I, R>(project: (value: T, index: number) => Observ
  * @method exhaustMap
  * @owner Observable
  */
-export function exhaustMap<T, I, R>(
-  project: (value: T, index: number) => ObservableInput<I>,
-  resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R,
-): OperatorFunction<T, I|R> {
+export function exhaustMap<T, R, O extends ObservableInput<any>>(
+  project: (value: T, index: number) => O,
+  resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R,
+): OperatorFunction<T, ObservedValueOf<O>|R> {
   if (resultSelector) {
     // DEPRECATED PATH
     return (source: Observable<T>) => source.pipe(
       exhaustMap((a, i) => from(project(a, i)).pipe(
-        map((b, ii) => resultSelector(a, b, i, ii)),
+        map((b: any, ii: any) => resultSelector(a, b, i, ii)),
       )),
     );
   }

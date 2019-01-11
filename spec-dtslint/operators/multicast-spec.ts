@@ -17,6 +17,11 @@ it('should be possible to use a selector', () => {
   const r = of(1, 2, 3).pipe(multicast(() => new Subject<number>(), p => of('foo'))); // $ExpectType Observable<string>
 });
 
+it('should support union types', () => {
+  const o = of(1, 2, 3).pipe(multicast(new Subject<number>(), p => Math.random() > 0.5 ? of(123) : of('foo'))); // $ExpectType Observable<string | number>
+  const p = of(1, 2, 3).pipe(multicast(() => new Subject<number>(), p => Math.random() > 0.5 ? of(123) : of('foo'))); // $ExpectType Observable<string | number>
+});
+
 it('should enforce types', () => {
   const p = of(1, 2, 3).pipe(multicast()); // $ExpectError
 });

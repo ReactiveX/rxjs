@@ -1,12 +1,12 @@
 import { concatMap } from './concatMap';
-import { ObservableInput, OperatorFunction } from '../types';
+import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 
 /* tslint:disable:max-line-length */
-export function concatMapTo<T>(observable: ObservableInput<T>): OperatorFunction<any, T>;
+export function concatMapTo<T, O extends ObservableInput<any>>(observable: O): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated */
-export function concatMapTo<T>(observable: ObservableInput<T>, resultSelector: undefined): OperatorFunction<any, T>;
+export function concatMapTo<T, O extends ObservableInput<any>>(observable: O, resultSelector: undefined): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated */
-export function concatMapTo<T, I, R>(observable: ObservableInput<I>, resultSelector: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
+export function concatMapTo<T, R, O extends ObservableInput<any>>(observable: O, resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -62,9 +62,9 @@ export function concatMapTo<T, I, R>(observable: ObservableInput<I>, resultSelec
  * @method concatMapTo
  * @owner Observable
  */
-export function concatMapTo<T, I, R>(
-  innerObservable: ObservableInput<I>,
-  resultSelector?: (outerValue: T, innerValue: I, outerIndex: number, innerIndex: number) => R
-): OperatorFunction<T, R> {
+export function concatMapTo<T, R, O extends ObservableInput<any>>(
+  innerObservable: O,
+  resultSelector?: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R
+): OperatorFunction<T, ObservedValueOf<O>|R> {
   return concatMap(() => innerObservable, resultSelector);
 }

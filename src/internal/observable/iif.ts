@@ -94,5 +94,5 @@ export function iif<T, F>(
   trueResult: SubscribableOrPromise<T> = EMPTY,
   falseResult: SubscribableOrPromise<F> = EMPTY
 ): Observable<T|F> {
-  return defer<T|F>(() => condition() ? trueResult : falseResult);
+  return defer(() => condition() ? trueResult : falseResult);
 }

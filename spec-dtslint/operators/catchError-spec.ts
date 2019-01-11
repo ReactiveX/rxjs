@@ -1,8 +1,17 @@
-import { of, Observable } from 'rxjs';
+import { of, Observable, EMPTY } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 it('should infer correctly', () => {
   const o = of(1, 2, 3).pipe(catchError((() => of(4, 5, 6)))); // $ExpectType Observable<number>
+});
+
+it('should handle empty (never) appropriately', () => {
+  const o = of(1, 2, 3).pipe(catchError(() => EMPTY)); // $ExpectType Observable<number>
+});
+
+it('should handle a throw', () => {
+  const f: () => never = () => { throw new Error('test'); };
+  const o = of(1, 2, 3).pipe(catchError(f)); // $ExpectType Observable<number>
 });
 
 it('should infer correctly when not returning', () => {
@@ -23,4 +32,8 @@ it('should enforce that selector returns an Observable', () => {
 
 it('should enforce type of caught', () => {
   const o = of(1, 2, 3).pipe(catchError((err, caught: Observable<string>) => of('a', 'b', 'c'))); // $ExpectError
+});
+
+it('should handle union types', () => {
+  const o = of(1, 2, 3).pipe(catchError(err => err.message === 'wee' ? of('fun') : of(123))); // $ExpectType Observable<string | number>
 });
