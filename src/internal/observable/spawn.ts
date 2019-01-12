@@ -1,3 +1,5 @@
+import { Observable } from '../Observable';
+import { ObservableInput } from '../types';
 import { async } from './async';
 
 // REVIEWER: Do I need to spell out every category of `ObservableInput`, or
@@ -36,6 +38,8 @@ import { async } from './async';
  * @returns {Observable<T>} An observable with the final value.
  * @name spawn
  */
-export function spawn(f: () => Iterator<any>) {
+export function spawn<T>(
+  f: () => Iterator<ObservableInput<any> | T>,
+): Observable<T> {
   return async(f)();
 }

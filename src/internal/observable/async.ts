@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { Observer } from '../types';
+import { ObservableInput, Observer } from '../types';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { from } from './from';
@@ -61,7 +61,7 @@ import { take } from '../operators/take';
 // REVIEWER: Is it ok to use non-single-letter type variables?
 // If not, please prescribe a replacement.
 export function async<T, Args extends any[]>(
-  f: (...args: Args) => Iterator<Observable<any> | T>,
+  f: (...args: Args) => Iterator<ObservableInput<any> | T>,
 ): (...args: Args) => Observable<T> {
   // Return a function that constructs an Observable.
   return function<This>(this: This, ...args: Args) {
