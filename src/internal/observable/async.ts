@@ -51,20 +51,20 @@ import { take } from '../operators/take';
  * subscription.unsubscribe() // Request canceled.
  * ```
  *
- * @param {(...args: Args) => Iterator<Observable<any> | T>} A generator
+ * @param {(...args: any[]) => Iterator<Observable<any> | T>} A generator
  * function that yields intermediate observables on its way to returning
  * a final value.
- * @return {(...args: Args) => Observable<T>}
+ * @return {(...args: any[]) => Observable<T>}
  * @name async
  */
 
 // REVIEWER: Is it ok to use non-single-letter type variables?
 // If not, please prescribe a replacement.
-export function async<T, Args extends any[]>(
-  f: (...args: Args) => Iterator<ObservableInput<any> | T>,
-): (...args: Args) => Observable<T> {
+export function async<T>(
+  f: (...args: any[]) => Iterator<ObservableInput<any> | T>,
+): (...args: any[]) => Observable<T> {
   // Return a function that constructs an Observable.
-  return function<This>(this: This, ...args: Args) {
+  return function<This>(this: This, ...args: any[]) {
     return Observable.create((observer: Observer<T>) => {
       const iterator = f.apply(this, args);
       return new IteratorSubscriber(observer, iterator);
