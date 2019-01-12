@@ -40,6 +40,7 @@ export { UnsubscriptionError } from './internal/util/UnsubscriptionError';
 export { TimeoutError } from './internal/util/TimeoutError';
 
 /* Static observable creation exports */
+export { async } from './internal/observable/async';
 export { bindCallback } from './internal/observable/bindCallback';
 export { bindNodeCallback } from './internal/observable/bindNodeCallback';
 export { combineLatest } from './internal/observable/combineLatest';
@@ -60,6 +61,7 @@ export { onErrorResumeNext } from './internal/observable/onErrorResumeNext';
 export { pairs } from './internal/observable/pairs';
 export { race } from './internal/observable/race';
 export { range } from './internal/observable/range';
+export { spawn } from './internal/observable/spawn';
 export { throwError } from './internal/observable/throwError';
 export { timer } from './internal/observable/timer';
 export { using } from './internal/observable/using';
