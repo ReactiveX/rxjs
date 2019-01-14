@@ -41,5 +41,5 @@ it('should accept an array of Inputs', () => {
     yield 42;
   }());
 
-  const o = from([of(1), ['test'], iterable]); // $ExpectType Observable<Observable<number> | IterableIterator<number> | string[]>
+  const o = from([of(1), ['test'], iterable]); // $ExpectType Observable<IterableIterator<number> | Observable<number> | string[]>
 });
