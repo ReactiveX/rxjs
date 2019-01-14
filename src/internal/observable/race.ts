@@ -9,9 +9,18 @@ import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 
-export function race<T>(observables: Array<Observable<T>>): Observable<T>;
-export function race<T>(observables: Array<Observable<any>>): Observable<T>;
-export function race<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T>;
+// tslint:disable:max-line-length
+export function race<A, B>(a: Observable<A>, b: Observable<B>): Observable<A> | Observable<B>;
+export function race<A, B, C>(a: Observable<A>, b: Observable<B>, c: Observable<C>): Observable<A> | Observable<B> | Observable<C>;
+export function race<A, B, C, D>(a: Observable<A>, b: Observable<B>, c: Observable<C>, d: Observable<D>): Observable<A> | Observable<B> | Observable<C> | Observable<D>;
+export function race<A, B, C, D, E>(a: Observable<A>, b: Observable<B>, c: Observable<C>, d: Observable<D>, e: Observable<E>): Observable<A> | Observable<B> | Observable<C> | Observable<D> | Observable<E>;
+// tslint:enable:max-line-length
+
+export function race<T>(observables: Observable<T>[]): Observable<T>;
+export function race(observables: Observable<any>[]): Observable<{}>;
+export function race<T>(...observables: Observable<T>[]): Observable<T>;
+export function race(...observables: Observable<any>[]): Observable<{}>;
+
 /**
  * Returns an Observable that mirrors the first source Observable to emit an item.
  *
@@ -38,14 +47,14 @@ export function race<T>(...observables: Array<Observable<T> | Array<Observable<T
  * @name race
  * @owner Observable
  */
-export function race<T>(...observables: Array<Observable<any> | Array<Observable<any>>>): Observable<T> {
+export function race<T>(...observables: (Observable<any>[] | Observable<any>)[]): Observable<T> {
   // if the only argument is an array, it was most likely called with
   // `race([obs1, obs2, ...])`
   if (observables.length === 1) {
     if (isArray(observables[0])) {
-      observables = <Array<Observable<any>>>observables[0];
+      observables = observables[0] as Observable<any>[];
     } else {
-      return <Observable<any>>observables[0];
+      return observables[0] as Observable<T>;
     }
   }
 
