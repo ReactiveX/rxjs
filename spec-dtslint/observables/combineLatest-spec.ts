@@ -1,20 +1,5 @@
-import { of, combineLatest, asyncScheduler } from 'rxjs';
-
-class A { a = 0; }
-class B { b = 0; }
-class C { c = 0; }
-class D { d = 0; }
-class E { e = 0; }
-class F { f = 0; }
-class G { g = 0; }
-
-const a = of(new A());
-const b = of(new B());
-const c = of(new C());
-const d = of(new D());
-const e = of(new E());
-const f = of(new F());
-const g = of(new G());
+import { combineLatest } from 'rxjs';
+import { a, b, c, d, e, f, g, A, B, C, D, E, F } from '../helpers';
 
 it('should accept 1 param', () => {
   const o = combineLatest(a); // $ExpectType Observable<[A]>

@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { ObservableInput, SchedulerLike} from '../types';
+import { ObservableInput, SchedulerLike, ObservedValueOf, ObservedValueOfArgs} from '../types';
 import { isScheduler } from '../util/isScheduler';
 import { mergeAll } from '../operators/mergeAll';
 import { fromArray } from './fromArray';
@@ -49,6 +49,7 @@ export function merge<T, R>(...observables: (ObservableInput<any> | number)[]): 
 /** @deprecated use {@link scheduled} and {@link mergeAll} (e.g. `scheduled([ob1, ob2, ob3], scheduled).pipe(mergeAll())*/
 export function merge<T, R>(...observables: (ObservableInput<any> | SchedulerLike | number)[]): Observable<R>;
 /* tslint:enable:max-line-length */
+
 /**
  * Creates an output Observable which concurrently emits all values from every
  * given input Observable.
@@ -119,22 +120,22 @@ export function merge<T, R>(...observables: (ObservableInput<any> | SchedulerLik
  * @name merge
  * @owner Observable
  */
-export function merge<T, R>(...observables: Array<ObservableInput<any> | SchedulerLike | number>): Observable<R> {
+export function merge(...observables: (ObservableInput<any> | SchedulerLike | number)[]): Observable<any> {
  let concurrent = Number.POSITIVE_INFINITY;
  let scheduler: SchedulerLike = null;
   let last: any = observables[observables.length - 1];
   if (isScheduler(last)) {
-    scheduler = <SchedulerLike>observables.pop();
+    scheduler = observables.pop() as SchedulerLike;
     if (observables.length > 1 && typeof observables[observables.length - 1] === 'number') {
-      concurrent = <number>observables.pop();
+      concurrent = observables.pop() as number;
     }
   } else if (typeof last === 'number') {
-    concurrent = <number>observables.pop();
+    concurrent = observables.pop() as number;
   }
 
   if (scheduler === null && observables.length === 1 && observables[0] instanceof Observable) {
-    return <Observable<R>>observables[0];
+    return observables[0] as Observable<any>;
   }
 
-  return mergeAll<R>(concurrent)(fromArray<any>(observables, scheduler));
+  return mergeAll(concurrent)(fromArray(observables as ObservableInput<any>[], scheduler));
 }
