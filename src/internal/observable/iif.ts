@@ -28,6 +28,8 @@ import { SubscribableOrPromise } from '../types';
  * ## Examples
  * ### Change at runtime which Observable will be subscribed
  * ```javascript
+ * import { iif, of } from 'rxjs';
+ *
  * let subscribeToFirst;
  * const firstOrSecond = iif(
  *   () => subscribeToFirst,

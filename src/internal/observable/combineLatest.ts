@@ -121,6 +121,8 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * ## Examples
  * ### Combine two timer Observables
  * ```javascript
+ * import { combineLatest, timer } from 'rxjs';
+ *
  * const firstTimer = timer(0, 1000); // emit 0, 1, 2... after every second, starting from now
  * const secondTimer = timer(500, 1000); // emit 0, 1, 2... after every second, starting 0,5s from now
  * const combinedTimers = combineLatest(firstTimer, secondTimer);
@@ -134,6 +136,9 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  *
  * ### Combine an array of Observables
  * ```javascript
+ * import { combineLatest, of } from 'rxjs';
+ * import { delat, starWith } from 'rxjs/operators';
+ *
  * const observables = [1, 5, 10].map(
  *   n => of(n).pipe(
  *     delay(n * 1000),   // emit 0 and then emit n after n seconds
@@ -152,6 +157,9 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  *
  * ### Use project function to dynamically calculate the Body-Mass Index
  * ```javascript
+ * import { combineLatest, of } from 'rxjs';
+ * import { map } from 'rxjs/operators';
+ *
  * const weight = of(70, 72, 76, 79, 75);
  * const height = of(1.76, 1.77, 1.78);
  * const bmi = combineLatest(weight, height).pipe(

@@ -23,6 +23,9 @@ import { Subscriber } from '../Subscriber';
  *
  * ## Example
  * ```javascript
+ * import { interval } from 'rxjs';
+ * import { shareReplay, take } from 'rxjs/operators';
+ *
  * const obs$ = interval(1000);
  * const subscription = obs$.pipe(
  *   take(4),

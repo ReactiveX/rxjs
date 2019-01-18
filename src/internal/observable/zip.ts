@@ -52,6 +52,9 @@ export function zip<R>(...observables: Array<ObservableInput<any> | ((...values:
  * ## Example
  * Combine age and name from different sources
  * ```javascript
+ * import { zip, of } from 'rxjs';
+ * import { map } from 'rxjs/operators';
+ *
  * let age$ = of<number>(27, 25, 29);
  * let name$ = of<string>('Foo', 'Bar', 'Beer');
  * let isDev$ = of<boolean>(true, true, false);

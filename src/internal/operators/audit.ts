@@ -34,6 +34,9 @@ import { subscribeToResult } from '../util/subscribeToResult';
  *
  * Emit clicks at a rate of at most one click per second
  * ```javascript
+ * import { fromEvent, interval } from 'rxjs';
+ * import { audit } from 'rxjs/operators'
+ *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(audit(ev => interval(1000)));
  * result.subscribe(x => console.log(x));

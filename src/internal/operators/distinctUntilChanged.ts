@@ -20,6 +20,9 @@ export function distinctUntilChanged<T, K>(compare: (x: K, y: K) => boolean, key
  * ## Example
  * A simple example with numbers
  * ```javascript
+ * import { of } from 'rxjs';
+ * import { distinctUntilChanged } from 'rxjs/operators';
+ *
  * of(1, 1, 2, 2, 2, 1, 1, 2, 3, 3, 4).pipe(
  *     distinctUntilChanged(),
  *   )
@@ -28,6 +31,9 @@ export function distinctUntilChanged<T, K>(compare: (x: K, y: K) => boolean, key
  *
  * An example using a compare function
  * ```typescript
+ * import { of } from 'rxjs';
+ * import { distinctUntilChanged } from 'rxjs/operators';
+ *
  * interface Person {
  *    age: number,
  *    name: string
