@@ -25,7 +25,10 @@
     <ul class="api-list">
       <ng-container *ngFor="let item of section.items">
         <li *ngIf="item.show" class="api-item">
-          <a [href]="item.path"><span class="symbol {{item.docType}}"></span> {{item.title}}</a>
+          <a [href]="item.path">
+            <span class="symbol {{item.docType}}"></span>
+            <span class="stability {{item.stability}}">{{item.title}} {{!item.stability || item.stability === 'stable' ? '' : '(' + item.stability + ')'}}</span>
+          </a>
         </li>
       </ng-container>
     </ul>
