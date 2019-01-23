@@ -26,6 +26,16 @@ describe('distinctUntilKeyChanged operator', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should distinguish between values by multiple keys', () => {
+    const values = {a: {o: 1, k: 2}, b: {o: 1, k: 2, i: 3}, c: {o: 4, k: 2}, d: {o: 1, k: 5}};
+    const e1 =   hot('--a--b--a--c--c--d--|', values);
+    const e1subs =   '^                   !';
+    const expected = '--a--------c-----d--|';
+
+    expectObservable((<any>e1).pipe(distinctUntilKeyChanged(['o', 'k']))).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should distinguish between values and does not completes', () => {
     const values = {a: {val: 1}, b: {val: 2}};
     const e1 =   hot('--a--a--a--b--b--a-', values);
