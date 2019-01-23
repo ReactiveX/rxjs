@@ -17,7 +17,7 @@ Find out how to update to v6, **automatically update your TypeScript code**, and
 
 - [Current home is MIGRATION.md](./docs_app/content/guide/v6/migration.md)
 
-### FOR V 5.X PLEASE GO TO [THE 5.0 BRANCH](https://github.com/ReactiveX/rxjs/tree/stable)
+### FOR V 5.X PLEASE GO TO [THE 5.0 BRANCH](https://github.com/ReactiveX/rxjs/tree/5.x)
 
 Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Extensions/RxJS](https://github.com/Reactive-Extensions/RxJS) and is the latest production-ready version of RxJS. This rewrite is meant to have better performance, better modularity, better debuggable call stacks, while staying mostly backwards compatible, with some breaking changes that reduce the API surface.
 
