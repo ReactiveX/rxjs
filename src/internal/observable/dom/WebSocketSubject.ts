@@ -5,8 +5,6 @@ import { Subscription } from '../../Subscription';
 import { Operator } from '../../Operator';
 import { ReplaySubject } from '../../ReplaySubject';
 import { Observer, NextObserver } from '../../types';
-import { tryCatch } from '../../util/tryCatch';
-import { errorObject } from '../../util/errorObject';
 
 export interface WebSocketSubjectConfig<T> {
   /** The url of the socket server to connect to */
@@ -131,30 +129,29 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   multiplex(subMsg: () => any, unsubMsg: () => any, messageFilter: (value: T) => boolean) {
     const self = this;
     return new Observable((observer: Observer<any>) => {
-      const result = tryCatch(subMsg)();
-      if (result === errorObject) {
-        observer.error(errorObject.e);
-      } else {
-        self.next(result);
+      try {
+        self.next(subMsg());
+      } catch (err) {
+        observer.error(err);
       }
 
-      let subscription = self.subscribe(x => {
-        const result = tryCatch(messageFilter)(x);
-        if (result === errorObject) {
-          observer.error(errorObject.e);
-        } else if (result) {
-          observer.next(x);
+      const subscription = self.subscribe(x => {
+        try {
+          if (messageFilter(x)) {
+            observer.next(x);
+          }
+        } catch (err) {
+          observer.error(err);
         }
       },
         err => observer.error(err),
         () => observer.complete());
 
       return () => {
-        const result = tryCatch(unsubMsg)();
-        if (result === errorObject) {
-          observer.error(errorObject.e);
-        } else {
-          self.next(result);
+        try {
+          self.next(unsubMsg());
+        } catch (err) {
+          observer.error(err);
         }
         subscription.unsubscribe();
       };
@@ -197,13 +194,12 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
       this.destination = Subscriber.create<T>(
         (x) => {
           if (socket.readyState === 1) {
-            const { serializer } = this._config;
-            const msg = tryCatch(serializer)(x);
-            if (msg === errorObject) {
-              this.destination.error(errorObject.e);
-              return;
+            try {
+              const { serializer } = this._config;
+              socket.send(serializer(x));
+              } catch (e) {
+              this.destination.error(e);
             }
-            socket.send(msg);
           }
         },
         (e) => {
@@ -252,12 +248,11 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     };
 
     socket.onmessage = (e: MessageEvent) => {
-      const { deserializer } = this._config;
-      const result = tryCatch(deserializer)(e);
-      if (result === errorObject) {
-        observer.error(errorObject.e);
-      } else {
-        observer.next(result);
+      try {
+        const { deserializer } = this._config;
+        observer.next(deserializer(e));
+      } catch (err) {
+        observer.error(err);
       }
     };
   }

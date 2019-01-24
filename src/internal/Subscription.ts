@@ -1,8 +1,6 @@
 import { isArray } from './util/isArray';
 import { isObject } from './util/isObject';
 import { isFunction } from './util/isFunction';
-import { tryCatch } from './util/tryCatch';
-import { errorObject } from './util/errorObject';
 import { UnsubscriptionError } from './util/UnsubscriptionError';
 import { SubscriptionLike, TeardownLogic } from './types';
 
@@ -84,13 +82,11 @@ export class Subscription implements SubscriptionLike {
     }
 
     if (isFunction(_unsubscribe)) {
-      let trial = tryCatch(_unsubscribe).call(this);
-      if (trial === errorObject) {
+      try {
+        _unsubscribe.call(this);
+      } catch (e) {
         hasErrors = true;
-        errors = errors || (
-          errorObject.e instanceof UnsubscriptionError ?
-            flattenUnsubscriptionErrors(errorObject.e.errors) : [errorObject.e]
-        );
+        errors = e instanceof UnsubscriptionError ? flattenUnsubscriptionErrors(e.errors) : [e];
       }
     }
 
@@ -102,15 +98,15 @@ export class Subscription implements SubscriptionLike {
       while (++index < len) {
         const sub = _subscriptions[index];
         if (isObject(sub)) {
-          let trial = tryCatch(sub.unsubscribe).call(sub);
-          if (trial === errorObject) {
+          try {
+            sub.unsubscribe();
+          } catch (e) {
             hasErrors = true;
             errors = errors || [];
-            let err = errorObject.e;
-            if (err instanceof UnsubscriptionError) {
-              errors = errors.concat(flattenUnsubscriptionErrors(err.errors));
+            if (e instanceof UnsubscriptionError) {
+              errors = errors.concat(flattenUnsubscriptionErrors(e.errors));
             } else {
-              errors.push(err);
+              errors.push(e);
             }
           }
         }

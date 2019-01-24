@@ -2,8 +2,6 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
-import { tryCatch } from '../util/tryCatch';
-import { errorObject } from '../util/errorObject';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
@@ -112,7 +110,6 @@ class BufferWhenSubscriber<T> extends OuterSubscriber<T, any> {
   }
 
   openBuffer() {
-
     let { closingSubscription } = this;
 
     if (closingSubscription) {
@@ -127,17 +124,18 @@ class BufferWhenSubscriber<T> extends OuterSubscriber<T, any> {
 
     this.buffer = [];
 
-    const closingNotifier = tryCatch(this.closingSelector)();
-
-    if (closingNotifier === errorObject) {
-      this.error(errorObject.e);
-    } else {
-      closingSubscription = new Subscription();
-      this.closingSubscription = closingSubscription;
-      this.add(closingSubscription);
-      this.subscribing = true;
-      closingSubscription.add(subscribeToResult(this, closingNotifier));
-      this.subscribing = false;
+    let closingNotifier;
+    try {
+      const { closingSelector } = this;
+      closingNotifier = closingSelector();
+    } catch (err) {
+      return this.error(err);
     }
+    closingSubscription = new Subscription();
+    this.closingSubscription = closingSubscription;
+    this.add(closingSubscription);
+    this.subscribing = true;
+    closingSubscription.add(subscribeToResult(this, closingNotifier));
+    this.subscribing = false;
   }
 }
