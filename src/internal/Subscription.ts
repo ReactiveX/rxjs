@@ -143,21 +143,13 @@ export class Subscription implements SubscriptionLike {
    * list.
    */
   add(teardown: TeardownLogic): Subscription {
-    if (!teardown || (teardown === Subscription.EMPTY)) {
-      return Subscription.EMPTY;
-    }
-
-    if (teardown === this) {
-      return this;
-    }
-
-    let subscription = (<Subscription> teardown);
-
+    let subscription = (<Subscription>teardown);
     switch (typeof teardown) {
       case 'function':
-        subscription = new Subscription(<(() => void) > teardown);
+        subscription = new Subscription(<(() => void)>teardown);
       case 'object':
-        if (subscription.closed || typeof subscription.unsubscribe !== 'function') {
+        if (subscription === this || subscription.closed || typeof subscription.unsubscribe !== 'function') {
+          // This also covers the case where `subscription` is `Subscription.EMPTY`, which is always in `closed` state.
           return subscription;
         } else if (this.closed) {
           subscription.unsubscribe();
@@ -168,13 +160,21 @@ export class Subscription implements SubscriptionLike {
           subscription._subscriptions = [tmp];
         }
         break;
-      default:
+      default: {
+        if (!(<any>teardown)) {
+          return Subscription.EMPTY;
+        }
         throw new Error('unrecognized teardown ' + teardown + ' added to Subscription.');
+      }
     }
 
-    const subscriptions = this._subscriptions || (this._subscriptions = []);
-
-    subscriptions.push(subscription);
+    // Optimize for the common case when adding the first subscription.
+    const subscriptions = this._subscriptions;
+    if (subscriptions) {
+      subscriptions.push(subscription);
+    } else {
+      this._subscriptions = [subscription];
+    }
     subscription._addParent(this);
 
     return subscription;
