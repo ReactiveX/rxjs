@@ -2,20 +2,9 @@ import { OperatorFunction, TeardownLogic } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from '../Subscription';
 import { Subject } from '../Subject';
-import { Subscriber } from '../Subscriber';
+import { MutableSubscriber } from 'rxjs/internal/MutableSubscriber';
 
 export function share<T>(): OperatorFunction<T, T> {
-  let subject: Subject<T>;
-  let refCount = 0;
-  let connection: Subscription;
-
-  const reset = () => {
-    refCount = 0;
-    connection && connection.unsubscribe();
-    connection = null;
-    subject = null;
-  };
-
   return (source: Observable<T>) => new SharedObservable(source);
 }
 
@@ -28,7 +17,7 @@ class SharedObservable<T> extends Observable<T> {
     super();
   }
 
-  _init(subscriber: Subscriber<T>): TeardownLogic {
+  _init(mut: MutableSubscriber<T>): TeardownLogic {
     this._refCount++;
 
     if (!this._subject || this._subject.closed) {
@@ -36,7 +25,7 @@ class SharedObservable<T> extends Observable<T> {
       this._connection = null;
     }
 
-    const innerSub = this._subject.subscribe(subscriber);
+    const innerSub = this._subject.subscribe(mut);
 
     if (!this._connection || this._connection.closed) {
       this._connection = this._source.subscribe(this._subject);

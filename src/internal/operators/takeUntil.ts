@@ -1,34 +1,30 @@
 import { Observable } from 'rxjs/internal/Observable';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { ObservableInput, OperatorFunction } from 'rxjs/internal/types';
-import { Subscriber } from '../Subscriber';
-import { OperatorSubscriber } from '../OperatorSubscriber';
+import { ObservableInput, OperatorFunction, Operator } from 'rxjs/internal/types';
 import { tryUserFunction, resultIsError } from '../util/userFunction';
 import { from } from '../create/from';
+import { MutableSubscriber } from 'rxjs/internal/MutableSubscriber';
+import { noop } from 'rxjs/internal/util/noop';
 
 export function takeUntil<T>(notifier: ObservableInput<any>): OperatorFunction<T, T> {
-  return (source: Observable<T>) =>
-    new Observable(subscriber => source.subscribe(new TakeUntilSubscriber(subscriber, notifier)));
+  return (source: Observable<T>) => source.lift(takeUntilOperator(notifier));
 }
 
-class TakeUntilSubscriber<T> extends OperatorSubscriber<T> {
-  private _notifierSubs = new Subscription();
-
-  constructor(destination: Subscriber<T>, notifier: ObservableInput<any>) {
-    super(destination);
-    const { _notifierSubs, _subscription } = this;
-    _subscription.add(_notifierSubs);
-    const result = tryUserFunction(from, [notifier]);
-    if (resultIsError(result)) {
-      destination.error(result);
+function takeUntilOperator<T>(notifier: ObservableInput<any>): Operator<T> {
+  return function takeUntilLifted(this: MutableSubscriber<any>, source: Observable<T>) {
+    const mut = this;
+    const notifierObs = tryUserFunction(() => from(notifier));
+    if (resultIsError(notifierObs)) {
+      mut.error(notifierObs.error);
+      return mut.subscription;
     } else {
-      _subscription.add(result.subscribe(new NotifierSubscriber(destination)));
-    }
-  }
-}
+      const notifierMut = new MutableSubscriber<any>(
+        mut.complete,
+        mut.error,
+        noop,
+      );
 
-class NotifierSubscriber extends OperatorSubscriber<any> {
-  _next() {
-    this._destination.complete();
-  }
+      mut.subscription.add(notifierObs.subscribe(notifierMut));
+      return source.subscribe(this);
+    }
+  };
 }

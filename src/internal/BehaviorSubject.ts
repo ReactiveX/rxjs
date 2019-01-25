@@ -1,5 +1,5 @@
 import { Subject } from './Subject';
-import { Subscriber } from './Subscriber';
+import { MutableSubscriber } from 'rxjs/internal/MutableSubscriber';
 
 export class BehaviorSubject<T> extends Subject<T> {
   private _lastValue: T;
@@ -17,11 +17,11 @@ export class BehaviorSubject<T> extends Subject<T> {
     this._lastValue = initialValue;
   }
 
-  protected _init(subscriber: Subscriber<T>) {
+  protected _init(mut: MutableSubscriber<T>) {
     if (!this._closed) {
-      subscriber.next(this._lastValue);
+      mut.next(this._lastValue);
     }
-    return super._init(subscriber);
+    return super._init(mut);
   }
 
   next(value: T) {

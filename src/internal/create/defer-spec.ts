@@ -53,11 +53,14 @@ describe('defer', () => {
       return new Promise<number>((resolve: any) => { resolve(expected); });
     });
 
-    e1.subscribe((x: number) => {
-      expect(x).to.equal(expected);
-      done();
-    }, (x: any) => {
-      done(new Error('should not be called'));
+    e1.subscribe({
+      next: x => {
+        expect(x).to.equal(expected);
+        done();
+      },
+      error: () => {
+        done(new Error('should not be called'));
+      }
     });
   });
 
@@ -67,13 +70,17 @@ describe('defer', () => {
       return new Promise<number>((resolve: any, reject: any) => { reject(expected); });
     });
 
-    e1.subscribe((x: number) => {
-      done(new Error('should not be called'));
-    }, (x: any) => {
-      expect(x).to.equal(expected);
-      done();
-    }, () => {
-      done(new Error('should not be called'));
+    e1.subscribe({
+      next: () => {
+        done(new Error('should not be called'));
+      },
+      error: x => {
+        expect(x).to.equal(expected);
+        done();
+      },
+      complete: () => {
+        done(new Error('should not be called'));
+      }
     });
   });
 

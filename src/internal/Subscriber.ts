@@ -1,41 +1,32 @@
 import { Observer } from './types';
 import { Subscription } from './Subscription';
+import { MutableSubscriber } from 'rxjs/internal/MutableSubscriber';
 
-export abstract class Subscriber<T> implements Observer<T> {
-  protected _subscription = new Subscription();
-  protected _closed = false;
-
+export class Subscriber<T> {
   get closed() {
-    return this._closed || this._subscription.closed;
+    return this._mut.closed;
   }
 
-  next(value: T): void {
-    if (!this.closed) {
-      this._next(value);
+  constructor(private _mut: MutableSubscriber<T>) {}
+
+  next(value: T) {
+    const _mut = this._mut;
+    if (!_mut.closed) {
+      _mut.next(value);
     }
   }
 
-  abstract _next(value: T): void;
-
-  error(err: any): void {
-    if (!this.closed) {
-      this._closed = true;
-      this._error(err);
-      this._subscription.unsubscribe();
-    } else {
-      console.warn('Subscription called error multiple times');
+  error(err: any) {
+    const _mut = this._mut;
+    if (!_mut.closed) {
+      _mut.error(err);
     }
   }
 
-  abstract _error(err: any): void;
-
-  complete(): void {
-    if (!this.closed) {
-      this._closed = true;
-      this._complete();
-      this._subscription.unsubscribe();
+  complete() {
+    const _mut = this._mut;
+    if (!_mut.closed) {
+      _mut.complete();
     }
   }
-
-  abstract _complete(): void;
 }

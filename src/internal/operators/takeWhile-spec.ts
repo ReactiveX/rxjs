@@ -184,8 +184,10 @@ describe('takeWhile operator', () => {
 
       const source = e1.pipe(
         takeWhile(predicate),
-        tap(null, null, () => {
-          expect(invoked).to.equal(3);
+        tap({
+          complete: () => {
+            expect(invoked).to.equal(3);
+          }
         })
       );
       expectObservable(source).toBe(expected);

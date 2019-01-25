@@ -1,4 +1,4 @@
-import { from, Subscription, Observer, InteropObservable } from 'rxjs';
+import { from, Subscription, Observer, InteropObservable, Subscriber } from 'rxjs';
 import { expect } from 'chai';
 import { take } from 'rxjs/operators';
 import { symbolObservable } from 'rxjs/internal/util/symbolObservable';
@@ -200,7 +200,7 @@ describe('from', () => {
       const obj = {
         [Symbol.observable]() {
           return {
-            subscribe(observer: Observer<number>) {
+            subscribe(observer: Subscriber<number>) {
               observer.next(1);
               observer.next(2);
               observer.next(3);

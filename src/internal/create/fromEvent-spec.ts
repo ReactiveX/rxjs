@@ -230,7 +230,7 @@ describe('fromEvent', () => {
     expect(offOptions).to.equal(expectedOptions);
   });
 
-  it('should pass through events that occur', (done: MochaDone) => {
+  it('should pass through events that occur', done => {
     let send: any;
     const obj = {
       on: (name: string, handler: Function) => {
@@ -242,18 +242,22 @@ describe('fromEvent', () => {
     };
 
     fromEvent(obj, 'click').pipe(take(1))
-      .subscribe((e: any) => {
-        expect(e).to.equal('test');
-      }, (err: any) => {
-        done(new Error('should not be called'));
-      }, () => {
-        done();
+      .subscribe({
+        next: e => {
+          expect(e).to.equal('test');
+        },
+        error: () => {
+          done(new Error('should not be called'));
+        },
+        complete: () => {
+          done();
+        }
       });
 
     send('test');
   });
 
-  it('should emit multiple arguments from event as an array', (done: MochaDone) => {
+  it('should emit multiple arguments from event as an array', done => {
     let send: any;
     const obj = {
       on: (name: string, handler: Function) => {
@@ -265,18 +269,22 @@ describe('fromEvent', () => {
     };
 
     fromEvent(obj, 'click').pipe(take(1))
-      .subscribe((e: any) => {
-        expect(e).to.deep.equal([1, 2, 3]);
-      }, (err: any) => {
-        done(new Error('should not be called'));
-      }, () => {
-        done();
+      .subscribe({
+        next: e => {
+          expect(e).to.deep.equal([1, 2, 3]);
+        },
+        error: () => {
+          done(new Error('should not be called'));
+        },
+        complete: () => {
+          done();
+        }
       });
 
     send(1, 2, 3);
   });
 
-  it('should not throw an exception calling toString on obj with a null prototype', (done: MochaDone) => {
+  it('should not throw an exception calling toString on obj with a null prototype', done => {
     // NOTE: Can not test with Object.create(null) or `class Foo extends null`
     // due to TypeScript bug. https://github.com/Microsoft/TypeScript/issues/1108
     class NullProtoEventTarget {

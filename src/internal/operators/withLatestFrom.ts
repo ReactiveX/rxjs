@@ -1,11 +1,9 @@
-import { OperatorFunction, ObservableInput } from 'rxjs/internal/types';
-import { Subscription } from 'rxjs/internal/Subscription';
+import { OperatorFunction, ObservableInput, Operator } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
-import { identity } from 'rxjs/internal/util/identity';
-import { OperatorSubscriber } from '../OperatorSubscriber';
-import { Subscriber } from '../Subscriber';
 import { from } from '../create/from';
+import { MutableSubscriber } from 'rxjs/internal/MutableSubscriber';
+import { noop } from 'rxjs/internal/util/noop';
 
 /* tslint:disable:max-line-length */
 export function withLatestFrom<T, R>(project: (v1: T) => R): OperatorFunction<T, R>;
@@ -70,45 +68,41 @@ export function withLatestFrom<T, R>(...args: Array<ObservableInput<any>>): Oper
     ? args[0] as Array<ObservableInput<any>>
     : args;
 
-  return (source: Observable<T>) => new Observable(subscriber => source.subscribe(new WithLatestFromSubscriber(subscriber, otherSources)));
+  return (source: Observable<T>) => source.lift(withLatestFromOperator(otherSources));
 }
 
-class WithLatestFromSubscriber<T, R> extends OperatorSubscriber<T> {
-  private _cache: any[];
-  private _hasValue = 0;
-  private _allHaveValues = false;
+function withLatestFromOperator<T, R>(otherSources: ObservableInput<any>[]): Operator<T> {
+  return function withLatestFromLifted(this: MutableSubscriber<any>, source: Observable<T>) {
+    const mut = this;
 
-  constructor(destination: Subscriber<R>, private _otherSources: ObservableInput<any>[]) {
-    super(destination);
-    this._cache = new Array(_otherSources.length);
+    let _allHaveValues = false;
+    const len = otherSources.length;
+    const _cache = new Array(len);
+    let _hasValue = 0;
 
-    for (let i = 0; i < _otherSources.length && !this.closed; i++) {
-      const result = tryUserFunction(from, [_otherSources[i]]);
+    for (let i = 0; i < len && !this.closed; i++) {
+      const result = tryUserFunction(from, [otherSources[i]]);
       if (resultIsError(result)) {
-        destination.error(result.error);
-        return;
+        mut.error(result.error);
+        return mut.subscription;
       } else {
         let first = true;
-        this._subscription.add(result.subscribe({
-          next: (value: any) => {
-            if (!this._allHaveValues && first) {
+        const innerMut = new MutableSubscriber(
+          (value: any) => {
+            if (!_allHaveValues && first) {
               first = false;
-              this._hasValue++;
-              this._allHaveValues = this._hasValue === _otherSources.length;
+              _hasValue++;
+              _allHaveValues = _hasValue === len;
             }
-            this._cache[i] = value;
+            _cache[i] = value;
           },
-          error(err: any) {
-            destination.error(err);
-          }
-        }));
+          mut.error,
+          noop,
+        );
+
+        mut.subscription.add(result.subscribe(innerMut));
       }
     }
-  }
-
-  next(value: T) {
-    if (this._allHaveValues) {
-      this._destination.next([value, ...this._cache]);
-    }
-  }
+    return source.subscribe(mut);
+  };
 }

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Observable, isObservable, of, throwError, EMPTY, Subscription } from 'rxjs';
+import { Observable, of, throwError, EMPTY, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
@@ -15,7 +15,7 @@ function expectFullObserver(val: any) {
 }
 
 /** @test {Observable} */
-describe('Observable', () => {
+describe.only('Observable', () => {
   let testScheduler: TestScheduler;
 
   beforeEach(() => {
@@ -29,15 +29,14 @@ describe('Observable', () => {
       subscriber.complete();
     });
 
-    source.subscribe(
-      x => expect(x).to.equal(1),
-      null,
-      done
-    );
+    source.subscribe({
+      next: x => expect(x).to.equal(1),
+      complete: done
+    });
   });
 
   it('should send errors thrown in the constructor down the error path', (done) => {
-    new Observable<number>(() => {
+    new Observable(() => {
       throw new Error('this should be handled');
     })
     .subscribe({
@@ -57,7 +56,7 @@ describe('Observable', () => {
     });
   });
 
-  describe('forEach', () => {
+  describe.skip('forEach', () => {
     it('should iterate and return a Promise', (done) => {
       const expected = [1, 2, 3];
       const result = of(1, 2, 3).forEach(function (x) {
@@ -221,12 +220,15 @@ describe('Observable', () => {
       let mutatedByNext = false;
       let mutatedByComplete = false;
 
-      source.subscribe((x) => {
-        nexted = x;
-        mutatedByNext = true;
-      }, null, () => {
-        completed = true;
-        mutatedByComplete = true;
+      source.subscribe({
+        next: (x) => {
+          nexted = x;
+          mutatedByNext = true;
+        },
+        complete: () => {
+          completed = true;
+          mutatedByComplete = true;
+        }
       });
 
       expect(mutatedByNext).to.be.true;
@@ -357,7 +359,7 @@ describe('Observable', () => {
       expect(unsubscribeCalled).to.be.true;
     });
 
-    it('should ignore next messages after unsubscription', (done) => {
+    it.only('should ignore next messages after unsubscription', (done) => {
       let times = 0;
 
       const subscription = new Observable<number>((observer) => {
@@ -387,12 +389,12 @@ describe('Observable', () => {
       let times = 0;
       let errorCalled = false;
 
-      const subscription = new Observable<number>((observer) => {
+      const subscription = new Observable<number>(subscriber => {
         let i = 0;
         const id = setInterval(() => {
-          observer.next(i++);
+          subscriber.next(i++);
           if (i === 3) {
-            observer.error(new Error());
+            subscriber.error(new Error());
           }
         });
 
@@ -404,14 +406,14 @@ describe('Observable', () => {
         };
       })
         .pipe(tap(() => times += 1))
-        .subscribe(
-          function () {
+        .subscribe({
+          next () {
             if (times === 2) {
               subscription.unsubscribe();
             }
           },
-          function () { errorCalled = true; }
-        );
+          error () { errorCalled = true; }
+        });
     });
 
     it('should ignore complete messages after unsubscription', (done) => {
@@ -435,15 +437,14 @@ describe('Observable', () => {
         };
       })
         .pipe(tap(() => times += 1))
-        .subscribe(
-          function () {
+        .subscribe({
+          next() {
             if (times === 2) {
               subscription.unsubscribe();
             }
           },
-          null,
-          function () { completeCalled = true; }
-        );
+          complete() { completeCalled = true; }
+        });
     });
 
     describe('when called with an anonymous observer', () => {
@@ -598,13 +599,12 @@ describe('Observable', () => {
           map((x: string) => x + x),
           map((x) => x + '!!!')
         )
-        .subscribe(
-          x => {
+        .subscribe({
+          next: x => {
             expect(x).to.equal('testtest!!!');
           },
-          null,
-          done
-        );
+          complete: done
+        });
     });
 
     it('should return the same observable if there are no arguments', () => {

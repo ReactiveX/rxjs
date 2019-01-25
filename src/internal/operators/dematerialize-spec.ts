@@ -1,16 +1,17 @@
 import { dematerialize } from 'rxjs/operators';
 import { of, NotificationLike } from 'rxjs';
 import { expect } from 'chai';
+import { NotificationKind } from 'rxjs/internal/types';
 
 describe('dematerialize', () => {
   it('should make a stream from notifications', () => {
     const results: any[] = [];
 
     of<NotificationLike<number>>(
-      { kind: 'N', value: 1 },
-      { kind: 'N', value: 2 },
-      { kind: 'N', value: 3 },
-      { kind: 'C' },
+      { kind: NotificationKind.NEXT, value: 1 },
+      { kind: NotificationKind.NEXT, value: 2 },
+      { kind: NotificationKind.NEXT, value: 3 },
+      { kind: NotificationKind.COMPLETE },
     )
     .pipe(
       dematerialize(),
@@ -27,10 +28,10 @@ describe('dematerialize', () => {
     const results: any[] = [];
 
     of<NotificationLike<number>>(
-      { kind: 'N', value: 1 },
-      { kind: 'N', value: 2 },
-      { kind: 'N', value: 3 },
-      { kind: 'E', error: 'bad' },
+      { kind: NotificationKind.NEXT, value: 1 },
+      { kind: NotificationKind.NEXT, value: 2 },
+      { kind: NotificationKind.NEXT, value: 3 },
+      { kind: NotificationKind.ERROR, error: 'bad' },
     )
     .pipe(
       dematerialize(),

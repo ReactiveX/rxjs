@@ -63,17 +63,21 @@ describe('interval', () => {
     const values: number[] = [];
     const expected = [0, 1, 2, 3, 4, 5, 6];
     const e1 = interval(5);
-    const subscription = e1.subscribe(x => {
-      values.push(x);
-      if (x === 6) {
-        subscription.unsubscribe();
-        expect(values).to.deep.equal(expected);
-        done();
+    const subscription = e1.subscribe({
+      next: x => {
+        values.push(x);
+        if (x === 6) {
+          subscription.unsubscribe();
+          expect(values).to.deep.equal(expected);
+          done();
+        }
+      },
+      error: () => {
+        done(new Error('should not be called'));
+      },
+      complete: () => {
+        done(new Error('should not be called'));
       }
-    }, () => {
-      done(new Error('should not be called'));
-    }, () => {
-      done(new Error('should not be called'));
     });
   });
 

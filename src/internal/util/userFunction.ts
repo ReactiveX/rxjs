@@ -10,7 +10,7 @@ const ERROR_OBJECT = {
  * @param fn the user-provided function to wrap in some error handling for safety
  * @param args The arguments to execute the user-provided function with.
  */
-export function tryUserFunction<R>(fn: (...args: any[]) => R, args?: any[], context?: any): typeof ERROR_OBJECT | R {
+export function tryUserFunction<R>(fn: (...args: any[]) => R, args?: any, context?: any): typeof ERROR_OBJECT | R {
   ERROR_OBJECT.error = null;
   let result: R;
   try {

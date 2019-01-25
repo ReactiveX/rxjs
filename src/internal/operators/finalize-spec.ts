@@ -19,8 +19,10 @@ describe('finalize operator', () => {
         expect(completed).to.be.true;
         done();
       })
-    ).subscribe(null, null, () => {
-      completed = true;
+    ).subscribe({
+      complete: () => {
+        completed = true;
+      }
     });
   });
 
@@ -37,8 +39,10 @@ describe('finalize operator', () => {
         expect(thrown).to.be.true;
         done();
       })
-    ).subscribe(null, () => {
-      thrown = true;
+    ).subscribe({
+      error: () => {
+        thrown = true;
+      }
     });
   });
 

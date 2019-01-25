@@ -1,30 +1,27 @@
 import { Observable } from 'rxjs/internal/Observable';
 import { OperatorFunction } from 'rxjs/internal/types';
-import { Subscription } from 'rxjs/internal/Subscription';
 import { tryUserFunction, resultIsError } from 'rxjs/internal/util/userFunction';
-import { Subscriber } from '../Subscriber';
-import { OperatorSubscriber } from '../OperatorSubscriber';
+import { MutableSubscriber } from 'rxjs/internal/MutableSubscriber';
 
 export function filter<T>(predicate: (value: T, index: number) => boolean): OperatorFunction<T, T> {
-  return (source: Observable<T>) => new Observable(subscriber => source.subscribe(new FilterSubscriber(subscriber, predicate)));
+  return (source: Observable<T>) => source.lift(filterOperator(predicate));
 }
 
-class FilterSubscriber<T> extends OperatorSubscriber<T> {
-  private _index = 0;
-
-  constructor(destination: Subscriber<T>, private _predicate: (value: T, index: number) => boolean) {
-    super(destination);
-  }
-
-  _next(value: T) {
-    const { _destination } = this;
-    const result = tryUserFunction(this._predicate, [value, this._index++]);
-    if (resultIsError(result)) {
-      _destination.error(result.error);
-    } else {
-      if (result) {
-        _destination.next(value);
+function filterOperator<T>(predicate: (value: T, index: number) => boolean) {
+  return function filterLifted(this: MutableSubscriber<any>, source: Observable<T>) {
+    const mut = this;
+    const _next = mut.next;
+    let _index = 0;
+    mut.next = (value: T) => {
+      const result = tryUserFunction(predicate, [value, _index++]);
+      if (resultIsError(result)) {
+        mut.error(result.error);
+      } else {
+        if (result) {
+          _next(value);
+        }
       }
-    }
-  }
+    };
+    return source.subscribe(mut);
+  };
 }

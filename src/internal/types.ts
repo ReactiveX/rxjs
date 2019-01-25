@@ -1,6 +1,7 @@
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscriber } from 'rxjs/internal/Subscriber';
+import { MutableSubscriber } from 'rxjs/internal/MutableSubscriber';
 
 export const enum FOType {
   SUBSCRIBE = 0,
@@ -59,7 +60,7 @@ export interface CompleteObserver<T> {
 export type PartialObserver<T> = NextObserver<T> | ErrorObserver<T> | CompleteObserver<T>;
 
 export interface Observer<T> {
-  next: (value: T, subscription?: Subscription) => void;
+  next: (value: T, subscription: Subscription) => void;
   error: (err: any) => void;
   complete: () => void;
   [key: string]: any;
@@ -67,8 +68,8 @@ export interface Observer<T> {
 
 export interface SchedulerLike {
   now(): number;
-  schedule<T>(work: () => void): Subscription;
-  schedule<T>(work: () => void, delay: number): Subscription;
+  schedule(work: () => void): Subscription;
+  schedule(work: () => void, delay: number): Subscription;
   schedule<T>(work: (state?: T) => void, delay: number, state: T): Subscription;
   schedule<T>(work: (state?: T) => void, delay: number, state: T, subs: Subscription): Subscription;
 }
@@ -99,8 +100,14 @@ export interface GroupedObservable<K, T> extends Observable<T> {
   readonly key: K;
 }
 
+export const enum NotificationKind {
+  NEXT = 'N',
+  ERROR = 'E',
+  COMPLETE = 'C',
+}
+
 export interface NotificationLike<T> {
-  kind: 'N'|'E'|'C';
+  kind: NotificationKind;
   value?: T;
   error?: any;
 }
@@ -118,6 +125,4 @@ declare global  {
 
 export type MonoTypeOperatorFunction<T> = OperatorFunction<T, T>;
 
-export interface Operator<T> {
-  call(subscriber: Subscriber<any>, source: any): TeardownLogic;
-}
+export type Operator<T> = (this: MutableSubscriber<any>, source: Observable<T>) => Subscription;

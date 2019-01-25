@@ -653,30 +653,36 @@ describe('concatMap', () => {
     const project = (value: number) => from(Promise.resolve(42));
 
     const results: number[] = [];
-    source.pipe(concatMap(project)).subscribe(
-      (x) => {
+    source.pipe(concatMap(project)).subscribe({
+      next: x => {
         results.push(x);
-      }, (err) => {
+      },
+      error: () => {
         done(new Error('Subscriber error handler not supposed to be called.'));
-      }, () => {
+      },
+      complete: () => {
         expect(results).to.deep.equal([42, 42, 42, 42]);
         done();
-      });
+      }
+    });
   });
 
   it('should map values to constant rejected promises and concatenate', (done) => {
     const source = from([4, 3, 2, 1]);
     const project = (value: any) => from(Promise.reject(42));
 
-    source.pipe(concatMap(project)).subscribe(
-      (x) => {
+    source.pipe(concatMap(project)).subscribe({
+      next: x => {
         done(new Error('Subscriber next handler not supposed to be called.'));
-      }, (err) => {
+      },
+      error: err => {
         expect(err).to.deep.equal(42);
         done();
-      }, () => {
+      },
+      complete: () => {
         done(new Error('Subscriber complete handler not supposed to be called.'));
-      });
+      }
+    });
   });
 
   it('should map values to resolved promises and concatenate', (done) => {
@@ -684,29 +690,35 @@ describe('concatMap', () => {
     const project = (value: number, index: number) => from(Promise.resolve(value + index));
 
     const results: number[] = [];
-    source.pipe(concatMap(project)).subscribe(
-      (x) => {
+    source.pipe(concatMap(project)).subscribe({
+      next: x => {
         results.push(x);
-      }, (err) => {
+      },
+      error: err => {
         done(new Error('Subscriber error handler not supposed to be called.'));
-      }, () => {
+      },
+      complete: () => {
         expect(results).to.deep.equal([4, 4, 4, 4]);
         done();
-      });
+      }
+    });
   });
 
   it('should map values to rejected promises and concatenate', (done) => {
     const source = from([4, 3, 2, 1]);
     const project = (value: number, index: number) => from(Promise.reject('' + value + '-' + index));
 
-    source.pipe(concatMap(project)).subscribe(
-      (x) => {
+    source.pipe(concatMap(project)).subscribe({
+      next: x => {
         done(new Error('Subscriber next handler not supposed to be called.'));
-      }, (err) => {
+      },
+      error: err => {
         expect(err).to.deep.equal('4-0');
         done();
-      }, () => {
+      },
+      complete: () => {
         done(new Error('Subscriber complete handler not supposed to be called.'));
-      });
+      }
+    });
   });
 });

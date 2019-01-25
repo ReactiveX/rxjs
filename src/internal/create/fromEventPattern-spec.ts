@@ -80,11 +80,13 @@ describe('fromEventPattern', () => {
   it('should send errors in addHandler down the error path', (done: MochaDone) => {
     fromEventPattern((h: any) => {
       throw 'bad';
-    }, noop).subscribe(
-      () => done(new Error('should not be called')),
-      (err: any) => {
+    }, noop).subscribe({
+      next: () => done(new Error('should not be called')),
+      error: err => {
         expect(err).to.equal('bad');
         done();
-      }, () => done(new Error('should not be called')));
+      },
+      complete: () => done(new Error('should not be called'))
+    });
   });
 });

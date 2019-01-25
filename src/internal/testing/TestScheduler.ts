@@ -124,12 +124,16 @@ export class TestScheduler extends VirtualTimeScheduler {
     outerFrame: number
   ): TestMessage<any>[] {
     const messages: TestMessage<any>[] = [];
-    observable.subscribe((value) => {
-      messages.push({ frame: this.frame - outerFrame, notification: Notification.createNext(value) });
-    }, (error) => {
-      messages.push({ frame: this.frame - outerFrame, notification: Notification.createError(error) });
-    }, () => {
-      messages.push({ frame: this.frame - outerFrame, notification: Notification.createComplete() });
+    observable.subscribe({
+      next: (value) => {
+        messages.push({ frame: this.frame - outerFrame, notification: Notification.createNext(value) });
+      },
+      error: (error) => {
+        messages.push({ frame: this.frame - outerFrame, notification: Notification.createError(error) });
+      },
+      complete: () => {
+        messages.push({ frame: this.frame - outerFrame, notification: Notification.createComplete() });
+      }
     });
     return messages;
   }
@@ -178,17 +182,21 @@ export class TestScheduler extends VirtualTimeScheduler {
     let subscription: Subscription;
 
     this.schedule(() => {
-      subscription = observable.subscribe(x => {
-        let value = x;
-        // Support Observable-of-Observables
-        if (isObservable(x)) {
-          value = this._materializeInnerObservable(x, this.frame);
+      subscription = observable.subscribe({
+        next: x => {
+          let value = x;
+          // Support Observable-of-Observables
+          if (isObservable(x)) {
+            value = this._materializeInnerObservable(x, this.frame);
+          }
+          actual.push({ frame: this.frame, notification: Notification.createNext(value) });
+        },
+        error: (error) => {
+          actual.push({ frame: this.frame, notification: Notification.createError(error) });
+        },
+        complete: () => {
+          actual.push({ frame: this.frame, notification: Notification.createComplete() });
         }
-        actual.push({ frame: this.frame, notification: Notification.createNext(value) });
-      }, (error) => {
-        actual.push({ frame: this.frame, notification: Notification.createError(error) });
-      }, () => {
-        actual.push({ frame: this.frame, notification: Notification.createComplete() });
       });
     }, subscriptionFrame);
 

@@ -39,11 +39,15 @@ describe('tap operator', () => {
 
   it('should error with a callback', () => {
     let err = null;
-    throwError('bad').pipe(tap(null, function (x) {
-      err = x;
+    throwError('bad').pipe(tap({
+      error: (x) => {
+        err = x;
+      }
     }))
-    .subscribe(null, function (ex) {
-      expect(ex).to.equal('bad');
+    .subscribe({
+      error: (ex) => {
+        expect(ex).to.equal('bad');
+      }
     });
 
     expect(err).to.equal('bad');
@@ -93,12 +97,16 @@ describe('tap operator', () => {
 
   it('should handle an error with a callback', () => {
     let errored = false;
-    throwError('bad').pipe(tap(null, (err: any) => {
-      expect(err).to.equal('bad');
+    throwError('bad').pipe(tap({
+      error: (err: any) => {
+        expect(err).to.equal('bad');
+      }
     }))
-    .subscribe(null, (err: any) => {
-      errored = true;
-      expect(err).to.equal('bad');
+    .subscribe({
+      error: (err: any) => {
+        errored = true;
+        expect(err).to.equal('bad');
+      }
     });
 
     expect(errored).to.be.true;
@@ -106,12 +114,16 @@ describe('tap operator', () => {
 
   it('should handle an error with observer', () => {
     let errored = false;
-    throwError('bad').pipe(tap(<any>{ error: function (err: string) {
-      expect(err).to.equal('bad');
-    } }))
-    .subscribe(null, function (err) {
-      errored = true;
-      expect(err).to.equal('bad');
+    throwError('bad').pipe(tap({
+      error: err => {
+        expect(err).to.equal('bad');
+      }
+    }))
+    .subscribe({
+      error: (err) => {
+        errored = true;
+        expect(err).to.equal('bad');
+      }
     });
 
     expect(errored).to.be.true;
@@ -146,8 +158,10 @@ describe('tap operator', () => {
       next: (x: string) => {
         throw new Error('bad');
       }
-    })).subscribe(null, (err: any) => {
-      expect(err.message).to.equal('bad');
+    })).subscribe({
+      error: (err: any) => {
+        expect(err.message).to.equal('bad');
+      }
     });
   });
 
@@ -156,8 +170,10 @@ describe('tap operator', () => {
       error: (x: any) => {
         throw new Error('bad');
       }
-    })).subscribe(null, (err: any) => {
-      expect(err.message).to.equal('bad');
+    })).subscribe({
+      error: (err: any) => {
+        expect(err.message).to.equal('bad');
+      }
     });
   });
 
@@ -166,8 +182,10 @@ describe('tap operator', () => {
       complete: () => {
         throw new Error('bad');
       }
-    })).subscribe(null, (err: any) => {
-      expect(err.message).to.equal('bad');
+    })).subscribe({
+      error: (err: any) => {
+        expect(err.message).to.equal('bad');
+      }
     });
   });
 

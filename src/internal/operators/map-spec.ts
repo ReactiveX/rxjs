@@ -1,12 +1,8 @@
 import { expect } from 'chai';
 import { map, tap, mergeMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, identity } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { assertDeepEquals } from 'rxjs/internal/test_helpers/assertDeepEquals';
-
-// function shortcuts
-const addDrama = function (x: number | string) { return x + '!'; };
-const identity = function <T>(x: T) { return x; };
 
 /** @test {map} */
 describe('map operator', () => {
@@ -36,7 +32,7 @@ describe('map operator', () => {
       const asubs =    '^    !';
       const expected = '--y--|';
 
-      const r = a.pipe(map(addDrama));
+      const r = a.pipe(map(x => x + '!'));
 
       expectObservable(r).toBe(expected, {y: '42!'});
       expectSubscriptionsTo(a).toBe(asubs);
@@ -49,7 +45,7 @@ describe('map operator', () => {
       const asubs =    '^          !';
       const expected = '--x--y--z--|';
 
-      const r = a.pipe(map(addDrama));
+      const r = a.pipe(map(x => x + '!'));
 
       expectObservable(r).toBe(expected, {x: '1!', y: '2!', z: '3!'});
       expectSubscriptionsTo(a).toBe(asubs);
@@ -89,7 +85,7 @@ describe('map operator', () => {
       const asubs =    '^       !';
       const expected = '--x--y--#';
 
-      const r = a.pipe(map(addDrama));
+      const r = a.pipe(map(x => x + '!'));
       expectObservable(r).toBe(expected, {x: '1!', y: '2!'}, 'too bad');
       expectSubscriptionsTo(a).toBe(asubs);
     });
@@ -104,8 +100,8 @@ describe('map operator', () => {
       let invoked = 0;
       const r = a.pipe(
         map((x: any) => { invoked++; return x; }),
-        tap(null, null, () => {
-          expect(invoked).to.equal(0);
+        tap({
+          complete: () => expect(invoked).to.equal(0)
         })
       );
 
@@ -121,7 +117,7 @@ describe('map operator', () => {
       const asubs =    '^     !     ';
       const expected = '--x--y-     ';
 
-      const r = a.pipe(map(addDrama));
+      const r = a.pipe(map(x => x + '!'));
 
       expectObservable(r, unsub).toBe(expected, {x: '1!', y: '2!'});
       expectSubscriptionsTo(a).toBe(asubs);
@@ -141,9 +137,7 @@ describe('map operator', () => {
           invoked++;
           return (parseInt(x) + 1) + (index * 10);
         }),
-        tap(null, null, () => {
-          expect(invoked).to.equal(4);
-        })
+        tap({ complete: () => expect(invoked).to.equal(4) }),
       );
 
       expectObservable(r).toBe(expected, values);
@@ -164,9 +158,7 @@ describe('map operator', () => {
           invoked++;
           return (parseInt(x) + 1) + (index * 10);
         }),
-        tap(null, null, () => {
-          expect(invoked).to.equal(4);
-        })
+        tap({ complete: () => expect(invoked).to.equal(4) }),
       );
 
       expectObservable(r).toBe(expected, values);
@@ -187,9 +179,7 @@ describe('map operator', () => {
           invoked++;
           return (parseInt(x) + 1) + (index * 10);
         }),
-        tap(null, null, () => {
-          expect(invoked).to.equal(4);
-        })
+        tap({ complete: () => expect(invoked).to.equal(4) }),
       );
 
       expectObservable(r).toBe(expected, values, 'too bad');
@@ -209,10 +199,12 @@ describe('map operator', () => {
       const r = a.pipe(
         map((x: string) => { invoked1++; return parseInt(x) * 2; }),
         map((x: number) => { invoked2++; return x / 2; }),
-        tap(null, null, () => {
-          expect(invoked1).to.equal(7);
-          expect(invoked2).to.equal(7);
-        })
+        tap({
+          complete: () => {
+            expect(invoked1).to.equal(7);
+            expect(invoked2).to.equal(7);
+          }
+        }),
       );
 
       expectObservable(r).toBe(expected, values);
@@ -228,9 +220,9 @@ describe('map operator', () => {
       const expected = '--x--y-     ';
 
       const r = a.pipe(
-        mergeMap((x: string) => of(x)),
-        map(addDrama),
-        mergeMap((x: string) => of(x))
+        mergeMap(x => of(x)),
+        map(x => x + '!'),
+        mergeMap(x => of(x))
       );
 
       expectObservable(r, unsub).toBe(expected, {x: '1!', y: '2!'});

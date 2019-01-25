@@ -53,12 +53,16 @@ describe('iif', () => {
     const expected = 42;
     const e1 = iif(() => true, new Promise((resolve: any) => { resolve(expected); }));
 
-    e1.subscribe(x => {
-      expect(x).to.equal(expected);
-    }, (x) => {
-      done(new Error('should not be called'));
-    }, () => {
-      done();
+    e1.subscribe({
+      next: x => {
+        expect(x).to.equal(expected);
+      },
+      error: () => {
+        done(new Error('should not be called'));
+      },
+      complete: () => {
+        done();
+      }
     });
   });
 
@@ -68,12 +72,16 @@ describe('iif', () => {
       of('a'),
       new Promise((resolve: any) => { resolve(expected); }));
 
-    e1.subscribe(x => {
-      expect(x).to.equal(expected);
-    }, (x) => {
-      done(new Error('should not be called'));
-    }, () => {
-      done();
+    e1.subscribe({
+      next: x => {
+        expect(x).to.equal(expected);
+      },
+      error: () => {
+        done(new Error('should not be called'));
+      },
+      complete: () => {
+        done();
+      }
     });
   });
 
@@ -83,13 +91,17 @@ describe('iif', () => {
       of('a'),
       new Promise((resolve: any, reject: any) => { reject(expected); }));
 
-    e1.subscribe(x => {
-      done(new Error('should not be called'));
-    }, (x) => {
-      expect(x).to.equal(expected);
-      done();
-    }, () => {
-      done(new Error('should not be called'));
+    e1.subscribe({
+      next: () => {
+        done(new Error('should not be called'));
+      },
+      error: err => {
+        expect(err).to.equal(expected);
+        done();
+      },
+      complete: () => {
+        done(new Error('should not be called'));
+      }
     });
   });
 
@@ -97,13 +109,17 @@ describe('iif', () => {
     const expected = 42;
     const e1 = iif(() => true, new Promise((resolve: any, reject: any) => { reject(expected); }));
 
-    e1.subscribe(x => {
-      done(new Error('should not be called'));
-    }, (x) => {
-      expect(x).to.equal(expected);
-      done();
-    }, () => {
-      done(new Error('should not be called'));
+    e1.subscribe({
+      next: () => {
+        done(new Error('should not be called'));
+      },
+      error: err => {
+        expect(err).to.equal(expected);
+        done();
+      },
+      complete: () => {
+        done(new Error('should not be called'));
+      }
     });
   });
 });

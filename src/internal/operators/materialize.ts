@@ -1,34 +1,25 @@
 import { OperatorFunction } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
-import { Subscription } from 'rxjs/internal/Subscription';
 import { Notification } from 'rxjs/internal/Notification';
-import { Subscriber } from '../Subscriber';
-import { OperatorSubscriber } from '../OperatorSubscriber';
+import { MutableSubscriber } from 'rxjs/internal/MutableSubscriber';
 
 export function materialize<T>(): OperatorFunction<T, Notification<T>> {
-  return (source: Observable<T>) => new Observable(subscriber => source.subscribe(new MaterializeSubscriber(subscriber)));
+  return (source: Observable<T>) => source.lift(materializeLifted);
 }
 
-function materializeOperator<T>() {
-  return function materializeLift(this: Subscriber<Notification<T>>, source: Observable<T>) {
-    return source.subscribe(new MaterializeSubscriber(this));
+function materializeLifted<T>(this: MutableSubscriber<any>, source: Observable<T>) {
+  const mut = this;
+  const _next = mut.next;
+  const _complete = mut.complete;
+
+  mut.next = (value: T) => _next(Notification.createNext(value));
+  mut.error = (err: any) => {
+    _next(Notification.createError(err));
+    _complete();
   };
-}
-
-class MaterializeSubscriber<T> extends OperatorSubscriber<T> {
-  _next(value: T) {
-    this._destination.next(Notification.createNext(value));
-  }
-
-  _error(err: any) {
-    const { _destination } = this;
-    _destination.next(Notification.createError(err));
-    _destination.complete();
-  }
-
-  _complete() {
-    const { _destination } = this;
-    _destination.next(Notification.createComplete());
-    _destination.complete();
-  }
+  mut.complete = () => {
+    _next(Notification.createComplete());
+    _complete();
+  };
+  return source.subscribe(mut);
 }

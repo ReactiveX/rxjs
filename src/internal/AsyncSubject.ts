@@ -1,16 +1,17 @@
 import { Subject  } from 'rxjs/internal/Subject';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
+import { MutableSubscriber } from 'rxjs/internal/MutableSubscriber';
 
 export class AsyncSubject<T> extends Subject<T> {
   private _hasValue = false;
   private _value: T;
 
-  protected _init(subscriber: Subscriber<T>) {
+  protected _init(mut: MutableSubscriber<T>) {
     if (!this._disposed && this._closed && !this._hasError) {
-      subscriber.next(this._value);
+      mut.next(this._value);
     }
-    return super._init(subscriber);
+    return super._init(mut);
   }
 
   next(value: T) {

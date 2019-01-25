@@ -43,13 +43,15 @@ describe('retry operator', () => {
         return x;
       }),
       retry(retries)
-    ).subscribe(
-        (x: number) => {
-          expect(x).to.equal(42);
-        },
-        (err: any) => {
-          expect('this was called').to.be.true;
-        }, done);
+    ).subscribe({
+      next: x => {
+        expect(x).to.equal(42);
+      },
+      error: err => {
+        expect('this was called').to.be.true;
+      },
+      complete: done,
+    });
   });
 
   it('should retry a number of times, then call error handler', done => {
@@ -64,16 +66,18 @@ describe('retry operator', () => {
         throw 'bad';
       }),
       retry(retries - 1)
-    ).subscribe(
-        (x: number) => {
-          expect(x).to.equal(42);
-        },
-        (err: any) => {
-          expect(errors).to.equal(2);
-          done();
-        }, () => {
-          expect('this was called').to.be.true;
-        });
+    ).subscribe({
+      next: x => {
+        expect(x).to.equal(42);
+      },
+      error: err => {
+        expect(errors).to.equal(2);
+        done();
+      },
+      complete: () => {
+        expect('this was called').to.be.true;
+      },
+    });
   });
 
   it('should retry until successful completion', done => {
@@ -92,13 +96,15 @@ describe('retry operator', () => {
       }),
       retry(),
       take(retries)
-    ).subscribe(
-        (x: number) => {
-          expect(x).to.equal(42);
-        },
-        (err: any) => {
-          expect('this was called').to.be.true;
-        }, done);
+    ).subscribe({
+      next: (x: number) => {
+        expect(x).to.equal(42);
+      },
+      error: (err: any) => {
+        expect('this was called').to.be.true;
+      },
+      complete: done,
+    });
   });
 
   it('should handle an empty source', () => {

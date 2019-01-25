@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { fromScheduled, of } from 'rxjs';
+import { fromScheduled, of, Subscriber } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { symbolObservable } from 'rxjs/internal/util/symbolObservable';
 import { Observer } from 'rxjs/internal/types';
@@ -103,7 +103,7 @@ describe('fromScheduled', () => {
     const logs: any[] = [];
 
     const source = {
-      subscribe(observer: Observer<number>) {
+      subscribe(observer: Subscriber<number>) {
         observer.next(1);
         observer.next(2);
         observer.next(3);

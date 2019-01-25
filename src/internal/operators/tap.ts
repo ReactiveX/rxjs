@@ -1,88 +1,42 @@
 import { Observable } from 'rxjs/internal/Observable';
-import { Operator, OperatorFunction, FOType, Sink, SinkArg, PartialObserver } from 'rxjs/internal/types';
-import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
-import { OperatorSubscriber } from '../OperatorSubscriber';
-import { isPartialObserver } from '../util/isPartialObserver';
-import { noop } from '../util/noop';
+import { Operator, OperatorFunction, PartialObserver } from 'rxjs/internal/types';
 import { tryUserFunction, resultIsError } from '../util/userFunction';
+import { MutableSubscriber } from 'rxjs/internal/MutableSubscriber';
 
 export function tap<T>(
-  observer: PartialObserver<T>
-): OperatorFunction<T, T>;
-
-export function tap<T>(
-  nextHandler?: (value: T) => void,
-  errorHandler?: (err: any) => void,
-  completeHandler?: () => void,
-): OperatorFunction<T, T>;
-
-export function tap<T>(
-  nextOrObserver?: PartialObserver<T>|((value: T) => void),
-  errorHandler?: (err: any) => void,
-  completeHandler?: () => void,
-): OperatorFunction<T, T>;
-
-export function tap<T>(
-  nextOrObserver?: PartialObserver<T>|((value: T) => void),
-  errorHandler?: (err: any) => void,
-  completeHandler?: () => void,
+  nextOrObserver: PartialObserver<T>|((value: T) => void)
 ): OperatorFunction<T, T> {
-  return (source: Observable<T>) =>
-    new Observable(subscriber => source.subscribe(new TapSubscriber(subscriber, nextOrObserver, errorHandler, completeHandler)));
+  return (source: Observable<T>) => source.lift(tapOperator(nextOrObserver));
 }
 
-class TapSubscriber<T> extends OperatorSubscriber<T> {
-  private _tapNext: (value: T, subscription: Subscription) => void;
-  private _tapError: (error: any) => void;
-  private _tapComplete: () => void;
-
-  constructor(
-    destination: Subscriber<T>,
-    nextOrObserver: PartialObserver<T>|((value: T) => void)|undefined,
-    errorHandler: ((err: any) => void)|undefined,
-    completeHandler: (() => void)|undefined
-  ) {
-    super(destination);
-
-    if (isPartialObserver(nextOrObserver)) {
-      this._tapNext = (nextOrObserver.next || noop).bind(nextOrObserver);
-      this._tapError = (nextOrObserver.error || noop).bind(nextOrObserver);
-      this._tapComplete = (nextOrObserver.complete || noop).bind(nextOrObserver);
-    } else {
-      this._tapNext = nextOrObserver as any || noop;
-      this._tapError = errorHandler || noop;
-      this._tapComplete = completeHandler || noop;
+function tapOperator<T>(nextOrObserver: PartialObserver<T>|((value: T) => void)): Operator<T> {
+  return function tapLifted(this: MutableSubscriber<any>, source: Observable<T>) {
+    const mut = this;
+    if (nextOrObserver) {
+      if (typeof nextOrObserver === 'object') {
+        if (nextOrObserver.next) {
+          mut.next = wrap(mut, nextOrObserver.next, mut.next, nextOrObserver);
+        }
+        if (nextOrObserver.error) {
+          mut.error = wrap(mut, nextOrObserver.error, mut.error, nextOrObserver);
+        }
+        if (nextOrObserver.complete) {
+          mut.complete = wrap(mut, nextOrObserver.complete, mut.complete, nextOrObserver);
+        }
+      } else {
+        mut.next = wrap(mut, nextOrObserver, mut.next);
+      }
     }
-  }
+    return source.subscribe(mut);
+  };
+}
 
-  _next(value: T) {
-    const { _destination } = this;
-    const result = tryUserFunction(this._tapNext, [value, this._subscription]);
+function wrap(mut: MutableSubscriber<any>, handler: (this: any, ...args: any[]) => any, forwardFn: Function, handlerContext?: any) {
+  return function () {
+    const result = tryUserFunction(handler, arguments, handlerContext);
     if (resultIsError(result)) {
-      _destination.error(result.error);
-    } else {
-      _destination.next(value);
+      mut.error(result.error);
     }
-  }
-
-  _error(err: any) {
-    const { _destination } = this;
-    const result = tryUserFunction(this._tapError, [err]);
-    if (resultIsError(result)) {
-      _destination.error(result.error);
-    } else {
-      _destination.error(err);
-    }
-  }
-
-  _complete() {
-    const { _destination } = this;
-    const result = tryUserFunction(this._tapComplete);
-    if (resultIsError(result)) {
-      _destination.error(result.error);
-    } else {
-      _destination.complete();
-    }
-  }
+    forwardFn.apply(undefined, arguments);
+  };
 }

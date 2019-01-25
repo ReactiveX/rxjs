@@ -2,9 +2,10 @@ import { Observable } from 'rxjs/internal/Observable';
 import { Observer, TeardownLogic } from 'rxjs/internal/types';
 import { Subscriber } from 'rxjs/internal/Subscriber';
 import { ObjectUnsubscribedError } from 'rxjs/internal/util/ObjectUnsubscribedError';
+import { MutableSubscriber } from 'rxjs/internal/MutableSubscriber';
 
 export class Subject<T> extends Observable<T> implements Observer<T> {
-  private _subscribers: Subscriber<T>[] = [];
+  private _subscribers: MutableSubscriber<T>[] = [];
   protected _closed = false;
   protected _hasError = false;
   protected _hasCompleted = false;
@@ -19,15 +20,15 @@ export class Subject<T> extends Observable<T> implements Observer<T> {
     return this._disposed;
   }
 
-  protected _init(subscriber: Subscriber<T>): TeardownLogic {
+  protected _init(mut: MutableSubscriber<T>): TeardownLogic {
     this._throwIfDisposed();
     if (this._hasError) {
-      subscriber.error(this._error);
+      mut.error(this._error);
       return;
     }
 
     if (this._hasCompleted) {
-      subscriber.complete();
+      mut.complete();
       return;
     }
 
@@ -36,9 +37,9 @@ export class Subject<T> extends Observable<T> implements Observer<T> {
     }
 
     const { _subscribers } = this;
-    _subscribers.push(subscriber);
+    _subscribers.push(mut);
     return () => {
-      const i = _subscribers.indexOf(subscriber);
+      const i = _subscribers.indexOf(mut);
       if (i >= 0) {
         _subscribers.splice(i, 1);
       }
@@ -88,7 +89,7 @@ export class Subject<T> extends Observable<T> implements Observer<T> {
   }
 
   asObservable(): Observable<T> {
-    return new Observable<T>(subscriber => this._init(subscriber));
+    return new Observable<T>(subscriber => this.subscribe(subscriber));
   }
 
   private _throwIfDisposed() {

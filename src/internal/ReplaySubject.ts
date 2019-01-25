@@ -1,7 +1,7 @@
 import { Subject } from 'rxjs/internal/Subject';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { Subscriber } from 'rxjs/internal/Subscriber';
 import { SchedulerLike } from 'rxjs/internal/types';
+import { MutableSubscriber } from 'rxjs/internal/MutableSubscriber';
+import { NOW_ONLY_SCHEDULER } from 'rxjs/internal/scheduler/now_only';
 
 interface ReplayEvent<T> {
   value: T;
@@ -14,21 +14,21 @@ export class ReplaySubject<T> extends Subject<T> {
   constructor(
     private _bufferSize: number = Number.POSITIVE_INFINITY,
     private _windowTime: number = Number.POSITIVE_INFINITY,
-    private _scheduler?: SchedulerLike
+    private _scheduler: SchedulerLike = NOW_ONLY_SCHEDULER
   ) {
     super();
   }
 
-  protected _init(subscriber: Subscriber<T>) {
+  protected _init(mut: MutableSubscriber<T>) {
     this._cleanBuffer();
     for (let { value } of this._buffer) {
-      subscriber.next(value);
+      mut.next(value);
     }
-    return super._init(subscriber);
+    return super._init(mut);
   }
 
   next(value: T) {
-    const { _buffer, _scheduler, _bufferSize, _windowTime } = this;
+    const { _buffer, _scheduler } = this;
     const timestamp = _scheduler.now();
     _buffer.push({ value, timestamp });
     this._cleanBuffer();

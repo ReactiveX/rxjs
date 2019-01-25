@@ -286,7 +286,7 @@ describe('share operator', () => {
     });
   });
 
-  it.only('should be retryable', () => {
+  it('should be retryable', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
       const source =     cold('-1-2-3----4-#                        ');
       const sourceSubs =     ['^           !                        ',

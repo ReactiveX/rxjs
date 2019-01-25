@@ -8,20 +8,13 @@ describe('Subscription', () => {
     expect(s).to.be.an.instanceof(Subscription);
   });
 
-  it('should take a teardown function', () => {
-    let fired = false;
-    const s = new Subscription(() => fired = true);
-    expect(fired).to.be.false;
-    s.unsubscribe();
-    expect(fired).to.be.true;
-  });
-
   it('should add children, and unsub in order', () => {
     const results: number[] = [];
-    const s = new Subscription(() => results.push(0));
+    const s = new Subscription();
+    s.add(() => results.push(0));
     s.add(() => results.push(1));
     s.add(() => results.push(2));
-    s.add(new Subscription(() => results.push(3)));
+    s.add(new Subscription().add(() => results.push(3)));
     s.add(() => results.push(4));
 
     expect(results).to.deep.equal([]);
@@ -34,11 +27,16 @@ describe('Subscription', () => {
 
     const parent = new Subscription();
 
-    const child1 = new Subscription(() => results.push(1));
-    const child2 = new Subscription(() => results.push(2));
-    const child3 = new Subscription(() => results.push(3));
+    const child1 = new Subscription();
+    child1.add(() => results.push(1));
+    const child2 = new Subscription();
+    child2.add(() => results.push(2));
+    const child3 = new Subscription();
+    child3.add(() => results.push(3));
 
-    parent.add(child1, child2, child3);
+    parent.add(child1);
+    parent.add(child2);
+    parent.add(child3);
 
     expect(results).to.deep.equal([]);
 
@@ -128,7 +126,8 @@ describe('Subscription', () => {
       main.unsubscribe();
 
       let isCalled = false;
-      const child = new Subscription(() => {
+      const child = new Subscription();
+      child.add(() => {
         isCalled = true;
       });
       main.add(child);

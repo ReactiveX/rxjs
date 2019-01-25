@@ -106,13 +106,14 @@ describe('forkJoin', () => {
                Promise.resolve(2)
             );
 
-    e1.subscribe(x => {
-      expect(x).to.deep.equal([1, 2]);
-    },
-    (err: any) => {
-      done(new Error('should not be called'));
-    }, () => {
-      done();
+    e1.subscribe({
+      next: x => {
+        expect(x).to.deep.equal([1, 2]);
+      },
+      error: (err: any) => {
+        done(new Error('should not be called'));
+      },
+      complete: done,
     });
   });
 

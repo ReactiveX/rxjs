@@ -1,34 +1,31 @@
-import { OperatorFunction } from 'rxjs/internal/types';
+import { OperatorFunction, Operator } from 'rxjs/internal/types';
 import { Observable } from 'rxjs/internal/Observable';
-import { Subscription } from 'rxjs/internal/Subscription';
 import { Subscriber } from '../Subscriber';
-import { OperatorSubscriber } from '../OperatorSubscriber';
 import { EMPTY } from '../EMPTY';
+import { MutableSubscriber } from 'rxjs/internal/MutableSubscriber';
 
 export function takeLast<T>(count: number = 1): OperatorFunction<T, T> {
   count = Math.max(count, 0);
-  return (source: Observable<T>) => count === 0 ? EMPTY : new Observable(subscriber => source.subscribe(new TakeLastSubscriber(subscriber, count)));
+  return (source: Observable<T>) => count === 0 ? EMPTY as any : source.lift(takeLastOperator(count));
 }
 
-class TakeLastSubscriber<T> extends OperatorSubscriber<T> {
-  private _buffer: T[] = [];
-
-  constructor(destination: Subscriber<T>, private _count: number) {
-    super(destination);
-  }
-
-  _next(value: T) {
-    const { _buffer } = this;
-    _buffer.push(value);
-    _buffer.splice(0, _buffer.length - this._count);
-  }
-
-  _complete() {
-    const { _buffer, _destination } = this;
-    for (let i = 0; i < _buffer.length && !_destination.closed; i++) {
-      _destination.next(_buffer[i]);
-    }
-    _destination.complete();
-    this._buffer = null;
-  }
+function takeLastOperator<T>(count: number): Operator<T> {
+  return function takeLastLifted(this: MutableSubscriber<any>, source: Observable<T>) {
+    const mut = this;
+    const _next = mut.next;
+    const _complete = mut.complete;
+    const _buffer: T[]|null = [];
+    mut.next = (value: T) => {
+      _buffer.push(value);
+      _buffer.splice(0, _buffer.length - count);
+    };
+    mut.complete = () => {
+      for (let i = 0; i < _buffer.length && !mut.closed; i++) {
+        _next(_buffer[i]);
+      }
+      _complete();
+      _buffer.length = 0;
+    };
+    return source.subscribe(mut);
+  };
 }

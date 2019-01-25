@@ -223,9 +223,12 @@ describe('withLatestFrom operator', () => {
 
   it('should handle promises', (done: MochaDone) => {
     of(1).pipe(delay(1), withLatestFrom(Promise.resolve(2), Promise.resolve(3)))
-      .subscribe((x: any) => {
-        expect(x).to.deep.equal([1, 2, 3]);
-      }, null, done);
+      .subscribe({
+        next: (x: any) => {
+          expect(x).to.deep.equal([1, 2, 3]);
+        },
+        complete: done,
+      });
   });
 
   it('should handle arrays', () => {
