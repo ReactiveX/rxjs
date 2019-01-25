@@ -12,30 +12,31 @@ export function tap<T>(
 function tapOperator<T>(nextOrObserver: PartialObserver<T>|((value: T) => void)): Operator<T> {
   return function tapLifted(this: MutableSubscriber<any>, source: Observable<T>) {
     const mut = this;
+    const _error = mut.error;
     if (nextOrObserver) {
       if (typeof nextOrObserver === 'object') {
         if (nextOrObserver.next) {
-          mut.next = wrap(mut, nextOrObserver.next, mut.next, nextOrObserver);
+          mut.next = wrap(_error, nextOrObserver.next, mut.next, nextOrObserver);
         }
         if (nextOrObserver.error) {
-          mut.error = wrap(mut, nextOrObserver.error, mut.error, nextOrObserver);
+          mut.error = wrap(_error, nextOrObserver.error, _error, nextOrObserver);
         }
         if (nextOrObserver.complete) {
-          mut.complete = wrap(mut, nextOrObserver.complete, mut.complete, nextOrObserver);
+          mut.complete = wrap(_error, nextOrObserver.complete, mut.complete, nextOrObserver);
         }
       } else {
-        mut.next = wrap(mut, nextOrObserver, mut.next);
+        mut.next = wrap(_error, nextOrObserver, mut.next);
       }
     }
     return source.subscribe(mut);
   };
 }
 
-function wrap(mut: MutableSubscriber<any>, handler: (this: any, ...args: any[]) => any, forwardFn: Function, handlerContext?: any) {
+function wrap(forwardError: (err: any) => void, handler: (this: any, ...args: any[]) => any, forwardFn: Function, handlerContext?: any) {
   return function () {
     const result = tryUserFunction(handler, arguments, handlerContext);
     if (resultIsError(result)) {
-      mut.error(result.error);
+      forwardError(result.error);
     }
     forwardFn.apply(undefined, arguments);
   };

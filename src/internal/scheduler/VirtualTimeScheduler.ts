@@ -28,6 +28,9 @@ export class VirtualTimeScheduler implements SchedulerLike {
       }
     });
     actions.push(action);
+    if (actions.length > 1000) {
+      debugger;
+    }
     actions.sort(sortActions);
     return subs;
   }

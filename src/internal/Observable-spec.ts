@@ -15,7 +15,7 @@ function expectFullObserver(val: any) {
 }
 
 /** @test {Observable} */
-describe.only('Observable', () => {
+describe('Observable', () => {
   let testScheduler: TestScheduler;
 
   beforeEach(() => {
@@ -359,7 +359,7 @@ describe.only('Observable', () => {
       expect(unsubscribeCalled).to.be.true;
     });
 
-    it.only('should ignore next messages after unsubscription', (done) => {
+    it('should ignore next messages after unsubscription', (done) => {
       let times = 0;
 
       const subscription = new Observable<number>((observer) => {

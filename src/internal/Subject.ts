@@ -1,8 +1,9 @@
 import { Observable } from 'rxjs/internal/Observable';
-import { Observer, TeardownLogic } from 'rxjs/internal/types';
+import { Observer, TeardownLogic, PartialObserver } from 'rxjs/internal/types';
 import { Subscriber } from 'rxjs/internal/Subscriber';
 import { ObjectUnsubscribedError } from 'rxjs/internal/util/ObjectUnsubscribedError';
 import { MutableSubscriber } from 'rxjs/internal/MutableSubscriber';
+import { Subscription } from './Subscription';
 
 export class Subject<T> extends Observable<T> implements Observer<T> {
   private _subscribers: MutableSubscriber<T>[] = [];
@@ -20,8 +21,12 @@ export class Subject<T> extends Observable<T> implements Observer<T> {
     return this._disposed;
   }
 
-  protected _init(mut: MutableSubscriber<T>): TeardownLogic {
+  subscribe(nextOrObserver?: PartialObserver<T>|((value: T, subscription: Subscription) => void)): Subscription {
     this._throwIfDisposed();
+    return super.subscribe(nextOrObserver);
+  }
+
+  protected _init(mut: MutableSubscriber<T>): TeardownLogic {
     if (this._hasError) {
       mut.error(this._error);
       return;

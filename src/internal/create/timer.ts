@@ -6,9 +6,9 @@ import { Observable } from 'rxjs/internal/Observable';
 import { isNumeric } from 'rxjs/internal/util/isNumeric';
 import { isScheduler } from 'rxjs/internal/util/isScheduler';
 
-export function timer(): Observable<0>;
-export function timer(delay: number|Date): Observable<0>;
-export function timer(delay: number|Date, scheduler: SchedulerLike): Observable<0>;
+export function timer(): Observable<number>;
+export function timer(delay: number|Date): Observable<number>;
+export function timer(delay: number|Date, scheduler: SchedulerLike): Observable<number>;
 export function timer(delay: number|Date, interval: number): Observable<number>;
 export function timer(delay: number|Date, interval: number, scheduler: SchedulerLike): Observable<number>;
 

@@ -84,7 +84,7 @@ export class Notification<T> {
    * by this Notification instance.
    * @return {any}
    */
-  toObservable(): Observable<T> {
+  toObservable(): Observable<T | never> {
     const kind = this.kind;
     switch (kind) {
       case 'N':

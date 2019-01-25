@@ -132,24 +132,26 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  * @return {Observable} Observable emitting either an array of last values emitted by passed Observables
  * or value from project function.
  */
-export function forkJoin<T>(
-  ...sources: Array<ObservableInput<T> | ObservableInput<T>[]>
-): Observable<T[]> {
+export function forkJoin(
+  ...args: any[]
+): Observable<any> {
+  let sources = args as ObservableInput<any>[];
   if (sources.length === 0) {
-    return EMPTY;
+    return EMPTY as any;
   }
 
-  if (sources.length === 1 && Array.isArray(sources[0])) {
-    return forkJoin(...(sources[0] as ObservableInput<T>[]));
+  const first = sources[0];
+  if (sources.length === 1 && Array.isArray(first)) {
+    return forkJoin(...first);
   }
 
-  return new Observable<T[]>(subscriber => {
+  return new Observable(subscriber => {
     const state = sources.map(toEmptyState);
     const subscription = new Subscription();
     for (let i = 0; i < sources.length && !subscriber.closed; i++) {
-      const source = from(sources[i] as ObservableInput<T>);
+      const source = from(sources[i]);
       subscription.add(source.subscribe({
-        next(value: T) {
+        next(value) {
           const s = state[i];
           s.hasValue = true;
           s.value = value;
@@ -160,7 +162,7 @@ export function forkJoin<T>(
           s.completed = true;
           if (!s.hasValue || state.every(isComplete)) {
             if (state.every(hasValue)) {
-              subscriber.next(state.map(getValue) as T[]);
+              subscriber.next(state.map(getValue));
             }
             subscriber.complete();
           }

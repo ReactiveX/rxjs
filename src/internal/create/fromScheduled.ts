@@ -12,7 +12,7 @@ import { symbolAsyncIterator } from 'rxjs/internal/util/symbolAsyncIterator';
 import { Subscriber } from '../Subscriber';
 
 export function fromScheduled<T>(input: ObservableInput<T>, scheduler: SchedulerLike): Observable<T> {
-  if (isObservable(input)) {
+  if (isObservable<T>(input)) {
     return fromObservableScheduled(input, scheduler);
   } else if (isInteropObservable(input)) {
     return fromInteropObservable(input, scheduler);

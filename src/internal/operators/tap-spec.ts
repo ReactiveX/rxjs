@@ -166,7 +166,7 @@ describe('tap operator', () => {
   });
 
   it('should raise error if error handler raises error', () => {
-    throwError('ops').pipe(tap(<any>{
+    throwError('oops').pipe(tap({
       error: (x: any) => {
         throw new Error('bad');
       }
@@ -178,7 +178,7 @@ describe('tap operator', () => {
   });
 
   it('should raise error if complete handler raises error', () => {
-    EMPTY.pipe(tap(<any>{
+    EMPTY.pipe(tap({
       complete: () => {
         throw new Error('bad');
       }

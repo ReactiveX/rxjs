@@ -11,7 +11,7 @@ import { symbolObservable } from 'rxjs/internal/util/symbolObservable';
 import { symbolAsyncIterator } from 'rxjs/internal/util/symbolAsyncIterator';
 
 export function from<T>(input: ObservableInput<T>): Observable<T> {
-  if (isObservable(input)) {
+  if (isObservable<T>(input)) {
     return input;
   } else if (isPromiseLike(input)) {
     return fromPromise(input);

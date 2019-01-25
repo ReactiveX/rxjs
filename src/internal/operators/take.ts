@@ -22,9 +22,11 @@ function takeOperator<T>(total: number): Operator<T> {
         _next(value);
         if (c === total) {
           mut.complete();
+          mut.subscription.unsubscribe();
         }
       }
     };
-    return mut.subscription;
+
+    return source.subscribe(mut);
   };
 }

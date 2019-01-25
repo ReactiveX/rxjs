@@ -119,11 +119,11 @@ describe('forkJoin', () => {
 
   it('should accept array of observables', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptionsTo }) => {
-      const e1 = forkJoin(
-                [hot('--a--b--c--d--|'),
-                  hot('(b|)'),
-                  hot('--1--2--3--|')]
-              );
+      const e1 = forkJoin([
+                  hot(' --a--b--c--d--|'),
+                  hot(' (b|)'),
+                  hot(' --1--2--3--|')
+                ]);
       const expected = '--------------(x|)';
 
       expectObservable(e1).toBe(expected, {x: ['d', 'b', '3']});

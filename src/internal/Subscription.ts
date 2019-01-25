@@ -6,6 +6,12 @@ export class Subscription {
   private _teardowns: (() => void)[] = [];
   private _closed = false;
 
+  constructor(teardown?: TeardownLogic) {
+    if (teardown) {
+      this.add(teardown);
+    }
+  }
+
   get closed() {
     return this._closed;
   }
@@ -18,17 +24,18 @@ export class Subscription {
   }
 
   private _unsubscribe() {
-    const _teardowns = this._teardowns;
+    const _teardowns = this._teardowns.slice();
     let errors = undefined;
     while (_teardowns.length > 0) {
       const teardown = _teardowns.shift();
-      debugger;
       const result = tryUserFunction(teardown);
       if (resultIsError(result)) {
         const err = result.error;
         errors = errors || [];
         if (err instanceof UnsubscriptionError) {
           errors.push(...err.errors);
+        } else {
+          errors.push(err);
         }
       }
     }
@@ -43,14 +50,27 @@ export class Subscription {
     }
     let teardown: () => void;
     if (isSubscription(teardownLogic)) {
-      teardown = () => teardownLogic.unsubscribe();
-      teardownLogic.add(() => {
-        const _teardowns = this._teardowns;
-        const index = _teardowns.indexOf(teardown);
-        if (index >= 0) {
-          _teardowns.splice(index, 1);
-        }
-      });
+      if (this._closed) {
+        teardownLogic.unsubscribe();
+        return;
+      } else {
+        teardown = () => teardownLogic.unsubscribe();
+        teardownLogic.add(() => {
+          const _teardowns = this._teardowns;
+          const index = _teardowns.indexOf(teardown);
+          if (index >= 0) {
+            _teardowns.splice(index, 1);
+          }
+        });
+      }
+    } else if (typeof teardownLogic === 'function') {
+      teardown = teardownLogic as () => void;
+      if (this._closed) {
+        teardown();
+        return;
+      }
+    } else {
+      return;
     }
     this._teardowns.push(teardown);
   }

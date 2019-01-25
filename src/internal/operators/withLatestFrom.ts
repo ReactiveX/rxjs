@@ -103,6 +103,15 @@ function withLatestFromOperator<T, R>(otherSources: ObservableInput<any>[]): Ope
         mut.subscription.add(result.subscribe(innerMut));
       }
     }
+
+    const _next = mut.next;
+
+    mut.next = (value: T) => {
+      if (_allHaveValues) {
+        _next([value, ..._cache]);
+      }
+    };
+
     return source.subscribe(mut);
   };
 }

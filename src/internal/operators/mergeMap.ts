@@ -52,6 +52,7 @@ function mergeMapOperator<T, R>(
 
     mut.next = (value: T) => {
       _buffer.push(value);
+      innerSubscribe();
     };
 
     mut.complete = () => {

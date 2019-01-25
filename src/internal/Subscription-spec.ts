@@ -14,7 +14,9 @@ describe('Subscription', () => {
     s.add(() => results.push(0));
     s.add(() => results.push(1));
     s.add(() => results.push(2));
-    s.add(new Subscription().add(() => results.push(3)));
+    const child = new Subscription();
+    child.add(() => results.push(3));
+    s.add(child);
     s.add(() => results.push(4));
 
     expect(results).to.deep.equal([]);
@@ -47,7 +49,7 @@ describe('Subscription', () => {
     expect(results).to.deep.equal([2, 1, 3]);
   });
 
-  it('should not leak', (done: MochaDone) => {
+  it('should not leak', done => {
     const tearDowns: number[] = [];
 
     const source1 = new Observable(subscriber => {
@@ -80,7 +82,7 @@ describe('Subscription', () => {
     });
   });
 
-  it('should not leak when adding a bad custom subscription to a subscription', (done: MochaDone) => {
+  it('should not leak when adding a bad custom subscription to a subscription', done => {
     const tearDowns: number[] = [];
 
     const sub = new Subscription();
@@ -121,7 +123,7 @@ describe('Subscription', () => {
   });
 
   describe('Subscription.add()', () => {
-    it('Should unsubscribe the passed one if the self has been unsubscribed', () => {
+    it('should unsubscribe the passed one if the self has been unsubscribed', () => {
       const main = new Subscription();
       main.unsubscribe();
 

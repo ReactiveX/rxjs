@@ -10,26 +10,26 @@ import { noop } from 'rxjs';
 export class Observable<T> {
   constructor(private _subscribe?: (subscriber: Subscriber<T>) => TeardownLogic) {}
 
-  protected _reconcileMutableSubscriber(nextOrObserver?: PartialObserver<T>|((value: T, subscription: Subscription) => void)): MutableSubscriber<T> {
+  protected _reconcileMutableSubscriber(
+    nextOrObserver?: PartialObserver<T>|((value: T, subscription: Subscription) => void)
+  ): MutableSubscriber<any> {
     if (nextOrObserver instanceof MutableSubscriber) {
       return nextOrObserver;
     } else {
-      if (nextOrObserver && typeof nextOrObserver === 'object') {
-        return new MutableObserverSubscriber(nextOrObserver);
+      if (nextOrObserver) {
+        if (typeof nextOrObserver === 'object') {
+          return new MutableObserverSubscriber(nextOrObserver);
+        } else {
+          return new MutableObserverSubscriber({ next: nextOrObserver });
+        }
       } else {
-        const mut = new MutableSubscriber<T>(noop, hostReportError, noop);
-        mut.next = (value: T) => {
-          if (!mut.closed) {
-            (nextOrObserver as (value: T, subscription: Subscription) => void)(value, mut.subscription);
-          }
-        };
-        return mut;
+        return new MutableObserverSubscriber({ next: noop });
       }
     }
   }
 
   protected _init(mut: MutableSubscriber<T>): TeardownLogic {
-    return this._subscribe(new Subscriber(mut));
+    return this._subscribe && this._subscribe(new Subscriber(mut));
   }
 
   subscribe(nextOrObserver?: PartialObserver<T>|((value: T, subscription: Subscription) => void)): Subscription {

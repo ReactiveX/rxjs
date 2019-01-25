@@ -16,7 +16,8 @@ export function combineLatest<R>(array: ObservableInput<any>[]): Observable<R>;
 export function combineLatest<T>(...observables: Array<ObservableInput<T>>): Observable<T[]>;
 /* tslint:enable:max-line-length */
 
-export function combineLatest<T>(...sources: ObservableInput<T>[]): Observable<T[]> {
+export function combineLatest<T>(...args: any[]): Observable<any> {
+  let sources = args as ObservableInput<any>[];
   if (sources && sources.length === 1 && Array.isArray(sources[0])) {
     sources = sources[0] as any;
   }

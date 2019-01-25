@@ -34,7 +34,7 @@ export class MutableObserverSubscriber<T> extends MutableSubscriber<T> {
           }
           this.subscription.unsubscribe();
         } else {
-          hostReportError(new Error('Multiple errors at: Your face')); // TODO: make this match v6
+          hostReportError(new Error('Multiple Errors: ' +  err.toString())); // TODO: make this match v6
         }
       },
       () => {
