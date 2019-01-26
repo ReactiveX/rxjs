@@ -152,6 +152,15 @@ describe('throttleTime operator', () => {
       expectObservable(result).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
+    asDiagram('throttleTime(fn, { leading: true, trailing: true })')('should handle a busy producer emitting a regular repeating sequence', () =>  {
+      const e1 =   hot('abcdabcdabcdabcdabcd|');
+      const subs =     '^                   !';
+      const t =   time('----|               ');
+      const expected = 'a---a---a---a---a---(d|';
+
+      expectObservable(e1.pipe(throttleTime(t, rxTestScheduler, { leading: true, trailing: true }))).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(subs);
+    });
   });
 
   describe('throttleTime(fn, { leading: false, trailing: true })', () => {
