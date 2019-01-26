@@ -1,0 +1,37 @@
+@import '~@angular/material/theming';
+@import '../../../styles/constants';
+
+h2 {
+  max-width: 700px;
+}
+
+button.option {
+  @include mat-elevation-transition;
+  border-radius: 34px;
+  border: 0;
+  cursor: pointer;
+  display: block;
+  margin-bottom: 12px;
+  padding: 0;
+  text-align: left;
+
+  &:active, &:hover, &:focus {
+    @include mat-elevation(8);
+    mat-card {
+      background-color: $pink;
+      color: $white;
+    }
+  }
+
+}
+
+mat-card {
+  border-radius: 34px;
+  padding: 12px 24px;
+  transition: all 250ms;
+}
+
+section {
+  margin-bottom: 16px;
+}
+
