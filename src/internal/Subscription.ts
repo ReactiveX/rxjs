@@ -154,7 +154,7 @@ export class Subscription implements SubscriptionLike {
         } else if (this.closed) {
           subscription.unsubscribe();
           return subscription;
-        } else if (typeof subscription._addParent !== 'function' /* quack quack */) {
+        } else if (!(subscription instanceof Subscription)) {
           const tmp = subscription;
           subscription = new Subscription();
           subscription._subscriptions = [tmp];
