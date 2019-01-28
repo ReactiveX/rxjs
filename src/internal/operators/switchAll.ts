@@ -1,4 +1,4 @@
-import {OperatorFunction, ObservableInput, MonoTypeOperatorFunction} from '../types';
+import {OperatorFunction, ObservableInput} from '../types';
 import { switchMap } from './switchMap';
 import { identity } from '../util/identity';
 
