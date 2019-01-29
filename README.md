@@ -112,8 +112,6 @@ range(1, 200).pipe(
 - `npm test` - runs tests
 - `npm run test_no_cache` - run test with `ts-node` set to false
 
-`npm run info` will list available scripts (there are a lot LOL)
-
 ## Performance Tests
 
 Run `npm run build_perf` or `npm run perf` to run the performance tests with `protractor`.
