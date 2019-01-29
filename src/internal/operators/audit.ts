@@ -4,8 +4,6 @@ import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { MonoTypeOperatorFunction, SubscribableOrPromise, TeardownLogic } from '../types';
 
-import { tryCatch } from '../util/tryCatch';
-import { errorObject } from '../util/errorObject';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 
@@ -87,16 +85,18 @@ class AuditSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.value = value;
     this.hasValue = true;
     if (!this.throttled) {
-      const duration = tryCatch(this.durationSelector)(value);
-      if (duration === errorObject) {
-        this.destination.error(errorObject.e);
+      let duration;
+      try {
+        const { durationSelector } = this;
+        duration = durationSelector(value);
+      } catch (err) {
+        return this.destination.error(err);
+      }
+      const innerSubscription = subscribeToResult(this, duration);
+      if (!innerSubscription || innerSubscription.closed) {
+        this.clearThrottle();
       } else {
-        const innerSubscription = subscribeToResult(this, duration);
-        if (!innerSubscription || innerSubscription.closed) {
-          this.clearThrottle();
-        } else {
-          this.add(this.throttled = innerSubscription);
-        }
+        this.add(this.throttled = innerSubscription);
       }
     }
   }

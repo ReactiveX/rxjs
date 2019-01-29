@@ -2,8 +2,6 @@ import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { tryCatch } from '../util/tryCatch';
-import { errorObject } from '../util/errorObject';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
@@ -86,14 +84,16 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
   protected _next(value: any): void {
     if (this.active < this.concurrent) {
       const index = this.index++;
-      const ish = tryCatch(this.accumulator)(this.acc, value);
       const destination = this.destination;
-      if (ish === errorObject) {
-        destination.error(errorObject.e);
-      } else {
-        this.active++;
-        this._innerSub(ish, value, index);
+      let ish;
+      try {
+        const { accumulator } = this;
+        ish = accumulator(this.acc, value);
+      } catch (e) {
+        return destination.error(e);
       }
+      this.active++;
+      this._innerSub(ish, value, index);
     } else {
       this.buffer.push(value);
     }

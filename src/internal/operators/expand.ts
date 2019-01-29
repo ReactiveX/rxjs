@@ -1,8 +1,6 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { tryCatch } from '../util/tryCatch';
-import { errorObject } from '../util/errorObject';
 import { Subscription } from '../Subscription';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
@@ -126,15 +124,18 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
     const index = this.index++;
     if (this.active < this.concurrent) {
       destination.next(value);
-      let result = tryCatch(this.project)(value, index);
-      if (result === errorObject) {
-        destination.error(errorObject.e);
-      } else if (!this.scheduler) {
-        this.subscribeToProjection(result, value, index);
-      } else {
-        const state: DispatchArg<T, R> = { subscriber: this, result, value, index };
-        const destination = this.destination as Subscription;
-        destination.add(this.scheduler.schedule<DispatchArg<T, R>>(ExpandSubscriber.dispatch, 0, state));
+      try {
+        const { project } = this;
+        const result = project(value, index);
+        if (!this.scheduler) {
+          this.subscribeToProjection(result, value, index);
+        } else {
+          const state: DispatchArg<T, R> = { subscriber: this, result, value, index };
+          const destination = this.destination as Subscription;
+          destination.add(this.scheduler.schedule<DispatchArg<T, R>>(ExpandSubscriber.dispatch, 0, state));
+        }
+      } catch (e) {
+        destination.error(e);
       }
     } else {
       this.buffer.push(value);
