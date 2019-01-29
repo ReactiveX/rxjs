@@ -8,15 +8,18 @@ import { map } from './map';
 
 /**
  *
- * emit time interval between current value with last value
+ * Emits an object containing the current value, and the time that has
+ * passed between emitting the current value and the previous value, which is 
+ * calculated by using the provided `scheduler`'s `now()` method to retrieve
+ * the current time at each emission, then calculating the difference. The `scheduler`
+ * defaults to {@link asyncScheduler}, so by default, the `interval` will be in
+ * milliseconds.
  *
  *
  * ![](timeinterval.png)
  *
- * `timeinterval` operator accepts as an argument as the Scheduler, default value is Scheduler.async
- *
  * ## Examples
- * emit inteval between current value with the last value
+ * Emit inteval between current value with the last value
  *
  * ```javascript
  * const seconds = interval(1000);
@@ -32,20 +35,24 @@ import { map } from './map';
  *     value => console.log(value),
  *     err => console.log(err),
  * );
- * // {value: 0, interval: 1001}
- * // {value: 1, interval: 1003}
- * // {value: 2, interval: 997}
+ *
+ * // NOTE: The values will never be this precise,
+ * // intervals created with `interval` or `setInterval`
+ * // are non-deterministic.
+ *
+ * // {value: 0, interval: 1000}
+ * // {value: 1, interval: 1000}
+ * // {value: 2, interval: 1000}
  * ```
  *
- * @param {SchedulerLike} [scheduler] Scheduler controlling when timeout checks occur.
- * @return {Observable<T>} Observable that emit infomation about value and interval
+ * @param {SchedulerLike} [scheduler] Scheduler used to get the current time.
+ * @return {Observable<{ interval: number, value: T }>} Observable that emit infomation about value and interval
  * @method timeInterval
- * @owner Observable
  */
 export function timeInterval<T>(scheduler: SchedulerLike = async): OperatorFunction<T, TimeInterval<T>> {
   return (source: Observable<T>) => defer(() => {
     return source.pipe(
-      // HACK: the typings seem off with scan
+      // TODO(benlesh): correct these typings.
       scan(
         ({ current }, value) => ({ value, current: scheduler.now(), last: current }),
         { current: scheduler.now(), value: undefined,  last: undefined }
@@ -55,6 +62,12 @@ export function timeInterval<T>(scheduler: SchedulerLike = async): OperatorFunct
   });
 }
 
+// TODO(benlesh): make this an interface, export the interface, but not the implemented class,
+// there's no reason users should be manually creating this type.
+
+/**
+ * @deprecated exposed API, use as interface only.
+ */
 export class TimeInterval<T> {
   constructor(public value: T, public interval: number) {}
 }
