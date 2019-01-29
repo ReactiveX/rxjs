@@ -25,6 +25,9 @@ import { Operator } from '../Operator';
  * ## Example
  * In every window of 1 second each, emit at most 2 click events
  * ```javascript
+ * import { fromEvent, interval } from 'rxjs';
+ * import { window, mergeAll, map take } from 'rxjs/operators';
+ *
  *  const clicks = fromEvent(document, 'click');
  *  const sec = interval(1000);
  *  const result = clicks.pipe(

@@ -24,6 +24,8 @@ import { empty } from './empty';
  * ## Example
  * ### Subscribe to either an Observable of clicks or an Observable of interval, at random
  * ```javascript
+ * import { defer, fromEvent, interval } from 'rxjs';
+ *
  * const clicksOrInterval = defer(function () {
  *   return Math.random() > 0.5
  *     ? fromEvent(document, 'click')

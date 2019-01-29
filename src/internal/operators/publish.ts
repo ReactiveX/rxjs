@@ -21,7 +21,7 @@ export function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOpera
  * ## Examples
  * Make source$ hot by applying publish operator, then merge each inner observable into a single one
  * and subscribe.
- * ```ts
+ * ```typescript
  * import { of, zip, interval, merge } from "rxjs";
  * import { map, publish } from "rxjs/operators";
  *

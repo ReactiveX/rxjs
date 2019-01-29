@@ -4,6 +4,8 @@ import { PrettyPrinter } from './pretty-printer.service';
 import { CopierService } from 'app/shared/copier.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { tap } from 'rxjs/operators';
+import { StackblitzService } from 'app/shared/stackblitz.service';
+import version from '../../../../tools/stackblitz/rxjs.version';
 
 /**
  * If linenums is not set, this is the default maximum number of lines that
@@ -38,16 +40,23 @@ const DEFAULT_LINE_NUMS_COUNT = 10;
     <pre class="prettyprint lang-{{language}}">
       <button *ngIf="!hideCopy" class="material-icons copy-button no-print"
         title="Copy code snippet"
-        [attr.aria-label]="ariaLabel"
+        [attr.aria-label]="ariaLabelCopy"
         (click)="doCopy()">
         <span aria-hidden="true">content_copy</span>
+      </button>
+      <button *ngIf="!hideCopy" class="material-icons edit-button no-print"
+        title="Edit in StackBlitz"
+        [attr.aria-label]="ariaLabelEdit"
+        (click)="editInStackBlitz()">
+        <span aria-hidden="true">open_in_new</span>
       </button>
       <code class="animated fadeIn" #codeContainer></code>
     </pre>
     `
 })
 export class CodeComponent implements OnChanges {
-  ariaLabel = '';
+  ariaLabelCopy = '';
+  ariaLabelEdit = '';
 
   /** The code to be copied when clicking the copy button, this should not be HTML encoded */
   private codeText: string;
@@ -89,7 +98,8 @@ export class CodeComponent implements OnChanges {
   @Input()
   set title(title: string) {
     this._title = title;
-    this.ariaLabel = this.title ? `Copy code snippet from ${this.title}` : '';
+    this.ariaLabelCopy = this.title ? `Copy code snippet from ${this.title}` : '';
+    this.ariaLabelEdit = this.title ? `Edit code snippet from ${this.title} in StackBlitz` : '';
   }
   get title(): string { return this._title; }
   private _title: string;
@@ -103,7 +113,8 @@ export class CodeComponent implements OnChanges {
     private snackbar: MatSnackBar,
     private pretty: PrettyPrinter,
     private copier: CopierService,
-    private logger: Logger) {}
+    private logger: Logger,
+    private stackblitz: StackblitzService) { }
 
   ngOnChanges() {
     // If some inputs have changed and there is code displayed, update the view with the latest
@@ -147,6 +158,16 @@ export class CodeComponent implements OnChanges {
     return this.codeContainer.nativeElement.textContent;
   }
 
+  /** Extracts html placed in the `// html: ` comment in the code.  */
+  private getHtmlFromCode(code: string): string {
+    const pattern = new RegExp('// html: (.*)');
+    const matches = code.match(pattern);
+
+    return matches
+      ? matches[1]
+      : '';
+  }
+
   /** Copies the code snippet to the user's clipboard. */
   doCopy() {
     const code = this.codeText;
@@ -159,6 +180,17 @@ export class CodeComponent implements OnChanges {
       this.logger.error(new Error(`ERROR copying code to clipboard: "${code}"`));
       this.snackbar.open('Copy failed. Please try again!', '', { duration: 800 });
     }
+  }
+
+  editInStackBlitz() {
+    this.stackblitz.openProject({
+      code: this.codeText,
+      language: this.language,
+      dependencies: {
+        rxjs: version
+      },
+      html: this.getHtmlFromCode(this.codeText)
+    });
   }
 
   /** Gets the calculated value of linenums (boolean/number). */

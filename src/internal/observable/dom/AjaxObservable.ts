@@ -110,8 +110,10 @@ export class AjaxObservable<T> extends Observable<T> {
    *
    * ## Example
    * ```javascript
-   * source = Rx.Observable.ajax('/products');
-   * source = Rx.Observable.ajax({ url: 'products', method: 'GET' });
+   * import { ajax } from 'rxjs/ajax';
+ *
+   * const source1 = ajax('/products');
+   * const source2 = ajax({ url: 'products', method: 'GET' });
    * ```
    *
    * @param {string|Object} request Can be one of the following:

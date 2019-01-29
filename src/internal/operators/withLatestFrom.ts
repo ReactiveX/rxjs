@@ -44,6 +44,9 @@ export function withLatestFrom<T, R>(array: ObservableInput<any>[], project: (..
  * ## Example
  * On every click event, emit an array with the latest timer event plus the click event
  * ```javascript
+ * import { fromEvent, interval } from 'rxjs';
+ * import { withLatestFrom } from 'rxjs/operators';
+ *
  * const clicks = fromEvent(document, 'click');
  * const timer = interval(1000);
  * const result = clicks.pipe(withLatestFrom(timer));

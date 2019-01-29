@@ -18,6 +18,9 @@ import { ObservableInput, OperatorFunction } from '../types';
  * ## Example
  * Count the number of click events
  * ```javascript
+ * import { fromEvent, of } from 'rxjs';
+ * import { mapTo } from 'rxjs/operators';
+ *
  * const click$ = fromEvent(document, 'click');
  * const one$ = click$.pipe(mapTo(1));
  * const seed = 0;

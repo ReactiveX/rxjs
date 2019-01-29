@@ -34,6 +34,9 @@ export function mergeMap<T, R, O extends ObservableInput<any>>(project: (value: 
  * ## Example
  * Map and flatten each letter to an Observable ticking every 1 second
  * ```javascript
+ * import { of, interval } from 'rxjs';
+ * import { mergeMap, map } from 'rxjs/operators';
+ *
  * const letters = of('a', 'b', 'c');
  * const result = letters.pipe(
  *   mergeMap(x => interval(1000).pipe(map(i => x+i))),

@@ -24,6 +24,9 @@ import { Observer, OperatorFunction } from '../types';
  * ## Example
  * figure out if the Konami code matches
  * ```javascript
+ * import { from, fromEvent } from 'rxjs';
+ * import { sequenceEqual, bufferCount, mergeMap, map } from 'rxjs/operators';
+ *
  * const codes = from([
  *   'ArrowUp',
  *   'ArrowUp',

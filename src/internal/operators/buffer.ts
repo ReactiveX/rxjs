@@ -24,6 +24,9 @@ import { OperatorFunction } from '../types';
  * On every click, emit array of most recent interval events
  *
  * ```javascript
+ * import { fromEvent, interval } from 'rxjs';
+ * import { buffer } from 'rxjs/operators';
+ *
  * const clicks = fromEvent(document, 'click');
  * const interval = interval(1000);
  * const buffered = interval.pipe(buffer(clicks));
