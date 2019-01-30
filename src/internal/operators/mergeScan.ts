@@ -91,7 +91,7 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
       let ish;
       try {
         const { accumulator } = this;
-        ish = accumulator(this.acc, value);
+        ish = accumulator(this.acc, value, index);
       } catch (e) {
         return destination.error(e);
       }
