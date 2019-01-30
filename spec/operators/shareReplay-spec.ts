@@ -163,20 +163,6 @@ describe('shareReplay operator', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should not restart if refCount hits 0 due to unsubscriptions', () => {
-    const results: number[] = [];
-    const source = interval(10, rxTestScheduler).pipe(
-      take(10),
-      shareReplay(1)
-    );
-    const subs = source.subscribe(x => results.push(x));
-    rxTestScheduler.schedule(() => subs.unsubscribe(), 35);
-    rxTestScheduler.schedule(() => source.subscribe(x => results.push(x)), 54);
-
-    rxTestScheduler.flush();
-    expect(results).to.deep.equal([0, 1, 2, 4, 5, 6, 7, 8, 9]);
-  });
-
   it('when no windowTime is given ReplaySubject should be in _infiniteTimeWindow mode', () => {
     const spy = sinon.spy(rxTestScheduler, 'now');
 
@@ -185,6 +171,45 @@ describe('shareReplay operator', () => {
       .subscribe();
     spy.restore();
     expect(spy, 'ReplaySubject should not call scheduler.now() when no windowTime is given').to.be.not.called;
+  });
+
+  it('should not restart due to unsubscriptions if refCount is false', () => {
+    const source = cold('a-b-c-d-e-f-g-h-i-j');
+    const sub1 =        '^------!';
+    const expected1 =   'a-b-c-d-';
+    const sub2 =        '-----------^-------';
+    const expected2 =   '-----------fg-h-i-j';
+
+    const shared = source.pipe(shareReplay({ bufferSize: 1, refCount: false }));
+
+    expectObservable(shared, sub1).toBe(expected1);
+    expectObservable(shared, sub2).toBe(expected2);
+  });
+
+  it('should restart due to unsubscriptions if refCount is true', () => {
+    const source = cold('a-b-c-d-e-f-g-h-i-j');
+    const sub1 =        '^------!';
+    const expected1 =   'a-b-c-d-';
+    const sub2 =        '-----------^------------------';
+    const expected2 =   '-----------a-b-c-d-e-f-g-h-i-j';
+
+    const shared = source.pipe(shareReplay({ bufferSize: 1, refCount: true }));
+
+    expectObservable(shared, sub1).toBe(expected1);
+    expectObservable(shared, sub2).toBe(expected2);
+  });
+
+  it('should default to refCount being false', () => {
+    const source = cold('a-b-c-d-e-f-g-h-i-j');
+    const sub1 =        '^------!';
+    const expected1 =   'a-b-c-d-';
+    const sub2 =        '-----------^-------';
+    const expected2 =   '-----------fg-h-i-j';
+
+    const shared = source.pipe(shareReplay(1));
+
+    expectObservable(shared, sub1).toBe(expected1);
+    expectObservable(shared, sub2).toBe(expected2);
   });
 
   it('should not break lift() composability', (done: MochaDone) => {
