@@ -5,6 +5,9 @@ import { Observer, TeardownLogic } from '../src/internal/types';
 import { cold, expectObservable, expectSubscriptions } from './helpers/marble-testing';
 import { map } from '../src/internal/operators/map';
 import { noop } from '../src/internal/util/noop';
+import { NEVER } from '../src/internal/observable/never';
+import { Subscriber } from '../src/internal/Subscriber';
+import { Operator } from '../src/internal/Operator';
 
 declare const asDiagram: any, rxTestScheduler: any;
 const Observable = Rx.Observable;
@@ -696,6 +699,24 @@ describe('Observable.lift', () => {
       return observable;
     }
   }
+
+  it('should return Observable which calls TeardownLogic of operator on unsubscription', (done) => {
+
+    const myOperator: Operator<any, any> = {
+      call: (subscriber: Subscriber<any>, source: any) => {
+        const subscription = source.subscribe((x: any) => subscriber.next(x));
+        return () => {
+          subscription.unsubscribe();
+          done();
+        };
+      }
+    };
+
+    NEVER.lift(myOperator)
+      .subscribe()
+      .unsubscribe();
+
+  });
 
   it('should be overrideable in a custom Observable type that composes', (done) => {
     const result = new MyCustomObservable<number>((observer) => {

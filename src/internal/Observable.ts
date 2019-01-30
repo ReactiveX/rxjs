@@ -204,7 +204,7 @@ export class Observable<T> implements Subscribable<T> {
     const sink = toSubscriber(observerOrNext, error, complete);
 
     if (operator) {
-      operator.call(sink, this.source);
+      sink.add(operator.call(sink, this.source));
     } else {
       sink.add(
         this.source || (config.useDeprecatedSynchronousErrorHandling && !sink.syncErrorThrowable) ?
