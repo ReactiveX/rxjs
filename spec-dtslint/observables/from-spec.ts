@@ -36,7 +36,7 @@ it('should accept an array of Observables', () => {
   const o = from([of(1), of(2), of(3)]); // $ExpectType Observable<Observable<number>>
 });
 
-// TODO(benlesh): enable this test, once the issue is resolved upstream
+// TODO(benlesh): enable this test, once the issue is resolved upstream (https://github.com/Microsoft/dtslint/issues/191)
 
 // NOTE: It appears to be working, it's just that dtslint sometimes says it wants
 // Observable<IterableIterator<number> | Observable<number> | string[]>
