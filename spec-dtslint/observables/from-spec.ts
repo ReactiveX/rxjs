@@ -49,7 +49,7 @@ it('should accept an array of Observables', () => {
 //     yield 42;
 //   }());
 
-//   const o = from([of(1), ['test'], iterable]); // $ExpectType Observable<IterableIterator<number> | Observable<number> | string[]>
+//   const o = from([of(1), ['test'], iterable]); // $__TODO__ExpectType Observable<IterableIterator<number> | Observable<number> | string[]>
 // });
 
 it('should support scheduler', () => {
