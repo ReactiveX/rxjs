@@ -26,7 +26,7 @@ import { Observable } from '../Observable';
  * @see {@link index/interval}
  *
  * @param {number} [start=0] The value of the first integer in the sequence.
- * @param {number} [count=0] The number of sequential integers to generate.
+ * @param {number} count The number of sequential integers to generate.
  * @param {SchedulerLike} [scheduler] A {@link SchedulerLike} to use for scheduling
  * the emissions of the notifications.
  * @return {Observable} An Observable of numbers that emits a finite range of
@@ -36,9 +36,14 @@ import { Observable } from '../Observable';
  * @owner Observable
  */
 export function range(start: number = 0,
-                      count: number = 0,
+                      count?: number,
                       scheduler?: SchedulerLike): Observable<number> {
   return new Observable<number>(subscriber => {
+    if (count === undefined) {
+      count = start;
+      start = 0;
+    }
+
     let index = 0;
     let current = start;
 
