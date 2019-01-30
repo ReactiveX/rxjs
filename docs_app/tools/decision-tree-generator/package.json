@@ -1,0 +1,28 @@
+{
+  "name": "decision-tree-generator",
+  "version": "2.0.1",
+  "description": "Interactive widget for a decision tree to assist choosing an RxJS operator",
+  "contributors": [
+    {
+      "name": "Jason Awbrey",
+      "email": "jason.s.awbrey@gmail.com",
+      "url": "https://jason-awbrey.com"
+    }
+  ],
+  "scripts": {
+    "watch": "nodemon -e ts,yml --watch './**/*' --exec 'ts-node' main.ts",
+    "build": "ts-node main.ts",
+    "test": "jest",
+    "test:watch": "jest --watch -o",
+    "test:coverage": "jest --coverage",
+    "test:watch:coverage": "jest --watch -o --coverage"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.9",
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.9",
+    "ts-jest": "^23.10.4",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.1.6"
+  }
+}

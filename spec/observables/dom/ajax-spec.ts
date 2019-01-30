@@ -600,6 +600,26 @@ describe('ajax', () => {
       expect(MockXMLHttpRequest.mostRecent.data).to.equal('{"🌟":"🚀"}');
     });
 
+    it('should send json body not mattered on case-sensitivity of HTTP headers', () => {
+      const body = {
+        hello: 'world'
+      };
+
+      const requestObj = {
+        url: '/flibbertyJibbet',
+        method: '',
+        body: body,
+        headers: {
+          'cOnTeNt-TyPe': 'application/json; charset=UTF-8'
+        }
+      };
+
+      ajax(requestObj).subscribe();
+
+      expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
+      expect(MockXMLHttpRequest.mostRecent.data).to.equal('{"hello":"world"}');
+    });
+
     it('should error if send request throws', (done: MochaDone) => {
       const expected = new Error('xhr send failure');
 

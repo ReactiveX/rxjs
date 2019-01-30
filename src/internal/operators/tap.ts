@@ -42,6 +42,9 @@ export function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T
  * ## Example
  * Map every click to the clientX position of that click, while also logging the click event
  * ```javascript
+ * import { fromEvent } from 'rxjs';
+ * import { tap, map } from 'rxjs/operators';
+ *
  * const clicks = fromEvent(document, 'click');
  * const positions = clicks.pipe(
  *   tap(ev => console.log(ev)),

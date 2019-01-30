@@ -9,6 +9,7 @@ module.exports = function makeClosure(sourcePath) {
     jsCode: [{src: source}],
     languageIn: 'ES2015',
     createSourceMap: true,
+    rewritePolyfills: false,
   };
 
   var output = compiler(compilerFlags);

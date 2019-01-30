@@ -23,13 +23,16 @@ import { Subscriber } from '../Subscriber';
  *
  * ## Example
  * ```javascript
+ * import { interval } from 'rxjs';
+ * import { shareReplay, take } from 'rxjs/operators';
+ *
  * const obs$ = interval(1000);
- * const subscription = obs$.pipe(
+ * const shared$ = obs$.pipe(
  *   take(4),
  *   shareReplay(3)
  * );
- * subscription.subscribe(x => console.log('source A: ', x));
- * subscription.subscribe(y => console.log('source B: ', y));
+ * shared$.subscribe(x => console.log('source A: ', x));
+ * shared$.subscribe(y => console.log('source B: ', y));
  *
  * ```
  *

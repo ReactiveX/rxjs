@@ -2,11 +2,11 @@ import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { multicast } from './multicast';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
-import { MonoTypeOperatorFunction, OperatorFunction, UnaryFunction } from '../types';
+import { MonoTypeOperatorFunction, OperatorFunction, UnaryFunction, ObservableInput, ObservedValueOf } from '../types';
 
 /* tslint:disable:max-line-length */
 export function publish<T>(): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
-export function publish<T, R>(selector: OperatorFunction<T, R>): OperatorFunction<T, R>;
+export function publish<T, O extends ObservableInput<any>>(selector: (shared: Observable<T>) => O): OperatorFunction<T, ObservedValueOf<O>>;
 export function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
 
@@ -21,7 +21,7 @@ export function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOpera
  * ## Examples
  * Make source$ hot by applying publish operator, then merge each inner observable into a single one
  * and subscribe.
- * ```ts
+ * ```typescript
  * import { of, zip, interval, merge } from "rxjs";
  * import { map, publish } from "rxjs/operators";
  *

@@ -199,7 +199,7 @@ describe('retry operator', () => {
 
     of(1, 2, 3).pipe(
       concat(throwError('bad!')),
-      multicast(() => new Subject()),
+      multicast(() => new Subject<number>()),
       refCount(),
       retry(4)
     ).subscribe(

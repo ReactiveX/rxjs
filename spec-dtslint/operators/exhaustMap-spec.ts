@@ -29,6 +29,10 @@ it('should support an undefined resultSelector', () => {
   const o = of(1, 2, 3).pipe(exhaustMap(p => of(Boolean(p)), undefined)); // $ExpectType Observable<boolean>
 });
 
+it('should report projections to union types', () => {
+  const o = of(Math.random()).pipe(exhaustMap(n => n > 0.5 ? of('life') : of(42))); // $ExpectType Observable<string | number>
+});
+
 it('should enforce types', () => {
   const o = of(1, 2, 3).pipe(exhaustMap()); // $ExpectError
 });

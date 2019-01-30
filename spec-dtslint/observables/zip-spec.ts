@@ -36,3 +36,14 @@ it('should return Array<T> when given a single observable', () => {
   const a = of(1); // $ExpectType Observable<number>
   const o1 = zip(a); // $ExpectType Observable<number[]>
 });
+
+it('should support union types', () => {
+  const u = Math.random() > 0.5 ? of(123) : of('abc');
+  const o = zip(u, u, u); // $ExpectType Observable<[string | number, string | number, string | number]>
+});
+
+it('should support different union types', () => {
+  const u = Math.random() > 0.5 ? of(123) : of('abc');
+  const u2 = Math.random() > 0.5 ? of(true) : of([1, 2, 3]);
+  const o = zip(u, u2); // $ExpectType Observable<[string | number, boolean | number[]]>
+});

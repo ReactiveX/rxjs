@@ -8,10 +8,9 @@ import { fromPromise } from './fromPromise';
 import { fromIterable } from './fromIterable';
 import { fromObservable } from './fromObservable';
 import { subscribeTo } from '../util/subscribeTo';
-import { ObservableInput, SchedulerLike } from '../types';
+import { ObservableInput, SchedulerLike, ObservedValueOf } from '../types';
 
-export function from<T>(input: ObservableInput<T>, scheduler?: SchedulerLike): Observable<T>;
-export function from<T>(input: ObservableInput<ObservableInput<T>>, scheduler?: SchedulerLike): Observable<Observable<T>>;
+export function from<O extends ObservableInput<any>>(input: O, scheduler?: SchedulerLike): Observable<ObservedValueOf<O>>;
 
 /**
  * Creates an Observable from an Array, an array-like object, a Promise, an iterable object, or an Observable-like object.
