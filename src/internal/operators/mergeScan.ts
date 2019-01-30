@@ -46,14 +46,14 @@ import { ObservableInput, OperatorFunction } from '../types';
  * @method mergeScan
  * @owner Observable
  */
-export function mergeScan<T, R>(accumulator: (acc: R, value: T) => ObservableInput<R>,
+export function mergeScan<T, R>(accumulator: (acc: R, value: T, index: number) => ObservableInput<R>,
                                 seed: R,
                                 concurrent: number = Number.POSITIVE_INFINITY): OperatorFunction<T, R> {
   return (source: Observable<T>) => source.lift(new MergeScanOperator(accumulator, seed, concurrent));
 }
 
 export class MergeScanOperator<T, R> implements Operator<T, R> {
-  constructor(private accumulator: (acc: R, value: T) => ObservableInput<R>,
+  constructor(private accumulator: (acc: R, value: T, index: number) => ObservableInput<R>,
               private seed: R,
               private concurrent: number) {
   }
@@ -78,7 +78,7 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
   protected index: number = 0;
 
   constructor(destination: Subscriber<R>,
-              private accumulator: (acc: R, value: T) => ObservableInput<R>,
+              private accumulator: (acc: R, value: T, index: number) => ObservableInput<R>,
               private acc: R,
               private concurrent: number) {
     super(destination);
@@ -91,7 +91,7 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
       let ish;
       try {
         const { accumulator } = this;
-        ish = accumulator(this.acc, value);
+        ish = accumulator(this.acc, value, index);
       } catch (e) {
         return destination.error(e);
       }
