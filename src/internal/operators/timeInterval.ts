@@ -9,7 +9,7 @@ import { map } from './map';
 /**
  *
  * Emits an object containing the current value, and the time that has
- * passed between emitting the current value and the previous value, which is 
+ * passed between emitting the current value and the previous value, which is
  * calculated by using the provided `scheduler`'s `now()` method to retrieve
  * the current time at each emission, then calculating the difference. The `scheduler`
  * defaults to {@link asyncScheduler}, so by default, the `interval` will be in
