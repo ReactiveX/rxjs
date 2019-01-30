@@ -10,9 +10,9 @@ const SRC_PATH = resolve(AIO_PATH, 'src');
 const OUTPUT_PATH = resolve(SRC_PATH, 'generated');
 const DOCS_OUTPUT_PATH = resolve(OUTPUT_PATH, 'docs');
 const API_SOURCE_PATH = resolve(PROJECT_ROOT, 'src');
-const MARBLE_IMAGES_PATH = resolve(PROJECT_ROOT, 'tmp/docs/img');
-const MARBLE_IMAGES_WEB_PATH = 'generated/images/marbles';
-const MARBLE_IMAGES_OUTPUT_PATH = resolve(OUTPUT_PATH, 'images/marbles');
+const MARBLE_IMAGES_PATH = resolve(SRC_PATH, 'assets/images/marble-diagrams');
+const MARBLE_IMAGES_WEB_PATH = 'assets/images/marble-diagrams';
+const MARBLE_IMAGES_OUTPUT_PATH = resolve('assets/images/marble-diagrams');
 
 function requireFolder(dirname, folderPath) {
   const absolutePath = resolve(dirname, folderPath);
