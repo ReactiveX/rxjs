@@ -14,7 +14,7 @@ export function switchScan<T, R>(accumulator: (acc: R, value: T, index: number) 
  * accumulator function itself returns an Observable, emitting values
  * only from the most recently returned Observable.
  *
- * <span class="informal">It's like {@link scan}, but only to most recent
+ * <span class="informal">It's like {@link scan}, but only the most recent
  * Observable returned by the accumulator is merged into the outer Observable.</span>
  *
  * ![](switchScan.png)
