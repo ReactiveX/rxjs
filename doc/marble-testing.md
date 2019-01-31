@@ -147,18 +147,16 @@ There should be **at most one** `^` point in a subscription marble diagram, and 
 
 ```js
 it('should repeat forever', () => {
-  scheduler.run(({hot, expectObservable}) => {
-    const repeatingStream$ = hot('a').pipe(
-      // ...Do things with 'a' until 'b', then start over.
-      takeUntil(hot('5m b')),
-      repeat(),
-    );
+  const scheduler = createScheduler()
 
-    // Manually unsubscribe since the stream never completes.
-    const unsub = '10m !'
+  scheduler.run(({ expectObservable }) => {
+    const foreverStream$ = interval(1).pipe(mapTo('a'))
 
-    expectObservable(repeatingStream$, unsub).toBe(results);
-  });
+    // Manually unsubscribe. Since the stream never completes omitting this arg will crash the test suite.
+    const unsub = '------ !'
+
+    expectObservable(foreverStream$, unsub).toBe('-aaaaa')
+  })
 })
 ```
 
