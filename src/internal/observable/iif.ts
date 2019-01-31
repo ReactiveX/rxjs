@@ -90,7 +90,10 @@ import { SubscribableOrPromise } from '../types';
  * @static true
  * @name iif
  * @owner Observable
- */
+*/
+/* tslint:disable:max-line-length */
+export function iif<T = never, F = never>(condition: () => boolean, trueResult?: SubscribableOrPromise<T>, falseResult?: SubscribableOrPromise<F>): Observable<T | F>;
+/* tslint:enable:max-line-length */
 export function iif<T, F>(
   condition: () => boolean,
   trueResult: SubscribableOrPromise<T> = EMPTY,
