@@ -16,7 +16,9 @@ An Pipeable Operator is essentially a pure function which takes one Observable a
 
 In the following example, we create a custom pipeable operator function that multiplies each value received from the input Observable by 10. We test this by creating a new Observable using the creation operator function `from` which can create an Observable from an array of values.
 
-```js
+```ts
+import { from, Observable } from 'rxjs';
+
 const multiplyByTen = () => (source) => {
   return new Observable((subscriber) => {
     source.subscribe({
@@ -30,22 +32,19 @@ const multiplyByTen = () => (source) => {
 const input = from([1, 2, 3, 4]);
 const output = input.pipe(multiplyByTen());
 output.subscribe(x => console.log(x));
-```
 
-Which outputs:
-
-```none
-10
-20
-30
-40
+// Logs:
+// 10
+// 20
+// 30
+// 40
 ```
 
 Notice that a subscribe to `output` will cause the `input` Observable to be subscribed. We call this an "operator subscription chain".
 
 You can also create custom operators by wrapping calls to existing operators. We can reimplement our `multiplyByTen` operator by wrapping the `map` operator which will project our multiplication function over values emitted by the source Observable.
 
-```js
+```ts
 import { map } from 'rxjs/operators';
 
 const multiplyByTen = () => map((value) => 10 * value);
@@ -57,7 +56,7 @@ const multiplyByTen = () => map((value) => 10 * value);
 
 A typical example of a creation operator would be the `interval` function. It takes a number (not an Observable) as input argument, and produces an Observable as output:
 
-```js
+```ts
 import { interval } from 'rxjs';
 
 const observable = interval(1000 /* number of milliseconds */);
@@ -67,7 +66,9 @@ See the list of [all static creation operators here](#creation-operators).
 
 Some *Join Operators* such as `merge`, `combineLatest`, `concat`, etc. take *multiple* Observables as input, not just one, for instance:
 
-```js
+```ts
+import { interval, merge } from 'rxjs';
+
 const observable1 = interval(1000);
 const observable2 = interval(400);
 
