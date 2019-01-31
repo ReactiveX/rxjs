@@ -145,6 +145,23 @@ There should be **at most one** `^` point in a subscription marble diagram, and 
 
 `'500ms ^ 1s !'`: on frame 500 a subscription happened, and on frame 1,501 was unsubscribed.
 
+```js
+it('should repeat forever', () => {
+  scheduler.run(({hot, expectObservable}) => {
+    const repeatingStream$ = hot('a').pipe(
+      // ...Do things with 'a' until 'b', then start over.
+      takeUntil(hot('5m b')),
+      repeat(),
+    );
+
+    // Manually unsubscribe since the stream never completes.
+    const unsub = '10m !'
+
+    expectObservable(repeatingStream$, unsub).toBe(results);
+  });
+})
+```
+
 ***
 
 ## Known Issues
