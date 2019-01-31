@@ -1,5 +1,5 @@
-import { of } from 'rxjs';
-import { delay, repeatWhen, skip, take, tap, mergeMap } from 'rxjs/operators';
+import { of, concat } from 'rxjs';
+import { delay, repeatWhen, skip, take, tap, mergeMap, ignoreElements } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
@@ -185,5 +185,20 @@ describe('delay operator', () => {
     );
 
     expectObservable(result).toBe(expected);
+  });
+
+  it('should be possible to delay complete by composition', () => {
+    const e1 =   hot('---a--b--|  ');
+    const t =   time(   '--|      ');
+    const expected = '-----a--b--|';
+    const subs =     '^        !  ';
+
+    const result = concat(
+      e1.pipe(delay(t, rxTestScheduler)),
+      of(undefined).pipe(delay(t, rxTestScheduler), ignoreElements()),
+    );
+
+    expectObservable(result).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 });
