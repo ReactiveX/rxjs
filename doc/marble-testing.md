@@ -124,7 +124,9 @@ expectObservable(result).toBe(expected);
 
 ## Subscription Marbles
 
-The `expectSubscriptions` helper allows you to assert that a `cold()` or `hot()` Observable you created was subscribed/unsubscribed to at the correct point in time. The subscription marble syntax is slightly different to conventional marble syntax.
+The `expectSubscriptions` helper allows you to assert that a `cold()` or `hot()` Observable you created was subscribed/unsubscribed to at the correct point in time. The `subscriptionMarbles` parameter to `expectObservable` allows your test to unsubscribe even if the observable being tested has not yet completed.
+
+The subscription marble syntax is slightly different to conventional marble syntax.
 
 - `'-'` time: 1 frame time passing.
 - `[0-9]+[ms|s|m]` time progression: the time progression syntax lets you progress virtual time by a specific amount. It's a number, followed by a time unit of `ms` (milliseconds), `s` (seconds), or `m` (minutes) without any space between them, e.g. `a 10ms b`. See [Time progression syntax](#Time-progression-syntax) for more details.
