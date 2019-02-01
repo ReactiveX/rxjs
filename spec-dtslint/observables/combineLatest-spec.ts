@@ -40,8 +40,36 @@ it('should accept 6 params', () => {
   const o = combineLatest(a, b, c, d, e, f); // $ExpectType Observable<[A, B, C, D, E, F]>
 });
 
-it('should result in Observable<{}> for 7 or more params', () => {
-  const o = combineLatest(a, b, c, d, e, f, g); // $ExpectType Observable<{}>
+it('should accept 7 or more params', () => {
+  const o = combineLatest(a, b, c, d, e, f, g, g, g); // $ExpectType Observable<[A, B, C, D, E, F, G, G, G]>
+});
+
+it('should accept 1 param and a scheduler', () => {
+  const o = combineLatest(a, asyncScheduler); // $ExpectType Observable<[A]>
+});
+
+it('should accept 2 params and a scheduler', () => {
+  const o = combineLatest(a, b, asyncScheduler); // $ExpectType Observable<[A, B]>
+});
+
+it('should accept 3 params and a scheduler', () => {
+  const o = combineLatest(a, b, c, asyncScheduler); // $ExpectType Observable<[A, B, C]>
+});
+
+it('should accept 4 params and a scheduler', () => {
+  const o = combineLatest(a, b, c, d, asyncScheduler); // $ExpectType Observable<[A, B, C, D]>
+});
+
+it('should accept 5 params and a scheduler', () => {
+  const o = combineLatest(a, b, c, d, e, asyncScheduler); // $ExpectType Observable<[A, B, C, D, E]>
+});
+
+it('should accept 6 params and a scheduler', () => {
+  const o = combineLatest(a, b, c, d, e, f, asyncScheduler); // $ExpectType Observable<[A, B, C, D, E, F]>
+});
+
+it('should result in Observable<{}> for 7 or more params and a scheduler', () => {
+  const o = combineLatest(a, b, c, d, e, f, g, asyncScheduler); // $ExpectType Observable<{}>
 });
 
 it('should accept union types', () => {
@@ -76,6 +104,34 @@ it('should accept 6 params and a result selector', () => {
 
 it('should accept 7 or more params and a result selector', () => {
   const o = combineLatest(a, b, c, d, e, f, g, g, g, () => new A()); // $ExpectType Observable<A>
+});
+
+it('should accept 1 param and a result selector and a scheduler', () => {
+  const o = combineLatest(a, () => new A(), asyncScheduler); // $ExpectType Observable<A>
+});
+
+it('should accept 2 params and a result selector and a scheduler', () => {
+  const o = combineLatest(a, b, () => new A(), asyncScheduler); // $ExpectType Observable<A>
+});
+
+it('should accept 3 params and a result selector and a scheduler', () => {
+  const o = combineLatest(a, b, c, () => new A(), asyncScheduler); // $ExpectType Observable<A>
+});
+
+it('should accept 4 params and a result selector and a scheduler', () => {
+  const o = combineLatest(a, b, c, d, () => new A(), asyncScheduler); // $ExpectType Observable<A>
+});
+
+it('should accept 5 params and a result selector and a scheduler', () => {
+  const o = combineLatest(a, b, c, d, e, () => new A(), asyncScheduler); // $ExpectType Observable<A>
+});
+
+it('should accept 6 params and a result selector and a scheduler', () => {
+  const o = combineLatest(a, b, c, d, e, f, () => new A(), asyncScheduler); // $ExpectType Observable<A>
+});
+
+it('should accept 7 or more params and a result selector and a scheduler', () => {
+  const o = combineLatest(a, b, c, d, e, f, g, g, g, () => new A(), asyncScheduler); // $ExpectType Observable<A>
 });
 
 it('should accept 1 param', () => {
