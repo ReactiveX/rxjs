@@ -124,7 +124,7 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  * );
  *
  * const observableB = subject.multiplex( // And the same goes for 'B'.
- *   () => {subscribe: 'B'},
+ *   () => ({subscribe: 'B'}),
  *   () => ({unsubscribe: 'B'}),
  *   message => message.type === 'B'
  * );
