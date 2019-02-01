@@ -104,7 +104,7 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  * // since no connection was established!
  *
  * subject.next({message: 'some message'});
- * // This will send a message to the server once a connection is made. Remember value is by default serialized with JSON.stringify!
+ * // This will send a message to the server once a connection is made. Remember value is serialized with JSON.stringify by default!
  *
  * subject.complete(); // Closes the connection.
  *
