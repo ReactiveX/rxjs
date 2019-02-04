@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { ObservableInput, SchedulerLike, ObservedValueOf } from '../types';
+import { ObservableInput, SchedulerLike, ObservedValueOf, ObservableOutputs } from '../types';
 import { isScheduler  } from '../util/isScheduler';
 import { isArray  } from '../util/isArray';
 import { Subscriber } from '../Subscriber';
@@ -10,8 +10,6 @@ import { subscribeToResult } from '../util/subscribeToResult';
 import { fromArray } from './fromArray';
 
 const NONE = {};
-
-type ObservableOutputs<T> = { [K in keyof T]: ObservedValueOf<T[K]> };
 
 /* tslint:disable:max-line-length */
 
