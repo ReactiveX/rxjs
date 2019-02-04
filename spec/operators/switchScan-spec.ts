@@ -372,6 +372,20 @@ describe('switchScan', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should create a new seed for each subscriber', () => {
+    const seeds: string[] = [];
+    const observer = (value: string) => seeds.push(value);
+
+    const source = of('a', 'b').pipe(
+      switchScan((acc, x) => of(x + 'x'))
+    );
+
+    source.subscribe(observer);
+    source.subscribe(observer);
+
+    expect(seeds).to.deep.equal(['a', 'bx', 'a', 'bx']);
+  });
+
   it('should pass index to the accumulator function', () => {
     const indices: number[] = [];
 

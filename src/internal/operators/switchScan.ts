@@ -46,17 +46,20 @@ class SwitchScanOperator<T, R> implements Operator<T, R> {
   constructor(private accumulator: (acc: R, value: T, index: number) => ObservableInput<R>, private seed: R, private hasSeed: boolean = false) { }
 
   call(subscriber: Subscriber<R>, source: any): any {
+    let seed: R = this.seed;
+    let hasSeed: boolean = this.hasSeed;
+
     return source.pipe(
       switchMap((value: T, index: number): ObservableInput<R> => {
-        if (this.hasSeed) {
-          return this.accumulator(this.seed, value, index);
+        if (hasSeed) {
+          return this.accumulator(seed, value, index);
         } else {
           return of(value);
         }
       }),
       tap((value: R) => {
-        this.seed = value;
-        this.hasSeed = true;
+        seed = value;
+        hasSeed = true;
       }),
     ).subscribe(subscriber);
   }
