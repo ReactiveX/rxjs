@@ -145,6 +145,8 @@ There should be **at most one** `^` point in a subscription marble diagram, and 
 
 `'500ms ^ 1s !'`: on frame 500 a subscription happened, and on frame 1,501 was unsubscribed.
 
+Manually unsubscribe from a source that will never complete:
+
 ```js
 it('should repeat forever', () => {
   const scheduler = createScheduler();
