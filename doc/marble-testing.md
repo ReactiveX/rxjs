@@ -145,6 +145,20 @@ There should be **at most one** `^` point in a subscription marble diagram, and 
 
 `'500ms ^ 1s !'`: on frame 500 a subscription happened, and on frame 1,501 was unsubscribed.
 
+Given a hot source, test multiple subscribers that subscribe at different times:
+
+```js
+testScheduler.run(({ hot, expectObservable }) => {
+  const source = hot('--a--a--a--a--a--a--a--');
+  const sub1 = '      --^-----------!';
+  const sub2 = '      ---------^--------!';
+  const expect1 = '   --a--a--a--a--';
+  const expect2 = '   -----------a--a--a-';
+  expectObservable(source, sub1).toBe(expect1);
+  expectObservable(source, sub2).toBe(expect2);
+});
+```
+
 Manually unsubscribe from a source that will never complete:
 
 ```js
