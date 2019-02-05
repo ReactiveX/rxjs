@@ -168,7 +168,7 @@ it('should repeat forever', () => {
   scheduler.run(({ expectObservable }) => {
     const foreverStream$ = interval(1).pipe(mapTo('a'));
 
-    // Manually unsubscribe. Since the stream never completes omitting this arg will crash the test suite.
+    // Omitting this arg may crash the test suite.
     const unsub = '------ !';
 
     expectObservable(foreverStream$, unsub).toBe('-aaaaa');
