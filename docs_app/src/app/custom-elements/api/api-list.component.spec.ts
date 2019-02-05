@@ -97,7 +97,7 @@ describe('ApiListComponent', () => {
     });
   });
 
-  describe('initial critera from location', () => {
+  describe('initial criteria from location', () => {
     let locationService: TestLocationService;
 
     beforeEach(() => {
@@ -110,7 +110,7 @@ describe('ApiListComponent', () => {
       component.filteredSections.subscribe(filtered => {
         expect(filtered.length).toBe(1, 'sections');
         expect(filtered[0].name).toBe(section, 'section name');
-        const items = filtered[0].items.filter(item => item.show);
+        const items = filtered[0].items.filter(currentItem => currentItem.show);
         expect(items.length).toBe(1, 'items');
 
         const item = items[0];
@@ -198,6 +198,31 @@ describe('ApiListComponent', () => {
       expect(search.type).toBe('class');
     });
   });
+
+  describe('item stability rendering', () => {
+
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    function expectRenderedStability(path: string, title: string, classes: string) {
+      const apiListElement: HTMLElement = fixture.nativeElement;
+      const a = apiListElement.querySelector(`a[href="${path}"] ${classes}`) as HTMLElement;
+      expect((a.textContent as string).trim()).toEqual(title.trim());
+    }
+
+    it('should display stable', () => {
+      expectRenderedStability('api/common/class_2', 'Class 2', '.stability');
+    });
+
+    it('should display experimental', () => {
+      expectRenderedStability('api/common/class_1', 'Class 1 (experimental)', '.stability.experimental');
+    });
+
+    it('should display deprecated', () => {
+      expectRenderedStability('api/core/function_1', 'Function 1 (deprecated)', '.stability.deprecated');
+    });
+  });
 });
 
 ////// Helpers ////////
@@ -268,7 +293,7 @@ const apiSections: ApiSection[] = [
       {
         "name": "function_1",
         "title": "Function 1",
-        "path": "api/core/function 1",
+        "path": "api/core/function_1",
         "docType": "function",
         "stability": "deprecated",
         "securityRisk": true

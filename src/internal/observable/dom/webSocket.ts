@@ -72,10 +72,11 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  * might stop sending messages, since it got unsubscription message. This needs to be handled
  * on the server or using {@link publish} on a Observable returned from 'multiplex'.
  *
- * Last argument to `multiplex` is a `messageFilter` function which filters out messages
+ * Last argument to `multiplex` is a `messageFilter` function which should return a boolean. It is used to filter out messages
  * sent by the server to only those that belong to simulated WebSocket stream. For example, server might mark these
  * messages with some kind of string identifier on a message object and `messageFilter` would return `true`
- * if there is such identifier on an object emitted by the socket.
+ * if there is such identifier on an object emitted by the socket. Messages which returns `false` in `messageFilter` are simply skipped,
+ * and are not passed down the stream.
  *
  * Return value of `multiplex` is an Observable with messages incoming from emulated socket connection. Note that this
  * is not a `WebSocketSubject`, so calling `next` or `multiplex` again will fail. For pushing values to the
@@ -118,9 +119,9 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  * const subject = webSocket('ws://localhost:8081');
  *
  * const observableA = subject.multiplex(
- *   () => {subscribe: 'A'}, // When server gets this message, it will start sending messages for 'A'...
- *   () => {unsubscribe: 'A'}, // ...and when gets this one, it will stop.
- *   message => message.type === 'A' // Server should tag all messages for 'A' with type property.
+ *   () => ({subscribe: 'A'}), // When server gets this message, it will start sending messages for 'A'...
+ *   () => ({unsubscribe: 'A'}), // ...and when gets this one, it will stop.
+ *   message => message.type === 'A' // If the function returns `true` message is passed down the stream. Skipped if the function returns false.
  * );
  *
  * const observableB = subject.multiplex( // And the same goes for 'B'.
