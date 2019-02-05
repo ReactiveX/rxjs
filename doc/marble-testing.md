@@ -124,7 +124,7 @@ expectObservable(result).toBe(expected);
 
 ## Subscription Marbles
 
-The `expectSubscriptions` helper allows you to assert that a `cold()` or `hot()` Observable you created was subscribed/unsubscribed to at the correct point in time. The `subscriptionMarbles` parameter to `expectObservable` allows your test to unsubscribe even if the observable being tested has not yet completed.
+The `expectSubscriptions` helper allows you to assert that a `cold()` or `hot()` Observable you created was subscribed/unsubscribed to at the correct point in time. The `subscriptionMarbles` parameter to `expectObservable` allows your test to defer subscription to a later virtual time, and/or unsubscribe even if the observable being tested has not yet completed.
 
 The subscription marble syntax is slightly different to conventional marble syntax.
 
@@ -147,17 +147,17 @@ There should be **at most one** `^` point in a subscription marble diagram, and 
 
 ```js
 it('should repeat forever', () => {
-  const scheduler = createScheduler()
+  const scheduler = createScheduler();
 
   scheduler.run(({ expectObservable }) => {
-    const foreverStream$ = interval(1).pipe(mapTo('a'))
+    const foreverStream$ = interval(1).pipe(mapTo('a'));
 
     // Manually unsubscribe. Since the stream never completes omitting this arg will crash the test suite.
-    const unsub = '------ !'
+    const unsub = '------ !';
 
-    expectObservable(foreverStream$, unsub).toBe('-aaaaa')
-  })
-})
+    expectObservable(foreverStream$, unsub).toBe('-aaaaa');
+  });
+});
 ```
 
 ***
