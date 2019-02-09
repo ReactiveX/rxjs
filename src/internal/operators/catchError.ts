@@ -25,7 +25,7 @@ export function catchError<T, O extends ObservableInput<any>>(selector: (err: an
  *
  * of(1, 2, 3, 4, 5).pipe(
  *     map(n => {
- *   	   if (n == 4) {
+ *   	   if (n === 4) {
  * 	       throw 'four!';
  *       }
  *	     return n;
@@ -64,7 +64,7 @@ export function catchError<T, O extends ObservableInput<any>>(selector: (err: an
  *
  * of(1, 2, 3, 4, 5).pipe(
  *     map(n => {
- *       if (n == 4) {
+ *       if (n === 4) {
  *         throw 'four!';
  *       }
  *       return n;
