@@ -28,8 +28,8 @@ import { OperatorFunction } from '../types';
  * import { buffer } from 'rxjs/operators';
  *
  * const clicks = fromEvent(document, 'click');
- * const interval = interval(1000);
- * const buffered = interval.pipe(buffer(clicks));
+ * const intervalEvents = interval(1000);
+ * const buffered = intervalEvents.pipe(buffer(clicks));
  * buffered.subscribe(x => console.log(x));
  * ```
  *
