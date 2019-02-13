@@ -152,6 +152,16 @@ describe('throttleTime operator', () => {
       expectObservable(result).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
+
+    it('should emit the first value if only a single one is given', () => {
+      const e1 =   hot('-a--------------------|');
+      const t =   time('----|                  ');
+      const expected = '-a--------------------|';
+
+      const result = e1.pipe(throttleTime(t, rxTestScheduler, { leading: true, trailing: true }));
+
+      expectObservable(result).toBe(expected);
+    });
   });
 
   describe('throttleTime(fn, { leading: false, trailing: true })', () => {
@@ -177,6 +187,16 @@ describe('throttleTime operator', () => {
 
       expectObservable(result).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+
+    it('should emit the first value if only a single one is given', () => {
+      const e1 =   hot('-a--------------------|');
+      const t =   time('----|                  ');
+      const expected = '-----a----------------|';
+
+      const result = e1.pipe(throttleTime(t, rxTestScheduler, { leading: false, trailing: true }));
+
+      expectObservable(result).toBe(expected);
     });
   });
 });
