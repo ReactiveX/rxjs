@@ -141,16 +141,44 @@ describe('throttleTime operator', () => {
   });
 
   describe('throttleTime(fn, { leading: true, trailing: true })', () => {
-    asDiagram('throttleTime(fn, { leading: true, trailing: true })')('should immediately emit the first and last values in each time window', () =>  {
-      const e1 =   hot('-a-xy-----b--x--cxxx--|');
-      const e1subs =   '^                     !';
-      const t =  time( '----|                  ');
-      const expected = '-a---y----b---x-c---x-|';
+    asDiagram('throttleTime(fn, { leading: true, trailing: true })')('should immediately emit the first and last values in each time window', () => {
+      const e1 =   hot('a123b12-c-23d-2-ef---|');
+      const t =   time('----|                 ');
+      const expected = 'a---b---c---d---e---f|';
 
       const result = e1.pipe(throttleTime(t, rxTestScheduler, { leading: true, trailing: true }));
 
       expectObservable(result).toBe(expected);
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    });
+
+    it('should immediately emit the first value in each time window', () =>  {
+      const e1 =   hot('-a---x------b|');
+      const t =   time('----|         ');
+      const expected = '-a---x------b|';
+
+      const result = e1.pipe(throttleTime(t, rxTestScheduler, { leading: true, trailing: true }));
+
+      expectObservable(result).toBe(expected);
+    });
+
+    it('should emit the last throttled value when complete', () => {
+      const e1 =   hot('-x--|');
+      const t =   time('----|');
+      const expected = '----(x|)';
+
+      const result = e1.pipe(throttleTime(t, rxTestScheduler, { leading: false, trailing: true }));
+
+      expectObservable(result).toBe(expected);
+    });
+
+    it('should emit both simple leading and trailing', () => {
+      const e1 =   hot('-a-b------------------|');
+      const t =   time('----|                  ');
+      const expected = '-a---b----------------|';
+
+      const result = e1.pipe(throttleTime(t, rxTestScheduler, { leading: true, trailing: true }));
+
+      expectObservable(result).toBe(expected);
     });
 
     it('should emit the value if only a single one is given', () => {
