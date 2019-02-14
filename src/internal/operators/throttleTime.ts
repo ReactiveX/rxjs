@@ -130,7 +130,7 @@ class ThrottleTimeSubscriber<T> extends Subscriber<T> {
         this._hasTrailingValue = true;
       }
     } else {
-      this.add(this.throttled = this.scheduler.schedule<DispatchArg<T>>(dispatchNext, this.duration, { subscriber: this }));
+      this.throttle();
       if (this.leading) {
         this.destination.next(value);
       } else if (this.trailing) {
@@ -151,16 +151,26 @@ class ThrottleTimeSubscriber<T> extends Subscriber<T> {
 
   clearThrottle() {
     const throttled = this.throttled;
+
     if (throttled) {
+      throttled.unsubscribe();
+      this.remove(throttled);
+      this.throttled = null;
+
       if (this.trailing && this._hasTrailingValue) {
         this.destination.next(this._trailingValue);
         this._trailingValue = null;
         this._hasTrailingValue = false;
+
+        if (this.leading && this.trailing) {
+          this.throttle();
+        }
       }
-      throttled.unsubscribe();
-      this.remove(throttled);
-      this.throttled = null;
     }
+  }
+
+  throttle() {
+    this.add(this.throttled = this.scheduler.schedule<DispatchArg<T>>(dispatchNext, this.duration, { subscriber: this }));
   }
 }
 
