@@ -66,8 +66,8 @@ This is how you would allow at most one click per second, with plain JavaScript:
 var count = 0;
 var rate = 1000;
 var lastClick = Date.now() - rate;
-var button = document.querySelector('button');
-button.addEventListener('click', () => {
+
+document.addEventListener('click', () => {
   if (Date.now() - lastClick >= rate) {
     console.log(`Clicked ${++count} times`);
     lastClick = Date.now();
@@ -76,12 +76,11 @@ button.addEventListener('click', () => {
 ```
 
 With RxJS:
-```js
-const { fromEvent } = rxjs;
-const { throttleTime, scan } = rxjs.operators;
+```ts
+import { fromEvent } from 'rxjs';
+import { throttleTime, scan } from 'rxjs/operators';
 
-const button = document.querySelector('button');
-fromEvent(button, 'click').pipe(
+fromEvent(document, 'click').pipe(
   throttleTime(1000),
   scan(count => count + 1, 0)
 )
