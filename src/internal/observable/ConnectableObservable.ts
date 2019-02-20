@@ -45,8 +45,6 @@ export class ConnectableObservable<T> extends Observable<T> {
       if (connection.closed) {
         this._connection = null;
         connection = Subscription.EMPTY;
-      } else {
-        this._connection = connection;
       }
     }
     return connection;
