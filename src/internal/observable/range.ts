@@ -1,5 +1,6 @@
 import { SchedulerAction, SchedulerLike } from '../types';
 import { Observable } from '../Observable';
+import { Subscriber } from '../Subscriber';
 
 /**
  * Creates an Observable that emits a sequence of numbers within a specified
@@ -35,23 +36,22 @@ import { Observable } from '../Observable';
  * @name range
  * @owner Observable
  */
-export function range(start: number = 0,
-                      count?: number,
-                      scheduler?: SchedulerLike): Observable<number> {
-  return new Observable<number>(subscriber => {
-    if (count === undefined) {
-      count = start;
-      start = 0;
-    }
+export function range(
+  start: number = 0,
+  count?: number,
+  scheduler?: SchedulerLike
+): Observable<number> {
+  if (count === undefined) {
+    count = start;
+    start = 0;
+  }
 
-    let index = 0;
-    let current = start;
-
-    if (scheduler) {
-      return scheduler.schedule(dispatch, 0, {
-        index, count, start, subscriber
-      });
-    } else {
+  if (scheduler) {
+    return new Observable<number>(subscriber => scheduler.schedule(dispatch, 0, { index: 0, count, start, subscriber, scheduler }));
+  } else {
+    return new Observable<number>(subscriber => {
+      let index = 0;
+      let current = start;
       do {
         if (index++ >= count) {
           subscriber.complete();
@@ -62,15 +62,13 @@ export function range(start: number = 0,
           break;
         }
       } while (true);
-    }
-
-    return undefined;
-  });
+    });
+  }
 }
 
 /** @internal */
-export function dispatch(this: SchedulerAction<any>, state: any) {
-  const { start, index, count, subscriber } = state;
+export function dispatch(state: ScheduledState) {
+  const { start, index, count, subscriber, scheduler } = state;
 
   if (index >= count) {
     subscriber.complete();
@@ -86,5 +84,13 @@ export function dispatch(this: SchedulerAction<any>, state: any) {
   state.index = index + 1;
   state.start = start + 1;
 
-  this.schedule(state);
+  subscriber.add(scheduler.schedule(dispatch, 0, state));
+}
+
+interface ScheduledState {
+  start: number;
+  index: number;
+  count: number;
+  subscriber: Subscriber<number>;
+  scheduler: SchedulerLike;
 }

@@ -75,7 +75,7 @@ export function timer(dueTime: number | Date = 0,
       : (+dueTime - scheduler.now());
 
     return scheduler.schedule(dispatch, due, {
-      index: 0, period, subscriber
+      index: 0, period, subscriber, scheduler
     });
   });
 }
@@ -84,10 +84,11 @@ interface TimerState {
   index: number;
   period: number;
   subscriber: Subscriber<number>;
+  scheduler: SchedulerLike;
 }
 
-function dispatch(this: SchedulerAction<TimerState>, state: TimerState) {
-  const { index, period, subscriber } = state;
+function dispatch(state: TimerState) {
+  const { index, period, subscriber, scheduler } = state;
   subscriber.next(index);
 
   if (subscriber.closed) {
@@ -97,5 +98,5 @@ function dispatch(this: SchedulerAction<TimerState>, state: TimerState) {
   }
 
   state.index = index + 1;
-  this.schedule(state, period);
+  scheduler.schedule(dispatch, period, state);
 }

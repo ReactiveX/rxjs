@@ -1,7 +1,6 @@
 import { Observable } from '../Observable';
-import { SchedulerAction, SchedulerLike } from '../types';
+import { SchedulerLike } from '../types';
 import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
 
 /**
  * Convert an object into an Observable of `[key, value]` pairs.
@@ -66,26 +65,32 @@ export function pairs<T>(obj: Object, scheduler?: SchedulerLike): Observable<[st
   } else {
     return new Observable<[string, T]>(subscriber => {
       const keys = Object.keys(obj);
-      const subscription = new Subscription();
-      subscription.add(
-        scheduler.schedule<{ keys: string[], index: number, subscriber: Subscriber<[string, T]>, subscription: Subscription, obj: Object }>
-          (dispatch, 0, { keys, index: 0, subscriber, subscription, obj }));
-      return subscription;
+      const state = { keys, index: 0, subscriber, obj, scheduler } as ScheduledState<T>;
+      return scheduler.schedule<ScheduledState<T>>(dispatch, 0, state);
     });
   }
 }
 
-/** @internal */
-export function dispatch<T>(this: SchedulerAction<any>,
-                            state: { keys: string[], index: number, subscriber: Subscriber<[string, T]>, subscription: Subscription, obj: Object }) {
-  const { keys, index, subscriber, subscription, obj } = state;
+function dispatch<T>(
+  state: ScheduledState<T>
+) {
+  const { keys, index, subscriber, obj, scheduler } = state;
   if (!subscriber.closed) {
     if (index < keys.length) {
       const key = keys[index];
       subscriber.next([key, obj[key]]);
-      subscription.add(this.schedule({ keys, index: index + 1, subscriber, subscription, obj }));
+      state.index++;
+      subscriber.add(scheduler.schedule<ScheduledState<T>>(dispatch, 0, state));
     } else {
       subscriber.complete();
     }
   }
+}
+
+interface ScheduledState<T> {
+  keys: string[];
+  index: number;
+  subscriber: Subscriber<[string, T]>;
+  obj: Object;
+  scheduler: SchedulerLike;
 }

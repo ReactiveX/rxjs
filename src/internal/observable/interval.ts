@@ -63,21 +63,19 @@ export function interval(period = 0,
   }
 
   return new Observable<number>(subscriber => {
-    subscriber.add(
-      scheduler.schedule(dispatch, period, { subscriber, counter: 0, period })
-    );
-    return subscriber;
+    return scheduler.schedule(dispatch, period, { subscriber, counter: 0, period, scheduler });
   });
 }
 
-function dispatch(this: SchedulerAction<IntervalState>, state: IntervalState) {
-  const { subscriber, counter, period } = state;
+function dispatch(state: IntervalState) {
+  const { subscriber, counter, period, scheduler } = state;
   subscriber.next(counter);
-  this.schedule({ subscriber, counter: counter + 1, period }, period);
+  state.counter++;
+  subscriber.add(scheduler.schedule(dispatch, period, state));
 }
-
 interface IntervalState {
   subscriber: Subscriber<number>;
   counter: number;
   period: number;
+  scheduler: SchedulerLike;
 }

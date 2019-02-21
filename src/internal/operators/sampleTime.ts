@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { async } from '../scheduler/async';
-import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types';
 
 /**
  * Emits the most recently emitted value from the source Observable within
@@ -70,10 +70,10 @@ class SampleTimeSubscriber<T> extends Subscriber<T> {
   hasValue: boolean = false;
 
   constructor(destination: Subscriber<T>,
-              private period: number,
-              private scheduler: SchedulerLike) {
+              period: number,
+              scheduler: SchedulerLike) {
     super(destination);
-    this.add(scheduler.schedule(dispatchNotification, period, { subscriber: this, period }));
+    this.add(scheduler.schedule<SampleState<T>>(dispatchNotification, period, { subscriber: this, period, scheduler }));
   }
 
   protected _next(value: T) {
@@ -89,8 +89,14 @@ class SampleTimeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function dispatchNotification<T>(this: SchedulerAction<any>, state: any) {
-  let { subscriber, period } = state;
+function dispatchNotification<T>(state: SampleState<T>) {
+  let { subscriber, period, scheduler } = state;
   subscriber.notifyNext();
-  this.schedule(state, period);
+  subscriber.add(scheduler.schedule<SampleState<T>>(dispatchNotification, period, state));
+}
+
+interface SampleState<T> {
+  subscriber: SampleTimeSubscriber<T>;
+  scheduler: SchedulerLike;
+  period: number;
 }

@@ -281,99 +281,99 @@ export function generate<T, S>(initialStateOrOptions: S | GenerateOptions<T, S>,
     resultSelector = resultSelectorOrObservable as ResultFunc<S, T>;
   }
 
-  return new Observable<T>(subscriber => {
-    let state = initialState;
-    if (scheduler) {
-      return scheduler.schedule<SchedulerState<T, S>>(dispatch, 0, {
+  if (scheduler) {
+    return new Observable(subscriber => {
+      const work = (state: SchedulerState<T, S>) => {
+        const { subscriber, condition } = state;
+        if (subscriber.closed) {
+          return;
+        }
+        if (state.needIterate) {
+          try {
+            state.state = state.iterate(state.state);
+          } catch (err) {
+            subscriber.error(err);
+            return;
+          }
+        } else {
+          state.needIterate = true;
+        }
+        if (condition) {
+          let conditionResult: boolean;
+          try {
+            conditionResult = condition(state.state);
+          } catch (err) {
+            subscriber.error(err);
+            return;
+          }
+          if (!conditionResult) {
+            subscriber.complete();
+            return;
+          }
+          if (subscriber.closed) {
+            return;
+          }
+        }
+        let value: T;
+        try {
+          value = state.resultSelector(state.state);
+        } catch (err) {
+          subscriber.error(err);
+          return;
+        }
+        if (subscriber.closed) {
+          return;
+        }
+        subscriber.next(value);
+        if (subscriber.closed) {
+          return;
+        }
+        subscriber.add(scheduler.schedule(work, 0, state));
+      };
+
+      return scheduler.schedule(work, 0, {
         subscriber,
         iterate,
         condition,
         resultSelector,
-        state
+        state: initialState,
       });
-    }
-
-    do {
-      if (condition) {
-        let conditionResult: boolean;
+    });
+  } else {
+    return new Observable(subscriber => {
+      let state = initialState;
+      while (true) {
+        if (condition) {
+          let conditionResult: boolean;
+          try {
+            conditionResult = condition(state);
+          } catch (err) {
+            subscriber.error(err);
+            return undefined;
+          }
+          if (!conditionResult) {
+            subscriber.complete();
+            break;
+          }
+        }
+        let value: T;
         try {
-          conditionResult = condition(state);
+          value = resultSelector(state);
         } catch (err) {
           subscriber.error(err);
           return undefined;
         }
-        if (!conditionResult) {
-          subscriber.complete();
+        subscriber.next(value);
+        if (subscriber.closed) {
           break;
         }
+        try {
+          state = iterate(state);
+        } catch (err) {
+          subscriber.error(err);
+          return undefined;
+        }
       }
-      let value: T;
-      try {
-        value = resultSelector(state);
-      } catch (err) {
-        subscriber.error(err);
-        return undefined;
-      }
-      subscriber.next(value);
-      if (subscriber.closed) {
-        break;
-      }
-      try {
-        state = iterate(state);
-      } catch (err) {
-        subscriber.error(err);
-        return undefined;
-      }
-    } while (true);
-
-    return undefined;
-  });
-}
-
-function dispatch<T, S>(this: SchedulerAction<SchedulerState<T, S>>, state: SchedulerState<T, S>) {
-  const { subscriber, condition } = state;
-  if (subscriber.closed) {
-    return undefined;
+    });
   }
-  if (state.needIterate) {
-    try {
-      state.state = state.iterate(state.state);
-    } catch (err) {
-      subscriber.error(err);
-      return undefined;
-    }
-  } else {
-    state.needIterate = true;
-  }
-  if (condition) {
-    let conditionResult: boolean;
-    try {
-      conditionResult = condition(state.state);
-    } catch (err) {
-      subscriber.error(err);
-      return undefined;
-    }
-    if (!conditionResult) {
-      subscriber.complete();
-      return undefined;
-    }
-    if (subscriber.closed) {
-      return undefined;
-    }
-  }
-  let value: T;
-  try {
-    value = state.resultSelector(state.state);
-  } catch (err) {
-    subscriber.error(err);
-    return undefined;
-  }
-  if (subscriber.closed) {
-    return undefined;
-  }
-  subscriber.next(value);
-  if (subscriber.closed) {
-    return undefined;
-  }
-  return this.schedule(state);
 }

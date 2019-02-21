@@ -4,7 +4,7 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { isScheduler } from '../util/isScheduler';
-import { OperatorFunction, SchedulerAction, SchedulerLike } from '../types';
+import { OperatorFunction, SchedulerLike } from '../types';
 
 /* tslint:disable:max-line-length */
 export function bufferTime<T>(bufferTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, T[]>;
@@ -109,7 +109,7 @@ class BufferTimeOperator<T> implements Operator<T, T[]> {
 
 class Context<T> {
   buffer: T[] = [];
-  closeAction: Subscription;
+  innerSubscription: Subscription;
 }
 
 interface DispatchCreateArg<T> {
@@ -122,6 +122,13 @@ interface DispatchCreateArg<T> {
 interface DispatchCloseArg<T> {
   subscriber: BufferTimeSubscriber<T>;
   context: Context<T>;
+}
+
+interface DispatchBufferTimeSpanOnlyArg<T> {
+  subscriber: BufferTimeSubscriber<T>;
+  scheduler: SchedulerLike;
+  context: Context<T>;
+  bufferTimeSpan: number;
 }
 
 /**
@@ -142,12 +149,14 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
     const context = this.openContext();
     this.timespanOnly = bufferCreationInterval == null || bufferCreationInterval < 0;
     if (this.timespanOnly) {
-      const timeSpanOnlyState = { subscriber: this, context, bufferTimeSpan };
-      this.add(context.closeAction = scheduler.schedule(dispatchBufferTimeSpanOnly, bufferTimeSpan, timeSpanOnlyState));
+      const timeSpanOnlyState = { subscriber: this, context, bufferTimeSpan, scheduler };
+      this.add(
+        context.innerSubscription =
+          scheduler.schedule<DispatchBufferTimeSpanOnlyArg<T>>(dispatchBufferTimeSpanOnly, bufferTimeSpan, timeSpanOnlyState));
     } else {
       const closeState = { subscriber: this, context };
       const creationState: DispatchCreateArg<T> = { bufferTimeSpan, bufferCreationInterval, subscriber: this, scheduler };
-      this.add(context.closeAction = scheduler.schedule<DispatchCloseArg<T>>(dispatchBufferClose, bufferTimeSpan, closeState));
+      this.add(context.innerSubscription = scheduler.schedule<DispatchCloseArg<T>>(dispatchBufferClose, bufferTimeSpan, closeState));
       this.add(scheduler.schedule<DispatchCreateArg<T>>(dispatchBufferCreation, bufferCreationInterval, creationState));
     }
   }
@@ -191,15 +200,17 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
 
   protected onBufferFull(context: Context<T>) {
     this.closeContext(context);
-    const closeAction = context.closeAction;
+    const closeAction = context.innerSubscription;
     closeAction.unsubscribe();
     this.remove(closeAction);
 
     if (!this.closed && this.timespanOnly) {
       context = this.openContext();
-      const bufferTimeSpan = this.bufferTimeSpan;
-      const timeSpanOnlyState = { subscriber: this, context, bufferTimeSpan };
-      this.add(context.closeAction = this.scheduler.schedule(dispatchBufferTimeSpanOnly, bufferTimeSpan, timeSpanOnlyState));
+      const { bufferTimeSpan, scheduler } = this;
+      const timeSpanOnlyState = { subscriber: this, context, bufferTimeSpan, scheduler };
+      this.add(
+        context.innerSubscription =
+          this.scheduler.schedule<DispatchBufferTimeSpanOnlyArg<T>>(dispatchBufferTimeSpanOnly, bufferTimeSpan, timeSpanOnlyState));
     }
   }
 
@@ -220,8 +231,8 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function dispatchBufferTimeSpanOnly(this: SchedulerAction<any>, state: any) {
-  const subscriber: BufferTimeSubscriber<any> = state.subscriber;
+function dispatchBufferTimeSpanOnly<T>(state: DispatchBufferTimeSpanOnlyArg<T>) {
+  const { subscriber, scheduler } = state;
 
   const prevContext = state.context;
   if (prevContext) {
@@ -230,17 +241,17 @@ function dispatchBufferTimeSpanOnly(this: SchedulerAction<any>, state: any) {
 
   if (!subscriber.closed) {
     state.context = subscriber.openContext();
-    state.context.closeAction = this.schedule(state, state.bufferTimeSpan);
+    state.context.innerSubscription = scheduler.schedule<DispatchBufferTimeSpanOnlyArg<T>>(dispatchBufferTimeSpanOnly, state.bufferTimeSpan, state);
+    subscriber.add(state.context.innerSubscription);
   }
 }
 
-function dispatchBufferCreation<T>(this: SchedulerAction<DispatchCreateArg<T>>, state: DispatchCreateArg<T>) {
+function dispatchBufferCreation<T>(state: DispatchCreateArg<T>) {
   const { bufferCreationInterval, bufferTimeSpan, subscriber, scheduler } = state;
   const context = subscriber.openContext();
-  const action = <SchedulerAction<DispatchCreateArg<T>>>this;
   if (!subscriber.closed) {
-    subscriber.add(context.closeAction = scheduler.schedule<DispatchCloseArg<T>>(dispatchBufferClose, bufferTimeSpan, { subscriber, context }));
-    action.schedule(state, bufferCreationInterval);
+    subscriber.add(context.innerSubscription = scheduler.schedule<DispatchCloseArg<T>>(dispatchBufferClose, bufferTimeSpan, { subscriber, context }));
+    subscriber.add(scheduler.schedule<DispatchCreateArg<T>>(dispatchBufferCreation, bufferCreationInterval, state));
   }
 }
 
