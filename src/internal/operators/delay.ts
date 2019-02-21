@@ -2,10 +2,9 @@ import { async } from '../scheduler/async';
 import { isDate } from '../util/isDate';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
 import { Notification } from '../Notification';
 import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, PartialObserver, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types';
 
 /**
  * Delays the emission of items from the source Observable by a given timeout or
@@ -74,78 +73,25 @@ class DelayOperator<T> implements Operator<T, T> {
   }
 }
 
-interface DelayState<T> {
-  source: DelaySubscriber<T>;
-  destination: PartialObserver<T>;
-  scheduler: SchedulerLike;
-}
-
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
  * @extends {Ignored}
  */
 class DelaySubscriber<T> extends Subscriber<T> {
-  private queue: Array<DelayMessage<T>> = [];
-  private active: boolean = false;
-  private errored: boolean = false;
-
-  private static dispatch<T>(this: SchedulerAction<DelayState<T>>, state: DelayState<T>): void {
-    const source = state.source;
-    const queue = source.queue;
-    const scheduler = state.scheduler;
-    const destination = state.destination;
-
-    while (queue.length > 0 && (queue[0].time - scheduler.now()) <= 0) {
-      queue.shift().notification.observe(destination);
-    }
-
-    if (queue.length > 0) {
-      const delay = Math.max(0, queue[0].time - scheduler.now());
-      this.schedule(state, delay);
-    } else {
-      this.unsubscribe();
-      source.active = false;
-    }
-  }
-
   constructor(destination: Subscriber<T>,
               private delay: number,
               private scheduler: SchedulerLike) {
     super(destination);
   }
 
-  private _schedule(scheduler: SchedulerLike): void {
-    this.active = true;
-    const destination = this.destination as Subscription;
-    destination.add(scheduler.schedule<DelayState<T>>(DelaySubscriber.dispatch, this.delay, {
-      source: this, destination: this.destination, scheduler: scheduler
-    }));
-  }
-
   private scheduleNotification(notification: Notification<T>): void {
-    if (this.errored === true) {
-      return;
-    }
-
-    const scheduler = this.scheduler;
-    const message = new DelayMessage(scheduler.now() + this.delay, notification);
-    this.queue.push(message);
-
-    if (this.active === false) {
-      this._schedule(scheduler);
-    }
+    const destination = this.destination as Subscriber<T>;
+    this.scheduler.schedule<DelayState<T>>(dispatch, this.delay, { notification, destination });
   }
 
   protected _next(value: T) {
     this.scheduleNotification(Notification.createNext(value));
-  }
-
-  protected _error(err: any) {
-    this.errored = true;
-    this.queue = [];
-    this.destination.error(err);
-    this.unsubscribe();
   }
 
   protected _complete() {
@@ -154,8 +100,14 @@ class DelaySubscriber<T> extends Subscriber<T> {
   }
 }
 
-class DelayMessage<T> {
-  constructor(public readonly time: number,
-              public readonly notification: Notification<T>) {
+function dispatch<T>(state: DelayState<T>) {
+  const { destination, notification } = state;
+  if (!destination.closed) {
+    notification.observe(destination);
   }
+}
+
+interface DelayState<T> {
+  notification: Notification<T>;
+  destination: Subscriber<T>;
 }
