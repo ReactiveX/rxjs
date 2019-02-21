@@ -16,18 +16,17 @@ import { AnimationFrameScheduler } from './AnimationFrameScheduler';
  *
  * ## Example
  * Schedule div height animation
- * ```javascript
+ * ```ts
  * // html: <div style="background: #0ff;"></div>
  * import { animationFrameScheduler } from 'rxjs';
  *
  * const div = document.querySelector('div');
  *
- * animationFrameScheduler.schedule(function(height) {
- *   div.style.height = height + "px";
+ * function animate({ height, div }) {
+ *  animationFrameScheduler.schedule(animate, 0, { height, div });
+ * }
  *
- *   this.schedule(height + 1);  // `this` references currently executing Action,
- *                               // which we reschedule with new state
- * }, 0, 0);
+ * animationFrameScheduler.schedule(animate, 0, { height: 0, div });
  *
  * // You will see a div element growing in height
  * ```

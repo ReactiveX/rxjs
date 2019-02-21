@@ -27,29 +27,6 @@ import { AsyncScheduler } from './AsyncScheduler';
  * // After 2 seconds logs:
  * // "it works!"
  * ```
- *
- * Use async scheduler to repeat task in intervals
- * ```javascript
- * import { asyncScheduler } from 'rxjs';
- *
- * function task(state) {
- *   console.log(state);
- *   this.schedule(state + 1, 1000); // `this` references currently executing Action,
- *                                   // which we reschedule with new state and delay
- * }
- *
- * asyncScheduler.schedule(task, 3000, 0);
- *
- * // Logs:
- * // 0 after 3s
- * // 1 after 4s
- * // 2 after 5s
- * // 3 after 6s
- * ```
- *
- * @static true
- * @name async
- * @owner Scheduler
  */
 
 export const async = new AsyncScheduler(AsyncAction);
