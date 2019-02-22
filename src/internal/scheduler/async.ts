@@ -1,5 +1,6 @@
-import { AsyncAction } from './AsyncAction';
-import { AsyncScheduler } from './AsyncScheduler';
+import { SchedulerLike } from '../types';
+import { Subscription } from 'rxjs/Rx';
+import { DEFAULT_NOW, __rx_scheduler_overrides__ } from './common';
 
 /**
  *
@@ -29,4 +30,22 @@ import { AsyncScheduler } from './AsyncScheduler';
  * ```
  */
 
-export const async = new AsyncScheduler(AsyncAction);
+export const async: SchedulerLike = {
+  schedule<S>(work: (state: S) => void, delay = 0, state?: S): Subscription {
+    if (__rx_scheduler_overrides__.scheduler) {
+      return __rx_scheduler_overrides__.scheduler.schedule(work, delay, state);
+    }
+    const subscription = new Subscription();
+    const id = setTimeout(() => {
+      try {
+        work(state);
+      } finally {
+        subscription.unsubscribe();
+      }
+    }, delay);
+    subscription.add(() => clearTimeout(id));
+    return subscription;
+  },
+
+  now: DEFAULT_NOW,
+};

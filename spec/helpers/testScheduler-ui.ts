@@ -173,6 +173,9 @@ module.exports = function(suite: any) {
           return;
         }
 
+        // console.log((new Error()).stack);
+        // console.log(JSON.stringify({ actual, expected }, null, 2));
+
         let message = '\nExpected \n';
         actual.forEach((x: any) => message += `\t${stringify(x)}\n`);
 
@@ -198,7 +201,7 @@ module.exports = function(suite: any) {
       if (fn && fn.length === 0) {
         modified = function () {
           context.rxTestScheduler = new TestScheduler(observableMatcher);
-
+          context.rxTestScheduler.maxFrames = 750; // HACK(benlesh): old default
           try {
             fn();
             context.rxTestScheduler.flush();

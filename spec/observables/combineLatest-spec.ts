@@ -8,7 +8,7 @@ declare const type: Function;
 const queueScheduler = rxQueueScheduler;
 
 /** @test {combineLatest} */
-describe('static combineLatest', () => {
+describe('combineLatest', () => {
   it('should combineLatest the provided observables', () => {
     const firstSource =  hot('----a----b----c----|');
     const secondSource = hot('--d--e--f--g--|');

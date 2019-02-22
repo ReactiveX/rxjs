@@ -83,6 +83,7 @@ class ConnectableSubscriber<T> extends SubjectSubscriber<T> {
     this._unsubscribe();
     super._complete();
   }
+
   protected _unsubscribe() {
     const connectable = <any>this.connectable;
     if (connectable) {

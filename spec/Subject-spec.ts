@@ -1,7 +1,11 @@
+import { of, Subject, ObjectUnsubscribedError, Observable, AsyncSubject, Observer } from 'rxjs';
+import { TestScheduler } from 'rxjs/testing';
 import { expect } from 'chai';
 import { hot, expectObservable } from './helpers/marble-testing';
-import { Subject, ObjectUnsubscribedError, Observable, AsyncSubject, Observer } from 'rxjs';
 import { AnonymousSubject } from 'rxjs/internal/Subject';
+import { delay } from 'rxjs/operators';
+
+declare const rxTestScheduler: TestScheduler;
 
 /** @test {Subject} */
 describe('Subject', () => {
@@ -304,7 +308,7 @@ describe('Subject', () => {
 
   it('should have a static create function that works', () => {
     expect(Subject.create).to.be.a('function');
-    const source = Observable.of(1, 2, 3, 4, 5);
+    const source = of(1, 2, 3, 4, 5);
     const nexts: number[] = [];
     const output: number[] = [];
 
@@ -350,7 +354,7 @@ describe('Subject', () => {
 
   it('should have a static create function that works also to raise errors', () => {
     expect(Subject.create).to.be.a('function');
-    const source = Observable.of(1, 2, 3, 4, 5);
+    const source = of(1, 2, 3, 4, 5);
     const nexts: number[] = [];
     const output: number[] = [];
 
@@ -395,7 +399,7 @@ describe('Subject', () => {
   });
 
   it('should be an Observer which can be given to Observable.subscribe', (done: MochaDone) => {
-    const source = Observable.of(1, 2, 3, 4, 5);
+    const source = of(1, 2, 3, 4, 5);
     const subject = new Subject();
     const expected = [1, 2, 3, 4, 5];
 
@@ -411,22 +415,20 @@ describe('Subject', () => {
     source.subscribe(subject);
   });
 
-  it('should be usable as an Observer of a finite delayed Observable', (done: MochaDone) => {
-    const source = Observable.of(1, 2, 3).delay(50);
+  it('should be usable as an Observer of a finite delayed Observable', () => {
+    const source = of(1, 2, 3).pipe(delay(5, rxTestScheduler));
     const subject = new Subject();
 
     const expected = [1, 2, 3];
 
-    subject.subscribe(
-      function (x) {
-        expect(x).to.equal(expected.shift());
-      }, (x) => {
-        done(new Error('should not be called'));
-      }, () => {
-        done();
-      });
+    subject.subscribe({
+      next: x => expect(x).to.equal(expected.shift()),
+      complete: () => expect(expected.length).to.equal(0),
+    });
 
     source.subscribe(subject);
+
+    rxTestScheduler.flush();
   });
 
   it('should throw ObjectUnsubscribedError when emit after unsubscribed', () => {
@@ -521,17 +523,13 @@ describe('Subject', () => {
   });
 });
 
-describe('AnonymousSubject', () => {
-  it('should be exposed', () => {
-    expect(AnonymousSubject).to.be.a('function');
-  });
-
+describe('Subject.create', () => {
   it('should not eager', () => {
     let subscribed = false;
 
     const subject = Subject.create(null, new Observable((observer: Observer<any>) => {
       subscribed = true;
-      const subscription = Observable.of('x').subscribe(observer);
+      const subscription = of('x').subscribe(observer);
       return () => {
         subscription.unsubscribe();
       };

@@ -10,12 +10,12 @@ declare function asDiagram(arg: string): Function;
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {debounceTime} */
-describe('debounceTime operator', () => {
-  asDiagram('debounceTime(20)')('should debounce values by 20 time units', () => {
+describe('debounceTime', () => {
+  asDiagram('debounceTime(2)')('should debounce values by 20 time units', () => {
     const e1 =   hot('-a--bc--d---|');
     const expected = '---a---c--d-|';
 
-    expectObservable(e1.pipe(debounceTime(20, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(debounceTime(2, rxTestScheduler))).toBe(expected);
   });
 
   it('should delay all element by the specified time', () => {
@@ -23,7 +23,7 @@ describe('debounceTime operator', () => {
     const e1subs =   '^                     !';
     const expected = '------a--------b------(c|)';
 
-    expectObservable(e1.pipe(debounceTime(50, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(debounceTime(5, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -32,7 +32,7 @@ describe('debounceTime operator', () => {
     const e1subs =   '^                          !';
     const expected = '---------c--------------d--|';
 
-    expectObservable(e1.pipe(debounceTime(50, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(debounceTime(5, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -41,7 +41,7 @@ describe('debounceTime operator', () => {
     const e1subs =   '^    !';
     const expected = '-----|';
 
-    expectObservable(e1.pipe(debounceTime(10, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(debounceTime(1, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -50,7 +50,7 @@ describe('debounceTime operator', () => {
     const e1subs =   '(^!)';
     const expected = '|';
 
-    expectObservable(e1.pipe(debounceTime(10, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(debounceTime(1, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -59,7 +59,7 @@ describe('debounceTime operator', () => {
     const e1subs =   '^    !';
     const expected = '-----#';
 
-    expectObservable(e1.pipe(debounceTime(10, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(debounceTime(1, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -68,7 +68,7 @@ describe('debounceTime operator', () => {
     const e1subs =   '(^!)';
     const expected = '#';
 
-    expectObservable(e1.pipe(debounceTime(10, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(debounceTime(1, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -78,7 +78,7 @@ describe('debounceTime operator', () => {
     const expected = '----a---       ';
     const unsub =    '       !       ';
 
-    const result = e1.pipe(debounceTime(20, rxTestScheduler));
+    const result = e1.pipe(debounceTime(2, rxTestScheduler));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -92,7 +92,7 @@ describe('debounceTime operator', () => {
 
     const result = e1.pipe(
       mergeMap((x: any) => of(x)),
-      debounceTime(20, rxTestScheduler),
+      debounceTime(2, rxTestScheduler),
       mergeMap((x: any) => of(x))
     );
 
@@ -105,7 +105,7 @@ describe('debounceTime operator', () => {
     const e1subs =   '^                          ';
     const expected = '---------c--------------d--';
 
-    expectObservable(e1.pipe(debounceTime(50, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(debounceTime(5, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -114,7 +114,7 @@ describe('debounceTime operator', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    expectObservable(e1.pipe(debounceTime(10, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(debounceTime(1, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -123,7 +123,7 @@ describe('debounceTime operator', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    expectObservable(e1.pipe(debounceTime(10, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(debounceTime(1, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -132,7 +132,7 @@ describe('debounceTime operator', () => {
     const e1subs =   '^                     !';
     const expected = '------a--------b------#';
 
-    expectObservable(e1.pipe(debounceTime(50, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(debounceTime(5, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -141,7 +141,7 @@ describe('debounceTime operator', () => {
     const e1subs =   '^                        !';
     const expected = '-------------------------(h|)';
 
-    expectObservable(e1.pipe(debounceTime(40, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(debounceTime(4, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -150,7 +150,7 @@ describe('debounceTime operator', () => {
     const e1subs =   '^                        !';
     const expected = '-------------------------#';
 
-    expectObservable(e1.pipe(debounceTime(40, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(debounceTime(4, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 

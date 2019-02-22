@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { groupBy, delay, tap, map, take, mergeMap, materialize, skip } from 'rxjs/operators';
-import { TestScheduler } from 'rxjs/testing';
+import { TestScheduler, parseMarbles, parseMarblesAsSubscriptions } from 'rxjs/testing';
 import { ReplaySubject, of, GroupedObservable, Observable, Operator, Observer } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
@@ -536,14 +536,13 @@ describe('groupBy operator', () => {
     const z =             '------------f-------------|';
 
     const expectedGroups = {
-      w: TestScheduler.parseMarbles(w, values),
-      x: TestScheduler.parseMarbles(x, values),
-      y: TestScheduler.parseMarbles(y, values),
-      z: TestScheduler.parseMarbles(z, values)
+      w: parseMarbles(w, values),
+      x: parseMarbles(x, values),
+      y: parseMarbles(y, values),
+      z: parseMarbles(z, values)
     };
 
-    const fooUnsubscriptionFrame = TestScheduler
-      .parseMarblesAsSubscriptions(unsubw)
+    const fooUnsubscriptionFrame = parseMarblesAsSubscriptions(unsubw)
       .unsubscribedFrame;
 
     const source = e1.pipe(
@@ -599,17 +598,17 @@ describe('groupBy operator', () => {
     const unsubz =        '                   !';
 
     const expectedGroups = {
-      w: TestScheduler.parseMarbles(w, values),
-      x: TestScheduler.parseMarbles(x, values),
-      y: TestScheduler.parseMarbles(y, values),
-      z: TestScheduler.parseMarbles(z, values)
+      w: parseMarbles(w, values),
+      x: parseMarbles(x, values),
+      y: parseMarbles(y, values),
+      z: parseMarbles(z, values)
     };
 
     const unsubscriptionFrames = {
-      foo: TestScheduler.parseMarblesAsSubscriptions(unsubw).unsubscribedFrame,
-      bar: TestScheduler.parseMarblesAsSubscriptions(unsubx).unsubscribedFrame,
-      baz: TestScheduler.parseMarblesAsSubscriptions(unsuby).unsubscribedFrame,
-      qux: TestScheduler.parseMarblesAsSubscriptions(unsubz).unsubscribedFrame
+      foo: parseMarblesAsSubscriptions(unsubw).unsubscribedFrame,
+      bar: parseMarblesAsSubscriptions(unsubx).unsubscribedFrame,
+      baz: parseMarblesAsSubscriptions(unsuby).unsubscribedFrame,
+      qux: parseMarblesAsSubscriptions(unsubz).unsubscribedFrame
     };
 
     const source = e1.pipe(
@@ -652,7 +651,7 @@ describe('groupBy operator', () => {
       .subscribe((group: any) => {
         rxTestScheduler.schedule(() => {
           expectObservable(group).toBe(expected);
-        }, 260);
+        }, 26);
       });
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
@@ -673,7 +672,7 @@ describe('groupBy operator', () => {
       .subscribe((group: any) => {
         rxTestScheduler.schedule(() => {
           expectObservable(group).toBe(expected);
-        }, 260);
+        }, 26);
       }, () => {
         //noop
       });
@@ -874,13 +873,12 @@ describe('groupBy operator', () => {
     const x =             '----------e-';
 
     const expectedGroups = {
-      v: TestScheduler.parseMarbles(v, values),
-      w: TestScheduler.parseMarbles(w, values),
-      x: TestScheduler.parseMarbles(x, values)
+      v: parseMarbles(v, values),
+      w: parseMarbles(w, values),
+      x: parseMarbles(x, values)
     };
 
-    const unsubscriptionFrame = TestScheduler
-      .parseMarblesAsSubscriptions(unsub)
+    const unsubscriptionFrame = parseMarblesAsSubscriptions(unsub)
       .unsubscribedFrame;
 
     const source = e1.pipe(
@@ -927,8 +925,7 @@ describe('groupBy operator', () => {
       cold(dur)
     ];
 
-    const unsubscribedFrame = TestScheduler
-      .parseMarblesAsSubscriptions(sub)
+    const unsubscribedFrame = parseMarblesAsSubscriptions(sub)
       .unsubscribedFrame;
 
     obs.pipe(groupBy(
@@ -1103,15 +1100,14 @@ describe('groupBy operator', () => {
     const z =             '------------------i-----l-|';
 
     const expectedGroups = {
-      v: TestScheduler.parseMarbles(v, reversedValues),
-      w: TestScheduler.parseMarbles(w, reversedValues),
-      x: TestScheduler.parseMarbles(x, reversedValues),
-      y: TestScheduler.parseMarbles(y, reversedValues),
-      z: TestScheduler.parseMarbles(z, reversedValues)
+      v: parseMarbles(v, reversedValues),
+      w: parseMarbles(w, reversedValues),
+      x: parseMarbles(x, reversedValues),
+      y: parseMarbles(y, reversedValues),
+      z: parseMarbles(z, reversedValues)
     };
 
-    const fooUnsubscriptionFrame = TestScheduler
-      .parseMarblesAsSubscriptions(unsubv)
+    const fooUnsubscriptionFrame = parseMarblesAsSubscriptions(unsubv)
       .unsubscribedFrame;
 
     const source = e1.pipe(
@@ -1176,19 +1172,19 @@ describe('groupBy operator', () => {
     const unsubz =        '                      !'    ;
 
     const expectedGroups = {
-      v: TestScheduler.parseMarbles(v, values),
-      w: TestScheduler.parseMarbles(w, values),
-      x: TestScheduler.parseMarbles(x, values),
-      y: TestScheduler.parseMarbles(y, values),
-      z: TestScheduler.parseMarbles(z, values)
+      v: parseMarbles(v, values),
+      w: parseMarbles(w, values),
+      x: parseMarbles(x, values),
+      y: parseMarbles(y, values),
+      z: parseMarbles(z, values)
     };
 
     const unsubscriptionFrames = {
-      foo: TestScheduler.parseMarblesAsSubscriptions(unsubv).unsubscribedFrame,
-      bar: TestScheduler.parseMarblesAsSubscriptions(unsubw).unsubscribedFrame,
-      baz: TestScheduler.parseMarblesAsSubscriptions(unsubx).unsubscribedFrame,
-      qux: TestScheduler.parseMarblesAsSubscriptions(unsuby).unsubscribedFrame,
-      foo2: TestScheduler.parseMarblesAsSubscriptions(unsubz).unsubscribedFrame
+      foo: parseMarblesAsSubscriptions(unsubv).unsubscribedFrame,
+      bar: parseMarblesAsSubscriptions(unsubw).unsubscribedFrame,
+      baz: parseMarblesAsSubscriptions(unsubx).unsubscribedFrame,
+      qux: parseMarblesAsSubscriptions(unsuby).unsubscribedFrame,
+      foo2: parseMarblesAsSubscriptions(unsubz).unsubscribedFrame
     };
     const hasUnsubscribed = {};
 
@@ -1253,17 +1249,17 @@ describe('groupBy operator', () => {
      const y =             '            ------------------|'; // qux
 
      const expectedGroups = {
-       v: TestScheduler.parseMarbles(v, values),
-       w: TestScheduler.parseMarbles(w, values),
-       x: TestScheduler.parseMarbles(x, values),
-       y: TestScheduler.parseMarbles(y, values),
+       v: parseMarbles(v, values),
+       w: parseMarbles(w, values),
+       x: parseMarbles(x, values),
+       y: parseMarbles(y, values),
      };
 
      const subscriptionFrames = {
-       foo: TestScheduler.parseMarblesAsSubscriptions(subv).subscribedFrame,
-       bar: TestScheduler.parseMarblesAsSubscriptions(subw).subscribedFrame,
-       baz: TestScheduler.parseMarblesAsSubscriptions(subx).subscribedFrame,
-       qux: TestScheduler.parseMarblesAsSubscriptions(suby).subscribedFrame,
+       foo: parseMarblesAsSubscriptions(subv).subscribedFrame,
+       bar: parseMarblesAsSubscriptions(subw).subscribedFrame,
+       baz: parseMarblesAsSubscriptions(subx).subscribedFrame,
+       qux: parseMarblesAsSubscriptions(suby).subscribedFrame,
      };
 
      const result = e1.pipe(
@@ -1309,11 +1305,10 @@ describe('groupBy operator', () => {
     const g =             '--------------------------------|';
 
     const expectedGroups = {
-      g: TestScheduler.parseMarbles(g, values)
+      g: parseMarbles(g, values)
     };
 
-    const innerSubscriptionFrame = TestScheduler
-      .parseMarblesAsSubscriptions(innerSub)
+    const innerSubscriptionFrame = parseMarblesAsSubscriptions(innerSub)
       .subscribedFrame;
 
     const source = e1.pipe(
@@ -1359,11 +1354,10 @@ describe('groupBy operator', () => {
     const g =             '--------------------------------#';
 
     const expectedGroups = {
-      g: TestScheduler.parseMarbles(g, values)
+      g: parseMarbles(g, values)
     };
 
-    const innerSubscriptionFrame = TestScheduler
-      .parseMarblesAsSubscriptions(innerSub)
+    const innerSubscriptionFrame = parseMarblesAsSubscriptions(innerSub)
       .subscribedFrame;
 
     const source = e1.pipe(
@@ -1411,11 +1405,10 @@ describe('groupBy operator', () => {
     const g =                                             '-';
 
     const expectedGroups = {
-      g: TestScheduler.parseMarbles(g, values)
+      g: parseMarbles(g, values)
     };
 
-    const innerSubscriptionFrame = TestScheduler
-      .parseMarblesAsSubscriptions(innerSub)
+    const innerSubscriptionFrame = parseMarblesAsSubscriptions(innerSub)
       .subscribedFrame;
 
     const source = e1.pipe(

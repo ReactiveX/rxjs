@@ -20,7 +20,7 @@ describe('Scheduler.animationFrame', () => {
     expect(actionHappened).to.be.false;
     fakeTimer.tick(25);
     expect(actionHappened).to.be.false;
-    fakeTimer.tick(25);
+    fakeTimer.tick(100); // the other 25, plus some for the animationFrame.
     expect(actionHappened).to.be.true;
     sandbox.restore();
   });
@@ -54,15 +54,15 @@ describe('Scheduler.animationFrame', () => {
   it('should execute recursively scheduled actions in separate asynchronous contexts', (done: MochaDone) => {
     let syncExec1 = true;
     let syncExec2 = true;
-    animationFrame.schedule(function (index) {
+    function work (index: number) {
       if (index === 0) {
-        this.schedule(1);
+        animationFrame.schedule(work, 0, 1);
         animationFrame.schedule(() => { syncExec1 = false; });
       } else if (index === 1) {
-        this.schedule(2);
+        animationFrame.schedule(work, 0, 2);
         animationFrame.schedule(() => { syncExec2 = false; });
       } else if (index === 2) {
-        this.schedule(3);
+        animationFrame.schedule(work, 0, 3);
       } else if (index === 3) {
         if (!syncExec1 && !syncExec2) {
           done();
@@ -70,7 +70,8 @@ describe('Scheduler.animationFrame', () => {
           done(new Error('Execution happened synchronously.'));
         }
       }
-    }, 0, 0);
+    }
+    animationFrame.schedule(work, 0, 0);
   });
 
   it('should cancel the animation frame if all scheduled actions unsubscribe before it executes', (done: MochaDone) => {
@@ -78,12 +79,8 @@ describe('Scheduler.animationFrame', () => {
     let animationFrameExec2 = false;
     const action1 = animationFrame.schedule(() => { animationFrameExec1 = true; });
     const action2 = animationFrame.schedule(() => { animationFrameExec2 = true; });
-    expect(animationFrame.scheduled).to.exist;
-    expect(animationFrame.actions.length).to.equal(2);
     action1.unsubscribe();
     action2.unsubscribe();
-    expect(animationFrame.actions.length).to.equal(0);
-    expect(animationFrame.scheduled).to.equal(undefined);
     animationFrame.schedule(() => {
       expect(animationFrameExec1).to.equal(false);
       expect(animationFrameExec2).to.equal(false);

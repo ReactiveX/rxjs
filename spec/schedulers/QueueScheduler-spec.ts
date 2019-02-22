@@ -28,15 +28,17 @@ describe('Scheduler.queue', () => {
     let asyncExec = false;
     let state: Array<number> = [];
 
-    queue.schedule(function (index) {
+    function work(index: number) {
       state.push(index);
       if (index === 0) {
-        this.schedule(1, 100);
+        queueScheduler.schedule(work, 100, 1);
       } else if (index === 1) {
         asyncExec = true;
-        this.schedule(2, 0);
+        queueScheduler.schedule(work, 0, 2);
       }
-    }, 0, 0);
+    }
+
+    queue.schedule(work, 0, 0);
 
     expect(asyncExec).to.be.false;
     expect(state).to.be.deep.equal([0]);

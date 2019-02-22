@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { SchedulerAction, VirtualAction, VirtualTimeScheduler } from 'rxjs';
+import { VirtualTimeScheduler } from 'rxjs';
 
 /** @test {VirtualTimeScheduler} */
 describe('VirtualTimeScheduler', () => {
@@ -61,43 +61,9 @@ describe('VirtualTimeScheduler', () => {
     expect(invoked).to.deep.equal([6, 4, 1, 3, 5, 2]);
   });
 
-  it('should support recursive scheduling', () => {
-    const v = new VirtualTimeScheduler();
-    let count = 0;
-    const expected = [100, 200, 300];
-
-    v.schedule<string>(function (this: SchedulerAction<string>, state: string) {
-      if (++count === 3) {
-        return;
-      }
-      const virtualAction = this as VirtualAction<string>;
-      expect(virtualAction.delay).to.equal(expected.shift());
-      this.schedule(state, virtualAction.delay);
-    }, 100, 'test');
-
-    v.flush();
-    expect(count).to.equal(3);
-  });
-
-  it('should not execute virtual actions that have been rescheduled before flush', () => {
-    const v = new VirtualTimeScheduler();
-    const messages: string[] = [];
-
-    const action: VirtualAction<string> = <VirtualAction<string>> v.schedule(
-      state => messages.push(state),
-      10,
-      'first message'
-    );
-
-    action.schedule('second message', 10);
-    v.flush();
-
-    expect(messages).to.deep.equal(['second message']);
-  });
-
   it('should execute only those virtual actions that fall into the maxFrames timespan', function () {
     const MAX_FRAMES = 50;
-    const v = new VirtualTimeScheduler(VirtualAction, MAX_FRAMES);
+    const v = new VirtualTimeScheduler(MAX_FRAMES);
     const messages: string[] = ['first message', 'second message', 'third message'];
 
     const actualMessages: string[] = [];
@@ -113,12 +79,12 @@ describe('VirtualTimeScheduler', () => {
     v.flush();
 
     expect(actualMessages).to.deep.equal(['first message', 'second message']);
-    expect(v.actions.map(a => a.state)).to.deep.equal(['third message']);
+    expect((v as any)._actions.map((a: any) => a.state)).to.deep.equal(['third message']);
   });
 
   it('should pick up actions execution where it left off after reaching previous maxFrames limit', function () {
     const MAX_FRAMES = 50;
-    const v = new VirtualTimeScheduler(VirtualAction, MAX_FRAMES);
+    const v = new VirtualTimeScheduler(MAX_FRAMES);
     const messages: string[] = ['first message', 'second message', 'third message'];
 
     const actualMessages: string[] = [];

@@ -22,7 +22,6 @@ describe('index', () => {
     expect(index.queueScheduler).to.exist;
     expect(index.animationFrameScheduler).to.exist;
     expect(index.VirtualTimeScheduler).to.exist;
-    expect(index.VirtualAction).to.exist;
   });
 
   it('should export Subscription', () => {

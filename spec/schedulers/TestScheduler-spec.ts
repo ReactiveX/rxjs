@@ -1,9 +1,10 @@
 import { expect } from 'chai';
-import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
-import { AsyncScheduler } from 'rxjs/internal/scheduler/AsyncScheduler';
+import { hot, cold, expectObservable, time, expectSubscriptions } from '../helpers/marble-testing';
 import { TestScheduler } from 'rxjs/testing';
-import { Observable, NEVER, EMPTY, Subject, of, concat, merge, Notification } from 'rxjs';
+import { Observable, NEVER, EMPTY, Subject, of, merge, Notification } from 'rxjs';
 import { delay, debounceTime, concatMap } from 'rxjs/operators';
+import { parseMarbles, parseMarblesAsSubscriptions } from 'rxjs/internal/testing/TestScheduler';
+import { __rx_scheduler_overrides__ } from 'rxjs/internal/scheduler/common';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -16,113 +17,113 @@ describe('TestScheduler', () => {
 
   describe('parseMarbles()', () => {
     it('should parse a marble string into a series of notifications and types', () => {
-      const result = TestScheduler.parseMarbles('-------a---b---|', { a: 'A', b: 'B' });
+      const result = parseMarbles('-------a---b---|', { a: 'A', b: 'B' });
       expect(result).deep.equal([
-        { frame: 70, notification: Notification.createNext('A') },
-        { frame: 110, notification: Notification.createNext('B') },
-        { frame: 150, notification: Notification.createComplete() }
+        { frame: 7, notification: Notification.createNext('A') },
+        { frame: 11, notification: Notification.createNext('B') },
+        { frame: 15, notification: Notification.createComplete() }
       ]);
     });
 
     it('should parse a marble string, allowing spaces too', () => {
-      const result = TestScheduler.parseMarbles('--a--b--|   ', { a: 'A', b: 'B' });
+      const result = parseMarbles('--a--b--|   ', { a: 'A', b: 'B' });
       expect(result).deep.equal([
-        { frame: 20, notification: Notification.createNext('A') },
-        { frame: 50, notification: Notification.createNext('B') },
-        { frame: 80, notification: Notification.createComplete() }
+        { frame: 2, notification: Notification.createNext('A') },
+        { frame: 5, notification: Notification.createNext('B') },
+        { frame: 8, notification: Notification.createComplete() }
       ]);
     });
 
     it('should parse a marble string with a subscription point', () => {
-      const result = TestScheduler.parseMarbles('---^---a---b---|', { a: 'A', b: 'B' });
+      const result = parseMarbles('---^---a---b---|', { a: 'A', b: 'B' });
       expect(result).deep.equal([
-        { frame: 40, notification: Notification.createNext('A') },
-        { frame: 80, notification: Notification.createNext('B') },
-        { frame: 120, notification: Notification.createComplete() }
+        { frame: 4, notification: Notification.createNext('A') },
+        { frame: 8, notification: Notification.createNext('B') },
+        { frame: 12, notification: Notification.createComplete() }
       ]);
     });
 
     it('should parse a marble string with an error', () => {
-      const result = TestScheduler.parseMarbles('-------a---b---#', { a: 'A', b: 'B' }, 'omg error!');
+      const result = parseMarbles('-------a---b---#', { a: 'A', b: 'B' }, 'omg error!');
       expect(result).deep.equal([
-        { frame: 70, notification: Notification.createNext('A') },
-        { frame: 110, notification: Notification.createNext('B') },
-        { frame: 150, notification: Notification.createError('omg error!') }
+        { frame: 7, notification: Notification.createNext('A') },
+        { frame: 11, notification: Notification.createNext('B') },
+        { frame: 15, notification: Notification.createError('omg error!') }
       ]);
     });
 
     it('should default in the letter for the value if no value hash was passed', () => {
-      const result = TestScheduler.parseMarbles('--a--b--c--');
+      const result = parseMarbles('--a--b--c--');
       expect(result).deep.equal([
-        { frame: 20, notification: Notification.createNext('a') },
-        { frame: 50, notification: Notification.createNext('b') },
-        { frame: 80, notification: Notification.createNext('c') },
+        { frame: 2, notification: Notification.createNext('a') },
+        { frame: 5, notification: Notification.createNext('b') },
+        { frame: 8, notification: Notification.createNext('c') },
       ]);
     });
 
     it('should handle grouped values', () => {
-      const result = TestScheduler.parseMarbles('---(abc)---');
+      const result = parseMarbles('---(abc)---');
       expect(result).deep.equal([
-        { frame: 30, notification: Notification.createNext('a') },
-        { frame: 30, notification: Notification.createNext('b') },
-        { frame: 30, notification: Notification.createNext('c') }
+        { frame: 3, notification: Notification.createNext('a') },
+        { frame: 3, notification: Notification.createNext('b') },
+        { frame: 3, notification: Notification.createNext('c') }
       ]);
     });
 
     it('should ignore whitespace when runMode=true', () => {
       const runMode = true;
-      const result = TestScheduler.parseMarbles('  -a - b -    c |       ', { a: 'A', b: 'B', c: 'C' }, undefined, undefined, runMode);
+      const result = parseMarbles('  -a - b -    c |       ', { a: 'A', b: 'B', c: 'C' }, undefined, undefined, runMode);
       expect(result).deep.equal([
-        { frame: 10, notification: Notification.createNext('A') },
-        { frame: 30, notification: Notification.createNext('B') },
-        { frame: 50, notification: Notification.createNext('C') },
-        { frame: 60, notification: Notification.createComplete() }
+        { frame: 1, notification: Notification.createNext('A') },
+        { frame: 3, notification: Notification.createNext('B') },
+        { frame: 5, notification: Notification.createNext('C') },
+        { frame: 6, notification: Notification.createComplete() }
       ]);
     });
 
-    it('should suppport time progression syntax when runMode=true', () => {
+    it('should support time progression syntax when runMode=true', () => {
       const runMode = true;
-      const result = TestScheduler.parseMarbles('10.2ms a 1.2s b 1m c|', { a: 'A', b: 'B', c: 'C' }, undefined, undefined, runMode);
+      const result = parseMarbles('10.2ms a 1.2s b 1m c|', { a: 'A', b: 'B', c: 'C' }, undefined, undefined, runMode);
       expect(result).deep.equal([
         { frame: 10.2, notification: Notification.createNext('A') },
-        { frame: 10.2 + 10 + (1.2 * 1000), notification: Notification.createNext('B') },
-        { frame: 10.2 + 10 + (1.2 * 1000) + 10 + (1000 * 60), notification: Notification.createNext('C') },
-        { frame: 10.2 + 10 + (1.2 * 1000) + 10 + (1000 * 60) + 10, notification: Notification.createComplete() }
+        { frame: 10.2 + 1 + (1.2 * 1000), notification: Notification.createNext('B') },
+        { frame: 10.2 + 1 + (1.2 * 1000) + 1 + (1000 * 60), notification: Notification.createNext('C') },
+        { frame: 10.2 + 1 + (1.2 * 1000) + 1 + (1000 * 60) + 1, notification: Notification.createComplete() }
       ]);
     });
   });
 
   describe('parseMarblesAsSubscriptions()', () => {
     it('should parse a subscription marble string into a subscriptionLog', () => {
-      const result = TestScheduler.parseMarblesAsSubscriptions('---^---!-');
-      expect(result.subscribedFrame).to.equal(30);
-      expect(result.unsubscribedFrame).to.equal(70);
+      const result = parseMarblesAsSubscriptions('---^---!-');
+      expect(result.subscribedFrame).to.equal(3);
+      expect(result.unsubscribedFrame).to.equal(7);
     });
 
     it('should parse a subscription marble string with an unsubscription', () => {
-      const result = TestScheduler.parseMarblesAsSubscriptions('---^-');
-      expect(result.subscribedFrame).to.equal(30);
+      const result = parseMarblesAsSubscriptions('---^-');
+      expect(result.subscribedFrame).to.equal(3);
       expect(result.unsubscribedFrame).to.equal(Number.POSITIVE_INFINITY);
     });
 
     it('should parse a subscription marble string with a synchronous unsubscription', () => {
-      const result = TestScheduler.parseMarblesAsSubscriptions('---(^!)-');
-      expect(result.subscribedFrame).to.equal(30);
-      expect(result.unsubscribedFrame).to.equal(30);
+      const result = parseMarblesAsSubscriptions('---(^!)-');
+      expect(result.subscribedFrame).to.equal(3);
+      expect(result.unsubscribedFrame).to.equal(3);
     });
 
     it('should ignore whitespace when runMode=true', () => {
       const runMode = true;
-      const result = TestScheduler.parseMarblesAsSubscriptions('  - -  - -  ^ -   - !  -- -      ', runMode);
-      expect(result.subscribedFrame).to.equal(40);
-      expect(result.unsubscribedFrame).to.equal(70);
+      const result = parseMarblesAsSubscriptions('  - -  - -  ^ -   - !  -- -      ', runMode);
+      expect(result.subscribedFrame).to.equal(4);
+      expect(result.unsubscribedFrame).to.equal(7);
     });
 
-    it('should suppport time progression syntax when runMode=true', () => {
+    it('should support time progression syntax when runMode=true', () => {
       const runMode = true;
-      const result = TestScheduler.parseMarblesAsSubscriptions('10.2ms ^ 1.2s - 1m !', runMode);
+      const result = parseMarblesAsSubscriptions('10.2ms ^ 1.2s - 1m !', runMode);
       expect(result.subscribedFrame).to.equal(10.2);
-      expect(result.unsubscribedFrame).to.equal(10.2 + 10 + (1.2 * 1000) + 10 + (1000 * 60));
+      expect(result.unsubscribedFrame).to.equal(10.2 + 1 + (1.2 * 1000) + 1 + (1000 * 60));
     });
   });
 
@@ -130,7 +131,7 @@ describe('TestScheduler', () => {
     it('should parse a simple time marble string to a number', () => {
       const scheduler = new TestScheduler(null);
       const time = scheduler.createTime('-----|');
-      expect(time).to.equal(50);
+      expect(time).to.equal(5);
     });
 
     it('should throw if not given good marble input', () => {
@@ -214,7 +215,7 @@ describe('TestScheduler', () => {
       });
 
       it('should parse a simple time marble string to a number', () => {
-        expect(time('-----|')).to.equal(50);
+        expect(time('-----|')).to.equal(5);
       });
     });
 
@@ -230,7 +231,7 @@ describe('TestScheduler', () => {
 
       it('should append to flushTests array', () => {
         expectObservable(EMPTY);
-        expect((<any>rxTestScheduler).flushTests.length).to.equal(1);
+        expect((rxTestScheduler as any)._flushTests.length).to.equal(1);
       });
 
       it('should handle empty', () => {
@@ -269,7 +270,7 @@ describe('TestScheduler', () => {
 
       it('should append to flushTests array', () => {
         expectSubscriptions([]);
-        expect((<any>rxTestScheduler).flushTests.length).to.equal(1);
+        expect((rxTestScheduler as any)._flushTests.length).to.equal(1);
       });
 
       it('should assert subscriptions of a cold observable', () => {
@@ -310,7 +311,7 @@ describe('TestScheduler', () => {
       it('should ignore whitespace', () => {
         const testScheduler = new TestScheduler(assertDeepEquals);
 
-        testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+        testScheduler.run(({ cold, expectObservable, expectSubscriptionsTo }) => {
           const input = cold('  -a - b -    c |       ');
           const output = input.pipe(
             concatMap(d => of(d).pipe(
@@ -320,14 +321,14 @@ describe('TestScheduler', () => {
           const expected = '     -- 9ms a 9ms b 9ms (c|) ';
 
           expectObservable(output).toBe(expected);
-          expectSubscriptions(input.subscriptions).toBe('  ^- - - - - !');
+          expectSubscriptionsTo(input).toBe('  ^- - - - - !');
         });
       });
 
       it('should support time progression syntax', () => {
         const testScheduler = new TestScheduler(assertDeepEquals);
 
-        testScheduler.run(({ cold, hot, flush, expectObservable, expectSubscriptions }) => {
+        testScheduler.run(({ cold, hot, flush, expectObservable, expectSubscriptionsTo }) => {
           const output = cold('10.2ms a 1.2s b 1m c|');
           const expected = '   10.2ms a 1.2s b 1m c|';
 
@@ -339,12 +340,12 @@ describe('TestScheduler', () => {
     it('should provide the correct helpers', () => {
       const testScheduler = new TestScheduler(assertDeepEquals);
 
-      testScheduler.run(({ cold, hot, flush, expectObservable, expectSubscriptions }) => {
+      testScheduler.run(({ cold, hot, flush, expectObservable, expectSubscriptionsTo }) => {
         expect(cold).to.be.a('function');
         expect(hot).to.be.a('function');
         expect(flush).to.be.a('function');
         expect(expectObservable).to.be.a('function');
-        expect(expectSubscriptions).to.be.a('function');
+        expect(expectSubscriptionsTo).to.be.a('function');
 
         const obs1 = cold('-a-c-e|');
         const obs2 = hot(' ^-b-d-f|');
@@ -352,8 +353,8 @@ describe('TestScheduler', () => {
         const expected = ' -abcdef|';
 
         expectObservable(output).toBe(expected);
-        expectSubscriptions(obs1.subscriptions).toBe('^-----!');
-        expectSubscriptions(obs2.subscriptions).toBe('^------!');
+        expectSubscriptionsTo(obs1).toBe('^-----!');
+        expectSubscriptionsTo(obs2).toBe('^------!');
       });
     });
 
@@ -406,12 +407,10 @@ describe('TestScheduler', () => {
         const expected = '   -- 9ms a 9ms b 9ms (c|)';
         expectObservable(output).toBe(expected);
 
-        expect(testScheduler['flushTests'].length).to.equal(1);
-        expect(testScheduler['actions'].length).to.equal(1);
+        expect((testScheduler as any)._flushTests.length).to.equal(1);
       });
 
-      expect(testScheduler['flushTests'].length).to.equal(0);
-      expect(testScheduler['actions'].length).to.equal(0);
+      expect((testScheduler as any)._flushTests.length).to.equal(0);
     });
 
     it('should support explicit flushing', () => {
@@ -426,17 +425,14 @@ describe('TestScheduler', () => {
         const expected = '   -- 9ms a 9ms b 9ms (c|)';
         expectObservable(output).toBe(expected);
 
-        expect(testScheduler['flushTests'].length).to.equal(1);
-        expect(testScheduler['actions'].length).to.equal(1);
+        expect((testScheduler as any)._flushTests.length).to.equal(1);
 
         flush();
 
-        expect(testScheduler['flushTests'].length).to.equal(0);
-        expect(testScheduler['actions'].length).to.equal(0);
+        expect((testScheduler as any)._flushTests.length).to.equal(0);
       });
 
-      expect(testScheduler['flushTests'].length).to.equal(0);
-      expect(testScheduler['actions'].length).to.equal(0);
+      expect((testScheduler as any)._flushTests.length).to.equal(0);
     });
 
     it('should pass-through return values, e.g. Promises', (done) => {
@@ -456,7 +452,7 @@ describe('TestScheduler', () => {
       const frameTimeFactor = TestScheduler['frameTimeFactor'];
       const maxFrames = testScheduler.maxFrames;
       const runMode = testScheduler['runMode'];
-      const delegate = AsyncScheduler.delegate;
+      const delegate = __rx_scheduler_overrides__.scheduler;
 
       try {
         testScheduler.run(() => {
@@ -467,7 +463,7 @@ describe('TestScheduler', () => {
       expect(TestScheduler['frameTimeFactor']).to.equal(frameTimeFactor);
       expect(testScheduler.maxFrames).to.equal(maxFrames);
       expect(testScheduler['runMode']).to.equal(runMode);
-      expect(AsyncScheduler.delegate).to.equal(delegate);
+      expect(__rx_scheduler_overrides__.scheduler).to.equal(delegate);
     });
 
     it('should flush expectations correctly', () => {

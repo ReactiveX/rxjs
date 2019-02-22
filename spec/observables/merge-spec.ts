@@ -249,7 +249,7 @@ describe('merge(...observables, Scheduler, number)', () => {
 
   it('should handle scheduler', () => {
     const e1 =  of('a');
-    const e2 =  of('b').delay(20, rxTestScheduler);
+    const e2 =  of('b').delay(2, rxTestScheduler);
     const expected = 'a-(b|)';
 
     expectObservable(merge(e1, e2, rxTestScheduler)).toBe(expected);

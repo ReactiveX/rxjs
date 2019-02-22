@@ -245,8 +245,7 @@ interface ParamsContext<T> {
   subject: AsyncSubject<T>;
 }
 
-function dispatch<T>(this: SchedulerAction<DispatchState<T>>, state: DispatchState<T>) {
-  const self = this;
+function dispatch<T>(state: DispatchState<T>) {
   const { args, subscriber, params } = state;
   const { callbackFunc, context, scheduler } = params;
   let { subject } = params;
@@ -255,7 +254,7 @@ function dispatch<T>(this: SchedulerAction<DispatchState<T>>, state: DispatchSta
 
     const handler = (...innerArgs: any[]) => {
       const value = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
-      this.add(scheduler.schedule<NextState<T>>(dispatchNext, 0, { value, subject }));
+      subscriber.add(scheduler.schedule<NextState<T>>(dispatchNext, 0, { value, subject }));
     };
 
     try {
@@ -265,7 +264,7 @@ function dispatch<T>(this: SchedulerAction<DispatchState<T>>, state: DispatchSta
     }
   }
 
-  this.add(subject.subscribe(subscriber));
+  subscriber.add(subject.subscribe(subscriber));
 }
 
 interface NextState<T> {

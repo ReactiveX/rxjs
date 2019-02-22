@@ -191,9 +191,9 @@ describe('ReplaySubject', () => {
     });
   });
 
-  describe('with windowTime=40', () => {
-    it('should replay previous values since 40 time units ago when subscribed', () => {
-      const replaySubject = new ReplaySubject<string>(Number.POSITIVE_INFINITY, 40, rxTestScheduler);
+  describe('with windowTime=4', () => {
+    it('should replay previous values since 4 time units ago when subscribed', () => {
+      const replaySubject = new ReplaySubject<string>(Number.POSITIVE_INFINITY, 4, rxTestScheduler);
       function feedNextIntoSubject(x: string) { replaySubject.next(x); }
       function feedErrorIntoSubject(err: any) { replaySubject.error(err); }
       function feedCompleteIntoSubject() { replaySubject.complete(); }
@@ -216,8 +216,8 @@ describe('ReplaySubject', () => {
       expectObservable(subscriber3).toBe(expected3);
     });
 
-    it('should replay last values since 40 time units ago when subscribed', () => {
-      const replaySubject = new ReplaySubject<string>(Number.POSITIVE_INFINITY, 40, rxTestScheduler);
+    it('should replay last values since 4 time units ago when subscribed', () => {
+      const replaySubject = new ReplaySubject<string>(Number.POSITIVE_INFINITY, 4, rxTestScheduler);
       function feedNextIntoSubject(x: string) { replaySubject.next(x); }
       function feedErrorIntoSubject(err: any) { replaySubject.error(err); }
       function feedCompleteIntoSubject() { replaySubject.complete(); }
@@ -232,8 +232,8 @@ describe('ReplaySubject', () => {
       expectObservable(subscriber1).toBe(expected1);
     });
 
-    it('should only replay bufferSize items when 40 time units ago more were emited', () => {
-      const replaySubject = new ReplaySubject<string>(2, 40, rxTestScheduler);
+    it('should only replay bufferSize items when 4 time units ago more were emited', () => {
+      const replaySubject = new ReplaySubject<string>(2, 4, rxTestScheduler);
       function feedNextIntoSubject(x: string) { replaySubject.next(x); }
       function feedErrorIntoSubject(err: any) { replaySubject.error(err); }
       function feedCompleteIntoSubject() { replaySubject.complete(); }

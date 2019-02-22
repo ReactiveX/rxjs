@@ -379,7 +379,7 @@ describe('ajax', () => {
         expect(x.xhr.method).to.equal('GET');
         expect(x.xhr.responseText).to.equal(expected);
       }, () => {
-        throw 'should not have been called';
+        throw new Error('should not have been called');
       });
 
     expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
@@ -395,13 +395,13 @@ describe('ajax', () => {
 
     ajax('/flibbertyJibbet')
       .subscribe(() => {
-        throw 'should not have been called';
+        throw new Error('should not have been called');
       }, (x: any) => {
         expect(x.status).to.equal(500);
         expect(x.xhr.method).to.equal('GET');
         expect(x.xhr.responseText).to.equal(expected);
       }, () => {
-        throw 'should not have been called';
+        throw new Error('should not have been called');
       });
 
     expect(MockXMLHttpRequest.mostRecent.url).to.equal('/flibbertyJibbet');
@@ -427,7 +427,7 @@ describe('ajax', () => {
         expect(x.xhr.timeout).to.equal(10);
         expect(x.xhr.responseType).to.equal('text');
       }, () => {
-        throw 'should not have been called';
+        throw new Error('should not have been called');
       });
 
     const request = MockXMLHttpRequest.mostRecent;
@@ -450,7 +450,7 @@ describe('ajax', () => {
 
     ajax(obj)
       .subscribe((x: any) => {
-        throw 'should not have been called';
+        throw new Error('should not have been called');
       }, (e) => {
         expect(e.status).to.equal(0);
         expect(e.xhr.method).to.equal('GET');
@@ -490,7 +490,7 @@ describe('ajax', () => {
         expect(x.xhr.timeout).to.be.undefined;
         expect(x.xhr.responseType).to.equal('');
       }, () => {
-        throw 'should not have been called';
+        throw new Error('should not have been called');
       });
 
     const request = MockXMLHttpRequest.mostRecent;

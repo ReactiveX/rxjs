@@ -14,7 +14,7 @@ describe('fromEventPattern', () => {
   asDiagram('fromEventPattern(addHandler, removeHandler)')
   ('should create an observable from the handler API', () => {
     function addHandler(h: any) {
-      timer(50, 20, rxTestScheduler).pipe(
+      timer(5, 2, rxTestScheduler).pipe(
         mapTo('ev'),
         take(2),
         concat(NEVER)

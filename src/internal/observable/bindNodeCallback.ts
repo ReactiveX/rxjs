@@ -228,7 +228,7 @@ interface ParamsState<T> {
   context: any;
 }
 
-function dispatch<T>(this: SchedulerAction<DispatchState<T>>, state: DispatchState<T>) {
+function dispatch<T>(state: DispatchState<T>) {
   const { params, subscriber, context } = state;
   const { callbackFunc, args, scheduler } = params;
   let subject = params.subject;
@@ -239,21 +239,21 @@ function dispatch<T>(this: SchedulerAction<DispatchState<T>>, state: DispatchSta
     const handler = (...innerArgs: any[]) => {
       const err = innerArgs.shift();
       if (err) {
-        this.add(scheduler.schedule<DispatchErrorArg<T>>(dispatchError, 0, { err, subject }));
+        subscriber.add(scheduler.schedule<DispatchErrorArg<T>>(dispatchError, 0, { err, subject }));
       } else {
         const value = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
-        this.add(scheduler.schedule<DispatchNextArg<T>>(dispatchNext, 0, { value, subject }));
+        subscriber.add(scheduler.schedule<DispatchNextArg<T>>(dispatchNext, 0, { value, subject }));
       }
     };
 
     try {
       callbackFunc.apply(context, [...args, handler]);
     } catch (err) {
-      this.add(scheduler.schedule<DispatchErrorArg<T>>(dispatchError, 0, { err, subject }));
+      subscriber.add(scheduler.schedule<DispatchErrorArg<T>>(dispatchError, 0, { err, subject }));
     }
   }
 
-  this.add(subject.subscribe(subscriber));
+  subscriber.add(subject.subscribe(subscriber));
 }
 
 interface DispatchNextArg<T> {

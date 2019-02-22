@@ -9,9 +9,7 @@ declare const rxTestScheduler: TestScheduler;
 
 /** @test {startWith} */
 describe('startWith operator', () => {
-  const defaultStartValue = 'x';
-
-  asDiagram('startWith(s)')('should prepend to a cold Observable', () => {
+  asDiagram('startWith("s")')('should prepend to a cold Observable', () => {
     const e1 =  cold('---a--b--c--|');
     const e1subs =   '^           !';
     const expected = 's--a--b--c--|';
@@ -25,7 +23,7 @@ describe('startWith operator', () => {
     const e1subs =   '^    !';
     const expected = 'x-a--|';
 
-    expectObservable(e1.pipe(startWith(defaultStartValue))).toBe(expected);
+    expectObservable(e1.pipe(startWith('x'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -34,7 +32,7 @@ describe('startWith operator', () => {
     const e1subs =   '^     ';
     const expected = 'x---a-';
 
-    expectObservable(e1.pipe(startWith(defaultStartValue))).toBe(expected);
+    expectObservable(e1.pipe(startWith('x'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -43,7 +41,7 @@ describe('startWith operator', () => {
     const e1subs =   '^';
     const expected = 'x-';
 
-    expectObservable(e1.pipe(startWith(defaultStartValue))).toBe(expected);
+    expectObservable(e1.pipe(startWith('x'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -52,7 +50,7 @@ describe('startWith operator', () => {
     const e1subs =   '^  !';
     const expected = 'x--|';
 
-    expectObservable(e1.pipe(startWith(defaultStartValue))).toBe(expected);
+    expectObservable(e1.pipe(startWith('x'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -61,7 +59,7 @@ describe('startWith operator', () => {
     const e1subs =   '(^!)';
     const expected = '(x|)';
 
-    expectObservable(e1.pipe(startWith(defaultStartValue))).toBe(expected);
+    expectObservable(e1.pipe(startWith('x'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -70,7 +68,7 @@ describe('startWith operator', () => {
     const e1subs =   '(^!)';
     const expected = '(xa|)';
 
-    expectObservable(e1.pipe(startWith(defaultStartValue))).toBe(expected);
+    expectObservable(e1.pipe(startWith('x'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -83,12 +81,12 @@ describe('startWith operator', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
-  it('should start with given value and raises error if source raises error', () => {
+  it('should start with given value and raise error if source raises an error', () => {
     const e1 =   hot('--#');
     const e1subs =   '^ !';
     const expected = 'x-#';
 
-    expectObservable(e1.pipe(startWith(defaultStartValue))).toBe(expected, defaultStartValue);
+    expectObservable(e1.pipe(startWith('x'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -97,7 +95,7 @@ describe('startWith operator', () => {
     const e1subs =   '(^!)';
     const expected = '(x#)';
 
-    expectObservable(e1.pipe(startWith(defaultStartValue))).toBe(expected, defaultStartValue);
+    expectObservable(e1.pipe(startWith('x'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -145,7 +143,7 @@ describe('startWith operator', () => {
     const e1subs =   '^    !';
     const expected = 'x-a--|';
 
-    expectObservable(e1.pipe(startWith(defaultStartValue, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(startWith('x', rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 

@@ -1,4 +1,3 @@
-import { QueueAction } from './QueueAction';
 import { QueueScheduler } from './QueueScheduler';
 
 /**
@@ -34,4 +33,4 @@ import { QueueScheduler } from './QueueScheduler';
  * ```
  */
 
-export const queue = new QueueScheduler(QueueAction);
+export const queue = new QueueScheduler();

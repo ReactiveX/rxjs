@@ -20,7 +20,7 @@ describe('from', () => {
   ('should create an observable from an array', () => {
     const e1 = from([10, 20, 30])
       // for the purpose of making a nice diagram, spread out the synchronous emissions
-      .concatMap((x, i) => of(x).delay(i === 0 ? 0 : 20, rxTestScheduler));
+      .concatMap((x, i) => of(x).delay(i === 0 ? 0 : 2, rxTestScheduler));
     const expected = 'x-y-(z|)';
     expectObservable(e1).toBe(expected, {x: 10, y: 20, z: 30});
   });

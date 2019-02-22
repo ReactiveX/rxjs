@@ -9,13 +9,13 @@ declare const rxTestScheduler: TestScheduler;
 
 /** @test {sampleTime} */
 describe('sampleTime operator', () => {
-  asDiagram('sampleTime(70)')('should get samples on a delay', () => {
+  asDiagram('sampleTime(7)')('should get samples on a delay', () => {
     const e1 =   hot('a---b-c---------d--e---f-g-h--|');
     const e1subs =   '^                             !';
     const expected = '-------c-------------e------h-|';
     // timer          -------!------!------!------!--
 
-    expectObservable(e1.pipe(sampleTime(70, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(sampleTime(7, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -25,7 +25,7 @@ describe('sampleTime operator', () => {
     const expected =       '-----------c----------------|';
     // timer              -----------!----------!---------
 
-    expectObservable(e1.pipe(sampleTime(110, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(sampleTime(11, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -35,7 +35,7 @@ describe('sampleTime operator', () => {
     const expected =       '-----------c----------c-----|';
     // timer              -----------!----------!---------
 
-    expectObservable(e1.pipe(sampleTime(110, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(sampleTime(11, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -45,7 +45,7 @@ describe('sampleTime operator', () => {
     const expected =       '----------------------b-----|';
     // timer              -----------!----------!---------
 
-    expectObservable(e1.pipe(sampleTime(110, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(sampleTime(11, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -55,7 +55,7 @@ describe('sampleTime operator', () => {
     const expected =       '-----------c------#';
     // timer              -----------!----------!---------
 
-    expectObservable(e1.pipe(sampleTime(110, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(sampleTime(11, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -66,7 +66,7 @@ describe('sampleTime operator', () => {
     const expected =       '-----------c-----            ';
     // timer              -----------!----------!---------
 
-    expectObservable(e1.pipe(sampleTime(110, rxTestScheduler)), unsub).toBe(expected);
+    expectObservable(e1.pipe(sampleTime(11, rxTestScheduler)), unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -79,7 +79,7 @@ describe('sampleTime operator', () => {
 
     const result = e1.pipe(
       mergeMap((x: string) => of(x)),
-      sampleTime(110, rxTestScheduler),
+      sampleTime(11, rxTestScheduler),
       mergeMap((x: string) => of(x))
     );
 
@@ -92,7 +92,7 @@ describe('sampleTime operator', () => {
     const e1subs =   '(^!)';
     const expected = '|';
 
-    expectObservable(e1.pipe(sampleTime(60, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(sampleTime(6, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -101,7 +101,7 @@ describe('sampleTime operator', () => {
     const e1subs =   '(^!)';
     const expected = '#';
 
-    expectObservable(e1.pipe(sampleTime(60, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(sampleTime(6, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -110,7 +110,7 @@ describe('sampleTime operator', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    expectObservable(e1.pipe(sampleTime(60, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(sampleTime(6, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });

@@ -1,9 +1,6 @@
 import { painter } from './painter';
-import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { TestMessage } from '../../../src/internal/testing/TestMessage';
-import { ColdObservable } from '../../../src/internal/testing/ColdObservable';
-import { HotObservable } from '../../../src/internal/testing/HotObservable';
 import { TestStream } from './types';
 
 declare const global: any;
@@ -12,16 +9,16 @@ export const rxTestScheduler: TestScheduler = global.rxTestScheduler;
 
 function getInputStreams(rxTestScheduler: TestScheduler): TestStream[] {
   return Array.prototype.concat.call([],
-    rxTestScheduler.hotObservables
-      .map(function (hot) {
+    (rxTestScheduler as any)._hotObservables
+      .map(function (hot: any) {
         return {
           messages: hot.messages,
           subscription: {start: 0, end: '100%'},
         };
       })
       .slice(),
-    rxTestScheduler.coldObservables
-      .map(function (cold) {
+    (rxTestScheduler as any)._coldObservables
+      .map(function (cold: any) {
         return {
           messages: cold.messages,
           cold: cold,
@@ -92,6 +89,7 @@ global.asDiagram = function asDiagram(operatorLabel: string, glit: glitFn) {
           }
           return true;
         });
+        global.rxTestScheduler.maxFrames = 750; // HACK(benlesh): old default
         specFn();
         let inputStreams = getInputStreams(global.rxTestScheduler);
         global.rxTestScheduler.flush();

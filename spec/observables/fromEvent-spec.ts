@@ -16,7 +16,7 @@ describe('fromEvent', () => {
   ('should create an observable of click on the element', () => {
     const target = {
       addEventListener: (eventType: any, listener: any) => {
-        timer(50, 20, rxTestScheduler)
+        timer(5, 2, rxTestScheduler)
           .pipe(
             mapTo('ev'),
             take(2),

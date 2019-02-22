@@ -14,7 +14,7 @@ describe('timeInterval operator', () => {
     const e1 = hot('--a--^b-c-----d--e--|');
     const e1subs =      '^              !';
     const expected =    '-w-x-----y--z--|';
-    const expectedValue = { w: 10, x: 20, y: 60, z: 30 };
+    const expectedValue = { w: 1, x: 2, y: 6, z: 3 };
 
     const result = (<any>e1).pipe(
       timeInterval(rxTestScheduler),
@@ -31,13 +31,13 @@ describe('timeInterval operator', () => {
     const expected =    '-w--x----y---z--|';
 
     const expectedValue = {
-      w: new TimeInterval('b', 10),
-      x: new TimeInterval('c', 30),
-      y: new TimeInterval('d', 50),
-      z: new TimeInterval('e', 40)
+      w: new TimeInterval('b', 1),
+      x: new TimeInterval('c', 3),
+      y: new TimeInterval('d', 5),
+      z: new TimeInterval('e', 4)
     };
 
-    expectObservable((<any>e1).pipe(timeInterval(rxTestScheduler))).toBe(expected, expectedValue);
+    expectObservable(e1.pipe(timeInterval(rxTestScheduler))).toBe(expected, expectedValue);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -65,8 +65,8 @@ describe('timeInterval operator', () => {
     const expected = '-y--z--';
 
     const expectedValue = {
-      y: new TimeInterval('a', 10),
-      z: new TimeInterval('b', 30)
+      y: new TimeInterval('a', 1),
+      z: new TimeInterval('b', 3)
     };
 
     expectObservable((<any>e1).pipe(timeInterval(rxTestScheduler))).toBe(expected, expectedValue);
@@ -80,8 +80,8 @@ describe('timeInterval operator', () => {
     const expected = '-y--z---           ';
 
     const expectedValue = {
-      y: new TimeInterval('a', 10),
-      z: new TimeInterval('b', 30)
+      y: new TimeInterval('a', 1),
+      z: new TimeInterval('b', 3)
     };
 
     const result = (<any>e1).pipe(timeInterval(rxTestScheduler));
@@ -97,8 +97,8 @@ describe('timeInterval operator', () => {
     const unsub =    '       !           ';
 
     const expectedValue = {
-      y: new TimeInterval('a', 10),
-      z: new TimeInterval('b', 30)
+      y: new TimeInterval('a', 1),
+      z: new TimeInterval('b', 3)
     };
 
     const result = (<any>e1).pipe(
@@ -135,8 +135,8 @@ describe('timeInterval operator', () => {
     const expected = '-y--z--#';
 
     const expectedValue = {
-      y: new TimeInterval('a', 10),
-      z: new TimeInterval('b', 30)
+      y: new TimeInterval('a', 1),
+      z: new TimeInterval('b', 3)
     };
 
     expectObservable((<any>e1).pipe(timeInterval(rxTestScheduler))).toBe(expected, expectedValue);

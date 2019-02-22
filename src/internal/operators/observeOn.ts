@@ -79,10 +79,9 @@ export class ObserveOnOperator<T> implements Operator<T, T> {
  */
 export class ObserveOnSubscriber<T> extends Subscriber<T> {
   /** @nocollapse */
-  static dispatch(this: SchedulerAction<ObserveOnMessage>, arg: ObserveOnMessage) {
+  static dispatch<T>(arg: ObserveOnMessage<T>) {
     const { notification, destination } = arg;
     notification.observe(destination);
-    this.unsubscribe();
   }
 
   constructor(destination: Subscriber<T>,
@@ -91,12 +90,12 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
     super(destination);
   }
 
-  private scheduleMessage(notification: Notification<any>): void {
-    const destination = this.destination as Subscription;
-    destination.add(this.scheduler.schedule(
+  private scheduleMessage(notification: Notification<T>): void {
+    const destination = this.destination as Subscriber<T>;
+    destination.add(this.scheduler.schedule<ObserveOnMessage<T>>(
       ObserveOnSubscriber.dispatch,
       this.delay,
-      new ObserveOnMessage(notification, this.destination)
+      new ObserveOnMessage(notification, destination)
     ));
   }
 
@@ -115,8 +114,8 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
   }
 }
 
-export class ObserveOnMessage {
-  constructor(public notification: Notification<any>,
-              public destination: PartialObserver<any>) {
+export class ObserveOnMessage<T> {
+  constructor(public notification: Notification<T>,
+              public destination: Subscriber<T>) {
   }
 }

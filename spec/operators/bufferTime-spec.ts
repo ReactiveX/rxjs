@@ -80,12 +80,12 @@ describe('bufferTime operator', () => {
 
   it('should emit buffers that have been created at intervals and close after the specified delay', () => {
     const e1 =   hot('---a---b---c----d----e----f----g----h----i----(k|)');
-                 // --------------------*--------------------*----  start interval
-                 // ---------------------|                          timespans
-                 //                     ---------------------|
-                 //                                          -----|
-    const t = time(  '---------------------|');
-    const interval = time(                '--------------------|');
+                   // --------------------|--------------------|----- new buffers created
+                   // ---------------------|                          buffer 1
+                   //                     ---------------------|      buffer 2
+                   //                                          -----| buffer 3
+    const bufferTimeSpan = 21;
+    const bufferCreationInterval = 20;
     const expected = '---------------------x-------------------y----(z|)';
     const values = {
       x: ['a', 'b', 'c', 'd', 'e'],
@@ -93,7 +93,7 @@ describe('bufferTime operator', () => {
       z: ['i', 'k']
     };
 
-    const result = e1.pipe(bufferTime(t, interval, Number.POSITIVE_INFINITY, rxTestScheduler));
+    const result = e1.pipe(bufferTime(bufferTimeSpan, bufferCreationInterval, Number.POSITIVE_INFINITY, rxTestScheduler));
 
     expectObservable(result).toBe(expected, values);
   });
@@ -309,8 +309,6 @@ describe('bufferTime operator', () => {
   });
 
   it('should not have errors when take follows and maxBufferSize is provided', () => {
-    const tick = 10;
-    const buffTime = 50;
     const expected = '-----a----b----c----d----(e|)';
     const values = {
       a: [0, 1, 2, 3],
@@ -320,8 +318,8 @@ describe('bufferTime operator', () => {
       e: [19, 20, 21, 22, 23]
     };
 
-    const source = interval(tick, rxTestScheduler).pipe(
-      bufferTime(buffTime, null, 10, rxTestScheduler),
+    const source = interval(1, rxTestScheduler).pipe(
+      bufferTime(5, null, 10, rxTestScheduler),
       take(5)
     );
 

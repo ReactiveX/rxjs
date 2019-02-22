@@ -1,1 +1,1 @@
-export { TestScheduler } from '../internal/testing/TestScheduler';
+export { TestScheduler, parseMarbles, parseMarblesAsSubscriptions } from '../internal/testing/TestScheduler';

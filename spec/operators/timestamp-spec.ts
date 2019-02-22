@@ -14,7 +14,7 @@ describe('timestamp operator', () => {
     const e1 =   hot('-b-c-----d--e--|');
     const e1subs =   '^              !';
     const expected = '-w-x-----y--z--|';
-    const expectedValue = { w: 10, x: 30, y: 90, z: 120 };
+    const expectedValue = { w: 1, x: 3, y: 9, z: 12 };
 
     const result = e1.pipe(
       timestamp(rxTestScheduler),
@@ -31,10 +31,10 @@ describe('timestamp operator', () => {
     const expected =    '-w--x----y---z--|';
 
     const expectedValue = {
-      w: new Timestamp('b', 10),
-      x: new Timestamp('c', 40),
-      y: new Timestamp('d', 90),
-      z: new Timestamp('e', 130)
+      w: new Timestamp('b', 1),
+      x: new Timestamp('c', 4),
+      y: new Timestamp('d', 9),
+      z: new Timestamp('e', 13)
     };
 
     expectObservable(e1.pipe(timestamp(rxTestScheduler))).toBe(expected, expectedValue);
@@ -65,8 +65,8 @@ describe('timestamp operator', () => {
     const expected = '-y--z--';
 
     const expectedValue = {
-      y: new Timestamp('a', 10),
-      z: new Timestamp('b', 40)
+      y: new Timestamp('a', 1),
+      z: new Timestamp('b', 4)
     };
 
     expectObservable(e1.pipe(timestamp(rxTestScheduler))).toBe(expected, expectedValue);
@@ -80,8 +80,8 @@ describe('timestamp operator', () => {
     const expected = '-y--z---           ';
 
     const expectedValue = {
-      y: new Timestamp('a', 10),
-      z: new Timestamp('b', 40)
+      y: new Timestamp('a', 1),
+      z: new Timestamp('b', 4)
     };
 
     const result = e1.pipe(timestamp(rxTestScheduler));
@@ -97,8 +97,8 @@ describe('timestamp operator', () => {
     const unsub =    '       !           ';
 
     const expectedValue = {
-      y: new Timestamp('a', 10),
-      z: new Timestamp('b', 40)
+      y: new Timestamp('a', 1),
+      z: new Timestamp('b', 4)
     };
 
     const result = e1.pipe(
@@ -135,8 +135,8 @@ describe('timestamp operator', () => {
     const expected = '-y--z--#';
 
     const expectedValue = {
-      y: new Timestamp('a', 10),
-      z: new Timestamp('b', 40)
+      y: new Timestamp('a', 1),
+      z: new Timestamp('b', 4)
     };
 
     expectObservable(e1.pipe(timestamp(rxTestScheduler))).toBe(expected, expectedValue);

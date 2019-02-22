@@ -10,20 +10,20 @@ declare const rxTestScheduler: TestScheduler;
 
 /** @test {auditTime} */
 describe('auditTime operator', () => {
-  asDiagram('auditTime(50)')('should emit the last value in each time window', () => {
+  asDiagram('auditTime(5)')('should emit the last value in each time window', () => {
     const e1 =   hot('-a-x-y----b---x-cx---|');
     const subs =     '^                    !';
     const expected = '------y--------x-----|';
 
-    const result = e1.pipe(auditTime(50, rxTestScheduler));
+    const result = e1.pipe(auditTime(5, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
-  it('should auditTime events by 50 time units', (done: MochaDone) => {
+  it('should auditTime events by 5 time units', (done: MochaDone) => {
     of(1, 2, 3).pipe(
-      auditTime(50)
+      auditTime(5)
     ).subscribe((x: number) => {
         done(new Error('should not be called'));
       }, null, () => {
@@ -34,16 +34,16 @@ describe('auditTime operator', () => {
   it('should auditTime events multiple times', () => {
     const expected = ['1-2', '2-2'];
     concat(
-      timer(0, 10, rxTestScheduler).pipe(
+      timer(0, 1, rxTestScheduler).pipe(
         take(3),
         map((x: number) => '1-' + x)
       ),
-      timer(80, 10, rxTestScheduler).pipe(
+      timer(8, 1, rxTestScheduler).pipe(
         take(5),
         map((x: number) => '2-' + x)
       )
     ).pipe(
-      auditTime(50, rxTestScheduler)
+      auditTime(5, rxTestScheduler)
     ).subscribe((x: string) => {
         expect(x).to.equal(expected.shift());
       });
@@ -56,7 +56,7 @@ describe('auditTime operator', () => {
     const subs =     '^                    !';
     const expected = '------a--------b-----|';
 
-    expectObservable(e1.pipe(auditTime(50, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(auditTime(5, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -65,7 +65,7 @@ describe('auditTime operator', () => {
     const subs =     '^                        !';
     const expected = '-----f-----f-----f-----f-|';
 
-    expectObservable(e1.pipe(auditTime(50, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(auditTime(5, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -74,7 +74,7 @@ describe('auditTime operator', () => {
     const subs =     '^    !';
     const expected = '-----|';
 
-    expectObservable(e1.pipe(auditTime(50, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(auditTime(5, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -83,7 +83,7 @@ describe('auditTime operator', () => {
     const subs =     '^    !';
     const expected = '-----#';
 
-    expectObservable(e1.pipe(auditTime(10, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(auditTime(1, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -92,7 +92,7 @@ describe('auditTime operator', () => {
     const subs =     '(^!)';
     const expected = '|';
 
-    expectObservable(e1.pipe(auditTime(30, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(auditTime(3, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -101,7 +101,7 @@ describe('auditTime operator', () => {
     const subs =     '^';
     const expected = '-';
 
-    expectObservable(e1.pipe(auditTime(30, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(auditTime(3, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -110,7 +110,7 @@ describe('auditTime operator', () => {
     const subs =     '(^!)';
     const expected = '#';
 
-    expectObservable(e1.pipe(auditTime(30, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(auditTime(3, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -120,7 +120,7 @@ describe('auditTime operator', () => {
     const subs =     '^                              !';
     const expected = '------c-------------d-----------';
 
-    expectObservable(e1.pipe(auditTime(50, rxTestScheduler)), unsub).toBe(expected);
+    expectObservable(e1.pipe(auditTime(5, rxTestScheduler)), unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -132,7 +132,7 @@ describe('auditTime operator', () => {
 
     const result = e1.pipe(
       mergeMap((x: string) => of(x)),
-      auditTime(50, rxTestScheduler),
+      auditTime(5, rxTestScheduler),
       mergeMap((x: string) => of(x))
     );
 
@@ -145,7 +145,7 @@ describe('auditTime operator', () => {
     const subs =     '^                              !';
     const expected = '------c-------------d----------#';
 
-    expectObservable(e1.pipe(auditTime(50, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(auditTime(5, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 });

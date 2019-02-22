@@ -8,14 +8,14 @@ declare const rxTestScheduler: TestScheduler;
 
 /** @test {timeoutWith} */
 describe('timeoutWith operator', () => {
-  asDiagram('timeoutWith(50)')('should timeout after a specified period then subscribe to the passed observable', () => {
+  asDiagram('timeoutWith(5)')('should timeout after a specified period then subscribe to the passed observable', () => {
     const e1 =  cold('-------a--b--|');
     const e1subs =   '^    !        ';
     const e2 =       cold('x-y-z-|  ');
     const e2subs =   '     ^     !  ';
     const expected = '-----x-y-z-|  ';
 
-    const result = e1.pipe(timeoutWith(50, e2, rxTestScheduler));
+    const result = e1.pipe(timeoutWith(5, e2, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -29,7 +29,7 @@ describe('timeoutWith operator', () => {
     const e2subs =   '          ^          !';
     const expected = '------------x--y--z--|';
 
-    const result = e1.pipe(timeoutWith(new Date(rxTestScheduler.now() + 100), e2, rxTestScheduler));
+    const result = e1.pipe(timeoutWith(new Date(rxTestScheduler.now() + 10), e2, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -44,7 +44,7 @@ describe('timeoutWith operator', () => {
     const e2subs =     '           ^    !  ';
     const expected =   '---a---b----x-y-|  ';
 
-    const result = e1.pipe(timeoutWith(40, e2, rxTestScheduler));
+    const result = e1.pipe(timeoutWith(4, e2, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -59,7 +59,7 @@ describe('timeoutWith operator', () => {
     const expected =   '---a---b----x--    ';
     const unsub =      '              !    ';
 
-    const result = e1.pipe(timeoutWith(40, e2, rxTestScheduler));
+    const result = e1.pipe(timeoutWith(4, e2, rxTestScheduler));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -76,7 +76,7 @@ describe('timeoutWith operator', () => {
 
     const result = e1.pipe(
       mergeMap((x: string) => of(x)),
-      timeoutWith(40, e2, rxTestScheduler),
+      timeoutWith(4, e2, rxTestScheduler),
       mergeMap((x: string) => of(x))
     );
 
@@ -95,7 +95,7 @@ describe('timeoutWith operator', () => {
 
     const result = e1.pipe(
       mergeMap((x: string) => of(x)),
-      timeoutWith(50, e2, rxTestScheduler),
+      timeoutWith(5, e2, rxTestScheduler),
       mergeMap((x: string) => of(x))
     );
 
@@ -112,7 +112,7 @@ describe('timeoutWith operator', () => {
     const e2subs =   '          ^        !';
     const expected = '--------------x----|';
 
-    const result = e1.pipe(timeoutWith(100, e2, rxTestScheduler));
+    const result = e1.pipe(timeoutWith(10, e2, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -127,7 +127,7 @@ describe('timeoutWith operator', () => {
     const e2subs =   '         ^           ';
     const expected = '--a--b----           ';
 
-    const result = e1.pipe(timeoutWith(40, e2, rxTestScheduler));
+    const result = e1.pipe(timeoutWith(4, e2, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -142,7 +142,7 @@ describe('timeoutWith operator', () => {
     const e2subs =   '          ^        !';
     const expected = '--------------x----|';
 
-    const result = e1.pipe(timeoutWith(100, e2, rxTestScheduler));
+    const result = e1.pipe(timeoutWith(10, e2, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -157,7 +157,7 @@ describe('timeoutWith operator', () => {
     const e2subs =   '          ^        ';
     const expected = '--------------x----';
 
-    const result = e1.pipe(timeoutWith(100, e2, rxTestScheduler));
+    const result = e1.pipe(timeoutWith(10, e2, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -171,7 +171,7 @@ describe('timeoutWith operator', () => {
     const e2subs: string[] = [];
     const expected = '-----|';
 
-    const result = e1.pipe(timeoutWith(100, e2, rxTestScheduler));
+    const result = e1.pipe(timeoutWith(10, e2, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -185,7 +185,7 @@ describe('timeoutWith operator', () => {
     const e2subs: string[] = [];
     const expected = '-----#';
 
-    const result = e1.pipe(timeoutWith(100, e2, rxTestScheduler));
+    const result = e1.pipe(timeoutWith(10, e2, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -199,7 +199,7 @@ describe('timeoutWith operator', () => {
     const e2subs: string[] = [];
     const expected = '--a--b--c--d--e--|';
 
-    const result = e1.pipe(timeoutWith(50, e2, rxTestScheduler));
+    const result = e1.pipe(timeoutWith(5, e2, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -213,7 +213,7 @@ describe('timeoutWith operator', () => {
     const e2subs =   '       ^    !     ';
     const expected = '--a--b---z--|     ';
 
-    const result = e1.pipe(timeoutWith(new Date(rxTestScheduler.now() + 70), e2, rxTestScheduler));
+    const result = e1.pipe(timeoutWith(new Date(rxTestScheduler.now() + 7), e2, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -227,7 +227,7 @@ describe('timeoutWith operator', () => {
     const e2subs: string[] = [];
     const expected = '--a--b--c--d--e--|';
 
-    const timeoutValue = new Date(Date.now() + (expected.length + 2) * 10);
+    const timeoutValue = new Date(Date.now() + (expected.length + 2));
 
     const result = e1.pipe(timeoutWith(timeoutValue, e2, rxTestScheduler));
 
@@ -243,7 +243,7 @@ describe('timeoutWith operator', () => {
     const e2subs: string[] = [];
     const expected = '---a---#';
 
-    const result = e1.pipe(timeoutWith(new Date(Date.now() + 100), e2, rxTestScheduler));
+    const result = e1.pipe(timeoutWith(new Date(Date.now() + 10), e2, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -258,7 +258,7 @@ describe('timeoutWith operator', () => {
     const e2subs =   '          ^             ';
     const expected = '---a---b---             ';
 
-    const result = e1.pipe(timeoutWith(new Date(rxTestScheduler.now() + 100), e2, rxTestScheduler));
+    const result = e1.pipe(timeoutWith(new Date(rxTestScheduler.now() + 10), e2, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -276,16 +276,16 @@ describe('timeoutWith operator', () => {
     const result = e1
       .lift({
         call: (timeoutSubscriber, source) => {
-          const { action } = <any> timeoutSubscriber; // get a ref to the action here
-          timeoutSubscriber.add(() => {               // because it'll be null by the
-            if (!action.closed) {                     // time we get into this function.
+          const { _innerSubscription } = <any> timeoutSubscriber; // get a ref to the _innerSubscription here
+          timeoutSubscriber.add(() => {                          // because it'll be null by the
+            if (!_innerSubscription.closed) {                     // time we get into this function.
               throw new Error('TimeoutSubscriber scheduled action wasn\'t canceled');
             }
           });
           return source.subscribe(timeoutSubscriber);
         }
       })
-      .pipe(timeoutWith(40, e2, rxTestScheduler));
+      .pipe(timeoutWith(4, e2, rxTestScheduler));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

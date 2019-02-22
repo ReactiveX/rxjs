@@ -38,9 +38,12 @@ export class Subscription implements SubscriptionLike {
    * @param {function(): void} [unsubscribe] A function describing how to
    * perform the disposal of resources when the `unsubscribe` method is called.
    */
-  constructor(unsubscribe?: () => void) {
-    if (unsubscribe) {
-      (<any> this)._unsubscribe = unsubscribe;
+  constructor(private __unsubscribe?: () => void) {
+  }
+
+  protected _unsubscribe() {
+    if (this.__unsubscribe) {
+      this.__unsubscribe();
     }
   }
 
@@ -57,7 +60,7 @@ export class Subscription implements SubscriptionLike {
       return;
     }
 
-    let { _parentOrParents, _unsubscribe, _subscriptions } = (<any> this);
+    let { _parentOrParents, _subscriptions } = this;
 
     this.closed = true;
     this._parentOrParents = null;
@@ -74,9 +77,9 @@ export class Subscription implements SubscriptionLike {
       }
     }
 
-    if (isFunction(_unsubscribe)) {
+    if (isFunction(this._unsubscribe)) {
       try {
-        _unsubscribe.call(this);
+        this._unsubscribe();
       } catch (e) {
         errors = e instanceof UnsubscriptionError ? flattenUnsubscriptionErrors(e.errors) : [e];
       }

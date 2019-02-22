@@ -1,6 +1,6 @@
 import { Observable } from '../Observable';
 import { async } from '../scheduler/async';
-import { SchedulerAction, SchedulerLike } from '../types';
+import { SchedulerLike } from '../types';
 import { isNumeric } from '../util/isNumeric';
 import { Subscriber } from '../Subscriber';
 
@@ -69,9 +69,13 @@ export function interval(period = 0,
 
 function dispatch(state: IntervalState) {
   const { subscriber, counter, period, scheduler } = state;
-  subscriber.next(counter);
-  state.counter++;
-  subscriber.add(scheduler.schedule(dispatch, period, state));
+  if (!subscriber.closed) {
+    subscriber.next(counter);
+    if (!subscriber.closed) {
+      state.counter++;
+      subscriber.add(scheduler.schedule(dispatch, period, state));
+    }
+  }
 }
 interface IntervalState {
   subscriber: Subscriber<number>;

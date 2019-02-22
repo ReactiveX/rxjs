@@ -1,6 +1,5 @@
-import { SchedulerLike, SchedulerAction } from '../types';
+import { SchedulerLike } from '../types';
 import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
 import { Observable } from '../Observable';
 import { asap } from '../scheduler/asap';
 import { isNumeric } from '../util/isNumeric';
@@ -22,9 +21,9 @@ export class SubscribeOnObservable<T> extends Observable<T> {
   }
 
   /** @nocollapse */
-  static dispatch<T>(this: SchedulerAction<T>, arg: DispatchArg<T>): Subscription {
+  static dispatch<T>(arg: DispatchArg<T>) {
     const { source, subscriber } = arg;
-    return this.add(source.subscribe(subscriber));
+    subscriber.add(source.subscribe(subscriber));
   }
 
   constructor(public source: Observable<T>,

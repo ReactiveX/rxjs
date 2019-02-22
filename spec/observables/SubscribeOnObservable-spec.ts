@@ -38,7 +38,7 @@ describe('SubscribeOnObservable', () => {
     const e1 =   hot('--a--b--|');
     const expected = '-----b--|';
     const sub      = '   ^    !';
-    const subscribe = new SubscribeOnObservable(e1, 30, rxTestScheduler);
+    const subscribe = new SubscribeOnObservable(e1, 3, rxTestScheduler);
 
     expectObservable(subscribe).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);

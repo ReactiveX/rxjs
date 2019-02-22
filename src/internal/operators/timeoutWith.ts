@@ -5,7 +5,8 @@ import { Observable } from '../Observable';
 import { isDate } from '../util/isDate';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
-import { ObservableInput, OperatorFunction, MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
+import { ObservableInput, OperatorFunction, SchedulerLike, TeardownLogic } from '../types';
+import { Subscription } from 'rxjs/Rx';
 
 /* tslint:disable:max-line-length */
 export function timeoutWith<T, R>(due: number | Date, withObservable: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;
@@ -69,7 +70,7 @@ export function timeoutWith<T, R>(due: number | Date,
                                   scheduler: SchedulerLike = async): OperatorFunction<T, T | R> {
   return (source: Observable<T>) => {
     let absoluteTimeout = isDate(due);
-    let waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
+    let waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(due as number);
     return source.lift(new TimeoutWithOperator(waitFor, absoluteTimeout, withObservable, scheduler));
   };
 }
@@ -94,8 +95,7 @@ class TimeoutWithOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
-
-  private action: SchedulerAction<TimeoutWithSubscriber<T, R>> = null;
+  private _innerSubscription: Subscription;
 
   constructor(destination: Subscriber<T>,
               private absoluteTimeout: boolean,
@@ -108,24 +108,17 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private static dispatchTimeout<T, R>(subscriber: TimeoutWithSubscriber<T, R>): void {
     const { withObservable } = subscriber;
-    (<any> subscriber)._unsubscribeAndRecycle();
+    subscriber._unsubscribeAndRecycle();
     subscriber.add(subscribeToResult(subscriber, withObservable));
   }
 
   private scheduleTimeout(): void {
-    const { action } = this;
-    if (action) {
-      // Recycle the action if we've already scheduled one. All the production
-      // Scheduler Actions mutate their state/delay time and return themeselves.
-      // VirtualActions are immutable, so they create and return a clone. In this
-      // case, we need to set the action reference to the most recent VirtualAction,
-      // to ensure that's the one we clone from next time.
-      this.action = (<SchedulerAction<TimeoutWithSubscriber<T, R>>> action.schedule(this, this.waitFor));
-    } else {
-      this.add(this.action = (<SchedulerAction<TimeoutWithSubscriber<T, R>>> this.scheduler.schedule<TimeoutWithSubscriber<T, R>>(
-        TimeoutWithSubscriber.dispatchTimeout, this.waitFor, this
-      )));
+    if (this._innerSubscription) {
+      this._innerSubscription.unsubscribe();
     }
+    this.add(this._innerSubscription = this.scheduler.schedule<TimeoutWithSubscriber<T, R>>(
+      TimeoutWithSubscriber.dispatchTimeout, this.waitFor, this
+    ));
   }
 
   protected _next(value: T): void {
@@ -133,12 +126,5 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
       this.scheduleTimeout();
     }
     super._next(value);
-  }
-
-  /** @deprecated This is an internal implementation detail, do not use. */
-  _unsubscribe() {
-    this.action = null;
-    this.scheduler = null;
-    this.withObservable = null;
   }
 }

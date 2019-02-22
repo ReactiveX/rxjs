@@ -9,21 +9,20 @@ declare const rxTestScheduler: TestScheduler;
 
 /** @test {windowTime} */
 describe('windowTime operator', () => {
-  asDiagram('windowTime(50, 100)')('should emit windows given windowTimeSpan ' +
-  'and windowCreationInterval', () => {
+  asDiagram('windowTime(50, 100)')('should emit windows given windowTimeSpan and windowCreationInterval', () => {
     const source = hot('--1--2--^-a--b--c--d--e---f--g--h-|');
     const subs =               '^                         !';
-    //  100 frames            0---------1---------2-----|
-    //  50                     ----|
-    //  50                               ----|
-    //  50                                         ----|
+    //  10 frames             0---------1---------2-----|
+    //  5                      ----|
+    //  5                                ----|
+    //  5                                          ----|
     const expected =           'x---------y---------z-----|';
     const x = cold(            '--a--(b|)                  ');
     const y = cold(                      '-d--e|           ');
     const z = cold(                                '-g--h| ');
     const values = { x, y, z };
 
-    const result = source.pipe(windowTime(50, 100, rxTestScheduler));
+    const result = source.pipe(windowTime(5, 10, rxTestScheduler));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -33,7 +32,7 @@ describe('windowTime operator', () => {
     const source = hot('--1--2--^--a--b--c--d--e--f--g-----|');
     const subs =               '^                          !';
     const timeSpan = time(     '----------|');
-    //  100 frames              0---------1---------2------|
+    //  10 frames               0---------1---------2------|
     const expected =           'x---------y---------z------|';
     const x = cold(            '---a--(b|)                  ');
     const y = cold(                      '--d--(e|)         ');
@@ -46,21 +45,20 @@ describe('windowTime operator', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should close window after max count is reached with' +
-  'windowCreationInterval', () => {
+  it('should close window after max count is reached with windowCreationInterval', () => {
     const source = hot('--1--2--^-a--b--c--de-f---g--h--i-|');
     const subs =               '^                         !';
-    //  100 frames              0---------1---------2-----|
-    //  50                      ----|
-    //  50                                ----|
-    //  50                                          ----|
+    //  10 frames               0---------1---------2-----|
+    //  5                       ----|
+    //  5                                 ----|
+    //  5                                           ----|
     const expected =           'x---------y---------z-----|';
     const x = cold(            '--a--(b|)                  ');
     const y = cold(                      '-de-(f|)         ');
     const z = cold(                                '-h--i| ');
     const values = { x, y, z };
 
-    const result = source.pipe(windowTime(50, 100, 3, rxTestScheduler));
+    const result = source.pipe(windowTime(5, 10, 3, rxTestScheduler));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -70,7 +68,7 @@ describe('windowTime operator', () => {
     const source = hot('--1--2--^--a--b--c--d--e--f--g--h--|');
     const subs =               '^                          !';
     const timeSpan = time(     '----------|');
-    //  100 frames            0---------1---------2------|
+    //  10 frames               0---------1---------2------|
     const expected =           'x---------y---------z------|';
     const x = cold(            '---a--b--c|                 ');
     const y = cold(                      '--d--e--f-|       ');
@@ -87,11 +85,11 @@ describe('windowTime operator', () => {
     const source = hot('--1--2--^--a--b--c--d--e--f--g--h--|');
     const subs =               '^                          !';
     const timeSpan = time(     '-----|');
-    const interval = time(               '----------|');
-    //  100 frames            0---------1---------2------|
-    //  50                     ----|
-    //  50                               ----|
-    //  50                                         ----|
+    const interval = time(     '----------|');
+    //  10 frames               0---------1---------2------|
+    //  5                       -----|
+    //  5                                 -----|
+    //  5                                           -----|
     const expected =           'x---------y---------z------|';
     const x = cold(            '---a-|                      ');
     const y = cold(                      '--d--(e|)         ');
@@ -173,10 +171,10 @@ describe('windowTime operator', () => {
     const subs =               '^                          !';
     const timeSpan = time(     '-----|');
     const interval = time(               '----------|');
-    //  100 frames            0---------1---------2------|
-    //  50                     ----|
-    //  50                               ----|
-    //  50                                         ----|
+    //  10 frames               0---------1---------2------|
+    //  5                       -----|
+    //  5                                 -----|
+    //  5                                           -----|
     const expected =           'x---------y---------z------#';
     const x = cold(            '---a-|                      ');
     const y = cold(                      '--d--(e|)         ');
@@ -189,16 +187,15 @@ describe('windowTime operator', () => {
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
-  it('should emit windows given windowTimeSpan and windowCreationInterval, ' +
-  'but outer is unsubscribed early', () => {
+  it('should emit windows given windowTimeSpan and windowCreationInterval, but outer is unsubscribed early', () => {
     const source = hot('--1--2--^--a--b--c--d--e--f--g--h--|');
     const subs =               '^          !                ';
     const timeSpan = time(     '-----|');
     const interval = time(               '----------|');
-    //  100 frames            0---------1---------2------|
-    //  50                     ----|
-    //  50                               ----|
-    //  50                                         ----|
+    //  10 frames               0---------1---------2------|
+    //  5                       -----|
+    //  5                                 -----|
+    //  5                                           -----|
     const expected =           'x---------y-                ';
     const x = cold(            '---a-|                      ');
     const y = cold(                      '--                ');
@@ -216,10 +213,10 @@ describe('windowTime operator', () => {
     const sourcesubs =         '^             !             ';
     const timeSpan = time(     '-----|');
     const interval = time(               '----------|');
-    //  100 frames            0---------1---------2------|
-    //  50                     ----|
-    //  50                               ----|
-    //  50                                         ----|
+    //  10 frames               0---------1---------2------|
+    //  5                       -----|
+    //  5                                 -----|
+    //  5                                           -----|
     const expected =           'x---------y----             ';
     const x = cold(            '---a-|                      ');
     const y = cold(                      '--d--             ');

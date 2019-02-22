@@ -1,5 +1,10 @@
-import { AnimationFrameAction } from './AnimationFrameAction';
-import { AnimationFrameScheduler } from './AnimationFrameScheduler';
+import { SchedulerLike } from '../types';
+import { Subscription } from 'rxjs/Rx';
+import { async } from 'rxjs/scheduler/async';
+import { DEFAULT_NOW } from './common';
+
+let _animationFrameId = -1;
+const _queue: any[] = [];
 
 /**
  *
@@ -35,5 +40,58 @@ import { AnimationFrameScheduler } from './AnimationFrameScheduler';
  * @name animationFrame
  * @owner Scheduler
  */
+export const animationFrame: SchedulerLike = {
+  schedule<S>(work: (state: S) => void, delay = 0, state?: S): Subscription {
+    const subscription = new Subscription();
+    if (delay > 0) {
+       subscription.add(
+         async.schedule(() => {
+           subscription.add(this.schedule(work, 0, state));
+         }, delay)
+       );
+    } else {
+      _queue.push(work, state, subscription);
+      if (_animationFrameId === -1) {
+        _animationFrameId = requestAnimationFrame(flushQueue);
+      }
+      subscription.add(() => {
+        const index = _queue.indexOf(subscription);
+        if (index >= 0) {
+          _queue.splice(index - 2, 3);
+        }
+        if (_queue.length === 0) {
+          _animationFrameId = -1;
+          cancelAnimationFrame(_animationFrameId);
+        }
+      });
+    }
+    return subscription;
+  },
 
-export const animationFrame = new AnimationFrameScheduler(AnimationFrameAction);
+  now: DEFAULT_NOW,
+};
+
+function flushQueue() {
+  try {
+    while (_queue.length > 0) {
+      const work = _queue.shift() as (state: any) => void;
+      const state = _queue.shift();
+      const subscription = _queue.shift() as Subscription;
+      try {
+        work(state);
+      } finally {
+        subscription.unsubscribe();
+      }
+    }
+  } finally {
+    // clean up if necessary
+    if (_queue.length > 0) {
+      const copy = _queue.slice();
+      _queue.length = 0;
+      for (let i = 2; i < copy.length; i += 3) {
+        (copy[i] as Subscription).unsubscribe();
+      }
+    }
+    _animationFrameId = -1;
+  }
+}

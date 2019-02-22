@@ -8,8 +8,8 @@ declare const rxTestScheduler: TestScheduler;
 
 /** @test {timer} */
 describe('timer', () => {
-  asDiagram('timer(3000, 1000)')('should create an observable emitting periodically', () => {
-    const e1 = timer(60, 20, rxTestScheduler).pipe(
+  asDiagram('timer(6, 2)')('should create an observable emitting periodically', () => {
+    const e1 = timer(6, 2, rxTestScheduler).pipe(
       take(4), // make it actually finite, so it can be rendered
       concat(NEVER) // but pretend it's infinite by not completing
     );

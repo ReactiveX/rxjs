@@ -30,7 +30,7 @@ describe('debounce operator', () => {
     const e1subs =   '^                    !';
     const expected = '----a--b--c--d-------|';
 
-    expectObservable(e1.pipe(debounce(getTimerSelector(20)))).toBe(expected);
+    expectObservable(e1.pipe(debounce(getTimerSelector(2)))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -39,7 +39,7 @@ describe('debounce operator', () => {
     const e1subs =   '^             !';
     const expected = '----a---c--d--|';
 
-    expectObservable(e1.pipe(debounce(getTimerSelector(20)))).toBe(expected);
+    expectObservable(e1.pipe(debounce(getTimerSelector(2)))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -61,7 +61,7 @@ describe('debounce operator', () => {
     const e1subs =   '^    !';
     const expected = '-----|';
 
-    expectObservable(e1.pipe(debounce(getTimerSelector(20)))).toBe(expected);
+    expectObservable(e1.pipe(debounce(getTimerSelector(2)))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -70,7 +70,7 @@ describe('debounce operator', () => {
     const e1subs =   '(^!)';
     const expected = '|';
 
-    expectObservable(e1.pipe(debounce(getTimerSelector(20)))).toBe(expected);
+    expectObservable(e1.pipe(debounce(getTimerSelector(2)))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -79,7 +79,7 @@ describe('debounce operator', () => {
     const e1subs =   '^    !';
     const expected = '-----#';
 
-    expectObservable(e1.pipe(debounce(getTimerSelector(20)))).toBe(expected);
+    expectObservable(e1.pipe(debounce(getTimerSelector(2)))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -88,7 +88,7 @@ describe('debounce operator', () => {
     const e1subs =   '(^!)';
     const expected = '#';
 
-    expectObservable(e1.pipe(debounce(getTimerSelector(20)))).toBe(expected);
+    expectObservable(e1.pipe(debounce(getTimerSelector(2)))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -98,7 +98,7 @@ describe('debounce operator', () => {
     const expected = '----a---       ';
     const unsub =    '       !       ';
 
-    const result = e1.pipe(debounce(getTimerSelector(20)));
+    const result = e1.pipe(debounce(getTimerSelector(2)));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -112,7 +112,7 @@ describe('debounce operator', () => {
 
     const result = e1.pipe(
       mergeMap((x: any) => of(x)),
-      debounce(getTimerSelector(20)),
+      debounce(getTimerSelector(2)),
       mergeMap((x: any) => of(x))
     );
 
@@ -125,7 +125,7 @@ describe('debounce operator', () => {
     const e1subs =   '^            ';
     const expected = '----a---c--d-';
 
-    expectObservable(e1.pipe(debounce(getTimerSelector(20)))).toBe(expected);
+    expectObservable(e1.pipe(debounce(getTimerSelector(2)))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -134,7 +134,7 @@ describe('debounce operator', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    expectObservable(e1.pipe(debounce(getTimerSelector(20)))).toBe(expected);
+    expectObservable(e1.pipe(debounce(getTimerSelector(2)))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -143,7 +143,7 @@ describe('debounce operator', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    expectObservable(e1.pipe(debounce(getTimerSelector(20)))).toBe(expected);
+    expectObservable(e1.pipe(debounce(getTimerSelector(2)))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -152,7 +152,7 @@ describe('debounce operator', () => {
     const e1subs =   '^                    !';
     const expected = '----a--b--c--d-------#';
 
-    expectObservable(e1.pipe(debounce(getTimerSelector(20)))).toBe(expected);
+    expectObservable(e1.pipe(debounce(getTimerSelector(2)))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -161,7 +161,7 @@ describe('debounce operator', () => {
     const e1subs =   '^                   !';
     const expected = '--------------------(e|)';
 
-    expectObservable(e1.pipe(debounce(getTimerSelector(40)))).toBe(expected);
+    expectObservable(e1.pipe(debounce(getTimerSelector(4)))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -170,7 +170,7 @@ describe('debounce operator', () => {
     const e1subs =   '^            !';
     const expected = '-------------#';
 
-    expectObservable(e1.pipe(debounce(getTimerSelector(50)))).toBe(expected);
+    expectObservable(e1.pipe(debounce(getTimerSelector(5)))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -433,21 +433,5 @@ describe('debounce operator', () => {
     source.next(1);
 
     expect(results).to.deep.equal([1, 2]);
-  });
-
-  type('should support selectors of the same type', () => {
-    /* tslint:disable:no-unused-variable */
-    let o: Observable<number>;
-    let s: Observable<number>;
-    let r: Observable<number> = o.pipe(debounce((n) => s));
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type('should support selectors of a different type', () => {
-    /* tslint:disable:no-unused-variable */
-    let o: Observable<number>;
-    let s: Observable<string>;
-    let r: Observable<number> = o.pipe(debounce((n) => s));
-    /* tslint:enable:no-unused-variable */
   });
 });

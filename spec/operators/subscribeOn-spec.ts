@@ -23,7 +23,7 @@ describe('subscribeOn operator', () => {
     const expected = '-----b--|';
     const sub =      '   ^    !';
 
-    expectObservable(e1.pipe(subscribeOn(rxTestScheduler, 30))).toBe(expected);
+    expectObservable(e1.pipe(subscribeOn(rxTestScheduler, 3))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 

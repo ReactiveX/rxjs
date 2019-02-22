@@ -59,7 +59,7 @@ describe('mergeScan', () => {
     };
 
     const source = e1.pipe(mergeScan((acc, x) =>
-      of(acc.concat(x)).delay(20, rxTestScheduler), []));
+      of(acc.concat(x)).pipe(delay(2, rxTestScheduler)), []));
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -80,7 +80,7 @@ describe('mergeScan', () => {
     };
 
     const source = e1.pipe(mergeScan((acc, x) =>
-      of(acc.concat(x)).delay(50, rxTestScheduler), []));
+      of(acc.concat(x)).pipe(delay(5, rxTestScheduler)), []));
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -101,7 +101,7 @@ describe('mergeScan', () => {
     };
 
     const source = e1.pipe(mergeScan((acc, x) =>
-      of(acc.concat(x)).delay(50, rxTestScheduler), []));
+      of(acc.concat(x)).pipe(delay(5, rxTestScheduler)), []));
 
     expectObservable(source, e1subs).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -127,7 +127,7 @@ describe('mergeScan', () => {
         mergeMap((x) => of(x)),
         mergeScan((acc, x) =>
           of([...acc, x]).pipe(
-            delay(50, rxTestScheduler)
+            delay(5, rxTestScheduler)
           )
         , []),
         mergeMap(function (x) { return of(x); })
@@ -323,7 +323,7 @@ describe('mergeScan', () => {
     const expected =    '-----------------------(x|)';
 
     const source = e1.pipe(
-      mergeScan((acc, x) => EMPTY.delay(50, rxTestScheduler), ['1'])
+      mergeScan((acc, x) => EMPTY.pipe(delay(5, rxTestScheduler)), ['1'])
     );
 
     expectObservable(source).toBe(expected, {x: ['1']});

@@ -1,5 +1,9 @@
-import { AsapAction } from './AsapAction';
-import { AsapScheduler } from './AsapScheduler';
+import { SchedulerLike } from '../types';
+import { Subscription } from '../Subscription';
+import { DEFAULT_NOW, __rx_scheduler_overrides__ } from './common';
+import { async } from './async';
+
+const RESOLVED_PROMISE = Promise.resolve();
 
 /**
  *
@@ -38,5 +42,27 @@ import { AsapScheduler } from './AsapScheduler';
  * @name asap
  * @owner Scheduler
  */
+export const asap: SchedulerLike = {
+  schedule<S>(work: (state: S) => void, delay = 0, state?: S): Subscription {
+    if (__rx_scheduler_overrides__.scheduler) {
+      return __rx_scheduler_overrides__.scheduler.schedule(work, delay, state);
+    }
+    if (delay > 0) {
+      return async.schedule(work, delay, state);
+    }
+    let cancelled = false;
+    const subscription = new Subscription(() => cancelled = true);
+    RESOLVED_PROMISE.then(() => {
+      if (!cancelled) {
+        try {
+          work(state);
+        } finally {
+          subscription.unsubscribe();
+        }
+      }
+    });
+    return subscription;
+  },
 
-export const asap = new AsapScheduler(AsapAction);
+  now: DEFAULT_NOW,
+};

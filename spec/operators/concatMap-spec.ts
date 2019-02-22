@@ -6,7 +6,7 @@ import { concatMap, mergeMap } from 'rxjs/operators';
 declare function asDiagram(arg: string): Function;
 
 /** @test {concatMap} */
-describe('Observable.prototype.concatMap', () => {
+describe('concatMap', () => {
   asDiagram('concatMap(i => 10*i\u2014\u201410*i\u2014\u201410*i\u2014| )')
   ('should map-and-flatten each item to an Observable', () => {
     const e1 =    hot('--1-----3--5-------|');
@@ -90,7 +90,7 @@ describe('Observable.prototype.concatMap', () => {
     const e1subs =   '^                               !       ';
     const expected = '--a-a-a-a---b--b--b-------c-c-c-----(d|)';
 
-    const observableLookup = { a: a, b: b, c: c, d: d };
+    const observableLookup = { a, b, c, d };
     const source = e1.pipe(concatMap((value) => observableLookup[value]));
 
     expectObservable(source).toBe(expected);

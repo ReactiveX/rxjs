@@ -10,19 +10,19 @@ declare const rxTestScheduler: TestScheduler;
 
 /** @test {throttleTime} */
 describe('throttleTime operator', () => {
-  asDiagram('throttleTime(50)')('should immediately emit the first value in each time window', () => {
+  asDiagram('throttleTime(5)')('should immediately emit the first value in each time window', () => {
     const e1 =   hot('-a-x-y----b---x-cx---|');
     const subs =     '^                    !';
     const expected = '-a--------b-----c----|';
 
-    const result = e1.pipe(throttleTime(50, rxTestScheduler));
+    const result = e1.pipe(throttleTime(5, rxTestScheduler));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
-  it('should throttle events by 50 time units', (done: MochaDone) => {
-    of(1, 2, 3).pipe(throttleTime(50))
+  it('should throttle events by 5 time units', (done: MochaDone) => {
+    of(1, 2, 3).pipe(throttleTime(5))
       .subscribe((x: number) => {
         expect(x).to.equal(1);
       }, null, done);
@@ -31,10 +31,10 @@ describe('throttleTime operator', () => {
   it('should throttle events multiple times', () => {
     const expected = ['1-0', '2-0'];
     concat(
-      timer(0, 10, rxTestScheduler).pipe(take(3), map((x: number) => '1-' + x)),
-      timer(80, 10, rxTestScheduler).pipe(take(5), map((x: number) => '2-' + x))
+      timer(0, 1, rxTestScheduler).pipe(take(3), map((x: number) => '1-' + x)),
+      timer(8, 1, rxTestScheduler).pipe(take(5), map((x: number) => '2-' + x))
     ).pipe(
-      throttleTime(50, rxTestScheduler)
+      throttleTime(5, rxTestScheduler)
     ).subscribe((x: string) => {
         expect(x).to.equal(expected.shift());
       });
@@ -47,7 +47,7 @@ describe('throttleTime operator', () => {
     const subs =     '^                    !';
     const expected = '-a--------b-----c----|';
 
-    expectObservable(e1.pipe(throttleTime(50, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(throttleTime(5, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -56,7 +56,7 @@ describe('throttleTime operator', () => {
     const subs =     '^                        !';
     const expected = 'a-----a-----a-----a-----a|';
 
-    expectObservable(e1.pipe(throttleTime(50, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(throttleTime(5, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -65,7 +65,7 @@ describe('throttleTime operator', () => {
     const subs =     '^    !';
     const expected = '-----|';
 
-    expectObservable(e1.pipe(throttleTime(50, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(throttleTime(5, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -74,7 +74,7 @@ describe('throttleTime operator', () => {
     const subs =     '^    !';
     const expected = '-----#';
 
-    expectObservable(e1.pipe(throttleTime(10, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(throttleTime(1, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -83,7 +83,7 @@ describe('throttleTime operator', () => {
     const subs =     '(^!)';
     const expected = '|';
 
-    expectObservable(e1.pipe(throttleTime(30, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(throttleTime(3, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -92,7 +92,7 @@ describe('throttleTime operator', () => {
     const subs =     '^';
     const expected = '-';
 
-    expectObservable(e1.pipe(throttleTime(30, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(throttleTime(3, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -101,7 +101,7 @@ describe('throttleTime operator', () => {
     const subs =     '(^!)';
     const expected = '#';
 
-    expectObservable(e1.pipe(throttleTime(30, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(throttleTime(3, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -111,7 +111,7 @@ describe('throttleTime operator', () => {
     const subs =     '^                              !';
     const expected = '-a-------------d----------------';
 
-    expectObservable(e1.pipe(throttleTime(50, rxTestScheduler)), unsub).toBe(expected);
+    expectObservable(e1.pipe(throttleTime(5, rxTestScheduler)), unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
@@ -123,7 +123,7 @@ describe('throttleTime operator', () => {
 
     const result = e1.pipe(
       mergeMap((x: string) => of(x)),
-      throttleTime(50, rxTestScheduler),
+      throttleTime(5, rxTestScheduler),
       mergeMap((x: string) => of(x))
     );
 
@@ -136,7 +136,7 @@ describe('throttleTime operator', () => {
     const subs =     '^                              !';
     const expected = '-a-------------d---------------#';
 
-    expectObservable(e1.pipe(throttleTime(50, rxTestScheduler))).toBe(expected);
+    expectObservable(e1.pipe(throttleTime(5, rxTestScheduler))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 

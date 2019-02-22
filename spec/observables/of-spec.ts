@@ -12,7 +12,7 @@ describe('of', () => {
   asDiagram('of(1, 2, 3)')('should create a cold observable that emits 1, 2, 3', () => {
     const e1 = of(1, 2, 3).pipe(
       // for the purpose of making a nice diagram, spread out the synchronous emissions
-      concatMap((x, i) => of(x).pipe(delay(i === 0 ? 0 : 20, rxTestScheduler)))
+      concatMap((x, i) => of(x).pipe(delay(i === 0 ? 0 : 2, rxTestScheduler)))
     );
     const expected = 'x-y-(z|)';
     expectObservable(e1).toBe(expected, {x: 1, y: 2, z: 3});
