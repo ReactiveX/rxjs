@@ -5,14 +5,14 @@ import { empty } from '../observable/empty';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
 /**
- * Returns an Observable that repeats the stream of items emitted by the source Observable at most count times.
+ * Returns an Observable that will resubscribe to the source stream when the source stream completes, at most count times.
  *
  * ![](repeat.png)
  *
  * @param {number} [count] The number of times the source Observable items are repeated, a count of 0 will yield
  * an empty Observable.
- * @return {Observable} An Observable that repeats the stream of items emitted by the source Observable at most
- * count times.
+ * @return {Observable} An Observable that will resubscribe to the source stream when the source stream completes
+ * , at most count times.
  * @method repeat
  * @owner Observable
  */
