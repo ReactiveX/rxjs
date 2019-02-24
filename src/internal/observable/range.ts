@@ -1,4 +1,4 @@
-import { SchedulerAction, SchedulerLike } from '../types';
+import { SchedulerLike } from '../types';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 

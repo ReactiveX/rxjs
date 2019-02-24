@@ -1,4 +1,4 @@
-import { SchedulerLike, SchedulerAction } from '../types';
+import { SchedulerLike } from '../types';
 import { Observable } from '../Observable';
 import { AsyncSubject } from '../AsyncSubject';
 import { Subscriber } from '../Subscriber';
@@ -272,18 +272,8 @@ interface NextState<T> {
   value: T;
 }
 
-function dispatchNext<T>(this: SchedulerAction<NextState<T>>, state: NextState<T>) {
+function dispatchNext<T>(state: NextState<T>) {
   const { value, subject } = state;
   subject.next(value);
   subject.complete();
-}
-
-interface ErrorState<T> {
-  subject: AsyncSubject<T>;
-  err: any;
-}
-
-function dispatchError<T>(this: SchedulerAction<ErrorState<T>>, state: ErrorState<T>) {
-  const { err, subject } = state;
-  subject.error(err);
 }

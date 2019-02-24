@@ -6,7 +6,7 @@ import { isDate } from '../util/isDate';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction, SchedulerLike, TeardownLogic } from '../types';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from '../Subscription';
 
 /* tslint:disable:max-line-length */
 export function timeoutWith<T, R>(due: number | Date, withObservable: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;

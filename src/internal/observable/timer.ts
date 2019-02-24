@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { SchedulerAction, SchedulerLike } from '../types';
+import { SchedulerLike } from '../types';
 import { async } from '../scheduler/async';
 import { isNumeric } from '../util/isNumeric';
 import { isScheduler } from '../util/isScheduler';

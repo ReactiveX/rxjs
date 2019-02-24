@@ -1,5 +1,5 @@
-import { SchedulerLike } from 'rxjs/internal/types';
-import { Subscription } from 'rxjs/internal/Subscription';
+import { SchedulerLike } from '../types';
+import { Subscription } from '../Subscription';
 
 export class VirtualTimeScheduler implements SchedulerLike {
   private _flushing = false;

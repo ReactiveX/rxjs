@@ -1,9 +1,9 @@
-import { Scheduler } from '../Scheduler';
 import { SubscriptionLog } from './SubscriptionLog';
+import { SchedulerLike } from '../types';
 
 export class SubscriptionLoggable {
   public subscriptions: SubscriptionLog[] = [];
-  scheduler: Scheduler;
+  scheduler: SchedulerLike;
 
   logSubscribedFrame(): number {
     this.subscriptions.push(new SubscriptionLog(this.scheduler.now()));

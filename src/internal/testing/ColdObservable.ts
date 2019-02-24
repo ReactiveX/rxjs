@@ -1,11 +1,11 @@
 import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
-import { Scheduler } from '../Scheduler';
 import { TestMessage } from './TestMessage';
 import { SubscriptionLog } from './SubscriptionLog';
 import { SubscriptionLoggable } from './SubscriptionLoggable';
 import { applyMixins } from '../util/applyMixins';
 import { Subscriber } from '../Subscriber';
+import { SchedulerLike } from '../types';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -14,12 +14,12 @@ import { Subscriber } from '../Subscriber';
  */
 export class ColdObservable<T> extends Observable<T> implements SubscriptionLoggable {
   public subscriptions: SubscriptionLog[] = [];
-  scheduler: Scheduler;
+  scheduler: SchedulerLike;
   logSubscribedFrame: () => number;
   logUnsubscribedFrame: (index: number) => void;
 
   constructor(public messages: TestMessage[],
-              scheduler: Scheduler) {
+              scheduler: SchedulerLike) {
     super(function (this: Observable<T>, subscriber: Subscriber<any>) {
       const observable: ColdObservable<T> = this as any;
       const index = observable.logSubscribedFrame();

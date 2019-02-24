@@ -1,11 +1,11 @@
 import { Subject } from '../Subject';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { Scheduler } from '../Scheduler';
 import { TestMessage } from './TestMessage';
 import { SubscriptionLog } from './SubscriptionLog';
 import { SubscriptionLoggable } from './SubscriptionLoggable';
 import { applyMixins } from '../util/applyMixins';
+import { SchedulerLike } from '../types';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -14,12 +14,12 @@ import { applyMixins } from '../util/applyMixins';
  */
 export class HotObservable<T> extends Subject<T> implements SubscriptionLoggable {
   public subscriptions: SubscriptionLog[] = [];
-  scheduler: Scheduler;
+  scheduler: SchedulerLike;
   logSubscribedFrame: () => number;
   logUnsubscribedFrame: (index: number) => void;
 
   constructor(public messages: TestMessage[],
-              scheduler: Scheduler) {
+              scheduler: SchedulerLike) {
     super();
     this.scheduler = scheduler;
   }

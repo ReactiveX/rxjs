@@ -1,6 +1,6 @@
 import { SchedulerLike } from '../types';
-import { Subscription } from 'rxjs/Rx';
-import { async } from 'rxjs/scheduler/async';
+import { Subscription } from '../Subscription';
+import { async } from './async';
 import { DEFAULT_NOW } from './common';
 
 let _animationFrameId = -1;

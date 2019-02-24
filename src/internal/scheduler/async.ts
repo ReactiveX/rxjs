@@ -1,5 +1,5 @@
 import { SchedulerLike } from '../types';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from '../Subscription';
 import { DEFAULT_NOW, __rx_scheduler_overrides__ } from './common';
 
 /**

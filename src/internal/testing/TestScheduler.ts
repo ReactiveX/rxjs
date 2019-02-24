@@ -1,7 +1,7 @@
-import { Observable } from 'rxjs/internal/Observable';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { VirtualTimeScheduler} from 'rxjs/internal/scheduler/VirtualTimeScheduler';
-import { isObservable } from 'rxjs/internal/util/isObservable';
+import { Observable } from '../Observable';
+import { Subscription } from '../Subscription';
+import { VirtualTimeScheduler} from '../scheduler/VirtualTimeScheduler';
+import { isObservable } from '../util/isObservable';
 import { Subject } from '../Subject';
 import { Notification } from '../Notification';
 import { Subscriber } from 'rxjs';

@@ -3,6 +3,7 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { asap } from '../scheduler/asap';
 import { isNumeric } from '../util/isNumeric';
+import { Subscription } from '../Subscription';
 
 export interface DispatchArg<T> {
   source: Observable<T>;
@@ -39,7 +40,7 @@ export class SubscribeOnObservable<T> extends Observable<T> {
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
-  _subscribe(subscriber: Subscriber<T>) {
+  _subscribe(subscriber: Subscriber<T>): Subscription {
     const delay = this.delayTime;
     const source = this.source;
     const scheduler = this.scheduler;

@@ -2,7 +2,6 @@
 export { config } from '../internal/config';
 export { InnerSubscriber } from '../internal/InnerSubscriber';
 export { OuterSubscriber } from '../internal/OuterSubscriber';
-export { Scheduler } from '../internal/Scheduler';
 export { AnonymousSubject } from '../internal/Subject';
 export { SubjectSubscription } from '../internal/SubjectSubscription';
 export { Subscriber } from '../internal/Subscriber';

@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { identity } from '../util/identity';
-import { SchedulerAction, SchedulerLike } from '../types';
+import { SchedulerLike } from '../types';
 import { isScheduler } from '../util/isScheduler';
 
 export type ConditionFunc<S> = (state: S) => boolean;

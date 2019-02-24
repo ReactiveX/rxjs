@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { AsyncSubject } from '../AsyncSubject';
 import { Subscriber } from '../Subscriber';
-import { SchedulerAction, SchedulerLike } from '../types';
+import { SchedulerLike } from '../types';
 import { map } from '../operators/map';
 import { canReportError } from '../util/canReportError';
 import { isScheduler } from '../util/isScheduler';
