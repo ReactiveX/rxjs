@@ -307,6 +307,41 @@ describe('ajax', () => {
     expect(error.message).to.equal('ajax error 404');
     expect(error.status).to.equal(404);
   });
+  it('should fail when request was aborted', () => {
+    let error: any;
+
+    ajax({ url: '/flibbertyJibbet' })
+      .subscribe((x: any) => {
+        throw 'should not next';
+      }, (err: any) => {
+        error = err;
+      }, () => {
+        throw 'should not complete';
+      });
+
+    const request = MockXMLHttpRequest.mostRecent;
+    request.abort();
+
+    expect(request.url).to.equal('/flibbertyJibbet');
+
+    expect(error instanceof AjaxError).to.be.true;
+    expect(error.name).to.equal('AjaxError');
+    expect(error.message).to.equal('ajax error');
+    expect(error.status).to.equal(0);
+    expect(error.xhr.readyState).to.equal(0);
+  });
+
+  it('should abort unfinished request when unsubscribe', () => {
+    const subscribtion = ajax({ url: '/flibbertyJibbet' }).subscribe();
+
+    const request = MockXMLHttpRequest.mostRecent;
+    const abortSpy = sinon.spy(request, 'abort');
+
+    subscribtion.unsubscribe();
+
+    expect(request.url).to.equal('/flibbertyJibbet');
+    expect(abortSpy).to.be.called;
+  });
 
   it('should succeed on 300', () => {
     let result: AjaxResponse;
@@ -1124,6 +1159,7 @@ class MockXMLHttpRequest {
   withCredentials: boolean = false;
 
   onreadystatechange: (e: ProgressEvent) => any;
+  onabort: (e: ProgressEvent) => any;
   onerror: (e: ErrorEvent) => any;
   onprogress: (e: ProgressEvent) => any;
   ontimeout: (e: ProgressEvent) => any;
@@ -1213,6 +1249,15 @@ class MockXMLHttpRequest {
     // TODO: pass better event to onload.
     this.triggerEvent('load');
     this.triggerEvent('readystatechange');
+  }
+
+  abort() {
+    // change `status` & `readyState` accodrding to
+    // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/abort
+    this.readyState = 0; // XMLHttpRequest.UNSENT;
+    this.status = 0;
+
+    this.triggerEvent('abort');
   }
 
   triggerEvent(name: any, eventObj?: any): void {

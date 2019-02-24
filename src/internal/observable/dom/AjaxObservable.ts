@@ -319,6 +319,26 @@ export class AjaxSubscriber<T> extends Subscriber<Event> {
   private setupEvents(xhr: XMLHttpRequest, request: AjaxRequest) {
     const progressSubscriber = request.progressSubscriber;
 
+    // TODO: `Event` should be replaced with `ProgressEvent` when TS is ready
+    // see https://github.com/Microsoft/TSJS-lib-generator/pull/432
+    function xhrAbort(this: XMLHttpRequest, e: Event): void {
+      const { subscriber, progressSubscriber, request } = (<any>xhrAbort);
+      if (progressSubscriber) {
+        progressSubscriber.error(e);
+      }
+      let error;
+      try {
+        error = new AjaxError('ajax error', this, request);
+      } catch (err) {
+        error = err;
+      }
+      subscriber.error(error);
+    }
+    xhr.onabort = xhrAbort;
+    (<any>xhrAbort).request = request;
+    (<any>xhrAbort).subscriber = this;
+    (<any>xhrAbort).progressSubscriber = progressSubscriber;
+
     function xhrTimeout(this: XMLHttpRequest, e: ProgressEvent): void {
       const {subscriber, progressSubscriber, request } = (<any>xhrTimeout);
       if (progressSubscriber) {
