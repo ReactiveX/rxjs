@@ -78,6 +78,12 @@ class DoOperator<T> implements Operator<T, T> {
               private complete?: () => void) {
   }
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+    /* make sure throwIfEmpty hasValue is set to false on re-subscribe */
+    if (this.nextOrObserver) {
+      if (this.nextOrObserver['hasValue']) {
+        this.nextOrObserver['hasValue'] = false;
+      }
+    }
     return source.subscribe(new TapSubscriber(subscriber, this.nextOrObserver, this.error, this.complete));
   }
 }
