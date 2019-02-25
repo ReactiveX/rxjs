@@ -1,3 +1,4 @@
+import 'rxjs/internal/symbol/observable';
 import { Observable } from './Observable';
 import { Subscription } from './Subscription';
 
