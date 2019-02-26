@@ -2,9 +2,9 @@ import { Observable } from 'rxjs';
 import { reduce as higherOrderReduce } from 'rxjs/operators';
 
 /* tslint:disable:max-line-length */
-export function reduce<T>(this: Observable<T>, accumulator: (acc: T, value: T, index: number) => T, seed?: T): Observable<T>;
-export function reduce<T>(this: Observable<T>, accumulator: (acc: T[], value: T, index: number) => T[], seed: T[]): Observable<T[]>;
 export function reduce<T, R>(this: Observable<T>, accumulator: (acc: R, value: T, index: number) => R, seed: R): Observable<R>;
+export function reduce<T>(this: Observable<T>, accumulator: (acc: T, value: T, index: number) => T, seed?: T): Observable<T>;
+export function reduce<T, R>(this: Observable<T>, accumulator: (acc: R, value: T, index: number) => R): Observable<R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -51,7 +51,7 @@ export function reduce<T, R>(this: Observable<T>, accumulator: (acc: R, value: T
  * @method reduce
  * @owner Observable
  */
-export function reduce<T, R>(this: Observable<T>, accumulator: (acc: R, value: T, index?: number) => R, seed?: R): Observable<R> {
+export function reduce<T, R>(this: Observable<T>, accumulator: (acc: T | R, value: T, index?: number) => (T | R), seed?: R): Observable<T | R> {
   // providing a seed of `undefined` *should* be valid and trigger
   // hasSeed! so don't use `seed !== undefined` checks!
   // For this reason, we have to check it here at the original call site
@@ -61,5 +61,5 @@ export function reduce<T, R>(this: Observable<T>, accumulator: (acc: R, value: T
     return higherOrderReduce(accumulator, seed)(this);
   }
 
-  return higherOrderReduce(accumulator)(this);
+  return higherOrderReduce<T, T | R>(accumulator)(this);
 }

@@ -3,9 +3,9 @@ import { Observable } from 'rxjs';
 import { scan as higherOrderScan } from 'rxjs/operators';
 
 /* tslint:disable:max-line-length */
+export function scan<T, R>(this: Observable<T>, accumulator: (acc: R, value: T, index: number) => R, seed: R): Observable<R>;
 export function scan<T>(this: Observable<T>, accumulator: (acc: T, value: T, index: number) => T, seed?: T): Observable<T>;
-export function scan<T>(this: Observable<T>, accumulator: (acc: T[], value: T, index: number) => T[], seed?: T[]): Observable<T[]>;
-export function scan<T, R>(this: Observable<T>, accumulator: (acc: R, value: T, index: number) => R, seed?: R): Observable<R>;
+export function scan<T, R>(this: Observable<T>, accumulator: (acc: R, value: T, index: number) => R): Observable<R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -46,10 +46,10 @@ export function scan<T, R>(this: Observable<T>, accumulator: (acc: R, value: T, 
  * @owner Observable
  */
 export function scan<T, R>(this: Observable<T>,
-                           accumulator: (acc: T | Array<T> | R, value: T, index: number) => T | Array<T> | R,
-                           seed?: T | R): Observable<R> {
+                           accumulator: (acc: T | R, value: T, index: number) => T | R,
+                           seed?: T | R): Observable<T | R> {
   if (arguments.length >= 2) {
-    return higherOrderScan(accumulator, seed)(this) as Observable<R>;
+    return higherOrderScan(accumulator, seed)(this);
   }
-  return higherOrderScan(accumulator)(this) as Observable<R>;
+  return higherOrderScan<T, T | R>(accumulator)(this);
 }
