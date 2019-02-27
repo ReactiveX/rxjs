@@ -7,7 +7,7 @@ import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
  * Ignores source values for `duration` milliseconds, then emits the most recent
  * value from the source Observable, then repeats this process.
  *
- * <span class="informal">When it sees a source values, it ignores that plus
+ * <span class="informal">When it sees a source value, it ignores that plus
  * the next ones for `duration` milliseconds, and then it emits the most recent
  * value from the source.</span>
  *
