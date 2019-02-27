@@ -18,7 +18,7 @@ import { TeardownLogic } from '../types';
  *
  * const click$ = fromEvent(button, 'click');
  *
- * clicks$.pipe(
+ * click$.pipe(
  *   takeUntil(timer(1000)),
  *   throwIfEmpty(
  *     () => new Error('the button was not clicked within 1 second')
@@ -26,7 +26,7 @@ import { TeardownLogic } from '../types';
  * )
  * .subscribe({
  *   next() { console.log('The button was clicked'); },
- *   error(err) { console.error(err); },
+ *   error(err) { console.error(err); }
  * });
  * ```
  *
