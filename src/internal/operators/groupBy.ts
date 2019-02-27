@@ -31,10 +31,12 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  * returned by the elementSelector function.
  *
  * ## Examples
+ *
  * ### Group objects by id and return as array
+ *
  * ```javascript
+ * import { of } from 'rxjs';
  * import { mergeMap, groupBy, reduce } from 'rxjs/operators';
- * import { of } from 'rxjs/observable/of';
  *
  * interface Obj {
  *    id: number,
@@ -42,11 +44,11 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  * }
  *
  * of<Obj>(
- *   {id: 1, name: 'javascript'},
- *   {id: 2, name: 'parcel'},
+ *   {id: 1, name: 'JavaScript'},
+ *   {id: 2, name: 'Parcel'},
  *   {id: 2, name: 'webpack'},
- *   {id: 1, name: 'typescript'},
- *   {id: 3, name: 'tslint'}
+ *   {id: 1, name: 'TypeScript'},
+ *   {id: 3, name: 'TSLint'}
  * ).pipe(
  *   groupBy(p => p.id),
  *   mergeMap((group$) => group$.pipe(reduce((acc, cur) => [...acc, cur], []))),
@@ -54,26 +56,27 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  * .subscribe(p => console.log(p));
  *
  * // displays:
- * // [ { id: 1, name: 'javascript'},
- * //   { id: 1, name: 'typescript'} ]
+ * // [ { id: 1, name: 'JavaScript'},
+ * //   { id: 1, name: 'TypeScript'} ]
  * //
- * // [ { id: 2, name: 'parcel'},
+ * // [ { id: 2, name: 'Parcel'},
  * //   { id: 2, name: 'webpack'} ]
  * //
- * // [ { id: 3, name: 'tslint'} ]
+ * // [ { id: 3, name: 'TSLint'} ]
  * ```
  *
  * ### Pivot data on the id field
+ *
  * ```javascript
+ * import { of } from 'rxjs';
  * import { mergeMap, groupBy, map, reduce } from 'rxjs/operators';
- * import { of } from 'rxjs/observable/of';
  *
  * of<Obj>(
- *   {id: 1, name: 'javascript'},
- *   {id: 2, name: 'parcel'},
+ *   {id: 1, name: 'JavaScript'},
+ *   {id: 2, name: 'Parcel'},
  *   {id: 2, name: 'webpack'},
- *   {id: 1, name: 'typescript'}
- *   {id: 3, name: 'tslint'}
+ *   {id: 1, name: 'TypeScript'}
+ *   {id: 3, name: 'TSLint'}
  * ).pipe(
  *   groupBy(p => p.id, p => p.name),
  *   mergeMap( (group$) => group$.pipe(reduce((acc, cur) => [...acc, cur], ["" + group$.key]))),
@@ -82,9 +85,9 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  * .subscribe(p => console.log(p));
  *
  * // displays:
- * // { id: 1, values: [ 'javascript', 'typescript' ] }
- * // { id: 2, values: [ 'parcel', 'webpack' ] }
- * // { id: 3, values: [ 'tslint' ] }
+ * // { id: 1, values: [ 'JavaScript', 'TypeScript' ] }
+ * // { id: 2, values: [ 'Parcel', 'webpack' ] }
+ * // { id: 3, values: [ 'TSLint' ] }
  * ```
  *
  * @param {function(value: T): K} keySelector A function that extracts the key
