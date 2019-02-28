@@ -26,13 +26,13 @@ import { OperatorFunction } from '../types';
  * Ignore every 3rd click event, starting from the first one
  * ```javascript
  * import { fromEvent } from 'rxjs';
- * import { windowCount, map, mergeAll } from 'rxjs/operators';
+ * import { windowCount, map, mergeAll, skip } from 'rxjs/operators';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(
- *   windowCount(3)),
- *   map(win => win.skip(1)), // skip first of every 3 clicks
- *   mergeAll(),              // flatten the Observable-of-Observables
+ *   windowCount(3),
+ *   map(win => win.pipe(skip(1))), // skip first of every 3 clicks
+ *   mergeAll()                     // flatten the Observable-of-Observables
  * );
  * result.subscribe(x => console.log(x));
  * ```
