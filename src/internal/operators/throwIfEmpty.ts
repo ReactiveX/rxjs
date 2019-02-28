@@ -30,7 +30,7 @@ import { TeardownLogic, MonoTypeOperatorFunction } from '../types';
  * });
  * ```
  *
- * @param {Function} [errorFactory] A factory function called to produce the
+ * @param errorFactory A factory function called to produce the
  * error to be thrown when the source observable completes without emitting a
  * value.
  */
@@ -63,7 +63,13 @@ class ThrowIfEmptySubscriber<T> extends Subscriber<T> {
 
   protected _complete() {
     if (!this.hasValue) {
-        this.destination.error(this.errorFactory());
+      let err: any;
+      try {
+        err = this.errorFactory();
+      } catch (e) {
+        err = e;
+      }
+      this.destination.error(err);
     } else {
         return this.destination.complete();
     }
