@@ -240,7 +240,7 @@ subject.next(3);
 
 ## ReplaySubject
 
-A `ReplaySubject` is similar to a `BehaviorSubject` in that it can send old values to new subscribers, but it can also *record* a part of the Observable execution.
+A `ReplaySubject` is similar to a `BehaviorSubject` in that it can send current and new values to new subscribers, but it can also *record* a part of the Observable execution.
 
 <span class="informal">A `ReplaySubject` records multiple values from the Observable execution and replays them to new subscribers.</span>
 

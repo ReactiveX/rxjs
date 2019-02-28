@@ -1,36 +1,39 @@
 {
-	"TopBar": [
-		{
-			"url": "guide/overview",
-			"title": "Overview"
-		},
-		{
-			"url": "api",
-			"title": "Reference"
-		},
-		{
-			"url": "guide/v6/migration",
-			"title": "Migration"
-		},
-		{
-			"url": "team",
-			"title": "Team"
-		}
-	],
+  "TopBar": [
+    {
+      "url": "guide/overview",
+      "title": "Overview"
+    },
+    {
+      "url": "api",
+      "title": "Reference"
+    },
+    {
+      "url": "guide/v6/migration",
+      "title": "Migration"
+    },
+    {
+      "url": "team",
+      "title": "Team"
+    }
+  ],
 
-	"TopBarNarrow": [],
-
+  "TopBarNarrow": [],
 	"SideNav": [
 		{
 			"url": "guide/overview",
 			"title": "Overview",
 			"tooltip": "RxJS Overview",
 			"children": [
-        {
+				{
 					"url": "guide/observable",
 					"title": "Observables"
-        },
-        {
+				},
+				{
+					"url": "guide/operators",
+					"title": "Operators"
+				},
+				{
 					"url": "guide/subscription",
 					"title": "Subscription"
 				},
@@ -62,11 +65,16 @@
 			"title": "Installation",
 			"tooltip": "Installation"
 		},
-		{
-			"url": "api",
-			"title": "Reference",
-			"tooltip": "RxJS Reference"
-		},
+    {
+      "url": "api",
+      "title": "Reference",
+      "tooltip": "RxJS Reference"
+    },
+    {
+      "tooltip": "Operator Decision Tree",
+      "url": "operator-decision-tree",
+      "title": "Operator Decision Tree"
+    },
 		{
 			"title": "About Version 6",
 			"children": [
@@ -84,6 +92,11 @@
 					"tooltip": "List of Deprecations"
 				}
 			]
+		},
+		{
+      "url": "resources",
+      "title": "External Resources",
+      "tooltip": "External Resources"
 		},
 		{
 			"url": "code-of-conduct",

@@ -84,7 +84,8 @@ aio-code pre {
 }
 
 
-.copy-button {
+.copy-button,
+.edit-button {
   position: absolute;
   top: -8px;
   right: -32px;
@@ -96,6 +97,9 @@ aio-code pre {
   &:hover {
     color: $mediumgray;
   }
+}
+.edit-button {
+  right: 0;
 }
 
 .lang-sh .copy-button, .lang-bash .copy-button {

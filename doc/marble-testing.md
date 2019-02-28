@@ -116,7 +116,7 @@ expectObservable(result).toBe(expected);
 
 `'-----(a|)'`: on frame 5 emit `a` and `complete`.
 
-`'a 9ms b 9s c'`: on frame 0 emit `a`, on frame 10 emit `b`, on frame 10,012 emit `c`, then on on frame 10,013 `complete`.
+`'a 9ms b 9s c|'`: on frame 0 emit `a`, on frame 10 emit `b`, on frame 10,012 emit `c`, then on on frame 10,013 `complete`.
 
 `'--a 2.5m b'`: on frame 2 emit `a`, on frame 150,003 emit `b` and never complete.
 

@@ -37,3 +37,8 @@ it('should enforce accumulate return type', () => {
 it('should enforce concurrent type', () => {
   const o = of(1, 2, 3).pipe(mergeScan((acc, value) => of(acc + value), 0, '')); // $ExpectError
 });
+
+// TODO(benlesh): It still seems we don't have a great way to do this in TS 3.2
+// it('should support union types', () => {
+//   const o = of(1, 2, 3).pipe(mergeScan(() => Math.random() > 0.5 ? of(123) : of('test'), 0)); // $ExpectType Observable<string | number>
+// });

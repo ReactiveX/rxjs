@@ -1,14 +1,15 @@
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable';
 
-import {OuterSubscriber} from '../OuterSubscriber';
+import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
-import {subscribeToResult} from '../util/subscribeToResult';
-import {ObservableInput, OperatorFunction, MonoTypeOperatorFunction} from '../types';
+import { subscribeToResult } from '../util/subscribeToResult';
+import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 
-export function catchError<T>(selector: (err: any, caught: Observable<T>) => never): MonoTypeOperatorFunction<T>;
-export function catchError<T, R>(selector: (err: any, caught: Observable<T>) => ObservableInput<R>): OperatorFunction<T, T | R>;
+/* tslint:disable:max-line-length */
+export function catchError<T, O extends ObservableInput<any>>(selector: (err: any, caught: Observable<T>) => O): OperatorFunction<T, T | ObservedValueOf<O>>;
+/* tslint:enable:max-line-length */
 
 /**
  * Catches errors on the observable to be handled by returning a new observable or throwing an error.
@@ -19,9 +20,12 @@ export function catchError<T, R>(selector: (err: any, caught: Observable<T>) => 
  * Continues with a different Observable when there's an error
  *
  * ```javascript
+ * import { of } from 'rxjs';
+ * import { map, catchError } from 'rxjs/operators';
+ *
  * of(1, 2, 3, 4, 5).pipe(
  *     map(n => {
- *   	   if (n == 4) {
+ *   	   if (n === 4) {
  * 	       throw 'four!';
  *       }
  *	     return n;
@@ -35,6 +39,9 @@ export function catchError<T, R>(selector: (err: any, caught: Observable<T>) => 
  * Retries the caught source Observable again in case of error, similar to retry() operator
  *
  * ```javascript
+ * import { of } from 'rxjs';
+ * import { map, catchError, take } from 'rxjs/operators';
+ *
  * of(1, 2, 3, 4, 5).pipe(
  *     map(n => {
  *   	   if (n === 4) {
@@ -52,9 +59,12 @@ export function catchError<T, R>(selector: (err: any, caught: Observable<T>) => 
  * Throws a new error when the source Observable throws an error
  *
  * ```javascript
+ * import { of } from 'rxjs';
+ * import { map, catchError } from 'rxjs/operators';
+ *
  * of(1, 2, 3, 4, 5).pipe(
  *     map(n => {
- *       if (n == 4) {
+ *       if (n === 4) {
  *         throw 'four!';
  *       }
  *       return n;
@@ -77,8 +87,10 @@ export function catchError<T, R>(selector: (err: any, caught: Observable<T>) => 
  *  catch `selector` function.
  * @name catchError
  */
-export function catchError<T, R>(selector: (err: any, caught: Observable<T>) => ObservableInput<R>): OperatorFunction<T, T | R> {
-  return function catchErrorOperatorFunction(source: Observable<T>): Observable<T | R> {
+export function catchError<T, O extends ObservableInput<any>>(
+  selector: (err: any, caught: Observable<T>) => O
+): OperatorFunction<T, T | ObservedValueOf<O>> {
+  return function catchErrorOperatorFunction(source: Observable<T>): Observable<T | ObservedValueOf<O>> {
     const operator = new CatchOperator(selector);
     const caught = source.lift(operator);
     return (operator.caught = caught as Observable<T>);

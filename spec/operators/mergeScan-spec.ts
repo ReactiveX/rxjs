@@ -419,4 +419,16 @@ describe('mergeScan', () => {
     expectSubscriptions(inner[1].subscriptions).toBe(ysubs);
     expectSubscriptions(inner[2].subscriptions).toBe(zsubs);
   });
+
+  it('should pass current index to accumulator', () => {
+    const recorded: number[] = [];
+    const e1 = of('a', 'b', 'c', 'd');
+
+    e1.pipe(mergeScan((acc, x, index) => {
+      recorded.push(index);
+      return of(x);
+    }, 0)).subscribe();
+
+    expect(recorded).to.deep.equal([0, 1, 2, 3]);
+  });
 });

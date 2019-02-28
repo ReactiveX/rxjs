@@ -20,7 +20,6 @@ module.exports = function embedMarbleDiagramsPostProcessor(log) {
             const props = node.properties;
             const src = props.src;
             const expectedImgPath = `${service.marbleImagesPath}/${src}`;
-
             if (fs.existsSync(expectedImgPath)) {
               const operator = path.basename(src, path.extname(src));
               const filename = path.basename(expectedImgPath);

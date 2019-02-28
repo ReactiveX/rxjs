@@ -4,19 +4,19 @@
 set +x -eu -o pipefail
 
 ## Only deploy if this not a PR. PRs are deployed early in `build.sh`.
-# TODO: UDNO ME LATER!
-# if [[ $TRAVIS_PULL_REQUEST != "false" ]]; then
-#   echo "Skipping deploy because this is a PR build."
-#   exit 0
-# fi
+
+if [[ $TRAVIS_PULL_REQUEST != "false" ]]; then
+  echo "Skipping deploy because this is a PR build."
+  exit 0
+fi
 
 # Do not deploy if the current commit is not the latest on its branch.
-# TODO: UDNO ME LATER!
-# readonly LATEST_COMMIT=$(git ls-remote origin $TRAVIS_BRANCH | cut -c1-40)
-# if [[ $TRAVIS_COMMIT != $LATEST_COMMIT ]]; then
-#   echo "Skipping deploy because $TRAVIS_COMMIT is not the latest commit ($LATEST_COMMIT)."
-#   exit 0
-# fi
+
+readonly LATEST_COMMIT=$(git ls-remote origin $TRAVIS_BRANCH | cut -c1-40)
+if [[ $TRAVIS_COMMIT != $LATEST_COMMIT ]]; then
+  echo "Skipping deploy because $TRAVIS_COMMIT is not the latest commit ($LATEST_COMMIT)."
+  exit 0
+fi
 
 # The deployment mode is computed based on the branch we are building
 if [[ $TRAVIS_BRANCH == master ]]; then
@@ -60,7 +60,7 @@ fi
 case $deployEnv in
   next)
     readonly projectId=rxjs-dev
-    readonly deployedUrl=https://rxjs-dev.firebaseapp.com
+    readonly deployedUrl=https://rxjs.dev
     readonly firebaseToken=$FIREBASE_TOKEN
     ;;
 #  stable)

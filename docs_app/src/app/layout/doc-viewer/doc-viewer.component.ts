@@ -93,6 +93,7 @@ export class DocViewerComponent implements OnDestroy {
    * Return a function to actually set them.
    */
   protected prepareTitleAndToc(targetElem: HTMLElement, docId: string): () => void {
+    const descriptionEl = targetElem.querySelector('.api-body > p:nth-child(2)');
     const titleEl = targetElem.querySelector('h1');
     const needsToc = !!titleEl && !/no-?toc/i.test(titleEl.className);
     const embeddedToc = targetElem.querySelector('aio-toc.embedded');
@@ -108,6 +109,7 @@ export class DocViewerComponent implements OnDestroy {
     return () => {
       this.tocService.reset();
       let title: string|null = '';
+      let description: string|null = '';
 
       // Only create ToC for docs with an `<h1>` heading.
       // If you don't want a ToC, add "no-toc" class to `<h1>`.
@@ -118,8 +120,12 @@ export class DocViewerComponent implements OnDestroy {
           this.tocService.genToc(targetElem, docId);
         }
       }
-
-      this.titleService.setTitle(title ? `RxJS - ${title}` : 'RxJS');
+      if (descriptionEl) {
+        description = descriptionEl.innerHTML;
+      }
+      const formattedTitle = title ? `RxJS - ${title}` : 'RxJS';
+      this.addDocumentMetaTags(formattedTitle, description);
+      this.titleService.setTitle(formattedTitle);
     };
   }
 
@@ -240,5 +246,18 @@ export class DocViewerComponent implements OnDestroy {
           this.nextViewContainer.innerHTML = '';  // Empty to release memory.
         }),
     );
+  }
+
+  private addDocumentMetaTags(title: string, description: string | null): void {
+    this.metaService.updateTag({ name: 'twitter:title', content: title });
+    this.metaService.updateTag({ name: 'twitter:card', content: 'summary' });
+    this.metaService.updateTag({ property: 'og:title', content: title });
+    this.metaService.updateTag({ property: 'og:type', content: 'article' });
+
+    if (description) {
+      const formattedDescription = description.replace(/<\/?\w*>/gm, '');
+      this.metaService.updateTag({ name: 'twitter:description', content: formattedDescription});
+      this.metaService.updateTag({ property: 'og:description', content: formattedDescription });
+    }
   }
 }

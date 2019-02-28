@@ -143,6 +143,34 @@ describe('webSocket', () => {
       (<any>socket.close).restore();
     });
 
+    it('should close the socket when unsubscribed before socket open', () => {
+      const subject = webSocket<string>('ws://mysocket');
+      subject.subscribe();
+      subject.unsubscribe();
+      const socket = MockWebSocket.lastSocket;
+      sinon.spy(socket, 'close');
+      socket.open();
+
+      expect(socket.close).have.been.called;
+      expect(socket.readyState).to.equal(3); // closed
+
+      (<any>socket.close).restore();
+    });
+
+    it('should close the socket when subscription is cancelled before socket open', () => {
+      const subject = webSocket<string>('ws://mysocket');
+      const subscription = subject.subscribe();
+      subscription.unsubscribe();
+      const socket = MockWebSocket.lastSocket;
+      sinon.spy(socket, 'close');
+      socket.open();
+
+      expect(socket.close).have.been.called;
+      expect(socket.readyState).to.equal(3); // closed
+
+      (<any>socket.close).restore();
+    });
+
     it('should close the socket with a code and a reason when errored', () => {
       const subject = webSocket<string>('ws://mysocket');
       subject.subscribe();

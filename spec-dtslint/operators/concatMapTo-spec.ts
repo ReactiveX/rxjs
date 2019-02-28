@@ -37,6 +37,11 @@ it('should support an undefined resultSelector', () => {
   const o = of(1, 2, 3).pipe(concatMapTo(of('foo'), undefined)); // $ExpectType Observable<string>
 });
 
+it('should support union types', () => {
+  const s = Math.random() > 0.5 ? of(123) : of('abc');
+  const r = of(1, 2, 3).pipe(concatMapTo(s)); // $ExpectType<string | number>
+});
+
 it('should enforce types', () => {
   const o = of(1, 2, 3).pipe(concatMapTo()); // $ExpectError
 });

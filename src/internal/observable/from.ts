@@ -8,10 +8,9 @@ import { fromPromise } from './fromPromise';
 import { fromIterable } from './fromIterable';
 import { fromObservable } from './fromObservable';
 import { subscribeTo } from '../util/subscribeTo';
-import { ObservableInput, SchedulerLike } from '../types';
+import { ObservableInput, SchedulerLike, ObservedValueOf } from '../types';
 
-export function from<T>(input: ObservableInput<T>, scheduler?: SchedulerLike): Observable<T>;
-export function from<T>(input: ObservableInput<ObservableInput<T>>, scheduler?: SchedulerLike): Observable<Observable<T>>;
+export function from<O extends ObservableInput<any>>(input: O, scheduler?: SchedulerLike): Observable<ObservedValueOf<O>>;
 
 /**
  * Creates an Observable from an Array, an array-like object, a Promise, an iterable object, or an Observable-like object.
@@ -27,9 +26,11 @@ export function from<T>(input: ObservableInput<ObservableInput<T>>, scheduler?: 
  * converted through this operator.
  *
  * ## Examples
+ *
  * ### Converts an array to an Observable
+ *
  * ```javascript
- * import { from } from 'rxjs/observable/from';
+ * import { from } from 'rxjs';
  *
  * const array = [10, 20, 30];
  * const result = from(array);
@@ -37,15 +38,18 @@ export function from<T>(input: ObservableInput<ObservableInput<T>>, scheduler?: 
  * result.subscribe(x => console.log(x));
  *
  * // Logs:
- * // 10 20 30
+ * // 10
+ * // 20
+ * // 30
  * ```
  *
  * ---
  *
  * ### Convert an infinite iterable (from a generator) to an Observable
+ *
  * ```javascript
+ * import { from } from 'rxjs';
  * import { take } from 'rxjs/operators';
- * import { from } from 'rxjs/observable/from';
  *
  * function* generateDoubles(seed) {
  *    let i = seed;
@@ -61,27 +65,40 @@ export function from<T>(input: ObservableInput<ObservableInput<T>>, scheduler?: 
  * result.subscribe(x => console.log(x));
  *
  * // Logs:
- * // 3 6 12 24 48 96 192 384 768 1536
+ * // 3
+ * // 6
+ * // 12
+ * // 24
+ * // 48
+ * // 96
+ * // 192
+ * // 384
+ * // 768
+ * // 1536
  * ```
  *
  * ---
  *
- * ### with async scheduler
+ * ### With async scheduler
+ *
  * ```javascript
- * import { from } from 'rxjs/observable/from';
- * import { async } from 'rxjs/scheduler/async';
+ * import { from, asyncScheduler } from 'rxjs';
  *
  * console.log('start');
  *
  * const array = [10, 20, 30];
- * const result = from(array, async);
+ * const result = from(array, asyncScheduler);
  *
  * result.subscribe(x => console.log(x));
  *
  * console.log('end');
  *
  * // Logs:
- * // start end 10 20 30
+ * // start
+ * // end
+ * // 10
+ * // 20
+ * // 30
  * ```
  *
  * @see {@link fromEvent}

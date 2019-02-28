@@ -22,6 +22,8 @@ import { Subscription } from '../Subscription';
  *
  * @example <caption>Converts a javascript object to an Observable</caption>
  * ```javascript
+ * import { pairs } from 'rxjs';
+ *
  * const obj = {
  *   foo: 42,
  *   bar: 56,
