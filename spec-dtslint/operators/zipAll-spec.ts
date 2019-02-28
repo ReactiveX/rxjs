@@ -11,6 +11,17 @@ it('should support projecting values', () => {
 
 it('should enforce types', () => {
   const o = of(1, 2, 3).pipe(zipAll()); // $ExpectError
+  const p = of(1, 2, 3).pipe(zipAll('foo')); // $ExpectError
+  const q = of(1, 2, 3).pipe(zipAll([4, 5, 6])); // $ExpectError
+  const r = of(1, 2, 3).pipe(zipAll(Promise.resolve(4))); // $ExpectError
+  const s = of(1, 2, 3).pipe(zipAll(of(4, 5, 6))); // $ExpectError
+
+  const myIterator:Iterator<number> = {
+    next(value: number) {
+      return {done: false, value};
+    },
+  }
+  const t = of(1, 2, 3).pipe(zipAll(myIterator)); // $ExpectError
 });
 
 it('should enforce projector types', () => {
