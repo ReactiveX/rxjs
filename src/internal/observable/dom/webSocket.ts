@@ -141,7 +141,7 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  * subB.unsubscribe();
  * // Message '{"unsubscribe": "B"}' is sent to the server, which stops sending 'B' messages.
  *
- * subA.unubscribe();
+ * subA.unsubscribe();
  * // Message '{"unsubscribe": "A"}' makes the server stop sending messages for 'A'. Since there is no more subscribers to root Subject,
  * // socket connection closes.
  * ```
