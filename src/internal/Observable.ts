@@ -121,21 +121,25 @@ export class Observable<T> implements Subscribable<T> {
    * ## Example
    * ### Subscribe with an Observer
    * ```javascript
+   * import { of } from 'rxjs';
+   *
    * const sumObserver = {
    *   sum: 0,
    *   next(value) {
    *     console.log('Adding: ' + value);
    *     this.sum = this.sum + value;
    *   },
-   *   error() { // We actually could just remove this method,
-   *   },        // since we do not really care about errors right now.
+   *   error() {
+   *     // We actually could just remove this method,
+   *     // since we do not really care about errors right now.
+   *   },
    *   complete() {
    *     console.log('Sum equals: ' + this.sum);
    *   }
    * };
    *
-   * Rx.Observable.of(1, 2, 3) // Synchronously emits 1, 2, 3 and then completes.
-   * .subscribe(sumObserver);
+   * of(1, 2, 3) // Synchronously emits 1, 2, 3 and then completes.
+   *   .subscribe(sumObserver);
    *
    * // Logs:
    * // "Adding: 1"
@@ -146,18 +150,17 @@ export class Observable<T> implements Subscribable<T> {
    *
    * ### Subscribe with functions
    * ```javascript
+   * import { of } from 'rxjs';
+   *
    * let sum = 0;
    *
-   * Rx.Observable.of(1, 2, 3)
-   * .subscribe(
-   *   function(value) {
+   * of(1, 2, 3).subscribe(
+   *   value => {
    *     console.log('Adding: ' + value);
    *     sum = sum + value;
    *   },
    *   undefined,
-   *   function() {
-   *     console.log('Sum equals: ' + sum);
-   *   }
+   *   () => console.log('Sum equals: ' + sum)
    * );
    *
    * // Logs:
@@ -169,12 +172,16 @@ export class Observable<T> implements Subscribable<T> {
    *
    * ### Cancel a subscription
    * ```javascript
-   * const subscription = Rx.Observable.interval(1000).subscribe(
+   * import { interval } from 'rxjs';
+   *
+   * const subscription = interval(1000).subscribe(
    *   num => console.log(num),
    *   undefined,
-   *   () => console.log('completed!') // Will not be called, even
-   * );                                // when cancelling subscription
-   *
+   *   () => {
+   *     // Will not be called, even when cancelling subscription.
+   *     console.log('completed!');
+   *   }
+   * );
    *
    * setTimeout(() => {
    *   subscription.unsubscribe();
