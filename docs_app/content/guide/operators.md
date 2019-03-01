@@ -274,7 +274,10 @@ If there is a commonly used sequence of operators in your code, use the `pipe()`
 For example, you could make a function that discarded odd values and doubled even values like this:
 
 ```ts
-function discardOddDisableEven() {
+import { pipe } from 'rxjs';
+import { filter, map } from 'rxjs';
+
+function discardOddDoubleEven() {
   return pipe(
     filter(v => ! (v % 2)),
     map(v => v + v),
