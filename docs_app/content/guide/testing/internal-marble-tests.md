@@ -15,7 +15,7 @@ André Staltz first recommended this as a DSL for creating unit tests, and it ha
 
 ## See also
 
-- [Code of Conduct](./guide/code-of-conduct)
+- [Code of Conduct](../../code-of-conduct)
 
 ## Basic methods
 
