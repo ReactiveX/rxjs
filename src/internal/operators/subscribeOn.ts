@@ -35,9 +35,9 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * const b = of(5, 6, 7, 8, 9);
  * merge(a, b).subscribe(console.log);
  * ```
- * 
- * The output will instead be `5 6 7 8 9 1 2 3 4`. 
- * The reason for this is that Observable `b` emits its values directly and synchronously like before 
+ *
+ * The output will instead be `5 6 7 8 9 1 2 3 4`.
+ * The reason for this is that Observable `b` emits its values directly and synchronously like before
  * but the emissions from `a` are scheduled on the event loop because we are now using the {@link asyncScheduler} for that specific Observable.
  *
  * @param {SchedulerLike} scheduler - The {@link SchedulerLike} to perform subscription actions on.
