@@ -199,6 +199,16 @@ aio-api-list {
         color: $blue-500;
       }
     }
+
+    .stability {
+      &.deprecated {
+        text-decoration: line-through;
+      }
+
+      &.experimental {
+        font-style: italic;
+      }
+    }
   }
 }
 

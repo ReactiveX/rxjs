@@ -34,13 +34,13 @@ import { OperatorFunction, SchedulerLike, SchedulerAction } from '../types';
  * In every window of 1 second each, emit at most 2 click events
  * ```javascript
  * import { fromEvent } from 'rxjs';
- * import { windowTime, map, mergeAll } from 'rxjs/operators';
+ * import { windowTime, map, mergeAll, take } from 'rxjs/operators';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(
  *   windowTime(1000),
- *   map(win => win.take(2)),   // each window has at most 2 emissions
- *   mergeAll(),                // flatten the Observable-of-Observables
+ *   map(win => win.pipe(take(2))), // each window has at most 2 emissions
+ *   mergeAll(),                    // flatten the Observable-of-Observables
  * );
  * result.subscribe(x => console.log(x));
  * ```
@@ -48,13 +48,13 @@ import { OperatorFunction, SchedulerLike, SchedulerAction } from '../types';
  * Every 5 seconds start a window 1 second long, and emit at most 2 click events per window
  * ```javascript
  * import { fromEvent } from 'rxjs';
- * import { windowTime, map, mergeAll } from 'rxjs/operators';
+ * import { windowTime, map, mergeAll, take } from 'rxjs/operators';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(
  *   windowTime(1000, 5000),
- *   map(win => win.take(2)),   // each window has at most 2 emissions
- *   mergeAll(),                // flatten the Observable-of-Observables
+ *   map(win => win.pipe(take(2))), // each window has at most 2 emissions
+ *   mergeAll(),                    // flatten the Observable-of-Observables
  * );
  * result.subscribe(x => console.log(x));
  * ```
