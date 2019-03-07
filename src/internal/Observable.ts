@@ -120,7 +120,9 @@ export class Observable<T> implements Subscribable<T> {
    *
    * ## Example
    * ### Subscribe with an Observer
-   * ```javascript
+   * ```ts
+   * import {of} from 'rxjs';
+   * 
    * const sumObserver = {
    *   sum: 0,
    *   next(value) {
@@ -134,7 +136,7 @@ export class Observable<T> implements Subscribable<T> {
    *   }
    * };
    *
-   * Rx.Observable.of(1, 2, 3) // Synchronously emits 1, 2, 3 and then completes.
+   * of(1, 2, 3) // Synchronously emits 1, 2, 3 and then completes.
    * .subscribe(sumObserver);
    *
    * // Logs:
@@ -145,10 +147,12 @@ export class Observable<T> implements Subscribable<T> {
    * ```
    *
    * ### Subscribe with functions
-   * ```javascript
+   * ```ts
+   * import {of} from 'rxjs'
+   *
    * let sum = 0;
    *
-   * Rx.Observable.of(1, 2, 3)
+   * of(1, 2, 3)
    * .subscribe(
    *   function(value) {
    *     console.log('Adding: ' + value);
@@ -168,8 +172,10 @@ export class Observable<T> implements Subscribable<T> {
    * ```
    *
    * ### Cancel a subscription
-   * ```javascript
-   * const subscription = Rx.Observable.interval(1000).subscribe(
+   * ```ts
+   * import {interval} from 'rxjs';
+   * 
+   * const subscription = interval(1000).subscribe(
    *   num => console.log(num),
    *   undefined,
    *   () => console.log('completed!') // Will not be called, even
@@ -318,10 +324,11 @@ export class Observable<T> implements Subscribable<T> {
    * been called in the order they were passed in.
    *
    * ### Example
-   * ```javascript
+   * ```ts
+   * import { interval } from 'rxjs';
    * import { map, filter, scan } from 'rxjs/operators';
    *
-   * Rx.Observable.interval(1000)
+   * interval(1000)
    *   .pipe(
    *     filter(x => x % 2 === 0),
    *     map(x => x + x),
