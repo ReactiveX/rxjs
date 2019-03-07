@@ -38,12 +38,7 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  * import { of } from 'rxjs';
  * import { mergeMap, groupBy, reduce } from 'rxjs/operators';
  *
- * interface Obj {
- *    id: number,
- *    name: string,
- * }
- *
- * of<Obj>(
+ * of(
  *   {id: 1, name: 'JavaScript'},
  *   {id: 2, name: 'Parcel'},
  *   {id: 2, name: 'webpack'},
@@ -69,20 +64,23 @@ export function groupBy<T, K, R>(keySelector: (value: T) => K, elementSelector?:
  *
  * ```javascript
  * import { of } from 'rxjs';
- * import { mergeMap, groupBy, map, reduce } from 'rxjs/operators';
+ * import { groupBy, map, mergeMap, reduce } from 'rxjs/operators';
  *
- * of<Obj>(
- *   {id: 1, name: 'JavaScript'},
- *   {id: 2, name: 'Parcel'},
- *   {id: 2, name: 'webpack'},
- *   {id: 1, name: 'TypeScript'}
- *   {id: 3, name: 'TSLint'}
- * ).pipe(
- *   groupBy(p => p.id, p => p.name),
- *   mergeMap( (group$) => group$.pipe(reduce((acc, cur) => [...acc, cur], ["" + group$.key]))),
- *   map(arr => ({'id': parseInt(arr[0]), 'values': arr.slice(1)})),
+ * of(
+ *   { id: 1, name: 'JavaScript' },
+ *   { id: 2, name: 'Parcel' },
+ *   { id: 2, name: 'webpack' },
+ *   { id: 1, name: 'TypeScript' },
+ *   { id: 3, name: 'TSLint' }
  * )
- * .subscribe(p => console.log(p));
+ *   .pipe(
+ *     groupBy(p => p.id, p => p.name),
+ *     mergeMap(group$ =>
+ *       group$.pipe(reduce((acc, cur) => [...acc, cur], [`${group$.key}`]))
+ *     ),
+ *     map(arr => ({ id: parseInt(arr[0], 10), values: arr.slice(1) }))
+ *  )
+ *  .subscribe(p => console.log(p));
  *
  * // displays:
  * // { id: 1, values: [ 'JavaScript', 'TypeScript' ] }
