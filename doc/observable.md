@@ -148,7 +148,7 @@ This happens because both functions and Observables are lazy computations. If yo
 
 Some people claim that Observables are asynchronous. That is not true. If you surround a function call with logs, like this:
 
-```js
+```ts
 console.log('before');
 console.log(foo.call());
 console.log('after');
@@ -165,7 +165,7 @@ You will see the output:
 
 And this is the same behavior with Observables:
 
-```js
+```ts
 console.log('before');
 foo.subscribe(x => {
   console.log(x);
@@ -188,7 +188,7 @@ Which proves the subscription of `foo` was entirely synchronous, just like a fun
 
 What is the difference between an Observable and a function? **Observables can "return" multiple values over time**, something which functions cannot. You can't do this:
 
-```js
+```ts
 function foo() {
   console.log('Hello');
   return 42;
@@ -404,7 +404,7 @@ Each Observable must define how to dispose resources of that execution when we c
 
 For instance, this is how we clear an interval execution set with `setInterval`:
 
-```js
+```ts
 const observable = new Observable(function subscribe(subscriber) {
   // Keep track of the interval resource
   const intervalId = setInterval(() => {
@@ -420,7 +420,7 @@ const observable = new Observable(function subscribe(subscriber) {
 
 Just like `observable.subscribe` resembles `new Observable(function subscribe() {...})`, the `unsubscribe` we return from `subscribe` is conceptually equal to `subscription.unsubscribe`. In fact, if we remove the ReactiveX types surrounding these concepts, we're left with rather straightforward JavaScript.
 
-```js
+```ts
 function subscribe(subscriber) {
   const intervalId = setInterval(() => {
     subscriber.next('hi');

@@ -315,7 +315,7 @@ setTimeout(() => {
 
 The AsyncSubject is a variant where only the last value of the Observable execution is sent to its observers, and only when the execution completes.
 
-```js
+```ts
 import { AsyncSubject } from 'rxjs';
 const subject = new AsyncSubject();
 

@@ -100,11 +100,11 @@ There should be **at most one** `^` point in a subscription marble diagram, and 
 
 A basic test might look as follows:
 
-```js
+```ts
 
-var e1 = hot('----a--^--b-------c--|');
-var e2 = hot(  '---d-^--e---------f-----|');
-var expected =      '---(be)----c-f-----|';
+cosnt e1 = hot('----a--^--b-------c--|');
+cosnt e2 = hot(  '---d-^--e---------f-----|');
+cosnt expected =      '---(be)----c-f-----|';
 
 expectObservable(e1.merge(e2)).toBe(expected);
 ```
@@ -116,8 +116,8 @@ expectObservable(e1.merge(e2)).toBe(expected);
 
 A test example with specified values:
 
-```js
-var values = {
+```ts
+cosnt values = {
   a: 1,
   b: 2,
   c: 3,
@@ -125,9 +125,9 @@ var values = {
   x: 1 + 3, // a + c
   y: 2 + 4, // b + d
 }
-var e1 =    hot('---a---b---|', values);
-var e2 =    hot('-----c---d---|', values);
-var expected =  '-----x---y---|';
+cosnt e1 =    hot('---a---b---|', values);
+cosnt e2 =    hot('-----c---d---|', values);
+cosnt expected =  '-----x---y---|';
 
 expectObservable(e1.zip(e2, function(x, y) { return x + y; }))
   .toBe(expected, values);
@@ -141,13 +141,13 @@ expectObservable(e1.zip(e2, function(x, y) { return x + y; }))
 
 A test example with subscription assertions:
 
-```js
-var x = cold(        '--a---b---c--|');
-var xsubs =    '------^-------!';
-var y = cold(                '---d--e---f---|');
-var ysubs =    '--------------^-------------!';
-var e1 = hot(  '------x-------y------|', { x: x, y: y });
-var expected = '--------a---b----d--e---f---|';
+```ts
+cosnt x = cold(        '--a---b---c--|');
+cosnt xsubs =    '------^-------!';
+cosnt y = cold(                '---d--e---f---|');
+cosnt ysubs =    '--------------^-------------!';
+cosnt e1 = hot(  '------x-------y------|', { x: x, y: y });
+cosnt expected = '--------a---b----d--e---f---|';
 
 expectObservable(e1.switch()).toBe(expected);
 expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -164,7 +164,7 @@ In most tests it will be unnecessary to test subscription and unsubscription poi
 Typically, each test case in Jasmine is written as `it('should do something', function () { /* ... */ })`. To mark a test case for PNG diagram generation, you must use the `asDiagram(label)` function, like this:
 
 <!-- skip-example -->
-```js
+```ts
 it.asDiagram(operatorLabel)('should do something', function () {
   // ...
 });
@@ -172,14 +172,14 @@ it.asDiagram(operatorLabel)('should do something', function () {
 
 For instance, with `zip`, we would write
 
-```js
+```ts
 it.asDiagram('zip')('should zip by concatenating', function () {
-  var e1 =    hot('---a---b---|');
-  var e2 =    hot('-----c---d---|');
-  var expected =  '-----x---y---|';
-  var values = { x: 'ac', y: 'bd' };
+  cosnt e1 =    hot('---a---b---|');
+  cosnt e2 =    hot('-----c---d---|');
+  cosnt expected =  '-----x---y---|';
+  cosnt values = { x: 'ac', y: 'bd' };
 
-  var result = e1.zip(e2, function(x, y) { return String(x) + String(y); });
+  cosnt result = e1.zip(e2, function(x, y) { return String(x) + String(y); });
 
   expectObservable(result).toBe(expected, values);
 });
