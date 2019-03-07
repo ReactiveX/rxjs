@@ -30,7 +30,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  *
  * ## Example
  * Emit the most recent click after a burst of clicks
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { debounceTime } from 'rxjs/operators';
  *

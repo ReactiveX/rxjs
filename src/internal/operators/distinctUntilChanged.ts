@@ -17,7 +17,7 @@ export function distinctUntilChanged<T, K>(compare: (x: K, y: K) => boolean, key
  *
  * ## Example
  * A simple example with numbers
- * ```javascript
+ * ```ts
  * import { of } from 'rxjs';
  * import { distinctUntilChanged } from 'rxjs/operators';
  *

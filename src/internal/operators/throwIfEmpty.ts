@@ -10,7 +10,7 @@ import { MonoTypeOperatorFunction } from '../types';
  * ![](throwIfEmpty.png)
  *
  * ## Example
- * ```javascript
+ * ```ts
  * import { fromEvent, timer } from 'rxjs';
  * import { throwIfEmpty, takeUntil } from 'rxjs/operators';
  *

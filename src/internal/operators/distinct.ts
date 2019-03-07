@@ -22,7 +22,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  *
  * ## Examples
  * A simple example with numbers
- * ```javascript
+ * ```ts
  * import { of } from 'rxjs';
  * import { distinct } from 'rxjs/operators';
  *

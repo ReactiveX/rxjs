@@ -29,7 +29,7 @@ export function from<O extends ObservableInput<any>>(input: O, scheduler?: Sched
  *
  * ### Converts an array to an Observable
  *
- * ```javascript
+ * ```ts
  * import { from } from 'rxjs';
  *
  * const array = [10, 20, 30];
@@ -47,7 +47,7 @@ export function from<O extends ObservableInput<any>>(input: O, scheduler?: Sched
  *
  * ### Convert an infinite iterable (from a generator) to an Observable
  *
- * ```javascript
+ * ```ts
  * import { from } from 'rxjs';
  * import { take } from 'rxjs/operators';
  *
@@ -81,7 +81,7 @@ export function from<O extends ObservableInput<any>>(input: O, scheduler?: Sched
  *
  * ### With async scheduler
  *
- * ```javascript
+ * ```ts
  * import { from, asyncScheduler } from 'rxjs';
  *
  * console.log('start');

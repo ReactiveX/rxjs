@@ -6,7 +6,7 @@ import {  AjaxObservable, AjaxCreationMethod  } from './AjaxObservable';
  * url, headers, etc or a string for a URL.
  *
  * ## Using ajax.getJSON() to fetch data from API.
- * ```javascript
+ * ```ts
  * import { ajax } from 'rxjs/ajax';
  * import { map, catchError } from 'rxjs/operators';
  *

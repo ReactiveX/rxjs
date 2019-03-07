@@ -27,7 +27,7 @@ export function pluck<T, R>(...properties: string[]): OperatorFunction<T, R>;
  *
  * ## Example
  * Map every click to the tagName of the clicked target element
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { pluck } from 'rxjs/operators';
  *

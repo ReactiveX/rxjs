@@ -37,7 +37,7 @@ export function exhaustMap<T, I, R>(project: (value: T, index: number) => Observ
  *
  * ## Example
  * Run a finite timer for each click, only if there is no currently active timer
- * ```javascript
+ * ```ts
  * import { fromEvent, } from 'rxjs';
  * import { exhaustMap, take } from 'rxjs/operators';
  *

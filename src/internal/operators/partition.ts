@@ -22,7 +22,7 @@ import { UnaryFunction } from '../types';
  *
  * ## Example
  * Partition click events into those on DIV elements and those elsewhere
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { partition } from 'rxjs/operators';
  *

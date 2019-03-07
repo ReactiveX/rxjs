@@ -22,7 +22,7 @@ import { Subscriber } from '../Subscriber';
  *
  * ## Example
  * Emits ascending numbers, one every second (1000ms) up to the number 3
- * ```javascript
+ * ```ts
  * import { interval } from 'rxjs';
  * import { take } from 'rxjs/operators';
  *

@@ -33,7 +33,7 @@ import { subscribeToResult } from '../util/subscribeToResult';
  *
  * ## Example
  * Emit the most recent click after a burst of clicks
- * ```javascript
+ * ```ts
  * import { fromEvent, interval } from 'rxjs';
  * import { debounce } from 'rxjs/operators';
  *

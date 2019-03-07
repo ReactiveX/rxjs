@@ -22,7 +22,7 @@ export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
  *
  * ## Examples
  * ### Emit the number 7, then complete
- * ```javascript
+ * ```ts
  * import { empty } from 'rxjs';
  * import { startWith } from 'rxjs/operators';
  *
@@ -31,7 +31,7 @@ export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
  * ```
  *
  * ### Map and flatten only odd numbers to the sequence 'a', 'b', 'c'
- * ```javascript
+ * ```ts
  * import { empty, interval } from 'rxjs';
  * import { mergeMap } from 'rxjs/operators';
  *

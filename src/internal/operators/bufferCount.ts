@@ -22,7 +22,7 @@ import { OperatorFunction, TeardownLogic } from '../types';
  *
  * Emit the last two click events as an array
  *
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { bufferCount } from 'rxjs/operators';
  *
@@ -33,7 +33,7 @@ import { OperatorFunction, TeardownLogic } from '../types';
  *
  * On every click, emit the last two click events as an array
  *
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { bufferCount } from 'rxjs/operators';
  *

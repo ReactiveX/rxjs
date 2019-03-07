@@ -33,7 +33,7 @@ export function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: nu
  *
  * Every second, emit an array of the recent click events
  *
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { bufferTime } from 'rxjs/operators';
  *
@@ -44,7 +44,7 @@ export function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: nu
  *
  * Every 5 seconds, emit the click events from the next 2 seconds
  *
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { bufferTime } from 'rxjs/operators';
  *
