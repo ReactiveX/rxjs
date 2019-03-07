@@ -12,7 +12,7 @@ We can test our _asynchronous_ RxJS code _synchronously_ and deterministically b
 ```ts
 import { TestScheduler } from 'rxjs/testing';
 
-const scheduler = new TestScheduler> ((actual, expected) => {
+const scheduler = new TestScheduler((actual, expected) => {
   // asserting the two objects are equal
   // e.g. using chai.
   expect(actual).deep.equal(expected);
@@ -49,9 +49,11 @@ testScheduler.run(helpers => {
 });
 ```
 
+Although `run()` executes entirely synchronously, the helper functions inside your callback function do not! These functions **schedule assertions** that will execute either when your callback completes or when you explicitly call `flush()`. Be wary of calling synchronous assertions, for example `expect` from your testing library of choice, from within the callback.
+
 - `hot(marbleDiagram: string, values?: object, error?: any)` - creates a ["hot" observable](https://medium.com/@benlesh/hot-vs-cold-observables-f8094ed53339) (like a subject) that will behave as though it's already "running" when the test begins. An interesting difference is that `hot` marbles allow a `^` character to signal where the "zero frame" is. That is the point at which the subscription to observables being tested begins.
 - `cold(marbleDiagram: string, values?: object, error?: any)` - creates a ["cold" observable](https://medium.com/@benlesh/hot-vs-cold-observables-f8094ed53339) whose subscription starts when the test begins.
-- `expectObservable(actual: Observable<T>).toBe(marbleDiagram: string, values?: object, error?: any)` - schedules an assertion for when the TestScheduler flushes. Give `subscriptionMarbles` as parameter to change the schedule of subscription and unsubscription. If you don't provide the `subscriptionMarbles` parameter it will subscribe at the beginning and never unsubscribe. Read below about subscription marble diagram.
+- `expectObservable(actual: Observable<T>, subscriptionMarbles?: string).toBe(marbleDiagram: string, values?: object, error?: any)` - schedules an assertion for when the TestScheduler flushes. Give `subscriptionMarbles` as parameter to change the schedule of subscription and unsubscription. If you don't provide the `subscriptionMarbles` parameter it will subscribe at the beginning and never unsubscribe. Read below about subscription marble diagram.
 - `expectSubscriptions(actualSubscriptionLogs: SubscriptionLog[]).toBe(subscriptionMarbles: string)` - like `expectObservable` schedules an assertion for when the testScheduler flushes. Both `cold()` and `hot()` return an observable with a property `subscriptions` of type `SubscriptionLog[]`. Give `subscriptions` as parameter to `expectSubscriptions` to assert whether it matches the `subscriptionsMarbles` marble diagram given in `toBe()`. Subscription marble diagrams are slightly different than Observable marble diagrams. Read more below.
 - `flush()` - immediately starts virtual time. Not often used since `run()` will automatically flush for you when your callback returns, but in some cases you may wish to flush more than once or otherwise have more control.
 
@@ -123,13 +125,15 @@ expectObservable(result).toBe(expected);
 
 `'-----(a|)'`: on frame 5 emit `a` and `complete`.
 
-`'a 9ms b 9s c'`: on frame 0 emit `a`, on frame 10 emit `b`, on frame 10,012 emit `c`, then on on frame 10,013 `complete`.
+`'a 9ms b 9s c|'`: on frame 0 emit `a`, on frame 10 emit `b`, on frame 10,012 emit `c`, then on on frame 10,013 `complete`.
 
 `'--a 2.5m b'`: on frame 2 emit `a`, on frame 150,003 emit `b` and never complete.
 
 ## Subscription Marbles
 
-The `expectSubscriptions` helper allows you to assert that a `cold()` or `hot()` Observable you created was subscribed/unsubscribed to at the correct point in time. The subscription marble syntax is slightly different to conventional marble syntax.
+The `expectSubscriptions` helper allows you to assert that a `cold()` or `hot()` Observable you created was subscribed/unsubscribed to at the correct point in time. The `subscriptionMarbles` parameter to `expectObservable` allows your test to defer subscription to a later virtual time, and/or unsubscribe even if the observable being tested has not yet completed.
+
+The subscription marble syntax is slightly different to conventional marble syntax.
 
 - `'-'` time: 1 frame time passing.
 - `[0-9]+[ms|s|m]` time progression: the time progression syntax lets you progress virtual time by a specific amount. It's a number, followed by a time unit of `ms` (milliseconds), `s` (seconds), or `m` (minutes) without any space between them, e.g. `a 10ms b`. See [Time progression syntax](#time-progression-syntax) for more details.
@@ -147,6 +151,37 @@ There should be **at most one** `^` point in a subscription marble diagram, and 
 `'--^--!-'`: on frame 2 a subscription happened, and on frame 5 was unsubscribed.
 
 `'500ms ^ 1s !'`: on frame 500 a subscription happened, and on frame 1,501 was unsubscribed.
+
+Given a hot source, test multiple subscribers that subscribe at different times:
+
+```js
+testScheduler.run(({ hot, expectObservable }) => {
+  const source = hot('--a--a--a--a--a--a--a--');
+  const sub1 = '      --^-----------!';
+  const sub2 = '      ---------^--------!';
+  const expect1 = '   --a--a--a--a--';
+  const expect2 = '   -----------a--a--a-';
+  expectObservable(source, sub1).toBe(expect1);
+  expectObservable(source, sub2).toBe(expect2);
+});
+```
+
+Manually unsubscribe from a source that will never complete:
+
+```js
+it('should repeat forever', () => {
+  const scheduler = createScheduler();
+
+  scheduler.run(({ expectObservable }) => {
+    const foreverStream$ = interval(1).pipe(mapTo('a'));
+
+    // Omitting this arg may crash the test suite.
+    const unsub = '------ !';
+
+    expectObservable(foreverStream$, unsub).toBe('-aaaaa');
+  });
+});
+```
 
 ***
 
