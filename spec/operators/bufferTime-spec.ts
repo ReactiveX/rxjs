@@ -311,11 +311,11 @@ describe('bufferTime operator', () => {
   it('should not have errors when take follows and maxBufferSize is provided', () => {
     const expected = '-----a----b----c----d----(e|)';
     const values = {
-      a: [0, 1, 2, 3],
-      b: [4, 5, 6, 7, 8],
-      c: [9, 10, 11, 12, 13],
-      d: [14, 15, 16, 17, 18],
-      e: [19, 20, 21, 22, 23]
+      a: [0, 1, 2, 3, 4],
+      b: [5, 6, 7, 8, 9],
+      c: [10, 11, 12, 13, 14],
+      d: [15, 16, 17, 18, 19],
+      e: [20, 21, 22, 23, 24]
     };
 
     const source = interval(1, rxTestScheduler).pipe(
