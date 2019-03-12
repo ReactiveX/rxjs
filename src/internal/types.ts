@@ -92,7 +92,7 @@ export interface Observer<T> {
 
 export interface SchedulerLike {
   now(): number;
-  schedule<S>(work: (state: S) => void, delay?: number, state?: S): Subscription;
+  schedule<S>(work: (state: S, reschedule: (nextState: S) => void) => void, delay?: number, state?: S): Subscription;
 }
 
 export type ObservedValueOf<O> = O extends ObservableInput<infer T> ? T : never;

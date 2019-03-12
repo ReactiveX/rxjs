@@ -43,24 +43,27 @@ const RESOLVED_PROMISE = Promise.resolve();
  * @owner Scheduler
  */
 export const asap: SchedulerLike = {
-  schedule<S>(work: (state: S) => void, delay = 0, state?: S): Subscription {
+  schedule<S>(work: (state: S, reschedule: (nextState: S) => void) => void, delay = 0, state?: S): Subscription {
     if (__rx_scheduler_overrides__.scheduler) {
       return __rx_scheduler_overrides__.scheduler.schedule(work, delay, state);
     }
     if (delay > 0) {
       return async.schedule(work, delay, state);
     }
+
     let cancelled = false;
     const subscription = new Subscription(() => cancelled = true);
-    RESOLVED_PROMISE.then(() => {
+    const reschedule = (state: S) => {
       if (!cancelled) {
-        try {
-          work(state);
-        } finally {
-          subscription.unsubscribe();
-        }
+        RESOLVED_PROMISE.then(() => {
+          if (!cancelled) {
+            work(state, reschedule);
+          }
+        });
       }
-    });
+    };
+    reschedule(state);
+
     return subscription;
   },
 

@@ -62,25 +62,4 @@ describe('interval', () => {
       done(new Error('should not be called'));
     });
   });
-
-  it('should create an observable that emits using any schedulerlike', () => {
-    const results: any[] = [];
-    let schedulerCalls = 0;
-    const scheduler: SchedulerLike = {
-      schedule<S>(work: (state: S) => void, delay = 0, state?: S): Subscription {
-        schedulerCalls++;
-        work(state);
-        return new Subscription();
-      },
-      now() {
-        return 42;
-      }
-    };
-    interval(100, scheduler).pipe(
-      take(3)
-    )
-    .subscribe(x => results.push(x));
-    expect(results).to.deep.equal([0, 1, 2]);
-    expect(schedulerCalls).to.equal(3);
-  });
 });

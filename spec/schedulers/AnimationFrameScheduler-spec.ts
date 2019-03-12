@@ -1,115 +1,158 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { animationFrameScheduler, Subscription } from 'rxjs';
+import { animationFrameScheduler } from 'rxjs';
 
-const animationFrame = animationFrameScheduler;
+const _raf: Function[] = [];
+const _originalRAF = requestAnimationFrame;
+const _originalCAF = cancelAnimationFrame;
 
-/** @test {Scheduler} */
-describe('Scheduler.animationFrame', () => {
-  it('should exist', () => {
-    expect(animationFrame).exist;
+function stubRAF() {
+  _raf.length = 0;
+  _removal = {};
+  try {
+    (window as any).requestAnimationFrame = requestAnimationFrameStub;
+  } catch (err) { /* do nothing */ }
+  try {
+    (global as any).requestAnimationFrame = requestAnimationFrameStub;
+  } catch (err) { /* do nothing */ }
+  try {
+    (window as any).cancelAnimationFrame = cancelAnimationFrameStub;
+  } catch (err) { /* do nothing */ }
+  try {
+    (global as any).cancelAnimationFrame = cancelAnimationFrameStub;
+  } catch (err) { /* do nothing */ }
+}
+
+let _id = 0;
+let _removal = {} as any;
+
+function requestAnimationFrameStub(cb: Function) {
+  _raf.push(cb);
+  _removal[_id] = () => {
+    const index = _raf.indexOf(cb);
+    if (index >= 0) {
+      _raf.splice(index, 1);
+    }
+  };
+  return _id++;
+}
+
+function cancelAnimationFrameStub(id: number) {
+  if (_removal[id]) {
+    _removal[id]();
+  }
+}
+
+function animationFrameStep() {
+  if (_raf.length > 0) {
+    _raf.shift()();
+  }
+}
+
+function unstubRAF() {
+  _raf.length = 0;
+  _removal = {};
+  try {
+    (window as any).requestAnimationFrame = _originalRAF;
+  } catch (err) { /* do nothing */ }
+  try {
+    (global as any).requestAnimationFrame = _originalRAF;
+  } catch (err) { /* do nothing */ }
+  try {
+    (window as any).cancelAnimationFrame = _originalCAF;
+  } catch (err) { /* do nothing */ }
+  try {
+    (global as any).cancelAnimationFrame = _originalCAF;
+  } catch (err) { /* do nothing */ }
+}
+
+/** @test {animationFrameScheduler} */
+describe('animationFrameScheduler', () => {
+  let fakeTimer: sinon.SinonFakeTimers;
+  let sandbox: sinon.SinonSandbox;
+
+  beforeEach(() => {
+    sandbox = sinon.sandbox.create();
+    fakeTimer = sandbox.useFakeTimers();
+    stubRAF();
   });
 
-  it('should act like the async scheduler if delay > 0', () => {
-    let actionHappened = false;
-    const sandbox = sinon.sandbox.create();
-    const fakeTimer = sandbox.useFakeTimers();
-    animationFrame.schedule(() => {
-      actionHappened = true;
-    }, 50);
-    expect(actionHappened).to.be.false;
-    fakeTimer.tick(25);
-    expect(actionHappened).to.be.false;
-    fakeTimer.tick(100); // the other 25, plus some for the animationFrame.
-    expect(actionHappened).to.be.true;
+  afterEach(() => {
+    fakeTimer.restore();
     sandbox.restore();
+    unstubRAF();
+  });
+
+  it('should wait a delay like the async scheduler, then execute the work on an animation frame if delay > 0', () => {
+    let executed = false;
+    animationFrameScheduler.schedule(() => executed = true, 100);
+
+    // Even if an animation frame executes, if enough time hasn't gone by, our work shouldn't be done
+    fakeTimer.tick(10);
+    animationFrameStep();
+    expect(executed).to.equal(false);
+
+    // Now that we've waited the full 100ms, we *still* shouldn't be doing any work,
+    // because we need to wait for an animation frame.
+    fakeTimer.tick(90);
+    expect(executed).to.equal(false);
+
+    // After the animation frame fires, it should have executed.
+    animationFrameStep();
+    expect(executed).to.equal(true);
   });
 
   it('should cancel animationFrame actions when unsubscribed', () => {
     let actionHappened = false;
-    const sandbox = sinon.sandbox.create();
-    const fakeTimer = sandbox.useFakeTimers();
-    animationFrame.schedule(() => {
+    animationFrameScheduler.schedule(() => {
       actionHappened = true;
     }, 50).unsubscribe();
     expect(actionHappened).to.be.false;
-    fakeTimer.tick(25);
+    fakeTimer.tick(50);
+    animationFrameStep();
     expect(actionHappened).to.be.false;
-    fakeTimer.tick(25);
-    expect(actionHappened).to.be.false;
-    sandbox.restore();
   });
 
-  it('should schedule an action to happen later', (done: MochaDone) => {
-    let actionHappened = false;
-    animationFrame.schedule(() => {
-      actionHappened = true;
-      done();
-    });
-    if (actionHappened) {
-      done(new Error('Scheduled action happened synchronously'));
-    }
-  });
-
-  it('should execute recursively scheduled actions in separate asynchronous contexts', (done: MochaDone) => {
-    let syncExec1 = true;
-    let syncExec2 = true;
-    function work (index: number) {
-      if (index === 0) {
-        animationFrame.schedule(work, 0, 1);
-        animationFrame.schedule(() => { syncExec1 = false; });
-      } else if (index === 1) {
-        animationFrame.schedule(work, 0, 2);
-        animationFrame.schedule(() => { syncExec2 = false; });
-      } else if (index === 2) {
-        animationFrame.schedule(work, 0, 3);
-      } else if (index === 3) {
-        if (!syncExec1 && !syncExec2) {
-          done();
-        } else {
-          done(new Error('Execution happened synchronously.'));
-        }
+  it('should execute recursively scheduled actions in separate asynchronous contexts', () => {
+    const expected = [0, 1, 2];
+    animationFrameScheduler.schedule((state: number, reschedule: (nextState: number) => void) => {
+      if (state < 3) {
+        expect(state).to.equal(expected.shift());
+        reschedule(state + 1);
       }
-    }
-    animationFrame.schedule(work, 0, 0);
+    }, 0, 0);
+    animationFrameStep();
+    animationFrameStep();
+    animationFrameStep();
+    animationFrameStep();
+    expect(expected).to.deep.equal([]);
   });
 
-  it('should cancel the animation frame if all scheduled actions unsubscribe before it executes', (done: MochaDone) => {
+  it('should cancel the animation frame if all scheduled actions unsubscribe before it executes', () => {
     let animationFrameExec1 = false;
     let animationFrameExec2 = false;
-    const action1 = animationFrame.schedule(() => { animationFrameExec1 = true; });
-    const action2 = animationFrame.schedule(() => { animationFrameExec2 = true; });
-    action1.unsubscribe();
-    action2.unsubscribe();
-    animationFrame.schedule(() => {
+    const subs1 = animationFrameScheduler.schedule(() => { animationFrameExec1 = true; });
+    const subs2 = animationFrameScheduler.schedule(() => { animationFrameExec2 = true; });
+    subs1.unsubscribe();
+    subs2.unsubscribe();
+    animationFrameScheduler.schedule(() => {
       expect(animationFrameExec1).to.equal(false);
       expect(animationFrameExec2).to.equal(false);
-      done();
     });
+    animationFrameStep();
   });
 
-  it('should execute the rest of the scheduled actions if the first action is canceled', (done: MochaDone) => {
-    let actionHappened = false;
-    let secondSubscription: Subscription | null = null;
+  it('should execute the rest of the scheduled actions if the first action is canceled', () => {
+    let results: number[] = [];
 
-    const firstSubscription = animationFrame.schedule(() => {
-      actionHappened = true;
-      if (secondSubscription) {
-        secondSubscription.unsubscribe();
-      }
-      done(new Error('The first action should not have executed.'));
-    });
+    const sub1 = animationFrameScheduler.schedule(() => results.push(1));
+    animationFrameScheduler.schedule(() => results.push(2));
+    animationFrameScheduler.schedule(() => results.push(3));
+    animationFrameScheduler.schedule(() => results.push(4));
 
-    secondSubscription = animationFrame.schedule(() => {
-      if (!actionHappened) {
-        done();
-      }
-    });
-
-    if (actionHappened) {
-      done(new Error('Scheduled action happened synchronously'));
-    } else {
-      firstSubscription.unsubscribe();
-    }
+    sub1.unsubscribe();
+    expect(results).to.deep.equal([]);
+    animationFrameStep();
+    expect(results).to.deep.equal([2, 3, 4]);
   });
 });

@@ -21,16 +21,6 @@ describe('auditTime operator', () => {
     expectSubscriptions(e1.subscriptions).toBe(subs);
   });
 
-  it('should auditTime events by 5 time units', (done: MochaDone) => {
-    of(1, 2, 3).pipe(
-      auditTime(5)
-    ).subscribe((x: number) => {
-        done(new Error('should not be called'));
-      }, null, () => {
-        done();
-      });
-  });
-
   it('should auditTime events multiple times', () => {
     const expected = ['1-2', '2-2'];
     concat(

@@ -2,19 +2,28 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { asapScheduler, Subscription } from 'rxjs';
 
-const asap = asapScheduler;
+/** @test {asapScheduler} */
+describe('asapScheduler', () => {
+  let sandbox: sinon.SinonSandbox;
+  let fakeTimer: sinon.SinonFakeTimers;
 
-/** @test {Scheduler} */
-describe('Scheduler.asap', () => {
+  beforeEach(() => {
+    sandbox = sinon.sandbox.create();
+    fakeTimer = sandbox.useFakeTimers();
+  });
+
+  afterEach(() => {
+    fakeTimer.restore();
+    sandbox.restore();
+  });
+
   it('should exist', () => {
-    expect(asap).exist;
+    expect(asapScheduler).exist;
   });
 
   it('should act like the async scheduler if delay > 0', () => {
     let actionHappened = false;
-    const sandbox = sinon.sandbox.create();
-    const fakeTimer = sandbox.useFakeTimers();
-    asap.schedule(() => {
+    asapScheduler.schedule(() => {
       actionHappened = true;
     }, 50);
     expect(actionHappened).to.be.false;
@@ -22,14 +31,11 @@ describe('Scheduler.asap', () => {
     expect(actionHappened).to.be.false;
     fakeTimer.tick(25);
     expect(actionHappened).to.be.true;
-    sandbox.restore();
   });
 
   it('should cancel asap actions when delay > 0', () => {
     let actionHappened = false;
-    const sandbox = sinon.sandbox.create();
-    const fakeTimer = sandbox.useFakeTimers();
-    asap.schedule(() => {
+    asapScheduler.schedule(() => {
       actionHappened = true;
     }, 50).unsubscribe();
     expect(actionHappened).to.be.false;
@@ -37,12 +43,11 @@ describe('Scheduler.asap', () => {
     expect(actionHappened).to.be.false;
     fakeTimer.tick(25);
     expect(actionHappened).to.be.false;
-    sandbox.restore();
   });
 
   it('should schedule an action to happen later', (done: MochaDone) => {
     let actionHappened = false;
-    asap.schedule(() => {
+    asapScheduler.schedule(() => {
       actionHappened = true;
       done();
     });
@@ -56,13 +61,13 @@ describe('Scheduler.asap', () => {
     let syncExec2 = true;
     function work(index: number) {
       if (index === 0) {
-        asap.schedule(work, 0, 1);
-        asap.schedule(() => { syncExec1 = false; });
+        asapScheduler.schedule(work, 0, 1);
+        asapScheduler.schedule(() => { syncExec1 = false; });
       } else if (index === 1) {
-        asap.schedule(work, 0, 2);
-        asap.schedule(() => { syncExec2 = false; });
+        asapScheduler.schedule(work, 0, 2);
+        asapScheduler.schedule(() => { syncExec2 = false; });
       } else if (index === 2) {
-        asap.schedule(work, 0, 3);
+        asapScheduler.schedule(work, 0, 3);
       } else if (index === 3) {
         if (!syncExec1 && !syncExec2) {
           done();
@@ -71,17 +76,17 @@ describe('Scheduler.asap', () => {
         }
       }
     }
-    asap.schedule(work, 0, 0);
+    asapScheduler.schedule(work, 0, 0);
   });
 
   it('should cancel the setImmediate if all scheduled actions unsubscribe before it executes', (done: MochaDone) => {
     let asapExec1 = false;
     let asapExec2 = false;
-    const subs1 = asap.schedule(() => { asapExec1 = true; });
-    const subs2 = asap.schedule(() => { asapExec2 = true; });
+    const subs1 = asapScheduler.schedule(() => { asapExec1 = true; });
+    const subs2 = asapScheduler.schedule(() => { asapExec2 = true; });
     subs1.unsubscribe();
     subs2.unsubscribe();
-    asap.schedule(() => {
+    asapScheduler.schedule(() => {
       expect(asapExec1).to.equal(false);
       expect(asapExec2).to.equal(false);
       done();
@@ -92,7 +97,7 @@ describe('Scheduler.asap', () => {
     let actionHappened = false;
     let secondSubscription: Subscription | null = null;
 
-    const firstSubscription = asap.schedule(() => {
+    const firstSubscription = asapScheduler.schedule(() => {
       actionHappened = true;
       if (secondSubscription) {
         secondSubscription.unsubscribe();
@@ -100,7 +105,7 @@ describe('Scheduler.asap', () => {
       done(new Error('The first action should not have executed.'));
     });
 
-    secondSubscription = asap.schedule(() => {
+    secondSubscription = asapScheduler.schedule(() => {
       if (!actionHappened) {
         done();
       }

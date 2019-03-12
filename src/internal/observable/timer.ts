@@ -89,14 +89,27 @@ interface TimerState {
 
 function dispatch(state: TimerState) {
   const { index, period, subscriber, scheduler } = state;
-  subscriber.next(index);
-
-  if (subscriber.closed) {
-    return;
-  } else if (period === -1) {
-    return subscriber.complete();
+  if (!subscriber.closed) {
+    subscriber.next(index);
+    if (subscriber.closed) {
+      return;
+    }
+    if (period >= 0) {
+      state.index++;
+      subscriber.add(scheduler.schedule(dispatchInterval, period, state));
+    } else {
+      subscriber.complete();
+    }
   }
+}
 
-  state.index = index + 1;
-  scheduler.schedule(dispatch, period, state);
+function dispatchInterval(state: TimerState,  reschedule: (nextState: TimerState) => void) {
+  const { index, subscriber } = state;
+  if (!subscriber.closed) {
+    subscriber.next(index);
+    if (!subscriber.closed) {
+      state.index++;
+      reschedule(state);
+    }
+  }
 }

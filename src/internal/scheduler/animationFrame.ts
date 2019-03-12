@@ -3,8 +3,14 @@ import { Subscription } from '../Subscription';
 import { async } from './async';
 import { DEFAULT_NOW } from './common';
 
-let _animationFrameId = -1;
-const _queue: any[] = [];
+interface Task {
+  work: (state: any, reschedule: (nextState: any) => void) => void;
+  state: any;
+  subscription: Subscription;
+}
+
+let _currentQueue: Task[] = [];
+let _nextQueue: Task[] = [];
 
 /**
  *
@@ -41,27 +47,39 @@ const _queue: any[] = [];
  * @owner Scheduler
  */
 export const animationFrame: SchedulerLike = {
-  schedule<S>(work: (state: S) => void, delay = 0, state?: S): Subscription {
+  schedule<S>(work: (state: S, reschedule: (nextState: S) => void) => void, delay = 0, state?: S): Subscription {
     const subscription = new Subscription();
     if (delay > 0) {
-       subscription.add(
-         async.schedule(() => {
-           subscription.add(this.schedule(work, 0, state));
-         }, delay)
-       );
+      subscription.add(
+        async.schedule(() => {
+          subscription.add(this.schedule(work, 0, state));
+        }, delay)
+      );
     } else {
-      _queue.push(work, state, subscription);
-      if (_animationFrameId === -1) {
-        _animationFrameId = requestAnimationFrame(flushQueue);
-      }
+      // Start the animation frame loop if it's not already going
+      startAnimationFrameLoop();
+
+      // Push a task to execute onto the queue.
+      const task = { work, state, subscription };
+      _nextQueue.push(task);
+
+      // Set up the teardown
       subscription.add(() => {
-        const index = _queue.indexOf(subscription);
+        // I might be in the currently flushing queue.
+        let index = _currentQueue.indexOf(task);
         if (index >= 0) {
-          _queue.splice(index - 2, 3);
+          _currentQueue.splice(index, 1);
         }
-        if (_queue.length === 0) {
-          _animationFrameId = -1;
-          cancelAnimationFrame(_animationFrameId);
+
+        // *OR* It might be in the queue that hasn't hit a frame to start flushing yet.
+        index = _nextQueue.indexOf(task);
+        if (index >= 0) {
+          _nextQueue.splice(index, 1);
+        }
+
+        // If the current animation frame queue is empty, AND the overall queue is empty, stop the animation frame loop
+        if (_currentQueue.length === 0 && _nextQueue.length === 0) {
+          stopAnimationFrameLoop();
         }
       });
     }
@@ -71,27 +89,56 @@ export const animationFrame: SchedulerLike = {
   now: DEFAULT_NOW,
 };
 
-function flushQueue() {
-  try {
-    while (_queue.length > 0) {
-      const work = _queue.shift() as (state: any) => void;
-      const state = _queue.shift();
-      const subscription = _queue.shift() as Subscription;
-      try {
-        work(state);
-      } finally {
-        subscription.unsubscribe();
+let flushing = false;
+
+/** Moves to the next animation task queue and flushes it */
+function flush() {
+  if (!flushing) {
+    flushing = true;
+
+    // Move to the next queue
+    _currentQueue = _nextQueue;
+
+    // Start a new queue for newly scheduled or rescheduled items
+    _nextQueue = [];
+
+    // process the tasks on this queue FIFO.
+    while (_currentQueue.length > 0) {
+      const task = _currentQueue.shift();
+
+      let rescheduled = false;
+      const reschedule = (nextState: any) => {
+        rescheduled = true;
+        task.state = nextState;
+        // If the task was rescheduled, push it onto the next queue
+        // which will be processed on the next animationFrame
+        _nextQueue.push(task);
+      };
+
+      task.work(task.state, reschedule);
+      if (!rescheduled)  {
+        // Otherwise teardown the task. (Set up above)
+        task.subscription.unsubscribe();
       }
     }
-  } finally {
-    // clean up if necessary
-    if (_queue.length > 0) {
-      const copy = _queue.slice();
-      _queue.length = 0;
-      for (let i = 2; i < copy.length; i += 3) {
-        (copy[i] as Subscription).unsubscribe();
-      }
-    }
-    _animationFrameId = -1;
+    flushing = false;
   }
+}
+
+let _id = -1;
+
+/** Starts a requestAnimationFrame loop, will run {@link flush} on each frame*/
+function startAnimationFrameLoop() {
+  _id = requestAnimationFrame(animate);
+}
+
+function animate() {
+  flush();
+  _id = requestAnimationFrame(animate);
+}
+
+/** Stops the requesAnimationFrame loop */
+function stopAnimationFrameLoop() {
+  cancelAnimationFrame(_id);
+  _id = -1;
 }

@@ -31,19 +31,26 @@ import { DEFAULT_NOW, __rx_scheduler_overrides__ } from './common';
  */
 
 export const async: SchedulerLike = {
-  schedule<S>(work: (state: S) => void, delay = 0, state?: S): Subscription {
+  schedule<S>(work: (state: S, reschedule: (nextState: S) => void) => void, delay = 0, state?: S): Subscription {
     if (__rx_scheduler_overrides__.scheduler) {
       return __rx_scheduler_overrides__.scheduler.schedule(work, delay, state);
     }
     const subscription = new Subscription();
-    const id = setTimeout(() => {
-      try {
-        work(state);
-      } finally {
+    let wasRescheduled = false;
+    const reschedule = (nextState: S) => {
+      wasRescheduled = true;
+      state = nextState;
+    };
+
+    const id = setInterval(() => {
+      wasRescheduled = false;
+      work(state, reschedule);
+      if (!wasRescheduled) {
         subscription.unsubscribe();
       }
     }, delay);
-    subscription.add(() => clearTimeout(id));
+
+    subscription.add(() => clearInterval(id));
     return subscription;
   },
 
