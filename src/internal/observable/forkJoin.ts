@@ -110,7 +110,7 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  * ### Use forkJoin with project function
  * ```javascript
  * import { forkJoin, interval } from 'rxjs';
- * import { take } from 'rxjs/operators';
+ * import { map, take } from 'rxjs/operators';
  *
  * const observable = forkJoin(
  *   interval(1000).pipe(take(3)), // emit 0, 1, 2 every second and complete
