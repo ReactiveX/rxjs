@@ -36,6 +36,16 @@ export function switchMap<T, R, O extends ObservableInput<any>>(project: (value:
  * subsequent inner Observables.
  *
  * ## Example
+ * Generate new Observable according to source Observable values
+ * ```javascript
+ * import { of } from 'rxjs';
+ * import { switchMap } from 'rxjs/operators';
+ *
+ * const switched = of(1,2,3).pipe(switchMap((x) => of( x, x ** 2, x ** 3)));
+ * switched.subscribe(x => console.log(x));
+ * ```
+ * 
+ *
  * Rerun an interval Observable on every click event
  * ```javascript
  * import { fromEvent, interval } from 'rxjs';
