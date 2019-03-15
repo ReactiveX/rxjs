@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import { queue } from 'rxjs/scheduler/queue';
 import { fromIterable } from 'rxjs/internal/observable/fromIterable';
+import { iterator as symbolIterator } from 'rxjs/internal/symbol/iterator';
 import { TestScheduler } from 'rxjs/testing';
 import { Notification, queueScheduler, Subscriber } from 'rxjs';
 import { observeOn, materialize, take } from 'rxjs/operators';
-import * as Rx from 'rxjs/Rx';
 
 declare const expectObservable: any;
 declare const rxTestScheduler: TestScheduler;
@@ -63,7 +63,7 @@ describe('fromIterable', () => {
     };
 
     const iterable = {
-      [Rx.Symbol.iterator]() {
+      [symbolIterator]() {
         return iterator;
       }
     };
@@ -94,7 +94,7 @@ describe('fromIterable', () => {
     };
 
     const iterable = {
-      [Rx.Symbol.iterator]() {
+      [symbolIterator]() {
         return iterator;
       }
     };
