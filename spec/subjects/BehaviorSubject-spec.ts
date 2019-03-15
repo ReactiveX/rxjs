@@ -1,16 +1,12 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
 import { hot, expectObservable } from '../helpers/marble-testing';
-
-const BehaviorSubject = Rx.BehaviorSubject;
-const Observable = Rx.Observable;
-const ObjectUnsubscribedError = Rx.ObjectUnsubscribedError;
+import { BehaviorSubject, Subject, ObjectUnsubscribedError, Observable } from 'rxjs';
 
 /** @test {BehaviorSubject} */
 describe('BehaviorSubject', () => {
   it('should extend Subject', () => {
     const subject = new BehaviorSubject(null);
-    expect(subject).to.be.instanceof(Rx.Subject);
+    expect(subject).to.be.instanceof(Subject);
   });
 
   it('should throw if it has received an error and getValue() is called', () => {
