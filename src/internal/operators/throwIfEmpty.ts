@@ -14,12 +14,12 @@ import { MonoTypeOperatorFunction } from '../types';
  * import { fromEvent, timer } from 'rxjs';
  * import { throwIfEmpty, takeUntil } from 'rxjs/operators';
  *
- * const click$ = fromEvent(button, 'click');
+ * const click$ = fromEvent(document, 'click');
  *
- * clicks$.pipe(
+ * click$.pipe(
  *   takeUntil(timer(1000)),
  *   throwIfEmpty(
- *     () => new Error('the button was not clicked within 1 second')
+ *     () => new Error('the document was not clicked within 1 second')
  *   ),
  * )
  * .subscribe({
