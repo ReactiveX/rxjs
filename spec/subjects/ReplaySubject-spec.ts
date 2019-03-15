@@ -1,18 +1,15 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
 import { TestScheduler } from '../../src/internal/testing/TestScheduler';
 import { hot, expectObservable } from '../helpers/marble-testing';
+import { ReplaySubject, Subject, of } from 'rxjs';
 
 declare const rxTestScheduler: TestScheduler;
-
-const ReplaySubject = Rx.ReplaySubject;
-const Observable = Rx.Observable;
 
 /** @test {ReplaySubject} */
 describe('ReplaySubject', () => {
   it('should extend Subject', () => {
     const subject = new ReplaySubject();
-    expect(subject).to.be.instanceof(Rx.Subject);
+    expect(subject).to.be.instanceof(Subject);
   });
 
   it('should add the observer before running subscription code', () => {
@@ -253,7 +250,7 @@ describe('ReplaySubject', () => {
   });
 
   it('should be an Observer which can be given to Observable.subscribe', () => {
-    const source = Observable.of(1, 2, 3, 4, 5);
+    const source = of(1, 2, 3, 4, 5);
     const subject = new ReplaySubject<number>(3);
     let results: (number | string)[] = [];
 
