@@ -1,9 +1,7 @@
-import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { of } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
-
-const Observable = Rx.Observable;
 
 /** @test {defaultIfEmpty} */
 describe('Observable.prototype.defaultIfEmpty', () => {
@@ -69,9 +67,9 @@ describe('Observable.prototype.defaultIfEmpty', () => {
     const unsub =    '    !    ';
 
     const result = e1
-      .mergeMap((x: any) => Observable.of(x))
+      .mergeMap((x: any) => of(x))
       .defaultIfEmpty('x')
-      .mergeMap((x: any) => Observable.of(x));
+      .mergeMap((x: any) => of(x));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

@@ -2,6 +2,8 @@ import { expect } from 'chai';
 import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
+// TODO: The imports on these tests can't be modernized until we do away with
+// the partition "operator" and make it a creation method.
 declare function asDiagram(arg: string): Function;
 
 const Observable = Rx.Observable;
