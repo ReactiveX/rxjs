@@ -1,18 +1,11 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Rx from 'rxjs/Rx';
 import { Observer, TeardownLogic } from '../src/internal/types';
 import { cold, expectObservable, expectSubscriptions } from './helpers/marble-testing';
-import { map } from '../src/internal/operators/map';
-import { noop } from '../src/internal/util/noop';
-import { NEVER } from '../src/internal/observable/never';
-import { Subscriber } from '../src/internal/Subscriber';
-import { Operator } from '../src/internal/Operator';
+import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 declare const asDiagram: any, rxTestScheduler: any;
-const Observable = Rx.Observable;
-
-declare const __root__: any;
 
 function expectFullObserver(val: any) {
   expect(val).to.be.a('object');
@@ -25,10 +18,10 @@ function expectFullObserver(val: any) {
 /** @test {Observable} */
 describe('Observable', () => {
   let originalConfigPromise: any;
-  before(() => originalConfigPromise = Rx.config.Promise);
+  before(() => originalConfigPromise = config.Promise);
 
   after(() => {
-    Rx.config.Promise = originalConfigPromise;
+    config.Promise = originalConfigPromise;
     originalConfigPromise = null;
   });
 
@@ -88,7 +81,7 @@ describe('Observable', () => {
     it('should allow Promise to be globally configured', (done) => {
       let wasCalled = false;
 
-      Rx.config.Promise = function MyPromise(callback: any) {
+      config.Promise = function MyPromise(callback: any) {
         wasCalled = true;
         return new Promise<number>(callback);
       } as any;
@@ -310,7 +303,7 @@ describe('Observable', () => {
       const sub = source.subscribe(() => {
         //noop
       });
-      expect(sub instanceof Rx.Subscription).to.be.true;
+      expect(sub instanceof Subscription).to.be.true;
       expect(unsubscribeCalled).to.be.false;
       expect(sub.unsubscribe).to.be.a('function');
 
@@ -561,10 +554,10 @@ describe('Observable', () => {
           warnCalledWith.push(args);
         };
 
-        Rx.config.useDeprecatedSynchronousErrorHandling = true;
+        config.useDeprecatedSynchronousErrorHandling = true;
         expect(warnCalledWith.length).to.equal(1);
 
-        Rx.config.useDeprecatedSynchronousErrorHandling = false;
+        config.useDeprecatedSynchronousErrorHandling = false;
         expect(logCalledWith.length).to.equal(1);
 
         console.log = _log;
@@ -576,7 +569,7 @@ describe('Observable', () => {
       beforeEach(() => {
         const _warn = console.warn;
         console.warn = noop;
-        Rx.config.useDeprecatedSynchronousErrorHandling = true;
+        config.useDeprecatedSynchronousErrorHandling = true;
         console.warn = _warn;
       });
 
@@ -590,7 +583,7 @@ describe('Observable', () => {
           observer.next(1);
         });
 
-        const sink = Rx.Subscriber.create(() => {
+        const sink = Subscriber.create(() => {
           throw 'error!';
         });
 
@@ -602,7 +595,7 @@ describe('Observable', () => {
       afterEach(() => {
         const _log = console.log;
         console.log = noop;
-        Rx.config.useDeprecatedSynchronousErrorHandling = false;
+        config.useDeprecatedSynchronousErrorHandling = false;
         console.log = _log;
       });
     });
@@ -655,7 +648,7 @@ describe('Observable.create', () => {
 
   it('should provide an observer to the function', () => {
     let called = false;
-    const result = Observable.create((observer: Rx.Observer<any>) => {
+    const result = Observable.create((observer: Observer<any>) => {
       called = true;
       expectFullObserver(observer);
       observer.complete();
@@ -686,13 +679,13 @@ describe('Observable.create', () => {
 /** @test {Observable} */
 describe('Observable.lift', () => {
 
-  class MyCustomObservable<T> extends Rx.Observable<T> {
+  class MyCustomObservable<T> extends Observable<T> {
     static from<T>(source: any) {
       const observable = new MyCustomObservable<T>();
-      observable.source = <Rx.Observable<T>>source;
+      observable.source = <Observable<T>>source;
       return observable;
     }
-    lift<R>(operator: Rx.Operator<T, R>): Rx.Observable<R> {
+    lift<R>(operator: Operator<T, R>): Observable<R> {
       const observable = new MyCustomObservable<R>();
       (<any>observable).source = this;
       (<any>observable).operator = operator;
@@ -747,7 +740,7 @@ describe('Observable.lift', () => {
       observer.next(3);
       observer.complete();
     })
-      .multicast(() => new Rx.Subject<number>())
+      .multicast(() => new Subject<number>())
       .refCount()
       .map((x) => { return 10 * x; });
 
@@ -772,7 +765,7 @@ describe('Observable.lift', () => {
       observer.next(3);
       observer.complete();
     })
-      .multicast(() => new Rx.Subject<number>(), (shared) => shared.map((x) => { return 10 * x; }));
+      .multicast(() => new Subject<number>(), (shared) => shared.map((x) => { return 10 * x; }));
 
     expect(result instanceof MyCustomObservable).to.be.true;
 
@@ -861,7 +854,7 @@ describe('Observable.lift', () => {
       // The custom Subscriber
       const log: Array<string> = [];
 
-      class LogSubscriber<T> extends Rx.Subscriber<T> {
+      class LogSubscriber<T> extends Subscriber<T> {
         next(value?: T): void {
           log.push('next ' + value);
           if (!this.isStopped) {
@@ -871,18 +864,18 @@ describe('Observable.lift', () => {
       }
 
       // The custom Operator
-      class LogOperator<T, R> implements Rx.Operator<T, R> {
-        constructor(private childOperator: Rx.Operator<T, R>) {
+      class LogOperator<T, R> implements Operator<T, R> {
+        constructor(private childOperator: Operator<T, R>) {
         }
 
-        call(subscriber: Rx.Subscriber<R>, source: any): TeardownLogic {
+        call(subscriber: Subscriber<R>, source: any): TeardownLogic {
           return this.childOperator.call(new LogSubscriber<R>(subscriber), source);
         }
       }
 
       // The custom Observable
       class LogObservable<T> extends Observable<T> {
-        lift<R>(operator: Rx.Operator<T, R>): Rx.Observable<R> {
+        lift<R>(operator: Operator<T, R>): Observable<R> {
           const observable = new LogObservable<R>();
           (<any>observable).source = this;
           (<any>observable).operator = new LogOperator(operator);

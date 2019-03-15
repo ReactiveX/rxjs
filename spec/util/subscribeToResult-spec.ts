@@ -1,11 +1,13 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
-import { iterator, subscribeToResult, OuterSubscriber } from 'rxjs/internal-compatibility';
+import { OuterSubscriber } from 'rxjs/internal/OuterSubscriber';
+import { subscribeToResult } from 'rxjs/internal/util/subscribeToResult';
+import { iterator } from 'rxjs/internal/symbol/iterator';
 import $$symbolObservable from 'symbol-observable';
+import { of, range, throwError } from 'rxjs';
 
 describe('subscribeToResult', () => {
   it('should synchronously complete when subscribe to scalarObservable', () => {
-    const result = Rx.Observable.of(42);
+    const result = of(42);
     let expected: number;
     const subscriber = new OuterSubscriber<number, number>((x) => expected = x);
 
@@ -15,9 +17,9 @@ describe('subscribeToResult', () => {
     expect(subscription).to.not.exist;
   });
 
-  it('should subscribe to observables that are an instanceof Rx.Observable', (done) => {
+  it('should subscribe to observables that are an instanceof Observable', (done) => {
     const expected = [1, 2, 3];
-    const result = Rx.Observable.range(1, 3);
+    const result = range(1, 3);
 
     const subscriber = new OuterSubscriber<number, number>(x => {
       expect(expected.shift()).to.be.equal(x);
@@ -32,7 +34,7 @@ describe('subscribeToResult', () => {
   });
 
   it('should emit error when observable emits error', (done) => {
-    const result = Rx.Observable.throwError(new Error('error'));
+    const result = throwError(new Error('error'));
     const subscriber = new OuterSubscriber(x => {
       done(new Error('should not be called'));
     }, (err) => {
@@ -118,7 +120,7 @@ describe('subscribeToResult', () => {
   });
 
   it('should subscribe to to an object that implements Symbol.observable', (done) => {
-    const observableSymbolObject = { [$$symbolObservable]: () => Rx.Observable.of(42) };
+    const observableSymbolObject = { [$$symbolObservable]: () => of(42) };
 
     const subscriber = new OuterSubscriber(x => {
       expect(x).to.be.equal(42);
