@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { bindCallback, bindNodeCallback, combineLatest, concat, defer, empty, forkJoin, from, fromEvent, fromEventPattern,
-  iif, interval, merge, NEVER, of, onErrorResumeNext, pairs, race, range, throwError, timer, using, zip } from 'rxjs';
+  iif, interval, merge, of, onErrorResumeNext, pairs, race, range, throwError, timer, using, zip } from 'rxjs';
 import * as Rx from 'rxjs/Rx';
 
 describe('exports', () => {
