@@ -30,10 +30,10 @@ import { ObservableInput, OperatorFunction } from '../types';
  * count$.subscribe(x => console.log(x));
  *
  * // Results:
- * 1
- * 2
- * 3
- * 4
+ * // 1
+ * // 2
+ * // 3
+ * // 4
  * // ...and so on for each click
  * ```
  *
