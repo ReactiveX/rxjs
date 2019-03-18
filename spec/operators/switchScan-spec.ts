@@ -28,10 +28,10 @@ describe('switchScan', () => {
       switchScan((acc, x) => {
         seeds.push(acc);
         return of(10).pipe(map(v => v * x + acc));
-      }),
+      }, 0),
     ).subscribe();
 
-    expect(seeds).to.deep.equal([1, 31]);
+    expect(seeds).to.deep.equal([0, 10, 40]);
   });
 
   it('should unsub inner observables', () => {
@@ -328,7 +328,7 @@ describe('switchScan', () => {
     const e1subs =   '(^!)';
     const expected = '|';
 
-    const result = e1.pipe(switchScan((acc, value) => of(value)));
+    const result = e1.pipe(switchScan((acc, value) => of(value), ''));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -339,7 +339,7 @@ describe('switchScan', () => {
     const e1subs =   '^';
     const expected = '-';
 
-    const result = e1.pipe(switchScan((acc, value) => of(value)));
+    const result = e1.pipe(switchScan((acc, value) => of(value), ''));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -350,7 +350,7 @@ describe('switchScan', () => {
     const e1subs =   '(^!)';
     const expected = '#';
 
-    const result = e1.pipe(switchScan((acc, value) => of(value)));
+    const result = e1.pipe(switchScan((acc, value) => of(value), ''));
 
     expectObservable(result).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -377,13 +377,13 @@ describe('switchScan', () => {
     const observer = (value: string) => seeds.push(value);
 
     const source = of('a', 'b').pipe(
-      switchScan((acc, x) => of(x + 'x'))
+      switchScan((acc, x) => of(acc + x), '')
     );
 
     source.subscribe(observer);
     source.subscribe(observer);
 
-    expect(seeds).to.deep.equal(['a', 'bx', 'a', 'bx']);
+    expect(seeds).to.deep.equal(['a', 'ab', 'a', 'ab']);
   });
 
   it('should pass index to the accumulator function', () => {
@@ -393,7 +393,7 @@ describe('switchScan', () => {
       switchScan((acc, x, index) => {
         indices.push(index);
         return of();
-      }, null),
+      }, ''),
     ).subscribe();
 
     expect(indices).to.deep.equal([0, 1, 2, 3]);

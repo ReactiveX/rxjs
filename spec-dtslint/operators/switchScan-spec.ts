@@ -2,11 +2,11 @@ import { of } from 'rxjs';
 import { switchScan } from 'rxjs/operators';
 
 it('should infer correctly', () => {
-  const o = of(1, 2, 3).pipe(switchScan((acc: boolean, v: number) => of(Boolean(v)))); // $ExpectType Observable<boolean>
+  const o = of(1, 2, 3).pipe(switchScan((acc: boolean, v: number) => of(Boolean(v)), false)); // $ExpectType Observable<boolean>
 });
 
 it('should infer correctly when using a single type', () => {
-  const o = of(1, 2, 3).pipe(switchScan((acc, v) => of(acc + v))); // $ExpectType Observable<number>
+  const o = of(1, 2, 3).pipe(switchScan((acc, v) => of(acc + v), 0)); // $ExpectType Observable<number>
 });
 
 it('should infer correctly when using a seed', () => {
@@ -18,7 +18,7 @@ it('should infer correctly when using seed of a different type', () => {
 });
 
 it('should support a projector that takes an index', () => {
-  const o = of(1, 2, 3).pipe(switchScan((acc: boolean, v: number, index) => of(Boolean(v)))); // $ExpectType Observable<boolean>
+  const o = of(1, 2, 3).pipe(switchScan((acc: boolean, v: number, index: number) => of(Boolean(v)), false)); // $ExpectType Observable<boolean>
 });
 
 it('should enforce types', () => {
