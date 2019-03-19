@@ -20,7 +20,6 @@ import {  AjaxObservable, AjaxCreationMethod  } from './AjaxObservable';
  *   })
  * );
  *
- * const subscribe = obs$.subscribe();
  * ```
  *
  * ## Using ajax.getJSON() to fetch data from API.
@@ -37,7 +36,6 @@ import {  AjaxObservable, AjaxCreationMethod  } from './AjaxObservable';
  *   })
  * );
  *
- * const subscribe = obs$.subscribe();
  * ```
  *
  * ## Using ajax() with object as argument and method POST with a two seconds delay.
@@ -63,7 +61,6 @@ import {  AjaxObservable, AjaxCreationMethod  } from './AjaxObservable';
  *   })
  * );
  *
- * const subscribe = obs$.subscribe();
  * ```
  *
  * ## Using ajax() to fetch. An error object that is being returned from the request.
@@ -80,7 +77,6 @@ import {  AjaxObservable, AjaxCreationMethod  } from './AjaxObservable';
  *   })
  * );
  *
- * const subscribe = obs$.subscribe();
  * ```
  */
 export const ajax: AjaxCreationMethod = AjaxObservable.create;
