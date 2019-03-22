@@ -7,7 +7,7 @@ import {  AjaxObservable, AjaxCreationMethod  } from './AjaxObservable';
  *
  *
  * ## Using ajax() to fetch the response object that is being returned from API.
- * ```javascript
+ * ```ts
  * import { ajax } from 'rxjs/ajax';
  * import { map, catchError } from 'rxjs/operators';
  * import { of } from 'rxjs';
@@ -23,7 +23,7 @@ import {  AjaxObservable, AjaxCreationMethod  } from './AjaxObservable';
  * ```
  *
  * ## Using ajax.getJSON() to fetch data from API.
- * ```javascript
+ * ```ts
  * import { ajax } from 'rxjs/ajax';
  * import { map, catchError } from 'rxjs/operators';
  * import { of } from 'rxjs';
@@ -39,7 +39,7 @@ import {  AjaxObservable, AjaxCreationMethod  } from './AjaxObservable';
  * ```
  *
  * ## Using ajax() with object as argument and method POST with a two seconds delay.
- * ```javascript
+ * ```ts
  * import { ajax } from 'rxjs/ajax';
  * import { of } from 'rxjs';
  *
@@ -64,7 +64,7 @@ import {  AjaxObservable, AjaxCreationMethod  } from './AjaxObservable';
  * ```
  *
  * ## Using ajax() to fetch. An error object that is being returned from the request.
- * ```javascript
+ * ```ts
  * import { ajax } from 'rxjs/ajax';
  * import { map, catchError } from 'rxjs/operators';
  * import { of } from 'rxjs';
