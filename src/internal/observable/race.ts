@@ -4,22 +4,31 @@ import { fromArray } from './fromArray';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { TeardownLogic } from '../types';
+import { TeardownLogic, ObservableInput } from '../types';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 
 // tslint:disable:max-line-length
-export function race<A, B>(a: Observable<A>, b: Observable<B>): Observable<A> | Observable<B>;
-export function race<A, B, C>(a: Observable<A>, b: Observable<B>, c: Observable<C>): Observable<A> | Observable<B> | Observable<C>;
-export function race<A, B, C, D>(a: Observable<A>, b: Observable<B>, c: Observable<C>, d: Observable<D>): Observable<A> | Observable<B> | Observable<C> | Observable<D>;
-export function race<A, B, C, D, E>(a: Observable<A>, b: Observable<B>, c: Observable<C>, d: Observable<D>, e: Observable<E>): Observable<A> | Observable<B> | Observable<C> | Observable<D> | Observable<E>;
+export function race<A>(arg: [ObservableInput<A>]): Observable<A>;
+export function race<A, B>(arg: [ObservableInput<A>, ObservableInput<B>]): Observable<A | B>;
+export function race<A, B, C>(arg: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>]): Observable<A | B | C>;
+export function race<A, B, C, D>(arg: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>]): Observable<A | B | C | D>;
+export function race<A, B, C, D, E>(arg: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>, ObservableInput<E>]): Observable<A | B | C | D | E>;
+export function race<T>(arg: ObservableInput<T>[]): Observable<T>;
+export function race(arg: ObservableInput<any>[]): Observable<{}>;
+
+export function race<A>(a: ObservableInput<A>): Observable<A>;
+export function race<A, B>(a: ObservableInput<A>, b: ObservableInput<B>): Observable<A | B>;
+export function race<A, B, C>(a: ObservableInput<A>, b: ObservableInput<B>, c: ObservableInput<C>): Observable<A | B | C>;
+export function race<A, B, C, D>(a: ObservableInput<A>, b: ObservableInput<B>, c: ObservableInput<C>, d: ObservableInput<D>): Observable<A | B | C | D>;
+export function race<A, B, C, D, E>(a: ObservableInput<A>, b: ObservableInput<B>, c: ObservableInput<C>, d: ObservableInput<D>, e: ObservableInput<E>): Observable<A | B | C | D | E>;
 // tslint:enable:max-line-length
 
-export function race<T>(observables: Observable<T>[]): Observable<T>;
-export function race(observables: Observable<any>[]): Observable<{}>;
-export function race<T>(...observables: Observable<T>[]): Observable<T>;
-export function race(...observables: Observable<any>[]): Observable<{}>;
+export function race<T>(observables: ObservableInput<T>[]): Observable<T>;
+export function race(observables: ObservableInput<any>[]): Observable<{}>;
+export function race<T>(...observables: ObservableInput<T>[]): Observable<T>;
+export function race(...observables: ObservableInput<any>[]): Observable<{}>;
 
 /**
  * Returns an Observable that mirrors the first source Observable to emit an item.
@@ -50,7 +59,7 @@ export function race(...observables: Observable<any>[]): Observable<{}>;
  * @name race
  * @owner Observable
  */
-export function race<T>(...observables: (Observable<any>[] | Observable<any>)[]): Observable<T> {
+export function race<T>(...observables: ObservableInput<any>[]): Observable<T> {
   // if the only argument is an array, it was most likely called with
   // `race([obs1, obs2, ...])`
   if (observables.length === 1) {

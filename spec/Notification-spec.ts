@@ -1,8 +1,6 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
 import { expectObservable } from './helpers/marble-testing';
-
-const Notification = Rx.Notification;
+import { Notification, Subscriber } from 'rxjs';
 
 /** @test {Notification} */
 describe('Notification', () => {
@@ -147,7 +145,7 @@ describe('Notification', () => {
       const value = 'a';
       let observed = false;
       const n = Notification.createNext(value);
-      const observer = Rx.Subscriber.create((x: string) => {
+      const observer = Subscriber.create((x: string) => {
         expect(x).to.equal(value);
         observed = true;
       }, (err: any) => {
@@ -163,7 +161,7 @@ describe('Notification', () => {
     it('should accept observer for error Notification', () => {
       let observed = false;
       const n = Notification.createError<string>();
-      const observer = Rx.Subscriber.create((x: string) => {
+      const observer = Subscriber.create((x: string) => {
         throw 'should not be called';
       }, (err: any) => {
         observed = true;
@@ -178,7 +176,7 @@ describe('Notification', () => {
     it('should accept observer for complete Notification', () => {
       let observed = false;
       const n = Notification.createComplete();
-      const observer = Rx.Subscriber.create((x: string) => {
+      const observer = Subscriber.create((x: string) => {
         throw 'should not be called';
       }, (err: any) => {
         throw 'should not be called';
@@ -242,7 +240,7 @@ describe('Notification', () => {
       const value = 'a';
       let observed = false;
       const n = Notification.createNext(value);
-      const observer = Rx.Subscriber.create((x: string) => {
+      const observer = Subscriber.create((x: string) => {
         expect(x).to.equal(value);
         observed = true;
       }, (err: any) => {
@@ -258,7 +256,7 @@ describe('Notification', () => {
     it('should observe for error Notification', () => {
       let observed = false;
       const n = Notification.createError();
-      const observer = Rx.Subscriber.create((x: any) => {
+      const observer = Subscriber.create((x: any) => {
         throw 'should not be called';
       }, (err: any) => {
         observed = true;
@@ -273,7 +271,7 @@ describe('Notification', () => {
     it('should observe for complete Notification', () => {
       let observed = false;
       const n = Notification.createComplete();
-      const observer = Rx.Subscriber.create((x: any) => {
+      const observer = Subscriber.create((x: any) => {
         throw 'should not be called';
       }, (err: any) => {
         throw 'should not be called';

@@ -91,7 +91,7 @@ export function concat<R>(...observables: (ObservableInput<any> | SchedulerLike)
  * import { take } from 'rxjs/operators';
  *
  * const timer = interval(1000).pipe(take(2));
- * *
+ *
  * concat(timer, timer) // concatenating the same Observable!
  * .subscribe(
  *   value => console.log(value),

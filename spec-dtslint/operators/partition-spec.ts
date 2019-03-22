@@ -1,5 +1,7 @@
 import * as Rx from 'rxjs/Rx';
 
+// TODO(benlesh): These tests and the imports are all wrong, because the operator is all wrong.
+// this should not be an operator, rather, it should be a creation method.
 const Observable = Rx.Observable;
 
 it('should infer correctly', () => {
