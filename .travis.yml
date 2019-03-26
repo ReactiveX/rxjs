@@ -42,7 +42,7 @@ before_install:
   - npm install -g npm@6 && node -v && npm -v
 
 install:
-  - npm ci
+  - rm -rf node_modules && npm cache clean --force && npm i
   - if [ "$FULL_VALIDATE" == "true" ]; then npm run lint && npm run dtslint && npm run test:circular; fi
 
 script:
