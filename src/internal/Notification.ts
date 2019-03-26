@@ -3,8 +3,17 @@ import { Observable } from './Observable';
 import { empty } from './observable/empty';
 import { of } from './observable/of';
 import { throwError } from './observable/throwError';
+import { deprecate } from 'util';
 
-export type NotificationKind = 'N' | 'E' | 'C';
+// TODO: When this enum is removed, replace it with a type alias. See #4556.
+/**
+ * @deprecated NotificationKind is deprecated as const enums are not compatible with isolated modules. Use a string literal instead.
+ */
+export enum NotificationKind {
+  NEXT = 'N',
+  ERROR = 'E',
+  COMPLETE = 'C',
+}
 
 /**
  * Represents a push-based event or value that an {@link Observable} can emit.
@@ -23,7 +32,7 @@ export type NotificationKind = 'N' | 'E' | 'C';
 export class Notification<T> {
   hasValue: boolean;
 
-  constructor(public kind: NotificationKind, public value?: T, public error?: any) {
+  constructor(public kind: 'N' | 'E' | 'C', public value?: T, public error?: any) {
     this.hasValue = kind === 'N';
   }
 
