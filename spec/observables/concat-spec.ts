@@ -58,7 +58,9 @@ describe('static concat', () => {
     const expected =    '--i-j-k-l---i-j-';
     const unsub =       '               !';
 
-    const innerWrapped = inner.mergeMap((x) => of(x));
+    const innerWrapped = inner.pipe(
+      mergeMap((x) => of(x))
+    );
     const result = concat(innerWrapped, innerWrapped, innerWrapped, innerWrapped)
       .pipe(mergeMap((x) => of(x)));
 

@@ -128,9 +128,9 @@ describe('Observable.prototype.last', () => {
       const foo: Foo = new Foo();
       of(foo).pipe(last())
         .subscribe(x => x.baz); // x is Foo
-      of(foo).last(foo => foo.bar === 'name')
+      of(foo).pipe(last(foo => foo.bar === 'name'))
         .subscribe(x => x.baz); // x is still Foo
-      of(foo).last(isBar)
+      of(foo).pipe(last(isBar))
         .subscribe(x => x.bar); // x is Bar!
 
       const foobar: Bar = new Foo(); // type is the interface, not the class

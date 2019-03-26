@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions, time } from '../helpers/marble-testing';
-import { Observable, NEVER, of, ObjectUnsubscribedError } from 'rxjs';
-import { windowToggle, tap } from 'rxjs/operators';
+import { Observable, NEVER, of, ObjectUnsubscribedError, EMPTY } from 'rxjs';
+import { windowToggle, tap, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 
 declare const rxTestScheduler: TestScheduler;
@@ -189,10 +189,11 @@ describe('windowToggle', () => {
     const values = { x, y };
 
     let i = 0;
-    const result = e1
-      .mergeMap((x: string) => of(x))
-      .pipe(windowToggle(e2, () => close[i++]))
-      .mergeMap(x => of(x));
+    const result = e1.pipe(
+      mergeMap(x => of(x)),
+      windowToggle(e2, () => close[i++]),
+      mergeMap(x => of(x)),
+    );
 
     expectObservable(result, unsub).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -418,7 +419,7 @@ describe('windowToggle', () => {
     const e1subs =      '^                                  !';
     const e2 = cold(    '---o---------------o-----------|    ');
     const e2subs =      '^                              !    ';
-    const e3 =  Observable.empty();
+    const e3 =  EMPTY;
     const expected =    '---x---------------y---------------|';
     const x = cold(        '|');
     const y = cold(                        '|');

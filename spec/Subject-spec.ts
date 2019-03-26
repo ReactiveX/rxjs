@@ -1,7 +1,8 @@
 import { expect } from 'chai';
 import { hot, expectObservable } from './helpers/marble-testing';
-import { Subject, ObjectUnsubscribedError, Observable, AsyncSubject, Observer } from 'rxjs';
+import { Subject, ObjectUnsubscribedError, Observable, AsyncSubject, Observer, of } from 'rxjs';
 import { AnonymousSubject } from 'rxjs/internal/Subject';
+import { delay } from 'rxjs/operators';
 
 /** @test {Subject} */
 describe('Subject', () => {
@@ -304,7 +305,7 @@ describe('Subject', () => {
 
   it('should have a static create function that works', () => {
     expect(Subject.create).to.be.a('function');
-    const source = Observable.of(1, 2, 3, 4, 5);
+    const source = of(1, 2, 3, 4, 5);
     const nexts: number[] = [];
     const output: number[] = [];
 
@@ -350,7 +351,7 @@ describe('Subject', () => {
 
   it('should have a static create function that works also to raise errors', () => {
     expect(Subject.create).to.be.a('function');
-    const source = Observable.of(1, 2, 3, 4, 5);
+    const source = of(1, 2, 3, 4, 5);
     const nexts: number[] = [];
     const output: number[] = [];
 
@@ -395,7 +396,7 @@ describe('Subject', () => {
   });
 
   it('should be an Observer which can be given to Observable.subscribe', (done: MochaDone) => {
-    const source = Observable.of(1, 2, 3, 4, 5);
+    const source = of(1, 2, 3, 4, 5);
     const subject = new Subject();
     const expected = [1, 2, 3, 4, 5];
 
@@ -412,7 +413,7 @@ describe('Subject', () => {
   });
 
   it('should be usable as an Observer of a finite delayed Observable', (done: MochaDone) => {
-    const source = Observable.of(1, 2, 3).delay(50);
+    const source = of(1, 2, 3).pipe(delay(50));
     const subject = new Subject();
 
     const expected = [1, 2, 3];
@@ -531,7 +532,7 @@ describe('AnonymousSubject', () => {
 
     const subject = Subject.create(null, new Observable((observer: Observer<any>) => {
       subscribed = true;
-      const subscription = Observable.of('x').subscribe(observer);
+      const subscription = of('x').subscribe(observer);
       return () => {
         subscription.unsubscribe();
       };
