@@ -11,6 +11,7 @@ interface Task {
 
 let _currentQueue: Task[] = [];
 let _nextQueue: Task[] = [];
+let _totalScheduled = 0;
 
 /**
  *
@@ -41,10 +42,6 @@ let _nextQueue: Task[] = [];
  *
  * // You will see a div element growing in height
  * ```
- *
- * @static true
- * @name animationFrame
- * @owner Scheduler
  */
 export const animationFrame: SchedulerLike = {
   schedule<S>(work: (state: S, reschedule: (nextState: S) => void) => void, delay = 0, state?: S): Subscription {
@@ -56,6 +53,8 @@ export const animationFrame: SchedulerLike = {
         }, delay)
       );
     } else {
+      _totalScheduled++;
+
       // Start the animation frame loop if it's not already going
       startAnimationFrameLoop();
 
@@ -65,20 +64,9 @@ export const animationFrame: SchedulerLike = {
 
       // Set up the teardown
       subscription.add(() => {
-        // I might be in the currently flushing queue.
-        let index = _currentQueue.indexOf(task);
-        if (index >= 0) {
-          _currentQueue.splice(index, 1);
-        }
-
-        // *OR* It might be in the queue that hasn't hit a frame to start flushing yet.
-        index = _nextQueue.indexOf(task);
-        if (index >= 0) {
-          _nextQueue.splice(index, 1);
-        }
-
+        _totalScheduled--;
         // If the current animation frame queue is empty, AND the overall queue is empty, stop the animation frame loop
-        if (_currentQueue.length === 0 && _nextQueue.length === 0) {
+        if (_totalScheduled === 0) {
           stopAnimationFrameLoop();
         }
       });
@@ -105,20 +93,21 @@ function flush() {
     // process the tasks on this queue FIFO.
     while (_currentQueue.length > 0) {
       const task = _currentQueue.shift();
+      if (!task.subscription.closed) {
+        let rescheduled = false;
+        const reschedule = (nextState: any) => {
+          rescheduled = true;
+          task.state = nextState;
+          // If the task was rescheduled, push it onto the next queue
+          // which will be processed on the next animationFrame
+          _nextQueue.push(task);
+        };
 
-      let rescheduled = false;
-      const reschedule = (nextState: any) => {
-        rescheduled = true;
-        task.state = nextState;
-        // If the task was rescheduled, push it onto the next queue
-        // which will be processed on the next animationFrame
-        _nextQueue.push(task);
-      };
-
-      task.work(task.state, reschedule);
-      if (!rescheduled)  {
-        // Otherwise teardown the task. (Set up above)
-        task.subscription.unsubscribe();
+        task.work(task.state, reschedule);
+        if (!rescheduled)  {
+          // Otherwise teardown the task. (Set up above)
+          task.subscription.unsubscribe();
+        }
       }
     }
     flushing = false;
