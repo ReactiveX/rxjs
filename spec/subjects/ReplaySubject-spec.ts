@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { TestScheduler } from '../../src/internal/testing/TestScheduler';
 import { hot, expectObservable } from '../helpers/marble-testing';
 import { ReplaySubject, Subject, of } from 'rxjs';
+import { mergeMapTo, tap } from 'rxjs/operators';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -102,18 +103,18 @@ describe('ReplaySubject', () => {
       function feedCompleteIntoSubject() { replaySubject.complete(); }
 
       const sourceTemplate =  '-1-2-3----4------5-6---7--8----9--|';
-      const subscriber1 = hot('      (a|)                         ').mergeMapTo(replaySubject);
+      const subscriber1 = hot('      (a|)                         ').pipe(mergeMapTo(replaySubject));
       const unsub1 =          '                     !             ';
       const expected1   =     '      (23)4------5-6--             ';
-      const subscriber2 = hot('            (b|)                   ').mergeMapTo(replaySubject);
+      const subscriber2 = hot('            (b|)                   ').pipe(mergeMapTo(replaySubject));
       const unsub2 =          '                         !         ';
       const expected2   =     '            (34)-5-6---7--         ';
-      const subscriber3 = hot('                           (c|)    ').mergeMapTo(replaySubject);
+      const subscriber3 = hot('                           (c|)    ').pipe(mergeMapTo(replaySubject));
       const expected3   =     '                           (78)9--|';
 
-      expectObservable(hot(sourceTemplate).do(
+      expectObservable(hot(sourceTemplate).pipe(tap(
         feedNextIntoSubject, feedErrorIntoSubject, feedCompleteIntoSubject
-      )).toBe(sourceTemplate);
+      ))).toBe(sourceTemplate);
       expectObservable(subscriber1, unsub1).toBe(expected1);
       expectObservable(subscriber2, unsub2).toBe(expected2);
       expectObservable(subscriber3).toBe(expected3);
@@ -126,12 +127,12 @@ describe('ReplaySubject', () => {
       function feedCompleteIntoSubject() { replaySubject.complete(); }
 
       const sourceTemplate =  '-1-2-3--4--|';
-      const subscriber1 = hot('               (a|) ').mergeMapTo(replaySubject);
+      const subscriber1 = hot('               (a|) ').pipe(mergeMapTo(replaySubject));
       const expected1   =     '               (34|)';
 
-      expectObservable(hot(sourceTemplate).do(
+      expectObservable(hot(sourceTemplate).pipe(tap(
         feedNextIntoSubject, feedErrorIntoSubject, feedCompleteIntoSubject
-      )).toBe(sourceTemplate);
+      ))).toBe(sourceTemplate);
       expectObservable(subscriber1).toBe(expected1);
     });
 
@@ -199,18 +200,18 @@ describe('ReplaySubject', () => {
       function feedCompleteIntoSubject() { replaySubject.complete(); }
 
       const sourceTemplate =  '-1-2-3----4------5-6----7-8----9--|';
-      const subscriber1 = hot('      (a|)                         ').mergeMapTo(replaySubject);
+      const subscriber1 = hot('      (a|)                         ').pipe(mergeMapTo(replaySubject));
       const unsub1 =          '                     !             ';
       const expected1   =     '      (23)4------5-6--             ';
-      const subscriber2 = hot('            (b|)                   ').mergeMapTo(replaySubject);
+      const subscriber2 = hot('            (b|)                   ').pipe(mergeMapTo(replaySubject));
       const unsub2 =          '                         !         ';
       const expected2   =     '            4----5-6----7-         ';
-      const subscriber3 = hot('                           (c|)    ').mergeMapTo(replaySubject);
+      const subscriber3 = hot('                           (c|)    ').pipe(mergeMapTo(replaySubject));
       const expected3   =     '                           (78)9--|';
 
-      expectObservable(hot(sourceTemplate).do(
+      expectObservable(hot(sourceTemplate).pipe(tap(
         feedNextIntoSubject, feedErrorIntoSubject, feedCompleteIntoSubject
-      )).toBe(sourceTemplate);
+      ))).toBe(sourceTemplate);
       expectObservable(subscriber1, unsub1).toBe(expected1);
       expectObservable(subscriber2, unsub2).toBe(expected2);
       expectObservable(subscriber3).toBe(expected3);
@@ -223,12 +224,12 @@ describe('ReplaySubject', () => {
       function feedCompleteIntoSubject() { replaySubject.complete(); }
 
       const sourceTemplate =  '-1-2-3----4|';
-      const subscriber1 = hot('             (a|)').mergeMapTo(replaySubject);
+      const subscriber1 = hot('             (a|)').pipe(mergeMapTo(replaySubject));
       const expected1   =     '             (4|)';
 
-      expectObservable(hot(sourceTemplate).do(
+      expectObservable(hot(sourceTemplate).pipe(tap(
         feedNextIntoSubject, feedErrorIntoSubject, feedCompleteIntoSubject
-      )).toBe(sourceTemplate);
+      ))).toBe(sourceTemplate);
       expectObservable(subscriber1).toBe(expected1);
     });
 
@@ -239,12 +240,12 @@ describe('ReplaySubject', () => {
       function feedCompleteIntoSubject() { replaySubject.complete(); }
 
       const sourceTemplate =  '1234     |';
-      const subscriber1 = hot('    (a|)').mergeMapTo(replaySubject);
+      const subscriber1 = hot('    (a|)').pipe(mergeMapTo(replaySubject));
       const expected1   =     '    (34) |';
 
-      expectObservable(hot(sourceTemplate).do(
+      expectObservable(hot(sourceTemplate).pipe(tap(
         feedNextIntoSubject, feedErrorIntoSubject, feedCompleteIntoSubject
-      )).toBe(sourceTemplate);
+      ))).toBe(sourceTemplate);
       expectObservable(subscriber1).toBe(expected1);
     });
   });

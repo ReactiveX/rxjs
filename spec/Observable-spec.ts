@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { Observer, TeardownLogic } from '../src/internal/types';
 import { cold, expectObservable, expectSubscriptions } from './helpers/marble-testing';
-import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, empty } from 'rxjs';
+import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip } from 'rxjs/operators';
 
 declare const asDiagram: any, rxTestScheduler: any;
 
@@ -57,7 +57,7 @@ describe('Observable', () => {
   describe('forEach', () => {
     it('should iterate and return a Promise', (done) => {
       const expected = [1, 2, 3];
-      const result = Observable.of(1, 2, 3).forEach(function (x) {
+      const result = of(1, 2, 3).forEach(function (x) {
         expect(x).to.equal(expected.shift());
       }, Promise)
         .then(() => {
@@ -68,7 +68,7 @@ describe('Observable', () => {
     });
 
     it('should reject promise when in error', (done) => {
-      Observable.throwError('bad').forEach((x) => {
+      throwError('bad').forEach((x) => {
         done(new Error('should not be called'));
       }, Promise).then(() => {
         done(new Error('should not complete'));
@@ -86,7 +86,7 @@ describe('Observable', () => {
         return new Promise<number>(callback);
       } as any;
 
-      Observable.of(42).forEach((x) => {
+      of(42).forEach((x) => {
         expect(x).to.equal(42);
       }).then(() => {
         expect(wasCalled).to.be.true;
@@ -97,7 +97,7 @@ describe('Observable', () => {
     it('should reject promise if nextHandler throws', (done) => {
       const results: number[] = [];
 
-      Observable.of(1, 2, 3).forEach((x) => {
+      of(1, 2, 3).forEach((x) => {
         if (x === 3) {
           throw new Error('NO THREES!');
         }
@@ -223,7 +223,7 @@ describe('Observable', () => {
 
       expect(unsubscribeCalled).to.be.false;
 
-      Observable.empty().subscribe();
+      empty().subscribe();
 
       expect(unsubscribeCalled).to.be.false;
     });
@@ -244,7 +244,7 @@ describe('Observable', () => {
 
       expect(unsubscribeCalled).to.be.false;
 
-      Observable.empty().subscribe(observer);
+      empty().subscribe(observer);
 
       expect(unsubscribeCalled).to.be.false;
     });
@@ -326,7 +326,7 @@ describe('Observable', () => {
           done();
         };
       })
-        .do(() => times += 1)
+        .pipe(tap(() => times += 1))
         .subscribe(
           function () {
             if (times === 2) {
@@ -357,7 +357,7 @@ describe('Observable', () => {
           done();
         };
       })
-        .do(() => times += 1)
+        .pipe(tap(() => times += 1))
         .subscribe(
           function () {
             if (times === 2) {
@@ -388,7 +388,7 @@ describe('Observable', () => {
           done();
         };
       })
-        .do(() => times += 1)
+        .pipe(tap(() => times += 1))
         .subscribe(
           function () {
             if (times === 2) {
@@ -413,7 +413,7 @@ describe('Observable', () => {
             }
           };
 
-          Observable.of(1).subscribe(o);
+          of(1).subscribe(o);
         });
 
       it('should accept an anonymous observer with just an error function and call the error function in the context' +
@@ -428,7 +428,7 @@ describe('Observable', () => {
             }
           };
 
-          Observable.throwError('bad').subscribe(o);
+          throwError('bad').subscribe(o);
         });
 
       it('should accept an anonymous observer with just a complete function and call the complete function in the' +
@@ -442,12 +442,12 @@ describe('Observable', () => {
             }
           };
 
-          Observable.empty().subscribe(o);
+          empty().subscribe(o);
         });
 
       it('should accept an anonymous observer with no functions at all', () => {
         expect(() => {
-          Observable.empty().subscribe(<any>{});
+          empty().subscribe(<any>{});
         }).not.to.throw();
       });
 
@@ -466,7 +466,7 @@ describe('Observable', () => {
             done();
           };
         })
-          .do(() => times += 1)
+          .pipe(tap(() => times += 1))
           .subscribe({
             next() {
               if (times === 2) {
@@ -495,7 +495,7 @@ describe('Observable', () => {
             done();
           };
         })
-          .do(() => times += 1)
+          .pipe(tap(() => times += 1))
           .subscribe({
             next() {
               if (times === 2) {
@@ -526,7 +526,7 @@ describe('Observable', () => {
             done();
           };
         })
-          .do(() => times += 1)
+          .pipe(tap(() => times += 1))
           .subscribe({
             next() {
               if (times === 2) {
@@ -574,7 +574,7 @@ describe('Observable', () => {
       });
 
       it('should throw synchronously', () => {
-        expect(() => Observable.throwError(new Error()).subscribe())
+        expect(() => throwError(new Error()).subscribe())
           .to.throw();
       });
 
@@ -603,12 +603,12 @@ describe('Observable', () => {
 
   describe('pipe', () => {
     it('should exist', () => {
-      const source = Observable.of('test');
+      const source = of('test');
       expect(source.pipe).to.be.a('function');
     });
 
     it('should pipe multiple operations', (done) => {
-      Observable.of('test')
+      of('test')
         .pipe(
           map((x) => x + x),
           map((x) => x + '!!!')
@@ -623,7 +623,7 @@ describe('Observable', () => {
     });
 
     it('should return the same observable if there are no arguments', () => {
-      const source = Observable.of('test');
+      const source = of('test');
       const result = source.pipe();
       expect(result).to.equal(source);
     });
@@ -717,7 +717,7 @@ describe('Observable.lift', () => {
       observer.next(2);
       observer.next(3);
       observer.complete();
-    }).map((x) => { return 10 * x; });
+    }).pipe(map((x) => { return 10 * x; }));
 
     expect(result instanceof MyCustomObservable).to.be.true;
 
@@ -734,15 +734,16 @@ describe('Observable.lift', () => {
   });
 
   it('should compose through multicast and refCount', (done) => {
-    const result = new MyCustomObservable((observer) => {
+    const result = new MyCustomObservable<number>((observer) => {
       observer.next(1);
       observer.next(2);
       observer.next(3);
       observer.complete();
-    })
-      .multicast(() => new Subject<number>())
-      .refCount()
-      .map((x) => { return 10 * x; });
+    }).pipe(
+      multicast(() => new Subject<number>()),
+      refCount(),
+      map(x => 10 * x),
+    );
 
     expect(result instanceof MyCustomObservable).to.be.true;
 
@@ -759,13 +760,14 @@ describe('Observable.lift', () => {
   });
 
   it('should compose through multicast with selector function', (done) => {
-    const result = new MyCustomObservable((observer) => {
+    const result = new MyCustomObservable<number>((observer) => {
       observer.next(1);
       observer.next(2);
       observer.next(3);
       observer.complete();
-    })
-      .multicast(() => new Subject<number>(), (shared) => shared.map((x) => { return 10 * x; }));
+    }).pipe(
+      multicast(() => new Subject<number>(), shared => shared.pipe(map(x => 10 * x)))
+    );
 
     expect(result instanceof MyCustomObservable).to.be.true;
 
@@ -786,7 +788,9 @@ describe('Observable.lift', () => {
     const e2 = cold('--1--2-3-4---|   ');
     const expected = '--A-BC-D-EF-G-H-|';
 
-    const result = MyCustomObservable.from(e1).combineLatest(e2, (a, b) => String(a) + String(b));
+    const result = MyCustomObservable.from(e1).pipe(
+      combineLatest(e2, (a, b) => String(a) + String(b))
+    );
 
     expect(result instanceof MyCustomObservable).to.be.true;
 
@@ -800,7 +804,9 @@ describe('Observable.lift', () => {
     const e2 = cold('--x---y--|');
     const expected = '--a--b---x---y--|';
 
-    const result = MyCustomObservable.from(e1).concat(e2, rxTestScheduler);
+    const result = MyCustomObservable.from(e1).pipe(
+      concat(e2, rxTestScheduler)
+    );
 
     expect(result instanceof MyCustomObservable).to.be.true;
 
@@ -812,7 +818,9 @@ describe('Observable.lift', () => {
     const e2 = cold('--x--y-|');
     const expected = '-ax-by-|';
 
-    const result = MyCustomObservable.from(e1).merge(e2, rxTestScheduler);
+    const result = MyCustomObservable.from(e1).pipe(
+      merge(e2, rxTestScheduler)
+    );
 
     expect(result instanceof MyCustomObservable).to.be.true;
 
@@ -826,7 +834,10 @@ describe('Observable.lift', () => {
     const e2subs = '^  !';
     const expected = '---a-----b-----c----|';
 
-    const result = MyCustomObservable.from(e1).race(e2);
+    const result = MyCustomObservable.from(e1).pipe(
+      // TODO: remove after race typings are fixed.
+      race(e2) as any
+    );
 
     expect(result instanceof MyCustomObservable).to.be.true;
 
@@ -840,7 +851,9 @@ describe('Observable.lift', () => {
     const e2 = cold('--1--2-3-4---|   ');
     const expected = ('--A--B----C-D|   ');
 
-    const result = MyCustomObservable.from(e1).zip(e2, (a, b) => String(a) + String(b));
+    const result = MyCustomObservable.from(e1).pipe(
+      zip(e2, (a, b) => String(a) + String(b))
+    );
 
     expect(result instanceof MyCustomObservable).to.be.true;
 
@@ -889,10 +902,11 @@ describe('Observable.lift', () => {
         observer.next(2);
         observer.next(3);
         observer.complete();
-      })
-        .map((x) => { return 10 * x; })
-        .filter((x) => { return x > 15; })
-        .count();
+      }).pipe(
+        map(x => 10 * x),
+        filter(x => x > 15),
+        count(),
+      );
 
       expect(result instanceof LogObservable).to.be.true;
 

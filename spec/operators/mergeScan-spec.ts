@@ -1,7 +1,7 @@
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { TestScheduler } from 'rxjs/testing';
 import { of, defer, EMPTY, NEVER, concat, throwError } from 'rxjs';
-import { mergeScan, delay, mergeMap, takeWhile } from 'rxjs/operators';
+import { mergeScan, delay, mergeMap, takeWhile, startWith } from 'rxjs/operators';
 import { expect } from 'chai';
 
 declare const rxTestScheduler: TestScheduler;
@@ -59,7 +59,7 @@ describe('mergeScan', () => {
     };
 
     const source = e1.pipe(mergeScan((acc, x) =>
-      of(acc.concat(x)).delay(20, rxTestScheduler), []));
+      of(acc.concat(x)).pipe(delay(20, rxTestScheduler)), []));
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -80,7 +80,7 @@ describe('mergeScan', () => {
     };
 
     const source = e1.pipe(mergeScan((acc, x) =>
-      of(acc.concat(x)).delay(50, rxTestScheduler), []));
+      of(acc.concat(x)).pipe(delay(50, rxTestScheduler)), []));
 
     expectObservable(source).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -101,7 +101,7 @@ describe('mergeScan', () => {
     };
 
     const source = e1.pipe(mergeScan((acc, x) =>
-      of(acc.concat(x)).delay(50, rxTestScheduler), []));
+      of(acc.concat(x)).pipe(delay(50, rxTestScheduler)), []));
 
     expectObservable(source, e1subs).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -295,7 +295,7 @@ describe('mergeScan', () => {
     let index = 0;
     const source = e1.pipe(mergeScan((acc, x) => {
       const value = inner[index++];
-      return value.startWith(acc);
+      return value.pipe(startWith(acc));
     }, 'x', 1));
 
     expectObservable(source).toBe(expected);
@@ -323,7 +323,7 @@ describe('mergeScan', () => {
     const expected =    '-----------------------(x|)';
 
     const source = e1.pipe(
-      mergeScan((acc, x) => EMPTY.delay(50, rxTestScheduler), ['1'])
+      mergeScan((acc, x) => EMPTY.pipe(delay(50, rxTestScheduler)), ['1'])
     );
 
     expectObservable(source).toBe(expected, {x: ['1']});
@@ -349,7 +349,7 @@ describe('mergeScan', () => {
     let index = 0;
     const source = e1.pipe(mergeScan((acc, x) => {
       const value = inner[index++];
-      return value.startWith(acc);
+      return value.pipe(startWith(acc));
     }, 'x', 1));
 
     expectObservable(source).toBe(expected);
@@ -379,7 +379,7 @@ describe('mergeScan', () => {
     let index = 0;
     const source = e1.pipe(mergeScan((acc, x) => {
       const value = inner[index++];
-      return value.startWith(acc);
+      return value.pipe(startWith(acc));
     }, 'x', 2));
 
     expectObservable(source).toBe(expected);
@@ -409,7 +409,9 @@ describe('mergeScan', () => {
     let index = 0;
     const source = e1.pipe(mergeScan((acc, x) => {
       const value = inner[index++];
-      return value.startWith(acc);
+      return value.pipe(
+        startWith(acc)
+      );
     }, 'x', 2));
 
     expectObservable(source).toBe(expected);

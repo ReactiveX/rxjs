@@ -99,7 +99,7 @@ describe('elementAt operator', () => {
   });
 
   it('should throw if index is smaller than zero', () => {
-    expect(() => { (<any>range(0, 10)).elementAt(-1); })
+    expect(() => { range(0, 10).pipe(elementAt(-1)); })
       .to.throw(ArgumentOutOfRangeError);
   });
 
@@ -119,7 +119,7 @@ describe('elementAt operator', () => {
     const expected =   '-----(x|)';
     const defaultValue = '42';
 
-    expectObservable((<any>source).pipe(elementAt(3, defaultValue))).toBe(expected, { x: defaultValue });
+    expectObservable(source.pipe(elementAt(3, defaultValue))).toBe(expected, { x: defaultValue });
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 });
