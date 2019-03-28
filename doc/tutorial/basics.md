@@ -107,7 +107,7 @@ input.pipe(
 import { fromEvent } from 'rxjs';
 
 // typing "hello world"
-cosnt input = fromEvent(document.querySelector('input'), 'input');
+const input = fromEvent(document.querySelector('input'), 'input');
 
 // Pass on a new value
 input.pipe(
