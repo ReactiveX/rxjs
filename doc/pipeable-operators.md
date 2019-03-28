@@ -179,7 +179,7 @@ const nodeEnv = process.env.NODE_ENV || 'development';
 const isProd = nodeEnv === 'production';
 const rxPaths = require('rxjs/_esm5/path-mapping');
 
-cosnt config = {
+const config = {
     devtool: isProd ? 'hidden-source-map' : 'cheap-eval-source-map',
     context: path.resolve('./src'),
     entry: {
