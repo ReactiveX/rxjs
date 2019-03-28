@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { expand, mergeMap } from 'rxjs/operators';
+import { expand, mergeMap, map } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { Subscribable, EMPTY, Observable, of, Observer } from 'rxjs';
@@ -19,7 +19,7 @@ describe('expand operator', () => {
     const expected =  '--a-b-c-d|';
     const values = {a: 1, b: 2, c: 4, d: 8};
 
-    const result = e1.pipe(expand(x => x === 8 ? EMPTY : e2.map(c => c * x)));
+    const result = e1.pipe(expand(x => x === 8 ? EMPTY : e2.pipe(map(c => c * x))));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -32,7 +32,7 @@ describe('expand operator', () => {
     const expected =  '--a-b-c-d|';
     const values = {a: 1, b: 2, c: 4, d: 8};
 
-    const result = e1.pipe(expand(x => x === 8 ? EMPTY : e2.map(c => c * x), Number.POSITIVE_INFINITY, rxTestScheduler));
+    const result = e1.pipe(expand(x => x === 8 ? EMPTY : e2.pipe(map(c => c * x)), Number.POSITIVE_INFINITY, rxTestScheduler));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
