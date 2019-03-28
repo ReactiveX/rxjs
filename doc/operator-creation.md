@@ -113,7 +113,7 @@ function mySimpleOperator(someCallback) {
   // notice that we return a function here
   return function mySimpleOperatorImplementation(source) {
     return Observable.create(subscriber => {
-      cosnt subscription = source.subscribe(value => {
+      const subscription = source.subscribe(value => {
         try {
           subscriber.next(someCallback(value));
         } catch(err) {
