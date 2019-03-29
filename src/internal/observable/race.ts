@@ -36,7 +36,7 @@ export function race(...observables: ObservableInput<any>[]): Observable<{}>;
  * ## Example
  * ### Subscribes to the observable that was the first to start emitting.
  *
- * ```javascript
+ * ```ts
  * import { race, interval } from 'rxjs';
  * import { mapTo } from 'rxjs/operators';
  *

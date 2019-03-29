@@ -25,7 +25,7 @@ import { OperatorFunction } from '../types';
  *
  * Emit an array of the last clicks every [1-5] random seconds
  *
- * ```javascript
+ * ```ts
  * import { fromEvent, interval } from 'rxjs';
  * import { bufferWhen } from 'rxjs/operators';
  *

@@ -16,7 +16,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  *
  * ## Example
  * Skip the last 2 values of an Observable with many values
- * ```javascript
+ * ```ts
  * import { range } from 'rxjs';
  * import { skipLast } from 'rxjs/operators';
  *

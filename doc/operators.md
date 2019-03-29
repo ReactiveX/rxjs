@@ -10,9 +10,11 @@ Operators are **methods** on the Observable type, such as `.map(...)`, `.filter(
 
 An Operator is essentially a pure function which takes one Observable as input and generates another Observable as output. Subscribing to the output Observable will also subscribe to the input Observable. In the following example, we create a custom operator function that multiplies each value received from the input Observable by 10:
 
-```js
+```ts
+import {Observable, from} from 'rxjs';
+
 function multiplyByTen(input) {
-  var output = Rx.Observable.create(function subscribe(observer) {
+  const output = Observable.create(function subscribe(observer) {
     input.subscribe({
       next: (v) => observer.next(10 * v),
       error: (err) => observer.error(err),
@@ -22,8 +24,8 @@ function multiplyByTen(input) {
   return output;
 }
 
-var input = Rx.Observable.from([1, 2, 3, 4]);
-var output = multiplyByTen(input);
+const input = from([1, 2, 3, 4]);
+const output = multiplyByTen(input);
 output.subscribe(x => console.log(x));
 ```
 
@@ -42,10 +44,12 @@ Notice that a subscribe to `output` will cause `input` Observable to be subscrib
 
 **What is an instance operator?** Typically when referring to operators, we assume *instance* operators, which are methods on Observable instances. For instance, if the operator `multiplyByTen` would be an official instance operator, it would look roughly like this:
 
-```js
-Rx.Observable.prototype.multiplyByTen = function multiplyByTen() {
-  var input = this;
-  return Rx.Observable.create(function subscribe(observer) {
+```ts
+import {Observable} from 'rxjs';
+
+Observable.prototype.multiplyByTen = function multiplyByTen() {
+  const input = this;
+  return Observable.create(function subscribe(observer) {
     input.subscribe({
       next: (v) => observer.next(10 * v),
       error: (err) => observer.error(err),
@@ -59,8 +63,9 @@ Rx.Observable.prototype.multiplyByTen = function multiplyByTen() {
 
 Notice how the `input` Observable is not a function argument anymore, it is assumed to be the `this` object. This is how we would use such instance operator:
 
-```js
-var observable = Rx.Observable.from([1, 2, 3, 4]).multiplyByTen();
+```ts
+import {Observable, from} from 'rxjs';
+const observable = from([1, 2, 3, 4]).multiplyByTen();
 
 observable.subscribe(x => console.log(x));
 ```
@@ -73,19 +78,22 @@ The most common type of static operators are the so-called *Creation Operators*.
 
 A typical example of a static creation operator would be the `interval` function. It takes a number (not an Observable) as input argument, and produces an Observable as output:
 
-```js
-var observable = Rx.Observable.interval(1000 /* number of milliseconds */);
+```ts
+import {interval} from 'rxjs';
+
+const observable = interval(1000 /* number of milliseconds */);
 ```
 
 Another example of a creation operator is `create`, which we have been using extensively in previous examples. See the list of [all static creation operators here](#creation-operators).
 
 However, static operators may be of different nature than simply creation. Some *Combination Operators* may be static, such as `merge`, `combineLatest`, `concat`, etc. These make sense as static operators because they take *multiple* Observables as input, not just one, for instance:
 
-```js
-var observable1 = Rx.Observable.interval(1000);
-var observable2 = Rx.Observable.interval(400);
+```ts
+import {interval, merge} from 'rxjs';
+const observable1 = interval(1000);
+const observable2 = interval(400);
 
-var merged = Rx.Observable.merge(observable1, observable2);
+const merged = merge(observable1, observable2);
 ```
 
 ## Marble diagrams

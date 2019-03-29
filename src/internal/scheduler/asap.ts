@@ -23,7 +23,7 @@ import { AsapScheduler } from './AsapScheduler';
  *
  * ## Example
  * Compare async and asap scheduler<
- * ```javascript
+ * ```ts
  * import { asapScheduler, asyncScheduler } from 'rxjs';
  *
  * asyncScheduler.schedule(() => console.log('async')); // scheduling 'async' first...

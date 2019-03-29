@@ -29,7 +29,7 @@ export interface ShareReplayConfig {
  * ![](shareReplay.png)
  *
  * ## Example
- * ```javascript
+ * ```ts
  * import { interval } from 'rxjs';
  * import { shareReplay, take } from 'rxjs/operators';
  *

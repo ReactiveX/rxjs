@@ -21,7 +21,7 @@ import { Subscription } from '../Subscription';
  * pass a {@link SchedulerLike} as a second argument to `pairs`.
  *
  * @example <caption>Converts a javascript object to an Observable</caption>
- * ```javascript
+ * ```ts
  * import { pairs } from 'rxjs';
  *
  * const obj = {

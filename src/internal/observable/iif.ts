@@ -27,7 +27,7 @@ import { SubscribableOrPromise } from '../types';
  *
  * ## Examples
  * ### Change at runtime which Observable will be subscribed
- * ```javascript
+ * ```ts
  * import { iif, of } from 'rxjs';
  *
  * let subscribeToFirst;
@@ -52,7 +52,7 @@ import { SubscribableOrPromise } from '../types';
  * ```
  *
  * ### Control an access to an Observable
- * ```javascript
+ * ```ts
  * let accessGranted;
  * const observableIfYouHaveAccess = iif(
  *   () => accessGranted,

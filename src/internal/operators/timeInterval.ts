@@ -21,7 +21,7 @@ import { map } from './map';
  * ## Examples
  * Emit inteval between current value with the last value
  *
- * ```javascript
+ * ```ts
  * const seconds = interval(1000);
  *
  * seconds.pipe(timeinterval())
