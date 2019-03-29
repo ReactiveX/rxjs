@@ -25,7 +25,7 @@ import { MonoTypeOperatorFunction, PartialObserver, SchedulerAction, SchedulerLi
  *
  * ## Examples
  * Delay each click by one second
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { delay } from 'rxjs/operators';
  *
@@ -35,7 +35,7 @@ import { MonoTypeOperatorFunction, PartialObserver, SchedulerAction, SchedulerLi
  * ```
  *
  * Delay all clicks until a future date happens
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { delay } from 'rxjs/operators';
  *

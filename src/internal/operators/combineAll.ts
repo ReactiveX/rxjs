@@ -26,7 +26,7 @@ export function combineAll<R>(project: (...values: Array<any>) => R): OperatorFu
  *
  * ### Map two click events to a finite interval Observable, then apply `combineAll`
  *
- * ```javascript
+ * ```ts
  * import { fromEvent, interval } from 'rxjs';
  * import { map, combineAll, take } from 'rxjs/operators';
  *

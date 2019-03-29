@@ -30,7 +30,7 @@ export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, 
  *
  * ## Example
  * Count the number of click events
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { scan, mapTo } from 'rxjs/operators';
  *

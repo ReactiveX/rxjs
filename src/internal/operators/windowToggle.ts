@@ -26,7 +26,7 @@ import { OperatorFunction } from '../types';
  *
  * ## Example
  * Every other second, emit the click events from the next 500ms
- * ```javascript
+ * ```ts
  * import { fromEvent, interval, EMPTY } from 'rxjs';
  * import { windowToggle, mergeAll } from 'rxjs/operators';
  *

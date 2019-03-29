@@ -26,7 +26,7 @@ export function endWith<T, Z = T>(...array: Array<Z | SchedulerLike>): OperatorF
  * ## Example
  * ### After the source observable completes, appends an emission and then completes too.
  *
- * ```javascript
+ * ```ts
  * import { of } from 'rxjs';
  * import { endWith } from 'rxjs/operators';
  *

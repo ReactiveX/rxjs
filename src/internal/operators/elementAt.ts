@@ -24,7 +24,7 @@ import { take } from './take';
  *
  * ## Example
  * Emit only the third click event
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { elementAt } from 'rxjs/operators';
  *

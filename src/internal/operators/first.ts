@@ -43,7 +43,7 @@ export function first<T, D = T>(
  *
  * ## Examples
  * Emit only the first click that happens on the DOM
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { first } from 'rxjs/operators';
  *
@@ -53,7 +53,7 @@ export function first<T, D = T>(
  * ```
  *
  * Emits the first click that happens on a DIV
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { first } from 'rxjs/operators';
  *

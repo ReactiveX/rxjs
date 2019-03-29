@@ -26,7 +26,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  *
  * ## Example
  * Emit clicks at a rate of at most one click per second
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { throttleTime } from 'rxjs/operators';
  *

@@ -54,7 +54,7 @@ export function concat<R>(...observables: (ObservableInput<any> | SchedulerLike)
  *
  * ## Examples
  * ### Concatenate a timer counting from 0 to 3 with a synchronous sequence from 1 to 10
- * ```javascript
+ * ```ts
  * import { concat, interval, range } from 'rxjs';
  * import { take } from 'rxjs/operators';
  *
@@ -68,7 +68,7 @@ export function concat<R>(...observables: (ObservableInput<any> | SchedulerLike)
  * ```
  *
  * ### Concatenate an array of 3 Observables
- * ```javascript
+ * ```ts
  * import { concat, interval } from 'rxjs';
  * import { take } from 'rxjs/operators';
  *
@@ -86,7 +86,7 @@ export function concat<R>(...observables: (ObservableInput<any> | SchedulerLike)
  * ```
  *
  * ### Concatenate the same Observable to repeat it
- * ```javascript
+ * ```ts
  * import { concat, interval } from 'rxjs';
  * import { take } from 'rxjs/operators';
  *

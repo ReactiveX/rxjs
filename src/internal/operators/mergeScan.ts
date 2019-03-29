@@ -17,7 +17,7 @@ import { ObservableInput, OperatorFunction } from '../types';
  *
  * ## Example
  * Count the number of click events
- * ```javascript
+ * ```ts
  * import { fromEvent, of } from 'rxjs';
  * import { mapTo, mergeScan } from 'rxjs/operators';
  *

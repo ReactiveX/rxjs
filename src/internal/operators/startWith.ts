@@ -30,7 +30,7 @@ export function startWith<T, D = T>(...array: Array<D | SchedulerLike>): Operato
  *
  * Start the chain of emissions with `"first"`, `"second"`
  *
- * ```javascript
+ * ```ts
  * import { of } from 'rxjs';
  * import { startWith } from 'rxjs/operators';
  *

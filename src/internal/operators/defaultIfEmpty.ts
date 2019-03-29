@@ -23,7 +23,7 @@ export function defaultIfEmpty<T, R>(defaultValue?: R): OperatorFunction<T, T | 
  *
  * ## Example
  * If no clicks happen in 5 seconds, then emit "no clicks"
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { defaultIfEmpty, takeUntil } from 'rxjs/operators';
  *

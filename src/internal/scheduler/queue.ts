@@ -19,7 +19,7 @@ import { QueueScheduler } from './QueueScheduler';
  *
  * ## Examples
  * Schedule recursively first, then do something
- * ```javascript
+ * ```ts
  * import { queueScheduler } from 'rxjs';
  *
  * queueScheduler.schedule(() => {
@@ -34,7 +34,7 @@ import { QueueScheduler } from './QueueScheduler';
  * ```
  *
  * Reschedule itself recursively
- * ```javascript
+ * ```ts
  * import { queueScheduler } from 'rxjs';
  *
  * queueScheduler.schedule(function(state) {

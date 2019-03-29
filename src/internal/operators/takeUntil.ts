@@ -25,7 +25,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  *
  * ## Example
  * Tick every second until the first click happens
- * ```javascript
+ * ```ts
  * import { fromEvent, interval } from 'rxjs';
  * import { takeUntil } from 'rxjs/operators';
  *
