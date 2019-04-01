@@ -16,7 +16,7 @@ import { Observer, MonoTypeOperatorFunction, TeardownLogic } from '../types';
  *
  * ## Example
  * emits 'error'
- * ```javascript
+ * ```ts
  * import { range } from 'rxjs';
  * import { single } from 'rxjs/operators';
  *
@@ -27,7 +27,7 @@ import { Observer, MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * ```
  *
  * emits 'undefined'
- * ```javascript
+ * ```ts
  * import { range } from 'rxjs';
  * import { single } from 'rxjs/operators';
  *
