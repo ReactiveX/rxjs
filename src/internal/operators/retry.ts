@@ -46,21 +46,23 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * ```
  *
  * @param {number} count - Number of retry attempts before failing.
+ * @param {boolean} resetOnSuccess - When set to `true` every successful emission will reset the error count
  * @return {Observable} The source Observable modified with the retry logic.
  * @method retry
  * @owner Observable
  */
-export function retry<T>(count: number = -1): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new RetryOperator(count, source));
+export function retry<T>(count: number = -1, resetOnSuccess = false): MonoTypeOperatorFunction<T> {
+  return (source: Observable<T>) => source.lift(new RetryOperator(count, source, resetOnSuccess));
 }
 
 class RetryOperator<T> implements Operator<T, T> {
   constructor(private count: number,
-              private source: Observable<T>) {
+              private source: Observable<T>,
+              private resetOnSuccess: boolean) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new RetrySubscriber(subscriber, this.count, this.source));
+    return source.subscribe(new RetrySubscriber(subscriber, this.count, this.source, this.resetOnSuccess));
   }
 }
 
@@ -70,11 +72,24 @@ class RetryOperator<T> implements Operator<T, T> {
  * @extends {Ignored}
  */
 class RetrySubscriber<T> extends Subscriber<T> {
+  private readonly initialCount: number;
+
   constructor(destination: Subscriber<any>,
               private count: number,
-              private source: Observable<T>) {
+              private source: Observable<T>,
+              private resetOnSuccess: boolean
+  ) {
     super(destination);
+    this.initialCount = this.count;
   }
+
+  next(value?: T): void {
+    super.next(value);
+    if (this.resetOnSuccess) {
+      this.count = this.initialCount;
+    }
+  }
+
   error(err: any) {
     if (!this.isStopped) {
       const { source, count } = this;
