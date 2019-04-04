@@ -18,56 +18,55 @@ The essential concepts in RxJS which solve async event management are:
 ## First examples
 
 Normally you register event listeners.
-```js
-const button = document.querySelector('button');
-button.addEventListener('click', () => console.log('Clicked!'));
+
+```ts
+document.addEventListener('click', () => console.log('Clicked!'));
 ```
 
 Using RxJS you create an observable instead.
-```js
-const { fromEvent } = rxjs;
 
-const button = document.querySelector('button');
-fromEvent(button, 'click')
-  .subscribe(() => console.log('Clicked!'));
+```ts
+import { fromEvent } from 'rxjs';
+
+fromEvent(document, 'click').subscribe(() => console.log('Clicked!'));
 ```
 
-
 ### Purity
+
 What makes RxJS powerful is its ability to produce values using pure functions. That means your code is less prone to errors.
 
 Normally you would create an impure function, where other
 pieces of your code can mess up your state.
-```js
-var count = 0;
-var button = document.querySelector('button');
-button.addEventListener('click', () => console.log(`Clicked ${++count} times`));
+
+```ts
+let count = 0;
+document.addEventListener('click', () => console.log(`Clicked ${++count} times`));
 ```
 
 Using RxJS you isolate the state.
-```Js
-const { fromEvent } = rxjs;
-const { scan } = rxjs.operators;
 
-const button = document.querySelector('button');
-fromEvent(button, 'click').pipe(
-  scan(count => count + 1, 0)
-)
-.subscribe(count => console.log(`Clicked ${count} times`));
+```ts
+import { fromEvent } from 'rxjs';
+import { scan } from 'rxjs/operators';
+
+fromEvent(document, 'click')
+  .pipe(scan(count => count + 1, 0))
+  .subscribe(count => console.log(`Clicked ${count} times`));
 ```
 
 The **scan** operator works just like **reduce** for arrays. It takes a value which is exposed to a callback. The returned value of the callback will then become the next value exposed the next time the callback runs.
 
 ### Flow
+
 RxJS has a whole range of operators that helps you control how the events flow through your observables.
 
 This is how you would allow at most one click per second, with plain JavaScript:
-```js
-var count = 0;
-var rate = 1000;
-var lastClick = Date.now() - rate;
-var button = document.querySelector('button');
-button.addEventListener('click', () => {
+
+```ts
+let count = 0;
+let rate = 1000;
+let lastClick = Date.now() - rate;
+document.addEventListener('click', () => {
   if (Date.now() - lastClick >= rate) {
     console.log(`Clicked ${++count} times`);
     lastClick = Date.now();
@@ -76,50 +75,53 @@ button.addEventListener('click', () => {
 ```
 
 With RxJS:
-```js
-const { fromEvent } = rxjs;
-const { throttleTime, scan } = rxjs.operators;
 
-const button = document.querySelector('button');
-fromEvent(button, 'click').pipe(
-  throttleTime(1000),
-  scan(count => count + 1, 0)
-)
-.subscribe(count => console.log(`Clicked ${count} times`));
+```ts
+import { fromEvent } from 'rxjs';
+import { throttleTime, scan } from 'rxjs/operators';
+
+fromEvent(document, 'click')
+  .pipe(
+    throttleTime(1000),
+    scan(count => count + 1, 0)
+  )
+  .subscribe(count => console.log(`Clicked ${count} times`));
 ```
 
 Other flow control operators are [**filter**](../api/operators/filter), [**delay**](../api/operators/delay), [**debounceTime**](../api/operators/debounceTime), [**take**](../api/operators/take), [**takeUntil**](../api/operators/takeUntil), [**distinct**](../api/operators/distinct), [**distinctUntilChanged**](../api/operators/distinctUntilChanged) etc.
 
 ### Values
+
 You can transform the values passed through your observables.
 
 Here's how you can add the current mouse x position for every click, in plain JavaScript:
-```js
+
+```ts
 let count = 0;
 const rate = 1000;
 let lastClick = Date.now() - rate;
-const button = document.querySelector('button');
-button.addEventListener('click', (event) => {
+document.addEventListener('click', event => {
   if (Date.now() - lastClick >= rate) {
     count += event.clientX;
-    console.log(count)
+    console.log(count);
     lastClick = Date.now();
   }
 });
 ```
 
 With RxJS:
-```js
-const { fromEvent } = rxjs;
-const { throttleTime, map, scan } = rxjs.operators;
 
-const button = document.querySelector('button');
-fromEvent(button, 'click').pipe(
-  throttleTime(1000),
-  map(event => event.clientX),
-  scan((count, clientX) => count + clientX, 0)
-)
-.subscribe(count => console.log(count));
+```ts
+import { fromEvent } from 'rxjs';
+import { throttleTime, map, scan } from 'rxjs/operators';
+
+fromEvent(document, 'click')
+  .pipe(
+    throttleTime(1000),
+    map(event => event.clientX),
+    scan((count, clientX) => count + clientX, 0)
+  )
+  .subscribe(count => console.log(count));
 ```
 
 Other value producing operators are [**pluck**](../api/operators/pluck), [**pairwise**](../api/operators/pairwise), [**sample**](../api/operators/sample) etc.
