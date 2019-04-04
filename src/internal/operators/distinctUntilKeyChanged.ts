@@ -12,7 +12,6 @@ export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (
  *
  * <span class="informal">It's like {@link distinctUntilChanged}, but the distinct comparison uses a key to access a property.</span>
  *
- * If a comparator function is not provided, an equality check is used by default.
  * ![](distinctUntilKeyChanged.png)
  *
  * `distinctUntilKeyChanged` emits all items of the source Observable, wich are distinct by comparison.
