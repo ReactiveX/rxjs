@@ -154,9 +154,9 @@ then it must cover the following cases:
 - If an error is thrown
 
 ### Running Unit tests
-Run all tests using `npm run test`. To run a specific test, run
-`npm run test_single -- spec/**/throttleTime-spec.ts` and replace `throttleTime` with the name of
-the file you want to run the tests of.
+Run all tests using `npm run test`. To run specific tests, run
+`npm run test_specific -- throttleTime,auditTime,...` and replace the comma separated argument
+with specs of your choosing. It is important to include the spec list immediately after the `--`.
 
 ### CI Tests
 - Using [Travis](https://travis-ci.org/) on your forked version of RxJS will allow running CI tests on that fork before submitting a PR to master
