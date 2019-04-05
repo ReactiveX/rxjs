@@ -73,7 +73,7 @@ function makeFilename(operatorLabel: string) {
 type glitFn = (description: string, fn: () => void ) => any;
 type specFn = () => any;
 
-global.asDiagram = function asDiagram(operatorLabel: string, glit: glitFn) {
+global.asDiagramFn = (operatorLabel: string, glit: glitFn) => {
   return function specFnWithPainter(description: string, specFn: specFn) {
     if (specFn.length === 0) {
       glit(description, function () {

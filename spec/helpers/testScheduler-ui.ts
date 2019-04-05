@@ -60,8 +60,6 @@ if (!global.Promise) {
   global.Promise = require('promise'); // tslint:disable-line:no-require-imports no-var-requires
 }
 
-const diagramFunction = global.asDiagram;
-
 //mocha creates own global context per each test suite, simple patching to global won't deliver its context into test cases.
 //this custom interface is just mimic of existing one amending test scheduler behavior previously test-helper does via global patching.
 module.exports = function(suite: any) {
@@ -222,10 +220,11 @@ module.exports = function(suite: any) {
      * Describe a specification or test-case
      * to be represented as marble diagram png.
      * It will still serve as normal test cases as well.
+     * Note: Named different from the actual function to prevent overwriting.
      */
     context.asDiagram = function (label: any) {
-      if (diagramFunction) {
-        return diagramFunction(label, it);
+      if (global.asDiagramFn) {
+        return global.asDiagramFn(label, it);
       }
       return it;
     };
