@@ -70,6 +70,7 @@
     "postpublish": "./docs_app/scripts/publish-docs.sh",
     "publish_docs": "./publish_docs.sh",
     "test": "cross-env TS_NODE_PROJECT=spec/tsconfig.json mocha --opts spec/support/default.opts \"spec/**/*-spec.ts\"",
+    "test_single": "cross-env TS_NODE_PROJECT=spec/tsconfig.json mocha --opts spec/support/default.opts",
     "test_no_cache": "cross-env TS_NODE_PROJECT=spec/tsconfig.json TS_NODE_CACHE=false mocha --opts spec/support/default.opts \"spec/**/*-spec.ts\"",
     "test_transpile_only": "cross-env TS_NODE_PROJECT=spec/tsconfig.json TS_NODE_TRANSPILE_ONLY=true mocha --opts spec/support/default.opts \"spec/**/*-spec.ts\"",
     "test:browser": "echo \"Browser test is not working currently\" && exit -1 && npm-run-all build:spec:browser && opn spec/support/mocha-browser-runner.html",

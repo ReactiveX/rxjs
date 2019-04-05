@@ -153,6 +153,11 @@ then it must cover the following cases:
 - Success with the context, if any allowed in the operator signature
 - If an error is thrown
 
+### Running Unit tests
+Run all tests using `npm run test`. To run a specific test, run
+`npm run test_single -- spec/**/throttleTime-spec.ts` and replace `throttleTime` with the name of
+the file you want to run the tests of.
+
 ### CI Tests
 - Using [Travis](https://travis-ci.org/) on your forked version of RxJS will allow running CI tests on that fork before submitting a PR to master
  - Simply create a `Travis` account and add your fork as a new project
