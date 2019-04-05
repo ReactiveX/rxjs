@@ -158,6 +158,9 @@ Run all tests using `npm run test`. To run specific tests, run
 `npm run test_specific -- throttleTime,auditTime,...` and replace the comma separated argument
 with specs of your choosing. It is important to include the spec list immediately after the `--`.
 
+Both test scripts accept the `-w` flag to watch files for changes. E.g.
+`npm run test -- -w ` and `npm run test_specific -- throttleTime,auditTime -w`.
+
 ### CI Tests
 - Using [Travis](https://travis-ci.org/) on your forked version of RxJS will allow running CI tests on that fork before submitting a PR to master
  - Simply create a `Travis` account and add your fork as a new project
