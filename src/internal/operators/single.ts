@@ -38,6 +38,9 @@ import { Observer, MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * ```
  *
  * @see {@link first}
+ * @see {@link find}
+ * @see {@link findIndex}
+ * @see {@link elementAt}
  *
  * @throws {EmptyError} Delivers an EmptyError to the Observer's `error`
  * callback if the Observable completes before any `next` notification was sent.
