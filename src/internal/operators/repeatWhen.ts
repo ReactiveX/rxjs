@@ -18,6 +18,56 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  *
  * ![](repeatWhen.png)
  *
+ * ## Example
+ *
+ * repeat a message
+ * ```ts
+ * import { of,interval } from 'rxjs';
+ * import { map, repeatWhen,take } from 'rxjs/operators';
+ *
+ * const notifier = interval(2000).pipe(
+ *   take(3)
+ * )
+ * const source = of('Hello World').pipe(
+ *   repeatWhen(() => notifier)
+ * );
+ * source.subscribe(x => console.log(x));
+ *
+ * // Results
+ * // Hello World
+ * // Hello World
+ * // Hello World
+ * // Hello World
+ * ```
+ * repeat values multiple times
+ *
+ * ```ts
+ * import { of,interval } from 'rxjs';
+ * import { map, repeatWhen,take } from 'rxjs/operators';
+ *
+ * const notifier = interval(2000).pipe(
+ *   take(3)
+ * )
+ * const source = interval(1000).pipe(
+ *   take(2),
+ *   repeatWhen(() => notifier)
+ * );
+ * source.subscribe(x => console.log(x));
+ * // repeat values
+ * // 0
+ * // 1
+ * // 2s later
+ * // 0
+ * // 1
+ * // 2s later
+ * // 0
+ * // 1
+ * // 2s later
+ * // 0
+ * // 1
+ * ```
+ *
+ *
  * @param {function(notifications: Observable): Observable} notifier - Receives an Observable of notifications with
  * which a user can `complete` or `error`, aborting the repetition.
  * @return {Observable} The source Observable modified with repeat logic.
