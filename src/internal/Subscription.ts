@@ -30,7 +30,7 @@ export class Subscription implements SubscriptionLike {
   public closed: boolean = false;
 
   /** @internal */
-  protected _parentOrParents: Subscription | Subscription[] = null;
+  protected _parents: Subscription[] = null;
   /** @internal */
   private _subscriptions: SubscriptionLike[] = null;
 
@@ -57,19 +57,17 @@ export class Subscription implements SubscriptionLike {
       return;
     }
 
-    let { _parentOrParents, _unsubscribe, _subscriptions } = (<any> this);
+    let { _parents, _unsubscribe, _subscriptions } = (<any> this);
 
     this.closed = true;
-    this._parentOrParents = null;
+    this._parents = null;
     // null out _subscriptions first so any child subscriptions that attempt
     // to remove themselves from this subscription will noop
     this._subscriptions = null;
 
-    if (_parentOrParents instanceof Subscription) {
-      _parentOrParents.remove(this);
-    } else if (_parentOrParents !== null) {
-      for (let index = 0; index < _parentOrParents.length; ++index) {
-        const parent = _parentOrParents[index];
+    if (_parents !== null) {
+      for (let index = 0; index < _parents.length; ++index) {
+        const parent = _parents[index];
         parent.remove(this);
       }
     }
@@ -154,26 +152,12 @@ export class Subscription implements SubscriptionLike {
       }
     }
 
-    // Add `this` as parent of `subscription` if that's not already the case.
-    let { _parentOrParents } = subscription;
-    if (_parentOrParents === null) {
-      // If we don't have a parent, then set `subscription._parents` to
-      // the `this`, which is the common case that we optimize for.
-      subscription._parentOrParents = this;
-    } else if (_parentOrParents instanceof Subscription) {
-      if (_parentOrParents === this) {
-        // The `subscription` already has `this` as a parent.
-        return subscription;
-      }
-      // If there's already one parent, but not multiple, allocate an
-      // Array to store the rest of the parent Subscriptions.
-      subscription._parentOrParents = [_parentOrParents, this];
-    } else if (_parentOrParents.indexOf(this) === -1) {
-      // Only add `this` to the _parentOrParents list if it's not already there.
-      _parentOrParents.push(this);
+    let { _parents } = subscription;
+    if (_parents && _parents.indexOf(this) > -1) { return subscription; }
+    if (_parents === null) {
+      subscription._parents = [this];
     } else {
-      // The `subscription` already has `this` as a parent.
-      return subscription;
+      _parents.push(this);
     }
 
     // Optimize for the common case when adding the first subscription.
