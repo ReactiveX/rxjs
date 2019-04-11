@@ -38,6 +38,10 @@ export const defaultThrottleConfig: ThrottleConfig = {
  * value or completes, the timer is disabled, and this process repeats for the
  * next source value.
  *
+ * When `trailing` is enabled in the `config` the last value emitted from the
+ * source observable during the timer is forwarded at the end of the timer if one
+ * was emitted.
+ *
  * ## Example
  * Emit clicks at a rate of at most one click per second
  * ```ts
@@ -58,7 +62,7 @@ export const defaultThrottleConfig: ThrottleConfig = {
  * @param {function(value: T): SubscribableOrPromise} durationSelector A function
  * that receives a value from the source Observable, for computing the silencing
  * duration for each source value, returned as an Observable or a Promise.
- * @param {Object} config a configuration object to define `leading` and `trailing` behavior. Defaults
+ * @param {ThrottleConfig} config a configuration object to define `leading` and `trailing` behavior. Defaults
  * to `{ leading: true, trailing: false }`.
  * @return {Observable<T>} An Observable that performs the throttle operation to
  * limit the rate of emissions from the source.

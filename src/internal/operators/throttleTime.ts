@@ -21,8 +21,13 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * value arrives, it is forwarded to the output Observable, and then the timer
  * is enabled. After `duration` milliseconds (or the time unit determined
  * internally by the optional `scheduler`) has passed, the timer is disabled,
- * and this process repeats for the next source value. Optionally takes a
- * {@link SchedulerLike} for managing timers.
+ * and this process repeats for the next source value.
+ *
+ * When `trailing` is enabled in the `config` the last value emitted from the
+ * source observable during the timer is forwarded at the end of the timer if one
+ * was emitted.
+ *
+ * Optionally takes a {@link SchedulerLike} for managing timers.
  *
  * ## Example
  * Emit clicks at a rate of at most one click per second
@@ -46,7 +51,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * internally by the optional `scheduler`.
  * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
  * managing the timers that handle the throttling.
- * @param {Object} config a configuration object to define `leading` and
+ * @param {ThrottleConfig} config a configuration object to define `leading` and
  * `trailing` behavior. Defaults to `{ leading: true, trailing: false }`.
  * @return {Observable<T>} An Observable that performs the throttle operation to
  * limit the rate of emissions from the source.
