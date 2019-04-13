@@ -45,17 +45,16 @@ it('should infer correctly with 6 parameters', () => {
   const res = forkJoin(a, b, c, d, e, f); // $ExpectType Observable<[number, string, number, number, number, number]>
 });
 
-// TODO(benlesh): this needs to be fixed as well
-// it('should infer of type any for more than 6 parameters', () => {
-//   const a = of(1, 2, 3);
-//   const b = of('a', 'b', 'c');
-//   const c = of(1, 2, 3);
-//   const d = of(1, 2, 3);
-//   const e = of(1, 2, 3);
-//   const f = of(1, 2, 3);
-//   const g = of(1, 2, 3);
-//   const res = forkJoin(a, b, c, d, e, f, g); // $ExpectType Observable<{}>
-// });
+it('should infer of type any for more than 6 parameters', () => {
+  const a = of(1, 2, 3);
+  const b = of('a', 'b', 'c');
+  const c = of(1, 2, 3);
+  const d = of(1, 2, 3);
+  const e = of(1, 2, 3);
+  const f = of(1, 2, 3);
+  const g = of(1, 2, 3);
+  const res = forkJoin(a, b, c, d, e, f, g); // $ExpectType Observable<any>
+});
 
 it('should infer correctly for array of 1 observable', () => {
   const a = [of(1, 2, 3)];

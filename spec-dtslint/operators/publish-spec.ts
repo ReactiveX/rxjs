@@ -6,8 +6,7 @@ it('should support empty parameter', () => {
   // the next version infers Observable<number>. It's not possible to specify
   // an upper bound for the TypeScript version used by dtslint, so an
   // expectation cannot be applied.
-  // TODO: put the test back after Typescript > 3.2
-  const a = of(1, 2, 3).pipe(publish());
+  const a = of(1, 2, 3).pipe(publish()); // $ExpectType Observable<any>
 });
 
 it('should infer when type is specified', () => {
