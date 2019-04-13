@@ -75,7 +75,10 @@ export function concat<R>(...observables: (ObservableInput<any> | SchedulerLike)
  * const timer1 = interval(1000).pipe(take(10));
  * const timer2 = interval(2000).pipe(take(6));
  * const timer3 = interval(500).pipe(take(10));
- * const result = concat([timer1, timer2, timer3]); // note that array is passed
+ *
+ * // an array itself being considered an observable source,
+ * // use the spread operator to observe its values instead of itself
+ * const result = concat(...[timer1, timer2, timer3]); // note that array is spread
  * result.subscribe(x => console.log(x));
  *
  * // results in the following:
