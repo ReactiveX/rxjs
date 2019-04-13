@@ -141,10 +141,10 @@ describe('throttleTime operator', () => {
   });
 
   describe('throttleTime(fn, { leading: true, trailing: true })', () => {
-    asDiagram('throttleTime(fn, { leading: true, trailing: true })')('should immediately emit the first value in each time window', () =>  {
+    asDiagram('throttleTime(fn, { leading: true, trailing: true })')('should immediately emit the first and last values in each time window', () =>  {
       const e1 =   hot('-a-xy-----b--x--cxxx--|');
       const e1subs =   '^                     !';
-      const t =  time( '----|                 ');
+      const t =  time( '----|                  ');
       const expected = '-a---y----b---x-c---x-|';
 
       const result = e1.pipe(throttleTime(t, rxTestScheduler, { leading: true, trailing: true }));
@@ -153,7 +153,7 @@ describe('throttleTime operator', () => {
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
 
-    it('should emit the first value if only a single one is given', () => {
+    it('should emit the value if only a single one is given', () => {
       const e1 =   hot('-a--------------------|');
       const t =   time('----|                  ');
       const expected = '-a--------------------|';
@@ -165,10 +165,10 @@ describe('throttleTime operator', () => {
   });
 
   describe('throttleTime(fn, { leading: false, trailing: true })', () => {
-    asDiagram('throttleTime(fn, { leading: false, trailing: true })')('should immediately emit the first value in each time window', () =>  {
+    asDiagram('throttleTime(fn, { leading: false, trailing: true })')('should immediately emit the last value in each time window', () =>  {
       const e1 =   hot('-a-xy-----b--x--cxxx--|');
       const e1subs =   '^                     !';
-      const t =  time( '----|                 ');
+      const t =  time( '----|                  ');
       const expected = '-----y--------x-----x-|';
 
       const result = e1.pipe(throttleTime(t, rxTestScheduler, { leading: false, trailing: true }));
@@ -177,10 +177,10 @@ describe('throttleTime operator', () => {
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
 
-    asDiagram('throttleTime(fn, { leading: false, trailing: true })')('should emit the last throttled value when complete', () => {
+    it('should emit the last throttled value when complete', () => {
       const e1 =   hot('-a-xy-----b--x--cxx|');
       const e1subs =   '^                  !';
-      const t =   time('----|              ');
+      const t =   time('----|               ');
       const expected = '-----y--------x----(x|)';
 
       const result = e1.pipe(throttleTime(t, rxTestScheduler, { leading: false, trailing: true }));
@@ -189,7 +189,7 @@ describe('throttleTime operator', () => {
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
 
-    it('should emit the first value if only a single one is given', () => {
+    it('should emit the value if only a single one is given', () => {
       const e1 =   hot('-a--------------------|');
       const t =   time('----|                  ');
       const expected = '-----a----------------|';
