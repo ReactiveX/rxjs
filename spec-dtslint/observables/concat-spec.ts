@@ -28,10 +28,9 @@ it('should accept more than 6 params', () => {
   const o = concat(of(1), of(2), of(3), of(4), of(5), of(6), of(7), of(8), of(9)); // $ExpectType Observable<number>
 });
 
-// TODO(benlesh): This test broken by TS next (> 3.4)... Observable<unknown> is returned.
-// it('should return Observable<{}> for more than 6 different types of params', () => {
-//   const o = concat(of(1), of('a'), of(2), of(true), of(3), of([1, 2, 3]), of(4)); // $ExpectType Observable<{}>
-// });
+it('should return Observable<{}> for more than 6 different types of params', () => {
+  const o = concat(of(1), of('a'), of(2), of(true), of(3), of([1, 2, 3]), of(4)); // $ExpectType Observable<{}>
+});
 
 it('should accept scheduler after params', () => {
   const o = concat(of(4), of(5), of(6), asyncScheduler); // $ExpectType Observable<number>

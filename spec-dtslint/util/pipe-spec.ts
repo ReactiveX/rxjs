@@ -21,10 +21,9 @@ function a<I extends string, O extends string>(input: I, output: O): UnaryFuncti
   return i => output;
 }
 
-// TODO(benlesh): This test broken by TS next (> 3.4)... Observable<unknown> is returned.
-// it('should infer {} for no arguments', () => {
-//   const o = pipe(); // $ExpectType UnaryFunction<{}, {}>
-// });
+it('should infer {} for no arguments', () => {
+  const o = pipe(); // $ExpectType UnaryFunction<{}, {}>
+});
 
 it('should infer for 1 argument', () => {
   const o = pipe(a('0', '1')); // $ExpectType UnaryFunction<"0", "1">
@@ -116,14 +115,13 @@ it('should return an explicit Observable type', () => {
   const o = of('foo').pipe(staticPipe); // $ExpectType Observable<string>
 });
 
-// TODO(benlesh): This test broken by TS next (> 3.4)... Observable<unknown> is returned.
-// it('should return Observable<{}> when T cannot be inferred', () => {
-//   const customOperator = <T>() => (a: Observable<T>) => a;
+it('should return Observable<{}> when T cannot be inferred', () => {
+  const customOperator = <T>() => (a: Observable<T>) => a;
 
-//   // type can't be possibly be inferred here, so it's {} instead of T.
-//   const staticPipe = pipe(customOperator());
-//   const o = of('foo').pipe(staticPipe); // $ExpectType Observable<{}>
-// });
+  // type can't be possibly be inferred here, so it's {} instead of T.
+  const staticPipe = pipe(customOperator());
+  const o = of('foo').pipe(staticPipe); // $ExpectType Observable<{}>
+});
 
 it('should return a non-narrowed type', () => {
   const func = pipe((value: string) => value, (value: string) => value + value);
