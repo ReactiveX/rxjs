@@ -11,12 +11,10 @@ function mockFetchImpl(input: string | Request, init?: RequestInit): Promise<Res
   return new Promise<any>((resolve, reject) => {
     if (init.signal) {
       init.signal.addEventListener('abort', () => {
-        console.log('triggered');
         reject(new MockDOMException());
       });
     }
     return Promise.resolve(null).then(() => {
-      console.log('resolved');
       resolve((mockFetchImpl as any).respondWith);
     });
   });
@@ -139,11 +137,11 @@ describe('fromFetch', () => {
     expect(MockAbortController.created).to.equal(0);
 
     fetch$.subscribe({
-      next: () => done(new Error('should not be called')),
-      error: err => {
-        expect(err.message).to.equal('RxJS Fetch HTTP Error\n\nStatus:\n400\n\nBody:\nBad stuff here\n');
-        done();
+      next: response => {
+        expect(response).to.equal(mockFetch.respondWith);
       },
+      complete: done,
+      error: done
     });
 
     expect(MockAbortController.created).to.equal(1);
@@ -169,10 +167,13 @@ describe('fromFetch', () => {
     expect(mockFetch.calls[0].init.signal.aborted).to.be.true;
   });
 
-  it('should allow passing of init object', () => {
+  it('should allow passing of init object', done => {
     const myInit = {};
     const fetch$ = fromFetch('/foo', myInit);
-    fetch$.subscribe();
+    fetch$.subscribe({
+      error: done,
+      complete: done,
+    });
     expect(mockFetch.calls[0].init).to.equal(myInit);
     expect(mockFetch.calls[0].init.signal).not.to.be.undefined;
   });
