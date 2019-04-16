@@ -260,7 +260,7 @@ export class Observable<T> implements Subscribable<T> {
     promiseCtor = getPromiseCtor(promiseCtor);
 
     return new promiseCtor<void>((resolve, reject) => {
-      // Must be declared in a separate statement to avoid a RefernceError when
+      // Must be declared in a separate statement to avoid a ReferenceError when
       // accessing subscription below in the closure due to Temporal Dead Zone.
       let subscription: Subscription;
       subscription = this.subscribe((value) => {
