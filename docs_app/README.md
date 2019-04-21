@@ -36,6 +36,14 @@ Running `npm run start` (even when explicitly targeting production mode) does no
 ServiceWorker. If you want to test the ServiceWorker locally, you can use `npm run build` and then
 serve the files in `dist/` with `npm run http-server -- dist -p 4200`.
 
+## Running on Docker
+
+The docs app (rxjs.io) can run as a docker container. 
+In order to run the docs app on docker, use the following commands (**run from the rxjs folder**):  
+* `docker build -t rxjs-docs:6.4.1 .` - building the rxjs docs app image
+* `docker run -p <host-port>:4200 rxjs-docs:6.4.1` - starting the container, listening on *<host-port>* for your choice.
+> tested on ubuntu 18.04.2 with Docker 18.09.4
+
 ## Guide to authoring
 
 There are two types of content in the documentation:
