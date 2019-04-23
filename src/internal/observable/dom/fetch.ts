@@ -18,10 +18,10 @@ import { Observable } from '../../Observable';
  *
  * ```ts
  * import { of } from 'rxjs';
- * import { fetch } from 'rxjs/fetch';
+ * import { fromFetch } from 'rxjs/fetch';
  * import { switchMap, catchError } from 'rxjs/operators';
  *
- * const data$ = fetch('https://api.github.com/users?per_page=5').pipe(
+ * const data$ = fromFetch('https://api.github.com/users?per_page=5').pipe(
  *  switchMap(response => {
  *    if(responose.ok) {
  *      // OK return data
