@@ -10,8 +10,15 @@ import { CodeModule } from './code.module';
 import { CopierService } from 'app/shared//copier.service';
 import { Logger } from 'app/shared/logger.service';
 import { PrettyPrinter } from './pretty-printer.service';
+import { StackblitzService } from 'app/shared/stackblitz.service';
 
 const oneLineCode = 'const foo = "bar";';
+
+const htmlCode = 'click me';
+const codeWithHtml = `
+// html: click me
+const foo = "bar";
+`;
 
 const smallMultiLineCode = `
 &lt;hero-details&gt;
@@ -46,7 +53,12 @@ describe('CodeComponent', () => {
       providers: [
         PrettyPrinter,
         CopierService,
-        {provide: Logger, useClass: TestLogger }
+        { provide: Logger, useClass: TestLogger },
+        {
+          provide: StackblitzService, useValue: {
+            openProject() {}
+          }
+        }
      ]
     }).compileComponents();
   });
@@ -262,6 +274,68 @@ describe('CodeComponent', () => {
       expect(logger.error).toHaveBeenCalledTimes(1);
       expect(logger.error).toHaveBeenCalledWith(jasmine.any(Error));
       expect(logger.error.calls.mostRecent().args[0].message).toMatch(/^ERROR copying code to clipboard:/);
+    });
+  });
+
+  describe('edit button', () => {
+
+    function getButton() {
+      const btnDe = fixture.debugElement.query(By.css('.edit-button'));
+      return btnDe ? btnDe.nativeElement : null;
+    }
+
+    it('should be hidden if the `hideCopy` input is true', () => {
+      hostComponent.hideCopy = true;
+      fixture.detectChanges();
+      expect(getButton()).toBe(null);
+    });
+
+    it('should have title', () => {
+      expect(getButton().title).toBe('Edit in StackBlitz');
+    });
+
+    it('should have no aria-label by default', () => {
+      expect(getButton().getAttribute('aria-label')).toBe('');
+    });
+
+    it('should have aria-label explaining what is being copied when title passed in', () => {
+      hostComponent.title = 'a/b/c/foo.ts';
+      fixture.detectChanges();
+      expect(getButton().getAttribute('aria-label')).toContain(hostComponent.title);
+    });
+
+    it('should call Stackblitz service when clicked', () => {
+      const copierService: StackblitzService = TestBed.get(StackblitzService);
+      const spy = spyOn(copierService, 'openProject');
+      expect(spy.calls.count()).toBe(0, 'before click');
+      getButton().click();
+      expect(spy.calls.count()).toBe(1, 'after click');
+    });
+
+    it('should pass code text when clicked', () => {
+      const copierService: StackblitzService = TestBed.get(StackblitzService);
+      const spy = spyOn(copierService, 'openProject');
+      getButton().click();
+      expect(spy.calls.argsFor(0)[0].code).toBe(oneLineCode, 'after click');
+    });
+
+    it('should pass language when clicked', () => {
+      const language = 'javascript';
+      const copierService: StackblitzService = TestBed.get(StackblitzService);
+      const spy = spyOn(copierService, 'openProject');
+      hostComponent.language = language;
+      fixture.detectChanges();
+      getButton().click();
+      expect(spy.calls.argsFor(0)[0].language).toBe(language, 'after click');
+    });
+
+    it('should pass html set in code in "// html: " comment', () => {
+      const copierService: StackblitzService = TestBed.get(StackblitzService);
+      const spy = spyOn(copierService, 'openProject');
+      hostComponent.setCode(codeWithHtml);
+      fixture.detectChanges();
+      getButton().click();
+      expect(spy.calls.argsFor(0)[0].html).toEqual(htmlCode, 'after click');
     });
   });
 });

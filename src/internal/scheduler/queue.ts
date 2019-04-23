@@ -19,9 +19,11 @@ import { QueueScheduler } from './QueueScheduler';
  *
  * ## Examples
  * Schedule recursively first, then do something
- * ```javascript
- * Rx.Scheduler.queue.schedule(() => {
- *   Rx.Scheduler.queue.schedule(() => console.log('second')); // will not happen now, but will be put on a queue
+ * ```ts
+ * import { queueScheduler } from 'rxjs';
+ *
+ * queueScheduler.schedule(() => {
+ *   queueScheduler.schedule(() => console.log('second')); // will not happen now, but will be put on a queue
  *
  *   console.log('first');
  * });
@@ -32,8 +34,10 @@ import { QueueScheduler } from './QueueScheduler';
  * ```
  *
  * Reschedule itself recursively
- * ```javascript
- * Rx.Scheduler.queue.schedule(function(state) {
+ * ```ts
+ * import { queueScheduler } from 'rxjs';
+ *
+ * queueScheduler.schedule(function(state) {
  *   if (state !== 0) {
  *     console.log('before', state);
  *     this.schedule(state - 1); // `this` references currently executing Action,

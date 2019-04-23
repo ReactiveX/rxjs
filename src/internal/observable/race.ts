@@ -4,10 +4,31 @@ import { fromArray } from './fromArray';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { TeardownLogic } from '../types';
+import { TeardownLogic, ObservableInput } from '../types';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
+
+// tslint:disable:max-line-length
+export function race<A>(arg: [ObservableInput<A>]): Observable<A>;
+export function race<A, B>(arg: [ObservableInput<A>, ObservableInput<B>]): Observable<A | B>;
+export function race<A, B, C>(arg: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>]): Observable<A | B | C>;
+export function race<A, B, C, D>(arg: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>]): Observable<A | B | C | D>;
+export function race<A, B, C, D, E>(arg: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>, ObservableInput<E>]): Observable<A | B | C | D | E>;
+export function race<T>(arg: ObservableInput<T>[]): Observable<T>;
+export function race(arg: ObservableInput<any>[]): Observable<{}>;
+
+export function race<A>(a: ObservableInput<A>): Observable<A>;
+export function race<A, B>(a: ObservableInput<A>, b: ObservableInput<B>): Observable<A | B>;
+export function race<A, B, C>(a: ObservableInput<A>, b: ObservableInput<B>, c: ObservableInput<C>): Observable<A | B | C>;
+export function race<A, B, C, D>(a: ObservableInput<A>, b: ObservableInput<B>, c: ObservableInput<C>, d: ObservableInput<D>): Observable<A | B | C | D>;
+export function race<A, B, C, D, E>(a: ObservableInput<A>, b: ObservableInput<B>, c: ObservableInput<C>, d: ObservableInput<D>, e: ObservableInput<E>): Observable<A | B | C | D | E>;
+// tslint:enable:max-line-length
+
+export function race<T>(observables: ObservableInput<T>[]): Observable<T>;
+export function race(observables: ObservableInput<any>[]): Observable<{}>;
+export function race<T>(...observables: ObservableInput<T>[]): Observable<T>;
+export function race(...observables: ObservableInput<any>[]): Observable<{}>;
 
 /**
  * Returns an Observable that mirrors the first source Observable to emit an item.
@@ -15,7 +36,10 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * ## Example
  * ### Subscribes to the observable that was the first to start emitting.
  *
- * ```javascript
+ * ```ts
+ * import { race, interval } from 'rxjs';
+ * import { mapTo } from 'rxjs/operators';
+ *
  * const obs1 = interval(1000).pipe(mapTo('fast one'));
  * const obs2 = interval(3000).pipe(mapTo('medium one'));
  * const obs3 = interval(5000).pipe(mapTo('slow one'));
@@ -35,17 +59,14 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * @name race
  * @owner Observable
  */
-export function race<T>(observables: Array<Observable<T>>): Observable<T>;
-export function race<T>(observables: Array<Observable<any>>): Observable<T>;
-export function race<T>(...observables: Array<Observable<T> | Array<Observable<T>>>): Observable<T>;
-export function race<T>(...observables: Array<Observable<any> | Array<Observable<any>>>): Observable<T> {
+export function race<T>(...observables: ObservableInput<any>[]): Observable<T> {
   // if the only argument is an array, it was most likely called with
   // `race([obs1, obs2, ...])`
   if (observables.length === 1) {
     if (isArray(observables[0])) {
-      observables = <Array<Observable<any>>>observables[0];
+      observables = observables[0] as Observable<any>[];
     } else {
-      return <Observable<any>>observables[0];
+      return observables[0] as Observable<T>;
     }
   }
 

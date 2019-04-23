@@ -58,7 +58,9 @@ describe('static concat', () => {
     const expected =    '--i-j-k-l---i-j-';
     const unsub =       '               !';
 
-    const innerWrapped = inner.mergeMap((x) => of(x));
+    const innerWrapped = inner.pipe(
+      mergeMap((x) => of(x))
+    );
     const result = concat(innerWrapped, innerWrapped, innerWrapped, innerWrapped)
       .pipe(mergeMap((x) => of(x)));
 
@@ -366,7 +368,6 @@ describe('static concat', () => {
     const source = cold('--a---b----c---|');
     const result = concat(source);
 
-    expect(result).to.equal(source);
     expectObservable(result).toBe('--a---b----c---|');
   });
 

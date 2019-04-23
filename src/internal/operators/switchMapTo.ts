@@ -33,7 +33,10 @@ export function switchMapTo<T, I, R>(observable: ObservableInput<I>, resultSelec
  *
  * ## Example
  * Rerun an interval Observable on every click event
- * ```javascript
+ * ```ts
+ * import { fromEvent, interval } from 'rxjs';
+ * import { switchMapTo } from 'rxjs/operators';
+ *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(switchMapTo(interval(1000)));
  * result.subscribe(x => console.log(x));

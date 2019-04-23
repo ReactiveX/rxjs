@@ -42,11 +42,11 @@ describe('publish operator', () => {
     const source =     cold('-1-2-3----4-|');
     const sourceSubs =      '^           !';
     const published = source.pipe(publish()) as ConnectableObservable<string>;
-    const subscriber1 = hot('a|           ').mergeMapTo(published);
+    const subscriber1 = hot('a|           ').pipe(mergeMapTo(published));
     const expected1   =     '-1-2-3----4-|';
-    const subscriber2 = hot('    b|       ').mergeMapTo(published);
+    const subscriber2 = hot('    b|       ').pipe(mergeMapTo(published));
     const expected2   =     '    -3----4-|';
-    const subscriber3 = hot('        c|   ').mergeMapTo(published);
+    const subscriber3 = hot('        c|   ').pipe(mergeMapTo(published));
     const expected3   =     '        --4-|';
 
     expectObservable(subscriber1).toBe(expected1);
@@ -175,7 +175,7 @@ describe('publish operator', () => {
     it('should disconnect when last subscriber unsubscribes', () => {
       const source =     cold(   '-1-2-3----4-|');
       const sourceSubs =      '   ^        !   ';
-      const replayed = source.publish().refCount();
+      const replayed = source.pipe(publish(), refCount());
       const subscriber1 = hot('   a|           ').pipe(mergeMapTo(replayed));
       const unsub1 =          '          !     ';
       const expected1   =     '   -1-2-3--     ';
@@ -373,7 +373,7 @@ describe('publish operator', () => {
   type('should infer the type for the pipeable operator with a selector', () => {
     /* tslint:disable:no-unused-variable */
     const source = of<number>(1, 2, 3);
-    const result: Observable<number> = source.pipe(publish(s => s.map(x => x)));
+    const result: Observable<number> = source.pipe(publish(s => s.pipe(map(x => x))));
     /* tslint:enable:no-unused-variable */
   });
 

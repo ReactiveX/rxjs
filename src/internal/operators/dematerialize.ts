@@ -23,7 +23,10 @@ import { OperatorFunction } from '../types';
  *
  * ## Example
  * Convert an Observable of Notifications to an actual Observable
- * ```javascript
+ * ```ts
+ * import { of, Notification } from 'rxjs';
+ * import { dematerialize } from 'rxjs/operators';
+ *
  * const notifA = new Notification('N', 'A');
  * const notifB = new Notification('N', 'B');
  * const notifE = new Notification('E', undefined,

@@ -69,7 +69,7 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  *
  * ## Examples
  * ### Use forkJoin with operator emitting immediately
- * ```javascript
+ * ```ts
  * import { forkJoin, of } from 'rxjs';
  *
  * const observable = forkJoin(
@@ -88,7 +88,7 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  * ```
  *
  * ### Use forkJoin with operator emitting after some time
- * ```javascript
+ * ```ts
  * import { forkJoin, interval } from 'rxjs';
  * import { take } from 'rxjs/operators';
  *
@@ -108,9 +108,9 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  * ```
  *
  * ### Use forkJoin with project function
- * ```javascript
+ * ```ts
  * import { forkJoin, interval } from 'rxjs';
- * import { take } from 'rxjs/operators';
+ * import { map, take } from 'rxjs/operators';
  *
  * const observable = forkJoin(
  *   interval(1000).pipe(take(3)), // emit 0, 1, 2 every second and complete

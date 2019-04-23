@@ -26,7 +26,10 @@ export function endWith<T, Z = T>(...array: Array<Z | SchedulerLike>): OperatorF
  * ## Example
  * ### After the source observable completes, appends an emission and then completes too.
  *
- * ```javascript
+ * ```ts
+ * import { of } from 'rxjs';
+ * import { endWith } from 'rxjs/operators';
+ *
  * of('hi', 'how are you?', 'sorry, I have to go now').pipe(
  *   endWith('goodbye!'),
  * )
@@ -61,7 +64,7 @@ export function endWith<T>(...array: Array<T | SchedulerLike>): MonoTypeOperator
     } else if (len > 0) {
       return concatStatic(source, fromArray(array as T[], scheduler));
     } else {
-      return concatStatic<T>(source, empty(scheduler) as any);
+      return concatStatic(source, empty(scheduler));
     }
   };
 }

@@ -53,11 +53,14 @@ export function onErrorResumeNext<T, R>(array: ObservableInput<any>[]): Operator
  *
  * ## Example
  * Subscribe to the next Observable after map fails
- * ```javascript
+ * ```ts
+ * import { of } from 'rxjs';
+ * import { onErrorResumeNext, map } from 'rxjs/operators';
+ *
  * of(1, 2, 3, 0).pipe(
  *   map(x => {
  *       if (x === 0) { throw Error(); }
-         return 10 / x;
+ *        return 10 / x;
  *   }),
  *   onErrorResumeNext(of(1, 2, 3)),
  * )
@@ -108,8 +111,8 @@ export function onErrorResumeNextStatic<R>(array: ObservableInput<any>[]): Obser
 /* tslint:enable:max-line-length */
 
 export function onErrorResumeNextStatic<T, R>(...nextSources: Array<ObservableInput<any> |
-                                                              Array<ObservableInput<any>> |
-                                                              ((...values: Array<any>) => R)>): Observable<R> {
+  Array<ObservableInput<any>> |
+  ((...values: Array<any>) => R)>): Observable<R> {
   let source: ObservableInput<any> = null;
 
   if (nextSources.length === 1 && isArray(nextSources[0])) {

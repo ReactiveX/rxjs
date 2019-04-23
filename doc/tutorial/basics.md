@@ -2,41 +2,47 @@
 
 ## Converting to observables
 <!-- skip-example -->
-```js
+```ts
+import { of, from, fromEvent, fromPromise, bindNodeCallback } from 'rxjs';
+
 // From one or multiple values
-Rx.Observable.of('foo', 'bar');
+of('foo', 'bar');
 
 // From array of values
-Rx.Observable.from([1,2,3]);
+from([1,2,3]);
 
 // From an event
-Rx.Observable.fromEvent(document.querySelector('button'), 'click');
+fromEvent(document.querySelector('button'), 'click');
 
 // From a Promise
-Rx.Observable.fromPromise(fetch('/users'));
+fromPromise(fetch('/users'));
 
 // From a callback (last argument is a callback)
 // fs.exists = (path, cb(exists))
-var exists = Rx.Observable.bindCallback(fs.exists);
+const exists = bindCallback(fs.exists);
 exists('file.txt').subscribe(exists => console.log('Does file exist?', exists));
 
 // From a callback (last argument is a callback)
 // fs.rename = (pathA, pathB, cb(err, result))
-var rename = Rx.Observable.bindNodeCallback(fs.rename);
+const rename = bindNodeCallback(fs.rename);
 rename('file.txt', 'else.txt').subscribe(() => console.log('Renamed!'));
 ```
 
 ## Creating observables
 Externally produce new events.
-```js
-var myObservable = new Rx.Subject();
+```ts
+import { Subject } from 'rxjs';
+
+const myObservable = new Subject();
 myObservable.subscribe(value => console.log(value));
 myObservable.next('foo');
 ```
 
 Internally produce new events.
-```js
-var myObservable = Rx.Observable.create(observer => {
+```ts
+import { Observable } from 'rxjs';
+
+const myObservable = Observable.create(observer => {
   observer.next('foo');
   setTimeout(() => observer.next('bar'), 1000);
 });
@@ -46,9 +52,11 @@ myObservable.subscribe(value => console.log(value));
 Which one you choose depends on the scenario. The normal **Observable** is great when you want to wrap functionality that produces values over time. An example would be a websocket connection. With **Subject** you can trigger new events from anywhere really and you can connect existing observables to it.
 
 ## Controlling the flow
-```js
+```ts
+import { fromEvent } from 'rxjs';
+
 // typing "hello world"
-var input = Rx.Observable.fromEvent(document.querySelector('input'), 'input');
+const input = fromEvent(document.querySelector('input'), 'input');
 
 // Filter out target values less than 3 characters long
 input.pipe(
@@ -86,7 +94,7 @@ input.pipe(
 .subscribe(value => console.log(value)); // "hel"
 
 // Passes through events until other observable triggers an event
-var stopStream = Rx.Observable.fromEvent(document.querySelector('button'), 'click');
+const stopStream = fromEvent(document.querySelector('button'), 'click');
 input.pipe(
   takeUntil(stopStream),
   map(event => event.target.value)
@@ -95,9 +103,11 @@ input.pipe(
 ```
 
 ## Producing values
-```js
+```ts
+import { fromEvent } from 'rxjs';
+
 // typing "hello world"
-var input = Rx.Observable.fromEvent(document.querySelector('input'), 'input');
+const input = fromEvent(document.querySelector('input'), 'input');
 
 // Pass on a new value
 input.pipe(

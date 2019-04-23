@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import { queue } from 'rxjs/scheduler/queue';
 import { fromIterable } from 'rxjs/internal/observable/fromIterable';
+import { iterator as symbolIterator } from 'rxjs/internal/symbol/iterator';
 import { TestScheduler } from 'rxjs/testing';
 import { Notification, queueScheduler, Subscriber } from 'rxjs';
-import { observeOn, materialize, take } from 'rxjs/operators';
-import * as Rx from 'rxjs/Rx';
+import { observeOn, materialize, take, toArray } from 'rxjs/operators';
 
 declare const expectObservable: any;
 declare const rxTestScheduler: TestScheduler;
@@ -43,8 +43,8 @@ describe('fromIterable', () => {
     const e1 = fromIterable<number>(new Int32Array([10, 20]), undefined).pipe(observeOn(rxTestScheduler));
 
     let v1, v2: Array<Notification<any>>;
-    e1.pipe(materialize()).toArray().subscribe((x) => v1 = x);
-    e1.pipe(materialize()).toArray().subscribe((x) => v2 = x);
+    e1.pipe(materialize(), toArray()).subscribe((x) => v1 = x);
+    e1.pipe(materialize(), toArray()).subscribe((x) => v2 = x);
 
     rxTestScheduler.flush();
     expect(v1).to.deep.equal(expected);
@@ -63,7 +63,7 @@ describe('fromIterable', () => {
     };
 
     const iterable = {
-      [Rx.Symbol.iterator]() {
+      [symbolIterator]() {
         return iterator;
       }
     };
@@ -94,7 +94,7 @@ describe('fromIterable', () => {
     };
 
     const iterable = {
-      [Rx.Symbol.iterator]() {
+      [symbolIterator]() {
         return iterator;
       }
     };

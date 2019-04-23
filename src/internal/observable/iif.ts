@@ -27,7 +27,9 @@ import { SubscribableOrPromise } from '../types';
  *
  * ## Examples
  * ### Change at runtime which Observable will be subscribed
- * ```javascript
+ * ```ts
+ * import { iif, of } from 'rxjs';
+ *
  * let subscribeToFirst;
  * const firstOrSecond = iif(
  *   () => subscribeToFirst,
@@ -50,7 +52,7 @@ import { SubscribableOrPromise } from '../types';
  * ```
  *
  * ### Control an access to an Observable
- * ```javascript
+ * ```ts
  * let accessGranted;
  * const observableIfYouHaveAccess = iif(
  *   () => accessGranted,
@@ -94,5 +96,5 @@ export function iif<T, F>(
   trueResult: SubscribableOrPromise<T> = EMPTY,
   falseResult: SubscribableOrPromise<F> = EMPTY
 ): Observable<T|F> {
-  return defer<T|F>(() => condition() ? trueResult : falseResult);
+  return defer(() => condition() ? trueResult : falseResult);
 }

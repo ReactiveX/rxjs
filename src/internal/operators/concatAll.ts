@@ -30,7 +30,10 @@ export function concatAll<R>(): OperatorFunction<any, R>;
  * ## Example
  *
  * For each click event, tick every second from 0 to 3, with no concurrency
- * ```javascript
+ * ```ts
+ * import { fromEvent, interval } from 'rxjs';
+ * import { map, take, concatAll } from 'rxjs/operators';
+ *
  * const clicks = fromEvent(document, 'click');
  * const higherOrder = clicks.pipe(
  *   map(ev => interval(1000).pipe(take(4))),

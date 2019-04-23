@@ -25,14 +25,20 @@ import { MonoTypeOperatorFunction, PartialObserver, SchedulerAction, SchedulerLi
  *
  * ## Examples
  * Delay each click by one second
- * ```javascript
+ * ```ts
+ * import { fromEvent } from 'rxjs';
+ * import { delay } from 'rxjs/operators';
+ *
  * const clicks = fromEvent(document, 'click');
  * const delayedClicks = clicks.pipe(delay(1000)); // each click emitted after 1 second
  * delayedClicks.subscribe(x => console.log(x));
  * ```
  *
  * Delay all clicks until a future date happens
- * ```javascript
+ * ```ts
+ * import { fromEvent } from 'rxjs';
+ * import { delay } from 'rxjs/operators';
+ *
  * const clicks = fromEvent(document, 'click');
  * const date = new Date('March 15, 2050 12:00:00'); // in the future
  * const delayedClicks = clicks.pipe(delay(date)); // click emitted only after that date

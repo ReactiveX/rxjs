@@ -2,18 +2,18 @@ import { pipe, UnaryFunction, of, Observable } from 'rxjs';
 
 /**
  * Used to keep the tests uncluttered.
- * 
+ *
  * Returns a `UnaryFunction` with the
  * specified literal type parameters.
  * That is, `a('0', '1')` returns `UnaryFunction<'0', '1'>`.
  * That means that the `a` function can be used to create consecutive
  * arguments that are either compatible or incompatible.
- * 
+ *
  * ```js
  * a('0', '1'), a('1', '2') // OK
  * a('0', '1'), a('#', '2') // Error '1' is not compatible with '#'
  * ```
- * 
+ *
  * @param {string} input The `UnaryFunction` input type parameter
  * @param {string} output The `UnaryFunction` output type parameter
  */

@@ -365,9 +365,11 @@ describe('groupBy operator', () => {
     const expected =      '--(a|)';
 
     const source = e1.pipe(
-      groupBy((val: string) => val.toLowerCase().trim()),
+      groupBy(val => val.toLowerCase().trim()),
       take(1),
-      mergeMap((group: any) => group.take(1))
+      mergeMap(group => group.pipe(
+        take(1)
+      ))
     );
 
     expectObservable(source).toBe(expected, values);

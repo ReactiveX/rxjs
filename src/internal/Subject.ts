@@ -45,7 +45,9 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     super();
   }
 
-  /**@nocollapse */
+  /**@nocollapse
+   * @deprecated use new Subject() instead
+  */
   static create: Function = <T>(destination: Observer<T>, source: Observable<T>): AnonymousSubject<T> => {
     return new AnonymousSubject<T>(destination, source);
   }

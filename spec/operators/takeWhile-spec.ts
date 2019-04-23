@@ -67,6 +67,21 @@ describe('takeWhile operator', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should take all elements up to and including the element that made ' +
+      'the predicate return false', () => {
+    const e1 = hot('--a-^-b--c--d--e--|');
+    const e1subs =     '^       !      ';
+    const expected =   '--b--c--(d|)   ';
+
+    function predicate(value: string) {
+      return value !== 'd';
+    }
+    const inclusive = true;
+
+    expectObservable(e1.pipe(takeWhile(predicate, inclusive))).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should take elements with predicate when source does not complete', () => {
     const e1 = hot('--a-^-b--c--d--e--');
     const e1subs =     '^             ';

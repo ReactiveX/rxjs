@@ -10,13 +10,21 @@ export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item,
  * using a property accessed by using the key provided to check if the two items are distinct.
  *
- * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.
+ * <span class="informal">It's like {@link distinctUntilChanged}, but the distinct comparison uses a key to access a property.</span>
  *
- * If a comparator function is not provided, an equality check is used by default.
+ * ![](distinctUntilKeyChanged.png)
+ *
+ * `distinctUntilKeyChanged` emits all items of the source Observable, wich are distinct by comparison.
+ * The comparison checks if the previous item is distinct from the current item, using a `key` to access a property.
+ * If a comparator function is provided, then it will be called for each item with the property key
+ * to test for whether or not that value should be emitted.
  *
  * ## Examples
  * An example comparing the name of persons
  * ```typescript
+ * import { of } from 'rxjs';
+ * import { distinctUntilKeyChanged } from 'rxjs/operators';
+ *
  *  interface Person {
  *     age: number,
  *     name: string
@@ -40,6 +48,9 @@ export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (
  *
  * An example comparing the first letters of the name
  * ```typescript
+ * import { of } from 'rxjs';
+ * import { distinctUntilKeyChanged } from 'rxjs/operators';
+ *
  * interface Person {
  *     age: number,
  *     name: string

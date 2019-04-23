@@ -3,8 +3,6 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { Subject } from '../Subject';
 import { Subscription } from '../Subscription';
-import { tryCatch } from '../util/tryCatch';
-import { errorObject } from '../util/errorObject';
 
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
@@ -19,6 +17,22 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * this method will resubscribe to the source Observable.
  *
  * ![](repeatWhen.png)
+ *
+ * ## Example
+ * Repeat a message stream on click
+ * ```ts
+ * import { of, fromEvent } from 'rxjs';
+ * import { repeatWhen } from 'rxjs/operators';
+ *
+ * const source = of('Repeat message');
+ * const documentClick$ = fromEvent(document, 'click');
+ *
+ * source.pipe(repeatWhen(() => documentClick$)
+ * ).subscribe(data => console.log(data))
+ * ```
+ * @see {@link repeat}
+ * @see {@link retry}
+ * @see {@link retryWhen}
  *
  * @param {function(notifications: Observable): Observable} notifier - Receives an Observable of notifications with
  * which a user can `complete` or `error`, aborting the repetition.
@@ -113,8 +127,11 @@ class RepeatWhenSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private subscribeToRetries() {
     this.notifications = new Subject();
-    const retries = tryCatch(this.notifier)(this.notifications);
-    if (retries === errorObject) {
+    let retries;
+    try {
+      const { notifier } = this;
+      retries = notifier(this.notifications);
+    } catch (e) {
       return super.complete();
     }
     this.retries = retries;

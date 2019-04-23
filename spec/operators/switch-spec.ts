@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { Observable, of, NEVER, queueScheduler, Subject } from 'rxjs';
-import { map, switchAll } from 'rxjs/operators';
+import { map, switchAll, mergeMap } from 'rxjs/operators';
 
 declare function asDiagram(arg: string): Function;
 declare const type: Function;
@@ -32,15 +32,15 @@ describe('switchAll', () => {
   it('should unsub inner observables', () => {
     const unsubbed: string[] = [];
 
-    of('a', 'b').map((x) =>
-      new Observable<string>((subscriber) => {
+    of('a', 'b').pipe(
+      map((x) => new Observable<string>((subscriber) => {
         subscriber.complete();
         return () => {
           unsubbed.push(x);
         };
-      }))
-    .pipe(switchAll())
-    .subscribe();
+      })),
+      switchAll()
+    ).subscribe();
 
     expect(unsubbed).to.deep.equal(['a', 'b']);
   });
@@ -89,10 +89,11 @@ describe('switchAll', () => {
     const expected = '--------a---b----            ';
     const unsub =    '                !            ';
 
-    const result = e1
-      .mergeMap((x) => of(x))
-      .pipe(switchAll())
-      .mergeMap((x) => of(x));
+    const result = e1.pipe(
+      mergeMap((x) => of(x)),
+      switchAll(),
+      mergeMap((x) => of(x)),
+    );
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(x.subscriptions).toBe(xsubs);
@@ -262,55 +263,5 @@ describe('switchAll', () => {
       (sub as any)._subscriptions.length
     ).to.equal(2);
     sub.unsubscribe();
-  });
-
-  type(() => {
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<number> = Observable
-      .of(source1, source2, source3)
-      .pipe(switchAll());
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<number> = Observable
-      .of(source1, source2, source3)
-      .pipe(switchAll());
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    // coerce type to a specific type
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<string> = Observable
-      .of(source1 as any, source2 as any, source3 as any)
-      .pipe(switchAll<string>());
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type(() => {
-    // coerce type to a specific type
-    /* tslint:disable:no-unused-variable */
-    const source1 = of(1, 2, 3);
-    const source2 = [1, 2, 3];
-    const source3 = new Promise<number>(d => d(1));
-
-    let result: Observable<string> = Observable
-      .of(source1 as any, source2 as any, source3 as any)
-      .switch<string>();
-    /* tslint:enable:no-unused-variable */
   });
 });

@@ -41,6 +41,10 @@ it('should support a undefined resultSelector and concurrent parameter', () => {
   const o = of(1, 2, 3).pipe(mergeMap(p => of(Boolean(p)), undefined, 4)); // $ExpectType Observable<boolean>
 });
 
+it('should support union-type projections', () => {
+  const o = of(Math.random()).pipe(mergeMap(n => n > 0.5 ? of('life') : of(42))); // $ExpectType Observable<string | number>
+});
+
 it('should enforce types', () => {
   const o = of(1, 2, 3).pipe(mergeMap()); // $ExpectError
 });
