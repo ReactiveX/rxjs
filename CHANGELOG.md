@@ -1,3 +1,13 @@
+## [6.5.1](https://github.com/reactivex/rxjs/compare/6.5.0...6.5.1) (2019-04-23)
+
+
+### Bug Fixes
+
+* **Notification:** replace const enum ([#4556](https://github.com/reactivex/rxjs/issues/4556)) ([e460eec](https://github.com/reactivex/rxjs/commit/e460eec)), closes [#4538](https://github.com/reactivex/rxjs/issues/4538)
+* **throttleTime:** emit single value with trailing enabled ([#4564](https://github.com/reactivex/rxjs/issues/4564)) ([fd690a6](https://github.com/reactivex/rxjs/commit/fd690a6)), closes [#2859](https://github.com/reactivex/rxjs/issues/2859) [#4491](https://github.com/reactivex/rxjs/issues/4491)
+
+
+
 # [6.5.0](https://github.com/reactivex/rxjs/compare/6.4.0...6.5.0) (2019-04-23)
 
 
