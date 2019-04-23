@@ -1,4 +1,3 @@
-import { Observable } from '../Observable';
 import { ObservableInput } from '../types';
 import { subscribeToArray } from './subscribeToArray';
 import { subscribeToPromise } from './subscribeToPromise';
@@ -9,20 +8,11 @@ import { isPromise } from './isPromise';
 import { isObject } from './isObject';
 import { iterator as Symbol_iterator } from '../symbol/iterator';
 import { observable as Symbol_observable } from '../symbol/observable';
+import { Subscription } from '../Subscription';
 import { Subscriber } from '../Subscriber';
 
-export const subscribeTo = <T>(result: ObservableInput<T>) => {
-  if (result instanceof Observable) {
-    return (subscriber: Subscriber<T>) => {
-        if (result._isScalar) {
-        subscriber.next((result as any).value);
-        subscriber.complete();
-        return undefined;
-      } else {
-        return result.subscribe(subscriber);
-      }
-    };
-  } else if (!!result && typeof result[Symbol_observable] === 'function') {
+export const subscribeTo = <T>(result: ObservableInput<T>): (subscriber: Subscriber<T>) => Subscription | void => {
+  if (!!result && typeof result[Symbol_observable] === 'function') {
     return subscribeToObservable(result as any);
   } else if (isArrayLike(result)) {
     return subscribeToArray(result);

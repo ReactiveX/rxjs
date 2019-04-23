@@ -64,6 +64,7 @@ export { throwError } from './internal/observable/throwError';
 export { timer } from './internal/observable/timer';
 export { using } from './internal/observable/using';
 export { zip } from './internal/observable/zip';
+export { scheduled } from './internal/scheduled/scheduled';
 
 /* Constants */
 export { EMPTY } from './internal/observable/empty';
