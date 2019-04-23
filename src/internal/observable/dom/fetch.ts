@@ -23,7 +23,7 @@ import { Observable } from '../../Observable';
  *
  * const data$ = fromFetch('https://api.github.com/users?per_page=5').pipe(
  *  switchMap(response => {
- *    if(responose.ok) {
+ *    if(response.ok) {
  *      // OK return data
  *      return response.json();
  *    } else {
@@ -58,7 +58,7 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
     let unsubscribed = false;
 
     if (init) {
-      // If we a signal is provided, just have it teardown. It's a cancellation token, basically.
+      // If a signal is provided, just have it teardown. It's a cancellation token, basically.
       if (init.signal) {
         outerSignalHandler = () => {
           if (!signal.aborted) {
