@@ -1,7 +1,8 @@
 import { not } from '../util/not';
-import { filter } from './filter';
+import { subscribeTo } from '../util/subscribeTo';
+import { filter } from '../operators/filter';
+import { ObservableInput } from '../types';
 import { Observable } from '../Observable';
-import { UnaryFunction } from '../types';
 
 /**
  * Splits the source Observable into two, one with values that satisfy a
@@ -21,17 +22,23 @@ import { UnaryFunction } from '../types';
  * behaves like {@link filter} with the predicate negated.
  *
  * ## Example
- * Partition click events into those on DIV elements and those elsewhere
+ * Partition a set of numbers into odds and evens observables
  * ```ts
- * import { fromEvent } from 'rxjs';
- * import { partition } from 'rxjs/operators';
+ * import { of, partition } from 'rxjs';
  *
- * const clicks = fromEvent(document, 'click');
- * const parts = clicks.pipe(partition(ev => ev.target.tagName === 'DIV'));
- * const clicksOnDivs = parts[0];
- * const clicksElsewhere = parts[1];
- * clicksOnDivs.subscribe(x => console.log('DIV clicked: ', x));
- * clicksElsewhere.subscribe(x => console.log('Other clicked: ', x));
+ * const observableValues = of(1, 2, 3, 4, 5, 6);
+ * const [evens$, odds$] = partition(observableValues, (value, index) => value % 2 === 0);
+ *
+ * odds$.subscribe(x => console.log('odds', x));
+ * evens$.subscribe(x => console.log('evens', x));
+ *
+ * // Logs:
+ * // odds 1
+ * // odds 3
+ * // odds 5
+ * // evens 2
+ * // evens 4
+ * // evens 6
  * ```
  *
  * @see {@link filter}
@@ -47,16 +54,14 @@ import { UnaryFunction } from '../types';
  * @return {[Observable<T>, Observable<T>]} An array with two Observables: one
  * with values that passed the predicate, and another with values that did not
  * pass the predicate.
- * @method partition
- * @owner Observable
  */
-/**
- * @deprecated use `partition` static creation function instead
- */
-export function partition<T>(predicate: (value: T, index: number) => boolean,
-                             thisArg?: any): UnaryFunction<Observable<T>, [Observable<T>, Observable<T>]> {
-  return (source: Observable<T>) => [
-    filter(predicate, thisArg)(source),
-    filter(not(predicate, thisArg) as any)(source)
+export function partition<T>(
+  source: ObservableInput<T>,
+  predicate: (value: T, index: number) => boolean,
+  thisArg?: any
+): [Observable<T>, Observable<T>] {
+  return [
+    filter(predicate, thisArg)(new Observable<T>(subscribeTo(source))),
+    filter(not(predicate, thisArg) as any)(new Observable<T>(subscribeTo(source)))
   ] as [Observable<T>, Observable<T>];
 }
