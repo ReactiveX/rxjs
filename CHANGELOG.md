@@ -24,7 +24,7 @@
 ### Features
 
 * **combineLatest:** deprecated rest argument and scheduler signatures ([#4641](https://github.com/reactivex/rxjs/issues/4641)) ([6661c79](https://github.com/reactivex/rxjs/commit/6661c79)), closes [#4640](https://github.com/reactivex/rxjs/issues/4640)
-* **fetch:** We now export a `fromFetch` static observable creation method from `rxjs/fetch`. Mirrors native `fetch` only it's lazy and cancellable via `Observable` interface. ([#4702](https://github.com/reactivex/rxjs/issues/4702)) ([5a1ef86](https://github.com/reactivex/rxjs/commit/5a1ef86))
+* **fromFetch:** We now export a `fromFetch` static observable creation method from `rxjs/fetch`. Mirrors native `fetch` only it's lazy and cancellable via `Observable` interface. ([#4702](https://github.com/reactivex/rxjs/issues/4702)) ([5a1ef86](https://github.com/reactivex/rxjs/commit/5a1ef86))
 * **forkJoin:** accepts a dictionary of sources ([#4640](https://github.com/reactivex/rxjs/issues/4640)) ([b5a2ac9](https://github.com/reactivex/rxjs/commit/b5a2ac9))
 * **partition:** new `partition` observable creation function. Old `partition` operator is deprecated ([#4419](https://github.com/reactivex/rxjs/issues/4419)) ([#4685](https://github.com/reactivex/rxjs/issues/4685)) ([d5d6980](https://github.com/reactivex/rxjs/commit/d5d6980))
 * **scheduled:** Add `scheduled` creation function to use to create scheduled observable of values. Deprecate scheduled versions of `from`, `range`, et al. ([#4595](https://github.com/reactivex/rxjs/issues/4595)) ([f57e1fc](https://github.com/reactivex/rxjs/commit/f57e1fc))
