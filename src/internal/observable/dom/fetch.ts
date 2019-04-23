@@ -23,7 +23,7 @@ import { Observable } from '../../Observable';
  *
  * const data$ = fromFetch('https://api.github.com/users?per_page=5').pipe(
  *  switchMap(response => {
- *    if(responose.ok) {
+ *    if(response.ok) {
  *      // OK return data
  *      return response.json();
  *    } else {
@@ -34,7 +34,7 @@ import { Observable } from '../../Observable';
  *  catchError(err => {
  *    // Network or other error, handle appropriately
  *    console.error(err);
- *    return of({ error: true, message: error.message })
+ *    return of({ error: true, message: err.message })
  *  })
  * );
  *
