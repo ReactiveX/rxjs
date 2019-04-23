@@ -18,6 +18,22 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  *
  * ![](repeatWhen.png)
  *
+ * ## Example
+ * Repeat a message stream on click
+ * ```ts
+ * import { of, fromEvent } from 'rxjs';
+ * import { repeatWhen } from 'rxjs/operators';
+ *
+ * const source = of('Repeat message');
+ * const documentClick$ = fromEvent(document, 'click');
+ *
+ * source.pipe(repeatWhen(() => documentClick$)
+ * ).subscribe(data => console.log(data))
+ * ```
+ * @see {@link repeat}
+ * @see {@link retry}
+ * @see {@link retryWhen}
+ *
  * @param {function(notifications: Observable): Observable} notifier - Receives an Observable of notifications with
  * which a user can `complete` or `error`, aborting the repetition.
  * @return {Observable} The source Observable modified with repeat logic.
