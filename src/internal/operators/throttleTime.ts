@@ -133,6 +133,9 @@ class ThrottleTimeSubscriber<T> extends Subscriber<T> {
       this.add(this.throttled = this.scheduler.schedule<DispatchArg<T>>(dispatchNext, this.duration, { subscriber: this }));
       if (this.leading) {
         this.destination.next(value);
+      } else if (this.trailing) {
+        this._trailingValue = value;
+        this._hasTrailingValue = true;
       }
     }
   }
