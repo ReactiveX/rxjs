@@ -1,3 +1,31 @@
+# [6.5.0](https://github.com/reactivex/rxjs/compare/6.4.0...6.5.0) (2019-04-23)
+
+
+### Bug Fixes
+
+* **docs-app:** remove stopWordFilter from lunr pipeline ([#4536](https://github.com/reactivex/rxjs/issues/4536)) ([9eaebd4](https://github.com/reactivex/rxjs/commit/9eaebd4))
+* **dtslint:** disable tests that break in TS@next ([#4705](https://github.com/reactivex/rxjs/issues/4705)) ([ecc73d2](https://github.com/reactivex/rxjs/commit/ecc73d2))
+* **index:** export NotificationKind ([#4514](https://github.com/reactivex/rxjs/issues/4514)) ([7125355](https://github.com/reactivex/rxjs/commit/7125355)), closes [#4513](https://github.com/reactivex/rxjs/issues/4513)
+* **race:** better typings ([#4643](https://github.com/reactivex/rxjs/issues/4643)) ([fb9bc48](https://github.com/reactivex/rxjs/commit/fb9bc48)), closes [#4390](https://github.com/reactivex/rxjs/issues/4390) [#4642](https://github.com/reactivex/rxjs/issues/4642)
+* **throwIfEmpty:** ensure result is retry-able ([c4f44b9](https://github.com/reactivex/rxjs/commit/c4f44b9))
+* **types:** Fixed signature for onErrorResumeNext ([#4603](https://github.com/reactivex/rxjs/issues/4603)) ([4dd0be0](https://github.com/reactivex/rxjs/commit/4dd0be0))
+
+
+### Features
+
+* **combineLatest:** deprecated rest argument and scheduler signatures ([#4641](https://github.com/reactivex/rxjs/issues/4641)) ([6661c79](https://github.com/reactivex/rxjs/commit/6661c79)), closes [#4640](https://github.com/reactivex/rxjs/issues/4640)
+* **fetch:** We now export a `fromFetch` static observable creation method from `rxjs/fetch`. Mirrors native `fetch` only it's lazy and cancellable via `Observable` interface. ([#4702](https://github.com/reactivex/rxjs/issues/4702)) ([5a1ef86](https://github.com/reactivex/rxjs/commit/5a1ef86))
+* **forkJoin:** accepts a dictionary of sources ([#4640](https://github.com/reactivex/rxjs/issues/4640)) ([b5a2ac9](https://github.com/reactivex/rxjs/commit/b5a2ac9))
+* **partition:** new `partition` observable creation function. Old `partition` operator is deprecated ([#4419](https://github.com/reactivex/rxjs/issues/4419)) ([#4685](https://github.com/reactivex/rxjs/issues/4685)) ([d5d6980](https://github.com/reactivex/rxjs/commit/d5d6980))
+* **scheduled:** Add `scheduled` creation function to use to create scheduled observable of values. Deprecate scheduled versions of `from`, `range`, et al. ([#4595](https://github.com/reactivex/rxjs/issues/4595)) ([f57e1fc](https://github.com/reactivex/rxjs/commit/f57e1fc))
+
+
+### Performance Improvements
+
+* **Subscription:** improve parent management ([#4526](https://github.com/reactivex/rxjs/issues/4526)) ([06f1a25](https://github.com/reactivex/rxjs/commit/06f1a25))
+
+
+
 # [6.4.0](https://github.com/reactivex/rxjs/compare/6.3.3...6.4.0) (2019-01-30)
 
 
