@@ -14,7 +14,7 @@ export function onErrorResumeNext<T, R>(v: ObservableInput<R>): OperatorFunction
 export function onErrorResumeNext<T, T2, T3, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>): OperatorFunction<T, R>;
 export function onErrorResumeNext<T, T2, T3, T4, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): OperatorFunction<T, R>;
 export function onErrorResumeNext<T, T2, T3, T4, T5, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): OperatorFunction<T, R>;
-export function onErrorResumeNext<T, T2, T3, T4, T5, T6, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): OperatorFunction<T, R> ;
+export function onErrorResumeNext<T, T2, T3, T4, T5, T6, R>(v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): OperatorFunction<T, R>;
 export function onErrorResumeNext<T, R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): OperatorFunction<T, R>;
 export function onErrorResumeNext<T, R>(array: ObservableInput<any>[]): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
@@ -89,8 +89,7 @@ export function onErrorResumeNext<T, R>(array: ObservableInput<any>[]): Operator
  */
 
 export function onErrorResumeNext<T, R>(...nextSources: Array<ObservableInput<any> |
-                                                       Array<ObservableInput<any>> |
-                                                       ((...values: Array<any>) => R)>): OperatorFunction<T, R> {
+  Array<ObservableInput<any>>>): OperatorFunction<T, R> {
   if (nextSources.length === 1 && isArray(nextSources[0])) {
     nextSources = <Array<Observable<any>>>nextSources[0];
   }
@@ -110,8 +109,8 @@ export function onErrorResumeNextStatic<R>(array: ObservableInput<any>[]): Obser
 /* tslint:enable:max-line-length */
 
 export function onErrorResumeNextStatic<T, R>(...nextSources: Array<ObservableInput<any> |
-                                                              Array<ObservableInput<any>> |
-                                                              ((...values: Array<any>) => R)>): Observable<R> {
+  Array<ObservableInput<any>> |
+  ((...values: Array<any>) => R)>): Observable<R> {
   let source: ObservableInput<any> = null;
 
   if (nextSources.length === 1 && isArray(nextSources[0])) {
