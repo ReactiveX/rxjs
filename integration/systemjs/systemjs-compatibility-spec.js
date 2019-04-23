@@ -6,6 +6,7 @@ System.config({
   packages: {
     'rxjs': {main: 'index.js', defaultExtension: 'js' },
     'rxjs/ajax': {main: 'index.js', defaultExtension: 'js' },
+    'rxjs/fetch': {main: 'index.js', defaultExtension: 'js' },
     'rxjs/operators': {main: 'index.js', defaultExtension: 'js' },
     'rxjs/testing': {main: 'index.js', defaultExtension: 'js' },
     'rxjs/webSocket': {main: 'index.js', defaultExtension: 'js' }
@@ -15,6 +16,7 @@ System.config({
 Promise.all([
   System.import('rxjs'),
   System.import('rxjs/ajax'),
+  System.import('rxjs/fetch'),
   System.import('rxjs/operators'),
   System.import('rxjs/testing'),
   System.import('rxjs/webSocket'),

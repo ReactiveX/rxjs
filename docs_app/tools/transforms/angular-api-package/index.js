@@ -70,6 +70,7 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
       'index.ts',
       'operators/index.ts',
       'ajax/index.ts',
+      'fetch/index.ts',
       'webSocket/index.ts',
       'testing/index.ts'
     ];
