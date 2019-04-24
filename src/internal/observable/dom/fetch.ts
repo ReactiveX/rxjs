@@ -22,8 +22,9 @@ import { Observable } from '../../Observable';
  * import { switchMap, catchError } from 'rxjs/operators';
  *
  * const data$ = fromFetch('https://api.github.com/users?per_page=5').pipe(
+ *  // Use switchMap because call to `response.json()` returns a promise.
  *  switchMap(response => {
- *    if(responose.ok) {
+ *    if(response.ok) {
  *      // OK return data
  *      return response.json();
  *    } else {
