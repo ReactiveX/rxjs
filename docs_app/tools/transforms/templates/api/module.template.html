@@ -8,7 +8,9 @@
 <section class="export-list">
   <ul>
     {% for export in doc.exports -%}
-    <li><a href="{$ export.path $}">{$ export.name $}</a></li>
+      {% if not export.duplicateOf %}
+        <li><a href="{$ export.path $}">{$ export.name $}</a></li>
+      {% endif %}
     {%- endfor %}
   </ul>
 </section>
