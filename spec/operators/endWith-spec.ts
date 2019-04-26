@@ -20,6 +20,16 @@ describe('endWith operator', () => {
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
+  it('should append numbers to a cold Observable', () => {
+    const values = { a: 1, b: 2, c: 3, s: 4 };
+    const e1 =  cold('---a--b--c--|', values);
+    const e1subs =   '^           !';
+    const expected = '---a--b--c--(s|)';
+
+    expectObservable(e1.pipe(endWith(values.s))).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
   it('should end an observable with given value', () => {
     const e1 =   hot('--a--|');
     const e1subs =   '^    !';
