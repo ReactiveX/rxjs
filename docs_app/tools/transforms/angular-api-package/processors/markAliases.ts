@@ -1,12 +1,12 @@
 import { DocCollection, Document, Processor } from 'dgeni';
 
-export function markAliases(log: any) {
+export function markAliases(log: any): MarkAliases {
   return new MarkAliases(log);
 }
 
 const getOriginalName = (doc: Document): string => doc.aliasSymbol.resolvedSymbol.escapedName;
 
-export class MarkAliases implements Processor {
+class MarkAliases implements Processor {
   $runAfter = ['readTypeScriptModules'];
   $runBefore = ['generateApiListDoc', 'createSitemap'];
 

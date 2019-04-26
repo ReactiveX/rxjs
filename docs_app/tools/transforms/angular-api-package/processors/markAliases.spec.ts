@@ -5,7 +5,7 @@ import * as path from 'path';
 import 'jasmine';
 
 import * as testPackage from '../../helpers/test-package';
-import { MarkAliases } from './markAliases';
+import { markAliases } from './markAliases';
 
 describe('markAliases processor', () => {
   let dgeni: Dgeni;
@@ -49,8 +49,8 @@ describe('markAliases processor', () => {
       ...exportedDocs,
     ];
 
-    const markAliases = new MarkAliases(console);
-    markAliases.$process(docs);
+    const processor = markAliases(console);
+    processor.$process(docs);
 
     const originalDoc = docs.find((doc: Document) => doc.name === 'original-name');
     const duplicateNames = originalDoc.renamedDuplicates.map((doc: Document) => doc.name);
@@ -59,10 +59,10 @@ describe('markAliases processor', () => {
   });
 
   it('should mark aliased exports and remove the aliased doc from a mock file', () => {
-    const markAliases = new MarkAliases(console);
+    const processor = markAliases(console);
     let docs: DocCollection = [];
     readTypescript.$process(docs);
-    markAliases.$process(docs);
+    processor.$process(docs);
 
     const originalDoc = docs.find((doc: Document) => doc.name === 'operator');
     const duplicateNames = originalDoc.renamedDuplicates.map((doc: Document) => doc.name);
@@ -71,10 +71,10 @@ describe('markAliases processor', () => {
   });
 
   it('should leave non duplicate exports unmarked', () => {
-    const markAliases = new MarkAliases(console);
+    const processor = markAliases(console);
     let docs: DocCollection = [];
     readTypescript.$process(docs);
-    markAliases.$process(docs);
+    processor.$process(docs);
 
     const nonDuplicateOperator = docs.find((doc: Document) => doc.name === 'operatorWithoutDuplicate');
     expect(nonDuplicateOperator.renamedDuplicates).toBeUndefined();
