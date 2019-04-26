@@ -70,12 +70,18 @@ class PairwiseSubscriber<T> extends Subscriber<T> {
   }
 
   _next(value: T): void {
+    let pair: [T, T] | undefined;
+
     if (this.hasPrev) {
-      this.destination.next([this.prev, value]);
+      pair = [this.prev, value];
     } else {
       this.hasPrev = true;
     }
 
     this.prev = value;
+
+    if (pair) {
+      this.destination.next(pair);
+    }
   }
 }
