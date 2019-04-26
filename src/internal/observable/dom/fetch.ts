@@ -55,6 +55,7 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
     const controller = new AbortController();
     const signal = controller.signal;
     let outerSignalHandler: () => void;
+    let abortable = true;
     let unsubscribed = false;
 
     if (init) {
@@ -73,9 +74,11 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
     }
 
     fetch(input, init).then(response => {
+      abortable = false;
       subscriber.next(response);
       subscriber.complete();
     }).catch(err => {
+      abortable = false;
       if (!unsubscribed) {
         // Only forward the error if it wasn't an abort.
         subscriber.error(err);
@@ -84,7 +87,9 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
 
     return () => {
       unsubscribed = true;
-      controller.abort();
+      if (abortable) {
+        controller.abort();
+      }
     };
   });
 }
