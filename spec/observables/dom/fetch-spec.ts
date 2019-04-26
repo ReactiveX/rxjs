@@ -115,14 +115,19 @@ describe('fromFetch', () => {
         expect(response).to.equal(OK_RESPONSE);
       },
       error: done,
-      complete: done,
+      complete: () => {
+        // Wait until the complete and the subsequent unsubscribe are finished
+        // before testing these expectations:
+        setTimeout(() => {
+          expect(MockAbortController.created).to.equal(1);
+          expect(mockFetch.calls.length).to.equal(1);
+          expect(mockFetch.calls[0].input).to.equal('/foo');
+          expect(mockFetch.calls[0].init.signal).not.to.be.undefined;
+          expect(mockFetch.calls[0].init.signal.aborted).to.be.false;
+          done();
+        }, 0);
+      }
     });
-
-    expect(MockAbortController.created).to.equal(1);
-    expect(mockFetch.calls.length).to.equal(1);
-    expect(mockFetch.calls[0].input).to.equal('/foo');
-    expect(mockFetch.calls[0].init.signal).not.to.be.undefined;
-    expect(mockFetch.calls[0].init.signal.aborted).to.be.false;
   });
 
   it('should handle Response that is not `ok`', done => {
