@@ -42,6 +42,11 @@ The docs app (rxjs.io) can run as a docker container.
 In order to run the docs app on docker, use the following commands (**run from the rxjs folder**):  
 * `docker build -t rxjs-docs:6.4.1 .` - building the rxjs docs app image
 * `docker run -p <host-port>:4200 rxjs-docs:6.4.1` - starting the container, listening on *<host-port>* for your choice.
+
+The container will run the documentation app with the script `start:docker` with the **stable configuration** and with 0.0.0.0 host support.
+* Saving the image for later offline usage is available by building the container and then using `sudo docker save rxjs-docs:6.4.1 > <tar-name>.tar`
+and loading it afterwards with `sudo docker load < <tar-name>.tar`.
+
 > tested on ubuntu 18.04.2 with Docker 18.09.4
 
 ## Guide to authoring

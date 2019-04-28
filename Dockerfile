@@ -11,4 +11,4 @@ RUN npm run setup
 
 EXPOSE 4200
 
-CMD ["npm", "start"]
+CMD ["npm", "start:docker"]
