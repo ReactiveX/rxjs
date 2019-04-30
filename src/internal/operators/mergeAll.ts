@@ -1,4 +1,3 @@
-
 import { mergeMap } from './mergeMap';
 import { identity } from '../util/identity';
 import { OperatorFunction, ObservableInput } from '../types';

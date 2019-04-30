@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { SubscribableOrPromise, ObservedValueOf, ObservableInput } from '../types';
+import { ObservedValueOf, ObservableInput } from '../types';
 import { from } from './from'; // lol
 import { empty } from './empty';
 

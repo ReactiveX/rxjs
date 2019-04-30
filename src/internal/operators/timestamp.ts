@@ -1,4 +1,3 @@
-
 import { async } from '../scheduler/async';
 import { OperatorFunction, SchedulerLike, Timestamp as TimestampInterface } from '../types';
 import { map } from './map';

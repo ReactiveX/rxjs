@@ -1,4 +1,3 @@
-import { Observable } from '../Observable';
 import { OperatorFunction, ObservedValueOf } from '../../internal/types';
 import { mergeMap } from './mergeMap';
 import { ObservableInput } from '../types';
