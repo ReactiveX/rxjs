@@ -63,5 +63,5 @@ export function endWith<T, Z = T>(...array: Array<Z | SchedulerLike>): OperatorF
  * @owner Observable
  */
 export function endWith<T>(...array: Array<T | SchedulerLike>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => concat(source, of(...(array as any[]))) as Observable<T>;
+  return (source: Observable<T>) => concat(source, of(...array)) as Observable<T>;
 }
