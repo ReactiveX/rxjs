@@ -1,5 +1,6 @@
 import { Observable } from '../Observable';
 import { concat } from '../observable/concat';
+import { of } from '../observable/of';
 import { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction } from '../types';
 
 /* tslint:disable:max-line-length */
@@ -62,5 +63,5 @@ export function endWith<T, Z = T>(...array: Array<Z | SchedulerLike>): OperatorF
  * @owner Observable
  */
 export function endWith<T>(...array: Array<T | SchedulerLike>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => concat(source, ...(array as any[])) as Observable<T>;
+  return (source: Observable<T>) => concat(source, of(...array)) as Observable<T>;
 }
