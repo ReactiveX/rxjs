@@ -147,7 +147,7 @@ export function forkJoin(
       return forkJoinInternal(first, null);
     }
     // TODO(benlesh): isObservable check will not be necessary when deprecated path is removed.
-    if (isObject(first) && !isObservable(first)) {
+    if (isObject(first) && Object.getPrototypeOf(first) === Object.prototype) {
       const keys = Object.keys(first);
       return forkJoinInternal(keys.map(key => first[key]), keys);
     }
