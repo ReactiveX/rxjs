@@ -504,5 +504,18 @@ describe('forkJoin', () => {
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
       expectSubscriptions(e2.subscriptions).toBe(e2subs);
     });
+
+    it('should accept promise as the first arg', done => {
+      const e1 = forkJoin(Promise.resolve(1));
+      const values: number[][] = [];
+
+      e1.subscribe({
+        next: x => values.push(x),
+        complete: () => {
+          expect(values).to.deep.equal([[1]]);
+          done();
+        }
+      });
+    });
   });
 });
