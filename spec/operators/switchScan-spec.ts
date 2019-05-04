@@ -8,14 +8,14 @@ declare function asDiagram(arg: string): Function;
 /** @test {switchScan} */
 describe('switchScan', () => {
   asDiagram('switchScan(i => 10*i\u2014\u201410*i\u2014\u201410*i\u2014|, 0)')
-  ('should map-and-flatten each item to an Observable while passing the seed', () => {
+  ('should map-and-flatten each item to an Observable while passing the accumulated value', () => {
     const e1 =    hot('--1-----3--5-------|');
     const e1subs =    '^                  !';
     const e2 =   cold('x-x-x|              ', {x: 10});
     const expected =  '--x-x-x-y-yz-z-z---|';
     const values = {x: 10, y: 40, z: 90};
 
-    const result = e1.pipe(switchScan((acc: number, x: string) => e2.pipe(map(i => i * Number(x) + acc)), 0));
+    const result = e1.pipe(switchScan((acc, x) => e2.pipe(map(i => i * Number(x) + acc)), 0));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -61,7 +61,7 @@ describe('switchScan', () => {
     const e1subs =   '^                            !        ';
     const expected = '-----------a--b--c----f---g---h---i--|';
 
-    const observableLookup = { x: x, y: y };
+    const observableLookup = { x, y };
 
     const result = e1.pipe(switchScan((acc, value) => observableLookup[value], null));
 

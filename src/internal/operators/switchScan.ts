@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { ObservableInput, OperatorFunction } from '../types';
+import { ObservableInput, ObservedValueOf, OperatorFunction } from '../types';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { switchMap } from './switchMap';
@@ -25,21 +25,21 @@ import { tap } from './tap';
  * @method switchScan
  * @owner Observable
  */
-export function switchScan<T, R>(
-  accumulator: (acc: R, value: T, index: number) => ObservableInput<R>,
+export function switchScan<T, R, O extends ObservableInput<any>>(
+  accumulator: (acc: R, value: T, index: number) => O,
   seed: R
-): OperatorFunction<T, R> {
+): OperatorFunction<T, ObservedValueOf<O>> {
   return (source: Observable<T>) => source.lift(new SwitchScanOperator(accumulator, seed));
 }
 
-class SwitchScanOperator<T, R> implements Operator<T, R> {
-  constructor(private accumulator: (acc: R, value: T, index: number) => ObservableInput<R>, private seed: R) { }
+class SwitchScanOperator<T, R, O extends ObservableInput<any>> implements Operator<T, O> {
+  constructor(private accumulator: (acc: R, value: T, index: number) => ObservableInput<O>, private seed: R) { }
 
-  call(subscriber: Subscriber<R>, source: any): any {
+  call(subscriber: Subscriber<O>, source: any): any {
     let seed: R = this.seed;
 
     return source.pipe(
-      switchMap((value: T, index: number): ObservableInput<R> => this.accumulator(seed, value, index)),
+      switchMap((value: T, index: number) => this.accumulator(seed, value, index)),
       tap((value: R) => seed = value),
     ).subscribe(subscriber);
   }
