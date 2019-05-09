@@ -1,13 +1,7 @@
 import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
-
-/* tslint:disable:max-line-length */
-export function scan<T>(accumulator: (acc: T, value: T, index: number) => T, seed?: T): MonoTypeOperatorFunction<T>;
-export function scan<T>(accumulator: (acc: T[], value: T, index: number) => T[], seed?: T[]): OperatorFunction<T, T[]>;
-export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, seed?: R): OperatorFunction<T, R>;
-/* tslint:enable:max-line-length */
+import { OperatorFunction } from '../types';
 
 /**
  * Applies an accumulator function over the source Observable, and returns each
@@ -52,7 +46,7 @@ export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, 
  * @method scan
  * @owner Observable
  */
-export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, seed?: T | R): OperatorFunction<T, R> {
+export function scan<T, R = T>(accumulator: (acc: R, value: T, index: number) => R, seed?: R): OperatorFunction<T, R> {
   let hasSeed = false;
   // providing a seed of `undefined` *should* be valid and trigger
   // hasSeed! so don't use `seed !== undefined` checks!

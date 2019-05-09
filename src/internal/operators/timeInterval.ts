@@ -54,12 +54,11 @@ import { map } from './map';
 export function timeInterval<T>(scheduler: SchedulerLike = async): OperatorFunction<T, TimeInterval<T>> {
   return (source: Observable<T>) => defer(() => {
     return source.pipe(
-      // TODO(benlesh): correct these typings.
       scan(
         ({ current }, value) => ({ value, current: scheduler.now(), last: current }),
-        { current: scheduler.now(), value: undefined,  last: undefined }
-      ) as any,
-      map<any, TimeInterval<T>>(({ current, last, value }) => new TimeInterval(value, current - last)),
+        { current: scheduler.now(), value: undefined, last: undefined } as { current: number, value?: T, last?: number }
+      ),
+      map(({ current, last, value }) => new TimeInterval(value, current - last)),
     );
   });
 }
