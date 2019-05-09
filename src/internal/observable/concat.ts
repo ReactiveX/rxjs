@@ -84,7 +84,7 @@ export function concat<R>(...observables: (ObservableInput<any> | SchedulerLike)
  * // 0 -1000ms-> 1 -1000ms-> 2 -1000ms-> 3 -immediate-> 1 ... 10
  * ```
  *
- * ### Concatenate an array of 3 Observables
+ * ### Concatenate 3 Observables
  * ```ts
  * import { concat, interval } from 'rxjs';
  * import { take } from 'rxjs/operators';
@@ -92,7 +92,8 @@ export function concat<R>(...observables: (ObservableInput<any> | SchedulerLike)
  * const timer1 = interval(1000).pipe(take(10));
  * const timer2 = interval(2000).pipe(take(6));
  * const timer3 = interval(500).pipe(take(10));
- * const result = concat([timer1, timer2, timer3]); // note that array is passed
+ *
+ * const result = concat(timer1, timer2, timer3);
  * result.subscribe(x => console.log(x));
  *
  * // results in the following:
