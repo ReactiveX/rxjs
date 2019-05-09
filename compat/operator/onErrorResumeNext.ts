@@ -2,13 +2,15 @@ import { Observable, ObservableInput } from 'rxjs';
 import { onErrorResumeNext as higherOrder } from 'rxjs/operators';
 
 /* tslint:disable:max-line-length */
-export function onErrorResumeNext<T, R>(this: Observable<T>, v: ObservableInput<R>): Observable<R>;
-export function onErrorResumeNext<T, T2, T3, R>(this: Observable<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>): Observable<R>;
-export function onErrorResumeNext<T, T2, T3, T4, R>(this: Observable<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): Observable<R>;
-export function onErrorResumeNext<T, T2, T3, T4, T5, R>(this: Observable<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Observable<R>;
-export function onErrorResumeNext<T, T2, T3, T4, T5, T6, R>(this: Observable<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Observable<R> ;
-export function onErrorResumeNext<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R)>): Observable<R>;
-export function onErrorResumeNext<T, R>(this: Observable<T>, array: ObservableInput<any>[]): Observable<R>;
+export function onErrorResumeNext<T>(): Observable<T>;
+export function onErrorResumeNext<T, R = T>(this: Observable<T>, v: ObservableInput<R>): Observable<T | R>;
+export function onErrorResumeNext<T, T2 = T, R = T>(this: Observable<T>, v: ObservableInput<T2>): Observable<T | T2 | R>;
+export function onErrorResumeNext<T, T2 = T, T3 = T, R = T>(this: Observable<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>): Observable<T | T2 | T3 | R>;
+export function onErrorResumeNext<T, T2 = T, T3 = T, T4 = T, R = T>(this: Observable<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): Observable<T | T2 | T3 | T4| R>;
+export function onErrorResumeNext<T, T2 = T, T3 = T, T4 = T, T5 = T, R = T>(this: Observable<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Observable<T | T2 | T3 | T4 | T5 | R>;
+export function onErrorResumeNext<T, T2 = T, T3 = T, T4 = T, T5 = T, T6 = T, R = T>(this: Observable<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Observable<T | T2 | T3 | T4 | T5 | T6 | R> ;
+export function onErrorResumeNext<T, R>(this: Observable<T>, ...observables: Array<ObservableInput<any>>): Observable<T | R>;
+export function onErrorResumeNext<T, R>(this: Observable<T>, array: ObservableInput<any>[]): Observable<T | R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -74,7 +76,6 @@ export function onErrorResumeNext<T, R>(this: Observable<T>, array: ObservableIn
  */
 
 export function onErrorResumeNext<T, R>(this: Observable<T>, ...nextSources: Array<ObservableInput<any> |
-                                                       Array<ObservableInput<any>> |
-                                                       ((...values: Array<any>) => R)>): Observable<R> {
-  return higherOrder(...nextSources)(this);
+                                                       Array<ObservableInput<any>>>): Observable<T | R> {
+  return higherOrder<T, R>(...nextSources)(this);
 }
