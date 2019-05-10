@@ -1,4 +1,4 @@
-This test checks if the side effects for loading Angular packages have changed using <https://github.com/filipesilva/check-side-effects>.
+This test checks if the side effects for loading RxJs packages have changed using <https://github.com/filipesilva/check-side-effects>.
 
 Running `npm test:side-effects` will check all ES modules listed in `side-effects.json`.
 

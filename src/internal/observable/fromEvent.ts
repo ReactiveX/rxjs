@@ -4,7 +4,7 @@ import { isFunction } from '../util/isFunction';
 import { Subscriber } from '../Subscriber';
 import { map } from '../operators/map';
 
-const toString: Function = Object.prototype.toString;
+const toString: Function = (() => Object.prototype.toString)();
 
 export interface NodeStyleEventEmitter {
   addListener: (eventName: string | symbol, handler: NodeEventHandler) => this;

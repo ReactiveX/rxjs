@@ -5,14 +5,18 @@ export interface TimeoutErrorCtor {
   new(): TimeoutError;
 }
 
-function TimeoutErrorImpl(this: any) {
-  Error.call(this);
-  this.message = 'Timeout has occurred';
-  this.name = 'TimeoutError';
-  return this;
-}
+const TimeoutErrorImpl = (() => {
+  function TimeoutErrorImpl(this: any) {
+    Error.call(this);
+    this.message = 'Timeout has occurred';
+    this.name = 'TimeoutError';
+    return this;
+  }
 
-TimeoutErrorImpl.prototype = Object.create(Error.prototype);
+  TimeoutErrorImpl.prototype = Object.create(Error.prototype);
+
+  return TimeoutErrorImpl;
+})();
 
 /**
  * An error thrown when duetime elapses.

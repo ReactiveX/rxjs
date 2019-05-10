@@ -5,14 +5,18 @@ export interface ArgumentOutOfRangeErrorCtor {
   new(): ArgumentOutOfRangeError;
 }
 
-function ArgumentOutOfRangeErrorImpl(this: any) {
-  Error.call(this);
-  this.message = 'argument out of range';
-  this.name = 'ArgumentOutOfRangeError';
-  return this;
-}
+const ArgumentOutOfRangeErrorImpl = (() => {
+  function ArgumentOutOfRangeErrorImpl(this: any) {
+    Error.call(this);
+    this.message = 'argument out of range';
+    this.name = 'ArgumentOutOfRangeError';
+    return this;
+  }
 
-ArgumentOutOfRangeErrorImpl.prototype = Object.create(Error.prototype);
+  ArgumentOutOfRangeErrorImpl.prototype = Object.create(Error.prototype);
+
+  return ArgumentOutOfRangeErrorImpl;
+})();
 
 /**
  * An error thrown when an element was queried at a certain index of an
