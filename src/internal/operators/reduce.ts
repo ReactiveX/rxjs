@@ -6,9 +6,9 @@ import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
 import { pipe } from '../util/pipe';
 
 /* tslint:disable:max-line-length */
+export function reduce<T, R>(accumulator: (acc: R, value: T, index: number) => R, seed: R): OperatorFunction<T, R>;
 export function reduce<T>(accumulator: (acc: T, value: T, index: number) => T, seed?: T): MonoTypeOperatorFunction<T>;
-export function reduce<T>(accumulator: (acc: T[], value: T, index: number) => T[], seed: T[]): OperatorFunction<T, T[]>;
-export function reduce<T, R>(accumulator: (acc: R, value: T, index: number) => R, seed?: R): OperatorFunction<T, R>;
+export function reduce<T, R>(accumulator: (acc: R, value: T, index: number) => R): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -62,20 +62,20 @@ export function reduce<T, R>(accumulator: (acc: R, value: T, index: number) => R
  * @method reduce
  * @owner Observable
  */
-export function reduce<T, R>(accumulator: (acc: R, value: T, index?: number) => R, seed?: R): OperatorFunction<T, R> {
+export function reduce<T, R>(accumulator: (acc: T | R, value: T, index?: number) => T | R, seed?: T | R): OperatorFunction<T, T | R> {
   // providing a seed of `undefined` *should* be valid and trigger
   // hasSeed! so don't use `seed !== undefined` checks!
   // For this reason, we have to check it here at the original call site
   // otherwise inside Operator/Subscriber we won't know if `undefined`
   // means they didn't provide anything or if they literally provided `undefined`
   if (arguments.length >= 2) {
-    return function reduceOperatorFunctionWithSeed(source: Observable<T>): Observable<R> {
+    return function reduceOperatorFunctionWithSeed(source: Observable<T>): Observable<T | R> {
       return pipe(scan(accumulator, seed), takeLast(1), defaultIfEmpty(seed))(source);
     };
   }
-  return function reduceOperatorFunction(source: Observable<T>): Observable<R> {
+  return function reduceOperatorFunction(source: Observable<T>): Observable<T | R> {
     return pipe(
-      scan((acc: R, value: T, index: number): R => accumulator(acc, value, index + 1)),
+      scan<T, T | R>((acc, value, index) => accumulator(acc, value, index + 1)),
       takeLast(1),
     )(source);
   };
