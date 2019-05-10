@@ -1,8 +1,9 @@
 import { isArray } from './util/isArray';
 import { isObject } from './util/isObject';
 import { isFunction } from './util/isFunction';
-import { UnsubscriptionError } from './util/UnsubscriptionError';
+import { UnsubscriptionError, createTeardownError } from './util/UnsubscriptionError';
 import { SubscriptionLike, TeardownLogic } from './types';
+import { isTeardownError } from 'rxjs/internal/util/errors';
 
 /**
  * Represents a disposable resource, such as the execution of an Observable. A
@@ -78,7 +79,7 @@ export class Subscription implements SubscriptionLike {
       try {
         _unsubscribe.call(this);
       } catch (e) {
-        errors = e instanceof UnsubscriptionError ? flattenUnsubscriptionErrors(e.errors) : [e];
+        errors = isTeardownError(e) ? flattenUnsubscriptionErrors(e.errors) : [e];
       }
     }
 
@@ -93,7 +94,7 @@ export class Subscription implements SubscriptionLike {
             sub.unsubscribe();
           } catch (e) {
             errors = errors || [];
-            if (e instanceof UnsubscriptionError) {
+            if (isTeardownError(e)) {
               errors = errors.concat(flattenUnsubscriptionErrors(e.errors));
             } else {
               errors.push(e);
@@ -104,7 +105,7 @@ export class Subscription implements SubscriptionLike {
     }
 
     if (errors) {
-      throw new UnsubscriptionError(errors);
+      throw createTeardownError(errors);
     }
   }
 
@@ -207,5 +208,5 @@ export class Subscription implements SubscriptionLike {
 }
 
 function flattenUnsubscriptionErrors(errors: any[]) {
- return errors.reduce((errs, err) => errs.concat((err instanceof UnsubscriptionError) ? err.errors : err), []);
+ return errors.reduce((errs, err) => errs.concat((isTeardownError(err)) ? err.errors : err), []);
 }

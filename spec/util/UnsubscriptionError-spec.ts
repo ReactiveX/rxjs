@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { UnsubscriptionError, Observable, timer, merge } from 'rxjs';
+import { UnsubscriptionError, Observable, timer, merge, isTeardownError } from 'rxjs';
 
 /** @test {UnsubscriptionError} */
 describe('UnsubscriptionError', () => {
@@ -16,7 +16,7 @@ describe('UnsubscriptionError', () => {
     try {
       subscription.unsubscribe();
     } catch (err) {
-      expect(err instanceof UnsubscriptionError).to.equal(true);
+      expect(isTeardownError(err)).to.equal(true);
       expect(err.errors).to.deep.equal([err1, err2]);
       expect(err.name).to.equal('UnsubscriptionError');
     }

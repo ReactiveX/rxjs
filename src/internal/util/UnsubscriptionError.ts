@@ -1,3 +1,5 @@
+import { RxErrorCode } from 'rxjs/internal/util/errors';
+
 export interface UnsubscriptionError extends Error {
   readonly errors: any[];
 }
@@ -29,3 +31,9 @@ UnsubscriptionErrorImpl.prototype = Object.create(Error.prototype);
  * @deprecated (gone in v8) for `instanceof` checks, instead use {@link isTeardownError}
  */
 export const UnsubscriptionError: UnsubscriptionErrorCtor = UnsubscriptionErrorImpl as any;
+
+export function createTeardownError(errors: any[]) {
+  const error: any = new UnsubscriptionError(errors);
+  error.__rxjsErrorCode = RxErrorCode.TeardownError;
+  return error;
+}
