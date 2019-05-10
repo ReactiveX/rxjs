@@ -1,9 +1,5 @@
 import { Observable } from '../Observable';
-<<<<<<< HEAD
-import { EmptyError } from '../util/EmptyError';
-=======
 import { createEmptyError } from '../util/EmptyError';
->>>>>>> refactor(EmptyError): is deprecated
 import { OperatorFunction } from '../../internal/types';
 import { filter } from './filter';
 import { takeLast } from './takeLast';

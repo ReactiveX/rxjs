@@ -30,5 +30,5 @@ TimeoutErrorImpl.prototype = Object.create(Error.prototype);
 export const TimeoutError: TimeoutErrorCtor = TimeoutErrorImpl as any;
 
 export function createTimeoutError() {
-  return createRxError('observable timed out', RxErrorCode.TimeoutError, TimeoutError);
+  return createRxError('observable timed out', RxErrorCode.Timeout, TimeoutError);
 }

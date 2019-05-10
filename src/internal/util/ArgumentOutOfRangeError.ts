@@ -33,5 +33,5 @@ ArgumentOutOfRangeErrorImpl.prototype = Object.create(Error.prototype);
 export const ArgumentOutOfRangeError: ArgumentOutOfRangeErrorCtor = ArgumentOutOfRangeErrorImpl as any;
 
 export function createOutOfRangeError() {
-  return createRxError('out of range', RxErrorCode.OutOfRangeError, ArgumentOutOfRangeError);
+  return createRxError('out of range', RxErrorCode.OutOfRange, ArgumentOutOfRangeError);
 }

@@ -34,6 +34,6 @@ export const UnsubscriptionError: UnsubscriptionErrorCtor = UnsubscriptionErrorI
 
 export function createTeardownError(errors: any[]) {
   const error: any = new UnsubscriptionError(errors);
-  error.__rxjsErrorCode = RxErrorCode.TeardownError;
+  error.__rxjsErrorCode = RxErrorCode.Teardown;
   return error;
 }

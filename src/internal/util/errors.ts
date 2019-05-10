@@ -1,12 +1,18 @@
 
+/**
+ * Used to identify different types of RxJS errors.
+ */
 export const enum RxErrorCode {
   Empty = 0,
-  OutOfRangeError = 1,
-  ObjectUnsubscribedError = 2,
-  TimeoutError = 3,
-  TeardownError = 4,
+  OutOfRange = 1,
+  ObjectUnsubscribed = 2,
+  Timeout = 3,
+  Teardown = 4,
 }
 
+/**
+ * Creates an error and decorates it with the appropriate error code for identification later.
+ */
 export function createRxError(message: string, code: RxErrorCode, ErrorType: any = Error) {
   const result = new ErrorType('RxJS: ' + message);
   (result as any).__rxjsErrorCode = code;
@@ -33,7 +39,7 @@ export function isEmptyError(err: any) {
  * was out of range.
  */
 export function isOutOfRangeError(err: any) {
-  return err.__rxjsErrorCode === RxErrorCode.OutOfRangeError;
+  return err.__rxjsErrorCode === RxErrorCode.OutOfRange;
 }
 
 /**
@@ -41,7 +47,7 @@ export function isOutOfRangeError(err: any) {
  * was unsubscribed, and an action was taken on it.
  */
 export function isObjectUnsubscribedError(err: any) {
-  return err.__rxjsErrorCode === RxErrorCode.ObjectUnsubscribedError;
+  return err.__rxjsErrorCode === RxErrorCode.ObjectUnsubscribed;
 }
 
 /**
@@ -49,7 +55,7 @@ export function isObjectUnsubscribedError(err: any) {
  * times out, for example with the {@link timeout} operator.
  */
 export function isTimeoutError(err: any) {
-  return err.__rxjsErrorCode === RxErrorCode.TimeoutError;
+  return err.__rxjsErrorCode === RxErrorCode.Timeout;
 }
 
 /**
@@ -58,5 +64,5 @@ export function isTimeoutError(err: any) {
  * chain.
  */
 export function isTeardownError(err: any) {
-  return err.__rxjsErrorCode === RxErrorCode.TeardownError;
+  return err.__rxjsErrorCode === RxErrorCode.Teardown;
 }

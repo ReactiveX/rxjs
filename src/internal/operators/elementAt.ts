@@ -1,14 +1,10 @@
-<<<<<<< HEAD
-import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
-=======
 import { createOutOfRangeError } from '../util/ArgumentOutOfRangeError';
->>>>>>> refactor(ArgumentOutOfRangeError): is now deprecated
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction } from '../types';
 import { filter } from './filter';
 import { throwIfEmpty } from './throwIfEmpty';
 import { defaultIfEmpty } from './defaultIfEmpty';
-import { take } from './take';
+import { take } from './take';s
 
 /**
  * Emits the single value at the specified `index` in a sequence of emissions

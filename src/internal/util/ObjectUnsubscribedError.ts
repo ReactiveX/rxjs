@@ -32,5 +32,5 @@ ObjectUnsubscribedErrorImpl.prototype = Object.create(Error.prototype);
 export const ObjectUnsubscribedError: ObjectUnsubscribedErrorCtor = ObjectUnsubscribedErrorImpl as any;
 
 export function createObjectUnsubscribedError() {
-  return createRxError('object unsubscribed', RxErrorCode.ObjectUnsubscribedError, ObjectUnsubscribedError);
+  return createRxError('object unsubscribed', RxErrorCode.ObjectUnsubscribed, ObjectUnsubscribedError);
 }
