@@ -38,6 +38,7 @@ export { EmptyError } from './internal/util/EmptyError';
 export { ObjectUnsubscribedError } from './internal/util/ObjectUnsubscribedError';
 export { UnsubscriptionError } from './internal/util/UnsubscriptionError';
 export { TimeoutError } from './internal/util/TimeoutError';
+export { isRxError, isEmptyError, isObjectUnsubscribedError, isOutOfRangeError, isTeardownError, isTimeoutError } from './internal/util/errors';
 
 /* Static observable creation exports */
 export { bindCallback } from './internal/observable/bindCallback';

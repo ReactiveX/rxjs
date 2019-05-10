@@ -46,6 +46,12 @@ describe('index', () => {
     expect(index.ObjectUnsubscribedError).to.exist;
     expect(index.UnsubscriptionError).to.exist;
     expect(index.TimeoutError).to.exist;
+
+    expect(index.isOutOfRangeError).to.exist;
+    expect(index.isEmptyError).to.exist;
+    expect(index.isObjectUnsubscribedError).to.exist;
+    expect(index.isTeardownError).to.exist;
+    expect(index.isTimeoutError).to.exist;
   });
 
   it('should export constants', () => {
