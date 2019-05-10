@@ -4,7 +4,7 @@ import { queue } from './scheduler/queue';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
 import { ObserveOnSubscriber } from './operators/observeOn';
-import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
+import { createObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 import { SubjectSubscription } from './SubjectSubscription';
 /**
  * A variant of Subject that "replays" or emits old values to new subscribers.
@@ -63,7 +63,7 @@ export class ReplaySubject<T> extends Subject<T> {
     let subscription: Subscription;
 
     if (this.closed) {
-      throw new ObjectUnsubscribedError();
+      throw createObjectUnsubscribedError();
     } else if (this.isStopped || this.hasError) {
       subscription = Subscription.EMPTY;
     } else {

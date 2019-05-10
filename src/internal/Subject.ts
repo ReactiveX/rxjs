@@ -3,7 +3,7 @@ import { Observable } from './Observable';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
 import { Observer, SubscriptionLike, TeardownLogic } from './types';
-import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
+import { createObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 import { SubjectSubscription } from './SubjectSubscription';
 import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscriber';
 
@@ -60,7 +60,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   next(value?: T) {
     if (this.closed) {
-      throw new ObjectUnsubscribedError();
+      throw createObjectUnsubscribedError();
     }
     if (!this.isStopped) {
       const { observers } = this;
@@ -74,7 +74,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   error(err: any) {
     if (this.closed) {
-      throw new ObjectUnsubscribedError();
+      throw createObjectUnsubscribedError();
     }
     this.hasError = true;
     this.thrownError = err;
@@ -90,7 +90,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
   complete() {
     if (this.closed) {
-      throw new ObjectUnsubscribedError();
+      throw createObjectUnsubscribedError();
     }
     this.isStopped = true;
     const { observers } = this;
@@ -111,7 +111,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   /** @deprecated This is an internal implementation detail, do not use. */
   _trySubscribe(subscriber: Subscriber<T>): TeardownLogic {
     if (this.closed) {
-      throw new ObjectUnsubscribedError();
+      throw createObjectUnsubscribedError();
     } else {
       return super._trySubscribe(subscriber);
     }
@@ -120,7 +120,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   /** @deprecated This is an internal implementation detail, do not use. */
   _subscribe(subscriber: Subscriber<T>): Subscription {
     if (this.closed) {
-      throw new ObjectUnsubscribedError();
+      throw createObjectUnsubscribedError();
     } else if (this.hasError) {
       subscriber.error(this.thrownError);
       return Subscription.EMPTY;

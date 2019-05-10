@@ -2,7 +2,7 @@ import { Subject } from './Subject';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
 import { SubscriptionLike } from './types';
-import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
+import { createObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 
 /**
  * A variant of Subject that requires an initial value and emits its current
@@ -33,7 +33,7 @@ export class BehaviorSubject<T> extends Subject<T> {
     if (this.hasError) {
       throw this.thrownError;
     } else if (this.closed) {
-      throw new ObjectUnsubscribedError();
+      throw createObjectUnsubscribedError();
     } else {
       return this._value;
     }

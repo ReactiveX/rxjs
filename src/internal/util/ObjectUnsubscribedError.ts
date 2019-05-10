@@ -1,3 +1,5 @@
+import { createRxError, RxErrorCode } from 'rxjs/internal/util/errors';
+
 export interface ObjectUnsubscribedError extends Error {
 }
 
@@ -28,3 +30,7 @@ ObjectUnsubscribedErrorImpl.prototype = Object.create(Error.prototype);
  * @deprecated (gone in v8) for `instanceof` checks, instead use {@link isOutOfRangeError}
  */
 export const ObjectUnsubscribedError: ObjectUnsubscribedErrorCtor = ObjectUnsubscribedErrorImpl as any;
+
+export function createObjectUnsubscribedError() {
+  return createRxError('object unsubscribed', RxErrorCode.ObjectUnsubscribedError, ObjectUnsubscribedError);
+}
