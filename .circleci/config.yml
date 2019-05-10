@@ -1,0 +1,55 @@
+var_1: &default_docker_image circleci/node:10.12
+
+version: 2
+jobs:
+  build:
+    docker:
+      - image: *default_docker_image
+    steps:
+      - checkout
+      - run: |
+        rm -rf node_modules/
+        npm i -g npm
+        npm i
+        npm run build_all
+  lint:
+    docker:
+      - image: *default_docker_image
+    steps:
+      - run: npm run lint
+  test:
+    docker:
+      - image: *default_docker_image
+    steps:
+      - run: npm test
+  dtslint:
+    docker:
+      - image: *default_docker_image
+    steps:
+      - run: npm run dtslint
+  typescript3:
+    docker:
+      - image: *default_docker_image
+    steps:
+      - run: |
+        npm i --no-save typescript@3.*
+        npm run build_cjs
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - lint:
+        requires:
+          - build
+      - test:
+        requires:
+          - build
+      - dtslint:
+        requires:
+          - build
+      - typescript3:
+        requires:
+          - lint
+          - test
+          - dtslint
