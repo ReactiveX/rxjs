@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { EmptyError } from 'rxjs/util/EmptyError';
+import { createEmptyError } from 'rxjs/internal/util/EmptyError';
 
 /** @test {EmptyError} */
 describe('EmptyError', () => {
@@ -7,6 +8,13 @@ describe('EmptyError', () => {
   it('Should have a name', () => {
     expect(error.name).to.be.equal('EmptyError');
   });
+  it('Should have a message', () => {
+    expect(error.message).to.be.equal('no elements in sequence');
+  });
+});
+
+describe('createEmptyError', () => {
+  const error = createEmptyError();
   it('Should have a message', () => {
     expect(error.message).to.be.equal('no elements in sequence');
   });

@@ -1,7 +1,7 @@
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { EmptyError } from '../util/EmptyError';
+import { EmptyError, createEmptyError } from '../util/EmptyError';
 
 import { Observer, MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
@@ -42,14 +42,12 @@ import { Observer, MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @see {@link findIndex}
  * @see {@link elementAt}
  *
- * @throws {EmptyError} Delivers an EmptyError to the Observer's `error`
+ * @throws {Error} Delivers an EmptyError to the Observer's `error`
  * callback if the Observable completes before any `next` notification was sent.
+ * To test for this, use {@link isEmptyError}.
  * @param {Function} predicate - A predicate function to evaluate items emitted by the source Observable.
  * @return {Observable<T>} An Observable that emits the single item emitted by the source Observable that matches
  * the predicate or `undefined` when no items match.
- *
- * @method single
- * @owner Observable
  */
 export function single<T>(predicate?: (value: T, index: number, source: Observable<T>) => boolean): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new SingleOperator(predicate, source));
@@ -117,7 +115,7 @@ class SingleSubscriber<T> extends Subscriber<T> {
       destination.next(this.seenValue ? this.singleValue : undefined);
       destination.complete();
     } else {
-      destination.error(new EmptyError);
+      destination.error(createEmptyError());
     }
   }
 }

@@ -1,4 +1,4 @@
-import { EmptyError } from '../util/EmptyError';
+import { EmptyError, createEmptyError } from '../util/EmptyError';
 import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
@@ -34,7 +34,7 @@ import { TeardownLogic, MonoTypeOperatorFunction } from '../types';
  * error to be thrown when the source observable completes without emitting a
  * value.
  */
-export function throwIfEmpty <T>(errorFactory: (() => any) = defaultErrorFactory): MonoTypeOperatorFunction<T> {
+export function throwIfEmpty <T>(errorFactory: (() => any) = createEmptyError): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => {
     return source.lift(new ThrowIfEmptyOperator(errorFactory));
   };
@@ -74,8 +74,4 @@ class ThrowIfEmptySubscriber<T> extends Subscriber<T> {
         return this.destination.complete();
     }
   }
-}
-
-function defaultErrorFactory() {
-  return new EmptyError();
 }

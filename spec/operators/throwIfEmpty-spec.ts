@@ -1,7 +1,8 @@
 import { expect } from 'chai';
-import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { EMPTY, of, EmptyError, defer, throwError } from 'rxjs';
 import { throwIfEmpty, mergeMap, retry } from 'rxjs/operators';
+import { createEmptyError } from 'rxjs/internal/util/EmptyError';
 
 declare function asDiagram(arg: string): Function;
 
@@ -169,7 +170,7 @@ describe('throwIfEmpty', () => {
       const expected =    '----#';
       expectObservable(
         source.pipe(throwIfEmpty())
-      ).toBe(expected, undefined, new EmptyError());
+      ).toBe(expected, undefined, createEmptyError());
       expectSubscriptions(source.subscriptions).toBe([sub1]);
     });
 

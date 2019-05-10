@@ -1,3 +1,5 @@
+import { createRxError, RxErrorCode } from 'rxjs/internal/util/errors';
+
 export interface EmptyError extends Error {
 }
 
@@ -29,3 +31,7 @@ EmptyErrorImpl.prototype = Object.create(Error.prototype);
  * @deprecated (gone in v8) for `instanceof` checks, instead use {@link isEmptyError}
  */
 export const EmptyError: EmptyErrorCtor = EmptyErrorImpl as any;
+
+export function createEmptyError() {
+  return createRxError('no elements in sequence', RxErrorCode.Empty, EmptyError);
+}

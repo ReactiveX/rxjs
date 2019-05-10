@@ -1,5 +1,9 @@
 import { Observable } from '../Observable';
+<<<<<<< HEAD
 import { EmptyError } from '../util/EmptyError';
+=======
+import { createEmptyError } from '../util/EmptyError';
+>>>>>>> refactor(EmptyError): is deprecated
 import { OperatorFunction } from '../../internal/types';
 import { filter } from './filter';
 import { takeLast } from './takeLast';
@@ -38,6 +42,7 @@ export function last<T, D = T>(
  * @return {Observable} An Observable that emits only the last item satisfying the given condition
  * from the source, or an NoSuchElementException if no such items are emitted.
  * @throws - Throws if no items that match the predicate are emitted by the source Observable.
+ * You can check for this with {@link isEmptyError}.
  */
 export function last<T, D>(
   predicate?: ((value: T, index: number, source: Observable<T>) => boolean) | null,
@@ -47,6 +52,6 @@ export function last<T, D>(
   return (source: Observable<T>) => source.pipe(
     predicate ? filter((v, i) => predicate(v, i, source)) : identity,
     takeLast(1),
-    hasDefaultValue ? defaultIfEmpty<T | D>(defaultValue) : throwIfEmpty(() => new EmptyError()),
+    hasDefaultValue ? defaultIfEmpty<T | D>(defaultValue) : throwIfEmpty(createEmptyError),
   );
 }

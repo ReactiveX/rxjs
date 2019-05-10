@@ -2,7 +2,8 @@ import { expect } from 'chai';
 import { hot, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { first, mergeMap, delay } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { of, from, Observable, Subject, EmptyError } from 'rxjs';
+import { of, from, Observable, Subject } from 'rxjs';
+import { createEmptyError } from 'rxjs/internal/util/EmptyError';
 
 declare function asDiagram(arg: string): Function;
 
@@ -33,7 +34,7 @@ describe('Observable.prototype.first', () => {
     const expected =    '-----#';
     const sub =         '^    !';
 
-    expectObservable(e1.pipe(first())).toBe(expected, null, new EmptyError());
+    expectObservable(e1.pipe(first())).toBe(expected, null, createEmptyError());
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 
@@ -141,7 +142,7 @@ describe('Observable.prototype.first', () => {
     const expected =   '---------------#';
     const sub =        '^              !';
 
-    expectObservable(e1.pipe(first(x => x === 's'))).toBe(expected, null, new EmptyError());
+    expectObservable(e1.pipe(first(x => x === 's'))).toBe(expected, null, createEmptyError());
     expectSubscriptions(e1.subscriptions).toBe(sub);
   });
 

@@ -1,7 +1,8 @@
 import { expect } from 'chai';
 import { hot, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { single, mergeMap, tap } from 'rxjs/operators';
-import { of, EmptyError } from 'rxjs';
+import { of } from 'rxjs';
+import { createEmptyError } from 'rxjs/internal/util/EmptyError';
 
 declare function asDiagram(arg: string): Function;
 
@@ -22,7 +23,7 @@ describe('single operator', () => {
     const e1subs =      '^  !';
     const expected =    '---#';
 
-    expectObservable(e1.pipe(single())).toBe(expected, null, new EmptyError());
+    expectObservable(e1.pipe(single())).toBe(expected, null, createEmptyError());
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -134,7 +135,7 @@ describe('single operator', () => {
       return value === 'a';
     };
 
-    expectObservable(e1.pipe(single(predicate))).toBe(expected, null, new EmptyError());
+    expectObservable(e1.pipe(single(predicate))).toBe(expected, null, createEmptyError());
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
