@@ -8,6 +8,6 @@ describe('ArgumentOutOfRangeError', () => {
     expect(error.name).to.be.equal('ArgumentOutOfRangeError');
   });
   it('Should have a message', () => {
-    expect(error.message).to.be.equal('argument out of range');
+    expect(error.message).to.be.equal('out of range');
   });
 });

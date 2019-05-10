@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
+=======
+import { createOutOfRangeError } from '../util/ArgumentOutOfRangeError';
+>>>>>>> refactor(ArgumentOutOfRangeError): is now deprecated
 import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction } from '../types';
 import { filter } from './filter';
 import { throwIfEmpty } from './throwIfEmpty';
 import { defaultIfEmpty } from './defaultIfEmpty';
@@ -42,9 +46,10 @@ import { take } from './take';
  * @see {@link single}
  * @see {@link take}
  *
- * @throws {ArgumentOutOfRangeError} When using `elementAt(i)`, it delivers an
+ * @throws {Error} When using `elementAt(i)`, it delivers an
  * ArgumentOutOrRangeError to the Observer's `error` callback if `i < 0` or the
  * Observable has completed before emitting the i-th `next` notification.
+ * If you need to test for this, use {@link isOutOfRangeError}.
  *
  * @param {number} index Is the number `i` for the i-th source emission that has
  * happened since the subscription, starting from the number `0`.
@@ -55,13 +60,13 @@ import { take } from './take';
  * @owner Observable
  */
 export function elementAt<T>(index: number, defaultValue?: T): MonoTypeOperatorFunction<T> {
-  if (index < 0) { throw new ArgumentOutOfRangeError(); }
+  if (index < 0) { throw createOutOfRangeError(); }
   const hasDefaultValue = arguments.length >= 2;
   return (source: Observable<T>) => source.pipe(
     filter((v, i) => i === index),
     take(1),
     hasDefaultValue
       ? defaultIfEmpty(defaultValue)
-      : throwIfEmpty(() => new ArgumentOutOfRangeError()),
+      : throwIfEmpty(() => createOutOfRangeError()),
   );
 }

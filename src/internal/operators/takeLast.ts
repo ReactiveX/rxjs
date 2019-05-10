@@ -1,6 +1,6 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
+import { createOutOfRangeError } from '../util/ArgumentOutOfRangeError';
 import { empty } from '../observable/empty';
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
@@ -37,8 +37,9 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @see {@link takeWhile}
  * @see {@link skip}
  *
- * @throws {ArgumentOutOfRangeError} When using `takeLast(i)`, it delivers an
+ * @throws {Error} When using `takeLast(i)`, it delivers an
  * ArgumentOutOrRangeError to the Observer's `error` callback if `i < 0`.
+ * If you need to test for this, use {@link isOutOfRangeError}.
  *
  * @param {number} count The maximum number of values to emit from the end of
  * the sequence of values emitted by the source Observable.
@@ -60,7 +61,7 @@ export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
 class TakeLastOperator<T> implements Operator<T, T> {
   constructor(private total: number) {
     if (this.total < 0) {
-      throw new ArgumentOutOfRangeError;
+      throw createOutOfRangeError();
     }
   }
 

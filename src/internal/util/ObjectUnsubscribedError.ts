@@ -18,9 +18,13 @@ ObjectUnsubscribedErrorImpl.prototype = Object.create(Error.prototype);
  * An error thrown when an action is invalid because the object has been
  * unsubscribed.
  *
+ * NOT INTENDED TO BE CREATED BY CONSUMING CODE.
+ *
  * @see {@link Subject}
  * @see {@link BehaviorSubject}
  *
  * @class ObjectUnsubscribedError
+ *
+ * @deprecated (gone in v8) for `instanceof` checks, instead use {@link isOutOfRangeError}
  */
 export const ObjectUnsubscribedError: ObjectUnsubscribedErrorCtor = ObjectUnsubscribedErrorImpl as any;

@@ -1,8 +1,8 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
-import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { createOutOfRangeError } from 'rxjs/internal/util/ArgumentOutOfRangeError';
 
 /**
  * Skip the last `count` values emitted by the source Observable.
@@ -33,8 +33,9 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @see {@link skipWhile}
  * @see {@link take}
  *
- * @throws {ArgumentOutOfRangeError} When using `skipLast(i)`, it throws
- * ArgumentOutOrRangeError if `i < 0`.
+ * @throws {Error} When using `skipLast(i)`, it throws
+ * ArgumentOutOrRangeError if `i < 0`. If you need to test for this, use
+ * {@link isOutOfRangeError}.
  *
  * @param {number} count Number of elements to skip from the end of the source Observable.
  * @returns {Observable<T>} An Observable that skips the last count values
@@ -49,7 +50,7 @@ export function skipLast<T>(count: number): MonoTypeOperatorFunction<T> {
 class SkipLastOperator<T> implements Operator<T, T> {
   constructor(private _skipCount: number) {
     if (this._skipCount < 0) {
-      throw new ArgumentOutOfRangeError;
+      throw createOutOfRangeError();
     }
   }
 

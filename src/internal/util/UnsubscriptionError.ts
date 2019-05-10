@@ -21,5 +21,11 @@ UnsubscriptionErrorImpl.prototype = Object.create(Error.prototype);
 /**
  * An error thrown when one or more errors have occurred during the
  * `unsubscribe` of a {@link Subscription}.
+ *
+ * NOT INTENDED TO BE CREATED BY CONSUMING CODE.
+ *
+ * @class UnsubscriptionError
+ *
+ * @deprecated (gone in v8) for `instanceof` checks, instead use {@link isTeardownError}
  */
 export const UnsubscriptionError: UnsubscriptionErrorCtor = UnsubscriptionErrorImpl as any;

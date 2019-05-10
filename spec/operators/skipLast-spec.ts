@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { skipLast, mergeMap } from 'rxjs/operators';
-import { range, ArgumentOutOfRangeError, of } from 'rxjs';
+import { range, of, isOutOfRangeError } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 
@@ -135,8 +135,13 @@ describe('skipLast operator', () => {
   });
 
   it('should throw if total is less than zero', () => {
-    expect(() => { range(0, 10).pipe(skipLast(-1)); })
-      .to.throw(ArgumentOutOfRangeError);
+    try {
+      range(0, 10).pipe(skipLast(-1));
+    } catch (err) {
+      expect(isOutOfRangeError(err)).to.be.true;
+      return;
+    }
+    throw new Error('should not make it this far');
   });
 
   it('should not break unsubscription chain when unsubscribed explicitly', () => {

@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { takeLast, mergeMap } from 'rxjs/operators';
-import { range, ArgumentOutOfRangeError, of } from 'rxjs';
+import { range, of, isOutOfRangeError } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 
@@ -142,8 +142,13 @@ describe('takeLast operator', () => {
   });
 
   it('should throw if total is less than zero', () => {
-    expect(() => { range(0, 10).pipe(takeLast(-1)); })
-      .to.throw(ArgumentOutOfRangeError);
+    try {
+      range(0, 10).pipe(takeLast(-1));
+    } catch (err) {
+      expect(isOutOfRangeError(err)).to.be.true;
+      return;
+    }
+    throw new Error('should not reach this point');
   });
 
   it('should not break unsubscription chain when unsubscribed explicitly', () => {

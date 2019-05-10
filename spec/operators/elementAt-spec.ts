@@ -1,7 +1,8 @@
 import { expect } from 'chai';
 import { elementAt, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { ArgumentOutOfRangeError, of, range } from 'rxjs';
+import { ArgumentOutOfRangeError, of, range, isOutOfRangeError } from 'rxjs';
+import { createOutOfRangeError } from 'rxjs/internal/util/ArgumentOutOfRangeError';
 
 declare function asDiagram(arg: string): Function;
 
@@ -12,7 +13,7 @@ describe('elementAt operator', () => {
     const subs =       '^       !      ';
     const expected =   '--------(c|)   ';
 
-    expectObservable((<any>source).pipe(elementAt(2))).toBe(expected);
+    expectObservable(source.pipe(elementAt(2))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -21,7 +22,7 @@ describe('elementAt operator', () => {
     const subs =       '^ !';
     const expected =   '--(a|)';
 
-    expectObservable((<any>source).pipe(elementAt(0))).toBe(expected);
+    expectObservable(source.pipe(elementAt(0))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -30,7 +31,7 @@ describe('elementAt operator', () => {
     const subs =       '^          !';
     const expected =   '-----------(d|)';
 
-    expectObservable((<any>source).pipe(elementAt(3))).toBe(expected);
+    expectObservable(source.pipe(elementAt(3))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -39,7 +40,7 @@ describe('elementAt operator', () => {
     const subs =       '^       !';
     const expected =   '--------(c|)';
 
-    expectObservable((<any>source).pipe(elementAt(2))).toBe(expected);
+    expectObservable(source.pipe(elementAt(2))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -48,7 +49,7 @@ describe('elementAt operator', () => {
     const subs =        '(^!)';
     const expected =    '#';
 
-    expectObservable((<any>source).pipe(elementAt(0))).toBe(expected, undefined, new ArgumentOutOfRangeError());
+    expectObservable(source.pipe(elementAt(0))).toBe(expected, undefined, new ArgumentOutOfRangeError());
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -57,7 +58,7 @@ describe('elementAt operator', () => {
     const subs =        '(^!)';
     const expected =    '#';
 
-    expectObservable((<any>source).pipe(elementAt(0))).toBe(expected);
+    expectObservable(source.pipe(elementAt(0))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -66,7 +67,7 @@ describe('elementAt operator', () => {
     const subs =        '^';
     const expected =    '-';
 
-    expectObservable((<any>source).pipe(elementAt(0))).toBe(expected);
+    expectObservable(source.pipe(elementAt(0))).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -76,7 +77,7 @@ describe('elementAt operator', () => {
     const expected =   '-------     ';
     const unsub =      '      !     ';
 
-    const result = (<any>source).pipe(elementAt(2));
+    const result = source.pipe(elementAt(2));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(source.subscriptions).toBe(subs);
@@ -88,7 +89,7 @@ describe('elementAt operator', () => {
     const expected =   '-------     ';
     const unsub =      '      !     ';
 
-    const result = (<any>source).pipe(
+    const result = source.pipe(
       mergeMap((x: any) => of(x)),
       elementAt(2),
       mergeMap((x: any) => of(x))
@@ -108,9 +109,20 @@ describe('elementAt operator', () => {
     const subs =       '^    !';
     const expected =   '-----#';
 
-    expectObservable((<any>source).pipe(elementAt(3)))
-      .toBe(expected, null, new ArgumentOutOfRangeError());
+    expectObservable(source.pipe(elementAt(3)))
+      .toBe(expected, null, createOutOfRangeError());
     expectSubscriptions(source.subscriptions).toBe(subs);
+  });
+
+  it('should raise an out of range error if the index if out of range and there is no default value', () => {
+    of(0, 1, 2).pipe(
+      elementAt(3),
+    )
+    .subscribe({
+      error: err => {
+        expect(isOutOfRangeError(err)).to.be.true;
+      }
+    });
   });
 
   it('should return default value if index is out of range', () => {
