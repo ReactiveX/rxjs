@@ -1,0 +1,52 @@
+{
+  "tests": [
+    {
+      "esModules": "../../dist/esm5/index.js",
+      "expectedOutput": "./snapshots/esm5/index.js"
+    },
+    {
+      "esModules": "../../dist/esm2015/index.js",
+      "expectedOutput": "./snapshots/esm2015/index.js"
+    },
+    {
+      "esModules": "../../dist/esm5/ajax/index.js",
+      "expectedOutput": "./snapshots/esm5/ajax.js"
+    },
+    {
+      "esModules": "../../dist/esm2015/ajax/index.js",
+      "expectedOutput": "./snapshots/esm2015/ajax.js"
+    },
+    {
+      "esModules": "../../dist/esm5/fetch/index.js",
+      "expectedOutput": "./snapshots/esm5/fetch.js"
+    },
+    {
+      "esModules": "../../dist/esm2015/fetch/index.js",
+      "expectedOutput": "./snapshots/esm2015/fetch.js"
+    },
+    {
+      "esModules": "../../dist/esm5/operators/index.js",
+      "expectedOutput": "./snapshots/esm5/operators.js"
+    },
+    {
+      "esModules": "../../dist/esm2015/operators/index.js",
+      "expectedOutput": "./snapshots/esm2015/operators.js"
+    },
+    {
+      "esModules": "../../dist/esm5/testing/index.js",
+      "expectedOutput": "./snapshots/esm5/testing.js"
+    },
+    {
+      "esModules": "../../dist/esm2015/testing/index.js",
+      "expectedOutput": "./snapshots/esm2015/testing.js"
+    },
+    {
+      "esModules": "../../dist/esm5/webSocket/index.js",
+      "expectedOutput": "./snapshots/esm5/websocket.js"
+    },
+    {
+      "esModules": "../../dist/esm2015/webSocket/index.js",
+      "expectedOutput": "./snapshots/esm2015/websocket.js"
+    }
+  ]
+}
