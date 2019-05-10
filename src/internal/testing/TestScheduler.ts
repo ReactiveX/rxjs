@@ -15,6 +15,7 @@ export interface RunHelpers {
   hot: typeof TestScheduler.prototype.createHotObservable;
   flush: typeof TestScheduler.prototype.flush;
   expectObservable: typeof TestScheduler.prototype.expectObservable;
+  expectSubscriptionsTo: typeof TestScheduler.prototype.expectSubscriptionsTo;
   expectSubscriptions: typeof TestScheduler.prototype.expectSubscriptions;
 }
 
@@ -131,6 +132,26 @@ export class TestScheduler extends VirtualTimeScheduler {
     };
   }
 
+  expectSubscriptionsTo(observable: ColdObservable<any>|HotObservable<any>): ({ toBe: subscriptionLogsToBeFn }) {
+    const actual = observable.subscriptions;
+    const flushTest: FlushableTest = { actual, ready: false };
+
+    this.flushTests.push(flushTest);
+
+    return {
+      toBe: (marbles: string | string[]) => {
+        const marblesArray: string[] = (typeof marbles === 'string') ? [marbles] : marbles;
+        flushTest.ready = true;
+        flushTest.expected = marblesArray.map(marbles =>
+          TestScheduler.parseMarblesAsSubscriptions(marbles, this.runMode)
+        );
+      }
+    };
+  }
+
+  /**
+   * @deprecated (gone in v8) use `expectSubscriptionsTo`.
+   */
   expectSubscriptions(actualSubscriptionLogs: SubscriptionLog[]): ({ toBe: subscriptionLogsToBeFn }) {
     const flushTest: FlushableTest = { actual: actualSubscriptionLogs, ready: false };
     this.flushTests.push(flushTest);
@@ -146,6 +167,10 @@ export class TestScheduler extends VirtualTimeScheduler {
     };
   }
 
+  /**
+   * Flushes all tasks queued, which will cause all expectations set up by
+   * `expectObservable` and `expectSubscriptionsTo` to be executed.
+   */
   flush() {
     const hotObservables = this.hotObservables;
     while (hotObservables.length > 0) {
@@ -163,7 +188,10 @@ export class TestScheduler extends VirtualTimeScheduler {
     });
   }
 
-  /** @nocollapse */
+  /**
+   * @deprecated (gone in v8) private API do not use.
+   * @nocollapse
+   */
   static parseMarblesAsSubscriptions(marbles: string, runMode = false): SubscriptionLog {
     if (typeof marbles !== 'string') {
       return new SubscriptionLog(Number.POSITIVE_INFINITY);
@@ -261,7 +289,10 @@ export class TestScheduler extends VirtualTimeScheduler {
     }
   }
 
-  /** @nocollapse */
+  /**
+   * @deprecated (gone in v8) private API, do not use.
+   * @nocollapse
+   */
   static parseMarbles(marbles: string,
                       values?: any,
                       errorValue?: any,
@@ -371,6 +402,31 @@ export class TestScheduler extends VirtualTimeScheduler {
     return testMessages;
   }
 
+  /**
+   * Sets up a run block. This is the primary way you should use `TestScheduler` to run
+   * assertions.
+   *
+   * ### Basic Example
+   *
+   * ```ts
+   * const testScheduler = new TestScheduler((a, b) => {
+   *    expect(a).toEqual(b); // deep equality check used to diff marble trees.
+   * });
+   *
+   * testScheduler.run(({ cold, expectObservable }) => {
+   *    const values = { a: 1, b: 2, c: 3, x: 101, y: 102, z: 103 };
+   *    const source = cold('---a---b---c---|');
+   *    const expected = '   ---x---y---z---|';
+   *
+   *    expectObservable(
+   *      source.pipe(map(x => x + 100))
+   *    ).toBe(expected, values);
+   * });
+   * ```
+   *
+   * For more information about marble testing, please check out
+   * [Marble Testing](https://rxjs.dev/guide/testing/marble-testing)
+   */
   run<T>(callback: (helpers: RunHelpers) => T): T {
     const prevFrameTimeFactor = TestScheduler.frameTimeFactor;
     const prevMaxFrames = this.maxFrames;
@@ -386,6 +442,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       flush: this.flush.bind(this),
       expectObservable: this.expectObservable.bind(this),
       expectSubscriptions: this.expectSubscriptions.bind(this),
+      expectSubscriptionsTo: this.expectSubscriptionsTo.bind(this),
     };
     try {
       const ret = callback(helpers);

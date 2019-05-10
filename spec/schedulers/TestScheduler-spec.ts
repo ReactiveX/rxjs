@@ -339,12 +339,12 @@ describe('TestScheduler', () => {
     it('should provide the correct helpers', () => {
       const testScheduler = new TestScheduler(assertDeepEquals);
 
-      testScheduler.run(({ cold, hot, flush, expectObservable, expectSubscriptions }) => {
+      testScheduler.run(({ cold, hot, flush, expectObservable, expectSubscriptionsTo }) => {
         expect(cold).to.be.a('function');
         expect(hot).to.be.a('function');
         expect(flush).to.be.a('function');
         expect(expectObservable).to.be.a('function');
-        expect(expectSubscriptions).to.be.a('function');
+        expect(expectSubscriptionsTo).to.be.a('function');
 
         const obs1 = cold('-a-c-e|');
         const obs2 = hot(' ^-b-d-f|');
@@ -352,8 +352,8 @@ describe('TestScheduler', () => {
         const expected = ' -abcdef|';
 
         expectObservable(output).toBe(expected);
-        expectSubscriptions(obs1.subscriptions).toBe('^-----!');
-        expectSubscriptions(obs2.subscriptions).toBe('^------!');
+        expectSubscriptionsTo(obs1).toBe('^-----!');
+        expectSubscriptionsTo(obs2).toBe('^------!');
       });
     });
 
@@ -479,6 +479,21 @@ describe('TestScheduler', () => {
           const expectation = expectObservable(cold('-z'));
           flush();
           expectation.toBe('-q');
+        });
+      }).to.throw();
+    });
+
+    it('should fail on bad expectSubscriptionsTo expectation', () => {
+      const rxTest = new TestScheduler(assertDeepEquals);
+
+      expect(() => {
+        rxTest.run(({ cold, expectObservable, expectSubscriptionsTo }) => {
+          const source = cold('      ---a--b---c---d----|');
+          const badSubExpectation = '^--------------!';
+          const expected = '         ---a--b---c---d----|';
+
+          expectObservable(source).toBe(expected);
+            expectSubscriptionsTo(source).toBe(badSubExpectation);
         });
       }).to.throw();
     });
