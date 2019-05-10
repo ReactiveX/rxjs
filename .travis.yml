@@ -46,5 +46,5 @@ script:
   - if [ "$FULL_VALIDATE" == "true" ] && [ -n "DANGER_GITHUB_API_TOKEN" ]; then cd docs_app && npm ci && npm run build && cd ..; fi
 
 after_success:
-  - if [ "$FULL_VALIDATE" == "true" ]; then npm run test:cover && npx nyc report --reporter=text-lcov | npx coveralls; fi
+  - if [ "$FULL_VALIDATE" == "true" ]; then npm run test:cover; fi
   - if [ "$FULL_VALIDATE" == "true" ]; then npm run tests2png && cd docs_app && chmod 755 scripts/deploy-to-firebase.sh && npm run deploy-production; fi
