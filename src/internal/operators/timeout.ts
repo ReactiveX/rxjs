@@ -1,6 +1,11 @@
 import { async } from '../scheduler/async';
+<<<<<<< HEAD
 import { TimeoutError } from '../util/TimeoutError';
 import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
+=======
+import { createTimeoutError } from '../util/TimeoutError';
+import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
+>>>>>>> feat(TimeoutError): is deprecated
 import { timeoutWith } from './timeoutWith';
 import { throwError } from '../observable/throwError';
 
@@ -84,5 +89,5 @@ import { throwError } from '../observable/throwError';
  */
 export function timeout<T>(due: number | Date,
                            scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
-  return timeoutWith(due, throwError(new TimeoutError()), scheduler);
+  return timeoutWith(due, throwError(createTimeoutError()), scheduler);
 }

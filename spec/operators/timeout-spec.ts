@@ -3,13 +3,14 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { timeout, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { TimeoutError, of } from 'rxjs';
+import { createTimeoutError } from 'rxjs/internal/util/TimeoutError';
 
 declare function asDiagram(arg: string): Function;
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {timeout} */
 describe('timeout operator', () => {
-  const defaultTimeoutError = new TimeoutError();
+  const defaultTimeoutError = createTimeoutError();
 
   asDiagram('timeout(50)')('should timeout after a specified timeout period', () => {
     const e1 =  cold('-------a--b--|');
