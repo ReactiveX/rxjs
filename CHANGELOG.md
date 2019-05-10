@@ -1,3 +1,20 @@
+## [6.5.2](https://github.com/reactivex/rxjs/compare/6.5.0...6.5.2) (2019-05-10)
+
+
+### Bug Fixes
+
+* **endWith:** wrap args - they are not observables - in of before concatenating ([#4735](https://github.com/reactivex/rxjs/issues/4735)) ([986be2f](https://github.com/reactivex/rxjs/commit/986be2f))
+* **forkJoin:** test for object literal ([#4741](https://github.com/reactivex/rxjs/issues/4741)) ([c11e1b3](https://github.com/reactivex/rxjs/commit/c11e1b3)), closes [#4737](https://github.com/reactivex/rxjs/issues/4737) [#4737](https://github.com/reactivex/rxjs/issues/4737)
+* **Notification:** replace const enum ([#4556](https://github.com/reactivex/rxjs/issues/4556)) ([e460eec](https://github.com/reactivex/rxjs/commit/e460eec)), closes [#4538](https://github.com/reactivex/rxjs/issues/4538)
+* **of:** remove deprecation comment to prevent false positive warning ([#4724](https://github.com/reactivex/rxjs/issues/4724)) ([da69c16](https://github.com/reactivex/rxjs/commit/da69c16))
+* **pairwise:** make it recursion-proof ([#4743](https://github.com/reactivex/rxjs/issues/4743)) ([21ab261](https://github.com/reactivex/rxjs/commit/21ab261))
+* **scan:** fixed declarations to properly support different return types ([#4598](https://github.com/reactivex/rxjs/issues/4598)) ([126d2b6](https://github.com/reactivex/rxjs/commit/126d2b6))
+* **Subscription:** Return Empty when teardown === null ([#4575](https://github.com/reactivex/rxjs/issues/4575)) ([ffc4e68](https://github.com/reactivex/rxjs/commit/ffc4e68))
+* **throttleTime:** emit single value with trailing enabled ([#4564](https://github.com/reactivex/rxjs/issues/4564)) ([fd690a6](https://github.com/reactivex/rxjs/commit/fd690a6)), closes [#2859](https://github.com/reactivex/rxjs/issues/2859) [#4491](https://github.com/reactivex/rxjs/issues/4491)
+* **umd:** export fetch namespace ([#4738](https://github.com/reactivex/rxjs/issues/4738)) ([7926122](https://github.com/reactivex/rxjs/commit/7926122))
+* **fromFetch:** don't abort if fetch resolves ([#4742](https://github.com/reactivex/rxjs/issues/4742) ([ed8d771](https://github.com/reactivex/rxjs/commit/ed8d771))
+
+
 ## [6.5.1](https://github.com/reactivex/rxjs/compare/6.5.0...6.5.1) (2019-04-23)
 
 
