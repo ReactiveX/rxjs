@@ -33,6 +33,21 @@ export function race(...observables: ObservableInput<any>[]): Observable<{}>;
 /**
  * Returns an Observable that mirrors the first source Observable to emit an item.
  *
+ * <span class="informal">Select an observable sequences that is the first to produce values.</span>
+ *
+ * ![](race.png)
+ *
+ * `race` can be used to select an observable sequences that is the first to produce
+ * values. As soon as one of the sequences starts emitting values the other sequences
+ * are unsubscribed and completely ignored. The resulting stream completes when the
+ * selected input stream completes and will throw an error if this one stream errors
+ * out. It will also never complete if this inner stream doesn’t complete.
+ *
+ * `race` can be useful if you have multiple resources that can provide values,
+ * for example, servers around the world, but due to network conditions the latency
+ * is not predictable and varies significantly. Using `race` you can send the same
+ * request out to multiple data sources and consume the result of the first that responds.
+ *
  * ## Example
  * ### Subscribes to the observable that was the first to start emitting.
  *
