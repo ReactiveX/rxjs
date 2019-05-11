@@ -1,8 +1,6 @@
 import { Observable } from '../Observable';
 import { ObservableInput, SchedulerLike, ObservedValueOf } from '../types';
-import { isScheduler } from '../util/isScheduler';
 import { of } from './of';
-import { from } from './from';
 import { concatAll } from '../operators/concatAll';
 
 /* tslint:disable:max-line-length */

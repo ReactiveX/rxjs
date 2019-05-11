@@ -1,4 +1,3 @@
-
 import { Observable } from '../Observable';
 import { async } from '../scheduler/async';
 import { SchedulerLike, OperatorFunction } from '../types';
