@@ -6,6 +6,11 @@ import { Observer, OperatorFunction } from '../types';
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
  *
+ * <span class="informal">If all values pass predicate before completion emit true,
+ * else false.</span>
+ *
+ * ![](every.png)
+ *
  * ## Example
  * A simple example emitting true if all elements are less than 5, false otherwise
  * ```ts
