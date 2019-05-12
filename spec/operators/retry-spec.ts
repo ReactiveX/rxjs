@@ -79,7 +79,7 @@ describe('retry operator', () => {
         errors += 1;
         throw 'bad';
       }),
-      retry(retries - 1, true)
+      retry({count: retries - 1, resetOnSuccess: true})
     ).subscribe(
       (x: number) => {
         done("shouldn't next");
@@ -106,7 +106,7 @@ describe('retry operator', () => {
           return of(42);
         }
       }),
-      retry(retries - 1, true)
+      retry({count: retries - 1, resetOnSuccess: true})
     ).subscribe(
       (x: number) => {
         expect(x).to.equal(42);
@@ -133,7 +133,7 @@ describe('retry operator', () => {
           return of(42);
         }
       }),
-      retry(retries - 1, false)
+      retry({count: retries - 1, resetOnSuccess: false})
     ).subscribe(
       (x: number) => {
         expect(x).to.equal(42);

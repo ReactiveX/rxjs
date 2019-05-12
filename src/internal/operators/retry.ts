@@ -4,6 +4,11 @@ import { Observable } from '../Observable';
 
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
+export interface RetryConfig {
+  count: number;
+  resetOnSuccess?: boolean;
+}
+
 /**
  * Returns an Observable that mirrors the source Observable with the exception of an `error`. If the source Observable
  * calls `error`, this method will resubscribe to the source Observable for a maximum of `count` resubscriptions (given
@@ -51,18 +56,28 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @method retry
  * @owner Observable
  */
-export function retry<T>(count: number = -1, resetOnSuccess = false): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new RetryOperator(count, source, resetOnSuccess));
+export function retry<T>(count?: number): MonoTypeOperatorFunction<T>;
+export function retry<T>(config: RetryConfig): MonoTypeOperatorFunction<T>;
+export function retry<T>(configOrCount: number | RetryConfig = -1): MonoTypeOperatorFunction<T> {
+  let config: RetryConfig;
+  if (configOrCount && typeof configOrCount === 'object') {
+    config = configOrCount as RetryConfig;
+  } else {
+    config = {
+      count: configOrCount as number
+    };
+  }
+  return (source: Observable<T>) => source.lift(new RetryOperator(config.count, config.resetOnSuccess, source));
 }
 
 class RetryOperator<T> implements Operator<T, T> {
   constructor(private count: number,
-              private source: Observable<T>,
-              private resetOnSuccess: boolean) {
+              private resetOnSuccess: boolean,
+              private source: Observable<T>) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
-    return source.subscribe(new RetrySubscriber(subscriber, this.count, this.source, this.resetOnSuccess));
+    return source.subscribe(new RetrySubscriber(subscriber, this.count, this.resetOnSuccess, this.source));
   }
 }
 
@@ -76,8 +91,8 @@ class RetrySubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<any>,
               private count: number,
-              private source: Observable<T>,
-              private resetOnSuccess: boolean
+              private resetOnSuccess: boolean,
+              private source: Observable<T>
   ) {
     super(destination);
     this.initialCount = this.count;
