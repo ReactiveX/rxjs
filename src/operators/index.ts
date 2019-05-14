@@ -31,6 +31,7 @@ export { exhaust } from '../internal/operators/exhaust';
 export { exhaustMap } from '../internal/operators/exhaustMap';
 export { expand } from '../internal/operators/expand';
 export { filter } from '../internal/operators/filter';
+export { filterByLatestFrom } from '../internal/operators/filterByLatestFrom';
 export { finalize } from '../internal/operators/finalize';
 export { find } from '../internal/operators/find';
 export { findIndex } from '../internal/operators/findIndex';

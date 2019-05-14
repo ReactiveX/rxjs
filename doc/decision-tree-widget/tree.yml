@@ -21,6 +21,9 @@ children:
       - label: based on custom logic
         children:
         - label: filter
+      - label: based on another obvervable
+        children:
+        - label: filterByLatestFrom
       - label: if they are at the start of the Observable
         children:
         - label: and only the first value

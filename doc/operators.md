@@ -179,6 +179,7 @@ There are operators for different purposes, and they may be categorized as: crea
 - [`distinctUntilKeyChanged`](../class/es6/Observable.js~Observable.html#instance-method-distinctUntilKeyChanged)
 - [`elementAt`](../class/es6/Observable.js~Observable.html#instance-method-elementAt)
 - [`filter`](../class/es6/Observable.js~Observable.html#instance-method-filter)
+- [`filterByLatestFrom`](../class/es6/Observable.js~Observable.html#instance-method-filterByLatestFrom)
 - [`first`](../class/es6/Observable.js~Observable.html#instance-method-first)
 - [`ignoreElements`](../class/es6/Observable.js~Observable.html#instance-method-ignoreElements)
 - [`last`](../class/es6/Observable.js~Observable.html#instance-method-last)
