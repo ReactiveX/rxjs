@@ -1,7 +1,7 @@
 import { isArray } from './util/isArray';
 import { isObject } from './util/isObject';
 import { isFunction } from './util/isFunction';
-import { UnsubscriptionError, createTeardownError } from './util/UnsubscriptionError';
+import { createTeardownError } from './util/UnsubscriptionError';
 import { SubscriptionLike, TeardownLogic } from './types';
 import { isTeardownError } from 'rxjs/internal/util/errors';
 

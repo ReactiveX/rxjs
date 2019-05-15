@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { elementAt, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { ArgumentOutOfRangeError, of, range, isOutOfRangeError } from 'rxjs';
+import { of, range, isOutOfRangeError } from 'rxjs';
 import { createOutOfRangeError } from 'rxjs/internal/util/ArgumentOutOfRangeError';
 
 declare function asDiagram(arg: string): Function;
@@ -49,7 +49,7 @@ describe('elementAt operator', () => {
     const subs =        '(^!)';
     const expected =    '#';
 
-    expectObservable(source.pipe(elementAt(0))).toBe(expected, undefined, new ArgumentOutOfRangeError());
+    expectObservable(source.pipe(elementAt(0))).toBe(expected, undefined, createOutOfRangeError());
     expectSubscriptions(source.subscriptions).toBe(subs);
   });
 
@@ -100,8 +100,13 @@ describe('elementAt operator', () => {
   });
 
   it('should throw if index is smaller than zero', () => {
-    expect(() => { range(0, 10).pipe(elementAt(-1)); })
-      .to.throw(ArgumentOutOfRangeError);
+    try {
+      range(0, 10).pipe(elementAt(-1));
+    } catch (err) {
+      expect(isOutOfRangeError(err)).to.be.true;
+      return;
+    }
+    expect('').to.equal('it should not get here');
   });
 
   it('should raise error if index is out of range but does not have default value', () => {

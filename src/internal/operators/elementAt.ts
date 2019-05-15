@@ -4,7 +4,7 @@ import { MonoTypeOperatorFunction } from '../types';
 import { filter } from './filter';
 import { throwIfEmpty } from './throwIfEmpty';
 import { defaultIfEmpty } from './defaultIfEmpty';
-import { take } from './take';s
+import { take } from './take';
 
 /**
  * Emits the single value at the specified `index` in a sequence of emissions

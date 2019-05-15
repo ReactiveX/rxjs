@@ -1,11 +1,6 @@
 import { async } from '../scheduler/async';
-<<<<<<< HEAD
-import { TimeoutError } from '../util/TimeoutError';
-import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
-=======
 import { createTimeoutError } from '../util/TimeoutError';
 import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
->>>>>>> feat(TimeoutError): is deprecated
 import { timeoutWith } from './timeoutWith';
 import { throwError } from '../observable/throwError';
 

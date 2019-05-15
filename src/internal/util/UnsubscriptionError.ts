@@ -33,6 +33,7 @@ UnsubscriptionErrorImpl.prototype = Object.create(Error.prototype);
 export const UnsubscriptionError: UnsubscriptionErrorCtor = UnsubscriptionErrorImpl as any;
 
 export function createTeardownError(errors: any[]) {
+  // TODO(benlesh): Move to just using createRxError here.
   const error: any = new UnsubscriptionError(errors);
   error.__rxjsErrorCode = RxErrorCode.Teardown;
   return error;
