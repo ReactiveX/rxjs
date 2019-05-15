@@ -132,7 +132,7 @@ export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, opti
  *
  * ## Examples
  * ### Emits clicks happening on the DOM document
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  *
  * const clicks = fromEvent(document, 'click');
@@ -144,7 +144,7 @@ export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, opti
  * ```
  *
  * ### Use addEventListener with capture option
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  *
  * const clicksInDocument = fromEvent(document, 'click', true); // note optional configuration parameter

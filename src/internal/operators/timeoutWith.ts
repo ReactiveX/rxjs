@@ -39,7 +39,7 @@ export function timeoutWith<T, R>(due: number | Date, withObservable: Observable
  *
  * ## Example
  * Add fallback observable
- * ```javascript
+ * ```ts
  * import { intrerval } from 'rxjs';
  * import { timeoutWith } from 'rxjs/operators';
  *

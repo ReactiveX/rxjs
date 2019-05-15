@@ -1,5 +1,7 @@
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { pairwise } from 'rxjs/operators';
+import { pairwise, take } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { expect } from 'chai';
 
 declare function asDiagram(arg: string): Function;
 
@@ -102,5 +104,26 @@ describe('pairwise operator', () => {
 
     expectObservable(source).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should be recursively re-enterable', () => {
+    const results = new Array<[string, string]>();
+
+    const subject = new Subject<string>();
+
+    subject
+      .pipe(
+        pairwise(),
+        take(3)
+      )
+      .subscribe(pair => {
+        results.push(pair);
+        subject.next('c');
+      });
+
+    subject.next('a');
+    subject.next('b');
+
+    expect(results).to.deep.equal([['a', 'b'], ['b', 'c'], ['c', 'c']]);
   });
 });

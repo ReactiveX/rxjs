@@ -130,6 +130,11 @@ export class Subscription implements SubscriptionLike {
    */
   add(teardown: TeardownLogic): Subscription {
     let subscription = (<Subscription>teardown);
+
+    if (!(<any>teardown)) {
+      return Subscription.EMPTY;
+    }
+
     switch (typeof teardown) {
       case 'function':
         subscription = new Subscription(<(() => void)>teardown);
@@ -147,9 +152,6 @@ export class Subscription implements SubscriptionLike {
         }
         break;
       default: {
-        if (!(<any>teardown)) {
-          return Subscription.EMPTY;
-        }
         throw new Error('unrecognized teardown ' + teardown + ' added to Subscription.');
       }
     }

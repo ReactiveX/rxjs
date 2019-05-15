@@ -23,7 +23,7 @@ import { OperatorFunction } from '../types';
  *
  * On every click, emit array of most recent interval events
  *
- * ```javascript
+ * ```ts
  * import { fromEvent, interval } from 'rxjs';
  * import { buffer } from 'rxjs/operators';
  *

@@ -20,3 +20,7 @@ export const ajax = _ajax;
 /* rxjs.webSocket */
 import * as _webSocket from '../webSocket/index';
 export const webSocket = _webSocket;
+
+/* rxjs.fetch */
+import * as _fetch from '../fetch/index';
+export const fetch = _fetch;

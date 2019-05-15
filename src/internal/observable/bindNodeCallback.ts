@@ -108,7 +108,7 @@ export function bindNodeCallback(callbackFunc: Function, scheduler?: SchedulerLi
  *
  * ## Examples
  * ###  Read a file from the filesystem and get the data as an Observable
- * ```javascript
+ * ```ts
  * import * as fs from 'fs';
  * const readFileAsObservable = bindNodeCallback(fs.readFile);
  * const result = readFileAsObservable('./roadNames.txt', 'utf8');
@@ -116,7 +116,7 @@ export function bindNodeCallback(callbackFunc: Function, scheduler?: SchedulerLi
  * ```
  *
  * ### Use on function calling callback with multiple arguments
- * ```javascript
+ * ```ts
  * someFunction((err, a, b) => {
  *   console.log(err); // null
  *   console.log(a); // 5
@@ -130,7 +130,7 @@ export function bindNodeCallback(callbackFunc: Function, scheduler?: SchedulerLi
  * ```
  *
  * ### Use on function calling callback in regular style
- * ```javascript
+ * ```ts
  * someFunction(a => {
  *   console.log(a); // 5
  * });

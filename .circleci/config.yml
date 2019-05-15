@@ -1,0 +1,85 @@
+## IMPORTANT
+# If you change the cache key prefix, also sync the restore_cache fallback to match.
+# Keep the static part of the cache key as prefix to enable correct fallbacks.
+# See https://circleci.com/docs/2.0/caching/#restoring-cache for how prefixes work in CircleCI.
+var_1: &default_docker_image circleci/node:10.12
+var_2: &cache_key rxjs-node-10.12-{{ checksum "package-lock.json" }}
+
+# Settings common to each job
+var_3: &defaults
+  working_directory: ~/ng
+  docker:
+    - image: *default_docker_image
+
+var_4: &restore_cache
+  restore_cache:
+    keys:
+      - *cache_key
+      # This fallback should be the cache_key without variables.
+      - rxjs-0.7.0-
+var_5: &attach_options
+  at: .
+
+version: 2
+jobs:
+  build:
+    docker:
+      - image: *default_docker_image
+    steps:
+      - checkout
+      - *restore_cache
+      - run: npm i
+      - run: npm run build_all
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./*
+      - save_cache:
+          key: *cache_key
+          paths:
+            - ./node_modules
+
+  lint:
+    <<: *defaults
+    steps:
+      - attach_workspace: *attach_options
+      - run: npm run lint
+
+  test:
+    <<: *defaults
+    steps:
+      - attach_workspace: *attach_options
+      - run: npm test
+
+  dtslint:
+    <<: *defaults
+    steps:
+      - attach_workspace: *attach_options
+      - run: npm run dtslint
+
+  typescript3:
+    <<: *defaults
+    steps:
+      - attach_workspace: *attach_options
+      - run: npm i --no-save typescript@3.*
+      - run: npm run build_cjs
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - lint:
+          requires:
+            - build
+      - test:
+          requires:
+            - build
+      - dtslint:
+          requires:
+            - build
+      - typescript3:
+          requires:
+            - lint
+            - test
+            - dtslint

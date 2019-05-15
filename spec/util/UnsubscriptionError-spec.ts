@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { UnsubscriptionError, Observable, timer } from 'rxjs';
+import { UnsubscriptionError, Observable, timer, merge } from 'rxjs';
 
 /** @test {UnsubscriptionError} */
 describe('UnsubscriptionError', () => {
@@ -9,7 +9,7 @@ describe('UnsubscriptionError', () => {
     const source1 = new Observable(() => () => { throw err1; });
     const source2 = timer(1000);
     const source3 = new Observable(() => () => { throw err2; });
-    const source = source1.merge(source2, source3);
+    const source = merge(source1, source2, source3);
 
     const subscription = source.subscribe();
 

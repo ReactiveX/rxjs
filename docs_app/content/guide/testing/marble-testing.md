@@ -70,7 +70,26 @@ How many virtual milliseconds one frame represents depends on the value of `Test
 - `[0-9]+[ms|s|m]` time progression: the time progression syntax lets you progress virtual time by a specific amount. It's a number, followed by a time unit of `ms` (milliseconds), `s` (seconds), or `m` (minutes) without any space between them, e.g. `a 10ms b`. See [Time progression syntax](#time-progression-syntax) for more details.
 - `'|'` complete: The successful completion of an observable. This is the observable producer signaling `complete()`.
 - `'#'` error: An error terminating the observable. This is the observable producer signaling `error()`.
-- `[a-z0-9]` e.g. `'a'` any alphanumeric character: Represents a value being emitted by the producer signaling `next()`.
+- `[a-z0-9]` e.g. `'a'` any alphanumeric character: Represents a value being emitted by the producer signaling `next()`. Also consider that you could map this into an object or an array like this:
+```ts
+    const expected = '400ms (a-b|)';
+    const values = {
+      a: 'value emitted',
+      b: 'another value emitter',
+    };
+
+    expectObservable(someStreamForTesting)
+      .toBe(expected, values);
+    // This would work also
+    const expected = '400ms (0-1|)';
+    const values = [
+      'value emitted',
+      'another value emitted',
+    ];
+
+    expectObservable(someStreamForTesting)
+      .toBe(expected, values);
+```
 - `'()'` sync groupings: When multiple events need to be in the same frame synchronously, parentheses are used to group those events. You can group next'd values, a completion, or an error in this manner. The position of the initial `(` determines the time at which its values are emitted. While it can be unintuitive at first, after all the values have synchronously emitted time will progress a number of frames equal to the number of ASCII characters in the group, including the parentheses. e.g. `'(abc)'` will emit the values of a, b, and c synchronously in the same frame and then advance virtual time by 5 frames, `'(abc)'.length === 5`. This is done because it often helps you vertically align your marble diagrams, but it's a known pain point in real-world testing. [Learn more about known issues](#known-issues).
 - `'^'` subscription point: (hot observables only) shows the point at which the tested observables will be subscribed to the hot observable. This is the "zero frame" for that observable, every frame before the `^` will be negative. Negative time might seem pointless, but there are in fact advanced cases where this is necessary, usually involving ReplaySubjects.
 

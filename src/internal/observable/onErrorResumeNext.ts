@@ -38,7 +38,7 @@ export function onErrorResumeNext<R>(array: ObservableInput<any>[]): Observable<
  *
  * ## Example
  * Subscribe to the next Observable after map fails</caption>
- * ```javascript
+ * ```ts
  * import { onErrorResumeNext, of } from 'rxjs';
  * import { map } from 'rxjs/operators';
  *

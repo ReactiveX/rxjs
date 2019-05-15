@@ -18,7 +18,7 @@ import { OperatorFunction } from '../types';
  *
  * ## Example
  * Emit the index of first click that happens on a DIV element
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { findIndex } from 'rxjs/operators';
  *

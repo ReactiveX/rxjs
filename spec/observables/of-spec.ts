@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { empty, of, Observable } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { expectObservable } from '../helpers/marble-testing';
 import { TestScheduler } from 'rxjs/testing';
 import { concatMap, delay, concatAll } from 'rxjs/operators';
@@ -33,18 +33,13 @@ describe('of', () => {
       });
   });
 
-  it('should return an empty observable if passed no values', () => {
-    const obs = of();
-    expect(obs).to.equal(empty());
-  });
-
   it('should emit one value', (done: MochaDone) => {
     let calls = 0;
 
     of(42).subscribe((x: number) => {
       expect(++calls).to.equal(1);
       expect(x).to.equal(42);
-    }, (err: any) => {
+  }, (err: any) => {
       done(new Error('should not be called'));
     }, () => {
       done();

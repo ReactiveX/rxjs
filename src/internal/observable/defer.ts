@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { SubscribableOrPromise, ObservedValueOf, ObservableInput } from '../types';
+import { ObservedValueOf, ObservableInput } from '../types';
 import { from } from './from'; // lol
 import { empty } from './empty';
 
@@ -23,7 +23,7 @@ import { empty } from './empty';
  *
  * ## Example
  * ### Subscribe to either an Observable of clicks or an Observable of interval, at random
- * ```javascript
+ * ```ts
  * import { defer, fromEvent, interval } from 'rxjs';
  *
  * const clicksOrInterval = defer(function () {

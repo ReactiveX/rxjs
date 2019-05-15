@@ -109,7 +109,7 @@ export class AjaxObservable<T> extends Observable<T> {
    * url, headers, etc or a string for a URL.
    *
    * ## Example
-   * ```javascript
+   * ```ts
    * import { ajax } from 'rxjs/ajax';
  *
    * const source1 = ajax('/products');
