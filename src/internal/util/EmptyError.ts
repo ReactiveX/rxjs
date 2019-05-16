@@ -5,14 +5,18 @@ export interface EmptyErrorCtor {
   new(): EmptyError;
 }
 
-function EmptyErrorImpl(this: any) {
-  Error.call(this);
-  this.message = 'no elements in sequence';
-  this.name = 'EmptyError';
-  return this;
-}
+const EmptyErrorImpl = (() => {
+  function EmptyErrorImpl(this: any) {
+    Error.call(this);
+    this.message = 'no elements in sequence';
+    this.name = 'EmptyError';
+    return this;
+  }
 
-EmptyErrorImpl.prototype = Object.create(Error.prototype);
+  EmptyErrorImpl.prototype = Object.create(Error.prototype);
+
+  return EmptyErrorImpl;
+})();
 
 /**
  * An error thrown when an Observable or a sequence was queried but has no

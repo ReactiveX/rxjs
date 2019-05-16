@@ -486,19 +486,21 @@ export interface AjaxErrorCtor {
   new(message: string, xhr: XMLHttpRequest, request: AjaxRequest): AjaxError;
 }
 
-function AjaxErrorImpl(this: any, message: string, xhr: XMLHttpRequest, request: AjaxRequest): AjaxError {
-  Error.call(this);
-  this.message = message;
-  this.name = 'AjaxError';
-  this.xhr = xhr;
-  this.request = request;
-  this.status = xhr.status;
-  this.responseType = xhr.responseType || request.responseType;
-  this.response = parseXhrResponse(this.responseType, xhr);
-  return this;
-}
-
-AjaxErrorImpl.prototype = Object.create(Error.prototype);
+const AjaxErrorImpl = (() => {
+  function AjaxErrorImpl(this: any, message: string, xhr: XMLHttpRequest, request: AjaxRequest): AjaxError {
+    Error.call(this);
+    this.message = message;
+    this.name = 'AjaxError';
+    this.xhr = xhr;
+    this.request = request;
+    this.status = xhr.status;
+    this.responseType = xhr.responseType || request.responseType;
+    this.response = parseXhrResponse(this.responseType, xhr);
+    return this;
+  }
+  AjaxErrorImpl.prototype = Object.create(Error.prototype);
+  return AjaxErrorImpl;
+})();
 
 export const AjaxError: AjaxErrorCtor = AjaxErrorImpl as any;
 
