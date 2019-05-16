@@ -3,7 +3,6 @@ import { Observable } from './Observable';
 import { empty } from './observable/empty';
 import { of } from './observable/of';
 import { throwError } from './observable/throwError';
-import { deprecate } from 'util';
 
 // TODO: When this enum is removed, replace it with a type alias. See #4556.
 /**
