@@ -50,6 +50,7 @@ jobs:
     steps:
       - attach_workspace: *attach_options
       - run: npm test
+      - run: npm run test:side-effects
 
   dtslint:
     <<: *defaults
