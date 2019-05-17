@@ -1,9 +1,9 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
+    "sourceMap": false,
     "noEmit": false,
     "baseUrl": "../src",
-    "sourceRoot": "../src",
     "paths": {
       "rxjs": ["./"],
       "rxjs/*": ["./*"]

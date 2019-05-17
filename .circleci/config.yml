@@ -29,7 +29,7 @@ jobs:
       - checkout
       - *restore_cache
       - run: npm i
-      - run: npm run build_all
+      - run: npm run build
       - persist_to_workspace:
           root: .
           paths:
@@ -58,13 +58,6 @@ jobs:
       - attach_workspace: *attach_options
       - run: npm run dtslint
 
-  typescript3:
-    <<: *defaults
-    steps:
-      - attach_workspace: *attach_options
-      - run: npm i --no-save typescript@3.*
-      - run: npm run build_cjs
-
 workflows:
   version: 2
   build_and_test:
@@ -79,8 +72,3 @@ workflows:
       - dtslint:
           requires:
             - build
-      - typescript3:
-          requires:
-            - lint
-            - test
-            - dtslint
