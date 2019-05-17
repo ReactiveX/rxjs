@@ -59,6 +59,13 @@
       "check-type"
     ],
     "no-const-enum": true,
+    "no-unused-declaration": [
+      true,
+      {
+        "declarations": false,
+        "imports": true
+      }
+    ],
     "no-toplevel-property-access": [
       true,
       "src/index.ts",
