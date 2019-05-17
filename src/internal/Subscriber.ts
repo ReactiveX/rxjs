@@ -251,7 +251,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
     const { _parentSubscriber } = this;
 
     try {
-      if (typeof value === 'undefined') {
+      if (arguments.length === 1) {
         fn.call(this._context);
       } else {
         fn.call(this._context, value);
