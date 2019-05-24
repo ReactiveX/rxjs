@@ -50,6 +50,9 @@ import { UnaryFunction } from '../types';
  * @method partition
  * @owner Observable
  */
+/**
+ * @deprecated use `partition` static creation function instead
+ */
 export function partition<T>(predicate: (value: T, index: number) => boolean,
                              thisArg?: any): UnaryFunction<Observable<T>, [Observable<T>, Observable<T>]> {
   return (source: Observable<T>) => [

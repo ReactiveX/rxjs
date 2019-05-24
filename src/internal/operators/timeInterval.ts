@@ -1,4 +1,3 @@
-
 import { Observable } from '../Observable';
 import { async } from '../scheduler/async';
 import { SchedulerLike, OperatorFunction } from '../types';
@@ -15,6 +14,8 @@ import { map } from './map';
  * defaults to {@link asyncScheduler}, so by default, the `interval` will be in
  * milliseconds.
  *
+ * <span class="informal">Convert an Observable that emits items into one that
+ * emits indications of the amount of time elapsed between those emissions.</span>
  *
  * ![](timeinterval.png)
  *

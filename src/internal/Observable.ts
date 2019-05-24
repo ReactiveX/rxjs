@@ -6,7 +6,7 @@ import { canReportError } from './util/canReportError';
 import { toSubscriber } from './util/toSubscriber';
 import { iif } from './observable/iif';
 import { throwError } from './observable/throwError';
-import { observable as Symbol_observable } from '../internal/symbol/observable';
+import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
 
@@ -260,7 +260,7 @@ export class Observable<T> implements Subscribable<T> {
     promiseCtor = getPromiseCtor(promiseCtor);
 
     return new promiseCtor<void>((resolve, reject) => {
-      // Must be declared in a separate statement to avoid a RefernceError when
+      // Must be declared in a separate statement to avoid a ReferenceError when
       // accessing subscription below in the closure due to Temporal Dead Zone.
       let subscription: Subscription;
       subscription = this.subscribe((value) => {

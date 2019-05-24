@@ -1,6 +1,6 @@
 {
   "name": "@reactivex/rxjs",
-  "version": "6.4.0",
+  "version": "7.0.0-alpha.0",
   "description": "Reactive Extensions for modern JavaScript",
   "main": "index.js",
   "sideEffects": false,
@@ -8,25 +8,6 @@
     "commitizen": {
       "path": "cz-conventional-changelog"
     }
-  },
-  "nyc": {
-    "include": [
-      "src/*.ts",
-      "src/**/*.ts"
-    ],
-    "exclude": [
-      "node_modules",
-      "dist",
-      "*.d.ts",
-      "src/**/MiscJSDoc.ts"
-    ],
-    "extension": [
-      ".ts"
-    ],
-    "reporter": [
-      "html"
-    ],
-    "all": true
   },
   "lint-staged": {
     "linters": {
@@ -88,8 +69,7 @@
     "lint_spec": "tslint -c tslint.json \"spec/**/*.ts\"",
     "lint_src": "tslint -c tslint.json \"src/**/*.ts\"",
     "lint": "npm-run-all --parallel lint_*",
-    "dtslint": "npm run build_types && npx dtslint spec-dtslint",
-    "perf:protractor": "echo \"Protractor is not working currently\" && exit -1 && protractor protractor.conf.js",
+    "dtslint": "npm run build_types && node ./spec-dtslint/script.js",
     "perf:micro": "node ./perf/micro/index.js",
     "prepublish": "shx rm -rf ./typings && npm run build_all",
     "postpublish": "./docs_app/scripts/publish-docs.sh",
@@ -98,9 +78,10 @@
     "test_no_cache": "cross-env TS_NODE_PROJECT=spec/tsconfig.json TS_NODE_CACHE=false mocha --opts spec/support/default.opts \"spec/**/*-spec.ts\"",
     "test_transpile_only": "cross-env TS_NODE_PROJECT=spec/tsconfig.json TS_NODE_TRANSPILE_ONLY=true mocha --opts spec/support/default.opts \"spec/**/*-spec.ts\"",
     "test:browser": "echo \"Browser test is not working currently\" && exit -1 && npm-run-all build:spec:browser && opn spec/support/mocha-browser-runner.html",
-    "test:cover": "nyc npm test",
     "test:circular": "dependency-cruise --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm5",
     "test:systemjs": "node integration/systemjs/systemjs-compatibility-spec.js",
+    "test:side-effects": "check-side-effects --test integration/side-effects/side-effects.json",
+    "test:side-effects:update": "npm run test:side-effects -- --update",
     "tests2png": "mkdirp docs_app/content/img && mocha --opts spec/support/tests2png.opts \"spec/**/*-spec.ts\"",
     "compat_build_all": "npm-run-all compat_clean_dist compat_build_cjs compat_build_esm5 compat_build_esm2015 compat_build_esm5_for_rollup compat_build_umd compat_generate_packages",
     "compat_build_closure": "node ./tools/make-closure-compat.js",
@@ -175,7 +156,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-optimizer": "0.4.6",
-    "@angular-devkit/schematics": "^0.5.4",
+    "@angular-devkit/schematics": "^7.3.9",
     "@types/chai": "4.1.2",
     "@types/lodash": "4.14.102",
     "@types/mocha": "2.2.48",
@@ -185,19 +166,18 @@
     "@types/source-map": "^0.5.2",
     "babel-polyfill": "6.26.0",
     "benchmark": "2.1.0",
-    "benchpress": "2.0.0-beta.1",
     "chai": "4.1.2",
+    "check-side-effects": "0.0.20",
     "color": "3.0.0",
     "colors": "1.1.2",
-    "commitizen": "2.9.6",
-    "coveralls": "3.0.0",
+    "commitizen": "^3.1.1",
     "cross-env": "5.1.3",
     "cz-conventional-changelog": "1.2.0",
-    "danger": "1.1.0",
-    "dependency-cruiser": "2.13.0",
+    "danger": "^7.1.4",
+    "dependency-cruiser": "^4.17.0",
     "doctoc": "1.3.0",
+    "dtslint": "^0.7.1",
     "escape-string-regexp": "1.0.5",
-    "esdoc": "0.4.7",
     "eslint": "4.17.0",
     "fs-extra": "5.0.0",
     "get-folder-size": "1.0.1",
@@ -205,22 +185,18 @@
     "gm": "1.23.1",
     "google-closure-compiler-js": "20170218.0.0",
     "gzip-size": "4.1.0",
-    "http-server": "0.11.1",
     "husky": "0.14.3",
     "klaw-sync": "3.0.2",
-    "lint-staged": "7.1.1",
-    "lodash": "4.17.5",
+    "lint-staged": "^8.1.6",
+    "lodash": "^4.17.11",
     "markdown-doctest": "0.9.1",
     "minimist": "1.2.0",
     "mkdirp": "0.5.1",
     "mocha": "5.0.0",
-    "mocha-in-sauce": "0.0.1",
     "npm-run-all": "4.1.2",
-    "nyc": "11.4.1",
     "opn-cli": "3.1.0",
     "platform": "1.3.5",
     "promise": "8.0.1",
-    "protractor": "3.1.1",
     "rollup": "0.66.6",
     "rollup-plugin-alias": "1.4.0",
     "rollup-plugin-inject": "2.0.0",
@@ -237,11 +213,11 @@
     "tsconfig-paths": "3.2.0",
     "tslint": "5.9.1",
     "tslint-etc": "1.2.6",
+    "tslint-no-toplevel-property-access": "0.0.2",
     "tslint-no-unused-expression-chai": "0.0.3",
     "typescript": "^3.0.1",
     "validate-commit-msg": "2.14.0",
-    "webpack": "1.13.1",
-    "xmlhttprequest": "1.8.0"
+    "webpack": "^4.31.0"
   },
   "engines": {
     "npm": ">=2.0.0"

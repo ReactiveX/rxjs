@@ -28,5 +28,6 @@ import { pluck as higherOrder } from 'rxjs/operators';
  * @owner Observable
  */
 export function pluck<T, R>(this: Observable<T>, ...properties: string[]): Observable<R> {
+  // @ts-ignore
   return higherOrder(...properties)(this) as Observable<R>;
 }

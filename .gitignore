@@ -18,9 +18,12 @@ coverage/
 img/
 spec-js/
 spec-build/
-.nyc_output/
 .out/
 
 # Misc
 npm-debug.log
 .DS_STORE
+
+# The check-side-effects package generates and deletes this file.
+# If the process is killed, it will be left behind.
+check-side-effects.tmp-input.js
