@@ -137,4 +137,14 @@ export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
 
     this.destination.next(innerValue);
   }
+
+  notifyComplete(innerSub: InnerSubscriber<T, T>): void {
+    this.hasFirst = true;
+    super.notifyComplete(innerSub);
+  }
+
+  notifyError(error: any, innerSub: InnerSubscriber<T, T>): void {
+    this.hasFirst = true;
+    super.notifyError(error, innerSub);
+  }
 }
