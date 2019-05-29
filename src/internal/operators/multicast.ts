@@ -3,12 +3,12 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { ConnectableObservable, connectableObservableDescriptor } from '../observable/ConnectableObservable';
-import { OperatorFunction, UnaryFunction, ObservedValueOf, ObservableInput } from '../types';
+import { OperatorFunction, UnaryFunction, ObservedValueOf, ObservableInput, MonoTypeOperatorFunction } from '../types';
 
 /* tslint:disable:max-line-length */
-export function multicast<T>(subject: Subject<T>): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
-export function multicast<T, O extends ObservableInput<any>>(subject: Subject<T>, selector: (shared: Observable<T>) => O): UnaryFunction<Observable<T>, ConnectableObservable<ObservedValueOf<O>>>;
-export function multicast<T>(subjectFactory: (this: Observable<T>) => Subject<T>): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
+export function multicast<T>(subject: Subject<T>): MonoTypeOperatorFunction<T>;
+export function multicast<T, O extends ObservableInput<any>>(subject: Subject<T>, selector: (shared: Observable<T>) => O): OperatorFunction<T, ObservedValueOf<O>>;
+export function multicast<T>(subjectFactory: (this: Observable<T>) => Subject<T>): MonoTypeOperatorFunction<T>;
 export function multicast<T, O extends ObservableInput<any>>(SubjectFactory: (this: Observable<T>) => Subject<T>, selector: (shared: Observable<T>) => O): OperatorFunction<T, ObservedValueOf<O>>;
 /* tslint:enable:max-line-length */
 

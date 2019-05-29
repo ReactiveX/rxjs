@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { AsyncSubject } from '../AsyncSubject';
 import { multicast } from './multicast';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
-import { UnaryFunction } from '../types';
+import { UnaryFunction, MonoTypeOperatorFunction } from '../types';
 
 /**
  * Returns a connectable observable sequence that shares a single subscription to the
@@ -62,6 +62,6 @@ import { UnaryFunction } from '../types';
  * @owner Observable
  */
 
-export function publishLast<T>(): UnaryFunction<Observable<T>, ConnectableObservable<T>> {
+export function publishLast<T>(): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => multicast(new AsyncSubject<T>())(source);
 }

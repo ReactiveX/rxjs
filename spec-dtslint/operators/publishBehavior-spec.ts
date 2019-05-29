@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { publishBehavior } from 'rxjs/operators';
+import { publishBehavior, map } from 'rxjs/operators';
 
 it('should enforce parameter', () => {
   const a = of(1, 2, 3).pipe(publishBehavior()); // $ExpectError
@@ -10,5 +10,10 @@ it('should infer correctly with parameter', () => {
 });
 
 it('should enforce type on parameter', () => {
-  const a = of(1, 2, 3).pipe(publishBehavior('a'); // $ExpectError
+  const a = of(1, 2, 3).pipe(publishBehavior('a')); // $ExpectType Observable<string | number>
+});
+
+it('should compose properly', () => {
+  const fn = () => Math.random() > 0.5;
+  const a = of(true, false).pipe(map(x => x && fn()), publishBehavior(false)); // $ExpectType Observable<boolean>
 });

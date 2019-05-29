@@ -340,47 +340,4 @@ describe('publish operator', () => {
     expect(subscriptions).to.equal(1);
     done();
   });
-
-  type('should infer the type', () => {
-    /* tslint:disable:no-unused-variable */
-    const source = of(1, 2, 3);
-    const result: ConnectableObservable<number> = source.pipe(publish()) as ConnectableObservable<number>;
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type('should infer the type with a selector', () => {
-    /* tslint:disable:no-unused-variable */
-    const source = of(1, 2, 3);
-    const result: Observable<number> = source.pipe(publish(s => s.pipe(map(x => x))));
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type('should infer the type with a type-changing selector', () => {
-    /* tslint:disable:no-unused-variable */
-    const source = of(1, 2, 3);
-    const result: Observable<string> = source.pipe(publish(s => s.pipe(map(x => x + '!'))));
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type('should infer the type for the pipeable operator', () => {
-    /* tslint:disable:no-unused-variable */
-    const source = of(1, 2, 3);
-    // TODO: https://github.com/ReactiveX/rxjs/issues/2972
-    const result: ConnectableObservable<number> = publish<number>()(source);
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type('should infer the type for the pipeable operator with a selector', () => {
-    /* tslint:disable:no-unused-variable */
-    const source = of(1, 2, 3);
-    const result: Observable<number> = source.pipe(publish(s => s.pipe(map(x => x))));
-    /* tslint:enable:no-unused-variable */
-  });
-
-  type('should infer the type for the pipeable operator with a type-changing selector', () => {
-    /* tslint:disable:no-unused-variable */
-    const source = of(1, 2, 3);
-    const result: Observable<string> = source.pipe(publish(s => s.pipe(map(x => x + '!'))));
-    /* tslint:enable:no-unused-variable */
-  });
 });
