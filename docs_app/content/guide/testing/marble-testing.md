@@ -210,34 +210,39 @@ Sometimes, we need to assert changes in state after an observable stream has com
 For example:
 
 ```ts
-it('should set a local variable', () => {
   let myVar = 0;
-
-  const testScheduler = new TestScheduler(() => {});
-
-  testScheduler.run(helpers => {
-    const { cold, flush } = helpers;
-
-    const myStream$ = cold('--a--b|', {
-      a: 'value emitted',
-      b: 'another value emitter',
-    });
-
+  let myStream$: Observable<string>;
+  const myFunctionUnderTest = () => {
     myStream$
       .pipe(
-        map(() => {
+        tap(() => {
           myVar++;
         }),
       )
       .subscribe();
+  };
 
-    // trigger testScheduler 'virtual time' to complete all outstanding hot or cold observables
-    // (or, 'Pause' in virtual time until the observable completes)
-    flush();
+  it('should set a local variable', () => {
+    const testScheduler = new TestScheduler(() => {});
 
-    expect(myVar).toBe(2);
+    testScheduler.run(helpers => {
+      const { cold, flush } = helpers;
+
+      myStream$ = cold('--a--b|', {
+        a: 'value emitted',
+        b: 'another value emitter',
+      });
+      myVar = 0;
+
+      myFunctionUnderTest();
+
+      // trigger testScheduler 'virtual time' to complete all outstanding hot or cold observables
+      // (or, 'Pause' in virtual time until the observable completes)
+      flush();
+
+      expect(myVar).toBe(2);
+    });
   });
-});
 ```
 
 In the above situation we need the observable stream to complete so that we can test the variable was set to the correct value. The TestScheduler runs in 'virtual time' (synchronously), but doesn't normally run (and complete) until when your callback returns. The flush() method manually triggers the virtual time so that we can test the local variable after the observable completes.
