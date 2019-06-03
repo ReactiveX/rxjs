@@ -205,47 +205,27 @@ it('should repeat forever', () => {
 
 ## Synchronous Assertion
 
-Sometimes, we need to assert changes in state after an observable stream has completed - such as when our subscription doesn’t map to another observable but instead just updates a basic variable. Outside of Marbles testing with TestScheduler, we might think of this as creating a delay or setting a timer before making our assertion.
+Sometimes, we need to assert changes in state _after_ an observable stream has completed - such as when a side effect like `tap` updates a variable. Outside of Marbles testing with TestScheduler, we might think of this as creating a delay or waiting before making our assertion.
 
 For example:
 
 ```ts
-  let myVar = 0;
-  let myStream$: Observable<string>;
-  const myFunctionUnderTest = () => {
-    myStream$
-      .pipe(
-        tap(() => {
-          myVar++;
-        }),
-      )
-      .subscribe();
-  };
+  let eventCount = 0;
 
-  it('should set a local variable', () => {
-    const testScheduler = new TestScheduler(() => {});
+  const s1 = cold('--a--b|', { a: 'x', b: 'y' });
 
-    testScheduler.run(helpers => {
-      const { cold, flush } = helpers;
+  // side effect using 'tap' updates a variable
+  const result = s1.pipe(tap(() => eventCount++));
+  
+  expectObservable(result).toBe('--a--b|', ['x', 'y']);
 
-      myStream$ = cold('--a--b|', {
-        a: 'value emitted',
-        b: 'another value emitter',
-      });
-      myVar = 0;
+  // flush - run 'virtual time' to complete all outstanding hot or cold observables
+  flush();
 
-      myFunctionUnderTest();
-
-      // trigger testScheduler 'virtual time' to complete all outstanding hot or cold observables
-      // (or, 'Pause' in virtual time until the observable completes)
-      flush();
-
-      expect(myVar).toBe(2);
-    });
-  });
+  expect(eventCount).toBe(2);
 ```
 
-In the above situation we need the observable stream to complete so that we can test the variable was set to the correct value. The TestScheduler runs in 'virtual time' (synchronously), but doesn't normally run (and complete) until when your callback returns. The flush() method manually triggers the virtual time so that we can test the local variable after the observable completes.
+In the above situation we need the observable stream to complete so that we can test the variable was set to the correct value. The TestScheduler runs in 'virtual time' (synchronously), but doesn't normally run (and complete) until the testScheduler callback returns. The flush() method manually triggers the virtual time so that we can test the local variable after the observable completes.
 
 ---
 
