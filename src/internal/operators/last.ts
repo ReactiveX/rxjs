@@ -47,6 +47,6 @@ export function last<T, D>(
   return (source: Observable<T>) => source.pipe(
     predicate ? filter((v, i) => predicate(v, i, source)) : identity,
     takeLast(1),
-    hasDefaultValue ? defaultIfEmpty<T | D>(defaultValue) : throwIfEmpty(() => new EmptyError()),
+    hasDefaultValue ? defaultIfEmpty<T, D>(defaultValue) : throwIfEmpty(() => new EmptyError()),
   );
 }
