@@ -65,15 +65,15 @@ describe('merge typings', () => {
     });
 
     it('should accept more than 6 arguments', () => {
-      const o = merge(a, b, c, d, e, f, g, 1); // $ExpectType Observable<any>
+      const o = merge(a, b, c, d, e, f, g, 1); // $ExpectType Observable<{}>
     });
 
     it('should accept a rest of similar arguments', () => {
-      const o = merge(...[a, a, a, a, a, a, a, a, a, a, a, a], 1); // $ExpectType Observable<any>
+      const o = merge(...[a, a, a, a, a, a, a, a, a, a, a, a], 1); // $ExpectType Observable<{}>
     });
 
     it('should accept a rest of different arguments', () => {
-      const o = merge(...[a, b, c], 1); // $ExpectType Observable<any>
+      const o = merge(...[a, b, c], 1); // $ExpectType Observable<{}>
     });
   });
 
@@ -103,15 +103,15 @@ describe('merge typings', () => {
     });
 
     it('should accept more than 6 arguments', () => {
-      const o = merge(a, b, c, d, e, f, g, asapScheduler); // $ExpectType Observable<any>
+      const o = merge(a, b, c, d, e, f, g, asapScheduler); // $ExpectType Observable<{}>
     });
 
     it('should accept a rest of similar arguments', () => {
-      const o = merge(...[a, a, a, a, a, a, a, a, a, a, a, a], asapScheduler); // $ExpectType Observable<any>
+      const o = merge(...[a, a, a, a, a, a, a, a, a, a, a, a], asapScheduler); // $ExpectType Observable<{}>
     });
 
     it('should accept a rest of different arguments', () => {
-      const o = merge(...[a, b, c], asapScheduler); // $ExpectType Observable<any>
+      const o = merge(...[a, b, c], asapScheduler); // $ExpectType Observable<{}>
     });
   });
 
@@ -141,15 +141,15 @@ describe('merge typings', () => {
     });
 
     it('should accept more than 6 arguments', () => {
-      const o = merge(a, b, c, d, e, f, g, 1, asapScheduler); // $ExpectType Observable<any>
+      const o = merge(a, b, c, d, e, f, g, 1, asapScheduler); // $ExpectType Observable<{}>
     });
 
     it('should accept a rest of similar arguments', () => {
-      const o = merge(...[a, a, a, a, a, a, a, a, a, a, a, a], 1, asapScheduler); // $ExpectType Observable<any>
+      const o = merge(...[a, a, a, a, a, a, a, a, a, a, a, a], 1, asapScheduler); // $ExpectType Observable<{}>
     });
 
     it('should accept a rest of different arguments', () => {
-      const o = merge(...[a, b, c], 1, asapScheduler); // $ExpectType Observable<any>
+      const o = merge(...[a, b, c], 1, asapScheduler); // $ExpectType Observable<{}>
     });
   });
 });

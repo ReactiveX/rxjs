@@ -37,5 +37,5 @@ export function merge<T, R>(...observables: Array<ObservableInput<any> | Schedul
  * @deprecated Deprecated in favor of static {@link merge}.
  */
 export function merge<T, R>(...observables: Array<ObservableInput<any> | SchedulerLike | number>): OperatorFunction<T, R> {
-  return (source: Observable<T>) => source.lift.call(mergeStatic(source, ...observables));
+  return (source: Observable<T>) => source.lift.call(mergeStatic(source, ...(observables as any)));
 }
