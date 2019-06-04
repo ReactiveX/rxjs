@@ -17,7 +17,7 @@ import { SubscribableOrPromise } from '../types';
  *
  * Note that Observables for both cases (true and false) are optional. If condition points to an Observable that
  * was left undefined, resulting stream will simply complete immediately. That allows you to, rather
- * then controlling which Observable will be subscribed, decide at runtime if consumer should have access
+ * than controlling which Observable will be subscribed, decide at runtime if consumer should have access
  * to given Observable or not.
  *
  * If you have more complex logic that requires decision between more than two Observables, {@link defer}
