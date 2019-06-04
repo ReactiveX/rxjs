@@ -15,3 +15,7 @@ it('should infer correctly with function return promise', () => {
 it('should support union type returns', () => {
   const a = defer(() => Math.random() > 0.5 ? of(123) : of('abc')); // $ExpectType Observable<string | number>
 });
+
+it('should infer correctly with void functions', () => {
+  const a = defer(() => {}); // $ExpectType Observable<never>
+});
