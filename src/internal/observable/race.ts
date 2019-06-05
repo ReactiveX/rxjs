@@ -31,22 +31,18 @@ export function race<T>(...observables: ObservableInput<T>[]): Observable<T>;
 export function race(...observables: ObservableInput<any>[]): Observable<{}>;
 
 /**
- * Returns an Observable that mirrors the first source Observable to emit an item.
- *
- * <span class="informal">Select an observable sequences that is the first to produce values.</span>
+ * Returns an observable that mirrors the first source observable to emit an item.
  *
  * ![](race.png)
  *
- * `race` can be used to select an observable sequences that is the first to produce
- * values. As soon as one of the sequences starts emitting values the other sequences
- * are unsubscribed and completely ignored. The resulting stream completes when the
- * selected input stream completes and will throw an error if this one stream errors
- * out. It will also never complete if this inner stream doesn’t complete.
+ * `race` returns an observable, that when subscribed to, subscribes to all source observables immediately.
+ * As soon as one of the source observables emits a value, the result unsubscribes from the other sources.
+ * The resulting observable will forward all emissions, including error and completion, from the "winning"
+ * source observable.
  *
- * `race` can be useful if you have multiple resources that can provide values,
- * for example, servers around the world, but due to network conditions the latency
- * is not predictable and varies significantly. Using `race` you can send the same
- * request out to multiple data sources and consume the result of the first that responds.
+ * `race` can be useful for selecting the response from the fastest network connection for
+ * HTTP or WebSockets. `race` can also be useful for switching observable context based on user
+ * input.
  *
  * ## Example
  * ### Subscribes to the observable that was the first to start emitting.
@@ -70,9 +66,6 @@ export function race(...observables: ObservableInput<any>[]): Observable<{}>;
  *
  * @param {...Observables} ...observables sources used to race for which Observable emits first.
  * @return {Observable} an Observable that mirrors the output of the first Observable to emit an item.
- * @static true
- * @name race
- * @owner Observable
  */
 export function race<T>(...observables: ObservableInput<any>[]): Observable<T> {
   // if the only argument is an array, it was most likely called with
