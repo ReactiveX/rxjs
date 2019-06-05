@@ -23,3 +23,7 @@ it('should infer correctly with void functions', () => {
 it('should error if an ObservableInput is not returned', () => {
   const a = defer(() => 42); // $ExpectError
 });
+
+it('should infer correctly with functions that sometimes do not return an ObservableInput', () => {
+  const a = defer(() => { if (Math.random() < 0.5) { return of(42); } }); // $ExpectType Observable<number>
+});
