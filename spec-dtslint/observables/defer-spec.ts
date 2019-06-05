@@ -19,3 +19,7 @@ it('should support union type returns', () => {
 it('should infer correctly with void functions', () => {
   const a = defer(() => {}); // $ExpectType Observable<never>
 });
+
+it('should error if an ObservableInput is not returned', () => {
+  const a = defer(() => 42); // $ExpectError
+});
