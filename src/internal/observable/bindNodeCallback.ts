@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { AsyncSubject } from '../AsyncSubject';
+import { LastValueSubject } from '../LastValueSubject';
 import { Subscriber } from '../Subscriber';
 import { SchedulerAction, SchedulerLike } from '../types';
 import { map } from '../operators/map';
@@ -183,7 +183,7 @@ export function bindNodeCallback<T>(
       let { subject } = params;
       if (!scheduler) {
         if (!subject) {
-          subject = params.subject = new AsyncSubject<T>();
+          subject = params.subject = new LastValueSubject<T>();
           const handler = (...innerArgs: any[]) => {
             const err = innerArgs.shift();
 
@@ -224,7 +224,7 @@ interface ParamsState<T> {
   callbackFunc: Function;
   args: any[];
   scheduler: SchedulerLike;
-  subject: AsyncSubject<T>;
+  subject: LastValueSubject<T>;
   context: any;
 }
 
@@ -234,7 +234,7 @@ function dispatch<T>(this: SchedulerAction<DispatchState<T>>, state: DispatchSta
   let subject = params.subject;
 
   if (!subject) {
-    subject = params.subject = new AsyncSubject<T>();
+    subject = params.subject = new LastValueSubject<T>();
 
     const handler = (...innerArgs: any[]) => {
       const err = innerArgs.shift();
@@ -257,7 +257,7 @@ function dispatch<T>(this: SchedulerAction<DispatchState<T>>, state: DispatchSta
 }
 
 interface DispatchNextArg<T> {
-  subject: AsyncSubject<T>;
+  subject: LastValueSubject<T>;
   value: T;
 }
 
@@ -268,7 +268,7 @@ function dispatchNext<T>(arg: DispatchNextArg<T>) {
 }
 
 interface DispatchErrorArg<T> {
-  subject: AsyncSubject<T>;
+  subject: LastValueSubject<T>;
   err: any;
 }
 

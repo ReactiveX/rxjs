@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BehaviorSubject } from 'rxjs';
+import { CurrentValueSubject } from 'rxjs';
 
 import { TopMenuComponent } from './top-menu.component';
 import { NavigationService, NavigationViews } from 'app/navigation/navigation.service';
@@ -38,5 +38,5 @@ class TestNavigationService {
     ],
   };
 
-  navigationViews = new BehaviorSubject<NavigationViews>(this.navJson);
+  navigationViews = new CurrentValueSubject<NavigationViews>(this.navJson);
 }

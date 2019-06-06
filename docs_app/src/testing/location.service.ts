@@ -1,8 +1,8 @@
-import { BehaviorSubject } from 'rxjs';
+import { CurrentValueSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export class MockLocationService {
-  urlSubject = new BehaviorSubject<string>(this.initialUrl);
+  urlSubject = new CurrentValueSubject<string>(this.initialUrl);
   currentUrl = this.urlSubject.asObservable().pipe(map(url => this.stripSlashes(url)));
   // strip off query and hash
   currentPath = this.currentUrl.pipe(map(url => url.match(/[^?#]*/)![0]));

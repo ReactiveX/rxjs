@@ -1,6 +1,6 @@
 import { SchedulerLike, SchedulerAction } from '../types';
 import { Observable } from '../Observable';
-import { AsyncSubject } from '../AsyncSubject';
+import { LastValueSubject } from '../LastValueSubject';
 import { Subscriber } from '../Subscriber';
 import { map } from '../operators/map';
 import { canReportError } from '../util/canReportError';
@@ -195,7 +195,7 @@ export function bindCallback<T>(
 
   return function (this: any, ...args: any[]): Observable<T> {
     const context = this;
-    let subject: AsyncSubject<T>;
+    let subject: LastValueSubject<T>;
     const params = {
       context,
       subject,
@@ -205,7 +205,7 @@ export function bindCallback<T>(
     return new Observable<T>(subscriber => {
       if (!scheduler) {
         if (!subject) {
-          subject = new AsyncSubject<T>();
+          subject = new LastValueSubject<T>();
           const handler = (...innerArgs: any[]) => {
             subject.next(innerArgs.length <= 1 ? innerArgs[0] : innerArgs);
             subject.complete();
@@ -242,7 +242,7 @@ interface ParamsContext<T> {
   callbackFunc: Function;
   scheduler: SchedulerLike;
   context: any;
-  subject: AsyncSubject<T>;
+  subject: LastValueSubject<T>;
 }
 
 function dispatch<T>(this: SchedulerAction<DispatchState<T>>, state: DispatchState<T>) {
@@ -251,7 +251,7 @@ function dispatch<T>(this: SchedulerAction<DispatchState<T>>, state: DispatchSta
   const { callbackFunc, context, scheduler } = params;
   let { subject } = params;
   if (!subject) {
-    subject = params.subject = new AsyncSubject<T>();
+    subject = params.subject = new LastValueSubject<T>();
 
     const handler = (...innerArgs: any[]) => {
       const value = innerArgs.length <= 1 ? innerArgs[0] : innerArgs;
@@ -269,7 +269,7 @@ function dispatch<T>(this: SchedulerAction<DispatchState<T>>, state: DispatchSta
 }
 
 interface NextState<T> {
-  subject: AsyncSubject<T>;
+  subject: LastValueSubject<T>;
   value: T;
 }
 
@@ -280,7 +280,7 @@ function dispatchNext<T>(this: SchedulerAction<NextState<T>>, state: NextState<T
 }
 
 interface ErrorState<T> {
-  subject: AsyncSubject<T>;
+  subject: LastValueSubject<T>;
   err: any;
 }
 

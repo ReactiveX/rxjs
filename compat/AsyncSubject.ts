@@ -1,1 +1,1 @@
-export {AsyncSubject} from 'rxjs';
+export {LastValueSubject as AsyncSubject} from 'rxjs';

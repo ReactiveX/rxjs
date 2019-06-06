@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BehaviorSubject } from 'rxjs';
+import { CurrentValueSubject } from 'rxjs';
 
 import { ApiListComponent } from './api-list.component';
 import { ApiItem, ApiSection, ApiService } from './api.service';
@@ -234,7 +234,7 @@ class TestLocationService {
 }
 
 class TestApiService {
-  sectionsSubject = new BehaviorSubject(getApiSections());
+  sectionsSubject = new CurrentValueSubject(getApiSections());
   sections = this.sectionsSubject.asObservable();
 }
 

@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { BehaviorSubject } from '../BehaviorSubject';
+import { CurrentValueSubject } from '../CurrentValueSubject';
 import { multicast } from './multicast';
 import { ConnectableObservable } from '../observable/ConnectableObservable';
 import { UnaryFunction } from '../types';
@@ -11,5 +11,5 @@ import { UnaryFunction } from '../types';
  * @owner Observable
  */
 export function publishBehavior<T>(value: T):  UnaryFunction<Observable<T>, ConnectableObservable<T>> {
-  return (source: Observable<T>) => multicast(new BehaviorSubject<T>(value))(source) as ConnectableObservable<T>;
+  return (source: Observable<T>) => multicast(new CurrentValueSubject<T>(value))(source) as ConnectableObservable<T>;
 }

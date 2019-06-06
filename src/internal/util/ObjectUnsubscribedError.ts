@@ -23,7 +23,9 @@ const ObjectUnsubscribedErrorImpl = (() => {
  * unsubscribed.
  *
  * @see {@link Subject}
- * @see {@link BehaviorSubject}
+ * @see {@link CurrentValueSubject}
+ * @see {@link LastValueSubject}
+ * @see {@link ReplaySubject}
  *
  * @class ObjectUnsubscribedError
  */

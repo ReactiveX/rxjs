@@ -50,7 +50,7 @@ export function multicast<T, R>(SubjectFactory: (this: Observable<T>) => Subject
  * source Observable. It means that all values from the source stream go through that Subject. Thus, if a Subject
  * has some special properties, Observable returned by `multicast` will have them as well. If you want to use
  * `multicast` with a Subject that is one of the ones included in RxJS by default - {@link Subject},
- * {@link AsyncSubject}, {@link BehaviorSubject}, or {@link ReplaySubject} - simply use {@link publish},
+ * {@link LastValueSubject}, {@link CurrentValueSubject}, or {@link ReplaySubject} - simply use {@link publish},
  * {@link publishLast}, {@link publishBehavior} or {@link publishReplay} respectively. These are actually
  * just wrappers around `multicast`, with a specific Subject hardcoded inside.
  *

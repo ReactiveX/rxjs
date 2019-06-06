@@ -1,1 +1,1 @@
-export {BehaviorSubject} from 'rxjs';
+export {CurrentValueSubject as BehaviorSubject} from 'rxjs';

@@ -149,7 +149,7 @@ export {
   Observer,
   Subscription,
   ReplaySubject,
-  BehaviorSubject,
+  CurrentValueSubject as BehaviorSubject,
   Notification,
   EmptyError,
   ArgumentOutOfRangeError,
@@ -160,7 +160,7 @@ export {
 
 export {TestScheduler} from 'rxjs/testing';
 
-export { Operator, Subscriber, AsyncSubject, ConnectableObservable, TimeoutError, VirtualTimeScheduler } from 'rxjs';
+export { Operator, Subscriber, LastValueSubject as AsyncSubject, ConnectableObservable, TimeoutError, VirtualTimeScheduler } from 'rxjs';
 export { AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError } from 'rxjs/ajax';
 
 import { asapScheduler, asyncScheduler, queueScheduler, animationFrameScheduler, SchedulerLike } from 'rxjs';

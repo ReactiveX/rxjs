@@ -7,9 +7,9 @@ export { observable } from './internal/symbol/observable';
 
 /* Subjects */
 export { Subject } from './internal/Subject';
-export { BehaviorSubject } from './internal/BehaviorSubject';
+export { CurrentValueSubject, BehaviorSubject } from './internal/CurrentValueSubject';
 export { ReplaySubject } from './internal/ReplaySubject';
-export { AsyncSubject } from './internal/AsyncSubject';
+export { LastValueSubject as LastValueSubject, AsyncSubject } from './internal/LastValueSubject';
 
 /* Schedulers */
 export { asap as asapScheduler } from './internal/scheduler/asap';

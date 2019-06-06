@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { hot, expectObservable } from './helpers/marble-testing';
-import { Subject, ObjectUnsubscribedError, Observable, AsyncSubject, Observer, of } from 'rxjs';
+import { Subject, ObjectUnsubscribedError, Observable, LastValueSubject, Observer, of } from 'rxjs';
 import { AnonymousSubject } from 'rxjs/internal/Subject';
 import { delay } from 'rxjs/operators';
 
@@ -508,7 +508,7 @@ describe('Subject', () => {
 
     it('should work with inherited subject', () => {
       const results: (number | string)[] = [];
-      const subject = new AsyncSubject<number>();
+      const subject = new LastValueSubject<number>();
 
       subject.next(42);
       subject.complete();

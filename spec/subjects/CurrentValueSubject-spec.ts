@@ -1,17 +1,17 @@
 import { expect } from 'chai';
 import { hot, expectObservable } from '../helpers/marble-testing';
-import { BehaviorSubject, Subject, ObjectUnsubscribedError, Observable, of } from 'rxjs';
+import { CurrentValueSubject, Subject, ObjectUnsubscribedError, of } from 'rxjs';
 import { tap, mergeMapTo } from 'rxjs/operators';
 
-/** @test {BehaviorSubject} */
-describe('BehaviorSubject', () => {
+/** @test {CurrentValueSubject} */
+describe('CurrentValueSubject', () => {
   it('should extend Subject', () => {
-    const subject = new BehaviorSubject(null);
+    const subject = new CurrentValueSubject(null);
     expect(subject).to.be.instanceof(Subject);
   });
 
   it('should throw if it has received an error and getValue() is called', () => {
-    const subject = new BehaviorSubject(null);
+    const subject = new CurrentValueSubject(null);
     subject.error(new Error('derp'));
     expect(() => {
       subject.getValue();
@@ -19,8 +19,8 @@ describe('BehaviorSubject', () => {
   });
 
   it('should throw an ObjectUnsubscribedError if getValue() is called ' +
-    'and the BehaviorSubject has been unsubscribed', () => {
-    const subject = new BehaviorSubject('hi there');
+    'and the CurrentValueSubject has been unsubscribed', () => {
+    const subject = new CurrentValueSubject('hi there');
     subject.unsubscribe();
     expect(() => {
       subject.getValue();
@@ -28,7 +28,7 @@ describe('BehaviorSubject', () => {
   });
 
   it('should have a getValue() method to retrieve the current value', () => {
-    const subject = new BehaviorSubject('staltz');
+    const subject = new CurrentValueSubject('staltz');
     expect(subject.getValue()).to.equal('staltz');
 
     subject.next('oj');
@@ -37,7 +37,7 @@ describe('BehaviorSubject', () => {
   });
 
   it('should not allow you to set `value` directly', () => {
-    const subject = new BehaviorSubject('flibberty');
+    const subject = new CurrentValueSubject('flibberty');
 
     try {
       // XXX: escape from readonly restriction for testing.
@@ -51,14 +51,14 @@ describe('BehaviorSubject', () => {
   });
 
   it('should still allow you to retrieve the value from the value property', () => {
-    const subject = new BehaviorSubject('fuzzy');
+    const subject = new CurrentValueSubject('fuzzy');
     expect(subject.value).to.equal('fuzzy');
     subject.next('bunny');
     expect(subject.value).to.equal('bunny');
   });
 
   it('should start with an initialization value', (done: MochaDone) => {
-    const subject = new BehaviorSubject('foo');
+    const subject = new CurrentValueSubject('foo');
     const expected = ['foo', 'bar'];
     let i = 0;
 
@@ -71,7 +71,7 @@ describe('BehaviorSubject', () => {
   });
 
   it('should pump values to multiple subscribers', (done: MochaDone) => {
-    const subject = new BehaviorSubject('init');
+    const subject = new CurrentValueSubject('init');
     const expected = ['init', 'foo', 'bar'];
     let i = 0;
     let j = 0;
@@ -91,7 +91,7 @@ describe('BehaviorSubject', () => {
   });
 
   it('should not pass values nexted after a complete', () => {
-    const subject = new BehaviorSubject('init');
+    const subject = new CurrentValueSubject('init');
     const results: string[] = [];
 
     subject.subscribe((x: string) => {
@@ -110,7 +110,7 @@ describe('BehaviorSubject', () => {
   });
 
   it('should clean out unsubscribed subscribers', (done: MochaDone) => {
-    const subject = new BehaviorSubject('init');
+    const subject = new CurrentValueSubject('init');
 
     const sub1 = subject.subscribe((x: string) => {
       expect(x).to.equal('init');
@@ -129,7 +129,7 @@ describe('BehaviorSubject', () => {
   });
 
   it('should replay the previous value when subscribed', () => {
-    const behaviorSubject = new BehaviorSubject('0');
+    const behaviorSubject = new CurrentValueSubject('0');
     function feedNextIntoSubject(x: string) { behaviorSubject.next(x); }
     function feedErrorIntoSubject(err: any) { behaviorSubject.error(err); }
     function feedCompleteIntoSubject() { behaviorSubject.complete(); }
@@ -155,7 +155,7 @@ describe('BehaviorSubject', () => {
   });
 
   it('should emit complete when subscribed after completed', () => {
-    const behaviorSubject = new BehaviorSubject('0');
+    const behaviorSubject = new CurrentValueSubject('0');
     function feedNextIntoSubject(x: string) { behaviorSubject.next(x); }
     function feedErrorIntoSubject(err: any) { behaviorSubject.error(err); }
     function feedCompleteIntoSubject() { behaviorSubject.complete(); }
@@ -176,7 +176,7 @@ describe('BehaviorSubject', () => {
 
   it('should be an Observer which can be given to Observable.subscribe', (done: MochaDone) => {
     const source = of(1, 2, 3, 4, 5);
-    const subject = new BehaviorSubject(0);
+    const subject = new CurrentValueSubject(0);
     const expected = [0, 1, 2, 3, 4, 5];
 
     subject.subscribe(

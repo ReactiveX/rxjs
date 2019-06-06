@@ -13,7 +13,7 @@ import { SearchResults } from 'app/search/interfaces';
 import { SearchService } from 'app/search/search.service';
 import { TocService } from 'app/shared/toc.service';
 
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { CurrentValueSubject, combineLatest, Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 
 const sideNavView = 'SideNav';
@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
   topMenuNarrowNodes: NavigationNode[];
 
   hasFloatingToc = true;
-  private showFloatingToc = new BehaviorSubject(false);
+  private showFloatingToc = new CurrentValueSubject(false);
   private showFloatingTocWidth = 800;
   tocMaxHeight: string;
   private tocMaxHeightOffset = 0;

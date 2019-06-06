@@ -8,16 +8,16 @@ import {
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ScrollService } from 'app/shared/scroll.service';
-import { BehaviorSubject } from 'rxjs';
+import { CurrentValueSubject } from 'rxjs';
 import { treeNodeStubNoOptions, treeNodeStubWithOptionsA } from './fixtures';
 import { OperatorDecisionTreeComponent } from './operator-decision-tree.component';
 import { OperatorDecisionTreeService } from './operator-decision-tree.service';
 
 const operatorDecisionTreeServiceStub = {
-  currentSentence$: new BehaviorSubject('Conditioner is better'),
-  options$: new BehaviorSubject([treeNodeStubWithOptionsA]),
-  isBeyondInitialQuestion$: new BehaviorSubject(false),
-  hasError$: new BehaviorSubject(false),
+  currentSentence$: new CurrentValueSubject('Conditioner is better'),
+  options$: new CurrentValueSubject([treeNodeStubWithOptionsA]),
+  isBeyondInitialQuestion$: new CurrentValueSubject(false),
+  hasError$: new CurrentValueSubject(false),
   selectOption: jasmine.createSpy(),
   back: jasmine.createSpy(),
   startOver: jasmine.createSpy()

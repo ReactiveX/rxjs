@@ -63,7 +63,7 @@ observable.subscribe(subject); // You can subscribe providing a Subject
 
 With the approach above, we essentially just converted a unicast Observable execution to multicast, through the Subject. This demonstrates how Subjects are the only way of making any Observable execution be shared to multiple Observers.
 
-There are also a few specializations of the `Subject` type: `BehaviorSubject`, `ReplaySubject`, and `AsyncSubject`.
+There are also a few specializations of the `Subject` type: `CurrentValueSubject`, `ReplaySubject`, and `LastValueSubject`.
 
 ## Multicasted Observables
 
@@ -204,17 +204,17 @@ setTimeout(() => {
 
 The `refCount()` operator is only available to use on ConnectableObservable, and it returns an `Observable`, not another ConnectableObservable.
 
-## BehaviorSubject
+## CurrentValueSubject
 
-One of the variants of Subjects is the `BehaviorSubject`, which has a notion of "the current value". It stores the latest value emitted to its consumers, and whenever a new Observer subscribes, it will immediately receive the "current value" from the `BehaviorSubject`.
+One of the variants of Subjects is the `CurrentValueSubject`, which has a notion of "the current value". It stores the latest value emitted to its consumers, and whenever a new Observer subscribes, it will immediately receive the "current value" from the `CurrentValueSubject`.
 
-<span class="informal">BehaviorSubjects are useful for representing "values over time". For instance, an event stream of birthdays is a Subject, but the stream of a person's age would be a BehaviorSubject.</span>
+<span class="informal">CurrentValueSubjects are useful for representing "values over time". For instance, an event stream of birthdays is a Subject, but the stream of a person's age would be a CurrentValueSubject.</span>
 
-In the following example, the BehaviorSubject is initialized with the value `0` which the first Observer receives when it subscribes. The second Observer receives the value `2` even though it subscribed after the value `2` was sent.
+In the following example, the CurrentValueSubject is initialized with the value `0` which the first Observer receives when it subscribes. The second Observer receives the value `2` even though it subscribed after the value `2` was sent.
 
 ```ts
-import { BehaviorSubject } from 'rxjs';
-const subject = new BehaviorSubject(0); // 0 is the initial value
+import { CurrentValueSubject } from 'rxjs';
+const subject = new CurrentValueSubject(0); // 0 is the initial value
 
 subject.subscribe({
   next: (v) => console.log(`observerA: ${v}`)
@@ -240,7 +240,7 @@ subject.next(3);
 
 ## ReplaySubject
 
-A `ReplaySubject` is similar to a `BehaviorSubject` in that it can send current and new values to new subscribers, but it can also *record* a part of the Observable execution.
+A `ReplaySubject` is similar to a `CurrentValueSubject` in that it can send current and new values to new subscribers, but it can also *record* a part of the Observable execution.
 
 <span class="informal">A `ReplaySubject` records multiple values from the Observable execution and replays them to new subscribers.</span>
 
@@ -311,13 +311,13 @@ setTimeout(() => {
 // ...
 ```
 
-## AsyncSubject
+## LastValueSubject
 
-The AsyncSubject is a variant where only the last value of the Observable execution is sent to its observers, and only when the execution completes.
+The LastValueSubject is a variant where only the last value of the Observable execution is sent to its observers, and only when the execution completes.
 
 ```ts
-import { AsyncSubject } from 'rxjs';
-const subject = new AsyncSubject();
+import { LastValueSubject } from 'rxjs';
+const subject = new LastValueSubject();
 
 subject.subscribe({
   next: (v) => console.log(`observerA: ${v}`)
@@ -340,4 +340,4 @@ subject.complete();
 // observerB: 5
 ```
 
-The AsyncSubject is similar to the [`last()`](../class/es6/Observable.js~Observable.html#instance-method-last) operator, in that it waits for the `complete` notification in order to deliver a single value.
+The LastValueSubject is similar to the [`last()`](../class/es6/Observable.js~Observable.html#instance-method-last) operator, in that it waits for the `complete` notification in order to deliver a single value.

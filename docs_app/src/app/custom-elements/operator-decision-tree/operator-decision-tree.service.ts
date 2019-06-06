@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
+import { CurrentValueSubject, combineLatest, Observable, of } from 'rxjs';
 import { catchError, filter, map, mapTo, shareReplay } from 'rxjs/operators';
 import { OperatorDecisionTree, OperatorTreeNode, State } from './interfaces';
 import { OperatorDecisionTreeDataService } from './operator-decision-tree-data.service';
@@ -11,7 +11,7 @@ export class OperatorDecisionTreeService {
     previousBranchIds: ['initial'],
     currentBranchId: 'initial'
   };
-  private state$ = new BehaviorSubject<State>(this.initialState);
+  private state$ = new CurrentValueSubject<State>(this.initialState);
   private tree$: Observable<
     OperatorDecisionTree
   > = this.dataService.getDecisionTree$().pipe(

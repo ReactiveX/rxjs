@@ -254,13 +254,13 @@ children:
         - label: and start it manually or imperatively
           children:
           - label: publish
-      - label: using a BehaviorSubject
+      - label: using a CurrentValueSubject
         children:
         - label: publishBehavior
       - label: using a ReplaySubject
         children:
         - label: publishReplay
-      - label: using an AsyncSubject
+      - label: using a LastValueSubject
         children:
         - label: publishLast
       - label: using a specific subject implementation

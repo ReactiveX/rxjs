@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { AsyncSubject, Observable, of } from 'rxjs';
+import { LastValueSubject, Observable, of } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 
 import { DocumentContents } from './document-contents';
@@ -54,7 +54,7 @@ export class DocumentService {
 
   private fetchDocument(id: string): Observable<DocumentContents> {
     const requestPath = `${DOC_CONTENT_URL_PREFIX}${id}.json`;
-    const subject = new AsyncSubject<DocumentContents>();
+    const subject = new LastValueSubject<DocumentContents>();
 
     this.logger.log('fetching document from', requestPath);
     this.http
