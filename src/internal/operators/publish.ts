@@ -5,9 +5,9 @@ import { ConnectableObservable } from '../observable/ConnectableObservable';
 import { MonoTypeOperatorFunction, OperatorFunction, UnaryFunction, ObservableInput, ObservedValueOf } from '../types';
 
 /* tslint:disable:max-line-length */
+/** @deprecated removed in v8. Use the static version of {@link publish}, (e.g. `import { publish } from 'rxjs'; publish(obs$)`) */
 export function publish<T>(): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
 export function publish<T, O extends ObservableInput<any>>(selector: (shared: Observable<T>) => O): OperatorFunction<T, ObservedValueOf<O>>;
-export function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
 
 /**

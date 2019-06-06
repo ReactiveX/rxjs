@@ -4,10 +4,13 @@ import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { ConnectableObservable, connectableObservableDescriptor } from '../observable/ConnectableObservable';
 import { OperatorFunction, UnaryFunction, ObservedValueOf, ObservableInput } from '../types';
+import { Subscription } from '../Subscription';
 
 /* tslint:disable:max-line-length */
+/** @deprecated remove in v8. Use static version of {@link multicast} */
 export function multicast<T>(subject: Subject<T>): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
 export function multicast<T, O extends ObservableInput<any>>(subject: Subject<T>, selector: (shared: Observable<T>) => O): UnaryFunction<Observable<T>, ConnectableObservable<ObservedValueOf<O>>>;
+/** @deprecated remove in v8. Use static version of {@link multicast} */
 export function multicast<T>(subjectFactory: (this: Observable<T>) => Subject<T>): UnaryFunction<Observable<T>, ConnectableObservable<T>>;
 export function multicast<T, O extends ObservableInput<any>>(SubjectFactory: (this: Observable<T>) => Subject<T>, selector: (shared: Observable<T>) => O): OperatorFunction<T, ObservedValueOf<O>>;
 /* tslint:enable:max-line-length */
@@ -28,18 +31,16 @@ export function multicast<T, O extends ObservableInput<any>>(SubjectFactory: (th
  * @return {Observable} An Observable that emits the results of invoking the selector
  * on the items emitted by a `ConnectableObservable` that shares a single subscription to
  * the underlying stream.
- * @method multicast
- * @owner Observable
  */
 export function multicast<T, R>(subjectOrSubjectFactory: Subject<T> | (() => Subject<T>),
                                 selector?: (source: Observable<T>) => Observable<R>): OperatorFunction<T, R> {
   return function multicastOperatorFunction(source: Observable<T>): Observable<R> {
     let subjectFactory: () => Subject<T>;
     if (typeof subjectOrSubjectFactory === 'function') {
-      subjectFactory = <() => Subject<T>>subjectOrSubjectFactory;
+      subjectFactory = subjectOrSubjectFactory;
     } else {
       subjectFactory = function subjectFactory() {
-        return <Subject<T>>subjectOrSubjectFactory;
+        return subjectOrSubjectFactory;
       };
     }
 
@@ -51,7 +52,7 @@ export function multicast<T, R>(subjectOrSubjectFactory: Subject<T> | (() => Sub
     connectable.source = source;
     connectable.subjectFactory = subjectFactory;
 
-    return <ConnectableObservable<R>> connectable;
+    return connectable;
   };
 }
 
@@ -62,7 +63,8 @@ export class MulticastOperator<T, R> implements Operator<T, R> {
   call(subscriber: Subscriber<R>, source: any): any {
     const { selector } = this;
     const subject = this.subjectFactory();
-    const subscription = selector(subject).subscribe(subscriber);
+    const subscription = new Subscription();
+    subscription.add(selector(subject).subscribe(subscriber));
     subscription.add(source.subscribe(subject));
     return subscription;
   }
