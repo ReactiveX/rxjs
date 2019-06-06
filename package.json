@@ -27,14 +27,12 @@
   "scripts": {
     "precommit": "lint-staged",
     "commitmsg": "validate-commit-msg",
-    "build_all": "npm-run-all compat_build_all clean_dist copy_sources build_cjs build_esm5 build_esm2015 build_esm5_for_rollup build_umd build_types build_legacy_reexport build_migrations generate_packages",
+    "build_all": "npm-run-all clean_dist copy_sources build_cjs build_esm5 build_esm2015 build_esm5_for_rollup build_umd build_types generate_packages",
     "build_cjs": "npm-run-all clean_dist_cjs compile_dist_cjs",
     "build_esm5": "npm-run-all clean_dist_esm5 compile_dist_esm5",
-    "build_esm5_for_rollup": "npm-run-all clean_dist_esm5_for_rollup compile_dist_esm5_for_rollup && mkdirp dist/esm5_for_rollup/node_modules && shx cp -r ./dist-compat/package ./dist/esm5_for_rollup/node_modules/rxjs-compat",
+    "build_esm5_for_rollup": "npm-run-all clean_dist_esm5_for_rollup compile_dist_esm5_for_rollup && mkdirp dist/esm5_for_rollup/node_modules",
     "build_esm2015": "npm-run-all clean_dist_esm2015 compile_dist_esm2015",
     "build_esm2015_for_docs": "npm-run-all clean_dist_esm2015 compile_dist_esm2015_for_docs",
-    "build_legacy_reexport": "npm-run-all compile_legacy_reexport",
-    "build_migrations": "npm-run-all clean_dist_migrations compile_dist_migrations",
     "build_types": "npm-run-all clean_dist_types compile_dist_types",
     "build_closure_core": "node ./tools/make-closure-core.js",
     "build_global": "npm-run-all clean_dist_global build_esm5_for_rollup && mkdirp ./dist/global && node ./tools/make-umd-bundle.js && npm-run-all build_closure_core clean_dist_esm5_for_rollup",
@@ -42,7 +40,7 @@
     "build_perf": "webdriver-manager update && npm-run-all build_cjs build_global perf",
     "build_docs": "npm-run-all build_global build_esm2015_for_docs build_cjs tests2png decision_tree_widget && esdoc -c esdoc.json && npm-run-all clean_dist_esm2015",
     "build_spec": "npm-run-all build_cjs generate_packages",
-    "build_spec_full": "npm-run-all compat_build_cjs compile_legacy_reexport compat_generate_packages build_spec",
+    "build_spec_full": "npm-run-all build_spec",
     "build:spec:browser": "echo \"Browser test is not working currently\" && exit -1 && webpack --config spec/support/webpack.mocha.config.js",
     "clean_dist": "shx rm -rf ./dist",
     "clean_dist_cjs": "shx rm -rf ./dist/cjs",
@@ -50,7 +48,6 @@
     "clean_dist_esm5_for_rollup": "shx rm -rf ./dist/esm5_for_rollup",
     "clean_dist_esm2015": "shx rm -rf ./dist/esm2015",
     "clean_dist_global": "shx rm -rf ./dist/global",
-    "clean_dist_migrations": "shx rm -rf ./dist/migrations",
     "clean_dist_types": "shx rm -rf ./dist/typings",
     "commit": "git-cz",
     "compile_dist_cjs": "tsc -p ./tsconfig/tsconfig.cjs.json",
@@ -58,9 +55,7 @@
     "compile_dist_esm2015": "tsc -p ./tsconfig/tsconfig.esm2015.json",
     "compile_dist_esm2015_for_docs": "tsc ./dist/src/internal/Rx.ts ./dist/src/add/observable/of.ts ./dist/src/MiscJSDoc.ts -m es2015   --sourceMap --outDir ./dist/es6 --target es2015 -d --diagnostics --pretty --noImplicitAny --noImplicitReturns --noImplicitThis --suppressImplicitAnyIndexErrors --moduleResolution node",
     "compile_dist_esm5_for_rollup": "tsc -p ./tsconfig/tsconfig.esm5.rollup.json",
-    "compile_dist_migrations": "tsc -p ./tsconfig/tsconfig.migrations.json",
     "compile_dist_types": "tsc -p ./tsconfig/tsconfig.types.json",
-    "compile_legacy_reexport": "tsc -p ./tsconfig/tsconfig.legacy-reexport.json",
     "copy_sources": "mkdirp dist && shx cp -r ./src/ ./dist/src",
     "decision_tree_widget": "cd doc/decision-tree-widget && npm run build && cd ../..",
     "doctoc": "doctoc CONTRIBUTING.md",
@@ -82,26 +77,7 @@
     "test:systemjs": "node integration/systemjs/systemjs-compatibility-spec.js",
     "test:side-effects": "check-side-effects --test integration/side-effects/side-effects.json",
     "test:side-effects:update": "npm run test:side-effects -- --update",
-    "tests2png": "mkdirp docs_app/content/img && mocha --opts spec/support/tests2png.opts \"spec/**/*-spec.ts\"",
-    "compat_build_all": "npm-run-all compat_clean_dist compat_build_cjs compat_build_esm5 compat_build_esm2015 compat_build_esm5_for_rollup compat_build_umd compat_generate_packages",
-    "compat_build_closure": "node ./tools/make-closure-compat.js",
-    "compat_build_cjs": "npm-run-all compat_clean_dist_cjs compat_compile_dist_cjs",
-    "compat_build_esm5": "npm-run-all compat_clean_dist_esm5 compat_compile_dist_esm5",
-    "compat_build_esm2015": "npm-run-all compat_clean_dist_esm2015 compat_compile_dist_esm2015",
-    "compat_build_esm5_for_rollup": "npm-run-all compat_clean_dist_esm5_for_rollup compat_compile_dist_esm5_for_rollup",
-    "compat_build_umd": "npm-run-all compat_clean_dist_global && mkdirp ./dist-compat/global && node ./tools/make-umd-compat-bundle.js && npm-run-all compat_build_closure",
-    "compat_clean_dist": "shx rm -rf ./dist-compat",
-    "compat_clean_dist_cjs": "shx rm -rf ./dist-compat/cjs",
-    "compat_clean_dist_esm5": "shx rm -rf ./dist-compat/esm5",
-    "compat_clean_dist_esm2015": "shx rm -rf ./dist-compat/esm2015",
-    "compat_clean_dist_esm5_for_rollup": "shx rm -rf ./dist-compat/esm5_for_rollup",
-    "compat_clean_dist_global": "shx rm -rf ./dist-compat/global",
-    "compat_compile_dist_cjs": "tsc -p ./tsconfig/compat/tsconfig.cjs.json",
-    "compat_compile_dist_esm5": "tsc -p ./tsconfig/compat/tsconfig.esm5.json",
-    "compat_compile_dist_esm5_for_rollup": "tsc -p ./tsconfig/compat/tsconfig.esm5.rollup.json",
-    "compat_compile_dist_esm2015": "tsc -p ./tsconfig/compat/tsconfig.esm2015.json",
-    "compat_copy_sources": "mkdirp dist-compat && shx cp -r ./compat/ ./dist-compat/",
-    "compat_generate_packages": "node .make-compat-package.js"
+    "tests2png": "mkdirp docs_app/content/img && mocha --opts spec/support/tests2png.opts \"spec/**/*-spec.ts\""
   },
   "repository": {
     "type": "git",
@@ -222,8 +198,5 @@
   "engines": {
     "npm": ">=2.0.0"
   },
-  "typings": "./dist/package/Rx.d.ts",
-  "ng-update": {
-    "migrations": "./migrations/collection.json"
-  }
+  "typings": "./dist/package/Rx.d.ts"
 }

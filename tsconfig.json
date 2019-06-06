@@ -3,11 +3,14 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "rxjs": ["./src"],
-      "rxjs/*": ["./src/*", "./legacy-reexport/*"],
-      "rxjs-compat": ["./compat/index"],
-      "rxjs-compat/*": ["./compat/*"]
+      "rxjs": ["./src/index"],
+      "rxjs/operators": ["./src/operators/index"],
+      "rxjs/testing": ["./src/testing/index"],
+      "rxjs/ajax": ["./src/ajax/index"],
+      "rxjs/webSocket": ["./src/webSocket/index"],
+      "rxjs/fetch": ["./src/fetch/index"],
+      "rxjs/internal/*": ["./src/internal/*"]
     }
   },
-  "exclude": ["./dist", "./dist-compat"]
+  "exclude": ["./dist"]
 }

@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { queue } from 'rxjs/scheduler/queue';
 import { fromIterable } from 'rxjs/internal/observable/fromIterable';
 import { iterator as symbolIterator } from 'rxjs/internal/symbol/iterator';
 import { TestScheduler } from 'rxjs/testing';
@@ -101,7 +100,7 @@ describe('fromIterable', () => {
 
     const results: any[] = [];
 
-    fromIterable(iterable as any, queue)
+    fromIterable(iterable as any, queueScheduler)
       .pipe(take(3))
       .subscribe(
         x => results.push(x),

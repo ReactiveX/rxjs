@@ -36,30 +36,7 @@ function copySources(rootDir, packageDir, ignoreMissing) {
   fs.copySync('./README.md', packageDir + 'README.md');
 }
 
-// Create a file that exports the importTargets object
-function createImportTargets(importTargets, targetName, targetDirectory) {
-  const importMap = {};
-  for (const x in importTargets) {
-    importMap['rxjs/' + x] = ('rxjs-compat/' + targetName + importTargets[x]).replace(/\.js$/, '');
-  }
-
-  const outputData =
-`
-"use strict"
-
-var path = require('path');
-var dir = path.resolve(__dirname);
-
-module.exports = function() {
-  return ${JSON.stringify(importMap, null, 4)};
-}
-`
-
-  fs.outputFileSync(targetDirectory + 'path-mapping.js', outputData);
-}
-
 module.exports = {
   copySources,
-  createImportTargets,
   cleanSourceMapRoot
 }

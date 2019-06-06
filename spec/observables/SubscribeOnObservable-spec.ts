@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { SubscribeOnObservable } from 'rxjs/observable/SubscribeOnObservable';
+import { SubscribeOnObservable } from 'rxjs/internal/observable/SubscribeOnObservable';
 import { hot, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { TestScheduler } from 'rxjs/testing';
 import { asapScheduler } from 'rxjs';

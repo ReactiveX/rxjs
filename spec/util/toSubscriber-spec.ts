@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { toSubscriber } from 'rxjs/internal-compatibility';
+import { toSubscriber } from 'src/internal/util/toSubscriber';
 
 describe('toSubscriber', () => {
   it('should not be closed when other subscriber created with no arguments completes', () => {
