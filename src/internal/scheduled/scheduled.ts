@@ -2,11 +2,12 @@ import { scheduleObservable } from './scheduleObservable';
 import { schedulePromise } from './schedulePromise';
 import { scheduleArray } from './scheduleArray';
 import { scheduleIterable } from './scheduleIterable';
-import { ObservableInput, SchedulerLike, Observable } from 'rxjs';
 import { isInteropObservable } from '../util/isInteropObservable';
 import { isPromise } from '../util/isPromise';
 import { isArrayLike } from '../util/isArrayLike';
 import { isIterable } from '../util/isIterable';
+import { ObservableInput, SchedulerLike } from '../types';
+import { Observable } from '../Observable';
 
 /**
  * Converts from a common {@link ObservableInput} type to an observable where subscription and emissions

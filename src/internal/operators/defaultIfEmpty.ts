@@ -4,8 +4,7 @@ import { Subscriber } from '../Subscriber';
 import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
 
 /* tslint:disable:max-line-length */
-export function defaultIfEmpty<T>(defaultValue?: T): MonoTypeOperatorFunction<T>;
-export function defaultIfEmpty<T, R>(defaultValue?: R): OperatorFunction<T, T | R>;
+export function defaultIfEmpty<T, R = T>(defaultValue?: R): OperatorFunction<T, T | R>;
 /* tslint:enable:max-line-length */
 
 /**

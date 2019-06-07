@@ -52,16 +52,16 @@ import { empty } from './empty';
  * @name defer
  * @owner Observable
  */
-export function defer<O extends ObservableInput<any>>(observableFactory: () => O | void): Observable<ObservedValueOf<O>> {
-  return new Observable<ObservedValueOf<O>>(subscriber => {
-    let input: O | void;
+export function defer<R extends ObservableInput<any> | void>(observableFactory: () => R): Observable<ObservedValueOf<R>> {
+  return new Observable<ObservedValueOf<R>>(subscriber => {
+    let input: R | void;
     try {
       input = observableFactory();
     } catch (err) {
       subscriber.error(err);
       return undefined;
     }
-    const source = input ? from(input) : empty();
+    const source = input ? from(input as ObservableInput<ObservedValueOf<R>>) : empty();
     return source.subscribe(subscriber);
   });
 }
