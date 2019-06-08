@@ -6,24 +6,28 @@ import { async } from '../scheduler/async';
 import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types';
 
 /**
- * Emits a value from the source Observable only after a particular time span
+ * Emits a notification from the source Observable only after a particular time span
  * has passed without another source emission.
  *
  * <span class="informal">It's like {@link delay}, but passes only the most
- * recent value from each burst of emissions.</span>
+ * recent notification from each burst of emissions.</span>
  *
  * ![](debounceTime.png)
  *
- * `debounceTime` delays values emitted by the source Observable, but drops
- * previous pending delayed emissions if a new value arrives on the source
- * Observable. This operator keeps track of the most recent value from the
- * source Observable, and emits that only when `dueTime` enough time has passed
- * without any other value appearing on the source Observable. If a new value
- * appears before `dueTime` silence occurs, the previous value will be dropped
- * and will not be emitted on the output Observable.
+ * `debounceTime` delays notifications emitted by the source Observable, but drops
+ * previous pending delayed emissions if a new notification arrives on the source
+ * Observable. This operator keeps track of the most recent notification from the
+ * source Observable, and emits that only when `dueTime` has passed
+ * without any other notification appearing on the source Observable. If a new value
+ * appears before `dueTime` silence occurs, the previous notification will be dropped
+ * and will not be emitted and a new `dueTime` is scheduled.
+ * If the completing event happens during `dueTime` the last cached notification
+ * is emitted before the completion event is forwarded to the output observable.
+ * If the error event happens during `dueTime` or after it only the error event is
+ * forwarded to the output observable. The cache notification is not emitted in this case.
  *
  * This is a rate-limiting operator, because it is impossible for more than one
- * value to be emitted in any time window of duration `dueTime`, but it is also
+ * notification to be emitted in any time window of duration `dueTime`, but it is also
  * a delay-like operator since output emissions do not occur at the same time as
  * they did on the source Observable. Optionally takes a {@link SchedulerLike} for
  * managing timers.
@@ -39,10 +43,13 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * result.subscribe(x => console.log(x));
  * ```
  *
+ * @see {@link audit}
  * @see {@link auditTime}
  * @see {@link debounce}
- * @see {@link delay}
+ * @see {@link debounceTime}
+ * @see {@link sample}
  * @see {@link sampleTime}
+ * @see {@link throttle}
  * @see {@link throttleTime}
  *
  * @param {number} dueTime The timeout duration in milliseconds (or the time
