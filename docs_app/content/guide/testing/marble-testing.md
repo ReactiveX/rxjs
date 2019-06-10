@@ -72,7 +72,7 @@ How many virtual milliseconds one frame represents depends on the value of `Test
 - `'#'` error: An error terminating the observable. This is the observable producer signaling `error()`.
 - `[a-z0-9]` e.g. `'a'` any alphanumeric character: Represents a value being emitted by the producer signaling `next()`. Also consider that you could map this into an object or an array like this:
 
-```js
+```ts
     const expected = '400ms (a-b|)';
     const values = {
       a: 'value emitted',
@@ -213,7 +213,7 @@ If you have RxJS code that uses any other form of asynchronous scheduling other 
 
 The solution is to test that code in isolation, with the traditional asynchronous testing methods of your testing framework. The specifics depend on your testing framework of choice, but here's a pseudo-code example:
 
-```js
+```ts
 // Some RxJS code that also consumes a Promise, so TestScheduler won't be able
 // to correctly virtualize and the test will always be really asynchronous.
 const myAsyncCode = () => from(Promise.resolve('something'));
