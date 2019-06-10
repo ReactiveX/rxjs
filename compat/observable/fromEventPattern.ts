@@ -1,1 +1,0 @@
-export { fromEventPattern } from 'rxjs';

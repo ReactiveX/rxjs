@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { Observable, Subscriber, asapScheduler as asap, range, of} from 'rxjs';
+import { Subscriber, asapScheduler as asap, range, of} from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { expectObservable } from '../helpers/marble-testing';
-import { dispatch } from 'rxjs/observable/range';
+import { dispatch } from 'rxjs/internal/observable/range';
 import { concatMap, delay } from 'rxjs/operators';
 
 declare const asDiagram: any;

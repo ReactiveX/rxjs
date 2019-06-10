@@ -1,1 +1,0 @@
-export { pairs } from 'rxjs';

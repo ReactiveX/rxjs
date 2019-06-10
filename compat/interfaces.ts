@@ -1,1 +1,0 @@
-export { UnaryFunction, OperatorFunction, FactoryOrValue, MonoTypeOperatorFunction } from 'rxjs';
