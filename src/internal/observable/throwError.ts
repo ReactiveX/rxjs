@@ -17,7 +17,7 @@ import { Subscriber } from '../Subscriber';
  *
  * ## Examples
  * ### Emit the number 7, then emit an error
- * ```javascript
+ * ```ts
  * import { throwError, concat, of } from 'rxjs';
  *
  * const result = concat(of(7), throwError(new Error('oops!')));
@@ -31,7 +31,7 @@ import { Subscriber } from '../Subscriber';
  * ---
  *
  * ### Map and flatten numbers to the sequence 'a', 'b', 'c', but throw an error for 2
- * ```javascript
+ * ```ts
  * import { throwError, interval, of } from 'rxjs';
  * import { mergeMap } from 'rxjs/operators';
  *

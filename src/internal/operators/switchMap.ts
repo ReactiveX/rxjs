@@ -46,6 +46,7 @@ export function switchMap<T, R, O extends ObservableInput<any>>(project: (value:
  * // outputs
  * // 1
  * // 1
+ * // 1
  * // 2
  * // 4
  * // 8
@@ -53,7 +54,7 @@ export function switchMap<T, R, O extends ObservableInput<any>>(project: (value:
  * ```
  *
  * Rerun an interval Observable on every click event
- * ```javascript
+ * ```ts
  * import { fromEvent, interval } from 'rxjs';
  * import { switchMap } from 'rxjs/operators';
  *

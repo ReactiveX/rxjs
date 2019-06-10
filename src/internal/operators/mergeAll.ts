@@ -1,4 +1,3 @@
-
 import { mergeMap } from './mergeMap';
 import { identity } from '../util/identity';
 import { OperatorFunction, ObservableInput } from '../types';
@@ -20,7 +19,7 @@ import { OperatorFunction, ObservableInput } from '../types';
  *
  * ## Examples
  * Spawn a new interval Observable for each click event, and blend their outputs as one Observable
- * ```javascript
+ * ```ts
  * import { fromEvent, interval } from 'rxjs';
  * import { map, mergeAll } from 'rxjs/operators';
  *
@@ -31,7 +30,7 @@ import { OperatorFunction, ObservableInput } from '../types';
  * ```
  *
  * Count from 0 to 9 every second for each click, but only allow 2 concurrent timers
- * ```javascript
+ * ```ts
  * import { fromEvent, interval } from 'rxjs';
  * import { take, map, mergeAll } from 'rxjs/operators';
  *

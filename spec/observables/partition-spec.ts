@@ -1,16 +1,13 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
+import { Observable, partition, of } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
-// TODO: The imports on these tests can't be modernized until we do away with
-// the partition "operator" and make it a creation method.
 declare function asDiagram(arg: string): Function;
-
-const Observable = Rx.Observable;
 
 /** @test {partition} */
 describe('Observable.prototype.partition', () => {
-  function expectObservableArray(result: Rx.Observable<string>[], expected: string[]) {
+  function expectObservableArray(result: Observable<string>[], expected: string[]) {
     for (let idx = 0; idx < result.length; idx++ ) {
       expectObservable(result[idx]).toBe(expected[idx]);
     }
@@ -23,7 +20,7 @@ describe('Observable.prototype.partition', () => {
     const expected = ['--1-----3---------5------|',
                     '----2----------4------6--|'];
 
-    const result = e1.partition((x: any) => x % 2 === 1);
+    const result = partition(e1, (x: any) => x % 2 === 1);
 
     expectObservableArray(result, expected);
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
@@ -39,7 +36,7 @@ describe('Observable.prototype.partition', () => {
       return x === 'a';
     }
 
-    expectObservableArray(e1.partition(predicate), expected);
+    expectObservableArray(partition(e1, predicate), expected);
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
   });
 
@@ -53,7 +50,7 @@ describe('Observable.prototype.partition', () => {
       return index % 2 === 0;
     }
 
-    expectObservableArray(e1.partition(predicate), expected);
+    expectObservableArray(partition(e1, predicate), expected);
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
   });
 
@@ -67,7 +64,7 @@ describe('Observable.prototype.partition', () => {
       return x === this.value;
     }
 
-    expectObservableArray(e1.partition(predicate, {value: 'a'}), expected);
+    expectObservableArray(partition(e1, predicate, {value: 'a'}), expected);
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
   });
 
@@ -81,7 +78,7 @@ describe('Observable.prototype.partition', () => {
       return x === 'a';
     }
 
-    expectObservableArray(e1.partition(predicate), expected);
+    expectObservableArray(partition(e1, predicate), expected);
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
   });
 
@@ -95,7 +92,7 @@ describe('Observable.prototype.partition', () => {
       return x === 'a';
     }
 
-    expectObservableArray(e1.partition(predicate), expected);
+    expectObservableArray(partition(e1, predicate), expected);
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
   });
 
@@ -115,7 +112,7 @@ describe('Observable.prototype.partition', () => {
       return match;
     }
 
-    expectObservableArray(e1.partition(predicate), expected);
+    expectObservableArray(partition(e1, predicate), expected);
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
   });
 
@@ -129,7 +126,7 @@ describe('Observable.prototype.partition', () => {
       return x === 'x';
     }
 
-    expectObservableArray(e1.partition(predicate), expected);
+    expectObservableArray(partition(e1, predicate), expected);
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
   });
 
@@ -143,7 +140,7 @@ describe('Observable.prototype.partition', () => {
       return x === 'x';
     }
 
-    expectObservableArray(e1.partition(predicate), expected);
+    expectObservableArray(partition(e1, predicate), expected);
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
   });
 
@@ -157,7 +154,7 @@ describe('Observable.prototype.partition', () => {
       return x === 'a';
     }
 
-    expectObservableArray(e1.partition(predicate), expected);
+    expectObservableArray(partition(e1, predicate), expected);
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
   });
 
@@ -171,7 +168,7 @@ describe('Observable.prototype.partition', () => {
       return x === 'a';
     }
 
-    expectObservableArray(e1.partition(predicate), expected);
+    expectObservableArray(partition(e1, predicate), expected);
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
   });
 
@@ -185,7 +182,7 @@ describe('Observable.prototype.partition', () => {
       return x === 'a';
     }
 
-    expectObservableArray(e1.partition(predicate), expected);
+    expectObservableArray(partition(e1, predicate), expected);
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
   });
 
@@ -199,7 +196,7 @@ describe('Observable.prototype.partition', () => {
       return x === 'a';
     }
 
-    expectObservableArray(e1.partition(predicate), expected);
+    expectObservableArray(partition(e1, predicate), expected);
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
   });
 
@@ -213,7 +210,7 @@ describe('Observable.prototype.partition', () => {
       return x === 'a';
     }
 
-    expectObservableArray(e1.partition(predicate), expected);
+    expectObservableArray(partition(e1, predicate), expected);
     expectSubscriptions(e1.subscriptions).toBe([e1subs, e1subs]);
   });
 
@@ -227,7 +224,7 @@ describe('Observable.prototype.partition', () => {
     function predicate(x: string) {
       return x === 'a';
     }
-    const result = e1.partition(predicate);
+    const result = partition(e1, predicate);
 
     for (let idx = 0; idx < result.length; idx++ ) {
       expectObservable(result[idx], unsub).toBe(expected[idx]);
@@ -242,11 +239,10 @@ describe('Observable.prototype.partition', () => {
                     '----b---          '];
     const unsub =     '       !          ';
 
-    const result = e1
-      .mergeMap((x: string) => Observable.of(x))
-      .partition((x: string) => x === 'a')
-      .map((observable: Rx.Observable<string>) =>
-        observable.mergeMap((x: string) => Observable.of(x)));
+    const e1Pipe = e1.pipe(
+      mergeMap((x: string) => of(x))
+    );
+    const result = partition(e1Pipe, (x: string) => x === 'a');
 
     expectObservable(result[0], unsub).toBe(expected[0]);
     expectObservable(result[1], unsub).toBe(expected[1]);
@@ -256,10 +252,10 @@ describe('Observable.prototype.partition', () => {
   it('should accept thisArg', () => {
     const thisArg = {};
 
-    Observable.of(1).partition(function (this: any, value: number) {
+    partition(of(1), function (this: any, value: number) {
       expect(this).to.deep.equal(thisArg);
       return true;
     }, thisArg)
-      .forEach((observable: Rx.Observable<number>) => observable.subscribe());
+      .forEach((observable: Observable<number>) => observable.subscribe());
   });
 });

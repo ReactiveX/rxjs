@@ -36,7 +36,7 @@ export function race(...observables: ObservableInput<any>[]): Observable<{}>;
  * ## Example
  * ### Subscribes to the observable that was the first to start emitting.
  *
- * ```javascript
+ * ```ts
  * import { race, interval } from 'rxjs';
  * import { mapTo } from 'rxjs/operators';
  *
@@ -136,5 +136,15 @@ export class RaceSubscriber<T> extends OuterSubscriber<T, T> {
     }
 
     this.destination.next(innerValue);
+  }
+
+  notifyComplete(innerSub: InnerSubscriber<T, T>): void {
+    this.hasFirst = true;
+    super.notifyComplete(innerSub);
+  }
+
+  notifyError(error: any, innerSub: InnerSubscriber<T, T>): void {
+    this.hasFirst = true;
+    super.notifyError(error, innerSub);
   }
 }

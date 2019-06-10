@@ -33,7 +33,7 @@ will emit `1`, `4`, `9`.  Another useful operator is [`first`](/api/operators/fi
 import { of } from 'rxjs';
 import { first } from 'rxjs/operators';
 
-first()(of(1, 2, 3).subscribe((v) => console.log(`value: ${v}`));
+first()(of(1, 2, 3)).subscribe((v) => console.log(`value: ${v}`));
 
 // Logs:
 // value: 1 

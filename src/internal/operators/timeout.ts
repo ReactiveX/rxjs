@@ -1,8 +1,4 @@
 import { async } from '../scheduler/async';
-import { isDate } from '../util/isDate';
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
-import { Observable } from '../Observable';
 import { TimeoutError } from '../util/TimeoutError';
 import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
 import { timeoutWith } from './timeoutWith';
@@ -39,7 +35,7 @@ import { throwError } from '../observable/throwError';
  *
  * ## Examples
  * Check if ticks are emitted within certain timespan
- * ```javascript
+ * ```ts
  * import { interval } from 'rxjs';
  * import { timeout } from 'rxjs/operators';
  *
@@ -61,7 +57,7 @@ import { throwError } from '../observable/throwError';
  * ```
  *
  * Use Date to check if Observable completed
- * ```javascript
+ * ```ts
  * import { interval } from 'rxjs';
  * import { timeout } from 'rxjs/operators';
  *

@@ -11,13 +11,16 @@ export function distinctUntilChanged<T, K>(compare: (x: K, y: K) => boolean, key
 /**
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
  *
- * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.
+ * <span class="informal">It's like {@link filter}, but just emits the values that are distinct from the previous.</span>
  *
+ * ![](distinctUntilChanged.png)
+ *
+ * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.
  * If a comparator function is not provided, an equality check is used by default.
  *
  * ## Example
  * A simple example with numbers
- * ```javascript
+ * ```ts
  * import { of } from 'rxjs';
  * import { distinctUntilChanged } from 'rxjs/operators';
  *

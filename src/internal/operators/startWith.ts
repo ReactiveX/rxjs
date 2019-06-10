@@ -1,19 +1,32 @@
 import { Observable } from '../Observable';
-import { fromArray } from '../observable/fromArray';
-import { scalar } from '../observable/scalar';
-import { empty } from '../observable/empty';
-import { concat as concatStatic } from '../observable/concat';
+import { concat } from '../observable/concat';
 import { isScheduler } from '../util/isScheduler';
 import { MonoTypeOperatorFunction, OperatorFunction, SchedulerLike } from '../types';
 
 /* tslint:disable:max-line-length */
-export function startWith<T>(scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
-export function startWith<T, D = T>(v1: D, scheduler?: SchedulerLike): OperatorFunction<T, T | D>;
-export function startWith<T, D = T, E = T>(v1: D, v2: E, scheduler?: SchedulerLike): OperatorFunction<T, T | D | E>;
-export function startWith<T, D = T, E = T, F = T>(v1: D, v2: E, v3: F, scheduler?: SchedulerLike): OperatorFunction<T, T | D | E | F>;
-export function startWith<T, D = T, E = T, F = T, G = T>(v1: D, v2:  E, v3: F, v4: G, scheduler?: SchedulerLike): OperatorFunction<T, T | D | E | F | G>;
-export function startWith<T, D = T, E = T, F = T, G = T, H = T>(v1: D, v2: E, v3: F, v4: G, v5: H, scheduler?: SchedulerLike): OperatorFunction<T, T | D | E | F | G | H>;
-export function startWith<T, D = T, E = T, F = T, G = T, H = T, I = T>(v1: D, v2: E, v3: F, v4: G, v5: H, v6: I, scheduler?: SchedulerLike): OperatorFunction<T, T | D | E | F | G | H | I>;
+/** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([[a, b, c], source], scheduler).pipe(concatAll())`) */
+export function startWith<T>(scheduler: SchedulerLike): MonoTypeOperatorFunction<T>;
+/** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([[a, b, c], source], scheduler).pipe(concatAll())`) */
+export function startWith<T, D>(v1: D, scheduler: SchedulerLike): OperatorFunction<T, T | D>;
+/** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([[a, b, c], source], scheduler).pipe(concatAll())`) */
+export function startWith<T, D, E>(v1: D, v2: E, scheduler: SchedulerLike): OperatorFunction<T, T | D | E>;
+/** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([[a, b, c], source], scheduler).pipe(concatAll())`) */
+export function startWith<T, D, E, F>(v1: D, v2: E, v3: F, scheduler: SchedulerLike): OperatorFunction<T, T | D | E | F>;
+/** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([[a, b, c], source], scheduler).pipe(concatAll())`) */
+export function startWith<T, D, E, F, G>(v1: D, v2:  E, v3: F, v4: G, scheduler: SchedulerLike): OperatorFunction<T, T | D | E | F | G>;
+/** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([[a, b, c], source], scheduler).pipe(concatAll())`) */
+export function startWith<T, D, E, F, G, H>(v1: D, v2: E, v3: F, v4: G, v5: H, scheduler: SchedulerLike): OperatorFunction<T, T | D | E | F | G | H>;
+/** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([[a, b, c], source], scheduler).pipe(concatAll())`) */
+export function startWith<T, D, E, F, G, H, I>(v1: D, v2: E, v3: F, v4: G, v5: H, v6: I, scheduler: SchedulerLike): OperatorFunction<T, T | D | E | F | G | H | I>;
+
+export function startWith<T, D>(v1: D): OperatorFunction<T, T | D>;
+export function startWith<T, D, E>(v1: D, v2: E): OperatorFunction<T, T | D | E>;
+export function startWith<T, D, E, F>(v1: D, v2: E, v3: F): OperatorFunction<T, T | D | E | F>;
+export function startWith<T, D, E, F, G>(v1: D, v2:  E, v3: F, v4: G): OperatorFunction<T, T | D | E | F | G>;
+export function startWith<T, D, E, F, G, H>(v1: D, v2: E, v3: F, v4: G, v5: H): OperatorFunction<T, T | D | E | F | G | H>;
+export function startWith<T, D, E, F, G, H, I>(v1: D, v2: E, v3: F, v4: G, v5: H, v6: I): OperatorFunction<T, T | D | E | F | G | H | I>;
+export function startWith<T, D = T>(...array: D[]): OperatorFunction<T, T | D>;
+/** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([[a, b, c], source], scheduler).pipe(concatAll())`) */
 export function startWith<T, D = T>(...array: Array<D | SchedulerLike>): OperatorFunction<T, T | D>;
 /* tslint:enable:max-line-length */
 
@@ -30,7 +43,7 @@ export function startWith<T, D = T>(...array: Array<D | SchedulerLike>): Operato
  *
  * Start the chain of emissions with `"first"`, `"second"`
  *
- * ```javascript
+ * ```ts
  * import { of } from 'rxjs';
  * import { startWith } from 'rxjs/operators';
  *
@@ -53,21 +66,12 @@ export function startWith<T, D = T>(...array: Array<D | SchedulerLike>): Operato
  * @owner Observable
  */
 export function startWith<T, D>(...array: Array<T | SchedulerLike>): OperatorFunction<T, T | D> {
-  return (source: Observable<T>) => {
-    let scheduler = <SchedulerLike>array[array.length - 1];
-    if (isScheduler(scheduler)) {
-      array.pop();
-    } else {
-      scheduler = null;
-    }
-
-    const len = array.length;
-    if (len === 1 && !scheduler) {
-      return concatStatic(scalar(array[0] as T), source);
-    } else if (len > 0) {
-      return concatStatic(fromArray(array as T[], scheduler), source);
-    } else {
-      return concatStatic(empty(scheduler), source);
-    }
-  };
+  const scheduler = array[array.length - 1] as SchedulerLike;
+  if (isScheduler(scheduler)) {
+    // deprecated path
+    array.pop();
+    return (source: Observable<T>) => concat(array as T[], source, scheduler);
+  } else {
+    return (source: Observable<T>) => concat(array as T[], source);
+  }
 }

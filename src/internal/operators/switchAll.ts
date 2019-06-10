@@ -27,7 +27,7 @@ export function switchAll<R>(): OperatorFunction<any, R>;
  *
  * ```ts
  * import { fromEvent, interval } from 'rxjs';
- * import { switchAll, map } from 'rxjs/operators';
+ * import { switchAll, map, tap } from 'rxjs/operators';
  *
  * const clicks = fromEvent(document, 'click').pipe(tap(() => console.log('click')));
  * const source = clicks.pipe(map((ev) => interval(1000)));

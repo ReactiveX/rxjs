@@ -19,7 +19,7 @@ import { OperatorFunction } from '../types';
  *
  * ## Example
  * Map every click to the clientX position of that click
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { map } from 'rxjs/operators';
  *

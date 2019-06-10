@@ -30,15 +30,15 @@ any way the developer sees fit, but here are some guidelines:
 ### Example
 
 <!-- skip-example -->
-```js
+```ts
 function mySimpleOperator(someCallback) {
-   // We *could* do a `var self = this;` here to close over, but see next comment
+   // We *could* do a `const self = this;` here to close over, but see next comment
    return Observable.create(subscriber => {
      // because we're in an arrow function `this` is from the outer scope.
-     var source = this;
+     const source = this;
 
      // save our inner subscription
-     var subscription = source.subscribe(value => {
+     const subscription = source.subscribe(value => {
        // important: catch errors from user-provided callbacks
        try {
          subscriber.next(someCallback(value));
@@ -64,14 +64,14 @@ There are a few ways to do this. It's really down to needs and preference:
 1) Use the ES7 function bind operator (`::`) available in transpilers like [BabelJS](http://babeljs.io):
 
 <!-- skip-example -->
-```js
+```ts
 someObservable::mySimpleOperator(x => x + '!');
 ```
 
 2) Create your own Observable subclass and override `lift` to return it:
 
 <!-- skip-example -->
-```js
+```ts
 class MyObservable extends Observable {
   lift(operator) {
     const observable = new MyObservable(); //<-- important part here
@@ -93,7 +93,7 @@ MyObservable.prototype.mySimpleOperator = mySimpleOperator;
 3) Patch `Observable.prototype` directly:
 
 <!-- skip-example -->
-```js
+```ts
 Observable.prototype.mySimpleOperator = mySimpleOperator;
 
 // ... and later .../
@@ -108,12 +108,12 @@ If you don't want to patch the Observable prototype, you can also write the oper
 Example implementation:
 
 <!-- skip-example -->
-```js
+```ts
 function mySimpleOperator(someCallback) {
   // notice that we return a function here
   return function mySimpleOperatorImplementation(source) {
     return Observable.create(subscriber => {
-      var subscription = source.subscribe(value => {
+      const subscription = source.subscribe(value => {
         try {
           subscriber.next(someCallback(value));
         } catch(err) {
@@ -132,7 +132,7 @@ function mySimpleOperator(someCallback) {
 This can now be used with the `pipe()` method on the Observable:
 
 <!-- skip-example -->
-```js
+```ts
 const obs = someObservable.pipe(mySimpleOperator(x => x + '!'));
 ```
 

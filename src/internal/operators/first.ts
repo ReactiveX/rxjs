@@ -1,6 +1,4 @@
 import { Observable } from '../Observable';
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
 import { EmptyError } from '../util/EmptyError';
 import { OperatorFunction } from '../../internal/types';
 import { filter } from './filter';
@@ -43,7 +41,7 @@ export function first<T, D = T>(
  *
  * ## Examples
  * Emit only the first click that happens on the DOM
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { first } from 'rxjs/operators';
  *
@@ -53,7 +51,7 @@ export function first<T, D = T>(
  * ```
  *
  * Emits the first click that happens on a DIV
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { first } from 'rxjs/operators';
  *
@@ -86,6 +84,6 @@ export function first<T, D>(
   return (source: Observable<T>) => source.pipe(
     predicate ? filter((v, i) => predicate(v, i, source)) : identity,
     take(1),
-    hasDefaultValue ? defaultIfEmpty<T | D>(defaultValue) : throwIfEmpty(() => new EmptyError()),
+    hasDefaultValue ? defaultIfEmpty<T, D>(defaultValue) : throwIfEmpty(() => new EmptyError()),
   );
 }

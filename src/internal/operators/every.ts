@@ -8,7 +8,7 @@ import { Observer, OperatorFunction } from '../types';
  *
  * ## Example
  * A simple example emitting true if all elements are less than 5, false otherwise
- * ```javascript
+ * ```ts
  * import { of } from 'rxjs';
  * import { every } from 'rxjs/operators';
  *
