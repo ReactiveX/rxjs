@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:lts
 
 # Create app directory
 WORKDIR /rxjs
