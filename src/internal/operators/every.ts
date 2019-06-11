@@ -6,8 +6,8 @@ import { Observer, OperatorFunction } from '../types';
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
  *
- * <span class="informal">If all values pass predicate before completion emit true,
- * else false.</span>
+ * <span class="informal">If all values pass predicate before the source completes, emits true before completion,
+ * otherwise emit false, then complete.</span>
  *
  * ![](every.png)
  *
