@@ -1,7 +1,7 @@
 import { reduce } from './reduce';
 import { OperatorFunction } from '../types';
 
-function toArrayReducer<T>(arr: T[], item: T, index: number) {
+function toArrayReducer<T>(arr: T[], item: T, index: number): T[] {
   if (index === 0) {
     return [item];
   }
