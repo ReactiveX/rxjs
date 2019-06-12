@@ -98,6 +98,9 @@ export interface SchedulerAction<T> extends Subscription {
   schedule(state?: T, delay?: number): Subscription;
 }
 
+/** NOT FOR PUBLIC USE */
 export type ObservedValueOf<O> = O extends ObservableInput<infer T> ? T : never;
-
+/** NOT FOR PUBLIC USE */
+export type ObservedValuesFromArrayOfObservables<X> = X extends Array<Observable<infer T>> ? T : never;
+/** NOT FOR PUBLIC USE */
 export type ObservedValuesFromArray<X> = X extends Array<ObservableInput<infer T>> ? T : never;

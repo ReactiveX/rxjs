@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { ObservableInput, SchedulerLike, ObservedValuesFromArray} from '../types';
+import { ObservableInput, SchedulerLike, ObservedValuesFromArray, ObservedValuesFromArrayOfObservables} from '../types';
 import { isScheduler } from '../util/isScheduler';
 import { mergeAll } from '../operators/mergeAll';
 import { fromArray } from './fromArray';
@@ -43,6 +43,10 @@ export function merge<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: ObservableI
 /** @deprecated remove in v8. use {@link mergeConcurrent}, (e.g. `mergeConcurrent(2, ob1, ob2, ob3)`)*/
 export function merge<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>, concurrent: number): Observable<T | T2 | T3 | T4 | T5 | T6>;
 
+// Handle spread of classes extending Observable (e.g. merge(...subjects))
+export function merge<O extends Observable<any>, A extends O[]>(...args: A): Observable<ObservedValuesFromArrayOfObservables<A>>;
+
+// General use cases
 export function merge<O extends ObservableInput<any>, A extends O[]>(...args: A): Observable<ObservedValuesFromArray<A>>;
 
 /** @deprecated remove in v8. use {@link mergeConcurrent} or {@link scheduled} and {@link mergeAll} */

@@ -1,5 +1,5 @@
 // TypeScript Version: 3.2
-import { merge, asapScheduler } from 'rxjs';
+import { merge, asapScheduler, Observable } from 'rxjs';
 import { a, b, c, d, e, f, g } from '../helpers';
 
 describe('merge typings', () => {
@@ -151,5 +151,13 @@ describe('merge typings', () => {
     it('should accept a rest of different arguments', () => {
       const o = merge(...[a, b, c], 1, asapScheduler); // $ExpectType Observable<{}>
     });
+  });
+
+  it('should work for classes extending Observable', () => {
+    class Test<T> extends Observable<T> {
+    }
+
+    const arr = [new Test<number>(), new Test<string>(), new Test<boolean>()];
+    const o = merge(...arr); // $ExpectType Observable<string | number | boolean>
   });
 });
