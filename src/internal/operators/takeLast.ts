@@ -59,7 +59,7 @@ export function takeLast<T>(count: number): MonoTypeOperatorFunction<T> {
 
 class TakeLastOperator<T> implements Operator<T, T> {
   constructor(private total: number) {
-    if (this.total < 0) {
+    if (this.total < 0 || this.total === undefined) {
       throw new ArgumentOutOfRangeError;
     }
   }

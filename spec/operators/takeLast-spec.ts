@@ -146,6 +146,11 @@ describe('takeLast operator', () => {
       .to.throw(ArgumentOutOfRangeError);
   });
 
+  it('should throw if total is not provided (takeLast()) or undefined', () => {
+    expect(() => { range(0, 10).pipe(takeLast(undefined)); })
+        .to.throw(ArgumentOutOfRangeError);
+  });
+
   it('should not break unsubscription chain when unsubscribed explicitly', () => {
     const e1 = hot('---^--a--b-----c--d--e--|');
     const unsub =     '         !            ';
