@@ -1,7 +1,7 @@
 import { NgModule, Type } from '@angular/core';
 import { ExpandableSectionComponent } from './expandable-section.component';
 import { WithCustomElementComponent } from '../element-registry';
-import { MatExpansionModule } from '@angular/material';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   imports: [ MatExpansionModule ],
