@@ -37,8 +37,12 @@ export function race(...observables: ObservableInput<any>[]): Observable<{}>;
  *
  * `race` returns an observable, that when subscribed to, subscribes to all source observables immediately.
  * As soon as one of the source observables emits a value, the result unsubscribes from the other sources.
- * The resulting observable will forward all emissions, including error and completion, from the "winning"
+ * The resulting observable will forward all notifications, including error and completion, from the "winning"
  * source observable.
+ *
+ * If one of the used source observable throws an errors before a first notification
+ * the race operator will also also throw an error, no matter if another source observable
+ * could potentially win the race.
  *
  * `race` can be useful for selecting the response from the fastest network connection for
  * HTTP or WebSockets. `race` can also be useful for switching observable context based on user
