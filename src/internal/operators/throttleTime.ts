@@ -153,13 +153,16 @@ class ThrottleTimeSubscriber<T> extends Subscriber<T> {
     const throttled = this.throttled;
     if (throttled) {
       if (this.trailing && this._hasTrailingValue) {
+        this.add(this.throttled = this.scheduler.schedule<DispatchArg<T>>(dispatchNext, this.duration, { subscriber: this }));
         this.destination.next(this._trailingValue);
         this._trailingValue = null;
         this._hasTrailingValue = false;
       }
       throttled.unsubscribe();
       this.remove(throttled);
-      this.throttled = null;
+      if (throttled === this.throttled) {
+        this.throttled = null;
+      }
     }
   }
 }
