@@ -38,6 +38,7 @@ describe('index', () => {
     expect(index.pipe).to.exist;
     expect(index.noop).to.exist;
     expect(index.identity).to.exist;
+    expect(index.flow).to.exist;
   });
 
   it('should export error types', () => {
