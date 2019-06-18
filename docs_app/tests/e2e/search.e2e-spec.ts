@@ -1,6 +1,6 @@
 import { SitePage } from './app.po';
 
-describe('site search', () => {
+xdescribe('site search', () => {
   let page;
 
   beforeEach(() => {

@@ -1,7 +1,7 @@
 import { browser, by, element, ElementFinder } from 'protractor';
 import { SitePage } from './app.po';
 
-describe('site App', function() {
+xdescribe('site App', function() {
   let page: SitePage;
 
   beforeEach(() => {
@@ -96,7 +96,7 @@ describe('site App', function() {
     expect(page.getInnerHtml(codeExample)).toContain('&lt;h1&gt;Tour of Heroes&lt;/h1&gt;');
   });
 
-  describe('scrolling to the top', () => {
+  xdescribe('scrolling to the top', () => {
     it('should scroll to the top when navigating to another page', () => {
       page.navigateTo('guide/security');
 
@@ -120,14 +120,14 @@ describe('site App', function() {
     });
   });
 
-  describe('tutorial docs', () => {
+  xdescribe('tutorial docs', () => {
     it('should not render a paragraph element inside the h1 element', () => {
       page.navigateTo('tutorial/toh-pt1');
       expect(element(by.css('h1 p')).isPresent()).toBeFalsy();
     });
   });
 
-  describe('google analytics', () => {
+  xdescribe('google analytics', () => {
 
     it('should call ga with initial URL', done => {
       let path: string;
@@ -159,7 +159,7 @@ describe('site App', function() {
     });
   });
 
-  describe('404 page', () => {
+  xdescribe('404 page', () => {
     it('should add or remove the "noindex" meta tag depending upon the validity of the page', () => {
       page.navigateTo('');
       expect(element(by.css('meta[name="googlebot"]')).isPresent()).toBeFalsy();
