@@ -37,6 +37,10 @@ it('should not accept empty parameter', () => {
   const a = of({ name: 'abc' }).pipe(pluck()); // $ExpectError
 });
 
-it('should accept string only', () => {
+it('should not accept a number when plucking an object', () => {
   const a = of({ name: 'abc' }).pipe(pluck(1)); // $ExpectError
 });
+
+it('should support arrays', () => {
+  const a = of(['abc']).pipe(pluck(0)) // ExpectType Observable<string>
+})

@@ -25,6 +25,16 @@ describe('pluck operator', () => {
     expectObservable(result).toBe(expected, {x: '1', y: '2', z: '3'});
   });
 
+  it('should work for one array', () => {
+    const a =   cold('--x--|', {x: ['abc']});
+    const asubs =    '^    !';
+    const expected = '--y--|';
+
+    const r = a.pipe(pluck(0));
+    expectObservable(r).toBe(expected, {y: 'abc'});
+    expectSubscriptions(a.subscriptions).toBe(asubs);
+  });
+
   it('should work for one object', () => {
     const a =   cold('--x--|', {x: {prop: 42}});
     const asubs =    '^    !';
