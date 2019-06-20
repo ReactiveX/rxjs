@@ -6,6 +6,12 @@ import { Subscription } from './Subscription';
 import { ObserveOnSubscriber } from './operators/observeOn';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 import { SubjectSubscription } from './SubjectSubscription';
+
+interface ReplayEvent<T> {
+  time: number;
+  value: T;
+}
+
 /**
  * A variant of Subject that "replays" or emits old values to new subscribers.
  * It buffers a set number of values and will emit those values immediately to
@@ -35,19 +41,18 @@ export class ReplaySubject<T> extends Subject<T> {
   }
 
   private nextInfiniteTimeWindow(value: T): void {
-    const _events = this._events;
-    _events.push(value);
+    this._events.push(value);
     // Since this method is invoked in every next() call than the buffer
     // can overgrow the max size only by one item
-    if (_events.length > this._bufferSize) {
-      _events.shift();
+    if (this._events.length > this._bufferSize) {
+      this._events.shift();
     }
 
     super.next(value);
   }
 
   private nextTimeWindow(value: T): void {
-    this._events.push(new ReplayEvent(this._getNow(), value));
+    this._events.push({time: this._getNow(), value});
     this._trimBufferThenGetEvents();
 
     super.next(value);
@@ -56,10 +61,7 @@ export class ReplaySubject<T> extends Subject<T> {
   /** @deprecated This is an internal implementation detail, do not use. */
   _subscribe(subscriber: Subscriber<T>): Subscription {
     // When `_infiniteTimeWindow === true` then the buffer is already trimmed
-    const _infiniteTimeWindow = this._infiniteTimeWindow;
-    const _events = _infiniteTimeWindow ? this._events : this._trimBufferThenGetEvents();
-    const scheduler = this.scheduler;
-    const len = _events.length;
+    const _events = this._infiniteTimeWindow ? this._events : this._trimBufferThenGetEvents();
     let subscription: Subscription;
 
     if (this.closed) {
@@ -71,18 +73,22 @@ export class ReplaySubject<T> extends Subject<T> {
       subscription = new SubjectSubscription(this, subscriber);
     }
 
-    if (scheduler) {
-      subscriber.add(subscriber = new ObserveOnSubscriber<T>(subscriber, scheduler));
+    if (this.scheduler) {
+      subscriber.add(subscriber = new ObserveOnSubscriber<T>(subscriber, this.scheduler));
     }
 
-    if (_infiniteTimeWindow) {
-      for (let i = 0; i < len && !subscriber.closed; i++) {
-        subscriber.next(<T>_events[i]);
-      }
+    if (this._infiniteTimeWindow) {
+      _events.forEach(event => {
+        if (!subscriber.closed) {
+          subscriber.next(<T>event);
+        }
+      });
     } else {
-      for (let i = 0; i < len && !subscriber.closed; i++) {
-        subscriber.next((<ReplayEvent<T>>_events[i]).value);
-      }
+      _events.forEach(event => {
+        if (!subscriber.closed) {
+          subscriber.next((<ReplayEvent<T>>event).value);
+        }
+      });
     }
 
     if (this.hasError) {
@@ -98,39 +104,30 @@ export class ReplaySubject<T> extends Subject<T> {
     return (this.scheduler || queue).now();
   }
 
-  private _trimBufferThenGetEvents(): ReplayEvent<T>[] {
-    const now = this._getNow();
-    const _bufferSize = this._bufferSize;
-    const _windowTime = this._windowTime;
-    const _events = <ReplayEvent<T>[]>this._events;
-
-    const eventsCount = _events.length;
+  private _trimBufferThenGetEvents(): (ReplayEvent<T> | T)[] {
     let spliceCount = 0;
+    const now = this._getNow();
 
     // Trim events that fall out of the time window.
     // Start at the front of the list. Break early once
     // we encounter an event that falls within the window.
-    while (spliceCount < eventsCount) {
-      if ((now - _events[spliceCount].time) < _windowTime) {
-        break;
+    this._events.some((event, index) => {
+      if ((now - (<ReplayEvent<T>>event).time) < this._windowTime) {
+        spliceCount = index;
+        return true;
       }
-      spliceCount++;
-    }
+      return false;
+    });
 
-    if (eventsCount > _bufferSize) {
-      spliceCount = Math.max(spliceCount, eventsCount - _bufferSize);
+    if (this._events.length > this._bufferSize) {
+      spliceCount = Math.max(spliceCount, this._events.length - this._bufferSize);
     }
 
     if (spliceCount > 0) {
-      _events.splice(0, spliceCount);
+      this._events.splice(0, spliceCount);
     }
 
-    return _events;
+    return this._events;
   }
 
-}
-
-class ReplayEvent<T> {
-  constructor(public time: number, public value: T) {
-  }
 }

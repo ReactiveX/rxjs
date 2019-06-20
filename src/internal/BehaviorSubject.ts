@@ -1,7 +1,6 @@
 import { Subject } from './Subject';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
-import { SubscriptionLike } from './types';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 
 /**
@@ -23,7 +22,7 @@ export class BehaviorSubject<T> extends Subject<T> {
   /** @deprecated This is an internal implementation detail, do not use. */
   _subscribe(subscriber: Subscriber<T>): Subscription {
     const subscription = super._subscribe(subscriber);
-    if (subscription && !(<SubscriptionLike>subscription).closed) {
+    if (subscription && !subscription.closed) {
       subscriber.next(this._value);
     }
     return subscription;
@@ -40,6 +39,7 @@ export class BehaviorSubject<T> extends Subject<T> {
   }
 
   next(value: T): void {
-    super.next(this._value = value);
+    this._value = value;
+    super.next(this._value);
   }
 }

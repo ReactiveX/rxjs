@@ -63,12 +63,8 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
       throw new ObjectUnsubscribedError();
     }
     if (!this.isStopped) {
-      const { observers } = this;
-      const len = observers.length;
-      const copy = observers.slice();
-      for (let i = 0; i < len; i++) {
-        copy[i].next(value);
-      }
+      this.observers
+        .forEach(observer => observer.next(value));
     }
   }
 
@@ -79,13 +75,9 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     this.hasError = true;
     this.thrownError = err;
     this.isStopped = true;
-    const { observers } = this;
-    const len = observers.length;
-    const copy = observers.slice();
-    for (let i = 0; i < len; i++) {
-      copy[i].error(err);
-    }
-    this.observers.length = 0;
+    this.observers
+      .forEach(observer => observer.error(err));
+    this.observers = [];
   }
 
   complete() {
@@ -93,12 +85,8 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
       throw new ObjectUnsubscribedError();
     }
     this.isStopped = true;
-    const { observers } = this;
-    const len = observers.length;
-    const copy = observers.slice();
-    for (let i = 0; i < len; i++) {
-      copy[i].complete();
-    }
+    this.observers
+      .forEach(observer => observer.complete());
     this.observers.length = 0;
   }
 
@@ -156,30 +144,26 @@ export class AnonymousSubject<T> extends Subject<T> {
   }
 
   next(value: T) {
-    const { destination } = this;
-    if (destination && destination.next) {
-      destination.next(value);
+    if (this.destination && this.destination.next) {
+      this.destination.next(value);
     }
   }
 
   error(err: any) {
-    const { destination } = this;
-    if (destination && destination.error) {
+    if (this.destination && this.destination.error) {
       this.destination.error(err);
     }
   }
 
   complete() {
-    const { destination } = this;
-    if (destination && destination.complete) {
+    if (this.destination && this.destination.complete) {
       this.destination.complete();
     }
   }
 
   /** @deprecated This is an internal implementation detail, do not use. */
   _subscribe(subscriber: Subscriber<T>): Subscription {
-    const { source } = this;
-    if (source) {
+    if (this.source) {
       return this.source.subscribe(subscriber);
     } else {
       return Subscription.EMPTY;
