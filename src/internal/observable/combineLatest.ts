@@ -171,7 +171,7 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * ### Combine an array of Observables
  * ```ts
  * import { combineLatest, of } from 'rxjs';
- * import { delay, starWith } from 'rxjs/operators';
+ * import { delay, startWith } from 'rxjs/operators';
  *
  * const observables = [1, 5, 10].map(
  *   n => of(n).pipe(

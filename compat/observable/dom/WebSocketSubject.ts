@@ -1,1 +1,0 @@
-export { WebSocketSubjectConfig, WebSocketSubject } from 'rxjs/internal-compatibility';

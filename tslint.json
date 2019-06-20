@@ -58,13 +58,13 @@
       "check-separator",
       "check-type"
     ],
+    "no-const-enum": true,
     "no-toplevel-property-access": [
       true,
       "src/index.ts",
       "src/ajax/",
       "src/fetch/",
       "src/internal/",
-      "src/internal-compatibility/",
       "src/operators/",
       "src/testing/",
       "src/webSocket/"
@@ -72,6 +72,7 @@
   },
   "rulesDirectory": [
     "tslint-no-unused-expression-chai",
+    "node_modules/tslint-etc/dist/rules",
     "node_modules/tslint-no-toplevel-property-access/rules"
   ]
 }

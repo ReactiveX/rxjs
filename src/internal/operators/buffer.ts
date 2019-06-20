@@ -12,7 +12,7 @@ import { OperatorFunction } from '../types';
  * <span class="informal">Collects values from the past as an array, and emits
  * that array only when another Observable emits.</span>
  *
- * ![](content/img/buffer.png)
+ * ![](buffer.png)
  *
  * Buffers the incoming Observable values until the given `closingNotifier`
  * Observable emits a value, at which point it emits the buffer on the output

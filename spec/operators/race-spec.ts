@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { NEVER, of, race as staticRace, timer, defer, Observable } from 'rxjs';
+import { EMPTY, NEVER, of, race as staticRace, timer, defer, Observable, throwError } from 'rxjs';
 import { race, mergeMap, map, finalize, startWith } from 'rxjs/operators';
 
 /** @test {race} */
@@ -181,6 +181,28 @@ describe('race operator', () => {
 
     e1.pipe(race(e2)).subscribe(onNext);
     expect(onNext.calledWithExactly('a')).to.be.true;
+    expect(onSubscribe.called).to.be.false;
+  });
+
+  it('should ignore latter observables if a former one completes immediately', () => {
+    const onComplete = sinon.spy();
+    const onSubscribe = sinon.spy();
+    const e1 = EMPTY; // Wins the race
+    const e2 = defer(onSubscribe); // Should be ignored
+
+    e1.pipe(race(e2)).subscribe({ complete: onComplete });
+    expect(onComplete.calledWithExactly()).to.be.true;
+    expect(onSubscribe.called).to.be.false;
+  });
+
+  it('should ignore latter observables if a former one errors immediately', () => {
+    const onError = sinon.spy();
+    const onSubscribe = sinon.spy();
+    const e1 = throwError('kaboom'); // Wins the race
+    const e2 = defer(onSubscribe); // Should be ignored
+
+    e1.pipe(race(e2)).subscribe({ error: onError });
+    expect(onError.calledWithExactly('kaboom')).to.be.true;
     expect(onSubscribe.called).to.be.false;
   });
 
