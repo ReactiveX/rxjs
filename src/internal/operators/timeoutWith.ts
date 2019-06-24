@@ -40,7 +40,7 @@ export function timeoutWith<T, R>(due: number | Date, withObservable: Observable
  * ## Example
  * Add fallback observable
  * ```ts
- * import { intrerval } from 'rxjs';
+ * import { interval } from 'rxjs';
  * import { timeoutWith } from 'rxjs/operators';
  *
  * const seconds = interval(1000);
