@@ -206,7 +206,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
   }
 
   protected _next(value: T): void {
-    const windows = this.windows;
+    const windows = this.windows.slice();
     const len = windows.length;
     for (let i = 0; i < len; i++) {
       const window = windows[i];
