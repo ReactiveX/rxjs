@@ -44,7 +44,7 @@ export function pluck<T, K1 extends keyof T, K2 extends keyof T[K1], K3 extends 
  * @method pluck
  * @owner Observable
  */
-export function pluck<T, R>(...properties: Array<string | number>): OperatorFunction<T, R> {
+export function pluck<T, R>(...properties: Array<string | number | symbol>): OperatorFunction<T, R> {
   const length = properties.length;
   if (length === 0) {
     throw new Error('list of properties cannot be empty.');
@@ -52,7 +52,7 @@ export function pluck<T, R>(...properties: Array<string | number>): OperatorFunc
   return (source: Observable<T>) => map(plucker(properties, length))(source as any);
 }
 
-function plucker(props: Array<string | number>, length: number): (x: string) => any {
+function plucker(props: Array<string | number | symbol>, length: number): (x: any) => any {
   const mapper = (x: string) => {
     let currentProp = x;
     for (let i = 0; i < length; i++) {
