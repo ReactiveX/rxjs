@@ -58,7 +58,10 @@ import { MonoTypeOperatorFunction, PartialObserver, SchedulerAction, SchedulerLi
  * @owner Observable
  */
 export function delay<T>(delay: number|Date,
-                         scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
+                         scheduler?: SchedulerLike): MonoTypeOperatorFunction<T> {
+  if (!scheduler) {
+    scheduler = async;
+  }
   const absoluteDelay = isDate(delay);
   const delayFor = absoluteDelay ? (+delay - scheduler.now()) : Math.abs(<number>delay);
   return (source: Observable<T>) => source.lift(new DelayOperator(delayFor, scheduler));

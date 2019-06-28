@@ -176,4 +176,10 @@ describe('delay operator', () => {
 
     expectObservable(result).toBe(expected);
   });
+  it('should not throw when provided scheduler is null', () => {
+    const input = cold('a|');
+    const sched: TestScheduler = null;
+    const observable = input.pipe(delay(10, sched));
+    expect(() => observable.subscribe()).to.not.throw();
+  });
 });
