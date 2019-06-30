@@ -29,12 +29,12 @@ it('should support nested object of more than 6 layer depth', () => {
   const a = of({ a: { b: { c: { d: { e: { f: { name: 'abc' } } } } } } }).pipe(pluck('a', 'b', 'c', 'd', 'e', 'f', 'name')); // $ExpectType Observable<{}>
 });
 
-it('should infer empty interface for non-existance key', () => {
-  const a = of({ name: 'abc' }).pipe(pluck('xyz')); // $ExpectType Observable<{}>
+it('should accept existing keys only', () => {
+  const a = of({ name: 'abc' }).pipe(pluck('xyz')); // $ExpectError
 });
 
-it('should infer empty interface for empty parameter', () => {
-  const a = of({ name: 'abc' }).pipe(pluck()); // $ExpectType Observable<{}>
+it('should not accept empty parameter', () => {
+  const a = of({ name: 'abc' }).pipe(pluck()); // $ExpectError
 });
 
 it('should accept string only', () => {

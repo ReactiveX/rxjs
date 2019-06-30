@@ -51,7 +51,7 @@ export function zip<R>(...observables: Array<ObservableInput<any> | ((...values:
  *
  * ## Example
  * Combine age and name from different sources
- * ```javascript
+ * ```ts
  * import { zip, of } from 'rxjs';
  * import { map } from 'rxjs/operators';
  *

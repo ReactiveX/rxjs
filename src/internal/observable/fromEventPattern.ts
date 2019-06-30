@@ -58,7 +58,7 @@ export function fromEventPattern<T>(addHandler: (handler: NodeEventHandler) => a
  * ## Example
  * ### Emits clicks happening on the DOM document
  *
- * ```javascript
+ * ```ts
  * import { fromEventPattern } from 'rxjs';
  *
  * function addClickHandler(handler) {
@@ -82,7 +82,7 @@ export function fromEventPattern<T>(addHandler: (handler: NodeEventHandler) => a
  * ## Example
  * ### Use with API that returns cancellation token
  *
- * ```javascript
+ * ```ts
  * import { fromEventPattern } from 'rxjs';
  *
  * const token = someAPI.registerEventHandler(function() {});
@@ -98,7 +98,7 @@ export function fromEventPattern<T>(addHandler: (handler: NodeEventHandler) => a
  * ## Example
  * ### Use with project function
  *
- * ```javascript
+ * ```ts
  * import { fromEventPattern } from 'rxjs';
  *
  * someAPI.registerEventHandler((eventType, eventMessage) => {

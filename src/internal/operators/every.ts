@@ -6,9 +6,14 @@ import { Observer, OperatorFunction } from '../types';
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
  *
+ * <span class="informal">If all values pass predicate before the source completes, emits true before completion,
+ * otherwise emit false, then complete.</span>
+ *
+ * ![](every.png)
+ *
  * ## Example
  * A simple example emitting true if all elements are less than 5, false otherwise
- * ```javascript
+ * ```ts
  * import { of } from 'rxjs';
  * import { every } from 'rxjs/operators';
  *

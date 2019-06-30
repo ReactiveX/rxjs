@@ -24,7 +24,7 @@ import { OperatorFunction } from '../types';
  *
  * ## Examples
  * Ignore every 3rd click event, starting from the first one
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { windowCount, map, mergeAll, skip } from 'rxjs/operators';
  *
@@ -38,7 +38,7 @@ import { OperatorFunction } from '../types';
  * ```
  *
  * Ignore every 3rd click event, starting from the third one
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { windowCount, mergeAll } from 'rxjs/operators';
  *

@@ -26,7 +26,7 @@ import { OperatorFunction } from '../types';
  *
  * ## Example
  * Emit only the first two clicks events in every window of [1-5] random seconds
- * ```javascript
+ * ```ts
  * import { fromEvent, interval } from 'rxjs';
  * import { windowWhen, map, mergeAll, take } from 'rxjs/operators';
  *

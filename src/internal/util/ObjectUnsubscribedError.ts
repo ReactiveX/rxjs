@@ -5,14 +5,18 @@ export interface ObjectUnsubscribedErrorCtor {
   new(): ObjectUnsubscribedError;
 }
 
-function ObjectUnsubscribedErrorImpl(this: any) {
-  Error.call(this);
-  this.message = 'object unsubscribed';
-  this.name = 'ObjectUnsubscribedError';
-  return this;
-}
+const ObjectUnsubscribedErrorImpl = (() => {
+  function ObjectUnsubscribedErrorImpl(this: any) {
+    Error.call(this);
+    this.message = 'object unsubscribed';
+    this.name = 'ObjectUnsubscribedError';
+    return this;
+  }
 
-ObjectUnsubscribedErrorImpl.prototype = Object.create(Error.prototype);
+  ObjectUnsubscribedErrorImpl.prototype = Object.create(Error.prototype);
+
+  return ObjectUnsubscribedErrorImpl;
+})();
 
 /**
  * An error thrown when an action is invalid because the object has been

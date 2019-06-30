@@ -2,6 +2,7 @@ import { TestScheduler } from 'rxjs/testing';
 import { expect } from 'chai';
 import { expectObservable } from '../helpers/marble-testing';
 import { generate, Subscriber } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 declare function asDiagram(arg: string): Function;
 declare const rxTestScheduler: TestScheduler;
@@ -47,7 +48,9 @@ describe('generate', () => {
       initialState: 1,
       iterate: x => x + 1,
       resultSelector: (x: number) => x.toString()
-    }).take(5);
+    }).pipe(
+      take(5)
+    );
     const expected = '(12345|)';
 
     expectObservable(source).toBe(expected);
@@ -92,7 +95,9 @@ describe('generate', () => {
     const source = generate({
       initialState: 1,
       iterate: x => x * 2
-    }).take(3);
+    }).pipe(
+      take(3)
+    );
     const expected = '(124|)';
 
     expectObservable(source).toBe(expected, { '1': 1, '2': 2, '4': 4 });

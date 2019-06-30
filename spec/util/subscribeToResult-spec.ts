@@ -6,7 +6,7 @@ import $$symbolObservable from 'symbol-observable';
 import { of, range, throwError } from 'rxjs';
 
 describe('subscribeToResult', () => {
-  it('should synchronously complete when subscribe to scalarObservable', () => {
+  it('should synchronously complete when subscribed to scalarObservable', () => {
     const result = of(42);
     let expected: number;
     const subscriber = new OuterSubscriber<number, number>((x) => expected = x);
@@ -14,7 +14,7 @@ describe('subscribeToResult', () => {
     const subscription = subscribeToResult(subscriber, result);
 
     expect(expected).to.be.equal(42);
-    expect(subscription).to.not.exist;
+    expect(subscription.closed).to.be.true;
   });
 
   it('should subscribe to observables that are an instanceof Observable', (done) => {

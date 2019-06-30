@@ -32,7 +32,7 @@ import { OperatorFunction, SchedulerLike, SchedulerAction } from '../types';
  *
  * ## Examples
  * In every window of 1 second each, emit at most 2 click events
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { windowTime, map, mergeAll, take } from 'rxjs/operators';
  *
@@ -46,7 +46,7 @@ import { OperatorFunction, SchedulerLike, SchedulerAction } from '../types';
  * ```
  *
  * Every 5 seconds start a window 1 second long, and emit at most 2 click events per window
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { windowTime, map, mergeAll, take } from 'rxjs/operators';
  *
@@ -60,7 +60,7 @@ import { OperatorFunction, SchedulerLike, SchedulerAction } from '../types';
  * ```
  *
  * Same as example above but with maxWindowCount instead of take
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { windowTime, mergeAll } from 'rxjs/operators';
  *

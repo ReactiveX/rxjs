@@ -16,7 +16,9 @@ describe('mergeMap', () => {
     const expected =  '--x-x-x-y-yzyz-z---|';
     const values = {x: 10, y: 30, z: 50};
 
-    const result = e1.pipe(mergeMap(x => e2.map(i => i * +x)));
+    const result = e1.pipe(mergeMap(x => e2.pipe(
+      map(i => i * +x)
+    )));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

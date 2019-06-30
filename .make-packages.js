@@ -10,7 +10,6 @@ let addLicenseToFile = licenseTool.addLicenseToFile;
 let addLicenseTextToFile = licenseTool.addLicenseTextToFile;
 let makePackages = require('./.make-helpers');
 let copySources = makePackages.copySources;
-let createImportTargets = makePackages.createImportTargets;
 let cleanSourceMapRoot = makePackages.cleanSourceMapRoot;
 let bo = null;
 // Build Optimizer is not available on Node 4.x. Using a try/catch
@@ -27,9 +26,7 @@ const ESM5_ROOT = ROOT + 'esm5/';
 const ESM2015_ROOT = ROOT + 'esm2015/';
 const UMD_ROOT = ROOT + 'global/';
 const ESM5_FOR_ROLLUP_ROOT = ROOT + 'esm5_for_rollup/';
-const LEGACY_REEXPORT_ROOT = ROOT + 'legacy-reexport/';
 const TYPE_ROOT = ROOT + 'typings/';
-const MIGRATION_PKG = ROOT + 'migrations/';
 const PKG_ROOT = ROOT + 'package/';
 const CJS_PKG = PKG_ROOT + '';
 const ESM5_PKG = PKG_ROOT + '_esm5/';
@@ -75,50 +72,13 @@ klawSync(ESM5_ROOT, {
   return fileName;
 });
 
-/**
- * Get a list of the file names. Sort in reverse order so re-export files
- * such as "operators.js" are AFTER their more specfic exports, such as
- * "operators/map.js". This is due to a Webpack bug for node-resolved imports
- * (rxjs/operators resolves to rxjs/operators.js), Webpack's "alias"
- * functionality requires that the most broad mapping (rxjs/operators) be at
- * the end of the alias mapping object. Created Webpack issue:
- * https://github.com/webpack/webpack/issues/5870
- *
- * This is only needed for items in legacy-reexport as others should be resolved
- * through their package.json.
- */
-const fileNames = klawSync(LEGACY_REEXPORT_ROOT, {
-  nodir: true,
-  filter: function(item) {
-    return item.path.endsWith('.js');
-  }
-})
-.map(item => item.path)
-.map(path => path.slice((`${__dirname}/${LEGACY_REEXPORT_ROOT}`).length))
-.sort().reverse();
-
-// Create an object hash mapping imports to file names
-const importTargets = fileNames.reduce((acc, fileName) => {
-  // Get the name of the file to be the new directory
-  const directory = fileName.slice(0, fileName.length - 3);
-
-  acc[directory] = fileName;
-  return acc;
-}, {});
-
-createImportTargets(importTargets, "_esm5/", ESM5_PKG);
-createImportTargets(importTargets, "_esm2015/", ESM2015_PKG);
-
 // Make the distribution folder
 mkdirp.sync(PKG_ROOT);
 
 // Copy over the sources
 copySources('src/', SRC_ROOT_PKG);
-// Copy legacy-reexport sources
-copySources('legacy-reexport/', SRC_ROOT_PKG);
 
 copySources(CJS_ROOT, CJS_PKG);
-fs.copySync(LEGACY_REEXPORT_ROOT, CJS_PKG, {overwrite: false, errorOnExist: true});
 
 // Clean up the source maps for CJS sources
 cleanSourceMapRoot(PKG_ROOT, SRC_ROOT_PKG);
@@ -137,11 +97,6 @@ fs.copySync('src/operators/package.json', PKG_ROOT + '/operators/package.json');
 fs.copySync('src/ajax/package.json', PKG_ROOT + '/ajax/package.json');
 fs.copySync('src/webSocket/package.json', PKG_ROOT + '/webSocket/package.json');
 fs.copySync('src/testing/package.json', PKG_ROOT + '/testing/package.json');
-fs.copySync('src/internal-compatibility/package.json', PKG_ROOT + '/internal-compatibility/package.json');
-
-// Copy over migrations
-fs.copySync(MIGRATION_PKG, PKG_ROOT + 'migrations/');
-fs.copySync('./migrations/collection.json', PKG_ROOT + 'migrations/collection.json');
 
 if (fs.existsSync(UMD_ROOT)) {
   fs.copySync(UMD_ROOT, UMD_PKG);

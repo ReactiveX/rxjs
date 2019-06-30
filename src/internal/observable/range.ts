@@ -16,7 +16,7 @@ import { Observable } from '../Observable';
  *
  * ## Example
  * Emits the numbers 1 to 10</caption>
- * ```javascript
+ * ```ts
  * import { range } from 'rxjs';
  *
  * const numbers = range(1, 10);

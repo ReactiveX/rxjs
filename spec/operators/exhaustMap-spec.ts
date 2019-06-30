@@ -1,6 +1,6 @@
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { concat, defer, Observable, of, from } from 'rxjs';
-import { exhaustMap, mergeMap, takeWhile } from 'rxjs/operators';
+import { exhaustMap, mergeMap, takeWhile, map } from 'rxjs/operators';
 import { expect } from 'chai';
 
 declare function asDiagram(arg: string): Function;
@@ -15,7 +15,7 @@ describe('exhaustMap', () => {
     const expected =  '--x-x-x-y-y-y------|';
     const values = {x: 10, y: 30, z: 50};
 
-    const result = e1.pipe(exhaustMap(x => e2.map(i => i * +x)));
+    const result = e1.pipe(exhaustMap(x => e2.pipe(map(i => i * +x))));
 
     expectObservable(result).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);

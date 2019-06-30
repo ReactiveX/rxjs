@@ -4,5 +4,5 @@
  * @param err the error to throw
  */
 export function hostReportError(err: any) {
-  setTimeout(() => { throw err; });
+  setTimeout(() => { throw err; }, 0);
 }

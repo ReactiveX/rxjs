@@ -20,7 +20,7 @@ import { OperatorFunction } from '../types';
  *
  * ## Example
  * On every click (starting from the second), emit the relative distance to the previous click
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { pairwise, map } from 'rxjs/operators';
  *
@@ -70,12 +70,18 @@ class PairwiseSubscriber<T> extends Subscriber<T> {
   }
 
   _next(value: T): void {
+    let pair: [T, T] | undefined;
+
     if (this.hasPrev) {
-      this.destination.next([this.prev, value]);
+      pair = [this.prev, value];
     } else {
       this.hasPrev = true;
     }
 
     this.prev = value;
+
+    if (pair) {
+      this.destination.next(pair);
+    }
   }
 }

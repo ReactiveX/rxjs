@@ -1,1 +1,0 @@
-export { interval } from 'rxjs';

@@ -1,1 +1,0 @@
-export { ConnectableObservable } from 'rxjs';
