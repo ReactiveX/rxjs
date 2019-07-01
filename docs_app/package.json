@@ -23,7 +23,7 @@
     "test-pwa-score": "node scripts/test-pwa-score",
     "deploy-production": "scripts/deploy-to-firebase.sh",
     "payload-size": "scripts/payload.sh",
-    "docs": "npx ts-node -P tsconfig.docs.json node_modules/.bin/dgeni ./tools/transforms/angular.io-package && npm run docs-decision-tree",
+    "docs": "npx ts-node -P tsconfig.docs.json ./node_modules/dgeni/lib/gen-docs.js ./tools/transforms/angular.io-package && npm run docs-decision-tree",
     "docs-watch": "node tools/transforms/authors-package/watchr.js",
     "docs-lint": "eslint --ignore-path=\"tools/transforms/.eslintignore\" tools/transforms",
     "docs-test": "npx ts-node -P tsconfig.docs.json tools/transforms/test.js",
