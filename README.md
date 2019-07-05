@@ -1,6 +1,7 @@
 <img src="doc/asset/Rx_Logo_S.png" alt="RxJS Logo" width="86" height="86"> RxJS: Reactive Extensions For JavaScript
 ======================================
-
+By Shago7932/Master
+    Code of conduct 
 
 [![CircleCI](https://circleci.com/gh/ReactiveX/rxjs/tree/master.svg?style=svg)](https://circleci.com/gh/ReactiveX/rxjs/tree/master)
 [![npm version](https://badge.fury.io/js/%40reactivex%2Frxjs.svg)](http://badge.fury.io/js/%40reactivex%2Frxjs)
