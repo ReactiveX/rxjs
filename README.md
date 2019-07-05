@@ -1,6 +1,7 @@
 <img src="doc/asset/Rx_Logo_S.png" alt="RxJS Logo" width="86" height="86"> RxJS: Reactive Extensions For JavaScript
 ======================================
-
+By Shago7932/Master
+    Code of conduct 
 
 [![CircleCI](https://circleci.com/gh/ReactiveX/rxjs/tree/master.svg?style=svg)](https://circleci.com/gh/ReactiveX/rxjs/tree/master)
 [![npm version](https://badge.fury.io/js/%40reactivex%2Frxjs.svg)](http://badge.fury.io/js/%40reactivex%2Frxjs)
@@ -89,3 +90,4 @@ Run `npm run perf_micro [operator]` to run micro performance test benchmarking o
 
 ## Adding documentation
 We appreciate all contributions to the documentation of any type. All of the information needed to get the docs app up and running locally as well as how to contribute can be found in the [documentation directory](./docs_app).
+404 no found Intelectual property Internacional IP adress 
