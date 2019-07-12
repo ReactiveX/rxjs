@@ -213,12 +213,12 @@ For example:
 ```ts
   let eventCount = 0;
 
-  const s1 = cold('--a--b|', { a: 'x', b: 'y' });
+  const s1 = cold('--0--1|', { 0: 'x', 1: 'y' });
 
   // side effect using 'tap' updates a variable
   const result = s1.pipe(tap(() => eventCount++));
-  
-  expectObservable(result).toBe('--a--b|', ['x', 'y']);
+
+  expectObservable(result).toBe('--0--1|', ['x', 'y']);
 
   // flush - run 'virtual time' to complete all outstanding hot or cold observables
   flush();
