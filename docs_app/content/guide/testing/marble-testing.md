@@ -12,7 +12,8 @@ We can test our _asynchronous_ RxJS code _synchronously_ and deterministically b
 import { TestScheduler } from 'rxjs/testing';
 
 const testScheduler = new TestScheduler((actual, expected) => {
-  // asserting the two objects are equal
+  // asserting the two objects are equal - required
+  // for TestScheduler assertions to work via your test framework
   // e.g. using chai.
   expect(actual).deep.equal(expected);
 });
