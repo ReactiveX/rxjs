@@ -85,7 +85,7 @@ describe('Subscription', () => {
       expect(isCalled).to.equal(true);
     });
   });
-  
+
   describe('Subscription.unsubscribe()', () => {
     it('Should unsubscribe from all subscriptions, when some of them throw', done => {
       const tearDowns: number[] = [];
