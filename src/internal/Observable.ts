@@ -71,6 +71,7 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   subscribe(observer?: PartialObserver<T>): Subscription;
+  subscribe(observable?: Observable<T>): Subscription;
   /** @deprecated Use an observer instead of a complete callback */
   subscribe(next: null | undefined, error: null | undefined, complete: () => void): Subscription;
   /** @deprecated Use an observer instead of an error callback */
