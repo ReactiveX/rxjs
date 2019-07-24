@@ -125,15 +125,15 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  * ```ts
  * import { bindCallback } from 'rxjs';
  *
- * const someFunction = (a, b, c) => {
- *   console.log(a); // 5
- *   console.log(b); // 'some string'
- *   console.log(c); // {someProperty: 'someValue'}
+ * const someFunction = (a, b, callback) => {
+ *   console.log(a); // 12
+ *   console.log(b); // 10
+ *   callback(a + b, a - b);
  * };
  *
  * const boundSomeFunction = bindCallback(someFunction);
- * boundSomeFunction().subscribe(values => {
- *   console.log(values) // [5, 'some string', {someProperty: 'someValue'}]
+ * boundSomeFunction(12, 10).subscribe(values => {
+ *   console.log(values); // [22, 2]
  * });
  * ```
  *
