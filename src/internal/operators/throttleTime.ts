@@ -158,13 +158,13 @@ class ThrottleTimeSubscriber<T> extends Subscriber<T> {
       this.throttled = null;
 
       if (this.trailing && this._hasTrailingValue) {
-        this.destination.next(this._trailingValue);
-        this._trailingValue = null;
-        this._hasTrailingValue = false;
-
         if (this.leading && this.trailing) {
           this.throttle();
         }
+
+        this.destination.next(this._trailingValue);
+        this._trailingValue = null;
+        this._hasTrailingValue = false;
       }
     }
   }
