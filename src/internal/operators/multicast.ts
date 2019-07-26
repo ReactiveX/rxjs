@@ -19,7 +19,7 @@ export function multicast<T, O extends ObservableInput<any>>(SubjectFactory: (th
  * ![](multicast.png)
  *
  * @param {Function|Subject} subjectOrSubjectFactory - Factory function to create an intermediate subject through
- * which the source sequence's elements will be multicast to the selector function
+ * which the source sequence's elements will be multicasted to the selector function
  * or Subject to push source elements into.
  * @param {Function} [selector] - Optional selector function that can use the multicasted source stream
  * as many times as needed, without causing multiple subscriptions to the source stream.
