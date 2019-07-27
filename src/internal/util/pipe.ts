@@ -22,10 +22,6 @@ export function pipe(...fns: Array<UnaryFunction<any, any>>): UnaryFunction<any,
 
 /** @internal */
 export function pipeFromArray<T, R>(fns: Array<UnaryFunction<T, R>>): UnaryFunction<T, R> {
-  if (!fns) {
-    return noop as UnaryFunction<any, any>;
-  }
-
   if (fns.length === 0) {
     return identity as UnaryFunction<any, any>;
   }
