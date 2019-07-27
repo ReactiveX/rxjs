@@ -23,7 +23,7 @@ describe('pipe', () => {
     expect(c).to.equal(a);
   });
 
-  it('should return a noop if not passed a function', () => {
+  it('should return the identity if not passed any functions', () => {
     const c = pipe();
 
     expect(c('whatever')).to.equal('whatever');
