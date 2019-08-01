@@ -156,6 +156,10 @@ section#intro {
     margin: 8px;
   }
 
+  img {
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.26));
+  }
+
   .button {
     display: flex;
     justify-content: center;
@@ -184,6 +188,10 @@ section#intro {
   }
 
   p {
+    strong {
+      font-weight: 700;
+    }
+
     font-size: 16px;
     margin: 8px;
     text-align: center;
