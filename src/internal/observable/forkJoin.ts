@@ -1,131 +1,130 @@
 import { Observable } from '../Observable';
-import { ObservableInput } from '../types';
+import { ObservableInput, ObservedValuesFromArray, ObservedValueOf, SubscribableOrPromise } from '../types';
 import { isArray } from '../util/isArray';
-import { EMPTY } from './empty';
-import { subscribeToResult } from '../util/subscribeToResult';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { Subscriber } from '../Subscriber';
 import { map } from '../operators/map';
+import { isObject } from '../util/isObject';
+import { isObservable } from '../util/isObservable';
+import { from } from './from';
 
 /* tslint:disable:max-line-length */
-// forkJoin([a$, b$, c$]);
-export function forkJoin<T>(sources: [ObservableInput<T>]): Observable<T[]>;
-export function forkJoin<T, T2>(sources: [ObservableInput<T>, ObservableInput<T2>]): Observable<[T, T2]>;
-export function forkJoin<T, T2, T3>(sources: [ObservableInput<T>, ObservableInput<T2>, ObservableInput<T3>]): Observable<[T, T2, T3]>;
-export function forkJoin<T, T2, T3, T4>(sources: [ObservableInput<T>, ObservableInput<T2>, ObservableInput<T3>, ObservableInput<T4>]): Observable<[T, T2, T3, T4]>;
-export function forkJoin<T, T2, T3, T4, T5>(sources: [ObservableInput<T>, ObservableInput<T2>, ObservableInput<T3>, ObservableInput<T4>, ObservableInput<T5>]): Observable<[T, T2, T3, T4, T5]>;
-export function forkJoin<T, T2, T3, T4, T5, T6>(sources: [ObservableInput<T>, ObservableInput<T2>, ObservableInput<T3>, ObservableInput<T4>, ObservableInput<T5>, ObservableInput<T6>]): Observable<[T, T2, T3, T4, T5, T6]>;
-export function forkJoin<T>(sources: Array<ObservableInput<T>>): Observable<T[]>;
 
 // forkJoin(a$, b$, c$)
-export function forkJoin<T>(v1: ObservableInput<T>): Observable<T[]>;
+/** @deprecated Use the version that takes an array of Observables instead */
+export function forkJoin<T>(v1: SubscribableOrPromise<T>): Observable<[T]>;
+/** @deprecated Use the version that takes an array of Observables instead */
 export function forkJoin<T, T2>(v1: ObservableInput<T>, v2: ObservableInput<T2>): Observable<[T, T2]>;
+/** @deprecated Use the version that takes an array of Observables instead */
 export function forkJoin<T, T2, T3>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>): Observable<[T, T2, T3]>;
+/** @deprecated Use the version that takes an array of Observables instead */
 export function forkJoin<T, T2, T3, T4>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>): Observable<[T, T2, T3, T4]>;
+/** @deprecated Use the version that takes an array of Observables instead */
 export function forkJoin<T, T2, T3, T4, T5>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>): Observable<[T, T2, T3, T4, T5]>;
+/** @deprecated Use the version that takes an array of Observables instead */
 export function forkJoin<T, T2, T3, T4, T5, T6>(v1: ObservableInput<T>, v2: ObservableInput<T2>, v3: ObservableInput<T3>, v4: ObservableInput<T4>, v5: ObservableInput<T5>, v6: ObservableInput<T6>): Observable<[T, T2, T3, T4, T5, T6]>;
+
+// forkJoin([a$, b$, c$]);
+// TODO(benlesh): Uncomment for TS 3.0
+// export function forkJoin(sources: []): Observable<never>;
+export function forkJoin<A>(sources: [ObservableInput<A>]): Observable<[A]>;
+export function forkJoin<A, B>(sources: [ObservableInput<A>, ObservableInput<B>]): Observable<[A, B]>;
+export function forkJoin<A, B, C>(sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>]): Observable<[A, B, C]>;
+export function forkJoin<A, B, C, D>(sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>]): Observable<[A, B, C, D]>;
+export function forkJoin<A, B, C, D, E>(sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>, ObservableInput<E>]): Observable<[A, B, C, D, E]>;
+export function forkJoin<A, B, C, D, E, F>(sources: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>, ObservableInput<E>, ObservableInput<F>]): Observable<[A, B, C, D, E, F]>;
+export function forkJoin<A extends ObservableInput<any>[]>(sources: A): Observable<ObservedValuesFromArray<A>[]>;
+
+// forkJoin({})
+export function forkJoin(sourcesObject: {}): Observable<never>;
+export function forkJoin<T, K extends keyof T>(sourcesObject: T): Observable<{ [K in keyof T]: ObservedValueOf<T[K]> }>;
 
 /** @deprecated resultSelector is deprecated, pipe to map instead */
 export function forkJoin(...args: Array<ObservableInput<any>|Function>): Observable<any>;
+/** @deprecated Use the version that takes an array of Observables instead */
 export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
 /* tslint:enable:max-line-length */
 
 /**
- * Joins last values emitted by passed Observables.
+ * Accepts an `Array` of {@link ObservableInput} or a dictionary `Object` of {@link ObservableInput} and returns
+ * an {@link Observable} that emits either an array of values in the exact same order as the passed array,
+ * or a dictionary of values in the same shape as the passed dictionary.
  *
  * <span class="informal">Wait for Observables to complete and then combine last values they emitted.</span>
  *
  * ![](forkJoin.png)
  *
- * `forkJoin` is an operator that takes any number of Observables which can be passed either as an array
- * or directly as arguments. If no input Observables are provided, resulting stream will complete
+ * `forkJoin` is an operator that takes any number of input observables which can be passed either as an array
+ * or a dictionary of input observables. If no input observables are provided, resulting stream will complete
  * immediately.
  *
- * `forkJoin` will wait for all passed Observables to complete and then it will emit an array with last
- * values from corresponding Observables. So if you pass `n` Observables to the operator, resulting
- * array will have `n` values, where first value is the last thing emitted by the first Observable,
- * second value is the last thing emitted by the second Observable and so on. That means `forkJoin` will
- * not emit more than once and it will complete after that. If you need to emit combined values not only
- * at the end of lifecycle of passed Observables, but also throughout it, try out {@link combineLatest}
+ * `forkJoin` will wait for all passed observables to complete and then it will emit an array or an object with last
+ * values from corresponding observables.
+ *
+ * If you pass an array of `n` observables to the operator, resulting
+ * array will have `n` values, where first value is the last thing emitted by the first observable,
+ * second value is the last thing emitted by the second observable and so on.
+ *
+ * If you pass a dictionary of observables to the operator, resulting
+ * objects will have the same keys as the dictionary passed, with their last values they've emitted
+ * located at the corresponding key.
+ *
+ * That means `forkJoin` will not emit more than once and it will complete after that. If you need to emit combined
+ * values not only at the end of lifecycle of passed observables, but also throughout it, try out {@link combineLatest}
  * or {@link zip} instead.
  *
- * In order for resulting array to have the same length as the number of input Observables, whenever any of
- * that Observables completes without emitting any value, `forkJoin` will complete at that moment as well
- * and it will not emit anything either, even if it already has some last values from other Observables.
- * Conversely, if there is an Observable that never completes, `forkJoin` will never complete as well,
- * unless at any point some other Observable completes without emitting value, which brings us back to
- * the previous case. Overall, in order for `forkJoin` to emit a value, all Observables passed as arguments
+ * In order for resulting array to have the same length as the number of input observables, whenever any of
+ * that observables completes without emitting any value, `forkJoin` will complete at that moment as well
+ * and it will not emit anything either, even if it already has some last values from other observables.
+ * Conversely, if there is an observable that never completes, `forkJoin` will never complete as well,
+ * unless at any point some other observable completes without emitting value, which brings us back to
+ * the previous case. Overall, in order for `forkJoin` to emit a value, all observables passed as arguments
  * have to emit something at least once and complete.
  *
- * If any input Observable errors at some point, `forkJoin` will error as well and all other Observables
+ * If any input observable errors at some point, `forkJoin` will error as well and all other observables
  * will be immediately unsubscribed.
  *
  * Optionally `forkJoin` accepts project function, that will be called with values which normally
  * would land in emitted array. Whatever is returned by project function, will appear in output
- * Observable instead. This means that default project can be thought of as a function that takes
+ * observable instead. This means that default project can be thought of as a function that takes
  * all its arguments and puts them into an array. Note that project function will be called only
- * when output Observable is supposed to emit a result.
+ * when output observable is supposed to emit a result.
  *
  * ## Examples
- * ### Use forkJoin with operator emitting immediately
- * ```javascript
- * import { forkJoin, of } from 'rxjs';
  *
- * const observable = forkJoin(
- *   of(1, 2, 3, 4),
- *   of(5, 6, 7, 8),
- * );
- * observable.subscribe(
- *   value => console.log(value),
- *   err => {},
- *   () => console.log('This is how it ends!'),
- * );
+ * ### Use forkJoin with a dictionary of observable inputs
+ * ```ts
+ * import { forkJoin, of, timer } from 'rxjs';
  *
- * // Logs:
- * // [4, 8]
- * // "This is how it ends!"
- * ```
- *
- * ### Use forkJoin with operator emitting after some time
- * ```javascript
- * import { forkJoin, interval } from 'rxjs';
- * import { take } from 'rxjs/operators';
- *
- * const observable = forkJoin(
- *   interval(1000).pipe(take(3)), // emit 0, 1, 2 every second and complete
- *   interval(500).pipe(take(4)),  // emit 0, 1, 2, 3 every half a second and complete
- * );
- * observable.subscribe(
- *   value => console.log(value),
- *   err => {},
- *   () => console.log('This is how it ends!'),
- * );
+ * const observable = forkJoin({
+ *   foo: of(1, 2, 3, 4),
+ *   bar: Promise.resolve(8),
+ *   baz: timer(4000),
+ * });
+ * observable.subscribe({
+ *  next: value => console.log(value),
+ *  complete: () => console.log('This is how it ends!'),
+ * });
  *
  * // Logs:
- * // [2, 3] after 3 seconds
+ * // { foo: 4, bar: 8, baz: 0 } after 4 seconds
  * // "This is how it ends!" immediately after
  * ```
  *
- * ### Use forkJoin with project function
- * ```javascript
- * import { forkJoin, interval } from 'rxjs';
- * import { take } from 'rxjs/operators';
+ * ### Use forkJoin with an array of observable inputs
+ * ```ts
+ * import { forkJoin, of } from 'rxjs';
  *
- * const observable = forkJoin(
- *   interval(1000).pipe(take(3)), // emit 0, 1, 2 every second and complete
- *   interval(500).pipe(take(4)),  // emit 0, 1, 2, 3 every half a second and complete
- * ).pipe(
- *   map(([n, m]) => n + m),
- * );
- * observable.subscribe(
- *   value => console.log(value),
- *   err => {},
- *   () => console.log('This is how it ends!'),
- * );
+ * const observable = forkJoin([
+ *   of(1, 2, 3, 4),
+ *   Promise.resolve(8),
+ *   timer(4000),
+ * ]);
+ * observable.subscribe({
+ *  next: value => console.log(value),
+ *  complete: () => console.log('This is how it ends!'),
+ * });
  *
  * // Logs:
- * // 5 after 3 seconds
+ * // [4, 8, 0] after 4 seconds
  * // "This is how it ends!" immediately after
  * ```
  *
@@ -139,93 +138,67 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  * @return {Observable} Observable emitting either an array of last values emitted by passed Observables
  * or value from project function.
  */
-export function forkJoin<T>(
-  ...sources: Array<ObservableInput<T> | ObservableInput<T>[] | Function>
-): Observable<T[]> {
+export function forkJoin(
+  ...sources: any[]
+): Observable<any> {
+  if (sources.length === 1) {
+    const first = sources[0];
+    if (isArray(first)) {
+      return forkJoinInternal(first, null);
+    }
+    // TODO(benlesh): isObservable check will not be necessary when deprecated path is removed.
+    if (isObject(first) && Object.getPrototypeOf(first) === Object.prototype) {
+      const keys = Object.keys(first);
+      return forkJoinInternal(keys.map(key => first[key]), keys);
+    }
+  }
 
-  let resultSelector: Function;
+  // DEPRECATED PATHS BELOW HERE
   if (typeof sources[sources.length - 1] === 'function') {
-    // DEPRECATED PATH
-    resultSelector = sources.pop() as Function;
-  }
-
-  // if the first and only other argument is an array
-  // assume it's been called with `forkJoin([obs1, obs2, obs3])`
-  if (sources.length === 1 && isArray(sources[0])) {
-    sources = sources[0] as Array<ObservableInput<T>>;
-  }
-
-  if (sources.length === 0) {
-    return EMPTY;
-  }
-
-  if (resultSelector) {
-    // DEPRECATED PATH
-    return forkJoin(sources).pipe(
-      map(args => resultSelector(...args))
+    const resultSelector = sources.pop() as Function;
+    sources = (sources.length === 1 && isArray(sources[0])) ? sources[0] : sources;
+    return forkJoinInternal(sources, null).pipe(
+      map((args: any[]) => resultSelector(...args))
     );
   }
 
-  return new Observable(subscriber => {
-    return new ForkJoinSubscriber(subscriber, sources as Array<ObservableInput<T>>);
-  });
+  return forkJoinInternal(sources, null);
 }
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-class ForkJoinSubscriber<T, R> extends OuterSubscriber<T, T> {
-  private completed = 0;
-  private values: T[];
-  private haveValues = 0;
 
-  constructor(destination: Subscriber<R>,
-              private sources: Array<ObservableInput<T>>) {
-    super(destination);
-
+function forkJoinInternal(sources: ObservableInput<any>[], keys: string[] | null): Observable<any> {
+  return new Observable(subscriber => {
     const len = sources.length;
-    this.values = new Array(len);
-
+    if (len === 0) {
+      subscriber.complete();
+      return;
+    }
+    const values = new Array(len);
+    let completed = 0;
+    let emitted = 0;
     for (let i = 0; i < len; i++) {
-      const source = sources[i];
-      const innerSubscription = subscribeToResult(this, source, null, i);
-
-      if (innerSubscription) {
-        this.add(innerSubscription);
-      }
+      const source = from(sources[i]);
+      let hasValue = false;
+      subscriber.add(source.subscribe({
+        next: value => {
+          if (!hasValue) {
+            hasValue = true;
+            emitted++;
+          }
+          values[i] = value;
+        },
+        error: err => subscriber.error(err),
+        complete: () => {
+          completed++;
+          if (completed === len || !hasValue) {
+            if (emitted === len) {
+              subscriber.next(keys ?
+                keys.reduce((result, key, i) => (result[key] = values[i], result), {}) :
+                values);
+            }
+            subscriber.complete();
+          }
+        }
+      }));
     }
-  }
-
-  notifyNext(outerValue: any, innerValue: T,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, T>): void {
-    this.values[outerIndex] = innerValue;
-    if (!(innerSub as any)._hasValue) {
-      (innerSub as any)._hasValue = true;
-      this.haveValues++;
-    }
-  }
-
-  notifyComplete(innerSub: InnerSubscriber<T, T>): void {
-    const { destination, haveValues, values } = this;
-    const len = values.length;
-
-    if (!(innerSub as any)._hasValue) {
-      destination.complete();
-      return;
-    }
-
-    this.completed++;
-
-    if (this.completed !== len) {
-      return;
-    }
-
-    if (haveValues === len) {
-      destination.next(values);
-    }
-
-    destination.complete();
-  }
+  });
 }

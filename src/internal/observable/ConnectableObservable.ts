@@ -45,8 +45,6 @@ export class ConnectableObservable<T> extends Observable<T> {
       if (connection.closed) {
         this._connection = null;
         connection = Subscription.EMPTY;
-      } else {
-        this._connection = connection;
       }
     }
     return connection;
@@ -57,19 +55,20 @@ export class ConnectableObservable<T> extends Observable<T> {
   }
 }
 
-const connectableProto = <any>ConnectableObservable.prototype;
-
-export const connectableObservableDescriptor: PropertyDescriptorMap = {
-  operator: { value: null },
-  _refCount: { value: 0, writable: true },
-  _subject: { value: null, writable: true },
-  _connection: { value: null, writable: true },
-  _subscribe: { value: connectableProto._subscribe },
-  _isComplete: { value: connectableProto._isComplete, writable: true },
-  getSubject: { value: connectableProto.getSubject },
-  connect: { value: connectableProto.connect },
-  refCount: { value: connectableProto.refCount }
-};
+export const connectableObservableDescriptor: PropertyDescriptorMap = (() => {
+  const connectableProto = <any>ConnectableObservable.prototype;
+  return {
+    operator: { value: null as null },
+    _refCount: { value: 0, writable: true },
+    _subject: { value: null as null, writable: true },
+    _connection: { value: null as null, writable: true },
+    _subscribe: { value: connectableProto._subscribe },
+    _isComplete: { value: connectableProto._isComplete, writable: true },
+    getSubject: { value: connectableProto.getSubject },
+    connect: { value: connectableProto.connect },
+    refCount: { value: connectableProto.refCount }
+  };
+})();
 
 class ConnectableSubscriber<T> extends SubjectSubscriber<T> {
   constructor(destination: Subject<T>,

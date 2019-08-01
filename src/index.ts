@@ -24,7 +24,7 @@ export { Subscription } from './internal/Subscription';
 export { Subscriber } from './internal/Subscriber';
 
 /* Notification */
-export { Notification } from './internal/Notification';
+export { Notification, NotificationKind } from './internal/Notification';
 
 /* Utils */
 export { pipe } from './internal/util/pipe';
@@ -58,12 +58,14 @@ export { never } from './internal/observable/never';
 export { of } from './internal/observable/of';
 export { onErrorResumeNext } from './internal/observable/onErrorResumeNext';
 export { pairs } from './internal/observable/pairs';
+export { partition } from './internal/observable/partition';
 export { race } from './internal/observable/race';
 export { range } from './internal/observable/range';
 export { throwError } from './internal/observable/throwError';
 export { timer } from './internal/observable/timer';
 export { using } from './internal/observable/using';
 export { zip } from './internal/observable/zip';
+export { scheduled } from './internal/scheduled/scheduled';
 
 /* Constants */
 export { EMPTY } from './internal/observable/empty';

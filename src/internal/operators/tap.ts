@@ -23,7 +23,7 @@ export function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T
  * <span class="informal">Intercepts each emission on the source and runs a
  * function, but returns an output which is identical to the source as long as errors don't occur.</span>
  *
- * ![](do.png)
+ * ![](tap.png)
  *
  * Returns a mirrored Observable of the source Observable, but modified so that
  * the provided Observer is called to perform a side effect for every value,
@@ -41,7 +41,10 @@ export function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T
  *
  * ## Example
  * Map every click to the clientX position of that click, while also logging the click event
- * ```javascript
+ * ```ts
+ * import { fromEvent } from 'rxjs';
+ * import { tap, map } from 'rxjs/operators';
+ *
  * const clicks = fromEvent(document, 'click');
  * const positions = clicks.pipe(
  *   tap(ev => console.log(ev)),

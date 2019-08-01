@@ -1,1 +1,0 @@
-export { webSocket } from 'rxjs/internal-compatibility';

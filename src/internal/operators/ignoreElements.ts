@@ -10,7 +10,10 @@ import { OperatorFunction } from '../types';
  *
  * ## Examples
  * ### Ignores emitted values, reacts to observable's completion.
- * ```javascript
+ * ```ts
+ * import { of } from 'rxjs';
+ * import { ignoreElements } from 'rxjs/operators';
+ *
  * of('you', 'talking', 'to', 'me').pipe(
  *   ignoreElements(),
  * )

@@ -3,6 +3,7 @@ import { lowerCaseO } from '../helpers/test-helper';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { TestScheduler } from 'rxjs/testing';
 import { merge, of, Observable, defer, asyncScheduler } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 declare const rxTestScheduler: TestScheduler;
 
@@ -249,7 +250,7 @@ describe('merge(...observables, Scheduler, number)', () => {
 
   it('should handle scheduler', () => {
     const e1 =  of('a');
-    const e2 =  of('b').delay(20, rxTestScheduler);
+    const e2 =  of('b').pipe(delay(20, rxTestScheduler));
     const expected = 'a-(b|)';
 
     expectObservable(merge(e1, e2, rxTestScheduler)).toBe(expected);

@@ -36,13 +36,21 @@ it('should accept an array of Observables', () => {
   const o = from([of(1), of(2), of(3)]); // $ExpectType Observable<Observable<number>>
 });
 
-it('should accept an array of Inputs', () => {
-  const iterable = (function*() {
-    yield 42;
-  }());
+// TODO(benlesh): enable this test, once the issue is resolved upstream (https://github.com/Microsoft/dtslint/issues/191)
 
-  const o = from([of(1), ['test'], iterable]); // $ExpectType Observable<IterableIterator<number> | Observable<number> | string[]>
-});
+// NOTE: It appears to be working, it's just that dtslint sometimes says it wants
+// Observable<IterableIterator<number> | Observable<number> | string[]>
+// and if you switch it to that, it wants
+// Observable<Observable<number> | IterableIterator<number> | string[]>
+// and vica versa.
+
+// it('should accept an array of Inputs', () => {
+//   const iterable = (function*() {
+//     yield 42;
+//   }());
+
+//   const o = from([of(1), ['test'], iterable]); // $__TODO__ExpectType Observable<IterableIterator<number> | Observable<number> | string[]>
+// });
 
 it('should support scheduler', () => {
   const a = from([1, 2, 3], animationFrameScheduler); // $ExpectType Observable<number>

@@ -17,29 +17,21 @@ env:
   global:
     - secure: "Qdr/ZwB7Tv25n7YQfudtGcnazeE7l4UM7QaoMxav6GdpFvSqaPwXJsjBFBogMAw5n1jvYM43Ah3JheChpx8yodhwgc4tAgqC1KJd4THmjq9keQMglN23QXCW2gq9/TGEZsQi96kUs/gpHmq1SXPVMil+eCKYaTtydtSeEgHnZhSagKbWln8BWi0mNn3l8MFJ5mIHz/uzyHolE57olfHCA7c+E3rw08O7EbEwQUkID2pYcIgC6Bm6dFHwgjcSJ9py8d6HOprhxAiTvAL8B97y0CBufo9SmpO7AqAgejphIESevscLiiKtP+sjctPXkS3YI28L5tCuOJulfgQKlMPfdDFBPnIu/HfN9irXK00N5ZQBtQ0596VQ6qGpx+yS7MXWYLP67+j95nbjN4gouRI4NXovMfbNPQ8oVrXjQLM52xCi2eA3W9p3plnqv544bdfjctOhGaBzW5A/1rSC7MHsAn6R0l9B0GLR60mJPw9oBko8OC/1uhWYqmzHzWoC8fzHi2QaynD9pxaYi3Gb9r1urLs8a3paWmaotrcXiPAvMK3PiC9o+/Osdp85JROnhFMyS0hhMz0PgwIB2+q9Fbv0vhjGSkW/6pgZWDx7k79OhPQQsiBDH23NMznWWPGzuXvTcACTnUynMz4G7cIkebOx6JVDBjwusKD2/+PE9cLs06w="
   matrix:
-  - NODE_VER=8 FULL_VALIDATE=true
-  - NODE_VER=8 TSC_VERSION=2.8.*
-  - NODE_VER=8 TSC_VERSION=next
-  - NODE_VER=9
-  - NODE_VER=9 TSC_VERSION=2.8.*
-  - NODE_VER=9 TSC_VERSION=next
-  - NODE_VER=10
   - NODE_VER=10 TSC_VERSION=2.8.*
   - NODE_VER=10 TSC_VERSION=next
+  - NODE_VER=11 FULL_VALIDATE=true TSC_VERSION=2.8.*
+  - NODE_VER=11 TSC_VERSION=next
 
 matrix:
   fast_finish: true
   allow_failures:
-    - NODE_VER=8 TSC_VERSION=2.8.*
-    - NODE_VER=8 TSC_VERSION=next
-    - NODE_VER=9 TSC_VERSION=2.8.*
-    - NODE_VER=9 TSC_VERSION=next
     - NODE_VER=10 TSC_VERSION=2.8.*
     - NODE_VER=10 TSC_VERSION=next
+    - NODE_VER=11 TSC_VERSION=next
 
 before_install:
   - nvm install $NODE_VER
-  - npm install -g npm@6 && node -v && npm -v
+  - npm install -g npm && node -v && npm -v
 
 install:
   - npm ci
@@ -54,5 +46,5 @@ script:
   - if [ "$FULL_VALIDATE" == "true" ] && [ -n "DANGER_GITHUB_API_TOKEN" ]; then cd docs_app && npm ci && npm run build && cd ..; fi
 
 after_success:
-  - if [ "$FULL_VALIDATE" == "true" ]; then npm run test:cover && npx nyc report --reporter=text-lcov | npx coveralls; fi
+  - if [ "$FULL_VALIDATE" == "true" ]; then npm run test:cover; fi
   - if [ "$FULL_VALIDATE" == "true" ]; then npm run tests2png && cd docs_app && chmod 755 scripts/deploy-to-firebase.sh && npm run deploy-production; fi

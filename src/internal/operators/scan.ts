@@ -4,9 +4,9 @@ import { Subscriber } from '../Subscriber';
 import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
 
 /* tslint:disable:max-line-length */
+export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, seed: R): OperatorFunction<T, R>;
 export function scan<T>(accumulator: (acc: T, value: T, index: number) => T, seed?: T): MonoTypeOperatorFunction<T>;
-export function scan<T>(accumulator: (acc: T[], value: T, index: number) => T[], seed?: T[]): OperatorFunction<T, T[]>;
-export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, seed?: R): OperatorFunction<T, R>;
+export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R): OperatorFunction<T, R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -30,7 +30,10 @@ export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, 
  *
  * ## Example
  * Count the number of click events
- * ```javascript
+ * ```ts
+ * import { fromEvent } from 'rxjs';
+ * import { scan, mapTo } from 'rxjs/operators';
+ *
  * const clicks = fromEvent(document, 'click');
  * const ones = clicks.pipe(mapTo(1));
  * const seed = 0;

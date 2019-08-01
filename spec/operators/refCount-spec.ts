@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { refCount, publish, publishReplay } from 'rxjs/operators';
+import { refCount, publish, publishReplay, first } from 'rxjs/operators';
 import { NEVER, noop, Observable, Observer, Subject, ConnectableObservable } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
@@ -108,7 +108,7 @@ describe('refCount', () => {
 
     subject.next('the number one');
 
-    refCounted.first().subscribe().unsubscribe();
+    refCounted.pipe(first()).subscribe().unsubscribe();
 
     subject.next('the number two');
 

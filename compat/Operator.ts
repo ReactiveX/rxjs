@@ -1,1 +1,0 @@
-export {Operator} from 'rxjs';

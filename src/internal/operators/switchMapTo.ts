@@ -1,10 +1,3 @@
-import { Operator } from '../Operator';
-import { Observable } from '../Observable';
-import { Subscriber } from '../Subscriber';
-import { Subscription } from '../Subscription';
-import { OuterSubscriber } from '../OuterSubscriber';
-import { InnerSubscriber } from '../InnerSubscriber';
-import { subscribeToResult } from '../util/subscribeToResult';
 import { ObservableInput, OperatorFunction } from '../types';
 import { switchMap } from './switchMap';
 
@@ -33,7 +26,10 @@ export function switchMapTo<T, I, R>(observable: ObservableInput<I>, resultSelec
  *
  * ## Example
  * Rerun an interval Observable on every click event
- * ```javascript
+ * ```ts
+ * import { fromEvent, interval } from 'rxjs';
+ * import { switchMapTo } from 'rxjs/operators';
+ *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(switchMapTo(interval(1000)));
  * result.subscribe(x => console.log(x));

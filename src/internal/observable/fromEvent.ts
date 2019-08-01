@@ -4,7 +4,7 @@ import { isFunction } from '../util/isFunction';
 import { Subscriber } from '../Subscriber';
 import { map } from '../operators/map';
 
-const toString: Function = Object.prototype.toString;
+const toString: Function = (() => Object.prototype.toString)();
 
 export interface NodeStyleEventEmitter {
   addListener: (eventName: string | symbol, handler: NodeEventHandler) => this;
@@ -132,7 +132,9 @@ export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, opti
  *
  * ## Examples
  * ### Emits clicks happening on the DOM document
- * ```javascript
+ * ```ts
+ * import { fromEvent } from 'rxjs';
+ *
  * const clicks = fromEvent(document, 'click');
  * clicks.subscribe(x => console.log(x));
  *
@@ -142,7 +144,9 @@ export function fromEvent<T>(target: FromEventTarget<T>, eventName: string, opti
  * ```
  *
  * ### Use addEventListener with capture option
- * ```javascript
+ * ```ts
+ * import { fromEvent } from 'rxjs';
+ *
  * const clicksInDocument = fromEvent(document, 'click', true); // note optional configuration parameter
  *                                                              // which will be passed to addEventListener
  * const clicksInDiv = fromEvent(someDivInDocument, 'click');

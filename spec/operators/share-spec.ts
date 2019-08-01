@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { share, retry, mergeMapTo, mergeMap, tap } from 'rxjs/operators';
+import { share, retry, mergeMapTo, mergeMap, tap, repeat } from 'rxjs/operators';
 import { Observable, EMPTY, NEVER, of } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
@@ -220,11 +220,11 @@ describe('share operator', () => {
                       ' (^!)'];
 
     expectObservable(hot(subscribe1).pipe(tap(() => {
-      expectObservable(shared.retry(1)).toBe(expected1);
+      expectObservable(shared.pipe(retry(1))).toBe(expected1);
     }))).toBe(subscribe1);
 
     expectObservable(hot(subscribe2).pipe(tap(() => {
-      expectObservable(shared.retry(1)).toBe(expected2);
+      expectObservable(shared.pipe(retry(1))).toBe(expected2);
     }))).toBe(subscribe2);
 
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -243,11 +243,11 @@ describe('share operator', () => {
                       ' (^!)'];
 
     expectObservable(hot(subscribe1).pipe(tap(() => {
-      expectObservable(shared.repeat(2)).toBe(expected1);
+      expectObservable(shared.pipe(repeat(2))).toBe(expected1);
     }))).toBe(subscribe1);
 
     expectObservable(hot(subscribe2).pipe(tap(() => {
-      expectObservable(shared.repeat(2)).toBe(expected2);
+      expectObservable(shared.pipe(repeat(2))).toBe(expected2);
     }))).toBe(subscribe2);
 
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -265,11 +265,11 @@ describe('share operator', () => {
     const expected2 =       '    -3----4--1-2-3----4--1-2-3----4-#';
 
     expectObservable(hot(subscribe1).pipe(tap(() => {
-      expectObservable(shared.retry(2)).toBe(expected1);
+      expectObservable(shared.pipe(retry(2))).toBe(expected1);
     }))).toBe(subscribe1);
 
     expectObservable(hot(subscribe2).pipe(tap(() => {
-      expectObservable(shared.retry(2)).toBe(expected2);
+      expectObservable(shared.pipe(retry(2))).toBe(expected2);
     }))).toBe(subscribe2);
 
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -287,11 +287,11 @@ describe('share operator', () => {
     const expected2 =       '    -3----4--1-2-3----4--1-2-3----4-|';
 
     expectObservable(hot(subscribe1).pipe(tap(() => {
-      expectObservable(shared.repeat(3)).toBe(expected1);
+      expectObservable(shared.pipe(repeat(3))).toBe(expected1);
     }))).toBe(subscribe1);
 
     expectObservable(hot(subscribe2).pipe(tap(() => {
-      expectObservable(shared.repeat(3)).toBe(expected2);
+      expectObservable(shared.pipe(repeat(3))).toBe(expected2);
     }))).toBe(subscribe2);
 
     expectSubscriptions(source.subscriptions).toBe(sourceSubs);
@@ -305,7 +305,7 @@ describe('share operator', () => {
   });
 
   it('should not change the output of the observable when empty', () => {
-    const e1 = Observable.empty();
+    const e1 = EMPTY;
     const expected = '|';
 
     expectObservable(e1.pipe(share())).toBe(expected);

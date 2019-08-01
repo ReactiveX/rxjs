@@ -1,13 +1,13 @@
 import { Observable } from '../Observable';
 import { isArray } from '../util/isArray';
 import { isFunction } from '../util/isFunction';
-import { fromEvent } from './fromEvent';
+import { NodeEventHandler } from './fromEvent';
 import { map } from '../operators/map';
 
 /* tslint:disable:max-line-length */
-export function fromEventPattern<T>(addHandler: (handler: Function) => any, removeHandler?: (handler: Function, signal?: any) => void): Observable<T>;
+export function fromEventPattern<T>(addHandler: (handler: NodeEventHandler) => any, removeHandler?: (handler: NodeEventHandler, signal?: any) => void): Observable<T>;
 /** @deprecated resultSelector no longer supported, pipe to map instead */
-export function fromEventPattern<T>(addHandler: (handler: Function) => any, removeHandler?: (handler: Function, signal?: any) => void, resultSelector?: (...args: any[]) => T): Observable<T>;
+export function fromEventPattern<T>(addHandler: (handler: NodeEventHandler) => any, removeHandler?: (handler: NodeEventHandler, signal?: any) => void, resultSelector?: (...args: any[]) => T): Observable<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -58,7 +58,9 @@ export function fromEventPattern<T>(addHandler: (handler: Function) => any, remo
  * ## Example
  * ### Emits clicks happening on the DOM document
  *
- * ```javascript
+ * ```ts
+ * import { fromEventPattern } from 'rxjs';
+ *
  * function addClickHandler(handler) {
  *   document.addEventListener('click', handler);
  * }
@@ -80,7 +82,9 @@ export function fromEventPattern<T>(addHandler: (handler: Function) => any, remo
  * ## Example
  * ### Use with API that returns cancellation token
  *
- * ```javascript
+ * ```ts
+ * import { fromEventPattern } from 'rxjs';
+ *
  * const token = someAPI.registerEventHandler(function() {});
  * someAPI.unregisterEventHandler(token); // this APIs cancellation method accepts
  *                                        // not handler itself, but special token.
@@ -94,7 +98,9 @@ export function fromEventPattern<T>(addHandler: (handler: Function) => any, remo
  * ## Example
  * ### Use with project function
  *
- * ```javascript
+ * ```ts
+ * import { fromEventPattern } from 'rxjs';
+ *
  * someAPI.registerEventHandler((eventType, eventMessage) => {
  *   console.log(eventType, eventMessage); // Logs "EVENT_TYPE" "EVENT_MESSAGE" to console.
  * });
@@ -132,8 +138,8 @@ export function fromEventPattern<T>(addHandler: (handler: Function) => any, remo
  * @owner Observable
  */
 
-export function fromEventPattern<T>(addHandler: (handler: Function) => any,
-                                    removeHandler?: (handler: Function, signal?: any) => void,
+export function fromEventPattern<T>(addHandler: (handler: NodeEventHandler) => any,
+                                    removeHandler?: (handler: NodeEventHandler, signal?: any) => void,
                                     resultSelector?: (...args: any[]) => T): Observable<T | T[]> {
 
   if (resultSelector) {

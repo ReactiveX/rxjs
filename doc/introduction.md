@@ -19,7 +19,7 @@ The essential concepts in RxJS which solve async event management are:
 
 Normally you register event listeners.
 
-```js
+```ts
 const button = document.querySelector('button');
 
 button.addEventListener('click', () => console.log('Clicked!'));
@@ -27,7 +27,7 @@ button.addEventListener('click', () => console.log('Clicked!'));
 
 Using RxJS you create an observable instead.
 
-```js
+```ts
 import { fromEvent } from 'rxjs';
 
 const button = document.querySelector('button');
@@ -42,7 +42,7 @@ What makes RxJS powerful is its ability to produce values using pure functions. 
 
 Normally you would create an impure function, where other pieces of your code can mess up your state.
 
-```js
+```ts
 const button = document.querySelector('button');
 let count = 0;
 
@@ -72,7 +72,7 @@ RxJS has a whole range of operators that helps you control how the events flow t
 
 This is how you would allow at most one click per second, with plain JavaScript:
 
-```js
+```ts
 const button = document.querySelector('button');
 const rate = 1000;
 let count = 0;
@@ -88,7 +88,7 @@ button.addEventListener('click', () => {
 
 With RxJS:
 
-```js
+```ts
 import { fromEvent } from 'rxjs';
 import { throttleTime, scan } from 'rxjs/operators';
 
@@ -110,7 +110,7 @@ You can transform the values passed through your observables.
 
 Here's how you can add the current mouse x position for every click, in plain JavaScript:
 
-```js
+```ts
 const button = document.querySelector('button');
 const rate = 1000;
 let count = 0;
@@ -127,7 +127,7 @@ button.addEventListener('click', (event) => {
 
 With RxJS:
 
-```js
+```ts
 import { fromEvent } from 'rxjs';
 import { throttleTime, map, scan } from 'rxjs/operators';
 

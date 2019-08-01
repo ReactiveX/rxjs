@@ -2,8 +2,6 @@ import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
-import { tryCatch } from '../util/tryCatch';
-import { errorObject } from '../util/errorObject';
 
 import { Observer, OperatorFunction } from '../types';
 
@@ -25,7 +23,10 @@ import { Observer, OperatorFunction } from '../types';
  *
  * ## Example
  * figure out if the Konami code matches
- * ```javascript
+ * ```ts
+ * import { from, fromEvent } from 'rxjs';
+ * import { sequenceEqual, bufferCount, mergeMap, map } from 'rxjs/operators';
+ *
  * const codes = from([
  *   'ArrowUp',
  *   'ArrowUp',
@@ -117,13 +118,10 @@ export class SequenceEqualSubscriber<T, R> extends Subscriber<T> {
       let a = _a.shift();
       let b = _b.shift();
       let areEqual = false;
-      if (comparator) {
-        areEqual = tryCatch(comparator)(a, b);
-        if (areEqual === errorObject) {
-          this.destination.error(errorObject.e);
-        }
-      } else {
-        areEqual = a === b;
+      try {
+        areEqual = comparator ? comparator(a, b) : a === b;
+      } catch (e) {
+        this.destination.error(e);
       }
       if (!areEqual) {
         this.emit(false);

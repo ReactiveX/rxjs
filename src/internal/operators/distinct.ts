@@ -22,7 +22,10 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  *
  * ## Examples
  * A simple example with numbers
- * ```javascript
+ * ```ts
+ * import { of } from 'rxjs';
+ * import { distinct } from 'rxjs/operators';
+ *
  * of(1, 1, 2, 2, 2, 1, 2, 3, 4, 3, 2, 1).pipe(
  *     distinct(),
  *   )
@@ -31,6 +34,9 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  *
  * An example using a keySelector function
  * ```typescript
+ * import { of } from 'rxjs';
+ * import { distinct } from 'rxjs/operators';
+ *
  * interface Person {
  *    age: number,
  *    name: string

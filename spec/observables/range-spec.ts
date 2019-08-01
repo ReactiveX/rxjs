@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { Observable, Subscriber, asapScheduler as asap, range, of} from 'rxjs';
+import { Subscriber, asapScheduler as asap, range, of} from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { expectObservable } from '../helpers/marble-testing';
-import { dispatch } from 'rxjs/observable/range';
+import { dispatch } from 'rxjs/internal/observable/range';
 import { concatMap, delay } from 'rxjs/operators';
 
 declare const asDiagram: any;
@@ -72,6 +72,21 @@ describe('range', () => {
       done();
     });
 
+  });
+
+  it('should accept only one argument where count is argument and start is zero', () => {
+    const e1 = range(5)
+      .pipe(concatMap((x, i) => of(x).pipe(delay(i === 0 ? 0 : 20, rxTestScheduler))));
+    const expected = 'a-b-c-d-(e|)';
+    const values = {
+      a: 0,
+      b: 1,
+      c: 2,
+      d: 3,
+      e: 4
+    };
+    expectObservable(e1).toBe(expected, values);
+    expectObservable(e1).toBe(expected, values);
   });
 });
 

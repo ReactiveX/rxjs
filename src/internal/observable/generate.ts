@@ -81,7 +81,7 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  *
  * <span class="informal">Use it instead of nexting values in a for loop.</span>
  *
- * <img src="./img/generate.png" width="100%">
+ * ![](generate.png)
  *
  * `generate` allows you to create stream of values generated with a loop very similar to
  * traditional for loop. First argument of `generate` is a beginning value. Second argument

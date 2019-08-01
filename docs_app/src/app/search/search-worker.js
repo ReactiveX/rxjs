@@ -28,6 +28,7 @@ self.onmessage = handleMessage;
 // the path and search terms for a page
 function createIndex(addFn) {
   return lunr(/** @this */function() {
+    this.pipeline.remove(lunr.stopWordFilter);
     this.ref('path');
     this.field('titleWords', {boost: 100});
     this.field('headingWords', {boost: 50});

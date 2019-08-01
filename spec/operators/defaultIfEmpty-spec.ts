@@ -1,9 +1,8 @@
-import * as Rx from 'rxjs/Rx';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { of } from 'rxjs';
+import { defaultIfEmpty, mergeMap } from 'rxjs/operators';
 
 declare function asDiagram(arg: string): Function;
-
-const Observable = Rx.Observable;
 
 /** @test {defaultIfEmpty} */
 describe('Observable.prototype.defaultIfEmpty', () => {
@@ -11,7 +10,8 @@ describe('Observable.prototype.defaultIfEmpty', () => {
     const e1 =   hot('--------|');
     const expected = '--------(x|)';
 
-    expectObservable(e1.defaultIfEmpty(42)).toBe(expected, { x: 42 });
+    // TODO: Fix `defaultIfEmpty` typings
+    expectObservable(e1.pipe(defaultIfEmpty(42) as any)).toBe(expected, { x: 42 });
   });
 
   it('should return the argument if Observable is empty', () => {
@@ -19,7 +19,7 @@ describe('Observable.prototype.defaultIfEmpty', () => {
     const e1subs =   '(^!)';
     const expected = '(x|)';
 
-    expectObservable(e1.defaultIfEmpty('x')).toBe(expected);
+    expectObservable(e1.pipe(defaultIfEmpty('x'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -28,7 +28,7 @@ describe('Observable.prototype.defaultIfEmpty', () => {
     const e1subs =   '(^!)';
     const expected = '(x|)';
 
-    expectObservable(e1.defaultIfEmpty()).toBe(expected, { x: null });
+    expectObservable(e1.pipe(defaultIfEmpty())).toBe(expected, { x: null });
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -37,7 +37,7 @@ describe('Observable.prototype.defaultIfEmpty', () => {
     const e1subs =   '^       !';
     const expected = '--a--b--|';
 
-    expectObservable(e1.defaultIfEmpty('x')).toBe(expected);
+    expectObservable(e1.pipe(defaultIfEmpty('x'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -46,7 +46,7 @@ describe('Observable.prototype.defaultIfEmpty', () => {
     const e1subs =   '^       !';
     const expected = '--a--b--|';
 
-    expectObservable(e1.defaultIfEmpty()).toBe(expected);
+    expectObservable(e1.pipe(defaultIfEmpty())).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -56,7 +56,7 @@ describe('Observable.prototype.defaultIfEmpty', () => {
     const expected = '--a--    ';
     const unsub =    '    !    ';
 
-    const result = e1.defaultIfEmpty('x');
+    const result = e1.pipe(defaultIfEmpty('x'));
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -68,10 +68,11 @@ describe('Observable.prototype.defaultIfEmpty', () => {
     const expected = '--a--    ';
     const unsub =    '    !    ';
 
-    const result = e1
-      .mergeMap((x: any) => Observable.of(x))
-      .defaultIfEmpty('x')
-      .mergeMap((x: any) => Observable.of(x));
+    const result = e1.pipe(
+      mergeMap(x => of(x)),
+      defaultIfEmpty('x'),
+      mergeMap(x => of(x)),
+    );
 
     expectObservable(result, unsub).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
@@ -82,7 +83,7 @@ describe('Observable.prototype.defaultIfEmpty', () => {
     const e1subs =   '(^!)';
     const expected = '#';
 
-    expectObservable(e1.defaultIfEmpty('x')).toBe(expected);
+    expectObservable(e1.pipe(defaultIfEmpty('x'))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 });

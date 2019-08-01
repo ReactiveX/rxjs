@@ -1,3 +1,103 @@
+## [6.5.2](https://github.com/reactivex/rxjs/compare/6.5.0...6.5.2) (2019-05-10)
+
+
+### Bug Fixes
+
+* **endWith:** wrap args - they are not observables - in of before concatenating ([#4735](https://github.com/reactivex/rxjs/issues/4735)) ([986be2f](https://github.com/reactivex/rxjs/commit/986be2f))
+* **forkJoin:** test for object literal ([#4741](https://github.com/reactivex/rxjs/issues/4741)) ([c11e1b3](https://github.com/reactivex/rxjs/commit/c11e1b3)), closes [#4737](https://github.com/reactivex/rxjs/issues/4737) [#4737](https://github.com/reactivex/rxjs/issues/4737)
+* **Notification:** replace const enum ([#4556](https://github.com/reactivex/rxjs/issues/4556)) ([e460eec](https://github.com/reactivex/rxjs/commit/e460eec)), closes [#4538](https://github.com/reactivex/rxjs/issues/4538)
+* **of:** remove deprecation comment to prevent false positive warning ([#4724](https://github.com/reactivex/rxjs/issues/4724)) ([da69c16](https://github.com/reactivex/rxjs/commit/da69c16))
+* **pairwise:** make it recursion-proof ([#4743](https://github.com/reactivex/rxjs/issues/4743)) ([21ab261](https://github.com/reactivex/rxjs/commit/21ab261))
+* **scan:** fixed declarations to properly support different return types ([#4598](https://github.com/reactivex/rxjs/issues/4598)) ([126d2b6](https://github.com/reactivex/rxjs/commit/126d2b6))
+* **Subscription:** Return Empty when teardown === null ([#4575](https://github.com/reactivex/rxjs/issues/4575)) ([ffc4e68](https://github.com/reactivex/rxjs/commit/ffc4e68))
+* **throttleTime:** emit single value with trailing enabled ([#4564](https://github.com/reactivex/rxjs/issues/4564)) ([fd690a6](https://github.com/reactivex/rxjs/commit/fd690a6)), closes [#2859](https://github.com/reactivex/rxjs/issues/2859) [#4491](https://github.com/reactivex/rxjs/issues/4491)
+* **umd:** export fetch namespace ([#4738](https://github.com/reactivex/rxjs/issues/4738)) ([7926122](https://github.com/reactivex/rxjs/commit/7926122))
+* **fromFetch:** don't abort if fetch resolves ([#4742](https://github.com/reactivex/rxjs/issues/4742) ([ed8d771](https://github.com/reactivex/rxjs/commit/ed8d771))
+
+
+## [6.5.1](https://github.com/reactivex/rxjs/compare/6.5.0...6.5.1) (2019-04-23)
+
+
+### Bug Fixes
+
+* **Notification:** replace const enum ([#4556](https://github.com/reactivex/rxjs/issues/4556)) ([e460eec](https://github.com/reactivex/rxjs/commit/e460eec)), closes [#4538](https://github.com/reactivex/rxjs/issues/4538)
+* **throttleTime:** emit single value with trailing enabled ([#4564](https://github.com/reactivex/rxjs/issues/4564)) ([fd690a6](https://github.com/reactivex/rxjs/commit/fd690a6)), closes [#2859](https://github.com/reactivex/rxjs/issues/2859) [#4491](https://github.com/reactivex/rxjs/issues/4491)
+
+
+
+# [6.5.0](https://github.com/reactivex/rxjs/compare/6.4.0...6.5.0) (2019-04-23)
+
+
+### Bug Fixes
+
+* **docs-app:** remove stopWordFilter from lunr pipeline ([#4536](https://github.com/reactivex/rxjs/issues/4536)) ([9eaebd4](https://github.com/reactivex/rxjs/commit/9eaebd4))
+* **dtslint:** disable tests that break in TS@next ([#4705](https://github.com/reactivex/rxjs/issues/4705)) ([ecc73d2](https://github.com/reactivex/rxjs/commit/ecc73d2))
+* **index:** export NotificationKind ([#4514](https://github.com/reactivex/rxjs/issues/4514)) ([7125355](https://github.com/reactivex/rxjs/commit/7125355)), closes [#4513](https://github.com/reactivex/rxjs/issues/4513)
+* **race:** better typings ([#4643](https://github.com/reactivex/rxjs/issues/4643)) ([fb9bc48](https://github.com/reactivex/rxjs/commit/fb9bc48)), closes [#4390](https://github.com/reactivex/rxjs/issues/4390) [#4642](https://github.com/reactivex/rxjs/issues/4642)
+* **throwIfEmpty:** ensure result is retry-able ([c4f44b9](https://github.com/reactivex/rxjs/commit/c4f44b9))
+* **types:** Fixed signature for onErrorResumeNext ([#4603](https://github.com/reactivex/rxjs/issues/4603)) ([4dd0be0](https://github.com/reactivex/rxjs/commit/4dd0be0))
+
+
+### Features
+
+* **combineLatest:** deprecated rest argument and scheduler signatures ([#4641](https://github.com/reactivex/rxjs/issues/4641)) ([6661c79](https://github.com/reactivex/rxjs/commit/6661c79)), closes [#4640](https://github.com/reactivex/rxjs/issues/4640)
+* **fromFetch:** We now export a `fromFetch` static observable creation method from `rxjs/fetch`. Mirrors native `fetch` only it's lazy and cancellable via `Observable` interface. ([#4702](https://github.com/reactivex/rxjs/issues/4702)) ([5a1ef86](https://github.com/reactivex/rxjs/commit/5a1ef86))
+* **forkJoin:** accepts a dictionary of sources ([#4640](https://github.com/reactivex/rxjs/issues/4640)) ([b5a2ac9](https://github.com/reactivex/rxjs/commit/b5a2ac9))
+* **partition:** new `partition` observable creation function. Old `partition` operator is deprecated ([#4419](https://github.com/reactivex/rxjs/issues/4419)) ([#4685](https://github.com/reactivex/rxjs/issues/4685)) ([d5d6980](https://github.com/reactivex/rxjs/commit/d5d6980))
+* **scheduled:** Add `scheduled` creation function to use to create scheduled observable of values. Deprecate scheduled versions of `from`, `range`, et al. ([#4595](https://github.com/reactivex/rxjs/issues/4595)) ([f57e1fc](https://github.com/reactivex/rxjs/commit/f57e1fc))
+
+
+### Performance Improvements
+
+* **Subscription:** improve parent management ([#4526](https://github.com/reactivex/rxjs/issues/4526)) ([06f1a25](https://github.com/reactivex/rxjs/commit/06f1a25))
+
+
+
+# [6.4.0](https://github.com/reactivex/rxjs/compare/6.3.3...6.4.0) (2019-01-30)
+
+
+### Bug Fixes
+
+* **ajax:** Fix case-insensitive headers in HTTP request ([#4453](https://github.com/reactivex/rxjs/issues/4453)) ([673bf47](https://github.com/reactivex/rxjs/commit/673bf47))
+* **bundle:** closure to not rewrite polyfills for minification ([#4487](https://github.com/reactivex/rxjs/issues/4487)) ([a1fedb9](https://github.com/reactivex/rxjs/commit/a1fedb9))
+* **bundle:** don't export `operators` twice ([#4310](https://github.com/reactivex/rxjs/issues/4310)) ([2399f6e](https://github.com/reactivex/rxjs/commit/2399f6e))
+* **combineLatest:** improve typings for combineLatest ([#4470](https://github.com/reactivex/rxjs/issues/4470)) ([40c3d9f](https://github.com/reactivex/rxjs/commit/40c3d9f))
+* **compat:** remove internal from import locations ([#4498](https://github.com/reactivex/rxjs/issues/4498)) ([a6c0017](https://github.com/reactivex/rxjs/commit/a6c0017)), closes [#4070](https://github.com/reactivex/rxjs/issues/4070)
+* **endWith:** ability to endWith different types ([#4183](https://github.com/reactivex/rxjs/issues/4183)) ([#4185](https://github.com/reactivex/rxjs/issues/4185)) ([83533d1](https://github.com/reactivex/rxjs/commit/83533d1))
+* **fromEventPattern:** improve typings for fromEventPattern ([#4496](https://github.com/reactivex/rxjs/issues/4496)) ([037f53d](https://github.com/reactivex/rxjs/commit/037f53d))
+* **Observable:** Fix Observable.subscribe to add operator TeardownLogic to returned Subscription. ([#4434](https://github.com/reactivex/rxjs/issues/4434)) ([f28955f](https://github.com/reactivex/rxjs/commit/f28955f))
+* **subscribe:** Deprecate null starting parameter signatures for subscribe ([#4202](https://github.com/reactivex/rxjs/issues/4202)) ([c85ddf6](https://github.com/reactivex/rxjs/commit/c85ddf6))
+* **combineLatest:** support passing union types ([ffda319](https://github.com/reactivex/rxjs/commit/ffda319))
+* **from:** support passing union types ([eb1d596](https://github.com/reactivex/rxjs/commit/eb1d596))
+* **withLatestFrom:** support passing union types ([1e19a24](https://github.com/reactivex/rxjs/commit/1e19a24))
+* **zip:** support passing union types ([0d87f52](https://github.com/reactivex/rxjs/commit/0d87f52))
+* **multicast:** support returning union types from projection ([e9e9041](https://github.com/reactivex/rxjs/commit/e9e9041))
+* **exhaustMap:** support returning union types from projection ([ff1f5dc](https://github.com/reactivex/rxjs/commit/ff1f5dc))
+* **merge:** support union type inference for merge operators ([c2ac39c](https://github.com/reactivex/rxjs/commit/c2ac39c))
+* **catchError:** support union type returns ([8350622](https://github.com/reactivex/rxjs/commit/8350622))
+* **switchMap:** support union type returns ([32d35fd](https://github.com/reactivex/rxjs/commit/32d35fd))
+* **defer:** support union types passed ([5aea50e](https://github.com/reactivex/rxjs/commit/5aea50e))
+* **race:** Update typings to support proper return types ([#4465](https://github.com/reactivex/rxjs/issues/4465)) ([0042846](https://github.com/reactivex/rxjs/commit/0042846))
+* **VirtualTimeScheduler:** rework flush so it won't lose actions ([#4433](https://github.com/reactivex/rxjs/issues/4433)) ([d068bc9](https://github.com/reactivex/rxjs/commit/d068bc9))
+* **WebSocketSubject:** fix subject failing to close socket ([#4446](https://github.com/reactivex/rxjs/issues/4446)) ([dcfa52b](https://github.com/reactivex/rxjs/commit/dcfa52b))
+
+
+### Features
+
+* **shareReplay:** Add configuration object for named arguments, and add argument to support unsubscribing from source observable by `refCount` when all resulting subscriptions have unsubscribed. The default behavior is to leave the source subscription running.
+* **mergeScan:** Add index to the accumulator function ([#4458](https://github.com/reactivex/rxjs/issues/4458)) ([f5e143d](https://github.com/reactivex/rxjs/commit/f5e143d)), closes [#4441](https://github.com/reactivex/rxjs/issues/4441)
+* **range:** accept one argument ([#4360](https://github.com/reactivex/rxjs/issues/4360)) ([a388578](https://github.com/reactivex/rxjs/commit/a388578))
+* **takeWhile:** add an `inclusive` option to the operator which causes to emit final value ([#4115](https://github.com/reactivex/rxjs/issues/4115)) ([6e7f407](https://github.com/reactivex/rxjs/commit/6e7f407))
+
+
+### Performance Improvements
+
+* **internal:** optimize Subscription#add() for the common case ([#4489](https://github.com/reactivex/rxjs/issues/4489)) ([bdd201c](https://github.com/reactivex/rxjs/commit/bdd201c))
+* **internal:** use strict equality for isObject() ([#4493](https://github.com/reactivex/rxjs/issues/4493)) ([fc84a00](https://github.com/reactivex/rxjs/commit/fc84a00))
+* **Subscription:** use `instanceof` to avoid megamorphic LoadIC ([#4499](https://github.com/reactivex/rxjs/issues/4499)) ([065b4e3](https://github.com/reactivex/rxjs/commit/065b4e3))
+
+
+
 <a name="6.3.3"></a>
 ## [6.3.3](https://github.com/reactivex/rxjs/compare/6.3.2...6.3.3) (2018-09-25)
 
