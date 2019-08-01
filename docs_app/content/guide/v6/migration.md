@@ -31,7 +31,7 @@ rxjs-5-to-6-migrate -p [path/to/tsconfig.json]
 In order to minimize the impact of the upgrade, RxJS v6 releases with a sibling package,  `rxjs-compat`, which provides a compatibility layer between the v6 and v5 APIs.
 Most developers with existing applications should upgrade by installing both `rxjs` and `rxjs-compat` at ^6.0.0:
 
-`npm install rxjs@6 rxjs-compat@6 --save`
+`npm install rxjs@6 rxjs-compat@6`
 
 For details about this package, see https://www.npmjs.com/package/rxjs-compat.
 
