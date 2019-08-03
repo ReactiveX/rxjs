@@ -275,8 +275,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     });
 
     socket.onopen = (e: Event) => {
-      const { _socket } = this;
-      if (!_socket) {
+      if (!this._socket) {
         socket.close();
         this._resetState();
         return;
@@ -356,19 +355,17 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
 
   /** @deprecated This is an internal implementation detail, do not use. */
   _subscribe(subscriber: Subscriber<T>): Subscription {
-    const { source } = this;
-    if (source) {
-      return source.subscribe(subscriber);
+    if (this.source) {
+      return this.source.subscribe(subscriber);
     }
     if (!this._socket) {
       this._connectSocket();
     }
     this._output.subscribe(subscriber);
     subscriber.add(() => {
-      const { _socket } = this;
       if (this._output.observers.length === 0) {
-        if (_socket && _socket.readyState === 1) {
-          _socket.close();
+        if (this._socket && this._socket.readyState === 1) {
+          this._socket.close();
         }
         this._resetState();
       }
@@ -377,9 +374,8 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
   }
 
   unsubscribe() {
-    const { _socket } = this;
-    if (_socket && _socket.readyState === 1) {
-      _socket.close();
+    if (this._socket && this._socket.readyState === 1) {
+      this._socket.close();
     }
     this._resetState();
     super.unsubscribe();
