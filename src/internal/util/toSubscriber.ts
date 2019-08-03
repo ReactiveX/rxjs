@@ -15,7 +15,7 @@ export function toSubscriber<T>(
     }
     if ((nextOrObserver as any).constructor
       && (nextOrObserver as any).constructor.name.indexOf('Subject') !== -1) {
-      return new SubjectSubscriber(nextOrObserver as any) as any;
+      return new SubjectSubscriber(nextOrObserver as Subject<T>) as Subscriber<T>;
     }
   }
 
