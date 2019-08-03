@@ -1,8 +1,7 @@
 import { isFunction } from './util/isFunction';
 import { empty as emptyObserver } from './Observer';
-import { Observer, PartialObserver, TeardownLogic } from './types';
+import { Observer, PartialObserver } from './types';
 import { Subscription } from './Subscription';
-import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscriber';
 import { config } from './config';
 import { hostReportError } from './util/hostReportError';
 

@@ -1,7 +1,5 @@
-import {SubjectSubscriber} from 'rxjs/Subject';
-import {Subject} from '../Subject';
+import {Subject, SubjectSubscriber} from '../Subject';
 import {Subscriber} from '../Subscriber';
-import {rxSubscriber as rxSubscriberSymbol} from '../symbol/rxSubscriber';
 import {empty as emptyObserver} from '../Observer';
 import {PartialObserver} from '../types';
 

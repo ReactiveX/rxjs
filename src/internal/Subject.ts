@@ -5,8 +5,6 @@ import { Subscription } from './Subscription';
 import { Observer, SubscriptionLike, TeardownLogic } from './types';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 import { SubjectSubscription } from './SubjectSubscription';
-import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscriber';
-
 /**
  * @class SubjectSubscriber<T>
  */
