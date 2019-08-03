@@ -27,10 +27,6 @@ export class SubjectSubscriber<T> extends Subscriber<T> {
  */
 export class Subject<T> extends Observable<T> implements SubscriptionLike {
 
-  [rxSubscriberSymbol]() {
-    return new SubjectSubscriber(this);
-  }
-
   observers: Observer<T>[] = [];
 
   closed = false;

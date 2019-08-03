@@ -18,8 +18,6 @@ import { hostReportError } from './util/hostReportError';
  */
 export class Subscriber<T> extends Subscription implements Observer<T> {
 
-  [rxSubscriberSymbol]() { return this; }
-
   /**
    * A static factory for a Subscriber, given a (potentially partial) definition
    * of an Observer.
