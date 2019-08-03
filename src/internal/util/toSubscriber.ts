@@ -13,7 +13,7 @@ export function toSubscriber<T>(
     if (nextOrObserver instanceof Subscriber) {
       return (<Subscriber<T>>nextOrObserver);
     }
-    if (nextOrObserver.constructor
+    if ((nextOrObserver as any).constructor
       && (nextOrObserver as any).constructor.name.indexOf('Subject') !== -1) {
       return new SubjectSubscriber(nextOrObserver as Subject<T>);
     }
