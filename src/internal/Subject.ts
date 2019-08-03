@@ -63,7 +63,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
       throw new ObjectUnsubscribedError();
     }
     if (!this.isStopped) {
-      this.observers
+      this.observers.slice()
         .forEach(observer => observer.next(value));
     }
   }
@@ -75,7 +75,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     this.hasError = true;
     this.thrownError = err;
     this.isStopped = true;
-    this.observers
+    this.observers.slice()
       .forEach(observer => observer.error(err));
     this.observers = [];
   }
@@ -85,7 +85,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
       throw new ObjectUnsubscribedError();
     }
     this.isStopped = true;
-    this.observers
+    this.observers.slice()
       .forEach(observer => observer.complete());
     this.observers.length = 0;
   }
