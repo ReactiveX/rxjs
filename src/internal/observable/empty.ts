@@ -32,11 +32,11 @@ export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
  *
  * ### Map and flatten only odd numbers to the sequence 'a', 'b', 'c'
  * ```ts
- * import { empty, interval } from 'rxjs';
+ * import { empty, interval, of } from 'rxjs';
  * import { mergeMap } from 'rxjs/operators';
  *
  * const interval$ = interval(1000);
- * result = interval$.pipe(
+ * const result = interval$.pipe(
  *   mergeMap(x => x % 2 === 1 ? of('a', 'b', 'c') : empty()),
  * );
  * result.subscribe(x => console.log(x));

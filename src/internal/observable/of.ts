@@ -71,6 +71,7 @@ export function of<T>(...args: T[]): Observable<T>;
  * // 'next: 10'
  * // 'next: 20'
  * // 'next: 30'
+ * // 'the end'
  *
  * ```
  *
@@ -87,6 +88,7 @@ export function of<T>(...args: T[]): Observable<T>;
  * );
  * // result:
  * // 'next: [1,2,3]'
+ * // 'the end'
  * ```
  *
  * @see {@link from}

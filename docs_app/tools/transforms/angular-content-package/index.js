@@ -43,6 +43,11 @@ module.exports = new Package('angular-content', [basePackage, contentPackage])
         include: CONTENTS_PATH + '/marketing/contributors.json',
         fileReader: 'jsonFileReader'
       },
+      {
+        basePath: CONTENTS_PATH,
+        include: CONTENTS_PATH + '/marketing/announcements.json',
+        fileReader: 'jsonFileReader'
+      },
     ]);
 
   })
@@ -65,7 +70,8 @@ module.exports = new Package('angular-content', [basePackage, contentPackage])
         outputPathTemplate: '${path}.json'
       },
       {docTypes: ['navigation-json'], pathTemplate: '${id}', outputPathTemplate: '../${id}.json'},
-      {docTypes: ['contributors-json'], pathTemplate: '${id}', outputPathTemplate: '../${id}.json'}
+      {docTypes: ['contributors-json'], pathTemplate: '${id}', outputPathTemplate: '../${id}.json'},
+      {docTypes: ['announcements-json'], pathTemplate: '${id}', outputPathTemplate: '../${id}.json'}
     ]);
   })
 

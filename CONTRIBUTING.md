@@ -36,7 +36,7 @@ Contents
 
 ---
 
-(This document is a work and progress and is subject to change)
+(This document is a work in progress and is subject to change)
 
 ## Submitting a Pull Request (PR)
 Before you submit your Pull Request (PR) consider the following guidelines:
