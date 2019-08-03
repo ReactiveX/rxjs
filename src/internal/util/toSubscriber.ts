@@ -1,3 +1,4 @@
+import {SubjectSubscriber} from 'rxjs/Subject';
 import {Subject} from '../Subject';
 import {Subscriber} from '../Subscriber';
 import {rxSubscriber as rxSubscriberSymbol} from '../symbol/rxSubscriber';
@@ -10,8 +11,14 @@ export function toSubscriber<T>(
   complete?: () => void
 ): Subscriber<T> {
 
-  if (nextOrObserver instanceof Subscriber) {
-    return (<Subscriber<T>>nextOrObserver);
+  if (nextOrObserver) {
+    if (nextOrObserver instanceof Subscriber) {
+      return (<Subscriber<T>>nextOrObserver);
+    }
+    if ((nextOrObserver as any).constructor
+      && (nextOrObserver as any).constructor.name.indexOf('Subject') !== -1) {
+      return new SubjectSubscriber(nextOrObserver as any) as any;
+    }
   }
 
   if (!nextOrObserver && !error && !complete) {
