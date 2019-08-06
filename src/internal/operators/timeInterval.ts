@@ -26,7 +26,7 @@ import { map } from './map';
  * ```ts
  * const seconds = interval(1000);
  *
- * seconds.pipe(timeinterval())
+ * seconds.pipe(timeInterval())
  * .subscribe(
  *     value => console.log(value),
  *     err => console.log(err),
