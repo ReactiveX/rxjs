@@ -1,11 +1,11 @@
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable';
 
-import {OuterSubscriber} from '../OuterSubscriber';
+import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
-import {subscribeToResult} from '../util/subscribeToResult';
-import {ObservableInput, OperatorFunction, MonoTypeOperatorFunction, ObservedValueOf} from '../types';
+import { subscribeToResult } from '../util/subscribeToResult';
+import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 
 /* tslint:disable:max-line-length */
 export function catchError<T, O extends ObservableInput<any>>(selector: (err: any, caught: Observable<T>) => O): OperatorFunction<T, T | ObservedValueOf<O>>;
@@ -19,13 +19,13 @@ export function catchError<T, O extends ObservableInput<any>>(selector: (err: an
  * ## Examples
  * Continues with a different Observable when there's an error
  *
- * ```javascript
+ * ```ts
  * import { of } from 'rxjs';
  * import { map, catchError } from 'rxjs/operators';
  *
  * of(1, 2, 3, 4, 5).pipe(
  *     map(n => {
- *   	   if (n == 4) {
+ *   	   if (n === 4) {
  * 	       throw 'four!';
  *       }
  *	     return n;
@@ -38,7 +38,7 @@ export function catchError<T, O extends ObservableInput<any>>(selector: (err: an
  *
  * Retries the caught source Observable again in case of error, similar to retry() operator
  *
- * ```javascript
+ * ```ts
  * import { of } from 'rxjs';
  * import { map, catchError, take } from 'rxjs/operators';
  *
@@ -58,13 +58,13 @@ export function catchError<T, O extends ObservableInput<any>>(selector: (err: an
  *
  * Throws a new error when the source Observable throws an error
  *
- * ```javascript
+ * ```ts
  * import { of } from 'rxjs';
  * import { map, catchError } from 'rxjs/operators';
  *
  * of(1, 2, 3, 4, 5).pipe(
  *     map(n => {
- *       if (n == 4) {
+ *       if (n === 4) {
  *         throw 'four!';
  *       }
  *       return n;

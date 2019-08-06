@@ -1,9 +1,7 @@
 import { expect } from 'chai';
-import * as Rx from 'rxjs/Rx';
+import { AsyncSubject, Observer } from 'rxjs';
 
-const AsyncSubject = Rx.AsyncSubject;
-
-class TestObserver implements Rx.Observer<number> {
+class TestObserver implements Observer<number> {
   results: (number | string)[] = [];
 
   next(value: number): void {

@@ -21,36 +21,34 @@ export function publish<T>(selector: MonoTypeOperatorFunction<T>): MonoTypeOpera
  * ## Examples
  * Make source$ hot by applying publish operator, then merge each inner observable into a single one
  * and subscribe.
- * ```typescript
+ * ```ts
  * import { of, zip, interval, merge } from "rxjs";
- * import { map, publish } from "rxjs/operators";
+ * import { map, publish, tap } from "rxjs/operators";
  *
- * const source$ = zip(
- *    interval(2000),
- *       of(1, 2, 3, 4, 5, 6, 7, 8, 9),
- *    ).pipe(
- *       map(values => values[1])
- *    );
+ * const source$ = zip(interval(2000), of(1, 2, 3, 4, 5, 6, 7, 8, 9)).pipe(
+ *   map(values => values[1])
+ * );
  *
- * source$.pipe(
- *    publish(multicasted$ => {
- *       return merge(
- *          multicasted$.pipe(tap(x => console.log('Stream 1:', x))),
- *          multicasted$.pipe(tap(x => console.log('Stream 2:', x))),
- *          multicasted$.pipe(tap(x => console.log('Stream 3:', x))),
- *       );
- *    })).subscribe();
+ * source$
+ *   .pipe(
+ *     publish(multicasted$ =>
+ *       merge(
+ *         multicasted$.pipe(tap(x => console.log('Stream 1:', x))),
+ *         multicasted$.pipe(tap(x => console.log('Stream 2:', x))),
+ *         multicasted$.pipe(tap(x => console.log('Stream 3:', x))),
+ *       )
+ *     )
+ *   )
+ *   .subscribe();
  *
- /* Results every two seconds
- * Stream 1: 1
- * Stream 2: 1
- * Stream 3: 1
- *
- * ...
- *
- * Stream 1: 9
- * Stream 2: 9
- * Stream 3: 9
+ * // Results every two seconds
+ * // Stream 1: 1
+ * // Stream 2: 1
+ * // Stream 3: 1
+ * // ...
+ * // Stream 1: 9
+ * // Stream 2: 9
+ * // Stream 3: 9
  * ```
  *
  * @param {Function} [selector] - Optional selector function which can use the multicasted source sequence as many times

@@ -33,13 +33,13 @@ describe('interval', () => {
   });
 
   it('should emit when relative interval set to zero', () => {
-    const e1 = interval(0, rxTestScheduler).take(7);
+    const e1 = interval(0, rxTestScheduler).pipe(take(7));
     const expected = '(0123456|)';
     expectObservable(e1).toBe(expected, [0, 1, 2, 3, 4, 5, 6]);
   });
 
   it('should consider negative interval as zero', () => {
-    const e1 = interval(-1, rxTestScheduler).take(7);
+    const e1 = interval(-1, rxTestScheduler).pipe(take(7));
     const expected = '(0123456|)';
     expectObservable(e1).toBe(expected, [0, 1, 2, 3, 4, 5, 6]);
   });
@@ -67,7 +67,7 @@ describe('interval', () => {
     const fakeTimer = sandbox.useFakeTimers();
     const period = 10;
     const events = [0, 1, 2, 3, 4, 5];
-    const source = interval(period, asapScheduler).take(6);
+    const source = interval(period, asapScheduler).pipe(take(6));
     source.subscribe({
       next(x) {
         expect(x).to.equal(events.shift());
@@ -94,7 +94,7 @@ describe('interval', () => {
     const fakeTimer = sandbox.useFakeTimers();
     const period = 10;
     const events = [0, 1, 2, 3, 4, 5];
-    const source = interval(period, queueScheduler).take(6);
+    const source = interval(period, queueScheduler).pipe(take(6));
     source.subscribe({
       next(x) {
         expect(x).to.equal(events.shift());

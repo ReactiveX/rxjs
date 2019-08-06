@@ -101,3 +101,6 @@ export interface SchedulerAction<T> extends Subscription {
 export type ObservedValueOf<O> = O extends ObservableInput<infer T> ? T : never;
 
 export type ObservedValueLookup<T> = { [K in keyof T]: ObservedValueOf<T[K]> };
+
+export type ObservedValuesFromArray<X> = X extends Array<ObservableInput<infer T>> ? T : never;
+

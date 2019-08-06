@@ -23,7 +23,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  *
  * ## Example
  * Take the last 3 values of an Observable with many values
- * ```javascript
+ * ```ts
  * import { range } from 'rxjs';
  * import { takeLast } from 'rxjs/operators';
  *

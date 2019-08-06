@@ -1,19 +1,32 @@
 import { Observable } from '../Observable';
-import { fromArray } from '../observable/fromArray';
-import { scalar } from '../observable/scalar';
-import { empty } from '../observable/empty';
-import { concat as concatStatic } from '../observable/concat';
-import { isScheduler } from '../util/isScheduler';
+import { concat } from '../observable/concat';
+import { of } from '../observable/of';
 import { MonoTypeOperatorFunction, SchedulerLike, OperatorFunction } from '../types';
 
 /* tslint:disable:max-line-length */
-export function endWith<T>(scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
-export function endWith<T, A = T>(v1: A, scheduler?: SchedulerLike): OperatorFunction<T, T | A>;
-export function endWith<T, A = T, B = T>(v1: A, v2: B, scheduler?: SchedulerLike): OperatorFunction<T, T | A | B>;
-export function endWith<T, A = T, B = T, C = T>(v1: A, v2: B, v3: C, scheduler?: SchedulerLike): OperatorFunction<T, T | A | B | C>;
-export function endWith<T, A = T, B = T, C = T, D = T>(v1: A, v2: B, v3: C, v4: D, scheduler?: SchedulerLike): OperatorFunction<T, T | A | B | C | D>;
-export function endWith<T, A = T, B = T, C = T, D = T, E = T>(v1: A, v2: B, v3: C, v4: D, v5: E, scheduler?: SchedulerLike): OperatorFunction<T, T | A | B | C | D | E>;
-export function endWith<T, A = T, B = T, C = T, D = T, E = T, F = T>(v1: A, v2: B, v3: C, v4: D, v5: E, v6: F, scheduler?: SchedulerLike): OperatorFunction<T, T | A | B | C | D | E | F>;
+/** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([source, [a, b, c]], scheduler).pipe(concatAll())`) */
+export function endWith<T>(scheduler: SchedulerLike): MonoTypeOperatorFunction<T>;
+/** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([source, [a, b, c]], scheduler).pipe(concatAll())`) */
+export function endWith<T, A>(v1: A, scheduler: SchedulerLike): OperatorFunction<T, T | A>;
+/** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([source, [a, b, c]], scheduler).pipe(concatAll())`) */
+export function endWith<T, A, B>(v1: A, v2: B, scheduler: SchedulerLike): OperatorFunction<T, T | A | B>;
+/** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([source, [a, b, c]], scheduler).pipe(concatAll())`) */
+export function endWith<T, A, B, C>(v1: A, v2: B, v3: C, scheduler: SchedulerLike): OperatorFunction<T, T | A | B | C>;
+/** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([source, [a, b, c]], scheduler).pipe(concatAll())`) */
+export function endWith<T, A, B, C, D>(v1: A, v2: B, v3: C, v4: D, scheduler: SchedulerLike): OperatorFunction<T, T | A | B | C | D>;
+/** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([source, [a, b, c]], scheduler).pipe(concatAll())`) */
+export function endWith<T, A, B, C, D, E>(v1: A, v2: B, v3: C, v4: D, v5: E, scheduler: SchedulerLike): OperatorFunction<T, T | A | B | C | D | E>;
+/** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([source, [a, b, c]], scheduler).pipe(concatAll())`) */
+export function endWith<T, A, B, C, D, E, F>(v1: A, v2: B, v3: C, v4: D, v5: E, v6: F, scheduler: SchedulerLike): OperatorFunction<T, T | A | B | C | D | E | F>;
+
+export function endWith<T, A>(v1: A): OperatorFunction<T, T | A>;
+export function endWith<T, A, B>(v1: A, v2: B): OperatorFunction<T, T | A | B>;
+export function endWith<T, A, B, C>(v1: A, v2: B, v3: C): OperatorFunction<T, T | A | B | C>;
+export function endWith<T, A, B, C, D>(v1: A, v2: B, v3: C, v4: D): OperatorFunction<T, T | A | B | C | D>;
+export function endWith<T, A, B, C, D, E>(v1: A, v2: B, v3: C, v4: D, v5: E): OperatorFunction<T, T | A | B | C | D | E>;
+export function endWith<T, A, B, C, D, E, F>(v1: A, v2: B, v3: C, v4: D, v5: E, v6: F): OperatorFunction<T, T | A | B | C | D | E | F>;
+export function endWith<T, Z = T>(...array: Z[]): OperatorFunction<T, T | Z>;
+/** @deprecated use {@link scheduled} and {@link concatAll} (e.g. `scheduled([source, [a, b, c]], scheduler).pipe(concatAll())`) */
 export function endWith<T, Z = T>(...array: Array<Z | SchedulerLike>): OperatorFunction<T, T | Z>;
 /* tslint:enable:max-line-length */
 
@@ -26,7 +39,7 @@ export function endWith<T, Z = T>(...array: Array<Z | SchedulerLike>): OperatorF
  * ## Example
  * ### After the source observable completes, appends an emission and then completes too.
  *
- * ```javascript
+ * ```ts
  * import { of } from 'rxjs';
  * import { endWith } from 'rxjs/operators';
  *
@@ -50,21 +63,5 @@ export function endWith<T, Z = T>(...array: Array<Z | SchedulerLike>): OperatorF
  * @owner Observable
  */
 export function endWith<T>(...array: Array<T | SchedulerLike>): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => {
-    let scheduler = <SchedulerLike>array[array.length - 1];
-    if (isScheduler(scheduler)) {
-      array.pop();
-    } else {
-      scheduler = null;
-    }
-
-    const len = array.length;
-    if (len === 1 && !scheduler) {
-      return concatStatic(source, scalar(array[0] as T));
-    } else if (len > 0) {
-      return concatStatic(source, fromArray(array as T[], scheduler));
-    } else {
-      return concatStatic(source, empty(scheduler));
-    }
-  };
+  return (source: Observable<T>) => concat(source, of(...array)) as Observable<T>;
 }

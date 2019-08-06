@@ -36,7 +36,7 @@ Contents
 
 ---
 
-(This document is a work and progress and is subject to change)
+(This document is a work in progress and is subject to change)
 
 ## Submitting a Pull Request (PR)
 Before you submit your Pull Request (PR) consider the following guidelines:
@@ -129,7 +129,7 @@ from the main (upstream) repository:
 - The folder `docs-app` contains everything you need for building and developing the docs
 - the folder `doc` used to be the documentation, but should remain until all content is transferred.
 - The [Documentation README](docs_app/README.md) will support you
-- After a PR is merged to master the docs will be published to https://rxjs-dev.firebaseapp.com/
+- After a PR is merged to master the docs will be published to https://rxjs.dev/
 
 ## Unit Tests
 

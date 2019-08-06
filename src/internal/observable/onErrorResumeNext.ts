@@ -32,13 +32,13 @@ export function onErrorResumeNext<R>(array: ObservableInput<any>[]): Observable<
  * `onErrorResumeNext` is basically {@link concat}, only it will continue, even if one of its
  * sources emits an error.
  *
- * Note that there is no way to handle any errors thrown by sources via the resuult of
+ * Note that there is no way to handle any errors thrown by sources via the result of
  * `onErrorResumeNext`. If you want to handle errors thrown in any given source, you can
  * always use the {@link catchError} operator on them before passing them into `onErrorResumeNext`.
  *
  * ## Example
  * Subscribe to the next Observable after map fails</caption>
- * ```javascript
+ * ```ts
  * import { onErrorResumeNext, of } from 'rxjs';
  * import { map } from 'rxjs/operators';
  *

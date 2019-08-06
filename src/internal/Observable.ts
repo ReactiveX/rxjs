@@ -6,7 +6,7 @@ import { canReportError } from './util/canReportError';
 import { toSubscriber } from './util/toSubscriber';
 import { iif } from './observable/iif';
 import { throwError } from './observable/throwError';
-import { observable as Symbol_observable } from '../internal/symbol/observable';
+import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
 
@@ -120,22 +120,26 @@ export class Observable<T> implements Subscribable<T> {
    *
    * ## Example
    * ### Subscribe with an Observer
-   * ```javascript
+   * ```ts
+   * import { of } from 'rxjs';
+   *
    * const sumObserver = {
    *   sum: 0,
    *   next(value) {
    *     console.log('Adding: ' + value);
    *     this.sum = this.sum + value;
    *   },
-   *   error() { // We actually could just remove this method,
-   *   },        // since we do not really care about errors right now.
+   *   error() {
+   *     // We actually could just remove this method,
+   *     // since we do not really care about errors right now.
+   *   },
    *   complete() {
    *     console.log('Sum equals: ' + this.sum);
    *   }
    * };
    *
-   * Rx.Observable.of(1, 2, 3) // Synchronously emits 1, 2, 3 and then completes.
-   * .subscribe(sumObserver);
+   * of(1, 2, 3) // Synchronously emits 1, 2, 3 and then completes.
+   *   .subscribe(sumObserver);
    *
    * // Logs:
    * // "Adding: 1"
@@ -145,19 +149,18 @@ export class Observable<T> implements Subscribable<T> {
    * ```
    *
    * ### Subscribe with functions
-   * ```javascript
+   * ```ts
+   * import { of } from 'rxjs'
+   *
    * let sum = 0;
    *
-   * Rx.Observable.of(1, 2, 3)
-   * .subscribe(
-   *   function(value) {
+   * of(1, 2, 3).subscribe(
+   *   value => {
    *     console.log('Adding: ' + value);
    *     sum = sum + value;
    *   },
    *   undefined,
-   *   function() {
-   *     console.log('Sum equals: ' + sum);
-   *   }
+   *   () => console.log('Sum equals: ' + sum)
    * );
    *
    * // Logs:
@@ -168,13 +171,17 @@ export class Observable<T> implements Subscribable<T> {
    * ```
    *
    * ### Cancel a subscription
-   * ```javascript
-   * const subscription = Rx.Observable.interval(1000).subscribe(
+   * ```ts
+   * import { interval } from 'rxjs';
+   *
+   * const subscription = interval(1000).subscribe(
    *   num => console.log(num),
    *   undefined,
-   *   () => console.log('completed!') // Will not be called, even
-   * );                                // when cancelling subscription
-   *
+   *   () => {
+   *     // Will not be called, even when cancelling subscription.
+   *     console.log('completed!');
+   *   }
+   * );
    *
    * setTimeout(() => {
    *   subscription.unsubscribe();
@@ -253,7 +260,7 @@ export class Observable<T> implements Subscribable<T> {
     promiseCtor = getPromiseCtor(promiseCtor);
 
     return new promiseCtor<void>((resolve, reject) => {
-      // Must be declared in a separate statement to avoid a RefernceError when
+      // Must be declared in a separate statement to avoid a ReferenceError when
       // accessing subscription below in the closure due to Temporal Dead Zone.
       let subscription: Subscription;
       subscription = this.subscribe((value) => {
@@ -318,10 +325,11 @@ export class Observable<T> implements Subscribable<T> {
    * been called in the order they were passed in.
    *
    * ### Example
-   * ```javascript
+   * ```ts
+   * import { interval } from 'rxjs';
    * import { map, filter, scan } from 'rxjs/operators';
    *
-   * Rx.Observable.interval(1000)
+   * interval(1000)
    *   .pipe(
    *     filter(x => x % 2 === 0),
    *     map(x => x + x),

@@ -26,15 +26,15 @@ import { OperatorFunction } from '../types';
  *
  * ## Example
  * Emit only the first two clicks events in every window of [1-5] random seconds
- * ```javascript
+ * ```ts
  * import { fromEvent, interval } from 'rxjs';
- * import { windowWhen, map, mergeAll } from 'rxjs/operators';
+ * import { windowWhen, map, mergeAll, take } from 'rxjs/operators';
  *
  * const clicks = fromEvent(document, 'click');
  * const result = clicks.pipe(
  *   windowWhen(() => interval(1000 + Math.random() * 4000)),
  *   map(win => win.pipe(take(2))),     // each window has at most 2 emissions
- *   mergeAll(),                        // flatten the Observable-of-Observables
+ *   mergeAll()                         // flatten the Observable-of-Observables
  * );
  * result.subscribe(x => console.log(x));
  * ```

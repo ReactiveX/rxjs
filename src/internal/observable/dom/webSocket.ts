@@ -66,16 +66,17 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  * subscribes and unsubscribes. Server can use them to verify that some kind of messages should start or stop
  * being forwarded to the client. In case of the above example application, after getting subscription message with proper identifier,
  * gateway server can decide that it should connect to real sport news service and start forwarding messages from it.
- * Note that both messages will be sent as returned by the functions, meaning they will have to be serialized manually, just
+ * Note that both messages will be sent as returned by the functions, they are by default serialized using JSON.stringify, just
  * as messages pushed via `next`. Also bear in mind that these messages will be sent on *every* subscription and
  * unsubscription. This is potentially dangerous, because one consumer of an Observable may unsubscribe and the server
  * might stop sending messages, since it got unsubscription message. This needs to be handled
  * on the server or using {@link publish} on a Observable returned from 'multiplex'.
  *
- * Last argument to `multiplex` is a `messageFilter` function which filters out messages
+ * Last argument to `multiplex` is a `messageFilter` function which should return a boolean. It is used to filter out messages
  * sent by the server to only those that belong to simulated WebSocket stream. For example, server might mark these
  * messages with some kind of string identifier on a message object and `messageFilter` would return `true`
- * if there is such identifier on an object emitted by the socket.
+ * if there is such identifier on an object emitted by the socket. Messages which returns `false` in `messageFilter` are simply skipped,
+ * and are not passed down the stream.
  *
  * Return value of `multiplex` is an Observable with messages incoming from emulated socket connection. Note that this
  * is not a `WebSocketSubject`, so calling `next` or `multiplex` again will fail. For pushing values to the
@@ -103,8 +104,8 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  * // Note that at least one consumer has to subscribe to the created subject - otherwise "nexted" values will be just buffered and not sent,
  * // since no connection was established!
  *
- * subject.next(JSON.stringify({message: 'some message'}));
- * // This will send a message to the server once a connection is made. Remember to serialize sent value first!
+ * subject.next({message: 'some message'});
+ * // This will send a message to the server once a connection is made. Remember value is serialized with JSON.stringify by default!
  *
  * subject.complete(); // Closes the connection.
  *
@@ -118,14 +119,14 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  * const subject = webSocket('ws://localhost:8081');
  *
  * const observableA = subject.multiplex(
- *   () => JSON.stringify({subscribe: 'A'}), // When server gets this message, it will start sending messages for 'A'...
- *   () => JSON.stringify({unsubscribe: 'A'}), // ...and when gets this one, it will stop.
- *   message => message.type === 'A' // Server will tag all messages for 'A' with type property.
+ *   () => ({subscribe: 'A'}), // When server gets this message, it will start sending messages for 'A'...
+ *   () => ({unsubscribe: 'A'}), // ...and when gets this one, it will stop.
+ *   message => message.type === 'A' // If the function returns `true` message is passed down the stream. Skipped if the function returns false.
  * );
  *
  * const observableB = subject.multiplex( // And the same goes for 'B'.
- *   () => JSON.stringify({subscribe: 'B'}),
- *   () => JSON.stringify({unsubscribe: 'B'}),
+ *   () => ({subscribe: 'B'}),
+ *   () => ({unsubscribe: 'B'}),
  *   message => message.type === 'B'
  * );
  *
@@ -140,7 +141,7 @@ import { WebSocketSubject, WebSocketSubjectConfig } from './WebSocketSubject';
  * subB.unsubscribe();
  * // Message '{"unsubscribe": "B"}' is sent to the server, which stops sending 'B' messages.
  *
- * subA.unubscribe();
+ * subA.unsubscribe();
  * // Message '{"unsubscribe": "A"}' makes the server stop sending messages for 'A'. Since there is no more subscribers to root Subject,
  * // socket connection closes.
  * ```

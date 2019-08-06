@@ -12,7 +12,7 @@ import { OperatorFunction } from '../types';
  * <span class="informal">Collects values from the past as an array, and emits
  * that array only when another Observable emits.</span>
  *
- * ![](content/img/buffer.png)
+ * ![](buffer.png)
  *
  * Buffers the incoming Observable values until the given `closingNotifier`
  * Observable emits a value, at which point it emits the buffer on the output
@@ -23,13 +23,13 @@ import { OperatorFunction } from '../types';
  *
  * On every click, emit array of most recent interval events
  *
- * ```javascript
+ * ```ts
  * import { fromEvent, interval } from 'rxjs';
  * import { buffer } from 'rxjs/operators';
  *
  * const clicks = fromEvent(document, 'click');
- * const interval = interval(1000);
- * const buffered = interval.pipe(buffer(clicks));
+ * const intervalEvents = interval(1000);
+ * const buffered = intervalEvents.pipe(buffer(clicks));
  * buffered.subscribe(x => console.log(x));
  * ```
  *

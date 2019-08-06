@@ -30,9 +30,7 @@ export class Subscription implements SubscriptionLike {
   public closed: boolean = false;
 
   /** @internal */
-  protected _parent: Subscription = null;
-  /** @internal */
-  protected _parents: Subscription[] = null;
+  protected _parentOrParents: Subscription | Subscription[] = null;
   /** @internal */
   private _subscriptions: SubscriptionLike[] = null;
 
@@ -53,47 +51,40 @@ export class Subscription implements SubscriptionLike {
    * @return {void}
    */
   unsubscribe(): void {
-    let hasErrors = false;
     let errors: any[];
 
     if (this.closed) {
       return;
     }
 
-    let { _parent, _parents, _unsubscribe, _subscriptions } = (<any> this);
+    let { _parentOrParents, _unsubscribe, _subscriptions } = (<any> this);
 
     this.closed = true;
-    this._parent = null;
-    this._parents = null;
+    this._parentOrParents = null;
     // null out _subscriptions first so any child subscriptions that attempt
     // to remove themselves from this subscription will noop
     this._subscriptions = null;
 
-    let index = -1;
-    let len = _parents ? _parents.length : 0;
-
-    // if this._parent is null, then so is this._parents, and we
-    // don't have to remove ourselves from any parent subscriptions.
-    while (_parent) {
-      _parent.remove(this);
-      // if this._parents is null or index >= len,
-      // then _parent is set to null, and the loop exits
-      _parent = ++index < len && _parents[index] || null;
+    if (_parentOrParents instanceof Subscription) {
+      _parentOrParents.remove(this);
+    } else if (_parentOrParents !== null) {
+      for (let index = 0; index < _parentOrParents.length; ++index) {
+        const parent = _parentOrParents[index];
+        parent.remove(this);
+      }
     }
 
     if (isFunction(_unsubscribe)) {
       try {
         _unsubscribe.call(this);
       } catch (e) {
-        hasErrors = true;
         errors = e instanceof UnsubscriptionError ? flattenUnsubscriptionErrors(e.errors) : [e];
       }
     }
 
     if (isArray(_subscriptions)) {
-
-      index = -1;
-      len = _subscriptions.length;
+      let index = -1;
+      let len = _subscriptions.length;
 
       while (++index < len) {
         const sub = _subscriptions[index];
@@ -101,7 +92,6 @@ export class Subscription implements SubscriptionLike {
           try {
             sub.unsubscribe();
           } catch (e) {
-            hasErrors = true;
             errors = errors || [];
             if (e instanceof UnsubscriptionError) {
               errors = errors.concat(flattenUnsubscriptionErrors(e.errors));
@@ -113,7 +103,7 @@ export class Subscription implements SubscriptionLike {
       }
     }
 
-    if (hasErrors) {
+    if (errors) {
       throw new UnsubscriptionError(errors);
     }
   }
@@ -140,6 +130,11 @@ export class Subscription implements SubscriptionLike {
    */
   add(teardown: TeardownLogic): Subscription {
     let subscription = (<Subscription>teardown);
+
+    if (!(<any>teardown)) {
+      return Subscription.EMPTY;
+    }
+
     switch (typeof teardown) {
       case 'function':
         subscription = new Subscription(<(() => void)>teardown);
@@ -157,21 +152,38 @@ export class Subscription implements SubscriptionLike {
         }
         break;
       default: {
-        if (!(<any>teardown)) {
-          return Subscription.EMPTY;
-        }
         throw new Error('unrecognized teardown ' + teardown + ' added to Subscription.');
       }
     }
 
-    if (subscription._addParent(this)) {
-      // Optimize for the common case when adding the first subscription.
-      const subscriptions = this._subscriptions;
-      if (subscriptions) {
-        subscriptions.push(subscription);
-      } else {
-        this._subscriptions = [subscription];
+    // Add `this` as parent of `subscription` if that's not already the case.
+    let { _parentOrParents } = subscription;
+    if (_parentOrParents === null) {
+      // If we don't have a parent, then set `subscription._parents` to
+      // the `this`, which is the common case that we optimize for.
+      subscription._parentOrParents = this;
+    } else if (_parentOrParents instanceof Subscription) {
+      if (_parentOrParents === this) {
+        // The `subscription` already has `this` as a parent.
+        return subscription;
       }
+      // If there's already one parent, but not multiple, allocate an
+      // Array to store the rest of the parent Subscriptions.
+      subscription._parentOrParents = [_parentOrParents, this];
+    } else if (_parentOrParents.indexOf(this) === -1) {
+      // Only add `this` to the _parentOrParents list if it's not already there.
+      _parentOrParents.push(this);
+    } else {
+      // The `subscription` already has `this` as a parent.
+      return subscription;
+    }
+
+    // Optimize for the common case when adding the first subscription.
+    const subscriptions = this._subscriptions;
+    if (subscriptions === null) {
+      this._subscriptions = [subscription];
+    } else {
+      subscriptions.push(subscription);
     }
 
     return subscription;
@@ -191,29 +203,6 @@ export class Subscription implements SubscriptionLike {
         subscriptions.splice(subscriptionIndex, 1);
       }
     }
-  }
-
-  /** @internal */
-  private _addParent(parent: Subscription): boolean {
-    let { _parent, _parents } = this;
-    if (_parent === parent) {
-      // If the new parent is the same as the current parent, then do nothing.
-      return false;
-    } else if (!_parent) {
-      // If we don't have a parent, then set this._parent to the new parent.
-      this._parent = parent;
-      return true;
-    } else if (!_parents) {
-      // If there's already one parent, but not multiple, allocate an Array to
-      // store the rest of the parent Subscriptions.
-      this._parents = [parent];
-      return true;
-    } else if (_parents.indexOf(parent) === -1) {
-      // Only add the new parent to the _parents list if it's not already there.
-      _parents.push(parent);
-      return true;
-    }
-    return false;
   }
 }
 

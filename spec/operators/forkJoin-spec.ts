@@ -1,11 +1,7 @@
-import * as Rx from 'rxjs/Rx';
-import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { forkJoin } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
-
-const Observable = Rx.Observable;
 
 /** @test {forkJoin} */
 describe('Observable.prototype.forkJoin', () => {
@@ -42,5 +38,4 @@ describe('Observable.prototype.forkJoin', () => {
     const result = forkJoin(e1, e2);
     expectObservable(result).toBe(expected);
   });
-
 });

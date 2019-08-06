@@ -23,7 +23,7 @@ import { Subscriber } from '../Subscriber';
  * ## Examples
  *
  * Counts how many seconds have passed before the first click happened
- * ```javascript
+ * ```ts
  * import { fromEvent, interval } from 'rxjs';
  * import { count, takeUntil } from 'rxjs/operators';
  *
@@ -35,7 +35,7 @@ import { Subscriber } from '../Subscriber';
  * ```
  *
  * Counts how many odd numbers are there between 1 and 7
- * ```javascript
+ * ```ts
  * import { range } from 'rxjs';
  * import { count } from 'rxjs/operators';
  *

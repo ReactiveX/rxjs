@@ -200,27 +200,27 @@ describe('Observable.prototype.first', () => {
       const isBaz = (x: any): x is Baz => x && (x as Baz).baz !== undefined;
 
       const foo: Foo = new Foo();
-      Observable.of(foo).pipe(first())
+      of(foo).pipe(first())
         .subscribe(x => x.baz); // x is Foo
-      Observable.of(foo).pipe(first(foo => foo.bar === 'name'))
+      of(foo).pipe(first(foo => foo.bar === 'name'))
         .subscribe(x => x.baz); // x is still Foo
-      Observable.of(foo).pipe(first(isBar))
+      of(foo).pipe(first(isBar))
         .subscribe(x => x.bar); // x is Bar!
 
       const foobar: Bar = new Foo(); // type is the interface, not the class
-      Observable.of(foobar).pipe(first())
+      of(foobar).pipe(first())
         .subscribe(x => x.bar); // x is Bar
-      Observable.of(foobar).pipe(first(foobar => foobar.bar === 'name'))
+      of(foobar).pipe(first(foobar => foobar.bar === 'name'))
         .subscribe(x => x.bar); // x is still Bar
-      Observable.of(foobar).pipe(first(isBaz))
+      of(foobar).pipe(first(isBaz))
         .subscribe(x => x.baz); // x is Baz!
 
       const barish = { bar: 'quack', baz: 42 }; // type can quack like a Bar
-      Observable.of(barish).pipe(first())
+      of(barish).pipe(first())
         .subscribe(x => x.baz); // x is still { bar: string; baz: number; }
-      Observable.of(barish).pipe(first(x => x.bar === 'quack'))
+      of(barish).pipe(first(x => x.bar === 'quack'))
         .subscribe(x => x.bar); // x is still { bar: string; baz: number; }
-      Observable.of(barish).pipe(first(isBar))
+      of(barish).pipe(first(isBar))
         .subscribe(x => x.bar); // x is Bar!
     }
 

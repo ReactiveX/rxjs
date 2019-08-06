@@ -1,11 +1,8 @@
 import * as _ from 'lodash';
-//import * as commonInterface from 'mocha/lib/interfaces/common';
-//import * as escapeRe from 'escape-string-regexp';
 import * as chai from 'chai';
 import * as sinonChai from 'sinon-chai';
-
-import * as Rx from 'rxjs/Rx';
 import * as marble from './marble-testing';
+import { TestScheduler } from 'rxjs/testing';
 
 //tslint:disable:no-var-requires no-require-imports
 const commonInterface = require('mocha/lib/interfaces/common');
@@ -200,7 +197,7 @@ module.exports = function(suite: any) {
 
       if (fn && fn.length === 0) {
         modified = function () {
-          context.rxTestScheduler = new Rx.TestScheduler(observableMatcher);
+          context.rxTestScheduler = new TestScheduler(observableMatcher);
 
           try {
             fn();

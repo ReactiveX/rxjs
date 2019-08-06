@@ -28,7 +28,7 @@ import { OperatorFunction } from '../types';
  *
  * ## Example
  * Convert a faulty Observable to an Observable of Notifications
- * ```javascript
+ * ```ts
  * import { of } from 'rxjs';
  * import { materialize, map } from 'rxjs/operators';
  *

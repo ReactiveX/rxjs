@@ -26,15 +26,15 @@ import { OperatorFunction } from '../types';
  *
  * ## Example
  * Every other second, emit the click events from the next 500ms
- * ```javascript
- * import { fromEvent, interval } from 'rxjs';
+ * ```ts
+ * import { fromEvent, interval, EMPTY } from 'rxjs';
  * import { windowToggle, mergeAll } from 'rxjs/operators';
  *
  * const clicks = fromEvent(document, 'click');
  * const openings = interval(1000);
  * const result = clicks.pipe(
- *   windowToggle(openings, i => i % 2 ? interval(500) : empty()),
- *   mergeAll(),
+ *   windowToggle(openings, i => i % 2 ? interval(500) : EMPTY),
+ *   mergeAll()
  * );
  * result.subscribe(x => console.log(x));
  * ```

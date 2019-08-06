@@ -1,6 +1,6 @@
 # Pipeable Operators
 
-Starting in version 5.5 we have shipped "pipeable operators", which can be accessed in `rxjs/operators` (notice the pluralized "operators"). These are meant to be a better approach for pulling in just the operators you need than the "patch" operators found in `rxjs-compat` package.
+Starting in version 5.5 we have shipped "pipeable operators", which can be accessed in `rxjs/operators` (notice the pluralized "operators").
 
 **NOTE**: Using `rxjs` or `rxjs/operators` without making changes to your build process can result in larger bundles. See [Known Issues](#known-issues) section below.
 
@@ -170,7 +170,7 @@ module.exports = {
 More complete configuration (closer to a real-world scenario):
 
 <!-- skip-example -->
-```js
+```ts
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -179,7 +179,7 @@ const nodeEnv = process.env.NODE_ENV || 'development';
 const isProd = nodeEnv === 'production';
 const rxPaths = require('rxjs/_esm5/path-mapping');
 
-var config = {
+const config = {
     devtool: isProd ? 'hidden-source-map' : 'cheap-eval-source-map',
     context: path.resolve('./src'),
     entry: {

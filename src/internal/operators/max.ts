@@ -9,7 +9,7 @@ import { MonoTypeOperatorFunction } from '../types';
  *
  * ## Examples
  * Get the maximal value of a series of numbers
- * ```javascript
+ * ```ts
  * import { of } from 'rxjs';
  * import { max } from 'rxjs/operators';
  *

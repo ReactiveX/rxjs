@@ -1,5 +1,3 @@
-import { Operator } from '../Operator';
-import { Subscriber } from '../Subscriber';
 import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
 import { Observable } from '../Observable';
 import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
@@ -24,7 +22,7 @@ import { take } from './take';
  *
  * ## Example
  * Emit only the third click event
- * ```javascript
+ * ```ts
  * import { fromEvent } from 'rxjs';
  * import { elementAt } from 'rxjs/operators';
  *
