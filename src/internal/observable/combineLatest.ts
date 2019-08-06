@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { ObservableInput, SchedulerLike, ObservedValueOf, ObservableOutputs } from '../types';
+import { ObservableInput, SchedulerLike, ObservedValueOf, ObservedValueLookup } from '../types';
 import { isScheduler  } from '../util/isScheduler';
 import { isArray  } from '../util/isArray';
 import { Subscriber } from '../Subscriber';
@@ -65,7 +65,7 @@ export function combineLatest<O extends ObservableInput<any>, R>(array: O[], res
 export function combineLatest<O extends ObservableInput<any>>(...observables: Array<O | SchedulerLike>): Observable<any[]>;
 export function combineLatest<O extends ObservableInput<any>, R>(...observables: Array<O | ((...values: ObservedValueOf<O>[]) => R) | SchedulerLike>): Observable<R>;
 export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((...values: Array<any>) => R) | SchedulerLike>): Observable<R>;
-export function combineLatest<O extends Array<ObservableInput<any>>>(...observables: O): Observable<ObservableOutputs<O>>;
+export function combineLatest<O extends Array<ObservableInput<any>>>(...observables: O): Observable<ObservedValueLookup<O>>;
 /* tslint:enable:max-line-length */
 
 /**
