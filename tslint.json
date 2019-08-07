@@ -22,8 +22,6 @@
     "no-var-keyword": true,
     "no-empty": true,
     "no-unused-expression-chai": true,
-    "no-unused-variable": true,
-    "no-use-before-declare": true,
     "no-var-requires": true,
     "no-require-imports": true,
     "one-line": [
@@ -59,9 +57,21 @@
       "check-operator",
       "check-separator",
       "check-type"
+    ],
+    "no-toplevel-property-access": [
+      true,
+      "src/index.ts",
+      "src/ajax/",
+      "src/fetch/",
+      "src/internal/",
+      "src/internal-compatibility/",
+      "src/operators/",
+      "src/testing/",
+      "src/webSocket/"
     ]
   },
   "rulesDirectory": [
-    "tslint-no-unused-expression-chai"
+    "tslint-no-unused-expression-chai",
+    "node_modules/tslint-no-toplevel-property-access/rules"
   ]
 }
