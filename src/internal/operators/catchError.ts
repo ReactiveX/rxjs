@@ -1,11 +1,11 @@
-import {Operator} from '../Operator';
-import {Subscriber} from '../Subscriber';
-import {Observable} from '../Observable';
+import { Operator } from '../Operator';
+import { Subscriber } from '../Subscriber';
+import { Observable } from '../Observable';
 
-import {OuterSubscriber} from '../OuterSubscriber';
-import {InnerSubscriber} from '../InnerSubscriber';
-import {subscribeToResult} from '../util/subscribeToResult';
-import {ObservableInput, OperatorFunction, ObservedValueOf} from '../types';
+import { OuterSubscriber } from '../OuterSubscriber';
+import { InnerSubscriber } from '../InnerSubscriber';
+import { subscribeToResult } from '../util/subscribeToResult';
+import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 
 /* tslint:disable:max-line-length */
 export function catchError<T, O extends ObservableInput<any>>(selector: (err: any, caught: Observable<T>) => O): OperatorFunction<T, T | ObservedValueOf<O>>;
@@ -14,17 +14,17 @@ export function catchError<T, O extends ObservableInput<any>>(selector: (err: an
 /**
  * Catches errors on the observable to be handled by returning a new observable or throwing an error.
  *
- * <span class="informal">It only listens to the error channel and ignores notifications.
- * If an error is emitted it catches it and retrieves the error as parameter.
- * It can either return a new `Observable` to swallow the error or rethrow an new error.</span>
+ * <span class="informal">
+ * It only listens to the error channel and ignores notifications.
+ * Handles errors from the source observable, and maps them to a new observable.
+ * The error may also be rethrown, or a new error can be thrown to emit an error from the result.
+ * </span>
  *
  * ![](catch.png)
  *
- * The `catchError` operator is here to handle errors within the pipe function.
- * The operator only listens on the error channel. It completely ignores next or complete events.
- * If an error is received it can d 2 different things. Catching the error or rethrow a new error.
- * The error is received as parameter of the operator and the return value of the operator is a new `Observable`
- * that either rethrows a new error or returns a new Observable that maybe emits a value and maybe completes.
+ * This operator handles errors, but forwards along all other events to the resulting observable.
+ * If the source observable terminates with an error, it will map that error to a new observable,
+ * subscribe to it, and forward all of its events to the resulting observable.
  *
  * ## Examples
  * Continues with a different Observable when there's an error
@@ -130,11 +130,9 @@ class CatchOperator<T, R> implements Operator<T, T | R> {
  * @extends {Ignored}
  */
 class CatchSubscriber<T, R> extends OuterSubscriber<T, T | R> {
-  constructor(
-    destination: Subscriber<any>,
-    private selector: (err: any, caught: Observable<T>) => ObservableInput<T | R>,
-    private caught: Observable<T>
-  ) {
+  constructor(destination: Subscriber<any>,
+              private selector: (err: any, caught: Observable<T>) => ObservableInput<T | R>,
+              private caught: Observable<T>) {
     super(destination);
   }
 
