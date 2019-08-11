@@ -330,4 +330,13 @@ describe('filter operator', () => {
 
     // tslint:disable enable
   });
+
+  it('should support Boolean as a predicate', () => {
+    const source = hot('-t--f--^-t-f-t-f--t-f--f--|', { t: 1, f: 0 });
+    const subs =              '^                  !';
+    const expected =          '--t---t----t-------|';
+
+    expectObservable(source.pipe(filter(Boolean))).toBe(expected, { t: 1, f: 0 });
+    expectSubscriptions(source.subscriptions).toBe(subs);
+  });
 });

@@ -38,3 +38,9 @@ it('should enforce user-defined type guard types', () => {
   const o = of(1, 2, 3).pipe(filter((value: string): value is '1' => value < '3')); // $ExpectError
   const p = of(1, 2, 3).pipe(filter((value: number, index): value is 1 => index < '3')); // $ExpectError
 });
+
+it('should support Boolean as a predicate', () => {
+  const o = of(1, 2, 3).pipe(filter(Boolean)); // $ExpectType Observable<number>
+  const p = of(1, null, undefined).pipe(filter(Boolean)); // $ExpectType Observable<number>
+  const q = of(null, undefined).pipe(filter(Boolean)); // $ExpectType Observable<never>
+});
