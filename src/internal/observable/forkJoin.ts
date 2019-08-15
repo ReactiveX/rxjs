@@ -3,7 +3,6 @@ import { ObservableInput, ObservedValuesFromArray, ObservedValueOf, Subscribable
 import { isArray } from '../util/isArray';
 import { map } from '../operators/map';
 import { isObject } from '../util/isObject';
-import { isObservable } from '../util/isObservable';
 import { from } from './from';
 
 /* tslint:disable:max-line-length */
@@ -56,7 +55,7 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  * or a dictionary of input observables. If no input observables are provided, resulting stream will complete
  * immediately.
  *
- * `forkJoin` will wait for all passed observables to complete and then it will emit an array or an object with last
+ * `forkJoin` will wait for all passed observables to emit and complete and then it will emit an array or an object with last
  * values from corresponding observables.
  *
  * If you pass an array of `n` observables to the operator, resulting
@@ -146,7 +145,6 @@ export function forkJoin(
     if (isArray(first)) {
       return forkJoinInternal(first, null);
     }
-    // TODO(benlesh): isObservable check will not be necessary when deprecated path is removed.
     if (isObject(first) && Object.getPrototypeOf(first) === Object.prototype) {
       const keys = Object.keys(first);
       return forkJoinInternal(keys.map(key => first[key]), keys);
