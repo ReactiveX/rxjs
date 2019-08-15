@@ -1,5 +1,5 @@
-import { of } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 it('should support a predicate', () => {
   const o = of(1, 2, 3).pipe(filter(value => value < 3)); // $ExpectType Observable<number>
@@ -43,4 +43,17 @@ it('should support Boolean as a predicate', () => {
   const o = of(1, 2, 3).pipe(filter(Boolean)); // $ExpectType Observable<number>
   const p = of(1, null, undefined).pipe(filter(Boolean)); // $ExpectType Observable<number>
   const q = of(null, undefined).pipe(filter(Boolean)); // $ExpectType Observable<never>
+});
+
+// I've not been able to effect a failing dtslint test for this situation and a
+// conventional test won't fail because the TypeScript configuration isn't
+// sufficiently strict:
+// https://github.com/ReactiveX/rxjs/issues/4959#issuecomment-520629091
+it('should support inference from a return type with Boolean as a predicate', () => {
+  interface I {
+    a: string | null;
+  }
+
+  const i$: Observable<I> = of();
+  const s$: Observable<string> = i$.pipe(map(i => i.a), filter(Boolean)); // $ExpectType Observable<string>
 });
