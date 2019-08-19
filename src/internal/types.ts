@@ -90,13 +90,25 @@ export interface Observer<T> {
 
 /** SCHEDULER INTERFACES */
 
-export interface SchedulerLike {
-  now(): number;
+export interface SchedulerLike extends TimestampProvider {
   schedule<T>(work: (this: SchedulerAction<T>, state?: T) => void, delay?: number, state?: T): Subscription;
 }
 
 export interface SchedulerAction<T> extends Subscription {
   schedule(state?: T, delay?: number): Subscription;
+}
+
+/**
+ * This is a type that provides a method to allow RxJS to create a numeric timestamp
+ */
+export interface TimestampProvider {
+  /**
+   * Returns a timestamp as a number.
+   *
+   * This is used by types like `ReplaySubject` or operators like `timestamp` to calculate
+   * the amount of time passed between events.
+   */
+  now(): number;
 }
 
 /**
