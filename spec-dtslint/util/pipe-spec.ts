@@ -22,7 +22,7 @@ function a<I extends string, O extends string>(input: I, output: O): UnaryFuncti
 }
 
 it('should infer {} for no arguments', () => {
-  const o = pipe(); // $ExpectType UnaryFunction<{}, {}>
+  const o = pipe(); // $ExpectType UnaryFunction<unknown, unknown>
 });
 
 it('should infer for 1 argument', () => {
@@ -118,9 +118,9 @@ it('should return an explicit Observable type', () => {
 it('should return Observable<{}> when T cannot be inferred', () => {
   const customOperator = <T>() => (a: Observable<T>) => a;
 
-  // type can't be possibly be inferred here, so it's {} instead of T.
+  // type can't be possibly be inferred here
   const staticPipe = pipe(customOperator());
-  const o = of('foo').pipe(staticPipe); // $ExpectType Observable<{}>
+  const o = of('foo').pipe(staticPipe); // $ExpectType Observable<unknown>
 });
 
 it('should return a non-narrowed type', () => {

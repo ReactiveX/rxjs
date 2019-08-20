@@ -41,7 +41,7 @@ it('should accept 6 params', () => {
 });
 
 it('should result in Observable<{}> for 7 or more params', () => {
-  const o = combineLatest(a, b, c, d, e, f, g); // $ExpectType Observable<{}>
+  const o = combineLatest(a, b, c, d, e, f, g); // $ExpectType Observable<unknown>
 });
 
 it('should accept union types', () => {

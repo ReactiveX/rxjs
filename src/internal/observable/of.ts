@@ -29,6 +29,7 @@ export function of<T, T2, T3, T4, T5, T6, T7, T8, T9>(a: T, b: T2, c: T3, d: T4,
 export function of<T>(...args: (T | SchedulerLike)[]): Observable<T>;
 
 // TODO(benlesh): Update the typings for this when we can switch to TS 3.x
+export function of(): Observable<never>;
 export function of<T>(a: T): Observable<T>;
 export function of<T, T2>(a: T, b: T2): Observable<T | T2>;
 export function of<T, T2, T3>(a: T, b: T2, c: T3): Observable<T | T2 | T3>;
