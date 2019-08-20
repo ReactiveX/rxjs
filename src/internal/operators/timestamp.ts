@@ -1,5 +1,4 @@
-import { async } from '../scheduler/async';
-import { OperatorFunction, SchedulerLike, Timestamp as TimestampInterface } from '../types';
+import { OperatorFunction, Timestamp as TimestampInterface, TimestampProvider, Timestamp } from '../types';
 import { map } from './map';
 
 /**
@@ -31,16 +30,8 @@ import { map } from './map';
  * });
  * ```
  *
- * @param scheduler
- * @return {Observable<Timestamp<any>>|WebSocketSubject<T>|Observable<T>}
- * @name timestamp
+ * @param timestampProvider An object with a `now()` method used to get the current timestamp.
  */
-export function timestamp<T>(scheduler: SchedulerLike = async): OperatorFunction<T, Timestamp<T>> {
-  return map((value: T) => new Timestamp(value, scheduler.now()));
-  // return (source: Observable<T>) => source.lift(new TimestampOperator(scheduler));
-}
-
-export class Timestamp<T> implements TimestampInterface<T> {
-  constructor(public value: T, public timestamp: number) {
-  }
+export function timestamp<T>(timestampProvider: TimestampProvider = Date): OperatorFunction<T, Timestamp<T>> {
+  return map((value: T) => ({ value, timestamp: timestampProvider.now()}));
 }
