@@ -6,7 +6,7 @@ export interface ArgumentOutOfRangeErrorCtor {
 }
 
 const ArgumentOutOfRangeErrorImpl = (() => {
-  function ArgumentOutOfRangeErrorImpl(this: any) {
+  function ArgumentOutOfRangeErrorImpl(this: Error) {
     Error.call(this);
     this.message = 'argument out of range';
     this.name = 'ArgumentOutOfRangeError';

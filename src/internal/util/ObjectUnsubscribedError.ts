@@ -6,7 +6,7 @@ export interface ObjectUnsubscribedErrorCtor {
 }
 
 const ObjectUnsubscribedErrorImpl = (() => {
-  function ObjectUnsubscribedErrorImpl(this: any) {
+  function ObjectUnsubscribedErrorImpl(this: Error) {
     Error.call(this);
     this.message = 'object unsubscribed';
     this.name = 'ObjectUnsubscribedError';
