@@ -2,6 +2,7 @@ import { mergeMap } from './mergeMap';
 import { ObservableInput, OperatorFunction, ObservedValueOf } from '../types';
 
 /* tslint:disable:max-line-length */
+export function concatMap<T>(project: (value: T, index: number) => ObservableInput<never>): OperatorFunction<T, never>;
 export function concatMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) =>  O): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated resultSelector no longer supported, use inner map instead */
 export function concatMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: undefined): OperatorFunction<T, ObservedValueOf<O>>;
