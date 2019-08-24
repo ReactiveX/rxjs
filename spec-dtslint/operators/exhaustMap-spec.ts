@@ -40,3 +40,7 @@ it('should enforce types', () => {
 it('should enforce the return type', () => {
   const o = of(1, 2, 3).pipe(exhaustMap(p => p)); // $ExpectError
 });
+
+it('should produce `Observable<never>` when mapping to an `ObservableInput<never>`', () => {
+  const o = of(1, 2, 3).pipe(exhaustMap(n => Promise.reject())); // $ExpectType Observable<never>
+});

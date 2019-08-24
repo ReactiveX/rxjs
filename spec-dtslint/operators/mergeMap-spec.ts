@@ -64,3 +64,7 @@ it('should enforce types of the concurrent parameter with a resultSelector', () 
 it('should enforce types of the concurrent parameter with an undefined resultSelector', () => {
   const o = of(1, 2, 3).pipe(mergeMap(p => of(Boolean(p)), undefined, '4')); // $ExpectError
 });
+
+it('should produce `Observable<never>` when mapping to an `ObservableInput<never>`', () => {
+  const o = of(1, 2, 3).pipe(mergeMap(n => Promise.reject())); // $ExpectType Observable<never>
+});

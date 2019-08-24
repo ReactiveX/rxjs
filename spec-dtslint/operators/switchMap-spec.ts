@@ -40,3 +40,7 @@ it('should enforce the return type', () => {
 it('should support projecting to union types', () => {
   const o = of(Math.random()).pipe(switchMap(n => n > 0.5 ? of(123) : of('test'))); // $ExpectType Observable<string | number>
 });
+
+it('should produce `Observable<never>` when mapping to an `ObservableInput<never>`', () => {
+  const o = of(1, 2, 3).pipe(switchMap(n => Promise.reject())); // $ExpectType Observable<never>
+});

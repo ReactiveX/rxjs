@@ -50,3 +50,7 @@ it('should enforce the return type', () => {
   const o = of(1, 2, 3).pipe(concatMapTo(p => p)); // $ExpectError
   const p = of(1, 2, 3).pipe(concatMapTo(4)); // $ExpectError
 });
+
+it('should produce `Observable<never>` when mapping to an `ObservableInput<never>`', () => {
+  const o = of(1, 2, 3).pipe(concatMapTo(Promise.reject())); // $ExpectType Observable<never>
+});

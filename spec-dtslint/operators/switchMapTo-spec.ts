@@ -45,3 +45,7 @@ it('should enforce the return type', () => {
   const o = of(1, 2, 3).pipe(switchMapTo(p => p)); // $ExpectError
   const p = of(1, 2, 3).pipe(switchMapTo(4)); // $ExpectError
 });
+
+it('should produce `Observable<never>` when mapping to an `ObservableInput<never>`', () => {
+  const o = of(1, 2, 3).pipe(switchMapTo(Promise.reject())); // $ExpectType Observable<never>
+});
