@@ -63,12 +63,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
       throw new ObjectUnsubscribedError();
     }
     if (!this.isStopped) {
-      const { observers } = this;
-      const len = observers.length;
-      const copy = observers.slice();
-      for (let i = 0; i < len; i++) {
-        copy[i].next(value);
-      }
+      this.observers.slice().map(observer => observer.next(value));
     }
   }
 
@@ -79,12 +74,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
     this.hasError = true;
     this.thrownError = err;
     this.isStopped = true;
-    const { observers } = this;
-    const len = observers.length;
-    const copy = observers.slice();
-    for (let i = 0; i < len; i++) {
-      copy[i].error(err);
-    }
+    this.observers.slice().map(observer => observer.error(err));
     this.observers.length = 0;
   }
 
@@ -93,12 +83,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
       throw new ObjectUnsubscribedError();
     }
     this.isStopped = true;
-    const { observers } = this;
-    const len = observers.length;
-    const copy = observers.slice();
-    for (let i = 0; i < len; i++) {
-      copy[i].complete();
-    }
+    this.observers.slice().map(observer => observer.complete());
     this.observers.length = 0;
   }
 
