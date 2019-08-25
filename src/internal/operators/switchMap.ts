@@ -10,6 +10,7 @@ import { map } from './map';
 import { from } from '../observable/from';
 
 /* tslint:disable:max-line-length */
+export function switchMap<T>(project: (value: T, index: number) => ObservableInput<never>): OperatorFunction<T, never>;
 export function switchMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O): OperatorFunction<T, ObservedValueOf<O>>;
 /** @deprecated resultSelector is no longer supported, use inner map instead */
 export function switchMap<T, O extends ObservableInput<any>>(project: (value: T, index: number) => O, resultSelector: undefined): OperatorFunction<T, ObservedValueOf<O>>;

@@ -3,6 +3,7 @@ import { mergeMap } from './mergeMap';
 import { ObservableInput } from '../types';
 
 /* tslint:disable:max-line-length */
+export function mergeMapTo(observable: ObservableInput<never>, concurrent?: number): OperatorFunction<any, never>;
 export function mergeMapTo<O extends ObservableInput<any>>(innerObservable: O, concurrent?: number): OperatorFunction<any, ObservedValueOf<O>>;
 /** @deprecated */
 export function mergeMapTo<T, R, O extends ObservableInput<any>>(innerObservable: O, resultSelector: (outerValue: T, innerValue: ObservedValueOf<O>, outerIndex: number, innerIndex: number) => R, concurrent?: number): OperatorFunction<T, R>;
