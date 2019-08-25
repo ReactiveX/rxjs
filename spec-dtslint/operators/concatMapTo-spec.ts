@@ -42,6 +42,10 @@ it('should support union types', () => {
   const r = of(1, 2, 3).pipe(concatMapTo(s)); // $ExpectType Observable<string | number>
 });
 
+it('should support union-type projections with empty streams', () => {
+  const o = of(1, 2, 3).pipe(concatMapTo(Math.random() < 0.5 ? of(123) : of())); // $ExpectType Observable<number>
+});
+
 it('should enforce types', () => {
   const o = of(1, 2, 3).pipe(concatMapTo()); // $ExpectError
 });

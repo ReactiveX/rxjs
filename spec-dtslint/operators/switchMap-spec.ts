@@ -29,6 +29,10 @@ it('should support an undefined resultSelector', () => {
   const o = of(1, 2, 3).pipe(switchMap(p => of(Boolean(p)), undefined)); // $ExpectType Observable<boolean>
 });
 
+it('should support union-type projections with empty streams', () => {
+  const o = of(1, 2, 3).pipe(switchMap(n => Math.random() < 0.5 ? of(123) : of())); // $ExpectType Observable<number>
+});
+
 it('should enforce types', () => {
   const o = of(1, 2, 3).pipe(switchMap()); // $ExpectError
 });
