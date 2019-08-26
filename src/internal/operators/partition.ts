@@ -49,8 +49,6 @@ import { UnaryFunction } from '../types';
  * pass the predicate.
  * @method partition
  * @owner Observable
- */
-/**
  * @deprecated use `partition` static creation function instead
  */
 export function partition<T>(predicate: (value: T, index: number) => boolean,
