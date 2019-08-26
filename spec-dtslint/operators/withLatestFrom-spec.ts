@@ -51,7 +51,7 @@ describe('withLatestFrom', () => {
       const e = of('j', 'k', 'l');
       const f = of('m', 'n', 'o');
       const g = of('p', 'q', 'r');
-      const res = a.pipe(withLatestFrom(b, c, d, e, f, g)); // $ExpectType Observable<{}>
+      const res = a.pipe(withLatestFrom(b, c, d, e, f, g)); // $ExpectType Observable<unknown>
     });
   });
 

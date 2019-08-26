@@ -2,11 +2,7 @@ import { of, Observable } from 'rxjs';
 import { publish } from 'rxjs/operators';
 
 it('should support empty parameter', () => {
-  // Here, TypeScript versions 3.1 and earlier infer Observable<any>. However,
-  // the next version infers Observable<number>. It's not possible to specify
-  // an upper bound for the TypeScript version used by dtslint, so an
-  // expectation cannot be applied.
-  const a = of(1, 2, 3).pipe(publish()); // $ExpectType Observable<any>
+  const a = of(1, 2, 3).pipe(publish()); // $ExpectType Observable<number>
 });
 
 it('should infer when type is specified', () => {

@@ -4,7 +4,7 @@ import { zip } from 'rxjs/operators';
 it('should support rest parameter observables', () => {
   const o = of(1); // $ExpectType Observable<number>
   const z = [of(2)]; // $ExpectType Observable<number>[]
-  const a = o.pipe(zip(...z)); // $ExpectType Observable<{}>
+  const a = o.pipe(zip(...z)); // $ExpectType Observable<unknown>
 });
 
 it('should support rest parameter observables with type parameters', () => {
