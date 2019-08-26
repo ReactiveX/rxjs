@@ -34,7 +34,7 @@ it('should accept existing keys only', () => {
 });
 
 it('should not accept empty parameter', () => {
-  const a = of({ name: 'abc' }).pipe(pluck()); // $ExpectType<unknown>
+  const a = of({ name: 'abc' }).pipe(pluck()); // $ExpectType Observable<unknown>
 });
 
 it('should accept string only', () => {
