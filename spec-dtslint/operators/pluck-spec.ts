@@ -30,13 +30,29 @@ it('should support nested object of more than 6 layer depth', () => {
 });
 
 it('should accept existing keys only', () => {
-  const a = of({ name: 'abc' }).pipe(pluck('xyz')); // $ExpectError
+  const a = of({ name: 'abc' }).pipe(pluck('xyz')); // $ExpectType Observable<unknown>
 });
 
 it('should not accept empty parameter', () => {
-  const a = of({ name: 'abc' }).pipe(pluck()); // $ExpectError
+  const a = of({ name: 'abc' }).pipe(pluck()); // $ExpectType Observable<unknown>
 });
 
 it('should accept string only', () => {
   const a = of({ name: 'abc' }).pipe(pluck(1)); // $ExpectError
+});
+
+it('should accept a spread of arguments', () => {
+  const obj = {
+    foo: {
+      bar: {
+        baz: 123
+      }
+    }
+  };
+
+  const path = ['foo', 'bar', 'baz'];
+  const a = of(obj).pipe(pluck(...path)); // $ExpectType Observable<unknown>
+
+  const path2 = ['bar', 'baz'];
+  const b = of(obj).pipe(pluck('foo', ...path2)); // $ExpectType Observable<unknown>
 });
