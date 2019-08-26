@@ -1,12 +1,12 @@
 import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
+import { OperatorFunction, TeardownLogic } from '../types';
 
 /* tslint:disable:max-line-length */
-export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, seed: R): OperatorFunction<T, R>;
-export function scan<T>(accumulator: (acc: T, value: T, index: number) => T, seed?: T): MonoTypeOperatorFunction<T>;
-export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R): OperatorFunction<T, R>;
+export function scan<V, A = V>(accumulator: (acc: A|V, value: V, index: number) => A): OperatorFunction<V, V|A>;
+export function scan<V, A>(accumulator: (acc: A, value: V, index: number) => A, seed: A): OperatorFunction<V, A>;
+export function scan<V, A, S>(accumulator: (acc: A|S, value: V, index: number) => A, seed: S): OperatorFunction<V, A>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -45,14 +45,14 @@ export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R):
  * @see {@link mergeScan}
  * @see {@link reduce}
  *
- * @param {function(acc: R, value: T, index: number): R} accumulator
+ * @param {function(acc: A, value: V, index: number): A} accumulator
  * The accumulator function called on each source value.
- * @param {T|R} [seed] The initial accumulation value.
- * @return {Observable<R>} An observable of the accumulated values.
+ * @param {V|A} [seed] The initial accumulation value.
+ * @return {Observable<A>} An observable of the accumulated values.
  * @method scan
  * @owner Observable
  */
-export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, seed?: T | R): OperatorFunction<T, R> {
+export function scan<V, A, S>(accumulator: (acc: V|A|S, value: V, index: number) => A, seed?: S): OperatorFunction<V, V|A> {
   let hasSeed = false;
   // providing a seed of `undefined` *should* be valid and trigger
   // hasSeed! so don't use `seed !== undefined` checks!
@@ -63,15 +63,15 @@ export function scan<T, R>(accumulator: (acc: R, value: T, index: number) => R, 
     hasSeed = true;
   }
 
-  return function scanOperatorFunction(source: Observable<T>): Observable<R> {
+  return function scanOperatorFunction(source: Observable<V>) {
     return source.lift(new ScanOperator(accumulator, seed, hasSeed));
   };
 }
 
-class ScanOperator<T, R> implements Operator<T, R> {
-  constructor(private accumulator: (acc: R, value: T, index: number) => R, private seed?: T | R, private hasSeed: boolean = false) {}
+class ScanOperator<V, A, S> implements Operator<V, A> {
+  constructor(private accumulator: (acc: V|A|S, value: V, index: number) => A, private seed?: S, private hasSeed: boolean = false) {}
 
-  call(subscriber: Subscriber<R>, source: any): any {
+  call(subscriber: Subscriber<A>, source: any): TeardownLogic {
     return source.subscribe(new ScanSubscriber(subscriber, this.accumulator, this.seed, this.hasSeed));
   }
 }
@@ -81,41 +81,31 @@ class ScanOperator<T, R> implements Operator<T, R> {
  * @ignore
  * @extends {Ignored}
  */
-class ScanSubscriber<T, R> extends Subscriber<T> {
+class ScanSubscriber<V, A> extends Subscriber<V> {
   private index: number = 0;
 
-  get seed(): T | R {
-    return this._seed;
-  }
-
-  set seed(value: T | R) {
-    this.hasSeed = true;
-    this._seed = value;
-  }
-
-  constructor(destination: Subscriber<R>, private accumulator: (acc: R, value: T, index: number) => R, private _seed: T | R,
-              private hasSeed: boolean) {
+  constructor(destination: Subscriber<A>, private accumulator: (acc: V|A, value: V, index: number) => A, private _state: any,
+              private _hasState: boolean) {
     super(destination);
   }
 
-  protected _next(value: T): void {
-    if (!this.hasSeed) {
-      this.seed = value;
-      this.destination.next(value);
+  protected _next(value: V): void {
+    const { destination } = this;
+    if (!this._hasState) {
+      this._state = value;
+      this._hasState = true;
+      destination.next(value);
     } else {
-      return this._tryNext(value);
+      const index = this.index++;
+      let result: A;
+      try {
+        result = this.accumulator(this._state, value, index);
+      } catch (err) {
+        destination.error(err);
+        return;
+      }
+      this._state = result;
+      destination.next(result);
     }
-  }
-
-  private _tryNext(value: T): void {
-    const index = this.index++;
-    let result: any;
-    try {
-      result = this.accumulator(<R>this.seed, value, index);
-    } catch (err) {
-      this.destination.error(err);
-    }
-    this.seed = result;
-    this.destination.next(result);
   }
 }
