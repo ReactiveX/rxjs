@@ -29,7 +29,7 @@ it('should accept more than 6 params', () => {
 });
 
 it('should return Observable<unknown> for more than 6 different types of params', () => {
-  const o = concat(of(1), of('a'), of(2), of(true), of(3), of([1, 2, 3]), of(4)); // $ExpectType Observable<string | number | boolean | number[]>
+  const o = concat(of(1), of('a'), of(2), of(true), of(3), of([1, 2, 3]), of(4)); // $ExpectType Observable<unknown>
 });
 
 it('should accept scheduler after params', () => {
