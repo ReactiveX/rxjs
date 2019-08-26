@@ -6,7 +6,7 @@ export interface EmptyErrorCtor {
 }
 
 const EmptyErrorImpl = (() => {
-  function EmptyErrorImpl(this: any) {
+  function EmptyErrorImpl(this: Error) {
     Error.call(this);
     this.message = 'no elements in sequence';
     this.name = 'EmptyError';
