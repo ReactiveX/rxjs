@@ -139,5 +139,5 @@ export function concat<R>(...observables: (ObservableInput<any> | SchedulerLike)
  * @owner Observable
  */
 export function concat<O extends ObservableInput<any>, R>(...observables: Array<O | SchedulerLike>): Observable<ObservedValueOf<O> | R> {
-  return concatAll<R>()(of(...observables));
+  return concatAll<R>()(of(...observables) as Observable<ObservedValueOf<O>>);
 }
