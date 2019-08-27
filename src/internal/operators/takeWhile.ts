@@ -3,10 +3,10 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { OperatorFunction, MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
-export function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S): OperatorFunction<T, S>;
-export function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S, inclusive: false): OperatorFunction<T, S>;
-export function takeWhile<T>(predicate: (value: T, index: number) => boolean, inclusive?: boolean): MonoTypeOperatorFunction<T>;
-
+export function takeWhile<T>(predicate: BooleanConstructor, inclusive?: boolean): OperatorFunction<T, T>;
+export function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S, inclusive: true): OperatorFunction<T, T>;
+export function takeWhile<T, S extends T>(predicate: (value: T, index: number) => value is S, inclusive?: boolean): OperatorFunction<T, S>;
+export function takeWhile<T>(predicate: (value: T, index: number) => boolean, inclusive?: boolean): OperatorFunction<T, T>;
 /**
  * Emits values emitted by the source Observable so long as each value satisfies
  * the given `predicate`, and then completes as soon as this `predicate` is not
