@@ -7,7 +7,7 @@ import { CodeComponent } from './code.component';
  * Example usage:
  *
  * ```
- * <code-example language="ts" linenums="2" class="special" title="Do Stuff">
+ * <code-example language="ts" linenums="2" class="special" header="Do Stuff">
  * // a code block
  * console.log('do stuff');
  * </code-example>
@@ -18,16 +18,14 @@ import { CodeComponent } from './code.component';
   template: `
     <!-- Content projection is used to get the content HTML provided to this component -->
     <div #content style="display: none"><ng-content></ng-content></div>
-
-    <header *ngIf="title">{{title}}</header>
-
+    <header *ngIf="header">{{header}}</header>
     <aio-code [ngClass]="classes"
               [language]="language"
               [linenums]="linenums"
               [path]="path"
               [region]="region"
               [hideCopy]="hidecopy"
-              [title]="title">
+              [header]="header">
     </aio-code>
   `,
 })
@@ -41,15 +39,15 @@ export class CodeExampleComponent implements AfterViewInit {
   @Input() region: string;
 
   @Input()
-  set title(title: string) {
-    this._title = title;
+  set header(header: string) {
+    this._header = header;
     this.classes = {
-      'headed-code': !!this.title,
-      'simple-code': !this.title,
+      'headed-code': !!this.header,
+      'simple-code': !this.header,
     };
   }
-  get title(): string { return this._title; }
-  private _title: string;
+  get header(): string { return this._header; }
+  private _header: string;
 
   @Input()
   set path(path: string) {
@@ -79,9 +77,9 @@ export class CodeExampleComponent implements AfterViewInit {
 
   @HostBinding('class.avoidFile') isAvoid = false;
 
-  @ViewChild('content') content: ElementRef;
+  @ViewChild('content', { static: true }) content: ElementRef;
 
-  @ViewChild(CodeComponent) aioCode: CodeComponent;
+  @ViewChild(CodeComponent, { static: true }) aioCode: CodeComponent;
 
   ngAfterViewInit() {
     this.aioCode.code = this.content.nativeElement.innerHTML;
