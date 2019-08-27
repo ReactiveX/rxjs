@@ -60,5 +60,10 @@ it('should support a predicate with a non-T default', () => {
 });
 
 it('should default D to T with a predicate', () => {
-  const o = of('foo').pipe(first<string>(x => !!x)); // $Observable<string>
+  const o = of('foo').pipe(first<string>(x => !!x)); // $ExpectType Observable<string>
+});
+
+it('should handle Boolean constructor', () => {
+  const o = of(0, 0, 0, 1, 0).pipe(first(Boolean)); // $ExpectType Observable<number>
+  const o2 = of(0, 0, 0).pipe(first(Boolean, 2)); // $ExpectType Observable<number>
 });
