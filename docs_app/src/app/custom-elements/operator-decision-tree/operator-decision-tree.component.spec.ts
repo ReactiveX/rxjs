@@ -1,10 +1,8 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatRippleModule
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatRippleModule } from '@angular/material/core';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ScrollService } from 'app/shared/scroll.service';
@@ -28,8 +26,10 @@ describe('OperatorDecisionTreeComponent', () => {
   let fixture: ComponentFixture<OperatorDecisionTreeComponent>;
   let operatorDecisionTreeService: OperatorDecisionTreeService;
   let scrollService: ScrollService;
+  let locationService: jasmine.SpyObj<Location>;
 
   beforeEach(async(() => {
+    locationService = jasmine.createSpyObj(['subscribe']);
     TestBed.configureTestingModule({
       imports: [
         CommonModule,
@@ -44,7 +44,8 @@ describe('OperatorDecisionTreeComponent', () => {
           provide: OperatorDecisionTreeService,
           useValue: operatorDecisionTreeServiceStub
         },
-        ScrollService
+        ScrollService,
+        {provide: Location, useValue: locationService }
       ]
     }).compileComponents();
   }));

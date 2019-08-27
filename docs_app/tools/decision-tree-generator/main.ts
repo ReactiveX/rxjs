@@ -23,7 +23,7 @@ try {
 try {
   const flattenedApiList = flattenApiList(apiList);
   const jsonContent = build(flattenedApiList, decisionTreeJson);
-  writeFileSync(outFilename, JSON.stringify(jsonContent, null, '  '), 'utf8');
+  writeFileSync(outFilename, JSON.stringify(jsonContent), 'utf8');
   console.log(
     chalk.green('Decision Tree Generator - success:'),
     'Finished generating decision tree'
