@@ -8,18 +8,10 @@ import { defaultIfEmpty } from './defaultIfEmpty';
 import { identity } from '../util/identity';
 
 /* tslint:disable:max-line-length */
-export function last<T, D = T>(
-  predicate?: null,
-  defaultValue?: D
-): OperatorFunction<T, T | D>;
-export function last<T, S extends T>(
-  predicate: (value: T, index: number, source: Observable<T>) => value is S,
-  defaultValue?: S
-): OperatorFunction<T, S>;
-export function last<T, D = T>(
-  predicate: (value: T, index: number, source: Observable<T>) => boolean,
-  defaultValue?: D
-): OperatorFunction<T, T | D>;
+export function last<T, D = T>(predicate: BooleanConstructor, defaultValue?: D): OperatorFunction<T, T | D>;
+export function last<T, D = T>(predicate?: null, defaultValue?: D): OperatorFunction<T, T | D>;
+export function last<T, S extends T>(predicate: (value: T, index: number, source: Observable<T>) => value is S, defaultValue?: S): OperatorFunction<T, S>;
+export function last<T, D = T>(predicate: (value: T, index: number, source: Observable<T>) => boolean, defaultValue?: D): OperatorFunction<T, T | D>;
 /* tslint:enable:max-line-length */
 
 /**

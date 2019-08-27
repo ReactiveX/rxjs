@@ -60,5 +60,17 @@ it('should support a predicate with a non-T default', () => {
 });
 
 it('should default D to T with a predicate', () => {
-  const o = of('foo').pipe(last<string>(x => !!x)); // $Observable<string>
+  const o = of('foo').pipe(last<string>(x => !!x)); // $ExpectType Observable<string>
+});
+
+it('should support Boolean constructor as a predicate', () => {
+  const o = of(0, 0, 1, 0).pipe(last(Boolean)); // $ExpectType Observable<number>
+  const o2 = of(0, 0, 1, 0).pipe(last(Boolean, 2)); // $ExpectType Observable<number>
+});
+
+it('should support type narrowing', () => {
+  function isString(x: any): x is string {
+    return typeof x === 'string';
+  }
+  const o = of('123', 123, {}, [], true).pipe(last(isString)); // $ExpectType Observable<string>
 });
