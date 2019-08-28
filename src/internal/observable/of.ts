@@ -1,4 +1,4 @@
-import { SchedulerLike, ArrayValueOf } from '../types';
+import { SchedulerLike, ValueFromArray } from '../types';
 import { isScheduler } from '../util/isScheduler';
 import { fromArray } from './fromArray';
 import { Observable } from '../Observable';
@@ -36,7 +36,7 @@ export function of(): Observable<never>;
 export function of<T>(): Observable<T>;
 /** @deprecated remove in v8. Do not use generic arguments directly, allow inference or cast with `as` */
 export function of<T>(value: T): Observable<T>;
-export function of<A extends Array<any>>(...args: A): Observable<ArrayValueOf<A>>;
+export function of<A extends Array<any>>(...args: A): Observable<ValueFromArray<A>>;
 /* tslint:enable:max-line-length */
 
 /**
