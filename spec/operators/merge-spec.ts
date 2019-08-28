@@ -39,8 +39,8 @@ describe('merge operator', () => {
   });
 
   it('should merge an immediately-scheduled source with an immediately-scheduled second', (done) => {
-    const a = of<number>(1, 2, 3, queueScheduler);
-    const b = of<number>(4, 5, 6, 7, 8, queueScheduler);
+    const a = of(1, 2, 3, queueScheduler);
+    const b = of(4, 5, 6, 7, 8, queueScheduler);
     const r = [1, 2, 4, 3, 5, 6, 7, 8];
 
     a.pipe(merge(b, queueScheduler)).subscribe((val) => {
@@ -291,8 +291,8 @@ describe('mergeAll operator', () => {
   });
 
   it('should merge two immediately-scheduled observables', (done) => {
-    const a = of<number>(1, 2, 3, queueScheduler);
-    const b = of<number>(4, 5, 6, 7, 8, queueScheduler);
+    const a = of(1, 2, 3, queueScheduler);
+    const b = of(4, 5, 6, 7, 8, queueScheduler);
     const r = [1, 2, 4, 3, 5, 6, 7, 8];
 
     of(a, b, queueScheduler).pipe(mergeAll()).subscribe((val) => {
