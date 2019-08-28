@@ -5,6 +5,7 @@ import { root } from 'rxjs/internal/util/root';
 import { observable } from 'rxjs/internal/symbol/observable';
 import { iterator } from 'rxjs/internal/symbol/iterator';
 import * as sinon from 'sinon';
+import { expect } from 'chai';
 
 export function lowerCaseO<T>(...args: Array<any>): Observable<T> {
   const o = {
@@ -46,6 +47,21 @@ export const createObservableInputs = <T>(value: T) => of(
     [observable]: () => of(value)
   } as any
 ) as Observable<ObservableInput<T>>;
+
+/**
+ * Used to signify no subscriptions took place to `expectSubscriptions` assertions.
+ */
+export const NO_SUBS: string[] = [];
+
+/**
+ * Does a deep equality assertion. Used to set up {@link TestScheduler}, so that
+ * trees of marbles can be compared.
+ * @param actual The value to run the expectation against.
+ * @param expected The value expected.
+ */
+export function assertDeepEquals (actual: any, expected: any) {
+  expect(actual).to.deep.equal(expected);
+}
 
 global.__root__ = root;
 
