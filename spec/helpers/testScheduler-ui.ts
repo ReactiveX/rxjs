@@ -56,10 +56,6 @@ if (global && !(typeof window !== 'undefined')) {
   global.Test = global.mocha.Test;
 }
 
-if (!global.Promise) {
-  global.Promise = require('promise'); // tslint:disable-line:no-require-imports no-var-requires
-}
-
 const diagramFunction = global.asDiagram;
 
 //mocha creates own global context per each test suite, simple patching to global won't deliver its context into test cases.
