@@ -4,7 +4,8 @@ import { Observable } from '../Observable';
 import { OperatorFunction, MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
 /* tslint:disable:max-line-length */
-export function filter<T>(predicate: BooleanConstructor): OperatorFunction<T, NonNullable<T>>;
+// NOTE(benlesh): T|null|undefined solves the issue discussed here: https://github.com/ReactiveX/rxjs/issues/4959#issuecomment-520629091
+export function filter<T>(predicate: BooleanConstructor): OperatorFunction<T|null|undefined, NonNullable<T>>;
 export function filter<T, S extends T>(predicate: (value: T, index: number) => value is S,
                                        thisArg?: any): OperatorFunction<T, S>;
 export function filter<T>(predicate: (value: T, index: number) => boolean,
@@ -43,18 +44,14 @@ export function filter<T>(predicate: (value: T, index: number) => boolean,
  * @see {@link partition}
  * @see {@link skip}
  *
- * @param {function(value: T, index: number): boolean} predicate A function that
+ * @param predicate A function that
  * evaluates each value emitted by the source Observable. If it returns `true`,
  * the value is emitted, if `false` the value is not passed to the output
  * Observable. The `index` parameter is the number `i` for the i-th source
  * emission that has happened since the subscription, starting from the number
  * `0`.
- * @param {any} [thisArg] An optional argument to determine the value of `this`
+ * @param thisArg An optional argument to determine the value of `this`
  * in the `predicate` function.
- * @return {Observable} An Observable of values from the source that were
- * allowed by the `predicate` function.
- * @method filter
- * @owner Observable
  */
 export function filter<T>(predicate: (value: T, index: number) => boolean,
                           thisArg?: any): MonoTypeOperatorFunction<T> {

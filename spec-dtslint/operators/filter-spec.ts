@@ -55,5 +55,5 @@ it('should support inference from a return type with Boolean as a predicate', ()
   }
 
   const i$: Observable<I> = of();
-  const s$ = i$.pipe(map(i => i.a), filter(Boolean)); // $ExpectType Observable<string>
+  const s$: Observable<string> = i$.pipe(map(i => i.a), filter(Boolean)); // $ExpectType Observable<string>
 });
