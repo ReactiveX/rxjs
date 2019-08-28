@@ -251,9 +251,9 @@ export class Observable<T> implements Subscribable<T> {
 
   /**
    * @method forEach
-   * @param {Function} next a handler for each value emitted by the observable
-   * @param {PromiseConstructor} [promiseCtor] a constructor function used to instantiate the Promise
-   * @return {Promise} a promise that either resolves on observable completion or
+   * @param next a handler for each value emitted by the observable
+   * @param [promiseCtor] a constructor function used to instantiate the Promise
+   * @return a promise that either resolves on observable completion or
    *  rejects with the handled error
    */
   forEach(next: (value: T) => void, promiseCtor?: PromiseConstructorLike): Promise<void> {
@@ -352,6 +352,16 @@ export class Observable<T> implements Subscribable<T> {
   toPromise<T>(this: Observable<T>, PromiseCtor: PromiseConstructorLike): Promise<T>;
   /* tslint:enable:max-line-length */
 
+  /**
+   * Subscribe to this Observable and get a Promise resolving on
+   * `complete` with the last emission.
+   *
+   * @method toPromise
+   * @param [promiseCtor] a constructor function used to instantiate
+   * the Promise
+   * @return A Promise that resolves with the last value emit, or
+   * rejects on an error.
+   */
   toPromise(promiseCtor?: PromiseConstructorLike): Promise<T> {
     promiseCtor = getPromiseCtor(promiseCtor);
 
