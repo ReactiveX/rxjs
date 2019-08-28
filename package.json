@@ -10,18 +10,13 @@
     }
   },
   "lint-staged": {
-    "linters": {
-      "*.@(js)": [
-        "eslint --fix",
-        "git add"
-      ],
-      "*.@(ts)": [
-        "tslint --fix",
-        "git add"
-      ]
-    },
-    "ignore": [
-      "spec-dtslint/**/*.{js,ts}"
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.ts": [
+      "tslint --fix",
+      "git add"
     ]
   },
   "scripts": {
@@ -156,9 +151,8 @@
     "gm": "1.23.1",
     "google-closure-compiler-js": "20170218.0.0",
     "gzip-size": "4.1.0",
-    "husky": "0.14.3",
     "klaw-sync": "3.0.2",
-    "lint-staged": "^8.1.6",
+    "lint-staged": "^9.2.5",
     "lodash": "^4.17.11",
     "minimist": "1.2.0",
     "mkdirp": "0.5.1",
@@ -171,7 +165,6 @@
     "rollup-plugin-alias": "1.4.0",
     "rollup-plugin-inject": "2.0.0",
     "rollup-plugin-node-resolve": "2.0.0",
-    "rxjs": "^6.0.0",
     "shx": "0.2.2",
     "sinon": "4.3.0",
     "sinon-chai": "2.14.0",
