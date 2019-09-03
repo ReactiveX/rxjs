@@ -1,3 +1,10 @@
+## [6.5.3](https://github.com/reactivex/rxjs/compare/6.5.2...6.5.3) (2019-09-03)
+
+### Bug Fixes
+
+* **general:** Refactor modules so they don't show side effects in some tools ([#4769](https://github.com/reactivex/rxjs/issues/4769)) ([9829c5e0](https://github.com/reactivex/rxjs/commit/9829c5e0))
+* **defer:** restrict allowed factory types ([#4835](https://github.com/reactivex/rxjs/issues/4835)) ([40a22096](https://github.com/reactivex/rxjs/commit/40a22096))
+
 ## [6.5.2](https://github.com/reactivex/rxjs/compare/6.5.0...6.5.2) (2019-05-10)
 
 
