@@ -62,7 +62,7 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace: *attach_options
-      - run: npm i --no-save typescript@3.*
+      - run: npm i --no-save typescript@3.5.*
       - run: npm run build_cjs
 
 workflows:
