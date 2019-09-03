@@ -10,18 +10,13 @@
     }
   },
   "lint-staged": {
-    "linters": {
-      "*.@(js)": [
-        "eslint --fix",
-        "git add"
-      ],
-      "*.@(ts)": [
-        "tslint --fix",
-        "git add"
-      ]
-    },
-    "ignore": [
-      "spec-dtslint/**/*.{js,ts}"
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.ts": [
+      "tslint --fix",
+      "git add"
     ]
   },
   "scripts": {
@@ -32,13 +27,11 @@
     "build_esm5": "npm-run-all clean_dist_esm5 compile_dist_esm5",
     "build_esm5_for_rollup": "npm-run-all clean_dist_esm5_for_rollup compile_dist_esm5_for_rollup && mkdirp dist/esm5_for_rollup/node_modules",
     "build_esm2015": "npm-run-all clean_dist_esm2015 compile_dist_esm2015",
-    "build_esm2015_for_docs": "npm-run-all clean_dist_esm2015 compile_dist_esm2015_for_docs",
     "build_types": "npm-run-all clean_dist_types compile_dist_types",
     "build_closure_core": "node ./tools/make-closure-core.js",
     "build_global": "npm-run-all clean_dist_global build_esm5_for_rollup && mkdirp ./dist/global && node ./tools/make-umd-bundle.js && npm-run-all build_closure_core clean_dist_esm5_for_rollup",
     "build_umd": "npm-run-all clean_dist_global && mkdirp ./dist/global && node ./tools/make-umd-bundle.js && npm-run-all build_closure_core",
     "build_perf": "webdriver-manager update && npm-run-all build_cjs build_global perf",
-    "build_docs": "npm-run-all build_global build_esm2015_for_docs build_cjs tests2png decision_tree_widget && esdoc -c esdoc.json && npm-run-all clean_dist_esm2015",
     "build_spec": "npm-run-all build_cjs generate_packages",
     "build_spec_full": "npm-run-all build_spec",
     "build:spec:browser": "echo \"Browser test is not working currently\" && exit -1 && webpack --config spec/support/webpack.mocha.config.js",
@@ -53,12 +46,10 @@
     "compile_dist_cjs": "tsc -p ./tsconfig/tsconfig.cjs.json",
     "compile_dist_esm5": "tsc -p ./tsconfig/tsconfig.esm5.json",
     "compile_dist_esm2015": "tsc -p ./tsconfig/tsconfig.esm2015.json",
-    "compile_dist_esm2015_for_docs": "tsc ./dist/src/internal/Rx.ts ./dist/src/add/observable/of.ts ./dist/src/MiscJSDoc.ts -m es2015   --sourceMap --outDir ./dist/es6 --target es2015 -d --diagnostics --pretty --noImplicitAny --noImplicitReturns --noImplicitThis --suppressImplicitAnyIndexErrors --moduleResolution node",
     "compile_dist_esm5_for_rollup": "tsc -p ./tsconfig/tsconfig.esm5.rollup.json",
     "compile_dist_types": "tsc -p ./tsconfig/tsconfig.types.json",
     "copy_sources": "mkdirp dist && shx cp -r ./src/ ./dist/src",
     "decision_tree_widget": "cd doc/decision-tree-widget && npm run build && cd ../..",
-    "doctoc": "doctoc CONTRIBUTING.md",
     "generate_packages": "node .make-packages.js",
     "lint_perf": "eslint perf/",
     "lint_spec": "tslint -c tslint.json \"spec/**/*.ts\"",
@@ -149,9 +140,7 @@
     "commitizen": "^3.1.1",
     "cross-env": "5.1.3",
     "cz-conventional-changelog": "1.2.0",
-    "danger": "^7.1.4",
     "dependency-cruiser": "^4.17.0",
-    "doctoc": "1.3.0",
     "dtslint": "0.7.4",
     "escape-string-regexp": "1.0.5",
     "eslint": "4.17.0",
@@ -162,11 +151,9 @@
     "gm": "1.23.1",
     "google-closure-compiler-js": "20170218.0.0",
     "gzip-size": "4.1.0",
-    "husky": "0.14.3",
     "klaw-sync": "3.0.2",
-    "lint-staged": "^8.1.6",
+    "lint-staged": "^9.2.5",
     "lodash": "^4.17.11",
-    "markdown-doctest": "0.9.1",
     "minimist": "1.2.0",
     "mkdirp": "0.5.1",
     "mocha": "5.0.0",
@@ -178,8 +165,6 @@
     "rollup-plugin-alias": "1.4.0",
     "rollup-plugin-inject": "2.0.0",
     "rollup-plugin-node-resolve": "2.0.0",
-    "rx": "latest",
-    "rxjs": "^5.5.7",
     "shx": "0.2.2",
     "sinon": "4.3.0",
     "sinon-chai": "2.14.0",

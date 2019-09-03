@@ -5,10 +5,6 @@ it still applies to you. Ignorance is not an exemption.
 
 Contents
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-
 - [Submitting a Pull Request (PR)](#submitting-a-pull-request-pr)
   - [After your pull request is merged](#after-your-pull-request-is-merged)
 - [Coding Style Guidelines](#coding-style-guidelines)
@@ -26,8 +22,6 @@ Contents
   - [Subject](#subject)
   - [Body](#body)
   - [Footer](#footer)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ---
 - Related documents

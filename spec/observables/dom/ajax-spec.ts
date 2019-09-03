@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { root } from 'rxjs/util/root';
+import { root } from 'rxjs/internal/util/root';
 import { TestScheduler } from 'rxjs/testing';
 import { ajax, AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError } from 'rxjs/ajax';
 
