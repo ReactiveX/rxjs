@@ -28,11 +28,38 @@ export type observableToBeFn = (marbles: string, values?: any, errorValue?: any)
 export type subscriptionLogsToBeFn = (marbles: string | string[]) => void;
 
 export class TestScheduler extends VirtualTimeScheduler {
+  /**
+   * The number of virtual time units each character in a marble diagram represents. If
+   * the test scheduler is being used in "run mode", via the `run` method, this is temporarly
+   * set to `1` for the duration of the `run` block, then set back to whatever value it was.
+   */
+  static frameTimeFactor = 10;
+
+  /**
+   * @deprecated remove in v8. Not for public use.
+   */
   public readonly hotObservables: HotObservable<any>[] = [];
+
+  /**
+   * @deprecated remove in v8. Not for public use.
+   */
   public readonly coldObservables: ColdObservable<any>[] = [];
+
+  /**
+   * Test meta data to be processed during `flush()`
+   */
   private flushTests: FlushableTest[] = [];
+
+  /**
+   * Indicates whether the TestScheduler instance is operating in "run mode",
+   * meaning it's processing a call to `run()`
+   */
   private runMode = false;
 
+  /**
+   *
+   * @param assertDeepEqual A function to set up your assertion for your test harness
+   */
   constructor(public assertDeepEqual: (actual: any, expected: any) => boolean | void) {
     super(VirtualAction, defaultMaxFrame);
   }

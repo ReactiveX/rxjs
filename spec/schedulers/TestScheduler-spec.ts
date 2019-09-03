@@ -14,6 +14,10 @@ describe('TestScheduler', () => {
     expect(TestScheduler).to.be.a('function');
   });
 
+  it('should have frameTimeFactor set initially', () => {
+    expect(TestScheduler.frameTimeFactor).to.equal(10);
+  });
+
   describe('parseMarbles()', () => {
     it('should parse a marble string into a series of notifications and types', () => {
       const result = TestScheduler.parseMarbles('-------a---b---|', { a: 'A', b: 'B' });
