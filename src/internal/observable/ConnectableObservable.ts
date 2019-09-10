@@ -12,8 +12,8 @@ import { refCount as higherOrderRefCount } from '../operators/refCount';
 export class ConnectableObservable<T> extends Observable<T> {
 
   protected _subject: Subject<T>;
-  private _refCount: number = 0;
-  private _connection: Subscription;
+  protected _refCount: number = 0;
+  protected _connection: Subscription;
   /** @internal */
   _isComplete = false;
 
