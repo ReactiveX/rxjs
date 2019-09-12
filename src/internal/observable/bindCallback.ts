@@ -110,15 +110,20 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  *
  * ## Examples
  *
- * ### Convert jQuery's getJSON to an Observable API
+ * ### Convert navigator.geolocation.getCurrentPosition to an Observable API
  * ```ts
  * import { bindCallback } from 'rxjs';
- * import * as jQuery from 'jquery';
  *
- * // Suppose we have jQuery.getJSON('/my/url', callback)
- * const getJSONAsObservable = bindCallback(jQuery.getJSON);
- * const result = getJSONAsObservable('/my/url');
- * result.subscribe(x => console.log(x), e => console.error(e));
+ * // Assuming navigator.geolocation is available on the browser.
+ * const getCurrentPosition = bindCallback(navigator.geolocation.getCurrentPosition);
+ *
+ * // Invocable function must executed within navigator.geolocation context
+ * const getCurrentPositionAsObservable = getCurrentPosition.apply(navigator.geolocation);
+ *
+ * getCurrentPositionAsObservable.subscribe(
+ *  (position: Position) => console.log(`lat: ${position.coords.latitude}, lng: ${position.coords.longitude}`),
+ *  (e) => console.error(e)
+ * );
  * ```
  *
  * ### Receive an array of arguments passed to a callback
