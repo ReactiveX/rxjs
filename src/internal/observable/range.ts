@@ -15,13 +15,26 @@ import { Observable } from '../Observable';
  * an optional {@link SchedulerLike} to regulate those deliveries.
  *
  * ## Example
- * Emits the numbers 1 to 10</caption>
+ *
+ * ### Produce a range of numbers
+ *
  * ```ts
  * import { range } from 'rxjs';
  *
- * const numbers = range(1, 10);
- * numbers.subscribe(x => console.log(x));
+ * const numbers = range(1, 3);
+ *
+ * numbers.subscribe({
+ *  next: value => { console.log(value) },
+ *  complete: () => { console.log('Complete!') }
+ * });
+ *
+ * // Logs:
+ * // 1
+ * // 2
+ * // 3
+ * // "Complete!"
  * ```
+ *
  * @see {@link timer}
  * @see {@link index/interval}
  *
