@@ -7,6 +7,7 @@ function runIfPresent(handle: number) {
   if (cb) {
     cb();
   }
+  Immediate.clearImmediate(handle);
 }
 
 export const Immediate = {
@@ -20,4 +21,10 @@ export const Immediate = {
   clearImmediate(handle: number): void {
     delete tasksByHandle[handle];
   },
+};
+
+export const ForTests = {
+  numberOfTasksToHandle() {
+    return Object.keys(tasksByHandle).length;
+  }
 };

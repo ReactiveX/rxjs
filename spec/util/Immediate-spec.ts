@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import { Immediate } from 'rxjs/internal/util/Immediate';
+// TODO: import was changed due to the fact that at startup the test referred to rxjs from node_modules
+import { Immediate, ForTests } from '../../src/internal/util/Immediate';
 
 describe('Immediate', () => {
   it('should schedule on the next microtask', (done) => {
@@ -27,6 +28,18 @@ describe('Immediate', () => {
 
     setTimeout(() => {
       expect(results).to.deep.equal([1, 2, 4, 5]);
+      done();
+    });
+  });
+
+  it('should clear the task after execution', (done) => {
+    const results: number[] = [];
+    Immediate.setImmediate(() => results.push(1));
+    Immediate.setImmediate(() => results.push(2));
+
+    setTimeout(() => {
+      const number = ForTests.numberOfTasksToHandle();
+      expect(number).to.not.equal(2);
       done();
     });
   });
