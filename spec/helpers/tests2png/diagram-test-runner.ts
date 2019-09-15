@@ -1,4 +1,4 @@
-import { painter } from './painter';
+import { init, dispose, paint } from './painter';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { TestMessage } from '../../../src/internal/testing/TestMessage';
@@ -73,6 +73,9 @@ function makeFilename(operatorLabel: string) {
 type glitFn = (description: string, fn: () => void ) => any;
 type specFn = () => any;
 
+const initializing = init();
+let active = 0;
+
 global.asDiagram = function asDiagram(operatorLabel: string, glit: glitFn) {
   return function specFnWithPainter(description: string, specFn: specFn) {
     if (specFn.length === 0) {
@@ -97,8 +100,20 @@ global.asDiagram = function asDiagram(operatorLabel: string, glit: glitFn) {
         global.rxTestScheduler.flush();
         inputStreams = updateInputStreamsPostFlush(inputStreams);
         let filename = './docs_app/content/img/' + makeFilename(operatorLabel);
-        painter(inputStreams, operatorLabel, outputStreams, filename);
-        console.log('Painted ' + filename);
+        ++active;
+        initializing
+          .then(browser => paint(inputStreams, operatorLabel, outputStreams, filename, browser))
+          .then(
+            () => console.log('Painted ' + filename),
+            err => console.error(err)
+          )
+          .then(() => {
+            --active;
+            if (active > 0) {
+              return null;
+            }
+            return initializing.then(browser => dispose(browser));
+          });
       });
     } else {
       throw new Error('cannot generate PNG marble diagram for async test ' + description);
