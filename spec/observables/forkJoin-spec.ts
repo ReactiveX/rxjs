@@ -12,8 +12,8 @@ describe('forkJoin', () => {
   asDiagram('forkJoin')
     ('should join the last values of the provided observables into an array', () => {
       const e1 = forkJoin([
-        hot('-a--b-----c-d-e-|'),
-        hot('--------f--g-h-i--j-|'),
+         hot('-a--b-----c-d-e-|'),
+         hot('--------f--g-h-i--j-|'),
         cold('--1--2-3-4---|'),
       ]);
       const expected = '--------------------(x|)';
