@@ -16,7 +16,7 @@ export function race<A, B, C>(arg: [ObservableInput<A>, ObservableInput<B>, Obse
 export function race<A, B, C, D>(arg: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>]): Observable<A | B | C | D>;
 export function race<A, B, C, D, E>(arg: [ObservableInput<A>, ObservableInput<B>, ObservableInput<C>, ObservableInput<D>, ObservableInput<E>]): Observable<A | B | C | D | E>;
 export function race<T>(arg: ObservableInput<T>[]): Observable<T>;
-export function race(arg: ObservableInput<any>[]): Observable<{}>;
+export function race(arg: ObservableInput<any>[]): Observable<unknown>;
 
 export function race<A>(a: ObservableInput<A>): Observable<A>;
 export function race<A, B>(a: ObservableInput<A>, b: ObservableInput<B>): Observable<A | B>;
@@ -26,9 +26,9 @@ export function race<A, B, C, D, E>(a: ObservableInput<A>, b: ObservableInput<B>
 // tslint:enable:max-line-length
 
 export function race<T>(observables: ObservableInput<T>[]): Observable<T>;
-export function race(observables: ObservableInput<any>[]): Observable<{}>;
+export function race(observables: ObservableInput<any>[]): Observable<unknown>;
 export function race<T>(...observables: ObservableInput<T>[]): Observable<T>;
-export function race(...observables: ObservableInput<any>[]): Observable<{}>;
+export function race(...observables: ObservableInput<any>[]): Observable<unknown>;
 
 /**
  * Returns an Observable that mirrors the first source Observable to emit an item.

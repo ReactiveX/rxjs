@@ -1,9 +1,9 @@
 declare const global: any;
 
-import { ObservableInput, of, asyncScheduler, Observable } from 'rxjs';
-import { iterator } from 'rxjs/internal/symbol/iterator';
+import { of, asyncScheduler, Observable, scheduled, ObservableInput } from 'rxjs';
 import { root } from 'rxjs/internal/util/root';
-import $$symbolObservable from 'symbol-observable';
+import { observable } from 'rxjs/internal/symbol/observable';
+import { iterator } from 'rxjs/internal/symbol/iterator';
 
 export function lowerCaseO<T>(...args: Array<any>): Observable<T> {
   const o = {
@@ -16,32 +16,34 @@ export function lowerCaseO<T>(...args: Array<any>): Observable<T> {
     }
   };
 
-  o[$$symbolObservable] = function (this: any) {
+  o[observable] = function (this: any) {
     return this;
   };
 
   return <any>o;
 }
 
-export const createObservableInputs = <T>(value: T) => of<ObservableInput<T>>(
+export const createObservableInputs = <T>(value: T) => of(
   of(value),
-  of(value, asyncScheduler),
+  scheduled([value], asyncScheduler),
   [value],
   Promise.resolve(value),
-  <any>({
-  [iterator]: () => {
-    const iteratorResults = [
-      { value, done: false },
-      { done: true }
-    ];
-    return {
-      next: () => {
-        return iteratorResults.shift();
-      }
-    };
-  }
-  }),
-  <any>({ [$$symbolObservable]: () => of(value) })
-);
+  {
+    [iterator]: () => {
+      const iteratorResults = [
+        { value, done: false },
+        { done: true }
+      ];
+      return {
+        next: () => {
+          return iteratorResults.shift();
+        }
+      };
+    }
+  } as any as Iterable<T>,
+  {
+    [observable]: () => of(value)
+  } as any
+) as Observable<ObservableInput<T>>;
 
 global.__root__ = root;

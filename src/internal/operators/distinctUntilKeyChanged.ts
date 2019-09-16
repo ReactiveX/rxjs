@@ -25,7 +25,7 @@ export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (
  *     name: string
  *  }
  *
- * of<Person>(
+ *of(
  *     { age: 4, name: 'Foo'},
  *     { age: 7, name: 'Bar'},
  *     { age: 5, name: 'Foo'},
@@ -51,7 +51,7 @@ export function distinctUntilKeyChanged<T, K extends keyof T>(key: K, compare: (
  *     name: string
  *  }
  *
- * of<Person>(
+ *of(
  *     { age: 4, name: 'Foo1'},
  *     { age: 7, name: 'Bar'},
  *     { age: 5, name: 'Foo2'},

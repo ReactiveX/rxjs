@@ -463,8 +463,8 @@ describe('combineAll operator', () => {
   });
 
   it('should combine two immediately-scheduled observables', (done) => {
-    const a = of<number>(1, 2, 3, queueScheduler);
-    const b = of<number>(4, 5, 6, 7, 8, queueScheduler);
+    const a = of(1, 2, 3, queueScheduler);
+    const b = of(4, 5, 6, 7, 8, queueScheduler);
     const r = [[1, 4], [2, 4], [2, 5], [3, 5], [3, 6], [3, 7], [3, 8]];
 
     of(a, b, queueScheduler).pipe(combineAll())

@@ -31,9 +31,8 @@ it('should accept seed parameter of a different type', () => {
 });
 
 it('should act appropriately with no seed', () => {
-  // Because an observable of one value will just pass that value directly through the reducer,
-  // the below could be a number or a string.
-  const a = of(1, 2, 3).pipe(reduce((a: any, v) => '' + v)); // $ExpectType Observable<string | number>
+  // Starting in TS 3.5, the return type is inferred from the accumulator's type if it's provided without a seed.
+  const a = of(1, 2, 3).pipe(reduce((a: any, v) => '' + v)); // $ExpectType Observable<any>
   const b = of(1, 2, 3).pipe(reduce((a, v) => v)); // $ExpectType Observable<number>
   const c = of(1, 2, 3).pipe(reduce(() => {})); // $ExpectType Observable<number | void>
 });
