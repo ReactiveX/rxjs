@@ -95,6 +95,7 @@ fs.copySync('./tsconfig.base.json', PKG_ROOT + 'src/tsconfig.json');
 fs.writeJsonSync(PKG_ROOT + 'package.json', rootPackageJson, {spaces: 2});
 fs.copySync('src/operators/package.json', PKG_ROOT + '/operators/package.json');
 fs.copySync('src/ajax/package.json', PKG_ROOT + '/ajax/package.json');
+fs.copySync('src/fetch/package.json', PKG_ROOT + '/fetch/package.json');
 fs.copySync('src/webSocket/package.json', PKG_ROOT + '/webSocket/package.json');
 fs.copySync('src/testing/package.json', PKG_ROOT + '/testing/package.json');
 
