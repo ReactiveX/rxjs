@@ -65,8 +65,5 @@ it('should support inference from a generic return type of the predicate', () =>
     };
   }
 
-  // $ExpectType Observable<string>
-  const source = of('World', 'test', null, 'ok').pipe(
-    filter(isDefined()),
-  );
+  const o$ = of(1, null, {foo: 'bar'}, true, undefined, 'Nick Cage').pipe(filter(isDefined())); // $ExpectType Observable<string | number | boolean | { foo: string; }>
 });
