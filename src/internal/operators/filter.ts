@@ -4,10 +4,10 @@ import { Observable } from '../Observable';
 import { OperatorFunction, MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
 /* tslint:disable:max-line-length */
-// NOTE(benlesh): T|null|undefined solves the issue discussed here: https://github.com/ReactiveX/rxjs/issues/4959#issuecomment-520629091
-export function filter<T>(predicate: BooleanConstructor): OperatorFunction<T|null|undefined, NonNullable<T>>;
 export function filter<T, S extends T>(predicate: (value: T, index: number) => value is S,
                                        thisArg?: any): OperatorFunction<T, S>;
+// NOTE(benlesh): T|null|undefined solves the issue discussed here: https://github.com/ReactiveX/rxjs/issues/4959#issuecomment-520629091
+export function filter<T>(predicate: BooleanConstructor): OperatorFunction<T|null|undefined, NonNullable<T>>;
 export function filter<T>(predicate: (value: T, index: number) => boolean,
                           thisArg?: any): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
