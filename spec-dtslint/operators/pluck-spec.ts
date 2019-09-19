@@ -26,7 +26,7 @@ it('should support nested object of 6 layer depth', () => {
 });
 
 it('should support nested object of more than 6 layer depth', () => {
-  const a = of({ a: { b: { c: { d: { e: { f: { name: 'abc' } } } } } } }).pipe(pluck('a', 'b', 'c', 'd', 'e', 'f', 'name')); // $ExpectType Observable<{}>
+  const a = of({ a: { b: { c: { d: { e: { f: { name: 'abc' } } } } } } }).pipe(pluck('a', 'b', 'c', 'd', 'e', 'f', 'name')); // $ExpectType Observable<unknown>
 });
 
 it('should accept existing keys only', () => {

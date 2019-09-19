@@ -37,7 +37,7 @@ export function distinctUntilChanged<T, K>(compare: (x: K, y: K) => boolean, key
  *    name: string
  * }
  *
- * of<Person>(
+ *of(
  *     { age: 4, name: 'Foo'},
  *     { age: 7, name: 'Bar'},
  *     { age: 5, name: 'Foo'},

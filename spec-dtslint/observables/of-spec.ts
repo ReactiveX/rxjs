@@ -1,4 +1,4 @@
-import { of, animationFrameScheduler } from 'rxjs';
+import { of, animationFrameScheduler, queueScheduler } from 'rxjs';
 import { A, B, C, D, E, F, G, H, I, J } from '../helpers';
 
 const a = new A();
@@ -11,6 +11,16 @@ const g = new G();
 const h = new H();
 const i = new I();
 const j = new J();
+
+it('should infer never with 0 params', () => {
+  const res = of(); // $ExpectType Observable<never>
+});
+
+it('forced generic should not cause an issue', () => {
+  const x: any = null;
+  const res = of<string>(); // $ExpectType Observable<string>
+  const res2 = of<string>(x); // $ExpectType Observable<string>
+});
 
 it('should infer correctly with 1 param', () => {
   const res = of(new A()); // $ExpectType Observable<A>
@@ -52,13 +62,23 @@ it('should infer correcly with mono type of more than 9 params', () => {
   const res = of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10); // $ExpectType Observable<number>
 });
 
-/*
-TODO: The below test throws error where it should infer correctly with empty interface({})
-shoudl be able to comment back in when https://github.com/ReactiveX/rxjs/issues/4502 is resolved
-it('should not support mixed type of more than 9 params', () => {
-  const res = of(a, b, c, d, e, f, g, h, i, j); // $TODO: Shoule ExpectType Observable<{}>
+it('should support mixed type of 9 params', () => {
+  const res = of(a, b, c, d, e, f, g, h, i, j); // $ExpectType Observable<A | B | C | D | E | F | G | H | I | J>
 });
- */
+
+it('should support mixed type of 13 params', () => {
+  const res = of(a, b, c, d, e, f, g, h, i, j, '', true, 123, [1, 2, 3]); // $ExpectType Observable<string | number | boolean | number[] | A | B | C | D | E | F | G | H | I | J>
+});
+
+it('should support a rest of params', () => {
+  const arr = [a, b, c, d, e, f, g, h, i, j];
+  const res = of(...arr); // $ExpectType Observable<A | B | C | D | E | F | G | H | I | J>
+
+  const arr2 = ['test', 123, a];
+  const res2 = of(...arr2); // $ExpectType Observable<string | number | A>
+
+  const res3 = of(b, ...arr2, c, true); // $ExpectType Observable<string | number | boolean | A | B | C>
+});
 
 it('should support scheduler', () => {
   const res = of(a, animationFrameScheduler); // $ExpectType Observable<A>
@@ -66,4 +86,46 @@ it('should support scheduler', () => {
 
 it('should infer correctly with array', () => {
   const res = of([a, b, c]); // $ExpectType Observable<(A | B | C)[]>
+});
+
+
+// SchedulerLike inclusions (remove in v8)
+it('should infer never with 0 params', () => {
+  const res = of(queueScheduler); // $ExpectType Observable<never>
+});
+
+it('should infer correctly with 1 param', () => {
+  const res = of(new A(), queueScheduler); // $ExpectType Observable<A>
+});
+
+it('should infer correcly with mixed type of 2 params', () => {
+  const res = of(a, b, queueScheduler); // $ExpectType Observable<A | B>
+});
+
+it('should infer correcly with mixed type of 3 params', () => {
+  const res = of(a, b, c, queueScheduler); // $ExpectType Observable<A | B | C>
+});
+
+it('should infer correcly with mixed type of 4 params', () => {
+  const res = of(a, b, c, d, queueScheduler); // $ExpectType Observable<A | B | C | D>
+});
+
+it('should infer correcly with mixed type of 5 params', () => {
+  const res = of(a, b, c, d, e, queueScheduler); // $ExpectType Observable<A | B | C | D | E>
+});
+
+it('should infer correcly with mixed type of 6 params', () => {
+  const res = of(a, b, c, d, e, f, queueScheduler); // $ExpectType Observable<A | B | C | D | E | F>
+});
+
+it('should infer correcly with mixed type of 7 params', () => {
+  const res = of(a, b, c, d, e, f, g, queueScheduler); // $ExpectType Observable<A | B | C | D | E | F | G>
+});
+
+it('should infer correcly with mixed type of 8 params', () => {
+  const res = of(a, b, c, d, e, f, g, h, queueScheduler); // $ExpectType Observable<A | B | C | D | E | F | G | H>
+});
+
+it('should infer correcly with mixed type of 9 params', () => {
+  const res = of(a, b, c, d, e, f, g, h, i, queueScheduler); // $ExpectType Observable<A | B | C | D | E | F | G | H | I>
 });

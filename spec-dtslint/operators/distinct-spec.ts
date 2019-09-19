@@ -7,7 +7,7 @@ it('should infer correctly', () => {
 
 it('should accept a keySelector', () => {
   interface Person { name: string; }
-  const o = of<Person>({ name: 'Tim' }).pipe(distinct(person => person.name)); // $ExpectType Observable<Person>
+  const o = of({ name: 'Tim' } as Person).pipe(distinct(person => person.name)); // $ExpectType Observable<Person>
 });
 
 it('should accept flushes', () => {
