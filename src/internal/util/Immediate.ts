@@ -23,8 +23,8 @@ export const Immediate = {
   },
 };
 
-export const ForTests = {
-  numberOfTasksToHandle() {
+export const TestTools = {
+  pending() {
     return Object.keys(tasksByHandle).length;
   }
 };
