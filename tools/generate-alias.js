@@ -10,8 +10,12 @@ const aliasRoot = [
   'ajax', 'fetch', 'operators', 'testing', 'webSocket'
 ]
 
-aliasRoot.forEach((alias) => fs.removeSync(alias));
-aliasRoot.forEach((alias) => fs.ensureDirSync(alias));
+aliasRoot.map((alias) => path.resolve(__dirname, `../${alias}`)).forEach((alias) => {
+  if (fs.existsSync(alias)) {
+    fs.removeSync(alias);
+  }
+  fs.ensureDirSync(alias);
+});
 
 aliasRoot.forEach((alias) => {
   const pkgManifest = {
