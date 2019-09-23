@@ -53,13 +53,13 @@ export class Notification<T> {
 
   /**
    * Given some {@link Observer} callbacks, deliver the value represented by the
-   * current Notification to the correctly corresponding callback.
-   * @param {function(value: T): void} next An Observer `next` callback.
-   * @param {function(err: any): void} [error] An Observer `error` callback.
-   * @param {function(): void} [complete] An Observer `complete` callback.
-   * @return {any}
+   * current Notification to the correctly corresponding callback and return its return value.
+   * @param {function(value: T): A} next An Observer `next` callback.
+   * @param {function(err: any): B} [error] An Observer `error` callback.
+   * @param {function(): C} [complete] An Observer `complete` callback.
+   * @return {A | B | C} return value of the executed callback, or `undefined` if no callback matched.
    */
-  do(next: (value: T) => void, error?: (err: any) => void, complete?: () => void): any {
+  do<A = undefined, B = undefined, C = undefined>(next: (value: T) => A, error?: (err: any) => B, complete?: () => C): A | B | C {
     const kind = this.kind;
     switch (kind) {
       case 'N':
