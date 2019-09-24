@@ -15,7 +15,6 @@ describe('take operator', () => {
   });
 
   asDiagram('take(2)')('should take two values of an observable with many values', () => {
-    
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
       const e1 =  cold('--a-----b----c---d--|');
       const e1subs =   '^-------!------------';
@@ -23,7 +22,7 @@ describe('take operator', () => {
 
       expectObservable(e1.pipe(take(2))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
-    })
+    });
   });
 
   it('should work with empty', () => {
@@ -31,7 +30,7 @@ describe('take operator', () => {
       const e1 =  cold('|');
       const e1subs =   '(^!)';
       const expected = '|';
-  
+
       expectObservable(e1.pipe(take(42))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
@@ -42,7 +41,7 @@ describe('take operator', () => {
       const e1 =  cold('-');
       const e1subs =   '^';
       const expected = '-';
-  
+
       expectObservable(e1.pipe(take(42))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
@@ -53,7 +52,7 @@ describe('take operator', () => {
       const e1 = hot('--a--^--b----c---d--|');
       const e1subs: string[] = []; // Don't subscribe at all
       const expected =    '|';
-  
+
       expectObservable(e1.pipe(take(0))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
@@ -64,7 +63,7 @@ describe('take operator', () => {
       const e1 =   hot('---(a|)');
       const e1subs =   '^--!---';
       const expected = '---(a|)';
-  
+
       expectObservable(e1.pipe(take(1))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
@@ -75,7 +74,7 @@ describe('take operator', () => {
       const e1 = hot('--a--^--b----c---d--|');
       const e1subs =      '^--!------------';
       const expected =    '---(b|)         ';
-  
+
       expectObservable(e1.pipe(take(1))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
@@ -86,7 +85,7 @@ describe('take operator', () => {
       const e1 = hot('--a--^----|');
       const e1subs =      '^----!';
       const expected =    '-----|';
-  
+
       expectObservable(e1.pipe(take(42))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
@@ -97,7 +96,7 @@ describe('take operator', () => {
       const e1 = hot('---^---#', null, 'too bad');
       const e1subs =    '^---!';
       const expected =  '----#';
-  
+
       expectObservable(e1.pipe(take(42))).toBe(expected, null, 'too bad');
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
@@ -108,7 +107,7 @@ describe('take operator', () => {
       const e1 = hot('---^--a--b--#');
       const e1subs =    '^--------!';
       const expected =  '---a--b--#';
-  
+
       expectObservable(e1.pipe(take(42))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
@@ -120,7 +119,7 @@ describe('take operator', () => {
       const unsub =     '---------!------------';
       const e1subs =    '^--------!------------';
       const expected =  '---a--b---            ';
-  
+
       expectObservable(e1.pipe(take(42)), unsub).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
@@ -131,7 +130,7 @@ describe('take operator', () => {
       const e1 =  cold('#');
       const e1subs =   '(^!)';
       const expected = '#';
-  
+
       expectObservable(e1.pipe(take(42))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
@@ -148,13 +147,13 @@ describe('take operator', () => {
       const unsub =     '---------!            ';
       const e1subs =    '^--------!            ';
       const expected =  '---a--b---            ';
-  
+
       const result = e1.pipe(
         mergeMap((x: string) => of(x)),
         take(42),
         mergeMap((x: string) => of(x))
       );
-  
+
       expectObservable(result, unsub).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
     });
