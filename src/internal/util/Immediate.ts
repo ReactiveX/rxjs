@@ -1,7 +1,6 @@
 let nextHandle = 1;
 const RESOLVED = Promise.resolve();
 const activeHandles: number[] = [];
-const tasksByHandle: { [handle: string]: () => void } = {};
 
 /**
  * Finds the handle in the list of active handles, and removes it.
