@@ -67,7 +67,7 @@ export class TestScheduler extends VirtualTimeScheduler {
   }
 
   createTime(marbles: string): number {
-    const indexOf: number = marbles.indexOf('|');
+    const indexOf = marbles.trim().indexOf('|');
     if (indexOf === -1) {
       throw new Error('marble diagram for time should have a completion marker "|"');
     }
