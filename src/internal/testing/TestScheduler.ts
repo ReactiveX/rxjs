@@ -14,6 +14,7 @@ export interface RunHelpers {
   cold: typeof TestScheduler.prototype.createColdObservable;
   hot: typeof TestScheduler.prototype.createHotObservable;
   flush: typeof TestScheduler.prototype.flush;
+  time: typeof TestScheduler.prototype.createTime;
   expectObservable: typeof TestScheduler.prototype.expectObservable;
   expectSubscriptions: typeof TestScheduler.prototype.expectSubscriptions;
 }
@@ -412,6 +413,7 @@ export class TestScheduler extends VirtualTimeScheduler {
       cold: this.createColdObservable.bind(this),
       hot: this.createHotObservable.bind(this),
       flush: this.flush.bind(this),
+      time: this.createTime.bind(this),
       expectObservable: this.expectObservable.bind(this),
       expectSubscriptions: this.expectSubscriptions.bind(this),
     };
