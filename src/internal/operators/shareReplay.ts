@@ -168,6 +168,7 @@ function shareReplayOperator<T>({
         },
         complete() {
           isComplete = true;
+          subscription = undefined;
           subject.complete();
         },
       });
