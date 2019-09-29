@@ -139,7 +139,7 @@ For a complete overview, see the [references page](/api).
 - [`timer`](/api/index/function/timer)
 - [`iif`](/api/index/function/iif)
 
-### Join Creation Operators
+### <a id="join-creation-operators"></a>Join Creation Operators ###
 These are Observable creation operators that also have join functionality -- emitting values of multiple source Observables.
 
 - [`combineLatest`](/api/index/function/combineLatest)
@@ -208,7 +208,7 @@ These are Observable creation operators that also have join functionality -- emi
 - [`throttle`](/api/operators/throttle)
 - [`throttleTime`](/api/operators/throttleTime)
 
-### Join Operators
+### <a id="join-operators"></a>Join Operators ###
 Also see the [Join Creation Operators](#join-creation-operators) section above.
 
 - [`combineAll`](/api/operators/combineAll)
