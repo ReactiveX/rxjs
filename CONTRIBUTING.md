@@ -114,7 +114,7 @@ from the main (upstream) repository:
 - 2 space indentation only
 - favor readability over terseness
 
-(TBD): For now try to follow the style that exists elsewhere in the source, and use your best judgment.
+(TBD): For now, try to follow the style that exists elsewhere in the source, and use your best judgment.
 
 ## Documentation
 
@@ -172,7 +172,7 @@ testing techniques.
 ### Macro
 
 [Macro performance tests](perf/macro) are best written for scenarios where many object instance allocations (or deallocations) are occurring. Operators
-that create a lot of child subscriptions, or operators that emit new objects like Observables and Subjects are definitely worth creating
+that create a lot of child subscriptions or operators that emit new objects like Observables and Subjects are definitely worth creating
 macro performance tests for.
 
 Other scenarios for macro performance testing may include common end-to-end scenarios from real-world apps. If you have a situation in your
@@ -248,7 +248,7 @@ Must be one of the following:
   generation
 
 ### Scope
-The scope could be anything specifying place of the commit change. For example
+The scope could be anything specifying the place of the commit change. For example
 `Observable`, `Subject`, `switchMap`, etc.
 
 ### Subject
