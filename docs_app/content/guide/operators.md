@@ -69,7 +69,7 @@ import { interval } from 'rxjs';
 const observable = interval(1000 /* number of milliseconds */);
 ```
 
-See the list of [all static creation operators here](#creation-operators).
+See the list of [all static creation operators here](#creation-operators-list).
 
 
 ## Higher-order Observables
@@ -121,7 +121,7 @@ There are operators for different purposes, and they may be categorized as: crea
 
 For a complete overview, see the [references page](/api).
 
-### Creation Operators
+### <a id="creation-operators-list"></a>Creation Operators ###
 
 - [`ajax`](/api/ajax/ajax)
 - [`bindCallback`](/api/index/function/bindCallback)
