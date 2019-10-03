@@ -64,7 +64,7 @@ describe('Observable.prototype.buffer', () => {
   });
 
   it('should work with never and empty selector', () => {
-    testScheduler.run(({ hot, expectObservable }) => {
+    testScheduler.run(({ expectObservable }) => {
       const a = NEVER;
       const b = EMPTY;
       const expected = '|';
