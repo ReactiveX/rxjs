@@ -21,8 +21,8 @@ describe('audit operator', () => {
       const e2 = cold('    ----|                ');
       const e2subs = [
         '                 -^---!                ',
-        '                ----------^---!        ',
-        '                ----------------^---!  '
+        '                 ----------^---!        ',
+        '                 ----------------^---!  '
       ];
       const expected = '  -----y--------x-----x|';
 
@@ -234,21 +234,21 @@ describe('audit operator', () => {
 
   it('should audit using durations of varying lengths', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  abcdefabcdabcdefghabca| ');
-      const e1subs = '  ^---------------------! ';
+      const e1 = hot('  abcdefabcdabcdefghabca|');
+      const e1subs = '  ^---------------------!';
       const e2 = [
-        cold('        -----|                  '),
-        cold('            ---|                '),
-        cold('                -------|        '),
-        cold('                        --|     '),
-        cold('                           ----|')
+        cold('          -----|                 '),
+        cold('              ---|               '),
+        cold('                  -------|       '),
+        cold('                        --|      '),
+        cold('                           ----| ')
       ];
       const e2subs =  [
         '               ^----!                  ',
-        '             ------^--!                ',
-        '             ----------^------!        ',
-        '             ------------------^-!     ',
-        '             ---------------------^!   '
+        '               ------^--!              ',
+        '               ----------^------!      ',
+        '               ------------------^-!   ',
+        '               ---------------------^! '
       ];
       const expected = '-----f---d-------h--c-| ';
 
@@ -341,7 +341,7 @@ describe('audit operator', () => {
       const subs = '    ^----!';
       const expected = '-----#';
       function durationSelector() {
-        return cold('  -----|');
+        return cold('   -----|');
       }
 
       expectObservable(e1.pipe(audit(durationSelector))).toBe(expected);
@@ -354,7 +354,9 @@ describe('audit operator', () => {
       const e1 = cold(' |');
       const subs = '    (^!)';
       const expected = '|';
-      function durationSelector() { return cold('-----|'); }
+      function durationSelector() {
+        return cold('   -----|');
+      }
 
       expectObservable(e1.pipe(audit(durationSelector))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -362,11 +364,13 @@ describe('audit operator', () => {
   });
 
   it('should handle a never source', () => {
-    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
       const e1 = cold(' -');
       const subs = '    ^';
       const expected = '-';
-      function durationSelector() { return cold('-----|'); }
+      function durationSelector() {
+        return cold('   -----|');
+      }
 
       expectObservable(e1.pipe(audit(durationSelector))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(subs);
@@ -374,11 +378,13 @@ describe('audit operator', () => {
   });
 
   it('should handle a throw source', () => {
-    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
+    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
       const e1 = cold(' #');
       const subs = '    (^!)';
       const expected = '#';
-      function durationSelector() { return cold('-----|'); }
+      function durationSelector() {
+        return cold('   -----|');
+      }
 
       expectObservable(e1.pipe(audit(durationSelector))).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(subs);
