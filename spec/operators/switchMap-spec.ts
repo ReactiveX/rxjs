@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { switchMap, mergeMap, map, takeWhile } from 'rxjs/operators';
 import { concat, defer, of, Observable } from 'rxjs';
+import { asInteropObservable } from '../helpers/interop-helper';
 
 declare function asDiagram(arg: string): Function;
 
@@ -160,6 +161,30 @@ describe('switchMap', () => {
     const result = e1.pipe(
       mergeMap(x => of(x)),
       switchMap(value => observableLookup[value]),
+      mergeMap(x => of(x)),
+    );
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should not break unsubscription chains with interop inners when result is unsubscribed explicitly', () => {
+    const x =   cold(         '--a--b--c--d--e--|           ');
+    const xsubs =    '         ^         !                  ';
+    const y =   cold(                   '---f---g---h---i--|');
+    const ysubs =    '                   ^ !                ';
+    const e1 =   hot('---------x---------y---------|        ');
+    const e1subs =   '^                    !                ';
+    const expected = '-----------a--b--c----                ';
+    const unsub =    '                     !                ';
+
+    const observableLookup = { x: x, y: y };
+
+    const result = e1.pipe(
+      mergeMap(x => of(x)),
+      switchMap(value => asInteropObservable(observableLookup[value])),
       mergeMap(x => of(x)),
     );
 
