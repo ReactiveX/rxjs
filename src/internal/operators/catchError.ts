@@ -153,7 +153,10 @@ class CatchSubscriber<T, R> extends OuterSubscriber<T, T | R> {
       this._unsubscribeAndRecycle();
       const innerSubscriber = new InnerSubscriber(this, undefined, undefined);
       this.add(innerSubscriber);
-      subscribeToResult(this, result, undefined, undefined, innerSubscriber);
+      const innerSubscription = subscribeToResult(this, result, undefined, undefined, innerSubscriber);
+      if (innerSubscription !== innerSubscriber) {
+        this.add(innerSubscription);
+      }
     }
   }
 }

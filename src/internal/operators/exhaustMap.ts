@@ -122,10 +122,13 @@ class ExhaustMapSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   private _innerSub(result: ObservableInput<R>, value: T, index: number): void {
-    const innerSubscriber = new InnerSubscriber(this, undefined, undefined);
+    const innerSubscriber = new InnerSubscriber(this, value, index);
     const destination = this.destination as Subscription;
     destination.add(innerSubscriber);
-    subscribeToResult<T, R>(this, result, value, index, innerSubscriber);
+    const innerSubscription = subscribeToResult<T, R>(this, result, undefined, undefined, innerSubscriber);
+    if (innerSubscription !== innerSubscriber) {
+      destination.add(innerSubscription);
+    }
   }
 
   protected _complete(): void {

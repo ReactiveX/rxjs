@@ -10,20 +10,13 @@ export function subscribeToResult<T, R>(
   result: any,
   outerValue?: T,
   outerIndex?: number,
-  destination?: Subscriber<any>
-): Subscription;
-export function subscribeToResult<T, R>(
-  outerSubscriber: OuterSubscriber<T, R>,
-  result: any,
-  outerValue?: T,
-  outerIndex?: number,
-  destination: Subscriber<any> = new InnerSubscriber(outerSubscriber, outerValue, outerIndex)
-): Subscription | void {
+  destination: Subscriber<R> = new InnerSubscriber(outerSubscriber, outerValue, outerIndex)
+): Subscription | undefined {
   if (destination.closed) {
     return undefined;
   }
   if (result instanceof Observable) {
     return result.subscribe(destination);
   }
-  return subscribeTo(result)(destination);
+  return subscribeTo(result)(destination) as Subscription;
 }
