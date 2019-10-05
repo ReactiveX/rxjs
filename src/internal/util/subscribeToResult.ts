@@ -8,15 +8,30 @@ import { Observable } from '../Observable';
 export function subscribeToResult<T, R>(
   outerSubscriber: OuterSubscriber<T, R>,
   result: any,
+  outerValue: undefined,
+  outerIndex: undefined,
+  innerSubscriber: InnerSubscriber<T, R>
+): Subscription | undefined;
+
+export function subscribeToResult<T, R>(
+  outerSubscriber: OuterSubscriber<T, R>,
+  result: any,
+  outerValue?: T,
+  outerIndex?: number
+): Subscription | undefined;
+
+export function subscribeToResult<T, R>(
+  outerSubscriber: OuterSubscriber<T, R>,
+  result: any,
   outerValue?: T,
   outerIndex?: number,
-  destination: Subscriber<R> = new InnerSubscriber(outerSubscriber, outerValue, outerIndex)
+  innerSubscriber: Subscriber<R> = new InnerSubscriber(outerSubscriber, outerValue, outerIndex)
 ): Subscription | undefined {
-  if (destination.closed) {
+  if (innerSubscriber.closed) {
     return undefined;
   }
   if (result instanceof Observable) {
-    return result.subscribe(destination);
+    return result.subscribe(innerSubscriber);
   }
-  return subscribeTo(result)(destination) as Subscription;
+  return subscribeTo(result)(innerSubscriber) as Subscription;
 }
