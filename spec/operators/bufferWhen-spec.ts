@@ -32,13 +32,13 @@ describe('bufferWhen operator', () => {
 
   it('should emit buffers using varying cold closings', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('--a--^---b---c---d---e---f---g---h------|    ');
-      const subs = '       ^----------------------------------!    ';
+      const e1 = hot('--a--^---b---c---d---e---f---g---h------|      ');
+      const subs = '       ^----------------------------------!      ';
       const closings = [
-        cold('           ---------------s--|                       '),
-        cold('                          ----------(s|)             '),
-        cold('                                    -------------(s|)')];
-      const expected = '   ---------------x---------y---------(z|) ';
+        cold('             ---------------s--|                       '),
+        cold('                            ----------(s|)             '),
+        cold('                                      -------------(s|)')];
+      const expected = '   ---------------x---------y---------(z|)   ';
       const values = {
         x: ['b', 'c', 'd'],
         y: ['e', 'f', 'g'],
@@ -59,16 +59,16 @@ describe('bufferWhen operator', () => {
       const subs = '       ^----------------------------------!   ';
       const closings = [
         {
-          obs: hot(' -1--^--------------s---|                     '),
-          sub: '        ^--------------!                          '
+          obs: hot('   -1--^--------------s---|                   '),
+          sub: '           ^--------------!                       '
         },
         {
-          obs: hot(' --1-^----3--------4----------s-|             '),
-          sub: '        ---------------^---------!                '
+          obs: hot('   --1-^----3--------4----------s-|           '),
+          sub: '           ---------------^---------!             '
         },
         {
-          obs: hot(' 1-2-^------3----4-------5--6-----------s--|  '),
-          sub: '        -------------------------^---------!      '
+          obs: hot('   1-2-^------3----4-------5--6-----------s--|'),
+          sub: '           -------------------------^---------!   '
         }
       ];
       const expected = '   ---------------x---------y---------(z|)';
@@ -94,14 +94,14 @@ describe('bufferWhen operator', () => {
       const e1 = hot('--a--^---b---c---d---e---f---g---h------|   ');
       const subs = '       ^----------------------------------!   ';
       const closings = [
-        cold('           ---------------|                         '),
-        cold('                          ----------|               '),
-        cold('                                    -------------|  ')
+        cold('             ---------------|                       '),
+        cold('                            ----------|             '),
+        cold('                                      -------------|')
       ];
       const closeSubs =  [
         '                  ^--------------!                       ',
-        '                ---------------^---------!               ',
-        '                -------------------------^---------!     '
+        '                  ---------------^---------!             ',
+        '                  -------------------------^---------!   '
       ];
       const expected = '   ---------------x---------y---------(z|)';
       const values = {
@@ -123,19 +123,19 @@ describe('bufferWhen operator', () => {
 
   it('should emit buffers using varying cold closings, outer unsubscribed early', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('--a--^---b---c---d---e---f---g---h------|    ');
-      const unsub = '      ------------------!                     ';
-      const subs = '       ^-----------------!                     ';
+      const e1 = hot('--a--^---b---c---d---e---f---g---h------|      ');
+      const unsub = '      ------------------!                       ';
+      const subs = '       ^-----------------!                       ';
       const closings = [
-        cold('           ---------------(s|)                       '),
-        cold('                          ----------(s|)             '),
-        cold('                                    -------------(s|)')
+        cold('             ---------------(s|)                       '),
+        cold('                            ----------(s|)             '),
+        cold('                                      -------------(s|)')
       ];
       const closeSubs =  [
-        '                  ^--------------!                        ',
-        '                ---------------^--!                       '
+        '                  ^--------------!                          ',
+        '                  ---------------^--!                       '
       ];
-      const expected = '   ---------------x---                     ';
+      const expected = '   ---------------x---                       ';
       const values = {
         x: ['b', 'c', 'd']
       };
@@ -156,13 +156,13 @@ describe('bufferWhen operator', () => {
       const e1 = hot('--a--^---b---c---d---e---f---g---h------|      ');
       const subs = '       ^-----------------!                       ';
       const closings = [
-        cold('           ---------------(s|)                         '),
-        cold('                          ----------(s|)               '),
-        cold('                                    -------------(s|)  ')
+        cold('             ---------------(s|)                       '),
+        cold('                            ----------(s|)             '),
+        cold('                                      -------------(s|)')
       ];
       const closeSubs = [
         '                  ^--------------!                          ',
-        '                ---------------^--!                         '
+        '                  ---------------^--!                       '
       ];
       const expected = '   ---------------x---                       ';
       const unsub = '      ------------------!                       ';
@@ -187,15 +187,15 @@ describe('bufferWhen operator', () => {
 
   it('should propagate error thrown from closingSelector', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('--a--^---b---c---d---e---f---g---h------|    ');
-      const subs = '       ^--------------!                        ';
+      const e1 = hot('--a--^---b---c---d---e---f---g---h------|      ');
+      const subs = '       ^--------------!                          ';
       const closings = [
-        cold('           ---------------s--|                       '),
-        cold('                          ----------(s|)             '),
-        cold('                                    -------------(s|)')
+        cold('             ---------------s--|                       '),
+        cold('                            ----------(s|)             '),
+        cold('                                      -------------(s|)')
       ];
-      const closeSubs0 = ' ^--------------!                        ';
-      const expected = '   ---------------(x#)                     ';
+      const closeSubs0 = ' ^--------------!                          ';
+      const expected = '   ---------------(x#)                       ';
       const values = { x: ['b', 'c', 'd'] };
 
       let i = 0;
@@ -219,12 +219,12 @@ describe('bufferWhen operator', () => {
       const e1 = hot('--a--^---b---c---d---e---f---g---h------|');
       const subs = '       ^--------------!                    ';
       const closings = [
-        cold('           ---------------s--|                   '),
-        cold('                          #                      ')
+        cold('             ---------------s--|                 '),
+        cold('                            #                    ')
       ];
       const closeSubs =  [
         '                  ^--------------!                    ',
-        '                ---------------(^!)                   '
+        '                  ---------------(^!)                 '
       ];
       const expected = '   ---------------(x#)                 ';
       const values = {
@@ -246,12 +246,12 @@ describe('bufferWhen operator', () => {
       const e1 = hot('--a--^---b---c---d---e---f---g---h------|');
       const subs = '       ^--------------------!              ';
       const closings = [
-        cold('           ---------------s--|                   '),
-        cold('                          ------#                ')
+        cold('             ---------------s--|                 '),
+        cold('                            ------#              ')
       ];
       const closeSubs = [
         '                  ^--------------!                    ',
-        '                ---------------^-----!                '
+        '                  ---------------^-----!              '
       ];
       const expected =    '---------------x-----#              ';
       const values = { x: ['b', 'c', 'd'] };
@@ -273,9 +273,9 @@ describe('bufferWhen operator', () => {
       //                                ---------------(s|)
       const e2subs = [
         '                  ^--------------!         ',
-        '                ---------------^--------!  '
+        '                  ---------------^--------!'
       ];
-      const expected =    '---------------x--------#';
+      const expected = '   ---------------x--------#';
       const values = {
         x: ['b', 'c', 'd']
       };
@@ -329,11 +329,11 @@ describe('bufferWhen operator', () => {
       const e2 = cold(' --------(s|)                                 ');
       const e2subs = [
         '               ^-------!                                    ',
-        '            --------^-------!                               ',
-        '            ----------------^-------!                       ',
-        '            ------------------------^-------!               ',
-        '            --------------------------------^-------!       ',
-        '            ----------------------------------------^---!   '
+        '               --------^-------!                            ',
+        '               ----------------^-------!                    ',
+        '               ------------------------^-------!            ',
+        '               --------------------------------^-------!    ',
+        '               ----------------------------------------^---!'
       ];
       const expected = '--------x-------x-------x-------x-------x----';
       const values = {
@@ -404,12 +404,12 @@ describe('bufferWhen operator', () => {
 
   it('should handle disposing of source', () => {
     testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('        --a--^---b---c---d---e---f---g---h------|');
-      const subs = '               ^-------------------!';
-      const unsub = '              --------------------!';
-      const e2 = cold('            ---------------(s|)');
-      //                                        ---------------(s|)
-      const expected = '           ---------------x-----';
+      const e1 = hot('--a--^---b---c---d---e---f---g---h------|');
+      const subs = '       ^-------------------!';
+      const unsub = '      --------------------!';
+      const e2 = cold('    ---------------(s|)');
+      //                                  ---------------(s|)
+      const expected = '   ---------------x-----';
       const values = {
         x: ['b', 'c', 'd'],
         y: ['e', 'f', 'g', 'h'],
