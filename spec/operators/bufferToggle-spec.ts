@@ -111,7 +111,7 @@ describe('bufferToggle operator', () => {
         }
       ];
 
-      const expected = '   -----------------ij----------------(k|)';
+      const expected = '             -----------------ij----------------(k|)';
       const values = {
         i: ['b', 'c', 'd', 'e'],
         j: ['e'],
@@ -252,7 +252,7 @@ describe('bufferToggle operator', () => {
       ];
       const closeSubs =  [
         '                  --^-----------!                     ',
-        '                --------------(^!)                    '
+        '                  --------------(^!)                  '
       ];
       const expected = '   --------------#                     ';
 
@@ -273,9 +273,11 @@ describe('bufferToggle operator', () => {
       const subs = '       ^------------------!                ';
       const closings = [
         cold('             ---------------s--|                 '),
-        cold('                         -----#                  ')];
-      const closeSubs = [ '--^--------------!                  ',
-        '                --------------^----!                  '
+        cold('                         -----#                  ')
+      ];
+      const closeSubs = [
+        '                  --^--------------!                  ',
+        '                  --------------^----!                '
       ];
       const expected = '   -----------------i-#                ';
       const values = {
@@ -301,8 +303,9 @@ describe('bufferToggle operator', () => {
         cold('             ---------------s--|         '),
         cold('                         -------s|       ')
       ];
-      const closeSubs =  ['--^--------------!          ',
-        '                --------------^----!          '
+      const closeSubs =  [
+        '                  --^--------------!          ',
+        '                  --------------^----!        '
       ];
       const expected = '   -----------------i-#        ';
       const values = {
@@ -381,7 +384,7 @@ describe('bufferToggle operator', () => {
     testScheduler.run(({ hot, cold, expectObservable }) => {
       const e1 = hot('--a--^---b---c---d---e---f---g---h------|    ');
       const e2 = cold('    ---o---------------o-----------|        ');
-      const e3 = cold(' -');
+      const e3 = cold('    -');
       const expected = '   -----------------------------------(xy|)';
       const values = {
         x: ['b', 'c', 'd', 'e', 'f', 'g', 'h'],
