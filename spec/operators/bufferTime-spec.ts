@@ -138,13 +138,13 @@ describe('bufferTime operator', () => {
   it('should emit buffers with timeSpan 10 and creationInterval 7', () => {
     testScheduler.run(({ hot, time, expectObservable, expectSubscriptions }) => {
       const e1 = hot('--1--^2--3---4---5--6--7---8----9------------|   ');
-      //                 -------*------*------*------*------*----- creation interval
-      //                 ----------|                               timespans
-      //                        ----------|
-      //                               ----------|
-      //                                      ----------|
-      //                                             ----------|
-      //                                                    ----------|
+      //                   -------*------*------*------*------*----- creation interval
+      //                   ----------|                               timespans
+      //                          ----------|
+      //                                 ----------|
+      //                                        ----------|
+      //                                               ----------|
+      //                                                      ----------|
       const e1subs = '     ^---------------------------------------!   ';
       const t = time('     ----------|');
       const interval = time('        -------|');
@@ -168,13 +168,13 @@ describe('bufferTime operator', () => {
   it('should emit buffers but handle source ending with an error', () => {
     testScheduler.run(({ hot, time, expectObservable }) => {
       const e1 = hot('--1--^2--3---4---5--6--7---8----9------------#');
-      //                 -------*------*------*------*------*----- creation interval
-      //                 ----------|                               timespans
-      //                        ----------|
-      //                               ----------|
-      //                                      ----------|
-      //                                             ----------|
-      //                                                    ----------|
+      //                   -------*------*------*------*------*----- creation interval
+      //                   ----------|                               timespans
+      //                          ----------|
+      //                                 ----------|
+      //                                        ----------|
+      //                                               ----------|
+      //                                                      ----------|
       const t = time('     ----------|');
       const interval = time('        -------|');
       const expected = '   ----------a------b------c------d------e-#';
@@ -197,10 +197,10 @@ describe('bufferTime operator', () => {
       const e1 = hot('--1--^2--3---4---5--6--7---8----9------------|');
       const unsub = '      -----------------!                       ';
       const subs = '       ^----------------!                       ';
-      //                 -------*------*------*------*------*----- creation interval
-      //                 ----------|                               timespans
-      //                        ----------|
-      //                               ----------|
+      //                   -------*------*------*------*------*----- creation interval
+      //                   ----------|                               timespans
+      //                          ----------|
+      //                                 ----------|
       const t = time('     ----------|                              ');
       const interval = time('        -------|                       ');
       const expected = '   ----------a------                        ';
@@ -219,10 +219,10 @@ describe('bufferTime operator', () => {
     testScheduler.run(({ hot, time, expectObservable, expectSubscriptions }) => {
       const e1 = hot('--1--^2--3---4---5--6--7---8----9------------|');
       const subs = '       ^---------------!                        ';
-      //                 -------*------*------*------*------*----- creation interval
-      //                 ----------|                               timespans
-      //                        ----------|
-      //                               ----------|
+      //                   -------*------*------*------*------*----- creation interval
+      //                   ----------|                               timespans
+      //                          ----------|
+      //                                 ----------|
       const t = time('     ----------|');
       const interval = time('        -------|');
       const expected = '   ----------a------                        ';
@@ -303,10 +303,10 @@ describe('bufferTime operator', () => {
   'the specified delay with errors', () => {
     testScheduler.run(({ hot, time, expectObservable, expectSubscriptions }) => {
       const e1 = hot('  ---a---b---c----d----e----f----g----h----i--#');
-      //             --------------------*--------------------*----  start interval
-      //             ---------------------|                          timespans
-      //                                 ---------------------|
-      //                                                      -----|
+      //                --------------------*--------------------*----  start interval
+      //                ---------------------|                          timespans
+      //                                    ---------------------|
+      //                                                         -----|
       const e1subs = '  ^-------------------------------------------!';
       const t = time('  ---------------------|                       ');
       const interval = time('                --------------------|   ');
