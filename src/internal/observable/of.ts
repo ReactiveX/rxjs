@@ -32,11 +32,12 @@ export function of<T, T2, T3, T4, T5, T6, T7, T8, T9>(a: T, b: T2, c: T3, d: T4,
 
 // TODO(benlesh): Update the typings for this when we can switch to TS 3.x
 export function of(): Observable<never>;
-export function of<A extends Array<any>>(...args: A): Observable<ValueFromArray<A>>;
 /** @deprecated remove in v8. Do not use generic arguments directly, allow inference or cast with `as` */
 export function of<T>(): Observable<T>;
-/** @deprecated remove in v8. Do not use generic arguments directly, allow inference or cast with `as` */
 export function of<T>(value: T): Observable<T>;
+export function of<T, U>(value1: T, value2: U): Observable<T|U>;
+export function of<T, U, V>(value1: T, value2: U, value3: V): Observable<T|U|V>;
+export function of<A extends Array<any>>(...args: A): Observable<ValueFromArray<A>>;
 /* tslint:enable:max-line-length */
 
 /**
