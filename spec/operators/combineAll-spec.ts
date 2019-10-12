@@ -130,7 +130,7 @@ describe('combineAll operator', () => {
       const e1subs = '   ^-!';
       const e2 = hot('------'); //never
       const e2subs = '   ^--';
-      const expected = ' -'; //never
+      const expected = ' ---'; //never
 
       const result = of(e1, e2).pipe(combineAll((x, y) => x + y));
 
