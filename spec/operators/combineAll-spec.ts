@@ -78,10 +78,10 @@ describe('combineAll operator', () => {
 
   it('should work with empty and empty', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const e1 = cold('|');
-      const e1subs = ' (^!)';
-      const e2 = cold('|');
-      const e2subs = ' (^!)';
+      const e1 = cold(' |');
+      const e1subs = '  (^!)';
+      const e2 = cold(' |');
+      const e2subs = '  (^!)';
       const expected = '|';
 
       const result = of(e1, e2).pipe(combineAll((x, y) => x + y));

@@ -77,10 +77,10 @@ describe('combineLatest operator', () => {
 
   it('should work with empty and empty', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const e1 = cold('|');
-      const e1subs = ' (^!)';
-      const e2 = cold('|');
-      const e2subs = ' (^!)';
+      const e1 = cold(' |');
+      const e1subs = '  (^!)';
+      const e2 = cold(' |');
+      const e2subs = '  (^!)';
       const expected = '|';
 
       const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
