@@ -489,7 +489,7 @@ describe('combineAll operator', () => {
 
   it('should handle two consecutive hot observables with error right', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const left =  hot('--a--^--b--c--|');
+      const left = hot(' --a--^--b--c--|');
       const leftSubs = '      ^--------!';
       const right = hot('-----^----------d--e--f--#', undefined, 'dun dun dun');
       const rightSubs = '     ^-------------------!';
