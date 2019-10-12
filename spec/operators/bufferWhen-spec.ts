@@ -18,7 +18,7 @@ describe('bufferWhen operator', () => {
     testScheduler.run(({ hot, cold, expectObservable }) => {
       const e1 = hot('--a--^---b---c---d---e---f---g---------|   ');
       const e2 = cold('    --------------(s|)                    ');
-      //                               --------------(s |)
+      //                                 --------------(s |)
       const expected = '   --------------x-------------y-----(z|)';
       const values = {
         x: ['b', 'c', 'd'],
