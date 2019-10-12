@@ -141,7 +141,7 @@ describe('combineLatest operator', () => {
       const e1subs = '   ^-!';
       const e2 = hot('------', values); //never
       const e2subs = '   ^--';
-      const expected = ' -'; //never
+      const expected = ' ---'; //never
 
       const result = e1.pipe(combineLatest(e2, (x, y) => x + y));
 
