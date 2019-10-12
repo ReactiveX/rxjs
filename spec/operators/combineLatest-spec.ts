@@ -15,8 +15,8 @@ describe('combineLatest operator', () => {
 
   asDiagram('combineLatest')('should combine events from two cold observables', () => {
     testScheduler.run(({ cold, expectObservable }) => {
-      const e1 = cold('  -a--b-----c-d-e-|');
-      const e2 = cold('  --1--2-3-4---|   ');
+      const e1 = cold(' -a--b-----c-d-e-|');
+      const e2 = cold(' --1--2-3-4---|   ');
       const expected = '--A-BC-D-EF-G-H-|';
 
       const result = e1.pipe(combineLatest(e2, (a, b) => String(a) + String(b)));
