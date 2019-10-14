@@ -126,4 +126,8 @@ describe('pipe', () => {
     const customOperator = () => <T>(a: Observable<T>) => a;
     const o = of('foo').pipe(customOperator()); // $ExpectType Observable<string>
   });
+
+  it('should have proper return type for toPromise', () => {
+    const o = of('foo').toPromise(); // $ExpectType Promise<string | undefined>
+  });
 });
