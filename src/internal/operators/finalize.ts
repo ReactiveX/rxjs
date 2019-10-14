@@ -18,13 +18,19 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  *
  * // emit value in sequence every 1 second
  * const source = interval(1000);
- * // 0,1,2,3,4,5....
  * const example = source.pipe(
  *   take(5), //take only the first 5 values
  *   finalize(() => console.log('Sequence complete')) // Execute when the observable completes
  * )
  * const subscribe = example.subscribe(val => console.log(val));
- * // 0,1,2,3,4,Sequence complete
+ *
+ * // results:
+ * //   0
+ * //   1
+ * //   2
+ * //   3
+ * //   4
+ * //   'Sequence complete'
  * ```
  *
  * Execute callback function when the subscriber explicitly unsubscribes
@@ -41,7 +47,10 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * const sub = source.subscribe(x => console.log(x), noop, () => console.log('[complete] Not called'));
  *
  * timer(150).subscribe(() => sub.unsubscribe());
- * // 0,[finalize] Called
+ *
+ * // results:
+ * //   0
+ * //   '[finalize] Called'
  * ```
  *
  * @param {function} callback Function to be called when source terminates.
