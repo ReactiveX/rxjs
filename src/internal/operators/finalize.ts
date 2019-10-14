@@ -41,7 +41,9 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  *
  * const source = interval(100).pipe(
  *   finalize(() => console.log('[finalize] Called')),
- *   tap(noop, noop, () => console.log('[tap] Not called')),
+ *    tap(() => console.log('[next] Called'),
+ *      () => console.log('[error] Not called'),
+ *      () => console.log('[tap] Not called')),
  * );
  *
  * const sub = source.subscribe(x => console.log(x), noop, () => console.log('[complete] Not called'));
