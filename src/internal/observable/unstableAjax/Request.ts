@@ -104,4 +104,3 @@ export {
   Transformer,
   BasicCredentials
 };
-

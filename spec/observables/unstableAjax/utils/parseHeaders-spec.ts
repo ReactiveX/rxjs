@@ -43,4 +43,3 @@ describe('parseHeaders', () => {
     expect(parsed['foo']).to.equal('foo-a, foo-b');
   });
 });
-
