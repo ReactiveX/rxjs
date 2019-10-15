@@ -2,7 +2,7 @@ var System = require('systemjs');
 var path = require('path');
 
 System.config({
-  map: { 'rxjs': path.join(__dirname, '..', '..', 'dist', 'package', '/') },
+  map: { 'rxjs': path.join(__dirname, '..', '..', 'dist', 'cjs', '/') },
   packages: {
     'rxjs': {main: 'index.js', defaultExtension: 'js' },
     'rxjs/ajax': {main: 'index.js', defaultExtension: 'js' },

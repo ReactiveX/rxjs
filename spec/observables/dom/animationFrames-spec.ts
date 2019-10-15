@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { animationFrames, Subject } from 'rxjs';
 import * as sinon from 'sinon';
 import { take, takeUntil } from 'rxjs/operators';
-import { RAFTestTools, stubRAF } from 'spec/helpers/test-helper';
+import { RAFTestTools, stubRAF } from '../../helpers/test-helper';
 
 describe('animationFrame', () => {
   let raf: RAFTestTools;
