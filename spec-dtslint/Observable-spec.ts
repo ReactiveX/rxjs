@@ -1,4 +1,4 @@
-import { Observable, of, OperatorFunction } from 'rxjs';
+import { Observable, of, OperatorFunction, EMPTY, NEVER } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 
 function a<I extends string, O extends string>(input: I, output: O): OperatorFunction<I, O>;
@@ -11,7 +11,7 @@ function a<I, O extends string>(output: O): OperatorFunction<I, O>;
  * That is, `a('0', '1')` returns `OperatorFunction<'0', '1'>`.
  * That means that the `a` function can be used to create consecutive
  * arguments that are either compatible or incompatible.
- * 
+ *
  * ```javascript
  * a('0', '1'), a('1', '2') // OK
  * a('0', '1'), a('#', '2') // Error '1' is not compatible with '#'
@@ -126,4 +126,18 @@ describe('pipe', () => {
     const customOperator = () => <T>(a: Observable<T>) => a;
     const o = of('foo').pipe(customOperator()); // $ExpectType Observable<string>
   });
+});
+
+describe('toPromise', () => {
+  const a = EMPTY.toPromise(); // $ExpectType Promise<void>
+  const b = NEVER.toPromise(); // $ExpectType Promise<void>
+  const c = of(1, 2, 3).toPromise() // $ExpectType Promise<number | void>
+  const d = of(1, 'two', false).toPromise() // $ExpectType Promise<string | number | boolean | void>
+});
+
+describe('lastValue', () => {
+  const a = EMPTY.lastValue(); // $ExpectType Promise<never>
+  const b = NEVER.lastValue(); // $ExpectType Promise<never>
+  const c = of(1, 2, 3).lastValue() // $ExpectType Promise<number>
+  const d = of(1, 'two', false).lastValue() // $ExpectType Promise<string | number | boolean>
 });

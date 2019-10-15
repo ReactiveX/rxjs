@@ -9,6 +9,7 @@ import { throwError } from './observable/throwError';
 import { observable as Symbol_observable } from './symbol/observable';
 import { pipeFromArray } from './util/pipe';
 import { config } from './config';
+import { EmptyError } from './util/EmptyError';
 
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
@@ -347,28 +348,53 @@ export class Observable<T> implements Subscribable<T> {
   }
 
   /* tslint:disable:max-line-length */
-  toPromise<T>(this: Observable<T>): Promise<T>;
-  toPromise<T>(this: Observable<T>, PromiseCtor: typeof Promise): Promise<T>;
-  toPromise<T>(this: Observable<T>, PromiseCtor: PromiseConstructorLike): Promise<T>;
+  toPromise<T>(this: Observable<T>): Promise<T | void>;
+  toPromise<T>(this: Observable<T>, PromiseCtor: typeof Promise): Promise<T | void>;
+  toPromise<T>(this: Observable<T>, PromiseCtor: PromiseConstructorLike): Promise<T | void>;
   /* tslint:enable:max-line-length */
 
   /**
-   * Subscribe to this Observable and get a Promise resolving on
-   * `complete` with the last emission.
+   * Subscribe to the observable and resolve with the last emitted value
+   * when the observable completes. If the observable does not emit at
+   * least one value, the returned promise will resolve with `undefined`.
    *
-   * @method toPromise
    * @param [promiseCtor] a constructor function used to instantiate
    * the Promise
-   * @return A Promise that resolves with the last value emit, or
-   * rejects on an error.
+   * @deprecated remove in v8. Use `lastValue` instead.
    */
-  toPromise(promiseCtor?: PromiseConstructorLike): Promise<T> {
+  toPromise(promiseCtor?: PromiseConstructorLike): Promise<T | void> {
     promiseCtor = getPromiseCtor(promiseCtor);
 
     return new promiseCtor((resolve, reject) => {
       let value: any;
       this.subscribe((x: T) => value = x, (err: any) => reject(err), () => resolve(value));
-    }) as Promise<T>;
+    }) as Promise<T | void>;
+  }
+
+  /**
+   * Subscribe to the observable and resolve with the last emitted value
+   * when the observable completes. If the observable does not emit at
+   * least one value, the returned promise will reject with an {@link EmptyError}.
+   */
+  lastValue(): Promise<T> {
+    return new Promise<T>((resolve, reject) => {
+      let hasValue = false;
+      let lastValue: T;
+      this.subscribe({
+        next: value => {
+          hasValue = true;
+          lastValue = value;
+        },
+        error: reject,
+        complete: () => {
+          if (hasValue) {
+            resolve(lastValue);
+          } else {
+            reject(new EmptyError());
+          }
+        }
+      });
+    });
   }
 }
 
