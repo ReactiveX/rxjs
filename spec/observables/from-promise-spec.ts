@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as sinon from 'sinon';
+import { spy } from 'sinon';
 import { asapScheduler, from } from 'rxjs';
 
 declare const process: any;
@@ -22,14 +22,14 @@ describe('from (fromPromise)', () => {
     const promise = Promise.reject('bad');
     from(promise)
       .subscribe((x) => {
-          done(new Error('should not be called'));
-        },
+        done(new Error('should not be called'));
+      },
         (e) => {
           expect(e).to.equal('bad');
           done();
         }, () => {
-         done(new Error('should not be called'));
-       });
+          done(new Error('should not be called'));
+        });
   });
 
   it('should share the underlying promise with multiple subscribers', (done) => {
@@ -141,9 +141,9 @@ describe('from (fromPromise)', () => {
   });
 
   it('should not emit, throw or complete if immediately unsubscribed', (done) => {
-    const nextSpy = sinon.spy();
-    const throwSpy = sinon.spy();
-    const completeSpy = sinon.spy();
+    const nextSpy = spy();
+    const throwSpy = spy();
+    const completeSpy = spy();
     const promise = Promise.resolve(42);
     const subscription = from(promise)
       .subscribe(nextSpy, throwSpy, completeSpy);

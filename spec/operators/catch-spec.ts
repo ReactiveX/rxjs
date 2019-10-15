@@ -373,7 +373,7 @@ describe('catchError operator', () => {
 
     beforeEach(() => {
       trueSetTimeout = global.setTimeout;
-      sandbox = sinon.sandbox.create();
+      sandbox = sinon.createSandbox();
       timers = sandbox.useFakeTimers();
     });
 

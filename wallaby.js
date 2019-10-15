@@ -4,7 +4,9 @@ module.exports = function (wallaby) {
       'tsconfig.base.json',
       'tsconfig.json',
       'src/**/*.ts',
-      { pattern: 'spec/helpers/*.ts', instrument: false, load: true }
+      { pattern: 'spec/helpers/*.ts', instrument: false, load: true },
+      { pattern: 'spec/**/testHelper.ts', instrument: false, load: true },
+      { pattern: 'spec/**/xhr-mock.ts', instrument: false, load: true },
     ],
 
     tests: ['spec/**/*-spec.ts'],

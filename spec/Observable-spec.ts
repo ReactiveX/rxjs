@@ -250,7 +250,7 @@ describe('Observable', () => {
     });
 
     it('should run unsubscription logic when an error is sent asynchronously and subscribe is called with no arguments', (done) => {
-      const sandbox = sinon.sandbox.create();
+      const sandbox = sinon.createSandbox();
       const fakeTimer = sandbox.useFakeTimers();
 
       let unsubscribeCalled = false;
