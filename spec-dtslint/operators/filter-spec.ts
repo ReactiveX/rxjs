@@ -59,11 +59,9 @@ it('should support inference from a return type with Boolean as a predicate', ()
 });
 
 it('should support inference from a generic return type of the predicate', () => {
-  function isDefined<T>() {
-    return (value: T|undefined|null): value is T => {
-      return value !== undefined && value !== null;
-    };
+  function isDefined<T>(value: T|undefined|null): value is T {
+    return value !== undefined && value !== null;
   }
 
-  const o$ = of(1, null, {foo: 'bar'}, true, undefined, 'Nick Cage').pipe(filter(isDefined())); // $ExpectType Observable<string | number | boolean | { foo: string; }>
+  const o$ = of(1, null, {foo: 'bar'}, true, undefined, 'Nick Cage').pipe(filter(isDefined)); ; // $ExpectType Observable<string | number | boolean | { foo: string; }>
 });
