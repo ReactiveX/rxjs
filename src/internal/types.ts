@@ -61,21 +61,21 @@ export type InteropObservable<T> = { [Symbol.observable]: () => Subscribable<T>;
 export interface NextObserver<T> {
   closed?: boolean;
   next: (value: T) => void;
-  error?: (err: any) => void;
+  error?: (err: unknown) => void;
   complete?: () => void;
 }
 
 export interface ErrorObserver<T> {
   closed?: boolean;
   next?: (value: T) => void;
-  error: (err: any) => void;
+  error: (err: unknown) => void;
   complete?: () => void;
 }
 
 export interface CompletionObserver<T> {
   closed?: boolean;
   next?: (value: T) => void;
-  error?: (err: any) => void;
+  error?: (err: unknown) => void;
   complete: () => void;
 }
 
@@ -84,7 +84,7 @@ export type PartialObserver<T> = NextObserver<T> | ErrorObserver<T> | Completion
 export interface Observer<T> {
   closed?: boolean;
   next: (value: T) => void;
-  error: (err: any) => void;
+  error: (err: unknown) => void;
   complete: () => void;
 }
 

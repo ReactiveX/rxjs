@@ -974,8 +974,12 @@ describe('ajax', () => {
     ajax(ajaxRequest)
       .subscribe({
         error(err) {
-          expect(err.name).to.equal('AjaxTimeoutError');
-          done();
+          if (err instanceof AjaxTimeoutError) {
+            expect(err.name).to.equal('AjaxTimeoutError');
+            done();
+          } else {
+            throw new Error('expected an AjaxTimeoutError');
+          }
         }
       });
 

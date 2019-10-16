@@ -126,4 +126,12 @@ describe('pipe', () => {
     const customOperator = () => <T>(a: Observable<T>) => a;
     const o = of('foo').pipe(customOperator()); // $ExpectType Observable<string>
   });
+
+  it('should not make assumptions about the error type', () => {
+    of('foo').subscribe({
+      error: error => {
+        error.name; // $ExpectError
+      }
+    });
+  });
 });
