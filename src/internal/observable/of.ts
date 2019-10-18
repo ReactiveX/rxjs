@@ -3,7 +3,6 @@ import { isScheduler } from '../util/isScheduler';
 import { fromArray } from './fromArray';
 import { Observable } from '../Observable';
 import { scheduleArray } from '../scheduled/scheduleArray';
-import { never } from './never';
 
 /* tslint:disable:max-line-length */
 /** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([], scheduler)` */
