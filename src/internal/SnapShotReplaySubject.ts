@@ -15,7 +15,7 @@ import { SubjectSubscription } from './SubjectSubscription';
 export class SnapShotReplaySubject<T> extends Subject<T> {
   private _eventsMap: Map<any, T> = new Map<any, T>();
 
-  private _keyProvider: (value: T) => any;
+  private readonly _keyProvider: (value: T) => any;
 
   constructor(keyProvider: (value: T) => any) {
     super();
@@ -28,7 +28,6 @@ export class SnapShotReplaySubject<T> extends Subject<T> {
     this._eventsMap.set(key, value);
     super.next(value);
   }
-
 
   /** @deprecated This is an internal implementation detail, do not use. */
   _subscribe(subscriber: Subscriber<T>): Subscription {
