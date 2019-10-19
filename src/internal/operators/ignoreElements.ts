@@ -8,8 +8,14 @@ import { OperatorFunction } from '../types';
  *
  * ![](ignoreElements.png)
  *
+ * The _IgnoreElements_ operator suppresses all of the items emitted by the source Observable,
+ * but allows its termination notification (either `error` or `complete`) to pass through unchanged.
+ *
+ * If you do not care about the items being emitted by an Observable, but you do want to be notified
+ * when it completes or when it terminates with an error, you can apply the `ignoreElements` operator
+ * to the Observable, which will ensure that it will never call its observers’ `next` handlers.
+ *
  * ## Examples
- * ### Ignores emitted values, reacts to observable's completion.
  * ```ts
  * import { of } from 'rxjs';
  * import { ignoreElements } from 'rxjs/operators';
