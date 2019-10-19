@@ -63,28 +63,29 @@ export function of<A extends Array<any>>(...args: A): Observable<ValueFromArray<
  *   err => console.log('error:', err),
  *   () => console.log('the end'),
  * );
- * // result:
- * // 'next: 10'
- * // 'next: 20'
- * // 'next: 30'
- * // 'the end'
  *
+ * // Outputs
+ * // next: 10
+ * // next: 20
+ * // next: 30
+ * // the end
  * ```
  *
- * Emit the array `[1,2,3]`
+ * Emit the array `[1, 2, 3]`
  *
  * ```ts
  * import { of } from 'rxjs';
  *
- * of([1,2,3])
+ * of([1, 2, 3])
  * .subscribe(
  *   next => console.log('next:', next),
  *   err => console.log('error:', err),
  *   () => console.log('the end'),
  * );
- * // result:
- * // 'next: [1,2,3]'
- * // 'the end'
+ *
+ * // Outputs
+ * // next: [1, 2, 3]
+ * // the end
  * ```
  *
  * @see {@link from}
