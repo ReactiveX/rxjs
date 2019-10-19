@@ -53,11 +53,37 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  *
  * ![](generate.png)
  *
- * @example <caption>Produces sequence of 0, 1, 2, ... 9, then completes.</caption>
- * const res = generate(0, x => x < 10, x => x + 1, x => x);
+ * ## Examples
  *
- * @example <caption>Using asap scheduler, produces sequence of 2, 3, 5, then completes.</caption>
- * const res = generate(1, x => x < 5, x => x * 2, x => x + 1, asap);
+ * ### Produces sequences of number
+ *
+ * ```ts
+ * import { generate } from 'rxjs';
+ *
+ * const result = generate(0, x => x < 3, x => x + 1, x => x);
+ *
+ * result.subscribe(x => console.log(x));
+ *
+ * // Logs:
+ * // 0
+ * // 1
+ * // 2
+ * ```
+ *
+ * ### Use asap scheduler
+ *
+ * ```ts
+ * import { generate } from 'rxjs';
+ *
+ * const result = generate(1, x => x < 5, x => x * 2, x => x + 1, asap);
+ *
+ * result.subscribe(x => console.log(x));
+ *
+ * // Logs:
+ * // 2
+ * // 3
+ * // 5
+ * ```
  *
  * @see {@link from}
  * @see {@link Observable}
@@ -119,70 +145,85 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  * by default (when no scheduler is passed) values are simply emitted synchronously.
  *
  *
- * @example <caption>Use with condition and iterate functions.</caption>
- * const generated = generate(0, x => x < 3, x => x + 1);
+ * ## Examples
  *
- * generated.subscribe(
- *   value => console.log(value),
- *   err => {},
- *   () => console.log('Yo!')
- * );
+ * ### Use with condition and iterate functions
+ *
+ * ```ts
+ * import { generate } from 'rxjs';
+ *
+ * const result = generate(0, x => x < 3, x => x + 1);
+ *
+ * result.subscribe({
+ *   next: value => console.log(value),
+ *   complete: () => console.log('Complete!')
+ * });
  *
  * // Logs:
  * // 0
  * // 1
  * // 2
- * // "Yo!"
+ * // "Complete!"
+ * ```
  *
+ * ### Use with condition, iterate and resultSelector functions
  *
- * @example <caption>Use with condition, iterate and resultSelector functions.</caption>
- * const generated = generate(0, x => x < 3, x => x + 1, x => x * 1000);
+ * ```ts
+ * import { generate } from 'rxjs';
  *
- * generated.subscribe(
- *   value => console.log(value),
- *   err => {},
- *   () => console.log('Yo!')
- * );
+ * const result = generate(0, x => x < 3, x => x + 1, x => x * 1000);
+ *
+ * result.subscribe({
+ *   next: value => console.log(value),
+ *   complete: () => console.log('complete!')
+ * });
  *
  * // Logs:
  * // 0
  * // 1000
  * // 2000
- * // "Yo!"
+ * // "complete!"
+ * ```
  *
+ * ### Use with options object
  *
- * @example <caption>Use with options object.</caption>
- * const generated = generate({
+ * ```ts
+ * import { generate } from 'rxjs';
+ *
+ * const result = generate({
  *   initialState: 0,
  *   condition(value) { return value < 3; },
  *   iterate(value) { return value + 1; },
  *   resultSelector(value) { return value * 1000; }
  * });
  *
- * generated.subscribe(
- *   value => console.log(value),
- *   err => {},
- *   () => console.log('Yo!')
- * );
+ * result.subscribe({
+ *   next: value => console.log(value),
+ *   complete: () => console.log('complete!')
+ * });
  *
  * // Logs:
  * // 0
  * // 1000
  * // 2000
- * // "Yo!"
+ * // "Complete!"
+ * ```
  *
- * @example <caption>Use options object without condition function.</caption>
- * const generated = generate({
+ * ### Use options object without condition function
+ *
+ * ```ts
+ * import { generate } from 'rxjs';
+ *
+ * const result = generate({
  *   initialState: 0,
  *   iterate(value) { return value + 1; },
  *   resultSelector(value) { return value * 1000; }
  * });
  *
- * generated.subscribe(
- *   value => console.log(value),
- *   err => {},
- *   () => console.log('Yo!') // This will never run.
- * );
+ * result.subscribe({
+ *   next: value => console.log(value),
+ *   complete: () => console.log('complete!') // This will never run
+ * });
  *
  * // Logs:
  * // 0
@@ -190,7 +231,7 @@ export interface GenerateOptions<T, S> extends GenerateBaseOptions<S> {
  * // 2000
  * // 3000
  * // ...and never stops.
- *
+ * ```
  *
  * @see {@link from}
  * @see {@link index/Observable.create}
@@ -216,12 +257,30 @@ export function generate<S>(initialState: S,
  *
  * ![](generate.png)
  *
- * @example <caption>Produces sequence of 0, 1, 2, ... 9, then completes.</caption>
- * const res = generate({
+ * ## Examples
+ *
+ * ### Use options object with condition function
+ *
+ * ```ts
+ * import { generate } from 'rxjs';
+ *
+ * const result = generate({
  *   initialState: 0,
- *   condition: x => x < 10,
+ *   condition: x => x < 3,
  *   iterate: x => x + 1,
  * });
+ *
+ * result.subscribe({
+ *   next: value => console.log(value),
+ *   complete: () => console.log('complete!')
+ * });
+ *
+ * // Logs:
+ * // 0
+ * // 1
+ * // 2
+ * // "Complete!".
+ * ```
  *
  * @see {@link from}
  * @see {@link Observable}
@@ -240,13 +299,31 @@ export function generate<S>(options: GenerateBaseOptions<S>): Observable<S>;
  *
  * ![](generate.png)
  *
- * @example <caption>Produces sequence of 0, 1, 2, ... 9, then completes.</caption>
- * const res = generate({
+ * ## Examples
+ *
+ * ### Use options object with condition and iterate function
+ *
+ * ```ts
+ * import { generate } from 'rxjs';
+ *
+ * const result = generate({
  *   initialState: 0,
- *   condition: x => x < 10,
+ *   condition: x => x < 3,
  *   iterate: x => x + 1,
  *   resultSelector: x => x,
  * });
+ *
+ * result.subscribe({
+ *   next: value => console.log(value),
+ *   complete: () => console.log('complete!')
+ * });
+ *
+ * // Logs:
+ * // 0
+ * // 1
+ * // 2
+ * // "Complete!".
+ * ```
  *
  * @see {@link from}
  * @see {@link Observable}
