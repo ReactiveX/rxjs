@@ -34,9 +34,10 @@ import { MonoTypeOperatorFunction, PartialObserver, SchedulerAction, SchedulerLi
  * ## Example
  * Ensure values in subscribe are called just before browser repaint.
  * ```ts
- * import { interval } from 'rxjs';
+ * import { interval, animationFrameScheduler } from 'rxjs';
  * import { observeOn } from 'rxjs/operators';
  *
+ * const someDiv = document.querySelector("#someDiv");
  * const intervals = interval(10);                // Intervals are scheduled
  *                                                // with async scheduler by default...
  * intervals.pipe(

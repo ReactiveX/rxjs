@@ -59,7 +59,7 @@ export function expand<T>(project: (value: T, index: number) => ObservableInput<
  * each projected inner Observable.
  * @return {Observable} An Observable that emits the source values and also
  * result of applying the projection function to each value emitted on the
- * output Observable and and merging the results of the Observables obtained
+ * output Observable and merging the results of the Observables obtained
  * from this transformation.
  * @method expand
  * @owner Observable

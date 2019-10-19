@@ -1,10 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatRippleModule
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatRippleModule } from '@angular/material/core';
 import { ScrollService } from 'app/shared/scroll.service';
 import { WithCustomElementComponent } from '../element-registry';
 import { OperatorDecisionTreeDataService } from './operator-decision-tree-data.service';

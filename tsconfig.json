@@ -1,6 +1,22 @@
 {
-  "extends": "./tsconfig.base.json",
   "compilerOptions": {
+    "incremental": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "strictFunctionTypes": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "moduleResolution": "node",
+    "stripInternal": false,
+    "noEmit": true,
+    "lib": [
+      "es5",
+      "es2018",
+      "dom"
+    ],
     "baseUrl": ".",
     "paths": {
       "rxjs": ["./src/index"],
@@ -12,5 +28,7 @@
       "rxjs/internal/*": ["./src/internal/*"]
     }
   },
-  "exclude": ["./dist"]
+  "bazelOptions": {
+    "suppressTsconfigOverrideWarnings": true
+  }
 }

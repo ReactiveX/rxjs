@@ -47,14 +47,14 @@ describe('race(a, b, c)', () => {
     const o = race(a, a, a, a, a, a, a, a, a, a, a, a, a, a); // $ExpectType Observable<number>
   });
 
-  it('should return {} for 6 or more arguments of different types', () => {
+  it('should return unknown for 6 or more arguments of different types', () => {
     const a = of(1);
     const b = of('a');
     const c = of(true);
     const d = of([1, 2, 3]);
     const e = of(['blah']);
     const f = of({ foo: 'bar' });
-    const o = race(a, b, c, d, e, f); // $ExpectType Observable<{}>
+    const o = race(a, b, c, d, e, f); // $ExpectType Observable<unknown>
   });
 });
 
@@ -107,7 +107,7 @@ describe('race([a, b, c])', () => {
     const d = of([1, 2, 3]);
     const e = of(['blah']);
     const f = of({ foo: 'bar' });
-    const o = race([a, b, c, d, e, f]); // $ExpectType Observable<{}>
+    const o = race([a, b, c, d, e, f]); // $ExpectType Observable<unknown>
   });
 });
 

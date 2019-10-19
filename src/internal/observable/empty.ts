@@ -32,11 +32,11 @@ export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
  *
  * ### Map and flatten only odd numbers to the sequence 'a', 'b', 'c'
  * ```ts
- * import { empty, interval } from 'rxjs';
+ * import { empty, interval, of } from 'rxjs';
  * import { mergeMap } from 'rxjs/operators';
  *
  * const interval$ = interval(1000);
- * result = interval$.pipe(
+ * const result = interval$.pipe(
  *   mergeMap(x => x % 2 === 1 ? of('a', 'b', 'c') : empty()),
  * );
  * result.subscribe(x => console.log(x));
@@ -57,7 +57,7 @@ export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
  * the emission of the complete notification.
  * @return An "empty" Observable: emits only the complete
  * notification.
- * @deprecated Deprecated in favor of using {@link EMPTY} constant, or {@link scheduled} (e.g. `scheduled([], scheduler)`)
+ * @deprecated Deprecated in favor of using {@link index/EMPTY} constant, or {@link scheduled} (e.g. `scheduled([], scheduler)`)
  */
 export function empty(scheduler?: SchedulerLike) {
   return scheduler ? emptyScheduled(scheduler) : EMPTY;

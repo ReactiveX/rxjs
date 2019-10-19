@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
-import { catchError, filter, map, mapTo, shareReplay } from 'rxjs/operators';
+import { filter, map, mapTo, shareReplay, catchError } from 'rxjs/operators';
 import { OperatorDecisionTree, OperatorTreeNode, State } from './interfaces';
 import { OperatorDecisionTreeDataService } from './operator-decision-tree-data.service';
 import { isInitialDecision, nodeHasOptions, treeIsErrorFree } from './utils';
@@ -15,7 +15,7 @@ export class OperatorDecisionTreeService {
   private tree$: Observable<
     OperatorDecisionTree
   > = this.dataService.getDecisionTree$().pipe(
-    catchError(error => of({ error })), // This helps if the JSON for some reason fails to get fetched
+    catchError(error => of(error)), // This helps if the JSON for some reason fails to get fetched
     shareReplay()
   );
 

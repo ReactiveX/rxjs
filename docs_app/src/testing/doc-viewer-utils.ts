@@ -37,7 +37,7 @@ export class TestDocViewerComponent extends DocViewerComponent {
 })
 export class TestParentComponent {
   currentDoc?: DocumentContents|null;
-  @ViewChild(DocViewerComponent) docViewer: DocViewerComponent;
+  @ViewChild(DocViewerComponent, {static: false}) docViewer: DocViewerComponent;
 }
 
 // Mock services.
@@ -82,7 +82,7 @@ export class TestModule { }
 
 export class ObservableWithSubscriptionSpies<T = void> extends Observable<T> {
   unsubscribeSpies: jasmine.Spy[] = [];
-  subscribeSpy = spyOn(this, 'subscribe').and.callFake((...args: any[]) => {
+  subscribeSpy = spyOn(this as any, 'subscribe').and.callFake((...args: any[]) => {
     const subscription = super.subscribe(...args);
     const unsubscribeSpy = spyOn(subscription, 'unsubscribe').and.callThrough();
     this.unsubscribeSpies.push(unsubscribeSpy);
