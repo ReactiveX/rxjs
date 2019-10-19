@@ -18,6 +18,8 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  *
  * ![](retryWhen.png)
  *
+ * Retry an observable sequence on error based on custom criteria.
+ *
  * ## Example
  * ```ts
  * import { timer, interval } from 'rxjs';
