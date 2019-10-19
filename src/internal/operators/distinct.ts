@@ -21,9 +21,9 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * that the internal `Set` can be "flushed", basically clearing it of values.
  *
  * ## Examples
- * 
+ *
  * A simple example with numbers
- * 
+ *
  * ```ts
  * import { of } from 'rxjs';
  * import { distinct } from 'rxjs/operators';
@@ -42,7 +42,7 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * ```
  *
  * An example using a keySelector function
- * 
+ *
  * ```ts
  * import { of } from 'rxjs';
  * import { distinct } from 'rxjs/operators';
