@@ -1,7 +1,7 @@
 /*eslint-disable no-param-reassign, no-use-before-define*/
 import { cloneDeep, isEqual } from 'lodash';
 // @ts-ignore
-import { drawMarbleDiagram } from 'swirly';
+import { drawMarbleDiagram } from 'swirly-renderer-node';
 // @ts-ignore
 import { launch } from 'puppeteer';
 import { writeFileSync } from 'fs';
