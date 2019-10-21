@@ -102,7 +102,7 @@ global.asDiagram = function asDiagram(operatorLabel: string, glit: glitFn) {
         let filename = './docs_app/content/img/' + makeFilename(operatorLabel);
         ++active;
         initializing
-          .then(browser => paint(inputStreams, operatorLabel, outputStreams, filename, browser))
+          .then(screenshotter => paint(inputStreams, operatorLabel, outputStreams, filename, screenshotter))
           .then(
             () => console.log('Painted ' + filename),
             err => console.error(err)
@@ -112,7 +112,7 @@ global.asDiagram = function asDiagram(operatorLabel: string, glit: glitFn) {
             if (active > 0) {
               return null;
             }
-            return initializing.then(browser => dispose(browser));
+            return initializing.then(screenshotter => dispose(screenshotter));
           });
       });
     } else {

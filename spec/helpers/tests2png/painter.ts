@@ -3,7 +3,7 @@ import { cloneDeep, isEqual } from 'lodash';
 // @ts-ignore
 import { drawMarbleDiagram } from 'swirly-renderer-node';
 // @ts-ignore
-import { launch } from 'puppeteer';
+import { createHtml, Screenshotter } from 'swirly-rasterizer';
 import { writeFileSync } from 'fs';
 import { TestMessage } from '../../../src/internal/testing/TestMessage';
 import { MarbleContent, TestStream } from './types';
@@ -183,50 +183,17 @@ function sanitizeHigherOrderInputStreams(inputStreams: TestStream[], outputStrea
   return newInputStreams;
 }
 
-function createHtml(svgXml: string, width: number, height: number): string {
-  return `
-    <!doctype html>
-    <html>
-      <head>
-        <style>
-          html, body { margin: 0; padding: 0; }
-          svg { width: ${width}px; height: ${height}px; }
-        </style>
-      </head>
-      <body>
-        ${svgXml}
-      </body>
-    </html>
-  `;
-}
-
-async function createImage(browser: any, xml: string, width: number, height: number): Promise<Buffer> {
-  const page = await browser.newPage();
-  const loading = page.waitForNavigation({ waitUntil: 'load' });
-  const html = createHtml(xml, width, height);
-  await page.setContent(html);
-  await loading;
-  const imageData = await page.screenshot({
-    clip: {
-      x: 0,
-      y: 0,
-      width,
-      height
-    }
-  });
-  await page.close();
-  return imageData;
-}
-
 export async function init() {
-  return await launch();
+  const screenshotter: any = new Screenshotter();
+  await screenshotter.init();
+  return screenshotter;
 }
 
-export async function dispose(browser: any) {
-  await browser.close();
+export async function dispose(screenshotter: any) {
+  await screenshotter.dispose();
 }
 
-export async function paint(inputStreams: TestStream[], operatorLabel: string, outputStreams: TestStream[], filename: string, browser: any) {
+export async function paint(inputStreams: TestStream[], operatorLabel: string, outputStreams: TestStream[], filename: string, screenshotter: any) {
   inputStreams = sanitizeHigherOrderInputStreams(inputStreams, outputStreams);
 
   const allStreams = inputStreams.concat(outputStreams);
@@ -249,6 +216,10 @@ export async function paint(inputStreams: TestStream[], operatorLabel: string, o
     content
   });
 
-  const imageData = await createImage(browser, xml, width * SCALE, height * SCALE);
+  const scaledWidth = Math.round(width * SCALE);
+  const scaledHeight = Math.round(height * SCALE);
+
+  const html = createHtml(xml, scaledWidth, scaledHeight);
+  const imageData = await screenshotter.capture(html, scaledWidth, scaledHeight);
   writeFileSync(filename, imageData, 'utf8');
 }
