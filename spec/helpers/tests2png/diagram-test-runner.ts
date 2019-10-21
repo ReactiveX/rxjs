@@ -84,6 +84,7 @@ async function paintWhenReady(inputStreams: TestStream[], operatorLabel: string,
     console.error(`Failed to initialize screenshotter: ${err}`);
     return;
   }
+  ++active;
   try {
     await paint(inputStreams, operatorLabel, outputStreams, filename, screenshotter);
     console.info(`Painted ${filename}`);
@@ -120,7 +121,6 @@ global.asDiagram = function asDiagram(operatorLabel: string, glit: glitFn) {
         global.rxTestScheduler.flush();
         inputStreams = updateInputStreamsPostFlush(inputStreams);
         let filename = './docs_app/content/img/' + makeFilename(operatorLabel);
-        ++active;
         paintWhenReady(inputStreams, operatorLabel, outputStreams, filename);
       });
     } else {
