@@ -3,7 +3,7 @@ import { cloneDeep, isEqual } from 'lodash';
 // @ts-ignore
 import { drawMarbleDiagram } from 'swirly-renderer-node';
 // @ts-ignore
-import { createHtml, Screenshotter } from 'swirly-rasterizer';
+import { createHtml, Screenshotter } from 'swirly-rasterizer-puppeteer';
 import { writeFileSync } from 'fs';
 import { TestMessage } from '../../../src/internal/testing/TestMessage';
 import { MarbleContent, TestStream } from './types';
