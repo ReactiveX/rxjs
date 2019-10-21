@@ -76,6 +76,26 @@ type specFn = () => any;
 const initializing = init();
 let active = 0;
 
+async function paintWhenReady(inputStreams: TestStream[], operatorLabel: string, outputStreams: TestStream[], filename: string) {
+  let screenshotter: any;
+  try {
+    screenshotter = await initializing;
+  } catch (err) {
+    console.error(`Failed to initialize screenshotter: ${err}`);
+    return;
+  }
+  try {
+    await paint(inputStreams, operatorLabel, outputStreams, filename, screenshotter);
+    console.info(`Painted ${filename}`);
+  } catch (err) {
+    console.error(`Failed to paint ${filename}: ${err}`);
+  }
+  if (--active === 0) {
+    console.info('Disposing screenshotter');
+    await dispose(screenshotter);
+  }
+}
+
 global.asDiagram = function asDiagram(operatorLabel: string, glit: glitFn) {
   return function specFnWithPainter(description: string, specFn: specFn) {
     if (specFn.length === 0) {
@@ -101,19 +121,7 @@ global.asDiagram = function asDiagram(operatorLabel: string, glit: glitFn) {
         inputStreams = updateInputStreamsPostFlush(inputStreams);
         let filename = './docs_app/content/img/' + makeFilename(operatorLabel);
         ++active;
-        initializing
-          .then(screenshotter => paint(inputStreams, operatorLabel, outputStreams, filename, screenshotter))
-          .then(
-            () => console.log('Painted ' + filename),
-            err => console.error(err)
-          )
-          .then(() => {
-            --active;
-            if (active > 0) {
-              return null;
-            }
-            return initializing.then(screenshotter => dispose(screenshotter));
-          });
+        paintWhenReady(inputStreams, operatorLabel, outputStreams, filename);
       });
     } else {
       throw new Error('cannot generate PNG marble diagram for async test ' + description);
