@@ -61,12 +61,16 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
     if (init) {
       // If a signal is provided, just have it teardown. It's a cancellation token, basically.
       if (init.signal) {
-        outerSignalHandler = () => {
-          if (!signal.aborted) {
-            controller.abort();
-          }
-        };
-        init.signal.addEventListener('abort', outerSignalHandler);
+        if (init.signal.aborted) {
+          controller.abort();
+        } else {
+          outerSignalHandler = () => {
+            if (!signal.aborted) {
+              controller.abort();
+            }
+          };
+          init.signal.addEventListener('abort', outerSignalHandler);
+        }
       }
       init = { ...init, signal };
     } else {

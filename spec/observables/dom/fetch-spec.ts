@@ -10,11 +10,15 @@ function mockFetchImpl(input: string | Request, init?: RequestInit): Promise<Res
   (mockFetchImpl as MockFetch).calls.push({ input, init });
   return new Promise<any>((resolve, reject) => {
     if (init.signal) {
+      if (init.signal.aborted) {
+        reject(new MockDOMException());
+        return;
+      }
       init.signal.addEventListener('abort', () => {
         reject(new MockDOMException());
       });
     }
-    return Promise.resolve(null).then(() => {
+    Promise.resolve(null).then(() => {
       resolve((mockFetchImpl as any).respondWith);
     });
   });
@@ -204,6 +208,22 @@ describe('fromFetch', () => {
       }
     });
     controller.abort();
+    expect(mockFetch.calls[0].init.signal.aborted).to.be.true;
+    // The subscription will not be closed until the error fires when the promise resolves.
+    expect(subscription.closed).to.be.false;
+  });
+
+  it('should treat passed already aborted signals as a cancellation token which triggers an error', done => {
+    const controller = new MockAbortController();
+    controller.abort();
+    const signal = controller.signal as any;
+    const fetch$ = fromFetch('/foo', { signal });
+    const subscription = fetch$.subscribe({
+      error: err => {
+        expect(err).to.be.instanceof(MockDOMException);
+        done();
+      }
+    });
     expect(mockFetch.calls[0].init.signal.aborted).to.be.true;
     // The subscription will not be closed until the error fires when the promise resolves.
     expect(subscription.closed).to.be.false;
