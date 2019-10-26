@@ -68,7 +68,7 @@ export function fromFetch(input: string | Request, init?: RequestInit): Observab
         };
         init.signal.addEventListener('abort', outerSignalHandler);
       }
-      init.signal = signal;
+      init = { ...init, signal };
     } else {
       init = { signal };
     }

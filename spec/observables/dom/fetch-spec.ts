@@ -173,13 +173,23 @@ describe('fromFetch', () => {
   });
 
   it('should allow passing of init object', done => {
-    const myInit = {};
-    const fetch$ = fromFetch('/foo', myInit);
+    const fetch$ = fromFetch('/foo', {method: 'HEAD'});
     fetch$.subscribe({
       error: done,
       complete: done,
     });
-    expect(mockFetch.calls[0].init).to.equal(myInit);
+    expect(mockFetch.calls[0].init.method).to.equal('HEAD');
+  });
+
+  it('should pass in a signal with the init object without mutating the init', done => {
+    const myInit = {method: 'DELETE'};
+    const fetch$ = fromFetch('/bar', myInit);
+    fetch$.subscribe({
+      error: done,
+      complete: done,
+    });
+    expect(mockFetch.calls[0].init.method).to.equal(myInit.method);
+    expect(mockFetch.calls[0].init).not.to.equal(myInit);
     expect(mockFetch.calls[0].init.signal).not.to.be.undefined;
   });
 
