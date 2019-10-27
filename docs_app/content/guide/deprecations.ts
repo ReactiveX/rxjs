@@ -144,7 +144,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         breakingLink: 'breakingChange-class-WebSocketSubject-deserializer-removed',
         headline: 'WebSocketSubject use `deserializer` in favour or `resultSelector`',
         reason: '@TODO',
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `
           import { WebSocketSubject } from 'rxjs/WebSocketSubject';
 
@@ -178,11 +178,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3/src/internal/operators/last.ts#L12',
         breakingVersion: '6.0.0-alpha.4',
         breakingLink: 'breakingChange-operator-last-resultSelector',
-        headline: 'Operator `last` method deprecated the `resultSelector` argument',
-        reason: `By removing the result selector from \`last\` we get a smaller bundle since of the operator.
-        Further the resultSelector was not that often used and the
-        refactoring to use and internal \`map\` operation instead is a minor code change.`,
-        implication: '@TODO',
+        headline:  getGeneralOperatorResultSelectorHeadlinePhrase('last'),
+        reason: getGeneralStaticResultSelectorReasonPhrase('last'),
+        implication: '@!TODO',
         exampleBefore: `
         import { last } from 'rxjs/operators';
         a$
@@ -207,11 +205,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3/src/internal/operators/first.ts#L18',
         breakingVersion: '6.0.0-alpha.4',
         breakingLink: 'breakingChange-operator-first-resultSelector',
-        headline: 'Operator `last` method deprecated the `resultSelector` argument',
-        reason: `By removing the result selector from \`first\` we get a smaller bundle since of the operator.
-        Further the resultSelector was not that often used and the
-        refactoring to use and internal \`map\` operation instead is a minor code change.`,
-        implication: '@TODO',
+        headline: getGeneralOperatorResultSelectorHeadlinePhrase('first'),
+        reason: getGeneralStaticResultSelectorReasonPhrase('first'),
+        implication: '@!TODO',
         exampleBefore: `
         import { first } from 'rxjs/operators';
         a$
@@ -262,10 +258,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/combineLatest.ts#L42',
         breakingVersion: '7.x.x',
         breakingLink: 'breakingChange-operator-combineLatest-removed',
-        headline: 'Static `combineLatest` deprecated in favor of static function {@link combineLatest}',
-        reason: `As \`combineLatest\` operator is a name duplicate of static the
-         operators to \`combineLatest\`. @TODO wait for ben\`s or nicolas\`s answer`,
-        implication: '@TODO',
+        headline: getGeneralFlatteningHeadlinePhrase('combineLatest'),
+        reason: getGeneralFlatteningReasonPhrase('combineLatest'),
+        implication: '@!TODO',
         exampleBefore: `
         import { combineLatest } from 'rxjs/operators';
         a$.pipe(
@@ -285,9 +280,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/merge.ts#L37',
         breakingVersion: '7.x.x',
         breakingLink: 'breakingChange-operator-merge-removed',
-        headline: 'Static `merge` deprecated in favor of static function {@link merge}',
-        reason: 'As `merge` operator is a name duplicate of static the operators to `merge`. @TODO wait for ben`s or nicolas`s answer',
-        implication: '@TODO',
+        headline: getGeneralFlatteningHeadlinePhrase('merge'),
+        reason: getGeneralFlatteningReasonPhrase('merge'),
+        implication: '@!TODO',
         exampleBefore: `
         import { merge } from 'rxjs/operators';
         a$
@@ -308,9 +303,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/zip.ts#L37',
         breakingVersion: '7.x.x',
         breakingLink: 'breakingChange-operator-zip-removed',
-        headline: 'Static `zip` deprecated in favor of static function {@link zip}',
-        reason: 'As `zip` operator is a name duplicate of static the operators to `zip`. @TODO wait for ben`s or nicolas`s answer',
-        implication: '@TODO',
+        headline: getGeneralFlatteningHeadlinePhrase('zip'),
+        reason: getGeneralFlatteningReasonPhrase('zip'),
+        implication: '@!TODO',
         exampleBefore: `
         import { zip } from 'rxjs/operators';
         a$
@@ -331,9 +326,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/concat.ts#L25',
         breakingVersion: '7.x.x',
         breakingLink: 'breakingChange-operator-concat-removed',
-        headline: 'Static `concat` deprecated in favor of static function {@link concat}',
-        reason: 'As `concat` operator is a name duplicate of static the operators to `concat`. @TODO wait for ben`s or nicolas`s answer',
-        implication: '@TODO',
+        headline: getGeneralFlatteningHeadlinePhrase('concat'),
+        reason: getGeneralFlatteningReasonPhrase('concat'),
+        implication: '@!TODO',
         exampleBefore: `
         import { concat } from 'rxjs/operators';
         a$
@@ -354,9 +349,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: `https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/zip.ts#L37`,
         breakingVersion: '7.x.x',
         breakingLink: 'breakingChange-static-zip-resultSelector-removed',
-        headline: 'Static `zip` method deprecated the `resultSelector` argument',
-        reason: getGeneralResultSelectorPhrase('zip'),
-        implication: '@TODO',
+        headline: getGeneralStaticResultSelectorHeadlinePhrase('zip'),
+        reason: getGeneralStaticResultSelectorReasonPhrase('zip'),
+        implication: '@!TODO',
         exampleBefore: `
         import { zip } from 'rxjs';
         zip(a$,b$, resultSelector)
@@ -377,9 +372,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/fromEventPattern.ts#L9',
         breakingVersion: '7.x.x',
         breakingLink: 'breakingChange-static-fromEventPattern-resultSelector-removed',
-        headline: 'Static `fromEventPattern` method deprecated the `resultSelector` argument',
-        reason: getGeneralResultSelectorPhrase('fromEventPattern'),
-        implication: '@TODO',
+        headline: getGeneralStaticResultSelectorHeadlinePhrase('fromEventPattern'),
+        reason: getGeneralStaticResultSelectorReasonPhrase('fromEventPattern'),
+        implication: '@!TODO',
         exampleBefore: `
         import { fromEventPattern } from 'rxjs';
         fromEventPattern(addHandler, removeHandler, resultSelector)
@@ -401,9 +396,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/bindNodeCallback.ts#L10',
         breakingVersion: '7.x.x',
         breakingLink: 'breakingChange-static-bindNodeCallback-resultSelector-removed',
-        headline: 'Static `bindNodeCallback` method deprecated the `resultSelector` argument',
-        reason: getGeneralResultSelectorPhrase('bindNodeCallback'),
-        implication: '@TODO',
+        headline: getGeneralStaticResultSelectorHeadlinePhrase('bindNodeCallback'),
+        reason: getGeneralStaticResultSelectorReasonPhrase('bindNodeCallback'),
+        implication: '@!TODO',
         exampleBefore: `
         import { bindNodeCallback } from 'rxjs';
         bindNodeCallback(callBackFunc, resultSelector)
@@ -425,9 +420,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/bindCallback.ts#L10',
         breakingVersion: '7.x.x',
         breakingLink: 'breakingChange-static-bindCallback-resultSelector-removed',
-        headline: 'Static `bindCallback` method deprecated the `resultSelector` argument',
-        reason: getGeneralResultSelectorPhrase('bindCallback'),
-        implication: '@TODO',
+        headline: getGeneralStaticResultSelectorHeadlinePhrase('bindCallback'),
+        reason: getGeneralStaticResultSelectorReasonPhrase('bindCallback'),
+        implication: '@!TODO',
         exampleBefore: `
         import { bindCallback } from 'rxjs';
         bindCallback(callBackFunc, resultSelector)
@@ -449,9 +444,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/forkJoin.ts#L29',
         breakingVersion: '7.x.x',
         breakingLink: 'breakingChange-static-forkJoin-resultSelector-removed',
-        headline: 'Static `forkJoin` method deprecated the `resultSelector` argument',
-        reason: getGeneralResultSelectorPhrase('forkJoin'),
-        implication: '@TODO',
+        headline: getGeneralStaticResultSelectorHeadlinePhrase('forkJoin'),
+        reason: getGeneralStaticResultSelectorReasonPhrase('forkJoin'),
+        implication: '@!TODO',
         exampleBefore: `
         import { forkJoin } from 'rxjs';
         forkJoin(a$, b$, resultSelector)
@@ -482,9 +477,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/fromEvent.ts#L32',
         breakingVersion: '7.x.x',
         breakingLink: 'breakingChange-static-fromEvent-resultSelector-removed',
-        headline: 'Static `fromEvent` method deprecated the `resultSelector` argument',
-        reason: getGeneralResultSelectorPhrase('fromEvent'),
-        implication: '@TODO',
+        headline: getGeneralStaticResultSelectorHeadlinePhrase('fromEvent'),
+        reason: getGeneralStaticResultSelectorReasonPhrase('fromEvent'),
+        implication: '@!TODO',
         exampleBefore: `
         import { fromEvent } from 'rxjs';
         fromEvent(element, eventName, resultSelector)
@@ -506,9 +501,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/switchMap.ts#L16',
         breakingVersion: '7.x.x',
         breakingLink: 'breakingChange-operator-switchMap-resultSelector-removed',
-        headline: 'Operator `switchMap` method deprecated the `resultSelector` argument',
-        reason: getGeneralResultSelectorPhrase('switchMap'),
-        implication: '@TODO',
+        headline: getGeneralOperatorResultSelectorHeadlinePhrase('switchMap'),
+        reason: getGeneralStaticResultSelectorReasonPhrase('switchMap'),
+        implication: '@!TODO',
         exampleBefore: `
         import { switchMap } from 'rxjs/operators';
         a$
@@ -534,9 +529,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/switchMapTo.ts#L15',
         breakingVersion: '7.x.x',
         breakingLink: 'breakingChange-operator-switchMapTo-resultSelector-removed',
-        headline: 'Operator `switchMapTo` method deprecated the `resultSelector` argument',
-        reason: getGeneralResultSelectorPhrase('switchMap'),
-        implication: '@TODO',
+        headline: getGeneralOperatorResultSelectorHeadlinePhrase('switchMapTo'),
+        reason: getGeneralStaticResultSelectorReasonPhrase('switchMapTo'),
+        implication: '@!TODO',
         exampleBefore: `
         import { switchMapTo } from 'rxjs/operators';
         a$
@@ -549,7 +544,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         import { switchMapTo, map } from 'rxjs/operators';
         a$
         .pipe(
-          switchMap((a, i) => b$.pipe(
+          switchMapTo((a, i) => b$.pipe(
             map((b, ii) => resultSelector(a, b, i, ii))
           ))
         )
@@ -562,9 +557,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/concatMap.ts#L8',
         breakingVersion: '7.x.x',
         breakingLink: 'breakingChange-operator-concatMap-resultSelector-removed',
-        headline: 'Operator `concatMap` method deprecated the `resultSelector` argument',
-        reason: getGeneralResultSelectorPhrase('concatMap'),
-        implication: '@TODO',
+        headline: getGeneralOperatorResultSelectorHeadlinePhrase('concatMap'),
+        reason: getGeneralStaticResultSelectorReasonPhrase('concatMap'),
+        implication: '@!TODO',
         exampleBefore: `
         import { concatMap } from 'rxjs/operators';
         a$
@@ -590,9 +585,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/concatMapTo.ts#L8',
         breakingVersion: '7.x.x',
         breakingLink: 'breakingChange-operator-concatMapTo-resultSelector-removed',
-        headline: 'Operator `concatMapTo` method deprecated the `resultSelector` argument',
-        reason: getGeneralResultSelectorPhrase('concatMapTo'),
-        implication: '@TODO',
+        headline: getGeneralOperatorResultSelectorHeadlinePhrase('concatMapTo'),
+        reason: getGeneralStaticResultSelectorReasonPhrase('concatMapTo'),
+        implication: '@!TODO',
         exampleBefore: `
         import { concatMapTo } from 'rxjs/operators';
         a$
@@ -618,9 +613,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/mergeMap.ts#L16',
         breakingVersion: '7.x.x',
         breakingLink: 'breakingChange-operator-mergeMap-resultSelector-removed',
-        headline: 'Operator `mergeMap` method deprecated the `resultSelector` argument',
-        reason: getGeneralResultSelectorPhrase('mergeMap'),
-        implication: '@TODO',
+        headline: getGeneralOperatorResultSelectorHeadlinePhrase('mergeMap'),
+        reason: getGeneralStaticResultSelectorReasonPhrase('mergeMap'),
+        implication: '@!TODO',
         exampleBefore: `
         import { mergeMap } from 'rxjs/operators';
         a$
@@ -646,9 +641,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/mergeMapTo.ts#L8',
         breakingVersion: '7.x.x',
         breakingLink: 'breakingChange-operator-mergeMapTo-resultSelector-removed',
-        headline: `Operator \`mergeMapTo\` method deprecated the \`resultSelector\` argument`,
-        reason: getGeneralResultSelectorPhrase('mergeMapTo'),
-        implication: '@TODO',
+        headline: getGeneralOperatorResultSelectorHeadlinePhrase('mergeMapTo'),
+        reason: getGeneralStaticResultSelectorReasonPhrase('mergeMapTo'),
+        implication: '@!TODO',
         exampleBefore: `
         import { mergeMapTo } from 'rxjs/operators';
         a$
@@ -674,9 +669,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/exhaustMap.ts#L16',
         breakingVersion: '7.x.x',
         breakingLink: 'breakingChange-operator-exhaustMap-resultSelector-removed',
-        headline: 'Operator `exhaustMap` method deprecated the `resultSelector` argument',
-        reason: getGeneralResultSelectorPhrase('exhaustMap'),
-        implication: '@TODO',
+        headline: getGeneralOperatorResultSelectorHeadlinePhrase('exhaustMap'),
+        reason: getGeneralStaticResultSelectorReasonPhrase('exhaustMap'),
+        implication: '@!TODO',
         exampleBefore: `
         import { exhaustMap } from 'rxjs/operators';
         a$
@@ -711,7 +706,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         headline: 'Class `Scheduler` deprecated in favor of Interface {@link SchedulerLike}',
         reason: 'As `Scheduler` is an internal implementation detail of RxJS, and ' +
           'should not be used directly. Create your own class instead and implement the Interface {@link SchedulerLike}',
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `
         @TODO => review
         import { Scheduler, Subscription, of } from "rxjs";
@@ -778,7 +773,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         reason: 'As `if` was a prototype method there was no conflict. ' +
           'After moving to "pipeable" operators `if` now conflicts with reserved names of te language.' +
           'Therefore it is renamed to `iif` and exposed as static function',
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `
         import { Observable } from 'rxjs'
         Observable.if(conditionFunc, a$, b$)
@@ -800,7 +795,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         reason: 'As `if` was a prototype method there was no conflict. ' +
           'After moving to "pipeable" operators `throw` now conflicts with reserved names of te language.' +
           'Therefore it is renamed to `throwError` and exposed as static function',
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `
         import { Observable } from 'rxjs'
         Observable.throw(new Error('smooshMap does not exist'))
@@ -826,7 +821,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         breakingLink: 'breakingChange-race-operator-removed',
         headline: 'Static `race` deprecated in favor of static function {@link race}',
         reason: 'As `race` operator is a name duplicate of static the operators to `race`.',
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `
         import { race } from 'rxjs/operators';
         a$
@@ -865,7 +860,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         headline: 'Interface `ObservableLike` in favour of `InteropObservable`',
         reason: `This interface is only here to provide
          the [observable symbol](https://github.com/ReactiveX/rxjs/blob/6.5.3/src/internal/types.ts#L57)`,
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `
         import { ObservableLike } from 'rxjs';
         let o: ObservableLike;
@@ -895,7 +890,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
 
         This deprecation will maybe get rolled back depending on official specification.
 `,
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `
         import { Observable } from 'rxjs';
         new Observable(subscriberFunc)
@@ -924,7 +919,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         headline: 'Operator `tap` method now takes an {@link Observer} object instead of callback',
         reason: 'The {@link Observer} object is way more explicit as the callbacks. We can avoid passing `null` for unused callbacks.' +
           'Also the typings are easier to implement.',
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `
         import { tap } from 'rxjs/operators';
         a$
@@ -960,7 +955,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         reason: `After moving to "pipeable" operators \`create\` static Observable method got deprecated.
         No new static method was created because \`new Observable() is more intuitive and natural to the language.
         Technically older versions of TypeScript had many more limitations that today's version`,
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `
         import { Observable } from 'rxjs';
         Observable.create(subscriberFunc)
@@ -981,7 +976,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         headline: 'Class `TimeInterval` deprecated. As it is an internal implementation detail use it as Interface only.',
         reason: `Class TimeInterval gets deprecated in favour of
          interface [TimeInterval](https://github.com/ReactiveX/rxjs/blob/6.5.3/src/internal/types.ts#L19-L22)`,
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `@TODO`,
         exampleAfter: `@TODO`
       }
@@ -1000,7 +995,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         headline: 'Static `of` deprecated the scheduler argument.',
         reason: 'The scheduling API is heavy and rarely used. Therefor it will get released as a separate package.' +
           'If you used `of` with a scheduler argument, you can use {@link scheduled} instead.',
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `
         import { of, asyncScheduler } from 'rxjs';
         of(777, asyncScheduler)
@@ -1021,7 +1016,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         headline: 'Static `combineLatest` deprecated the scheduler argument.',
         reason: 'The scheduling API is heavy and rarely used. Therefor it will get released as a separate package.' +
           'If you used `combineLatest` with a scheduler argument, you can use {@link scheduled} instead.',
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `
         import { combineLatest, asyncScheduler } from 'rxjs';
         combineLatest(a$, b$, asyncScheduler)
@@ -1039,10 +1034,9 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/combineLatest.ts#L43',
         breakingVersion: '8.x.x',
         breakingLink: 'breakingChange-static-combineLatest-resultSelector-removed',
-        headline: 'Static `combineLatest` method deprecated the `resultSelector` argument',
-        reason: 'By removing the resultSelector from `combineLatest` we get a smaller bundle since of the operator. ' +
-          ' Further the resultSelector was not that often use and the refactoring to used `map` instead is a minor code change.',
-        implication: '@TODO',
+        headline: getGeneralStaticResultSelectorHeadlinePhrase('combineLatest'),
+        reason: getGeneralStaticResultSelectorReasonPhrase('combineLatest'),
+        implication: '@!TODO',
         exampleBefore: `
         import { combineLatest } from 'rxjs';
         combineLatest([a$,b$], resultSelector)
@@ -1066,7 +1060,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         headline: 'Static `combineLatest` method arguments in an array instead of single arguments.',
         reason: `Static \`combineLatest\` method arguments in an array instead of single arguments.
         They are technically easier to type.`,
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `
         import { combineLatest } from 'rxjs';
         combineLatest(a$,b$)
@@ -1087,7 +1081,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         headline: 'Static `forkJoin` method arguments in an array instead of single arguments.',
         reason: `Static \`forkJoin\` method arguments in an array instead of single arguments.
         They are technically easier to type.`,
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `
         import { forkJoin } from 'rxjs';
         forkJoin(a$,b$)
@@ -1107,7 +1101,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         breakingLink: 'breakingChange-operator-partition-removed',
         headline: 'Static `partition` deprecated in favor of static function {@link partition}',
         reason: 'As `partition` operator is not compose able and it can anyway only be used to create the array`.',
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `
         import { partition } from 'rxjs/operators';
         const p = interval$
@@ -1144,7 +1138,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         breakingLink: 'breakingChange-enum-NotificationKind-removed',
         headline: '`NotificationKind` is deprecated, use a string literal instead.',
         reason: 'NotificationKind is deprecated as const enums are not compatible with isolated modules. Use a string literal instead.',
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `
         import { NotificationKind } from 'rxjs';
         const next = NotificationKind.NEXT;
@@ -1194,7 +1188,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         breakingLink: 'breakingChange-static-of-scheduler-removed',
         headline: 'Static `of` deprecate the scheduler argument',
         reason: 'Due to refactorings on scheduling in RxJS the scheduler argument of `of` gets deprecated.',
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `
         import { of, asyncScheduler } from 'rxjs';
         of(1, asyncScheduler)
@@ -1214,7 +1208,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         breakingLink: 'breakingChange-static-merge-scheduler-removed',
         headline: 'Static `merge` deprecate the scheduler argument',
         reason: 'Due to refactorings on scheduling in RxJS the scheduler argument of `merge` gets deprecated.',
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `
         import { merge, asyncScheduler } from 'rxjs';
         merge(a$, b$, asyncScheduler)
@@ -1237,7 +1231,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         breakingLink: 'breakingChange-operator-startWith-scheduler-removed',
         headline: 'Operator `startWith` deprecate the scheduler argument',
         reason: 'Due to refactorings on scheduling in RxJS the scheduler argument of `startWith` gets deprecated.',
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `
         import { asyncScheduler } from 'rxjs';
         import { startWith, map } from 'rxjs/operators';
@@ -1268,7 +1262,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         breakingLink: 'breakingChange-operator-endWith-scheduler-removed',
         headline: 'Operator `endWith` deprecate the scheduler argument',
         reason: 'Due to refactorings on scheduling in RxJS the scheduler argument of `endWith` gets deprecated.',
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `
         import { asyncScheduler } from 'rxjs';
         import { endWith, map } from 'rxjs/operators';
@@ -1299,7 +1293,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         breakingLink: 'breakingChange-class-TestScheduler-hotObservables-private',
         headline: 'Class `TestScheduler` deprecate the public property `hotObservables`',
         reason: '@TODO `TestScheduler` deprecates public `hotObservables` property and makes it protected as it is internal.',
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: `@TODO`,
         exampleAfter: '@TODO'
       },
@@ -1311,7 +1305,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         breakingLink: 'breakingChange-class-TestScheduler-coldObservables-private',
         headline: 'Class `TestScheduler` deprecate the public property `coldObservables`',
         reason: '@TODO `TestScheduler` deprecates public `coldObservables` property and makes it protected as it is and internal.',
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: '@TODO',
         exampleAfter: '@TODO'
       },
@@ -1323,7 +1317,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         breakingLink: 'breakingChange-class-VirtualTimeScheduler-breakingChange-frameTimeFactor',
         headline: 'Class `VirtualTimeScheduler` deprecates the static property `frameTimeFactor`.',
         reason: '`frameTimeFactor` is not used in `VirtualTimeScheduler` directly, therefore it does not belong here.',
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: '@TODO',
         exampleAfter: '@TODO'
       },
@@ -1335,7 +1329,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         breakingLink: 'breakingChange-class-VirtualTimeScheduler-index-private',
         headline: 'Class `VirtualTimeScheduler` deprecates the static property `index`.',
         reason: '`index` property of `VirtualTimeScheduler` is only used internally and should ot be used.',
-        implication: '@TODO',
+        implication: '@!TODO',
         exampleBefore: '@TODO',
         exampleAfter: '@TODO'
       }
@@ -1412,12 +1406,25 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
   }
 ];
 
-
-function getGeneralFlatteningPhrase(operatorName: string): string {
-  return `l \`${operatorName}\` l`;
+// Info from: https://github.com/ReactiveX/rxjs/issues/3927
+function getGeneralFlatteningHeadlinePhrase(operatorName: string): string {
+  return `Static \`${operatorName}\` deprecated. Use static function {@link ${operatorName}}' \`${operatorName}\` instead.`;
 }
 
-function getGeneralResultSelectorPhrase(operatorName: string): string {
+// Info from: https://github.com/ReactiveX/rxjs/issues/3927
+function getGeneralFlatteningReasonPhrase(operatorName: string): string {
+  return `As \`${operatorName}\` operator is a name duplicate of the static
+         function \`${operatorName}\` it gets deprecated.
+         In future releases it will most probably be available under \`${operatorName}With\`.`;
+}
+
+function getGeneralOperatorResultSelectorHeadlinePhrase(operatorName: string): string {
+  return `Operator \`${operatorName}\` method deprecated the \`resultSelector\` argument`;
+}
+function getGeneralStaticResultSelectorHeadlinePhrase(operatorName: string): string {
+  return `Static \`${operatorName}\` method deprecated the \`resultSelector\` argument`;
+}
+function getGeneralStaticResultSelectorReasonPhrase(operatorName: string): string {
   return `By removing the result selector from \`${operatorName}\` we get a smaller bundle since of the operator.
           Further the resultSelector was not that often used and the
           refactoring to use and internal \`map\` operation instead is a minor code change.`;
