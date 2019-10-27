@@ -12,9 +12,7 @@ Consider:
 https://github.com/ReactiveX/rxjs/issues/5107
  */
 
-// @TODO check all linkName
-// @TODO check all version specifier => After Deprecation (>= 6.0.0-rc.0)
-
+// @TODO => rxjs-compat intro and remove
 
 interface Deprecation {
   // Link to line of code in GitHub in version it got introduced
@@ -202,6 +200,35 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         )
           .subscribe({next: n => console.log(n)});
         `
+      },
+      {
+        linkName: 'deprecation-operator-first-resultSelector',
+        type: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3/src/internal/operators/first.ts#L18',
+        breakingVersion: '6.0.0-alpha.4',
+        breakingLink: 'breakingChange-operator-first-resultSelector',
+        headline: 'Operator `last` method deprecated the `resultSelector` argument',
+        reason: `By removing the result selector from \`first\` we get a smaller bundle since of the operator.
+        Further the resultSelector was not that often used and the
+        refactoring to use and internal \`map\` operation instead is a minor code change.`,
+        implication: '@TODO',
+        exampleBefore: `
+        import { first } from 'rxjs/operators';
+        a$
+        .pipe(
+          first((n, i) => n))
+        )
+          .subscribe({next: n => console.log(n)})
+        `,
+        exampleAfter: `
+        import { first, map } from 'rxjs/operators';
+        a$
+        .pipe(
+          first(),
+          map((n, i) => n))
+        )
+          .subscribe({next: n => console.log(n)});
+        `
       }
     ],
   },
@@ -215,6 +242,13 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         deprecationVersion: '6.0.0-alpha.3',
         deprecationLink: 'deprecation-operator-last-resultSelector',
         headline: 'Operator `last` method removed the `resultSelector` argument'
+      },
+      {
+        linkName: 'breakingChange-operator-first-resultSelector-remove',
+        type: 'breakingChange',
+        deprecationVersion: '6.0.0-alpha.3',
+        deprecationLink: 'deprecation-operator-first-resultSelector',
+        headline: 'Operator `first` method removed the `resultSelector` argument'
       }
     ]
   },
@@ -679,12 +713,53 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
           'should not be used directly. Create your own class instead and implement the Interface {@link SchedulerLike}',
         implication: '@TODO',
         exampleBefore: `
-        import { Scheduler } from 'rxjs';
-        // @TODO
+        @TODO => review
+        import { Scheduler, Subscription, of } from "rxjs";
+        import { Zone } from "./Zone";
+
+        function leaveZone(
+          zone: Zone,
+          scheduler: Scheduler = queueScheduler
+        ): SchedulerLike {
+          return new LeaveZoneScheduler(zone, scheduler) as any;
+        }
+
+        class LeaveZoneScheduler {
+          constructor(private zone: Zone, private scheduler: Scheduler) {}
+
+          schedule(...args: any[]): Subscription {
+            return this.zone.runOutsideAngular(() =>
+              this.scheduler.schedule.apply(this.scheduler, args)
+            );
+          }
+        }
+
+        of(1, leaveZone(zone))
+          .subscribe();
         `,
         exampleAfter: `
-        import { SchedulerLike } from 'rxjs';
-        // @TODO
+        import { SchedulerLike, Subscription, of } from "rxjs";
+        import { Zone } from "./Zone";
+
+        function leaveZone(
+          zone: Zone,
+          scheduler: SchedulerLike = queueScheduler
+        ): SchedulerLike {
+          return new LeaveZoneScheduler(zone, scheduler) as any;
+        }
+
+        class LeaveZoneScheduler {
+          constructor(private zone: Zone, private scheduler: SchedulerLike) {}
+
+          schedule(...args: any[]): Subscription {
+            return this.zone.runOutsideAngular(() =>
+              this.scheduler.schedule.apply(this.scheduler, args)
+            );
+          }
+        }
+
+         of(1, leaveZone(zone))
+          .subscribe();
         `
       }
     ]
@@ -787,11 +862,18 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.3.0/src/internal/types.ts#L48',
         breakingVersion: '8.x.x',
         breakingLink: 'interface-ObservableLike-removed',
-        headline: 'Interface `ObservableLike` deprecated. @TODO',
-        reason: 'Interface `ObservableLike` in favour of `InteropObservable`. @TODO',
+        headline: 'Interface `ObservableLike` in favour of `InteropObservable`',
+        reason: `This interface is only here to provide
+         the [observable symbol](https://github.com/ReactiveX/rxjs/blob/6.5.3/src/internal/types.ts#L57)`,
         implication: '@TODO',
-        exampleBefore: `@TODO`,
-        exampleAfter: `@TODO`
+        exampleBefore: `
+        import { ObservableLike } from 'rxjs';
+        let o: ObservableLike;
+        `,
+        exampleAfter: `
+        import { InteropObservable } from 'rxjs';
+        let o: InteropObservable;
+        `
       }
     ]
   },
@@ -806,8 +888,13 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         breakingVersion: '8.x.x',
         breakingLink: 'breakingChange-class-Observable-subscribe-callback-argument-removed',
         headline: 'The Observables `subscribe` method now takes an {@link Observer} object instead of callback',
-        reason: 'The {@link Observer} object is way more explicit as the callbacks. We can avoid passing `null` for unused callbacks.' +
-          'Also the typings are easier to implement.',
+        reason: `The {@link Observer} object is way more explicit as the callbacks.
+        We can also avoid passing \`null\` for unused callbacks.
+        It's more 'readable' as the callbacks are named as actual properties of the \`observer\`.
+        Technically supporting both observers and individual callbacks is a pain.
+
+        This deprecation will maybe get rolled back depending on official specification.
+`,
         implication: '@TODO',
         exampleBefore: `
         import { Observable } from 'rxjs';
@@ -871,7 +958,8 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         breakingLink: 'breakingChange-class-Observable-create-removed',
         headline: 'Observable static method `create` deprecated in favour of normal instantiation over `new Observable()`',
         reason: `After moving to "pipeable" operators \`create\` static Observable method got deprecated.
-        No new static method was created because \`new Observable() is more intuitive\`.`,
+        No new static method was created because \`new Observable() is more intuitive and natural to the language.
+        Technically older versions of TypeScript had many more limitations that today's version`,
         implication: '@TODO',
         exampleBefore: `
         import { Observable } from 'rxjs';
@@ -891,7 +979,8 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         breakingVersion: '8.x.x',
         breakingLink: 'breakingChange-class-TimeInterval-removed',
         headline: 'Class `TimeInterval` deprecated. As it is an internal implementation detail use it as Interface only.',
-        reason: '@TODO',
+        reason: `Class TimeInterval gets deprecated in favour of
+         interface [TimeInterval](https://github.com/ReactiveX/rxjs/blob/6.5.3/src/internal/types.ts#L19-L22)`,
         implication: '@TODO',
         exampleBefore: `@TODO`,
         exampleAfter: `@TODO`
@@ -975,7 +1064,8 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         breakingVersion: '8.x.x',
         breakingLink: 'breakingChange-static-combineLatest-multiple-arguments-removed',
         headline: 'Static `combineLatest` method arguments in an array instead of single arguments.',
-        reason: '@TODO',
+        reason: `Static \`combineLatest\` method arguments in an array instead of single arguments.
+        They are technically easier to type.`,
         implication: '@TODO',
         exampleBefore: `
         import { combineLatest } from 'rxjs';
@@ -989,13 +1079,14 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
-        linkName: 'deprecation-static-forkJoin-deprecation-multiple-arguments',
+        linkName: 'deprecation-static-forkJoin-multiple-arguments',
         type: 'deprecation',
         breakingVersion: '8.x.x',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/forkJoin.ts#L22',
         breakingLink: 'breakingChange-static-forkJoin-multiple-arguments-removed',
         headline: 'Static `forkJoin` method arguments in an array instead of single arguments.',
-        reason: 'It is easier to type and maintain @TODO needs check',
+        reason: `Static \`forkJoin\` method arguments in an array instead of single arguments.
+        They are technically easier to type.`,
         implication: '@TODO',
         exampleBefore: `
         import { forkJoin } from 'rxjs';
@@ -1244,7 +1335,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
         breakingLink: 'breakingChange-class-VirtualTimeScheduler-index-private',
         headline: 'Class `VirtualTimeScheduler` deprecates the static property `index`.',
         reason: '`index` property of `VirtualTimeScheduler` is only used internally and should ot be used.',
-        implication: '',
+        implication: '@TODO',
         exampleBefore: '@TODO',
         exampleAfter: '@TODO'
       }
@@ -1319,8 +1410,12 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
       }
     ]
   }
-
 ];
+
+
+function getGeneralFlatteningPhrase(operatorName: string): string {
+  return `l \`${operatorName}\` l`;
+}
 
 function getGeneralResultSelectorPhrase(operatorName: string): string {
   return `By removing the result selector from \`${operatorName}\` we get a smaller bundle since of the operator.
