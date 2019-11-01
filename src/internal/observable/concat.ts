@@ -116,6 +116,8 @@ export function concat<A extends ObservableInput<any>[]>(...observables: A): Obs
  * @see {@link concatAll}
  * @see {@link concatMap}
  * @see {@link concatMapTo}
+ * @see {@link startWith}
+ * @see {@link endWith}
  *
  * @param input1 An input Observable to concatenate with others.
  * @param input2 An input Observable to concatenate with others.
