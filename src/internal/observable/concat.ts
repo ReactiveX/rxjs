@@ -128,6 +128,8 @@ export function concat<R>(...observables: (ObservableInput<any> | SchedulerLike)
  * @see {@link concatAll}
  * @see {@link concatMap}
  * @see {@link concatMapTo}
+ * @see {@link startWith}
+ * @see {@link endWith}
  *
  * @param {ObservableInput} input1 An input Observable to concatenate with others.
  * @param {ObservableInput} input2 An input Observable to concatenate with others.
