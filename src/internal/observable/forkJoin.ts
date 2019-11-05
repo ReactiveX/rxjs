@@ -110,7 +110,7 @@ export function forkJoin<T>(...sources: ObservableInput<T>[]): Observable<T[]>;
  *
  * ### Use forkJoin with an array of observable inputs
  * ```ts
- * import { forkJoin, of } from 'rxjs';
+ * import { forkJoin, of, timer } from 'rxjs';
  *
  * const observable = forkJoin([
  *   of(1, 2, 3, 4),
