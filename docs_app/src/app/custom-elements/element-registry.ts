@@ -18,6 +18,10 @@ export const ELEMENT_MODULE_LOAD_CALLBACKS_AS_ROUTES = [
     loadChildren: () => import('./contributor/contributor-list.module').then(m => m.ContributorListModule)
   },
   {
+    selector: 'rxjs-migration-timeline',
+    loadChildren: './migration-timeline/migration-timeline.module#MigrationTimelineModule'
+  },
+  {
     selector: 'aio-file-not-found-search',
     loadChildren: () => import('./search/file-not-found-search.module').then(m => m.FileNotFoundSearchModule)
   },
