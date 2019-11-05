@@ -28,8 +28,7 @@ export { Subscriber } from './internal/Subscriber';
 export { Notification, NotificationKind } from './internal/Notification';
 
 /* Utils */
-export { pipe, Piper } from './internal/util/pipe';
-export { ValueGetter } from './internal/util/ValueGetter';
+export { pipe } from './internal/util/pipe';
 export { noop } from './internal/util/noop';
 export { identity } from './internal/util/identity';
 export { isObservable } from './internal/util/isObservable';
