@@ -18,7 +18,7 @@ export const ELEMENT_MODULE_LOAD_CALLBACKS_AS_ROUTES = [
     loadChildren: () => import('./contributor/contributor-list.module').then(m => m.ContributorListModule)
   },
   {
-    selector: 'rxjs-migration-timeline',
+    selector: 'rxjs-migration-timeline-container',
     loadChildren: './migration-timeline/migration-timeline.module#MigrationTimelineModule'
   },
   {
