@@ -31,21 +31,52 @@ export interface IMigrationTimelineVM {
           </mat-panel-title>
         </mat-expansion-panel-header>
 
-        <ng-container *ngFor="let deprecation of release.deprecations">
-          <mat-card class="migration-card ">
+        <ng-container *ngIf="release.deprecations.length > 0; else emptyDeprecationList">
+          <mat-card *ngFor="let deprecation of release.deprecations" class="migration-card ">
             <mat-card-header [id]="release.link">
               <mat-card-title>{{deprecation.title}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
+              <b>Reason:</b>
               <p>
                 {{deprecation.reason}}
               </p>
+              <b>Implication:</b>
+              <p>
+                {{deprecation.implication}}
+              </p>
+              <code-example [language]="'typescript'" [title]="deprecation.exampleBeforeTitle">
+                {{deprecation.exampleBefore}}
+              </code-example>
+              <code-example [language]="'typescript'" [title]="deprecation.exampleAfterTitle">
+                {{deprecation.exampleAfter}}
+              </code-example>
             </mat-card-content>
             <mat-card-actions>
               <button mat-button>Breaking in {{deprecation.breakingVersion}}</button>
             </mat-card-actions>
           </mat-card>
         </ng-container>
+        <ng-template #emptyDeprecationList>
+          <p>No Deprecations made in version {{release.version}}</p>
+        </ng-template>
+
+        <ng-container *ngIf="release.breakingChanges.length > 0; else emptyBreakingChangesList">
+          <mat-card *ngFor="let breakingChange of release.breakingChanges" class="migration-card ">
+            <mat-card-header [id]="release.link">
+              <mat-card-title>{{breakingChange.title}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+             <p>See deprecations in version: ?</p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button>Deprecated in</button>
+            </mat-card-actions>
+          </mat-card>
+        </ng-container>
+        <ng-template #emptyBreakingChangesList>
+          <p>No BreakingChanges made in version {{release.version}}</p>
+        </ng-template>
 
       </mat-expansion-panel>
 

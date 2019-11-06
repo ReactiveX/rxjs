@@ -9,15 +9,23 @@ export interface VmReleaseNavigationItem {
 export interface VmDeprecation {
   title: string;
   reason: string;
+  implication: string;
   breakingVersion: string;
+  exampleBeforeTitle: string;
+  exampleBefore: string;
+  exampleAfterTitle: string;
+  exampleAfter: string;
 }
 
+export interface VmBreakingChange {
+  title: string;
+}
 export interface VmMigrationListItem {
   version: string;
   title: string;
   link: string;
   deprecations: VmDeprecation[];
-  breakingChanges?: any[];
+  breakingChanges?: VmBreakingChange[];
 }
 
 export type VmMigrationList = VmMigrationListItem[];

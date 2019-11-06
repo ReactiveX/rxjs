@@ -1,14 +1,16 @@
 import {CommonModule} from '@angular/common';
 import {NgModule, Type} from '@angular/core';
-import {MatChipsModule, MatCardModule, MatExpansionModule, MatButtonModule} from '@angular/material';
+import {MatButtonModule, MatCardModule, MatChipsModule, MatExpansionModule} from '@angular/material';
+import {CodeExampleModule} from '../code/code-example.module';
 import {WithCustomElementComponent} from '../element-registry';
-import {MigrationTimelineService} from './data-access/migration-timeline.service';
 import {MigrationTimelineComponent} from './components/migration-timeline.component';
-import { MigrationTimelineContainerComponent } from './migration-timeline.container.component';
+import {MigrationTimelineService} from './data-access/migration-timeline.service';
+import {MigrationTimelineContainerComponent} from './migration-timeline.container.component';
 
 @NgModule({
   imports: [
     CommonModule,
+    CodeExampleModule,
     MatChipsModule, MatCardModule, MatExpansionModule,
     MatCardModule, MatButtonModule
   ],

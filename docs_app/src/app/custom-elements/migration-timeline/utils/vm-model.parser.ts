@@ -23,15 +23,23 @@ export function parseVmMigrationList(releases: Release[]): VmMigrationListItem[]
     version: release.version,
     title: parseVmDeprecationTitle(release),
     link: release.version,
-    deprecations: release.deprecations.map(parseVmDeprecationItem)
+    deprecations: release.deprecations.map(parseVmDeprecationItem(release.version)),
+    breakingChanges: []
   }));
 }
 
-export function parseVmDeprecationItem(i: Deprecation): VmDeprecation {
-  return {
-    title: i.headline,
-    reason: i.reason,
-    breakingVersion: i.breakingVersion
+export function parseVmDeprecationItem(version: string) {
+  return (i: Deprecation): VmDeprecation => {
+    return {
+      title: i.headline,
+      reason: i.reason,
+      implication: i.implication,
+      breakingVersion: i.breakingVersion,
+      exampleBeforeTitle: `Before Deprecation (< ${version})`,
+      exampleBefore: i.exampleBefore,
+      exampleAfterTitle: `After Deprecation (>= ${version})`,
+      exampleAfter: i.exampleAfter,
+    };
   };
 }
 
