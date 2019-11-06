@@ -10,7 +10,7 @@ export function parseVmReleaseNavigation(releases: Release[]): VmReleaseNavigati
     const navigationItem: VmReleaseNavigationItem = {
       date: release.date,
       version: release.version,
-      link: '@TODO'
+      link: release.version
     };
     res.push(navigationItem);
     return res;
@@ -22,6 +22,7 @@ export function parseVmMigrationList(releases: Release[]): VmMigrationListItem[]
   return releases.map(release => ({
     version: release.version,
     title: parseVmDeprecationTitle(release),
+    link: release.version,
     deprecations: release.deprecations.map(parseVmDeprecationItem)
   }));
 }

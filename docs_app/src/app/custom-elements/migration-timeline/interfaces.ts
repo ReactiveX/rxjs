@@ -15,6 +15,7 @@ export interface VmDeprecation {
 export interface VmMigrationListItem {
   version: string;
   title: string;
+  link: string;
   deprecations: VmDeprecation[];
   breakingChanges?: any[];
 }

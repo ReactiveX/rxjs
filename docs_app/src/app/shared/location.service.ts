@@ -22,6 +22,10 @@ export class LocationService {
     tap(path => this.gaService.locationChanged(path)),
   );
 
+  currentHash = this.currentUrl.pipe(
+    map(url => (url.split('#') || '')[1]),  // extract hash
+  );
+
   constructor(
     private gaService: GaService,
     private location: Location,

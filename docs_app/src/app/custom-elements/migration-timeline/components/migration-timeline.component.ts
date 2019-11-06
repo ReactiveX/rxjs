@@ -33,7 +33,7 @@ export interface IMigrationTimelineVM {
 
         <ng-container *ngFor="let deprecation of release.deprecations">
           <mat-card class="migration-card ">
-            <mat-card-header>
+            <mat-card-header [id]="release.link">
               <mat-card-title>{{deprecation.title}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>

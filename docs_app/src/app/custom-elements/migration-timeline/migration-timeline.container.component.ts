@@ -1,8 +1,8 @@
 import {Component, ViewEncapsulation} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
-import {distinctUntilChanged, map, startWith} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 import {MigrationTimelineService} from './data-access/migration-timeline.service';
-import {VmMigrationList, VmReleaseNavigationItem} from './interfaces';
+import {VmMigrationListItem, VmReleaseNavigationItem} from './interfaces';
 import {LocalState} from './utils/local-state.service';
 import {parseVmMigrationList, parseVmReleaseNavigation} from './utils/vm-model.parser';
 
@@ -14,12 +14,15 @@ import {parseVmMigrationList, parseVmReleaseNavigation} from './utils/vm-model.p
       Some Text here...
     </p>
     <h2>Supported Versions</h2>
+    selectedVersion$: {{selectedVersion$ | async}}
     <div class="flex-center group-buttons">
       <mat-chip-list>
         <mat-chip
           *ngFor="let option of releaseNavigation$ | async"
           [selected]="(selectedVersion$ | async) === option.version"
-          (click)="selectedVersionChange$.next(option.version)">{{option.version}}</mat-chip>
+          (click)="selectedVersionChange$.next(option.version)">
+          {{option.version}}
+        </mat-chip>
       </mat-chip-list>
     </div>
     <h2>Timeline</h2>
@@ -45,21 +48,32 @@ import {parseVmMigrationList, parseVmReleaseNavigation} from './utils/vm-model.p
   encapsulation: ViewEncapsulation.None
 })
 export class MigrationTimelineContainerComponent
-  extends LocalState<{ selectedVersion: string }> {
-
-  initFocusedVersion = '6.5.1';
+  extends LocalState<{
+    selectedVersion?: string,
+    releaseNavigation?: VmReleaseNavigationItem[],
+    migrationList?: VmMigrationListItem[]
+  }> {
+  initVersion = '6.5.1';
 
   selectedVersionChange$ = new Subject<string>();
-  selectedVersion$ = this.selectedVersionChange$.pipe(distinctUntilChanged(), startWith(this.initFocusedVersion));
-  releaseNavigation$: Observable<VmReleaseNavigationItem[]> = this.mtlService.migrations$
-    .pipe(map(parseVmReleaseNavigation));
-  migrationList$: Observable<VmMigrationList> = this.mtlService.migrations$
-    .pipe(map(parseVmMigrationList));
+  // derivations
+  selectedVersion$ = this.select(s => s.selectedVersion)
+    .pipe(startWith(this.initVersion));
+  releaseNavigation$ = this.select(s => s.releaseNavigation);
+  migrationList$ = this.select(s => s.migrationList);
 
-  constructor(public mtlService: MigrationTimelineService) {
+
+  constructor(private migrationService: MigrationTimelineService) {
     super();
+    this.migrationService.fetchMigrationTimeline();
 
-    this.mtlService.fetchMigrationTimeline();
+    this.connectSlice(this.migrationService.migrations$
+      .pipe(map(parseVmReleaseNavigation), map(releaseNavigation => ({releaseNavigation}))));
+    this.connectSlice(this.migrationService.migrations$
+      .pipe(map(parseVmMigrationList), map(migrationList => ({migrationList}))));
+    this.connectSlice(this.selectedVersionChange$
+      .pipe(startWith(this.initVersion), map(selectedVersion => ({selectedVersion}))));
+
   }
 
 }
