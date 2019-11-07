@@ -13,7 +13,7 @@ import {VmBreakingChange} from '../interfaces';
           <span class="symbol" [ngClass]="b.subjectApiSymbol"></span>
           <code>{{b.subject}}</code>
         </th>
-        <th>{{b.deprecationVersionText}}<a class="release-link" [href]="'#' + b.deprecationLink">v{{b.deprecationVersion}}</a></th>
+        <th>{{b.deprecationVersionText}}<a class="release-link" [href]="b.deprecationLink">v{{b.deprecationVersion}}</a></th>
       </tr>
       </thead>
       <tbody>

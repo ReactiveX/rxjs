@@ -26,28 +26,24 @@ export interface IMigrationTimelineVM {
           class="release"
           [ngClass]="{'selected': (selectedVersion$ | async) === release.version}">
           <mat-panel-title [id]="release.version">
-            <ng-container *ngIf="expandedRelease[release.version]">
-              <div class="release-shield">
-                <span class="label">github</span>
-                <span class="version">{{release.version}}</span>
-              </div> - {{release.date | date:'dd.MM.yyyy'}}&nbsp;-&nbsp;
-              <mat-icon [color]="'warn'" aria-hidden="false" aria-label="Deprecations">warning
-              </mat-icon> Deprecations: <b>{{release.deprecations.length}}</b>
-              <mat-icon [color]="'accert'" aria-hidden="false" aria-label="Deprecations">error
-              </mat-icon>   BreakingChanges: <b>{{release.breakingChanges.length}}</b>
+            <div class="release-shield">
+              <span class="label">github</span>
+              <span class="version">{{release.version}}</span>
+            </div>&nbsp;-&nbsp;{{release.date | date:'dd.MM.yyyy'}}&nbsp;-
+            <ng-container *ngIf="expandedRelease[release.version]">&nbsp;
+              <mat-icon aria-hidden="false" aria-label="Deprecations">warning
+              </mat-icon>&nbsp;Deprecations:&nbsp;{{release.deprecations.length}}
+              <mat-icon  aria-hidden="false" aria-label="Deprecations">error
+              </mat-icon>&nbsp;BreakingChanges:&nbsp;{{release.breakingChanges.length}}
             </ng-container>
             <ng-container *ngIf="!expandedRelease[release.version]">
-              <div class="release-shield">
-                <span class="label">github</span>
-                <span class="version">{{release.version}}</span>
-              </div>&nbsp;-&nbsp;<b>{{release.date | date:'dd.MM.yyyy'}}</b>-
-              <mat-icon *ngIf="release.deprecations.length" [color]="'warn'" aria-hidden="false" aria-label="Deprecations">warning
-              </mat-icon>
-              <b *ngIf="release.deprecations.length">{{release.deprecations.length}}</b>
-              <mat-icon *ngIf="release.breakingChanges.length" [color]="'accent'" aria-hidden="false" aria-label="BreakingChange">error
+              <mat-icon *ngIf="release.deprecations.length" aria-hidden="false" aria-label="Deprecations">warning
+              </mat-icon>&nbsp;
+              <span *ngIf="release.deprecations.length">{{release.deprecations.length}}</span>
+              <mat-icon *ngIf="release.breakingChanges.length" aria-hidden="false" aria-label="BreakingChange">error
               </mat-icon>
               &nbsp;
-              <b *ngIf="release.breakingChanges.length">{{release.breakingChanges.length}}</b>&nbsp;
+              <span *ngIf="release.breakingChanges.length">{{release.breakingChanges.length}}</span>&nbsp;
             </ng-container>
           </mat-panel-title>
         </mat-expansion-panel-header>

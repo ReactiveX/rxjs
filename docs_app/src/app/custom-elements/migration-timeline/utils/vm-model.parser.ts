@@ -78,14 +78,30 @@ export function prefixHash(link: string): string {
   return '#' + link;
 }
 
-export function getLatestRelevantVersion(rL: Release[]): string {
+export function getClosestRelevantVersion (version: string) {
+  return (rL: Release[]): string => {
+    // rightPad
+    version = version.split('.')
+      .concat(['0', '0'])
+      .splice(0, 3)
+      .join('.');
+
+    if (rL) {
+      const closestRelease = rL.find(release => release.version.split('.').shift() === version.split('.').shift());
+      return closestRelease ? closestRelease.version : version;
+    }
+    return version;
+  }
+}
+
+export const getLatestRelevantVersion = (date: Date) => (rL: Release[]): string => {
   if (rL) {
     const reIndex = rL.findIndex(r => {
       const reDate = new Date(r.date);
       if (!reDate) {
         return false;
       }
-      return reDate.getTime() > Date.now();
+      return reDate.getTime() > date.getTime();
     });
 
     if (reIndex !== -1) {

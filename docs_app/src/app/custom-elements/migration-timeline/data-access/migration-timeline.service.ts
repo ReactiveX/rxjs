@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {LocalState} from '../utils/local-state.service';
 import {Release} from './interfaces';
@@ -11,7 +11,7 @@ export class MigrationTimelineService extends LocalState<{ migrations?: Release[
 
   private initialMigrations = [];
   private staticMigrations: Release[] = deprecationAndBreakingChangeTimeline;
-  migrations$ = this.state$.pipe(map((s) => s.migrations), startWith(this.initialMigrations));
+  migrations$: Observable<Release[]> = this.state$.pipe(map((s) => s.migrations), startWith(this.initialMigrations));
 
   constructor() {
     super();

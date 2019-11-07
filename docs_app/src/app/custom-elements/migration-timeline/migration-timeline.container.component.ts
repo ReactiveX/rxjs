@@ -1,11 +1,12 @@
 import {Component, ViewEncapsulation} from '@angular/core';
-import {concat, Observable, of, Subject} from 'rxjs';
+import {concat, merge, Observable, of, Subject} from 'rxjs';
 import {map, switchMap, take} from 'rxjs/operators';
 import {LocationService} from '../../shared/location.service';
 import {MigrationTimelineService} from './data-access/migration-timeline.service';
 import {VmMigrationListItem, VmReleaseNavigationItem} from './interfaces';
 import {LocalState} from './utils/local-state.service';
-import {getLatestRelevantVersion, parseVmMigrationList, parseVmReleaseNavigation} from './utils/vm-model.parser';
+import {closestRelevantVersion, latestRelevantVersion} from './utils/operators';
+import {parseVmMigrationList, parseVmReleaseNavigation} from './utils/vm-model.parser';
 
 @Component({
   selector: `rxjs-migration-timeline-container`,
@@ -15,7 +16,6 @@ import {getLatestRelevantVersion, parseVmMigrationList, parseVmReleaseNavigation
       Some Text here...
     </p>
     <h2>Supported Versions</h2>
-    selectedVersion$: {{selectedVersion$ | async}}
     <div class="flex-center group-buttons">
       <mat-chip-list>
         <mat-chip
@@ -29,7 +29,7 @@ import {getLatestRelevantVersion, parseVmMigrationList, parseVmReleaseNavigation
     <h2>Timeline</h2>
     <section class="grid-fluid">
       <div class="release-group">
-   <rxjs-migration-timeline
+        <rxjs-migration-timeline
           [migrationList]="migrationList$ | async"
           [selectedVersion]="selectedVersion$ | async"
           (selectedVersionChange)="selectedVersionChange$.next($event)">
@@ -63,14 +63,21 @@ import {getLatestRelevantVersion, parseVmMigrationList, parseVmReleaseNavigation
     .migration-card .mat-card-header-text {
       margin: 0;
     }
+
     .section-headline {
       padding-left: 35px;
       position: relative;
     }
+
     .section-headline .mat-icon {
       position: absolute;
       left: 0;
       top: -3px;
+    }
+
+    .mat-expansion-panel-header .mat-icon {
+      font-size: 20px;
+      color: #666666;
     }
 
     .release-shield {
@@ -78,15 +85,17 @@ import {getLatestRelevantVersion, parseVmMigrationList, parseVmReleaseNavigation
       border-radius: 4px;
       overflow: hidden;
     }
+
     .release-shield .label,
     .release-shield .version {
-      padding: 3px 3px 4px;
+      padding: 3px 4px 4px;
     }
+
     .release-shield .label {
-      background: #4d4d4c;
+      background: #333333;
       color: #fff;
-      padding-left: 4px;
     }
+
     .release-shield .version {
       background: #1E88E5;
       color: #fff;
@@ -113,17 +122,15 @@ import {getLatestRelevantVersion, parseVmMigrationList, parseVmReleaseNavigation
       padding-right: 4px;
     }
 
-    .migration-card .mat-card-actions {
-      display: flex;
-      justify-content: right;
-      align-content: flex-end;
-    }
-
     .migration-card table {
       width: 100%;
     }
 
     .release.selected .mat-expansion-panel-header-title {
+      color: #d81b60 !important;
+    }
+
+    .release.selected .mat-expansion-panel-header-title .mat-icon {
       color: #d81b60 !important;
     }
   `],
@@ -135,6 +142,7 @@ export class MigrationTimelineContainerComponent
     releaseNavigation?: VmReleaseNavigationItem[],
     migrationList?: VmMigrationListItem[]
   }> {
+  baseURL = 'migration-timeline';
   // UI
   selectedVersionChange$ = new Subject<string>();
 
@@ -145,10 +153,13 @@ export class MigrationTimelineContainerComponent
     this.select(s => s.selectedVersion)
   );
 
-  latestRelevantVersion$: Observable<string> = this.migrationList$
-    .pipe(map(getLatestRelevantVersion));
+  urlVersion$ = this.locationService.currentHash;
+  latestRelevantVersion$: Observable<string> = of(new Date())
+    .pipe(latestRelevantVersion(this.migrationList$));
   initialVersion$: Observable<string> = this.locationService.currentHash
-    .pipe(switchMap(h => h === undefined ? this.latestRelevantVersion$ : of(h)), take(1));
+    .pipe(switchMap((hash: string) => hash === undefined ?
+      this.latestRelevantVersion$ : of(hash).pipe(closestRelevantVersion(this.migrationList$))), take(1)
+    );
 
   constructor(
     private migrationService: MigrationTimelineService,
@@ -162,17 +173,21 @@ export class MigrationTimelineContainerComponent
     this.connectSlice(this.migrationService.migrations$
       .pipe(map(parseVmReleaseNavigation), map(releaseNavigation => ({releaseNavigation}))));
     this.connectSlice(this.migrationService.migrations$
-      .pipe(map(parseVmMigrationList('migration-timeline#')), map(migrationList => ({migrationList}))));
+      .pipe(map(parseVmMigrationList(this.baseURL + '#')), map(migrationList => ({migrationList}))));
 
     // initial values
     this.connectSlice(this.initialVersion$
       .pipe(map(selectedVersion => ({selectedVersion}))));
 
     // UI interactions
-    this.connectSlice(this.selectedVersionChange$
-      .pipe(
-        map(selectedVersion => ({selectedVersion}))
-      ));
+    this.connectSlice(
+      merge(
+        this.selectedVersionChange$,
+        this.urlVersion$.pipe(closestRelevantVersion(this.migrationList$))
+      )
+        .pipe(
+          map(selectedVersion => ({selectedVersion}))
+        ));
   }
 
 }
