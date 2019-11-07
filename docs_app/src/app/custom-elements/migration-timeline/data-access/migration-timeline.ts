@@ -1,15 +1,31 @@
-import {Release} from './interfaces';
+import {ApiSymbols, Release} from './interfaces';
 
+/*
+**Code MSG:**
+@TODO => parse able message in code =>  @deprecated [breakingChange-in v8]: <>
+Pattern: <GenericDeprecationError> <HumanReadableShortMessage> - see <LinkToDeprecationPage>
+- GenericDeprecationError:
+- HumanReadableShortMessage: headline of deprecation object
+- LinkToDeprecationPage: Follows pattern of LinkName
+
+@TODO Consider:
+- how to structure rollback of a deprecation?
+https://github.com/ReactiveX/rxjs/issues/5107
+ */
+
+// @TODO => rxjs-compat intro and remove
 export const deprecationAndBreakingChangeTimeline: Release[] = [
   {
     version: '6.0.0-beta.4',
     date: '2018-03-29',
     deprecations: [
       {
+        subject: 'never',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-static-method-never-to-constant',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-beta.4/src/internal/observable/never.ts#L30',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-static-method-never-removed',
         headline: 'Static method `never` deprecated in favour of constant `NEVER`',
         reason: 'Deprecated because it is more efficient?',
@@ -28,10 +44,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'empty',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-static-method-empty-to-constant',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-beta.4/src/internal/observable/empty.ts#L52',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-static-method-empty-removed',
         headline: 'Static method `empty` deprecated in favor of constant EMPTY',
         reason: 'Deprecated because it is more efficient? Some more text here... Some more text here... Some more text here...',
@@ -46,10 +64,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'WebSocketSubject',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-class-WebSocketSubject-deserializer-to-resultSelector',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-beta.4/src/internal/observable/dom/WebSocketSubject.ts#L16',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-class-WebSocketSubject-deserializer-removed',
         headline: 'WebSocketSubject use `deserializer` in favour or `resultSelector`',
         reason: '@TODO',
@@ -83,12 +103,14 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
     date: '2018-02-09',
     deprecations: [
       {
+        subject: 'last',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-operator-last-resultSelector',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3/src/internal/operators/last.ts#L12',
         breakingVersion: '6.0.0-alpha.4',
         breakingLink: 'breakingChange-operator-last-resultSelector',
-        headline:  getGeneralOperatorResultSelectorHeadlinePhrase('last'),
+        headline: getGeneralOperatorResultSelectorHeadlinePhrase('last'),
         reason: getGeneralStaticResultSelectorReasonPhrase('last'),
         implication: '@!TODO',
         exampleBefore: `
@@ -110,6 +132,8 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'first',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-operator-first-resultSelector',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3/src/internal/operators/first.ts#L18',
@@ -145,6 +169,8 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
     deprecations: [],
     breakingChanges: [
       {
+        subject: 'last',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'breakingChange-operator-last-resultSelector-remove',
         type: 'breakingChange',
         deprecationVersion: '6.0.0-alpha.3',
@@ -152,6 +178,8 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         headline: 'Operator `last` method removed the `resultSelector` argument'
       },
       {
+        subject: 'first',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'breakingChange-operator-first-resultSelector-remove',
         type: 'breakingChange',
         deprecationVersion: '6.0.0-alpha.3',
@@ -165,10 +193,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
     date: '2018-03-31',
     deprecations: [
       {
+        subject: 'combineLatest',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-operator-combineLatest-to-static',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/combineLatest.ts#L42',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-operator-combineLatest-removed',
         headline: getGeneralFlatteningHeadlinePhrase('combineLatest'),
         reason: getGeneralFlatteningReasonPhrase('combineLatest'),
@@ -187,10 +217,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'merge',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-operator-merge-to-static',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/merge.ts#L37',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-operator-merge-removed',
         headline: getGeneralFlatteningHeadlinePhrase('merge'),
         reason: getGeneralFlatteningReasonPhrase('merge'),
@@ -210,10 +242,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'zip',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-operator-zip-to-static',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/zip.ts#L37',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-operator-zip-removed',
         headline: getGeneralFlatteningHeadlinePhrase('zip'),
         reason: getGeneralFlatteningReasonPhrase('zip'),
@@ -233,10 +267,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'concat',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-operator-concat-to-static',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/concat.ts#L25',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-operator-concat-removed',
         headline: getGeneralFlatteningHeadlinePhrase('concat'),
         reason: getGeneralFlatteningReasonPhrase('concat'),
@@ -256,10 +292,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'zip',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-static-zip-resultSelector',
         type: 'deprecation',
         sourceLink: `https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/zip.ts#L37`,
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-static-zip-resultSelector-removed',
         headline: getGeneralStaticResultSelectorHeadlinePhrase('zip'),
         reason: getGeneralStaticResultSelectorReasonPhrase('zip'),
@@ -279,10 +317,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'fromEventPattern',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-static-fromEventPattern-resultSelector',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/fromEventPattern.ts#L9',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-static-fromEventPattern-resultSelector-removed',
         headline: getGeneralStaticResultSelectorHeadlinePhrase('fromEventPattern'),
         reason: getGeneralStaticResultSelectorReasonPhrase('fromEventPattern'),
@@ -303,10 +343,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'bindNodeCallback',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-static-bindNodeCallback-resultSelector',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/bindNodeCallback.ts#L10',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-static-bindNodeCallback-resultSelector-removed',
         headline: getGeneralStaticResultSelectorHeadlinePhrase('bindNodeCallback'),
         reason: getGeneralStaticResultSelectorReasonPhrase('bindNodeCallback'),
@@ -327,10 +369,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'bindCallback',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-static-bindCallback-resultSelector',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/bindCallback.ts#L10',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-static-bindCallback-resultSelector-removed',
         headline: getGeneralStaticResultSelectorHeadlinePhrase('bindCallback'),
         reason: getGeneralStaticResultSelectorReasonPhrase('bindCallback'),
@@ -351,10 +395,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'forkJoin',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-static-forkJoin-resultSelector',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/forkJoin.ts#L29',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-static-forkJoin-resultSelector-removed',
         headline: getGeneralStaticResultSelectorHeadlinePhrase('forkJoin'),
         reason: getGeneralStaticResultSelectorReasonPhrase('forkJoin'),
@@ -384,10 +430,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'fromEvent',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-static-fromEvent-resultSelector',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/fromEvent.ts#L32',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-static-fromEvent-resultSelector-removed',
         headline: getGeneralStaticResultSelectorHeadlinePhrase('fromEvent'),
         reason: getGeneralStaticResultSelectorReasonPhrase('fromEvent'),
@@ -408,10 +456,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'switchMap',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-operator-switchMap-resultSelector',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/switchMap.ts#L16',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-operator-switchMap-resultSelector-removed',
         headline: getGeneralOperatorResultSelectorHeadlinePhrase('switchMap'),
         reason: getGeneralStaticResultSelectorReasonPhrase('switchMap'),
@@ -436,10 +486,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'switchMapTo',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-operator-switchMapTo-resultSelector',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/switchMapTo.ts#L15',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-operator-switchMapTo-resultSelector-removed',
         headline: getGeneralOperatorResultSelectorHeadlinePhrase('switchMapTo'),
         reason: getGeneralStaticResultSelectorReasonPhrase('switchMapTo'),
@@ -464,10 +516,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'concatMap',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-operator-concatMap-resultSelector',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/concatMap.ts#L8',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-operator-concatMap-resultSelector-removed',
         headline: getGeneralOperatorResultSelectorHeadlinePhrase('concatMap'),
         reason: getGeneralStaticResultSelectorReasonPhrase('concatMap'),
@@ -492,10 +546,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'concatMapTo',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-operator-concatMapTo-resultSelector',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/concatMapTo.ts#L8',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-operator-concatMapTo-resultSelector-removed',
         headline: getGeneralOperatorResultSelectorHeadlinePhrase('concatMapTo'),
         reason: getGeneralStaticResultSelectorReasonPhrase('concatMapTo'),
@@ -520,10 +576,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'mergeMap',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-operator-mergeMap-resultSelector',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/mergeMap.ts#L16',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-operator-mergeMap-resultSelector-removed',
         headline: getGeneralOperatorResultSelectorHeadlinePhrase('mergeMap'),
         reason: getGeneralStaticResultSelectorReasonPhrase('mergeMap'),
@@ -548,10 +606,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
       `
       },
       {
+        subject: 'mergeMapTo',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-operator-mergeMapTo-resultSelector',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/mergeMapTo.ts#L8',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-operator-mergeMapTo-resultSelector-removed',
         headline: getGeneralOperatorResultSelectorHeadlinePhrase('mergeMapTo'),
         reason: getGeneralStaticResultSelectorReasonPhrase('mergeMapTo'),
@@ -576,10 +636,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'exhaustMapTo',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-operator-exhaustMap-resultSelector',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/exhaustMap.ts#L16',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-operator-exhaustMap-resultSelector-removed',
         headline: getGeneralOperatorResultSelectorHeadlinePhrase('exhaustMap'),
         reason: getGeneralStaticResultSelectorReasonPhrase('exhaustMap'),
@@ -611,10 +673,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
     date: '2018-04-07',
     deprecations: [
       {
+        subject: 'Scheduler',
+        subjectApiSymbol: ApiSymbols.class,
         linkName: 'deprecation-class-Scheduler',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tactical-rc.1/src/internal/Scheduler.ts#L20',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-class-Scheduler-removed',
         headline: 'Class `Scheduler` deprecated in favor of Interface {@link SchedulerLike}',
         reason: 'As `Scheduler` is an internal implementation detail of RxJS, and ' +
@@ -678,10 +742,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
     date: '2018-04-07',
     deprecations: [
       {
+        subject: 'Observable',
+        subjectApiSymbol: ApiSymbols.class,
         linkName: 'deprecation-class-Observable-if-to-static',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.1/src/internal/Observable.ts#L260',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-class-Observable-if-removed',
         headline: 'Observable static method `if` moved to static operator function {@link iif}',
         reason: 'As `if` was a prototype method there was no conflict. ' +
@@ -700,10 +766,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'Observable',
+        subjectApiSymbol: ApiSymbols.class,
         linkName: 'deprecation-class-Observable-throw-to-static',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.1/src/internal/Observable.ts#L265',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-class-Observable-throw-removed',
         headline: 'Observable static method `throw` moved to static operator function {@link iif}',
         reason: 'As `if` was a prototype method there was no conflict. ' +
@@ -729,10 +797,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
     date: '2018-05-22',
     deprecations: [
       {
+        subject: 'race',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-race-operator-to-static',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.2.0/src/internal/operators/race.ts#L24',
-        breakingVersion: '7.x.x',
+        breakingVersion: '7',
         breakingLink: 'breakingChange-race-operator-removed',
         headline: 'Static `race` deprecated in favor of static function {@link race}',
         reason: 'As `race` operator is a name duplicate of static the operators to `race`.',
@@ -765,13 +835,15 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
   },
   {
     version: '6.3.0',
-    date: '2018-30-08',
+    date: '2018-08-30',
     deprecations: [
       {
+        subject: 'ObservableLike',
+        subjectApiSymbol: ApiSymbols.interface,
         linkName: 'interface-ObservableLike-deprecation-to-interopObservable ',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.3.0/src/internal/types.ts#L48',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'interface-ObservableLike-removed',
         headline: 'Interface `ObservableLike` in favour of `InteropObservable`',
         reason: `This interface is only here to provide
@@ -794,10 +866,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
     date: '2019-01-30',
     deprecations: [
       {
+        subject: 'ObservableLike',
+        subjectApiSymbol: ApiSymbols.class,
         linkName: 'deprecation-class-Observable-subscribe-callback-argument-to-observer',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/Observable.ts#L78',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'breakingChange-class-Observable-subscribe-callback-argument-removed',
         headline: 'The Observables `subscribe` method now takes an {@link Observer} object instead of callback',
         reason: `The {@link Observer} object is way more explicit as the callbacks.
@@ -828,10 +902,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'tap',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-operator-tap-callbacks-argument-to-observer',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/operators/tap.ts#L13',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'breakingChange-operator-tap-callbacks-argument-removed',
         headline: 'Operator `tap` method now takes an {@link Observer} object instead of callback',
         reason: 'The {@link Observer} object is way more explicit as the callbacks. We can avoid passing `null` for unused callbacks.' +
@@ -863,10 +939,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'Observable',
+        subjectApiSymbol: ApiSymbols.class,
         linkName: 'deprecation-class-Observable-create',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/Observable.ts#L53',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'breakingChange-class-Observable-create-removed',
         headline: 'Observable static method `create` deprecated in favour of normal instantiation over `new Observable()`',
         reason: `After moving to "pipeable" operators \`create\` static Observable method got deprecated.
@@ -885,10 +963,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'TimeInterval',
+        subjectApiSymbol: ApiSymbols.class,
         linkName: 'deprecation-class-TimeInterval-to-interface',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/operators/timeInterval.ts#L69',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'breakingChange-class-TimeInterval-removed',
         headline: 'Class `TimeInterval` deprecated. As it is an internal implementation detail use it as Interface only.',
         reason: `Class TimeInterval gets deprecated in favour of
@@ -905,10 +985,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
     date: '2019-04-23',
     deprecations: [
       {
+        subject: 'of',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-static-of-scheduler',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/of.ts#L29',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'breakingChange-static-of-scheduler-removed',
         headline: 'Static `of` deprecated the scheduler argument.',
         reason: 'The scheduling API is heavy and rarely used. Therefor it will get released as a separate package.' +
@@ -926,10 +1008,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'combineLatest',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-static-combineLatest-scheduler',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/combineLatest.ts#L59',
         type: 'deprecation',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'breakingChange-static-combineLatest-scheduler-removed',
         headline: 'Static `combineLatest` deprecated the scheduler argument.',
         reason: 'The scheduling API is heavy and rarely used. Therefor it will get released as a separate package.' +
@@ -947,10 +1031,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'combineLatest',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-static-combineLatest-resultSelector',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/combineLatest.ts#L43',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'breakingChange-static-combineLatest-resultSelector-removed',
         headline: getGeneralStaticResultSelectorHeadlinePhrase('combineLatest'),
         reason: getGeneralStaticResultSelectorReasonPhrase('combineLatest'),
@@ -970,10 +1056,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'combineLatest',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-static-combineLatest-multiple-arguments',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/combineLatest.ts#L100',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'breakingChange-static-combineLatest-multiple-arguments-removed',
         headline: 'Static `combineLatest` method arguments in an array instead of single arguments.',
         reason: `Static \`combineLatest\` method arguments in an array instead of single arguments.
@@ -991,9 +1079,11 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'forkJoin',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-static-forkJoin-multiple-arguments',
         type: 'deprecation',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/forkJoin.ts#L22',
         breakingLink: 'breakingChange-static-forkJoin-multiple-arguments-removed',
         headline: 'Static `forkJoin` method arguments in an array instead of single arguments.',
@@ -1012,10 +1102,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'partition',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-operator-partition-to-static',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/operators/partition.ts#L54',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'breakingChange-operator-partition-removed',
         headline: 'Static `partition` deprecated in favor of static function {@link partition}',
         reason: 'As `partition` operator is not compose able and it can anyway only be used to create the array`.',
@@ -1050,10 +1142,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
     date: '2019-04-23',
     deprecations: [
       {
+        subject: 'NotificationKind',
+        subjectApiSymbol: ApiSymbols.enum,
         linkName: 'deprecation-enum-NotificationKind-to-string-literal',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.1/src/internal/Notification.ts#L10',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'breakingChange-enum-NotificationKind-removed',
         headline: '`NotificationKind` is deprecated, use a string literal instead.',
         reason: 'NotificationKind is deprecated as const enums are not compatible with isolated modules. Use a string literal instead.',
@@ -1071,14 +1165,16 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
     breakingChanges: []
   },
   {
-    version: '7.0.0-alpha-0',
+    version: '7.0.0-alpha.0',
     date: '2019-09-18',
     deprecations: [
       {
+        subject: 'concat',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-operator-concat-scheduler',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/observable/concat.ts#L17',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'breakingChange-operator-concat-scheduler-removed',
         headline: 'Static `concat` deprecate the scheduler argument',
         reason: 'Due to refactorings on scheduling in RxJS the scheduler argument of `concat` gets deprecated.',
@@ -1101,10 +1197,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'of',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-operator-of-deprecation-scheduler',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/observable/of.ts#L29',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'breakingChange-static-of-scheduler-removed',
         headline: 'Static `of` deprecate the scheduler argument',
         reason: 'Due to refactorings on scheduling in RxJS the scheduler argument of `of` gets deprecated.',
@@ -1121,10 +1219,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'merge',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-static-merge-deprecation-scheduler',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/observable/merge.ts#L49',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'breakingChange-static-merge-scheduler-removed',
         headline: 'Static `merge` deprecate the scheduler argument',
         reason: 'Due to refactorings on scheduling in RxJS the scheduler argument of `merge` gets deprecated.',
@@ -1144,10 +1244,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'startWith',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-operator-startWith-scheduler',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/operators/startWith.ts#L29',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'breakingChange-operator-startWith-scheduler-removed',
         headline: 'Operator `startWith` deprecate the scheduler argument',
         reason: 'Due to refactorings on scheduling in RxJS the scheduler argument of `startWith` gets deprecated.',
@@ -1175,10 +1277,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'endWith',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'deprecation-operator-endWith-scheduler',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/operators/endWith.ts#L29',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'breakingChange-operator-endWith-scheduler-removed',
         headline: 'Operator `endWith` deprecate the scheduler argument',
         reason: 'Due to refactorings on scheduling in RxJS the scheduler argument of `endWith` gets deprecated.',
@@ -1206,10 +1310,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         `
       },
       {
+        subject: 'TestScheduler',
+        subjectApiSymbol: ApiSymbols.class,
         linkName: 'deprecation-class-TestScheduler-hotObservables',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/testing/TestScheduler.ts#L39',
         type: 'deprecation',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'breakingChange-class-TestScheduler-hotObservables-private',
         headline: 'Class `TestScheduler` deprecate the public property `hotObservables`',
         reason: '@TODO `TestScheduler` deprecates public `hotObservables` property and makes it protected as it is internal.',
@@ -1218,10 +1324,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         exampleAfter: '@TODO'
       },
       {
+        subject: 'TestScheduler',
+        subjectApiSymbol: ApiSymbols.class,
         linkName: 'deprecation-class-TestScheduler-coldObservables',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/testing/TestScheduler.ts#L44',
         type: 'deprecation',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'breakingChange-class-TestScheduler-coldObservables-private',
         headline: 'Class `TestScheduler` deprecate the public property `coldObservables`',
         reason: '@TODO `TestScheduler` deprecates public `coldObservables` property and makes it protected as it is and internal.',
@@ -1230,10 +1338,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         exampleAfter: '@TODO'
       },
       {
+        subject: 'VirtualTimeScheduler',
+        subjectApiSymbol: ApiSymbols.class,
         linkName: 'deprecation-class-VirtualTimeScheduler-frameTimeFactor',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/scheduler/VirtualTimeScheduler.ts#L8',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'breakingChange-class-VirtualTimeScheduler-breakingChange-frameTimeFactor',
         headline: 'Class `VirtualTimeScheduler` deprecates the static property `frameTimeFactor`.',
         reason: '`frameTimeFactor` is not used in `VirtualTimeScheduler` directly, therefore it does not belong here.',
@@ -1242,10 +1352,12 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         exampleAfter: '@TODO'
       },
       {
+        subject: 'VirtualTimeScheduler',
+        subjectApiSymbol: ApiSymbols.class,
         linkName: 'class-VirtualTimeScheduler-index-to-private',
         type: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/scheduler/VirtualTimeScheduler.ts#L23',
-        breakingVersion: '8.x.x',
+        breakingVersion: '8',
         breakingLink: 'breakingChange-class-VirtualTimeScheduler-index-private',
         headline: 'Class `VirtualTimeScheduler` deprecates the static property `index`.',
         reason: '`index` property of `VirtualTimeScheduler` is only used internally and should ot be used.',
@@ -1257,11 +1369,34 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
     breakingChanges: []
   },
   {
+    version: '7.0.0-test-99',
+    date: '2019-11-18',
+    deprecations: [
+      {
+        subject: 'TestScheduler',
+        subjectApiSymbol: ApiSymbols.class,
+        linkName: 'deprecation-class-TestScheduler-coldObservables',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/testing/TestScheduler.ts#L44',
+        type: 'deprecation',
+        breakingVersion: '8',
+        breakingLink: 'breakingChange-class-TestScheduler-coldObservables-private',
+        headline: 'Class `TestScheduler` deprecate the public property `coldObservables`',
+        reason: '@TODO `TestScheduler` deprecates public `coldObservables` property and makes it protected as it is and internal.',
+        implication: '@!TODO',
+        exampleBefore: '@TODO',
+        exampleAfter: '@TODO'
+      }
+    ],
+    breakingChanges: []
+  },
+  {
     version: '8.0.0.alpha.0',
-    date: '???????',
+    date: '2020-20-02',
     deprecations: [],
     breakingChanges: [
       {
+        subject: 'concat',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'breakingChange-operator-concat-scheduler-removed',
         type: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
@@ -1269,6 +1404,8 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         headline: 'Static `concat` method removed the `scheduler` argument'
       },
       {
+        subject: 'of',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'breakingChange-static-of-scheduler-removed',
         type: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
@@ -1276,6 +1413,8 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         headline: 'Static `of` method removed the `scheduler` argument'
       },
       {
+        subject: 'merge',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'breakingChange-static-merge-scheduler-removed',
         type: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
@@ -1283,6 +1422,8 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         headline: 'Static `merge` method removed the `scheduler` argument'
       },
       {
+        subject: 'startWith',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'breakingChange-operator-startWith-scheduler-removed',
         type: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
@@ -1290,6 +1431,8 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         headline: 'Static `startWith` method removed the `scheduler` argument'
       },
       {
+        subject: 'endWith',
+        subjectApiSymbol: ApiSymbols.function,
         linkName: 'breakingChange-operator-endWith-scheduler-removed',
         type: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
@@ -1297,6 +1440,8 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         headline: 'Static `endWith` method removed the `scheduler` argument'
       },
       {
+        subject: 'TestScheduler',
+        subjectApiSymbol: ApiSymbols.class,
         linkName: 'breakingChange-class-TestScheduler-hotObservables',
         type: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
@@ -1304,6 +1449,8 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         headline: 'Class `TestScheduler` method made the `hotObservables` property private'
       },
       {
+        subject: 'TestScheduler',
+        subjectApiSymbol: ApiSymbols.class,
         linkName: 'breakingChange-class-TestScheduler-coldObservables',
         type: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
@@ -1311,6 +1458,8 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         headline: 'Class `TestScheduler` method made the `coldObservables` property private'
       },
       {
+        subject: 'VirtualTimeScheduler',
+        subjectApiSymbol: ApiSymbols.class,
         linkName: 'breakingChange-class-VirtualTimeScheduler-breakingChange-frameTimeFactor',
         type: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
@@ -1318,6 +1467,8 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
         headline: 'Class `VirtualTimeScheduler` moved `frameTimeFactor` out of class.'
       },
       {
+        subject: 'VirtualTimeScheduler',
+        subjectApiSymbol: ApiSymbols.class,
         linkName: 'breakingChange-class-VirtualTimeScheduler-index-private',
         type: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
@@ -1343,14 +1494,17 @@ function getGeneralFlatteningReasonPhrase(operatorName: string): string {
 function getGeneralOperatorResultSelectorHeadlinePhrase(operatorName: string): string {
   return `Operator \`${operatorName}\` method deprecated the \`resultSelector\` argument`;
 }
+
 function getGeneralStaticResultSelectorHeadlinePhrase(operatorName: string): string {
   return `Static \`${operatorName}\` method deprecated the \`resultSelector\` argument`;
 }
+
 function getGeneralStaticResultSelectorReasonPhrase(operatorName: string): string {
   return `By removing the result selector from \`${operatorName}\` we get a smaller bundle since of the operator.
           Further the resultSelector was not that often used and the
           refactoring to use and internal \`map\` operation instead is a minor code change.`;
 }
+
 /*
 function toRefactoring(deprecation: Deprecation, version: string): string {
   return `

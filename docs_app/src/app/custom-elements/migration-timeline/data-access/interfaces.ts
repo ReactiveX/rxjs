@@ -1,14 +1,34 @@
+export type TimeLineTypeDeprecation = 'deprecation';
+export type TimeLineTypeBreakingChange = 'breakingChange';
+export type TimeLineTypes = TimeLineTypeDeprecation | TimeLineTypeBreakingChange
 
-
-export type TimeLineTypeDeprecation =  'deprecation';
-export type TimeLineTypeBreakingChange =  'breakingChange';
-export type TimeLineTypes =  TimeLineTypeDeprecation | TimeLineTypeBreakingChange
+export enum ApiSymbols {
+  all = 'all',
+  argument = 'argument',
+  decorator = 'decorator',
+  directive = 'directive',
+  pipe = 'pipe',
+  class = 'class',
+  interface = 'interface',
+  function = 'function',
+  enum = 'enum',
+  const = 'enum',
+  let = 'let',
+  var = 'var',
+  'typeAlias' = 'type-alias',
+  module = 'module'
+}
 
 export interface Deprecation {
+  // What piece is effected? i.e. never, switchMap
+  subject: string;
+  // What attribute of the piece is effected? i.e. multiple arguments to one ,resultSelector, accessor specifier private/public/readonly....
+  subjectApiSymbol: ApiSymbols;
   // Link to line of code in GitHub in version it got introduced
   sourceLink: string;
   /*
   # LinkName
+  @TODO prefix linkName with version?
   Pattern: deprecation-<type>-<type-name>-<action-name>
   - type: class, interface, operator, static, constant, enum
   - type-name: TestScheduler, of, NEVER, switchMap
@@ -51,6 +71,10 @@ export interface Deprecation {
 }
 
 export interface BreakingChange {
+  // What piece is effected? i.e. never, switchMap
+  subject: string;
+  // What attribute of the piece is effected? i.e. multiple arguments to one ,resultSelector, accessor specifier private/public/readonly....
+  subjectApiSymbol: ApiSymbols;
   /*
  # LinkName
  Pattern: breakingChange-<type>-<type-name>-<action-name>

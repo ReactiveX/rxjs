@@ -24,27 +24,51 @@ export interface IMigrationTimelineVM {
         [expanded]="expandedRelease[release.version]">
         <mat-expansion-panel-header
           class="release"
-          [ngClass]="{'selected': expandedRelease[release.version]}">
-          <mat-panel-title>
-            <ng-container *ngIf="!expandedRelease[release.version]">{{release.version}}</ng-container>
-            <ng-container *ngIf="expandedRelease[release.version]">{{release.title}}</ng-container>
+          [ngClass]="{'selected': (selectedVersion$ | async) === release.version}">
+          <mat-panel-title [id]="release.version">
+            <ng-container *ngIf="expandedRelease[release.version]">
+              <div class="release-shield">
+                <span class="label">github</span>
+                <span class="version">{{release.version}}</span>
+              </div> - {{release.date | date:'dd.MM.yyyy'}}&nbsp;-&nbsp;
+              <mat-icon [color]="'warn'" aria-hidden="false" aria-label="Deprecations">warning
+              </mat-icon> Deprecations: <b>{{release.deprecations.length}}</b>
+              <mat-icon [color]="'accert'" aria-hidden="false" aria-label="Deprecations">error
+              </mat-icon>   BreakingChanges: <b>{{release.breakingChanges.length}}</b>
+            </ng-container>
+            <ng-container *ngIf="!expandedRelease[release.version]">
+              <div class="release-shield">
+                <span class="label">github</span>
+                <span class="version">{{release.version}}</span>
+              </div>&nbsp;-&nbsp;<b>{{release.date | date:'dd.MM.yyyy'}}</b>-
+              <mat-icon *ngIf="release.deprecations.length" [color]="'warn'" aria-hidden="false" aria-label="Deprecations">warning
+              </mat-icon>
+              <b *ngIf="release.deprecations.length">{{release.deprecations.length}}</b>
+              <mat-icon *ngIf="release.breakingChanges.length" [color]="'accent'" aria-hidden="false" aria-label="BreakingChange">error
+              </mat-icon>
+              &nbsp;
+              <b *ngIf="release.breakingChanges.length">{{release.breakingChanges.length}}</b>&nbsp;
+            </ng-container>
           </mat-panel-title>
         </mat-expansion-panel-header>
 
         <ng-container *ngIf="release.deprecations.length > 0; else emptyDeprecationList">
-          <mat-card *ngFor="let deprecation of release.deprecations" class="migration-card ">
+          <h3 class="section-headline">
+            <mat-icon [color]="'warn'"
+              aria-hidden="false" aria-label="Deprecations">warning
+            </mat-icon>
+            {{release.deprecations.length}} Deprecations introduced on {{release.date}} ( {{release.version}} )
+          </h3>
+          <mat-card *ngFor="let deprecation of release.deprecations" class="migration-card">
             <mat-card-header [id]="release.link">
-              <mat-card-title>{{deprecation.title}}</mat-card-title>
+              <mat-card-title>
+                {{deprecation.title}}
+              </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-              <b>Reason:</b>
-              <p>
-                {{deprecation.reason}}
-              </p>
-              <b>Implication:</b>
-              <p>
-                {{deprecation.implication}}
-              </p>
+              <deprecation-description-table
+                [deprecation]="deprecation">
+              </deprecation-description-table>
               <code-example [language]="'typescript'" [title]="deprecation.exampleBeforeTitle">
                 {{deprecation.exampleBefore}}
               </code-example>
@@ -52,30 +76,29 @@ export interface IMigrationTimelineVM {
                 {{deprecation.exampleAfter}}
               </code-example>
             </mat-card-content>
-            <mat-card-actions>
-              <button mat-button>Breaking in {{deprecation.breakingVersion}}</button>
-            </mat-card-actions>
           </mat-card>
         </ng-container>
         <ng-template #emptyDeprecationList>
-          <p>No Deprecations made in version {{release.version}}</p>
+          <h3>No Deprecations made in version {{release.version}}</h3>
         </ng-template>
 
         <ng-container *ngIf="release.breakingChanges.length > 0; else emptyBreakingChangesList">
+          <h3 class="section-headline">
+            <mat-icon [color]="'accent'" aria-hidden="false" aria-label="BreakingChange">error</mat-icon>
+            Breaking changes introduced on {{release.date}} ( {{release.version}} )
+          </h3>
           <mat-card *ngFor="let breakingChange of release.breakingChanges" class="migration-card ">
             <mat-card-header [id]="release.link">
               <mat-card-title>{{breakingChange.title}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-             <p>See deprecations in version: ?</p>
+              <breaking-change-description-table [breakingChange]="breakingChange">
+              </breaking-change-description-table>
             </mat-card-content>
-            <mat-card-actions>
-              <button mat-button>Deprecated in</button>
-            </mat-card-actions>
           </mat-card>
         </ng-container>
         <ng-template #emptyBreakingChangesList>
-          <p>No BreakingChanges made in version {{release.version}}</p>
+          <h3>No BreakingChanges made in version {{release.version}}</h3>
         </ng-template>
 
       </mat-expansion-panel>
@@ -112,8 +135,8 @@ export class MigrationTimelineComponent extends LocalState<IMigrationTimelineVM>
   migrationList$ = this.select(s => s.migrationList);
   selectedVersion$ = this.select(s => s.selectedVersion);
   expandedRelease$: Observable<{ [key: string]: boolean }> = merge(
-    // A) Version selection click
-    // If the user select's new version expand this panel
+    // A) Version selection click (nav bar of versions)
+    // If the user select's a new version expand this panel
     this.selectedVersion$.pipe(map((version: string) => ({[version]: true}))),
     // B) Panel expansion click
     // If the panel requests a expansion change

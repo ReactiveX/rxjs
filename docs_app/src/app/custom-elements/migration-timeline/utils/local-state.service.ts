@@ -45,8 +45,9 @@ export class LocalState<T> implements OnDestroy {
     this.effectSubject.next(o);
   }
 
-  select(selector?) {
-    return selector ? this.state$
+  // @TODO find out where the initial undefined is coming from
+  select(selector) {
+    return this.state$
       .pipe(
         map(s => selector(s)),
         // @TODO where to put? .select in the view is meh, and creating multiple properties in vm is not good!
@@ -57,7 +58,7 @@ export class LocalState<T> implements OnDestroy {
         // - use state$ | async in the template
         distinctUntilChanged(),
         shareReplay(1)
-      ) : this.state$;
+      );
   }
 
   ngOnDestroy(): void {
