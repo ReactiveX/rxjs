@@ -78,20 +78,45 @@ export function prefixHash(link: string): string {
   return '#' + link;
 }
 
-export function getClosestRelevantVersion (version: string) {
+export function getClosestRelevantVersion(version = '') {
   return (rL: Release[]): string => {
-    // rightPad
-    version = version.split('.')
-      .concat(['0', '0'])
-      .splice(0, 3)
-      .join('.');
 
     if (rL) {
-      const closestRelease = rL.find(release => release.version.split('.').shift() === version.split('.').shift());
+      const closestRelease = rL.find(release => {
+        if (release.version === version) {
+          return true;
+        }
+        const [rMajor, rMinor, rMid, rSubV] = release.version.split('.');
+        const [rPatch, rName] = rMid ? rMid.split('-') : [0, 0];
+
+        const [sMajor, sMinor, sMid, sSubV] = version.split('.');
+        const [sPatch, sName] = sMid ? sMid.split('-') : [0, 0];
+
+        let rNameVal;
+        let sNameVal;
+        if (rName < sName) {
+          rNameVal = 0;
+          sNameVal = 1;
+        }
+        if (rName > sName) {
+          rNameVal = 1;
+          sNameVal = 0;
+        }
+        if (rName > sName) {
+          rNameVal = 0;
+          sNameVal = 0;
+        }
+        const currentVersion = [rMajor, rMinor, rPatch, rNameVal, rSubV].map(n => n || 0).join('');
+        const selectedVersion = [sMajor, sMinor, sPatch, sNameVal, sSubV].map(n => n || 0).join('');
+        if (currentVersion >= selectedVersion) {
+          return true;
+        }
+        return false;
+      });
       return closestRelease ? closestRelease.version : version;
     }
     return version;
-  }
+  };
 }
 
 export const getLatestRelevantVersion = (date: Date) => (rL: Release[]): string => {
@@ -112,5 +137,5 @@ export const getLatestRelevantVersion = (date: Date) => (rL: Release[]): string 
     }
   }
   return '';
-}
+};
 

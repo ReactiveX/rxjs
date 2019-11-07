@@ -18,7 +18,14 @@ export class MigrationTimelineService extends LocalState<{ migrations?: Release[
   }
 
   fetchMigrationTimeline(): void {
-    this.connectSlice(of({migrations: this.staticMigrations}));
+    this.connectSlice(of({
+        migrations: this.staticMigrations.sort((a, b) => {
+          if (a.date < b.date) { return -1; }
+          if (a.date > b.date) { return 1; }
+          return 0;
+        })
+      })
+    );
   }
 
 }

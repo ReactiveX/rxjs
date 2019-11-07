@@ -18,12 +18,12 @@ import {parseVmMigrationList, parseVmReleaseNavigation} from './utils/vm-model.p
     <h2>Supported Versions</h2>
     <div class="flex-center group-buttons">
       <mat-chip-list>
+        <a *ngFor="let option of releaseNavigation$ | async" [href]="baseURL + '#' + option.version">
         <mat-chip
-          *ngFor="let option of releaseNavigation$ | async"
-          [selected]="(selectedVersion$ | async) === option.version"
-          (click)="selectedVersionChange$.next(option.version)">
+          [selected]="(selectedVersion$ | async) === option.version">
           {{option.version}}
         </mat-chip>
+        </a>
       </mat-chip-list>
     </div>
     <h2>Timeline</h2>

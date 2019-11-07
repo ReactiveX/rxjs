@@ -1369,7 +1369,7 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
     breakingChanges: []
   },
   {
-    version: '7.0.0-test-99',
+    version: '7.0.0-test.99',
     date: '2019-11-18',
     deprecations: [
       {
