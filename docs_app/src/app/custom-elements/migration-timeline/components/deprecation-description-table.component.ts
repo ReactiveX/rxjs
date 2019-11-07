@@ -1,4 +1,4 @@
-import {Component, Input, ViewEncapsulation} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ReplaySubject} from 'rxjs';
 import {VmDeprecation} from '../interfaces';
 
@@ -48,11 +48,7 @@ import {VmDeprecation} from '../interfaces';
       </tr>
       </tbody>
     </table>
-  `,
-  styles: [`
-
-  `],
-  encapsulation: ViewEncapsulation.None
+  `
 })
 export class DeprecationDescriptionTableComponent {
   d$ = new ReplaySubject<VmDeprecation>(1);

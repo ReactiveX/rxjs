@@ -1,4 +1,4 @@
-import {Component, Input, ViewEncapsulation} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ReplaySubject} from 'rxjs';
 import {VmBreakingChange} from '../interfaces';
 
@@ -29,11 +29,7 @@ import {VmBreakingChange} from '../interfaces';
       </tr>
       </tbody>
     </table>
-  `,
-  styles: [`
-
-  `],
-  encapsulation: ViewEncapsulation.None
+  `
 })
 export class BreakingChangeDescriptionTableComponent {
   b$ = new ReplaySubject<VmBreakingChange>(1);

@@ -1,4 +1,4 @@
-import {Component, Input, Output, ViewEncapsulation} from '@angular/core';
+import {Component, Input, Output} from '@angular/core';
 import {merge, Observable, Subject} from 'rxjs';
 import {filter, map, scan, shareReplay, withLatestFrom} from 'rxjs/operators';
 import {VmMigrationList} from '../interfaces';
@@ -17,23 +17,24 @@ export interface IMigrationTimelineVM {
       *ngIf="expandedRelease$ | async as expandedRelease">
 
       <mat-expansion-panel
-        class="migration-timeline"
+        class="migration-timeline-item"
+        [ngClass]="{'selected': (selectedVersion$ | async) === release.version}"
         *ngFor="let release of migrationList$ | async"
         (click)="selectedVersionChange.next(release.version)"
         (click)="expandedReleaseChange.next(release.version)"
         [expanded]="expandedRelease[release.version]">
-        <mat-expansion-panel-header
-          class="release"
-          [ngClass]="{'selected': (selectedVersion$ | async) === release.version}">
-          <mat-panel-title [id]="release.version">
-            <div class="release-shield">
+        <mat-expansion-panel-header class="header">
+          <mat-panel-title
+            class="migration-timeline-item-header-title"
+            [id]="release.version">
+            <div class="shield">
               <span class="label">github</span>
               <span class="version">{{release.version}}</span>
             </div>&nbsp;-&nbsp;{{release.date | date:'dd.MM.yyyy'}}&nbsp;-
             <ng-container *ngIf="expandedRelease[release.version]">&nbsp;
               <mat-icon aria-hidden="false" aria-label="Deprecations">warning
-              </mat-icon>&nbsp;Deprecations:&nbsp;{{release.deprecations.length}}
-              <mat-icon  aria-hidden="false" aria-label="Deprecations">error
+              </mat-icon>&nbsp;Deprecations:&nbsp;{{release.deprecations.length}}&nbsp;
+              <mat-icon aria-hidden="false" aria-label="Deprecations">error
               </mat-icon>&nbsp;BreakingChanges:&nbsp;{{release.breakingChanges.length}}
             </ng-container>
             <ng-container *ngIf="!expandedRelease[release.version]">
@@ -49,14 +50,14 @@ export interface IMigrationTimelineVM {
         </mat-expansion-panel-header>
 
         <ng-container *ngIf="release.deprecations.length > 0; else emptyDeprecationList">
-          <h3 class="section-headline">
+          <h3 class="migration-section-headline">
             <mat-icon [color]="'warn'"
               aria-hidden="false" aria-label="Deprecations">warning
             </mat-icon>
             {{release.deprecations.length}} Deprecations introduced on {{release.date}} ( {{release.version}} )
           </h3>
-          <mat-card *ngFor="let deprecation of release.deprecations" class="migration-card">
-            <mat-card-header [id]="release.link">
+          <mat-card *ngFor="let deprecation of release.deprecations" class="migration-section">
+            <mat-card-header [id]="release.link" class="migration-headline">
               <mat-card-title>
                 {{deprecation.title}}
               </mat-card-title>
@@ -79,12 +80,12 @@ export interface IMigrationTimelineVM {
         </ng-template>
 
         <ng-container *ngIf="release.breakingChanges.length > 0; else emptyBreakingChangesList">
-          <h3 class="section-headline">
+          <h3 class="migration-section-headline">
             <mat-icon [color]="'accent'" aria-hidden="false" aria-label="BreakingChange">error</mat-icon>
             Breaking changes introduced on {{release.date}} ( {{release.version}} )
           </h3>
-          <mat-card *ngFor="let breakingChange of release.breakingChanges" class="migration-card ">
-            <mat-card-header [id]="release.link">
+          <mat-card *ngFor="let breakingChange of release.breakingChanges" class="migration-section">
+            <mat-card-header [id]="release.link" class="migration-headline">
               <mat-card-title>{{breakingChange.title}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
@@ -99,11 +100,7 @@ export interface IMigrationTimelineVM {
 
       </mat-expansion-panel>
 
-    </mat-accordion>`,
-  styles: [`
-
-  `],
-  encapsulation: ViewEncapsulation.None
+    </mat-accordion>`
 })
 export class MigrationTimelineComponent extends LocalState<IMigrationTimelineVM> {
 
@@ -113,8 +110,6 @@ export class MigrationTimelineComponent extends LocalState<IMigrationTimelineVM>
       this.setSlice({migrationList});
     }
   }
-
-  selectedVersionInput = new Subject<string>();
 
   @Input()
   set selectedVersion(selectedVersion: string) {
@@ -130,6 +125,8 @@ export class MigrationTimelineComponent extends LocalState<IMigrationTimelineVM>
 
   migrationList$ = this.select(s => s.migrationList);
   selectedVersion$ = this.select(s => s.selectedVersion);
+
+  // @TODO refactor after routing is done clean
   expandedRelease$: Observable<{ [key: string]: boolean }> = merge(
     // A) Version selection click (nav bar of versions)
     // If the user select's a new version expand this panel

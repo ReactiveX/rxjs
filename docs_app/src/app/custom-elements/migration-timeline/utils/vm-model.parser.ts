@@ -62,7 +62,7 @@ export function parseVmBreakingChangeItem(version: string, baseURL: string) {
       subject: i.subject,
       subjectApiSymbol: i.subjectApiSymbol || 'all',
       refactoringTitle: 'Refactoring',
-      refactoringText: `For refactoring suggestions please visit `,
+      refactoringText: `For refactoring suggestions please visit the version of deprecation.`,
       deprecationVersionText: 'Deprecated in verion ',
       deprecationVersion: i.deprecationVersion,
       deprecationLink: baseURL + i.deprecationVersion
