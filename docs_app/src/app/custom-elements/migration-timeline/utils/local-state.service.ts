@@ -119,8 +119,8 @@ export class LocalState<T> implements OnDestroy {
    * const ls = new LocalState<{test: string, bar: number}>();
    * ls.select();
    * // Error
-   * // ls.select2('foo');
-   * ls.select2('test');
+   * // ls.select('foo');
+   * ls.select('test');
    * // Error
    * // ls.select(of(7));
    * ls.select(mapTo(7));
@@ -132,23 +132,26 @@ export class LocalState<T> implements OnDestroy {
    * // ls.select(pipe(map(s => s.test), startWith(7)));
    * ls.select(pipe(map(s => s.test), startWith('unknown test value')));
    * @TODO consider state keys as string could be passed
-   // select<R, K extends keyof T>(operator?: K): Observable<T>;
-   * @TODO consider ngrx selectors could be passed
-   * select<R, D)>(mapFn: (s: T) => D): Observable<R>;
-   */
-  select<R = T>(operator?: OperatorFunction<T, R>): Observable<R>;
-  select<R>(operator?: OperatorFunction<T, R>): Observable<T | R> {
-    const operators: OperatorFunction<T, R | T> = operator ? operator : pipe();
-    /*
-    if (typeof operator === 'string') {
+   * // For state keys as string i.e. 'bar'
+   select<R, K extends keyof T>(operator?: K): Observable<T>;
+   if (typeof operator === 'string') {
       const key: string = operator;
       operators = pipe(map(s => operator ? s[key] : s));
     }
-    if (typeof operator === 'function') {
-      // const mapFn = (value: T, index: number) => value;
-      operator = pipe(map((value: T, index: number) => value));
+   * @TODO consider ngrx selectors could be passed
+   * // For project functions i.e. (s) => s.slice, (s) => s.slice * 2 or (s) => 2
+   * select<R>(operator: (value: T, index?: number) => T | R, thisArg?: any): Observable<T | R>;
+   if (typeof operator === 'function') {
+      const mapFn: (value: T, index: number) => R = operator ? operator : (value: T, index: number): R => value;
+      operators = pipe(map(mapFn));
     }
-    */
+   */
+  // For OperatorFunction i.e. pipe(map(s => s.slice)), map(s => s.slice) or mapTo('value')
+  select<R>(operator: OperatorFunction<T, R>): Observable<T | R>;
+  // For undefined arguments i.e select()
+  select<R = T>(operator?: OperatorFunction<T, R>): Observable<R> {
+    const operators: OperatorFunction<T, R | T> = operator ? operator : pipe();
+
     return this.state$
       .pipe(
         // We need to accept operators to enable composition of local scope related observables
