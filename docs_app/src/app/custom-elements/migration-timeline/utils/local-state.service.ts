@@ -1,6 +1,6 @@
 import {Injectable, OnDestroy} from '@angular/core';
-import {ConnectableObservable, merge, Observable, Subject, Subscription} from 'rxjs';
-import {distinctUntilChanged, map, mergeAll, publishReplay, scan, shareReplay} from 'rxjs/operators';
+import {ConnectableObservable, merge, Observable, OperatorFunction, Subject, Subscription} from 'rxjs';
+import {distinctUntilChanged, mergeAll, publishReplay, scan, shareReplay} from 'rxjs/operators';
 
 export interface SliceConfig {
   starWith?: any,
@@ -13,7 +13,7 @@ const stateAccumulator = (acc, command): { [key: string]: number } => ({...acc, 
 export class LocalState<T> implements OnDestroy {
   private subscription = new Subscription();
   private effectSubject = new Subject<Observable<{ [key: string]: number }>>();
-  private stateObservables = new Subject<Observable<T>>();
+  private stateObservables = new Subject<Observable<Partial<T>>>();
   private stateSlices = new Subject<T>();
   state$: Observable<T> =
     merge(
@@ -37,7 +37,7 @@ export class LocalState<T> implements OnDestroy {
     this.stateSlices.next(s);
   }
 
-  connectSlice(o: Observable<T>): void {
+  connectSlice(o: Observable<Partial<T>>): void {
     this.stateObservables.next(o);
   }
 
@@ -46,10 +46,11 @@ export class LocalState<T> implements OnDestroy {
   }
 
   // @TODO find out where the initial undefined is coming from
-  select(selector) {
+  select<R = T>(operator: OperatorFunction<T, R>): Observable<R>;
+  select<R>(operator?: OperatorFunction<T, R>): Observable<T | R> {
     return this.state$
       .pipe(
-        map(s => selector(s)),
+        operator ? operator : (o) => o,
         // @TODO where to put? .select in the view is meh, and creating multiple properties in vm is not good!
         // .state$ should be the one source where we get state from
         // ATM I do:
@@ -61,8 +62,43 @@ export class LocalState<T> implements OnDestroy {
       );
   }
 
+  /*
+    select(selector) {
+      return this.state$
+        .pipe(
+          map(s => selector(s)),
+          // @TODO where to put? .select in the view is meh, and creating multiple properties in vm is not good!
+          // .state$ should be the one source where we get state from
+          // ATM I do:
+          // - create properties as queries
+          // - use pipes in the template
+          // - use state$ | async in the template
+          distinctUntilChanged(),
+          shareReplay(1)
+        );
+    }
+  */
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
 }
+
+/*
+// export function select<T>(): ((value: T) => void) & ObservableInput<T>;
+export function select<T, R = T>(operator: OperatorFunction<T, R>): ObservableInput<R>;
+export function select<T, R>(operator?: OperatorFunction<T, R>):  ObservableInput<T | R> {
+  return this.state$
+    .pipe(
+      operator ? operator : (o) => o,
+      // @TODO where to put? .select in the view is meh, and creating multiple properties in vm is not good!
+      // .state$ should be the one source where we get state from
+      // ATM I do:
+      // - create properties as queries
+      // - use pipes in the template
+      // - use state$ | async in the template
+      distinctUntilChanged(),
+      shareReplay(1)
+    );
+}
+*/

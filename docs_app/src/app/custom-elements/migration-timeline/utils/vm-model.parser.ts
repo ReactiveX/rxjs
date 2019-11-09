@@ -79,7 +79,7 @@ export function prefixHash(link: string): string {
 }
 
 export function getClosestRelevantVersion(version = '') {
-  return (rL: Release[]): string => {
+  return (rL: VmMigrationListItem[]): string => {
 
     if (rL) {
       const closestRelease = rL.find(release => {
@@ -119,7 +119,7 @@ export function getClosestRelevantVersion(version = '') {
   };
 }
 
-export const getLatestRelevantVersion = (date: Date) => (rL: Release[]): string => {
+export const getLatestRelevantVersion = (date: Date) => (rL: VmMigrationListItem[]): string => {
   if (rL) {
     const reIndex = rL.findIndex(r => {
       const reDate = new Date(r.date);

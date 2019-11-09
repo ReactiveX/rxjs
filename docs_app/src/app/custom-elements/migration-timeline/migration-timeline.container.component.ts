@@ -41,17 +41,17 @@ export class MigrationTimelineContainerComponent
   extends LocalState<{
     selectedVersion?: string,
     releaseNavigation?: VmReleaseNavigationItem[],
-    migrationList?: VmMigrationListItem[]
+    migrationList: VmMigrationListItem[]
   }> {
   baseURL = 'migration-timeline';
   // UI
   selectedVersionChange$ = new Subject<string>();
 
   // derivations
-  releaseNavigation$ = this.select(s => s.releaseNavigation);
-  migrationList$ = this.select(s => s.migrationList);
+  releaseNavigation$ = this.select(map(s => s.releaseNavigation));
+  migrationList$ = this.select(map(s => s.migrationList));
   selectedVersion$ = concat(
-    this.select(s => s.selectedVersion)
+    this.select(map(s => s.selectedVersion))
   );
 
   urlVersion$ = this.locationService.currentHash;

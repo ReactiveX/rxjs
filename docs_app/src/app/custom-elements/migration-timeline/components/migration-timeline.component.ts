@@ -136,8 +136,8 @@ export class MigrationTimelineComponent extends LocalState<IMigrationTimelineVM>
 
   expandedReleaseChange = new Subject<string>();
 
-  migrationList$ = this.select(s => s.migrationList);
-  selectedVersion$ = this.select(s => s.selectedVersion);
+  migrationList$ = this.select(map(s => s.migrationList));
+  selectedVersion$ = this.select(map(s => s.selectedVersion));
 
   // @TODO Rethink after routing is done clean
   expandedRelease$: Observable<{ [key: string]: boolean }> = merge(
