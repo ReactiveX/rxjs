@@ -45,11 +45,17 @@ export class LocalState<T> implements OnDestroy {
     this.effectSubject.next(o);
   }
 
-  // @TODO find out where the initial undefined is coming from
+
+  // @TODO consider state keys as string could be passed
+  // select<R = T, K extends keyof T>(path: K): Observable<R>;
+  // @TODO consider state ngrx selectors could be passed
+  // select<R, D)>(mapFn: (s: T) => D): Observable<R>;
   select<R = T>(operator: OperatorFunction<T, R>): Observable<R>;
   select<R>(operator?: OperatorFunction<T, R>): Observable<T | R> {
     return this.state$
       .pipe(
+        // We need to accept operators to enable composition of local scope related observables
+        // createSelector
         operator ? operator : (o) => o,
         // @TODO how to deal with undefined values?
         // map(state => state.property) can return undefined if not set.
