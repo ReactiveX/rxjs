@@ -27,6 +27,7 @@
 
 .migration-section {
   margin-bottom: 15px;
+
   .migration-headline .mat-card-title {
     font-size: 18px;
   }
@@ -62,6 +63,10 @@
         padding-right: 4px;
       }
     }
+  }
+
+  &.empty .mat-card-title {
+    margin-bottom: 0px;
   }
 
 }

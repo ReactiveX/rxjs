@@ -1391,7 +1391,7 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
   },
   {
     version: '8.0.0.alpha.0',
-    date: '2020-20-02',
+    date: '2020-02-20',
     deprecations: [],
     breakingChanges: [
       {
@@ -1481,7 +1481,7 @@ export const deprecationAndBreakingChangeTimeline: Release[] = [
 
 // Info from: https://github.com/ReactiveX/rxjs/issues/3927
 function getGeneralFlatteningHeadlinePhrase(operatorName: string): string {
-  return `Static \`${operatorName}\` deprecated. Use static function {@link ${operatorName}}' \`${operatorName}\` instead.`;
+  return `Static \`${operatorName}\` deprecated. Use static function \`${operatorName}\` instead.`;
 }
 
 // Info from: https://github.com/ReactiveX/rxjs/issues/3927
@@ -1491,10 +1491,8 @@ function getGeneralFlatteningReasonPhrase(operatorName: string): string {
          In future releases it will most probably be available under \`${operatorName}With\`.`;
 }
 
-function getGeneralOperatorResultSelectorHeadlinePhrase(operatorName: string): string {
-  return `Operator \`${operatorName}\` method deprecated the \`resultSelector\` argument`;
-}
-
+// # RESULT SELECTOR ===
+// ## Static
 function getGeneralStaticResultSelectorHeadlinePhrase(operatorName: string): string {
   return `Static \`${operatorName}\` method deprecated the \`resultSelector\` argument`;
 }
@@ -1505,6 +1503,10 @@ function getGeneralStaticResultSelectorReasonPhrase(operatorName: string): strin
           refactoring to use and internal \`map\` operation instead is a minor code change.`;
 }
 
+// ## Operator
+function getGeneralOperatorResultSelectorHeadlinePhrase(operatorName: string): string {
+  return `Operator \`${operatorName}\` method deprecated the \`resultSelector\` argument`;
+}
 /*
 function toRefactoring(deprecation: Deprecation, version: string): string {
   return `

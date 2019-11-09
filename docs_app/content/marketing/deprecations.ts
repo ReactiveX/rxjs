@@ -1408,7 +1408,7 @@ const deprecationAndBreakingChangeTimeline: Release[] = [
 
 // Info from: https://github.com/ReactiveX/rxjs/issues/3927
 function getGeneralFlatteningHeadlinePhrase(operatorName: string): string {
-  return `Static \`${operatorName}\` deprecated. Use static function {@link ${operatorName}}' \`${operatorName}\` instead.`;
+  return `Static \`${operatorName}\` deprecated. Use static function \`${operatorName}\` instead.`;
 }
 
 // Info from: https://github.com/ReactiveX/rxjs/issues/3927
