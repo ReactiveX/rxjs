@@ -5,9 +5,9 @@ import {VmMigrationList} from '../interfaces';
 import {LocalState} from '../utils/local-state.service';
 
 export interface IMigrationTimelineVM {
-  migrationList?: VmMigrationList
-  expandedRelease?: { [key: string]: boolean };
-  selectedVersion?: string;
+  migrationList: VmMigrationList
+  expandedRelease: { [key: string]: boolean };
+  selectedVersion: string;
 }
 
 @Component({
