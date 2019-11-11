@@ -19,8 +19,8 @@ it('should enforce projector types', () => {
   const q = of(of(1, 2, 3)).pipe(zipAll(Promise.resolve(4))); // $ExpectError
   const r = of(of(1, 2, 3)).pipe(zipAll(of(4, 5, 6))); // $ExpectError
 
-  const myIterator: Iterator<number> = {
-    next(value: number) {
+  const myIterator: Iterator<number | undefined> = {
+    next(value) {
       return {done: false, value};
     },
   };
