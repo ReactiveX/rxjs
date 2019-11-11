@@ -26,39 +26,39 @@ it('should infer correctly with 1 param', () => {
   const res = of(new A()); // $ExpectType Observable<A>
 });
 
-it('should infer correcly with mixed type of 2 params', () => {
+it('should infer correctly with mixed type of 2 params', () => {
   const res = of(a, b); // $ExpectType Observable<A | B>
 });
 
-it('should infer correcly with mixed type of 3 params', () => {
+it('should infer correctly with mixed type of 3 params', () => {
   const res = of(a, b, c); // $ExpectType Observable<A | B | C>
 });
 
-it('should infer correcly with mixed type of 4 params', () => {
+it('should infer correctly with mixed type of 4 params', () => {
   const res = of(a, b, c, d); // $ExpectType Observable<A | B | C | D>
 });
 
-it('should infer correcly with mixed type of 5 params', () => {
+it('should infer correctly with mixed type of 5 params', () => {
   const res = of(a, b, c, d, e); // $ExpectType Observable<A | B | C | D | E>
 });
 
-it('should infer correcly with mixed type of 6 params', () => {
+it('should infer correctly with mixed type of 6 params', () => {
   const res = of(a, b, c, d, e, f); // $ExpectType Observable<A | B | C | D | E | F>
 });
 
-it('should infer correcly with mixed type of 7 params', () => {
+it('should infer correctly with mixed type of 7 params', () => {
   const res = of(a, b, c, d, e, f, g); // $ExpectType Observable<A | B | C | D | E | F | G>
 });
 
-it('should infer correcly with mixed type of 8 params', () => {
+it('should infer correctly with mixed type of 8 params', () => {
   const res = of(a, b, c, d, e, f, g, h); // $ExpectType Observable<A | B | C | D | E | F | G | H>
 });
 
-it('should infer correcly with mixed type of 9 params', () => {
+it('should infer correctly with mixed type of 9 params', () => {
   const res = of(a, b, c, d, e, f, g, h, i); // $ExpectType Observable<A | B | C | D | E | F | G | H | I>
 });
 
-it('should infer correcly with mono type of more than 9 params', () => {
+it('should infer correctly with mono type of more than 9 params', () => {
   const res = of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10); // $ExpectType Observable<number>
 });
 
@@ -98,34 +98,53 @@ it('should infer correctly with 1 param', () => {
   const res = of(new A(), queueScheduler); // $ExpectType Observable<A>
 });
 
-it('should infer correcly with mixed type of 2 params', () => {
+it('should infer correctly with mixed type of 2 params', () => {
   const res = of(a, b, queueScheduler); // $ExpectType Observable<A | B>
 });
 
-it('should infer correcly with mixed type of 3 params', () => {
+it('should infer correctly with mixed type of 3 params', () => {
   const res = of(a, b, c, queueScheduler); // $ExpectType Observable<A | B | C>
 });
 
-it('should infer correcly with mixed type of 4 params', () => {
+it('should infer correctly with mixed type of 4 params', () => {
   const res = of(a, b, c, d, queueScheduler); // $ExpectType Observable<A | B | C | D>
 });
 
-it('should infer correcly with mixed type of 5 params', () => {
+it('should infer correctly with mixed type of 5 params', () => {
   const res = of(a, b, c, d, e, queueScheduler); // $ExpectType Observable<A | B | C | D | E>
 });
 
-it('should infer correcly with mixed type of 6 params', () => {
+it('should infer correctly with mixed type of 6 params', () => {
   const res = of(a, b, c, d, e, f, queueScheduler); // $ExpectType Observable<A | B | C | D | E | F>
 });
 
-it('should infer correcly with mixed type of 7 params', () => {
+it('should infer correctly with mixed type of 7 params', () => {
   const res = of(a, b, c, d, e, f, g, queueScheduler); // $ExpectType Observable<A | B | C | D | E | F | G>
 });
 
-it('should infer correcly with mixed type of 8 params', () => {
+it('should infer correctly with mixed type of 8 params', () => {
   const res = of(a, b, c, d, e, f, g, h, queueScheduler); // $ExpectType Observable<A | B | C | D | E | F | G | H>
 });
 
-it('should infer correcly with mixed type of 9 params', () => {
+it('should infer correctly with mixed type of 9 params', () => {
   const res = of(a, b, c, d, e, f, g, h, i, queueScheduler); // $ExpectType Observable<A | B | C | D | E | F | G | H | I>
+});
+
+it('should deprecate correctly', () => {
+  of(queueScheduler); // $ExpectDeprecation
+  of(a, queueScheduler); // $ExpectDeprecation
+  of(a, b, queueScheduler); // $ExpectDeprecation
+  of(a, b, c, queueScheduler); // $ExpectDeprecation
+  of(a, b, c, d, queueScheduler); // $ExpectDeprecation
+  of(a, b, c, d, e, queueScheduler); // $ExpectDeprecation
+  of(a, b, c, d, e, f, queueScheduler); // $ExpectDeprecation
+  of(a, b, c, d, e, f, g, queueScheduler); // $ExpectDeprecation
+  of(a, b, c, d, e, f, g, h, queueScheduler); // $ExpectDeprecation
+  of(a, b, c, d, e, f, g, h, i, queueScheduler); // $ExpectDeprecation  
+  of<A>(); // $ExpectDeprecation
+  of(); // $ExpectNoDeprecation
+  of(a); // $ExpectNoDeprecation
+  of(a, b); // $ExpectNoDeprecation
+  of(a, b, c); // $ExpectNoDeprecation
+  of(a, b, c, d); // $ExpectNoDeprecation
 });
