@@ -7,5 +7,5 @@ it('should accept any type and return never observable', () => {
 });
 
 it('should support scheduler', () => {
-  const a = throwError(1, animationFrameScheduler); // $Expect Observable<never>
+  const a = throwError(1, animationFrameScheduler); // $ExpectType Observable<never>
 });

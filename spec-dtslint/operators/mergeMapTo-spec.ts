@@ -43,7 +43,7 @@ it('should support a resultSelector and concurrent parameter', () => {
 
 it('should support union types', () => {
   const s = Math.random() > 0.5 ? of(123) : of('abc');
-  const r = of(1, 2, 3).pipe(mergeMapTo(s)); // $ExpectType<string | number>
+  const r = of(1, 2, 3).pipe(mergeMapTo(s)); // $ExpectType Observable<string | number>
 });
 
 it('should enforce types', () => {
