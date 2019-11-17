@@ -29,7 +29,7 @@ export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
  *
  * const result = empty().pipe(startWith(7));
  * result.subscribe(x => console.log(x));
- * 
+ *
  * // Outputs
  * // 7
  * ```
