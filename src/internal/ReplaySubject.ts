@@ -18,6 +18,7 @@ export class ReplaySubject<T> extends Subject<T> {
   private _bufferSize: number;
   private _windowTime: number;
   private _infiniteTimeWindow: boolean = false;
+  private _replaySubjectNext: (value: T) => void;
 
   constructor(bufferSize: number = Number.POSITIVE_INFINITY,
               windowTime: number = Number.POSITIVE_INFINITY,
@@ -29,10 +30,14 @@ export class ReplaySubject<T> extends Subject<T> {
     if (windowTime === Number.POSITIVE_INFINITY) {
       this._infiniteTimeWindow = true;
       /** @override */
-      this.next = this.nextInfiniteTimeWindow;
+      this._replaySubjectNext = this.nextInfiniteTimeWindow;
     } else {
-      this.next = this.nextTimeWindow;
+      this._replaySubjectNext = this.nextTimeWindow;
     }
+  }
+
+  public next(value: T): void {
+    this._replaySubjectNext(value);
   }
 
   private nextInfiniteTimeWindow(value: T): void {

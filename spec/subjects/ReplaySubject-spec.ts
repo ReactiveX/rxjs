@@ -13,6 +13,38 @@ describe('ReplaySubject', () => {
     expect(subject).to.be.instanceof(Subject);
   });
 
+  describe('inheritance', () => {
+    it('should allow subclasses to override the next method', () => {
+      let wasMethodCalled = false;
+      class SubClassReplaySubject<T> extends ReplaySubject<T> {
+        next(value: T) {
+          wasMethodCalled = true;
+          super.next(value);
+        }
+      }
+      const subject = new SubClassReplaySubject<number>(1);
+
+      subject.next(1);
+
+      expect(wasMethodCalled).to.equal(true);
+    });
+
+    it('should allow subclasses to call the superclass next method', () => {
+      class SubClassReplaySubject<T> extends ReplaySubject<T> {
+        subNext(value: T) {
+          super.next(value);
+        }
+      }
+      const subject = new SubClassReplaySubject<number>(1);
+      subject.subNext(1);
+      let result = 0;
+
+      subject.subscribe(x => result = x);
+
+      expect(result).to.equal(1);
+    });
+  });
+
   it('should add the observer before running subscription code', () => {
     const subject = new ReplaySubject<number>();
     subject.next(1);
