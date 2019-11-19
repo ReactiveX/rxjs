@@ -3,7 +3,6 @@ import { from, throwError, of, Observable } from 'rxjs';
 import { concatAll, take, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from 'spec/helpers/observableMatcher';
-import { expectObservable } from '../helpers/marble-testing';
 
 declare function asDiagram(arg: string): Function;
 declare const type: Function;
@@ -22,7 +21,7 @@ describe('concatAll operator', () => {
       const x = cold('    ----a------b------|                 ');
       const y = cold('                      ---c-d---|        ');
       const z = cold('                               ---e--f-|');
-      const outer = hot('-x---y----z------|              ', { x: x, y: y, z: z });
+      const outer = hot('-x---y----z------|', { x: x, y: y, z: z });
       const expected = ' -----a------b---------c-d------e--f-|';
 
       const result = outer.pipe(concatAll());
@@ -31,66 +30,88 @@ describe('concatAll operator', () => {
     });
   });
 
-  it('should concat sources from promise', function (done) {
+  it('should concat sources from promise', function(done) {
     this.timeout(2000);
     const sources = from([
-      new Promise<number>((res) => { res(0); }),
-      new Promise<number>((res) => { res(1); }),
-      new Promise<number>((res) => { res(2); }),
-      new Promise<number>((res) => { res(3); }),
+      new Promise<number>(res => {
+        res(0);
+      }),
+      new Promise<number>(res => {
+        res(1);
+      }),
+      new Promise<number>(res => {
+        res(2);
+      }),
+      new Promise<number>(res => {
+        res(3);
+      })
     ]).pipe(take(10));
 
     const res: number[] = [];
     sources.pipe(concatAll()).subscribe(
-      (x) => { res.push(x); },
-      (err) => { done(new Error('should not be called')); },
+      x => {
+        res.push(x);
+      },
+      err => {
+        done(new Error('should not be called'));
+      },
       () => {
         expect(res).to.deep.equal([0, 1, 2, 3]);
         done();
-      });
+      }
+    );
   });
 
-  it('should concat and raise error from promise', function (done) {
+  it('should concat and raise error from promise', function(done) {
     this.timeout(2000);
 
     const sources = from([
-      new Promise<number>((res) => { res(0); }),
-      new Promise<number>((res, rej) => { rej(1); }),
-      new Promise<number>((res) => { res(2); }),
-      new Promise<number>((res) => { res(3); }),
+      new Promise<number>(res => {
+        res(0);
+      }),
+      new Promise<number>((res, rej) => {
+        rej(1);
+      }),
+      new Promise<number>(res => {
+        res(2);
+      }),
+      new Promise<number>(res => {
+        res(3);
+      })
     ]).pipe(take(10));
 
     const res: number[] = [];
     sources.pipe(concatAll()).subscribe(
-      (x) => { res.push(x); },
-      (err) => {
+      x => {
+        res.push(x);
+      },
+      err => {
         expect(res.length).to.equal(1);
         expect(err).to.equal(1);
         done();
       },
-      () => { done(new Error('should not be called')); });
+      () => {
+        done(new Error('should not be called'));
+      }
+    );
   });
 
   it('should concat all observables in an observable', () => {
-    const e1 = from([
-      of('a'),
-      of('b'),
-      of('c')
-    ]).pipe(take(10));
-    const expected = '(abc|)';
+    testScheduler.run(({ expectObservable }) => {
+      const e1 = from([of('a'), of('b'), of('c')]).pipe(take(10));
+      const expected = '(abc|)';
 
-    expectObservable(e1.pipe(concatAll())).toBe(expected);
+      expectObservable(e1.pipe(concatAll())).toBe(expected);
+    });
   });
 
   it('should throw if any child observable throws', () => {
-    const e1 = from([
-      of('a'),
-      throwError('error'),
-      of('c')
-    ]).pipe(take(10));
-    const expected = '(a#)';
+    testScheduler.run(({ expectObservable }) => {
+      const e1 = from([of('a'), throwError('error'), of('c')]).pipe(take(10));
+      const expected = '(a#)';
 
-    expectObservable(e1.pipe(concatAll())).toBe(expected);
+      expectObservable(e1.pipe(concatAll())).toBe(expected);
+    });
   });
 
   it('should concat merging a hot observable of non-overlapped observables', () => {
@@ -111,11 +132,11 @@ describe('concatAll operator', () => {
   it('should raise error if inner observable raises error', () => {
     testScheduler.run(({ cold, hot, expectObservable }) => {
       const values = {
-        x: cold('      a-b---------|'),
-        y: cold('                c-d-e-f-#'),
+        x: cold('       a-b---------|'),
+        y: cold('                 c-d-e-f-#'),
         z: cold('                         g-h-i-j-k-|')
       };
-      const e1 =   hot('--x---------y--------z--------|', values);
+      const e1 = hot('  --x---------y--------z--------|', values);
       const expected = '--a-b---------c-d-e-f-#';
 
       expectObservable(e1.pipe(concatAll())).toBe(expected);
@@ -126,7 +147,7 @@ describe('concatAll operator', () => {
     testScheduler.run(({ cold, hot, expectObservable }) => {
       const values = {
         y: cold('       a-b---------|'),
-        z: cold('                 c-d-e-f-|'),
+        z: cold('                 c-d-e-f-|')
       };
       const e1 = hot('  --y---------z---#    ', values);
       const expected = '--a-b---------c-#';
@@ -153,11 +174,11 @@ describe('concatAll operator', () => {
 
   it('should not complete if first source does not completes', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const e1 =   cold('-');
-      const e1subs =    '^';
-      const e2 =   cold('--|');
+      const e1 = cold('  -');
+      const e1subs = '   ^';
+      const e2 = cold('  --|');
       const e2subs: string[] = [];
-      const expected =  '-';
+      const expected = ' -';
 
       const result = of(e1, e2).pipe(concatAll());
 
@@ -185,11 +206,11 @@ describe('concatAll operator', () => {
 
   it('should not complete if both sources do not complete', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const e1 =   cold('-');
-      const e1subs =    '^';
-      const e2 =   cold('-');
+      const e1 = cold('  -');
+      const e1subs = '   ^';
+      const e2 = cold('  -');
       const e2subs: string[] = [];
-      const expected =  '-';
+      const expected = ' -';
 
       const result = of(e1, e2).pipe(concatAll());
 
@@ -237,7 +258,7 @@ describe('concatAll operator', () => {
       const e1subs = '   ^--!';
       const e2 = cold('  ------#');
       const e2subs: string[] = [];
-      const expected =  '---#';
+      const expected = ' ---#';
 
       const result = of(e1, e2).pipe(concatAll());
 
@@ -279,30 +300,33 @@ describe('concatAll operator', () => {
     });
   });
 
-  it('should emit element from first source, and should not complete if second ' +
-  'source does not completes', () => {
-    testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const e1 = cold('  --a--|');
-      const e1subs = '   ^----!';
-      const e2 = cold('       -');
-      const e2subs = '   -----^';
-      const expected = ' --a---';
+  it(
+    'should emit element from first source, and should not complete if second ' +
+      'source does not completes',
+    () => {
+      testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
+        const e1 = cold('  --a--|');
+        const e1subs = '   ^----!';
+        const e2 = cold('       -');
+        const e2subs = '   -----^';
+        const expected = ' --a---';
 
-      const result = of(e1, e2).pipe(concatAll());
+        const result = of(e1, e2).pipe(concatAll());
 
-      expectObservable(result).toBe(expected);
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
-      expectSubscriptions(e2.subscriptions).toBe(e2subs);
-    });
-  });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      });
+    }
+  );
 
   it('should not complete if first source does not complete', () => {
     testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
-      const e1 =   cold('-');
-      const e1subs =    '^';
-      const e2 =   cold('--a--|');
+      const e1 = cold('  -');
+      const e1subs = '   ^';
+      const e2 = cold('  --a--|');
       const e2subs: string[] = [];
-      const expected =  '-';
+      const expected = ' -';
 
       const result = of(e1, e2).pipe(concatAll());
 
@@ -355,9 +379,9 @@ describe('concatAll operator', () => {
       const unsub = '    -----------------!    ';
 
       const result = of(e1, e2).pipe(
-        mergeMap((x) => of(x)),
+        mergeMap(x => of(x)),
         concatAll(),
-        mergeMap((x) => of(x))
+        mergeMap(x => of(x))
       );
 
       expectObservable(result, unsub).toBe(expected);
@@ -398,39 +422,47 @@ describe('concatAll operator', () => {
     });
   });
 
-  it('should emit all elements from both hot observable sources if first source ' +
-  'completes before second source starts emit', () => {
-    testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  --a--b-|');
-      const e1subs = '  ^------!';
-      const e2 = hot('  --------x--y--|');
-      const e2subs = '  -------^------!';
-      const expected = '--a--b--x--y--|';
+  it(
+    'should emit all elements from both hot observable sources if first source ' +
+      'completes before second source starts emit',
+    () => {
+      testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
+        const e1 = hot('  --a--b-|');
+        const e1subs = '  ^------!';
+        const e2 = hot('  --------x--y--|');
+        const e2subs = '  -------^------!';
+        const expected = '--a--b--x--y--|';
 
-      const result = of(e1, e2).pipe(concatAll());
+        const result = of(e1, e2).pipe(concatAll());
 
-      expectObservable(result).toBe(expected);
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
-      expectSubscriptions(e2.subscriptions).toBe(e2subs);
-    });
-  });
+        expectObservable(result).toBe(expected);
+        expectSubscriptions(e1.subscriptions).toBe(e1subs);
+        expectSubscriptions(e2.subscriptions).toBe(e2subs);
+      });
+    }
+  );
 
-  it('should emit elements from second source regardless of completion time ' +
-  'when second source is cold observable', () => {
-    testScheduler.run(({ cold, hot, expectObservable, expectSubscriptions }) => {
-      const e1 = hot('  --a--b--c---|');
-      const e1subs = '  ^-----------!';
-      const e2 = cold(' -x-y-z-|');
-      const e2subs = '  ------------^------!';
-      const expected = '--a--b--c----x-y-z-|';
+  it(
+    'should emit elements from second source regardless of completion time ' +
+      'when second source is cold observable',
+    () => {
+      testScheduler.run(
+        ({ cold, hot, expectObservable, expectSubscriptions }) => {
+          const e1 = hot('  --a--b--c---|');
+          const e1subs = '  ^-----------!';
+          const e2 = cold(' -x-y-z-|');
+          const e2subs = '  ------------^------!';
+          const expected = '--a--b--c----x-y-z-|';
 
-      const result = of(e1, e2).pipe(concatAll());
+          const result = of(e1, e2).pipe(concatAll());
 
-      expectObservable(result).toBe(expected);
-      expectSubscriptions(e1.subscriptions).toBe(e1subs);
-      expectSubscriptions(e2.subscriptions).toBe(e2subs);
-    });
-  });
+          expectObservable(result).toBe(expected);
+          expectSubscriptions(e1.subscriptions).toBe(e1subs);
+          expectSubscriptions(e2.subscriptions).toBe(e2subs);
+        }
+      );
+    }
+  );
 
   it('should not emit collapsing element from second source', () => {
     testScheduler.run(({ hot, expectObservable, expectSubscriptions }) => {
@@ -499,8 +531,9 @@ describe('concatAll operator', () => {
     const source2 = [1, 2, 3];
     const source3 = new Promise<number>(d => d(1));
 
-    let result: Observable<number> = of(source1, source2, source3)
-      .pipe(concatAll());
+    let result: Observable<number> = of(source1, source2, source3).pipe(
+      concatAll()
+    );
     /* tslint:enable:no-unused-variable */
   });
 
@@ -523,9 +556,11 @@ describe('concatAll operator', () => {
     const source2 = [1, 2, 3];
     const source3 = new Promise<number>(d => d(1));
 
-    let result: Observable<string> = of(<any>source1, <any>source2, <any>source3).pipe(
-      concatAll<string>()
-    );
+    let result: Observable<string> = of(
+      <any>source1,
+      <any>source2,
+      <any>source3
+    ).pipe(concatAll<string>());
     /* tslint:enable:no-unused-variable */
   });
 
@@ -536,9 +571,11 @@ describe('concatAll operator', () => {
     const source2 = [1, 2, 3];
     const source3 = new Promise<number>(d => d(1));
 
-    let result: Observable<string> = of(<any>source1, <any>source2, <any>source3).pipe(
-      concatAll<string>()
-    );
+    let result: Observable<string> = of(
+      <any>source1,
+      <any>source2,
+      <any>source3
+    ).pipe(concatAll<string>());
     /* tslint:enable:no-unused-variable */
   });
 });
