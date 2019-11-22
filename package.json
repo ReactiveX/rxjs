@@ -34,7 +34,7 @@
     "prepublishOnly": "npm run build:package",
     "postpublish": "./docs_app/scripts/publish-docs.sh",
     "publish_docs": "./publish_docs.sh",
-    "test": "npm run compile && mocha --opts spec/support/default.opts \"dist/spec/**/*-spec.js\"",
+    "test": "mocha --opts spec/support/default.opts \"spec/**/*-spec.ts\"",
     "test:browser": "echo \"Browser test is not working currently\" && exit -1 && npm-run-all build:spec:browser && opn spec/support/mocha-browser-runner.html",
     "test:circular": "dependency-cruise --validate .dependency-cruiser.json -x \"^node_modules\" dist/esm5",
     "test:systemjs": "node integration/systemjs/systemjs-compatibility-spec.js",
