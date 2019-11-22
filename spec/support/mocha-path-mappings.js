@@ -19,7 +19,7 @@ Module._resolveFilename = function(path, ...rest) {
   for (let k = 0; k < keys.length; ++k) {
     const key = keys[k];
     if (key.endsWith('*')) {
-      const regExp = new RegExp(key.replace(/\//, '\\\/').replace(/\*$/, '(.*)'));
+      const regExp = new RegExp(key.replace(/\//g, '\\\/').replace(/\*$/, '(.*)'));
       const match = path.match(regExp);
       if (match) {
         const [, more] = match;
