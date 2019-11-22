@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { of, Observable } from 'rxjs';
 import { concatWith, mergeMap } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { assertDeepEquals, NO_SUBS } from 'spec/helpers/test-helper';
+import { assertDeepEquals, NO_SUBS } from '../helpers/test-helper';
 
 /** @test {concat} */
 describe('concat operator', () => {

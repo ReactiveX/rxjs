@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": "../..",
+    "paths": {
+      "rxjs": ["./dist/src/index"],
+      "rxjs/operators": ["./dist/src/operators/index"],
+      "rxjs/testing": ["./dist/src/testing/index"],
+      "rxjs/ajax": ["./dist/src/ajax/index"],
+      "rxjs/webSocket": ["./dist/src/webSocket/index"],
+      "rxjs/fetch": ["./dist/src/fetch/index"],
+      "rxjs/internal/*": ["./dist/src/internal/*"]
+    }
+  }
+}
