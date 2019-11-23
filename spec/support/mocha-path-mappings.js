@@ -23,10 +23,10 @@ Module._resolveFilename = function(path, ...rest) {
       const match = path.match(regExp);
       if (match) {
         const [, more] = match;
-        return originalResolveFilename.call(this, join(root, paths[key][0].replace(/\*$/, more)));
+        return originalResolveFilename.call(this, join(root, paths[key][0].replace(/\*$/, more)), ...rest);
       }
     } else if (path === key) {
-      return originalResolveFilename.call(this, join(root, paths[key][0]));
+      return originalResolveFilename.call(this, join(root, paths[key][0]), ...rest);
     }
   }
   return originalResolveFilename.call(this, path, ...rest);
