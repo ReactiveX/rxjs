@@ -3,9 +3,13 @@ import { subscribeTo } from '../util/subscribeTo';
 import { ObservableInput, SchedulerLike, ObservedValueOf } from '../types';
 import { scheduled } from '../scheduled/scheduled';
 
-export function from<O extends ObservableInput<any>>(input: O): Observable<ObservedValueOf<O>, [ObservedValueOf<O>]>;
+type TupleTypeFromInput<O extends ObservableInput<any>> =
+  O extends PromiseLike<unknown> ? [ObservedValueOf<O>] :
+  ObservedValueOf<O>[];
+
+export function from<O extends ObservableInput<any>>(input: O): Observable<ObservedValueOf<O>, TupleTypeFromInput<O>>;
 /** @deprecated use {@link scheduled} instead. */
-export function from<O extends ObservableInput<any>>(input: O, scheduler: SchedulerLike): Observable<ObservedValueOf<O>, [ObservedValueOf<O>]>;
+export function from<O extends ObservableInput<any>>(input: O, scheduler: SchedulerLike): Observable<ObservedValueOf<O>, TupleTypeFromInput<O>>;
 
 /**
  * Creates an Observable from an Array, an array-like object, a Promise, an iterable object, or an Observable-like object.
