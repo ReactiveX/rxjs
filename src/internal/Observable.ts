@@ -16,7 +16,7 @@ import { config } from './config';
  *
  * @class Observable<T>
  */
-export class Observable<T> implements Subscribable<T> {
+export class Observable<T, Ts extends T[] = T[]> implements Subscribable<T> {
 
   /** Internal implementation detail, do not use directly. */
   public _isScalar: boolean = false;
@@ -306,16 +306,16 @@ export class Observable<T> implements Subscribable<T> {
 
   /* tslint:disable:max-line-length */
   pipe(): Observable<T>;
-  pipe<A>(op1: OperatorFunction<T, A>): Observable<A>;
-  pipe<A, B>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>): Observable<B>;
-  pipe<A, B, C>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>): Observable<C>;
-  pipe<A, B, C, D>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>): Observable<D>;
-  pipe<A, B, C, D, E>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>): Observable<E>;
-  pipe<A, B, C, D, E, F>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>): Observable<F>;
-  pipe<A, B, C, D, E, F, G>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op7: OperatorFunction<F, G>): Observable<G>;
-  pipe<A, B, C, D, E, F, G, H>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op7: OperatorFunction<F, G>, op8: OperatorFunction<G, H>): Observable<H>;
-  pipe<A, B, C, D, E, F, G, H, I>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op7: OperatorFunction<F, G>, op8: OperatorFunction<G, H>, op9: OperatorFunction<H, I>): Observable<I>;
-  pipe<A, B, C, D, E, F, G, H, I>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>, op5: OperatorFunction<D, E>, op6: OperatorFunction<E, F>, op7: OperatorFunction<F, G>, op8: OperatorFunction<G, H>, op9: OperatorFunction<H, I>, ...operations: OperatorFunction<any, any>[]): Observable<unknown>;
+  pipe<A, As extends A[]>(op1: OperatorFunction<T, A, Ts, As>): Observable<A, As>;
+  pipe<A, As extends A[], B, Bs extends B[]>(op1: OperatorFunction<T, A, Ts, As>, op2: OperatorFunction<A, B, As, Bs>): Observable<B, Bs>;
+  pipe<A, As extends A[], B, Bs extends B[], C, Cs extends C[]>(op1: OperatorFunction<T, A, Ts, As>, op2: OperatorFunction<A, B, As, Bs>, op3: OperatorFunction<B, C, Bs, Cs>): Observable<C, Cs>;
+  pipe<A, As extends A[], B, Bs extends B[], C, Cs extends C[], D, Ds extends D[]>(op1: OperatorFunction<T, A, Ts, As>, op2: OperatorFunction<A, B, As, Bs>, op3: OperatorFunction<B, C, Bs, Cs>, op4: OperatorFunction<C, D, Cs, Ds>): Observable<D, Ds>;
+  pipe<A, As extends A[], B, Bs extends B[], C, Cs extends C[], D, Ds extends D[], E, Es extends E[]>(op1: OperatorFunction<T, A, Ts, As>, op2: OperatorFunction<A, B, As, Bs>, op3: OperatorFunction<B, C, Bs, Cs>, op4: OperatorFunction<C, D, Cs, Ds>, op5: OperatorFunction<D, E, Ds, Es>): Observable<E>;
+  pipe<A, As extends A[], B, Bs extends B[], C, Cs extends C[], D, Ds extends D[], E, Es extends E[], F, Fs extends F[]>(op1: OperatorFunction<T, A, Ts, As>, op2: OperatorFunction<A, B, As, Bs>, op3: OperatorFunction<B, C, Bs, Cs>, op4: OperatorFunction<C, D, Cs, Ds>, op5: OperatorFunction<D, E, Ds, Es>, op6: OperatorFunction<E, F, Es, Fs>): Observable<F>;
+  pipe<A, As extends A[], B, Bs extends B[], C, Cs extends C[], D, Ds extends D[], E, Es extends E[], F, Fs extends F[], G, Gs extends G[]>(op1: OperatorFunction<T, A, Ts, As>, op2: OperatorFunction<A, B, As, Bs>, op3: OperatorFunction<B, C, Bs, Cs>, op4: OperatorFunction<C, D, Cs, Ds>, op5: OperatorFunction<D, E, Ds, Es>, op6: OperatorFunction<E, F, Es, Fs>, op7: OperatorFunction<F, G, Fs, Gs>): Observable<G>;
+  pipe<A, As extends A[], B, Bs extends B[], C, Cs extends C[], D, Ds extends D[], E, Es extends E[], F, Fs extends F[], G, Gs extends G[], H, Hs extends H[]>(op1: OperatorFunction<T, A, Ts, As>, op2: OperatorFunction<A, B, As, Bs>, op3: OperatorFunction<B, C, Bs, Cs>, op4: OperatorFunction<C, D, Cs, Ds>, op5: OperatorFunction<D, E, Ds, Es>, op6: OperatorFunction<E, F, Es, Fs>, op7: OperatorFunction<F, G, Fs, Gs>, op8: OperatorFunction<G, H, Gs, Hs>): Observable<H>;
+  pipe<A, As extends A[], B, Bs extends B[], C, Cs extends C[], D, Ds extends D[], E, Es extends E[], F, Fs extends F[], G, Gs extends G[], H, Hs extends H[], I, Is extends I[]>(op1: OperatorFunction<T, A, Ts, As>, op2: OperatorFunction<A, B, As, Bs>, op3: OperatorFunction<B, C, Bs, Cs>, op4: OperatorFunction<C, D, Cs, Ds>, op5: OperatorFunction<D, E, Ds, Es>, op6: OperatorFunction<E, F, Es, Fs>, op7: OperatorFunction<F, G, Fs, Gs>, op8: OperatorFunction<G, H, Gs, Hs>, op9: OperatorFunction<H, I, Hs, Is>): Observable<I>;
+  pipe<A, As extends A[], B, Bs extends B[], C, Cs extends C[], D, Ds extends D[], E, Es extends E[], F, Fs extends F[], G, Gs extends G[], H, Hs extends H[], I, Is extends I[]>(op1: OperatorFunction<T, A, Ts, As>, op2: OperatorFunction<A, B, As, Bs>, op3: OperatorFunction<B, C, Bs, Cs>, op4: OperatorFunction<C, D, Cs, Ds>, op5: OperatorFunction<D, E, Ds, Es>, op6: OperatorFunction<E, F, Es, Fs>, op7: OperatorFunction<F, G, Fs, Gs>, op8: OperatorFunction<G, H, Gs, Hs>, op9: OperatorFunction<H, I, Hs, Is>, ...operations: OperatorFunction<any, any>[]): Observable<unknown>;
   /* tslint:enable:max-line-length */
 
   /**

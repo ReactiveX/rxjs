@@ -33,9 +33,13 @@ export function of<T, T2, T3, T4, T5, T6, T7, T8, T9>(a: T, b: T2, c: T3, d: T4,
 export function of(): Observable<never>;
 /** @deprecated remove in v8. Do not use generic arguments directly, allow inference or cast with `as` */
 export function of<T>(): Observable<T>;
-export function of<T>(value: T): Observable<T>;
-export function of<T, U>(value1: T, value2: U): Observable<T|U>;
-export function of<T, U, V>(value1: T, value2: U, value3: V): Observable<T|U|V>;
+export function of<T>(value: T): Observable<T, [T]>;
+export function of<T, U>(value1: T, value2: U): Observable<T|U, [T, U]>;
+export function of<T, U, V>(value1: T, value2: U, value3: V): Observable<T|U|V, [T, U, V]>;
+export function of<T, U, V, W>(value1: T, value2: U, value3: V, value4: W): Observable<T|U|V|W, [T, U, V, W]>;
+export function of<T, U, V, W, X>(value1: T, value2: U, value3: V, value4: W, value5: X): Observable<T|U|V|W|X, [T, U, V, W, X]>;
+export function of<T, U, V, W, X, Y>(value1: T, value2: U, value3: V, value4: W, value5: X, value6: Y): Observable<T|U|V|W|X|Y, [T, U, V, W, X, Y]>;
+export function of<T, U, V, W, X, Y, Z>(value1: T, value2: U, value3: V, value4: W, value5: X, value6: Y, value7: Z): Observable<T|U|V|W|X|Y|Z, [T, U, V, W, X, Y, Z]>;
 export function of<A extends Array<any>>(...args: A): Observable<ValueFromArray<A>>;
 /* tslint:enable:max-line-length */
 

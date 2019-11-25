@@ -3,7 +3,7 @@ import { Subscriber } from '../Subscriber';
 import { ArgumentOutOfRangeError } from '../util/ArgumentOutOfRangeError';
 import { empty } from '../observable/empty';
 import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { TeardownLogic, OperatorFunction, Take, LessThanOrEqual } from '../types';
 
 /**
  * Emits only the first `count` values emitted by the source Observable.
@@ -51,7 +51,9 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  * @method take
  * @owner Observable
  */
-export function take<T>(count: number): MonoTypeOperatorFunction<T> {
+export function take<N extends LessThanOrEqual<Ts['length']>, T, Ts extends T[]>(
+  count: N
+): OperatorFunction<T, Take<Ts, N>[number], Ts, Take<Ts, N>> {
   return (source: Observable<T>) => {
     if (count === 0) {
       return empty();

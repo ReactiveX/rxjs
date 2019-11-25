@@ -58,7 +58,7 @@ export function timeInterval<T>(scheduler: SchedulerLike = async): OperatorFunct
         ({ current }, value) => ({ value, current: scheduler.now(), last: current }),
         { current: scheduler.now(), value: undefined,  last: undefined }
       ) as any,
-      map<any, TimeInterval<T>>(({ current, last, value }) => new TimeInterval(value, current - last)),
+      map<any, any, any>(({ current, last, value }) => new TimeInterval(value, current - last)),
     );
   });
 }

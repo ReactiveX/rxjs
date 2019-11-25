@@ -3,9 +3,9 @@ import { subscribeTo } from '../util/subscribeTo';
 import { ObservableInput, SchedulerLike, ObservedValueOf } from '../types';
 import { scheduled } from '../scheduled/scheduled';
 
-export function from<O extends ObservableInput<any>>(input: O): Observable<ObservedValueOf<O>>;
+export function from<O extends ObservableInput<any>>(input: O): Observable<ObservedValueOf<O>, [ObservedValueOf<O>]>;
 /** @deprecated use {@link scheduled} instead. */
-export function from<O extends ObservableInput<any>>(input: O, scheduler: SchedulerLike): Observable<ObservedValueOf<O>>;
+export function from<O extends ObservableInput<any>>(input: O, scheduler: SchedulerLike): Observable<ObservedValueOf<O>, [ObservedValueOf<O>]>;
 
 /**
  * Creates an Observable from an Array, an array-like object, a Promise, an iterable object, or an Observable-like object.
@@ -111,7 +111,7 @@ export function from<T>(input: ObservableInput<T>, scheduler?: SchedulerLike): O
     if (input instanceof Observable) {
       return input;
     }
-    return new Observable<T>(subscribeTo(input));
+    return new Observable(subscribeTo(input));
   } else {
     return scheduled(input, scheduler);
   }

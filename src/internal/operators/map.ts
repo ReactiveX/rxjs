@@ -1,7 +1,7 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { OperatorFunction } from '../types';
+import { OperatorFunction, MakeTuple } from '../types';
 
 /**
  * Applies a given `project` function to each value emitted by the source
@@ -42,8 +42,10 @@ import { OperatorFunction } from '../types';
  * @method map
  * @owner Observable
  */
-export function map<T, R>(project: (value: T, index: number) => R, thisArg?: any): OperatorFunction<T, R> {
-  return function mapOperation(source: Observable<T>): Observable<R> {
+export function map<T, R, Ts extends T[]>(
+  project: (value: T, index: number) => R, thisArg?: any
+): OperatorFunction<T, R, Ts, MakeTuple<R, Ts['length']>> {
+  return function mapOperation(source: Observable<T, Ts>): Observable<R, MakeTuple<R, Ts['length']>> {
     if (typeof project !== 'function') {
       throw new TypeError('argument is not a function. Are you looking for `mapTo()`?');
     }
