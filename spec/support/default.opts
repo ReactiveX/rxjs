@@ -1,5 +1,4 @@
---require ts-node/register
---require tsconfig-paths/register
+--require spec/support/mocha-path-mappings.js
 --require dist/spec/helpers/polyfills.js
 --require dist/spec/helpers/testScheduler-ui.js
 --ui dist/spec/helpers/testScheduler-ui.js
