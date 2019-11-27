@@ -137,6 +137,12 @@ describe('onErrorResumeNext operator', () => {
     const subs =        '^           !';
     const expected =    '--a--b----c--';
 
+    // This test manipulates the observable to make it look like an interop
+    // observable - an observable from a foreign library. Interop subscribers
+    // are treated differently: they are wrapped in a safe subscriber. This
+    // test ensures that unsubscriptions are chained all the way to the
+    // interop subscriber.
+
     expectObservable(source.pipe(onErrorResumeNext(asInteropObservable(next))), subs).toBe(expected);
     expectSubscriptions(next.subscriptions).toBe(nextSubs);
   });

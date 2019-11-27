@@ -106,6 +106,12 @@ describe('skipUntil', () => {
     const expected =  ('----------          ');
     const unsub =      '         !          ';
 
+    // This test is the same as the previous test, but the observable is
+    // manipulated to make it look like an interop observable - an observable
+    // from a foreign library. Interop subscribers are treated differently:
+    // they are wrapped in a safe subscriber. This test ensures that
+    // unsubscriptions are chained all the way to the interop subscriber.
+
     const result = e1.pipe(
       mergeMap(x => of(x)),
       skipUntil(asInteropObservable(skip)),
