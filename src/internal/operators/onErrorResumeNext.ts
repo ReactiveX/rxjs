@@ -163,6 +163,9 @@ class OnErrorResumeNextSubscriber<T, R> extends OuterSubscriber<T, R> {
       const destination = this.destination as Subscription;
       destination.add(innerSubscriber);
       const innerSubscription = subscribeToResult(this, next, undefined, undefined, innerSubscriber);
+      // The returned subscription will usually be the subscriber that was
+      // passed. However, interop subscribers will be wrapped and for
+      // unsubscriptions to chain correctly, the wrapper needs to be added, too.
       if (innerSubscription !== innerSubscriber) {
         destination.add(innerSubscription);
       }

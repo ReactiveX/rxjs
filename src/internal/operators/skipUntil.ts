@@ -75,6 +75,9 @@ class SkipUntilSubscriber<T, R> extends OuterSubscriber<T, R> {
     this.add(innerSubscriber);
     this.innerSubscription = innerSubscriber;
     const innerSubscription = subscribeToResult(this, notifier, undefined, undefined, innerSubscriber);
+    // The returned subscription will usually be the subscriber that was
+    // passed. However, interop subscribers will be wrapped and for
+    // unsubscriptions to chain correctly, the wrapper needs to be added, too.
     if (innerSubscription !== innerSubscriber) {
       this.add(innerSubscription);
       this.innerSubscription = innerSubscription;
