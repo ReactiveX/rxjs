@@ -12,6 +12,7 @@ export function distinctUntilChanged<T, K>(compare: (x: K, y: K) => boolean, key
  * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
  *
  * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.
+ * The comparator function shourld return true if the values are the same, and false if they are different.
  *
  * If a comparator function is not provided, an equality check is used by default.
  *
@@ -57,6 +58,7 @@ export function distinctUntilChanged<T, K>(compare: (x: K, y: K) => boolean, key
  * @see {@link distinctUntilKeyChanged}
  *
  * @param {function} [compare] Optional comparison function called to test if an item is distinct from the previous item in the source.
+ * A return value of true indicates that it is the same, and a return value of false means they are different.
  * @return {Observable} An Observable that emits items from the source Observable with distinct values.
  * @method distinctUntilChanged
  * @owner Observable
