@@ -29,7 +29,7 @@ export class Observable<T> implements Subscribable<T> {
 
   /**
    * @constructor
-   * @param {Function} subscribe the function that is called when the Observable is
+   * @param {Function} [subscribe] the function that is called when the Observable is
    * initially subscribed to. This function is given a Subscriber, to which new values
    * can be `next`ed, or an `error` method can be called to raise an error, or
    * `complete` can be called to notify of a successful completion.
@@ -47,7 +47,7 @@ export class Observable<T> implements Subscribable<T> {
    * @static true
    * @owner Observable
    * @method create
-   * @param {Function} subscribe? the subscriber function to be passed to the Observable constructor
+   * @param {Function} [subscribe] the subscriber function to be passed to the Observable constructor
    * @return {Observable} a new cold observable
    * @nocollapse
    * @deprecated use new Observable() instead
@@ -200,7 +200,7 @@ export class Observable<T> implements Subscribable<T> {
    * @param {Function} error (optional) A handler for a terminal event resulting from an error. If no error handler is provided,
    *  the error will be thrown as unhandled.
    * @param {Function} complete (optional) A handler for a terminal event resulting from successful completion.
-   * @return {ISubscription} a subscription reference to the registered handlers
+   * @return {Subscription} a subscription reference to the registered handlers
    * @method subscribe
    */
   subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
@@ -251,9 +251,9 @@ export class Observable<T> implements Subscribable<T> {
 
   /**
    * @method forEach
-   * @param next a handler for each value emitted by the observable
-   * @param [promiseCtor] a constructor function used to instantiate the Promise
-   * @return a promise that either resolves on observable completion or
+   * @param {Function} next a handler for each value emitted by the observable
+   * @param {PromiseConstructorLike} [promiseCtor] a constructor function used to instantiate the Promise
+   * @return {Promise} a promise that either resolves on observable completion or
    *  rejects with the handled error
    */
   forEach(next: (value: T) => void, promiseCtor?: PromiseConstructorLike): Promise<void> {
@@ -357,9 +357,9 @@ export class Observable<T> implements Subscribable<T> {
    * `complete` with the last emission.
    *
    * @method toPromise
-   * @param [promiseCtor] a constructor function used to instantiate
+   * @param {PromiseConstructorLike} [promiseCtor] a constructor function used to instantiate
    * the Promise
-   * @return A Promise that resolves with the last value emit, or
+   * @return {Promise} A Promise that resolves with the last value emit, or
    * rejects on an error.
    */
   toPromise(promiseCtor?: PromiseConstructorLike): Promise<T> {
