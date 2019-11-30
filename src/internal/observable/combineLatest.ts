@@ -145,13 +145,6 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * emitted value. On the other hand, if any Observable errors, `combineLatest`
  * will error immediately as well, and all other Observables will be unsubscribed.
  *
- * `combineLatest` accepts as optional parameter `project` function, which takes
- * as arguments all values that would normally be emitted by resulting Observable.
- * `project` can return any kind of value, which will be then emitted by Observable
- * instead of default array. Note that `project` does not take as argument that array
- * of values, but values themselves. That means default `project` can be imagined
- * as function that takes all its arguments and puts them into an array.
- *
  * ## Examples
  * ### Combine two timer Observables
  * ```ts
@@ -189,7 +182,7 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * ```
  *
  *
- * ### Use project function to dynamically calculate the Body-Mass Index
+ * ### Use map operator to dynamically calculate the Body-Mass Index
  * ```ts
  * import { combineLatest, of } from 'rxjs';
  * import { map } from 'rxjs/operators';
@@ -197,7 +190,7 @@ export function combineLatest<R>(...observables: Array<ObservableInput<any> | ((
  * const weight = of(70, 72, 76, 79, 75);
  * const height = of(1.76, 1.77, 1.78);
  * const bmi = combineLatest(weight, height).pipe(
- *   map(([w, h]) => w / (h * h)),
+ *   map(([w, h]) => w / (h * h))),
  * );
  * bmi.subscribe(x => console.log('BMI is ' + x));
  *
