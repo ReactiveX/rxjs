@@ -33,6 +33,7 @@ module.exports = new Package('angular-api', [basePackage, typeScriptPackage])
   .processor(require('./processors/computeSearchTitle'))
   .processor(require('./processors/simplifyMemberAnchors'))
   .processor(require('./processors/computeStability'))
+  .processor(require('./processors/markAliases').markAliases)
 
   .factory(require('./post-processors/embedMarbleDiagrams'))
 

@@ -193,7 +193,7 @@ describe('reduce operator', () => {
       throw 'error';
     };
 
-    expectObservable(e1.pipe(reduce<string>(reduceFunction, seed))).toBe(expected);
+    expectObservable(e1.pipe(reduce(reduceFunction, seed))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 
@@ -288,106 +288,5 @@ describe('reduce operator', () => {
 
     expectObservable(e1.pipe(reduce(reduceFunction))).toBe(expected);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
-  });
-
-  type('should accept array typed reducers', () => {
-    let a: Observable<{ a: number; b: string }>;
-    a.pipe(reduce((acc, value) => acc.concat(value), []));
-  });
-
-  type('should accept T typed reducers', () => {
-    let a: Observable<{ a: number; b: string }>;
-    const reduced = a.pipe(reduce((acc, value) => {
-      value.a = acc.a;
-      value.b = acc.b;
-      return acc;
-    }));
-
-    reduced.subscribe(r => {
-      r.a.toExponential();
-      r.b.toLowerCase();
-    });
-  });
-
-  type('should accept T typed reducers when T is an array', () => {
-    let a: Observable<number[]>;
-    const reduced = a.pipe(reduce((acc, value) => {
-      return acc.concat(value);
-    }, []));
-
-    reduced.subscribe(rs => {
-      rs[0].toExponential();
-    });
-  });
-
-  type('should accept R typed reduces when R is an array of T', () => {
-    let a: Observable<number>;
-    const reduced = a.pipe(reduce((acc, value) => {
-      acc.push(value);
-      return acc;
-    }, []));
-
-    reduced.subscribe(rs => {
-      rs[0].toExponential();
-    });
-  });
-
-  type('should accept R typed reducers when R is assignable to T', () => {
-    let a: Observable<{ a?: number; b?: string }>;
-    const reduced = a.pipe(reduce((acc, value) => {
-      value.a = acc.a;
-      value.b = acc.b;
-      return acc;
-    }, {} as { a?: number; b?: string }));
-
-    reduced.subscribe(r => {
-      r.a.toExponential();
-      r.b.toLowerCase();
-    });
-  });
-
-  type('should accept R typed reducers when R is not assignable to T', () => {
-    let a: Observable<{ a: number; b: string }>;
-    const seed = {
-      as: [1],
-      bs: ['a']
-    };
-    const reduced = a.pipe(reduce((acc, value: {a: number, b: string}) => {
-      acc.as.push(value.a);
-      acc.bs.push(value.b);
-      return acc;
-    }, seed));
-
-    reduced.subscribe(r => {
-      r.as[0].toExponential();
-      r.bs[0].toLowerCase();
-    });
-  });
-
-  type('should accept R typed reducers and reduce to type R', () => {
-    let a: Observable<{ a: number; b: string }>;
-    const reduced = a.pipe(reduce<{ a?: number; b?: string }>((acc, value) => {
-      value.a = acc.a;
-      value.b = acc.b;
-      return acc;
-    }, {}));
-
-    reduced.subscribe(r => {
-      r.a.toExponential();
-      r.b.toLowerCase();
-    });
-  });
-
-  type('should accept array of R typed reducers and reduce to array of R', () => {
-    let a: Observable<number>;
-    const reduced = a.pipe(reduce<number, string[]>((acc, cur) => {
-      console.log(acc);
-      acc.push(cur.toString());
-      return acc;
-    }, [] as string[]));
-
-    reduced.subscribe(rs => {
-      rs[0].toLowerCase();
-    });
   });
 });

@@ -6,7 +6,7 @@ export interface TimeoutErrorCtor {
 }
 
 const TimeoutErrorImpl = (() => {
-  function TimeoutErrorImpl(this: any) {
+  function TimeoutErrorImpl(this: Error) {
     Error.call(this);
     this.message = 'Timeout has occurred';
     this.name = 'TimeoutError';

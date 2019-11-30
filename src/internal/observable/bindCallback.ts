@@ -130,8 +130,8 @@ export function bindCallback(callbackFunc: Function, scheduler?: SchedulerLike):
  * };
  *
  * const boundSomeFunction = bindCallback(someFunction);
- * boundSomeFunction().subscribe(values => {
- *   console.log(values) // [5, 'some string', {someProperty: 'someValue'}]
+ * boundSomeFunction(12, 10).subscribe(values => {
+ *   console.log(values); // [22, 2]
  * });
  * ```
  *

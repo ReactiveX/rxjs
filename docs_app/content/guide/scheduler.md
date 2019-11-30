@@ -10,7 +10,6 @@
 
 In the example below, we take the usual simple Observable that emits values `1`, `2`, `3` synchronously, and use the operator `observeOn` to specify the `async` scheduler to use for delivering those values.
 
-[View on Stackblitz](https://stackblitz.com/edit/typescript-jexdny)
 ```ts
 import { Observable, asyncScheduler } from 'rxjs';
 import { observeOn } from 'rxjs/operators';

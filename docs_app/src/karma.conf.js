@@ -16,8 +16,8 @@ module.exports = function (config) {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     coverageIstanbulReporter: {
-      dir: require('path').join(__dirname, '../coverage'),
-      reports: ['html', 'lcovonly'],
+      dir: require('path').join(__dirname, './coverage/site'),
+      reports: ['html', 'lcovonly', 'text-summary'],
       fixWebpackSourcePaths: true
     },
     reporters: ['progress', 'kjhtml'],
@@ -25,14 +25,9 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['CustomChrome'],
+    browsers: ['Chrome'],
     browserNoActivityTimeout: 60000,
     singleRun: false,
-    customLaunchers: {
-      CustomChrome: {
-        base: 'Chrome',
-        flags: process.env.TRAVIS && ['--no-sandbox']
-      }
-    }
+    restartOnFileChange: true
   });
 };

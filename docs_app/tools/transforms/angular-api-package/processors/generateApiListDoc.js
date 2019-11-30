@@ -25,10 +25,12 @@ function getModuleInfo(moduleDoc) {
     name: moduleName.toLowerCase(),
     title: moduleName,
     items: moduleDoc.exports
-                  // Ignore internals and private exports (indicated by the ɵ prefix)
-                  .filter(doc => !doc.internal && !doc.privateExport)
-                  .map(getExportInfo)
-                  .sort((a, b) => a.name === b.name ? 0 : a.name > b.name ? 1 : -1)
+    // Ignore internals and private exports (indicated by the ɵ prefix)
+      .filter(doc => !doc.internal && !doc.privateExport)
+    // Ignore all renamed exports that are just duplicates of other docs
+      .filter(doc => !doc.duplicateOf)
+      .map(getExportInfo)
+      .sort((a, b) => a.name === b.name ? 0 : a.name > b.name ? 1 : -1)
   };
 }
 

@@ -5,10 +5,6 @@ it still applies to you. Ignorance is not an exemption.
 
 Contents
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-
 - [Submitting a Pull Request (PR)](#submitting-a-pull-request-pr)
   - [After your pull request is merged](#after-your-pull-request-is-merged)
 - [Coding Style Guidelines](#coding-style-guidelines)
@@ -27,8 +23,6 @@ Contents
   - [Body](#body)
   - [Footer](#footer)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 ---
 - Related documents
   - [Creating Operators](doc/operator-creation.md)
@@ -36,7 +30,7 @@ Contents
 
 ---
 
-(This document is a work and progress and is subject to change)
+(This document is a work in progress and is subject to change)
 
 ## Submitting a Pull Request (PR)
 Before you submit your Pull Request (PR) consider the following guidelines:
@@ -120,7 +114,7 @@ from the main (upstream) repository:
 - 2 space indentation only
 - favor readability over terseness
 
-(TBD): For now try to follow the style that exists elsewhere in the source, and use your best judgment.
+(TBD): For now, try to follow the style that exists elsewhere in the source, and use your best judgment.
 
 ## Documentation
 
@@ -178,7 +172,7 @@ testing techniques.
 ### Macro
 
 [Macro performance tests](perf/macro) are best written for scenarios where many object instance allocations (or deallocations) are occurring. Operators
-that create a lot of child subscriptions, or operators that emit new objects like Observables and Subjects are definitely worth creating
+that create a lot of child subscriptions or operators that emit new objects like Observables and Subjects are definitely worth creating
 macro performance tests for.
 
 Other scenarios for macro performance testing may include common end-to-end scenarios from real-world apps. If you have a situation in your
@@ -254,7 +248,7 @@ Must be one of the following:
   generation
 
 ### Scope
-The scope could be anything specifying place of the commit change. For example
+The scope could be anything specifying the place of the commit change. For example
 `Observable`, `Subject`, `switchMap`, etc.
 
 ### Subject

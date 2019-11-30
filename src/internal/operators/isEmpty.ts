@@ -4,10 +4,10 @@ import { Observable } from '../Observable';
 import { OperatorFunction } from '../types';
 
 /**
- * Emits false if the input observable emits any values, or emits true if the
- * input observable completes without emitting any values.
+ * Emits `false` if the input Observable emits any values, or emits `true` if the
+ * input Observable completes without emitting any values.
  *
- * <span class="informal">Tells whether any values are emitted by an observable</span>
+ * <span class="informal">Tells whether any values are emitted by an Observable.</span>
  *
  * ![](isEmpty.png)
  *
@@ -23,42 +23,47 @@ import { OperatorFunction } from '../types';
  *
  * ## Examples
  *
- * Emit `false` for a non-empty Observable
- * ```javascript
+ * Emit `false` for a non-empty Observable.
+ *
+ * ```ts
  * import { Subject } from 'rxjs';
  * import { isEmpty } from 'rxjs/operators';
  *
  * const source = new Subject<string>();
  * const result = source.pipe(isEmpty());
+ *
  * source.subscribe(x => console.log(x));
  * result.subscribe(x => console.log(x));
+ *
  * source.next('a');
  * source.next('b');
  * source.next('c');
  * source.complete();
  *
- * // Results in:
+ * // Outputs
  * // a
  * // false
  * // b
  * // c
  * ```
  *
- * Emit `true` for an empty Observable
- * ```javascript
+ * Emit `true` for an empty Observable.
+ *
+ * ```ts
  * import { EMPTY } from 'rxjs';
  * import { isEmpty } from 'rxjs/operators';
  *
  * const result = EMPTY.pipe(isEmpty());
  * result.subscribe(x => console.log(x));
- * // Results in:
+ *
+ * // Outputs
  * // true
  * ```
  *
  * @see {@link count}
- * @see {@link EMPTY}
+ * @see {@link index/EMPTY}
  *
- * @return {OperatorFunction<T, boolean>} An Observable of a boolean value indicating whether observable was empty or not
+ * @return {OperatorFunction<T, boolean>} An Observable of a boolean value indicating whether observable was empty or not.
  * @method isEmpty
  * @owner Observable
  */

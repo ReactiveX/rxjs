@@ -227,27 +227,4 @@ describe('scan operator', () => {
     expectObservable(scanObs).toBe(expected, values);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
-
-  type('should accept array typed reducers', () => {
-    let a: Observable<{ a: number; b: string }>;
-    a.pipe(scan((acc, value) => acc.concat(value), []));
-  });
-
-  type('should accept T typed reducers', () => {
-    let a: Observable<{ a?: number; b?: string }>;
-    a.pipe(scan((acc, value) => {
-      value.a = acc.a;
-      value.b = acc.b;
-      return acc;
-    }, {} as { a?: number; b?: string }));
-  });
-
-  type('should accept R typed reducers', () => {
-    let a: Observable<{ a: number; b: string }>;
-    a.pipe(scan<{ a?: number; b?: string }>((acc, value) => {
-      value.a = acc.a;
-      value.b = acc.b;
-      return acc;
-    }, {}));
-  });
 });

@@ -7,12 +7,11 @@
     "noImplicitAny": true,
     "noImplicitThis": true,
     "paths": {
-      "rxjs": ["../dist/typings"],
-      "rxjs/operators": ["../dist/typings/operators"]
+      "rxjs": ["../dist/types"],
+      "rxjs/operators": ["../dist/types/operators"]
     },
     "skipLibCheck": true,
-    "strictFunctionTypes": true,
-    "strictNullChecks": true,
+    "strict": true,
     "target": "es2015"
   }
 }

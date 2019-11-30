@@ -336,8 +336,8 @@ describe('static concat', () => {
   });
 
   it('should concat an immediately-scheduled source with an immediately-scheduled second', (done) => {
-    const a = of<number>(1, 2, 3, queueScheduler);
-    const b = of<number>(4, 5, 6, 7, 8, queueScheduler);
+    const a = of(1, 2, 3, queueScheduler);
+    const b = of(4, 5, 6, 7, 8, queueScheduler);
     const r = [1, 2, 3, 4, 5, 6, 7, 8];
 
     concat(a, b, queueScheduler).subscribe((vals) => {

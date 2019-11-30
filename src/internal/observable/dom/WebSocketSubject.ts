@@ -41,7 +41,7 @@ import { Observer, NextObserver } from '../../types';
  * // This is a msg from the server
  * ```
  *
- * **serializer** allows us tom apply custom serialization strategy but for the outgoing messages
+ * **serializer** allows us to apply custom serialization strategy but for the outgoing messages
  * ```ts
  * import { webSocket } from 'rxjs/webSocket';
  *

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { cold } from 'jasmine-marbles';
+import { cold, initTestScheduler, addMatchers } from 'jasmine-marbles';
 import {
   treeNodeInitialStub,
   treeNodeStubNoOptions,
@@ -17,6 +17,8 @@ describe('OperatorDecisionTreeService', () => {
   };
 
   beforeEach(() => {
+    addMatchers();
+    initTestScheduler();
     TestBed.configureTestingModule({
       providers: [
         OperatorDecisionTreeService,
@@ -188,14 +190,6 @@ describe('OperatorDecisionTreeService', () => {
   });
 
   describe('hasError$', () => {
-    describe('when the tree has an error', () => {
-      it('should be true', () => {
-        dataServiceStub.getDecisionTree$.and.returnValue(cold('#'));
-        service = TestBed.get(OperatorDecisionTreeService);
-        expect(service.hasError$).toBeObservable(cold('(a|)', { a: true }));
-      });
-    });
-
     describe('when the tree has no error', () => {
       it('shoud not emit', () => {
         dataServiceStub.getDecisionTree$.and.returnValue(

@@ -4,7 +4,7 @@ module.exports = function cleanGeneratedFiles() {
     $runAfter: ['writing-files'],
     $runBefore: ['writeFilesProcessor'],
     $process: function() {
-      rimraf.sync('src/generated/{docs,*.json}');
+      rimraf.sync('src/generated/{*.json}');
     }
   };
 };

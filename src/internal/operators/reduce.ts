@@ -2,13 +2,13 @@ import { Observable } from '../Observable';
 import { scan } from './scan';
 import { takeLast } from './takeLast';
 import { defaultIfEmpty } from './defaultIfEmpty';
-import { OperatorFunction, MonoTypeOperatorFunction } from '../types';
+import { OperatorFunction } from '../types';
 import { pipe } from '../util/pipe';
 
 /* tslint:disable:max-line-length */
-export function reduce<T, R>(accumulator: (acc: R, value: T, index: number) => R, seed: R): OperatorFunction<T, R>;
-export function reduce<T>(accumulator: (acc: T, value: T, index: number) => T, seed?: T): MonoTypeOperatorFunction<T>;
-export function reduce<T, R>(accumulator: (acc: R, value: T, index: number) => R): OperatorFunction<T, R>;
+export function reduce<V, A = V>(accumulator: (acc: A|V, value: V, index: number) => A): OperatorFunction<V, V|A>;
+export function reduce<V, A>(accumulator: (acc: A, value: V, index: number) => A, seed: A): OperatorFunction<V, A>;
+export function reduce<V, A, S = A>(accumulator: (acc: A|S, value: V, index: number) => A, seed: S): OperatorFunction<V, A>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -54,28 +54,32 @@ export function reduce<T, R>(accumulator: (acc: R, value: T, index: number) => R
  * @see {@link mergeScan}
  * @see {@link scan}
  *
- * @param {function(acc: R, value: T, index: number): R} accumulator The accumulator function
+ * @param {function(acc: A, value: V, index: number): A} accumulator The accumulator function
  * called on each source value.
- * @param {R} [seed] The initial accumulation value.
- * @return {Observable<R>} An Observable that emits a single value that is the
+ * @param {A} [seed] The initial accumulation value.
+ * @return {Observable<A>} An Observable that emits a single value that is the
  * result of accumulating the values emitted by the source Observable.
  * @method reduce
  * @owner Observable
  */
-export function reduce<T, R>(accumulator: (acc: T | R, value: T, index?: number) => T | R, seed?: T | R): OperatorFunction<T, T | R> {
+export function reduce<V, A>(accumulator: (acc: V | A, value: V, index?: number) => A, seed?: any): OperatorFunction<V, V | A> {
   // providing a seed of `undefined` *should* be valid and trigger
   // hasSeed! so don't use `seed !== undefined` checks!
   // For this reason, we have to check it here at the original call site
   // otherwise inside Operator/Subscriber we won't know if `undefined`
   // means they didn't provide anything or if they literally provided `undefined`
   if (arguments.length >= 2) {
-    return function reduceOperatorFunctionWithSeed(source: Observable<T>): Observable<T | R> {
-      return pipe(scan(accumulator, seed), takeLast(1), defaultIfEmpty(seed))(source);
+    return function reduceOperatorFunctionWithSeed(source: Observable<V>): Observable<V | A> {
+      return pipe(
+        scan(accumulator, seed),
+        takeLast(1),
+        defaultIfEmpty(seed),
+      )(source);
     };
   }
-  return function reduceOperatorFunction(source: Observable<T>): Observable<T | R> {
+  return function reduceOperatorFunction(source: Observable<V>): Observable<V | A> {
     return pipe(
-      scan<T, T | R>((acc, value, index) => accumulator(acc, value, index + 1)),
+      scan<V, V | A>((acc, value, index) => accumulator(acc, value, index + 1)),
       takeLast(1),
     )(source);
   };
