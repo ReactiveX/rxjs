@@ -41,6 +41,7 @@ import {  AjaxObservable, AjaxCreationMethod  } from './AjaxObservable';
  * ## Using ajax() with object as argument and method POST with a two seconds delay.
  * ```ts
  * import { ajax } from 'rxjs/ajax';
+ * import { map, catchError } from 'rxjs/operators';
  * import { of } from 'rxjs';
  *
  * const users = ajax({
