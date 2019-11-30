@@ -24,6 +24,8 @@ module.exports = function createSitemap() {
           // Filter out unwanted docs
           .filter(doc => this.blacklistedDocTypes.indexOf(doc.docType) === -1)
           .filter(doc => this.blacklistedPaths.indexOf(doc.path) === -1)
+          // Filter out duplicate renamed exports
+          .filter(doc => !doc.duplicateOf)
           // Capture the path of each doc
           .map(doc => doc.path)
           // Convert the homepage: `index` to `/`
