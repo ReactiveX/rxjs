@@ -1,3 +1,48 @@
+# [7.0.0-alpha.0](https://github.com/reactivex/rxjs/compare/6.5.2...7.0.0-alpha.0) (2019-09-18)
+
+
+### Bug Fixes
+
+* missing package.json in rxjs/fetch ([#5001](https://github.com/reactivex/rxjs/issues/5001)) ([f4bee07](https://github.com/reactivex/rxjs/commit/f4bee07))
+* **filter:** Resolve TS build failures for certain situations where Boolean is the predicate ([77c7dfd](https://github.com/reactivex/rxjs/commit/77c7dfd))
+* **pluck:** key union type strictness ([#4585](https://github.com/reactivex/rxjs/issues/4585)) ([bd5ec2d](https://github.com/reactivex/rxjs/commit/bd5ec2d))
+* **race:** ignore latter sources after first complete or error ([#4809](https://github.com/reactivex/rxjs/issues/4809)) ([f31c3df](https://github.com/reactivex/rxjs/commit/f31c3df)), closes [#4808](https://github.com/reactivex/rxjs/issues/4808)
+* **scan/reduce:** Typings correct for mixed seed/value types ([#4858](https://github.com/reactivex/rxjs/issues/4858)) ([b89ebe5](https://github.com/reactivex/rxjs/commit/b89ebe5))
+* **scheduled:** import from relative paths ([#4832](https://github.com/reactivex/rxjs/issues/4832)) ([1d37a87](https://github.com/reactivex/rxjs/commit/1d37a87))
+* **TS:** Error impls now properly type `this` ([#4978](https://github.com/reactivex/rxjs/issues/4978)) ([7606dc7](https://github.com/reactivex/rxjs/commit/7606dc7))
+* **TS:** fix type inference for defaultIfEmpty. ([#4833](https://github.com/reactivex/rxjs/issues/4833)) ([9b5ce2f](https://github.com/reactivex/rxjs/commit/9b5ce2f))
+* **types:** add Boolean signature to filter ([#4961](https://github.com/reactivex/rxjs/issues/4961)) ([259853e](https://github.com/reactivex/rxjs/commit/259853e)), closes [#4959](https://github.com/reactivex/rxjs/issues/4959) [/github.com/ReactiveX/rxjs/issues/4959#issuecomment-520629091](https://github.com//github.com/ReactiveX/rxjs/issues/4959/issues/issuecomment-520629091)
+
+
+### Features
+
+* **animationFrames:** Adds an observable of animationFrames ([#5021](https://github.com/reactivex/rxjs/issues/5021)) ([6a4cd68](https://github.com/reactivex/rxjs/commit/6a4cd68))
+* **concat:** can infer N types ([6c0cbc4](https://github.com/reactivex/rxjs/commit/6c0cbc4))
+* **of:** Update of typings ([e8adbb5](https://github.com/reactivex/rxjs/commit/e8adbb5))
+* **rxjs-compat:** removed for v7 ([#4839](https://github.com/reactivex/rxjs/issues/4839)) ([79b1b95](https://github.com/reactivex/rxjs/commit/79b1b95))
+* **TestScheduler:** expose `frameTimeFactor` property ([#4977](https://github.com/reactivex/rxjs/issues/4977)) ([8c32ed0](https://github.com/reactivex/rxjs/commit/8c32ed0))
+* **TS:** Update to TypeScript 3.5.3 ([741a136](https://github.com/reactivex/rxjs/commit/741a136))
+
+
+### BREAKING CHANGES
+
+* **concat:** Generic signature changed. Recommend not explicitly passing generics, just let inference do its job. If you must, cast with `as`.
+* **of:** Generic signature changed, do not specify generics, allow them to be inferred or use `as`
+* **of:** Use with more than 9 arguments, where the last argument is a `SchedulerLike` may result in the wrong type which includes the `SchedulerLike`, even though the run time implementation does not support that. Developers should be using `scheduled` instead
+* **TS:** RxJS requires TS 3.5
+* **rxjs-compat:** `rxjs/Rx` is no longer a valid import site.
+* **rxjs-compat:** `rxjs-compat` is not published for v7 (yet)
+* **race:** `race()` will no longer subscribe to subsequent observables if a provided source synchronously errors or completes. This means side effects that might have occurred during subscription in those rare cases will no longer occur.
+
+
+
+## [6.5.3](https://github.com/reactivex/rxjs/compare/6.5.2...6.5.3) (2019-09-03)
+
+### Bug Fixes
+
+* **general:** Refactor modules so they don't show side effects in some tools ([#4769](https://github.com/reactivex/rxjs/issues/4769)) ([9829c5e0](https://github.com/reactivex/rxjs/commit/9829c5e0))
+* **defer:** restrict allowed factory types ([#4835](https://github.com/reactivex/rxjs/issues/4835)) ([40a22096](https://github.com/reactivex/rxjs/commit/40a22096))
+
 ## [6.5.2](https://github.com/reactivex/rxjs/compare/6.5.0...6.5.2) (2019-05-10)
 
 

@@ -39,7 +39,7 @@ it('should support an undefined resultSelector', () => {
 
 it('should support union types', () => {
   const s = Math.random() > 0.5 ? of(123) : of('abc');
-  const r = of(1, 2, 3).pipe(concatMapTo(s)); // $ExpectType<string | number>
+  const r = of(1, 2, 3).pipe(concatMapTo(s)); // $ExpectType Observable<string | number>
 });
 
 it('should enforce types', () => {

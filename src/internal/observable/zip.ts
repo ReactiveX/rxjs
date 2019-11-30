@@ -50,21 +50,23 @@ export function zip<R>(...observables: Array<ObservableInput<any> | ((...values:
  * Otherwise, an array of the input values is returned.
  *
  * ## Example
+ *
  * Combine age and name from different sources
+ *
  * ```ts
  * import { zip, of } from 'rxjs';
  * import { map } from 'rxjs/operators';
  *
- * let age$ = of<number>(27, 25, 29);
- * let name$ = of<string>('Foo', 'Bar', 'Beer');
- * let isDev$ = of<boolean>(true, true, false);
+ * let age$ = of(27, 25, 29);
+ * let name$ = of('Foo', 'Bar', 'Beer');
+ * let isDev$ = of(true, true, false);
  *
  * zip(age$, name$, isDev$).pipe(
- *   map(([age, name, isDev]) => ({ age, name, isDev })),
+ *   map(([age, name, isDev]) => ({ age, name, isDev }))
  * )
  * .subscribe(x => console.log(x));
  *
- * // outputs
+ * // Outputs
  * // { age: 27, name: 'Foo', isDev: true }
  * // { age: 25, name: 'Bar', isDev: true }
  * // { age: 29, name: 'Beer', isDev: false }

@@ -8,7 +8,7 @@ import { Subscription } from '../Subscription';
  *
  * <span class="informal">Turn entries of an object into a stream.</span>
  *
- * <img src="./img/pairs.png" width="100%">
+ * ![](pairs.png)
  *
  * `pairs` takes an arbitrary object and returns an Observable that emits arrays. Each
  * emitted array has exactly two elements - the first is a key from the object
@@ -20,7 +20,9 @@ import { Subscription } from '../Subscription';
  * By default these arrays are emitted synchronously. To change that you can
  * pass a {@link SchedulerLike} as a second argument to `pairs`.
  *
- * @example <caption>Converts a javascript object to an Observable</caption>
+ * ## Example
+ *
+ * ### Converts an object to an Observable
  * ```ts
  * import { pairs } from 'rxjs';
  *
@@ -30,18 +32,16 @@ import { Subscription } from '../Subscription';
  *   baz: 78
  * };
  *
- * pairs(obj)
- * .subscribe(
- *   value => console.log(value),
- *   err => {},
- *   () => console.log('the end!')
- * );
+ * pairs(obj).subscribe({
+ *   next: value => console.log(value),
+ *   complete: () => console.log('Complete!')
+ * });
  *
  * // Logs:
  * // ["foo", 42],
  * // ["bar", 56],
  * // ["baz", 78],
- * // "the end!"
+ * // "Complete!"
  * ```
  *
  * @param {Object} obj The object to inspect and turn into an

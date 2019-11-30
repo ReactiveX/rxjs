@@ -98,6 +98,24 @@ export interface SchedulerAction<T> extends Subscription {
   schedule(state?: T, delay?: number): Subscription;
 }
 
+/**
+ * Extracts the type from an `ObservableInput<any>`. If you have
+ * `O extends ObservableInput<any>` and you pass in `Observable<number>`, or
+ * `Promise<number>`, etc, it will type as `number`.
+ */
 export type ObservedValueOf<O> = O extends ObservableInput<infer T> ? T : never;
 
+/**
+ * Extracts the generic type from an `ObservableInput<any>[]`.
+ * If you have `O extends ObservableInput<any>[]` and you pass in
+ * `Observable<string>[]` or `Promise<string>[]` you would get
+ * back a type of `string`
+ */
 export type ObservedValuesFromArray<X> = X extends Array<ObservableInput<infer T>> ? T : never;
+
+/**
+ * Extracts the generic value from an Array type.
+ * If you have `T extends Array<any>`, and pass a `string[]` to it,
+ * `ValueFromArray<T>` will return the actual type of `string`.
+ */
+export type ValueFromArray<A> = A extends Array<infer T> ? T : never;

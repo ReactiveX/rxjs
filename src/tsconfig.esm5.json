@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "importHelpers": true,
+    "target": "es5",
+    "outDir": "../dist/esm5"
+  },
+  "exclude": [
+    "./internal/umd.ts"
+  ]
+}

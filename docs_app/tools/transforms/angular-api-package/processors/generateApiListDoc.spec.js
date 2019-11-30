@@ -165,5 +165,27 @@ describe('generateApiListDoc processor', () => {
       { docType: 'class', title: 'DddDdd', name: 'dddddd', path: 'uuu', stability: '', securityRisk: false },
     ]);
   });
+
+  it('should remove duplicate exports', () => {
+    const origDoc = { docType: 'class', name: 'DddDdd', path: 'uuu' };
+    const duplicatedDoc = { docType: 'class', name: 'BbbBbb', path: 'vvv', duplicateOf: origDoc };
+    origDoc.renamedDuplicates = [duplicatedDoc];
+
+    const processor = processorFactory();
+    const docs = [
+      { docType: 'module', id: '@angular/common/index', exports: [
+        origDoc,
+        duplicatedDoc,
+        { docType: 'class', name: 'AaaAaa', path: 'xxx' },
+        { docType: 'class', name: 'CccCcc', path: 'yyy' },
+      ]}
+    ];
+    processor.$process(docs);
+    expect(docs[1].data[0].items).toEqual([
+      { docType: 'class', title: 'AaaAaa', name: 'aaaaaa', path: 'xxx', stability: '', securityRisk: false },
+      { docType: 'class', title: 'CccCcc', name: 'cccccc', path: 'yyy', stability: '', securityRisk: false },
+      { docType: 'class', title: 'DddDdd', name: 'dddddd', path: 'uuu', stability: '', securityRisk: false },
+    ]);
+  });
 });
 

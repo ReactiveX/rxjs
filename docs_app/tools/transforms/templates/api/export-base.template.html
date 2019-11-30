@@ -1,6 +1,7 @@
 {% extends 'base.template.html' -%}
 
 {% block body %}
+  {% include "includes/renamed-exports.html" %}
   <p class="short-description">{$ doc.shortDescription | marked $}</p>
   {% include "includes/security-notes.html" %}
   {% include "includes/deprecation.html" %}

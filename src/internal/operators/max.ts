@@ -28,7 +28,7 @@ import { MonoTypeOperatorFunction } from '../types';
  *   age: number,
  *   name: string
  * }
- * of<Person>(
+ *of(
  *   {age: 7, name: 'Foo'},
  *   {age: 5, name: 'Bar'},
  *   {age: 9, name: 'Beer'},

@@ -23,7 +23,7 @@ describe('of', () => {
     const expected = [1, 'a', x];
     let i = 0;
 
-    of<any>(1, 'a', x)
+   of(1, 'a', x)
       .subscribe((y: any) => {
         expect(y).to.equal(expected[i++]);
       }, (x) => {
@@ -47,8 +47,8 @@ describe('of', () => {
   });
 
   it('should handle an Observable as the only value', () => {
-    const source = of<Observable<string>>(
-      of<string>('a', 'b', 'c', rxTestScheduler),
+    const source = of(
+     of('a', 'b', 'c', rxTestScheduler),
       rxTestScheduler
     );
     const result = source.pipe(concatAll());
@@ -56,9 +56,9 @@ describe('of', () => {
   });
 
   it('should handle many Observable as the given values', () => {
-    const source = of<Observable<string>>(
-      of<string>('a', 'b', 'c', rxTestScheduler),
-      of<string>('d', 'e', 'f', rxTestScheduler),
+    const source = of(
+     of('a', 'b', 'c', rxTestScheduler),
+     of('d', 'e', 'f', rxTestScheduler),
       rxTestScheduler
     );
 

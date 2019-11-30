@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import * as chai from 'chai';
 
 function stringify(x: any): string {
   return JSON.stringify(x, function (key: string, value: any) {

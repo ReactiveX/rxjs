@@ -28,6 +28,7 @@ export class ReplaySubject<T> extends Subject<T> {
 
     if (windowTime === Number.POSITIVE_INFINITY) {
       this._infiniteTimeWindow = true;
+      /** @override */
       this.next = this.nextInfiniteTimeWindow;
     } else {
       this.next = this.nextTimeWindow;

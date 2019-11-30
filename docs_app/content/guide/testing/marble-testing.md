@@ -1,12 +1,12 @@
 # Testing RxJS Code with Marble Diagrams
 
 <div class="alert is-helpful">
-  <span>This guide refers to usage of marble diagrams when using the new `testScheduler.run(callback)`. Some details here do not apply to using the TestScheduler manually, without using the `run()` helper. </span>
+  <span>This guide refers to usage of marble diagrams when using the new testScheduler.run(callback). Some details here do not apply to using the TestScheduler manually, without using the run() helper.</span>
 </div>
 
 We can test our _asynchronous_ RxJS code _synchronously_ and deterministically by virtualizing time using the TestScheduler. ASCII **marble diagrams** provide a visual way for us to represent the behavior of an Observable. We can use them to assert that a particular Observable behaves as expected, as well as to create [hot and cold Observables](https://medium.com/@benlesh/hot-vs-cold-observables-f8094ed53339) we can use as mocks.
 
-> At this time the TestScheduler can only be used to test code that uses timers, like delay/debounceTime/etc (i.e. it uses AsyncScheduler with delays > 1). If the code consumes a Promise or does scheduling with AsapScheduler/AnimationFrameScheduler/etc it cannot be reliably tested with TestScheduler, but instead should be tested more traditionally. See the [Known Issues](#known-issues) section for more details.
+> At this time the TestScheduler can only be used to test code that uses timers, like `delay`, `debounceTime`, etc., (i.e. it uses `AsyncScheduler` with delays > 1). If the code consumes a Promise or does scheduling with `AsapScheduler`, `AnimationFrameScheduler`, etc., it cannot be reliably tested with `TestScheduler`, but instead should be tested more traditionally. See the [Known Issues](#known-issues) section for more details.
 
 ```ts
 import { TestScheduler } from 'rxjs/testing';
@@ -18,8 +18,8 @@ const testScheduler = new TestScheduler((actual, expected) => {
   expect(actual).deep.equal(expected);
 });
 
-// This test will actually run *synchronously*
-it('generate the stream correctly', () => {
+// This test runs synchronously.
+it('generates the stream correctly', () => {
   testScheduler.run(helpers => {
     const { cold, expectObservable, expectSubscriptions } = helpers;
     const e1 =  cold('-a--b--c---|');
@@ -38,7 +38,7 @@ The callback function you provide to `testScheduler.run(callback)` is called wit
 
 <div class="alert is-helpful">
   <span>
-    When the code inside this callback is being executed, any operator that uses timers/AsyncScheduler (like delay, debounceTime, etc) will **automatically** use the TestScheduler instead, so that we have "virtual time". You do not need to pass the TestScheduler to them, like in the past.
+    When the code inside this callback is being executed, any operator that uses timers/AsyncScheduler (like delay, debounceTime, etc.,) will automatically use the TestScheduler instead, so that we have "virtual time". You do not need to pass the TestScheduler to them, like in the past.
   </span>
 </div>
 
@@ -49,15 +49,15 @@ testScheduler.run(helpers => {
 });
 ```
 
-Although `run()` executes entirely synchronously, the helper functions inside your callback function do not! These functions **schedule assertions** that will execute either when your callback completes or when you explicitly call `flush()`. Be wary of calling synchronous assertions, for example `expect` from your testing library of choice, from within the callback. See [Synchronous Assertion](#synchronous-assertion) for more information on how to do this.
+Although `run()` executes entirely synchronously, the helper functions inside your callback function do not! These functions **schedule assertions** that will execute either when your callback completes or when you explicitly call `flush()`. Be wary of calling synchronous assertions, for example `expect`, from your testing library of choice, from within the callback. See [Synchronous Assertion](#synchronous-assertion) for more information on how to do this.
 
-- `hot(marbleDiagram: string, values?: object, error?: any)` - creates a ["hot" observable](https://medium.com/@benlesh/hot-vs-cold-observables-f8094ed53339) (like a subject) that will behave as though it's already "running" when the test begins. An interesting difference is that `hot` marbles allow a `^` character to signal where the "zero frame" is. This is the default point at which the subscription to observables being tested begins, (this can be configured - see `expectObservable` below).
-- `cold(marbleDiagram: string, values?: object, error?: any)` - creates a ["cold" observable](https://medium.com/@benlesh/hot-vs-cold-observables-f8094ed53339) whose subscription starts when the test begins.
+- `hot(marbleDiagram: string, values?: object, error?: any)` - creates a "hot" observable (like a subject) that will behave as though it's already "running" when the test begins. An interesting difference is that `hot` marbles allow a `^` character to signal where the "zero frame" is. That is the point at which the subscription to observables being tested begins.
+- `cold(marbleDiagram: string, values?: object, error?: any)` - creates a "cold" observable whose subscription starts when the test begins.
 - `expectObservable(actual: Observable<T>, subscriptionMarbles?: string).toBe(marbleDiagram: string, values?: object, error?: any)` - schedules an assertion for when the TestScheduler flushes. Give `subscriptionMarbles` as parameter to change the schedule of subscription and unsubscription. If you don't provide the `subscriptionMarbles` parameter it will subscribe at the beginning and never unsubscribe. Read below about subscription marble diagram.
 - `expectSubscriptions(actualSubscriptionLogs: SubscriptionLog[]).toBe(subscriptionMarbles: string)` - like `expectObservable` schedules an assertion for when the testScheduler flushes. Both `cold()` and `hot()` return an observable with a property `subscriptions` of type `SubscriptionLog[]`. Give `subscriptions` as parameter to `expectSubscriptions` to assert whether it matches the `subscriptionsMarbles` marble diagram given in `toBe()`. Subscription marble diagrams are slightly different than Observable marble diagrams. Read more below.
 - `flush()` - immediately starts virtual time. Not often used since `run()` will automatically flush for you when your callback returns, but in some cases you may wish to flush more than once or otherwise have more control.
 
-## Marble Syntax
+## Marble syntax
 
 In the context of TestScheduler, a marble diagram is a string containing special syntax representing events happening over virtual time. Time progresses by _frames_. The first character of any marble string always represents the _zero frame_, or the start of time. Inside of `testScheduler.run(callback)` the frameTimeFactor is set to 1, which means one frame is equal to one virtual millisecond.
 
@@ -81,6 +81,7 @@ How many virtual milliseconds one frame represents depends on the value of `Test
 
     expectObservable(someStreamForTesting)
       .toBe(expected, values);
+
     // This would work also
     const expected = '400ms (0-1|)';
     const values = [
@@ -92,30 +93,27 @@ How many virtual milliseconds one frame represents depends on the value of `Test
       .toBe(expected, values);
 ```
 
-- `'()'` sync groupings: When multiple events need to be in the same frame synchronously, parentheses are used to group those events. You can group next'd values, a completion, or an error in this manner. The position of the initial `(` determines the time at which its values are emitted. While it can be unintuitive at first, after all the values have synchronously emitted time will progress a number of frames equal to the number of ASCII characters in the group, including the parentheses. e.g. `'(abc)'` will emit the values of a, b, and c synchronously in the same frame and then advance virtual time by 5 frames, `'(abc)'.length === 5`. This is done because it often helps you vertically align your marble diagrams, but it's a known pain point in real-world testing. [Learn more about known issues](#known-issues).
+- `'()'` sync groupings: When multiple events need to be in the same frame synchronously, parentheses are used to group those events. You can group next'd values, a completion, or an error in this manner. The position of the initial `(` determines the time at which its values are emitted. While it can be counter-intuitive at first, after all the values have synchronously emitted time will progress a number of frames equal to the number of ASCII characters in the group, including the parentheses. e.g. `'(abc)'` will emit the values of a, b, and c synchronously in the same frame and then advance virtual time by 5 frames, `'(abc)'.length === 5`. This is done because it often helps you vertically align your marble diagrams, but it's a known pain point in real-world testing. [Learn more about known issues](#known-issues).
 - `'^'` subscription point: (hot observables only) shows the point at which the tested observables will be subscribed to the hot observable. This is the "zero frame" for that observable, every frame before the `^` will be negative. Negative time might seem pointless, but there are in fact advanced cases where this is necessary, usually involving ReplaySubjects.
 
 ### Time progression syntax
 
-The new time progression syntax takes inspiration from the CSS duration syntax. It's a number (int or float) immediately followed by a unit; ms (milliseconds), s (seconds), m (minutes). e.g. `100ms`, `1.4s`, `5.25m`.
+The new time progression syntax takes inspiration from the CSS duration syntax. It's a number (integer or floating point) immediately followed by a unit; ms (milliseconds), s (seconds), m (minutes). e.g. `100ms`, `1.4s`, `5.25m`.
 
 When it's not the first character of the diagram it must be padded a space before/after to disambiguate it from a series of marbles. e.g. `a 1ms b` needs the spaces because `a1msb` will be interpreted as `['a', '1', 'm', 's', 'b']` where each of these characters is a value that will be next()'d as-is.
 
-**NOTE**: You may have to subtract 1 millisecond from the time you want to progress because the alphanumeric marbles (representing an actual emitted value) _advance time 1 virtual frame_ themselves already, after they emit. This can be very unintuitive and frustrating, but for now it is indeed correct.
+**NOTE**: You may have to subtract 1 millisecond from the time you want to progress because the alphanumeric marbles (representing an actual emitted value) _advance time 1 virtual frame_ themselves already, after they emit. This can be counter-intuitive and frustrating, but for now it is indeed correct.
 
-```ts
+```js
 const input = ' -a-b-c|';
 const expected = '-- 9ms a 9ms b 9ms (c|)';
-/*
 
 // Depending on your personal preferences you could also
-// use frame dashes to keep vertical aligment with the input
-const input = ' -a-b-c|';
-const expected = '------- 4ms a 9ms b 9ms (c|)';
+// use frame dashes to keep vertical alignment with the input.
+// const input = ' -a-b-c|';
+// const expected = '------- 4ms a 9ms b 9ms (c|)';
 // or
-const expected = '-----------a 9ms b 9ms (c|)';
-
-*/
+// const expected = '-----------a 9ms b 9ms (c|)';
 
 const result = cold(input).pipe(
   concatMap(d => of(d).pipe(
@@ -150,7 +148,7 @@ expectObservable(result).toBe(expected);
 
 `'--a 2.5m b'`: on frame 2 emit `a`, on frame 150,003 emit `b` and never complete.
 
-## Subscription Marbles
+## Subscription marbles
 
 The `expectSubscriptions` helper allows you to assert that a `cold()` or `hot()` Observable you created was subscribed/unsubscribed to at the correct point in time. The `subscriptionMarbles` parameter to `expectObservable` allows your test to defer subscription to a later virtual time, and/or unsubscribe even if the observable being tested has not yet completed.
 
@@ -182,6 +180,7 @@ testScheduler.run(({ hot, expectObservable }) => {
   const sub2 = '      ---------^--------!';
   const expect1 = '   --a--a--a--a--';
   const expect2 = '   -----------a--a--a-';
+
   expectObservable(source, sub1).toBe(expect1);
   expectObservable(source, sub2).toBe(expect2);
 });
@@ -230,17 +229,17 @@ In the above situation we need the observable stream to complete so that we can 
 
 ---
 
-## Known Issues
+## Known issues
 
-### You can't directly test RxJS code that consumes Promises or uses any of the other schedulers (e.g. AsapScheduler)
+### RxJS code that consumes Promises or uses any of the other schedulers (e.g. AsapScheduler) cannot be directly tested
 
-If you have RxJS code that uses any other form of async scheduling other than AsyncScheduler, e.g. Promises, AsapScheduler, etc. you can't reliably use marble diagrams _for that particular code_. This is because those other scheduling methods won't be virtualized or known to TestScheduler.
+If you have RxJS code that uses any other form of asynchronous scheduling other than `AsyncScheduler`, e.g. Promises, `AsapScheduler`, etc. you can't reliably use marble diagrams _for that particular code_. This is because those other scheduling methods won't be virtualized or known to TestScheduler.
 
-The solution is to test that code in isolation, with the traditional async testing methods of your testing framework. The specifics depend on your testing framework of choice, but here's a pseudo-code example:
+The solution is to test that code in isolation, with the traditional asynchronous testing methods of your testing framework. The specifics depend on your testing framework of choice, but here's a pseudo-code example:
 
 ```ts
 // Some RxJS code that also consumes a Promise, so TestScheduler won't be able
-// to correctly virtualize and the test will always be really async
+// to correctly virtualize and the test will always be really asynchronous.
 const myAsyncCode = () => from(Promise.resolve('something'));
 
 it('has async code', done => {
@@ -251,18 +250,18 @@ it('has async code', done => {
 });
 ```
 
-On a related note, you also can't currently assert delays of zero, even with AsyncScheduler, e.g. `delay(0)` is like saying `setTimeout(work, 0)`. This schedules a new ["task" aka "macrotask"](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/), so it's async, but without an explicit passage of time.
+On a related note, you also can't currently assert delays of zero, even with `AsyncScheduler`, e.g. `delay(0)` is like saying `setTimeout(work, 0)`. This schedules a new ["task" aka "macrotask"](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/), so it's asynchronous, but without an explicit passage of time.
 
 ### Behavior is different outside of `testScheduler.run(callback)`
 
-The TestScheduler has been around since v5, but was actually intended for testing RxJS itself by the maintainers, rather than for use in regular user apps. Because of this, some of the default behaviors and features of the TestScheduler didn't work well (or at all) for users. In v6 we introduced the `testScheduler.run(callback)` method which allowed us to provide new defaults and features in a non-breaking way, but it's still possible to [use the TestScheduler outside](./guide/testing/internal-marble-tests) of `testScheduler.run(callback)`. It's important to note that if you do so, there are some major differences in how it will behave.
+The `TestScheduler` has been around since v5, but was actually intended for testing RxJS itself by the maintainers, rather than for use in regular user apps. Because of this, some of the default behaviors and features of the TestScheduler did not work well (or at all) for users. In v6 we introduced the `testScheduler.run(callback)` method which allowed us to provide new defaults and features in a non-breaking way, but it's still possible to [use the TestScheduler outside](./guide/testing/internal-marble-tests) of `testScheduler.run(callback)`. It's important to note that if you do so, there are some major differences in how it will behave.
 
-* TestScheduler helper methods have more verbose names, like `testScheduler.createColdObservable()` instead of `cold()`
-* The testScheduler instance is NOT automatically be used by operators that uses AsyncScheduler, e.g. delay, debounceTime, etc so you have to explicitly pass it to them.
+* `TestScheduler` helper methods have more verbose names, like `testScheduler.createColdObservable()` instead of `cold()`
+* The testScheduler instance is *not* automatically be used by operators that uses `AsyncScheduler`, e.g. `delay`, `debounceTime`, etc., so you have to explicitly pass it to them.
 * There is NO support for time progression syntax e.g. `-a 100ms b-|`
 * 1 frame is 10 virtual milliseconds by default. i.e. `TestScheduler.frameTimeFactor = 10`
-* Each space ` ` equals 1 frame, same as a hyphen `-`.
-* There is a hard maximum number of frames set at 750 i.e. `maxFrames = 750`. After 750 they are silently ignored.
+* Each whitespace `' '` equals 1 frame, same as a hyphen `'-'`
+* There is a hard maximum number of frames set at 750 i.e. `maxFrames = 750`. After 750 they are silently ignored
 * You must explicitly flush the scheduler
 
 While at this time usage of the TestScheduler outside of `testScheduler.run(callback)` has not been officially deprecated, it is discouraged because it is likely to cause confusion.

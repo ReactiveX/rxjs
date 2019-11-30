@@ -3,7 +3,7 @@
 
 
 [![CircleCI](https://circleci.com/gh/ReactiveX/rxjs/tree/master.svg?style=svg)](https://circleci.com/gh/ReactiveX/rxjs/tree/master)
-[![npm version](https://badge.fury.io/js/%40reactivex%2Frxjs.svg)](http://badge.fury.io/js/%40reactivex%2Frxjs)
+[![npm version](https://badge.fury.io/js/rxjs.svg)](http://badge.fury.io/js/rxjs)
 [![Join the chat at https://gitter.im/Reactive-Extensions/RxJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Reactive-Extensions/RxJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # RxJS 7 (alpha)
@@ -22,8 +22,10 @@ Reactive Extensions Library for JavaScript. This is a rewrite of [Reactive-Exten
 
 ## Versions In This Repository
 
-- [master](https://github.com/ReactiveX/rxjs/commits/master) - This is all of the current, unreleased work, which is against v6 of RxJS right now
-- [stable](https://github.com/ReactiveX/rxjs/commits/stable) - This is the branch for the latest version you'd get if you do `npm install rxjs`
+- [master](https://github.com/ReactiveX/rxjs/commits/master) - This is all of the current, unreleased work, which is against v7 of RxJS right now
+- [stable](https://github.com/ReactiveX/rxjs/tree/6.x) - This is the branch for the latest version you'd get if you do `npm install rxjs`
+
+Most PRs should be made to **master**.
 
 ## Important
 

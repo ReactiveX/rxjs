@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { OuterSubscriber } from 'rxjs/internal/OuterSubscriber';
 import { subscribeToResult } from 'rxjs/internal/util/subscribeToResult';
 import { iterator } from 'rxjs/internal/symbol/iterator';
-import $$symbolObservable from 'symbol-observable';
+import { observable as $$symbolObservable } from 'rxjs/internal/symbol/observable';
 import { of, range, throwError } from 'rxjs';
 
 describe('subscribeToResult', () => {

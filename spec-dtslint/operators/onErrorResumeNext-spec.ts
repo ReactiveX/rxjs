@@ -43,7 +43,7 @@ it('should accept six inputs', () => {
 });
 
 it('should accept seven and more inputs', () => {
-  const o = of('apple', 'banana', 'peach').pipe(onErrorResumeNext(of(1), of(2), of('3'), of('4'), of(5), of('6'), of(7))); // $ExpectType Observable<string | {}>
+  const o = of('apple', 'banana', 'peach').pipe(onErrorResumeNext(of(1), of(2), of('3'), of('4'), of(5), of('6'), of(7))); // $ExpectType Observable<unknown>
   const p = of('apple', 'banana', 'peach').pipe(onErrorResumeNext<string, string | number>(of(1), of(2), of('3'), of('4'), of(5), of('6'), of(7))); // $ExpectType Observable<string | number>
 });
 

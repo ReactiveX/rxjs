@@ -7,13 +7,13 @@ export interface UnsubscriptionErrorCtor {
 }
 
 const UnsubscriptionErrorImpl = (() => {
-  function UnsubscriptionErrorImpl(this: any, errors: any[]) {
+  function UnsubscriptionErrorImpl(this: Error, errors: (Error|string)[]) {
     Error.call(this);
     this.message = errors ?
       `${errors.length} errors occurred during unsubscription:
 ${errors.map((err, i) => `${i + 1}) ${err.toString()}`).join('\n  ')}` : '';
     this.name = 'UnsubscriptionError';
-    this.errors = errors;
+    (this as any).errors = errors;
     return this;
   }
 

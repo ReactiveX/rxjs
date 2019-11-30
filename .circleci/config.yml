@@ -29,7 +29,7 @@ jobs:
       - checkout
       - *restore_cache
       - run: npm i
-      - run: npm run build_all
+      - run: npm run build:package
       - persist_to_workspace:
           root: .
           paths:
@@ -62,8 +62,8 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace: *attach_options
-      - run: npm i --no-save typescript@3.*
-      - run: npm run build_cjs
+      - run: npm i --no-save typescript@3.5.*
+      - run: npm run compile
 
 workflows:
   version: 2
