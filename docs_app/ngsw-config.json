@@ -30,7 +30,8 @@
           "/assets/images/**",
           "/generated/images/marketing/**",
           "!/assets/images/favicons/**",
-          "!/**/_unused/**"
+          "!/**/_unused/**",
+          "!/assets/images/marble-diagrams/**"
         ]
       }
     }, {
@@ -65,6 +66,15 @@
           "/generated/docs/**/*.json",
           "/generated/images/**",
           "!/**/_unused/**"
+        ]
+      }
+    }, {
+      "name": "marble-diagrams",
+      "installMode": "lazy",
+      "updateMode": "lazy",
+      "resources": {
+        "files": [
+          "/assets/images/marble-diagrams/**"
         ]
       }
     }
