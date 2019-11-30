@@ -31,7 +31,22 @@ export function race<T>(...observables: ObservableInput<T>[]): Observable<T>;
 export function race(...observables: ObservableInput<any>[]): Observable<unknown>;
 
 /**
- * Returns an Observable that mirrors the first source Observable to emit an item.
+ * Returns an observable that mirrors the first source observable to emit an item.
+ *
+ * ![](race.png)
+ *
+ * `race` returns an observable, that when subscribed to, subscribes to all source observables immediately.
+ * As soon as one of the source observables emits a value, the result unsubscribes from the other sources.
+ * The resulting observable will forward all notifications, including error and completion, from the "winning"
+ * source observable.
+ *
+ * If one of the used source observable throws an errors before a first notification
+ * the race operator will also also throw an error, no matter if another source observable
+ * could potentially win the race.
+ *
+ * `race` can be useful for selecting the response from the fastest network connection for
+ * HTTP or WebSockets. `race` can also be useful for switching observable context based on user
+ * input.
  *
  * ## Example
  * ### Subscribes to the observable that was the first to start emitting.
@@ -55,9 +70,6 @@ export function race(...observables: ObservableInput<any>[]): Observable<unknown
  *
  * @param {...Observables} ...observables sources used to race for which Observable emits first.
  * @return {Observable} an Observable that mirrors the output of the first Observable to emit an item.
- * @static true
- * @name race
- * @owner Observable
  */
 export function race<T>(...observables: ObservableInput<any>[]): Observable<T> {
   // if the only argument is an array, it was most likely called with
