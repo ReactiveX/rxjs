@@ -1,13 +1,56 @@
 import {Injectable, OnDestroy} from '@angular/core';
-import {ConnectableObservable, merge, Observable, OperatorFunction, pipe, Subject, Subscription} from 'rxjs';
-import {distinctUntilChanged, filter, mergeAll, publishReplay, scan, shareReplay} from 'rxjs/operators';
+import {ConnectableObservable, merge, noop, Observable, OperatorFunction, pipe, Subject, Subscription, UnaryFunction} from 'rxjs';
+import {distinctUntilChanged, filter, map, mergeAll, publishReplay, scan, shareReplay} from 'rxjs/operators';
 
-// @TODO implement SliceConfig is `connectSlice`
-export interface SliceConfig {
-  starWith?: any,
-  endWith?: any,
+/** RxJS INTERNAL */
+function pipeFromArray<T, R>(fns: Array<UnaryFunction<T, R>>): UnaryFunction<T, R> {
+  if (!fns) {
+    return noop as UnaryFunction<any, any>;
+  }
+
+  if (fns.length === 1) {
+    return fns[0];
+  }
+
+  return function piped(input: T): R {
+    return fns.reduce((prev: any, fn: UnaryFunction<T, R>) => fn(prev), input as any);
+  };
 }
 
+export function select<T>(): UnaryFunction<T, T>;
+export function select<T, A>(op: OperatorFunction<T, T>): UnaryFunction<T, A>;
+export function select<T, A, B>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>): UnaryFunction<T, B>;
+// tslint:disable-next-line:max-line-length
+export function select<T, A, B, C>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>): UnaryFunction<T, C>;
+// tslint:disable-next-line:max-line-length
+export function select<T, A, B, C, D>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>, op4: OperatorFunction<C, D>): UnaryFunction<T, D>;
+export function select<T>(...ops: OperatorFunction<T, any>[]) {
+  return pipe(
+    pipeFromArray(ops),
+    filter(v => v !== undefined),
+    distinctUntilChanged(),
+    shareReplay(1)
+  );
+}
+
+/*
+interface AbstractLocalState<T> {
+  setSlice(s: Partial<T>): void;
+
+  connectSlice(o: Observable<Partial<T>>): void;
+
+  connectEffect(o: Observable<any>): void;
+
+  select(): Observable<T>;
+  select<A = T>(op: OperatorFunction<T, A>): Observable<A>;
+  select<A = T, B = A>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>): Observable<B>;
+  select<A = T, B = A, C = B>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>): Observable<C>;
+  select<A extends keyof T>(path: A): Observable<T[A]>;
+  select(...opOrMapFn: OperatorFunction<T, any>[] | string[]): Observable<any>;
+
+  teardown(): void;
+}
+*/
 export const stateAccumulator = (acc, command): { [key: string]: number } => ({...acc, ...command});
 // @TODO use accumulator with cleanup logic for undefined state slices
 export const deleteUndefinedStateAccumulator = (state, [keyToDelete, value]: [string, number]): { [key: string]: number } => {
@@ -27,24 +70,25 @@ export const deleteUndefinedStateAccumulator = (state, [keyToDelete, value]: [st
 
 @Injectable()
 export class LocalState<T> implements OnDestroy {
-  private subscription = new Subscription();
-  private effectSubject = new Subject<Observable<{ [key: string]: number }>>();
-  private stateObservables = new Subject<Observable<Partial<T>>>();
-  private stateSlices = new Subject<Partial<T>>();
+  private _subscription = new Subscription();
+  private _stateObservables = new Subject<Observable<Partial<T>>>();
+  private _stateSlices = new Subject<Partial<T>>();
+  private _effectSubject = new Subject<any>();
 
-  private state$: Observable<Partial<T>> =
-    merge(
-      this.stateObservables.pipe(mergeAll()),
-      this.stateSlices
-    )
-      .pipe(
-        scan(stateAccumulator, {}),
-        publishReplay(1)
-      );
+  private stateAccumulator = (acc: T, command: Partial<T>): T => ({...acc, ...command});
+
+  // tslint:disable-next-line:member-ordering
+  private _state$ = merge(
+    this._stateObservables.pipe(mergeAll()),
+    this._stateSlices
+  ).pipe(
+    scan(this.stateAccumulator, {} as T),
+    publishReplay(1)
+  );
 
   constructor() {
-    this.subscription.add((this.state$ as ConnectableObservable<any>).connect());
-    this.subscription.add((this.effectSubject
+    this._subscription.add((this._state$ as ConnectableObservable<T>).connect());
+    this._subscription.add((this._effectSubject
       .pipe(mergeAll(), publishReplay(1)
       ) as ConnectableObservable<any>).connect()
     );
@@ -65,7 +109,7 @@ export class LocalState<T> implements OnDestroy {
    * ls.setSlice({bar: 7});
    */
   setSlice(s: Partial<T>): void {
-    this.stateSlices.next(s);
+    this._stateSlices.next(s);
   }
 
 
@@ -89,8 +133,19 @@ export class LocalState<T> implements OnDestroy {
    *
    * @TODO implement SliceConfig to end a stream automatically with undefined => cleanup of sate
    */
-  connectSlice(o: Observable<Partial<T>>): void {
-    this.stateObservables.next(o);
+  connectSlice<A extends keyof T>(strOrObs: A | Observable<Partial<T>>, obs?: Observable<T[A]>): void {
+    let _obs;
+    if (typeof strOrObs === 'string') {
+      const str: A = strOrObs;
+      const o = obs as Observable<T[A]>;
+      _obs = o.pipe(
+        map(s => ({[str]: s}))
+      );
+    } else {
+      const ob = strOrObs as Observable<Partial<T>>;
+      _obs = ob;
+    }
+    this._stateObservables.next(_obs as Observable<Partial<T>> | Observable<T[A]>);
   }
 
 
@@ -107,7 +162,7 @@ export class LocalState<T> implements OnDestroy {
    * ls.connectEffect(of().pipe(tap(n => console.log('side effect', n))));
    */
   connectEffect(o: Observable<any>): void {
-    this.effectSubject.next(o);
+    this._effectSubject.next(o);
   }
 
   /**
@@ -146,28 +201,45 @@ export class LocalState<T> implements OnDestroy {
       operators = pipe(map(mapFn));
     }
    */
-  // For OperatorFunction i.e. pipe(map(s => s.slice)), map(s => s.slice) or mapTo('value')
-  select<R>(operator: OperatorFunction<T, R>): Observable<T | R>;
-  // For undefined arguments i.e select()
-  select<R = T>(operator?: OperatorFunction<T, R>): Observable<R> {
-    const operators: OperatorFunction<T, R | T> = operator ? operator : pipe();
-
-    return this.state$
-      .pipe(
-        // We need to accept operators to enable composition of local scope related observables
-        // createSelector
-        operators,
-        // @TODO how to deal with undefined values?
-        // map(state => state.property) can return undefined if not set.
-        // This leads to unwanted behaviour in views.
-        // Should filter out undefined values be done here?
+  select(): Observable<T>;
+  select<A = T>(op: OperatorFunction<T, A>): Observable<A>;
+  select<A = T, B = A>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>): Observable<B>;
+  select<A = T, B = A, C = B>(op1: OperatorFunction<T, A>, op2: OperatorFunction<A, B>, op3: OperatorFunction<B, C>): Observable<C>;
+  select<A extends keyof T>(path: A): Observable<T[A]>;
+  select(...opOrMapFn: OperatorFunction<T, any>[] | string[]): Observable<any> {
+    if (!opOrMapFn || opOrMapFn.length === 0) {
+      return this._state$
+        .pipe(
+          distinctUntilChanged(),
+          shareReplay(1)
+        );
+    } else if (!this.isOperateFnArray(opOrMapFn)) {
+      const [path] = opOrMapFn;
+      return this._state$.pipe(
+        map((x: T) => x[path]),
         filter(v => v !== undefined),
-        // State should get pushed only if changed. as this is a repetitive task we do it here
         distinctUntilChanged(),
-        // I don't want to run the same computation for multiple subscribers.
-        // Therefore we share the computed value
         shareReplay(1)
       );
+    } else {
+      return this._state$.pipe(
+        select(...opOrMapFn as [])
+      );
+    }
+  }
+
+  private isOperateFnArray(op: OperatorFunction<T, any>[] | string[]): op is OperatorFunction<T, any>[] {
+    return !(op.length === 1 && typeof op[0] === 'string');
+  }
+
+  /**
+   * teardown(): void
+   *
+   * When called it teardown all internal logic
+   * used to connect to the `OnDestroy` life-cycle hook of services, components, directives, pipes
+   */
+  teardown(): void {
+    this._subscription.unsubscribe();
   }
 
   /**
@@ -177,7 +249,7 @@ export class LocalState<T> implements OnDestroy {
    * used to connect to the `OnDestroy` life-cycle hook of services, components, directives, pipes
    */
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.teardown();
   }
 
 }

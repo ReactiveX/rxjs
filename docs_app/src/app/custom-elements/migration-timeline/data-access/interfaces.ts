@@ -22,30 +22,16 @@ export enum ApiSymbols {
 export interface Deprecation {
   // What piece is effected? i.e. never, switchMap
   subject: string;
-  // What attribute of the piece is effected? i.e. multiple arguments to one ,resultSelector, accessor specifier private/public/readonly....
   subjectApiSymbol: ApiSymbols;
+  // What attribute of the piece is effected? i.e. multiple arguments to one ,resultSelector, accessor specifier private/public/readonly....
+  subjectAction: string;
   // Link to line of code in GitHub in version it got introduced
   sourceLink: string;
-  /*
-  # LinkName
-  @TODO prefix linkName with version?
-  Pattern: deprecation-<type>-<type-name>-<action-name>
-  - type: class, interface, operator, static, constant, enum
-  - type-name: TestScheduler, of, NEVER, switchMap
-  - action-name: to-constant, to string-literal, internal
-  Examples:
-  - deprecation-class-TestScheduler-index-to-private
-  - deprecation-operator-switchMap-resultSelector-to-map-operator
- */
-  linkName: string;
-  type: TimeLineTypeDeprecation;
+  itemType: TimeLineTypeDeprecation;
   // semver n.n.n-s.n,
   breakingVersion: string;
-  /*
-  see Deprecation.linkName
-  */
   breakingLink: string;
-  headline: string;
+  deprecationMsgCode: string;
   reason: string;
   implication: string;
   /*
@@ -73,30 +59,20 @@ export interface Deprecation {
 export interface BreakingChange {
   // What piece is effected? i.e. never, switchMap
   subject: string;
-  // What attribute of the piece is effected? i.e. multiple arguments to one ,resultSelector, accessor specifier private/public/readonly....
   subjectApiSymbol: ApiSymbols;
-  /*
- # LinkName
- Pattern: breakingChange-<type>-<type-name>-<action-name>
- - type: class, interface, operator, static, constant, enum
- - type-name: TestScheduler, of, NEVER, switchMap
- - action-name: to-constant, to string-literal, internal
- Examples:
- - breakingChange-operator-last-resultSelector-removed
- - breakingChange-enum-NotificationKind-removed
-*/
-  linkName: string;
-  type: TimeLineTypeBreakingChange;
+  // What attribute of the piece is effected? i.e. multiple arguments to one ,resultSelector, accessor specifier private/public/readonly....
+  subjectAction: string;
+  itemType: TimeLineTypeBreakingChange;
   // semver n.n.n.s-n,
   deprecationVersion: string;
   /*
   see Deprecation.linkName
   */
   deprecationLink: string;
-  headline: string;
+  breakingChangeMsgCode: string;
 }
 
-export interface Release {
+export interface ServerRelease {
   // semver n.n.n.s-n,
   version: string,
   // YYYY-MM-DD
@@ -104,3 +80,13 @@ export interface Release {
   deprecations: Deprecation[];
   breakingChanges: BreakingChange[];
 }
+
+export interface ClientRelease {
+  // semver n.n.n.s-n,
+  version: string,
+  // JS Date
+  date: Date;
+  deprecations: Deprecation[];
+  breakingChanges: BreakingChange[];
+}
+

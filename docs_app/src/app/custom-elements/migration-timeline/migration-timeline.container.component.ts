@@ -1,99 +1,100 @@
 import {Component} from '@angular/core';
-import {concat, merge, Observable, of, Subject} from 'rxjs';
-import {map, switchMap, take, delay, tap, distinctUntilChanged} from 'rxjs/operators';
-import {LocationService} from '../../shared/location.service';
-import {MigrationTimelineService} from './data-access/migration-timeline.service';
-import {VmMigrationListItem, VmReleaseNavigationItem} from './interfaces';
+import {combineLatest, Subject} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import {MigrationTimelineContainerAdapter} from './migration-timeline.container.adapter';
+import {VmTimelineContainerView} from './migration-timeline.interface';
 import {LocalState} from './utils/local-state.service';
-import {closestRelevantVersion, latestRelevantVersion} from './utils/operators';
-import {parseVmMigrationList, parseVmReleaseNavigation} from './utils/vm-model.parser';
+import {formatSemVerNumber} from './utils/operators';
 
 @Component({
   selector: `rxjs-migration-timeline-container`,
   template: `
     <h1>RxJS Migration Timeline</h1>
     <p>
-      Some Text here...
+      The migration timeline is here to support you in the following things:
     </p>
+    <ul>
+      <li>
+        <input type="checkbox" checked disabled>
+        Getting detailed explanation on why a deprecation happened. <br/>
+        Elaborating the different between the deprecated version and the new version
+      </li>
+      <li>
+        <input type="checkbox" checked disabled>
+        Explaining the implications of a deprecation
+      </li>
+      <li>
+        <input type="checkbox" checked disabled>
+        Code examples of the deprecated and the new version
+      </li>
+      <li>
+        <input type="checkbox" disabled>
+        Manual Migration suggestions (optional)
+      </li>
+      <li>
+        <input type="checkbox" disabled>
+        Migration over tooling (optional)
+      </li>
+    </ul>
     <h2>Supported Versions</h2>
-    <div class="flex-center group-buttons">
-      <mat-chip-list>
-        <a *ngFor="let option of releaseNavigation$ | async"
-          [href]="baseURL + '#' + option.version"
-          class="mat-chip mat-primary mat-standard-chip"
-          [ngClass]="{selected:(selectedVersion$ | async) === option.version}">
-          {{option.version}}
-        </a>
-      </mat-chip-list>
-    </div>
-    <h2>Timeline</h2>
-    <section class="grid-fluid">
-      <div class="release-group">
-        <rxjs-migration-timeline
-          [migrationList]="migrationList$ | async"
-          [selectedVersion]="selectedVersion$ | async"
-          (selectedVersionChange)="selectedVersionChange$.next($event)">
-        </rxjs-migration-timeline>
-      </div>
-    </section>`
+    <ng-container *ngIf="vm$ | async as vm">
+      <section>
+        {{vm.filter}}<br>
+        {{vm.releaseNavigation}}
+        <filter-form
+          [releaseList]="vm.releaseNavigation"
+          (filterChange)="setSlice({filter: $event})">
+        </filter-form>
+      </section>
+      <section>
+        <release-navigation
+          [selectedVersion]="vm.selectedVersion"
+          [releaseList]="vm.releaseList">
+        </release-navigation>
+      </section>
+      <h2>Timeline</h2>
+      <section class="grid-fluid">
+        <div class="release-group">
+          <rxjs-migration-timeline
+            [releaseList]="vm.releaseList"
+            [selectedVersion]="vm.selectedVersion"
+            [itemSubId]="vm.selectedItemSubId"
+            (selectedVersionChange)="selectedVersionChange$.next($event)">
+          </rxjs-migration-timeline>
+        </div>
+      </section>
+    </ng-container>
+
+    <msg-format-decision-helper></msg-format-decision-helper>
+  `,
+  providers: [MigrationTimelineContainerAdapter]
 })
-export class MigrationTimelineContainerComponent
-  extends LocalState<{
-    selectedVersion?: string,
-    releaseNavigation?: VmReleaseNavigationItem[],
-    migrationList: VmMigrationListItem[]
-  }> {
-  baseURL = 'migration-timeline';
+export class MigrationTimelineContainerComponent extends LocalState<VmTimelineContainerView> {
   // UI
   selectedVersionChange$ = new Subject<string>();
-
+  vm$ = this.select();
   // derivations
-  releaseNavigation$ = this.select(map(s => s.releaseNavigation));
-  migrationList$ = this.select(map(s => s.migrationList));
-  selectedVersion$ = concat(
-    this.select(map(s => s.selectedVersion))
-  );
-
-  urlVersion$ = this.locationService.currentHash;
-  latestRelevantVersion$: Observable<string> = of(new Date())
-    .pipe(latestRelevantVersion(this.migrationList$));
-  initialVersion$: Observable<string> = this.locationService.currentHash
-    .pipe(switchMap((hash: string) => hash === undefined ?
-      this.latestRelevantVersion$ : of(hash).pipe(closestRelevantVersion(this.migrationList$))), take(1)
+  filteredReleaseNavigation$ = combineLatest(
+    this.select('filter').pipe(startWith({from: '', to: ''})),
+    this.select('releaseList')
+  )
+    .pipe(
+      map(([filterCfg, list]) => {
+        return list.filter(r => {
+          return r.versionNumber >= formatSemVerNumber(filterCfg.from);
+        });
+      })
     );
 
-  constructor(
-    private migrationService: MigrationTimelineService,
-    private locationService: LocationService
-  ) {
+
+  constructor(private va: MigrationTimelineContainerAdapter) {
     super();
-    // (re)fetch data  over http request
-    this.migrationService.fetchMigrationTimeline();
-
-    // Global state to view view state
-    this.connectSlice(this.migrationService.migrations$
-      .pipe(map(parseVmReleaseNavigation), map(releaseNavigation => ({releaseNavigation}))));
-    this.connectSlice(this.migrationService.migrations$
-      .pipe(map(parseVmMigrationList(this.baseURL + '#')), map(migrationList => ({migrationList}))));
-
-    // initial values
-    this.connectSlice(this.initialVersion$
-      .pipe(map(selectedVersion => ({selectedVersion}))));
-
+    // UI State
+    this.connectSlice('releaseList', this.va.releaseList$);
+    this.connectSlice('releaseNavigation', this.va.releaseNavigation$);
+    this.connectSlice('selectedVersion', this.va.selectedVersion$);
     // UI interactions
-    this.selectedVersionChange$.pipe(
-      distinctUntilChanged(),
-      tap(v => this.locationService.go('migration-timeline#' + v))
-    ).subscribe();
-    this.connectSlice(
-      merge(
-        // this.selectedVersionChange$,
-        this.urlVersion$.pipe(closestRelevantVersion(this.migrationList$))
-      )
-        .pipe(
-          map(selectedVersion => ({selectedVersion})),
-          delay(200)
-        ));
+    this.va.selectedVersionChange.add(this.selectedVersionChange$);
   }
 
 }

@@ -1,17 +1,39 @@
 import {CommonModule} from '@angular/common';
 import {NgModule, Type} from '@angular/core';
-import {MatButtonModule, MatIconModule, MatCardModule, MatChipsModule, MatExpansionModule} from '@angular/material';
+import {ReactiveFormsModule} from '@angular/forms';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatChipsModule,
+  MatExpansionModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatSelectModule
+} from '@angular/material';
 import {CodeExampleModule} from '../code/code-example.module';
 import {WithCustomElementComponent} from '../element-registry';
-import {BreakingChangeDescriptionTableComponent} from './components/breaking-change-description-table.component';
-import {DeprecationDescriptionTableComponent} from './components/deprecation-description-table.component';
-import {MigrationTimelineComponent} from './components/migration-timeline.component';
+import {FilterFormComponent} from './components/filter-form.component';
+import {BreakingChangeDescriptionTableComponent} from './components/migration-timeline/breaking-change-description-table.component';
+import {DeprecationDescriptionTableComponent} from './components/migration-timeline/deprecation-description-table.component';
+import {MigrationTimelineComponent} from './components/migration-timeline/migration-timeline.component';
+import {MsgFormatDecisionHelperComponent} from './components/msg-format-decision-helper.component';
+import {ReleaseNavigationComponent} from './components/release-navigation.component';
 import {MigrationTimelineService} from './data-access/migration-timeline.service';
 import {MigrationTimelineContainerComponent} from './migration-timeline.container.component';
+import {TimelineItemLinkPipe} from './pipes/timeline-item-link.pipe';
+import {TimelineItemSubIdPipe} from './pipes/timeline-item-sub-id.pipe';
+
+export const baseURL = 'migration-timeline';
 
 @NgModule({
   imports: [
     CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    // @TODO remove after clarification
+    MatInputModule,
     CodeExampleModule,
     MatChipsModule, MatCardModule, MatExpansionModule,
     MatCardModule, MatButtonModule, MatIconModule
@@ -19,7 +41,13 @@ import {MigrationTimelineContainerComponent} from './migration-timeline.containe
   declarations: [
     MigrationTimelineContainerComponent,
     MigrationTimelineComponent, DeprecationDescriptionTableComponent,
-    BreakingChangeDescriptionTableComponent
+    BreakingChangeDescriptionTableComponent,
+    // @TODO remove after clarification
+    MsgFormatDecisionHelperComponent,
+    TimelineItemLinkPipe,
+    TimelineItemSubIdPipe,
+    FilterFormComponent,
+    ReleaseNavigationComponent
   ],
   entryComponents: [MigrationTimelineContainerComponent],
   providers: [MigrationTimelineService]
