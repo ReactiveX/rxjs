@@ -17,7 +17,7 @@ export const subscribeTo = <T>(result: ObservableInput<T>): (subscriber: Subscri
   } else if (isArrayLike(result)) {
     return subscribeToArray(result);
   } else if (isPromise(result)) {
-    return subscribeToPromise(result as Promise<any>);
+    return subscribeToPromise(result);
   } else if (!!result && typeof result[Symbol_iterator] === 'function') {
     return subscribeToIterable(result as any);
   } else {
