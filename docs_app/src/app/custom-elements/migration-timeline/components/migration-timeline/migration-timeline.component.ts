@@ -1,24 +1,26 @@
 import {Component, Input, Output} from '@angular/core';
 import {merge, Observable, Subject} from 'rxjs';
 import {filter, map, scan, shareReplay, withLatestFrom} from 'rxjs/operators';
-import {VmMigrationList} from '../interfaces';
-import {LocalState} from '../utils/local-state.service';
+import {VmReleaseListItem} from '../../migration-timeline.interface';
+import {baseURL} from '../../migration-timeline.module';
+import {LocalState} from '../../utils/local-state.service';
 
-export interface IMigrationTimelineVM {
-  migrationList: VmMigrationList
+export interface VmMigrationTimeline {
+  releaseList: VmReleaseListItem[]
   expandedRelease: { [key: string]: boolean };
   selectedVersion: string;
+  itemSubId: string;
 }
 
 @Component({
   selector: `rxjs-migration-timeline`,
   template: `
-    <mat-accordion *ngIf="migrationList$ | async as migrationList">
+    <mat-accordion *ngIf="releaseList$ | async as releaseList" class="migration-timeline">
       <ng-container *ngIf="expandedRelease$ | async as expandedRelease">
         <mat-expansion-panel
-          class="migration-timeline-item"
+          class="release"
           [ngClass]="{'selected': (selectedVersion$ | async) === release.version}"
-          *ngFor="let release of migrationList"
+          *ngFor="let release of releaseList"
           (click)="selectedVersionChange.next(release.version)"
           (click)="expandedReleaseChange.next(release.version)"
           [expanded]="expandedRelease[release.version]">
@@ -54,21 +56,26 @@ export interface IMigrationTimelineVM {
             </mat-icon>
             {{release.deprecations.length}} Deprecations introduced on {{release.date | date:'dd.MM.yyyy'}} ( {{release.version}} )
           </h3>
+
           <ng-container *ngIf="release.deprecations.length > 0; else emptyDeprecationList">
-            <mat-card *ngFor="let deprecation of release.deprecations" class="migration-section">
-              <mat-card-header [id]="release.link" class="migration-headline">
+            <mat-card
+              *ngFor="let deprecation of release.deprecations"
+              class="migration-section deprecation"
+              [ngClass]="{selected: (itemSubId$ | async) === (deprecation | timelineItemSubId: {})}">
+              <mat-card-header [id]="deprecation | timelineItemLink:{ version: release.version}" class="migration-headline">
                 <mat-card-title>
-                  {{deprecation.title}}
+                  {{deprecation.deprecationMsgCode}}
                 </mat-card-title>
               </mat-card-header>
               <mat-card-content>
                 <deprecation-description-table
+                  [baseURL]="baseURL"
                   [deprecation]="deprecation">
                 </deprecation-description-table>
-                <code-example [language]="'typescript'" [title]="deprecation.exampleBeforeTitle">
+                <code-example [language]="'typescript'" [title]="'Before Deprecation (< v' + release.version + ')'">
                   {{deprecation.exampleBefore}}
                 </code-example>
-                <code-example [language]="'typescript'" [title]="deprecation.exampleAfterTitle">
+                <code-example [language]="'typescript'" [title]="'After Deprecation (>= v' + release.version+ ')'">
                   {{deprecation.exampleAfter}}
                 </code-example>
               </mat-card-content>
@@ -77,7 +84,7 @@ export interface IMigrationTimelineVM {
 
           <ng-template #emptyDeprecationList>
             <mat-card class="migration-section empty">
-              <mat-card-header [id]="release.link" class="migration-headline">
+              <mat-card-header [id]="release.version" class="migration-headline">
                 <mat-card-title>
                   No Deprecations made in version {{release.version}}
                 </mat-card-title>
@@ -90,19 +97,24 @@ export interface IMigrationTimelineVM {
             Breaking changes introduced on {{release.date | date:'dd.MM.yyyy'}} ( {{release.version}} )
           </h3>
           <ng-container *ngIf="release.breakingChanges.length > 0; else emptyBreakingChangesList">
-            <mat-card *ngFor="let breakingChange of release.breakingChanges" class="migration-section">
-              <mat-card-header [id]="release.link" class="migration-headline">
-                <mat-card-title>{{breakingChange.title}}</mat-card-title>
+            <mat-card *ngFor="let breakingChange of release.breakingChanges"
+              class="migration-section breakingChange"
+              [ngClass]="{selected: (itemSubId$ | async) === (breakingChange | timelineItemSubId: {})}">
+              <mat-card-header [id]="breakingChange | timelineItemLink:{ version: release.version}" class="migration-headline">
+                <mat-card-title>
+                  {{breakingChange.breakingChangeMsgCode}}</mat-card-title>
               </mat-card-header>
               <mat-card-content>
-                <breaking-change-description-table [breakingChange]="breakingChange">
+                <breaking-change-description-table
+                  [baseURL]="baseURL"
+                  [breakingChange]="breakingChange">
                 </breaking-change-description-table>
               </mat-card-content>
             </mat-card>
           </ng-container>
           <ng-template #emptyBreakingChangesList>
             <mat-card class="migration-section empty">
-              <mat-card-header [id]="release.link" class="migration-headline">
+              <mat-card-header [id]="release.version" class="migration-headline">
                 <mat-card-title>
                   No BreakingChanges made in version {{release.version}}
                 </mat-card-title>
@@ -115,12 +127,13 @@ export interface IMigrationTimelineVM {
       </ng-container>
     </mat-accordion>`
 })
-export class MigrationTimelineComponent extends LocalState<IMigrationTimelineVM> {
+export class MigrationTimelineComponent extends LocalState<VmMigrationTimeline> {
+  baseURL = baseURL;
 
   @Input()
-  set migrationList(migrationList: VmMigrationList) {
-    if (migrationList) {
-      this.setSlice({migrationList});
+  set releaseList(releaseList: VmReleaseListItem[]) {
+    if (releaseList) {
+      this.setSlice({releaseList});
     }
   }
 
@@ -131,13 +144,21 @@ export class MigrationTimelineComponent extends LocalState<IMigrationTimelineVM>
     }
   }
 
+  @Input()
+  set itemSubId(itemSubId: string) {
+    if (itemSubId) {
+      this.setSlice({itemSubId});
+    }
+  }
+
   @Output()
   selectedVersionChange = new Subject<string>();
 
   expandedReleaseChange = new Subject<string>();
 
-  migrationList$ = this.select(map(s => s.migrationList));
+  releaseList$ = this.select(map(s => s.releaseList));
   selectedVersion$ = this.select(map(s => s.selectedVersion));
+  itemSubId$ = this.select(map(s => s.itemSubId));
 
   // @TODO Rethink after routing is done clean
   expandedRelease$: Observable<{ [key: string]: boolean }> = merge(

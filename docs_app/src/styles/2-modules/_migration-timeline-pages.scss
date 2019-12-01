@@ -1,15 +1,36 @@
-.migration-timeline-item {
-  background: transparent;
-  box-shadow: none !important;
-}
+.migration-timeline-navigation {
+  .navigation-item:hover,
+  .navigation-item:focus{
 
-.migration-timeline-item.selected .migration-timeline-item-header-title {
-  color: mat-color($rxjs-primary) !important;
-  font-weight: bold;
-  .mat-icon {
-    color: mat-color($rxjs-primary) !important;
+  }
+  .is-official {
+    margin: 2px;
+    color: rgba(0, 0, 0, 0.57);
+    background-color: #f1f1f1;
   }
 }
+
+.migration-timeline {
+  .release {
+    background: transparent;
+    box-shadow: none !important;
+    &.selected{
+      .migration-timeline-item-header-title {
+        color: mat-color($rxjs-primary) !important;
+        font-weight: bold;
+
+        .mat-icon {
+          color: mat-color($rxjs-primary) !important;
+        }
+      }
+    }
+
+
+  }
+
+
+}
+
 
 .release-link {
   text-transform: none !important;
@@ -27,6 +48,10 @@
 
 .migration-section {
   margin-bottom: 15px;
+
+  &.selected {
+    border: 1px solid mat-color($rxjs-primary);
+  }
 
   .migration-headline .mat-card-title {
     font-size: 18px;
