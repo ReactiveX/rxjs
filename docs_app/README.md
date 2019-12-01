@@ -38,7 +38,7 @@ serve the files in `dist/` with `npm run http-server -- dist -p 4200`.
 
 ## Running on Docker
 
-The docs app (rxjs.io) can run as a docker container. 
+The docs app (rxjs.dev) can run as a docker container. 
 In order to run the docs app on docker, use the following commands (**run from the rxjs folder**):  
 * `docker build -t rxjs-docs:6.4.1 .` - building the rxjs docs app image
 * `docker run -p <host-port>:4200 rxjs-docs:6.4.1` - starting the container, listening on *<host-port>* for your choice.
