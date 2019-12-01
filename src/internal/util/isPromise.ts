@@ -3,6 +3,6 @@
  * @see {@link https://www.ecma-international.org/ecma-262/6.0/#sec-promise-objects}
  * @param value the object to test
  */
-export function isPromise(value: any): value is PromiseLike<any> {
-  return !!value && typeof (<any>value).subscribe !== 'function' && typeof (value as any).then === 'function';
+export function isPromise<T>(value: any): value is PromiseLike<T> {
+  return !!value && typeof value.subscribe !== 'function' && typeof value.then === 'function';
 }
