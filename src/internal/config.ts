@@ -2,7 +2,7 @@ let _enable_super_gross_mode_that_will_cause_bad_things = false;
 
 /**
  * The global configuration object for RxJS, used to configure things
- * like what Promise contructor should used to create Promises
+ * like what Promise constructor should used to create Promises
  */
 export const config = {
   /**

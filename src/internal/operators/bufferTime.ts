@@ -184,7 +184,7 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
     super._complete();
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
+  /** @internal This is an internal implementation detail, do not use. */
   _unsubscribe() {
     this.contexts = null;
   }

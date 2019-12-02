@@ -152,7 +152,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
 
   private _config: WebSocketSubjectConfig<T>;
 
-  /** @deprecated This is an internal implementation detail, do not use. */
+  /** @internal This is an internal implementation detail, do not use. */
   _output: Subject<T>;
 
   private _socket: WebSocket;
@@ -354,7 +354,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
     };
   }
 
-  /** @deprecated This is an internal implementation detail, do not use. */
+  /** @internal This is an internal implementation detail, do not use. */
   _subscribe(subscriber: Subscriber<T>): Subscription {
     const { source } = this;
     if (source) {

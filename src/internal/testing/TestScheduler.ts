@@ -31,7 +31,7 @@ export type subscriptionLogsToBeFn = (marbles: string | string[]) => void;
 export class TestScheduler extends VirtualTimeScheduler {
   /**
    * The number of virtual time units each character in a marble diagram represents. If
-   * the test scheduler is being used in "run mode", via the `run` method, this is temporarly
+   * the test scheduler is being used in "run mode", via the `run` method, this is temporarily
    * set to `1` for the duration of the `run` block, then set back to whatever value it was.
    * @nocollapse
    */
@@ -355,7 +355,7 @@ export class TestScheduler extends VirtualTimeScheduler {
         default:
           // Might be time progression syntax, or a value literal
           if (runMode && c.match(/^[0-9]$/)) {
-            // Time progression must be preceeded by at least one space
+            // Time progression must be preceded by at least one space
             // if it's not at the beginning of the diagram
             if (i === 0 || marbles[i - 1] === ' ') {
               const buffer = marbles.slice(i);
