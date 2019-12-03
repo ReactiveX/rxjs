@@ -2,8 +2,8 @@ import {Component, Input} from '@angular/core';
 import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {VmDeprecation} from '../../migration-timeline.interface';
+import {parseMigrationItemUID} from '../../utils/formatter-parser';
 import {LocalState} from '../../utils/local-state.service';
-import {getItemHash} from '../../utils/operators';
 
 
 @Component({
@@ -66,7 +66,12 @@ export class DeprecationDescriptionTableComponent extends LocalState<{
   baseURL$ = this.select('baseURL');
   breakingChangeLink$ = combineLatest(this.deprecation$, this.baseURL$)
     .pipe(
-      map(([d, url]) => url + '#' + getItemHash(d, {type: 'breakingChange', version: d.breakingVersion, link: d.breakingLink}))
+      map(([d, url]) => url + '#' + parseMigrationItemUID(d, {
+        itemType: 'breakingChange',
+        version: d.breakingVersion,
+        subjectAction: d.breakingSubjectAction,
+        subject: d.subject
+      }))
     );
 
   @Input()

@@ -1,25 +1,31 @@
 import {VmFilterForm} from './components/filter-form.component';
-import {BreakingChange, Deprecation} from './data-access/interfaces';
+import {VmReleaseNavigationItem} from './components/release-navigation.component';
+import {BreakingChange, Deprecation, semVerString} from './data-access/migration-timeline-struckture/interfaces';
 
-export interface SemVerObj {
-  major: number,
-  minor: number,
-  patch: number,
-  subVersionName?: string,
-  subVersion?: number
+export interface VmMigrationTimelineContainerView {
+  releaseList: VmReleaseListItem[],
+  releaseNavigation: VmReleaseNavigationItem[],
+  selectedMigrationReleaseUID: string,
+  selectedMigrationItemSubjectUID: string,
+  filter: VmFilterForm
 }
 
-export interface VmDeprecation extends Deprecation {
-  itemHash: string
+export interface MigrationItemUIDAware {
+  migrationItemUID: string;
+  migrationReleaseUID: string;
+  migrationItemSubjectUID: string;
 }
 
-export interface VmBreakingChange extends BreakingChange {
-  itemHash: string
+export interface VmDeprecation extends Deprecation, MigrationItemUIDAware {
+
+}
+
+export interface VmBreakingChange extends BreakingChange, MigrationItemUIDAware {
+
 }
 
 export interface VmReleaseListItem {
-  // semver n.n.n.s-n,
-  version: string;
+  version: semVerString;
   // semverNumber 0 0 0 097 0,
   versionNumber: number;
   officialRelease: boolean;
@@ -29,17 +35,3 @@ export interface VmReleaseListItem {
   breakingChanges: VmBreakingChange[];
 }
 
-export interface VmReleaseNavigationItem {
-  date: Date;
-  versionNumber: number
-  version: string;
-  officialRelease: boolean
-}
-
-export interface VmTimelineContainerView {
-  selectedVersion: string,
-  selectedItemSubId: string,
-  filter: VmFilterForm,
-  releaseList: VmReleaseListItem[],
-  releaseNavigation: VmReleaseNavigationItem[]
-}

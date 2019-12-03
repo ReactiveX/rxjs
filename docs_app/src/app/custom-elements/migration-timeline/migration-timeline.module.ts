@@ -21,8 +21,6 @@ import {MsgFormatDecisionHelperComponent} from './components/msg-format-decision
 import {ReleaseNavigationComponent} from './components/release-navigation.component';
 import {MigrationTimelineService} from './data-access/migration-timeline.service';
 import {MigrationTimelineContainerComponent} from './migration-timeline.container.component';
-import {TimelineItemLinkPipe} from './pipes/timeline-item-link.pipe';
-import {TimelineItemSubIdPipe} from './pipes/timeline-item-sub-id.pipe';
 
 export const baseURL = 'migration-timeline';
 
@@ -32,22 +30,20 @@ export const baseURL = 'migration-timeline';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatSelectModule,
-    // @TODO remove after clarification
-    MatInputModule,
     CodeExampleModule,
     MatChipsModule, MatCardModule, MatExpansionModule,
-    MatCardModule, MatButtonModule, MatIconModule
+    MatCardModule, MatButtonModule, MatIconModule,
+    // @TODO remove msg format after clarification
+    MatInputModule
   ],
   declarations: [
     MigrationTimelineContainerComponent,
     MigrationTimelineComponent, DeprecationDescriptionTableComponent,
     BreakingChangeDescriptionTableComponent,
-    // @TODO remove after clarification
-    MsgFormatDecisionHelperComponent,
-    TimelineItemLinkPipe,
-    TimelineItemSubIdPipe,
     FilterFormComponent,
-    ReleaseNavigationComponent
+    ReleaseNavigationComponent,
+    // @TODO remove after clarification
+    MsgFormatDecisionHelperComponent
   ],
   entryComponents: [MigrationTimelineContainerComponent],
   providers: [MigrationTimelineService]

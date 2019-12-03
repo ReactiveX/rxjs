@@ -1,8 +1,8 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {startWith} from 'rxjs/operators';
-import {VmReleaseNavigationItem} from '../migration-timeline.interface';
 import {LocalState} from '../utils/local-state.service';
+import {VmReleaseNavigationItem} from './release-navigation.component';
 
 
 export interface VmFilterForm {

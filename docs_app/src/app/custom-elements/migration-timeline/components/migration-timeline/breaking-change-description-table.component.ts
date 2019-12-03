@@ -1,9 +1,9 @@
 import {Component, Input} from '@angular/core';
 import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {BreakingChange} from '../../data-access/interfaces';
+import {BreakingChange} from '../../data-access/migration-timeline-struckture/interfaces';
+import {parseMigrationItemUID} from '../../utils/formatter-parser';
 import {LocalState} from '../../utils/local-state.service';
-import {getItemHash} from '../../utils/operators';
 
 @Component({
   selector: `breaking-change-description-table`,
@@ -31,7 +31,7 @@ import {getItemHash} from '../../utils/operators';
         <td>
           <p>
             For refactoring suggestions please visit the version of deprecation: <a class="release-link"
-            [href]="vm.breakingChange.deprecationLink">v{{vm.breakingChange.deprecationVersion}}</a>
+            [href]="vm.breakingChange.deprecationSubjectAction">v{{vm.breakingChange.deprecationVersion}}</a>
           </p>
         </td>
       </tr>
@@ -49,7 +49,11 @@ export class BreakingChangeDescriptionTableComponent extends LocalState<{
 
   deprecationLink$ = combineLatest(this.breakingChange$, this.baseURL$)
     .pipe(
-      map(([b, url]) => url + '#' + getItemHash(b, {type: 'deprecation', version: b.deprecationVersion, link: b.deprecationLink}))
+      map(([b, url]) => url + '#' + parseMigrationItemUID(b, {
+        itemType: 'deprecation',
+        version: b.deprecationVersion,
+        subjectAction: b.deprecationSubjectAction,
+        subject: b.subject}))
     );
 
 

@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
-import {combineLatest, Subject} from 'rxjs';
+import {combineLatest} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {MigrationTimelineContainerAdapter} from './migration-timeline.container.adapter';
-import {VmTimelineContainerView} from './migration-timeline.interface';
-import {LocalState} from './utils/local-state.service';
-import {formatSemVerNumber} from './utils/operators';
+import {baseURL} from './migration-timeline.module';
+import {formatSemVerNumber} from './utils/formatter-parser';
 
 @Component({
   selector: `rxjs-migration-timeline-container`,
@@ -35,31 +34,40 @@ import {formatSemVerNumber} from './utils/operators';
         <input type="checkbox" disabled>
         Migration over tooling (optional)
       </li>
+      <li>
+        <input type="checkbox" disabled>
+        If deprecation information does not exist suggest to open an issue.
+        - Implement Link to docs issue template
+        - Update Docs Issue template with new option for deprecation message
+      </li>
     </ul>
     <h2>Supported Versions</h2>
-    <ng-container *ngIf="vm$ | async as vm">
+    <ng-container *ngIf="va.m$ | async as m">
       <section>
-        {{vm.filter}}<br>
-        {{vm.releaseNavigation}}
+        {{m.filter}}<br>
+        {{m.releaseNavigation}}
         <filter-form
-          [releaseList]="vm.releaseNavigation"
-          (filterChange)="setSlice({filter: $event})">
+          [releaseList]="m.releaseNavigation"
+          (filterChange)="va.setSlice({filter: $event})">
         </filter-form>
       </section>
       <section>
         <release-navigation
-          [selectedVersion]="vm.selectedVersion"
-          [releaseList]="vm.releaseList">
+          [baseURL]="baseURL"
+          [selectedMigrationReleaseUID]="m.selectedMigrationReleaseUID"
+          [releaseList]="m.releaseList"
+          (selectedMigrationReleaseUIDChange)="selectedMigrationReleaseUIDChange.next($event)">
         </release-navigation>
       </section>
       <h2>Timeline</h2>
       <section class="grid-fluid">
         <div class="release-group">
           <rxjs-migration-timeline
-            [releaseList]="vm.releaseList"
-            [selectedVersion]="vm.selectedVersion"
-            [itemSubId]="vm.selectedItemSubId"
-            (selectedVersionChange)="selectedVersionChange$.next($event)">
+            [baseURL]="baseURL"
+            [releaseList]="m.releaseList"
+            [selectedMigrationReleaseUID]="m.selectedMigrationReleaseUID"
+            [selectedMigrationItemSubjectUID]="m.selectedMigrationItemSubjectUID"
+            (selectedMigrationReleaseUIDChange)="selectedMigrationReleaseUIDChange.next($event)">
           </rxjs-migration-timeline>
         </div>
       </section>
@@ -69,14 +77,13 @@ import {formatSemVerNumber} from './utils/operators';
   `,
   providers: [MigrationTimelineContainerAdapter]
 })
-export class MigrationTimelineContainerComponent extends LocalState<VmTimelineContainerView> {
-  // UI
-  selectedVersionChange$ = new Subject<string>();
-  vm$ = this.select();
-  // derivations
+export class MigrationTimelineContainerComponent {
+  baseURL = baseURL;
+
+  // derivations from view model
   filteredReleaseNavigation$ = combineLatest(
-    this.select('filter').pipe(startWith({from: '', to: ''})),
-    this.select('releaseList')
+    this.va.select('filter').pipe(startWith({from: '', to: ''})),
+    this.va.select('releaseList')
   )
     .pipe(
       map(([filterCfg, list]) => {
@@ -85,16 +92,11 @@ export class MigrationTimelineContainerComponent extends LocalState<VmTimelineCo
         });
       })
     );
-
+  // UI interactions
+  selectedMigrationReleaseUIDChange = this.va.selectedMigrationReleaseUIDChangeConnector;
 
   constructor(private va: MigrationTimelineContainerAdapter) {
-    super();
-    // UI State
-    this.connectSlice('releaseList', this.va.releaseList$);
-    this.connectSlice('releaseNavigation', this.va.releaseNavigation$);
-    this.connectSlice('selectedVersion', this.va.selectedVersion$);
-    // UI interactions
-    this.va.selectedVersionChange.add(this.selectedVersionChange$);
+
   }
 
 }

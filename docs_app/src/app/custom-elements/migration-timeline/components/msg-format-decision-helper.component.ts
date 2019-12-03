@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {filter, map, shareReplay} from 'rxjs/operators';
-import {ApiSymbols} from '../data-access/interfaces';
+import {ApiSymbols} from '../data-access/migration-timeline-struckture/interfaces';
 import {VmReleaseListItem} from '../migration-timeline.interface';
 import {LocalState} from '../utils/local-state.service';
 
@@ -16,13 +16,15 @@ export const releaseList: VmReleaseListItem[] =
       deprecations: [
         {
           subject: 'never',
-          itemHash: 'hash',
           subjectApiSymbol: ApiSymbols.function,
           subjectAction: 'deprecated',
           sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/testing/TestScheduler.ts#L44',
           itemType: 'deprecation',
+          migrationItemUID: '7.0.0-test.99_deprecation-never-function-deprecated',
+          migrationReleaseUID: '7.0.0-test.99',
+          migrationItemSubjectUID: 'deprecation-never-function-deprecated',
           breakingVersion: '7.0.0-test.99',
-          breakingLink: 'never-removed',
+          breakingSubjectAction: 'never-removed',
           deprecationMsgCode: 'Deprecated in favor of using {@link NEVER} constant',
           reason: 'Some meaningful reason',
           implication: '@!TODO',
@@ -32,14 +34,16 @@ export const releaseList: VmReleaseListItem[] =
       ],
       breakingChanges: [
         {
+          migrationItemUID: '7.0.0-test.99_breakingChange-never-function-removed',
+          migrationReleaseUID: '7.0.0-test.99',
+          migrationItemSubjectUID: 'breakingChange-never-function-deprecated',
           subject: 'never',
-          itemHash: 'hash',
           subjectApiSymbol: ApiSymbols.function,
-          subjectAction: 'never-removed',
+          subjectAction: 'removed',
           itemType: 'breakingChange',
           deprecationVersion: '7.0.0-test.99',
-          deprecationLink: 'deprecated',
-          breakingChangeMsgCode: 'Function never removed.'
+          deprecationSubjectAction: 'deprecated',
+          breakingChangeMsg: 'Function never removed.'
         }
       ]
     }
@@ -101,8 +105,8 @@ export const releaseList: VmReleaseListItem[] =
         <h3>Migration Timeline</h3>
         <rxjs-migration-timeline
           [releaseList]="releaseList$ | async"
-          [selectedVersion]="'7.0.0-test.99'"
-          [itemSubId]="'deprecation-function-never-depreacted'">
+          [selectedMigrationReleaseUID]="'7.0.0-test.99'"
+          [selectedMigrationItemSubjectUID]="'deprecation-function-never-depreacted'">
         </rxjs-migration-timeline>
       </div>
       <div class="col">
