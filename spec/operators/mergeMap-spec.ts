@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { mergeMap, map } from 'rxjs/operators';
 import { asapScheduler, defer, Observable, from, of, timer } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
+import { asInteropObservable } from '../helpers/interop-helper';
 
 declare const type: Function;
 declare const asDiagram: Function;
@@ -257,6 +258,36 @@ describe('mergeMap', () => {
     );
 
     expectObservable(source, unsub).toBe(expected, values);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should not break unsubscription chains with interop inners when result is unsubscribed explicitly', () => {
+    const x =   cold(         '--a--b--c--d--e--|           ');
+    const xsubs =    '         ^           !                ';
+    const y =   cold(                   '---f---g---h---i--|');
+    const ysubs =    '                   ^ !                ';
+    const e1 =   hot('---------x---------y---------|        ');
+    const e1subs =   '^                    !                ';
+    const expected = '-----------a--b--c--d-                ';
+    const unsub =    '                     !                ';
+
+    const observableLookup = { x: x, y: y };
+
+    // This test manipulates the observable to make it look like an interop
+    // observable - an observable from a foreign library. Interop subscribers
+    // are treated differently: they are wrapped in a safe subscriber. This
+    // test ensures that unsubscriptions are chained all the way to the
+    // interop subscriber.
+
+    const result = e1.pipe(
+      mergeMap(x => of(x)),
+      mergeMap(value => asInteropObservable(observableLookup[value])),
+      mergeMap(x => of(x)),
+    );
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(y.subscriptions).toBe(ysubs);
     expectSubscriptions(e1.subscriptions).toBe(e1subs);
   });
 

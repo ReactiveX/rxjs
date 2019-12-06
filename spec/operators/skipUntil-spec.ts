@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { concat, defer, Observable, of, Subject } from 'rxjs';
 import { skipUntil, mergeMap } from 'rxjs/operators';
+import { asInteropObservable } from '../helpers/interop-helper';
 
 declare function asDiagram(arg: string): Function;
 
@@ -89,6 +90,31 @@ describe('skipUntil', () => {
     const result = e1.pipe(
       mergeMap(x => of(x)),
       skipUntil(skip),
+      mergeMap(x => of(x)),
+    );
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+    expectSubscriptions(skip.subscriptions).toBe(skipSubs);
+  });
+
+  it('should not break unsubscription chains with interop inners when result is unsubscribed explicitly', () => {
+    const e1 =     hot('--a--b--c--d--e----|');
+    const e1subs =     '^        !          ';
+    const skip =   hot('-------------x--|   ');
+    const skipSubs =   '^        !          ';
+    const expected =  ('----------          ');
+    const unsub =      '         !          ';
+
+    // This test is the same as the previous test, but the observable is
+    // manipulated to make it look like an interop observable - an observable
+    // from a foreign library. Interop subscribers are treated differently:
+    // they are wrapped in a safe subscriber. This test ensures that
+    // unsubscriptions are chained all the way to the interop subscriber.
+
+    const result = e1.pipe(
+      mergeMap(x => of(x)),
+      skipUntil(asInteropObservable(skip)),
       mergeMap(x => of(x)),
     );
 
@@ -248,7 +274,6 @@ describe('skipUntil', () => {
   });
 
   it('should stop listening to a synchronous notifier after its first nexted value', () => {
-    // const source =   hot('-^-o---o---o---o---o---o---|');
     const sideEffects: number[] = [];
     const synchronousNotifer = concat(
       defer(() => {
