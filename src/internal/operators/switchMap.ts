@@ -133,10 +133,16 @@ class SwitchMapSubscriber<T, R> extends OuterSubscriber<T, R> {
     if (innerSubscription) {
       innerSubscription.unsubscribe();
     }
-    const innerSubscriber = new InnerSubscriber(this, undefined, undefined);
+    const innerSubscriber = new InnerSubscriber(this, value, index);
     const destination = this.destination as Subscription;
     destination.add(innerSubscriber);
-    this.innerSubscription = subscribeToResult(this, result, value, index, innerSubscriber);
+    this.innerSubscription = subscribeToResult(this, result, undefined, undefined, innerSubscriber);
+    // The returned subscription will usually be the subscriber that was
+    // passed. However, interop subscribers will be wrapped and for
+    // unsubscriptions to chain correctly, the wrapper needs to be added, too.
+    if (this.innerSubscription !== innerSubscriber) {
+      destination.add(this.innerSubscription);
+    }
   }
 
   protected _complete(): void {

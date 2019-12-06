@@ -2,6 +2,7 @@ import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/mar
 import { concat, defer, Observable, of, from } from 'rxjs';
 import { exhaustMap, mergeMap, takeWhile, map } from 'rxjs/operators';
 import { expect } from 'chai';
+import { asInteropObservable } from '../helpers/interop-helper';
 
 declare function asDiagram(arg: string): Function;
 
@@ -192,6 +193,39 @@ describe('exhaustMap', () => {
     const result = e1.pipe(
       mergeMap(x => of(x)),
       exhaustMap(value => observableLookup[value]),
+      mergeMap(x => of(x))
+    );
+
+    expectObservable(result, unsub).toBe(expected);
+    expectSubscriptions(x.subscriptions).toBe(xsubs);
+    expectSubscriptions(y.subscriptions).toBe(ysubs);
+    expectSubscriptions(z.subscriptions).toBe(zsubs);
+    expectSubscriptions(e1.subscriptions).toBe(e1subs);
+  });
+
+  it('should not break unsubscription chains with interop inners when result is unsubscribed explicitly', () => {
+    const x = cold(     '--a--b--c--|                               ');
+    const xsubs =    '   ^          !                               ';
+    const y = cold(               '--d--e--f--|                     ');
+    const ysubs: string[] = [];
+    const z = cold(                                 '--g--h--i--|   ');
+    const zsubs =    '                               ^  !           ';
+    const e1 =   hot('---x---------y-----------------z-------------|');
+    const e1subs =   '^                                 !           ';
+    const expected = '-----a--b--c---------------------g-           ';
+    const unsub =    '                                  !           ';
+
+    const observableLookup = { x: x, y: y, z: z };
+
+    // This test is the same as the previous test, but the observable is
+    // manipulated to make it look like an interop observable - an observable
+    // from a foreign library. Interop subscribers are treated differently:
+    // they are wrapped in a safe subscriber. This test ensures that
+    // unsubscriptions are chained all the way to the interop subscriber.
+
+    const result = e1.pipe(
+      mergeMap(x => of(x)),
+      exhaustMap(value => asInteropObservable(observableLookup[value])),
       mergeMap(x => of(x))
     );
 

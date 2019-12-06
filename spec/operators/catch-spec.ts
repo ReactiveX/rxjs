@@ -5,6 +5,7 @@ import * as sinon from 'sinon';
 import { createObservableInputs } from '../helpers/test-helper';
 import { TestScheduler } from 'rxjs/testing';
 import { observableMatcher } from '../helpers/observableMatcher';
+import { asInteropObservable } from '../helpers/interop-helper';
 
 declare function asDiagram(arg: string): Function;
 
@@ -132,6 +133,29 @@ describe('catchError operator', () => {
       const unsub = '   ------------!     ';
 
       const result = e1.pipe(catchError(() => e2));
+
+      expectObservable(result, unsub).toBe(expected);
+      expectSubscriptions(e1.subscriptions).toBe(e1subs);
+      expectSubscriptions(e2.subscriptions).toBe(e2subs);
+    });
+  });
+
+  it('should unsubscribe from a caught cold caught interop observable when unsubscribed explicitly', () => {
+    testScheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
+      const e1 = hot('  -1-2-3-#          ');
+      const e1subs = '  ^------!          ';
+      const e2 =  cold('       5-6-7-8-9-|');
+      const e2subs = '  -------^----!     ';
+      const expected = '-1-2-3-5-6-7-     ';
+      const unsub = '   ------------!     ';
+
+      // This test is the same as the previous test, but the observable is
+      // manipulated to make it look like an interop observable - an observable
+      // from a foreign library. Interop subscribers are treated differently:
+      // they are wrapped in a safe subscriber. This test ensures that
+      // unsubscriptions are chained all the way to the interop subscriber.
+
+      const result = e1.pipe(catchError(() => asInteropObservable(e2)));
 
       expectObservable(result, unsub).toBe(expected);
       expectSubscriptions(e1.subscriptions).toBe(e1subs);
