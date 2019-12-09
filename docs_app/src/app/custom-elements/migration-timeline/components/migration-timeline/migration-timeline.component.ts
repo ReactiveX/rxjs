@@ -1,31 +1,29 @@
 import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
 import {distinctUntilChanged, filter, map, scan, withLatestFrom} from 'rxjs/operators';
-import {VmReleaseListItem} from '../../migration-timeline.interface';
+import {ClientMigrationTimelineReleaseItem} from '../../data-access/migration-timeline.interface';
 
 import {LocalState} from '../../utils/local-state.service';
+import {disposeEvent} from '../../utils/operators';
 
-export interface VmMigrationTimeline {
-  baseURL: string;
-  releaseList: VmReleaseListItem[];
-  expandedRelease: { [version: string]: boolean };
+export interface MigrationTimelineComponentViewBaseModel {
+  releaseList: ClientMigrationTimelineReleaseItem[];
   selectedMigrationReleaseUID: string;
-  selectedMigrationItemSubjectUID: string;
+  selectedMigrationItemUID: string;
+  expandedRelease: { [version: string]: boolean };
 }
 
 @Component({
   selector: `rxjs-migration-timeline`,
   template: `
-    expandedRelease: {{(vm$ | async).expandedRelease | json}}<br/>
-    selectedMigrationReleaseUID: {{(vm$ | async).selectedMigrationReleaseUID | json}}<br/>
-    baseURL: {{(vm$ | async).baseURL | json}}
     <mat-accordion *ngIf="vm$ | async as vm" class="migration-timeline">
       <mat-expansion-panel
         class="release"
-        [ngClass]="{'selected': vm.selectedMigrationReleaseUID === release.version}"
         *ngFor="let release of vm.releaseList"
-        (click)="expandedReleaseChange.next(release.version)"
-        [expanded]="(vm.expandedRelease)[release.version]">
+        [ngClass]="{'selected': vm.selectedMigrationReleaseUID === release.version}"
+        (click)="migrationItemUidSelectRequest
+        .next(release.deprecations[0].migrationItemUID || release.breakingChanges[0].migrationItemUID)"
+        [expanded]="(vm.selectedMigrationItemUID)[release.version]">
         <mat-expansion-panel-header class="header">
           <mat-panel-title
             class="migration-timeline-item-header-title"
@@ -62,18 +60,16 @@ export interface VmMigrationTimeline {
           <mat-card
             *ngFor="let deprecation of release.deprecations"
             class="migration-section deprecation"
-            [ngClass]="{selected: vm.selectedMigrationItemSubjectUID === deprecation.migrationItemSubjectUID}">
+            [ngClass]="{selected: vm.selectedMigrationItemUID === deprecation.migrationItemUID}">
             <mat-card-header [id]="deprecation.migrationItemSubjectUID" class="migration-headline">
               <mat-card-title>
-                itemSubId$: {{vm.selectedMigrationItemSubjectUID}}
-                deprecation {{deprecation.migrationItemSubjectUID }}
-                {{deprecation.subject}} is deprecated, {{deprecation.deprecationMsgCode}}
+                <code>{{deprecation.subject}}</code> is deprecated {{deprecation.deprecationMsgCode}}
               </mat-card-title>
             </mat-card-header>
             <mat-card-content>
               <deprecation-description-table
-                [baseURL]="vm.baseURL"
-                [deprecation]="deprecation">
+                [deprecation]="deprecation"
+                (selectedMigrationItemUidChange)="migrationItemUidSelectRequest.next($event)">
               </deprecation-description-table>
               <code-example [language]="'typescript'" [title]="'Before Deprecation (< v' + release.version + ')'">
                 {{deprecation.exampleBefore}}
@@ -101,14 +97,14 @@ export interface VmMigrationTimeline {
         <ng-container *ngIf="release.breakingChanges.length > 0; else emptyBreakingChangesList">
           <mat-card *ngFor="let breakingChange of release.breakingChanges"
             class="migration-section breakingChange"
-            [ngClass]="{selected: vm.selectedMigrationItemSubjectUID === breakingChange.migrationItemSubjectUID}">
+            [ngClass]="{selected: vm.selectedMigrationItemUID === breakingChange.migrationItemUID}">
             <mat-card-header [id]="breakingChange.migrationItemUID" class="migration-headline">
               <mat-card-title>{{breakingChange.breakingChangeMsg}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
               <breaking-change-description-table
-                [baseURL]="vm.baseURL"
-                [breakingChange]="breakingChange">
+                [breakingChange]="breakingChange"
+                (selectedMigrationItemUidChange)="migrationItemUidSelectRequest.next($event)">
               </breaking-change-description-table>
             </mat-card-content>
           </mat-card>
@@ -126,37 +122,36 @@ export interface VmMigrationTimeline {
       </mat-expansion-panel>
     </mat-accordion>`
 })
-export class MigrationTimelineComponent extends LocalState<VmMigrationTimeline> {
+export class MigrationTimelineComponent extends LocalState<MigrationTimelineComponentViewBaseModel> {
+
+  disposeEvent = disposeEvent;
 
   @Input()
-  set baseURL(baseURL: string) {
-    if (baseURL) {
-      this.setSlice({baseURL});
-    }
-  }
-
-  @Input()
-  set releaseList(releaseList: VmReleaseListItem[]) {
+  set releaseList(releaseList: ClientMigrationTimelineReleaseItem[]) {
     if (releaseList) {
       this.setSlice({releaseList});
     }
   }
 
   @Input()
-  set selectedMigrationReleaseUID(selectedMigrationReleaseUID: string) {
-    this.setSlice({selectedMigrationReleaseUID: selectedMigrationReleaseUID || ''});
+  set selectedMigrationItemUID(selectedMigrationItemUID: string) {
+    this.setSlice({
+      selectedMigrationItemUID: selectedMigrationItemUID || '',
+      selectedMigrationReleaseUID: selectedMigrationItemUID ? selectedMigrationItemUID.split('_')[0] : ''
+    });
   }
 
-  @Input()
-  set selectedMigrationItemSubjectUID(selectedMigrationItemSubjectUID: string) {
-    if (selectedMigrationItemSubjectUID) {
-      this.setSlice({selectedMigrationItemSubjectUID});
-    }
-  }
+  migrationItemUidSelectRequest = new Subject<any>();
+  @Output()
+  selectedMigrationItemUIDChange = this.migrationItemUidSelectRequest
+    .pipe(distinctUntilChanged());
 
   expandedReleaseChange = new Subject<string>();
+
+  selectedMigrationReleaseUIDChangeRequest = new Subject<string>();
   @Output()
-  selectedMigrationReleaseUIDChange = this.expandedReleaseChange.pipe(distinctUntilChanged(), filter(v => v !== undefined));
+  selectedMigrationReleaseUIDChange = this.selectedMigrationReleaseUIDChangeRequest
+    .pipe(distinctUntilChanged(), filter(v => v !== undefined));
 
   vm$ = this.select();
 
@@ -165,10 +160,10 @@ export class MigrationTimelineComponent extends LocalState<VmMigrationTimeline> 
     this.setSlice({expandedRelease: {}});
 
     // @TODO Rethink!!!!
-    const _selectedMigrationItemSubjectUID$ = this.select('selectedMigrationItemSubjectUID');
+    const _selectedMigrationItemUID$ = this.select('selectedMigrationItemUID');
     // A) Version selection click (nav bar of versions)
     // If the user select's a new version expand this panel
-    this.connectSlice('expandedRelease', _selectedMigrationItemSubjectUID$
+    this.connectSlice('expandedRelease', _selectedMigrationItemUID$
       .pipe(
         map((version: string) => ({[version]: true}))
       ),
@@ -177,7 +172,7 @@ export class MigrationTimelineComponent extends LocalState<VmMigrationTimeline> 
     // If the panel requests a expansion change
     this.connectSlice('expandedRelease', this.expandedReleaseChange
       .pipe(
-        withLatestFrom(_selectedMigrationItemSubjectUID$),
+        withLatestFrom(_selectedMigrationItemUID$),
         // If the user changes the currently selected version do nothing
         // This case is handled by the URL hash change
         filter(([changedVersion, selectedVersion]) => changedVersion !== selectedVersion),

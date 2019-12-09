@@ -2,11 +2,11 @@ import {Component} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {filter, map, shareReplay} from 'rxjs/operators';
 import {ApiSymbols} from '../data-access/migration-timeline-struckture/interfaces';
-import {VmReleaseListItem} from '../migration-timeline.interface';
+import {ClientMigrationTimelineReleaseItem} from '../data-access/migration-timeline.interface';
 import {LocalState} from '../utils/local-state.service';
 
 
-export const releaseList: VmReleaseListItem[] =
+export const releaseList: ClientMigrationTimelineReleaseItem[] =
   [
     {
       version: '7.0.0-test.99',
@@ -23,8 +23,9 @@ export const releaseList: VmReleaseListItem[] =
           migrationItemUID: '7.0.0-test.99_deprecation-never-function-deprecated',
           migrationReleaseUID: '7.0.0-test.99',
           migrationItemSubjectUID: 'deprecation-never-function-deprecated',
-          breakingVersion: '7.0.0-test.99',
-          breakingSubjectAction: 'never-removed',
+          opponentMigrationItemUID: '7.0.0-test.99_deprecation-never-function-never-removed',
+          breakingChangeVersion: '7.0.0-test.99',
+          breakingChangeSubjectAction: 'never-removed',
           deprecationMsgCode: 'Deprecated in favor of using {@link NEVER} constant',
           reason: 'Some meaningful reason',
           implication: '@!TODO',
@@ -37,6 +38,7 @@ export const releaseList: VmReleaseListItem[] =
           migrationItemUID: '7.0.0-test.99_breakingChange-never-function-removed',
           migrationReleaseUID: '7.0.0-test.99',
           migrationItemSubjectUID: 'breakingChange-never-function-deprecated',
+          opponentMigrationItemUID: '7.0.0-test.99_deprecation-never-function-deprecated',
           subject: 'never',
           subjectApiSymbol: ApiSymbols.function,
           subjectAction: 'removed',
@@ -105,8 +107,7 @@ export const releaseList: VmReleaseListItem[] =
         <h3>Migration Timeline</h3>
         <rxjs-migration-timeline
           [releaseList]="releaseList$ | async"
-          [selectedMigrationReleaseUID]="'7.0.0-test.99'"
-          [selectedMigrationItemSubjectUID]="'deprecation-function-never-depreacted'">
+          [selectedMigrationItemUID]="'7.0.0-test.99'">
         </rxjs-migration-timeline>
       </div>
       <div class="col">
@@ -149,7 +150,7 @@ export const releaseList: VmReleaseListItem[] =
 })
 export class MsgFormatDecisionHelperComponent
   extends LocalState<{
-    releaseList: VmReleaseListItem[],
+    releaseList: ClientMigrationTimelineReleaseItem[],
     docsMsg: { start: string, link: string, end: string },
     commentsMsg: string,
     linterMsg: string,
@@ -161,7 +162,7 @@ export class MsgFormatDecisionHelperComponent
 
   releaseList$ = this.select(map(s => s.releaseList));
   docsMsg$ = this.releaseList$
-    .pipe(map((l: VmReleaseListItem[]) => this.parseDocsMsg(l[0].deprecations[0].deprecationMsgCode)));
+    .pipe(map((l: ClientMigrationTimelineReleaseItem[]) => this.parseDocsMsg(l[0].deprecations[0].deprecationMsgCode)));
 
   constructor(private fb: FormBuilder) {
     super();

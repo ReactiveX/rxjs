@@ -1,9 +1,16 @@
 import {Component} from '@angular/core';
-import {combineLatest} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {Observable, Subject} from 'rxjs';
+import {map, tap} from 'rxjs/operators';
+import {LocationService} from '../../shared/location.service';
+import {ClientMigrationTimelineReleaseItem} from './data-access/migration-timeline.interface';
 import {MigrationTimelineContainerAdapter} from './migration-timeline.container.adapter';
 import {baseURL} from './migration-timeline.module';
-import {formatSemVerNumber} from './utils/formatter-parser';
+import {LocalState} from './utils/local-state.service';
+
+export interface MigrationTimelineContainerModelFromRemoteSources {
+  releaseList: ClientMigrationTimelineReleaseItem[];
+  selectedMigrationItemUID: string;
+}
 
 @Component({
   selector: `rxjs-migration-timeline-container`,
@@ -42,60 +49,72 @@ import {formatSemVerNumber} from './utils/formatter-parser';
       </li>
     </ul>
     <h2>Supported Versions</h2>
-    <ng-container *ngIf="va.m$ | async as m">
-      <section>
-        {{m.filter}}<br>
-        {{m.releaseNavigation}}
-        <filter-form
-          [releaseList]="m.releaseNavigation"
-          (filterChange)="va.setSlice({filter: $event})">
-        </filter-form>
-      </section>
-      <section>
-        <release-navigation
-          [baseURL]="baseURL"
-          [selectedMigrationReleaseUID]="m.selectedMigrationReleaseUID"
-          [releaseList]="m.releaseList"
-          (selectedMigrationReleaseUIDChange)="selectedMigrationReleaseUIDChange.next($event)">
-        </release-navigation>
-      </section>
-      <h2>Timeline</h2>
-      <section class="grid-fluid">
-        <div class="release-group">
-          <rxjs-migration-timeline
-            [baseURL]="baseURL"
+    <ng-container *ngIf="baseModel$ | async as m">
+      <ng-container *ngIf="selectedMigrationReleaseUID$ | async as selectedMigrationReleaseUID">
+        <!--
+        <section>
+          {{m.filter}}<br>
+          {{m.releaseNavigation}}
+          <filter-form
+            [releaseList]="m.releaseNavigation"
+            (filterChange)="va.setSlice({filter: $event})">
+          </filter-form>
+        </section>
+        -->
+        <section>
+          <release-navigation
+            [selectedMigrationReleaseUID]="selectedMigrationReleaseUID"
             [releaseList]="m.releaseList"
-            [selectedMigrationReleaseUID]="m.selectedMigrationReleaseUID"
-            [selectedMigrationItemSubjectUID]="m.selectedMigrationItemSubjectUID"
             (selectedMigrationReleaseUIDChange)="selectedMigrationReleaseUIDChange.next($event)">
-          </rxjs-migration-timeline>
-        </div>
-      </section>
+          </release-navigation>
+        </section>
+        <h2>Timeline</h2>
+        <section class="grid-fluid">
+          <div class="release-group">
+            <rxjs-migration-timeline
+              [releaseList]="m.releaseList"
+              [selectedMigrationItemUID]="selectedMigrationReleaseUID"
+              (selectedMigrationItemUIDChange)="selectedMigrationItemUIDChange.next($event)"
+              (selectedMigrationReleaseUIDChange)="selectedMigrationReleaseUIDChange.next($event)">
+            </rxjs-migration-timeline>
+          </div>
+        </section>
+      </ng-container>
     </ng-container>
-
     <msg-format-decision-helper></msg-format-decision-helper>
   `,
-  providers: [MigrationTimelineContainerAdapter]
+  providers: [LocalState, MigrationTimelineContainerAdapter]
 })
 export class MigrationTimelineContainerComponent {
-  baseURL = baseURL;
+  private _baseURL = baseURL;
 
-  // derivations from view model
-  filteredReleaseNavigation$ = combineLatest(
-    this.va.select('filter').pipe(startWith({from: '', to: ''})),
-    this.va.select('releaseList')
-  )
-    .pipe(
-      map(([filterCfg, list]) => {
-        return list.filter(r => {
-          return r.versionNumber >= formatSemVerNumber(filterCfg.from);
-        });
-      })
-    );
-  // UI interactions
-  selectedMigrationReleaseUIDChange = this.va.selectedMigrationReleaseUIDChangeConnector;
+  // # UI State
+  // ## Normalized Model
+  baseModel$: Observable<MigrationTimelineContainerModelFromRemoteSources> = this._baseModel.select();
+  // Derivations from normalized model
+  selectedMigrationReleaseUID$ = this._baseModel.select(
+    map(s => s.selectedMigrationItemUID.split('_')[0])
+  );
+  // ## UI Interactions
+  selectedMigrationItemUIDChange = new Subject<string>();
+  selectedMigrationReleaseUIDChange = new Subject<string>();
 
-  constructor(private va: MigrationTimelineContainerAdapter) {
+  constructor(
+    private _baseModel: LocalState<MigrationTimelineContainerModelFromRemoteSources>,
+    private _locationService: LocationService,
+    private _va: MigrationTimelineContainerAdapter
+  ) {
+
+    // connect data from remote sources to component state
+    // @TODO looks weired, is this a anti pattern?
+    this._baseModel.connectSlice('releaseList', this._va.select('releaseList'));
+
+    // Routing
+    this._baseModel.connectEffect(
+      this.selectedMigrationReleaseUIDChange.pipe(
+        tap(v => console.log('navigate to', v)),
+        tap(version => this._locationService.go(this._baseURL + '#' + version))
+      ));
 
   }
 

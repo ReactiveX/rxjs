@@ -55,15 +55,15 @@ export enum ApiSymbols {
 /*
 @type TimeLineTypeDeprecation
 */
-export type MigrationTimeTypeDeprecation = 'deprecation';
+export type MigrationItemTypeDeprecation = 'deprecation';
 /*
 @type TimeLineTypeBreakingChange
 */
-export type MigrationTimeTypeBreakingChange = 'breakingChange';
+export type MigrationItemTypeBreakingChange = 'breakingChange';
 /*
 @type TimeLineTypes
 */
-export type MigrationTimeTypes = MigrationTimeTypeDeprecation | MigrationTimeTypeBreakingChange
+export type MigrationItemTypes = MigrationItemTypeDeprecation | MigrationItemTypeBreakingChange;
 
 /*
 @Interface MigrationItemUIDFields
@@ -106,7 +106,7 @@ Examples for breakingChanges:
 - property-hotObservables-to-private
 */
 export interface MigrationItemSubjectUIDFields {
-  itemType: MigrationTimeTypes;
+  itemType: MigrationItemTypes;
   subject: string;
   subjectApiSymbol: ApiSymbols;
   subjectAction: string;
@@ -135,7 +135,8 @@ Example:
 
 @field sourceLink
 description: Link to line of code in GitHub in version it got introduced.
-The link should target the tag where the deprecation got introduced and point to the exact line of code.
+The link should target the tag (.../blob/6.0.0-tactical-rc.1/src/...)
+where the deprecation got introduced and point to the exact line of code.
 type: string
 Example:
 https://github.com/ReactiveX/rxjs/blob/6.0.0-tactical-rc.1/src/internal/Scheduler.ts#L20
@@ -185,10 +186,10 @@ Example:
   EMPTY;
 */
 export interface Deprecation extends MigrationItemSubjectUIDFields {
-  itemType: MigrationTimeTypeDeprecation;
+  itemType: MigrationItemTypeDeprecation;
   sourceLink: string;
-  breakingVersion: semVerString;
-  breakingSubjectAction: string;
+  breakingChangeVersion: semVerString;
+  breakingChangeSubjectAction: string;
   deprecationMsgCode: string;
   reason: string;
   implication: string;
@@ -221,7 +222,7 @@ type: string
 Example: Class `TestScheduler` changed property `coldObservables` to private
  */
 export interface BreakingChange extends MigrationItemSubjectUIDFields {
-  itemType: MigrationTimeTypeBreakingChange;
+  itemType: MigrationItemTypeBreakingChange;
   deprecationVersion: semVerString;
   deprecationSubjectAction: string;
   breakingChangeMsg: string;
