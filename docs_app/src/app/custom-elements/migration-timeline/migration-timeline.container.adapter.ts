@@ -25,8 +25,6 @@ export class MigrationTimelineContainerAdapter extends LocalState<MigrationTimel
     private locationService: LocationService
   ) {
     super();
-    this._selectedMigrationItemUIDFromUrl$.subscribe();
-    this.locationService.subscribe();
 
     // Server state / Global state to component state
     // (re)fetch data  over http request
