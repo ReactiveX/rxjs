@@ -1,10 +1,10 @@
 import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
-import {distinctUntilChanged, filter, map, scan, withLatestFrom} from 'rxjs/operators';
+import {filter, map, scan, withLatestFrom} from 'rxjs/operators';
 import {ClientMigrationTimelineReleaseItem} from '../../data-access/migration-timeline.interface';
+import {parseMigrationReleaseUID} from '../../utils/formatter-parser';
 
 import {LocalState} from '../../utils/local-state.service';
-import {disposeEvent} from '../../utils/operators';
 
 export interface MigrationTimelineComponentViewBaseModel {
   releaseList: ClientMigrationTimelineReleaseItem[];
@@ -21,7 +21,7 @@ export interface MigrationTimelineComponentViewBaseModel {
         class="release"
         *ngFor="let release of vm.releaseList"
         [ngClass]="{'selected': vm.selectedMigrationReleaseUID === release.version}"
-        (click)="migrationItemUidSelectRequest
+        (click)="selectedMigrationReleaseUIDChange
         .next(release.deprecations[0].migrationItemUID || release.breakingChanges[0].migrationItemUID)"
         [expanded]="(vm.selectedMigrationItemUID)[release.version]">
         <mat-expansion-panel-header class="header">
@@ -69,7 +69,7 @@ export interface MigrationTimelineComponentViewBaseModel {
             <mat-card-content>
               <deprecation-description-table
                 [deprecation]="deprecation"
-                (selectedMigrationItemUidChange)="migrationItemUidSelectRequest.next($event)">
+                (selectedMigrationItemUIDChange)="selectedMigrationItemUIDChange.next($event)">
               </deprecation-description-table>
               <code-example [language]="'typescript'" [title]="'Before Deprecation (< v' + release.version + ')'">
                 {{deprecation.exampleBefore}}
@@ -104,7 +104,7 @@ export interface MigrationTimelineComponentViewBaseModel {
             <mat-card-content>
               <breaking-change-description-table
                 [breakingChange]="breakingChange"
-                (selectedMigrationItemUidChange)="migrationItemUidSelectRequest.next($event)">
+                (selectedMigrationItemUIDChange)="selectedMigrationItemUIDChange.next($event)">
               </breaking-change-description-table>
             </mat-card-content>
           </mat-card>
@@ -118,13 +118,10 @@ export interface MigrationTimelineComponentViewBaseModel {
             </mat-card-header>
           </mat-card>
         </ng-template>
-
       </mat-expansion-panel>
     </mat-accordion>`
 })
 export class MigrationTimelineComponent extends LocalState<MigrationTimelineComponentViewBaseModel> {
-
-  disposeEvent = disposeEvent;
 
   @Input()
   set releaseList(releaseList: ClientMigrationTimelineReleaseItem[]) {
@@ -137,21 +134,19 @@ export class MigrationTimelineComponent extends LocalState<MigrationTimelineComp
   set selectedMigrationItemUID(selectedMigrationItemUID: string) {
     this.setSlice({
       selectedMigrationItemUID: selectedMigrationItemUID || '',
-      selectedMigrationReleaseUID: selectedMigrationItemUID ? selectedMigrationItemUID.split('_')[0] : ''
+      selectedMigrationReleaseUID: parseMigrationReleaseUID(selectedMigrationItemUID)
     });
   }
 
-  migrationItemUidSelectRequest = new Subject<any>();
-  @Output()
-  selectedMigrationItemUIDChange = this.migrationItemUidSelectRequest
-    .pipe(distinctUntilChanged());
 
   expandedReleaseChange = new Subject<string>();
 
-  selectedMigrationReleaseUIDChangeRequest = new Subject<string>();
+
   @Output()
-  selectedMigrationReleaseUIDChange = this.selectedMigrationReleaseUIDChangeRequest
-    .pipe(distinctUntilChanged(), filter(v => v !== undefined));
+  selectedMigrationItemUIDChange = new Subject<string>();
+
+  @Output()
+  selectedMigrationReleaseUIDChange = new Subject<string>();
 
   vm$ = this.select();
 

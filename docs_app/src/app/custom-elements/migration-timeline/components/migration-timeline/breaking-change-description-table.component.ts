@@ -1,6 +1,5 @@
 import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
-import {distinctUntilChanged} from 'rxjs/operators';
 import {ClientBreakingChange} from '../../data-access/migration-timeline.interface';
 import {LocalState} from '../../utils/local-state.service';
 
@@ -21,7 +20,7 @@ interface VMBreakingChangeDescriptionTable {
         <th>
           Deprecated in version
           <a class="release-link"
-            (click)="migrationItemUidSelectRequest.next(vm.breakingChange.opponentMigrationItemUID)">
+            (click)="selectedMigrationItemUIDChange.next(vm.breakingChange.opponentMigrationItemUID)">
             v{{vm.breakingChange.deprecationVersion}}
           </a>
         </th>
@@ -47,10 +46,8 @@ interface VMBreakingChangeDescriptionTable {
 export class BreakingChangeDescriptionTableComponent extends LocalState<VMBreakingChangeDescriptionTable> {
   vm$ = this.select();
 
-  migrationItemUidSelectRequest = new Subject<string>();
   @Output()
-  selectedMigrationItemUidChange = this.migrationItemUidSelectRequest
-    .pipe(distinctUntilChanged());
+  selectedMigrationItemUIDChange = new Subject<string>();
 
   @Input()
   set breakingChange(breakingChange: ClientBreakingChange) {

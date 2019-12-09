@@ -18,6 +18,7 @@ export interface MigrationTimelineNavigationComponentModel {
 @Component({
   selector: 'release-navigation',
   template: `
+    releaseNavigationList: {{(baseModel$ | async).releaseNavigationList}}
     <div class="flex-center group-buttons migration-timeline-navigation"
       *ngIf="baseModel$ | async as vm">
       <mat-chip-list>
@@ -50,6 +51,7 @@ export class ReleaseNavigationComponent {
   @Input()
   set releaseList(releaseList: ClientMigrationTimelineReleaseItem[]) {
     if (releaseList) {
+      console.log('releaseList MigrationTimelineNavigationItem[]', releaseList);
       const releaseNavigationList: MigrationTimelineNavigationItem[] = this.parseVmReleaseNavigation(releaseList);
       this._baseModel.setSlice({releaseNavigationList});
     }

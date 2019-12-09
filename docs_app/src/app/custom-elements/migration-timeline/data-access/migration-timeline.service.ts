@@ -63,32 +63,32 @@ export class MigrationTimelineService extends LocalState<MigrationTimelineState>
   }
 
   private _parseToMigrationItemUIDAware<T>(version: string) {
-    return (item) => item.map((i) => {
-      const awareItem: T & MigrationItemUIDAware = {
-        ...i,
-        migrationReleaseUID: formatSemVerNumber(version) + '',
-        migrationItemSubjectUID: parseMigrationItemSubjectUID(i, {}),
-        migrationItemUID: parseMigrationItemUID(i, {version})
-      };
+    return (item) => {
+        const awareItem: T & MigrationItemUIDAware = {
+          ...item,
+          migrationReleaseUID: formatSemVerNumber(version) + '',
+          migrationItemSubjectUID: parseMigrationItemSubjectUID(item, {}),
+          migrationItemUID: parseMigrationItemUID(item, {version})
+        };
 
-      let opponentMigrationItemUID;
-      if (i.itemType === 'deprecation') {
-        opponentMigrationItemUID = parseMigrationItemUID(i, {
-          itemType: 'breakingChange',
-          version: i.breakingChangeVersion,
-          subjectAction: i.breakingChangeSubjectAction
-        });
-        // i.itemType === 'breakingChange'
-      } else {
-        opponentMigrationItemUID = parseMigrationItemUID(i, {
-          itemType: 'deprecation',
-          version: i.deprecationVersion,
-          subjectAction: i.deprecationSubjectAction
-        });
-      }
-      awareItem.opponentMigrationItemUID = opponentMigrationItemUID;
-      return awareItem;
-    });
+        let opponentMigrationItemUID;
+        if (item.itemType === 'deprecation') {
+          opponentMigrationItemUID = parseMigrationItemUID(item, {
+            itemType: 'breakingChange',
+            version: item.breakingChangeVersion,
+            subjectAction: item.breakingChangeSubjectAction
+          });
+          // i.itemType === 'breakingChange'
+        } else {
+          opponentMigrationItemUID = parseMigrationItemUID(item, {
+            itemType: 'deprecation',
+            version: item.deprecationVersion,
+            subjectAction: item.deprecationSubjectAction
+          });
+        }
+        awareItem.opponentMigrationItemUID = opponentMigrationItemUID;
+        return awareItem;
+    }
   }
 
 }

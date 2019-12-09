@@ -35,6 +35,7 @@ export class LocationService {
     this.urlSubject.next(location.path(true));
 
     this.location.subscribe(state => {
+      console.log('state', state);
       return this.urlSubject.next(state.url || '');
     });
 
@@ -43,6 +44,7 @@ export class LocationService {
 
   // TODO: ignore if url-without-hash-or-search matches current location?
   go(url: string|null|undefined) {
+    console.log('SSSSSSSSSSSSSSSs', url)
     if (!url) { return; }
     url = this.stripSlashes(url);
     if (/^http/.test(url) || this.swUpdateActivated) {

@@ -1,6 +1,5 @@
 import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
-import {distinctUntilChanged} from 'rxjs/operators';
 import {ClientDeprecation} from '../../data-access/migration-timeline.interface';
 import {LocalState} from '../../utils/local-state.service';
 
@@ -18,7 +17,7 @@ import {LocalState} from '../../utils/local-state.service';
         <th>
           Breaking change in version&nbsp;
           <a class="release-link"
-            (click)="migrationItemUidSelectRequest.next(vm.deprecation.opponentMigrationItemUID)"
+            (click)="selectedMigrationItemUIDChange.next(vm.deprecation.opponentMigrationItemUID)"
             [href]="vm.deprecation.opponentMigrationItemUID">
             v{{vm.deprecation.breakingChangeVersion}}
           </a>
@@ -69,12 +68,8 @@ export class DeprecationDescriptionTableComponent extends LocalState<{
     }
   }
 
-  migrationItemUidSelectRequest = new Subject<string>();
   @Output()
-  selectedMigrationItemUidChange = this.migrationItemUidSelectRequest
-    .pipe(
-      distinctUntilChanged()
-    );
+  selectedMigrationItemUIDChange = new Subject<string>();
 
 }
 

@@ -1,7 +1,6 @@
 import {Observable} from 'rxjs';
 import {map, switchMap, tap} from 'rxjs/operators';
-import {ClientRelease} from '../data-access/migration-timeline.service';
-import {ClientMigrationRelease} from '../migration-timeline.interface';
+import {ClientMigrationTimelineReleaseItem} from '../data-access/migration-timeline.interface';
 import {getClosestVersion, getLatestVersion} from './filter';
 
 export const disposeEvent = (o$) => o$.pipe(
@@ -11,7 +10,7 @@ export const disposeEvent = (o$) => o$.pipe(
   })
 );
 
-export const closestRelevantVersion = (list$: Observable<ClientMigrationRelease[]>) =>
+export const closestRelevantVersion = (list$: Observable<ClientMigrationTimelineReleaseItem[]>) =>
   (version$: Observable<string>): Observable<string> => version$
     .pipe(
       switchMap((hash) => {
@@ -21,18 +20,9 @@ export const closestRelevantVersion = (list$: Observable<ClientMigrationRelease[
         );
       })
     );
-export const closestRelevantMigrationItem = (list$: Observable<ClientMigrationRelease[]>) =>
-  (version$: Observable<string>): Observable<string> => version$
-    .pipe(
-      switchMap((hash) => {
-        const [version] = hash.split('_');
-        return list$.pipe(
-          map(getClosestMigrationItem(version))
-        );
-      })
-    );
 
-export const latestRelevantVersion = (list$: Observable<ClientRelease[]>) => (date$: Observable<Date>): Observable<string> => date$
+export const latestRelevantVersion = (list$: Observable<ClientMigrationTimelineReleaseItem[]>) =>
+  (date$: Observable<Date>): Observable<string> => date$
   .pipe(
     switchMap(date => list$.pipe(
       map(getLatestVersion(date))

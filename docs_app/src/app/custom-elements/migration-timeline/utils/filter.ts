@@ -3,7 +3,6 @@ import {formatSemVerNumber} from './formatter-parser';
 
 export function getClosestVersion(version = '') {
   return (rL: ClientMigrationTimelineReleaseItem[]): string => {
-
     if (rL) {
       const closestRelease = rL.find(release => {
         if (release.version === version) {
@@ -19,23 +18,20 @@ export function getClosestVersion(version = '') {
     return version;
   };
 }
-export function getClosestRelease(version = '') {
-  return (rL: ClientMigrationTimelineReleaseItem[]): ClientMigrationTimelineReleaseItem => {
 
-    if (rL) {
-      const closestRelease = rL.find(release => {
-        if (release.version === version) {
-          return true;
-        }
-        const currentVersion = formatSemVerNumber(release.version);
-        const selectedVersion = formatSemVerNumber(version);
-
-        return currentVersion >= selectedVersion;
-      });
-      return closestRelease ? closestRelease : rL[0];
-    }
-    return rL[0];
-  };
+export function getClosestRelease(rL: ClientMigrationTimelineReleaseItem[], selectedVersion = '') {
+  if (rL) {
+    const closestRelease = rL.find(release => {
+      console.log('closestRelease', closestRelease);
+      if (release.version === selectedVersion) {
+        return true;
+      }
+      const currentVersion = release.version;
+      return currentVersion >= selectedVersion;
+    });
+    return closestRelease ? closestRelease : rL[0];
+  }
+  return rL[0];
 }
 
 export const getLatestVersion = (date: Date) => (rL: ClientMigrationTimelineReleaseItem[]): string => {

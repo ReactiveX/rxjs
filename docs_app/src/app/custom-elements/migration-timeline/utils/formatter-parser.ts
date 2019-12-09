@@ -20,6 +20,10 @@ import {
   SemVerObj
 } from '../data-access/migration-timeline-struckture/interfaces';
 
+export function parseMigrationReleaseUID(uid: string): string {
+  return uid ? uid.split('_')[0] : '';
+}
+
 export function parseMigrationItemUID(
   item: MigrationItem,
   args: Partial<MigrationReleaseUIDFields> & Partial<MigrationItemSubjectUIDFields>

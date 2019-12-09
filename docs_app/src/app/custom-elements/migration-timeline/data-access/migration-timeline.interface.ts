@@ -8,11 +8,11 @@ export interface MigrationItemUIDAware {
 }
 
 export interface ClientDeprecation extends Deprecation, MigrationItemUIDAware {
-  opponentMigrationItemUID: string;
+
 }
 
 export interface ClientBreakingChange extends BreakingChange, MigrationItemUIDAware {
-  opponentMigrationItemUID: string;
+
 }
 
 export interface ClientMigrationTimelineReleaseItem {
