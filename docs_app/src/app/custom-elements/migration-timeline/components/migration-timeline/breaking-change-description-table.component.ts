@@ -1,9 +1,12 @@
-import {Component, Input} from '@angular/core';
-import {combineLatest} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {BreakingChange} from '../../data-access/migration-timeline-struckture/interfaces';
-import {parseMigrationItemUID} from '../../utils/formatter-parser';
+import {Component, Input, Output} from '@angular/core';
+import {Subject} from 'rxjs';
+import {distinctUntilChanged} from 'rxjs/operators';
+import {ClientBreakingChange} from '../../data-access/migration-timeline.interface';
 import {LocalState} from '../../utils/local-state.service';
+
+interface VMBreakingChangeDescriptionTable {
+  breakingChange: ClientBreakingChange;
+}
 
 @Component({
   selector: `breaking-change-description-table`,
@@ -17,7 +20,8 @@ import {LocalState} from '../../utils/local-state.service';
         </th>
         <th>
           Deprecated in version
-          <a class="release-link" [href]="deprecationLink$ | async">
+          <a class="release-link"
+            (click)="migrationItemUidSelectRequest.next(vm.breakingChange.opponentMigrationItemUID)">
             v{{vm.breakingChange.deprecationVersion}}
           </a>
         </th>
@@ -30,8 +34,9 @@ import {LocalState} from '../../utils/local-state.service';
         </td>
         <td>
           <p>
-            For refactoring suggestions please visit the version of deprecation: <a class="release-link"
-            [href]="vm.breakingChange.deprecationSubjectAction">v{{vm.breakingChange.deprecationVersion}}</a>
+            For refactoring suggestions please visit the version of deprecation:
+            (click)="migrationItemUidSelectRequest.next(vm.breakingChange.opponentMigrationItemUID)
+            <a class="release-link">v{{vm.breakingChange.deprecationVersion}}</a>
           </p>
         </td>
       </tr>
@@ -39,33 +44,16 @@ import {LocalState} from '../../utils/local-state.service';
     </table>
   `
 })
-export class BreakingChangeDescriptionTableComponent extends LocalState<{
-  breakingChange: BreakingChange;
-  baseURL: string;
-}> {
+export class BreakingChangeDescriptionTableComponent extends LocalState<VMBreakingChangeDescriptionTable> {
   vm$ = this.select();
-  breakingChange$ = this.select('breakingChange');
-  baseURL$ = this.select('baseURL');
 
-  deprecationLink$ = combineLatest(this.breakingChange$, this.baseURL$)
-    .pipe(
-      map(([b, url]) => url + '#' + parseMigrationItemUID(b, {
-        itemType: 'deprecation',
-        version: b.deprecationVersion,
-        subjectAction: b.deprecationSubjectAction,
-        subject: b.subject}))
-    );
-
+  migrationItemUidSelectRequest = new Subject<string>();
+  @Output()
+  selectedMigrationItemUidChange = this.migrationItemUidSelectRequest
+    .pipe(distinctUntilChanged());
 
   @Input()
-  set baseURL(baseURL: string) {
-    if (baseURL) {
-      this.setSlice({baseURL});
-    }
-  }
-
-  @Input()
-  set breakingChange(breakingChange: BreakingChange) {
+  set breakingChange(breakingChange: ClientBreakingChange) {
     if (breakingChange) {
       this.setSlice({breakingChange});
     }

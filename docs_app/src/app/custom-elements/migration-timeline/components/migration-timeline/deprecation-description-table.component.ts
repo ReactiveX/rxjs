@@ -1,8 +1,7 @@
-import {Component, Input} from '@angular/core';
-import {combineLatest} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {VmDeprecation} from '../../migration-timeline.interface';
-import {parseMigrationItemUID} from '../../utils/formatter-parser';
+import {Component, Input, Output} from '@angular/core';
+import {Subject} from 'rxjs';
+import {distinctUntilChanged} from 'rxjs/operators';
+import {ClientDeprecation} from '../../data-access/migration-timeline.interface';
 import {LocalState} from '../../utils/local-state.service';
 
 
@@ -19,8 +18,9 @@ import {LocalState} from '../../utils/local-state.service';
         <th>
           Breaking change in version&nbsp;
           <a class="release-link"
-            [href]="breakingChangeLink$ | async">
-            v{{vm.deprecation.breakingVersion}}
+            (click)="migrationItemUidSelectRequest.next(vm.deprecation.opponentMigrationItemUID)"
+            [href]="vm.deprecation.opponentMigrationItemUID">
+            v{{vm.deprecation.breakingChangeVersion}}
           </a>
           <div class="page-actions">
             <a [href]="vm.deprecation.sourceLink"
@@ -58,35 +58,24 @@ import {LocalState} from '../../utils/local-state.service';
   `
 })
 export class DeprecationDescriptionTableComponent extends LocalState<{
-  deprecation: VmDeprecation;
-  baseURL: string;
+  deprecation: ClientDeprecation;
 }> {
   vm$ = this.select();
-  deprecation$ = this.select('deprecation');
-  baseURL$ = this.select('baseURL');
-  breakingChangeLink$ = combineLatest(this.deprecation$, this.baseURL$)
-    .pipe(
-      map(([d, url]) => url + '#' + parseMigrationItemUID(d, {
-        itemType: 'breakingChange',
-        version: d.breakingVersion,
-        subjectAction: d.breakingSubjectAction,
-        subject: d.subject
-      }))
-    );
 
   @Input()
-  set deprecation(deprecation: VmDeprecation) {
+  set deprecation(deprecation: ClientDeprecation) {
     if (deprecation) {
       this.setSlice({deprecation});
     }
   }
 
-  @Input()
-  set baseURL(baseURL: string) {
-    if (baseURL) {
-      this.setSlice({baseURL});
-    }
-  }
+  migrationItemUidSelectRequest = new Subject<string>();
+  @Output()
+  selectedMigrationItemUidChange = this.migrationItemUidSelectRequest
+    .pipe(
+      distinctUntilChanged()
+    );
+
 }
 
 
