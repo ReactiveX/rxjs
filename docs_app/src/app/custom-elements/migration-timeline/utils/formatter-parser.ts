@@ -14,14 +14,20 @@
   - 7.0.0-alpha.1_breakingChange-operator-switchMap-resultSelector-to-map-operator
 */
 import {
-  MigrationItem, MigrationItemSubjectUIDFields,
-  MigrationReleaseUIDFields, SemVerObj
+  MigrationItem,
+  MigrationItemSubjectUIDFields,
+  MigrationReleaseUIDFields,
+  SemVerObj
 } from '../data-access/migration-timeline-struckture/interfaces';
 
-export function parseMigrationItemUID(item: MigrationItem, args: MigrationReleaseUIDFields & Partial<MigrationItemSubjectUIDFields>) {
+export function parseMigrationItemUID(
+  item: MigrationItem,
+  args: Partial<MigrationReleaseUIDFields> & Partial<MigrationItemSubjectUIDFields>
+) {
   let {version} = args;
-  version = formatSemVerString(version);
-  const migrationItemSubjectUID = parseMigrationItemSubjectUID(item, args);
+  version = formatSemVerString(version || '');
+  const i: any = {...item, ...args};
+  const migrationItemSubjectUID = parseMigrationItemSubjectUID(i);
 
   return `${version}_${migrationItemSubjectUID}`;
 }
@@ -50,16 +56,9 @@ Pattern: <itemType>-<subjectApiSymbol>-<subject>-<subjectAction>
       - property-frameTimeFactor-moved
       - property-hotObservables-to-private
  */
-export function parseMigrationItemSubjectUID(item: MigrationItem, args: Partial<MigrationItemSubjectUIDFields>): any {
-  let {subjectAction} = args;
-  let itemType = 'breakingChange';
-  if ('breakingVersion' in item) {
-    itemType = 'deprecation';
-  }
-  if (!subjectAction) {
-    subjectAction = item.subjectAction;
-  }
-  return `${itemType}-${item.subjectApiSymbol}-${item.subject}-${subjectAction}`;
+export function parseMigrationItemSubjectUID(item: MigrationItem, args?: Partial<MigrationItemSubjectUIDFields>): any {
+  const i = {...item, ...args};
+  return `${i.itemType}-${i.subjectApiSymbol}-${i.subject}-${i.subjectAction}`;
 }
 
 export function parseSemVerObject(version: string): SemVerObj {

@@ -1,16 +1,33 @@
 import {Observable} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
+import {map, switchMap, tap} from 'rxjs/operators';
 import {ClientRelease} from '../data-access/migration-timeline.service';
-import {VmReleaseListItem} from '../migration-timeline.interface';
+import {ClientMigrationRelease} from '../migration-timeline.interface';
 import {getClosestVersion, getLatestVersion} from './filter';
 
-export const closestRelevantVersion = (list$: Observable<VmReleaseListItem[]>) =>
+export const disposeEvent = (o$) => o$.pipe(
+  tap((e: Event) => {
+    e.preventDefault();
+    e.stopPropagation();
+  })
+);
+
+export const closestRelevantVersion = (list$: Observable<ClientMigrationRelease[]>) =>
   (version$: Observable<string>): Observable<string> => version$
     .pipe(
       switchMap((hash) => {
         const [version] = hash.split('_');
         return list$.pipe(
           map(getClosestVersion(version))
+        );
+      })
+    );
+export const closestRelevantMigrationItem = (list$: Observable<ClientMigrationRelease[]>) =>
+  (version$: Observable<string>): Observable<string> => version$
+    .pipe(
+      switchMap((hash) => {
+        const [version] = hash.split('_');
+        return list$.pipe(
+          map(getClosestMigrationItem(version))
         );
       })
     );

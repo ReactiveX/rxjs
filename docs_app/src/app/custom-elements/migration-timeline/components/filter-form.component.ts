@@ -2,7 +2,7 @@ import {Component, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {startWith} from 'rxjs/operators';
 import {LocalState} from '../utils/local-state.service';
-import {VmReleaseNavigationItem} from './release-navigation.component';
+import {MigrationTimelineNavigationItem} from './release-navigation.component';
 
 
 export interface VmFilterForm {
@@ -40,7 +40,7 @@ export interface VmFilterForm {
   styles: []
 })
 export class FilterFormComponent extends LocalState<{
-  releaseList: VmReleaseNavigationItem[]
+  releaseList: MigrationTimelineNavigationItem[]
 }> implements OnInit {
 
   vm$ = this.select();
@@ -50,7 +50,7 @@ export class FilterFormComponent extends LocalState<{
   });
 
   @Input()
-  set releaseList(releaseList: VmReleaseNavigationItem[]) {
+  set releaseList(releaseList: MigrationTimelineNavigationItem[]) {
     if (releaseList) {
       this.setSlice({releaseList});
     }
