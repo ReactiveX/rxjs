@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Location, PlatformLocation } from '@angular/common';
+import {Injectable} from '@angular/core';
+import {Location, PlatformLocation} from '@angular/common';
 
-import { ReplaySubject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import {merge, Observable, ReplaySubject} from 'rxjs';
+import {distinctUntilChanged, map, tap} from 'rxjs/operators';
 
-import { GaService } from 'app/shared/ga.service';
-import { SwUpdatesService } from 'app/sw-updates/sw-updates.service';
+import {GaService} from 'app/shared/ga.service';
+import {SwUpdatesService} from 'app/sw-updates/sw-updates.service';
 
 @Injectable()
 export class LocationService {
@@ -13,6 +13,7 @@ export class LocationService {
   private readonly urlParser = document.createElement('a');
   private urlSubject = new ReplaySubject<string>(1);
   private swUpdateActivated = false;
+  private replaceStateSubject = new ReplaySubject<string>(1);
 
   currentUrl = this.urlSubject
     .pipe(map(url => this.stripSlashes(url)));
@@ -26,16 +27,25 @@ export class LocationService {
     map(url => (url.split('#') || '')[1]),  // extract hash
   );
 
+  currentSearchParams: Observable<{ [key: string]: any }> = merge(
+    this.urlSubject.pipe(distinctUntilChanged()),
+    this.replaceStateSubject.pipe(distinctUntilChanged()),
+  )
+    .pipe(
+      map(s => this.search())
+    );
+
+
   constructor(
     private gaService: GaService,
     private location: Location,
     private platformLocation: PlatformLocation,
-    swUpdates: SwUpdatesService) {
+    swUpdates: SwUpdatesService
+  ) {
 
     this.urlSubject.next(location.path(true));
 
     this.location.subscribe(state => {
-      console.log('state', state);
       return this.urlSubject.next(state.url || '');
     });
 
@@ -43,9 +53,10 @@ export class LocationService {
   }
 
   // TODO: ignore if url-without-hash-or-search matches current location?
-  go(url: string|null|undefined) {
-    console.log('SSSSSSSSSSSSSSSs', url)
-    if (!url) { return; }
+  go(url: string | null | undefined) {
+    if (!url) {
+      return;
+    }
     url = this.stripSlashes(url);
     if (/^http/.test(url) || this.swUpdateActivated) {
       // Has http protocol so leave the site
@@ -70,24 +81,24 @@ export class LocationService {
   }
 
   search() {
-    const search: { [index: string]: string|undefined; } = {};
+    const search: { [index: string]: string | undefined; } = {};
     const path = this.location.path();
     const q = path.indexOf('?');
     if (q > -1) {
       try {
-          const params = path.substr(q + 1).split('&');
-          params.forEach(p => {
-            const pair = p.split('=');
-            if (pair[0]) {
-              search[decodeURIComponent(pair[0])] = pair[1] && decodeURIComponent(pair[1]);
-            }
-          });
+        const params = path.substr(q + 1).split('&');
+        params.forEach(p => {
+          const pair = p.split('=');
+          if (pair[0]) {
+            search[decodeURIComponent(pair[0])] = pair[1] && decodeURIComponent(pair[1]);
+          }
+        });
       } catch (e) { /* don't care */ }
     }
     return search;
   }
 
-  setSearch(label: string, params: { [key: string]: string|undefined}) {
+  setSearch(label: string, params: { [key: string]: string | undefined }) {
     const search = Object.keys(params).reduce((acc, key) => {
       const value = params[key];
       return (value === undefined) ? acc :
@@ -95,6 +106,7 @@ export class LocationService {
     }, '');
 
     this.platformLocation.replaceState({}, label, this.platformLocation.pathname + search);
+    this.replaceStateSubject.next(this.platformLocation.pathname + search);
   }
 
   /**
@@ -138,13 +150,13 @@ export class LocationService {
       return true; // let the download happen
     }
 
-    const { pathname, search, hash } = anchor;
+    const {pathname, search, hash} = anchor;
     const relativeUrl = pathname + search + hash;
     this.urlParser.href = relativeUrl;
 
     // don't navigate if external link or has extension
-    if ( anchor.href !== this.urlParser.href ||
-         !/\/[^/.]*$/.test(pathname) ) {
+    if (anchor.href !== this.urlParser.href ||
+      !/\/[^/.]*$/.test(pathname)) {
       return true;
     }
 
