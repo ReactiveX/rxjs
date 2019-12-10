@@ -14,6 +14,7 @@
   - 7.0.0-alpha.1_breakingChange-operator-switchMap-resultSelector-to-map-operator
 */
 import {
+  ApiSymbols,
   MigrationItem,
   MigrationItemSubjectUIDFields,
   MigrationReleaseUIDFields,
@@ -84,6 +85,19 @@ Pattern: <itemType>-<subjectApiSymbol>-<subject>-<subjectAction>
 export function parseMigrationItemSubjectUID(item: MigrationItem, args?: Partial<MigrationItemSubjectUIDFields>): any {
   const i = {...item, ...args};
   return `${i.itemType}-${i.subjectApiSymbol}-${i.subject}-${i.subjectAction}`;
+}
+
+export function parseMigrationItemUIDObject(uid: string): MigrationItemSubjectUIDFields & MigrationReleaseUIDFields {
+  const [releaseItemUID, _misUID] = uid ? uid.split('_') : ['', ''];
+  const [itemType, subjectApiSymbol, subject, ...subjectActionArr] = _misUID ? _misUID.split('-') : ['', '', ''];
+  const subjectAction = subjectActionArr.join('');
+  return {
+    version: formatSemVerString(releaseItemUID),
+    itemType: itemType === 'deprecation' ? 'breakingChange' : 'deprecation',
+    subject,
+    subjectApiSymbol: subjectApiSymbol as ApiSymbols,
+    subjectAction
+  };
 }
 
 export function parseSemVerObject(version: string): SemVerObj {

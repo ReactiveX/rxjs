@@ -34,6 +34,10 @@ export interface MigrationTimelineContainerModelFromRemoteSources {
         Code examples of the deprecated and the new version
       </li>
       <li>
+        <input type="checkbox" checked disabled>
+        It provides a way to navigate trough all listed items
+      </li>
+      <li>
         <input type="checkbox" disabled>
         Manual Migration suggestions (optional)
       </li>
@@ -42,10 +46,7 @@ export interface MigrationTimelineContainerModelFromRemoteSources {
         Migration over tooling (optional)
       </li>
       <li>
-        <input type="checkbox" disabled>
-        If deprecation information does not exist suggest to open an issue.
-        - Implement Link to docs issue template
-        - Update Docs Issue template with new option for deprecation message
+        <input type="checkbox" checked disabled>
       </li>
     </ul>
     <h2>Supported Versions</h2>
