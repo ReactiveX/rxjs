@@ -50,9 +50,6 @@ export interface MigrationTimelineContainerModelFromRemoteSources {
     </ul>
     <h2>Supported Versions</h2>
     <ng-container *ngIf="baseModel$ | async as m">
-      selectedMigrationReleaseUID$: {{selectedMigrationReleaseUID$ | async | json}}<br/>
-      selectedMigrationItemUID: {{m.selectedMigrationItemUID | json}}<br/>
-      m.releaseList.length :{{m.releaseList.length}}
       <!--
       <section>
         {{m.filter}}<br>

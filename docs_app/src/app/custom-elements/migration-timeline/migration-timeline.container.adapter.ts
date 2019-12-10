@@ -16,7 +16,6 @@ export class MigrationTimelineContainerAdapter extends LocalState<MigrationTimel
     .pipe(
       map(s => s.uid),
       filter(v => v !== undefined),
-      tap(console.log),
       map(uid => parseMigrationItemUIDURL(uid)),
       distinctUntilChanged()
     );
@@ -38,7 +37,7 @@ export class MigrationTimelineContainerAdapter extends LocalState<MigrationTimel
     this.connectSlice('releaseList', this.migrationService.migrations$
       .pipe(
         // ensure base sorting by version number before putting it into client state
-        map(a => a.sort(this.compareByReleaseDateAsc))
+        map(a => a.sort(this.compareByVersionNumberAsc))
       ));
 
     // URL state to component state
@@ -52,13 +51,12 @@ export class MigrationTimelineContainerAdapter extends LocalState<MigrationTimel
           // get the release object for selectedMigrationItemUID (or the closest one)
           const release = getClosestRelease(releaseList, selectedMigrationItemUID);
           const migrationItemSubjectUID = parseMigrationItemSubjectUIDFromString(selectedMigrationItemUID.split('_')[1]);
-          console.log('migrationItemSubjectUID', migrationItemSubjectUID);
-          // If no item is specified forward only version
+
+          // If no subjectUID is specified forward only version
           if (migrationItemSubjectUID === '') {
             return release.version;
           }
-
-          // if uid is ok search it
+          // If uid is ok search it
           const item = ([] as any[])
             .concat(release.deprecations)
             .concat(release.breakingChanges)

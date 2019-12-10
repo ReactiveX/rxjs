@@ -1,11 +1,11 @@
 import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
-import {filter, map, scan, withLatestFrom} from 'rxjs/operators';
+import {map, scan, withLatestFrom} from 'rxjs/operators';
 import {ClientMigrationTimelineReleaseItem} from '../../data-access/migration-timeline.interface';
 import {parseMigrationReleaseUIDFromString} from '../../utils/formatter-parser';
+import {disposeEvent} from '../../utils/general';
 
 import {LocalState} from '../../utils/local-state.service';
-import { disposeEvent } from '../../utils/general';
 
 export interface MigrationTimelineComponentViewBaseModel {
   releaseList: ClientMigrationTimelineReleaseItem[];
@@ -155,7 +155,7 @@ export class MigrationTimelineComponent extends LocalState<MigrationTimelineComp
   }
 
 
-  expandedReleaseChange = new Subject<string>();
+  expandedMigrationReleaseItemUIDChange = new Subject<string>();
 
   @Output()
   selectedMigrationReleaseUIDChange = new Subject<string>();
@@ -181,18 +181,15 @@ export class MigrationTimelineComponent extends LocalState<MigrationTimelineComp
     );
     // B) Panel expansion click
     // If the panel requests a expansion change
-    this.connectSlice('expandedRelease', this.expandedReleaseChange
-      .pipe(
-        withLatestFrom(_selectedMigrationItemUID$),
-        // If the user changes the currently selected version do nothing
-        // This case is handled by the URL hash change
-        filter(([changedVersion, selectedVersion]) => changedVersion !== selectedVersion),
-        // If the user clicks on a panel that is already the selected version
-        // Get the changedVersion and
-        map(([changedVersion]) => changedVersion),
-        // Toggle it's state
-        scan((s: { [key: string]: boolean }, v: string): { [key: string]: boolean } => ({[v]: !s[v]}), {})
-      )
+    this.connectSlice('expandedRelease',
+      this.expandedMigrationReleaseItemUIDChange
+        .pipe(
+          withLatestFrom(this.select('expandedRelease')),
+          map(([changedVersion, expandedRelease]) => [expandedRelease, changedVersion]),
+          // Toggle it's state
+          scan((expandedRelease: { [key: string]: boolean }, changedVersion: string):
+          { [key: string]: boolean } => ({[changedVersion]: !expandedRelease[changedVersion]}), {})
+        )
     );
 
   }

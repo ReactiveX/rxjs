@@ -27,7 +27,6 @@ export function getClosestRelease(rL: ClientMigrationTimelineReleaseItem[], sele
       if (release.versionNumber === selectedVersionNumber) {
         return true;
       }
-
       return release.versionNumber >= selectedVersionNumber;
     });
     return closestRelease ? closestRelease : rL[0];

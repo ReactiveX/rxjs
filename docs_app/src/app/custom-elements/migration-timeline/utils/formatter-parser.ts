@@ -106,10 +106,8 @@ export function parseSemVerObject(version: string): SemVerObj {
     patch: +patch
   };
 
-  if (subVersionName !== undefined) {
+  if (subVersionName !== '') {
     obj.subVersionName = subVersionName + '';
-  }
-  if (subVersionName !== undefined) {
     obj.subVersion = +subVersion;
   }
 
@@ -143,6 +141,7 @@ export function formatSemVerNumber(version: string): number {
     subVersionName: getSubVersionNameNumber(_obj.subVersionName),
     subVersion: getSubVersionNumber(_obj.subVersion),
   };
+
   return +[
     filledVersionNumber.major,
     filledVersionNumber.minor,
