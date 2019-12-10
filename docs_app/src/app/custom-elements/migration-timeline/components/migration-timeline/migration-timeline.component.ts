@@ -2,9 +2,10 @@ import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
 import {filter, map, scan, withLatestFrom} from 'rxjs/operators';
 import {ClientMigrationTimelineReleaseItem} from '../../data-access/migration-timeline.interface';
-import {parseMigrationReleaseUID} from '../../utils/formatter-parser';
+import {parseMigrationReleaseUIDFromString} from '../../utils/formatter-parser';
 
 import {LocalState} from '../../utils/local-state.service';
+import { disposeEvent } from '../../utils/general';
 
 export interface MigrationTimelineComponentViewBaseModel {
   releaseList: ClientMigrationTimelineReleaseItem[];
@@ -17,18 +18,31 @@ export interface MigrationTimelineComponentViewBaseModel {
   selector: `rxjs-migration-timeline`,
   template: `
     <mat-accordion *ngIf="vm$ | async as vm" class="migration-timeline">
+
+      <mat-card *ngIf="vm.selectedMigrationItemUID === 'wrong-uid'"
+        class="migration-section manual-step selected">
+        <mat-card-header [id]="vm.selectedMigrationItemUID" class="migration-headline">
+          <mat-card-title>Migration Information Missing</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>
+            Go to RxJS GitHub page and <a href="@TODO">open an issue</a>
+          </p>
+        </mat-card-content>
+      </mat-card>
+
       <mat-expansion-panel
         class="release"
         *ngFor="let release of vm.releaseList"
         [ngClass]="{'selected': vm.selectedMigrationReleaseUID === release.version}"
-        (click)="selectedMigrationReleaseUIDChange
-        .next(release.deprecations[0].migrationItemUID || release.breakingChanges[0].migrationItemUID)"
         [expanded]="(vm.selectedMigrationItemUID)[release.version]">
         <mat-expansion-panel-header class="header">
           <mat-panel-title
             class="migration-timeline-item-header-title"
             [id]="release.version">
-            <div class="shield">
+            <div class="shield"
+              (click)="disposeEvent($event)"
+              (click)="selectedMigrationReleaseUIDChange.next(release.version)">
               <span class="label">github</span>
               <span class="version">{{release.version}}</span>
             </div>&nbsp;-&nbsp;{{release.date | date:'dd.MM.yyyy'}}&nbsp;-
@@ -69,7 +83,7 @@ export interface MigrationTimelineComponentViewBaseModel {
             <mat-card-content>
               <deprecation-description-table
                 [deprecation]="deprecation"
-                (selectedMigrationItemUIDChange)="selectedMigrationItemUIDChange.next($event)">
+                (selectedMigrationItemUIDChange)="selectedMigrationReleaseUIDChange.next($event)">
               </deprecation-description-table>
               <code-example [language]="'typescript'" [title]="'Before Deprecation (< v' + release.version + ')'">
                 {{deprecation.exampleBefore}}
@@ -104,7 +118,7 @@ export interface MigrationTimelineComponentViewBaseModel {
             <mat-card-content>
               <breaking-change-description-table
                 [breakingChange]="breakingChange"
-                (selectedMigrationItemUIDChange)="selectedMigrationItemUIDChange.next($event)">
+                (selectedMigrationItemUIDChange)="selectedMigrationReleaseUIDChange.next($event)">
               </breaking-change-description-table>
             </mat-card-content>
           </mat-card>
@@ -123,6 +137,8 @@ export interface MigrationTimelineComponentViewBaseModel {
 })
 export class MigrationTimelineComponent extends LocalState<MigrationTimelineComponentViewBaseModel> {
 
+  disposeEvent = disposeEvent;
+
   @Input()
   set releaseList(releaseList: ClientMigrationTimelineReleaseItem[]) {
     if (releaseList) {
@@ -134,19 +150,19 @@ export class MigrationTimelineComponent extends LocalState<MigrationTimelineComp
   set selectedMigrationItemUID(selectedMigrationItemUID: string) {
     this.setSlice({
       selectedMigrationItemUID: selectedMigrationItemUID || '',
-      selectedMigrationReleaseUID: parseMigrationReleaseUID(selectedMigrationItemUID)
+      selectedMigrationReleaseUID: parseMigrationReleaseUIDFromString(selectedMigrationItemUID)
     });
   }
 
 
   expandedReleaseChange = new Subject<string>();
 
+  @Output()
+  selectedMigrationReleaseUIDChange = new Subject<string>();
+
 
   @Output()
   selectedMigrationItemUIDChange = new Subject<string>();
-
-  @Output()
-  selectedMigrationReleaseUIDChange = new Subject<string>();
 
   vm$ = this.select();
 
