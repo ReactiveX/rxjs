@@ -21,6 +21,7 @@ import {MsgFormatDecisionHelperComponent} from './components/msg-format-decision
 import {ReleaseNavigationComponent} from './components/release-navigation.component';
 import {MigrationTimelineService} from './data-access/migration-timeline.service';
 import {MigrationTimelineContainerComponent} from './migration-timeline.container.component';
+import { MissingInformationComponent } from './components/migration-timeline/missing-information.component';
 
 export const baseURL = 'migration-timeline';
 
@@ -39,7 +40,7 @@ export const baseURL = 'migration-timeline';
   declarations: [
     MigrationTimelineContainerComponent,
     MigrationTimelineComponent, DeprecationDescriptionTableComponent,
-    BreakingChangeDescriptionTableComponent,
+    BreakingChangeDescriptionTableComponent, MissingInformationComponent,
     FilterFormComponent,
     ReleaseNavigationComponent,
     // @TODO remove after clarification

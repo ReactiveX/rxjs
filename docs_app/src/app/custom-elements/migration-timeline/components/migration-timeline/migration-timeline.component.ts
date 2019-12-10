@@ -1,6 +1,6 @@
 import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
-import {map, scan, withLatestFrom} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {ClientMigrationTimelineReleaseItem} from '../../data-access/migration-timeline.interface';
 import {parseMigrationReleaseUIDFromString} from '../../utils/formatter-parser';
 import {disposeEvent} from '../../utils/general';
@@ -19,23 +19,14 @@ export interface MigrationTimelineComponentViewBaseModel {
   template: `
     <mat-accordion *ngIf="vm$ | async as vm" class="migration-timeline">
 
-      <mat-card *ngIf="vm.selectedMigrationItemUID === 'wrong-uid'"
-        class="migration-section manual-step selected">
-        <mat-card-header [id]="vm.selectedMigrationItemUID" class="migration-headline">
-          <mat-card-title>Migration Information Missing</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>
-            Go to RxJS GitHub page and <a href="@TODO">open an issue</a>
-          </p>
-        </mat-card-content>
-      </mat-card>
+      <missing-information *ngIf="vm.selectedMigrationItemUID === 'wrong-uid'">
+      </missing-information>
 
       <mat-expansion-panel
         class="release"
         *ngFor="let release of vm.releaseList"
         [ngClass]="{'selected': vm.selectedMigrationReleaseUID === release.version}"
-        [expanded]="(vm.expandedRelease)[release.version]">
+        [expanded]="vm.expandedRelease[release.version]">
         <mat-expansion-panel-header class="header">
           <mat-panel-title
             class="migration-timeline-item-header-title"
@@ -154,12 +145,8 @@ export class MigrationTimelineComponent extends LocalState<MigrationTimelineComp
     });
   }
 
-
-  expandedMigrationReleaseItemUIDChange = new Subject<string>();
-
   @Output()
   selectedMigrationReleaseUIDChange = new Subject<string>();
-
 
   @Output()
   selectedMigrationItemUIDChange = new Subject<string>();
@@ -170,30 +157,13 @@ export class MigrationTimelineComponent extends LocalState<MigrationTimelineComp
     super();
     this.setSlice({expandedRelease: {}});
 
-    // @TODO Rethink!!!!
     const _selectedMigrationItemUID$ = this.select('selectedMigrationItemUID');
     // A) Version selection click (nav bar of versions)
     // If the user select's a new version expand this panel
     this.connectSlice('expandedRelease', _selectedMigrationItemUID$
       .pipe(
-        map((version: string) => ({[version]: true}))
-      ),
+        map((version: string) => ({[parseMigrationReleaseUIDFromString(version)]: true}))
+      )
     );
-    // B) Panel expansion click
-    // If the panel requests a expansion change
-    this.connectSlice('expandedRelease',
-      this.expandedMigrationReleaseItemUIDChange
-        .pipe(
-          withLatestFrom(this.select('expandedRelease')),
-          map(([changedVersion, expandedRelease]) => [expandedRelease, changedVersion]),
-          // Toggle it's state
-          scan((expandedRelease: { [key: string]: boolean }, changedVersion: string):
-          { [key: string]: boolean } => ({[changedVersion]: !expandedRelease[changedVersion]}), {})
-        )
-    );
-
   }
-
 }
-
-

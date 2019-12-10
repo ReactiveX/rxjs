@@ -50,7 +50,6 @@ export class ReleaseNavigationComponent {
   @Input()
   set releaseList(releaseList: ClientMigrationTimelineReleaseItem[]) {
     if (releaseList) {
-      console.log('releaseList MigrationTimelineNavigationItem[]', releaseList);
       const releaseNavigationList: MigrationTimelineNavigationItem[] = this.parseVmReleaseNavigation(releaseList);
       this._baseModel.setSlice({releaseNavigationList});
     }

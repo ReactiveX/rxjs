@@ -1,6 +1,6 @@
 import {Inject} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
-import {distinctUntilChanged, filter, map, tap} from 'rxjs/operators';
+import {distinctUntilChanged, filter, map} from 'rxjs/operators';
 import {LocationService} from '../../shared/location.service';
 import {ClientMigrationTimelineReleaseItem} from './data-access/migration-timeline.interface';
 import {MigrationTimelineService} from './data-access/migration-timeline.service';
@@ -37,7 +37,7 @@ export class MigrationTimelineContainerAdapter extends LocalState<MigrationTimel
     this.connectSlice('releaseList', this.migrationService.migrations$
       .pipe(
         // ensure base sorting by version number before putting it into client state
-        map(a => a.sort(this.compareByVersionNumberAsc))
+        map(a => a.sort(this.compareByReleaseDateAsc))
       ));
 
     // URL state to component state
