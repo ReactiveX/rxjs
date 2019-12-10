@@ -55,6 +55,7 @@ const DEFAULT_LINE_NUMS_COUNT = 10;
     `
 })
 export class CodeComponent implements OnChanges {
+  _defaultDependencies = {rxjs: version};
   ariaLabelCopy = '';
   ariaLabelEdit = '';
 
@@ -79,6 +80,18 @@ export class CodeComponent implements OnChanges {
 
   /** Language to render the code (e.g. javascript, dart, typescript). */
   @Input() language: string;
+
+  _dependencies = this._defaultDependencies;
+  /** dependencies of the code (e.g. javascript, dart, typescript). */
+  @Input() set dependencies(dependencies: { [libName: string]: string }) {
+    if (dependencies && typeof dependencies === 'object') {
+      this._dependencies = {
+        ...this._defaultDependencies,
+        ...dependencies
+      };
+    }
+
+  };
 
   /**
    * Whether to display line numbers:
@@ -107,7 +120,7 @@ export class CodeComponent implements OnChanges {
   @Output() codeFormatted = new EventEmitter<void>();
 
   /** The element in the template that will display the formatted code. */
-  @ViewChild('codeContainer', { static: true }) codeContainer: ElementRef;
+  @ViewChild('codeContainer') codeContainer: ElementRef;
 
   constructor(
     private snackbar: MatSnackBar,
@@ -186,9 +199,7 @@ export class CodeComponent implements OnChanges {
     this.stackblitz.openProject({
       code: this.codeText,
       language: this.language,
-      dependencies: {
-        rxjs: version
-      },
+      dependencies: this._dependencies,
       html: this.getHtmlFromCode(this.codeText)
     });
   }

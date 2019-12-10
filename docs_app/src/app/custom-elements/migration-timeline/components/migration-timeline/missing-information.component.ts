@@ -29,7 +29,7 @@ export class MissingInformationComponent {
         const s = parseMigrationItemUIDURL(p.uid);
         return `https://github.com/ReactiveX/rxjs/issues/new?
 title=[docs] Missing ${o.itemType} information for ${o.subject} in version ${o.version}&
-body=The ID ${s} is not linked to any item of the migration timeline.\nPlease insert the information.&
+body=The ID ${s} is not linked to any item of the migration timeline.\n Please insert the information.&
 template=documentation.md`;
       })
     );

@@ -21,6 +21,7 @@ import { CodeComponent } from './code.component';
     <header *ngIf="header">{{header}}</header>
     <aio-code [ngClass]="classes"
               [language]="language"
+              [dependencies]="dependencies"
               [linenums]="linenums"
               [path]="path"
               [region]="region"
@@ -33,6 +34,8 @@ export class CodeExampleComponent implements AfterViewInit {
   classes: {};
 
   @Input() language: string;
+
+  @Input() dependencies: { [libName: string]: string };
 
   @Input() linenums: string;
 

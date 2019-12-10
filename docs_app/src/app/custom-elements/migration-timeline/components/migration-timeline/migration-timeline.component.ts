@@ -76,10 +76,16 @@ export interface MigrationTimelineComponentViewBaseModel {
                 [deprecation]="deprecation"
                 (selectedMigrationItemUIDChange)="selectedMigrationReleaseUIDChange.next($event)">
               </deprecation-description-table>
-              <code-example [language]="'typescript'" [title]="'Before Deprecation (< v' + release.version + ')'">
+              <code-example
+                [dependencies]="{rxjs: '<' + release.version}"
+                [language]="'typescript'"
+                [title]="'Before Deprecation (< v' + release.version + ')'">
                 {{deprecation.exampleBefore}}
               </code-example>
-              <code-example [language]="'typescript'" [title]="'After Deprecation (>= v' + release.version+ ')'">
+              <code-example
+                [dependencies]="{rxjs: '>=' + release.version + '<=' + deprecation.breakingChangeVersion}"
+                [language]="'typescript'"
+                [title]="'After Deprecation (>= v' + release.version + ')'">
                 {{deprecation.exampleAfter}}
               </code-example>
             </mat-card-content>

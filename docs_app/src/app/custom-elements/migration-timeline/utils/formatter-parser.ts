@@ -93,7 +93,7 @@ export function parseMigrationItemUIDObject(uid: string): MigrationItemSubjectUI
   const subjectAction = subjectActionArr.join('');
   return {
     version: formatSemVerString(releaseItemUID),
-    itemType: itemType === 'deprecation' ? 'breakingChange' : 'deprecation',
+    itemType: itemType === 'deprecation' ? 'deprecation' : 'breakingChange',
     subject,
     subjectApiSymbol: subjectApiSymbol as ApiSymbols,
     subjectAction
