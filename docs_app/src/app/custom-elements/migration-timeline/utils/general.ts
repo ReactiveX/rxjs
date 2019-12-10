@@ -1,6 +1,14 @@
 import {merge, Observable, Subject} from 'rxjs';
 import {mergeAll} from 'rxjs/operators';
 
+
+export function disposeEvent(e: Event) {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+}
+
 export function flattener<T>(): {
   changes$: Observable<T>;
   add: (o: Observable<T>) => void;

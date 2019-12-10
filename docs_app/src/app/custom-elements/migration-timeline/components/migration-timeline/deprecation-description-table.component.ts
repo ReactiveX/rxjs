@@ -2,6 +2,7 @@ import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
 import {ClientDeprecation} from '../../data-access/migration-timeline.interface';
 import {LocalState} from '../../utils/local-state.service';
+import {disposeEvent} from '../../utils/operators';
 
 
 @Component({
@@ -17,8 +18,7 @@ import {LocalState} from '../../utils/local-state.service';
         <th>
           Breaking change in version&nbsp;
           <a class="release-link"
-            (click)="selectedMigrationItemUIDChange.next(vm.deprecation.opponentMigrationItemUID)"
-            [href]="vm.deprecation.opponentMigrationItemUID">
+            (click)="selectedMigrationItemUIDChange.next(vm.deprecation.opponentMigrationItemUID)">
             v{{vm.deprecation.breakingChangeVersion}}
           </a>
           <div class="page-actions">
@@ -61,6 +61,7 @@ export class DeprecationDescriptionTableComponent extends LocalState<{
 }> {
   vm$ = this.select();
 
+  disposeEvent = disposeEvent;
   @Input()
   set deprecation(deprecation: ClientDeprecation) {
     if (deprecation) {

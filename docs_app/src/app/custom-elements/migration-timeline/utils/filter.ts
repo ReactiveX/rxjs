@@ -1,5 +1,5 @@
 import {ClientMigrationTimelineReleaseItem} from '../data-access/migration-timeline.interface';
-import {formatSemVerNumber} from './formatter-parser';
+import {formatSemVerNumber, parseMigrationReleaseUIDFromString} from './formatter-parser';
 
 export function getClosestVersion(version = '') {
   return (rL: ClientMigrationTimelineReleaseItem[]): string => {
@@ -8,7 +8,7 @@ export function getClosestVersion(version = '') {
         if (release.version === version) {
           return true;
         }
-        const currentVersion = formatSemVerNumber(release.version);
+        const currentVersion = release.versionNumber;
         const selectedVersion = formatSemVerNumber(version);
 
         return currentVersion >= selectedVersion;
@@ -19,15 +19,16 @@ export function getClosestVersion(version = '') {
   };
 }
 
-export function getClosestRelease(rL: ClientMigrationTimelineReleaseItem[], selectedVersion = '') {
+export function getClosestRelease(rL: ClientMigrationTimelineReleaseItem[], selectedMigrationTimelineItemUID = '') {
   if (rL) {
+    const selectedVersion = parseMigrationReleaseUIDFromString(selectedMigrationTimelineItemUID);
     const closestRelease = rL.find(release => {
-      console.log('closestRelease', closestRelease);
-      if (release.version === selectedVersion) {
+      const selectedVersionNumber = formatSemVerNumber(selectedVersion);
+      if (release.versionNumber === selectedVersionNumber) {
         return true;
       }
-      const currentVersion = release.version;
-      return currentVersion >= selectedVersion;
+
+      return release.versionNumber >= selectedVersionNumber;
     });
     return closestRelease ? closestRelease : rL[0];
   }

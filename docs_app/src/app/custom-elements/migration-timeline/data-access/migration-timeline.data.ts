@@ -11,8 +11,98 @@ https://github.com/ReactiveX/rxjs/issues/5107
 
 export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   {
+    version: '6.0.0-alpha.3',
+    date: '2018-02-09T17:06:57.961Z',
+    deprecations: [
+      {
+        subject: 'last',
+        subjectApiSymbol: ApiSymbols.argument,
+        subjectAction: 'resultSelector',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3/src/internal/operators/last.ts#L12',
+        breakingChangeVersion: '6.0.0-alpha.4',
+        breakingChangeSubjectAction: 'resultSelector-removed',
+        deprecationMsgCode: getGeneralOperatorResultSelectorHeadlinePhrase('last'),
+        reason: getGeneralStaticResultSelectorReasonPhrase('last'),
+        implication: getResultSelectorGeneralImplication('last'),
+        exampleBefore: `
+        import { last } from 'rxjs/operators';
+        a$
+        .pipe(
+          last(1, (n, i) => n))
+        )
+          .subscribe({next: n => console.log(n)})
+        `,
+        exampleAfter: `
+        import { last, map } from 'rxjs/operators';
+        a$
+        .pipe(
+          last(1),
+          map((n, i) => n))
+        )
+          .subscribe({next: n => console.log(n)});
+        `
+      },
+      {
+        subject: 'first',
+        subjectApiSymbol: ApiSymbols.argument,
+        subjectAction: 'resultSelector',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3/src/internal/operators/first.ts#L18',
+        breakingChangeVersion: '6.0.0-alpha.4',
+        breakingChangeSubjectAction: 'resultSelector-removed',
+        deprecationMsgCode: getGeneralOperatorResultSelectorHeadlinePhrase('first'),
+        reason: getGeneralStaticResultSelectorReasonPhrase('first'),
+        implication: getResultSelectorGeneralImplication('first'),
+        exampleBefore: `
+        import { first } from 'rxjs/operators';
+        a$
+        .pipe(
+          first((n, i) => n))
+        )
+          .subscribe({next: n => console.log(n)})
+        `,
+        exampleAfter: `
+        import { first, map } from 'rxjs/operators';
+        a$
+        .pipe(
+          first(),
+          map((n, i) => n))
+        )
+          .subscribe({next: n => console.log(n)});
+        `
+      }
+    ],
+    breakingChanges: []
+  },
+  {
+    version: '6.0.0-alpha.4',
+    date: '2018-03-13T19:00:55.397Z',
+    deprecations: [],
+    breakingChanges: [
+      {
+        subject: 'last',
+        subjectApiSymbol: ApiSymbols.argument,
+        subjectAction: 'resultSelector-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-alpha.3',
+        deprecationSubjectAction: 'resultSelector',
+        breakingChangeMsg: getResultSelectorGeneralBreakingChangeMsg('last')
+      },
+      {
+        subject: 'first',
+        subjectApiSymbol: ApiSymbols.argument,
+        subjectAction: 'resultSelector-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-alpha.3',
+        deprecationSubjectAction: 'resultSelector',
+        breakingChangeMsg: getResultSelectorGeneralBreakingChangeMsg('first')
+      }
+    ]
+  },
+  {
     version: '6.0.0-beta.4',
-    date: '2018-03-29',
+    date: '2018-03-29T20:15:32.638Z',
     deprecations: [
       {
         subject: 'never',
@@ -90,98 +180,8 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     breakingChanges: [],
   },
   {
-    version: '6.0.0-alpha.3',
-    date: '2018-02-09',
-    deprecations: [
-      {
-        subject: 'last',
-        subjectApiSymbol: ApiSymbols.argument,
-        subjectAction: 'resultSelector',
-        itemType: 'deprecation',
-        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3/src/internal/operators/last.ts#L12',
-        breakingChangeVersion: '6.0.0-alpha.4',
-        breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getGeneralOperatorResultSelectorHeadlinePhrase('last'),
-        reason: getGeneralStaticResultSelectorReasonPhrase('last'),
-        implication: getResultSelectorGeneralImplication('last'),
-        exampleBefore: `
-        import { last } from 'rxjs/operators';
-        a$
-        .pipe(
-          last(1, (n, i) => n))
-        )
-          .subscribe({next: n => console.log(n)})
-        `,
-        exampleAfter: `
-        import { last, map } from 'rxjs/operators';
-        a$
-        .pipe(
-          last(1),
-          map((n, i) => n))
-        )
-          .subscribe({next: n => console.log(n)});
-        `
-      },
-      {
-        subject: 'first',
-        subjectApiSymbol: ApiSymbols.argument,
-        subjectAction: 'resultSelector',
-        itemType: 'deprecation',
-        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3/src/internal/operators/first.ts#L18',
-        breakingChangeVersion: '6.0.0-alpha.4',
-        breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getGeneralOperatorResultSelectorHeadlinePhrase('first'),
-        reason: getGeneralStaticResultSelectorReasonPhrase('first'),
-        implication: getResultSelectorGeneralImplication('first'),
-        exampleBefore: `
-        import { first } from 'rxjs/operators';
-        a$
-        .pipe(
-          first((n, i) => n))
-        )
-          .subscribe({next: n => console.log(n)})
-        `,
-        exampleAfter: `
-        import { first, map } from 'rxjs/operators';
-        a$
-        .pipe(
-          first(),
-          map((n, i) => n))
-        )
-          .subscribe({next: n => console.log(n)});
-        `
-      }
-    ],
-    breakingChanges: []
-  },
-  {
-    version: '6.0.0-alpha.4',
-    date: '2018-03-13',
-    deprecations: [],
-    breakingChanges: [
-      {
-        subject: 'last',
-        subjectApiSymbol: ApiSymbols.argument,
-        subjectAction: 'resultSelector-removed',
-        itemType: 'breakingChange',
-        deprecationVersion: '6.0.0-alpha.3',
-        deprecationSubjectAction: 'resultSelector',
-        breakingChangeMsg: getResultSelectorGeneralBreakingChangeMsg('last')
-      },
-      {
-        subject: 'first',
-        subjectApiSymbol: ApiSymbols.argument,
-        subjectAction: 'resultSelector-removed',
-        itemType: 'breakingChange',
-        deprecationVersion: '6.0.0-alpha.3',
-        deprecationSubjectAction: 'resultSelector',
-        breakingChangeMsg: getResultSelectorGeneralBreakingChangeMsg('first')
-      }
-    ]
-  },
-  {
     version: '6.0.0-rc.0',
-    date: '2018-03-31',
+    date: '2018-03-31T00:12:03.479Z',
     deprecations: [
       {
         subject: 'combineLatest',
@@ -660,8 +660,63 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     breakingChanges: []
   },
   {
+    version: '6.0.0-rc.1',
+    date: '2018-04-07T04:43:35.190Z',
+    deprecations: [
+      {
+        subject: 'Observable',
+        subjectApiSymbol: ApiSymbols.class,
+        subjectAction: 'deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.1/src/internal/Observable.ts#L260',
+        breakingChangeVersion: '7',
+        breakingChangeSubjectAction: 'property-if-removed',
+        deprecationMsgCode: 'renamed - use iif instead',
+        reason: 'As `if` was a prototype method there was no conflict. ' +
+          'After moving to "pipeable" operators `if` now conflicts with reserved names of te language.' +
+          'Therefore it is renamed to `iif` and exposed as static function',
+        implication: '@!TODO',
+        exampleBefore: `
+        import { Observable } from 'rxjs'
+        Observable.if(conditionFunc, a$, b$)
+          .subscribe({next: n => console.log(n)});
+        `,
+        exampleAfter: `
+        import { iif } from 'rxjs'
+        iif(conditionFunc, a$, b$)
+          .subscribe({next: n => console.log(n)});
+        `
+      },
+      {
+        subject: 'Observable',
+        subjectApiSymbol: ApiSymbols.class,
+        subjectAction: 'deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.1/src/internal/Observable.ts#L265',
+        breakingChangeVersion: '7',
+        breakingChangeSubjectAction: 'property-throw-removed',
+        deprecationMsgCode: 'renamed - use throwError instead',
+        reason: 'As `if` was a prototype method there was no conflict. ' +
+          'After moving to "pipeable" operators `throw` now conflicts with reserved names of te language.' +
+          'Therefore it is renamed to `throwError` and exposed as static function',
+        implication: '@!TODO',
+        exampleBefore: `
+        import { Observable } from 'rxjs'
+        Observable.throw(new Error('smooshMap does not exist'))
+          .subscribe({next: n => console.log(n)});
+        `,
+        exampleAfter: `
+        import { throwError } from 'rxjs'
+        throwError(new Error('smooshMap does not exist'))
+          .subscribe({next: n => console.log(n)});
+        `
+      }
+    ],
+    breakingChanges: []
+  },
+  {
     version: '6.0.0-tactical-rc.1',
-    date: '2018-04-07',
+    date: '2018-04-07T05:03:49.629Z',
     deprecations: [
       {
         subject: 'Scheduler',
@@ -728,63 +783,8 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     breakingChanges: []
   },
   {
-    version: '6.0.0-rc.1',
-    date: '2018-04-07',
-    deprecations: [
-      {
-        subject: 'Observable',
-        subjectApiSymbol: ApiSymbols.class,
-        subjectAction: 'deprecated',
-        itemType: 'deprecation',
-        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.1/src/internal/Observable.ts#L260',
-        breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'property-if-removed',
-        deprecationMsgCode: 'renamed - use iif instead',
-        reason: 'As `if` was a prototype method there was no conflict. ' +
-          'After moving to "pipeable" operators `if` now conflicts with reserved names of te language.' +
-          'Therefore it is renamed to `iif` and exposed as static function',
-        implication: '@!TODO',
-        exampleBefore: `
-        import { Observable } from 'rxjs'
-        Observable.if(conditionFunc, a$, b$)
-          .subscribe({next: n => console.log(n)});
-        `,
-        exampleAfter: `
-        import { iif } from 'rxjs'
-        iif(conditionFunc, a$, b$)
-          .subscribe({next: n => console.log(n)});
-        `
-      },
-      {
-        subject: 'Observable',
-        subjectApiSymbol: ApiSymbols.class,
-        subjectAction: 'deprecated',
-        itemType: 'deprecation',
-        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.1/src/internal/Observable.ts#L265',
-        breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'property-throw-removed',
-        deprecationMsgCode: 'renamed - use throwError instead',
-        reason: 'As `if` was a prototype method there was no conflict. ' +
-          'After moving to "pipeable" operators `throw` now conflicts with reserved names of te language.' +
-          'Therefore it is renamed to `throwError` and exposed as static function',
-        implication: '@!TODO',
-        exampleBefore: `
-        import { Observable } from 'rxjs'
-        Observable.throw(new Error('smooshMap does not exist'))
-          .subscribe({next: n => console.log(n)});
-        `,
-        exampleAfter: `
-        import { throwError } from 'rxjs'
-        throwError(new Error('smooshMap does not exist'))
-          .subscribe({next: n => console.log(n)});
-        `
-      }
-    ],
-    breakingChanges: []
-  },
-  {
     version: '6.2.0',
-    date: '2018-05-22',
+    date: '2018-05-22T04:52:34.571Z',
     deprecations: [
       {
         subject: 'race',
@@ -825,7 +825,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   },
   {
     version: '6.3.0',
-    date: '2018-08-30',
+    date: '2018-08-30T14:49:17.765Z',
     deprecations: [
       {
         subject: 'ObservableLike',
@@ -853,7 +853,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   },
   {
     version: '6.4.0',
-    date: '2019-01-30',
+    date: '2019-01-30T03:50:24.313Z',
     deprecations: [
       {
         subject: 'Observable',
@@ -1118,7 +1118,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   },
   {
     version: '6.5.0',
-    date: '2019-04-23',
+    date: '2019-04-23T02:55:47.108Z',
     deprecations: [
       {
         subject: 'from',
@@ -1304,7 +1304,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   },
   {
     version: '6.5.1',
-    date: '2019-04-23',
+    date: '2019-04-23T03:39:56.746Z',
     deprecations: [
       {
         subject: 'NotificationKind',
@@ -1331,7 +1331,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   },
   {
     version: '7.0.0-alpha.0',
-    date: '2019-09-18',
+    date: '2019-09-18T14:02:25.345Z',
     deprecations: [
       {
         subject: 'concat',
@@ -1557,7 +1557,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   },
   {
     version: '7.0.0-test.99',
-    date: '2019-11-18',
+    date: '2019-12-18T14:02:25.345Z',
     deprecations: [
       {
         subject: 'TestScheduler',
@@ -1587,10 +1587,19 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     ]
   },
   {
-    version: '8.0.0-alpha.0',
-    date: '2020-02-20',
+    version: '8.0.0',
+    date: '2020-12-24T12:12:12.800Z',
     deprecations: [],
     breakingChanges: [
+      {
+        subject: 'ObservableLike',
+        subjectApiSymbol: ApiSymbols.interface,
+        subjectAction: 'removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.3.0',
+        deprecationSubjectAction: 'deprecated',
+        breakingChangeMsg: getGeneralSchedulerArgumentBreakingChangePhrase()
+      },
       {
         subject: 'concat',
         subjectApiSymbol: ApiSymbols.argument,

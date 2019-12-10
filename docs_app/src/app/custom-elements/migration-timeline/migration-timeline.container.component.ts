@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
+import {merge, Observable, Subject} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {LocationService} from '../../shared/location.service';
 import {ClientMigrationTimelineReleaseItem} from './data-access/migration-timeline.interface';
 import {MigrationTimelineContainerAdapter} from './migration-timeline.container.adapter';
-import {parseMigrationReleaseUID} from './utils/formatter-parser';
+import {parseMigrationReleaseUIDFromString} from './utils/formatter-parser';
 import {LocalState} from './utils/local-state.service';
 
 export interface MigrationTimelineContainerModelFromRemoteSources {
@@ -50,37 +50,38 @@ export interface MigrationTimelineContainerModelFromRemoteSources {
     </ul>
     <h2>Supported Versions</h2>
     <ng-container *ngIf="baseModel$ | async as m">
-      {{(selectedMigrationReleaseUID$ | async | json)}}
-        releaseList :{{m.releaseList.length}}
-        <!--
-        <section>
-          {{m.filter}}<br>
-          {{m.releaseNavigation}}
-          <filter-form
-            [releaseList]="m.releaseNavigation"
-            (filterChange)="va.setSlice({filter: $event})">
-          </filter-form>
-        </section>
-        -->
-        <section>
-          <release-navigation
-            [selectedMigrationReleaseUID]="(selectedMigrationReleaseUID$ | async)"
+      selectedMigrationReleaseUID$: {{selectedMigrationReleaseUID$ | async | json}}<br/>
+      selectedMigrationItemUID: {{m.selectedMigrationItemUID | json}}<br/>
+      m.releaseList.length :{{m.releaseList.length}}
+      <!--
+      <section>
+        {{m.filter}}<br>
+        {{m.releaseNavigation}}
+        <filter-form
+          [releaseList]="m.releaseNavigation"
+          (filterChange)="va.setSlice({filter: $event})">
+        </filter-form>
+      </section>
+      -->
+      <section>
+        <release-navigation
+          [selectedMigrationReleaseUID]="(selectedMigrationReleaseUID$ | async)"
+          [releaseList]="m.releaseList"
+          (selectedMigrationReleaseUIDChange)="selectedMigrationReleaseUIDChange.next($event)">
+        </release-navigation>
+      </section>
+      <h2>Timeline</h2>
+      <section class="grid-fluid">
+        <div class="release-group">
+          <rxjs-migration-timeline
             [releaseList]="m.releaseList"
+            [selectedMigrationItemUID]="m.selectedMigrationItemUID"
+            (selectedMigrationItemUIDChange)="selectedMigrationItemUIDChange.next($event)"
             (selectedMigrationReleaseUIDChange)="selectedMigrationReleaseUIDChange.next($event)">
-          </release-navigation>
-        </section>
-        <h2>Timeline</h2>
-        <section class="grid-fluid">
-          <div class="release-group">
-            <rxjs-migration-timeline
-              [releaseList]="m.releaseList"
-              [selectedMigrationItemUID]="(selectedMigrationReleaseUID$ | async)"
-              (selectedMigrationItemUIDChange)="selectedMigrationItemUIDChange.next($event)"
-              (selectedMigrationReleaseUIDChange)="selectedMigrationReleaseUIDChange.next($event)">
-            </rxjs-migration-timeline>
-          </div>
-        </section>
-      </ng-container>
+          </rxjs-migration-timeline>
+        </div>
+      </section>
+    </ng-container>
     <msg-format-decision-helper></msg-format-decision-helper>
   `,
   providers: [LocalState, MigrationTimelineContainerAdapter]
@@ -92,7 +93,7 @@ export class MigrationTimelineContainerComponent {
   baseModel$: Observable<MigrationTimelineContainerModelFromRemoteSources> = this._baseModel.select();
   // Derivations from normalized model
   selectedMigrationReleaseUID$ = this._baseModel.select(
-    map(s => parseMigrationReleaseUID(s.selectedMigrationItemUID)),
+    map(s => parseMigrationReleaseUIDFromString(s.selectedMigrationItemUID)),
   );
   // ## UI Interactions
   selectedMigrationItemUIDChange = new Subject<string>();
@@ -108,20 +109,19 @@ export class MigrationTimelineContainerComponent {
 
     // Routing
     this._baseModel.connectEffect(
-      this.selectedMigrationReleaseUIDChange.pipe(
-        tap(v => console.log('navigate to', v)),
-        tap(version => this.setMigrationTimelineSelection(version))
-      ));
+      merge(
+        this.selectedMigrationReleaseUIDChange,
+        this.selectedMigrationItemUIDChange
+      )
+      .pipe(tap(uid => this.setMigrationTimelineSelection(uid)))
+    );
 
   }
 
 
   private setMigrationTimelineSelection(uid: string) {
-    const params = {
-      uid: uid ? uid : undefined
-    };
-
-    this._locationService.setSearch('API Search', params);
+    const params = {uid: uid ? uid : undefined};
+    this._locationService.setSearch('Migration Timeline', params);
   }
 
 

@@ -1,6 +1,8 @@
 import {Injectable, OnDestroy} from '@angular/core';
-import {ConnectableObservable, merge, noop, Observable, OperatorFunction, pipe, Subject, Subscription, UnaryFunction} from 'rxjs';
-import {distinctUntilChanged, filter, map, mergeAll, publishReplay, scan, shareReplay} from 'rxjs/operators';
+import {ConnectableObservable, merge, noop, Observable, OperatorFunction,
+  pipe, queueScheduler, Subject, Subscription, UnaryFunction} from 'rxjs';
+import {distinctUntilChanged, filter, map, mergeAll, observeOn,
+  publishReplay, scan, shareReplay} from 'rxjs/operators';
 
 /** RxJS INTERNAL */
 function pipeFromArray<T, R>(fns: Array<UnaryFunction<T, R>>): UnaryFunction<T, R> {
@@ -79,8 +81,8 @@ export class LocalState<T> implements OnDestroy {
 
   // tslint:disable-next-line:member-ordering
   private _state$ = merge(
-    this._stateObservables.pipe(mergeAll()),
-    this._stateSlices
+    this._stateObservables.pipe(mergeAll(), observeOn(queueScheduler)),
+    this._stateSlices.pipe(observeOn(queueScheduler))
   ).pipe(
     scan(this.stateAccumulator, {} as T),
     publishReplay(1)

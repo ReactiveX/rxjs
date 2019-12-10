@@ -59,7 +59,7 @@ export class MigrationTimelineService extends LocalState<MigrationTimelineState>
         .map(this._parseToMigrationItemUIDAware(r.version)),
       breakingChanges: r.breakingChanges
         .map(this._parseToMigrationItemUIDAware(r.version)),
-    };
+    } as ClientMigrationTimelineReleaseItem;
   }
 
   private _parseToMigrationItemUIDAware<T>(version: string) {

@@ -35,7 +35,7 @@ export interface MigrationTimelineComponentViewBaseModel {
         class="release"
         *ngFor="let release of vm.releaseList"
         [ngClass]="{'selected': vm.selectedMigrationReleaseUID === release.version}"
-        [expanded]="(vm.selectedMigrationItemUID)[release.version]">
+        [expanded]="(vm.expandedRelease)[release.version]">
         <mat-expansion-panel-header class="header">
           <mat-panel-title
             class="migration-timeline-item-header-title"
