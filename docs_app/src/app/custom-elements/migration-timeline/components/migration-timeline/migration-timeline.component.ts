@@ -83,7 +83,7 @@ export interface MigrationTimelineComponentViewBaseModel {
                 {{deprecation.exampleBefore}}
               </code-example>
               <code-example
-                [dependencies]="{rxjs: '>=' + release.version + '<=' + deprecation.breakingChangeVersion}"
+                [dependencies]="{rxjs: '>=' + release.version + ' <=' + deprecation.breakingChangeVersion}"
                 [language]="'typescript'"
                 [title]="'After Deprecation (>= v' + release.version + ')'">
                 {{deprecation.exampleAfter}}

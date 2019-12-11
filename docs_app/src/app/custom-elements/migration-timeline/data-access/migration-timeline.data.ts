@@ -110,7 +110,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         subjectAction: 'deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-beta.4/src/internal/observable/never.ts#L30',
-        breakingChangeVersion: '7',
+        breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'removed',
         deprecationMsgCode: 'use the NEVER constant instead',
         reason: 'Deprecated because it is more efficient?',
@@ -1370,7 +1370,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'generic-removed',
         deprecationMsgCode: 'do not use generic arguments directly, allow inference or assert with `as`',
-        reason:  '@TODO',
+        reason: '@TODO',
         implication: '@!TODO',
         exampleBefore: `
         import { of, asyncScheduler } from 'rxjs';
@@ -1414,7 +1414,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'scheduler-removed',
         deprecationMsgCode: getStaticGeneralSchedulerArgumentDeprecationPhrase('merge'),
-        reason:  getSchedulerArgumentGeneralReason(),
+        reason: getSchedulerArgumentGeneralReason(),
         implication: '@!TODO',
         exampleBefore: `
         import { merge, asyncScheduler } from 'rxjs';
@@ -1439,7 +1439,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'scheduler-removed',
         deprecationMsgCode: getStaticGeneralSchedulerArgumentDeprecationPhrase('concatAll'),
-        reason:  getSchedulerArgumentGeneralReason(),
+        reason: getSchedulerArgumentGeneralReason(),
         implication: '@!TODO',
         exampleBefore: `
         import { asyncScheduler } from 'rxjs';
@@ -1472,7 +1472,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'scheduler-removed',
         deprecationMsgCode: getStaticGeneralSchedulerArgumentDeprecationPhrase('concatAll'),
-        reason:  getSchedulerArgumentGeneralReason(),
+        reason: getSchedulerArgumentGeneralReason(),
         implication: '@!TODO',
         exampleBefore: `
         import { asyncScheduler } from 'rxjs';
@@ -1592,6 +1592,15 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     deprecations: [],
     breakingChanges: [
       {
+        subject: 'never',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-beta.4',
+        deprecationSubjectAction: 'deprecated',
+        breakingChangeMsg: 'never is removed in favour of NEVER'
+      },
+      {
         subject: 'ObservableLike',
         subjectApiSymbol: ApiSymbols.interface,
         subjectAction: 'removed',
@@ -1690,12 +1699,15 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
 function getStaticGeneralSchedulerArgumentDeprecationPhrase(operatorName: string) {
   return `use scheduled and ${operatorName} instead of passing a scheduler`;
 }
+
 function getOperatorGeneralSchedulerArgumentDeprecationPhrase() {
   return `use subscribeOn and/or observeOn instead of passing a scheduler`;
 }
+
 function getGeneralSchedulerArgumentBreakingChangePhrase() {
   return `scheduler argument removed`;
 }
+
 function getSchedulerArgumentGeneralReason(): string {
   return `The scheduler argument rather will be used only where appropriate.
           A lot of operators include optional scheduler parameters,
@@ -1717,6 +1729,7 @@ function getOperatorSchedulerGeneralImplication(opr: string): string {
 function getGeneralFlatteningHeadlinePhrase(operatorName: string): string {
   return `use the static ${operatorName} instead`;
 }
+
 // Info from: https://github.com/ReactiveX/rxjs/issues/3927
 function getGeneralFlatteningReasonPhrase(operatorName: string): string {
   return `As \`${operatorName}\` operator is a name duplicate of the static
@@ -1740,11 +1753,13 @@ function getResultSelectorGeneralImplication(opr: string): string {
 function getGeneralStaticResultSelectorHeadlinePhrase(operatorName: string): string {
   return `use the map operator instead of a result selector`;
 }
+
 function getGeneralStaticResultSelectorReasonPhrase(operatorName: string): string {
   return `By removing the result selector from \`${operatorName}\` we get a smaller bundle since of the operator.
           Further the resultSelector was not that often used and the
           refactoring to use and internal \`map\` operation instead is a minor code change.`;
 }
+
 // Operator
 function getGeneralOperatorResultSelectorHeadlinePhrase(operatorName: string): string {
   return `use the map operator, on the inner observable, instead of a result selector`;
