@@ -90,8 +90,8 @@ import { SubscribableOrPromise } from '../types';
  * @static true
  * @name iif
  * @owner Observable
- */
-export function iif<T, F>(
+*/
+export function iif<T = never, F = never>(
   condition: () => boolean,
   trueResult: SubscribableOrPromise<T> = EMPTY,
   falseResult: SubscribableOrPromise<F> = EMPTY
