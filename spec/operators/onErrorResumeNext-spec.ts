@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { onErrorResumeNext, takeWhile } from 'rxjs/operators';
 import { concat, defer, throwError, of } from 'rxjs';
+import { asInteropObservable } from '../helpers/interop-helper';
 
 declare function asDiagram(arg: string): Function;
 
@@ -127,6 +128,23 @@ describe('onErrorResumeNext operator', () => {
     ).subscribe(() => { /* noop */ });
 
     expect(sideEffects).to.deep.equal([1, 2]);
+  });
+
+  it('should unsubscribe from an interop observble upon explicit unsubscription', () => {
+    const source =  hot('--a--b--#');
+    const next   = cold(        '--c--d--');
+    const nextSubs =    '        ^   !';
+    const subs =        '^           !';
+    const expected =    '--a--b----c--';
+
+    // This test manipulates the observable to make it look like an interop
+    // observable - an observable from a foreign library. Interop subscribers
+    // are treated differently: they are wrapped in a safe subscriber. This
+    // test ensures that unsubscriptions are chained all the way to the
+    // interop subscriber.
+
+    expectObservable(source.pipe(onErrorResumeNext(asInteropObservable(next))), subs).toBe(expected);
+    expectSubscriptions(next.subscriptions).toBe(nextSubs);
   });
 
   it('should work with promise', (done: MochaDone) => {

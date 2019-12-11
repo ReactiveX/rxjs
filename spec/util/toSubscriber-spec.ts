@@ -12,7 +12,7 @@ describe('toSubscriber', () => {
     expect(sub2.closed).to.be.true;
   });
 
-it('should not be closed when other subscriber created with same observer instance completes', () => {
+  it('should not be closed when other subscriber created with same observer instance completes', () => {
     let observer = {
       next: function () { /*noop*/ }
     };
