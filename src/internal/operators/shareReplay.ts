@@ -1,18 +1,18 @@
 import { Observable } from '../Observable';
 import { ReplaySubject } from '../ReplaySubject';
 import { Subscription } from '../Subscription';
-import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
+import { MonoTypeOperatorFunction, ISchedulerLike } from '../types';
 import { Subscriber } from '../Subscriber';
 
 export interface ShareReplayConfig {
   bufferSize?: number;
   windowTime?: number;
   refCount: boolean;
-  scheduler?: SchedulerLike;
+  scheduler?: ISchedulerLike;
 }
 
 export function shareReplay<T>(config: ShareReplayConfig): MonoTypeOperatorFunction<T>;
-export function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+export function shareReplay<T>(bufferSize?: number, windowTime?: number, scheduler?: ISchedulerLike): MonoTypeOperatorFunction<T>;
 
 /**
  * Share source and replay specified number of emissions on subscription.
@@ -127,7 +127,7 @@ export function shareReplay<T>(bufferSize?: number, windowTime?: number, schedul
 export function shareReplay<T>(
   configOrBufferSize?: ShareReplayConfig | number,
   windowTime?: number,
-  scheduler?: SchedulerLike
+  scheduler?: ISchedulerLike
 ): MonoTypeOperatorFunction<T> {
   let config: ShareReplayConfig;
   if (configOrBufferSize && typeof configOrBufferSize === 'object') {

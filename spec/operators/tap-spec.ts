@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { tap, mergeMap } from 'rxjs/operators';
-import { Subject, of, throwError, Observer, EMPTY } from 'rxjs';
+import { Subject, of, throwError, EMPTY } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare function asDiagram(arg: string): Function;
@@ -47,7 +47,7 @@ describe('tap operator', () => {
     const results: number[] = [];
 
     of(1, 2, 3).pipe(
-      tap(<Observer<number>>{
+      tap({
         next: (x: number) => {
           results.push(x);
         },

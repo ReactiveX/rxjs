@@ -2,7 +2,8 @@ import { expect } from 'chai';
 import { expand, mergeMap, map } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { Subscribable, EMPTY, Observable, of, Observer } from 'rxjs';
+import { ISubscribable, EMPTY, Observable, of, IObserver, ISubscriber } from 'rxjs';
+import { IPartialObserver } from 'dist/types';
 
 declare function asDiagram(arg: string): Function;
 declare const type: Function;
@@ -363,22 +364,26 @@ describe('expand operator', () => {
 
   it('should recursively flatten lowercase-o observables', (done) => {
     const expected = [1, 2, 4, 8, 16];
-    const project = (x: number, index: number): Subscribable<number> => {
+    const project = (x: number, index: number) => {
       if (x === 16) {
-        return <any>EMPTY;
+        return EMPTY as Observable<number>;
       }
 
       const ish = {
-        subscribe: (observer: Observer<number>) => {
+        subscribe(observer: IPartialObserver<number>) {
           observer.next(x + x);
           observer.complete();
+          return {
+            unsubscribe() { /* noop */ }
+          };
         }
       };
 
       ish[Symbol.observable] = function () {
         return this;
       };
-      return <Subscribable<number>> ish;
+
+      return ish as any;
     };
 
     of(1).pipe(

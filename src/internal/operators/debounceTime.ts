@@ -3,7 +3,7 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { async } from '../scheduler/async';
-import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, ISchedulerLike, TeardownLogic } from '../types';
 
 /**
  * Emits a notification from the source Observable only after a particular time span
@@ -56,7 +56,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * unit determined internally by the optional `scheduler`) for the window of
  * time required to wait for emission silence before emitting the most recent
  * source value.
- * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
+ * @param {ISchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
  * managing the timers that handle the timeout for each value.
  * @return {Observable} An Observable that delays the emissions of the source
  * Observable by the specified `dueTime`, and may drop some values if they occur
@@ -64,12 +64,12 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * @method debounceTime
  * @owner Observable
  */
-export function debounceTime<T>(dueTime: number, scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
+export function debounceTime<T>(dueTime: number, scheduler: ISchedulerLike = async): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new DebounceTimeOperator(dueTime, scheduler));
 }
 
 class DebounceTimeOperator<T> implements Operator<T, T> {
-  constructor(private dueTime: number, private scheduler: SchedulerLike) {
+  constructor(private dueTime: number, private scheduler: ISchedulerLike) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -89,7 +89,7 @@ class DebounceTimeSubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<T>,
               private dueTime: number,
-              private scheduler: SchedulerLike) {
+              private scheduler: ISchedulerLike) {
     super(destination);
   }
 

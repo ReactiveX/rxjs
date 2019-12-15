@@ -4,6 +4,7 @@ import { isArray } from '../util/isArray';
 import { map } from '../operators/map';
 import { isObject } from '../util/isObject';
 import { from } from './from';
+import { Subscription } from '../Subscription';
 
 /* tslint:disable:max-line-length */
 
@@ -166,37 +167,40 @@ export function forkJoin(
 function forkJoinInternal(sources: ObservableInput<any>[], keys: string[] | null): Observable<any> {
   return new Observable(subscriber => {
     const len = sources.length;
+    let subscription: Subscription;
     if (len === 0) {
       subscriber.complete();
-      return;
-    }
-    const values = new Array(len);
-    let completed = 0;
-    let emitted = 0;
-    for (let i = 0; i < len; i++) {
-      const source = from(sources[i]);
-      let hasValue = false;
-      subscriber.add(source.subscribe({
-        next: value => {
-          if (!hasValue) {
-            hasValue = true;
-            emitted++;
-          }
-          values[i] = value;
-        },
-        error: err => subscriber.error(err),
-        complete: () => {
-          completed++;
-          if (completed === len || !hasValue) {
-            if (emitted === len) {
-              subscriber.next(keys ?
-                keys.reduce((result, key, i) => (result[key] = values[i], result), {}) :
-                values);
+    } else {
+      const values = new Array(len);
+      let completed = 0;
+      let emitted = 0;
+      subscription = new Subscription();
+      for (let i = 0; i < len; i++) {
+        const source = from(sources[i]);
+        let hasValue = false;
+        subscription.add(source.subscribe({
+          next: value => {
+            if (!hasValue) {
+              hasValue = true;
+              emitted++;
             }
-            subscriber.complete();
+            values[i] = value;
+          },
+          error: err => subscriber.error(err),
+          complete: () => {
+            completed++;
+            if (completed === len || !hasValue) {
+              if (emitted === len) {
+                subscriber.next(keys ?
+                  keys.reduce((result, key, i) => (result[key] = values[i], result), {}) :
+                  values);
+              }
+              subscriber.complete();
+            }
           }
-        }
-      }));
+        }));
+      }
     }
+    return subscription;
   });
 }

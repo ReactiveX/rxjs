@@ -1,6 +1,6 @@
 import { Observable } from '../Observable';
 import { async } from '../scheduler/async';
-import { SchedulerAction, SchedulerLike } from '../types';
+import { ISchedulerAction, ISchedulerLike, ISubscriber } from '../types';
 import { isNumeric } from '../util/isNumeric';
 import { Subscriber } from '../Subscriber';
 
@@ -44,7 +44,7 @@ import { Subscriber } from '../Subscriber';
  *
  * @param {number} [period=0] The interval size in milliseconds (by default)
  * or the time unit determined by the scheduler's clock.
- * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for scheduling
+ * @param {ISchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for scheduling
  * the emission of values, and providing a notion of "time".
  * @return {Observable} An Observable that emits a sequential number each time
  * interval.
@@ -53,7 +53,7 @@ import { Subscriber } from '../Subscriber';
  * @owner Observable
  */
 export function interval(period = 0,
-                         scheduler: SchedulerLike = async): Observable<number> {
+                         scheduler: ISchedulerLike = async): Observable<number> {
   if (!isNumeric(period) || period < 0) {
     period = 0;
   }
@@ -63,21 +63,25 @@ export function interval(period = 0,
   }
 
   return new Observable<number>(subscriber => {
-    subscriber.add(
+    // TODO(benlesh): Figure out why we're not just returning the result of `scheduler.schedule` here.
+    // Not sure what the trickery is about. :\
+
+    // Below relies on an implemenation detail that Subscriber is also the subscription.
+    (subscriber as any).add(
       scheduler.schedule(dispatch, period, { subscriber, counter: 0, period })
     );
-    return subscriber;
+    return subscriber as any;
   });
 }
 
-function dispatch(this: SchedulerAction<IntervalState>, state: IntervalState) {
+function dispatch(this: ISchedulerAction<IntervalState>, state: IntervalState) {
   const { subscriber, counter, period } = state;
   subscriber.next(counter);
   this.schedule({ subscriber, counter: counter + 1, period }, period);
 }
 
 interface IntervalState {
-  subscriber: Subscriber<number>;
+  subscriber: ISubscriber<number>;
   counter: number;
   period: number;
 }

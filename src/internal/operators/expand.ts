@@ -5,11 +5,11 @@ import { Subscription } from '../Subscription';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
-import { MonoTypeOperatorFunction, OperatorFunction, ObservableInput, SchedulerLike } from '../types';
+import { MonoTypeOperatorFunction, OperatorFunction, ObservableInput, ISchedulerLike } from '../types';
 
 /* tslint:disable:max-line-length */
-export function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>, concurrent?: number, scheduler?: SchedulerLike): OperatorFunction<T, R>;
-export function expand<T>(project: (value: T, index: number) => ObservableInput<T>, concurrent?: number, scheduler?: SchedulerLike): MonoTypeOperatorFunction<T>;
+export function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>, concurrent?: number, scheduler?: ISchedulerLike): OperatorFunction<T, R>;
+export function expand<T>(project: (value: T, index: number) => ObservableInput<T>, concurrent?: number, scheduler?: ISchedulerLike): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -55,7 +55,7 @@ export function expand<T>(project: (value: T, index: number) => ObservableInput<
  * returns an Observable.
  * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
  * Observables being subscribed to concurrently.
- * @param {SchedulerLike} [scheduler=null] The {@link SchedulerLike} to use for subscribing to
+ * @param {ISchedulerLike} [scheduler=null] The {@link SchedulerLike} to use for subscribing to
  * each projected inner Observable.
  * @return {Observable} An Observable that emits the source values and also
  * result of applying the projection function to each value emitted on the
@@ -66,7 +66,7 @@ export function expand<T>(project: (value: T, index: number) => ObservableInput<
  */
 export function expand<T, R>(project: (value: T, index: number) => ObservableInput<R>,
                              concurrent: number = Number.POSITIVE_INFINITY,
-                             scheduler: SchedulerLike = undefined): OperatorFunction<T, R> {
+                             scheduler: ISchedulerLike = undefined): OperatorFunction<T, R> {
   concurrent = (concurrent || 0) < 1 ? Number.POSITIVE_INFINITY : concurrent;
 
   return (source: Observable<T>) => source.lift(new ExpandOperator(project, concurrent, scheduler));
@@ -75,7 +75,7 @@ export function expand<T, R>(project: (value: T, index: number) => ObservableInp
 export class ExpandOperator<T, R> implements Operator<T, R> {
   constructor(private project: (value: T, index: number) => ObservableInput<R>,
               private concurrent: number,
-              private scheduler: SchedulerLike) {
+              private scheduler: ISchedulerLike) {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {
@@ -104,7 +104,7 @@ export class ExpandSubscriber<T, R> extends OuterSubscriber<T, R> {
   constructor(destination: Subscriber<R>,
               private project: (value: T, index: number) => ObservableInput<R>,
               private concurrent: number,
-              private scheduler: SchedulerLike) {
+              private scheduler: ISchedulerLike) {
     super(destination);
     if (concurrent < Number.POSITIVE_INFINITY) {
       this.buffer = [];

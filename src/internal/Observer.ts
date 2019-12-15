@@ -1,10 +1,10 @@
-import { Observer } from './types';
+import { ISubscriber } from './types';
 import { config } from './config';
 import { hostReportError } from './util/hostReportError';
 
-export const empty: Observer<any> = {
+export const EMPTY_OBSERVER: ISubscriber<any> = {
   closed: true,
-  next(value: any): void { /* noop */},
+  next(): void { /* noop */},
   error(err: any): void {
     if (config.useDeprecatedSynchronousErrorHandling) {
       throw err;

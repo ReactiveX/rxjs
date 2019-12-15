@@ -1,4 +1,4 @@
-import { SchedulerLike, SchedulerAction } from '../types';
+import { ISchedulerLike, ISchedulerAction } from '../types';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { Observable } from '../Observable';
@@ -17,19 +17,19 @@ export interface DispatchArg<T> {
  */
 export class SubscribeOnObservable<T> extends Observable<T> {
   /** @nocollapse */
-  static create<T>(source: Observable<T>, delay: number = 0, scheduler: SchedulerLike = asap): Observable<T> {
+  static create<T>(source: Observable<T>, delay: number = 0, scheduler: ISchedulerLike = asap): Observable<T> {
     return new SubscribeOnObservable(source, delay, scheduler);
   }
 
   /** @nocollapse */
-  static dispatch<T>(this: SchedulerAction<T>, arg: DispatchArg<T>): Subscription {
+  static dispatch<T>(this: ISchedulerAction<T>, arg: DispatchArg<T>): Subscription {
     const { source, subscriber } = arg;
     return this.add(source.subscribe(subscriber));
   }
 
   constructor(public source: Observable<T>,
               private delayTime: number = 0,
-              private scheduler: SchedulerLike = asap) {
+              private scheduler: ISchedulerLike = asap) {
     super();
     if (!isNumeric(delayTime) || delayTime < 0) {
       this.delayTime = 0;

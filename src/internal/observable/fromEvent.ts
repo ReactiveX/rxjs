@@ -4,8 +4,6 @@ import { isFunction } from '../util/isFunction';
 import { Subscriber } from '../Subscriber';
 import { map } from '../operators/map';
 
-const toString: Function = (() => Object.prototype.toString)();
-
 export interface NodeStyleEventEmitter {
   addListener: (eventName: string | symbol, handler: NodeEventHandler) => this;
   removeListener: (eventName: string | symbol, handler: NodeEventHandler) => this;
@@ -201,7 +199,8 @@ export function fromEvent<T>(
         subscriber.next(e);
       }
     }
-    setupSubscription(target, eventName, handler, subscriber, options as EventListenerOptions);
+    // The relies on an implemenation detail that Subscriber is also a Subscription
+    setupSubscription(target, eventName, handler, subscriber as any, options as EventListenerOptions);
   });
 }
 

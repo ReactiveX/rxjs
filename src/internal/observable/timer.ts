@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { SchedulerAction, SchedulerLike } from '../types';
+import { ISchedulerAction, ISchedulerLike, ISubscriber } from '../types';
 import { async } from '../scheduler/async';
 import { isNumeric } from '../util/isNumeric';
 import { isScheduler } from '../util/isScheduler';
@@ -44,9 +44,9 @@ import { Subscriber } from '../Subscriber';
  *
  * @param {number|Date} [dueTime] The initial delay time specified as a Date object or as an integer denoting
  * milliseconds to wait before emitting the first value of `0`.
- * @param {number|SchedulerLike} [periodOrScheduler] The period of time between emissions of the
+ * @param {number|ISchedulerLike} [periodOrScheduler] The period of time between emissions of the
  * subsequent numbers.
- * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for scheduling
+ * @param {ISchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for scheduling
  * the emission of values, and providing a notion of "time".
  * @return {Observable} An Observable that emits a `0` after the
  * `dueTime` and ever increasing numbers after each `period` of time
@@ -56,8 +56,8 @@ import { Subscriber } from '../Subscriber';
  * @owner Observable
  */
 export function timer(dueTime: number | Date = 0,
-                      periodOrScheduler?: number | SchedulerLike,
-                      scheduler?: SchedulerLike): Observable<number> {
+                      periodOrScheduler?: number | ISchedulerLike,
+                      scheduler?: ISchedulerLike): Observable<number> {
   let period = -1;
   if (isNumeric(periodOrScheduler)) {
     period = Number(periodOrScheduler) < 1 && 1 || Number(periodOrScheduler);
@@ -83,10 +83,10 @@ export function timer(dueTime: number | Date = 0,
 interface TimerState {
   index: number;
   period: number;
-  subscriber: Subscriber<number>;
+  subscriber: ISubscriber<number>;
 }
 
-function dispatch(this: SchedulerAction<TimerState>, state: TimerState) {
+function dispatch(this: ISchedulerAction<TimerState>, state: TimerState) {
   const { index, period, subscriber } = state;
   subscriber.next(index);
 

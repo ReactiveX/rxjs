@@ -4,12 +4,12 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { isScheduler } from '../util/isScheduler';
-import { OperatorFunction, SchedulerAction, SchedulerLike } from '../types';
+import { OperatorFunction, ISchedulerAction, ISchedulerLike } from '../types';
 
 /* tslint:disable:max-line-length */
-export function bufferTime<T>(bufferTimeSpan: number, scheduler?: SchedulerLike): OperatorFunction<T, T[]>;
-export function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: number | null | undefined, scheduler?: SchedulerLike): OperatorFunction<T, T[]>;
-export function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: number | null | undefined, maxBufferSize: number, scheduler?: SchedulerLike): OperatorFunction<T, T[]>;
+export function bufferTime<T>(bufferTimeSpan: number, scheduler?: ISchedulerLike): OperatorFunction<T, T[]>;
+export function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: number | null | undefined, scheduler?: ISchedulerLike): OperatorFunction<T, T[]>;
+export function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: number | null | undefined, maxBufferSize: number, scheduler?: ISchedulerLike): OperatorFunction<T, T[]>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -63,7 +63,7 @@ export function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: nu
  * @param {number} [bufferCreationInterval] The interval at which to start new
  * buffers.
  * @param {number} [maxBufferSize] The maximum buffer size.
- * @param {SchedulerLike} [scheduler=async] The scheduler on which to schedule the
+ * @param {ISchedulerLike} [scheduler=async] The scheduler on which to schedule the
  * intervals that determine buffer boundaries.
  * @return {Observable<T[]>} An observable of arrays of buffered values.
  * @method bufferTime
@@ -72,7 +72,7 @@ export function bufferTime<T>(bufferTimeSpan: number, bufferCreationInterval: nu
 export function bufferTime<T>(bufferTimeSpan: number): OperatorFunction<T, T[]> {
   let length: number = arguments.length;
 
-  let scheduler: SchedulerLike = async;
+  let scheduler: ISchedulerLike = async;
   if (isScheduler(arguments[arguments.length - 1])) {
     scheduler = arguments[arguments.length - 1];
     length--;
@@ -97,7 +97,7 @@ class BufferTimeOperator<T> implements Operator<T, T[]> {
   constructor(private bufferTimeSpan: number,
               private bufferCreationInterval: number,
               private maxBufferSize: number,
-              private scheduler: SchedulerLike) {
+              private scheduler: ISchedulerLike) {
   }
 
   call(subscriber: Subscriber<T[]>, source: any): any {
@@ -116,7 +116,7 @@ interface DispatchCreateArg<T> {
   bufferTimeSpan: number;
   bufferCreationInterval: number;
   subscriber: BufferTimeSubscriber<T>;
-  scheduler: SchedulerLike;
+  scheduler: ISchedulerLike;
 }
 
 interface DispatchCloseArg<T> {
@@ -137,7 +137,7 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
               private bufferTimeSpan: number,
               private bufferCreationInterval: number,
               private maxBufferSize: number,
-              private scheduler: SchedulerLike) {
+              private scheduler: ISchedulerLike) {
     super(destination);
     const context = this.openContext();
     this.timespanOnly = bufferCreationInterval == null || bufferCreationInterval < 0;
@@ -220,7 +220,7 @@ class BufferTimeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function dispatchBufferTimeSpanOnly(this: SchedulerAction<any>, state: any) {
+function dispatchBufferTimeSpanOnly(this: ISchedulerAction<any>, state: any) {
   const subscriber: BufferTimeSubscriber<any> = state.subscriber;
 
   const prevContext = state.context;
@@ -234,10 +234,10 @@ function dispatchBufferTimeSpanOnly(this: SchedulerAction<any>, state: any) {
   }
 }
 
-function dispatchBufferCreation<T>(this: SchedulerAction<DispatchCreateArg<T>>, state: DispatchCreateArg<T>) {
+function dispatchBufferCreation<T>(this: ISchedulerAction<DispatchCreateArg<T>>, state: DispatchCreateArg<T>) {
   const { bufferCreationInterval, bufferTimeSpan, subscriber, scheduler } = state;
   const context = subscriber.openContext();
-  const action = <SchedulerAction<DispatchCreateArg<T>>>this;
+  const action = <ISchedulerAction<DispatchCreateArg<T>>>this;
   if (!subscriber.closed) {
     subscriber.add(context.closeAction = scheduler.schedule<DispatchCloseArg<T>>(dispatchBufferClose, bufferTimeSpan, { subscriber, context }));
     action.schedule(state, bufferCreationInterval);

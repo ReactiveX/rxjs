@@ -1,5 +1,5 @@
 import { Subject } from './Subject';
-import { Observer } from './types';
+import { IObserver } from './types';
 import { Subscription } from './Subscription';
 
 /**
@@ -10,7 +10,7 @@ import { Subscription } from './Subscription';
 export class SubjectSubscription<T> extends Subscription {
   closed: boolean = false;
 
-  constructor(public subject: Subject<T>, public subscriber: Observer<T>) {
+  constructor(public subject: Subject<T>, public subscriber: IObserver<T>) {
     super();
   }
 

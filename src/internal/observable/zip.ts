@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { fromArray } from './fromArray';
 import { isArray } from '../util/isArray';
 import { Operator } from '../Operator';
-import { ObservableInput, PartialObserver, ObservedValueOf } from '../types';
+import { ObservableInput, IPartialObserver, ObservedValueOf } from '../types';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { OuterSubscriber } from '../OuterSubscriber';
@@ -281,7 +281,7 @@ class ZipBufferIterator<T, R> extends OuterSubscriber<T, R> implements LookAhead
   buffer: T[] = [];
   isComplete = false;
 
-  constructor(destination: PartialObserver<T>,
+  constructor(destination: IPartialObserver<T>,
               private parent: ZipSubscriber<T, R>,
               private observable: Observable<T>) {
     super(destination);

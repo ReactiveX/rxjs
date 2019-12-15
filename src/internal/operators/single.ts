@@ -3,7 +3,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { EmptyError } from '../util/EmptyError';
 
-import { Observer, MonoTypeOperatorFunction, TeardownLogic } from '../types';
+import { IObserver, MonoTypeOperatorFunction, TeardownLogic } from '../types';
 
 /**
  * Returns an Observable that emits the single item emitted by the source Observable that matches a specified
@@ -75,7 +75,7 @@ class SingleSubscriber<T> extends Subscriber<T> {
   private singleValue: T;
   private index: number = 0;
 
-  constructor(destination: Observer<T>,
+  constructor(destination: IObserver<T>,
               private predicate?: (value: T, index: number, source: Observable<T>) => boolean,
               private source?: Observable<T>) {
     super(destination);

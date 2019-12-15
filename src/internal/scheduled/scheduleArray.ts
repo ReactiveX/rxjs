@@ -1,8 +1,8 @@
 import { Observable } from '../Observable';
-import { SchedulerLike } from '../types';
+import { ISchedulerLike } from '../types';
 import { Subscription } from '../Subscription';
 
-export function scheduleArray<T>(input: ArrayLike<T>, scheduler: SchedulerLike) {
+export function scheduleArray<T>(input: ArrayLike<T>, scheduler: ISchedulerLike) {
   return new Observable<T>(subscriber => {
     const sub = new Subscription();
     let i = 0;

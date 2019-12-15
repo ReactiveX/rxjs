@@ -3,6 +3,7 @@ import { ObservableInput } from '../types';
 import { from } from './from';
 import { isArray } from '../util/isArray';
 import { EMPTY } from './empty';
+import { Subscription } from '../Subscription';
 
 /* tslint:disable:max-line-length */
 export function onErrorResumeNext<R>(v: ObservableInput<R>): Observable<R>;
@@ -89,14 +90,17 @@ export function onErrorResumeNext<T, R>(...sources: Array<ObservableInput<any> |
   }
 
   return new Observable(subscriber => {
-    const subNext = () => subscriber.add(
+    const subscription = new Subscription();
+    const subNext = () => subscription.add(
       onErrorResumeNext(...remainder).subscribe(subscriber)
     );
 
-    return from(first).subscribe({
+    subscription.add(from(first).subscribe({
       next(value) { subscriber.next(value); },
       error: subNext,
       complete: subNext,
-    });
+    }));
+
+    return subscription;
   });
 }

@@ -1,4 +1,4 @@
-import { SchedulerAction, SchedulerLike } from '../types';
+import { ISchedulerAction, ISchedulerLike } from '../types';
 import { Observable } from '../Observable';
 
 /**
@@ -40,7 +40,7 @@ import { Observable } from '../Observable';
  *
  * @param {number} [start=0] The value of the first integer in the sequence.
  * @param {number} count The number of sequential integers to generate.
- * @param {SchedulerLike} [scheduler] A {@link SchedulerLike} to use for scheduling
+ * @param {ISchedulerLike} [scheduler] A {@link SchedulerLike} to use for scheduling
  * the emissions of the notifications.
  * @return {Observable} An Observable of numbers that emits a finite range of
  * sequential integers.
@@ -50,7 +50,7 @@ import { Observable } from '../Observable';
  */
 export function range(start: number = 0,
                       count?: number,
-                      scheduler?: SchedulerLike): Observable<number> {
+                      scheduler?: ISchedulerLike): Observable<number> {
   return new Observable<number>(subscriber => {
     if (count === undefined) {
       count = start;
@@ -82,7 +82,7 @@ export function range(start: number = 0,
 }
 
 /** @internal */
-export function dispatch(this: SchedulerAction<any>, state: any) {
+export function dispatch(this: ISchedulerAction<any>, state: any) {
   const { start, index, count, subscriber } = state;
 
   if (index >= count) {

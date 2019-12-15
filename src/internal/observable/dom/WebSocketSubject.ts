@@ -4,7 +4,7 @@ import { Observable } from '../../Observable';
 import { Subscription } from '../../Subscription';
 import { Operator } from '../../Operator';
 import { ReplaySubject } from '../../ReplaySubject';
-import { Observer, NextObserver } from '../../types';
+import { IObserver, NextObserver } from '../../types';
 
 /**
  * WebSocketSubjectConfig is a plain Object that allows us to make our
@@ -157,7 +157,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
 
   private _socket: WebSocket;
 
-  constructor(urlConfigOrSource: string | WebSocketSubjectConfig<T> | Observable<T>, destination?: Observer<T>) {
+  constructor(urlConfigOrSource: string | WebSocketSubjectConfig<T> | Observable<T>, destination?: IObserver<T>) {
     super();
     if (urlConfigOrSource instanceof Observable) {
       this.destination = destination;
@@ -219,7 +219,7 @@ export class WebSocketSubject<T> extends AnonymousSubject<T> {
    */
   multiplex(subMsg: () => any, unsubMsg: () => any, messageFilter: (value: T) => boolean) {
     const self = this;
-    return new Observable((observer: Observer<any>) => {
+    return new Observable((observer: IObserver<any>) => {
       try {
         self.next(subMsg());
       } catch (err) {

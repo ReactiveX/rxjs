@@ -2,7 +2,7 @@ import { isArray } from './util/isArray';
 import { isObject } from './util/isObject';
 import { isFunction } from './util/isFunction';
 import { UnsubscriptionError } from './util/UnsubscriptionError';
-import { SubscriptionLike, TeardownLogic } from './types';
+import { ISubscriptionLike, TeardownLogic } from './types';
 
 /**
  * Represents a disposable resource, such as the execution of an Observable. A
@@ -16,7 +16,7 @@ import { SubscriptionLike, TeardownLogic } from './types';
  *
  * @class Subscription
  */
-export class Subscription implements SubscriptionLike {
+export class Subscription implements ISubscriptionLike {
   /** @nocollapse */
   public static EMPTY: Subscription = (function(empty: any) {
     empty.closed = true;
@@ -32,7 +32,7 @@ export class Subscription implements SubscriptionLike {
   /** @internal */
   protected _parentOrParents: Subscription | Subscription[] = null;
   /** @internal */
-  private _subscriptions: SubscriptionLike[] = null;
+  private _subscriptions: ISubscriptionLike[] = null;
 
   /**
    * @param {function(): void} [unsubscribe] A function describing how to

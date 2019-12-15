@@ -1,7 +1,7 @@
 import { Operator } from './Operator';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
-import { TeardownLogic, OperatorFunction, PartialObserver, Subscribable } from './types';
+import { TeardownLogic, OperatorFunction, IPartialObserver, ISubscribable, ISubscriber } from './types';
 import { canReportError } from './util/canReportError';
 import { toSubscriber } from './util/toSubscriber';
 import { iif } from './observable/iif';
@@ -16,7 +16,7 @@ import { config } from './config';
  *
  * @class Observable<T>
  */
-export class Observable<T> implements Subscribable<T> {
+export class Observable<T> implements ISubscribable<T> {
 
   /** Internal implementation detail, do not use directly. */
   public _isScalar: boolean = false;
@@ -34,7 +34,7 @@ export class Observable<T> implements Subscribable<T> {
    * can be `next`ed, or an `error` method can be called to raise an error, or
    * `complete` can be called to notify of a successful completion.
    */
-  constructor(subscribe?: (this: Observable<T>, subscriber: Subscriber<T>) => TeardownLogic) {
+  constructor(subscribe?: (this: Observable<T>, subscriber: ISubscriber<T>) => TeardownLogic) {
     if (subscribe) {
       this._subscribe = subscribe;
     }
@@ -52,7 +52,7 @@ export class Observable<T> implements Subscribable<T> {
    * @nocollapse
    * @deprecated use new Observable() instead
    */
-  static create: Function = <T>(subscribe?: (subscriber: Subscriber<T>) => TeardownLogic) => {
+  static create: Function = <T>(subscribe?: (subscriber: ISubscriber<T>) => TeardownLogic) => {
     return new Observable<T>(subscribe);
   }
 
@@ -70,7 +70,7 @@ export class Observable<T> implements Subscribable<T> {
     return observable;
   }
 
-  subscribe(observer?: PartialObserver<T>): Subscription;
+  subscribe(observer?: IPartialObserver<T>): Subscription;
   /** @deprecated Use an observer instead of a complete callback */
   subscribe(next: null | undefined, error: null | undefined, complete: () => void): Subscription;
   /** @deprecated Use an observer instead of an error callback */
@@ -203,7 +203,7 @@ export class Observable<T> implements Subscribable<T> {
    * @return {ISubscription} a subscription reference to the registered handlers
    * @method subscribe
    */
-  subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void),
+  subscribe(observerOrNext?: IPartialObserver<T> | ((value: T) => void),
             error?: (error: any) => void,
             complete?: () => void): Subscription {
 

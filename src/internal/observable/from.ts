@@ -1,11 +1,11 @@
 import { Observable } from '../Observable';
 import { subscribeTo } from '../util/subscribeTo';
-import { ObservableInput, SchedulerLike, ObservedValueOf } from '../types';
+import { ObservableInput, ISchedulerLike, ObservedValueOf } from '../types';
 import { scheduled } from '../scheduled/scheduled';
 
 export function from<O extends ObservableInput<any>>(input: O): Observable<ObservedValueOf<O>>;
 /** @deprecated use {@link scheduled} instead. */
-export function from<O extends ObservableInput<any>>(input: O, scheduler: SchedulerLike): Observable<ObservedValueOf<O>>;
+export function from<O extends ObservableInput<any>>(input: O, scheduler: ISchedulerLike): Observable<ObservedValueOf<O>>;
 
 /**
  * Creates an Observable from an Array, an array-like object, a Promise, an iterable object, or an Observable-like object.
@@ -101,17 +101,18 @@ export function from<O extends ObservableInput<any>>(input: O, scheduler: Schedu
  *
  * @param {ObservableInput<T>} A subscription object, a Promise, an Observable-like,
  * an Array, an iterable, or an array-like object to be converted.
- * @param {SchedulerLike} An optional {@link SchedulerLike} on which to schedule the emission of values.
+ * @param {ISchedulerLike} An optional {@link SchedulerLike} on which to schedule the emission of values.
  * @return {Observable<T>}
  * @name from
  * @owner Observable
  */
-export function from<T>(input: ObservableInput<T>, scheduler?: SchedulerLike): Observable<T> {
+export function from<T>(input: ObservableInput<T>, scheduler?: ISchedulerLike): Observable<T> {
   if (!scheduler) {
     if (input instanceof Observable) {
       return input;
     }
-    return new Observable<T>(subscribeTo(input));
+    // This relies on an implemenation detail that Subscriber is also a Subscription.
+    return new Observable<T>(subscribeTo(input) as any);
   } else {
     return scheduled(input, scheduler);
   }

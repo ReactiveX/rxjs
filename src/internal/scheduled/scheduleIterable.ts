@@ -1,9 +1,9 @@
 import { Observable } from '../Observable';
-import { SchedulerLike } from '../types';
+import { ISchedulerLike } from '../types';
 import { Subscription } from '../Subscription';
 import { iterator as Symbol_iterator } from '../symbol/iterator';
 
-export function scheduleIterable<T>(input: Iterable<T>, scheduler: SchedulerLike) {
+export function scheduleIterable<T>(input: Iterable<T>, scheduler: ISchedulerLike) {
   if (!input) {
     throw new Error('Iterable cannot be null');
   }

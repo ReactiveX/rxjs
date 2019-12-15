@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { SchedulerAction, SchedulerLike } from '../types';
+import { ISchedulerAction, ISchedulerLike, ISubscriber } from '../types';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 
@@ -50,7 +50,7 @@ import { Subscription } from '../Subscription';
  * @returns {(Observable<Array<string|T>>)} An observable sequence of
  * [key, value] pairs from the object.
  */
-export function pairs<T>(obj: Object, scheduler?: SchedulerLike): Observable<[string, T]> {
+export function pairs<T>(obj: Object, scheduler?: ISchedulerLike): Observable<[string, T]> {
   if (!scheduler) {
     return new Observable<[string, T]>(subscriber => {
       const keys = Object.keys(obj);
@@ -67,7 +67,7 @@ export function pairs<T>(obj: Object, scheduler?: SchedulerLike): Observable<[st
       const keys = Object.keys(obj);
       const subscription = new Subscription();
       subscription.add(
-        scheduler.schedule<{ keys: string[], index: number, subscriber: Subscriber<[string, T]>, subscription: Subscription, obj: Object }>
+        scheduler.schedule<{ keys: string[], index: number, subscriber: ISubscriber<[string, T]>, subscription: Subscription, obj: Object }>
           (dispatch, 0, { keys, index: 0, subscriber, subscription, obj }));
       return subscription;
     });
@@ -75,8 +75,8 @@ export function pairs<T>(obj: Object, scheduler?: SchedulerLike): Observable<[st
 }
 
 /** @internal */
-export function dispatch<T>(this: SchedulerAction<any>,
-                            state: { keys: string[], index: number, subscriber: Subscriber<[string, T]>, subscription: Subscription, obj: Object }) {
+export function dispatch<T>(this: ISchedulerAction<any>,
+                            state: { keys: string[], index: number, subscriber: ISubscriber<[string, T]>, subscription: Subscription, obj: Object }) {
   const { keys, index, subscriber, subscription, obj } = state;
   if (!subscriber.closed) {
     if (index < keys.length) {

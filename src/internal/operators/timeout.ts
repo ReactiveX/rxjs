@@ -1,6 +1,6 @@
 import { async } from '../scheduler/async';
 import { TimeoutError } from '../util/TimeoutError';
-import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, ISchedulerAction, ISchedulerLike, TeardownLogic } from '../types';
 import { timeoutWith } from './timeoutWith';
 import { throwError } from '../observable/throwError';
 
@@ -77,12 +77,12 @@ import { throwError } from '../observable/throwError';
  *
  * @param {number|Date} due Number specifying period within which Observable must emit values
  *                          or Date specifying before when Observable should complete
- * @param {SchedulerLike} [scheduler] Scheduler controlling when timeout checks occur.
+ * @param {ISchedulerLike} [scheduler] Scheduler controlling when timeout checks occur.
  * @return {Observable<T>} Observable that mirrors behaviour of source, unless timeout checks fail.
  * @method timeout
  * @owner Observable
  */
 export function timeout<T>(due: number | Date,
-                           scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
+                           scheduler: ISchedulerLike = async): MonoTypeOperatorFunction<T> {
   return timeoutWith(due, throwError(new TimeoutError()), scheduler);
 }

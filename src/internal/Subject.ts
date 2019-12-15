@@ -2,7 +2,7 @@ import { Operator } from './Operator';
 import { Observable } from './Observable';
 import { Subscriber } from './Subscriber';
 import { Subscription } from './Subscription';
-import { Observer, SubscriptionLike, TeardownLogic } from './types';
+import { IObserver, ISubscriptionLike, TeardownLogic, ISubscriber } from './types';
 import { ObjectUnsubscribedError } from './util/ObjectUnsubscribedError';
 import { SubjectSubscription } from './SubjectSubscription';
 import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscriber';
@@ -25,13 +25,13 @@ export class SubjectSubscriber<T> extends Subscriber<T> {
  *
  * @class Subject<T>
  */
-export class Subject<T> extends Observable<T> implements SubscriptionLike {
+export class Subject<T> extends Observable<T> implements ISubscriptionLike, ISubscriber<T> {
 
   [rxSubscriberSymbol]() {
     return new SubjectSubscriber(this);
   }
 
-  observers: Observer<T>[] = [];
+  observers: IObserver<T>[] = [];
 
   closed = false;
 
@@ -48,7 +48,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
   /**@nocollapse
    * @deprecated use new Subject() instead
   */
-  static create: Function = <T>(destination: Observer<T>, source: Observable<T>): AnonymousSubject<T> => {
+  static create: Function = <T>(destination: IObserver<T>, source: Observable<T>): AnonymousSubject<T> => {
     return new AnonymousSubject<T>(destination, source);
   }
 
@@ -150,7 +150,7 @@ export class Subject<T> extends Observable<T> implements SubscriptionLike {
  * @class AnonymousSubject<T>
  */
 export class AnonymousSubject<T> extends Subject<T> {
-  constructor(protected destination?: Observer<T>, source?: Observable<T>) {
+  constructor(protected destination?: IObserver<T>, source?: Observable<T>) {
     super();
     this.source = source;
   }

@@ -4,7 +4,7 @@ import { Subscription } from '../Subscription';
 import { async } from '../scheduler/async';
 import { Observable } from '../Observable';
 import { ThrottleConfig, defaultThrottleConfig } from './throttle';
-import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, ISchedulerLike, TeardownLogic } from '../types';
 
 /**
  * Emits a value from the source Observable, then ignores subsequent source
@@ -76,7 +76,7 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * @param {number} duration Time to wait before emitting another value after
  * emitting the last value, measured in milliseconds or the time unit determined
  * internally by the optional `scheduler`.
- * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
+ * @param {ISchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
  * managing the timers that handle the throttling.
  * @param {Object} config a configuration object to define `leading` and
  * `trailing` behavior. Defaults to `{ leading: true, trailing: false }`.
@@ -86,14 +86,14 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * @owner Observable
  */
 export function throttleTime<T>(duration: number,
-                                scheduler: SchedulerLike = async,
+                                scheduler: ISchedulerLike = async,
                                 config: ThrottleConfig = defaultThrottleConfig): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new ThrottleTimeOperator(duration, scheduler, config.leading, config.trailing));
 }
 
 class ThrottleTimeOperator<T> implements Operator<T, T> {
   constructor(private duration: number,
-              private scheduler: SchedulerLike,
+              private scheduler: ISchedulerLike,
               private leading: boolean,
               private trailing: boolean) {
   }
@@ -117,7 +117,7 @@ class ThrottleTimeSubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<T>,
               private duration: number,
-              private scheduler: SchedulerLike,
+              private scheduler: ISchedulerLike,
               private leading: boolean,
               private trailing: boolean) {
     super(destination);

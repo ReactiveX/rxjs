@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 import { retry, map, take, mergeMap, concat, multicast, refCount } from 'rxjs/operators';
-import { Observable, Observer, of, throwError, Subject } from 'rxjs';
+import { Observable, of, throwError, Subject } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 
@@ -23,9 +23,9 @@ describe('retry operator', () => {
   it('should retry a number of times, without error, then complete', (done: MochaDone) => {
     let errors = 0;
     const retries = 2;
-    Observable.create((observer: Observer<number>) => {
-      observer.next(42);
-      observer.complete();
+    new Observable<number>(subscriber => {
+      subscriber.next(42);
+      subscriber.complete();
     }).pipe(
       map((x: any) => {
         if (++errors < retries) {
@@ -39,7 +39,7 @@ describe('retry operator', () => {
         (x: number) => {
           expect(x).to.equal(42);
         },
-        (err: any) => {
+        () => {
           expect('this was called').to.be.true;
         }, done);
   });
@@ -47,11 +47,11 @@ describe('retry operator', () => {
   it('should retry a number of times, then call error handler', (done: MochaDone) => {
     let errors = 0;
     const retries = 2;
-    Observable.create((observer: Observer<number>) => {
-      observer.next(42);
-      observer.complete();
+    new Observable<number>(subscriber => {
+      subscriber.next(42);
+      subscriber.complete();
     }).pipe(
-      map((x: any) => {
+      map(() => {
         errors += 1;
         throw 'bad';
       }),
@@ -60,7 +60,7 @@ describe('retry operator', () => {
         (x: number) => {
           expect(x).to.equal(42);
         },
-        (err: any) => {
+        () => {
           expect(errors).to.equal(2);
           done();
         }, () => {
@@ -71,9 +71,9 @@ describe('retry operator', () => {
   it('should retry until successful completion', (done: MochaDone) => {
     let errors = 0;
     const retries = 10;
-    Observable.create((observer: Observer<number>) => {
-      observer.next(42);
-      observer.complete();
+    new Observable<number>(subscriber => {
+      subscriber.next(42);
+      subscriber.complete();
     }).pipe(
       map((x: any) => {
         if (++errors < retries) {
@@ -88,7 +88,7 @@ describe('retry operator', () => {
         (x: number) => {
           expect(x).to.equal(42);
         },
-        (err: any) => {
+        () => {
           expect('this was called').to.be.true;
         }, done);
   });

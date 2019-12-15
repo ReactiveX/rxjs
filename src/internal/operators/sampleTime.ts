@@ -2,7 +2,7 @@ import { Observable } from '../Observable';
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { async } from '../scheduler/async';
-import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, ISchedulerAction, ISchedulerLike, TeardownLogic } from '../types';
 
 /**
  * Emits the most recently emitted value from the source Observable within
@@ -39,20 +39,20 @@ import { MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic
  *
  * @param {number} period The sampling period expressed in milliseconds or the
  * time unit determined internally by the optional `scheduler`.
- * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
+ * @param {ISchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
  * managing the timers that handle the sampling.
  * @return {Observable<T>} An Observable that emits the results of sampling the
  * values emitted by the source Observable at the specified time interval.
  * @method sampleTime
  * @owner Observable
  */
-export function sampleTime<T>(period: number, scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
+export function sampleTime<T>(period: number, scheduler: ISchedulerLike = async): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new SampleTimeOperator(period, scheduler));
 }
 
 class SampleTimeOperator<T> implements Operator<T, T> {
   constructor(private period: number,
-              private scheduler: SchedulerLike) {
+              private scheduler: ISchedulerLike) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -71,7 +71,7 @@ class SampleTimeSubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<T>,
               private period: number,
-              private scheduler: SchedulerLike) {
+              private scheduler: ISchedulerLike) {
     super(destination);
     this.add(scheduler.schedule(dispatchNotification, period, { subscriber: this, period }));
   }
@@ -89,7 +89,7 @@ class SampleTimeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function dispatchNotification<T>(this: SchedulerAction<any>, state: any) {
+function dispatchNotification<T>(this: ISchedulerAction<any>, state: any) {
   let { subscriber, period } = state;
   subscriber.notifyNext();
   this.schedule(state, period);

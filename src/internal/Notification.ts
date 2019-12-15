@@ -1,4 +1,4 @@
-import { PartialObserver } from './types';
+import { IPartialObserver } from './types';
 import { Observable } from './Observable';
 import { empty } from './observable/empty';
 import { of } from './observable/of';
@@ -40,7 +40,7 @@ export class Notification<T> {
    * @param {Observer} observer
    * @return
    */
-  observe(observer: PartialObserver<T>): any {
+  observe(observer: IPartialObserver<T>): any {
     switch (this.kind) {
       case 'N':
         return observer.next && observer.next(this.value);
@@ -80,9 +80,9 @@ export class Notification<T> {
    * @param {function(): void} [complete] An Observer `complete` callback.
    * @return {any}
    */
-  accept(nextOrObserver: PartialObserver<T> | ((value: T) => void), error?: (err: any) => void, complete?: () => void) {
-    if (nextOrObserver && typeof (<PartialObserver<T>>nextOrObserver).next === 'function') {
-      return this.observe(<PartialObserver<T>>nextOrObserver);
+  accept(nextOrObserver: IPartialObserver<T> | ((value: T) => void), error?: (err: any) => void, complete?: () => void) {
+    if (nextOrObserver && typeof (<IPartialObserver<T>>nextOrObserver).next === 'function') {
+      return this.observe(<IPartialObserver<T>>nextOrObserver);
     } else {
       return this.do(<(value: T) => void>nextOrObserver, error, complete);
     }

@@ -1,7 +1,7 @@
 import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, PartialObserver, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, IPartialObserver, TeardownLogic } from '../types';
 import { noop } from '../util/noop';
 import { isFunction } from '../util/isFunction';
 
@@ -13,7 +13,7 @@ export function tap<T>(next: null | undefined, error: (error: any) => void, comp
 /** @deprecated Use an observer instead of a complete callback */
 export function tap<T>(next: (value: T) => void, error: null | undefined, complete: () => void): MonoTypeOperatorFunction<T>;
 export function tap<T>(next?: (x: T) => void, error?: (e: any) => void, complete?: () => void): MonoTypeOperatorFunction<T>;
-export function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T>;
+export function tap<T>(observer: IPartialObserver<T>): MonoTypeOperatorFunction<T>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -64,7 +64,7 @@ export function tap<T>(observer: PartialObserver<T>): MonoTypeOperatorFunction<T
  * specified Observer or callback(s) for each item.
  * @name tap
  */
-export function tap<T>(nextOrObserver?: PartialObserver<T> | ((x: T) => void),
+export function tap<T>(nextOrObserver?: IPartialObserver<T> | ((x: T) => void),
                        error?: (e: any) => void,
                        complete?: () => void): MonoTypeOperatorFunction<T> {
   return function tapOperatorFunction(source: Observable<T>): Observable<T> {
@@ -73,7 +73,7 @@ export function tap<T>(nextOrObserver?: PartialObserver<T> | ((x: T) => void),
 }
 
 class DoOperator<T> implements Operator<T, T> {
-  constructor(private nextOrObserver?: PartialObserver<T> | ((x: T) => void),
+  constructor(private nextOrObserver?: IPartialObserver<T> | ((x: T) => void),
               private error?: (e: any) => void,
               private complete?: () => void) {
   }
@@ -98,7 +98,7 @@ class TapSubscriber<T> extends Subscriber<T> {
   private _tapComplete: (() => void) = noop;
 
   constructor(destination: Subscriber<T>,
-              observerOrNext?: PartialObserver<T> | ((value: T) => void),
+              observerOrNext?: IPartialObserver<T> | ((value: T) => void),
               error?: (e?: any) => void,
               complete?: () => void) {
       super(destination);

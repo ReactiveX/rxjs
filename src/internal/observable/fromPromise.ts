@@ -5,7 +5,9 @@ import { schedulePromise } from '../scheduled/schedulePromise';
 
 export function fromPromise<T>(input: PromiseLike<T>, scheduler?: SchedulerLike) {
   if (!scheduler) {
-    return new Observable<T>(subscribeToPromise(input));
+    // Below we're relying on an implemenation detail that the subscriber
+    // passed is also a Subscription.
+    return new Observable<T>(subscribeToPromise(input) as any);
   } else {
     return schedulePromise(input, scheduler);
   }

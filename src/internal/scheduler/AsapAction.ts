@@ -1,7 +1,7 @@
 import { Immediate } from '../util/Immediate';
 import { AsyncAction } from './AsyncAction';
 import { AsapScheduler } from './AsapScheduler';
-import { SchedulerAction } from '../types';
+import { ISchedulerAction } from '../types';
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
@@ -10,7 +10,7 @@ import { SchedulerAction } from '../types';
 export class AsapAction<T> extends AsyncAction<T> {
 
   constructor(protected scheduler: AsapScheduler,
-              protected work: (this: SchedulerAction<T>, state?: T) => void) {
+              protected work: (this: ISchedulerAction<T>, state?: T) => void) {
     super(scheduler, work);
   }
 

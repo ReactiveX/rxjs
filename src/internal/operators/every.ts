@@ -1,7 +1,7 @@
 import { Operator } from '../Operator';
 import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
-import { Observer, OperatorFunction } from '../types';
+import { IObserver, OperatorFunction } from '../types';
 
 /**
  * Returns an Observable that emits whether or not every item of the source satisfies the condition specified.
@@ -53,7 +53,7 @@ class EveryOperator<T> implements Operator<T, boolean> {
 class EverySubscriber<T> extends Subscriber<T> {
   private index: number = 0;
 
-  constructor(destination: Observer<boolean>,
+  constructor(destination: IObserver<boolean>,
               private predicate: (value: T, index: number, source: Observable<T>) => boolean,
               private thisArg: any,
               private source?: Observable<T>) {

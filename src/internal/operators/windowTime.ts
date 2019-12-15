@@ -6,7 +6,7 @@ import { Observable } from '../Observable';
 import { Subscription } from '../Subscription';
 import { isNumeric } from '../util/isNumeric';
 import { isScheduler } from '../util/isScheduler';
-import { OperatorFunction, SchedulerLike, SchedulerAction } from '../types';
+import { OperatorFunction, ISchedulerLike, ISchedulerAction } from '../types';
 
 /**
  * Branch out the source Observable values as a nested Observable periodically
@@ -83,7 +83,7 @@ import { OperatorFunction, SchedulerLike, SchedulerAction } from '../types';
  * windows.
  * @param {number} [maxWindowSize=Number.POSITIVE_INFINITY] Max number of
  * values each window can emit before completion.
- * @param {SchedulerLike} [scheduler=async] The scheduler on which to schedule the
+ * @param {ISchedulerLike} [scheduler=async] The scheduler on which to schedule the
  * intervals that determine window boundaries.
  * @return {Observable<Observable<T>>} An observable of windows, which in turn
  * are Observables.
@@ -91,17 +91,17 @@ import { OperatorFunction, SchedulerLike, SchedulerAction } from '../types';
  * @owner Observable
  */
 export function windowTime<T>(windowTimeSpan: number,
-                              scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
+                              scheduler?: ISchedulerLike): OperatorFunction<T, Observable<T>>;
 export function windowTime<T>(windowTimeSpan: number,
                               windowCreationInterval: number,
-                              scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
+                              scheduler?: ISchedulerLike): OperatorFunction<T, Observable<T>>;
 export function windowTime<T>(windowTimeSpan: number,
                               windowCreationInterval: number,
                               maxWindowSize: number,
-                              scheduler?: SchedulerLike): OperatorFunction<T, Observable<T>>;
+                              scheduler?: ISchedulerLike): OperatorFunction<T, Observable<T>>;
 
 export function windowTime<T>(windowTimeSpan: number): OperatorFunction<T, Observable<T>> {
-  let scheduler: SchedulerLike = async;
+  let scheduler: ISchedulerLike = async;
   let windowCreationInterval: number = null;
   let maxWindowSize: number = Number.POSITIVE_INFINITY;
 
@@ -131,7 +131,7 @@ class WindowTimeOperator<T> implements Operator<T, Observable<T>> {
   constructor(private windowTimeSpan: number,
               private windowCreationInterval: number | null,
               private maxWindowSize: number,
-              private scheduler: SchedulerLike) {
+              private scheduler: ISchedulerLike) {
   }
 
   call(subscriber: Subscriber<Observable<T>>, source: any): any {
@@ -145,7 +145,7 @@ interface CreationState<T> {
   windowTimeSpan: number;
   windowCreationInterval: number;
   subscriber: WindowTimeSubscriber<T>;
-  scheduler: SchedulerLike;
+  scheduler: ISchedulerLike;
 }
 
 interface TimeSpanOnlyState<T> {
@@ -155,7 +155,7 @@ interface TimeSpanOnlyState<T> {
   }
 
 interface CloseWindowContext<T> {
-  action: SchedulerAction<CreationState<T>>;
+  action: ISchedulerAction<CreationState<T>>;
   subscription: Subscription;
 }
 
@@ -190,7 +190,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
               private windowTimeSpan: number,
               private windowCreationInterval: number | null,
               private maxWindowSize: number,
-              private scheduler: SchedulerLike) {
+              private scheduler: ISchedulerLike) {
     super(destination);
 
     const window = this.openWindow();
@@ -253,7 +253,7 @@ class WindowTimeSubscriber<T> extends Subscriber<T> {
   }
 }
 
-function dispatchWindowTimeSpanOnly<T>(this: SchedulerAction<TimeSpanOnlyState<T>>, state: TimeSpanOnlyState<T>): void {
+function dispatchWindowTimeSpanOnly<T>(this: ISchedulerAction<TimeSpanOnlyState<T>>, state: TimeSpanOnlyState<T>): void {
   const { subscriber, windowTimeSpan, window } = state;
   if (window) {
     subscriber.closeWindow(window);
@@ -262,7 +262,7 @@ function dispatchWindowTimeSpanOnly<T>(this: SchedulerAction<TimeSpanOnlyState<T
   this.schedule(state, windowTimeSpan);
 }
 
-function dispatchWindowCreation<T>(this: SchedulerAction<CreationState<T>>, state: CreationState<T>): void {
+function dispatchWindowCreation<T>(this: ISchedulerAction<CreationState<T>>, state: CreationState<T>): void {
   const { windowTimeSpan, subscriber, scheduler, windowCreationInterval } = state;
   const window = subscriber.openWindow();
   const action = this;

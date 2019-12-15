@@ -1,21 +1,21 @@
 import { Observable } from '../Observable';
-import { ObservableInput, SchedulerLike, ObservedValueOf, ObservedValuesFromArray } from '../types';
+import { ObservableInput, ISchedulerLike, ObservedValueOf, ObservedValuesFromArray } from '../types';
 import { of } from './of';
 import { concatAll } from '../operators/concatAll';
 
 /* tslint:disable:max-line-length */
 /** @deprecated remove in v8. Passing a scheduler to concat is deprecated, please use {@link scheduled} and {@link concatAll} `scheduled([o1, o2], scheduler).pipe(concatAll())` */
-export function concat<O1 extends ObservableInput<any>>(v1: O1, scheduler: SchedulerLike): Observable<ObservedValueOf<O1>>;
+export function concat<O1 extends ObservableInput<any>>(v1: O1, scheduler: ISchedulerLike): Observable<ObservedValueOf<O1>>;
 /** @deprecated remove in v8. Passing a scheduler to concat is deprecated, please use {@link scheduled} and {@link concatAll} `scheduled([o1, o2], scheduler).pipe(concatAll())` */
-export function concat<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>>(v1: O1, v2: O2, scheduler: SchedulerLike): Observable<ObservedValueOf<O1> | ObservedValueOf<O2>>;
+export function concat<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>>(v1: O1, v2: O2, scheduler: ISchedulerLike): Observable<ObservedValueOf<O1> | ObservedValueOf<O2>>;
 /** @deprecated remove in v8. Passing a scheduler to concat is deprecated, please use {@link scheduled} and {@link concatAll} `scheduled([o1, o2], scheduler).pipe(concatAll())` */
-export function concat<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>>(v1: O1, v2: O2, v3: O3, scheduler: SchedulerLike): Observable<ObservedValueOf<O1> | ObservedValueOf<O2> | ObservedValueOf<O3>>;
+export function concat<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>>(v1: O1, v2: O2, v3: O3, scheduler: ISchedulerLike): Observable<ObservedValueOf<O1> | ObservedValueOf<O2> | ObservedValueOf<O3>>;
 /** @deprecated remove in v8. Passing a scheduler to concat is deprecated, please use {@link scheduled} and {@link concatAll} `scheduled([o1, o2], scheduler).pipe(concatAll())` */
-export function concat<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>>(v1: O1, v2: O2, v3: O3, v4: O4, scheduler: SchedulerLike): Observable<ObservedValueOf<O1> | ObservedValueOf<O2> | ObservedValueOf<O3> | ObservedValueOf<O4>>;
+export function concat<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>>(v1: O1, v2: O2, v3: O3, v4: O4, scheduler: ISchedulerLike): Observable<ObservedValueOf<O1> | ObservedValueOf<O2> | ObservedValueOf<O3> | ObservedValueOf<O4>>;
 /** @deprecated remove in v8. Passing a scheduler to concat is deprecated, please use {@link scheduled} and {@link concatAll} `scheduled([o1, o2], scheduler).pipe(concatAll())` */
-export function concat<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>>(v1: O1, v2: O2, v3: O3, v4: O4, v5: O5, scheduler: SchedulerLike): Observable<ObservedValueOf<O1> | ObservedValueOf<O2> | ObservedValueOf<O3> | ObservedValueOf<O4> | ObservedValueOf<O5>>;
+export function concat<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>>(v1: O1, v2: O2, v3: O3, v4: O4, v5: O5, scheduler: ISchedulerLike): Observable<ObservedValueOf<O1> | ObservedValueOf<O2> | ObservedValueOf<O3> | ObservedValueOf<O4> | ObservedValueOf<O5>>;
 /** @deprecated remove in v8. Passing a scheduler to concat is deprecated, please use {@link scheduled} and {@link concatAll} `scheduled([o1, o2], scheduler).pipe(concatAll())` */
-export function concat<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>, O6 extends ObservableInput<any>>(v1: O1, v2: O2, v3: O3, v4: O4, v5: O5, v6: O6, scheduler: SchedulerLike): Observable<ObservedValueOf<O1> | ObservedValueOf<O2> | ObservedValueOf<O3> | ObservedValueOf<O4> | ObservedValueOf<O5> | ObservedValueOf<O6>>;
+export function concat<O1 extends ObservableInput<any>, O2 extends ObservableInput<any>, O3 extends ObservableInput<any>, O4 extends ObservableInput<any>, O5 extends ObservableInput<any>, O6 extends ObservableInput<any>>(v1: O1, v2: O2, v3: O3, v4: O4, v5: O5, v6: O6, scheduler: ISchedulerLike): Observable<ObservedValueOf<O1> | ObservedValueOf<O2> | ObservedValueOf<O3> | ObservedValueOf<O4> | ObservedValueOf<O5> | ObservedValueOf<O6>>;
 
 export function concat<A extends ObservableInput<any>[]>(...observables: A): Observable<ObservedValuesFromArray<A>>;
 
@@ -125,7 +125,7 @@ export function concat<A extends ObservableInput<any>[]>(...observables: A): Obs
  * @param scheduler An optional {@link SchedulerLike} to schedule each
  * Observable subscription on.
  */
-export function concat<O extends ObservableInput<any>>(...observables: Array<O | SchedulerLike>): Observable<ObservedValueOf<O>> {
+export function concat<O extends ObservableInput<any>>(...observables: Array<O | ISchedulerLike>): Observable<ObservedValueOf<O>> {
   // The cast with `as` below is due to the SchedulerLike, once this is removed, it will no longer be a problem.
   return concatAll<ObservedValueOf<O>>()(of(...observables) as Observable<ObservedValueOf<O>>);
 }

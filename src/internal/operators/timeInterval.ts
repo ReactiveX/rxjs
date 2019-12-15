@@ -1,6 +1,6 @@
 import { Observable } from '../Observable';
 import { async } from '../scheduler/async';
-import { SchedulerLike, OperatorFunction } from '../types';
+import { ISchedulerLike, OperatorFunction } from '../types';
 import { scan } from './scan';
 import { defer } from '../observable/defer';
 import { map } from './map';
@@ -46,11 +46,11 @@ import { map } from './map';
  * // {value: 2, interval: 1000}
  * ```
  *
- * @param {SchedulerLike} [scheduler] Scheduler used to get the current time.
+ * @param {ISchedulerLike} [scheduler] Scheduler used to get the current time.
  * @return {Observable<{ interval: number, value: T }>} Observable that emit infomation about value and interval
  * @method timeInterval
  */
-export function timeInterval<T>(scheduler: SchedulerLike = async): OperatorFunction<T, TimeInterval<T>> {
+export function timeInterval<T>(scheduler: ISchedulerLike = async): OperatorFunction<T, TimeInterval<T>> {
   return (source: Observable<T>) => defer(() => {
     return source.pipe(
       // TODO(benlesh): correct these typings.

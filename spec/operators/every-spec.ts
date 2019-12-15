@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { every, mergeMap } from 'rxjs/operators';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { of, Observable, Observer } from 'rxjs';
+import { of, Observable } from 'rxjs';
 
 declare function asDiagram(arg: string): Function;
 
@@ -46,9 +46,9 @@ describe('every operator', () => {
   it('should accept thisArg with ordinary observables', () => {
     const thisArg = {};
 
-    Observable.create((observer: Observer<number>) => {
-      observer.next(1);
-      observer.complete();
+    new Observable<number>(subscriber => {
+      subscriber.next(1);
+      subscriber.complete();
     })
     .pipe(every(function (this: any, value: number, index: number) {
       expect(this).to.deep.equal(thisArg);

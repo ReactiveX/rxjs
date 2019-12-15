@@ -1,6 +1,6 @@
 import { isFunction } from './util/isFunction';
-import { empty as emptyObserver } from './Observer';
-import { Observer, PartialObserver, TeardownLogic } from './types';
+import { EMPTY_OBSERVER } from './Observer';
+import { IPartialObserver, ISubscriber } from './types';
 import { Subscription } from './Subscription';
 import { rxSubscriber as rxSubscriberSymbol } from '../internal/symbol/rxSubscriber';
 import { config } from './config';
@@ -16,7 +16,7 @@ import { hostReportError } from './util/hostReportError';
  *
  * @class Subscriber<T>
  */
-export class Subscriber<T> extends Subscription implements Observer<T> {
+export class Subscriber<T> extends Subscription implements ISubscriber<T> {
 
   [rxSubscriberSymbol]() { return this; }
 
@@ -45,28 +45,28 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
   /** @internal */ syncErrorThrowable: boolean = false;
 
   protected isStopped: boolean = false;
-  protected destination: PartialObserver<any> | Subscriber<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
+  protected destination: ISubscriber<any> | Subscriber<any>; // this `any` is the escape hatch to erase extra type param (e.g. R)
 
   /**
-   * @param {Observer|function(value: T): void} [destinationOrNext] A partially
+   * @param {IObserver|function(value: T): void} [destinationOrNext] A partially
    * defined Observer or a `next` callback function.
    * @param {function(e: ?any): void} [error] The `error` callback of an
    * Observer.
    * @param {function(): void} [complete] The `complete` callback of an
    * Observer.
    */
-  constructor(destinationOrNext?: PartialObserver<any> | ((value: T) => void),
+  constructor(destinationOrNext?: IPartialObserver<any> | ((value: T) => void),
               error?: (e?: any) => void,
               complete?: () => void) {
     super();
 
     switch (arguments.length) {
       case 0:
-        this.destination = emptyObserver;
+        this.destination = EMPTY_OBSERVER;
         break;
       case 1:
         if (!destinationOrNext) {
-          this.destination = emptyObserver;
+          this.destination = EMPTY_OBSERVER;
           break;
         }
         if (typeof destinationOrNext === 'object') {
@@ -76,7 +76,7 @@ export class Subscriber<T> extends Subscription implements Observer<T> {
             destinationOrNext.add(this);
           } else {
             this.syncErrorThrowable = true;
-            this.destination = new SafeSubscriber<T>(this, <PartialObserver<any>> destinationOrNext);
+            this.destination = new SafeSubscriber<T>(this, <IPartialObserver<any>> destinationOrNext);
           }
           break;
         }
@@ -171,7 +171,7 @@ export class SafeSubscriber<T> extends Subscriber<T> {
   private _context: any;
 
   constructor(private _parentSubscriber: Subscriber<T>,
-              observerOrNext?: PartialObserver<T> | ((value: T) => void),
+              observerOrNext?: IPartialObserver<T> | ((value: T) => void),
               error?: (e?: any) => void,
               complete?: () => void) {
     super();
@@ -182,10 +182,10 @@ export class SafeSubscriber<T> extends Subscriber<T> {
     if (isFunction(observerOrNext)) {
       next = (<((value: T) => void)> observerOrNext);
     } else if (observerOrNext) {
-      next = (<PartialObserver<T>> observerOrNext).next;
-      error = (<PartialObserver<T>> observerOrNext).error;
-      complete = (<PartialObserver<T>> observerOrNext).complete;
-      if (observerOrNext !== emptyObserver) {
+      next = observerOrNext.next;
+      error = observerOrNext.error;
+      complete = observerOrNext.complete;
+      if (observerOrNext !== EMPTY_OBSERVER) {
         context = Object.create(observerOrNext);
         if (isFunction(context.unsubscribe)) {
           this.add(<() => void> context.unsubscribe.bind(context));

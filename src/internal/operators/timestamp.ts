@@ -1,5 +1,5 @@
 import { async } from '../scheduler/async';
-import { OperatorFunction, SchedulerLike, Timestamp as TimestampInterface } from '../types';
+import { OperatorFunction, ISchedulerLike, Timestamp as TimestampInterface } from '../types';
 import { map } from './map';
 
 /**
@@ -36,7 +36,7 @@ import { map } from './map';
  * @method timestamp
  * @owner Observable
  */
-export function timestamp<T>(scheduler: SchedulerLike = async): OperatorFunction<T, Timestamp<T>> {
+export function timestamp<T>(scheduler: ISchedulerLike = async): OperatorFunction<T, Timestamp<T>> {
   return map((value: T) => new Timestamp(value, scheduler.now()));
   // return (source: Observable<T>) => source.lift(new TimestampOperator(scheduler));
 }

@@ -1,7 +1,7 @@
 import { async } from '../scheduler/async';
 import { audit } from './audit';
 import { timer } from '../observable/timer';
-import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
+import { MonoTypeOperatorFunction, ISchedulerLike } from '../types';
 
 /**
  * Ignores source values for `duration` milliseconds, then emits the most recent
@@ -45,13 +45,13 @@ import { MonoTypeOperatorFunction, SchedulerLike } from '../types';
  * @param {number} duration Time to wait before emitting the most recent source
  * value, measured in milliseconds or the time unit determined internally
  * by the optional `scheduler`.
- * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
+ * @param {ISchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
  * managing the timers that handle the rate-limiting behavior.
  * @return {Observable<T>} An Observable that performs rate-limiting of
  * emissions from the source Observable.
  * @method auditTime
  * @owner Observable
  */
-export function auditTime<T>(duration: number, scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
+export function auditTime<T>(duration: number, scheduler: ISchedulerLike = async): MonoTypeOperatorFunction<T> {
   return audit(() => timer(duration, scheduler));
 }

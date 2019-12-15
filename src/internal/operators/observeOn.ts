@@ -3,7 +3,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { Notification } from '../Notification';
-import { MonoTypeOperatorFunction, PartialObserver, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, IPartialObserver, ISchedulerAction, ISchedulerLike, TeardownLogic } from '../types';
 
 /**
  *
@@ -50,7 +50,7 @@ import { MonoTypeOperatorFunction, PartialObserver, SchedulerAction, SchedulerLi
  *
  * @see {@link delay}
  *
- * @param {SchedulerLike} scheduler Scheduler that will be used to reschedule notifications from source Observable.
+ * @param {ISchedulerLike} scheduler Scheduler that will be used to reschedule notifications from source Observable.
  * @param {number} [delay] Number of milliseconds that states with what delay every notification should be rescheduled.
  * @return {Observable<T>} Observable that emits the same notifications as the source Observable,
  * but with provided scheduler.
@@ -58,14 +58,14 @@ import { MonoTypeOperatorFunction, PartialObserver, SchedulerAction, SchedulerLi
  * @method observeOn
  * @owner Observable
  */
-export function observeOn<T>(scheduler: SchedulerLike, delay: number = 0): MonoTypeOperatorFunction<T> {
+export function observeOn<T>(scheduler: ISchedulerLike, delay: number = 0): MonoTypeOperatorFunction<T> {
   return function observeOnOperatorFunction(source: Observable<T>): Observable<T> {
     return source.lift(new ObserveOnOperator(scheduler, delay));
   };
 }
 
 export class ObserveOnOperator<T> implements Operator<T, T> {
-  constructor(private scheduler: SchedulerLike, private delay: number = 0) {
+  constructor(private scheduler: ISchedulerLike, private delay: number = 0) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -80,14 +80,14 @@ export class ObserveOnOperator<T> implements Operator<T, T> {
  */
 export class ObserveOnSubscriber<T> extends Subscriber<T> {
   /** @nocollapse */
-  static dispatch(this: SchedulerAction<ObserveOnMessage>, arg: ObserveOnMessage) {
+  static dispatch(this: ISchedulerAction<ObserveOnMessage>, arg: ObserveOnMessage) {
     const { notification, destination } = arg;
     notification.observe(destination);
     this.unsubscribe();
   }
 
   constructor(destination: Subscriber<T>,
-              private scheduler: SchedulerLike,
+              private scheduler: ISchedulerLike,
               private delay: number = 0) {
     super(destination);
   }
@@ -118,6 +118,6 @@ export class ObserveOnSubscriber<T> extends Subscriber<T> {
 
 export class ObserveOnMessage {
   constructor(public notification: Notification<any>,
-              public destination: PartialObserver<any>) {
+              public destination: IPartialObserver<any>) {
   }
 }

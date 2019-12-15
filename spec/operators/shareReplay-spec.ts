@@ -1,11 +1,10 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
-import { shareReplay, mergeMapTo, retry, take } from 'rxjs/operators';
+import { shareReplay, mergeMapTo, retry } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { Observable, interval, Operator, Observer, of } from 'rxjs';
+import { Observable, Operator, of } from 'rxjs';
 
-declare function asDiagram(arg: string): Function;
 declare const rxTestScheduler: TestScheduler;
 
 /** @test {shareReplay} */
@@ -222,11 +221,11 @@ describe('shareReplay operator', () => {
       }
     }
 
-    const result = new MyCustomObservable((observer: Observer<number>) => {
-      observer.next(1);
-      observer.next(2);
-      observer.next(3);
-      observer.complete();
+    const result = new MyCustomObservable<number>(subscriber => {
+      subscriber.next(1);
+      subscriber.next(2);
+      subscriber.next(3);
+      subscriber.complete();
     }).pipe(shareReplay());
 
     expect(result instanceof MyCustomObservable).to.be.true;
@@ -237,7 +236,7 @@ describe('shareReplay operator', () => {
       .subscribe((n: any) => {
         expect(expected.length).to.be.greaterThan(0);
         expect(n).to.equal(expected.shift());
-      }, (x) => {
+      }, () => {
         done(new Error('should not be called'));
       }, () => {
         done();

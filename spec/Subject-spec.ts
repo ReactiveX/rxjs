@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { hot, expectObservable } from './helpers/marble-testing';
-import { Subject, ObjectUnsubscribedError, Observable, AsyncSubject, Observer, of } from 'rxjs';
+import { Subject, ObjectUnsubscribedError, Observable, AsyncSubject, of } from 'rxjs';
 import { AnonymousSubject } from 'rxjs/internal/Subject';
 import { delay } from 'rxjs/operators';
 
@@ -530,9 +530,9 @@ describe('AnonymousSubject', () => {
   it('should not eager', () => {
     let subscribed = false;
 
-    const subject = Subject.create(null, new Observable((observer: Observer<any>) => {
+    const subject = Subject.create(null, new Observable(subscriber => {
       subscribed = true;
-      const subscription = of('x').subscribe(observer);
+      const subscription = of('x').subscribe(subscriber);
       return () => {
         subscription.unsubscribe();
       };

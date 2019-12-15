@@ -3,50 +3,79 @@ import { Subscription } from './Subscription';
 
 /** OPERATOR INTERFACES */
 
-export interface UnaryFunction<T, R> { (source: T): R; }
+export type UnaryFunction<T, R> = (source: T) => R;
 
-export interface OperatorFunction<T, R> extends UnaryFunction<Observable<T>, Observable<R>> {}
+export type OperatorFunction<T, R> = (source: Observable<T>) => Observable<R>;
 
 export type FactoryOrValue<T> = T | (() => T);
 
-export interface MonoTypeOperatorFunction<T> extends OperatorFunction<T, T> {}
+/**
+ * @deprecated use `OperatorFunction`
+ */
+export type MonoTypeOperatorFunction<T> = (source: Observable<T>) => Observable<T>;
 
-export interface Timestamp<T> {
+/**
+ * @deprecated use `ITimestamp`
+ */
+export type Timestamp<T> = ITimestamp<T>;
+
+export interface ITimestamp<T> {
   value: T;
   timestamp: number;
 }
 
-export interface TimeInterval<T> {
+/**
+ * @deprecated use `ITimeInterval`
+ */
+export type TimeInterval<T> = ITimeInterval<T>;
+
+export interface ITimeInterval<T> {
   value: T;
   interval: number;
 }
 
 /** SUBSCRIPTION INTERFACES */
 
-export interface Unsubscribable {
+/**
+ * @deprecated use `IUnsubscribable`
+ */
+export type Unsubscribable = IUnsubscribable;
+
+export interface IUnsubscribable {
   unsubscribe(): void;
 }
 
-export type TeardownLogic = Unsubscribable | Function | void;
+export type TeardownLogic = IUnsubscribable | Function | void;
 
-export interface SubscriptionLike extends Unsubscribable {
+/**
+ * @deprecated use `ISubscriptionLike`
+ */
+export type SubscriptionLike = ISubscriptionLike;
+
+export interface ISubscriptionLike extends IUnsubscribable {
   unsubscribe(): void;
   readonly closed: boolean;
 }
 
-export type SubscribableOrPromise<T> = Subscribable<T> | Subscribable<never> | PromiseLike<T> | InteropObservable<T>;
+export type SubscribableOrPromise<T> = ISubscribable<T> | ISubscribable<never> | PromiseLike<T> | InteropObservable<T>;
 
 /** OBSERVABLE INTERFACES */
 
-export interface Subscribable<T> {
-  subscribe(observer?: PartialObserver<T>): Unsubscribable;
+/**
+ * @deprecated use ISubscribable
+ */
+export type Subscribable<T> = ISubscribable<T>;
+
+export interface ISubscribable<T> {
+  subscribe(): IUnsubscribable;
+  subscribe(observer: IPartialObserver<T>): IUnsubscribable;
   /** @deprecated Use an observer instead of a complete callback */
-  subscribe(next: null | undefined, error: null | undefined, complete: () => void): Unsubscribable;
+  subscribe(next: null | undefined, error: null | undefined, complete: () => void): IUnsubscribable;
   /** @deprecated Use an observer instead of an error callback */
-  subscribe(next: null | undefined, error: (error: any) => void, complete?: () => void): Unsubscribable;
+  subscribe(next: null | undefined, error: (error: any) => void, complete?: () => void): IUnsubscribable;
   /** @deprecated Use an observer instead of a complete callback */
-  subscribe(next: (value: T) => void, error: null | undefined, complete: () => void): Unsubscribable;
-  subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Unsubscribable;
+  subscribe(next: (value: T) => void, error: null | undefined, complete: () => void): IUnsubscribable;
+  subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): IUnsubscribable;
 }
 
 export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T> | Iterable<T>;
@@ -54,10 +83,13 @@ export type ObservableInput<T> = SubscribableOrPromise<T> | ArrayLike<T> | Itera
 /** @deprecated use {@link InteropObservable } */
 export type ObservableLike<T> = InteropObservable<T>;
 
-export type InteropObservable<T> = { [Symbol.observable]: () => Subscribable<T>; };
+export type InteropObservable<T> = { [Symbol.observable]: () => ISubscribable<T>; };
 
 /** OBSERVER INTERFACES */
 
+/**
+ * @deprecated do not use
+ */
 export interface NextObserver<T> {
   closed?: boolean;
   next: (value: T) => void;
@@ -65,6 +97,9 @@ export interface NextObserver<T> {
   complete?: () => void;
 }
 
+/**
+ * @deprecated do not use
+ */
 export interface ErrorObserver<T> {
   closed?: boolean;
   next?: (value: T) => void;
@@ -72,6 +107,9 @@ export interface ErrorObserver<T> {
   complete?: () => void;
 }
 
+/**
+ * @deprecated do not use
+ */
 export interface CompletionObserver<T> {
   closed?: boolean;
   next?: (value: T) => void;
@@ -79,8 +117,14 @@ export interface CompletionObserver<T> {
   complete: () => void;
 }
 
+/**
+ * @deprecated use `IPartialObserver`
+ */
 export type PartialObserver<T> = NextObserver<T> | ErrorObserver<T> | CompletionObserver<T>;
 
+/**
+ * @deprecated use `IObserver`
+ */
 export interface Observer<T> {
   closed?: boolean;
   next: (value: T) => void;
@@ -88,13 +132,39 @@ export interface Observer<T> {
   complete: () => void;
 }
 
+export interface IObserver<T, E = any> {
+  next: (value: T) => void;
+  error: (err: E) => void;
+  complete: () => void;
+}
+
+export interface ISubscriber<T, E = any> {
+  next(value: T): void;
+  error(err: E): void;
+  complete(): void;
+  readonly closed: boolean;
+}
+
+export type IPartialObserver<T, E = any> = Partial<IObserver<T, E>>;
+
 /** SCHEDULER INTERFACES */
 
-export interface SchedulerLike {
+/**
+ * @deprecated use `ISchedulerLike`
+ */
+export type SchedulerLike = ISchedulerLike;
+
+export interface ISchedulerLike {
   now(): number;
-  schedule<T>(work: (this: SchedulerAction<T>, state?: T) => void, delay?: number, state?: T): Subscription;
+  schedule<T>(work: (this: ISchedulerAction<T>, state?: T) => void, delay?: number, state?: T): Subscription;
 }
-export interface SchedulerAction<T> extends Subscription {
+
+/**
+ * @deprecated use `ISchedulerAction`
+ */
+export type SchedulerAction<T> = ISchedulerAction<T>;
+
+export interface ISchedulerAction<T> extends Subscription {
   schedule(state?: T, delay?: number): Subscription;
 }
 

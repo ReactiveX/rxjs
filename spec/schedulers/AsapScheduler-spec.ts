@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { asapScheduler, Subscription, SchedulerAction } from 'rxjs';
+import { asapScheduler, Subscription, ISchedulerAction } from 'rxjs';
 
 const asap = asapScheduler;
 
@@ -48,7 +48,7 @@ describe('Scheduler.asap', () => {
     const period = 50;
     const state = { index: 0, period };
     type State = typeof state;
-    function dispatch(this: SchedulerAction<State>, state: State): void {
+    function dispatch(this: ISchedulerAction<State>, state: State): void {
       state.index += 1;
       if (state.index < 3) {
         this.schedule(state, state.period);
@@ -75,7 +75,7 @@ describe('Scheduler.asap', () => {
     const period = 50;
     const state = { index: 0, period };
     type State = typeof state;
-    function dispatch(this: SchedulerAction<State>, state: State): void {
+    function dispatch(this: ISchedulerAction<State>, state: State): void {
       state.index += 1;
       state.period -= 1;
       if (state.index < 3) {

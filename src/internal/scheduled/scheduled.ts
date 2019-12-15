@@ -6,7 +6,7 @@ import { isInteropObservable } from '../util/isInteropObservable';
 import { isPromise } from '../util/isPromise';
 import { isArrayLike } from '../util/isArrayLike';
 import { isIterable } from '../util/isIterable';
-import { ObservableInput, SchedulerLike } from '../types';
+import { ObservableInput, ISchedulerLike } from '../types';
 import { Observable } from '../Observable';
 
 /**
@@ -20,7 +20,7 @@ import { Observable } from '../Observable';
  * @param scheduler The scheduler to use to schedule the subscription and emissions from
  * the returned observable.
  */
-export function scheduled<T>(input: ObservableInput<T>, scheduler: SchedulerLike): Observable<T> {
+export function scheduled<T>(input: ObservableInput<T>, scheduler: ISchedulerLike): Observable<T> {
   if (input != null) {
     if (isInteropObservable(input)) {
       return scheduleObservable(input, scheduler);

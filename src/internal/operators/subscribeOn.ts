@@ -2,7 +2,7 @@ import { Operator } from '../Operator';
 import { Subscriber } from '../Subscriber';
 import { Observable } from '../Observable';
 import { SubscribeOnObservable } from '../observable/SubscribeOnObservable';
-import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, ISchedulerLike, TeardownLogic } from '../types';
 
 /**
  * Asynchronously subscribes Observers to this Observable on the specified {@link SchedulerLike}.
@@ -40,20 +40,20 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * The reason for this is that Observable `b` emits its values directly and synchronously like before
  * but the emissions from `a` are scheduled on the event loop because we are now using the {@link asyncScheduler} for that specific Observable.
  *
- * @param {SchedulerLike} scheduler - The {@link SchedulerLike} to perform subscription actions on.
+ * @param {ISchedulerLike} scheduler - The {@link SchedulerLike} to perform subscription actions on.
  * @return {Observable<T>} The source Observable modified so that its subscriptions happen on the specified {@link SchedulerLike}.
  .
  * @method subscribeOn
  * @owner Observable
  */
-export function subscribeOn<T>(scheduler: SchedulerLike, delay: number = 0): MonoTypeOperatorFunction<T> {
+export function subscribeOn<T>(scheduler: ISchedulerLike, delay: number = 0): MonoTypeOperatorFunction<T> {
   return function subscribeOnOperatorFunction(source: Observable<T>): Observable<T> {
     return source.lift(new SubscribeOnOperator<T>(scheduler, delay));
   };
 }
 
 class SubscribeOnOperator<T> implements Operator<T, T> {
-  constructor(private scheduler: SchedulerLike,
+  constructor(private scheduler: ISchedulerLike,
               private delay: number) {
   }
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {

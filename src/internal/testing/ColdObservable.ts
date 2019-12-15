@@ -6,6 +6,7 @@ import { SubscriptionLog } from './SubscriptionLog';
 import { SubscriptionLoggable } from './SubscriptionLoggable';
 import { applyMixins } from '../util/applyMixins';
 import { Subscriber } from '../Subscriber';
+import { ISubscriber } from '../types';
 
 /**
  * We need this JSDoc comment for affecting ESDoc.
@@ -20,14 +21,16 @@ export class ColdObservable<T> extends Observable<T> implements SubscriptionLogg
 
   constructor(public messages: TestMessage[],
               scheduler: Scheduler) {
-    super(function (this: Observable<T>, subscriber: Subscriber<any>) {
+    super(function (this: Observable<T>, subscriber: ISubscriber<any>) {
       const observable: ColdObservable<T> = this as any;
       const index = observable.logSubscribedFrame();
       const subscription = new Subscription();
       subscription.add(new Subscription(() => {
         observable.logUnsubscribedFrame(index);
       }));
-      observable.scheduleMessages(subscriber);
+      // Below we're relying on an implementation detail that subscribers
+      // are also subscriptions
+      observable.scheduleMessages(subscriber as any);
       return subscription;
     });
     this.scheduler = scheduler;

@@ -5,7 +5,7 @@ import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 import { Notification } from '../Notification';
 import { Observable } from '../Observable';
-import { MonoTypeOperatorFunction, PartialObserver, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
+import { MonoTypeOperatorFunction, IPartialObserver, ISchedulerAction, ISchedulerLike, TeardownLogic } from '../types';
 
 /**
  * Delays the emission of items from the source Observable by a given timeout or
@@ -50,7 +50,7 @@ import { MonoTypeOperatorFunction, PartialObserver, SchedulerAction, SchedulerLi
  *
  * @param {number|Date} delay The delay duration in milliseconds (a `number`) or
  * a `Date` until which the emission of the source items is delayed.
- * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
+ * @param {ISchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for
  * managing the timers that handle the time-shift for each item.
  * @return {Observable} An Observable that delays the emissions of the source
  * Observable by the specified timeout or Date.
@@ -58,7 +58,7 @@ import { MonoTypeOperatorFunction, PartialObserver, SchedulerAction, SchedulerLi
  * @owner Observable
  */
 export function delay<T>(delay: number|Date,
-                         scheduler: SchedulerLike = async): MonoTypeOperatorFunction<T> {
+                         scheduler: ISchedulerLike = async): MonoTypeOperatorFunction<T> {
   const absoluteDelay = isDate(delay);
   const delayFor = absoluteDelay ? (+delay - scheduler.now()) : Math.abs(<number>delay);
   return (source: Observable<T>) => source.lift(new DelayOperator(delayFor, scheduler));
@@ -66,7 +66,7 @@ export function delay<T>(delay: number|Date,
 
 class DelayOperator<T> implements Operator<T, T> {
   constructor(private delay: number,
-              private scheduler: SchedulerLike) {
+              private scheduler: ISchedulerLike) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -76,8 +76,8 @@ class DelayOperator<T> implements Operator<T, T> {
 
 interface DelayState<T> {
   source: DelaySubscriber<T>;
-  destination: PartialObserver<T>;
-  scheduler: SchedulerLike;
+  destination: IPartialObserver<T>;
+  scheduler: ISchedulerLike;
 }
 
 /**
@@ -90,7 +90,7 @@ class DelaySubscriber<T> extends Subscriber<T> {
   private active: boolean = false;
   private errored: boolean = false;
 
-  private static dispatch<T>(this: SchedulerAction<DelayState<T>>, state: DelayState<T>): void {
+  private static dispatch<T>(this: ISchedulerAction<DelayState<T>>, state: DelayState<T>): void {
     const source = state.source;
     const queue = source.queue;
     const scheduler = state.scheduler;
@@ -111,11 +111,11 @@ class DelaySubscriber<T> extends Subscriber<T> {
 
   constructor(destination: Subscriber<T>,
               private delay: number,
-              private scheduler: SchedulerLike) {
+              private scheduler: ISchedulerLike) {
     super(destination);
   }
 
-  private _schedule(scheduler: SchedulerLike): void {
+  private _schedule(scheduler: ISchedulerLike): void {
     this.active = true;
     const destination = this.destination as Subscription;
     destination.add(scheduler.schedule<DelayState<T>>(DelaySubscriber.dispatch, this.delay, {

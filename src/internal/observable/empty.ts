@@ -1,5 +1,5 @@
 import { Observable } from '../Observable';
-import { SchedulerLike } from '../types';
+import { ISchedulerLike } from '../types';
 
 /**
  * The same Observable instance returned by any call to {@link empty} without a
@@ -64,10 +64,10 @@ export const EMPTY = new Observable<never>(subscriber => subscriber.complete());
  * notification.
  * @deprecated Deprecated in favor of using {@link index/EMPTY} constant, or {@link scheduled} (e.g. `scheduled([], scheduler)`)
  */
-export function empty(scheduler?: SchedulerLike) {
+export function empty(scheduler?: ISchedulerLike) {
   return scheduler ? emptyScheduled(scheduler) : EMPTY;
 }
 
-function emptyScheduled(scheduler: SchedulerLike) {
+function emptyScheduled(scheduler: ISchedulerLike) {
   return new Observable<never>(subscriber => scheduler.schedule(() => subscriber.complete()));
 }

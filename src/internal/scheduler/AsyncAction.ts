@@ -1,5 +1,5 @@
 import { Action } from './Action';
-import { SchedulerAction } from '../types';
+import { ISchedulerAction } from '../types';
 import { Subscription } from '../Subscription';
 import { AsyncScheduler } from './AsyncScheduler';
 
@@ -16,7 +16,7 @@ export class AsyncAction<T> extends Action<T> {
   protected pending: boolean = false;
 
   constructor(protected scheduler: AsyncScheduler,
-              protected work: (this: SchedulerAction<T>, state?: T) => void) {
+              protected work: (this: ISchedulerAction<T>, state?: T) => void) {
     super(scheduler, work);
   }
 

@@ -1,6 +1,5 @@
 import { Observable } from '../Observable';
-import { SchedulerLike } from '../types';
-import { Subscriber } from '../Subscriber';
+import { ISchedulerLike, ISubscriber } from '../types';
 
 /**
  * Creates an Observable that emits no items to the Observer and immediately
@@ -58,7 +57,7 @@ import { Subscriber } from '../Subscriber';
  * @see {@link of}
  *
  * @param {any} error The particular Error to pass to the error notification.
- * @param {SchedulerLike} [scheduler] A {@link SchedulerLike} to use for scheduling
+ * @param {ISchedulerLike} [scheduler] A {@link SchedulerLike} to use for scheduling
  * the emission of the error notification.
  * @return {Observable} An error Observable: emits only the error notification
  * using the given error argument.
@@ -66,7 +65,7 @@ import { Subscriber } from '../Subscriber';
  * @name throwError
  * @owner Observable
  */
-export function throwError(error: any, scheduler?: SchedulerLike): Observable<never> {
+export function throwError(error: any, scheduler?: ISchedulerLike): Observable<never> {
   if (!scheduler) {
     return new Observable(subscriber => subscriber.error(error));
   } else {
@@ -76,7 +75,7 @@ export function throwError(error: any, scheduler?: SchedulerLike): Observable<ne
 
 interface DispatchArg {
   error: any;
-  subscriber: Subscriber<any>;
+  subscriber: ISubscriber<any>;
 }
 
 function dispatch({ error, subscriber }: DispatchArg) {

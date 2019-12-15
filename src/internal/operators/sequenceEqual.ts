@@ -3,7 +3,7 @@ import { Observable } from '../Observable';
 import { Subscriber } from '../Subscriber';
 import { Subscription } from '../Subscription';
 
-import { Observer, OperatorFunction } from '../types';
+import { IObserver, OperatorFunction } from '../types';
 
 /**
  * Compares all values of two observables in sequence using an optional comparator function
@@ -87,7 +87,7 @@ export class SequenceEqualSubscriber<T, R> extends Subscriber<T> {
   private _b: T[] = [];
   private _oneComplete = false;
 
-  constructor(destination: Observer<R>,
+  constructor(destination: IObserver<R>,
               private compareTo: Observable<T>,
               private comparator: (a: T, b: T) => boolean) {
     super(destination);
@@ -154,7 +154,7 @@ export class SequenceEqualSubscriber<T, R> extends Subscriber<T> {
 }
 
 class SequenceEqualCompareToSubscriber<T, R> extends Subscriber<T> {
-  constructor(destination: Observer<R>, private parent: SequenceEqualSubscriber<T, R>) {
+  constructor(destination: IObserver<R>, private parent: SequenceEqualSubscriber<T, R>) {
     super(destination);
   }
 

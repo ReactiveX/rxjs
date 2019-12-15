@@ -1,7 +1,8 @@
 import { expect } from 'chai';
 import { TestScheduler } from 'rxjs/testing';
-import { asyncScheduler, of, from, Observable, asapScheduler, Observer, observable, Subject, EMPTY } from 'rxjs';
+import { asyncScheduler, of, from, Observable, asapScheduler, observable, Subject, EMPTY } from 'rxjs';
 import { first, concatMap, delay } from 'rxjs/operators';
+import { ISubscriber } from 'dist/types';
 
 // tslint:disable:no-any
 declare const asDiagram: any;
@@ -53,7 +54,7 @@ describe('from', () => {
 
   const fakervable = <T>(...values: T[]) => ({
     [observable]: () => ({
-      subscribe: (observer: Observer<T>) => {
+      subscribe: (observer: ISubscriber<T>) => {
         for (const value of values) {
           observer.next(value);
         }
@@ -66,7 +67,7 @@ describe('from', () => {
     let arr = ['bad array!'];
     arr[observable] = () =>  {
       return {
-        subscribe: (observer: Observer<T>) => {
+        subscribe: (observer: ISubscriber<T>) => {
           for (const value of values) {
             observer.next(value);
           }

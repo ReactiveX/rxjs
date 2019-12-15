@@ -1,10 +1,10 @@
 import { Subscriber } from '../Subscriber';
 import { rxSubscriber as rxSubscriberSymbol } from '../symbol/rxSubscriber';
-import { empty as emptyObserver } from '../Observer';
-import { PartialObserver } from '../types';
+import { EMPTY_OBSERVER as emptyObserver } from '../Observer';
+import { IPartialObserver } from '../types';
 
 export function toSubscriber<T>(
-  nextOrObserver?: PartialObserver<T> | ((value: T) => void),
+  nextOrObserver?: IPartialObserver<T> | ((value: T) => void),
   error?: (error: any) => void,
   complete?: () => void): Subscriber<T> {
 

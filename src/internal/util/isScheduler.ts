@@ -1,5 +1,5 @@
-import { SchedulerLike } from '../types';
+import { ISchedulerLike } from '../types';
 
-export function isScheduler(value: any): value is SchedulerLike {
+export function isScheduler(value: any): value is ISchedulerLike {
   return value && typeof (<any>value).schedule === 'function';
 }

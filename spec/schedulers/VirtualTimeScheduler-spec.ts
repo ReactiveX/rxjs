@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { SchedulerAction, VirtualAction, VirtualTimeScheduler } from 'rxjs';
+import { ISchedulerAction, VirtualAction, VirtualTimeScheduler } from 'rxjs';
 
 /** @test {VirtualTimeScheduler} */
 describe('VirtualTimeScheduler', () => {
@@ -66,7 +66,7 @@ describe('VirtualTimeScheduler', () => {
     let count = 0;
     const expected = [100, 200, 300];
 
-    v.schedule<string>(function (this: SchedulerAction<string>, state: string) {
+    v.schedule<string>(function (this: ISchedulerAction<string>, state: string) {
       if (++count === 3) {
         return;
       }

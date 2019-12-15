@@ -5,10 +5,10 @@ import { Observable } from '../Observable';
 import { isDate } from '../util/isDate';
 import { OuterSubscriber } from '../OuterSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
-import { ObservableInput, OperatorFunction, MonoTypeOperatorFunction, SchedulerAction, SchedulerLike, TeardownLogic } from '../types';
+import { ObservableInput, OperatorFunction, MonoTypeOperatorFunction, ISchedulerAction, ISchedulerLike, TeardownLogic } from '../types';
 
 /* tslint:disable:max-line-length */
-export function timeoutWith<T, R>(due: number | Date, withObservable: ObservableInput<R>, scheduler?: SchedulerLike): OperatorFunction<T, T | R>;
+export function timeoutWith<T, R>(due: number | Date, withObservable: ObservableInput<R>, scheduler?: ISchedulerLike): OperatorFunction<T, T | R>;
 /* tslint:enable:max-line-length */
 
 /**
@@ -58,7 +58,7 @@ export function timeoutWith<T, R>(due: number | Date, withObservable: Observable
  * @param {number|Date} due Number specifying period within which Observable must emit values
  *                          or Date specifying before when Observable should complete
  * @param {Observable<T>} withObservable Observable which will be subscribed if source fails timeout check.
- * @param {SchedulerLike} [scheduler] Scheduler controlling when timeout checks occur.
+ * @param {ISchedulerLike} [scheduler] Scheduler controlling when timeout checks occur.
  * @return {Observable<T>} Observable that mirrors behaviour of source or, when timeout check fails, of an Observable
  *                          passed as a second parameter.
  * @method timeoutWith
@@ -66,7 +66,7 @@ export function timeoutWith<T, R>(due: number | Date, withObservable: Observable
  */
 export function timeoutWith<T, R>(due: number | Date,
                                   withObservable: ObservableInput<R>,
-                                  scheduler: SchedulerLike = async): OperatorFunction<T, T | R> {
+                                  scheduler: ISchedulerLike = async): OperatorFunction<T, T | R> {
   return (source: Observable<T>) => {
     let absoluteTimeout = isDate(due);
     let waitFor = absoluteTimeout ? (+due - scheduler.now()) : Math.abs(<number>due);
@@ -78,7 +78,7 @@ class TimeoutWithOperator<T> implements Operator<T, T> {
   constructor(private waitFor: number,
               private absoluteTimeout: boolean,
               private withObservable: ObservableInput<any>,
-              private scheduler: SchedulerLike) {
+              private scheduler: ISchedulerLike) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
@@ -95,13 +95,13 @@ class TimeoutWithOperator<T> implements Operator<T, T> {
  */
 class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
 
-  private action: SchedulerAction<TimeoutWithSubscriber<T, R>> = null;
+  private action: ISchedulerAction<TimeoutWithSubscriber<T, R>> = null;
 
   constructor(destination: Subscriber<T>,
               private absoluteTimeout: boolean,
               private waitFor: number,
               private withObservable: ObservableInput<any>,
-              private scheduler: SchedulerLike) {
+              private scheduler: ISchedulerLike) {
     super(destination);
     this.scheduleTimeout();
   }
@@ -120,9 +120,9 @@ class TimeoutWithSubscriber<T, R> extends OuterSubscriber<T, R> {
       // VirtualActions are immutable, so they create and return a clone. In this
       // case, we need to set the action reference to the most recent VirtualAction,
       // to ensure that's the one we clone from next time.
-      this.action = (<SchedulerAction<TimeoutWithSubscriber<T, R>>> action.schedule(this, this.waitFor));
+      this.action = (<ISchedulerAction<TimeoutWithSubscriber<T, R>>> action.schedule(this, this.waitFor));
     } else {
-      this.add(this.action = (<SchedulerAction<TimeoutWithSubscriber<T, R>>> this.scheduler.schedule<TimeoutWithSubscriber<T, R>>(
+      this.add(this.action = (<ISchedulerAction<TimeoutWithSubscriber<T, R>>> this.scheduler.schedule<TimeoutWithSubscriber<T, R>>(
         TimeoutWithSubscriber.dispatchTimeout, this.waitFor, this
       )));
     }

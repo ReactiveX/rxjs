@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { Observer, TeardownLogic } from '../src/internal/types';
+import { IObserver, TeardownLogic } from '../src/internal/types';
 import { cold, expectObservable, expectSubscriptions } from './helpers/marble-testing';
 import { Observable, config, Subscription, noop, Subscriber, Operator, NEVER, Subject, of, throwError, empty } from 'rxjs';
 import { map, multicast, refCount, filter, count, tap, combineLatest, concat, merge, race, zip } from 'rxjs/operators';
@@ -634,7 +634,7 @@ describe('Observable', () => {
 describe('Observable.create', () => {
   asDiagram('create(obs => { obs.next(1); })')
     ('should create a cold observable that emits just 1', () => {
-      const e1 = Observable.create((obs: Observer<number>) => { obs.next(1); });
+      const e1 = Observable.create((obs: IObserver<number>) => { obs.next(1); });
       const expected = 'x';
       expectObservable(e1).toBe(expected, { x: 1 });
     });
@@ -648,7 +648,7 @@ describe('Observable.create', () => {
 
   it('should provide an observer to the function', () => {
     let called = false;
-    const result = Observable.create((observer: Observer<any>) => {
+    const result = Observable.create((observer: IObserver<any>) => {
       called = true;
       expectFullObserver(observer);
       observer.complete();
@@ -662,7 +662,7 @@ describe('Observable.create', () => {
   });
 
   it('should send errors thrown in the passed function down the error path', (done) => {
-    Observable.create((observer: Observer<any>) => {
+    Observable.create((observer: IObserver<any>) => {
       throw new Error('this should be handled');
     })
       .subscribe({

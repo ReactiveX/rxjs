@@ -1,4 +1,4 @@
-import { SchedulerLike, ValueFromArray } from '../types';
+import { ISchedulerLike, ValueFromArray } from '../types';
 import { isScheduler } from '../util/isScheduler';
 import { fromArray } from './fromArray';
 import { Observable } from '../Observable';
@@ -6,27 +6,27 @@ import { scheduleArray } from '../scheduled/scheduleArray';
 
 /* tslint:disable:max-line-length */
 /** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([], scheduler)` */
-export function of(scheduler: SchedulerLike): Observable<never>;
+export function of(scheduler: ISchedulerLike): Observable<never>;
 /** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([a, b, c], scheduler)` */
-export function of<T>(a: T, scheduler: SchedulerLike): Observable<T>;
+export function of<T>(a: T, scheduler: ISchedulerLike): Observable<T>;
 /** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([a, b, c], scheduler)` */
-export function of<T, T2>(a: T, b: T2, scheduler: SchedulerLike): Observable<T | T2>;
+export function of<T, T2>(a: T, b: T2, scheduler: ISchedulerLike): Observable<T | T2>;
 /** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([a, b, c], scheduler)` */
-export function of<T, T2, T3>(a: T, b: T2, c: T3, scheduler: SchedulerLike): Observable<T | T2 | T3>;
+export function of<T, T2, T3>(a: T, b: T2, c: T3, scheduler: ISchedulerLike): Observable<T | T2 | T3>;
 /** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([a, b, c], scheduler)` */
-export function of<T, T2, T3, T4>(a: T, b: T2, c: T3, d: T4, scheduler: SchedulerLike): Observable<T | T2 | T3 | T4>;
+export function of<T, T2, T3, T4>(a: T, b: T2, c: T3, d: T4, scheduler: ISchedulerLike): Observable<T | T2 | T3 | T4>;
 /** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([a, b, c], scheduler)` */
-export function of<T, T2, T3, T4, T5>(a: T, b: T2, c: T3, d: T4, e: T5, scheduler: SchedulerLike): Observable<T | T2 | T3 | T4 | T5>;
+export function of<T, T2, T3, T4, T5>(a: T, b: T2, c: T3, d: T4, e: T5, scheduler: ISchedulerLike): Observable<T | T2 | T3 | T4 | T5>;
 /** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([a, b, c], scheduler)` */
-export function of<T, T2, T3, T4, T5, T6>(a: T, b: T2, c: T3, d: T4, e: T5, f: T6, scheduler: SchedulerLike): Observable<T | T2 | T3 | T4 | T5 | T6>;
+export function of<T, T2, T3, T4, T5, T6>(a: T, b: T2, c: T3, d: T4, e: T5, f: T6, scheduler: ISchedulerLike): Observable<T | T2 | T3 | T4 | T5 | T6>;
 /** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([a, b, c], scheduler)` */
-export function of<T, T2, T3, T4, T5, T6, T7>(a: T, b: T2, c: T3, d: T4, e: T5, f: T6, g: T7, scheduler: SchedulerLike):
+export function of<T, T2, T3, T4, T5, T6, T7>(a: T, b: T2, c: T3, d: T4, e: T5, f: T6, g: T7, scheduler: ISchedulerLike):
   Observable<T | T2 | T3 | T4 | T5 | T6 | T7>;
 /** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([a, b, c], scheduler)` */
-export function of<T, T2, T3, T4, T5, T6, T7, T8>(a: T, b: T2, c: T3, d: T4, e: T5, f: T6, g: T7, h: T8, scheduler: SchedulerLike):
+export function of<T, T2, T3, T4, T5, T6, T7, T8>(a: T, b: T2, c: T3, d: T4, e: T5, f: T6, g: T7, h: T8, scheduler: ISchedulerLike):
   Observable<T | T2 | T3 | T4 | T5 | T6 | T7 | T8>;
 /** @deprecated remove in v8. Use {@link scheduled} instead `scheduled([a, b, c], scheduler)` */
-export function of<T, T2, T3, T4, T5, T6, T7, T8, T9>(a: T, b: T2, c: T3, d: T4, e: T5, f: T6, g: T7, h: T8, i: T9, scheduler: SchedulerLike):
+export function of<T, T2, T3, T4, T5, T6, T7, T8, T9>(a: T, b: T2, c: T3, d: T4, e: T5, f: T6, g: T7, h: T8, i: T9, scheduler: ISchedulerLike):
   Observable<T | T2 | T3 | T4 | T5 | T6 | T7 | T8 | T9>;
 
 // TODO(benlesh): Update the typings for this when we can switch to TS 3.x
@@ -97,8 +97,8 @@ export function of<A extends Array<any>>(...args: A): Observable<ValueFromArray<
  * @owner Observable
  */
 
-export function of<T>(...args: Array<T | SchedulerLike>): Observable<T> {
-  let scheduler = args[args.length - 1] as SchedulerLike;
+export function of<T>(...args: Array<T | ISchedulerLike>): Observable<T> {
+  let scheduler = args[args.length - 1] as ISchedulerLike;
   if (isScheduler(scheduler)) {
     args.pop();
     return scheduleArray(args as T[], scheduler);

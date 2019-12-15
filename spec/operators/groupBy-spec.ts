@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { groupBy, delay, tap, map, take, mergeMap, materialize, skip } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { ReplaySubject, of, GroupedObservable, Observable, Operator, Observer } from 'rxjs';
+import { ReplaySubject, of, GroupedObservable, Observable, Operator, IObserver } from 'rxjs';
 import { hot, cold, expectObservable, expectSubscriptions } from '../helpers/marble-testing';
 
 declare function asDiagram(arg: string): Function;
@@ -1458,7 +1458,7 @@ describe('groupBy operator', () => {
       }
     }
 
-    const result = new MyCustomObservable((observer: Observer<number>) => {
+    const result = new MyCustomObservable((observer: IObserver<number>) => {
       observer.next(1);
       observer.next(2);
       observer.next(3);
