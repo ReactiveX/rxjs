@@ -1,5 +1,5 @@
 let nextHandle = 1;
-const RESOLVED = Promise.resolve();
+const RESOLVED = (() => Promise.resolve())();
 const activeHandles: number[] = [];
 
 /**
