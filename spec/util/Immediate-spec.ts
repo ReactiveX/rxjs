@@ -39,7 +39,7 @@ describe('Immediate', () => {
 
     setTimeout(() => {
       const number = TestTools.pending();
-      expect(number).to.not.equal(2);
+      expect(number).to.equal(0);
       done();
     });
   });

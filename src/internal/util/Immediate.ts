@@ -1,6 +1,6 @@
 let nextHandle = 1;
 const RESOLVED = (() => Promise.resolve())();
-const activeHandles: number[] = [];
+const activeHandles: { [key: number]: any } = {};
 
 /**
  * Finds the handle in the list of active handles, and removes it.
@@ -8,9 +8,8 @@ const activeHandles: number[] = [];
  * Immediate scheduled tasks, and to identify if a task should be scheduled.
  */
 function findAndClearHandle(handle: number): boolean {
-  const i = activeHandles.indexOf(handle);
-  if (i >= 0) {
-    activeHandles.splice(i, 1);
+  if (handle in activeHandles) {
+    delete activeHandles[handle];
     return true;
   }
   return false;
@@ -22,7 +21,7 @@ function findAndClearHandle(handle: number): boolean {
 export const Immediate = {
   setImmediate(cb: () => void): number {
     const handle = nextHandle++;
-    activeHandles.push(handle);
+    activeHandles[handle] = true;
     RESOLVED.then(() => findAndClearHandle(handle) && cb());
     return handle;
   },
@@ -37,6 +36,6 @@ export const Immediate = {
  */
 export const TestTools = {
   pending() {
-    return activeHandles.length;
+    return Object.keys(activeHandles).length;
   }
 };
