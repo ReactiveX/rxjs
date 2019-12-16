@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Immediate } from 'rxjs/util/Immediate';
+import { Immediate, TestTools } from 'rxjs/internal/util/Immediate';
 
 describe('Immediate', () => {
   it('should schedule on the next microtask', (done) => {
@@ -27,6 +27,18 @@ describe('Immediate', () => {
 
     setTimeout(() => {
       expect(results).to.deep.equal([1, 2, 4, 5]);
+      done();
+    });
+  });
+
+  it('should clear the task after execution', (done) => {
+    const results: number[] = [];
+    Immediate.setImmediate(() => results.push(1));
+    Immediate.setImmediate(() => results.push(2));
+
+    setTimeout(() => {
+      const number = TestTools.pending();
+      expect(number).to.equal(0);
       done();
     });
   });
