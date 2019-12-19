@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { concat, defer, Observable, of, throwError, EMPTY, from } from 'rxjs';
-import { catchError, map, mergeMap, takeWhile } from 'rxjs/operators';
+import { catchError, delay, map, mergeMap, takeWhile } from 'rxjs/operators';
 import * as sinon from 'sinon';
 import { createObservableInputs } from '../helpers/test-helper';
 import { TestScheduler } from 'rxjs/testing';
@@ -430,4 +430,33 @@ describe('catchError operator', () => {
     });
   });
 
+  // TODO(v8): see https://github.com/ReactiveX/rxjs/issues/5115
+  // The re-implementation in version 8 should fix the problem in the
+  // referenced issue. Closed subscribers should remain closed.
+  /*
+  it('issue #5115', (done: MochaDone) => {
+    const source = new Observable<string>(observer => {
+      observer.error(new Error('kaboom!'));
+      observer.complete();
+    });
+
+    const sourceWithDelay = new Observable<string>(observer => {
+      observer.next('delayed');
+      observer.complete();
+    }).pipe(delay(0));
+
+    const values: string[] = [];
+    source.pipe(
+      catchError(err => sourceWithDelay)
+    )
+    .subscribe(
+      value => values.push(value),
+      err => done(err),
+      () => {
+        expect(values).to.deep.equal(['delayed']);
+        done();
+      }
+    );
+  });
+  */
 });
