@@ -1,5 +1,6 @@
 let nextHandle = 1;
-const RESOLVED = (() => Promise.resolve())();
+// The promise needs to be created lazily otherwise it won't be patched by Zones
+let resolved: Promise<any>;
 const activeHandles: { [key: number]: any } = {};
 
 /**
@@ -22,7 +23,10 @@ export const Immediate = {
   setImmediate(cb: () => void): number {
     const handle = nextHandle++;
     activeHandles[handle] = true;
-    RESOLVED.then(() => findAndClearHandle(handle) && cb());
+    if (!resolved) {
+      resolved = Promise.resolve();
+    }
+    resolved.then(() => findAndClearHandle(handle) && cb());
     return handle;
   },
 
