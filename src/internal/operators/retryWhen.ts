@@ -18,6 +18,45 @@ import { MonoTypeOperatorFunction, TeardownLogic } from '../types';
  *
  * ![](retryWhen.png)
  *
+ * Retry an observable sequence on error based on custom criteria.
+ *
+ * ## Example
+ * ```ts
+ * import { timer, interval } from 'rxjs';
+ * import { map, tap, retryWhen, delayWhen } from 'rxjs/operators';
+ *
+ * const source = interval(1000);
+ * const example = source.pipe(
+ *   map(val => {
+ *     if (val > 5) {
+ *       // error will be picked up by retryWhen
+ *       throw val;
+ *     }
+ *     return val;
+ *   }),
+ *   retryWhen(errors =>
+ *     errors.pipe(
+ *       // log error message
+ *       tap(val => console.log(`Value ${val} was too high!`)),
+ *       // restart in 5 seconds
+ *       delayWhen(val => timer(val * 1000))
+ *     )
+ *   )
+ * );
+ *
+ * const subscribe = example.subscribe(val => console.log(val));
+ *
+ * // results:
+ * //   0
+ * //   1
+ * //   2
+ * //   3
+ * //   4
+ * //   5
+ * //   "Value 6 was too high!"
+ * //  --Wait 5 seconds then repeat
+ * ```
+ *
  * @param {function(errors: Observable): Observable} notifier - Receives an Observable of notifications with which a
  * user can `complete` or `error`, aborting the retry.
  * @return {Observable} The source Observable modified with retry logic.

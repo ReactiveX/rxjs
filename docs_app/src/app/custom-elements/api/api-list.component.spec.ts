@@ -32,21 +32,16 @@ describe('ApiListComponent', () => {
    * Expectation Utility: Assert that filteredSections has the expected result for this test
    * @param itemTest - return true if the item passes the match test
    *
-   * Subscribes to `filteredSections` and performs expectation within subscription callback.
+   * Subscibes to `filteredSections` and performs expectation within subscription callback.
    */
   function expectFilteredResult(label: string, itemTest: (item: ApiItem) => boolean) {
     component.filteredSections.subscribe(filtered => {
-      let badItem: ApiItem|undefined;
+      filtered = filtered.filter(section => section.items);
       expect(filtered.length).toBeGreaterThan(0, 'expected something');
-      expect(filtered.every(section => section.items.every(
-          item => {
-            const ok = item.show === itemTest(item);
-            if (!ok) { badItem = item; }
-            return ok;
-          }
-      ))).toBe(true, `${label} fail: ${JSON.stringify(badItem, null, 2)}`);
+      expect(filtered.every(section => section.items!.every(itemTest))).toBe(true, label);
     });
   }
+
 
   describe('#filteredSections', () => {
 
@@ -65,34 +60,45 @@ describe('ApiListComponent', () => {
       expectFilteredResult('query: class', item => /class/.test(item.name));
     });
 
-    it('item.show should be true for every item in section when query matches section name', () => {
+    it('items should be an array for every item in section when query matches section name', () => {
       component.setQuery('core');
       component.filteredSections.subscribe(filtered => {
+        filtered = filtered.filter(section => Array.isArray(section.items));
         expect(filtered.length).toBe(1, 'only one section');
         expect(filtered[0].name).toBe('core');
-        expect(filtered[0].items.every(item => !!item.show)).toBe(true, 'all core items shown');
+        expect(filtered[0].items).toEqual(sections.find(section => section.name === 'core')!.items);
       });
     });
 
-    it('item.show should be true for items with selected status', () => {
-      component.setStatus({value: 'stable', title: 'Stable'});
-      expectFilteredResult('status: stable', item => item.stability === 'stable');
+    describe('section.items', () => {
+      it('should null if there are no matching items and the section itself does not match', () => {
+        component.setQuery('core');
+        component.filteredSections.subscribe(filtered => {
+          const commonSection = filtered.find(section => section.name === 'common')!;
+          expect(commonSection.items).toBe(null);
+        });
+      });
+
+      it('should be visible if they have the selected stability status', () => {
+        component.setStatus({value: 'stable', title: 'Stable'});
+        expectFilteredResult('status: stable', item => item.stability === 'stable');
+      });
+
+      it('should be visible if they have the selected security status', () => {
+        component.setStatus({value: 'security-risk', title: 'Security Risk'});
+        expectFilteredResult('status: security-risk', item => item.securityRisk);
+      });
+
+      it('should be visible if they match the selected API type', () => {
+        component.setType({value: 'class', title: 'Class'});
+        expectFilteredResult('type: class', item => item.docType === 'class');
+      });
     });
 
-    it('item.show should be true for items with "security-risk" status when selected', () => {
-      component.setStatus({value: 'security-risk', title: 'Security Risk'});
-      expectFilteredResult('status: security-risk', item => item.securityRisk);
-    });
-
-    it('item.show should be true for items of selected type', () => {
-      component.setType({value: 'class', title: 'Class'});
-      expectFilteredResult('type: class', item => item.docType === 'class');
-    });
-
-    it('should have no sections and no items when no match', () => {
+    it('should have no sections and no items visible when there is no match', () => {
       component.setQuery('fizbuzz');
       component.filteredSections.subscribe(filtered => {
-        expect(filtered.length).toBe(0, 'expected no sections');
+        expect(filtered.some(section => !!section.items)).toBeFalsy();
       });
     });
   });
@@ -101,16 +107,17 @@ describe('ApiListComponent', () => {
     let locationService: TestLocationService;
 
     beforeEach(() => {
-      locationService = <any> fixture.componentRef.injector.get(LocationService);
+      locationService = fixture.componentRef.injector.get<any>(LocationService);
     });
 
     function expectOneItem(name: string, section: string, type: string, stability: string) {
       fixture.detectChanges();
 
       component.filteredSections.subscribe(filtered => {
+        filtered = filtered.filter(s => s.items);
         expect(filtered.length).toBe(1, 'sections');
         expect(filtered[0].name).toBe(section, 'section name');
-        const items = filtered[0].items.filter(currentItem => currentItem.show);
+        const items = filtered[0].items!;
         expect(items.length).toBe(1, 'items');
 
         const item = items[0];
@@ -127,18 +134,18 @@ describe('ApiListComponent', () => {
       expectOneItem('class_3', 'core', 'class', 'experimental');
     });
 
-    xit('should filter as expected for ?status', () => {
+    it('should filter as expected for ?status', () => {
       locationService.query = {status: 'deprecated'};
       expectOneItem('function_1', 'core', 'function', 'deprecated');
     });
 
-    xit('should filter as expected when status is security-risk', () => {
+    it('should filter as expected when status is security-risk', () => {
       locationService.query = {status: 'security-risk'};
       fixture.detectChanges();
       expectFilteredResult('security-risk', item => item.securityRisk);
     });
 
-    xit('should filter as expected for ?type', () => {
+    it('should filter as expected for ?type', () => {
       locationService.query = {type: 'pipe'};
       expectOneItem('pipe_1', 'common', 'pipe', 'stable');
     });
@@ -168,7 +175,7 @@ describe('ApiListComponent', () => {
     let locationService: TestLocationService;
 
     beforeEach(() => {
-      locationService = <any> fixture.componentRef.injector.get(LocationService);
+      locationService = fixture.componentRef.injector.get<any>(LocationService);
     });
 
     it('should have query', () => {
@@ -198,31 +205,6 @@ describe('ApiListComponent', () => {
       expect(search.type).toBe('class');
     });
   });
-
-  describe('item stability rendering', () => {
-
-    beforeEach(() => {
-      fixture.detectChanges();
-    });
-
-    function expectRenderedStability(path: string, title: string, classes: string) {
-      const apiListElement: HTMLElement = fixture.nativeElement;
-      const a = apiListElement.querySelector(`a[href="${path}"] ${classes}`) as HTMLElement;
-      expect((a.textContent as string).trim()).toEqual(title.trim());
-    }
-
-    it('should display stable', () => {
-      expectRenderedStability('api/common/class_2', 'Class 2', '.stability');
-    });
-
-    it('should display experimental', () => {
-      expectRenderedStability('api/common/class_1', 'Class 1 (experimental)', '.stability.experimental');
-    });
-
-    it('should display deprecated', () => {
-      expectRenderedStability('api/core/function_1', 'Function 1 (deprecated)', '.stability.deprecated');
-    });
-  });
 });
 
 ////// Helpers ////////
@@ -243,6 +225,8 @@ const apiSections: ApiSection[] = [
   {
     "name": "common",
     "title": "common",
+    "path": "api/common",
+    "deprecated": false,
     "items": [
       {
         "name": "class_1",
@@ -250,7 +234,7 @@ const apiSections: ApiSection[] = [
         "path": "api/common/class_1",
         "docType": "class",
         "stability": "experimental",
-        "securityRisk": false
+        "securityRisk": false,
       },
       {
         "name": "class_2",
@@ -258,7 +242,7 @@ const apiSections: ApiSection[] = [
         "path": "api/common/class_2",
         "docType": "class",
         "stability": "stable",
-        "securityRisk": false
+        "securityRisk": false,
       },
       {
         "name": "directive_1",
@@ -266,7 +250,7 @@ const apiSections: ApiSection[] = [
         "path": "api/common/directive_1",
         "docType": "directive",
         "stability": "stable",
-        "securityRisk": true
+        "securityRisk": true,
       },
       {
         "name": "pipe_1",
@@ -274,13 +258,15 @@ const apiSections: ApiSection[] = [
         "path": "api/common/pipe_1",
         "docType": "pipe",
         "stability": "stable",
-        "securityRisk": true
+        "securityRisk": true,
       },
     ]
   },
   {
     "name": "core",
     "title": "core",
+    "path": "api/core",
+    "deprecated": false,
     "items": [
       {
         "name": "class_3",
@@ -288,15 +274,15 @@ const apiSections: ApiSection[] = [
         "path": "api/core/class_3",
         "docType": "class",
         "stability": "experimental",
-        "securityRisk": false
+        "securityRisk": false,
       },
       {
         "name": "function_1",
         "title": "Function 1",
-        "path": "api/core/function_1",
+        "path": "api/core/function 1",
         "docType": "function",
         "stability": "deprecated",
-        "securityRisk": true
+        "securityRisk": true,
       },
       {
         "name": "const_1",
@@ -304,7 +290,7 @@ const apiSections: ApiSection[] = [
         "path": "api/core/const_1",
         "docType": "const",
         "stability": "stable",
-        "securityRisk": false
+        "securityRisk": false,
       }
     ]
   }

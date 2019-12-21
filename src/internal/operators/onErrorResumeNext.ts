@@ -25,7 +25,7 @@ export function onErrorResumeNext<T, R>(array: ObservableInput<any>[]): Operator
  * When any of the provided Observable emits an complete or error notification, it immediately subscribes to the next one
  * that was passed.
  *
- * <span class="informal">Execute series of Observables no matter what, even if it means swallowing errors.</span>
+ * <span class="informal">Execute series of Observables, subscribes to next one on error or complete.</span>
  *
  * ![](onErrorResumeNext.png)
  *
@@ -162,7 +162,13 @@ class OnErrorResumeNextSubscriber<T, R> extends OuterSubscriber<T, R> {
       const innerSubscriber = new InnerSubscriber(this, undefined, undefined);
       const destination = this.destination as Subscription;
       destination.add(innerSubscriber);
-      subscribeToResult(this, next, undefined, undefined, innerSubscriber);
+      const innerSubscription = subscribeToResult(this, next, undefined, undefined, innerSubscriber);
+      // The returned subscription will usually be the subscriber that was
+      // passed. However, interop subscribers will be wrapped and for
+      // unsubscriptions to chain correctly, the wrapper needs to be added, too.
+      if (innerSubscription !== innerSubscriber) {
+        destination.add(innerSubscription);
+      }
     } else {
       this.destination.complete();
     }

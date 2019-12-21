@@ -19,7 +19,20 @@ img/
 spec-js/
 spec-build/
 .out/
+.tmp/
+
+# Import location artifacts
+/ajax/
+/fetch/
+/operators/
+/testing/
+/webSocket/
 
 # Misc
 npm-debug.log
 .DS_STORE
+*.tgz
+
+# The check-side-effects package generates and deletes this file.
+# If the process is killed, it will be left behind.
+check-side-effects.tmp-input.js

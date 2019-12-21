@@ -29,7 +29,7 @@ jobs:
       - checkout
       - *restore_cache
       - run: npm i
-      - run: npm run build_all
+      - run: npm run build:package
       - persist_to_workspace:
           root: .
           paths:
@@ -50,6 +50,7 @@ jobs:
     steps:
       - attach_workspace: *attach_options
       - run: npm test
+      - run: npm run test:side-effects
 
   dtslint:
     <<: *defaults
@@ -57,12 +58,19 @@ jobs:
       - attach_workspace: *attach_options
       - run: npm run dtslint
 
-  typescript3:
+  # Ideally, this package should support typescript@next. However, in the past
+  # that hasn't always been possible and frequent problems with nightly
+  # TypeScript builds resulted in CI failures being deliberately ignored.
+  # Instead, we should aim to keep the TypeScript version specified here as
+  # high as possible, but it should be known to be good. That is, it should be
+  # the upper bound - the latest version of TypeScript that we can be confident
+  # we can support. 
+  typescriptLatestSupported:
     <<: *defaults
     steps:
       - attach_workspace: *attach_options
-      - run: npm i --no-save typescript@3.*
-      - run: npm run build_cjs
+      - run: npm i --no-save typescript@3.7.2
+      - run: npm run compile
 
 workflows:
   version: 2
@@ -78,7 +86,7 @@ workflows:
       - dtslint:
           requires:
             - build
-      - typescript3:
+      - typescriptLatestSupported:
           requires:
             - lint
             - test

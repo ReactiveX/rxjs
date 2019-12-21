@@ -160,9 +160,9 @@ There are a few things to know and (try to) understand while developing operator
  It also means operators can be brought in ad-hock and used directly, either with the ES7 function bind operator
  in Babel (`::`) or by using it with `.call()`.
 2. Every operator has an `Operator` class. The `Operator` class is really a `Subscriber` "factory". It's
- what gets passed into the `lift` method to make the "magic" happen. It's sole job is to create the operation's
+ what gets passed into the `lift` method to make the "magic" happen. Its sole job is to create the operation's
  `Subscriber` instance on subscription.
-3. Every operator has a `Subscriber` class. This class does *all* of the logic for the operation. It's job is to
+3. Every operator has a `Subscriber` class. This class does *all* of the logic for the operation. Its job is to
  handle values being nexted in (generally by overriding `_next()`) and forward it along to the `destination`,
  which is the next observer in the chain.
    - It's important to note that the `destination` Observer set on any `Subscriber` serves as more than just

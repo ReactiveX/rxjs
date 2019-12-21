@@ -9,7 +9,7 @@ import { InnerSubscriber } from '../InnerSubscriber';
 import { subscribeToResult } from '../util/subscribeToResult';
 
 /**
- * Emits a value from the source Observable only after a particular time span
+ * Emits a notification from the source Observable only after a particular time span
  * determined by another Observable has passed without another source emission.
  *
  * <span class="informal">It's like {@link debounceTime}, but the time span of
@@ -17,15 +17,19 @@ import { subscribeToResult } from '../util/subscribeToResult';
  *
  * ![](debounce.png)
  *
- * `debounce` delays values emitted by the source Observable, but drops previous
- * pending delayed emissions if a new value arrives on the source Observable.
- * This operator keeps track of the most recent value from the source
+ * `debounce` delays notifications emitted by the source Observable, but drops previous
+ * pending delayed emissions if a new notification arrives on the source Observable.
+ * This operator keeps track of the most recent notification from the source
  * Observable, and spawns a duration Observable by calling the
- * `durationSelector` function. The value is emitted only when the duration
- * Observable emits a value or completes, and if no other value was emitted on
+ * `durationSelector` function. The notification is emitted only when the duration
+ * Observable emits a notification or completes, and if no other notification was emitted on
  * the source Observable since the duration Observable was spawned. If a new
- * value appears before the duration Observable emits, the previous value will
- * be dropped and will not be emitted on the output Observable.
+ * notification appears before the duration Observable emits, the previous notification will
+ * not be emitted and a new duration is scheduled from `durationSelector` is scheduled.
+ * If the completing event happens during the scheduled duration the last cached notification
+ * is emitted before the completion event is forwarded to the output observable.
+ * If the error event happens during the scheduled duration or after it only the error event is
+ * forwarded to the output observable. The cache notification is not emitted in this case.
  *
  * Like {@link debounceTime}, this is a rate-limiting operator, and also a
  * delay-like operator since output emissions do not necessarily occur at the
@@ -35,17 +39,24 @@ import { subscribeToResult } from '../util/subscribeToResult';
  * Emit the most recent click after a burst of clicks
  * ```ts
  * import { fromEvent, interval } from 'rxjs';
- * import { debounce } from 'rxjs/operators';
+ * import { scan, debounce } from 'rxjs/operators';
  *
  * const clicks = fromEvent(document, 'click');
- * const result = clicks.pipe(debounce(() => interval(1000)));
+ * const result = clicks.pipe(
+ *   scan((i) => ++i, 1),
+ *   debounce((i) => interval(200 * i))
+ * );
  * result.subscribe(x => console.log(x));
  * ```
  *
  * @see {@link audit}
- * @see {@link debounceTime}
- * @see {@link delayWhen}
+ * @see {@link auditTime}
+ * @see {@link debounce}
+ * @see {@link delay}
+ * @see {@link sample}
+ * @see {@link sampleTime}
  * @see {@link throttle}
+ * @see {@link throttleTime}
  *
  * @param {function(value: T): SubscribableOrPromise} durationSelector A function
  * that receives a value from the source Observable, for computing the timeout

@@ -20,10 +20,13 @@ describe('DocViewerComponent', () => {
   let parentComponent: TestParentComponent;
   let docViewerEl: HTMLElement;
   let docViewer: TestDocViewerComponent;
+  let metaServiceMock: jasmine.SpyObj<Meta>
 
   beforeEach(() => {
+    metaServiceMock = jasmine.createSpyObj(['updateTag', 'addTag', 'removeTag']);
     TestBed.configureTestingModule({
       imports: [CustomElementsModule, TestModule],
+      providers: [{provide: Meta, useValue: metaServiceMock}]
     });
 
     parentFixture = TestBed.createComponent(TestParentComponent);
@@ -47,7 +50,7 @@ describe('DocViewerComponent', () => {
       parentFixture.detectChanges();
     };
 
-    beforeEach(() => renderSpy = spyOn(docViewer, 'render').and.returnValue([null]));
+    beforeEach(() => renderSpy = spyOn(docViewer, 'render').and.returnValue(of()));
 
     it('should render the new document', () => {
       setCurrentDoc('foo', 'bar');
@@ -87,7 +90,7 @@ describe('DocViewerComponent', () => {
 
   describe('#ngOnDestroy()', () => {
     it('should stop responding to document changes', () => {
-      const renderSpy = spyOn(docViewer, 'render').and.returnValue([undefined]);
+      const renderSpy = spyOn(docViewer, 'render').and.returnValue(of());
 
       expect(renderSpy).not.toHaveBeenCalled();
 

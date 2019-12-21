@@ -1,1 +1,0 @@
-export { defer } from 'rxjs';

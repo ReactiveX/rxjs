@@ -43,7 +43,7 @@ import { Subscriber } from '../Subscriber';
  * @see {@link delay}
  *
  * @param {number|Date} [dueTime] The initial delay time specified as a Date object or as an integer denoting
- * milliseconds to wait before emitting the first value of 0`.
+ * milliseconds to wait before emitting the first value of `0`.
  * @param {number|SchedulerLike} [periodOrScheduler] The period of time between emissions of the
  * subsequent numbers.
  * @param {SchedulerLike} [scheduler=async] The {@link SchedulerLike} to use for scheduling

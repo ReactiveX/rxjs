@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { ArgumentOutOfRangeError } from 'rxjs/util/ArgumentOutOfRangeError';
+import { ArgumentOutOfRangeError } from 'rxjs';
 
 /** @test {ArgumentOutOfRangeError} */
 describe('ArgumentOutOfRangeError', () => {

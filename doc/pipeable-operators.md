@@ -1,6 +1,6 @@
 # Pipeable Operators
 
-Starting in version 5.5 we have shipped "pipeable operators", which can be accessed in `rxjs/operators` (notice the pluralized "operators"). These are meant to be a better approach for pulling in just the operators you need than the "patch" operators found in `rxjs-compat` package.
+Starting in version 5.5 we have shipped "pipeable operators", which can be accessed in `rxjs/operators` (notice the pluralized "operators").
 
 **NOTE**: Using `rxjs` or `rxjs/operators` without making changes to your build process can result in larger bundles. See [Known Issues](#known-issues) section below.
 
@@ -142,7 +142,7 @@ In order to use the new pipeable operators and not gain bundle size, you will ne
 
 Published along with rxjs 5.5 is builds of rxjs in ECMAScript Module format (imports and exports) with both ES5 and ES2015 language level. You can find these distributions in `node_modules/rxjs/_esm5` and `node_modules/rxjs/_esm2015` ("esm" stands for ECMAScript Modules and the number "5" or "2015" is for the ES language level). In your application source code, you should import from `rxjs/operators`, but in your Webpack configuration file you will need to re-map imports to the ESM5 (or ESM2015) version.
 
-If you `require('rxjs/_esm5/path-mapping')`, you will receive a function that returns an object of key-value pairs mapping each input to it's file location on disk. Utilize this mapping as follows:
+If you `require('rxjs/_esm5/path-mapping')`, you will receive a function that returns an object of key-value pairs mapping each input to its file location on disk. Utilize this mapping as follows:
 
 **webpack.config.js**
 

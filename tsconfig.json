@@ -1,13 +1,34 @@
 {
-  "extends": "./tsconfig.base.json",
   "compilerOptions": {
+    "incremental": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "strictFunctionTypes": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "moduleResolution": "node",
+    "stripInternal": false,
+    "noEmit": true,
+    "lib": [
+      "es5",
+      "es2018",
+      "dom"
+    ],
     "baseUrl": ".",
     "paths": {
-      "rxjs": ["./src"],
-      "rxjs/*": ["./src/*", "./legacy-reexport/*"],
-      "rxjs-compat": ["./compat/index"],
-      "rxjs-compat/*": ["./compat/*"]
+      "rxjs": ["./src/index"],
+      "rxjs/operators": ["./src/operators/index"],
+      "rxjs/testing": ["./src/testing/index"],
+      "rxjs/ajax": ["./src/ajax/index"],
+      "rxjs/webSocket": ["./src/webSocket/index"],
+      "rxjs/fetch": ["./src/fetch/index"],
+      "rxjs/internal/*": ["./src/internal/*"]
     }
   },
-  "exclude": ["./dist", "./dist-compat"]
+  "bazelOptions": {
+    "suppressTsconfigOverrideWarnings": true
+  }
 }

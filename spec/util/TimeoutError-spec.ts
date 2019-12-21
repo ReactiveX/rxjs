@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { TimeoutError } from 'rxjs/util/TimeoutError';
+import { TimeoutError } from 'rxjs';
 
 /** @test {TimeoutError} */
 describe('TimeoutError', () => {

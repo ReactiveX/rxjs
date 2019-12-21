@@ -103,10 +103,16 @@ export class MergeScanSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   private _innerSub(ish: any, value: T, index: number): void {
-    const innerSubscriber = new InnerSubscriber(this, undefined, undefined);
+    const innerSubscriber = new InnerSubscriber(this, value, index);
     const destination = this.destination as Subscription;
     destination.add(innerSubscriber);
-    subscribeToResult<T, R>(this, ish, value, index, innerSubscriber);
+    const innerSubscription = subscribeToResult<T, R>(this, ish, undefined, undefined, innerSubscriber);
+    // The returned subscription will usually be the subscriber that was
+    // passed. However, interop subscribers will be wrapped and for
+    // unsubscriptions to chain correctly, the wrapper needs to be added, too.
+    if (innerSubscription !== innerSubscriber) {
+      destination.add(innerSubscription);
+    }
   }
 
   protected _complete(): void {

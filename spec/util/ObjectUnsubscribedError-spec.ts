@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { ObjectUnsubscribedError } from 'rxjs/util/ObjectUnsubscribedError';
+import { ObjectUnsubscribedError } from 'rxjs';
 
 /** @test {ObjectUnsubscribedError} */
 describe('ObjectUnsubscribedError', () => {

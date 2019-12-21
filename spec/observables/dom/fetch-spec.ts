@@ -10,11 +10,15 @@ function mockFetchImpl(input: string | Request, init?: RequestInit): Promise<Res
   (mockFetchImpl as MockFetch).calls.push({ input, init });
   return new Promise<any>((resolve, reject) => {
     if (init.signal) {
+      if (init.signal.aborted) {
+        reject(new MockDOMException());
+        return;
+      }
       init.signal.addEventListener('abort', () => {
         reject(new MockDOMException());
       });
     }
-    return Promise.resolve(null).then(() => {
+    Promise.resolve(null).then(() => {
       resolve((mockFetchImpl as any).respondWith);
     });
   });
@@ -173,13 +177,23 @@ describe('fromFetch', () => {
   });
 
   it('should allow passing of init object', done => {
-    const myInit = {};
-    const fetch$ = fromFetch('/foo', myInit);
+    const fetch$ = fromFetch('/foo', {method: 'HEAD'});
     fetch$.subscribe({
       error: done,
       complete: done,
     });
-    expect(mockFetch.calls[0].init).to.equal(myInit);
+    expect(mockFetch.calls[0].init.method).to.equal('HEAD');
+  });
+
+  it('should pass in a signal with the init object without mutating the init', done => {
+    const myInit = {method: 'DELETE'};
+    const fetch$ = fromFetch('/bar', myInit);
+    fetch$.subscribe({
+      error: done,
+      complete: done,
+    });
+    expect(mockFetch.calls[0].init.method).to.equal(myInit.method);
+    expect(mockFetch.calls[0].init).not.to.equal(myInit);
     expect(mockFetch.calls[0].init.signal).not.to.be.undefined;
   });
 
@@ -194,6 +208,22 @@ describe('fromFetch', () => {
       }
     });
     controller.abort();
+    expect(mockFetch.calls[0].init.signal.aborted).to.be.true;
+    // The subscription will not be closed until the error fires when the promise resolves.
+    expect(subscription.closed).to.be.false;
+  });
+
+  it('should treat passed already aborted signals as a cancellation token which triggers an error', done => {
+    const controller = new MockAbortController();
+    controller.abort();
+    const signal = controller.signal as any;
+    const fetch$ = fromFetch('/foo', { signal });
+    const subscription = fetch$.subscribe({
+      error: err => {
+        expect(err).to.be.instanceof(MockDOMException);
+        done();
+      }
+    });
     expect(mockFetch.calls[0].init.signal.aborted).to.be.true;
     // The subscription will not be closed until the error fires when the promise resolves.
     expect(subscription.closed).to.be.false;
