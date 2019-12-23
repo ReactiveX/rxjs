@@ -41,7 +41,7 @@ export function race(...observables: ObservableInput<any>[]): Observable<unknown
  * source observable.
  *
  * If one of the used source observable throws an errors before a first notification
- * the race operator will also also throw an error, no matter if another source observable
+ * the race operator will also throw an error, no matter if another source observable
  * could potentially win the race.
  *
  * `race` can be useful for selecting the response from the fastest network connection for
@@ -64,7 +64,7 @@ export function race(...observables: ObservableInput<any>[]): Observable<unknown
  *   winner => console.log(winner)
  * );
  *
- * // result:
+ * // Outputs
  * // a series of 'fast one'
  * ```
  *
