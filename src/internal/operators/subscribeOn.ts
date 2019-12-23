@@ -14,29 +14,48 @@ import { MonoTypeOperatorFunction, SchedulerLike, TeardownLogic } from '../types
  * ![](subscribeOn.png)
  *
  * ## Example
+ *
  * Given the following code:
- * ```javascript
+ *
+ * ```ts
  * import { of, merge } from 'rxjs';
  *
- * const a = of(1, 2, 3, 4);
- * const b = of(5, 6, 7, 8, 9);
+ * const a = of(1, 2, 3);
+ * const b = of(4, 5, 6);
+ *
  * merge(a, b).subscribe(console.log);
+ *
+ * // Outputs
+ * // 1
+ * // 2
+ * // 3
+ * // 4
+ * // 5
+ * // 6
  * ```
  *
  * Both Observable `a` and `b` will emit their values directly and synchronously once they are subscribed to.
- * This will result in the output of `1 2 3 4 5 6 7 8 9`.
  *
- * But if we instead us the `subscribeOn` operator declaring that we want to use the {@link asyncScheduler} for values emited by Observable `a`:
- * ```javascript
+ * If we instead use the `subscribeOn` operator declaring that we want to use the {@link asyncScheduler} for values emited by Observable `a`:
+ *
+ * ```ts
  * import { of, merge, asyncScheduler } from 'rxjs';
  * import { subscribeOn } from 'rxjs/operators';
  *
- * const a = of(1, 2, 3, 4).pipe(subscribeOn(asyncScheduler));
- * const b = of(5, 6, 7, 8, 9);
+ * const a = of(1, 2, 3).pipe(subscribeOn(asyncScheduler));
+ * const b = of(4, 5, 6);
+ *
  * merge(a, b).subscribe(console.log);
+ *
+ * // Outputs
+ * // 4
+ * // 5
+ * // 6
+ * // 1
+ * // 2
+ * // 3
  * ```
  *
- * The output will instead be `5 6 7 8 9 1 2 3 4`.
  * The reason for this is that Observable `b` emits its values directly and synchronously like before
  * but the emissions from `a` are scheduled on the event loop because we are now using the {@link asyncScheduler} for that specific Observable.
  *
