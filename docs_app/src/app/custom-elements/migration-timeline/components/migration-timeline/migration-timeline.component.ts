@@ -1,6 +1,7 @@
 import {Component, Input, Output} from '@angular/core';
 import {Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {environment} from '../../../../../environments/environment';
 import {ClientMigrationTimelineReleaseItem} from '../../data-access/migration-timeline.interface';
 import {parseMigrationReleaseUIDFromString} from '../../utils/formatter-parser';
 import {disposeEvent} from '../../utils/general';
@@ -68,6 +69,13 @@ export interface MigrationTimelineComponentViewBaseModel {
             [ngClass]="{selected: vm.selectedMigrationItemUID === deprecation.migrationItemUID}">
             <mat-card-header [id]="deprecation.migrationItemSubjectUID" class="migration-headline">
               <mat-card-title>
+                <!-- @TODO discuss or remove -->
+                <mat-icon
+                  *ngIf="!env.production"
+                  copy-to-clipboard
+                  aria-hidden="false" aria-label="Deprecation message for source code">
+                  content_copy
+                </mat-icon>
                 <code>{{deprecation.subject}}</code> is deprecated {{deprecation.deprecationMsgCode}}
               </mat-card-title>
             </mat-card-header>
@@ -133,7 +141,7 @@ export interface MigrationTimelineComponentViewBaseModel {
     </mat-accordion>`
 })
 export class MigrationTimelineComponent extends LocalState<MigrationTimelineComponentViewBaseModel> {
-
+  env = environment;
   disposeEvent = disposeEvent;
 
   @Input()
