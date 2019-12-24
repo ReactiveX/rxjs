@@ -22,6 +22,7 @@ import {ReleaseNavigationComponent} from './components/release-navigation.compon
 import {MigrationTimelineService} from './data-access/migration-timeline.service';
 import {MigrationTimelineContainerComponent} from './migration-timeline.container.component';
 import { MissingInformationComponent } from './components/migration-timeline/missing-information.component';
+import { CopyToClipboardDirective } from './components/copy-to-clipboard.directive';
 
 export const baseURL = 'migration-timeline';
 
@@ -41,7 +42,7 @@ export const baseURL = 'migration-timeline';
     MigrationTimelineContainerComponent,
     MigrationTimelineComponent, DeprecationDescriptionTableComponent,
     BreakingChangeDescriptionTableComponent, MissingInformationComponent,
-    FilterFormComponent,
+    CopyToClipboardDirective, FilterFormComponent,
     ReleaseNavigationComponent,
     // @TODO remove after clarification
     MsgFormatDecisionHelperComponent
