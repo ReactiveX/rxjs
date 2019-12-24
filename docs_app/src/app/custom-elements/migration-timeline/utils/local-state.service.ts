@@ -218,7 +218,10 @@ export class LocalState<T> implements OnDestroy {
     } else if (!this.isOperateFnArray(opOrMapFn)) {
       const [path] = opOrMapFn;
       return this._state$.pipe(
-        map((x: T) => x[path]),
+        map((x: T) =>  {
+          // @ts-ignore
+          return x[path]
+        }),
         filter(v => v !== undefined),
         distinctUntilChanged(),
         shareReplay(1)

@@ -63,7 +63,7 @@ export class MigrationTimelineService extends LocalState<MigrationTimelineState>
   }
 
   private _parseToMigrationItemUIDAware<T>(version: string) {
-    return (item) => {
+    return (item: any) => {
         const awareItem: T & MigrationItemUIDAware = {
           ...item,
           migrationReleaseUID: formatSemVerNumber(version) + '',
