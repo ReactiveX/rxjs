@@ -3,7 +3,7 @@
 description: semver as object
   type: string
 */
-  export interface SemVerObj {
+export interface SemVerObj {
   major: number,
   minor: number,
   patch: number,
@@ -42,6 +42,7 @@ This information is a subset from the information from the [API explorer](https:
 export enum ApiSymbols {
   all = 'all',
   argument = 'argument',
+  property = 'property',
   class = 'class',
   interface = 'interface',
   function = 'function',
@@ -74,6 +75,23 @@ type: TimeLineTypes
 
 @field subject
 description: subject of migration. What piece is effected?
+@TODO consider this!
+Subjects are things that components and things that are leafs
+- class
+  - method
+    - argument
+    - constant
+    - var
+    - let
+  - property
+- functions
+  - argument
+  - constant
+  - var
+  - let
+- constant
+- var
+- let
 type: string
 Examples:
 - TestScheduler
@@ -83,6 +101,7 @@ Examples:
 
 @field subjectApiSymbol
 description: type of ApiSymbols
+For `ApiSymbols.property` and `ApiSymbols.property`
 type: ApiSymbols
 
 @field subjectAction
@@ -166,7 +185,14 @@ in a detailed way to help the user to spot the differences in code.
 type: string
 
 @field exampleBefore
-description: Code example showing the situation before the deprecation
+description: Code example showing the situation before the deprecation.
+Consider following guide lines:
+- No '$' notation
+- One line between imports asn code
+- const source ... => ... source.subscribe(next: n => console.log(n));
+- It has to work in StackBlitz in the right version
+- Code should log a result
+
 type: string
 Pattern:
   <imports>
@@ -193,9 +219,7 @@ export interface Deprecation extends MigrationItemSubjectUIDFields {
   deprecationMsgCode: string;
   reason: string;
   implication: string;
-  // @TODO How to handle dependencies to other libs in stackblitz?
   exampleBefore: string;
-  // @TODO How to handle dependencies to other libs in stackblitz?
   exampleAfter: string;
 }
 

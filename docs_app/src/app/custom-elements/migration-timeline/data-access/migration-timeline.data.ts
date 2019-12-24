@@ -14,6 +14,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     version: '6.0.0-alpha.3',
     date: '2018-02-09T17:06:57.961Z',
     deprecations: [
+      /*@NOTE Deprecation not documented*/
       {
         subject: 'last',
         subjectApiSymbol: ApiSymbols.argument,
@@ -22,25 +23,29 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3/src/internal/operators/last.ts#L12',
         breakingChangeVersion: '6.0.0-alpha.4',
         breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getGeneralOperatorResultSelectorHeadlinePhrase('last'),
-        reason: getGeneralStaticResultSelectorReasonPhrase('last'),
-        implication: getResultSelectorGeneralImplication('last'),
+        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('last'),
+        reason: getResultSelectorReason('last'),
+        implication: getCreationResultSelectorImplication('last'),
         exampleBefore: `
-        import { last } from 'rxjs/operators';
-        a$
-        .pipe(
-          last(1, (n, i) => n))
-        )
-          .subscribe({next: n => console.log(n)})
+        import { Observable } from 'rxjs';
+        import { last } from 'rxjs/operator';
+
+        const resultSelector = (n, i) => n;
+        const source = Observable.of(1,2,3)
+            .last((n) => n > 0, resultSelector);
+        source.subscribe((n) => console.log(n));
         `,
         exampleAfter: `
+        import { Observable, of } from 'rxjs';
         import { last, map } from 'rxjs/operators';
-        a$
+
+        const resultSelector = (n, i) => n;
+        const source = of(1,2,3)
         .pipe(
-          last(1),
-          map((n, i) => n))
-        )
-          .subscribe({next: n => console.log(n)});
+          last((n) => n > 0),
+          map(resultSelector)
+        );
+        source.subscribe((n) => console.log(n));
         `
       },
       {
@@ -51,25 +56,29 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3/src/internal/operators/first.ts#L18',
         breakingChangeVersion: '6.0.0-alpha.4',
         breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getGeneralOperatorResultSelectorHeadlinePhrase('first'),
-        reason: getGeneralStaticResultSelectorReasonPhrase('first'),
-        implication: getResultSelectorGeneralImplication('first'),
+        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('first'),
+        reason: getResultSelectorReason('first'),
+        implication: getCreationResultSelectorImplication('first'),
         exampleBefore: `
-        import { first } from 'rxjs/operators';
-        a$
-        .pipe(
-          first((n, i) => n))
-        )
-          .subscribe({next: n => console.log(n)})
+        import { Observable } from 'rxjs';
+        import { first } from 'rxjs/operator';
+
+        const resultSelector = (n, i) => n;
+        const source = Observable.of(1,2,3)
+            .first((n) => n > 0, resultSelector);
+        source.subscribe((n) => console.log(n));
         `,
         exampleAfter: `
+        import { Observable, of } from 'rxjs';
         import { first, map } from 'rxjs/operators';
-        a$
+
+        const resultSelector = (n, i) => n;
+        const source = of(1,2,3)
         .pipe(
-          first(),
-          map((n, i) => n))
-        )
-          .subscribe({next: n => console.log(n)});
+          last((n) => n > 0),
+          map(resultSelector)
+        );
+        source.subscribe((n) => console.log(n));
         `
       }
     ],
@@ -87,7 +96,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-alpha.3',
         deprecationSubjectAction: 'resultSelector',
-        breakingChangeMsg: getResultSelectorGeneralBreakingChangeMsg('last')
+        breakingChangeMsg: getResultSelectorBreakingChangeMsg('last')
       },
       {
         subject: 'first',
@@ -96,7 +105,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-alpha.3',
         deprecationSubjectAction: 'resultSelector',
-        breakingChangeMsg: getResultSelectorGeneralBreakingChangeMsg('first')
+        breakingChangeMsg: getResultSelectorBreakingChangeMsg('first')
       }
     ]
   },
@@ -113,15 +122,19 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'removed',
         deprecationMsgCode: 'use the NEVER constant instead',
-        reason: 'Deprecated because it is more efficient?',
-        implication: '@TODO',
+        reason: getFunctionToStaticReason('never'),
+        implication: getFunctionToStaticImplication('never', 'NEVER'),
         exampleBefore: `
-          import { never } from 'rxjs';
-          never();
+        import { never } from 'rxjs';
+
+        const source = never();
+        source.subscribe((n) => console.log(n));
         `,
         exampleAfter: `
-          import { NEVER } from 'rxjs';
-          NEVER;
+        import { NEVER } from 'rxjs';
+
+        const source = NEVER;
+        source.subscribe((n) => console.log(n));
         `
       },
       {
@@ -130,18 +143,22 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         subjectAction: 'deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-beta.4/src/internal/observable/empty.ts#L52',
-        breakingChangeVersion: '7',
+        breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'removed',
-        deprecationMsgCode: 'use the EMPTY constant or scheduled([], scheduler) instead',
-        reason: 'Deprecated because it is more efficient? Some more text here... Some more text here... Some more text here...',
-        implication: 'Replacing `empty` with `EMPTY`',
+        deprecationMsgCode: 'use the EMPTY constant instead',
+        reason: getFunctionToStaticReason('empty'),
+        implication: getFunctionToStaticImplication('empty', 'EMPTY'),
         exampleBefore: `
           import { empty } from 'rxjs';
-          empty();
+
+          const source = empty();
+          source.subscribe((n) => console.log(n));
         `,
         exampleAfter: `
           import {EMPTY} from 'rxjs';
-          EMPTY;
+
+          const source = EMPTY;
+          source.subscribe((n) => console.log(n));
         `
       },
       {
@@ -191,20 +208,26 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/combineLatest.ts#L42',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'removed',
-        deprecationMsgCode: getGeneralFlatteningHeadlinePhrase('combineLatest'),
-        reason: getGeneralFlatteningReasonPhrase('combineLatest'),
-        implication: '@!TODO',
+        deprecationMsgCode: getNameDupleOperatorDeprecationMsgCode('combineLatest'),
+        reason: getNameDupleOperatorReason('combineLatest'),
+        implication: getNameDupleOperatorImplication('combineLatest', 'combineLatest'),
         exampleBefore: `
+        import { of } from 'rxjs';
         import { combineLatest } from 'rxjs/operators';
-        a$.pipe(
-            combineLatest(b$)
-          )
-          .subscribe({next: n => console.log(n)});
+
+        const a = of('1');
+        const b = of('2');
+        const source = a
+          .pipe(combineLatest(b));
+        source.subscribe(n => console.log(n));
         `,
         exampleAfter: `
-        import { combineLatest } from 'rxjs/operators';
-        combineLatest(a$, b$)
-          .subscribe({next: n => console.log(n)})
+          import { of, combineLatest } from 'rxjs';
+
+          const a = of('1');
+          const b = of('2');
+          const source = combineLatest(a, b);
+          source.subscribe(n => console.log(n));
         `
       },
       {
@@ -215,21 +238,26 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/merge.ts#L37',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'removed',
-        deprecationMsgCode: getGeneralFlatteningHeadlinePhrase('merge'),
-        reason: getGeneralFlatteningReasonPhrase('merge'),
-        implication: '@!TODO',
+        deprecationMsgCode: getNameDupleOperatorDeprecationMsgCode('merge'),
+        reason: getNameDupleOperatorReason('merge'),
+        implication: getNameDupleOperatorImplication('merge', 'merge'),
         exampleBefore: `
+        import { of } from 'rxjs';
         import { merge } from 'rxjs/operators';
-        a$
-          .pipe(
-            merge(b$)
-          )
-          .subscribe({next: n => console.log(n)});
+
+        const a = of('1');
+        const b = of('2');
+        const source = a
+          .pipe(merge(b));
+        source.subscribe(n => console.log(n));
         `,
         exampleAfter: `
-        import { merge } from 'rxjs/operators';
-        merge(a$, b$)
-          .subscribe({next: n => console.log(n)});
+          import { of, merge } from 'rxjs';
+
+          const a = of('1');
+          const b = of('2');
+          const source = merge(a, b);
+          source.subscribe(n => console.log(n));
         `
       },
       {
@@ -240,21 +268,26 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/zip.ts#L37',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'removed',
-        deprecationMsgCode: getGeneralFlatteningHeadlinePhrase('zip'),
-        reason: getGeneralFlatteningReasonPhrase('zip'),
-        implication: '@!TODO',
+        deprecationMsgCode: getNameDupleOperatorDeprecationMsgCode('zip'),
+        reason: getNameDupleOperatorReason('zip'),
+        implication: getNameDupleOperatorImplication('zip', 'zip'),
         exampleBefore: `
+        import { of } from 'rxjs';
         import { zip } from 'rxjs/operators';
-        a$
-          .pipe(
-            zip(b$)
-          )
-          .subscribe({next: n => console.log(n)})
+
+        const a = of('1');
+        const b = of('2');
+        const source = a
+          .pipe(zip(b));
+        source.subscribe(n => console.log(n));
         `,
         exampleAfter: `
-        import { zip } from 'rxjs/operators';
-        zip(a$, b$)
-          .subscribe({next: n => console.log(n)});
+          import { of, zip } from 'rxjs';
+
+          const a = of('1');
+          const b = of('2');
+          const source = zip(a, b);
+          source.subscribe(n => console.log(n));
         `
       },
       {
@@ -265,21 +298,26 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/concat.ts#L25',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'removed',
-        deprecationMsgCode: getGeneralFlatteningHeadlinePhrase('concat'),
-        reason: getGeneralFlatteningReasonPhrase('concat'),
-        implication: '@!TODO',
+        deprecationMsgCode: getNameDupleOperatorDeprecationMsgCode('concat'),
+        reason: getNameDupleOperatorReason('concat'),
+        implication: getNameDupleOperatorImplication('concat', 'concat'),
         exampleBefore: `
+        import { of } from 'rxjs';
         import { concat } from 'rxjs/operators';
-        a$
-          .pipe(
-            concat(b$, )
-          )
-          .subscribe({next: n => console.log(n)});
+
+        const a = of('1');
+        const b = of('2');
+        const source = a
+          .pipe(concat(b));
+        source.subscribe(n => console.log(n));
         `,
         exampleAfter: `
-        import { concat } from 'rxjs/operators';
-        concat(a$, b$)
-          .subscribe({next: n => console.log(n)});
+          import { of, concat } from 'rxjs';
+
+          const a = of('1');
+          const b = of('2');
+          const source = concat(a, b);
+          source.subscribe(n => console.log(n));
         `
       },
       {
@@ -290,9 +328,9 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: `https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/zip.ts#L37`,
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getGeneralStaticResultSelectorHeadlinePhrase('zip'),
-        reason: getGeneralStaticResultSelectorReasonPhrase('zip'),
-        implication: getResultSelectorGeneralImplication('zip'),
+        deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('zip'),
+        reason: getResultSelectorReason('zip'),
+        implication: getCreationResultSelectorImplication('zip'),
         exampleBefore: `
         import { zip } from 'rxjs';
         zip(a$,b$, resultSelector)
@@ -315,9 +353,9 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/fromEventPattern.ts#L9',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getGeneralStaticResultSelectorHeadlinePhrase('fromEventPattern'),
-        reason: getGeneralStaticResultSelectorReasonPhrase('fromEventPattern'),
-        implication: getResultSelectorGeneralImplication('fromEventPattern'),
+        deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('fromEventPattern'),
+        reason: getResultSelectorReason('fromEventPattern'),
+        implication: getCreationResultSelectorImplication('fromEventPattern'),
         exampleBefore: `
         import { fromEventPattern } from 'rxjs';
         fromEventPattern(addHandler, removeHandler, resultSelector)
@@ -341,9 +379,9 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/bindNodeCallback.ts#L10',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getGeneralStaticResultSelectorHeadlinePhrase('bindNodeCallback'),
-        reason: getGeneralStaticResultSelectorReasonPhrase('bindNodeCallback'),
-        implication: getResultSelectorGeneralImplication('bindNodeCallback'),
+        deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('bindNodeCallback'),
+        reason: getResultSelectorReason('bindNodeCallback'),
+        implication: getCreationResultSelectorImplication('bindNodeCallback'),
         exampleBefore: `
         import { bindNodeCallback } from 'rxjs';
         bindNodeCallback(callBackFunc, resultSelector)
@@ -367,9 +405,9 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/bindCallback.ts#L10',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getGeneralStaticResultSelectorHeadlinePhrase('bindCallback'),
-        reason: getGeneralStaticResultSelectorReasonPhrase('bindCallback'),
-        implication: getResultSelectorGeneralImplication('bindCallback'),
+        deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('bindCallback'),
+        reason: getResultSelectorReason('bindCallback'),
+        implication: getCreationResultSelectorImplication('bindCallback'),
         exampleBefore: `
         import { bindCallback } from 'rxjs';
         bindCallback(callBackFunc, resultSelector)
@@ -393,9 +431,9 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/forkJoin.ts#L29',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getGeneralStaticResultSelectorHeadlinePhrase('forkJoin'),
-        reason: getGeneralStaticResultSelectorReasonPhrase('forkJoin'),
-        implication: getResultSelectorGeneralImplication('forkJoin'),
+        deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('forkJoin'),
+        reason: getResultSelectorReason('forkJoin'),
+        implication: getCreationResultSelectorImplication('forkJoin'),
         exampleBefore: `
         import { forkJoin } from 'rxjs';
         forkJoin(a$, b$, resultSelector)
@@ -428,9 +466,9 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/fromEvent.ts#L32',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getGeneralStaticResultSelectorHeadlinePhrase('fromEvent'),
-        reason: getGeneralStaticResultSelectorReasonPhrase('fromEvent'),
-        implication: getResultSelectorGeneralImplication('fromEvent'),
+        deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('fromEvent'),
+        reason: getResultSelectorReason('fromEvent'),
+        implication: getCreationResultSelectorImplication('fromEvent'),
         exampleBefore: `
         import { fromEvent } from 'rxjs';
         fromEvent(element, eventName, resultSelector)
@@ -454,9 +492,9 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/switchMap.ts#L16',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getGeneralOperatorResultSelectorHeadlinePhrase('switchMap'),
-        reason: getGeneralStaticResultSelectorReasonPhrase('switchMap'),
-        implication: getResultSelectorGeneralImplication('switchMap'),
+        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('switchMap'),
+        reason: getResultSelectorReason('switchMap'),
+        implication: getCreationResultSelectorImplication('switchMap'),
         exampleBefore: `
         import { switchMap } from 'rxjs/operators';
         a$
@@ -484,9 +522,9 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/switchMapTo.ts#L15',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getGeneralOperatorResultSelectorHeadlinePhrase('switchMapTo'),
-        reason: getGeneralStaticResultSelectorReasonPhrase('switchMapTo'),
-        implication: getResultSelectorGeneralImplication('switchMapTo'),
+        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('switchMapTo'),
+        reason: getResultSelectorReason('switchMapTo'),
+        implication: getCreationResultSelectorImplication('switchMapTo'),
         exampleBefore: `
         import { switchMapTo } from 'rxjs/operators';
         a$
@@ -514,9 +552,9 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/concatMap.ts#L8',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getGeneralOperatorResultSelectorHeadlinePhrase('concatMap'),
-        reason: getGeneralStaticResultSelectorReasonPhrase('concatMap'),
-        implication: getResultSelectorGeneralImplication('concatMap'),
+        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('concatMap'),
+        reason: getResultSelectorReason('concatMap'),
+        implication: getCreationResultSelectorImplication('concatMap'),
         exampleBefore: `
         import { concatMap } from 'rxjs/operators';
         a$
@@ -544,9 +582,9 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/concatMapTo.ts#L8',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getGeneralOperatorResultSelectorHeadlinePhrase('concatMapTo'),
-        reason: getGeneralStaticResultSelectorReasonPhrase('concatMapTo'),
-        implication: getResultSelectorGeneralImplication('concatMapTo'),
+        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('concatMapTo'),
+        reason: getResultSelectorReason('concatMapTo'),
+        implication: getCreationResultSelectorImplication('concatMapTo'),
         exampleBefore: `
         import { concatMapTo } from 'rxjs/operators';
         a$
@@ -574,9 +612,9 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/mergeMap.ts#L16',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getGeneralOperatorResultSelectorHeadlinePhrase('mergeMap'),
-        reason: getGeneralStaticResultSelectorReasonPhrase('mergeMap'),
-        implication: getResultSelectorGeneralImplication('mergeMap'),
+        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('mergeMap'),
+        reason: getResultSelectorReason('mergeMap'),
+        implication: getCreationResultSelectorImplication('mergeMap'),
         exampleBefore: `
         import { mergeMap } from 'rxjs/operators';
         a$
@@ -604,9 +642,9 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/mergeMapTo.ts#L8',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getGeneralOperatorResultSelectorHeadlinePhrase('mergeMapTo'),
-        reason: getGeneralStaticResultSelectorReasonPhrase('mergeMapTo'),
-        implication: getResultSelectorGeneralImplication('mergeMapTo'),
+        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('mergeMapTo'),
+        reason: getResultSelectorReason('mergeMapTo'),
+        implication: getCreationResultSelectorImplication('mergeMapTo'),
         exampleBefore: `
         import { mergeMapTo } from 'rxjs/operators';
         a$
@@ -634,9 +672,9 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/exhaustMap.ts#L16',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getGeneralOperatorResultSelectorHeadlinePhrase('exhaustMap'),
-        reason: getGeneralStaticResultSelectorReasonPhrase('exhaustMap'),
-        implication: getResultSelectorGeneralImplication('exhaustMap'),
+        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('exhaustMap'),
+        reason: getResultSelectorReason('exhaustMap'),
+        implication: getCreationResultSelectorImplication('exhaustMap'),
         exampleBefore: `
         import { exhaustMap } from 'rxjs/operators';
         a$
@@ -824,28 +862,28 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     breakingChanges: []
   },
   {
-    version: '6.3.0',
-    date: '2018-08-30T14:49:17.765Z',
+    version: '6.1.0',
+    date: '2018-05-03T18:15:54.101Z',
     deprecations: [
       {
         subject: 'ObservableLike',
         subjectApiSymbol: ApiSymbols.interface,
         subjectAction: 'deprecated',
         itemType: 'deprecation',
-        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.3.0/src/internal/types.ts#L48',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.1.0/src/internal/types.ts#L49',
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'removed',
         deprecationMsgCode: 'use InteropObservable instead',
         reason: `This interface is only here to provide
-         the [observable symbol](https://github.com/ReactiveX/rxjs/blob/6.5.3/src/internal/types.ts#L57)`,
-        implication: '@!TODO',
+         the 'Symbol.observable' and therefore internal.`,
+        implication: 'The deprecation of ObservableLike means the user have to use InteropObservable instead.',
         exampleBefore: `
         import { ObservableLike } from 'rxjs';
-        let o: ObservableLike;
+        let o: ObservableLike<number>;
         `,
         exampleAfter: `
         import { InteropObservable } from 'rxjs';
-        let o: InteropObservable;
+        let o: InteropObservable<number>;
         `
       }
     ],
@@ -1158,18 +1196,28 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/of.ts#L29',
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'scheduler-removed',
-        deprecationMsgCode: getOperatorGeneralSchedulerArgumentDeprecationPhrase(),
+        deprecationMsgCode: getCreationGeneralSchedulerArgumentDeprecationPhrase(),
         reason: getSchedulerArgumentGeneralReason(),
-        implication: getOperatorSchedulerGeneralImplication('of'),
+        implication: getCreationSchedulerGeneralImplication('of'),
         exampleBefore: `
         import { of, asyncScheduler } from 'rxjs';
-        of(777, asyncScheduler)
-          .subscribe({next: (n) => { console.log(a); } });
+
+        const a = of('1', asyncScheduler);
+        const source = a;
+        source.subscribe((n) => console.log(n));
+        console.log('logs before observer');
         `,
         exampleAfter: `
-        import { scheduled, asyncScheduler } from 'rxjs';
-        scheduled([777], asyncScheduler)
-          .subscribe({next: (n) => { console.log(a); } });
+        import { of, asyncScheduler } from 'rxjs';
+        import { observeOn } from 'rxjs/operators';
+
+        const a = of('1');
+        const source = a
+        .pipe(
+          observeOn(asyncScheduler)
+        );
+        source.subscribe((n) => console.log(n));
+        console.log('logs before observer');
         `
       },
       {
@@ -1180,19 +1228,30 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         itemType: 'deprecation',
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'scheduler-removed',
-        deprecationMsgCode: getOperatorGeneralSchedulerArgumentDeprecationPhrase(),
-        reason: 'The scheduling API is heavy and rarely used. Therefor it will get released as a separate package.' +
-          'If you used `combineLatest` with a scheduler argument, you can use {@link scheduled} instead.',
-        implication: '@!TODO',
+        deprecationMsgCode: getCreationGeneralSchedulerArgumentDeprecationPhrase(),
+        reason: getSchedulerArgumentGeneralReason(),
+        implication: getCreationSchedulerGeneralImplication('combineLatest'),
         exampleBefore: `
-        import { combineLatest, asyncScheduler } from 'rxjs';
-        combineLatest(a$, b$, asyncScheduler)
-          .subscribe({next: (n) => { console.log(a); } });
+        import { of, combineLatest, asyncScheduler } from 'rxjs';
+
+        const a = of('1');
+        const b = of('2');
+        const source = combineLatest(a, b, asyncScheduler);
+        source.subscribe((n) => console.log(n));
+        console.log('logs before observer');
         `,
         exampleAfter: `
-        import { scheduled, asyncScheduler } from 'rxjs';
-        scheduled([a$, b$], asyncScheduler)
-          .subscribe({next: (n) => { console.log(a); } });
+        import { of, combineLatest, asyncScheduler } from 'rxjs';
+        import { observeOn } from 'rxjs/operators';
+
+        const a = of('1');
+        const b = of('2');
+        const source = combineLatest(a, b)
+        .pipe(
+          observeOn(asyncScheduler)
+        );
+        source.subscribe((n) => console.log(n));
+        console.log('logs before observer');
         `
       },
       {
@@ -1203,9 +1262,9 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/combineLatest.ts#L43',
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getGeneralStaticResultSelectorHeadlinePhrase('combineLatest'),
-        reason: getGeneralStaticResultSelectorReasonPhrase('combineLatest'),
-        implication: getResultSelectorGeneralImplication('combineLatest'),
+        deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('combineLatest'),
+        reason: getResultSelectorReason('combineLatest'),
+        implication: getCreationResultSelectorImplication('combineLatest'),
         exampleBefore: `
         import { combineLatest } from 'rxjs';
         combineLatest([a$,b$], resultSelector)
@@ -1341,24 +1400,30 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/observable/concat.ts#L17',
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'scheduler-removed',
-        deprecationMsgCode: getStaticGeneralSchedulerArgumentDeprecationPhrase('concatAll'),
+        deprecationMsgCode: getCreationGeneralSchedulerArgumentDeprecationPhrase(),
         reason: getSchedulerArgumentGeneralReason(),
-        implication: '',
+        implication: getCreationSchedulerGeneralImplication('concat'),
         exampleBefore: `
-        import { concat, asyncScheduler } from 'rxjs';
+        import { of, concat, asyncScheduler } from 'rxjs';
 
-        concat(a$, b$)
-          .subscribe({ next: (n) => console.log(n) });
+        const a = of('1');
+        const b = of('2');
+        const source = concat(a, b, asyncScheduler);
+        source.subscribe((n) => console.log(n));
+        console.log('logs before observer');
         `,
         exampleAfter: `
-        import { scheduled, asyncScheduler } from 'rxjs';
-        import { concatAll } from 'rxjs/operators';
+        import { of, concat, asyncScheduler } from 'rxjs';
+        import { observeOn } from 'rxjs/operators';
 
-        scheduled([a$, b$], asyncScheduler)
-          .pipe(
-            concatAll()
-          )
-          .subscribe({ next: (n) => console.log(n) });
+        const a = of('1');
+        const b = of('2');
+        const source = concat(a, b)
+        .pipe(
+          observeOn(asyncScheduler)
+        );
+        source.subscribe((n) => console.log(n));
+        console.log('logs before observer');
         `
       },
       {
@@ -1391,18 +1456,26 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/observable/of.ts#L29',
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'scheduler-removed',
-        deprecationMsgCode: getStaticGeneralSchedulerArgumentDeprecationPhrase('of'),
+        deprecationMsgCode: getCreationGeneralSchedulerArgumentDeprecationPhrase(),
         reason: getSchedulerArgumentGeneralReason(),
-        implication: '@!TODO',
+        implication: `For of, the removal of the scheduler parameter means that if callers
+         want notifications to be scheduled, they will have to move the values
+         into the scheduled operator and apply the used scheduler there.`,
         exampleBefore: `
         import { of, asyncScheduler } from 'rxjs';
-        of(1, asyncScheduler)
-          .subscribe({ next: (n) => console.log(n) });
+
+        const a = of('1', asyncScheduler);
+        const source = a;
+        source.subscribe((n) => console.log(n));
+        console.log('logs before observer');
         `,
         exampleAfter: `
         import { scheduled, asyncScheduler } from 'rxjs';
-        scheduled([1], scheduler)
-          .subscribe({ next: (n) => console.log(n) });
+
+        const a = scheduled(['1'], asyncScheduler);
+        const source = a;
+        source.subscribe((n) => console.log(n));
+        console.log('logs before observer');
         `
       },
       {
@@ -1413,21 +1486,30 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/observable/merge.ts#L49',
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'scheduler-removed',
-        deprecationMsgCode: getStaticGeneralSchedulerArgumentDeprecationPhrase('merge'),
+        deprecationMsgCode: getCreationGeneralSchedulerArgumentDeprecationPhrase(),
         reason: getSchedulerArgumentGeneralReason(),
-        implication: '@!TODO',
+        implication: getCreationSchedulerGeneralImplication('merge'),
         exampleBefore: `
-        import { merge, asyncScheduler } from 'rxjs';
-        merge(a$, b$, asyncScheduler)
-          .subscribe({ next: (n) => console.log(n) });
-        import { scheduled, asyncScheduler } from 'rxjs';
+        import { of, merge, asyncScheduler } from 'rxjs';
+
+        const a = of('1');
+        const b = of('2');
+        const source = merge(a, b, asyncScheduler);
+        source.subscribe((n) => console.log(n));
+        console.log('logs before observer');
         `,
         exampleAfter: `
-        scheduled([a$, b$], scheduler)
-          .pipe(
-            mergeAll()
-          )
-          .subscribe({ next: (n) => console.log(n) });
+        import { of, merge, asyncScheduler } from 'rxjs';
+        import { observeOn } from 'rxjs/operators';
+
+        const a = of('1');
+        const b = of('2');
+        const source = merge(a, b)
+        .pipe(
+          observeOn(asyncScheduler)
+        );
+        source.subscribe((n) => console.log(n));
+        console.log('logs before observer');
         `
       },
       {
@@ -1438,29 +1520,29 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/operators/startWith.ts#L29',
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'scheduler-removed',
-        deprecationMsgCode: getStaticGeneralSchedulerArgumentDeprecationPhrase('concatAll'),
+        deprecationMsgCode: getOperatorGeneralSchedulerArgumentDeprecationPhrase('startWith', 'concatAll'),
         reason: getSchedulerArgumentGeneralReason(),
-        implication: '@!TODO',
+        implication: getOperatorSchedulerGeneralImplication('startWith'),
         exampleBefore: `
-        import { asyncScheduler } from 'rxjs';
-        import { startWith, map } from 'rxjs/operators';
+        import { of, asyncScheduler } from 'rxjs';
+        import { startWith } from 'rxjs/operators';
 
-        a$
+        const a = of('1');
+        const source = a
           .pipe(
-            map(v => !!v),
-            startsWith(false, asyncScheduler)
+            startWith(0, asyncScheduler)
           )
-          .subscribe({ next: (n) => console.log(n) });
-`,
+          .subscribe((n) => console.log(n));
+          console.log('logs before observer');
+        `,
         exampleAfter: `
-        import { asyncScheduler } from 'rxjs';
-        import { scheduled, map } from 'rxjs/operators';
+        import { of, scheduled, asyncScheduler } from 'rxjs';
+        import { concatAll } from 'rxjs/operators';
 
-        scheduled([of(false), a$.pipe(map(v => !!v))], asyncScheduler]
-          .pipe(
-            mergeAll()
-          )
-          .subscribe({ next: (n) => console.log(n) });
+        const a = of('1');
+        const source = concat(scheduled([0], asyncScheduler), a);
+        source.subscribe((n) => console.log(n));
+        console.log('logs before observer');
         `
       },
       {
@@ -1471,72 +1553,128 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/operators/endWith.ts#L29',
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'scheduler-removed',
-        deprecationMsgCode: getStaticGeneralSchedulerArgumentDeprecationPhrase('concatAll'),
+        deprecationMsgCode: getOperatorGeneralSchedulerArgumentDeprecationPhrase('endWith', 'concatAll'),
         reason: getSchedulerArgumentGeneralReason(),
-        implication: '@!TODO',
+        implication: getOperatorSchedulerGeneralImplication('endWith'),
         exampleBefore: `
-        import { asyncScheduler } from 'rxjs';
-        import { endWith, map } from 'rxjs/operators';
+        import { of, asyncScheduler } from 'rxjs';
+        import { endWith } from 'rxjs/operators';
 
-        a$
+        const a = of('1');
+        const source = a
           .pipe(
-            map(v => !!v),
-            endWith(false, asyncScheduler)
+            endWith(0, asyncScheduler)
           )
-          .subscribe({ next: (n) => console.log(n) });
+          .subscribe((n) => console.log(n));
+        console.log('logs before observer');
         `,
-        exampleAfter: `        import { asyncScheduler } from 'rxjs';
-        import { scheduled, map } from 'rxjs/operators';
+        exampleAfter: `
+        import { of, concat, scheduled, asyncScheduler } from 'rxjs';
+        import { concatAll } from 'rxjs/operators';
 
-        scheduled([a$.pipe(map(v => !!v)), of(false)], asyncScheduler]
-          .pipe(
-            mergeAll()
-          )
-          .subscribe({ next: (n) => console.log(n) });
-        \`\`\`
+        const a = of('1');
+        const source = concat(a, scheduled([0], asyncScheduler));
+        source.subscribe((n) => console.log(n));
+        console.log('logs before observer');
         `
       },
       {
         subject: 'TestScheduler',
-        subjectApiSymbol: ApiSymbols.class,
-        subjectAction: 'property-hotObservables',
+        subjectApiSymbol: ApiSymbols.property,
+        subjectAction: 'hotObservables-deprecated',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/testing/TestScheduler.ts#L39',
         itemType: 'deprecation',
         breakingChangeVersion: '8',
-        breakingChangeSubjectAction: 'property-hotObservables-to-private',
-        deprecationMsgCode: 'internal use only',
-        reason: '@TODO `TestScheduler` deprecates public `hotObservables` property and makes it protected as it is internal.',
-        implication: '@!TODO',
-        exampleBefore: `@TODO`,
-        exampleAfter: '@TODO'
+        breakingChangeSubjectAction: 'hotObservables-to-private',
+        deprecationMsgCode: 'it is meant to be used only internally',
+        reason: 'TestScheduler deprecates public hotObservables property and makes it protected as it is meant to be used only internally.',
+        implication: `The deprecation of the property hotObservables in TestScheduler means
+        the caller uses parts that should not be used outside.`,
+        exampleBefore: `
+        import { scheduled } from 'rxjs';
+        import { TestScheduler} from 'rxjs/testing';
+
+        const testScheduler = new TestScheduler((a, b) => a === b);
+        const a = scheduled([1], testScheduler);
+        const source = a
+        source.subscribe((n) => console.log(n));
+        console.log('Usage of internal hotObservables:', testScheduler.hotObservables);
+        console.log('logs only when flush');
+        testScheduler.flush();
+        `,
+        exampleAfter: `
+        import { scheduled } from 'rxjs';
+        import { TestScheduler} from 'rxjs/testing';
+
+        const testScheduler = new TestScheduler((a, b) => a === b);
+        const a = scheduled([1], testScheduler);
+        const source = a
+        source.subscribe((n) => console.log(n));
+
+        console.log('logs only when flush');
+        testScheduler.flush();
+        `
       },
       {
         subject: 'TestScheduler',
-        subjectApiSymbol: ApiSymbols.class,
-        subjectAction: 'property-coldObservables',
+        subjectApiSymbol: ApiSymbols.property,
+        subjectAction: 'coldObservables-deprecated',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/testing/TestScheduler.ts#L44',
         itemType: 'deprecation',
         breakingChangeVersion: '8',
-        breakingChangeSubjectAction: 'property-coldObservables-to-private',
-        deprecationMsgCode: 'internal use only',
-        reason: '@TODO `TestScheduler` deprecates public `coldObservables` property and makes it protected as it is and internal.',
-        implication: '@!TODO',
-        exampleBefore: '@TODO',
-        exampleAfter: '@TODO'
+        breakingChangeSubjectAction: 'coldObservables-to-private',
+        deprecationMsgCode: 'it is meant to be used only internally',
+        reason: `TestScheduler deprecates public coldObservables
+        property and makes it protected as it is meant to be used only internally.`,
+        implication: `The deprecation of the property coldObservables in TestScheduler means
+        the caller uses internal parts that should not be used outside.`,
+        exampleBefore: `
+        import { scheduled } from 'rxjs';
+        import { TestScheduler} from 'rxjs/testing';
+
+        const testScheduler = new TestScheduler((a, b) => a === b);
+        const a = scheduled([1], testScheduler);
+        const source = a
+        source.subscribe((n) => console.log(n));
+        console.log('Usage of internal coldObservables:', testScheduler.coldObservables);
+        console.log('logs only when flush');
+        testScheduler.flush();
+        `,
+        exampleAfter: `
+        import { scheduled } from 'rxjs';
+        import { TestScheduler} from 'rxjs/testing';
+
+        const testScheduler = new TestScheduler((a, b) => a === b);
+        const a = scheduled([1], testScheduler);
+        const source = a
+        source.subscribe((n) => console.log(n));
+
+        console.log('logs only when flush');
+        testScheduler.flush();
+        `
       },
       {
         subject: 'VirtualTimeScheduler',
-        subjectApiSymbol: ApiSymbols.class,
-        subjectAction: 'property-frameTimeFactor',
+        subjectApiSymbol: ApiSymbols.property,
+        subjectAction: 'frameTimeFactor-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/scheduler/VirtualTimeScheduler.ts#L8',
         breakingChangeVersion: '8',
-        breakingChangeSubjectAction: 'property-frameTimeFactor-moved',
-        deprecationMsgCode: 'no longer used directly',
-        reason: '`frameTimeFactor` is not used in `VirtualTimeScheduler` directly, therefore it does not belong here.',
-        implication: '@!TODO',
-        exampleBefore: '@TODO',
-        exampleAfter: '@TODO'
+        breakingChangeSubjectAction: 'frameTimeFactor-moved',
+        deprecationMsgCode: 'it is no longer used directly',
+        reason: 'frameTimeFactor is not used in VirtualTimeScheduler directly. Therefore it does not belong here.',
+        implication: 'Property frameTimeFactor is deprecated because it moved to a different place. ',
+        exampleBefore: `
+        import { VirtualTimeScheduler } from 'rxjs';
+
+        console.log('Usage of internal static frameTimeFactor:', VirtualTimeScheduler.frameTimeFactor);
+        console.log('Usage of class:', VirtualTimeScheduler);
+        `,
+        exampleAfter: `
+        import { VirtualTimeScheduler } from 'rxjs';
+
+        console.log('Usage of class:', VirtualTimeScheduler);
+        `
       },
       {
         subject: 'VirtualTimeScheduler',
@@ -1548,9 +1686,30 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         breakingChangeSubjectAction: 'breakingChange-class-VirtualTimeScheduler-index-private',
         deprecationMsgCode: 'internal use only',
         reason: '`index` property of `VirtualTimeScheduler` is only used internally and should ot be used.',
-        implication: '@!TODO',
-        exampleBefore: '@TODO',
-        exampleAfter: '@TODO'
+        implication: `The deprecation of the property index in VirtualTimeScheduler means the caller
+        uses internal parts that should not be used outside.`,
+        exampleBefore: `
+        import { scheduled, VirtualTimeScheduler } from 'rxjs';
+
+        const vTimeScheduler = new VirtualTimeScheduler();
+        const a = scheduled([1], vTimeScheduler);
+        const source = a
+        source.subscribe((n) => console.log(n));
+        console.log('Usage of internal index:', vTimeScheduler.index);
+        console.log('logs only when flush');
+        vTimeScheduler.flush();
+        `,
+        exampleAfter:  `
+        import { scheduled, VirtualTimeScheduler } from 'rxjs';
+
+        const vTimeScheduler = new VirtualTimeScheduler();
+        const a = scheduled([1], vTimeScheduler);
+        const source = a
+        source.subscribe((n) => console.log(n));
+
+        console.log('logs only when flush');
+        vTimeScheduler.flush();
+        `
       }
     ],
     breakingChanges: []
@@ -1577,11 +1736,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     breakingChanges: [
       {
         subject: 'TestScheduler',
-        subjectApiSymbol: ApiSymbols.class,
-        subjectAction: 'property-coldObservables-to-private',
+        subjectApiSymbol: ApiSymbols.property,
+        subjectAction: 'coldObservables-to-private',
         itemType: 'breakingChange',
         deprecationVersion: '7.0.0-test.99',
-        deprecationSubjectAction: 'property-coldObservables',
+        deprecationSubjectAction: 'coldObservables-deprecated',
         breakingChangeMsg: 'Class `TestScheduler` changed property `coldObservables` to private'
       }
     ]
@@ -1601,13 +1760,22 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         breakingChangeMsg: 'never is removed in favour of NEVER'
       },
       {
+        subject: 'empty',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-beta.4',
+        deprecationSubjectAction: 'deprecated',
+        breakingChangeMsg: 'empty is removed in favour of EMPTY'
+      },
+      {
         subject: 'ObservableLike',
         subjectApiSymbol: ApiSymbols.interface,
         subjectAction: 'removed',
         itemType: 'breakingChange',
-        deprecationVersion: '6.3.0',
+        deprecationVersion: '6.1.0',
         deprecationSubjectAction: 'deprecated',
-        breakingChangeMsg: getGeneralSchedulerArgumentBreakingChangePhrase()
+        breakingChangeMsg: 'Interface ObservableLike removed in favour of InteropObservable'
       },
       {
         subject: 'concat',
@@ -1656,38 +1824,38 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'TestScheduler',
-        subjectApiSymbol: ApiSymbols.class,
-        subjectAction: 'property-hotObservables-to-private',
+        subjectApiSymbol: ApiSymbols.property,
+        subjectAction: 'hotObservables-to-private',
         itemType: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
-        deprecationSubjectAction: 'property-hotObservables',
-        breakingChangeMsg: 'Class `TestScheduler` method made the `hotObservables` property private'
+        deprecationSubjectAction: 'hotObservables-deprecated',
+        breakingChangeMsg: 'The access modifier of TestScheduler property hotObservables is now private'
       },
       {
         subject: 'TestScheduler',
         subjectApiSymbol: ApiSymbols.class,
-        subjectAction: 'property-coldObservables-to-private',
+        subjectAction: 'coldObservables-to-private',
         itemType: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
-        deprecationSubjectAction: 'property-coldObservables',
-        breakingChangeMsg: 'Class `TestScheduler` method made the `coldObservables` property private'
+        deprecationSubjectAction: 'coldObservables-deprecated',
+        breakingChangeMsg: 'The access modifier of TestScheduler property coldObservables is now private'
       },
       {
         subject: 'VirtualTimeScheduler',
-        subjectApiSymbol: ApiSymbols.class,
-        subjectAction: 'moved-frameTimeFactor',
+        subjectApiSymbol: ApiSymbols.property,
+        subjectAction: 'frameTimeFactor-moved',
         itemType: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
-        deprecationSubjectAction: 'property-frameTimeFactor',
+        deprecationSubjectAction: 'frameTimeFactor-deprecated',
         breakingChangeMsg: 'Class `VirtualTimeScheduler` moved `frameTimeFactor` out of class.'
       },
       {
         subject: 'VirtualTimeScheduler',
-        subjectApiSymbol: ApiSymbols.class,
-        subjectAction: 'property-index-to-private',
+        subjectApiSymbol: ApiSymbols.property,
+        subjectAction: 'index-to-private',
         itemType: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
-        deprecationSubjectAction: 'property-frameTimeFactor',
+        deprecationSubjectAction: 'index-deprecated',
         breakingChangeMsg: 'Class `VirtualTimeScheduler` made `index` property private.'
       }
     ]
@@ -1696,12 +1864,8 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
 
 
 // SCHEDULER ARGUMENT
-function getStaticGeneralSchedulerArgumentDeprecationPhrase(operatorName: string) {
-  return `use scheduled and ${operatorName} instead of passing a scheduler`;
-}
-
-function getOperatorGeneralSchedulerArgumentDeprecationPhrase() {
-  return `use subscribeOn and/or observeOn instead of passing a scheduler`;
+function getOperatorGeneralSchedulerArgumentDeprecationPhrase(operatorName: string, arg: string) {
+  return `use scheduled and ${arg} instead of passing a scheduler`;
 }
 
 function getGeneralSchedulerArgumentBreakingChangePhrase() {
@@ -1709,58 +1873,88 @@ function getGeneralSchedulerArgumentBreakingChangePhrase() {
 }
 
 function getSchedulerArgumentGeneralReason(): string {
-  return `The scheduler argument rather will be used only where appropriate.
+  return `The scheduler argument will be used only where appropriate.
           A lot of operators include optional scheduler parameters,
           that means that the implementation needs to check for a scheduler, which
           imports the scheduling logic and prevents it from being tree-shaken.`;
 }
 
+// Creation
+
+function getCreationGeneralSchedulerArgumentDeprecationPhrase(operatorName?: string, arg?: string) {
+  return `use subscribeOn and/or observeOn instead of passing a scheduler`;
+}
+
+function getCreationSchedulerGeneralImplication(opr: string): string {
+  return `For ${opr}, the removal of the scheduler parameter means that if callers
+  want notifications to be scheduled, they will have to apply the observeOn operator and move the used scheduler into it.`;
+}
+
+
 // OPR
 function getOperatorSchedulerGeneralImplication(opr: string): string {
   return `For ${opr}, the removal of the scheduler parameter means that if callers
-  want notifications to be scheduled, they will have to use observeOn`;
+  want notifications to be scheduled, they will have to move the observables in the scheduled operator
+  and later on use concatAll to flatten the resulting observable.`;
 }
 
 // -----------------------------
 
+// FUNCTION TO STATIC
+
+function getFunctionToStaticReason(operatorName: string): string {
+  return `The function is deprecated as it returns a constant value. A constant is more efficient  than a function.`;
+}
+
+function getFunctionToStaticImplication(operatorName: string, arg: string): string {
+  return `For ${operatorName}, the refactoring to a constant means that the  callers have to use ${arg}`;
+}
+
 // NAME DUPLICATE
 
 // Info from: https://github.com/ReactiveX/rxjs/issues/3927
-function getGeneralFlatteningHeadlinePhrase(operatorName: string): string {
+function getNameDupleOperatorDeprecationMsgCode(operatorName: string): string {
   return `use the static ${operatorName} instead`;
 }
 
 // Info from: https://github.com/ReactiveX/rxjs/issues/3927
-function getGeneralFlatteningReasonPhrase(operatorName: string): string {
+function getNameDupleOperatorReason(operatorName: string): string {
   return `As \`${operatorName}\` operator is a name duplicate of the static
          function \`${operatorName}\` it gets deprecated.
          In future releases it will most probably be available under \`${operatorName}With\`.`;
 }
 
+function getNameDupleOperatorImplication(opr: string, arg: string): string {
+  return `For ${opr}, the removal of the resultSelector argument means that if callers want to
+   "compose in" another observable the observable to compose and
+   the other code need to get composed by the equivalent a creation method ${arg}.`;
+}
+
+
 // RESULT_SELECTOR
 
-function getResultSelectorGeneralBreakingChangeMsg(opr: string): string {
+function getResultSelectorBreakingChangeMsg(opr: string): string {
   return `Operator \`${opr}\` method removed the \`resultSelector\` argument`;
 }
 
-function getResultSelectorGeneralImplication(opr: string): string {
-  return `For ${opr}, the removal of the resultSelector argument means that if callers want to
-   perform a projection, they will have to use map`;
+
+function getResultSelectorReason(operatorName: string): string {
+  return `By removing the result selector from \`${operatorName}\` we get a smaller bundle since and better maintainability.
+          Refactoring to use a \`map\` operation instead.`;
 }
 
+function getCreationResultSelectorImplication(opr: string): string {
+  return `For ${opr}, the removal of the resultSelector argument means that if callers want to
+   perform a projection, they will have to move this code into an additional map operator.
+   To refactor this, take the function used as resultSelector and place it into a map operator below.`;
+}
 
 // Static
-function getGeneralStaticResultSelectorHeadlinePhrase(operatorName: string): string {
+function getCreationResultSelectorDeprecationMsgCode(operatorName?: string): string {
   return `use the map operator instead of a result selector`;
 }
 
-function getGeneralStaticResultSelectorReasonPhrase(operatorName: string): string {
-  return `By removing the result selector from \`${operatorName}\` we get a smaller bundle since of the operator.
-          Further the resultSelector was not that often used and the
-          refactoring to use and internal \`map\` operation instead is a minor code change.`;
-}
-
 // Operator
-function getGeneralOperatorResultSelectorHeadlinePhrase(operatorName: string): string {
+function getOperatorResultSelectorDeprecationMsgCode(operatorName?: string): string {
   return `use the map operator, on the inner observable, instead of a result selector`;
 }
