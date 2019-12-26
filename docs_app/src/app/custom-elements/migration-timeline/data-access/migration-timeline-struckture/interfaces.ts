@@ -99,6 +99,16 @@ Examples:
 - NEVER
 - switchMap
 
+There are 2 possible systems I see here:
+- focusing on the subject e.g. last-function-resultSelector-deprecated
+- focusing on the subjectAction e.g. last-argument-resultSelector-deprecated
+
+APISymbol is what changes here. The thing to consider is we
+get a nice icon (same as in the API reference in the docs) that
+shows us the type of the subject i.e. class, function etc.
+
+
+
 @field subjectApiSymbol
 description: type of ApiSymbols
 For `ApiSymbols.property` and `ApiSymbols.property`
@@ -219,8 +229,11 @@ export interface Deprecation extends MigrationItemSubjectUIDFields {
   deprecationMsgCode: string;
   reason: string;
   implication: string;
+  // @TODO How to handle dependencies to other libs in stackblitz?
   exampleBefore: string;
+  // @TODO How to handle dependencies to other libs in stackblitz?
   exampleAfter: string;
+  notes?: string;
 }
 
 /*
@@ -250,6 +263,7 @@ export interface BreakingChange extends MigrationItemSubjectUIDFields {
   deprecationVersion: semVerString;
   deprecationSubjectAction: string;
   breakingChangeMsg: string;
+  notes?: string;
 }
 
 /*

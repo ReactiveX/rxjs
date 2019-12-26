@@ -17,7 +17,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       /*@NOTE Deprecation not documented*/
       {
         subject: 'last',
-        subjectApiSymbol: ApiSymbols.argument,
+        subjectApiSymbol: ApiSymbols.function,
         subjectAction: 'resultSelector',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3/src/internal/operators/last.ts#L12',
@@ -25,7 +25,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         breakingChangeSubjectAction: 'resultSelector-removed',
         deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('last'),
         reason: getResultSelectorReason('last'),
-        implication: getCreationResultSelectorImplication('last'),
+        implication: getResultSelectorImplication('last'),
         exampleBefore: `
         import { Observable } from 'rxjs';
         import { last } from 'rxjs/operator';
@@ -50,7 +50,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'first',
-        subjectApiSymbol: ApiSymbols.argument,
+        subjectApiSymbol: ApiSymbols.function,
         subjectAction: 'resultSelector',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3/src/internal/operators/first.ts#L18',
@@ -58,7 +58,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         breakingChangeSubjectAction: 'resultSelector-removed',
         deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('first'),
         reason: getResultSelectorReason('first'),
-        implication: getCreationResultSelectorImplication('first'),
+        implication: getResultSelectorImplication('first'),
         exampleBefore: `
         import { Observable } from 'rxjs';
         import { first } from 'rxjs/operator';
@@ -91,7 +91,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     breakingChanges: [
       {
         subject: 'last',
-        subjectApiSymbol: ApiSymbols.argument,
+        subjectApiSymbol: ApiSymbols.function,
         subjectAction: 'resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-alpha.3',
@@ -100,7 +100,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'first',
-        subjectApiSymbol: ApiSymbols.argument,
+        subjectApiSymbol: ApiSymbols.function,
         subjectAction: 'resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-alpha.3',
@@ -163,8 +163,8 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'WebSocketSubject',
-        subjectApiSymbol: ApiSymbols.argument,
-        subjectAction: 'resultSelector',
+        subjectApiSymbol: ApiSymbols.class,
+        subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-beta.4/src/internal/observable/dom/WebSocketSubject.ts#L16',
         breakingChangeVersion: '7',
@@ -202,141 +202,521 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     deprecations: [
       {
         subject: 'fromEventPattern',
-        subjectApiSymbol: ApiSymbols.argument,
-        subjectAction: 'resultSelector',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/fromEventPattern.ts#L9',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'resultSelector-removed',
         deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('fromEventPattern'),
         reason: getResultSelectorReason('fromEventPattern'),
-        implication: getCreationResultSelectorImplication('fromEventPattern'),
+        implication: getResultSelectorImplication('fromEventPattern'),
         exampleBefore: `
-        import { fromEventPattern } from 'rxjs';
-        fromEventPattern(addHandler, removeHandler, resultSelector)
-          .subscribe({next: n => console.log(n)});
-        `,
+                    import { fromEventPattern } from 'rxjs';
+
+                    const resultSelector = (event) => event.matches;
+
+                    const mediaQueryList = window.matchMedia('(max-width: 600px)');
+                    const source = fromEventPattern(
+                      (handler) => { mediaQueryList.addListener(handler)},
+                      (handler) => { mediaQueryList.removeListener(handler)},
+                      resultSelector
+                    )
+
+                    // Resize the window to see results in the console
+                    source.subscribe({next: n => console.log(n)});
+                  `,
         exampleAfter: `
-        import { fromEventPattern } from 'rxjs';
-        import { map } from 'rxjs/operators';
-        fromEventPattern(addHandler, removeHandler)
-          .pipe(
-              map((event) => resultSelector(event))
-          )
-          .subscribe({next: n => console.log(n)});
-        `
+                  import { fromEventPattern } from 'rxjs';
+                  import { map } from 'rxjs/operators';
+
+                  const resultSelector = (event) => event.matches;
+
+                  const mediaQueryList = window.matchMedia('(max-width: 600px)');
+                  const source = fromEventPattern(
+                    (handler) => { mediaQueryList.addListener(handler)},
+                    (handler) => { mediaQueryList.removeListener(handler)}
+                  )
+                  .pipe(
+                    map(resultSelector)
+                  );
+
+                  // Resize the window to see results in the console
+                  source.subscribe({next: n => console.log(n)});
+                `
       },
       {
         subject: 'fromEvent',
-        subjectApiSymbol: ApiSymbols.argument,
-        subjectAction: 'resultSelector',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/fromEvent.ts#L32',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'resultSelector-removed',
         deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('fromEvent'),
         reason: getResultSelectorReason('fromEvent'),
-        implication: getCreationResultSelectorImplication('fromEvent'),
+        implication: getResultSelectorImplication('fromEvent'),
         exampleBefore: `
-        import { fromEvent } from 'rxjs';
-        fromEvent(element, eventName, resultSelector)
-          .subscribe({next: n => console.log(n)})
-        `,
+                import { fromEvent } from 'rxjs';
+
+                const resultSelector = (event) => event.clientX;
+                const source = fromEvent(document, 'click', resultSelector);
+
+                // Click the window to see results in the console
+                source.subscribe({next: n => console.log(n)});
+                `,
         exampleAfter: `
-        import { fromEvent } from 'rxjs';
-        import { map } from 'rxjs/operators';
-        fromEvent(element, eventName)
-          .pipe(
-              map((event) => resultSelector(event))
-          )
-          .subscribe({next: n => console.log(n)})
-        `
+                import { fromEvent } from 'rxjs';
+                import { map } from 'rxjs/operators';
+
+                const resultSelector = (event) => event.clientX;
+                const source = fromEvent(document, 'click')
+                .pipe(
+                  map(resultSelector)
+                )
+
+                // Click the window to see results in the console
+                source.subscribe({next: n => console.log(n)});
+                `
       },
       {
         subject: 'bindNodeCallback',
-        subjectApiSymbol: ApiSymbols.argument,
-        subjectAction: 'resultSelector',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/bindNodeCallback.ts#L10',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'resultSelector-removed',
         deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('bindNodeCallback'),
         reason: getResultSelectorReason('bindNodeCallback'),
-        implication: getCreationResultSelectorImplication('bindNodeCallback'),
+        implication: getResultSelectorImplication('bindNodeCallback'),
         exampleBefore: `
-        import { bindNodeCallback } from 'rxjs';
-        bindNodeCallback(callBackFunc, resultSelector)
-          .subscribe({next: n => console.log(n)});
-        `,
+                import { bindNodeCallback } from 'rxjs';
+
+                function fakeReadFile( path: string, callback: (err: any, data: any) => void): void {
+                    setTimeout(() => {
+                      callback(null, {value: 'a value'});
+                    }, 0);
+                }
+
+                const resultSelector = (result) => result.value;
+                const readFileAsObservable = bindNodeCallback(fakeReadFile, resultSelector);
+                const source = readFileAsObservable('path/to/file');
+
+                source.subscribe(n => console.log('next', n));
+                `,
         exampleAfter: `
                 import { bindNodeCallback } from 'rxjs';
-        import { map } from 'rxjs/operators';
-        bindNodeCallback(callBackFunc, removeHandler)
-          .pipe(
-              map((event) => resultSelector(event))
-          )
-          .subscribe({next: n => console.log(n)});
-        `
+                import { map } from 'rxjs/operators';
+
+                function fakeReadFile( path: string, callback: (err: any, data: any) => void): void {
+                    setTimeout(() => {
+                      callback(null, {value: 'a value'});
+                    }, 0);
+                }
+
+                const resultSelector = (result) => result.value;
+                const readFileAsObservable = bindNodeCallback(fakeReadFile);
+                const source = readFileAsObservable('path/to/file')
+                .pipe(
+                  map(resultSelector)
+                );
+
+                source.subscribe(n => console.log('next', n));
+                `
       },
       {
         subject: 'bindCallback',
-        subjectApiSymbol: ApiSymbols.argument,
-        subjectAction: 'resultSelector',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/bindCallback.ts#L10',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'resultSelector-removed',
         deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('bindCallback'),
         reason: getResultSelectorReason('bindCallback'),
-        implication: getCreationResultSelectorImplication('bindCallback'),
+        implication: getResultSelectorImplication('bindCallback'),
         exampleBefore: `
-        import { bindCallback } from 'rxjs';
-        bindCallback(callBackFunc, resultSelector)
-          .subscribe({next: n => console.log(n)});
-        `,
+                import { bindCallback } from 'rxjs';
+
+                  function callbackSynchronously(cb) {
+                      setTimeout(() => {
+                        cb({value: 'a value'});
+                      }, 0);
+                  }
+
+                  const resultSelector = (result) => result.value;
+                  const readFileAsObservable = bindCallback(callbackSynchronously, resultSelector);
+                  const source = readFileAsObservable();
+
+                  source.subscribe(n => console.log('next', n));
+                `,
         exampleAfter: `
-        import { bindCallback } from 'rxjs';
-        import { map } from 'rxjs/operators';
-        bindCallback(callBackFunc, removeHandler)
-          .pipe(
-              map((event) => resultSelector(event))
-          )
-          .subscribe({next: n => console.log(n)});
-        `
+                    import { bindCallback } from 'rxjs';
+                    import { map } from 'rxjs/operators';
+
+                    function callbackSynchronously(cb) {
+                        setTimeout(() => {
+                          cb({value: 'a value'});
+                        }, 0);
+                    }
+
+                    const resultSelector = (result) => result.value;
+                    const readFileAsObservable = bindCallback(callbackSynchronously, resultSelector);
+                    const source = readFileAsObservable()
+                      .pipe(
+                        map(resultSelector)
+                      );
+
+                    source.subscribe(n => console.log('next', n));
+            `
       },
       {
         subject: 'forkJoin',
-        subjectApiSymbol: ApiSymbols.argument,
-        subjectAction: 'resultSelector',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/forkJoin.ts#L29',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'resultSelector-removed',
         deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('forkJoin'),
         reason: getResultSelectorReason('forkJoin'),
-        implication: getCreationResultSelectorImplication('forkJoin'),
+        implication: getResultSelectorImplication('forkJoin'),
         exampleBefore: `
-        import { forkJoin } from 'rxjs';
-        forkJoin(a$, b$, resultSelector)
-          .subscribe({next: n => console.log(n)});
-        // or
-        forkJoin([a$, b$], resultSelector)
-          .subscribe({next: n => console.log(n)})
+        import { of, forkJoin } from 'rxjs';
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = forkJoin(a, b, resultSelector);
+        source.subscribe(n => console.log(n));
         `,
         exampleAfter: `
-        import { forkJoin } from 'rxjs';
+        import { of, forkJoin } from 'rxjs';
         import { map } from 'rxjs/operators';
-        forkJoin(a$, b$, removeHandler)
-          .pipe(
-              map((n) => resultSelector(...n))
-          )
-          .subscribe({next: n => console.log(n)});
-        // or
-        forkJoin([a$, b$], removeHandler)
-          .pipe(
-              map((n) => resultSelector(...n))
-          )
-          .subscribe({next: n => console.log(n)});
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = forkJoin(a, b)
+        .pipe(
+          map(([a,b], i) => resultSelector(a, b, i))
+        );
+        source.subscribe(n => console.log(n));
+        `
+      },
+      {
+        subject: 'zip',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-deprecated',
+        itemType: 'deprecation',
+        sourceLink: `https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/zip.ts#L37`,
+        breakingChangeVersion: '7',
+        breakingChangeSubjectAction: 'resultSelector-removed',
+        deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('zip'),
+        reason: getResultSelectorReason('zip'),
+        implication: getResultSelectorImplication('zip'),
+        exampleBefore: `
+        import { of, zip } from 'rxjs';
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = zip(a, b, resultSelector);
+        source.subscribe(n => console.log(n));
+        `,
+        exampleAfter: `
+        import { of, zip } from 'rxjs';
+        import { map } from 'rxjs/operators';
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = zip(a, b)
+        .pipe(
+          map(([a,b], i) => resultSelector(a, b, i))
+        );
+        source.subscribe(n => console.log(n));
+        `
+      },
+      {
+        subject: 'switchMap',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/switchMap.ts#L16',
+        breakingChangeVersion: '7',
+        breakingChangeSubjectAction: 'resultSelector-removed',
+        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('switchMap'),
+        reason: getResultSelectorReason('switchMap'),
+        implication: getResultSelectorImplication('switchMap'),
+        exampleBefore: `
+        import { of } from 'rxjs';
+        import { switchMap } from 'rxjs/operators';
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = a.pipe(
+          switchMap(n => b, resultSelector)
+        );
+        source.subscribe(n => console.log(n));
+        `,
+        exampleAfter: `
+        import { of } from 'rxjs';
+        import { map, switchMap } from 'rxjs/operators';
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = a.pipe(
+          switchMap(nextA => b
+            .pipe(
+              map((b, i) => resultSelector(nextA, b, i))
+            )
+          ),
+        );
+        source.subscribe(n => console.log(n));
+        `
+      },
+      {
+        subject: 'switchMapTo',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/switchMapTo.ts#L15',
+        breakingChangeVersion: '7',
+        breakingChangeSubjectAction: 'resultSelector-removed',
+        deprecationMsgCode: getMapToOperatorResultSelectorDeprecationMsgCode('switchMapTo', 'switchMap'),
+        reason: getResultSelectorReason('switchMapTo'),
+        implication: getResultSelectorImplication('switchMapTo'),
+        exampleBefore: `
+        import { of } from 'rxjs';
+        import { switchMapTo } from 'rxjs/operators';
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = a.pipe(
+          switchMapTo(b, resultSelector)
+        );
+        source.subscribe(n => console.log(n));
+        `,
+        exampleAfter: `
+        import { of } from 'rxjs';
+        import { map, switchMap } from 'rxjs/operators';
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = a.pipe(
+          switchMap(nextA => b
+            .pipe(
+              map((b, i) => resultSelector(nextA, b, i))
+            )
+          ),
+        );
+        source.subscribe(n => console.log(n));
+        `
+      },
+      {
+        subject: 'concatMap',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/concatMap.ts#L8',
+        breakingChangeVersion: '7',
+        breakingChangeSubjectAction: 'resultSelector-removed',
+        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('concatMap'),
+        reason: getResultSelectorReason('concatMap'),
+        implication: getResultSelectorImplication('concatMap'),
+        exampleBefore: `
+        import { of } from 'rxjs';
+        import { concatMap } from 'rxjs/operators';
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = a.pipe(
+          concatMap(n => b, resultSelector)
+        );
+        source.subscribe(n => console.log(n));
+        `,
+        exampleAfter: `
+        import { of } from 'rxjs';
+        import { map, concatMap } from 'rxjs/operators';
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = a.pipe(
+          concatMap(nextA => b
+            .pipe(
+              map((b, i) => resultSelector(nextA, b, i))
+            )
+          ),
+        );
+        source.subscribe(n => console.log(n));
+        `
+      },
+      {
+        subject: 'concatMapTo',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/concatMapTo.ts#L8',
+        breakingChangeVersion: '7',
+        breakingChangeSubjectAction: 'resultSelector-removed',
+        deprecationMsgCode: getMapToOperatorResultSelectorDeprecationMsgCode('concatMapTo', 'concatMap'),
+        reason: getResultSelectorReason('concatMapTo'),
+        implication: getResultSelectorImplication('concatMapTo'),
+        exampleBefore: `
+        import { of } from 'rxjs';
+        import { concatMapTo } from 'rxjs/operators';
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = a.pipe(
+          concatMapTo(b, resultSelector)
+        );
+        source.subscribe(n => console.log(n));
+        `,
+        exampleAfter: `
+        import { of } from 'rxjs';
+        import { map, concatMap } from 'rxjs/operators';
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = a.pipe(
+          concatMap(nextA => b
+            .pipe(
+              map((b, i) => resultSelector(nextA, b, i))
+            )
+          ),
+        );
+        source.subscribe(n => console.log(n));
+        `
+      },
+      {
+        subject: 'mergeMap',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/mergeMap.ts#L16',
+        breakingChangeVersion: '7',
+        breakingChangeSubjectAction: 'resultSelector-removed',
+        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('mergeMap'),
+        reason: getResultSelectorReason('mergeMap'),
+        implication: getResultSelectorImplication('mergeMap'),
+        exampleBefore: `
+        import { of } from 'rxjs';
+        import { mergeMap } from 'rxjs/operators';
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = a.pipe(
+          mergeMap(n => b, resultSelector)
+        );
+        source.subscribe(n => console.log(n));
+        `,
+        exampleAfter: `
+        import { of } from 'rxjs';
+        import { map, mergeMap } from 'rxjs/operators';
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = a.pipe(
+          mergeMap(nextA => b
+            .pipe(
+              map((b, i) => resultSelector(nextA, b, i))
+            )
+          ),
+        );
+        source.subscribe(n => console.log(n));
+        `
+      },
+      {
+        subject: 'mergeMapTo',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/mergeMapTo.ts#L8',
+        breakingChangeVersion: '7',
+        breakingChangeSubjectAction: 'resultSelector-removed',
+        deprecationMsgCode: getMapToOperatorResultSelectorDeprecationMsgCode('mergeMapTo', 'mergeMap'),
+        reason: getResultSelectorReason('mergeMapTo'),
+        implication: getResultSelectorImplication('mergeMapTo'),
+        exampleBefore: `
+        import { of } from 'rxjs';
+        import { mergeMapTo } from 'rxjs/operators';
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = a.pipe(
+          mergeMapTo(b, resultSelector)
+        );
+        source.subscribe(n => console.log(n));
+        `,
+        exampleAfter: `
+        import { of } from 'rxjs';
+        import { map, mergeMap } from 'rxjs/operators';
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = a.pipe(
+          mergeMap(nextA => b
+            .pipe(
+              map((b, i) => resultSelector(nextA, b, i))
+            )
+          ),
+        );
+        source.subscribe(n => console.log(n));
+        `
+      },
+      {
+        subject: 'exhaustMap',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-deprecated',
+        itemType: 'deprecation',
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/exhaustMap.ts#L16',
+        breakingChangeVersion: '7',
+        breakingChangeSubjectAction: 'resultSelector-removed',
+        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('exhaustMap'),
+        reason: getResultSelectorReason('exhaustMap'),
+        implication: getResultSelectorImplication('exhaustMap'),
+        exampleBefore: `
+        import { of } from 'rxjs';
+        import { exhaustMap } from 'rxjs/operators';
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = a.pipe(
+          exhaustMap(n => b, resultSelector)
+        );
+        source.subscribe(n => console.log(n));
+        `,
+        exampleAfter: `
+        import { of } from 'rxjs';
+        import { map, exhaustMap } from 'rxjs/operators';
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = a.pipe(
+          exhaustMap(nextA => b
+            .pipe(
+              map((b, i) => resultSelector(nextA, b, i))
+            )
+          ),
+        );
+        source.subscribe(n => console.log(n));
         `
       },
       {
@@ -400,36 +780,6 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         `
       },
       {
-        subject: 'zip',
-        subjectApiSymbol: ApiSymbols.function,
-        subjectAction: 'deprecated',
-        itemType: 'deprecation',
-        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/zip.ts#L37',
-        breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'removed',
-        deprecationMsgCode: getNameDupleOperatorDeprecationMsgCode('zip'),
-        reason: getNameDupleOperatorReason('zip'),
-        implication: getNameDupleOperatorImplication('zip', 'zip'),
-        exampleBefore: `
-        import { of } from 'rxjs';
-        import { zip } from 'rxjs/operators';
-
-        const a = of('1');
-        const b = of('2');
-        const source = a
-          .pipe(zip(b));
-        source.subscribe(n => console.log(n));
-        `,
-        exampleAfter: `
-          import { of, zip } from 'rxjs';
-
-          const a = of('1');
-          const b = of('2');
-          const source = zip(a, b);
-          source.subscribe(n => console.log(n));
-        `
-      },
-      {
         subject: 'concat',
         subjectApiSymbol: ApiSymbols.function,
         subjectAction: 'deprecated',
@@ -461,239 +811,35 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'zip',
-        subjectApiSymbol: ApiSymbols.argument,
-        subjectAction: 'resultSelector',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'deprecated',
         itemType: 'deprecation',
-        sourceLink: `https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/zip.ts#L37`,
+        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/zip.ts#L37',
         breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('zip'),
-        reason: getResultSelectorReason('zip'),
-        implication: getCreationResultSelectorImplication('zip'),
+        breakingChangeSubjectAction: 'removed',
+        deprecationMsgCode: getNameDupleOperatorDeprecationMsgCode('zip'),
+        reason: getNameDupleOperatorReason('zip'),
+        implication: getNameDupleOperatorImplication('zip', 'zip'),
         exampleBefore: `
-        import { zip } from 'rxjs';
-        zip(a$,b$, resultSelector)
-          .subscribe({next: n => console.log(n)})
+        import { of } from 'rxjs';
+        import { zip } from 'rxjs/operators';
+
+        const a = of('1');
+        const b = of('2');
+        const source = a
+          .pipe(zip(b));
+        source.subscribe(n => console.log(n));
         `,
         exampleAfter: `
-        import { zip, map } from 'rxjs';
-        zip(a$,b$)
-          .pipe(
-            map(n => resultSelector(...n))
-          )
-          .subscribe({next: n => console.log(n)});
-        `
-      },
-      {
-        subject: 'switchMap',
-        subjectApiSymbol: ApiSymbols.argument,
-        subjectAction: 'resultSelector',
-        itemType: 'deprecation',
-        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/switchMap.ts#L16',
-        breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('switchMap'),
-        reason: getResultSelectorReason('switchMap'),
-        implication: getCreationResultSelectorImplication('switchMap'),
-        exampleBefore: `
-        import { switchMap } from 'rxjs/operators';
-        a$
-          .pipe(
-            switchMap(projectionFn, resultSelector)
-          )
-          .subscribe({next: n => console.log(n)})
-        `,
-        exampleAfter: `
-        import { switchMap, map } from 'rxjs/operators';
-        a$
-          .pipe(
-            switchMap((a, i) => b$.pipe(
-              map((b, ii) => resultSelector(a, b, i, ii))
-            ))
-          )
-          .subscribe({next: n => console.log(n)});
-        `
-      },
-      {
-        subject: 'switchMapTo',
-        subjectApiSymbol: ApiSymbols.argument,
-        subjectAction: 'resultSelector',
-        itemType: 'deprecation',
-        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/switchMapTo.ts#L15',
-        breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('switchMapTo'),
-        reason: getResultSelectorReason('switchMapTo'),
-        implication: getCreationResultSelectorImplication('switchMapTo'),
-        exampleBefore: `
-        import { switchMapTo } from 'rxjs/operators';
-        a$
-          .pipe(
-            switchMapTo(b$, resultSelector)
-          )
-          .subscribe({next: n => console.log(n)})
-        `,
-        exampleAfter: `
-        import { switchMapTo, map } from 'rxjs/operators';
-        a$
-          .pipe(
-            switchMapTo((a, i) => b$.pipe(
-              map((b, ii) => resultSelector(a, b, i, ii))
-            ))
-          )
-          .subscribe({next: n => console.log(n)});
-        `
-      },
-      {
-        subject: 'concatMap',
-        subjectApiSymbol: ApiSymbols.argument,
-        subjectAction: 'resultSelector',
-        itemType: 'deprecation',
-        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/concatMap.ts#L8',
-        breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('concatMap'),
-        reason: getResultSelectorReason('concatMap'),
-        implication: getCreationResultSelectorImplication('concatMap'),
-        exampleBefore: `
-        import { concatMap } from 'rxjs/operators';
-        a$
-          .pipe(
-            concatMap(projectionFn, resultSelector)
-          )
-          .subscribe({next: n => console.log(n)});
-        `,
-        exampleAfter: `
-        import { concatMap, map } from 'rxjs/operators';
-        a$
-          .pipe(
-            concatMap((a, i) => b$.pipe(
-              map((b, ii) => resultSelector(a, b, i, ii))
-            ))
-          )
-          .subscribe({next: n => console.log(n)});
-        `
-      },
-      {
-        subject: 'concatMapTo',
-        subjectApiSymbol: ApiSymbols.argument,
-        subjectAction: 'resultSelector',
-        itemType: 'deprecation',
-        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/concatMapTo.ts#L8',
-        breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('concatMapTo'),
-        reason: getResultSelectorReason('concatMapTo'),
-        implication: getCreationResultSelectorImplication('concatMapTo'),
-        exampleBefore: `
-        import { concatMapTo } from 'rxjs/operators';
-        a$
-          .pipe(
-            concatMapTo(b$, (n, i) =>  v)
-          )
-          .subscribe({next: n => console.log(n)});
-        `,
-        exampleAfter: `
-        import { concatMapTo, map } from 'rxjs/operators';
-        a$
-          .pipe(
-            concatMapTo(b$.pipe(
-              map((n, i) =>  v)
-            ))
-          )
-          .subscribe({next: n => console.log(n)});
-        `
-      },
-      {
-        subject: 'mergeMap',
-        subjectApiSymbol: ApiSymbols.argument,
-        subjectAction: 'resultSelector',
-        itemType: 'deprecation',
-        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/mergeMap.ts#L16',
-        breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('mergeMap'),
-        reason: getResultSelectorReason('mergeMap'),
-        implication: getCreationResultSelectorImplication('mergeMap'),
-        exampleBefore: `
-        import { mergeMap } from 'rxjs/operators';
-        a$
-          .pipe(
-            mergeMap(projectionFn, resultSelector)
-          )
-          .subscribe({next: n => console.log(n)})
-        `,
-        exampleAfter: `
-                import { mergeMap, map } from 'rxjs/operators';
-        a$
-          .pipe(
-            mergeMap((a, i) => b$.pipe(
-              map((b, ii) => resultSelector(a, b, i, ii))
-            ))
-          )
-          .subscribe({next: n => console.log(n)});
-      `
-      },
-      {
-        subject: 'mergeMapTo',
-        subjectApiSymbol: ApiSymbols.argument,
-        subjectAction: 'resultSelector',
-        itemType: 'deprecation',
-        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/mergeMapTo.ts#L8',
-        breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('mergeMapTo'),
-        reason: getResultSelectorReason('mergeMapTo'),
-        implication: getCreationResultSelectorImplication('mergeMapTo'),
-        exampleBefore: `
-        import { mergeMapTo } from 'rxjs/operators';
-        a$
-          .pipe(
-            mergeMapTo(b$, (n, i) => n))
-          )
-          .subscribe({next: n => console.log(n)});
-        `,
-        exampleAfter: `
-        import { mergeMapTo, map } from 'rxjs/operators';
-        a$
-          .pipe(
-            mergeMapTo(b$.pipe(
-              map((n, i) => n)
-            ))
-          )
-          .subscribe({next: n => console.log(n)});
-        `
-      },
-      {
-        subject: 'exhaustMapTo',
-        subjectApiSymbol: ApiSymbols.argument,
-        subjectAction: 'resultSelector',
-        itemType: 'deprecation',
-        sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/exhaustMap.ts#L16',
-        breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
-        deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('exhaustMap'),
-        reason: getResultSelectorReason('exhaustMap'),
-        implication: getCreationResultSelectorImplication('exhaustMap'),
-        exampleBefore: `
-        import { exhaustMap } from 'rxjs/operators';
-        a$
-          .pipe(
-            exhaustMap(projectionFn, resultSelector)
-          )
-          .subscribe({next: n => console.log(n)})
-        `,
-        exampleAfter: `
-        import { exhaustMap, map } from 'rxjs/operators';
-        a$
-          .pipe(
-            exhaustMap((a, i) => b$.pipe(
-              map((b, ii) => resultSelector(a, b, i, ii))
-            ))
-          )
-          .subscribe({next: n => console.log(n)});
+          import { of, zip } from 'rxjs';
+
+          const a = of('1');
+          const b = of('2');
+          const source = zip(a, b);
+          source.subscribe(n => console.log(n));
         `
       }
+
     ],
     breakingChanges: []
   },
@@ -1109,9 +1255,9 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         `
       },
       {
-        subject: 'create',
+        subject: 'Observable',
         subjectApiSymbol: ApiSymbols.class,
-        subjectAction: 'deprecated',
+        subjectAction: 'property-create-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/Observable.ts#L53',
         breakingChangeVersion: '8',
@@ -1253,26 +1399,35 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'combineLatest',
         subjectApiSymbol: ApiSymbols.argument,
-        subjectAction: 'resultSelector',
+        subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/combineLatest.ts#L43',
         breakingChangeVersion: '7',
         breakingChangeSubjectAction: 'resultSelector-removed',
         deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('combineLatest'),
         reason: getResultSelectorReason('combineLatest'),
-        implication: getCreationResultSelectorImplication('combineLatest'),
+        implication: getResultSelectorImplication('combineLatest'),
         exampleBefore: `
-        import { combineLatest } from 'rxjs';
-        combineLatest([a$,b$], resultSelector)
-          .subscribe({next: n => console.log(n)});
+        import { of, combineLatest } from 'rxjs';
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = combineLatest(a, b, resultSelector);
+        source.subscribe(n => console.log(n));
         `,
         exampleAfter: `
-        import { combineLatest, map } from 'rxjs';
-        combineLatest([a$,b$])
-          .pipe(
-            map(n => resultSelector(...n))
-          )
-          .subscribe({next: n => console.log(n)});
+        import { of, combineLatest } from 'rxjs';
+        import { map } from 'rxjs/operators';
+
+        const a = of('1');
+        const b = of('2');
+        const resultSelector = (a, b, i) => a + b;
+        const source = combineLatest(a, b)
+        .pipe(
+          map(([a,b], i) => resultSelector(a, b, i))
+        );
+        source.subscribe(n => console.log(n));
         `
       },
       {
@@ -1747,13 +1902,139 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     deprecations: [],
     breakingChanges: [
       {
+        subject: 'fromEventPattern',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-rc.0',
+        deprecationSubjectAction: 'resultSelector-deprecated',
+        breakingChangeMsg: getResultSelectorBreakingChangeMsg('fromEventPattern')
+      },
+      {
+        subject: 'fromEvent',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-rc.0',
+        deprecationSubjectAction: 'resultSelector-deprecated',
+        breakingChangeMsg: getResultSelectorBreakingChangeMsg('fromEvent')
+      },
+      {
+        subject: 'bindNodeCallback',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-rc.0',
+        deprecationSubjectAction: 'resultSelector-deprecated',
+        breakingChangeMsg: getResultSelectorBreakingChangeMsg('bindNodeCallback')
+      },
+      {
+        subject: 'bindCallback',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-rc.0',
+        deprecationSubjectAction: 'resultSelector-deprecated',
+        breakingChangeMsg: getResultSelectorBreakingChangeMsg('bindCallback')
+      },
+      {
+        subject: 'forkJoin',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-rc.0',
+        deprecationSubjectAction: 'resultSelector-deprecated',
+        breakingChangeMsg: getResultSelectorBreakingChangeMsg('forkJoin')
+      },
+      {
+        subject: 'zip',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-rc.0',
+        deprecationSubjectAction: 'resultSelector-deprecated',
+        breakingChangeMsg: getResultSelectorBreakingChangeMsg('zip')
+      },
+      {
+        subject: 'switchMap',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-rc.0',
+        deprecationSubjectAction: 'resultSelector-deprecated',
+        breakingChangeMsg: getResultSelectorBreakingChangeMsg('switchMap')
+      },
+      {
+        subject: 'switchMapTo',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-rc.0',
+        deprecationSubjectAction: 'resultSelector-deprecated',
+        breakingChangeMsg: getResultSelectorBreakingChangeMsg('switchMapTo')
+      },
+      {
+        subject: 'concatMap',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-rc.0',
+        deprecationSubjectAction: 'resultSelector-deprecated',
+        breakingChangeMsg: getResultSelectorBreakingChangeMsg('concatMap')
+      },
+      {
+        subject: 'concatMapTo',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-rc.0',
+        deprecationSubjectAction: 'resultSelector-deprecated',
+        breakingChangeMsg: getResultSelectorBreakingChangeMsg('concatMapTo')
+      },
+      {
+        subject: 'mergeMap',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-rc.0',
+        deprecationSubjectAction: 'resultSelector-deprecated',
+        breakingChangeMsg: getResultSelectorBreakingChangeMsg('mergeMap')
+      },
+      {
+        subject: 'mergeMapTo',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-rc.0',
+        deprecationSubjectAction: 'resultSelector-deprecated',
+        breakingChangeMsg: getResultSelectorBreakingChangeMsg('mergeMapTo')
+      },
+      {
+        subject: 'exhaustMap',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-rc.0',
+        deprecationSubjectAction: 'resultSelector-deprecated',
+        breakingChangeMsg: getResultSelectorBreakingChangeMsg('exhaustMap')
+      },
+      {
+        subject: 'combineLatest',
+        subjectApiSymbol: ApiSymbols.function,
+        subjectAction: 'resultSelector-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.5.0',
+        deprecationSubjectAction: 'resultSelector-deprecated',
+        breakingChangeMsg: getResultSelectorBreakingChangeMsg('combineLatest')
+      },
+      {
         subject: 'combineLatest',
         subjectApiSymbol: ApiSymbols.function,
         subjectAction: 'removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
         deprecationSubjectAction: 'deprecated',
-        breakingChangeMsg: 'Operator combineLatest removed'
+        breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('combineLatest')
       },
       {
         subject: 'merge',
@@ -1762,7 +2043,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
         deprecationSubjectAction: 'deprecated',
-        breakingChangeMsg: 'Operator merge removed'
+        breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('merge')
       },
       {
         subject: 'zip',
@@ -1771,7 +2052,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         deprecationVersion: '6.0.0-rc.0',
         itemType: 'breakingChange',
         deprecationSubjectAction: 'deprecated',
-        breakingChangeMsg: 'Operator zip removed'
+        breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('zip')
       },
       {
         subject: 'concat',
@@ -1780,7 +2061,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         deprecationVersion: '6.0.0-rc.0',
         itemType: 'breakingChange',
         deprecationSubjectAction: 'deprecated',
-        breakingChangeMsg: 'Operator concat removed'
+        breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('concat')
       },
       {
         subject: 'race',
@@ -1789,7 +2070,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         deprecationVersion: '6.2.0',
         itemType: 'breakingChange',
         deprecationSubjectAction: 'deprecated',
-        breakingChangeMsg: 'Operator race removed'
+        breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('race')
       },
       {
         subject: 'never',
@@ -1798,7 +2079,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-beta.4',
         deprecationSubjectAction: 'deprecated',
-        breakingChangeMsg: 'never is removed in favour of NEVER'
+        breakingChangeMsg: getOperatorRemovedInFavourOfBreakingChangePhrase('never', 'NEVER')
       },
       {
         subject: 'empty',
@@ -1807,7 +2088,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-beta.4',
         deprecationSubjectAction: 'deprecated',
-        breakingChangeMsg: 'empty is removed in favour of EMPTY'
+        breakingChangeMsg: getOperatorRemovedInFavourOfBreakingChangePhrase('empty', 'EMPTY')
       },
       {
         subject: 'ObservableLike',
@@ -1816,7 +2097,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         itemType: 'breakingChange',
         deprecationVersion: '6.1.0',
         deprecationSubjectAction: 'deprecated',
-        breakingChangeMsg: 'Interface ObservableLike removed in favour of InteropObservable'
+        breakingChangeMsg: getInterfaceRemovedInFavourOfBreakingChangePhrase('ObservableLike', ' InteropObservable')
       },
       {
         subject: 'concat',
@@ -1904,6 +2185,21 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
 ];
 
 
+// GENERAL
+
+function getOperatorRemovedBreakingChangePhrase(operatorName: string, arg?: string) {
+  return `Operator ${operatorName} removed`
+}
+
+function getOperatorRemovedInFavourOfBreakingChangePhrase(operatorName: string, arg?: string) {
+  return `Operator ${operatorName} is removed in favour of ${arg}`
+}
+
+function getInterfaceRemovedInFavourOfBreakingChangePhrase(interfaceName: string, arg?: string) {
+  return `Interface ${interfaceName} is removed in favour of ${arg}`
+}
+
+
 // SCHEDULER ARGUMENT
 function getOperatorGeneralSchedulerArgumentDeprecationPhrase(operatorName: string, arg: string) {
   return `use scheduled and ${arg} instead of passing a scheduler`;
@@ -1975,16 +2271,15 @@ function getNameDupleOperatorImplication(opr: string, arg: string): string {
 // RESULT_SELECTOR
 
 function getResultSelectorBreakingChangeMsg(opr: string): string {
-  return `Operator \`${opr}\` method removed the \`resultSelector\` argument`;
+  return `Operator \`${opr}\` removed the \`resultSelector\` argument`;
 }
-
 
 function getResultSelectorReason(operatorName: string): string {
   return `By removing the result selector from \`${operatorName}\` we get a smaller bundle since and better maintainability.
           Refactoring to use a \`map\` operation instead.`;
 }
 
-function getCreationResultSelectorImplication(opr: string): string {
+function getResultSelectorImplication(opr: string): string {
   return `For ${opr}, the removal of the resultSelector argument means that if callers want to
    perform a projection, they will have to move this code into an additional map operator.
    To refactor this, take the function used as resultSelector and place it into a map operator below.`;
@@ -1998,4 +2293,8 @@ function getCreationResultSelectorDeprecationMsgCode(operatorName?: string): str
 // Operator
 function getOperatorResultSelectorDeprecationMsgCode(operatorName?: string): string {
   return `use the map operator, on the inner observable, instead of a result selector`;
+}
+
+function getMapToOperatorResultSelectorDeprecationMsgCode(operatorName?: string, arg?: string): string {
+  return ` use ${arg} with an inner map instead of a result selector`;
 }
