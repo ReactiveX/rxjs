@@ -195,7 +195,7 @@ export class LocalState<T> implements OnDestroy {
       const key: string = operator;
       operators = pipe(map(s => operator ? s[key] : s));
     }
-   * @TODO consider ngrx selectors could be passed
+   * @TODO consider normal function could be passed
    * // For project functions i.e. (s) => s.slice, (s) => s.slice * 2 or (s) => 2
    * select<R>(operator: (value: T, index?: number) => T | R, thisArg?: any): Observable<T | R>;
    if (typeof operator === 'function') {

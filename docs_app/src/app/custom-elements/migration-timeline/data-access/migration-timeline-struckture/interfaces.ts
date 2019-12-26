@@ -35,14 +35,12 @@ export interface MigrationReleaseUIDFields {
 }
 
 /*
-@enum ApiSymbols
+@enum subjectSymbols
 description: string specifying a specific piece of typescript code
 This information is a subset from the information from the [API explorer](https://rxjs.dev/api)
 */
-export enum ApiSymbols {
+export enum SubjectSymbols {
   all = 'all',
-  argument = 'argument',
-  property = 'property',
   class = 'class',
   interface = 'interface',
   function = 'function',
@@ -51,6 +49,12 @@ export enum ApiSymbols {
   let = 'let',
   var = 'var',
   typeAlias = 'type-alias',
+}
+
+export enum SubjectActionSymbol {
+  all = 'all',
+  argument = 'argument',
+  property = 'property'
 }
 
 /*
@@ -110,9 +114,8 @@ shows us the type of the subject i.e. class, function etc.
 
 
 @field subjectApiSymbol
-description: type of ApiSymbols
-For `ApiSymbols.property` and `ApiSymbols.property`
-type: ApiSymbols
+description: type of SubjectSymbols
+type: SubjectSymbols
 
 @field subjectAction
 description: action on subject.
@@ -137,7 +140,7 @@ Examples for breakingChanges:
 export interface MigrationItemSubjectUIDFields {
   itemType: MigrationItemTypes;
   subject: string;
-  subjectApiSymbol: ApiSymbols;
+  subjectSymbol: SubjectSymbols;
   subjectAction: string;
 }
 

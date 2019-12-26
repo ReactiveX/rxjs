@@ -17,7 +17,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       /*@NOTE Deprecation not documented*/
       {
         subject: 'last',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3/src/internal/operators/last.ts#L12',
@@ -50,7 +50,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'first',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3/src/internal/operators/first.ts#L18',
@@ -91,7 +91,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     breakingChanges: [
       {
         subject: 'last',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-alpha.3',
@@ -100,7 +100,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'first',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-alpha.3',
@@ -115,7 +115,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     deprecations: [
       {
         subject: 'never',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-beta.4/src/internal/observable/never.ts#L30',
@@ -139,7 +139,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'empty',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-beta.4/src/internal/observable/empty.ts#L52',
@@ -163,7 +163,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'WebSocketSubject',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-beta.4/src/internal/observable/dom/WebSocketSubject.ts#L16',
@@ -217,7 +217,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     deprecations: [
       {
         subject: 'fromEventPattern',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/fromEventPattern.ts#L9',
@@ -262,7 +262,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'fromEvent',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/fromEvent.ts#L32',
@@ -296,7 +296,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'bindNodeCallback',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/bindNodeCallback.ts#L10',
@@ -342,7 +342,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'bindCallback',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/bindCallback.ts#L10',
@@ -388,7 +388,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'forkJoin',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/forkJoin.ts#L29',
@@ -422,7 +422,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'zip',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: `https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/zip.ts#L37`,
@@ -456,7 +456,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'switchMap',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/switchMap.ts#L16',
@@ -496,7 +496,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'switchMapTo',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/switchMapTo.ts#L15',
@@ -536,7 +536,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'concatMap',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/concatMap.ts#L8',
@@ -576,7 +576,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'concatMapTo',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/concatMapTo.ts#L8',
@@ -616,7 +616,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'mergeMap',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/mergeMap.ts#L16',
@@ -656,7 +656,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'mergeMapTo',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/mergeMapTo.ts#L8',
@@ -696,7 +696,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'exhaustMap',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/exhaustMap.ts#L16',
@@ -736,7 +736,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'combineLatest',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/combineLatest.ts#L42',
@@ -766,7 +766,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'merge',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/merge.ts#L37',
@@ -796,7 +796,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'concat',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/concat.ts#L25',
@@ -826,7 +826,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'zip',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/zip.ts#L37',
@@ -864,7 +864,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     deprecations: [
       {
         subject: 'Observable',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'property-if-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.1/src/internal/Observable.ts#L260',
@@ -890,7 +890,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'Observable',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'property-throw-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.1/src/internal/Observable.ts#L265',
@@ -919,7 +919,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     deprecations: [
       {
         subject: 'Scheduler',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tactical-rc.1/src/internal/Scheduler.ts#L20',
@@ -987,7 +987,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     deprecations: [
       {
         subject: 'ObservableLike',
-        subjectApiSymbol: SubjectSymbols.interface,
+        subjectSymbol: SubjectSymbols.interface,
         subjectAction: 'deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.1.0/src/internal/types.ts#L49',
@@ -1015,7 +1015,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     deprecations: [
       {
         subject: 'race',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.2.0/src/internal/operators/race.ts#L24',
@@ -1052,7 +1052,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     deprecations: [
       {
         subject: 'Observable',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'subscribe-argument-nextCallback-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/Observable.ts#L74',
@@ -1080,7 +1080,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'Observable',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'subscribe-argument-errorCallback',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/Observable.ts#L76',
@@ -1106,7 +1106,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'Observable',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'subscribe-argument-completeCallback',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/Observable.ts#L78',
@@ -1132,7 +1132,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'tap',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'argument-nextCallback',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/operators/tap.ts#L9',
@@ -1165,7 +1165,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'tap',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'argument-errorCallback',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/operators/tap.ts#L11',
@@ -1198,7 +1198,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'tap',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'argument-completeCallback',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/operators/tap.ts#L13',
@@ -1232,7 +1232,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'Observable',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'property-create-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/Observable.ts#L53',
@@ -1256,7 +1256,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'TimeInterval',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/operators/timeInterval.ts#L69',
@@ -1278,7 +1278,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     deprecations: [
       {
         subject: 'from',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'argument-scheduler-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/from.ts#L7',
@@ -1303,7 +1303,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'of',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'scheduler',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/of.ts#L29',
@@ -1335,7 +1335,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'combineLatest',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'argument-scheduler-deprecated',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/combineLatest.ts#L59',
         itemType: 'deprecation',
@@ -1369,7 +1369,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'combineLatest',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/combineLatest.ts#L43',
@@ -1403,7 +1403,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'combineLatest',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'multiple-arguments',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/combineLatest.ts#L100',
@@ -1426,7 +1426,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'forkJoin',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'multiple-arguments',
         itemType: 'deprecation',
         breakingChangeVersion: '8',
@@ -1449,7 +1449,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'partition',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/operators/partition.ts#L54',
@@ -1489,7 +1489,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     deprecations: [
       {
         subject: 'NotificationKind',
-        subjectApiSymbol: SubjectSymbols.enum,
+        subjectSymbol: SubjectSymbols.enum,
         subjectAction: 'deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.1/src/internal/Notification.ts#L10',
@@ -1516,7 +1516,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     deprecations: [
       {
         subject: 'concat',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'scheduler',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/observable/concat.ts#L17',
@@ -1550,7 +1550,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'of',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'generic',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/observable/of.ts#L35',
@@ -1572,7 +1572,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'of',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'scheduler',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/observable/of.ts#L29',
@@ -1602,7 +1602,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'merge',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'scheduler',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/observable/merge.ts#L49',
@@ -1636,7 +1636,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'startWith',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'scheduler',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/operators/startWith.ts#L29',
@@ -1669,7 +1669,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'endWith',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'scheduler',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/operators/endWith.ts#L29',
@@ -1702,7 +1702,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'TestScheduler',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'property-hotObservables-deprecated',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/testing/TestScheduler.ts#L39',
         itemType: 'deprecation',
@@ -1739,7 +1739,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'TestScheduler',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'property-coldObservables-deprecated',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/testing/TestScheduler.ts#L44',
         itemType: 'deprecation',
@@ -1777,7 +1777,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'VirtualTimeScheduler',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'property-frameTimeFactor-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/scheduler/VirtualTimeScheduler.ts#L8',
@@ -1800,7 +1800,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'VirtualTimeScheduler',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'property-index-to-private',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/scheduler/VirtualTimeScheduler.ts#L23',
@@ -1843,7 +1843,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     breakingChanges: [
       {
         subject: 'fromEventPattern',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
@@ -1852,7 +1852,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'fromEvent',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
@@ -1861,7 +1861,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'bindNodeCallback',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
@@ -1870,7 +1870,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'bindCallback',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
@@ -1879,7 +1879,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'forkJoin',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
@@ -1888,7 +1888,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'zip',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
@@ -1897,7 +1897,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'switchMap',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
@@ -1906,7 +1906,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'switchMapTo',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
@@ -1915,7 +1915,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'concatMap',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
@@ -1924,7 +1924,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'concatMapTo',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
@@ -1933,7 +1933,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'mergeMap',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
@@ -1942,7 +1942,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'mergeMapTo',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
@@ -1951,7 +1951,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'exhaustMap',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
@@ -1960,7 +1960,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'combineLatest',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.5.0',
@@ -1969,7 +1969,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'WebSocketSubject',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-beat.4',
@@ -1978,7 +1978,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'combineLatest',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
@@ -1987,7 +1987,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'combineLatest',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'argument-scheduler-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.5.0',
@@ -1996,7 +1996,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'from',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'argument-scheduler-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.5.0',
@@ -2005,7 +2005,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'merge',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
@@ -2014,7 +2014,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'zip',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'removed',
         deprecationVersion: '6.0.0-rc.0',
         itemType: 'breakingChange',
@@ -2023,7 +2023,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'concat',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'removed',
         deprecationVersion: '6.0.0-rc.0',
         itemType: 'breakingChange',
@@ -2032,7 +2032,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'race',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'removed',
         deprecationVersion: '6.2.0',
         itemType: 'breakingChange',
@@ -2041,7 +2041,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'never',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-beta.4',
@@ -2050,7 +2050,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'empty',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-beta.4',
@@ -2059,7 +2059,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'ObservableLike',
-        subjectApiSymbol: SubjectSymbols.interface,
+        subjectSymbol: SubjectSymbols.interface,
         subjectAction: 'removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.1.0',
@@ -2068,7 +2068,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'concat',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'scheduler-removed',
         itemType: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
@@ -2077,7 +2077,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'of',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'scheduler-removed',
         itemType: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
@@ -2086,7 +2086,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'merge',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'scheduler-removed',
         itemType: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
@@ -2095,7 +2095,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'startWith',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'scheduler-removed',
         itemType: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
@@ -2104,7 +2104,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'endWith',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'scheduler-removed',
         itemType: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
@@ -2113,7 +2113,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'TestScheduler',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'hotObservables-to-private',
         itemType: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
@@ -2122,7 +2122,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'TestScheduler',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'coldObservables-to-private',
         itemType: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
@@ -2131,7 +2131,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'VirtualTimeScheduler',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'property-frameTimeFactor-moved',
         itemType: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
@@ -2140,7 +2140,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'VirtualTimeScheduler',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'property-index-to-private',
         itemType: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
@@ -2149,7 +2149,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'Observable',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'property-if-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.1',
@@ -2158,7 +2158,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'Observable',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'property-throw-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.1',
@@ -2167,7 +2167,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'Observable',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'subscribe-argument-nextCallback-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.4.0',
@@ -2176,7 +2176,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'Observable',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'subscribe-argument-errorCallback-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.4.0',
@@ -2185,7 +2185,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'Observable',
-        subjectApiSymbol: SubjectSymbols.class,
+        subjectSymbol: SubjectSymbols.class,
         subjectAction: 'subscribe-argument-completeCallback-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.4.0',
@@ -2194,7 +2194,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'tap',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'argument-nextCallback-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.4.0',
@@ -2203,7 +2203,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'tap',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'argument-errorCallback-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.4.0',
@@ -2212,7 +2212,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       },
       {
         subject: 'tap',
-        subjectApiSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.function,
         subjectAction: 'argument-completeCallback-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.4.0',

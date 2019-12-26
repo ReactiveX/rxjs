@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {filter, map, shareReplay} from 'rxjs/operators';
-import {ApiSymbols} from '../data-access/migration-timeline-struckture/interfaces';
+import {SubjectSymbols} from '../data-access/migration-timeline-struckture/interfaces';
 import {ClientMigrationTimelineReleaseItem} from '../data-access/migration-timeline.interface';
 import {LocalState} from '../utils/local-state.service';
 
@@ -16,7 +16,7 @@ export const releaseList: ClientMigrationTimelineReleaseItem[] =
       deprecations: [
         {
           subject: 'never',
-          subjectApiSymbol: ApiSymbols.function,
+          subjectSymbol: SubjectSymbols.function,
           subjectAction: 'deprecated',
           sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/testing/TestScheduler.ts#L44',
           itemType: 'deprecation',
@@ -40,7 +40,7 @@ export const releaseList: ClientMigrationTimelineReleaseItem[] =
           migrationItemSubjectUID: 'breakingChange-never-function-deprecated',
           opponentMigrationItemUID: '7.0.0-test.99_deprecation-never-function-deprecated',
           subject: 'never',
-          subjectApiSymbol: ApiSymbols.function,
+          subjectSymbol: SubjectSymbols.function,
           subjectAction: 'removed',
           itemType: 'breakingChange',
           deprecationVersion: '7.0.0-test.99',

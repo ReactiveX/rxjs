@@ -14,7 +14,7 @@
   - 7.0.0-alpha.1_breakingChange-operator-switchMap-resultSelector-to-map-operator
 */
 import {
-  ApiSymbols,
+  SubjectSymbols,
   MigrationItem,
   MigrationItemSubjectUIDFields,
   MigrationReleaseUIDFields,
@@ -84,7 +84,7 @@ Pattern: <itemType>-<subjectApiSymbol>-<subject>-<subjectAction>
  */
 export function parseMigrationItemSubjectUID(item: MigrationItem, args?: Partial<MigrationItemSubjectUIDFields>): any {
   const i = {...item, ...args};
-  return `${i.itemType}-${i.subjectApiSymbol}-${i.subject}-${i.subjectAction}`;
+  return `${i.itemType}-${i.subjectSymbol}-${i.subject}-${i.subjectAction}`;
 }
 
 export function parseMigrationItemUIDObject(uid: string): MigrationItemSubjectUIDFields & MigrationReleaseUIDFields {
@@ -95,7 +95,7 @@ export function parseMigrationItemUIDObject(uid: string): MigrationItemSubjectUI
     version: formatSemVerString(releaseItemUID),
     itemType: itemType === 'deprecation' ? 'deprecation' : 'breakingChange',
     subject,
-    subjectApiSymbol: subjectApiSymbol as ApiSymbols,
+    subjectSymbol: subjectApiSymbol as SubjectSymbols,
     subjectAction
   };
 }

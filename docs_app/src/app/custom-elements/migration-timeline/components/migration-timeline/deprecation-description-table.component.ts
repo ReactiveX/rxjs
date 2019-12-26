@@ -12,7 +12,7 @@ import {disposeEvent} from '../../utils/operators';
       <thead>
       <tr>
         <th class="subject">
-          <span class="symbol" [ngClass]="vm.deprecation.subjectApiSymbol"></span>
+          <span class="symbol" [ngClass]="vm.deprecation.subjectSymbol"></span>
           <code>{{vm.deprecation.subject}}</code>
         </th>
         <th>

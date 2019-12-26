@@ -14,7 +14,7 @@ interface VMBreakingChangeDescriptionTable {
       <thead>
       <tr>
         <th class="subject">
-          <span class="symbol" [ngClass]="vm.breakingChange.subjectApiSymbol"></span>
+          <span class="symbol" [ngClass]="vm.breakingChange.subjectSymbol"></span>
           <code>{{vm.breakingChange.subject}}</code>
         </th>
         <th>
