@@ -52,7 +52,7 @@ export class FilterFormComponent extends LocalState<{
   @Input()
   set releaseList(releaseList: MigrationTimelineNavigationItem[]) {
     if (releaseList) {
-      this.setSlice({releaseList});
+      this.setState({releaseList});
     }
   }
 

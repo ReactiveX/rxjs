@@ -8,12 +8,12 @@ export class CopyToClipboardDirective extends LocalState<{ text: string, descrip
 
   @Input()
   set text(text: string) {
-    this.setSlice({text});
+    this.setState({text});
   }
 
   @Input()
   set description(description: string) {
-    this.setSlice({description});
+    this.setState({description});
   }
 
   @HostListener('click')

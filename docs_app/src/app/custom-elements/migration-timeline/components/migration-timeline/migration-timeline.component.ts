@@ -147,13 +147,13 @@ export class MigrationTimelineComponent extends LocalState<MigrationTimelineComp
   @Input()
   set releaseList(releaseList: ClientMigrationTimelineReleaseItem[]) {
     if (releaseList) {
-      this.setSlice({releaseList});
+      this.setState({releaseList});
     }
   }
 
   @Input()
   set selectedMigrationItemUID(selectedMigrationItemUID: string) {
-    this.setSlice({
+    this.setState({
       selectedMigrationItemUID: selectedMigrationItemUID || '',
       selectedMigrationReleaseUID: parseMigrationReleaseUIDFromString(selectedMigrationItemUID)
     });
@@ -169,12 +169,12 @@ export class MigrationTimelineComponent extends LocalState<MigrationTimelineComp
 
   constructor() {
     super();
-    this.setSlice({expandedRelease: {}});
+    this.setState({expandedRelease: {}});
 
     const _selectedMigrationItemUID$ = this.select('selectedMigrationItemUID');
     // A) Version selection click (nav bar of versions)
     // If the user select's a new version expand this panel
-    this.connectSlice('expandedRelease', _selectedMigrationItemUID$
+    this.connectState('expandedRelease', _selectedMigrationItemUID$
       .pipe(
         map((version: string) => ({[parseMigrationReleaseUIDFromString(version)]: true}))
       )

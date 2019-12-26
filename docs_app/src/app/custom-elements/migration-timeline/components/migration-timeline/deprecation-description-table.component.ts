@@ -65,7 +65,7 @@ export class DeprecationDescriptionTableComponent extends LocalState<{
   @Input()
   set deprecation(deprecation: ClientDeprecation) {
     if (deprecation) {
-      this.setSlice({deprecation});
+      this.setState({deprecation});
     }
   }
 

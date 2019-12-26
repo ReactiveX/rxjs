@@ -26,7 +26,7 @@ export class MigrationTimelineService extends LocalState<MigrationTimelineState>
   }
 
   fetchMigrationTimeline(): void {
-    this.connectSlice(of({
+    this.connectState(of({
         migrations: this.staticMigrations.sort((a, b) => {
           if (a.date < b.date) {
             return -1;

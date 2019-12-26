@@ -4,7 +4,6 @@ import {ConnectableObservable, merge, noop, Observable, OperatorFunction,
 import {distinctUntilChanged, filter, map, mergeAll, observeOn,
   publishReplay, scan, shareReplay} from 'rxjs/operators';
 
-/** RxJS INTERNAL */
 function pipeFromArray<T, R>(fns: Array<UnaryFunction<T, R>>): UnaryFunction<T, R> {
   if (!fns) {
     return noop as UnaryFunction<any, any>;
@@ -81,6 +80,7 @@ export class LocalState<T> implements OnDestroy {
 
   // tslint:disable-next-line:member-ordering
   private _state$ = merge(
+    // @TODO I'm not sure if we should protect against anti patterns (re-entrance situation)
     this._stateObservables.pipe(mergeAll(), observeOn(queueScheduler)),
     this._stateSlices.pipe(observeOn(queueScheduler))
   ).pipe(
@@ -90,10 +90,7 @@ export class LocalState<T> implements OnDestroy {
 
   constructor() {
     this._subscription.add((this._state$ as ConnectableObservable<T>).connect());
-    this._subscription.add((this._effectSubject
-      .pipe(mergeAll(), publishReplay(1)
-      ) as ConnectableObservable<any>).connect()
-    );
+    this._subscription.add(this._effectSubject.subscribe());
   }
 
   /**
@@ -110,7 +107,7 @@ export class LocalState<T> implements OnDestroy {
    * // ls.setSlice({bar: 'tau'});
    * ls.setSlice({bar: 7});
    */
-  setSlice(s: Partial<T>): void {
+  setState(s: Partial<T>): void {
     this._stateSlices.next(s);
   }
 
@@ -135,7 +132,7 @@ export class LocalState<T> implements OnDestroy {
    *
    * @TODO implement SliceConfig to end a stream automatically with undefined => cleanup of sate
    */
-  connectSlice<A extends keyof T>(strOrObs: A | Observable<Partial<T>>, obs?: Observable<T[A]>): void {
+  connectState<A extends keyof T>(strOrObs: A | Observable<Partial<T>>, obs?: Observable<T[A]>): void {
     let _obs;
     if (typeof strOrObs === 'string') {
       const str: A = strOrObs;

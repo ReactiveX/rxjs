@@ -52,7 +52,7 @@ export class BreakingChangeDescriptionTableComponent extends LocalState<VMBreaki
   @Input()
   set breakingChange(breakingChange: ClientBreakingChange) {
     if (breakingChange) {
-      this.setSlice({breakingChange});
+      this.setState({breakingChange});
     }
   }
 

@@ -103,7 +103,7 @@ export class MigrationTimelineContainerComponent {
     private _va: MigrationTimelineContainerAdapter
   ) {
     // connect data from remote sources to component state
-    this._baseModel.connectSlice(this._va.select());
+    this._baseModel.connectState(this._va.select());
 
     // Routing
     this._baseModel.connectEffect(

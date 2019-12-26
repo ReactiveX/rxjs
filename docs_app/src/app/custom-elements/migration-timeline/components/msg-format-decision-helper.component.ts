@@ -170,17 +170,17 @@ export class MsgFormatDecisionHelperComponent
     const msg$ = this.form.controls.deprecationMsgExample.valueChanges.pipe(shareReplay());
 
 
-    this.connectSlice(msg$
+    this.connectState(msg$
       .pipe(filter(v => !!v), map(v => {
         releaseList[0].deprecations[0].deprecationMsgCode = v;
         return {releaseList: releaseList};
       }))
     );
 
-    this.connectSlice(msg$
+    this.connectState(msg$
       .pipe(map(v => ({commentsMsg: this.parseCommentsMsg(v)})))
     );
-    this.connectSlice(msg$
+    this.connectState(msg$
       .pipe(map(v => ({linterMsg: this.parseLinterMsg(v)})))
     );
   }

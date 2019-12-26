@@ -34,7 +34,7 @@ export class MigrationTimelineContainerAdapter extends LocalState<MigrationTimel
     // (re)fetch data  over http request
     this.migrationService.fetchMigrationTimeline();
     // Global state to view state
-    this.connectSlice('releaseList', this.migrationService.migrations$
+    this.connectState('releaseList', this.migrationService.migrations$
       .pipe(
         // ensure base sorting by version number before putting it into client state
         map(a => a.sort(this.compareByReleaseDateAsc))
@@ -42,7 +42,7 @@ export class MigrationTimelineContainerAdapter extends LocalState<MigrationTimel
 
     // URL state to component state
     // Connect Router to selectedMigrationReleaseUID
-    this.connectSlice('selectedMigrationItemUID',
+    this.connectState('selectedMigrationItemUID',
       combineLatest(
         this.releaseList$,
         this._selectedMigrationTimelineItemUIDUrl$
