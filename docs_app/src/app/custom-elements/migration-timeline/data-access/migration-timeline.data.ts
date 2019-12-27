@@ -1,28 +1,18 @@
-import {SubjectSymbols, MigrationReleaseItem} from './migration-timeline-struckture/interfaces';
-
-/*
-@TODO Consider:
-- how to structure rollback of a deprecation?
-https://github.com/ReactiveX/rxjs/issues/5107
- */
-
-// @TODO => show migration scripts in the timeline
-// @TODO => rxjs-compat intro and remove
+import {MigrationReleaseItem, SubjectSymbols} from './migration-timeline-struckture/interfaces';
 
 export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
   {
     version: '6.0.0-alpha.3',
     date: '2018-02-09T17:06:57.961Z',
     deprecations: [
-      /*@NOTE Deprecation not documented*/
       {
         subject: 'last',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector',
+        subjectAction: 'argument-resultSelector',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3/src/internal/operators/last.ts#L12',
         breakingChangeVersion: '6.0.0-alpha.4',
-        breakingChangeSubjectAction: 'resultSelector-removed',
+        breakingChangeSubjectAction: 'argument-resultSelector-removed',
         deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('last'),
         reason: getResultSelectorReason('last'),
         implication: getResultSelectorImplication('last'),
@@ -51,11 +41,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'first',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector',
+        subjectAction: 'argument-resultSelector',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-alpha.3/src/internal/operators/first.ts#L18',
         breakingChangeVersion: '6.0.0-alpha.4',
-        breakingChangeSubjectAction: 'resultSelector-removed',
+        breakingChangeSubjectAction: 'argument-resultSelector-removed',
         deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('first'),
         reason: getResultSelectorReason('first'),
         implication: getResultSelectorImplication('first'),
@@ -92,19 +82,19 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'last',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-removed',
+        subjectAction: 'argument-resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-alpha.3',
-        deprecationSubjectAction: 'resultSelector',
+        deprecationSubjectAction: 'argument-resultSelector',
         breakingChangeMsg: getResultSelectorBreakingChangeMsg('last')
       },
       {
         subject: 'first',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-removed',
+        subjectAction: 'argument-resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-alpha.3',
-        deprecationSubjectAction: 'resultSelector',
+        deprecationSubjectAction: 'argument-resultSelector',
         breakingChangeMsg: getResultSelectorBreakingChangeMsg('first')
       }
     ]
@@ -164,13 +154,13 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'WebSocketSubject',
         subjectSymbol: SubjectSymbols.class,
-        subjectAction: 'resultSelector-deprecated',
+        subjectAction: 'argument-resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-beta.4/src/internal/observable/dom/WebSocketSubject.ts#L16',
         breakingChangeVersion: '8',
-        breakingChangeSubjectAction: 'deserializer-removed',
+        breakingChangeSubjectAction: 'argument-resultSelector-removed',
         deprecationMsgCode: 'use deserializer instead',
-        reason: 'Incoming and outgoing projections are now done over WebSocketSubjectConfig interface serialize and deserialize options',
+        reason: `Incoming and outgoing projections are now done over WebSocketSubjectConfig interface serialize and deserialize options`,
         implication: `instead of providing the resultSelector under the key
         "resultSelector" in WebSocketSubjectConfig use key "deserialize" instead`,
         exampleBefore: `
@@ -218,11 +208,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'fromEventPattern',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-deprecated',
+        subjectAction: 'argument-resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/fromEventPattern.ts#L9',
         breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
+        breakingChangeSubjectAction: 'argument-resultSelector-removed',
         deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('fromEventPattern'),
         reason: getResultSelectorReason('fromEventPattern'),
         implication: getResultSelectorImplication('fromEventPattern'),
@@ -263,11 +253,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'fromEvent',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-deprecated',
+        subjectAction: 'argument-resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/fromEvent.ts#L32',
         breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
+        breakingChangeSubjectAction: 'argument-resultSelector-removed',
         deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('fromEvent'),
         reason: getResultSelectorReason('fromEvent'),
         implication: getResultSelectorImplication('fromEvent'),
@@ -297,11 +287,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'bindNodeCallback',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-deprecated',
+        subjectAction: 'argument-resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/bindNodeCallback.ts#L10',
         breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
+        breakingChangeSubjectAction: 'argument-resultSelector-removed',
         deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('bindNodeCallback'),
         reason: getResultSelectorReason('bindNodeCallback'),
         implication: getResultSelectorImplication('bindNodeCallback'),
@@ -343,11 +333,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'bindCallback',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-deprecated',
+        subjectAction: 'argument-resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/bindCallback.ts#L10',
         breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
+        breakingChangeSubjectAction: 'argument-resultSelector-removed',
         deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('bindCallback'),
         reason: getResultSelectorReason('bindCallback'),
         implication: getResultSelectorImplication('bindCallback'),
@@ -389,11 +379,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'forkJoin',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-deprecated',
+        subjectAction: 'argument-resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/forkJoin.ts#L29',
         breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
+        breakingChangeSubjectAction: 'argument-resultSelector-removed',
         deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('forkJoin'),
         reason: getResultSelectorReason('forkJoin'),
         implication: getResultSelectorImplication('forkJoin'),
@@ -423,11 +413,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'zip',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-deprecated',
+        subjectAction: 'argument-resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: `https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/observable/zip.ts#L37`,
         breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
+        breakingChangeSubjectAction: 'argument-resultSelector-removed',
         deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('zip'),
         reason: getResultSelectorReason('zip'),
         implication: getResultSelectorImplication('zip'),
@@ -457,11 +447,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'switchMap',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-deprecated',
+        subjectAction: 'argument-resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/switchMap.ts#L16',
         breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
+        breakingChangeSubjectAction: 'argument-resultSelector-removed',
         deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('switchMap'),
         reason: getResultSelectorReason('switchMap'),
         implication: getResultSelectorImplication('switchMap'),
@@ -497,11 +487,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'switchMapTo',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-deprecated',
+        subjectAction: 'argument-resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/switchMapTo.ts#L15',
         breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
+        breakingChangeSubjectAction: 'argument-resultSelector-removed',
         deprecationMsgCode: getMapToOperatorResultSelectorDeprecationMsgCode('switchMapTo', 'switchMap'),
         reason: getResultSelectorReason('switchMapTo'),
         implication: getResultSelectorImplication('switchMapTo'),
@@ -537,11 +527,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'concatMap',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-deprecated',
+        subjectAction: 'argument-resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/concatMap.ts#L8',
         breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
+        breakingChangeSubjectAction: 'argument-resultSelector-removed',
         deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('concatMap'),
         reason: getResultSelectorReason('concatMap'),
         implication: getResultSelectorImplication('concatMap'),
@@ -577,11 +567,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'concatMapTo',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-deprecated',
+        subjectAction: 'argument-resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/concatMapTo.ts#L8',
         breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
+        breakingChangeSubjectAction: 'argument-resultSelector-removed',
         deprecationMsgCode: getMapToOperatorResultSelectorDeprecationMsgCode('concatMapTo', 'concatMap'),
         reason: getResultSelectorReason('concatMapTo'),
         implication: getResultSelectorImplication('concatMapTo'),
@@ -617,11 +607,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'mergeMap',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-deprecated',
+        subjectAction: 'argument-resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/mergeMap.ts#L16',
         breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
+        breakingChangeSubjectAction: 'argument-resultSelector-removed',
         deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('mergeMap'),
         reason: getResultSelectorReason('mergeMap'),
         implication: getResultSelectorImplication('mergeMap'),
@@ -657,11 +647,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'mergeMapTo',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-deprecated',
+        subjectAction: 'argument-resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/mergeMapTo.ts#L8',
         breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
+        breakingChangeSubjectAction: 'argument-resultSelector-removed',
         deprecationMsgCode: getMapToOperatorResultSelectorDeprecationMsgCode('mergeMapTo', 'mergeMap'),
         reason: getResultSelectorReason('mergeMapTo'),
         implication: getResultSelectorImplication('mergeMapTo'),
@@ -697,11 +687,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'exhaustMap',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-deprecated',
+        subjectAction: 'argument-resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.0/src/internal/operators/exhaustMap.ts#L16',
         breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
+        breakingChangeSubjectAction: 'argument-resultSelector-removed',
         deprecationMsgCode: getOperatorResultSelectorDeprecationMsgCode('exhaustMap'),
         reason: getResultSelectorReason('exhaustMap'),
         implication: getResultSelectorImplication('exhaustMap'),
@@ -865,18 +855,18 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'Observable',
         subjectSymbol: SubjectSymbols.class,
-        subjectAction: 'property-if-deprecated',
+        subjectAction: 'static-property-if-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.1/src/internal/Observable.ts#L260',
-        breakingChangeVersion: '8',
-        breakingChangeSubjectAction: 'property-if-removed',
+        breakingChangeVersion: '7',
+        breakingChangeSubjectAction: 'static-property-if-removed',
         deprecationMsgCode: 'use iif instead',
         reason: `As 'if' is seen by the compiler as reserved word, static method 'if' gets deprecated.
             It is now available under a creation operator named 'iif'`,
         implication: 'The deprecation of Observable.if means for the caller to use iif instead',
         exampleBeforeDependencies: {
-          'rxjs' : '6.0.0-rc.0',
-          'rxjs-compat' : '6.0.0-rc.0'
+          'rxjs': '6.0.0-rc.0',
+          'rxjs-compat': '6.0.0-rc.0'
         },
         exampleBefore: `
         import { Observable } from 'rxjs/Observable';
@@ -904,12 +894,12 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'Observable',
         subjectSymbol: SubjectSymbols.class,
-        subjectAction: 'property-throw-deprecated',
+        subjectAction: 'static-property-throw-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-rc.1/src/internal/Observable.ts#L265',
-        breakingChangeVersion: '8',
-        breakingChangeSubjectAction: 'property-throw-removed',
-        deprecationMsgCode: 'renamed - use throwError instead',
+        breakingChangeVersion: '7',
+        breakingChangeSubjectAction: 'static-property-throw-removed',
+        deprecationMsgCode: 'use throwError instead',
         reason: `As 'throw' is seen by the compiler as reserved word, static method 'throw' gets deprecated.
             It is now available under a creation operator named 'throwError'`,
         implication: 'The deprecation of Observable.if means for the caller to use iif operator instead',
@@ -947,10 +937,10 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.0.0-tactical-rc.1/src/internal/Scheduler.ts#L20',
         breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'removed',
-        deprecationMsgCode: 'Class `Scheduler` deprecated in favor of Interface {@link SchedulerLike}',
-        reason: 'create your own class and implement SchedulerLike instead',
-        implication: '@!TODO',
+        breakingChangeSubjectAction: 'to-private',
+        deprecationMsgCode: 'use interface SchedulerLike instead',
+        reason: `create your own class and implement SchedulerLike instead`,
+        implication: '@TODO',
         exampleBefore: `
         @TODO => https://stackblitz.com/edit/rxjs-scheduler-example
         import { Scheduler, Subscription, of } from "rxjs";
@@ -1104,7 +1094,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'Observable',
         subjectSymbol: SubjectSymbols.class,
-        subjectAction: 'subscribe-argument-errorCallback',
+        subjectAction: 'subscribe-argument-errorCallback-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/Observable.ts#L76',
         breakingChangeVersion: '8',
@@ -1130,7 +1120,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'Observable',
         subjectSymbol: SubjectSymbols.class,
-        subjectAction: 'subscribe-argument-completeCallback',
+        subjectAction: 'subscribe-argument-completeCallback-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/Observable.ts#L78',
         breakingChangeVersion: '8',
@@ -1156,11 +1146,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'tap',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'argument-nextCallback',
+        subjectAction: 'argument-nextCallback-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/operators/tap.ts#L9',
         breakingChangeVersion: '8',
-        breakingChangeSubjectAction: 'argument-nextCallbacks-removed',
+        breakingChangeSubjectAction: 'argument-nextCallback-removed',
         deprecationMsgCode: getGeneralObserverCallbackDeprecationMsgCode(),
         reason: getGeneralObserverCallbackReason(),
         implication: getOperatorGeneralObserverCallbackImplication(),
@@ -1189,11 +1179,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'tap',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'argument-errorCallback',
+        subjectAction: 'argument-errorCallback-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/operators/tap.ts#L11',
         breakingChangeVersion: '8',
-        breakingChangeSubjectAction: 'argument-errorCallbacks-removed',
+        breakingChangeSubjectAction: 'argument-errorCallback-removed',
         deprecationMsgCode: getGeneralObserverCallbackDeprecationMsgCode(),
         reason: getGeneralObserverCallbackReason(),
         implication: getOperatorGeneralObserverCallbackImplication(),
@@ -1222,11 +1212,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'tap',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'argument-completeCallback',
+        subjectAction: 'argument-completeCallback-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.4.0/src/internal/operators/tap.ts#L13',
         breakingChangeVersion: '8',
-        breakingChangeSubjectAction: 'argument-completeCallbacks-removed',
+        breakingChangeSubjectAction: 'argument-completeCallback-removed',
         deprecationMsgCode: getGeneralObserverCallbackDeprecationMsgCode(),
         reason: getGeneralObserverCallbackReason(),
         implication: getOperatorGeneralObserverCallbackImplication(),
@@ -1262,19 +1252,21 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'property-create-removed',
         deprecationMsgCode: 'use new Observable() instead',
-        reason: `After moving to "pipeable" operators \`create\` static Observable method got deprecated.
-        No new static method was created because \`new Observable() is more intuitive and natural to the language.
+        reason: `After moving to "pipeable" operators create static Observable method got deprecated.
+        No new static method was created because new Observable() is more intuitive and natural to the language.
         Technically older versions of TypeScript had many more limitations that today's version`,
-        implication: '@!TODO',
+        implication: 'The deprecation of Observable.create means tfor thw caller to use new Observable instead.',
         exampleBefore: `
         import { Observable } from 'rxjs';
-        Observable.create(subscriberFunc)
-          .subscribe({(n) => console.log(n)});
+
+        const source = Observable.create(subscriberFunc);
+        source.subscribe((n) => console.log(n));
         `,
         exampleAfter: `
         import { Observable } from 'rxjs';
-        new Observable(subscriberFunc)
-          .subscribe({(n) => console.log(n)});
+
+        const source = new Observable(subscriberFunc)
+        source.subscribe((n) => console.log(n));
         `
       },
       {
@@ -1412,11 +1404,11 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'combineLatest',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-deprecated',
+        subjectAction: 'argument-resultSelector-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/combineLatest.ts#L43',
         breakingChangeVersion: '7',
-        breakingChangeSubjectAction: 'resultSelector-removed',
+        breakingChangeSubjectAction: 'argument-resultSelector-removed',
         deprecationMsgCode: getCreationResultSelectorDeprecationMsgCode('combineLatest'),
         reason: getResultSelectorReason('combineLatest'),
         implication: getResultSelectorImplication('combineLatest'),
@@ -1520,7 +1512,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'removed',
         deprecationMsgCode: 'use the static partition instead',
-        reason: 'As partition operator is not compose able and it can anyway only be used to create the array it is deprecated.',
+        reason: `As partition operator is not compose able and it can anyway only be used to create the array it is deprecated.`,
         implication: 'The deprecation of the operator partition means for the caller to use creation method instead',
         exampleBefore: `
         import { of, Observable } from 'rxjs';
@@ -1563,7 +1555,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'removed',
         deprecationMsgCode: 'use a string literal instead of a const enum',
-        reason: 'NotificationKind is deprecated as const enums are not compatible with isolated modules. Use a string literal instead.',
+        reason: `NotificationKind is deprecated as const enums are not compatible with isolated modules. Use a string literal instead.`,
         implication: 'The deprecation of enum NotificationKind means for the caller to use string literals instead.',
         exampleBefore: `
         import { Notification, NotificationKind } from 'rxjs';
@@ -1627,7 +1619,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'generic-argument-removed',
         deprecationMsgCode: 'do not use generic arguments directly, allow inference or assert with `as`',
-        reason: 'As TypeScript 3.x allows better type inference directly applying generic arguments is no longer needed.',
+        reason: `As TypeScript 3.x allows better type inference directly applying generic arguments is no longer needed.`,
         implication: `The deprecation of generic arguments for the of creation operator means for the caller to delete
          them and let the type inference do the rest, or use 'as' to type it.`,
         exampleBefore: `
@@ -1784,7 +1776,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'property-hotObservables-to-private',
         deprecationMsgCode: 'it is meant to be used only internally',
-        reason: 'TestScheduler deprecates public hotObservables property and makes it protected as it is meant to be used only internally.',
+        reason: `TestScheduler deprecates public hotObservables property and makes it protected as it is meant to be used only internally.`,
         implication: `The deprecation of the property hotObservables in TestScheduler means
         the caller uses parts that should not be used outside.`,
         exampleBefore: `
@@ -1859,7 +1851,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'property-frameTimeFactor-moved',
         deprecationMsgCode: 'it is no longer used directly',
-        reason: 'frameTimeFactor is not used in VirtualTimeScheduler directly. Therefore it does not belong here.',
+        reason: `frameTimeFactor is not used in VirtualTimeScheduler directly. Therefore it does not belong here.`,
         implication: 'Property frameTimeFactor is deprecated because it moved to a different place. ',
         exampleBefore: `
         import { VirtualTimeScheduler } from 'rxjs';
@@ -1876,13 +1868,13 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'VirtualTimeScheduler',
         subjectSymbol: SubjectSymbols.class,
-        subjectAction: 'property-index-to-private',
+        subjectAction: 'property-index-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/scheduler/VirtualTimeScheduler.ts#L23',
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'property-index-to-private',
-        deprecationMsgCode: 'internal use only',
-        reason: '`index` property of `VirtualTimeScheduler` is only used internally and should ot be used.',
+        deprecationMsgCode: 'it is meant to be used only internally',
+        reason: `index property of VirtualTimeScheduler is only used internally and should ot be used.`,
         implication: `The deprecation of the property index in VirtualTimeScheduler means the caller
         uses internal parts that should not be used outside.`,
         exampleBefore: `
@@ -1912,189 +1904,135 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
     breakingChanges: []
   },
   {
-    version: '8.0.0',
-    date: '2020-12-24T12:12:12.800Z',
+    version: '7.0.0',
+    date: '2020-11-24T12:12:12.800Z',
     deprecations: [],
     breakingChanges: [
       {
         subject: 'fromEventPattern',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-removed',
+        subjectAction: 'argument-resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
-        deprecationSubjectAction: 'resultSelector-deprecated',
+        deprecationSubjectAction: 'argument-resultSelector-deprecated',
         breakingChangeMsg: getResultSelectorBreakingChangeMsg('fromEventPattern')
       },
       {
         subject: 'fromEvent',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-removed',
+        subjectAction: 'argument-resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
-        deprecationSubjectAction: 'resultSelector-deprecated',
+        deprecationSubjectAction: 'argument-resultSelector-deprecated',
         breakingChangeMsg: getResultSelectorBreakingChangeMsg('fromEvent')
       },
       {
         subject: 'bindNodeCallback',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-removed',
+        subjectAction: 'argument-resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
-        deprecationSubjectAction: 'resultSelector-deprecated',
+        deprecationSubjectAction: 'argument-resultSelector-deprecated',
         breakingChangeMsg: getResultSelectorBreakingChangeMsg('bindNodeCallback')
       },
       {
         subject: 'bindCallback',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-removed',
+        subjectAction: 'argument-resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
-        deprecationSubjectAction: 'resultSelector-deprecated',
+        deprecationSubjectAction: 'argument-resultSelector-deprecated',
         breakingChangeMsg: getResultSelectorBreakingChangeMsg('bindCallback')
       },
       {
         subject: 'forkJoin',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-removed',
+        subjectAction: 'argument-resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
-        deprecationSubjectAction: 'resultSelector-deprecated',
+        deprecationSubjectAction: 'argument-resultSelector-deprecated',
         breakingChangeMsg: getResultSelectorBreakingChangeMsg('forkJoin')
       },
       {
         subject: 'zip',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-removed',
+        subjectAction: 'argument-resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
-        deprecationSubjectAction: 'resultSelector-deprecated',
+        deprecationSubjectAction: 'argument-resultSelector-deprecated',
         breakingChangeMsg: getResultSelectorBreakingChangeMsg('zip')
+      },
+      {
+        subject: 'combineLatest',
+        subjectSymbol: SubjectSymbols.function,
+        subjectAction: 'argument-resultSelector-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.5.0',
+        deprecationSubjectAction: 'argument-resultSelector-deprecated',
+        breakingChangeMsg: getResultSelectorBreakingChangeMsg('combineLatest')
       },
       {
         subject: 'switchMap',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-removed',
+        subjectAction: 'argument-resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
-        deprecationSubjectAction: 'resultSelector-deprecated',
+        deprecationSubjectAction: 'argument-resultSelector-deprecated',
         breakingChangeMsg: getResultSelectorBreakingChangeMsg('switchMap')
       },
       {
         subject: 'switchMapTo',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-removed',
+        subjectAction: 'argument-resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
-        deprecationSubjectAction: 'resultSelector-deprecated',
+        deprecationSubjectAction: 'argument-resultSelector-deprecated',
         breakingChangeMsg: getResultSelectorBreakingChangeMsg('switchMapTo')
       },
       {
         subject: 'concatMap',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-removed',
+        subjectAction: 'argument-resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
-        deprecationSubjectAction: 'resultSelector-deprecated',
+        deprecationSubjectAction: 'argument-resultSelector-deprecated',
         breakingChangeMsg: getResultSelectorBreakingChangeMsg('concatMap')
       },
       {
         subject: 'concatMapTo',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-removed',
+        subjectAction: 'argument-resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
-        deprecationSubjectAction: 'resultSelector-deprecated',
+        deprecationSubjectAction: 'argument-resultSelector-deprecated',
         breakingChangeMsg: getResultSelectorBreakingChangeMsg('concatMapTo')
       },
       {
         subject: 'mergeMap',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-removed',
+        subjectAction: 'argument-resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
-        deprecationSubjectAction: 'resultSelector-deprecated',
+        deprecationSubjectAction: 'argument-resultSelector-deprecated',
         breakingChangeMsg: getResultSelectorBreakingChangeMsg('mergeMap')
       },
       {
         subject: 'mergeMapTo',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-removed',
+        subjectAction: 'argument-resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
-        deprecationSubjectAction: 'resultSelector-deprecated',
+        deprecationSubjectAction: 'argument-resultSelector-deprecated',
         breakingChangeMsg: getResultSelectorBreakingChangeMsg('mergeMapTo')
       },
       {
         subject: 'exhaustMap',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-removed',
+        subjectAction: 'argument-resultSelector-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.0.0-rc.0',
-        deprecationSubjectAction: 'resultSelector-deprecated',
+        deprecationSubjectAction: 'argument-resultSelector-deprecated',
         breakingChangeMsg: getResultSelectorBreakingChangeMsg('exhaustMap')
-      },
-      {
-        subject: 'combineLatest',
-        subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'resultSelector-removed',
-        itemType: 'breakingChange',
-        deprecationVersion: '6.5.0',
-        deprecationSubjectAction: 'resultSelector-deprecated',
-        breakingChangeMsg: getResultSelectorBreakingChangeMsg('combineLatest')
-      },
-      {
-        subject: 'WebSocketSubject',
-        subjectSymbol: SubjectSymbols.class,
-        subjectAction: 'resultSelector-removed',
-        itemType: 'breakingChange',
-        deprecationVersion: '6.0.0-beat.4',
-        deprecationSubjectAction: 'resultSelector-deprecated',
-        breakingChangeMsg: 'Class WebSocketSubject made removed resultSelector.'
-      },
-      {
-        subject: 'combineLatest',
-        subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'removed',
-        itemType: 'breakingChange',
-        deprecationVersion: '6.0.0-rc.0',
-        deprecationSubjectAction: 'deprecated',
-        breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('combineLatest')
-      },
-      {
-        subject: 'combineLatest',
-        subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'argument-scheduler-removed',
-        itemType: 'breakingChange',
-        deprecationVersion: '6.5.0',
-        deprecationSubjectAction: 'argument-scheduler-deprecated',
-        breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('combineLatest')
-      },
-      {
-        subject: 'combineLatest',
-        subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'multiple-arguments-removed',
-        itemType: 'breakingChange',
-        deprecationVersion: '6.5.0',
-        deprecationSubjectAction: 'multiple-arguments-deprecated',
-        breakingChangeMsg: 'Creation operator combineLatest removed the option to pass multiple arguments'
-      },
-      {
-        subject: 'forkJoin',
-        subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'multiple-arguments-removed',
-        itemType: 'breakingChange',
-        deprecationVersion: '6.5.0',
-        deprecationSubjectAction: 'multiple-arguments-deprecated',
-        breakingChangeMsg: 'Creation operator combineLatest removed the option to pass multiple arguments'
-      },
-      {
-        subject: 'from',
-        subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'argument-scheduler-removed',
-        itemType: 'breakingChange',
-        deprecationVersion: '6.5.0',
-        deprecationSubjectAction: 'argument-from-deprecated',
-        breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('from')
       },
       {
         subject: 'merge',
@@ -2124,6 +2062,33 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('concat')
       },
       {
+        subject: 'combineLatest',
+        subjectSymbol: SubjectSymbols.function,
+        subjectAction: 'removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-rc.0',
+        deprecationSubjectAction: 'deprecated',
+        breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('combineLatest')
+      },
+      {
+        subject: 'Observable',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'static-property-if-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-rc.1',
+        deprecationSubjectAction: 'static-property-if-deprecated',
+        breakingChangeMsg: 'Class Observable removed if property.'
+      },
+      {
+        subject: 'Observable',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'static-property-throw-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-rc.1',
+        deprecationSubjectAction: 'static-property-throw-deprecated',
+        breakingChangeMsg: 'Class Observable removed throw property.'
+      },
+      {
         subject: 'race',
         subjectSymbol: SubjectSymbols.function,
         subjectAction: 'removed',
@@ -2131,6 +2096,67 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         itemType: 'breakingChange',
         deprecationSubjectAction: 'deprecated',
         breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('race')
+      },
+      {
+        subject: 'Scheduler',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'to-private',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-tactical-rc.1',
+        deprecationSubjectAction: 'deprecated',
+        breakingChangeMsg: 'The access modifier of class Scheduler is now private'
+      }
+    ]
+  },
+  {
+    version: '8.0.0',
+    date: '2020-12-24T12:12:12.800Z',
+    deprecations: [],
+    breakingChanges: [
+      {
+        subject: 'WebSocketSubject',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'argument-resultSelector-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.0.0-beta.4',
+        deprecationSubjectAction: 'argument-resultSelector-deprecated',
+        breakingChangeMsg: 'Class WebSocketSubject removed resultSelector.'
+      },
+      {
+        subject: 'combineLatest',
+        subjectSymbol: SubjectSymbols.function,
+        subjectAction: 'argument-scheduler-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.5.0',
+        deprecationSubjectAction: 'argument-scheduler-deprecated',
+        breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('combineLatest')
+      },
+      {
+        subject: 'combineLatest',
+        subjectSymbol: SubjectSymbols.function,
+        subjectAction: 'multiple-arguments-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.5.0',
+        deprecationSubjectAction: 'multiple-arguments-deprecated',
+        breakingChangeMsg: getOperatorRemovedMultipleArgumentsBreakingChangeMsg('combineLatest')
+      },
+      {
+        subject: 'forkJoin',
+        subjectSymbol: SubjectSymbols.function,
+        subjectAction: 'multiple-arguments-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.5.0',
+        deprecationSubjectAction: 'multiple-arguments-deprecated',
+        breakingChangeMsg: getOperatorRemovedMultipleArgumentsBreakingChangeMsg('forkJoin')
+      },
+      {
+        subject: 'from',
+        subjectSymbol: SubjectSymbols.function,
+        subjectAction: 'argument-scheduler-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.5.0',
+        deprecationSubjectAction: 'argument-scheduler-deprecated',
+        breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('from')
       },
       {
         subject: 'never',
@@ -2155,13 +2181,13 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         subjectSymbol: SubjectSymbols.function,
         subjectAction: 'removed',
         itemType: 'breakingChange',
-        deprecationVersion: '7.0.0-alpha.0',
+        deprecationVersion: '6.5.0',
         deprecationSubjectAction: 'deprecated',
         breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('partition')
       },
       {
         subject: 'NotificationKind',
-        subjectSymbol: SubjectSymbols.function,
+        subjectSymbol: SubjectSymbols.enum,
         subjectAction: 'removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.5.1',
@@ -2234,19 +2260,19 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'TestScheduler',
         subjectSymbol: SubjectSymbols.class,
-        subjectAction: 'hotObservables-to-private',
+        subjectAction: 'property-hotObservables-to-private',
         itemType: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
-        deprecationSubjectAction: 'hotObservables-deprecated',
+        deprecationSubjectAction: 'property-hotObservables-deprecated',
         breakingChangeMsg: 'The access modifier of TestScheduler property hotObservables is now private'
       },
       {
         subject: 'TestScheduler',
         subjectSymbol: SubjectSymbols.class,
-        subjectAction: 'coldObservables-to-private',
+        subjectAction: 'property-coldObservables-to-private',
         itemType: 'breakingChange',
         deprecationVersion: '7.0.0-alpha.0',
-        deprecationSubjectAction: 'coldObservables-deprecated',
+        deprecationSubjectAction: 'property-coldObservables-deprecated',
         breakingChangeMsg: 'The access modifier of TestScheduler property coldObservables is now private'
       },
       {
@@ -2266,24 +2292,6 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         deprecationVersion: '7.0.0-alpha.0',
         deprecationSubjectAction: 'property-index-deprecated',
         breakingChangeMsg: 'Class `VirtualTimeScheduler` made `index` property private.'
-      },
-      {
-        subject: 'Observable',
-        subjectSymbol: SubjectSymbols.class,
-        subjectAction: 'property-if-removed',
-        itemType: 'breakingChange',
-        deprecationVersion: '6.0.0-rc.1',
-        deprecationSubjectAction: 'property-if-deprecated',
-        breakingChangeMsg: 'Class Observable removed if property.'
-      },
-      {
-        subject: 'Observable',
-        subjectSymbol: SubjectSymbols.class,
-        subjectAction: 'property-throw-removed',
-        itemType: 'breakingChange',
-        deprecationVersion: '6.0.0-rc.1',
-        deprecationSubjectAction: 'property-throw-deprecated',
-        breakingChangeMsg: 'Class Observable removed throw property.'
       },
       {
         subject: 'Observable',
@@ -2353,7 +2361,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         subjectSymbol: SubjectSymbols.class,
         subjectAction: 'property-create-removed',
         itemType: 'breakingChange',
-        deprecationVersion: '7.0.0-alpha.0',
+        deprecationVersion: '6.4.0',
         deprecationSubjectAction: 'property-create-deprecated',
         breakingChangeMsg: 'Class Observable removed property create'
       }
@@ -2363,6 +2371,10 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
 
 
 // GENERAL
+
+function getOperatorRemovedMultipleArgumentsBreakingChangeMsg(operatorName: string, arg?: string) {
+  return `${operatorName} removed the option to pass multiple arguments`
+}
 
 function getOperatorRemovedBreakingChangePhrase(operatorName: string, arg?: string) {
   return `Operator ${operatorName} removed`
@@ -2381,9 +2393,11 @@ function getInterfaceRemovedInFavourOfBreakingChangePhrase(interfaceName: string
 function getGeneralObserverCallbackBreakingChangeMsg(operatorName: string, arg: string) {
   return `Class Observable removed the ${arg} callback argument of the subscribe method.`;
 }
+
 function getGeneralObserverCallbackDeprecationMsgCode(operatorName?: string, arg?: string) {
   return 'use an observer instead of a separate callback';
 }
+
 function getGeneralObserverCallbackReason(operatorName?: string, arg?: string) {
   return `The Observer object is more explicit and passing null values for unused callbacks can be avoided.
 
@@ -2452,9 +2466,9 @@ function getNameDupleOperatorDeprecationMsgCode(operatorName: string): string {
 
 // Info from: https://github.com/ReactiveX/rxjs/issues/3927
 function getNameDupleOperatorReason(operatorName: string): string {
-  return `As \`${operatorName}\` operator is a name duplicate of the static
-         function \`${operatorName}\` it gets deprecated.
-         In future releases it will most probably be available under \`${operatorName}With\`.`;
+  return `As ${operatorName} operator is a name duplicate of the static
+         function ${operatorName} it gets deprecated.
+         In future releases it will most probably be available under ${operatorName}With.`;
 }
 
 function getNameDupleOperatorImplication(opr: string, arg: string): string {
@@ -2467,12 +2481,12 @@ function getNameDupleOperatorImplication(opr: string, arg: string): string {
 // RESULT_SELECTOR
 
 function getResultSelectorBreakingChangeMsg(opr: string): string {
-  return `Operator \`${opr}\` removed the \`resultSelector\` argument`;
+  return `Operator ${opr} removed the resultSelector argument`;
 }
 
 function getResultSelectorReason(operatorName: string): string {
-  return `By removing the result selector from \`${operatorName}\` we get a smaller bundle since and better maintainability.
-          Refactoring to use a \`map\` operation instead.`;
+  return `By removing the result selector from ${operatorName} we get a smaller bundle since and better maintainability.
+          Refactoring to use a map operation instead.`;
 }
 
 function getResultSelectorImplication(opr: string): string {
