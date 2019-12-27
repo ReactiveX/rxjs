@@ -56,7 +56,9 @@ export enum SubjectSymbols {
 export enum SubjectActionSymbol {
   all = 'all',
   argument = 'argument',
-  property = 'property'
+  property = 'property',
+  // @TODO reconsider
+  genericArgument =  'generic-argument'
 }
 
 /*

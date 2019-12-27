@@ -1432,7 +1432,7 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/combineLatest.ts#L88',
         breakingChangeVersion: '8',
         breakingChangeSubjectAction: 'multiple-arguments-removed',
-        deprecationMsgCode: 'pass arguments in a single array instead `combineLatest([a, b, c])`',
+        deprecationMsgCode: 'pass arguments in a single array instead',
         reason: `Creation operator combineLatest method arguments in an array instead of single arguments.
         They are technically easier to type.`,
         implication: `Deprecating the option to passe multiple observables
@@ -1461,24 +1461,35 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'forkJoin',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'multiple-arguments',
+        subjectAction: 'multiple-arguments-deprecated',
         itemType: 'deprecation',
         breakingChangeVersion: '8',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/6.5.0/src/internal/observable/forkJoin.ts#L22',
         breakingChangeSubjectAction: 'multiple-arguments-removed',
-        deprecationMsgCode: 'Static `forkJoin` method arguments in an array instead of single arguments.',
-        reason: `Static \`forkJoin\` method arguments in an array instead of single arguments.
+        deprecationMsgCode: 'pass arguments in a single array instead',
+        reason: `Creation operator forkJoin method arguments in an array instead of single arguments.
         They are technically easier to type.`,
-        implication: '@!TODO',
+        implication: `Deprecating the option to passe multiple observables
+        to forkJoin means for the caller to use an array of observables instead.`,
         exampleBefore: `
+        import { of } from 'rxjs';
         import { forkJoin } from 'rxjs';
-        forkJoin(a$,b$)
-          .subscribe({next: n => console.log(n)});
+
+        const a = of('1');
+        const b = of('2');
+
+        const source = forkJoin(a,b);
+        source.subscribe((n) => console.log(n));
         `,
         exampleAfter: `
-                import { forkJoin } from 'rxjs';
-        forkJoin([a$,b$])
-          .subscribe({next: n => console.log(n)})
+        import { of } from 'rxjs';
+        import { forkJoin } from 'rxjs';
+
+        const a = of('1');
+        const b = of('2');
+
+        const source = forkJoin([a,b]);
+        source.subscribe((n) => console.log(n));
         `
       },
       {
@@ -1585,23 +1596,26 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
       {
         subject: 'of',
         subjectSymbol: SubjectSymbols.function,
-        subjectAction: 'generic',
+        subjectAction: 'generic-argument-deprecated',
         itemType: 'deprecation',
         sourceLink: 'https://github.com/ReactiveX/rxjs/blob/7.0.0-alpha.0/src/internal/observable/of.ts#L35',
         breakingChangeVersion: '8',
-        breakingChangeSubjectAction: 'generic-removed',
+        breakingChangeSubjectAction: 'generic-argument-removed',
         deprecationMsgCode: 'do not use generic arguments directly, allow inference or assert with `as`',
-        reason: '@TODO',
-        implication: '@!TODO',
+        reason: 'As TypeScript 3.x allows better type inference directly applying generic arguments is no longer needed.',
+        implication: `The deprecation of generic arguments for the of creation operator means for the caller to delete
+         them and let the type inference do the rest, or use 'as' to type it.`,
         exampleBefore: `
-        import { of, asyncScheduler } from 'rxjs';
-        of(1, asyncScheduler)
-          .subscribe({ next: (n) => console.log(n) });
+        import { of } from 'rxjs';
+        const source = of<string>('1');
+        source.subscribe((n) => console.log(n));
         `,
         exampleAfter: `
-        import { scheduled, asyncScheduler } from 'rxjs';
-        scheduled([1], scheduler)
-          .subscribe({ next: (n) => console.log(n) });
+        import { of, Observable } from 'rxjs';
+        const a = of('1');
+        const b = of('1') as Observable<string>;
+        a.subscribe((n) => console.log(n));
+        b.subscribe((n) => console.log(n));
         `
       },
       {
@@ -2027,14 +2041,24 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         deprecationVersion: '6.5.0',
         deprecationSubjectAction: 'argument-scheduler-deprecated',
         breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('combineLatest')
-      }, {
+      },
+      {
         subject: 'combineLatest',
         subjectSymbol: SubjectSymbols.function,
         subjectAction: 'multiple-arguments-removed',
         itemType: 'breakingChange',
         deprecationVersion: '6.5.0',
         deprecationSubjectAction: 'multiple-arguments-deprecated',
-        breakingChangeMsg: getOperatorRemovedBreakingChangePhrase('combineLatest')
+        breakingChangeMsg: 'Creation operator combineLatest removed the option to pass multiple arguments'
+      },
+      {
+        subject: 'forkJoin',
+        subjectSymbol: SubjectSymbols.function,
+        subjectAction: 'multiple-arguments-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '6.5.0',
+        deprecationSubjectAction: 'multiple-arguments-deprecated',
+        breakingChangeMsg: 'Creation operator combineLatest removed the option to pass multiple arguments'
       },
       {
         subject: 'from',
@@ -2260,6 +2284,24 @@ export const deprecationAndBreakingChangeTimeline: MigrationReleaseItem[] = [
         deprecationVersion: '6.4.0',
         deprecationSubjectAction: 'argument-completeCallback-deprecated',
         breakingChangeMsg: getGeneralObserverCallbackBreakingChangeMsg('tap', 'complete')
+      },
+      {
+        subject: 'of',
+        subjectSymbol: SubjectSymbols.function,
+        subjectAction: 'generic-argument-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '7.0.0-alpha.0',
+        deprecationSubjectAction: 'generic-argument-deprecated',
+        breakingChangeMsg: 'Creation operator of removed generic arguments'
+      },
+      {
+        subject: 'Observable',
+        subjectSymbol: SubjectSymbols.class,
+        subjectAction: 'property-create-removed',
+        itemType: 'breakingChange',
+        deprecationVersion: '7.0.0-alpha.0',
+        deprecationSubjectAction: 'property-create-deprecated',
+        breakingChangeMsg: 'Class Observable removed property create'
       }
     ]
   }
