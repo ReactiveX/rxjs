@@ -1,3 +1,16 @@
+## [6.5.4](https://github.com/reactivex/rxjs/compare/6.5.3...6.5.4) (2019-12-27)
+
+
+### Bug Fixes
+
+* **asapScheduler:** resolved memory leak ([#5183](https://github.com/reactivex/rxjs/issues/5183)) ([4312af5](https://github.com/reactivex/rxjs/commit/4312af5)), closes [#5016](https://github.com/reactivex/rxjs/issues/5016)
+* chain subscriptions from interop observables for 6.x ([#5178](https://github.com/reactivex/rxjs/issues/5178)) ([cbc7721](https://github.com/reactivex/rxjs/commit/cbc7721))
+* **shareReplay** clear subscription on shareReplay completion ([#5044](https://github.com/reactivex/rxjs/issues/5044)) ([9f87505](https://github.com/reactivex/rxjs/commit/9f87505)), closes [#5034](https://github.com/reactivex/rxjs/issues/5034)
+* **fromFetch:** passing already aborted signal to init aborts fetch ([c2657a8](https://github.com/reactivex/rxjs/commit/c2657a8))
+* missing package.json in rxjs/fetch ([#5001](https://github.com/reactivex/rxjs/issues/5001)) ([06fb735](https://github.com/reactivex/rxjs/commit/06fb735))
+
+
+
 ## [6.5.3](https://github.com/reactivex/rxjs/compare/6.5.2...6.5.3) (2019-09-03)
 
 ### Bug Fixes
